@@ -35,18 +35,17 @@
                     <?php echo $prefix; ?>
                 </div>
             <?php endif; ?>
-            <input
-                class="form-control numeric <?php echo $kpclass;?>"
-                type="text"
-                name="<?php echo $myfname;?>"
-                id="answer<?php echo $myfname; ?>"
-                value="<?php echo $dispVal;?>"
-                title="<?php eT('Only numbers may be entered in this field.'); ?>"
-                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
-                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
-                data-number="1"
-                data-integer="<?php echo $integeronly;?>"
-                />
+            <?php
+            echo \CHtml::textField($myfname,$dispVal,array(
+                'id' => "answer{$myfname}",
+                'class' => "form-control numeric {$kpclass}",
+                'title' => gT('Only numbers may be entered in this field.'),
+                'size' => ($inputsize ? $inputsize : null),
+                'maxlength' => ($maxlength ? $maxlength : null),
+                'data-number' => 1,
+                'data-integer' => $integeronly,
+            ));
+            ?>
             <?php if ($suffix != ''): ?>
                 <div class="ls-input-group-extra suffix-text suffix">
                     <?php echo $suffix; ?>

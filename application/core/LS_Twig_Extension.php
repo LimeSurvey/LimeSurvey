@@ -64,10 +64,10 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerTemplateCssFile($sTemplateCssFileName)
     {
-        $oAdminTheme = AdminTheme::getInstance();
+        $oTemplate = self::getTemplateForRessource($sTemplateCssFileName);
 
         Yii::app()->getClientScript()->registerCssFile(
-            $oAdminTheme->sTemplateUrl .
+            $oTemplate->sTemplateUrl .
             $sTemplateCssFileName
         );
     }
@@ -95,11 +95,11 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
     {
-        $oAdminTheme = AdminTheme::getInstance();
+        $oTemplate = self::getTemplateForRessource($sTemplateScriptFileName);
 
         $position = self::getPosition($position);
         Yii::app()->getClientScript()->registerScriptFile(
-            $oAdminTheme->sTemplateUrl .
+            $oRTemplate->sTemplateUrl .
             $sTemplateScriptFileName,
             $position,
             $htmlOptions
@@ -206,6 +206,42 @@ class LS_Twig_Extension extends Twig_Extension
     public static function assetPublish($sRessource)
     {
         return App()->getAssetManager()->publish($sRessource);
+    }
+
+    /**
+     * @var $sImagePath  string                 the image path relative to the template root
+     * @var $alt         string                 the alternative text display
+     * @var $htmlOptions array                  additional HTML attribute
+     */
+    public static function image($sImagePath, $alt='', $htmlOptions=array ( ) )
+    {
+        // Reccurence on templates to find the file
+        $oTemplate = self::getTemplateForRessource($sImagePath);
+
+        if($oTemplate){
+            $sUrlImgAsset = self::assetPublish($oTemplate->path.'/'.$sImagePath);
+        }else{
+            // TODO: publish a default image "not found"
+        }
+
+        return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
+    }
+
+    public static function getTemplateForRessource($sRessource)
+    {
+        $oRTemplate = Template::model()->getInstance();
+        
+        while (!file_exists($oRTemplate->path.'/'.$sRessource)){
+
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
     }
 
     public static function getPost($sName, $sDefaultValue=null)

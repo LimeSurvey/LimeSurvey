@@ -55,6 +55,14 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .top-container .form-change-lang {text-align:center}
 
 /**
+ * Navigator
+ */
+ 
+ .save-clearall-wrapper {
+	 margin-top: 0.75em;
+ }
+
+/**
  * Question part
  */
 /** Question Design **/
@@ -231,6 +239,8 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .slider-tick.custom::before {
   color: #2c3e50;
 }
+
+
 /* Show more the heading in table */
 .ls-answers .ls-heading th{font-weight:700}
 /* Max width for some answer part */
@@ -249,7 +259,7 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .ls-even{
 background-color:#f9f9f9;
 }
-/* dynamic group (multipe-numeric) .form-control-static same padding and border width than form-control for better alignment */
+/* dynamic group (multiple-numeric) .form-control-static same padding and border width than form-control for better alignment */
 .ls-group-dynamic .form-control-static{border: 2px solid transparent;padding-left:15px;padding-right:15px;}
 /* array by column hover column */
 .table-col-hover col:hover, /* This, maybe, work in CSS4 :) */
@@ -713,3 +723,4 @@ div.yes-no .btn-group label {
 p.return-to-survey{
     clear:left;
 }
+

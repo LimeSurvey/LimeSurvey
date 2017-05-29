@@ -11,11 +11,13 @@
 
     (¯`·._.·(¯`·._.· Header  ·._.·´¯)·._.·´¯)
 
-    This file generate the headers.
-    Most of the time, it will not the right place to add your own JS/CSS. Use the config.xml file for that.
+    This file generates the headers.
+    Most of the time, it is not the right place to add your own JS/CSS - instead, use the config.xml file for that.
 #}
 
-{{ registerScript('activateConfirmLanguage',"$.extend(LSvar.lang," ~ aSurveyInfo.jYesNo ~ ")", "POS_BEGIN") }}
+{% if(aSurveyInfo.jYesNo) %}
+    {{ registerScript('activateConfirmLanguage',"$.extend(LSvar.lang," ~ aSurveyInfo.jYesNo ~ ")", "POS_BEGIN") }}
+{% endif %}
 {{ registerScript('activateActionLink',"activateActionLink();", "POS_END") }}
 {{ registerScript('activateConfirmButton',"activateConfirmButton();", "POS_END") }}
 

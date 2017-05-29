@@ -39,7 +39,6 @@
             <?php endif; ?>
             <div class="slider-container ls-input-group col-xs-12 col-sm-<?php echo $sliderWidth ?>">
                 <?php
-                /* FF show issue + prefix/suffix must be encoded */
                 echo CHtml::textField($myfname,$dispVal,array(
                     'class'=>'form-control answer-item numeric-item',
                     'id'=>"answer{$myfname}",

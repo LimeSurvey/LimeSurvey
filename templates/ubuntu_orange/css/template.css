@@ -1,0 +1,1093 @@
+ body
+ {
+     /*padding-top: 50px; now define in JS to fit any title length */
+     padding-bottom: 10px;
+ }
+
+.remove-margins {
+    margin: 0;
+}
+.remove-padding {
+    padding: 0;
+}
+div[id^="group-"]>div {
+    background-color: #fff;
+    margin-bottom: 1em;
+ }
+
+ div[id^="group-"]>div.group-container {
+     background-color: transparent;
+ }
+
+.language-changer {
+    background-color: #fff;
+    padding: 1em;
+}
+
+#topContainer {
+    position: absolute;
+    /*top: 55px; now define in JS to fit any title length */
+    width: 100%;
+    padding: 1em;
+    border-bottom: none;
+}
+
+.progress {
+    height: 21px;
+    margin-bottom: 0px;
+}
+
+#surveynametitle {
+    font-size: 4em;
+}
+
+#surveydescription, #surveynametitle, #welcome-container h1 {
+    color: #2c3e50;
+    text-align: center;
+}
+
+.group-name {
+
+}
+
+#surveydescription, .group-name {
+    color: #2c3e50;
+}
+
+#main-row, #welcome-container {
+    background-color: transparent;
+}
+ /**
+ * Navigator
+ */
+
+ #navigator-container {
+     margin-top: 4em;
+     padding-top: 1em;
+     padding-bottom: 1em;
+ }
+ #navigator-container>div
+ {
+ }
+
+ #main-col {
+     margin-top: 1em;
+ }
+
+.row {
+}
+
+ .col-centered{
+     float: none;
+     margin: 0 auto;
+ }
+
+
+/**
+* navigator
+*/
+#loadallbtn{
+    white-space: normal;
+}
+
+
+.label-col {
+    min-width: 10%;
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+li.responsive-content
+{
+    display: block;
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+/* Don't wrap "No answer" for 10-point array */
+.table-in-qanda-2 thead th {
+    white-space: nowrap;
+}
+
+
+/**
+* slider
+**/
+.numeric-multi ul.slider.computed {
+  width: 22em;
+}
+
+.numeric-multi ul.computed li label,.numeric-multi ul.slider.computed li label
+  {
+  padding-right: 0%;
+}
+
+.numeric-multi div.multinum-slider {
+  width: auto;
+  float: left;
+  margin-top: 1.5em;
+  margin-bottom: 0.2em;
+}
+
+/** UI Slider **/
+.numeric-multi label.slider-label {
+  display: table-cell;
+  width: auto !important;
+  padding: 0 1em 0.2em 0;
+  margin-top: 1.3em;
+  vertical-align: middle;
+}
+
+.numeric-multi .ui-slider-handle {
+    top: -0.35em;
+}
+
+.ui-slider-1 {
+  width: 200px;
+  height: 9px;
+  margin-bottom: 20px;
+}
+
+.ui-slider-2 {
+  width: 200px;
+  height: 23px;
+  position: relative;
+  background-image: url(../../images/slider-bg-2.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.slider_callout {
+  height: 20px;
+  width: 100px;
+  overflow: hidden;
+  position: absolute;
+  top: -20px;
+  margin-left: -3px;
+  color: #284a6e;
+  font-size: 90%;
+  font-weight: bold;
+  text-align: left;
+}
+
+.slider_showmin {
+  float: left;
+  width: 50px;
+  margin: 15px 0 0 -0.3em;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 0.7em;
+  font-weight: normal;
+  text-align: left;
+}
+
+.slider_showmax {
+  float: right;
+  width: 50px;
+  margin: 15px -0.3em 0 0;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 0.7em;
+  font-weight: normal;
+  text-align: right;
+}
+
+.slider_lefttext {
+  display: table-cell;
+  padding-top: 1.5em;
+  padding-right: 11px;
+  padding-bottom: 3px;
+  vertical-align: top;
+  text-align: right;
+  font-size: 0.9em;
+}
+
+.slider_righttext {
+  display: table-cell;
+  padding-top: 1.5em;
+  padding-left: 11px;
+  padding-bottom: 3px;
+  vertical-align: top;
+  font-size: 0.9em;
+}
+
+.withslider {
+    margin-bottom: 30px;
+}
+
+
+
+
+
+
+#indexcontainer {display : none;}
+
+.radio-list li
+{
+    display: block;
+    clear: both;
+}
+/*
+.checkbox, .radio
+{
+    float: left;
+}
+
+.label-radio span
+{
+    display: inline-block;
+    padding-top: 3px;
+}
+*/
+.question-item .other-label
+{
+    margin: 0px;
+    padding: 0px;
+}
+
+/**
+ * For em-type
+ */
+ .strong
+ {
+     font-weight: bold;
+     display: inline-block;
+     padding: 0.2em;
+ }
+
+ .hide-tip
+ {
+     display: none;
+ }
+
+/**
+ * Surveys list
+ */
+.surveys-list {
+    margin-top: 1em;
+    list-style: none;
+}
+.surveys-list li {
+    padding: 0.5em;
+}
+.surveys-list li a {
+    margin-left: 0.5em;
+}
+
+#surveys-list-jumbotron {
+    text-align: center;
+}
+
+/*#outerframeContainer {
+    height: 100%;
+}*/
+
+#surveyListFooter {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    margin-top: 10px;
+}
+
+#surveyListFooter div{
+
+}
+
+html, body {
+    height: 90%;
+}
+
+/**
+ * Gender buttons
+ */
+
+/* Not selected */
+.gender-button button{
+    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.16), 2px 2px 2px 0 rgba(0, 0, 0, 0.12);
+    margin-left: 1em;
+}
+
+/* selected */
+.gender-button .btn:focus {
+    box-shadow: none;
+}
+
+.gender-button .btn:focus .gender-text{
+    text-decoration: underline;
+}
+
+/* General */
+.gender-button .btn span {
+    display: block;
+}
+
+html body .navbar.navbar-default.navbar-fixed-top {
+    z-index: 2000;
+}
+
+.gender-button .gender-icon {
+    font-size: 2em;
+}
+
+.navbar-brand {
+    height: auto;
+}
+
+/* For striped tables */
+.array2 {
+    background-color: #f9f9f9;
+}
+
+/* Make sure table covers hole page */
+table {
+    width: 100%;
+}
+
+/* Give help text some space */
+.question-help {
+    margin-top: 1em;
+}
+
+/* Wrap text in e.g. gender button "No answer */
+.wrap-normal {
+    white-space: normal;
+}
+
+/* Center modal vertically, used by file-upload modal */
+.modal {
+    text-align: center;
+    padding: 0!important;
+}
+.modal:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -4px;
+}
+.modal-dialog {
+    display: inline-block;
+     text-align: left;
+     vertical-align: middle;
+}
+
+/* Make file upload modal fit to iframe */
+.file-upload-modal-body iframe {
+    height: inherit;
+    width: 100%;
+    border: none;
+}
+.file-upload-modal-body {
+    padding: 0;
+    height: 500px;
+}
+.file-upload-modal-footer {
+    margin-top: 0;
+}
+
+.slider.slider-horizontal {
+    width: 100%;
+
+    /* The reset button will be under the slider, so allow some margin */
+    margin-bottom: 1em;
+}
+
+/* When slider has both show-min-max and reset button, add space between
+ * left badge and reset button */
+.slider-min-badge {
+    margin-right: 1em;
+}
+
+.slider-left-span {
+    text-align: right;
+}
+
+.slider-right-span {
+    text-align: left;
+}
+
+.slider-container {
+    margin-top: 3.5em;
+    margin-bottom: 2.5em;
+}
+
+#yii-flash-message {
+    margin-top: 3em;
+}
+
+.prefix-text-right {
+    text-align: right;
+}
+
+.align-middle {
+    vertical-align: middle !important;
+}
+
+table.table-multi-text tbody tr th {
+    vertical-align: middle;
+}
+
+table.question.subquestion-list.questions-list.table-multi-text thead tr th {
+    text-align: center;
+}
+
+/* Used for date-picker icon within input */
+.form-control-feedback {
+    right: 1em;
+    left: auto;
+}
+
+/* Used for multiple numeric sum and remain
+ * Overwrite Bootstrap label font-size 75% */
+.label {
+    font-size: 90%;
+}
+
+body .navbar-default .navbar-brand:hover {
+    color: #ffffff;
+}
+
+/* Only use <label> to get vertical align easy. Don't want boldness. */
+.no-label {
+    font-weight: normal;
+}
+
+/* Center radio buttons in array-by-column */
+.table-array-by-column td.radio-item.text-center.answer-item {
+    padding-left: 47px;
+}
+
+table > tbody > tr > td.ddprefix {
+    padding-right: 1em;
+    vertical-align: middle;
+}
+
+
+/*
+    Arrays Question
+*/
+
+/* center the radio list in the td*/
+td.answer-item.text-center
+{
+    padding-left: 39px;
+}
+
+table.array-no-dropdown  td.answer-item.text-center
+{
+    padding-left: 45px;
+}
+
+.table-5-point-array td.answer-item.text-center
+{
+    padding-left: 54px;
+}
+
+.table-10-point-array  td.answer-item.text-center
+{
+    padding-left: 40px;
+}
+
+.table-10-point-array  thead tr th.text-center
+{
+    padding-left: 0px;
+}
+
+/**
+ * On big screen only, iPad and up
+ */
+@media only screen and (min-width: 768px) {
+
+    .table-dual-scale .separator {
+        width: 6%;
+    }
+
+    table > tbody > tr > td.ddsuffix {
+        padding-left: 1em;
+        vertical-align: middle;
+    }
+
+}
+
+/**
+ * No more tables
+ * OBS: Media specific CSS must be last in this file.
+ * iPad has width 768px (according to Chrome dev tool)
+ * Google Nexus 10 has width 800px.
+ * (Both in portrait mode.)
+ * We don't have to collapse tables on pads.
+ */
+@media only screen and (max-width: 801px) {
+
+    /*
+        No more table transformation applies when screen is under 801px (for a few exotic tablet screens, see #11016),
+        whereas visible-xs-block respect bootstrap standards (767px)
+        If too many bugs of this kind appears in the future, we should just refuse to support weird exotic tablet screens.
+        We should repsect standards, we should not try to fit to non standards devices.
+    */
+    .visible-xs-block{
+        display: block !important;
+    }
+    .visible-xs-inline-block{
+        display: inline-block !important;
+    }
+
+    /* Remove margin */
+    .row {
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Add some margin for multiple short text */
+    .form-group.row {
+        margin-bottom: 15px;
+    }
+
+    /* Force table to not be like tables anymore */
+    .no-more-tables table,
+    .no-more-tables thead,
+    .no-more-tables tbody,
+    .no-more-tables th,
+    .no-more-tables td {
+        display: block;
+    }
+
+    .no-more-tables tbody th,
+    .no-more-tables tbody td,
+    .no-more-tables tbody tr {
+        width: 100% !important;
+    }
+
+    .no-more-tables tr {
+        display: inline-block;
+    }
+
+    .no-more-tables tbody {
+        padding: 0 1em 0 1em;
+    }
+
+    /* Hide table headers (but not display: none;, for accessibility) */
+    .no-more-tables thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .no-more-tables tr,
+    .array-by-columns-div .radio-list {
+        border: 1px solid #ccc;
+        padding: 1em;
+    }
+
+    /* Line header ; color is h4 color */
+    .no-more-tables tr th,
+    .array-by-columns-div .answertext {
+        font-size: 1.1em;
+        text-align: center;
+        color: #317eac;
+    }
+
+    .no-more-tables tr th {
+        text-align: left;
+    }
+
+    .array-by-columns-div .answertext {
+        padding: 8px;
+        padding-left: 0;
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .array-by-columns-div .radio-item {
+        padding-bottom: 8px;
+    }
+
+    .no-more-tables .checkbox  {
+        position: relative;
+        top: 6px;
+    }
+
+    .no-more-tables td {
+        /* Behave  like a "row" */
+        min-height: 2em;
+        border: none;
+        position: relative;
+        /*padding-left: 95%;*/
+        padding-bottom: 1em;
+        white-space: normal;
+        text-align:left;
+    }
+
+    .array-multi-flexi  .no-more-tables td, .no-more-tables-array-dual-dropdown-layout  td, .no-more-tables-array-multi-text td{
+        padding-left: 0%;
+    }
+
+
+    .no-more-tables td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align:left;
+        font-weight: bold;
+    }
+
+    /*
+    Label the data
+    */
+    /*.no-more-tables td:before { content: attr(data-title); }*/
+
+    .no-more-tables-10-point td {
+    }
+
+    /* Don't wrap "No answer" on two lines */
+    .no-more-tables-10-point label {
+        white-space: nowrap;
+    }
+
+    .no-more-tables-10-point td:before, .no-more-tables-5-point td:before {
+        /* Now like a table header */
+        position: relative;
+        left: 2px;
+        /* Top/left values mimic padding */
+    }
+
+    /* When tables are collapsed, remove margin top so the labels look centered */
+    input[type="radio"],
+    .radio input[type="radio"],
+    .radio-inline input[type="radio"] {
+      margin-top: 4px;
+    }
+
+    .five-point-choice .col-xs-12 {
+        padding-bottom: 8px;  /* For 5-point-choice; TODO: Should look like 5-point-array? */
+    }
+
+    /* Hide the first column in array-by-column */
+    .array-by-columns-table tr > *:nth-child(1) {
+        display: none;
+    }
+
+    /* Need some more space on phone */
+    .array-multi-flexi .answertext {
+        padding-bottom: 0.5em;
+    }
+
+    .array-multi-flexi .answer-item label {
+        padding-bottom: 0.5em;
+    }
+
+    /* On phone, left and right slider text is above and below slider */
+    .slider-left-span {
+        text-align: left;
+    }
+
+    /* As above, collapse prefix/suffix to above/below input */
+    .prefix-text-right {
+        text-align: left;
+    }
+
+    table.question.subquestion-list.questions-list tr th.answertext {
+        text-align: left;
+    }
+
+    /* Used for date-picker icon within input */
+    .form-control-feedback {
+        right: 0.5em;
+    }
+
+    /* Increase-same-decrease array */
+    .row-inc-same-dec .radio-item,
+    .thead-inc-same-dec th {
+        text-align: left;
+    }
+
+    .table-multi-num.no-more-tables tr {
+        border: none;
+    }
+
+    /* Used for <td></td> in multiple-numeric */
+    td.hide-on-small-screen {
+        display: none;
+    }
+
+    #langchanger-label {
+        padding-top: 11px;
+    }
+
+    .col-xs-12.question-container {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    /* text overflows, ellipsis and hyphens */
+    .navbar-brand {
+        white-space:nowrap;
+        text-overflow: ellipsis;
+        text-overflow: "…";
+    }
+}
+
+/** On small phones, leave some more space */
+@media only screen and (max-width: 400px) {
+
+    .array-by-columns-div .radio-list {
+        border: 1px solid #ccc;
+        padding: 1em;
+        margin: 1em;
+    }
+
+    /*
+    .col-sm-12.answer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    */
+
+    .no-more-tables tbody {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* For yes-no question, shrink the buttons a bit on phone screens */
+    .btn-lg, .btn-group-lg label {
+        padding: 10px 15px;
+    }
+
+    .slider.slider-horizontal {
+        /* Slider can be full width on phones */
+        width: 100%;
+    }
+
+    /* Center label under radio button on phones */
+    .five-point-choice label {
+        margin-left: 5px;
+    }
+
+    /* Make file-upload pop-up shorter on phones */
+    .file-upload-modal-body {
+        padding: 0;
+        height: 300px;
+    }
+
+    /* Modal should be in front of navbar, so the close icon is visible */
+    .modal {
+        z-index: 3000;
+    }
+
+    /* Less margin on phones */
+    .slider.slider-horizontal {
+        margin-bottom: 0.4em;
+    }
+
+}
+
+/* On iPad etc only */
+@media only screen and (max-width: 800px) and (min-width: 768px) {
+    .five-point-choice .noanswer-item {
+        padding: 0;
+    }
+
+
+}
+
+@media only screen and (max-width: 1000px) and (min-width: 800px) {
+    .table-10-point-array td.answer-item.text-center
+    {
+        padding-left: 10px;
+    }
+
+    .table-10-point-array  > thead > tr > th
+    {
+        text-align: left;
+        padding-right: 0px;
+    }
+}
+
+
+/**
+ * Display adjust, question type by question type
+ */
+
+.radio input[type="radio"]:disabled + label
+{
+    opacity: 0.25;
+}
+
+
+
+
+/* center the label text in no more table mode */
+.label-text{
+    margin-top: -24px;
+    margin-left: 20px;
+}
+
+/* ...except for dual-scale and array-by-column */
+.table-dual-scale .label-text, .array-by-columns-div .label-text {
+    margin-top: 0px;
+    margin-left: 0px;
+}
+
+.label-clickable:hover
+{
+    cursor: pointer;
+}
+
+.table > tbody > tr > th
+{
+    vertical-align: middle;
+}
+
+table.numbers-only th, table.numbers-only input {
+    text-align: right;
+}
+
+.othertext-label-checkox-container {
+    padding-top: 5px;
+    margin-right: 5px;
+}
+
+.multiple-choice-with-comment.table, .table-multi-num.table{
+    table-layout: auto;
+    width: initial;
+}
+ .multiple-choice-with-comment.table > tbody > tr > td {
+     padding-left: 18px;
+     vertical-align: middle;
+ }
+
+ /* alignment for small screens*/
+ .multiple-choice-with-comment.table > tbody > tr > td.comment-container {
+     padding-left: 14px;
+ }
+.checkbox input[type="checkbox"] {
+    margin-left: 0px;
+}
+
+.short-free-text .prefix, .short-free-text .suffix,.geoloc-item .search-icon, .geoloc-item .checkbox  {
+    padding-top: 10px;
+}
+
+.geoname_search {
+    margin-bottom: 10px;
+}
+
+
+
+
+/** Question Design **/
+
+body div.row .question-container {
+    margin-bottom: 2em;
+}
+
+.answer-container, .question-help-container
+{
+    border-style: solid;
+}
+
+.answer-container
+{
+    border-width: 0px 1px 0px 1px;
+    padding-top: 3em;
+    background-color: white;
+}
+
+.question-help-container
+{
+    border-width: 0px 1px 1px 1px;
+    padding-bottom: 5px;
+}
+
+
+/** Header **/
+
+.question-title-container {
+    color: white;
+    padding: 2em 1em 1em 1em;
+
+}
+
+.questionvalidcontainer {
+    position: relative;
+    text-align: center;
+    padding-bottom: 1em;
+}
+
+.questionvalidcontainer .text-danger{
+    font-weight: bold;
+}
+
+.questionvalidcontainer .text-info{
+    color: #B9CC14;
+    font-weight: bold;
+}
+
+/* Arrow */
+/* Will confuse survey takers?
+.questionvalidcontainer:after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-top-color: #233140;
+    border-width: 0.9em;
+    margin-left: -0.9em;
+}
+*/
+
+/* Asterix */
+.asterisk {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.asterisk:before {
+    content: "\f069";
+}
+
+
+/* Check javascript */
+#checkjavascript {
+    margin-top: 100px;
+    z-index: 999;
+    right: 100px;
+    position: fixed;
+    width: 300px;
+}
+
+/*label font weight*/
+label {
+    font-weight: normal;
+}
+
+#surveys-list-container
+{
+    margin-top: 50px;
+}
+
+/* text overflows, ellipsis and hyphens */
+.navbar-brand {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#outerframeContainer {
+    min-height: 100%;
+    word-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    -o-hyphens: auto;
+    hyphens: auto;
+}
+
+.xdebug-var-dump {
+    z-index: 10000;
+    position: relative;
+    top: 10px;
+}
+
+.list-unstyled.radio-list {
+    padding-left: 15px;
+}
+
+div.yes-no .btn-group label {
+  white-space:normal;
+}
+
+
+.multipleco-other-topic {
+    max-width: 150px;
+}
+
+.privacy-header{
+    font-weight: bold;
+    font-style: italic;
+}
+
+/*** Divider for Bootstrap ***/
+
+.horizontal-divider.top{
+  border-top: 3px solid #323232;
+}
+.horizontal-divider.bottom{
+  border-bottom: 3px solid #323232;
+}
+
+.vertical-divider.left {
+  border-left: 3px solid #323232;
+}
+.vertical-divider.right {
+  border-right: 3px solid #323232;
+}
+@media (max-width: 800px){
+    .vertical-divider.left {
+    border: none;
+    }
+    .vertical-divider.right {
+    border: none;
+    }
+}
+/*** Small helper classes, that are not shipped with bootstrap but fit in well***/
+.ls-custom-padding{
+    padding: 1px;
+}
+.ls-custom-padding.two{
+    padding: 2px;
+}
+.ls-custom-padding.three{
+    padding: 3px;
+}
+.ls-custom-padding.four{
+    padding: 4px;
+}
+.ls-custom-padding.five{
+    padding: 5px;
+}
+.ls-custom-padding.fifteen{
+    padding: 15px;
+}
+.ls-custom-padding.eighteen{
+    padding: 18px;
+}
+
+.ls-custom-margin{
+    margin: 1px;
+}
+.ls-custom-margin.two{
+    margin: 2px;
+}
+.ls-custom-margin.three{
+    margin: 3px;
+}
+.ls-custom-margin.four{
+    margin: 4px;
+}
+.ls-custom-margin.five{
+    margin: 5px;
+}
+.ls-custom-margin.fifteen{
+    margin: 15px;
+}
+.ls-custom-margin.eighteen{
+    margin: 18px;
+}
+
+.label-danger {
+    white-space: normal;
+}

@@ -831,7 +831,7 @@ function buildsurveysession($surveyid,$preview=false)
     $sLangCode                        = App()->language;
     $thissurvey                       = getSurveyInfo($surveyid,$sLangCode);
     $oTemplate                        = Template::model()->getInstance('', $surveyid);
-    App()->getController()->sTemplate = $oTemplate->name;                                   // It's going to be hard to be sure this is used ....
+    App()->getController()->sTemplate = $oTemplate->sTemplateName;                                   // It's going to be hard to be sure this is used ....
     $sTemplatePath                    = $oTemplate->path;
     $sTemplateViewPath                = $oTemplate->viewPath;
 
@@ -1425,7 +1425,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
 
-            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_user_forms.twig"), array('aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('aSurveyInfo'=>$thissurvey), false);
             break;
 
         case "register": //Register new user
@@ -1516,16 +1516,15 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
     // Template settings
     $surveyid          = $thissurvey['sid'];
     $oTemplate         = Template::model()->getInstance('', $surveyid);
-    $sTemplateViewPath = $oTemplate->viewPath;
-    $oTemplate->registerAssets();
-    Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
+
+    //$oTemplate->registerAssets();
 
     $aError = array();
     $aError['title']      = ($sTitle != '')?$sTitle:gT("This survey cannot be tested or completed for the following reason(s):");
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
-    Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_errors.twig"), array('aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -2038,8 +2037,7 @@ function checkCompletedQuota($surveyid,$return=false)
             header("Location: ".$sUrl);
         }
     }
-
-    Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_quotas.twig"), array('aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -2115,7 +2113,6 @@ function display_first_page($thissurvey) {
     // Template init
     $oTemplate         = Template::model()->getInstance('', $surveyid);
     $sTemplatePath     = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->viewPath;
 
     LimeExpressionManager::StartProcessingPage();
     LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page
@@ -2144,7 +2141,8 @@ function display_first_page($thissurvey) {
     LimeExpressionManager::FinishProcessingPage();
 
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
-    Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_first_page.twig"), array('aSurveyInfo'=>$thissurvey), false);
+
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('aSurveyInfo'=>$thissurvey), false);
 }
 
 /**

@@ -13,6 +13,8 @@
 
     (¯`·._.·(¯`·._.· Survey List Layout  ·._.·´¯)·._.·´¯)
 
+    This file renders the list of publicly listed surveys in your LimeSurvey home page.
+
 #}
 
 <!DOCTYPE html>
@@ -47,19 +49,20 @@
 
                     <div class="row" id="surveys-list-container">
 
-                        {# include the alert for no javascrit #}
+                        {# include the alert for no JavaScript #}
                         {{ include('./subviews/no_js_alert.twig') }}
 
                         <div class="jumbotron" id="surveys-list-jumbotron">
-                            <p>
+                            <p>                                
                                 {% if  not empty(aSurveyInfo.oTemplate.siteLogo) %}
-                                    <img class="img-responsive center-block" src="{{ assetPublish(aSurveyInfo.oTemplate.path ~ '/' ~ aSurveyInfo.oTemplate.siteLogo ) }}" alt=""/>
+                                    {% set htmlOptions = {'class': 'img-responsive center-block',} %}
+                                    {{ image(aSurveyInfo.oTemplate.siteLogo, "LimeSurvey Survey Software", htmlOptions ) }}
                                 {% endif %}
                                 {{ aSurveyInfo.sSiteName }}
                             </p>
                         </div>
 
-                        <div class="col-xs-12 survey-list-heading">                            
+                        <div class="col-xs-12 survey-list-heading">
                             <div class='h3 '>
                                 {{ "The following surveys are available:" | t }}
                             </div>
@@ -92,7 +95,7 @@
                         <div class="container">
                             <p>
                                 <a href="http://www.limesurvey.org" target="_blank">
-                                    <img src="{{ aSurveyInfo.oTemplate.sTemplateurl }}/poweredby.png" alt="LimeSurvey Survey Software" />
+                                    {{ image("poweredby.png", "LimeSurvey Survey Software") }}
                                     </a>
                                     <br />
                                     <a href="http://www.limesurvey.org" target="_blank">

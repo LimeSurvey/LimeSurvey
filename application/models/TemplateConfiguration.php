@@ -24,306 +24,101 @@ class TemplateConfiguration extends CFormModel
 {
     /** @var string $sTemplateName The template name */
     public $sTemplateName='';
-    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
-    public $iSurveyId='';
-    /** @var SimpleXMLElement $config Will contain the config.xml*/
-    public $config;
-    /**
-     * @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update
-     */
-    private $apiVersion;
 
-    /** @var  string $viewPath Path of the views files (php files to replace existing core views) */
-    public $viewPath;
+    /** @var string $sPackageName Name of the asset package of this template*/
+    public $sPackageName;
+
     /** @var  string $siteLogo Name of the logo file (like: logo.png) */
     public $siteLogo;
-    /** @var  string $filesPath Path of the uploaded files */
-    public $filesPath;
-    /**
-     * @var string[] $cssFramework What framework css is used
-     * @see getFrameworkPackages()
-     */
-    public $cssFramework;
-    /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
-    public $packages;
-    /**
-     * @var string[] $depends List of all dependencies (could be more that just the config.xml packages)
-     * @see getDependsPackages()
-     */
-    public $depends;
-    /**
-     * @var array $otherFiles Array of files in the file directory
-     * @see setOtherFiles()
-     */
-    public $otherFiles;
 
-    public $sTemplateurl;
-
-    /** @var  Survey $oSurvey The survey object */
-    public $oSurvey;
-    /** @var boolean $isStandard Is this template a core one? */
-    public $isStandard;
     /** @var  string $path Path of this template */
     public $path;
-    /**
-     * @var string $hasConfigFile Does it has a config.xml file?
-     * //TODO why string not boolean ??
-     */
-    public $hasConfigFile='';//
+
+    /** @var string[] $sTemplateurl Url to reach the framework */
+    public $sTemplateurl;
+
+    /** @var  string $viewPath Path of the views files (twig template) */
+    public $viewPath;
+
+    /** @var  string $filesPath Path of the tmeplate's files */
+    public $filesPath;
+
+    /** @var string[] $cssFramework What framework css is used */
+    public $cssFramework;
+
+    /** @var boolean $isStandard Is this template a core one? */
+    public $isStandard;
+
+    /** @var SimpleXMLElement $config Will contain the config.xml */
+    public $config;
+
+    /** @var TemplateConfiguration $oMotherTemplate The template name */
+    public $oMotherTemplate;
+
+
+    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
+    private $iSurveyId='';
+
+    /** @var string $hasConfigFile Does it has a config.xml file? */
+    private $hasConfigFile='';//
+
+    /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
+    private $packages;
+
+    /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
+    private $depends = array();
 
     /** @var bool $overwrite_question_views Does it overwrites the question rendering from quanda.php? Must have a valid viewPath too. */
-    public $overwrite_question_views=false;
+    private $overwrite_question_views=false;
+
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
-    public $xmlFile;
+    private $xmlFile;
+
+    /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
+    private $apiVersion;
+
 
     /**
-     * This method construct a template object, having all the needed configuration datas.
-     * It checks if the required template is a core one or a user one.
-     * If it's a user template, it will check if it's an old 2.0x template to provide default configuration values corresponding to the old template system
-     * If it's not an old template, it will check if it has a configuration file to load its datas.
-     * If it's not the case (template probably doesn't exist), it will load the default template configuration
-     * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if it has the needed layout files, if the files refered in css exist, etc.
+     * Constructs a template configuration object
+     * If any problem (like template doesn't exist), it will load the default template configuration
      *
-     * @param string $sTemplateName the name of the template to load. The string come from the template selector in survey settings
-     * @param string $iSurveyId the id of the survey. If
+     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
+     * @param  string $iSurveyId the id of the survey. If
      * @return $this
      */
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
-        // If it's called from template editor, a template name will be provided.
-        // If it's called for survey taking, a survey id will be provided
-        if ($sTemplateName == '' && $iSurveyId == '') {
-            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
-            $sTemplateName=Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate','default'));
-            //throw new TemplateException("Template needs either template name or survey id");
-        }
-        $this->sTemplateName = $sTemplateName;
-        $this->iSurveyId     = (int) $iSurveyId;
-
-        if ($sTemplateName=='') {
-            $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
-            if($this->oSurvey) {
-                $this->sTemplateName = $this->oSurvey->template;
-            } else {
-                $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
-            }
-        }
-        // We check if  it's a CORE template
-        $this->isStandard = $this->setIsStandard();
-        // If the template is standard, its root is based on standardtemplaterootdir, else, it's a user template, its root is based on usertemplaterootdir
-        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-
-        // If the template directory doesn't exist, it can be that:
-        // - user deleted a custom theme
-        // In any case, we just set Default as the template to use
-        if (!is_dir($this->path)) {
-            $this->sTemplateName = 'default';
-            $this->isStandard    = true;
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-            if(!$this->iSurveyId){
-                setGlobalSetting('defaulttemplate', 'default');
-            }
-        }
-
-        // If the template don't have a config file (maybe it has been deleted, or whatever),
-        // then, we load the default template
-        $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
-
-        if (!$this->hasConfigFile) {
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-
-        }
-
-        $this->xmlFile = $this->path.DIRECTORY_SEPARATOR.'config.xml';
-
-        //////////////////////
-        // Config file loading
-
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile));  // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-
-        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-        $this->config  = simplexml_load_string($sXMLConfigFile);
-
-        // Template configuration
-        // Ternary operators test if configuration entry exists in the config file (to avoid PHP notice in user custom templates)
-        $this->apiVersion               = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion:0;
-        $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR                            : '';
-
-        $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                                                 : '';
-        $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR                            : $this->path . '/files/';
-        $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
-        $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : (string)$this->config->engine->cssframework;
-        $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                             : array();
-
-
-        /* Add depend package according to packages */
-        $this->depends                  = $this->getDependsPackages();
-        $this->otherFiles               = $this->setOtherFiles();
-
-        // Package creation
-        $this->createTemplatePackage();
-
-        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
+        $this->setIsStandard();                                                 // Check if  it is a CORE template
+        $this->setPath();                                                       // Check and set path
+        $this->readManifest();                                                  // Check and read the manifest to set local params
+        $this->setMotherTemplates();                                            // Recursive mother templates configuration
+        $this->setThisTemplate();                                               // Set the main config values of this template
+        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
     }
 
     /**
      * Update the configuration file "last update" node.
-     * For now, it's called only from template editor
+     * For now, it is called only from template editor
      */
     public function actualizeLastUpdate()
     {
-        $date = date("Y-m-d H:i:s");
+        $date   = date("Y-m-d H:i:s");
         $config = simplexml_load_file(realpath ($this->xmlFile));
         $config->metadatas->last_update = $date;
         $config->asXML( realpath ($this->xmlFile) );                // Belt
         touch ( $this->path );                                      // & Suspenders ;-)
     }
 
-    public function registerAssets()
-    {
-        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
-        }else{
-            $aDepends = $this->getRecursiveDependencies('survey-template');
-
-            // CONVERT ALL PACKAGE IN $aDepend to BASE URL instead of PATH
-            foreach($aDepends as $package){
-
-                $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
-
-                // This will overwrite the package definition  using a base url instead of a base path
-                if( array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
-                    Yii::app()->clientScript->addPackage( $package, array(
-                        'baseUrl'   => $aOldPackageDefinition['devBaseUrl'],                                 // Don't use asset manager
-                        'css'       => array_key_exists('css', $aOldPackageDefinition)?$aOldPackageDefinition['css']:array(),
-                        'js'        => array_key_exists('js', $aOldPackageDefinition)?$aOldPackageDefinition['js']:array(),
-                        'depends'   => array_key_exists('depends', $aOldPackageDefinition)?$aOldPackageDefinition['depends']:array(),
-                    ) );
-                }
-            }
-
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
-        }
-
-
-    }
 
     /**
-     * Return a list of all the recursive dependencies of a packages
-     * eg: If a package A depends on B, and B depends on C, getRecursiveDependencies('A') will return {B,C}
+     * get the template API version
+     * @return integer
      */
-    public function getRecursiveDependencies($sPackageName)
+    public function getApiVersion()
     {
-        $aPackages     = Yii::app()->clientScript->packages;
-        if ( array_key_exists('depends', $aPackages[$sPackageName]) ){
-            $aDependencies = $aPackages[$sPackageName]['depends'];
-
-            foreach ($aDependencies as $sDpackageName){
-                if($aPackages[$sPackageName]['depends']){
-                    $aRDependencies = $this->getRecursiveDependencies($sDpackageName);                  // Recursive call
-                    if (is_array($aRDependencies)){
-                        $aDependencies = array_unique(array_merge($aDependencies, $aRDependencies));
-                    }
-                }
-            }
-            return $aDependencies;
-        }
-    }
-
-    /**
-     * Create a package for the asset manager.
-     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
-     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
-     * The publication of the package itself is done for now in replacements_helper, to respect the old logic of {TEMPLATECSS} replacement keyword
-     *
-     * NOTE 1 : To refresh the assets, the base directory of the template must be updated.
-     *
-     * NOTE 2: By default, Asset Manager is off when debug mode is on.
-     * Developers should then think about :
-     * 1. refreshing their brower's cache (ctrl + F5) to see their changes
-     * 2. update the config.xml last_update before pushing, to be sure that end users will have the new version
-     *
-     *
-     * For more detail, see :
-     *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
-     *  http://www.yiiframework.com/doc/api/1.1/YiiBase#setPathOfAlias-detail
-     *
-     */
-    private function createTemplatePackage()
-    {
-        Yii::setPathOfAlias('survey.template.path', $this->path);                                   // The package creation/publication need an alias
-        Yii::setPathOfAlias('survey.template.viewpath', $this->viewPath);
-
-        $aCssFiles   = (array)$this->config->files->css->filename;                                 // The CSS files of this template
-        $aJsFiles    = (array)$this->config->files->js->filename;                                  // The JS files of this template
-        $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-        if (isset($this->config->files->$dir)) {
-            $aCssFilesDir = isset($this->config->files->$dir->css->filename) ? (array)$this->config->files->$dir->css->filename : array();
-            $aJsFilesDir  = isset($this->config->files->$dir->js->filename) ? (array)$this->config->files->$dir->js->filename : array();
-            $aCssFiles=array_merge($aCssFiles,$aCssFilesDir);
-            $aJsFiles=array_merge($aJsFiles,$aJsFilesDir);
-        }
-
-        if (Yii::app()->getConfig('debug') == 0) {
-            Yii::app()->clientScript->registerScriptFile( Yii::app()->getConfig("generalscripts"). 'deactivatedebug.js', CClientScript::POS_END);
-        }
-
-        // The package "survey-template" will be available from anywhere in the app now.
-        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template' );
-        // It will create the asset directory, and publish the css and js files
-        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
-            Yii::app()->clientScript->addPackage( 'survey-template', array(
-                'basePath'    => 'survey.template.path',                        // Use asset manager
-                'css'         => $aCssFiles,
-                'js'          => $aJsFiles,
-                'depends'     => $this->depends,
-            ) );
-        }else{
-            $sTemplateurl = $this->getTemplateURL();
-            Yii::app()->clientScript->addPackage( 'survey-template', array(
-                'baseUrl'    =>  $sTemplateurl,                                 // Don't use asset manager
-                'css'         => $aCssFiles,
-                'js'          => $aJsFiles,
-                'depends'     => $this->depends,
-            ) );
-        }
-    }
-
-
-    /**
-     * Return the list of ALL files present in the file directory
-     * @return array
-     */
-    private function setOtherFiles()
-    {
-        $otherFiles = array();
-        if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath)) {
-            while (false !== ($file = readdir($handle))) {
-                if($file!='.' && $file!='..') {
-                    if (!is_dir($file)) {
-                        $otherFiles[] = array("name" => $file);
-                    }
-                }
-            }
-            closedir($handle);
-        }
-        return $otherFiles;
-    }
-
-    public function getName()
-    {
-        return $this->sTemplateName;
-    }
-
-
-    /**
-     * @return bool
-     */
-    private function setIsStandard()
-    {
-        return Template::isStandardTemplate($this->sTemplateName);
+        return $this->apiVersion;
     }
 
     /**
@@ -340,33 +135,225 @@ class TemplateConfiguration extends CFormModel
         return $this->sTemplateurl;
     }
 
+
+    /**
+     * Create a package for the asset manager.
+     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
+     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
+     * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
+     *
+     */
+    private function createTemplatePackage($oTemplate)
+    {
+        // Each template in the inheritance tree needs a specific alias
+        $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
+        $sViewName  = 'survey.template-'.$oTemplate->sTemplateName.'.viewpath';
+
+        Yii::setPathOfAlias($sPathName, $oTemplate->path);
+        Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
+
+        $aCssFiles   = (array) $oTemplate->config->files->css->filename;        // The CSS files of this template
+        $aJsFiles    = (array) $oTemplate->config->files->js->filename;         // The JS files of this template
+        $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+
+        // Remove/Replace mother files
+        $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
+        $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
+
+        if (isset($oTemplate->config->files->$dir)) {
+            $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array) $oTemplate->config->files->$dir->css->filename : array();
+            $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename)  ? (array) $oTemplate->config->files->$dir->js->filename : array();
+            $aCssFiles    = array_merge($aCssFiles,$aCssFilesDir);
+            $aJsFiles     = array_merge($aJsFiles,$aJsFilesDir);
+        }
+
+        if (Yii::app()->getConfig('debug') == 0) {
+            Yii::app()->clientScript->registerScriptFile( Yii::app()->getConfig("generalscripts"). 'deactivatedebug.js', CClientScript::POS_END);
+        }
+
+        $this->sPackageName = 'survey-template-'.$this->sTemplateName;
+        $sTemplateurl       = $oTemplate->getTemplateURL();
+
+        // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
+        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
+        // Depending on settings, it will create the asset directory, and publish the css and js files
+        Yii::app()->clientScript->addPackage( $this->sPackageName, array(
+            'devBaseUrl'  => $sTemplateurl,                                     // Used when asset manager is off
+            'basePath'    => $sPathName,                                        // Used when asset manager is on
+            'css'         => $aCssFiles,
+            'js'          => $aJsFiles,
+            'depends'     => $oTemplate->depends,
+        ) );
+    }
+
+    /**
+     * Change the mother template configuration depending on template settings
+     * @var $sType     string   the type of settings to change (css or js)
+     * @var $aSettings array    array of local setting
+     * @return array
+     */
+    private function changeMotherConfiguration( $sType, $aSettings )
+    {
+        foreach( $aSettings as $key => $aSetting){
+            if (!empty($aSetting['replace']) || !empty($aSetting['remove'])){
+                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSetting['replace'] );
+                unset($aSettings[$key]);
+            }
+        }
+
+        return $aSettings;
+    }
+
+    /**
+     * Read the config.xml file of the template and push its contents to $this->config
+     */
+    private function readManifest()
+    {
+        $this->xmlFile         = $this->path.DIRECTORY_SEPARATOR.'config.xml';
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true);            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $this->config          = simplexml_load_string($sXMLConfigFile);        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+
+        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+    }
+
+    /**
+     * Configure the mother template (and its mother templates)
+     * This is an object recursive call to TemplateConfiguration::setTemplateConfiguration()
+     */
+    private function setMotherTemplates()
+    {
+        if (isset($this->config->metadatas->extends)){
+            $sMotherTemplateName   = (string) $this->config->metadatas->extends;
+            $this->oMotherTemplate = new TemplateConfiguration;
+            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
+        }
+    }
+
+    /**
+     * Set the path of the current template
+     * It checks if it's a core or a user template, if it exists, and if it has a config file
+     */
+    private function setPath()
+    {
+        // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on usertemplaterootdir
+        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+
+        // If the template directory doesn't exist, we just set Default as the template to use
+        // TODO: create a method "setToDefault"
+        if (!is_dir($this->path)) {
+            $this->sTemplateName = 'default';
+            $this->isStandard    = true;
+            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+            if(!$this->iSurveyId){
+                setGlobalSetting('defaulttemplate', 'default');
+            }
+        }
+
+        // If the template doesn't have a config file (maybe it has been deleted, or whatever),
+        // then, we load the default template
+        $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
+        if (!$this->hasConfigFile) {
+            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+
+        }
+    }
+
+    /**
+     * Set the template name.
+     * If no templateName provided, then a survey id should be given (it will then load the template related to the survey)
+     *
+     * @var     $sTemplateName  string the name of the template
+     * @var     $iSurveyId      int    the id of the survey
+      */
+    private function setTemplateName($sTemplateName='', $iSurveyId='')
+    {
+        // If it is called from the template editor, a template name will be provided.
+        // If it is called for survey taking, a survey id will be provided
+        if ($sTemplateName == '' && $iSurveyId == '') {
+            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
+            $sTemplateName = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate','default'));
+        }
+
+        $this->sTemplateName = $sTemplateName;
+        $this->iSurveyId     = (int) $iSurveyId;
+
+        if ($sTemplateName == '') {
+            $oSurvey       = Survey::model()->findByPk($iSurveyId);
+
+            if($oSurvey) {
+                $this->sTemplateName = $oSurvey->template;
+            } else {
+                $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
+            }
+        }
+    }
+
+    /**
+     * Set the default configuration values for the template, and use the motherTemplate value if needed
+     */
+    private function setThisTemplate()
+    {
+        // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
+        $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
+        $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
+        $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
+        $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR  : $this->oMotherTemplate->filesPath;
+
+        // Not mandatory (use package dependances)
+        $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
+        $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : '';
+        $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                                      : array();
+
+        /* Add depend package according to packages */
+        $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
+    }
+
+
+    /**
+     * @return bool
+     */
+    private function setIsStandard()
+    {
+        $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
+    }
+
+
     /**
      * Get the depends package
      * @uses self::@package
      * @return string[]
      */
-    private function getDependsPackages()
+    private function getDependsPackages($oTemplate)
     {
 
         /* Start by adding cssFramework package */
-        $packages=$this->getFrameworkPackages();
-        if(!getLanguageRTL(App()->getLanguage())) {
-            $packages=array_merge ($packages,$this->getFrameworkPackages('ltr'));
+        $packages = $this->getFrameworkPackages($oTemplate);
+
+        if (!getLanguageRTL(App()->getLanguage())) {
+            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'ltr'));
         } else {
-            $packages=array_merge ($packages,$this->getFrameworkPackages('rtl'));
+            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'rtl'));
         }
 
         /* Core package */
         $packages[]='limesurvey-public';
 
         /* template packages */
-        if(!empty($this->packages->package)) {
-            $packages=array_merge ($packages,(array)$this->packages->package);
+        if (!empty($this->packages->package)) {
+            $packages = array_merge ($packages, (array)$this->packages->package);
         }
+
         /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
-        $dir=getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-        if(!empty($this->packages->$dir->package)) {
-            $packages=array_merge ($packages,(array)$this->packages->$dir->package);
+        $dir = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+
+        if (!empty($this->packages->$dir->package)) {
+            $packages = array_merge ($packages, (array)$this->packages->$dir->package);
+        }
+
+        if (isset($this->config->metadatas->extends)){
+            $sMotherTemplateName = (string) $this->config->metadatas->extends;
+            $packages[]          = 'survey-template-'.$sMotherTemplateName;
         }
 
         return $packages;
@@ -378,79 +365,78 @@ class TemplateConfiguration extends CFormModel
      * @use self::@cssFramework
      * @return string[] depends for framework
      */
-    private function getFrameworkPackages($dir="")
+    private function getFrameworkPackages($oTemplate, $dir="")
     {
-        $framework=isset($this->cssFramework->name)? (string)$this->cssFramework->name : (string)$this->cssFramework;
-        $framework=$dir ? $framework."-".$dir : $framework;
-        if(isset(Yii::app()->clientScript->packages[$framework])) {
-            $frameworkPackages=array();
+        // If current template doesn't have a name for the framework package, we use the mother's one
+        $framework = isset($oTemplate->cssFramework->name) ? (string) $oTemplate->cssFramework->name : (string) $oTemplate->oMotherTemplate->cssFramework;
+        $framework = $dir ? $framework."-".$dir : $framework;
+
+        if  ( isset(Yii::app()->clientScript->packages[$framework]) ) {
+
+            $frameworkPackages = array();
+
             /* Theming */
-            if($dir) {
-                $cssFrameworkCsss=isset($this->cssFramework->$dir->css) ? $this->cssFramework->$dir->css : array();
-                $cssFrameworkJss=isset($this->cssFramework->$dir->js) ? $this->cssFramework->$dir->js : array();
+            if ($dir) {
+                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->$dir->css ) ? $oTemplate->cssFramework->$dir->css : array();
+                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->$dir->js  ) ? $oTemplate->cssFramework->$dir->js  : array();
             } else {
-                $cssFrameworkCsss=isset($this->cssFramework->css) ? $this->cssFramework->css : array();
-                $cssFrameworkJss=isset($this->cssFramework->js) ? $this->cssFramework->js : array();
+                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->css       ) ? $oTemplate->cssFramework->css       : array();
+                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->js        ) ? $oTemplate->cssFramework->js        : array();
             }
-            if(empty($cssFrameworkCsss) && empty($cssFrameworkJss)) {
-                $frameworkPackages[]=$framework;
+
+            if (empty($cssFrameworkCsss) && empty($cssFrameworkJss)) {
+                $frameworkPackages[] = $framework;
             } else {
-                /* Need to create an adapted core framework */
-                $cssFrameworkPackage=Yii::app()->clientScript->packages[$framework];
-                /* Need to create an adapted template/theme framework */
-                $packageCss=array();
-                $packageJs=array();
-                /* css file to replace from default package */
-                $cssDelete=array();
+
+                $cssFrameworkPackage = Yii::app()->clientScript->packages[$framework];     // Need to create an adapted core framework
+                $packageCss          = array();                                            // Need to create an adapted template/theme framework */
+                $packageJs           = array();                                            // css file to replace from default package */
+                $cssDelete           = array();
+
                 foreach($cssFrameworkCsss as $cssFrameworkCss) {
                     if(isset($cssFrameworkCss['replace'])) {
-                        $cssDelete[]=$cssFrameworkCss['replace'];
+                        $cssDelete[] = $cssFrameworkCss['replace'];
                     }
                     if((string)$cssFrameworkCss) {
-                        $packageCss[]=(string)$cssFrameworkCss;
+                        $packageCss[] = (string) $cssFrameworkCss;
                     }
                 }
+
                 if(isset($cssFrameworkPackage['css'])) {
                     $cssFrameworkPackage['css']=array_diff($cssFrameworkPackage['css'],$cssDelete);
                 }
+
                 $jsDelete=array();
                 foreach($cssFrameworkJss as $cssFrameworkJs) {
                     if(isset($cssFrameworkJs['replace'])) {
-                        $jsDelete[]=$cssFrameworkJs['replace'];
+                        $jsDelete[] = $cssFrameworkJs['replace'];
                     }
                     if((string)$cssFrameworkJs) {
-                        $packageJs[]=(string)$cssFrameworkJs;
+                        $packageJs[] = (string)$cssFrameworkJs;
                     }
                 }
                 if(isset($cssFrameworkPackage['js'])) {
-                    $cssFrameworkPackage['js']=array_diff($cssFrameworkPackage['js'],$cssDelete);
+                    $cssFrameworkPackage['js'] = array_diff($cssFrameworkPackage['js'],$cssDelete);
                 }
+
                 /* And now : we add : core package fixed + template/theme package */
-                Yii::app()->clientScript->packages[$framework]=$cssFrameworkPackage; /* @todo : test if empty css and js : just add depends if yes */
+                Yii::app()->clientScript->packages[$framework] = $cssFrameworkPackage; /* @todo : test if empty css and js : just add depends if yes */
                 $aDepends=array(
                     $framework,
                 );
 
-                if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
-                    Yii::app()->clientScript->addPackage(
-                        $framework.'-template', array(
-                            'basePath'    => 'survey.template.path',            // basePath: the asset manager will be used
-                            'css'         => $packageCss,
-                            'js'          => $packageJs,
-                            'depends'     => $aDepends,
-                        )
-                    );
-                }else{
-                    $sTemplateurl = $this->getTemplateURL();
-                    Yii::app()->clientScript->addPackage(
-                        $framework.'-template', array(
-                            'baseUrl'    =>  $sTemplateurl,                                 // Don't use asset manager
-                            'css'         => $packageCss,
-                            'js'          => $packageJs,
-                            'depends'     => $aDepends,
-                        )
-                    );
-                }
+                $sTemplateurl = $oTemplate->getTemplateURL();
+                $sPathName    = 'survey.template-'.$oTemplate->sTemplateName.'.path';
+
+                Yii::app()->clientScript->addPackage(
+                    $framework.'-template', array(
+                        'devBaseUrl'  => $sTemplateurl,                        // Don't use asset manager
+                        'basePath'    => $sPathName,                            // basePath: the asset manager will be used
+                        'css'         => $packageCss,
+                        'js'          => $packageJs,
+                        'depends'     => $aDepends,
+                    )
+                );
                 $frameworkPackages[]=$framework.'-template';
             }
             return $frameworkPackages;
@@ -460,12 +446,4 @@ class TemplateConfiguration extends CFormModel
         return array();
     }
 
-    /**
-     * get the template API version
-     * @return integer
-     */
-    public function getApiVersion()
-    {
-        return $this->apiVersion;
-    }
 }

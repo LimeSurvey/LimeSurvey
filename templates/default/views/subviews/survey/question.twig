@@ -16,12 +16,13 @@
     This file is one of the most important of the rendering progress.
     It will render a question. It's included in the for loop in group.twig
 
-    Here, you have access to the array aQuestion that contains the datas of the current question
-    To see what's inside aQuestion, turn debug mode on, and put out of the comment section this statement: {{ dump(aQuestion) }}
+    Here, you have access to the array aQuestion that contains the data of the current question.
+    To see what's inside aQuestion, turn debug mode on, and copy the following line to the end of this file: 
+    {{ dump(aQuestion) }}
 
-    All the content of aQuestion it self is generated from qanda_helper.
+    All content of aQuestion itself is generated from qanda_helper.
     To modify it, you must create a question template and apply it to the question in its display settings
-    (here, you're inside the survey template, applied to the survey in its settings)
+    (here, you're inside the survey template, applied to the survey in its settings).
 
 #}
 
@@ -35,7 +36,7 @@
     <!-- Question text -->
     <div class="question-title-container bg-primary col-xs-12">
 
-        {# If the question is mandatory, that asterisk will be shown  #}
+        {# If the question is mandatory, the asterisk will be shown  #}
         {% if aQuestion.mandatory != '' %}
             <!-- Add a visual information + just Mandatory string for aria : can be improved -->
             <div class="asterisk pull-left">
@@ -44,21 +45,21 @@
             </div>
         {% endif %}
 
-        {# If the question number must be shown (set in survey settings) #}
+        {# If the question number is to be shown (set in survey settings) #}
         {% if (aShow.question_number) %}
             <span class='text-muted question-number'>
                 {{ aQuestion.number }}
             </span>
         {% endif %}
 
-        {# If the question code must be shown (set in survey settings) #}
+        {# If the question code is to be shown (set in survey settings) #}
         {% if (aShow.question_code) %}
             <span class='text-muted question-code'>
                 {{ aQuestion.code }}
             </span>
         {% endif %}
 
-        {# Here the question text, has entered by the survey creator #}
+        {# The question text as entered by the survey creator in question editing #}
         <div class="question-text">
             <div id="ls-question-text-{{ aQuestion.SGQ }}" class="ls-label-question">
                 {{ aQuestion.text | raw }}
@@ -73,19 +74,19 @@
         {{ aQuestion.file_valid_message | raw }} {# Used only for file upload question type... TODO: check if we can remove it and use valid_message for file upload question type too #}
     </div>
 
-    {# Here the rendering of the answers: the input the survey taker interact with. #}
+    {# The rendering of the answers: the input elements the survey respondent interacts with. #}
     <!-- Answer -->
     <div class="answer-container  col-xs-12">
         {# NOTE: If you want to customize the question rendering, use a question template #}
         {{ aQuestion.answer | raw }}
     </div>
 
-    {# The additional question help: it can be added by survey creator in the question editing #}
+    {# The additional question help as entered by the survey creator in question editing #}
     <!-- Survey question help -->
     <div class="question-help-container text-info col-xs-12">
         {% if aQuestion.help.show %}
             <div class="ls-questionhelp">
-                {{ aQuestion.help.txt | raw }}
+                {{ aQuestion.help.text | raw }}
             </div>
         {% endif %}
     </div>

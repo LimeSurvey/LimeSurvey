@@ -226,6 +226,7 @@ $internalConfig = array(
                 'isset'                   => 'isset',
                 'str_replace'             => 'str_replace',
                 'assetPublish'            => 'LS_Twig_Extension::assetPublish',
+                'image'                   => 'LS_Twig_Extension::image',
                 'sprintf'                 => 'sprintf',
                 'gT'                      => 'gT',
             ),
@@ -239,15 +240,15 @@ $internalConfig = array(
                 'tags' => array('if', 'for', 'set', 'autoescape'),
                 'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
+                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
                     'Survey'                            =>  array("getAllLanguages"),
                     'LSHttpRequest'                     =>  array("getParam"),
                 ),
                 'properties' => array(
-                    'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
-                    'LSYii_Application'                 =>  array("request"),
+                    'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
+                    'LSYii_Application'                          => array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'sprintf', 'gT' ),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
             ),
 
         ),

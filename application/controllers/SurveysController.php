@@ -28,12 +28,14 @@
 
 
             $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
-            $oTemplate->registerAssets();
+            //$oTemplate->registerAssets();
 
 
             $this->sTemplate = $oTemplate->name;
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
-//            $this->aGlobalData['languagechanger'] = makeLanguageChanger(App()->language);
+            //Yii::app()->clientScript->registerPackage( 'survey-template' );
+            //Yii::app()->clientScript->registerPackage( 'survey-template-'.$oTemplate->sTemplateName );
+            //var_dump('survey-template-'.$oTemplate->sTemplateName);
+
 
             $aData = array(
                     'publicSurveys'     => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
@@ -55,10 +57,8 @@
 
             Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
 
-            $sTemplateViewPath = $oTemplate->viewPath;
 
-            Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
-            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_survey_list.twig"), array('aSurveyInfo'=>$aData), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$aData), false);
 
         }
         /**

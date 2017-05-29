@@ -916,7 +916,8 @@ function do_5pointchoice($ia)
         'coreClass'     => "ls-answers answers-list radio-list",
         'sliderId'      => $ia[0],
         'name'          => $ia[1],
-        'sessionValue'  => htmlspecialchars($sessionValue),
+        'basename'      => $ia[1],
+        'sessionValue'  => $sessionValue,
         'sRows'         => $sRows,
         'slider_rating' => $slider_rating,
 
@@ -1340,7 +1341,6 @@ function do_list_dropdown($ia)
     $_prefix = '';
 
     $value            = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]];
-    $select_show_hide = (isset($other) && $other=='Y')?' showhideother(this.name, this.value);':'';
     $sOptions         = '';
 
     // If no answer previously selected
@@ -1513,8 +1513,8 @@ function do_list_dropdown($ia)
         'basename'               => $ia[1],
         'dropdownSize'           => $dropdownSize,
         'checkconditionFunction' => $checkconditionFunction,
-        'value'                  => htmlspecialchars($value),
-        'select_show_hide'       => $select_show_hide,
+        'value'                  => $value,
+        'coreClass'              => $coreClass
     ), true);
 
 
@@ -1783,8 +1783,6 @@ function do_list_radio($ia)
             'basename' => $ia[1],
             'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
             'coreClass'=>$coreClass,
-            'value' => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]),
-
     ), true);
 
     $inputnames[]=$ia[1];
@@ -1883,7 +1881,7 @@ function do_listwithcomment($ia)
             'comment_saved'     => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$fname2]),
             'java_name'         => 'java'.$ia[1],
             'java_id'           => 'java'.$ia[1],
-            'java_value'        => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]])
+            'java_value'        => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]
         ), true);
 
 
@@ -2256,7 +2254,7 @@ function do_multiplechoice($ia)
             'checkedState'            => $checkedState,
             'sCheckconditionFunction' => $sCheckconditionFunction,
             'myfname'                 => $myfname,
-            'sValue'                  => htmlspecialchars($sValue),
+            'sValue'                  => $sValue,
         ), true);
 
         ////
@@ -2516,7 +2514,7 @@ function do_multiplechoice_withcomments($ia)
             'labeltext'                     => $ansrow['question'],
             'javainput'                     => true,
             'javaname'                      => 'java'.$myfname,
-            'javavalue'                     => htmlspecialchars($javavalue),
+            'javavalue'                     => $javavalue,
             'checked'                       => $checked,
             'inputCommentId'                => 'answer'.$myfname2,
             'commentLabelText'              => gT('Make a comment on your choice here:'),
@@ -3194,10 +3192,10 @@ function do_multiplenumeric($ia)
                     'prefix'                 => $prefix,
                     'suffix'                 => $suffix,
                     'sInputContainerWidth'   => $sInputContainerWidth,
-                    'tiwidth'                => $tiwidth,
+                    'sLabelWidth'            => $sLabelWidth,
                     'inputsize'              => $inputsize,
                     'myfname'                => $myfname,
-                    'dispVal'                => htmlspecialchars($sValue),
+                    'dispVal'                => $sValue,
                     'maxlength'              => $maxlength,
                     'labelText'              => $labelText,
                     'integeronly'=> $integeronly,
@@ -3222,7 +3220,7 @@ function do_multiplenumeric($ia)
                     'sliderWidth'            => $sliderWidth,
                     'inputsize'              => $inputsize,
                     'myfname'                => $myfname,
-                    'dispVal'                => htmlspecialchars($sValue),
+                    'dispVal'                => $sValue,
                     'maxlength'              => $maxlength,
                     'labelText'              => $labelText,
                     'slider_orientation'     => $slider_orientation,
@@ -3389,7 +3387,6 @@ function do_numerical($ia)
         $fValue = rtrim(rtrim($fValue,"0"),".");
     }
     $fValue = str_replace('.',$sSeparator,$fValue);
-    $fValue = htmlspecialchars($fValue);
 
     if ($thissurvey['nokeyboard']=='Y')
     {
@@ -3968,8 +3965,7 @@ function do_yesno($ia)
         'nChecked' => $nChecked,
         'naChecked'=> $naChecked,
         'noAnswer' => $noAnswer,
-        'checkconditionFunction'=>$checkconditionFunction.'(this.value, this.name, this.type)',
-        'value' => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]),
+        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'displayType'=>$displayType,
     );
     if($displayType===0)
@@ -4015,7 +4011,7 @@ function do_gender($ia)
         'mChecked'               => $mChecked,
         'naChecked'              => $naChecked,
         'noAnswer'               => $noAnswer,
-        'value'                  => htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]),
+        'value'                  => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
     );
 
     if ($displayType===0)
@@ -4221,7 +4217,7 @@ function do_array_5point($ia)
                     'myfname'       => $myfname,
                     'answertext'    => $answertext,
                     'answerwidth'=>$answerwidth,
-                    'value'         => htmlspecialchars($value),
+                    'value'         => $value,
                     'error'         => $error,
                     'sDisplayStyle' => $sDisplayStyle,
                     'odd'           => ($j % 2), // true for odd, false for even
@@ -4379,7 +4375,7 @@ function do_array_10point($ia)
                     'myfname'       => $myfname,
                     'answerwidth'   => $answerwidth,
                     'answertext'    => $answertext,
-                    'value'         => htmlspecialchars($value),
+                    'value'         => $value,
                     'error'         => $error,
                     'sDisplayStyle' => $sDisplayStyle,
                     'odd'           => ($j % 2),
@@ -4487,7 +4483,7 @@ function do_array_yesnouncertain($ia)
                         'Uchecked'               => $Uchecked,
                         'Nchecked'               => $Nchecked,
                         'NAchecked'              => $NAchecked,
-                        'value'                  => htmlspecialchars($value),
+                        'value'                  => $value,
                         'checkconditionFunction' => $checkconditionFunction,
                         'error'                  => $error,
                         'no_answer'              => $no_answer,
@@ -4595,7 +4591,7 @@ function do_array_increasesamedecrease($ia)
                     'Schecked'=> $Schecked,
                     'Dchecked'=>$Dchecked,
                     'NAchecked'=>$NAchecked,
-                    'value'=>htmlspecialchars($value),
+                    'value'=>$value,
                     'checkconditionFunction'=>$checkconditionFunction,
                     'error'=>$error,
                     'no_answer'=>$no_answer,
@@ -4818,7 +4814,7 @@ function do_array($ia)
                         'answerwidth'=>$answerwidth,
                         'answertextright' => $answertextright,
                         'right_exists' => $right_exists,
-                        'value'      => htmlspecialchars($value),
+                        'value'      => $value,
                         'error'      => $error,
                         'odd'        => ($i % 2), // true for odd, false for even
                     ),  true);
@@ -4973,7 +4969,7 @@ function do_array($ia)
                 'myfname'                => $myfname,
                 'answertext'             => $answertext,
                 'answerwidth'=>$answerwidth,
-                'value'                  => htmlspecialchars($value),
+                'value'                  => $value,
                 'error'                  => $error,
                 'checkconditionFunction' => $checkconditionFunction,
                 'right_exists'           => $right_exists,
@@ -5287,7 +5283,7 @@ function do_array_texts($ia)
                                     'kpclass'    => $kpclass,
                                     'maxlength'  => $maxlength,
                                     'inputsize'  => $inputsize,
-                                    'value'      => htmlspecialchars($myfname2value),
+                                    'value'      => $myfname2value,
                                     'isNumber'   => $isNumber,
                                     'isInteger'  => $isInteger,
                                     'error'      => ($error && $myfname2value===''),
@@ -5314,7 +5310,7 @@ function do_array_texts($ia)
                                 'answertext'        =>  $answertext,
                                 'answerwidth'=>$answerwidth,
                                 'error'             =>  $error,
-                                'value'             =>  htmlspecialchars($value),
+                                'value'             =>  $value,
                                 'answer_tds'        =>  $answer_tds,
                                 'rightTd'           =>  $rightTd,
                                 'rightTdEmpty'      =>  $rightTdEmpty,
@@ -5714,7 +5710,7 @@ function do_array_multiflexi($ia)
                                         'minvalue'                  => $minvalue,
                                         'maxvalue'                  => $maxvalue,
                                         'reverse'                   => $reverse,
-                                        'value'                     => htmlspecialchars($value),
+                                        'value'                     => $value,
                                         'sSeparator'                => $sSeparator,
                                         'kpclass'                   => $kpclass,
                                         'maxlength'                 => $maxlength,
@@ -5773,7 +5769,7 @@ function do_array_multiflexi($ia)
                                 'answerwidth'       => $answerwidth,
                                 'myfname'           => $myfname,
                                 'error'             => $error,
-                                'row_value'         => htmlspecialchars($row_value),
+                                'row_value'         => $row_value,
                                 'answertext'        => $answertext,
                                 'answertextright'   => $answertextright,
                                 'answer_tds'        => $answer_tds,
@@ -5929,7 +5925,7 @@ function do_arraycolumns($ia)
                 $myfname=$ia[1].$ld;
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
                 {
-                    $aData['aQuestions'][$j]['myfname_value'] = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]);
+                    $aData['aQuestions'][$j]['myfname_value'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname];
                 }
                 else
                 {
@@ -6213,7 +6209,7 @@ function do_array_dual($ia)
 
                 if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]))
                 {
-                    $aData['aSubQuestions'][$i]['sessionfname0'] = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0]);
+                    $aData['aSubQuestions'][$i]['sessionfname0'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname0];
                 }
                 else
                 {
@@ -6225,7 +6221,7 @@ function do_array_dual($ia)
                     if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]))
                     {
                         //$answer .= $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
-                        $aData['aSubQuestions'][$i]['sessionfname1'] = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1]);
+                        $aData['aSubQuestions'][$i]['sessionfname1'] = $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname1];
                     }
                     else
                     {
@@ -6376,8 +6372,8 @@ function do_array_dual($ia)
                 $aData['aSubQuestions'][$i]['myfid0'] = $myfid0;
                 $aData['aSubQuestions'][$i]['myfname1'] = $myfname1;
                 $aData['aSubQuestions'][$i]['myfid1'] = $myfid1;
-                $aData['aSubQuestions'][$i]['sActualAnswer0'] = htmlspecialchars($sActualAnswer0);
-                $aData['aSubQuestions'][$i]['sActualAnswer1'] = htmlspecialchars($sActualAnswer1);
+                $aData['aSubQuestions'][$i]['sActualAnswer0'] = $sActualAnswer0;
+                $aData['aSubQuestions'][$i]['sActualAnswer1'] = $sActualAnswer1;
                 $aData['aSubQuestions'][$i]['odd'] =  ($i % 2);
                 // Set mandatory alert
                 $aData['aSubQuestions'][$i]['alert'] = ($ia[6]=='Y' && (in_array($myfname0, $aMandatoryViolationSubQ) || in_array($myfname1, $aMandatoryViolationSubQ)));

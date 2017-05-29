@@ -24,13 +24,13 @@
 
 <!-- answer_td -->
 <td class="answer_cell_<?php echo $ld;?> answer-item <?php echo $answertypeclass; ?> <?php echo $extraclass; ?><?php if($error){ echo " has-error";} ?>">
-        <input
-            type="hidden"
-            name="java<?php echo $myfname2;?>"
-            id="java<?php echo $myfname2;?>"
-            value="<?php echo $value; ?>"
-        />
-
+        <?php
+        /* Value for expression manager javascript ; no need to submit */
+        echo \CHtml::hiddenField("java{$myfname2}",$value,array(
+            'id' => "java{$myfname2}",
+            'disabled' => true,
+        ));
+        ?>
         <label for="answer<?php echo $myfname2;?>" class='ls-label-xs-visibility'>
             <?php echo $dataTitle;?>
         </label>
@@ -53,16 +53,16 @@
             </select>
         <?php elseif($inputboxlayout == true): ?>
             <!-- InputBox Layout -->
-            <input
-                type='text'
-                class="multiflexitext form-control <?php echo $kpclass;?> text-right"
-                name="<?php echo $myfname2; ?>"
-                id="answer<?php echo $myfname2;?>"
-                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
-                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
-                value="<?php echo $value; ?>"
-                data-number="true"
-                />
+            <?php
+            echo \CHtml::textField($myfname2,$value,array(
+                'id' => "answer{$myfname2}",
+                'class' => "multiflexitext form-control {$answertypeclass} text-right",
+                'title' => gT('Only numbers may be entered in this field.'),
+                'size' => ($inputsize ? $inputsize : null),
+                'maxlength' => ($maxlength ? $maxlength : null),
+                'data-number' => 1,
+            ));
+            ?>
         <?php endif; ?>
 </td>
 <!-- end of answer_td -->

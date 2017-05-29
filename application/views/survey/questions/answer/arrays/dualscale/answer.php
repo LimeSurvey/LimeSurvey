@@ -110,17 +110,19 @@
             >
             <th id="answertext<?php echo $ansrow['myfname']; ?>" class="answertext control-label<?php echo ($answerwidth==0)? " sr-only":""; ?>">
                 <?php echo $ansrow['answertext']; ?>
-                <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>"
-                    id="java<?php echo $ansrow['myfid0']; ?>"
-                    value="<?php echo $ansrow['sessionfname0']; ?>"
-                />
-
-                <?php if (count($labelans1) > 0): ?>
-                    <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid1']; ?>"
-                        id="java<?php echo $ansrow['myfid1']; ?>" "
-                        value="<?php echo $ansrow['sessionfname1']; ?>"
-                    />
-                <?php endif; ?>
+                <?php
+                /* Value for expression manager javascript (use id) ; no need to submit */
+                echo \CHtml::hiddenField("java{$ansrow['myfid0']}",$ansrow['sessionfname0'],array(
+                    'id' => "java{$ansrow['myfid0']}",
+                    'disabled' => true,
+                ));
+                ?>
+                <?php if (count($labelans1) > 0):
+                    echo \CHtml::hiddenField("java{$ansrow['myfid1']}",$ansrow['sessionfname1'],array(
+                        'id' => "java{$ansrow['myfid1']}",
+                        'disabled' => true,
+                    ));
+                endif; ?>
 
             </th>
 

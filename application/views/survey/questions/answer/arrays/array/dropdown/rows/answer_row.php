@@ -15,12 +15,13 @@
         <label for="answer<?php echo $myfname;?>">
             <?php echo $answertext; ?>
         </label>
-        <input
-            type="hidden"
-            name="java<?php echo $myfname; ?>"
-            id="java<?php echo $myfname;?>"
-            value="<?php echo $value;?>"
-        />
+        <?php
+        /* Value for expression manager javascript (use id) ; no need to submit */
+        echo \CHtml::hiddenField("java{$myfname}",$value,array(
+            'id' => "java{$myfname}",
+            'disabled' => true,
+        ));
+        ?>
     </th>
     <td>
         <select class="form-control" name="<?php echo $myfname; ?>" id="answer<?php echo $myfname; ?>">

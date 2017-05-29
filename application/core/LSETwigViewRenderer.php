@@ -26,7 +26,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
      public  $sandboxConfig = array();
      private $_twig;
-     private $forcedPath = null;
 
     /**
      * Adds custom extensions
@@ -137,16 +136,30 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
     }
 
-    /**
-     * Only use for renderTemplateFromString for now, to force the path of included twig files (in renderTemplateFromString: the template files)
-     * It's necessary for the twig include statments: by default, those views would be looked into application/views instead of the template's views directory.
-     * @param string $sPath  the path that will be used to render the views.
-     */
-    public function setForcedPath($sPath)
+
+    public function renderTemplateFromFile($sView, $aDatas, $bReturn)
     {
-        $this->forcedPath=$sPath;
+        $oTemplate = $this->getTemplateForView($sView);
+        $line      = file_get_contents($oTemplate->viewPath.$sView);
+        $this->renderTemplateFromString( $line, $aDatas, $bReturn);
     }
 
+    private function getTemplateForView($sView)
+    {
+        $oRTemplate = Template::model()->getInstance();
+
+        while (!file_exists($oRTemplate->viewPath.$sView)){
+
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
+    }
 
     /**
      * Render a string, not a file. It's used from template replace function.
@@ -157,13 +170,16 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
     public function renderTemplateFromString( $line, $aDatas, $bReturn)
     {
-        $this->_twig      = $twig = parent::getTwig();
+        $this->_twig  = $twig = parent::getTwig();
+        $loader       = $this->_twig->getLoader();
+        $oRTemplate   = Template::model()->getInstance();
+        $loader->addPath($oRTemplate->viewPath);
+        Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
 
-        // At this point, forced path should not be nulled.
-        // It contains the path to the template's view directory for twig include statements
-        if (!is_null($this->forcedPath)){
-            $loader       = $this->_twig->getLoader();
-            $loader->setPaths($this->forcedPath);
+        // Add all mother templates path
+        while($oRTemplate->oMotherTemplate instanceof TemplateConfiguration){
+            $oRTemplate = $oRTemplate->oMotherTemplate;
+            $loader->addPath($oRTemplate->viewPath);
         }
 
         // Plugin for blocks replacement
