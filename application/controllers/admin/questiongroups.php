@@ -32,14 +32,15 @@ class questiongroups extends Survey_Common_Action
      *
      * @access public
      * @return void
-     * @throws CHttpException
      */
-    public function import()
+    function import()
     {
         $action = $_POST['action'];
         $oSurvey = Survey::model()->findByPk((int)$_POST['sid']);
         if(!$oSurvey){
-            throw new CHttpException(404);
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
         }
         $iSurveyID = $surveyid =  $aData['surveyid'] = $oSurvey->primaryKey;
 
@@ -121,11 +122,13 @@ class questiongroups extends Survey_Common_Action
      * Import a question group
      *
      */
-    public function importView($surveyid)
+    function importView($surveyid)
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         if(!$oSurvey){
-            throw new CHttpException(404);
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
         }
         $iSurveyID = $surveyid = $oSurvey->primaryKey;
         if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
@@ -157,20 +160,21 @@ class questiongroups extends Survey_Common_Action
     /**
      * questiongroup::add()
      * Load add new question group screen.
-     * @param integer $surveyid
      * @return mixed
-     * @throws CHttpException
      */
     public function add($surveyid)
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
-        if(!$oSurvey) {
-            throw new CHttpException(404);
+        if(!$oSurvey){
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
         }
         $iSurveyID = $surveyid = $oSurvey->primaryKey;
         $aViewUrls = $aData = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
+        {
             Yii::app()->session['FileManagerContext'] = "create:group:{$surveyid}";
 
             Yii::app()->loadHelper('admin/htmleditor');
@@ -209,16 +213,18 @@ class questiongroups extends Survey_Common_Action
      * @access public
      * @param int $surveyid
      * @return void
-     * @throws CHttpException
      */
     public function insert($surveyid)
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         if(!$oSurvey){
-            throw new CHttpException(404);
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
         }
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create')) {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
+        {
             Yii::app()->loadHelper('surveytranslator');
 
             foreach ($oSurvey->getAllLanguages() as $sLanguage) {
@@ -274,20 +280,20 @@ class questiongroups extends Survey_Common_Action
      * Action to delete a question group.
      *
      * @access public
-     * @param int $iSurveyId
-     * @param int $iGroupId
      * @return void
-     * @throws CHttpException
      */
     public function delete($iSurveyId, $iGroupId)
     {
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $iGroupId, 'language' => $oSurvey->language));
         if(!$oSurvey || !$oQuestionGroup){
-            throw new CHttpException(404);
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
         }
 
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete')) {
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'delete'))
+        {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyId);
 
             $iGroupId = sanitize_int($iGroupId);
@@ -310,18 +316,15 @@ class questiongroups extends Survey_Common_Action
         }
     }
 
-    /**
-     * @param integer $surveyid
-     * @param integer $gid
-     * @throws CHttpException
-     */
     public function view($surveyid, $gid)
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $oSurvey->language));
 
         if(!$oSurvey || !$oQuestionGroup){
-            throw new CHttpException(404);
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
         }
 
         $aData = array();
@@ -364,14 +367,15 @@ class questiongroups extends Survey_Common_Action
      * @param int $surveyid
      * @param int $gid
      * @return void
-     * @throws CHttpException
      */
     public function edit($surveyid, $gid)
     {
         $oSurvey = Survey::model()->findByPk($surveyid);
         $oQuestionGroup = QuestionGroup::model()->findByPk(array('gid' => $gid, 'language' => $oSurvey->language));
         if(!$oSurvey || !$oQuestionGroup){
-            throw new CHttpException(404);
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
         }
 
         $surveyid = $oSurvey->primaryKey;
@@ -479,14 +483,15 @@ class questiongroups extends Survey_Common_Action
      * @access public
      * @param int $gid
      * @return void
-     * @throws CHttpException
      */
     public function update($gid)
     {
         $gid = (int) $gid;
         $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
         if(!$group){
-            throw new CHttpException(404);
+            Yii::app()->user->setFlash('error', gT("Not found!"));
+            $this->getController()->redirect(Yii::app()->request->urlReferrer);
+            return;
         }
 
         $surveyid = $group->sid;
