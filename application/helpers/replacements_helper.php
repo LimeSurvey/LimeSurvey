@@ -379,7 +379,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_datestamp = '-';
     }
-    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
+    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y" && !$iscompleted)
     {
         $_saveall = doHtmlSaveAll(isset($move)?$move:NULL);
         $_savelinks = doHtmlSaveLinks(isset($move)?$move:NULL);
