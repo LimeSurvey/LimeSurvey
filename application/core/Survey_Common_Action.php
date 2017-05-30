@@ -64,18 +64,8 @@ class Survey_Common_Action extends CAction
         $params = $this->_addPseudoParams($params);
 
         if (!empty($params['iSurveyId'])) {
-            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
-            if(!$oSurvey) {
-                Yii::app()->setFlashMessage(gT("Invalid survey ID"),'error');
-                $this->getController()->redirect(array("admin/index"));
-            } elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
-                Yii::app()->setFlashMessage(gT("No permission"), 'error');
-                $this->getController()->redirect(array("admin/index"));
-            } else {
-                LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
-            }
+            LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
         }
-
         // Check if the method is public and of the action class, not its parents
         // ReflectionClass gets us the methods of the class and parent class
         // If the above method existence check passed, it might not be neceessary that it is of the action class
@@ -110,8 +100,7 @@ class Survey_Common_Action extends CAction
     private function _addPseudoParams($params)
     {
         // Return if params isn't an array
-        if (empty($params) || !is_array($params))
-        {
+        if (empty($params) || !is_array($params)) {
             return $params;
         }
 
@@ -143,7 +132,7 @@ class Survey_Common_Action extends CAction
         // with that key's value in the params
         // (only if that place is empty)
         foreach ($pseudos as $key => $pseudo) {
-            if (!empty($params[$key])) {
+            if (isset($params[$key])) {
                 $pseudo = (array) $pseudo;
                 foreach ($pseudo as $pseud) {
                     if (empty($params[$pseud])) {
@@ -153,29 +142,49 @@ class Survey_Common_Action extends CAction
             }
         }
 
+        /* Control sid,gid and qid params validity see #12434 */
         // Fill param with according existing param, replace existing parameters.
         // iGroupId/gid can be found with qid/iQuestionId
-        if(isset($params['iQuestionId']))
-        {
-            if((int) $params['iQuestionId'] >0 )
-            { //Check if the transfered iQuestionId is numeric to prevent Errors with postgresql
-                $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
-                if($oQuestion)
-                {
-                    $params['iGroupId']=$params['gid']=$oQuestion->gid;
-                }
+        if(isset($params['iQuestionId'])) {
+            if((string)(int)$params['iQuestionId']!==(string)$params['iQuestionId']) { // pgsql need filtering before find
+                throw new CHttpException(404,gT("Invalid question"));
+            }
+            $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
+            if(!$oQuestion) {
+                throw new CHttpException(404,gT("Invalid question"));
+            }
+            if(!isset($params['iGroupId'])) {
+                $params['iGroupId']=$params['gid']=$oQuestion->gid;
             }
         }
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
-        if(isset($params['iGroupId']))
-        {
+        if(isset($params['iGroupId'])) {
+            if((string)(int)$params['iGroupId']!==(string)$params['iGroupId']) { // pgsql need filtering before find
+                throw new CHttpException(404,gT("Invalid group"));
+            }
             $oGroup=QuestionGroup::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
-            if($oGroup)
-            {
+            if(!$oGroup) {
+                throw new CHttpException(404,gT("Invalid group"));
+            }
+            if(!isset($params['iSurveyId'])) {
                 $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oGroup->sid;
             }
         }
-
+        // Finally control validity of sid
+        if(isset($params['iSurveyId'])) {
+            if((string)(int)$params['iSurveyId']!==(string)$params['iSurveyId']) { // pgsql need filtering before find
+                throw new CHttpException(404,gT("Invalid survey"));
+            }
+            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
+            if(!$oSurvey) {
+                throw new CHttpException(404,gT("Invalid survey"));
+            }
+            // Minimal permission needed, extra permission must be tested in each controller
+            if (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
+                throw new CHttpException(401,gT("No permission"));
+            }
+            $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oSurvey->sid;
+        }
         // Finally return the populated array
         return $params;
     }
