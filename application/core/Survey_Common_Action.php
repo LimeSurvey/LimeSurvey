@@ -147,7 +147,7 @@ class Survey_Common_Action extends CAction
         // iGroupId/gid can be found with qid/iQuestionId
         if(isset($params['iQuestionId'])) {
             if((string)(int)$params['iQuestionId']!==(string)$params['iQuestionId']) { // pgsql need filtering before find
-                throw new CHttpException(404,gT("Invalid question"));
+                throw new CHttpException(403,gT("Invalid question id"));
             }
             $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
             if(!$oQuestion) {
@@ -160,7 +160,7 @@ class Survey_Common_Action extends CAction
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
         if(isset($params['iGroupId'])) {
             if((string)(int)$params['iGroupId']!==(string)$params['iGroupId']) { // pgsql need filtering before find
-                throw new CHttpException(404,gT("Invalid group"));
+                throw new CHttpException(403,gT("Invalid group id"));
             }
             $oGroup=QuestionGroup::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
             if(!$oGroup) {
@@ -173,7 +173,8 @@ class Survey_Common_Action extends CAction
         // Finally control validity of sid
         if(isset($params['iSurveyId'])) {
             if((string)(int)$params['iSurveyId']!==(string)$params['iSurveyId']) { // pgsql need filtering before find
-                throw new CHttpException(404,gT("Invalid survey"));
+                // 403 mean The request was valid, but the server is refusing action.
+                throw new CHttpException(403,gT("Invalid survey id"));
             }
             $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
             if(!$oSurvey) {
@@ -181,7 +182,9 @@ class Survey_Common_Action extends CAction
             }
             // Minimal permission needed, extra permission must be tested in each controller
             if (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
-                throw new CHttpException(401,gT("No permission"));
+                // 403 mean (too) The user might not have the necessary permissions for a resource.
+                // 401 semantically means "unauthenticated"
+                throw new CHttpException(403);
             }
             $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oSurvey->sid;
         }
