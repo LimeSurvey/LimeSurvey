@@ -582,7 +582,68 @@ class SettingsWidget extends CWidget
         return $html;
     }
 
-    /* Return htmlOptions for an input od seting
+
+    /**
+     * @param $name string
+     * @param array $metaData
+     * @param string $form form name ??
+     * @return mixed
+     */
+    public function renderFiles($name, array $metaData, $form = null){
+        $metaData['class'] = 'form-control';
+
+        if(isset($metaData['options']['fileTypes'])){
+            $fileTypes = $metaData['options']['fileTypes'];
+        }else{
+            // default allowed file types
+            $fileTypes =self::getDefaultFileTypes();
+        }
+
+        if(isset($metaData['options']['max'])){
+            $max = $metaData['options']['max'];
+        }else{
+            // TODO get this via config?
+            $max =50;
+        }
+
+        $defaults['multiple'] = 'multiple';
+        $htmlOptions = $this->htmlOptions($metaData,$form,$defaults);
+        $value = isset($metaData['content']) ? $metaData['content'] : '';
+        return $this->widget('CMultiFileUpload', array(
+            'name' => $name,
+            'duplicate' => gT('Duplicate file!'),
+            'accept' => implode('|',$fileTypes),
+            'denied' => gT('Invalid file type'),
+            'max'=>$max,
+            'htmlOptions' => $htmlOptions,
+            'value'=>$value,
+        ),true);
+
+    }
+
+
+    /**
+     * @return array Default file types
+     */
+    public static function getDefaultFileTypes(){
+
+        return  array(
+            // images
+            'jpeg','jpg','gif','png',
+            // audio
+            'wav','mp3','ogg','aiff','m4p','flac',
+            //video
+            'mp4','avi','mkv','flv','wmv','mov',
+            // documents
+            'pdf','doc','docx','odt','xls','xlsx','odf','ppt','pptx','odp','xml',
+            //data
+            'csv','txt','dat',
+            // web
+            'html','htm','php',
+        );
+    }
+
+    /* Return htmlOptions for an input od setting
      *
      * @param array metaData : completMetaData of setting
      * @param string form form to be used
