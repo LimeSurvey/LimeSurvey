@@ -10,6 +10,12 @@
 			"role" : "Developer"
 		}
 	],
+	"repositories": [
+	    {
+		"type": "vcs",
+		"url": "https://github.com/LimeSurvey/LimeSurvey"
+	    }
+	],
 	"support" : {
 		"wiki" : "https://manual.limesurvey.org/LimeSurvey_Manual",
 		"irc" : "https://www.limesurvey.org/de/community-hilfe/irc-live-chat",
