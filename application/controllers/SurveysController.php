@@ -70,7 +70,7 @@
         {
             $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
 
-            $this->sTemplate = $oTemplate->name;
+            $this->sTemplate = $oTemplate->sTemplateName;
 
             $error = Yii::app()->errorHandler->error;
             if ($error){
