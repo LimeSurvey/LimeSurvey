@@ -603,15 +603,18 @@ function submittokens($quotaexit=false)
                 $event->set('from', $from);
                 $event->set('bounce', getBounceEmail($surveyid));
                 $event->set('token', $token->attributes);
+                $event->set('attachements', $aRelevantAttachments);
                 App()->getPluginManager()->dispatchEvent($event);
                 $subject = $event->get('subject');
                 $message = $event->get('body');
                 $to = $event->get('to');
                 $from = $event->get('from');
                 $bounce = $event->get('bounce');
+                $aCustomHeaders= (array) $event->get('customheaders');
+                $aRelevantAttachments=(array) $event->get('attachements');
                 if ($event->get('send', true) != false)
                 {
-                    SendEmailMessage($message, $subject, $to, $from, Yii::app()->getConfig("sitename"), $ishtml, $bounce, $aRelevantAttachments);
+                    SendEmailMessage($message, $subject, $to, $from, Yii::app()->getConfig("sitename"), $ishtml, $bounce, $aRelevantAttachments,$aCustomHeaders);
                 }
             }
      //   } else {

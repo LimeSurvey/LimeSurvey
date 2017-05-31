@@ -2636,17 +2636,17 @@ function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
 * This function mails a text $body to the recipient $to.
 * You can use more than one recipient when using a semikolon separated string with recipients.
 *
-* @param string $body Body text of the email in plain text or HTML
-* @param mixed $subject Email subject
-* @param mixed $to Array with several email addresses or single string with one email address
-* @param mixed $from
-* @param mixed $sitename
+* @param string $subject Email subject
+* @param string|string[] $to Array with several email addresses or single string with one email address
+* @param string $from
+* @param string $sitename
 * @param boolean $ishtml
-* @param mixed $bouncemail
-* @param mixed $attachments
+* @param string|null $bouncemail
+* @param string[] $attachments
+* @param array $customheaders
 * @return bool If successful returns true
 */
-function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=null, $customheaders="")
+function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false, $bouncemail=null, $attachments=array(), $customheaders=array())
 {
     global $maildebug, $maildebugbody;
     require_once(APPPATH.'/third_party/html2text/src/Html2Text.php');
@@ -2671,12 +2671,6 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         $to=array($to);
     }
 
-
-
-    if (!is_array($customheaders) && $customheaders == '')
-    {
-        $customheaders=array();
-    }
     if (Yii::app()->getConfig('demoMode'))
     {
         $maildebug=gT('Email was not sent because demo-mode is activated.');
@@ -2772,13 +2766,16 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
             $mail->AddAddress($singletoemail);
         }
     }
-    if (is_array($customheaders))
+
+    if (!is_array($customheaders))
     {
-        foreach ($customheaders as $key=>$val) {
-            $mail->AddCustomHeader($val);
-        }
+        $customheaders=array();
     }
-    $mail->AddCustomHeader("X-Surveymailer: $sitename Emailer (LimeSurvey.org)");
+    foreach ($customheaders as $key=>$val) {
+        $mail->AddCustomHeader($key,$val);
+    }
+    $mail->AddCustomHeader("X-Surveymailer","$sitename Emailer (LimeSurvey.org)");
+
     if (get_magic_quotes_gpc() != "0")    {$body = stripcslashes($body);}
     if ($ishtml)
     {
@@ -6211,7 +6208,7 @@ function array_diff_assoc_recursive($array1, $array2) {
 
     /**
     * Force Yii to create a new CSRF token by removing the old one
-    * 
+    *
     */
     function regenerateCSRFToken(){
         // Expire the CSRF cookie
