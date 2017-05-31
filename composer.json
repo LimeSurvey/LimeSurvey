@@ -6,7 +6,7 @@
 	"authors" : [{
 			"name" : "LimeSurvey Team",
 			"email" : "support@limesurvey.org",
-			"homepage" : "www.limesurvey.org",
+			"homepage" : "https://www.limesurvey.org",
 			"role" : "Developer"
 		}
 	],
