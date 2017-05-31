@@ -225,8 +225,9 @@ class Notification extends LSActiveRecord
     public function getAjaxUrl()
     {
         return Yii::app()->createUrl(
-            'admin/notification/sa/getNotificationAsJSON',
+            'admin/notification',
             array(
+                'sa' => 'getNotificationAsJSON',
                 'notId' => $this->id
             )
         );
@@ -239,8 +240,9 @@ class Notification extends LSActiveRecord
     public function getReadUrl()
     {
         return Yii::app()->createUrl(
-            'admin/notification/sa/notificationRead',
+            'admin/notification',
             array(
+                'sa' => 'notificationRead',
                 'notId' => $this->id
             )
         );
@@ -264,11 +266,15 @@ class Notification extends LSActiveRecord
      * @return string
      */
     public static function getUpdateUrl($surveyId = null) {
+        $params=array(
+            'sa' => 'actionGetMenuWidget',
+        );
+        if($surveyId) {
+            $params['surveyId'] = $surveyId;
+        }
         return Yii::app()->createUrl(
-            'admin/notification/sa/actionGetMenuWidget',
-            array(
-                'surveyId' => $surveyId
-            )
+            'admin/notification',
+            $params
         );
     }
 

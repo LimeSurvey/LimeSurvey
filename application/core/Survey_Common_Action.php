@@ -151,7 +151,7 @@ class Survey_Common_Action extends CAction
             }
             $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
             if(!$oQuestion) {
-                throw new CHttpException(404,gT("Invalid question"));
+                throw new CHttpException(404,gT("Question not found"));
             }
             if(!isset($params['iGroupId'])) {
                 $params['iGroupId']=$params['gid']=$oQuestion->gid;
@@ -164,7 +164,7 @@ class Survey_Common_Action extends CAction
             }
             $oGroup=QuestionGroup::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
             if(!$oGroup) {
-                throw new CHttpException(404,gT("Invalid group"));
+                throw new CHttpException(404,gT("Group not found"));
             }
             if(!isset($params['iSurveyId'])) {
                 $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oGroup->sid;
@@ -178,7 +178,7 @@ class Survey_Common_Action extends CAction
             }
             $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
             if(!$oSurvey) {
-                throw new CHttpException(404,gT("Invalid survey"));
+                throw new CHttpException(404,gT("Survey not found"));
             }
             // Minimal permission needed, extra permission must be tested in each controller
             if (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {

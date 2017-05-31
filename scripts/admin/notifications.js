@@ -84,23 +84,35 @@ $(document).ready(function() {
         $.ajax({
             url: url,
             method: 'GET',
-        }).done(function(response) {
-
-            var response = JSON.parse(response);
-            var not = response.result;
-
-            $('#admin-notification-modal .modal-title').html(not.title);
-            $('#admin-notification-modal .modal-body-text').html(not.message);
-            $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
-            $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
-            $('#admin-notification-modal').modal();
-            
-            // TODO: Will this work in message includes a link that is clicked?
-            $('#admin-notification-modal').unbind('hidden.bs.modal');
-            $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
-                notificationIsRead(that);
-                $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
-            });
+            dataType: 'json',
+            success : function(response) {
+                if(response.error) {
+                    $('#admin-notification-modal .modal-title').html("Error");
+                    $('#admin-notification-modal .modal-body-text').html(response.error);
+                    $('#admin-notification-modal .modal-content').addClass('panel-danger');
+                    //$('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
+                    $('#admin-notification-modal').modal();
+                    $('#admin-notification-modal').unbind('hidden.bs.modal');
+                    $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
+                        notificationIsRead(that);
+                        $('#admin-notification-modal .modal-content').removeClass('panel-danger');
+                    });
+                    return;
+                }
+                var not = response.result;
+                $('#admin-notification-modal .modal-title').html(not.title);
+                $('#admin-notification-modal .modal-body-text').html(not.message);
+                $('#admin-notification-modal .modal-content').removeClass('panel-danger').addClass('panel-' + not.display_class);
+                $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
+                $('#admin-notification-modal').modal();
+                
+                // TODO: Will this work in message includes a link that is clicked?
+                $('#admin-notification-modal').unbind('hidden.bs.modal');
+                $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
+                    notificationIsRead(that);
+                    $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
+                });
+            }
         });
     }
 
