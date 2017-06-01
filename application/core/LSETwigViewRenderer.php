@@ -67,7 +67,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
         $this->_twig = parent::getTwig();                                       // Twig object
         $loader      = $this->_twig->getLoader();                               // Twig Template loader
-        $oTemplate   = Template::model()->getInstance($thissurvey['template']); // Template configuration
 
         $requiredView = Yii::getPathOfAlias('application.views').$sView;        // By default, the required view is the core view
         $loader->setPaths(App()->getBasePath().'/views/');                      // Core views path

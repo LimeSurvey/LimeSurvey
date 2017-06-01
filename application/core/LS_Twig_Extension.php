@@ -91,15 +91,14 @@ class LS_Twig_Extension extends Twig_Extension
     /**
      * Publish a script file from template directory, using or not the asset manager (depending on configuration)
      * In any twig file, you can register a template script file doing: {{ registerTemplateScript($sTemplateScriptFileName) }}
-     * @param string $sGeneralScriptFileName name of the script file to publish in general script directory (it should contains the subdirectories)
+     * @param string $sTemplateScriptFileName name of the script file to publish in general script directory (it should contains the subdirectories)
      */
     public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
     {
         $oTemplate = self::getTemplateForRessource($sTemplateScriptFileName);
-
         $position = self::getPosition($position);
         Yii::app()->getClientScript()->registerScriptFile(
-            $oRTemplate->sTemplateUrl .
+            $oTemplate->sTemplateUrl .
             $sTemplateScriptFileName,
             $position,
             $htmlOptions
