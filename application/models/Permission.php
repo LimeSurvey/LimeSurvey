@@ -286,6 +286,7 @@ class Permission extends LSActiveRecord
      */
     public static function getPermissions($iUserID, $iEntityID=null, $sEntityName=null)
     {
+        $aBasePermissions = array();
         if ($sEntityName=='survey') {
             $aBasePermissions=Permission::model()->getSurveyBasePermissions();
         } elseif ($sEntityName=='global') {
@@ -327,6 +328,7 @@ class Permission extends LSActiveRecord
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck=false)
     {
         $iUserID = sanitize_int($iUserID);
+        $aBasePermissions = array();
         // Filter global permissions on save
         if ($sEntityName=='global') {
             $aBasePermissions=Permission::model()->getGlobalBasePermissions();
