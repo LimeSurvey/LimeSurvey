@@ -234,7 +234,9 @@ class LSYii_Application extends CWebApplication
      */
     public function getPluginManager()
     {
-        return $this->getComponent('pluginManager');
+        /** @var PluginManager $pluginManager */
+        $pluginManager =$this->getComponent('pluginManager');
+        return $pluginManager;
     }
 
     /**

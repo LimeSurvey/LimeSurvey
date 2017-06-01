@@ -2514,9 +2514,9 @@ function buildLabelSetCheckSumArray()
 
 /**
 * Returns a flat array with all question attributes for the question only (and the qid we gave it)!
-* @depecated : use QuestionAttribute::model()->getQuestionAttributes($iQID); directly
-* @param $iQID The question ID
-* @return array$bOrderByNative=>value, attribute=>value} or false if the question ID does not exist (anymore)
+* @deprecated : use QuestionAttribute::model()->getQuestionAttributes($iQID); directly
+* @param integer $iQID The question ID
+* @return array $bOrderByNative=>value, attribute=>value} or false if the question ID does not exist (anymore)
 */
 function getQuestionAttributeValues($iQID)
 {
