@@ -68,9 +68,6 @@ class TemplateConfiguration extends CFormModel
     /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
     private $depends = array();
 
-    /** @var bool $overwrite_question_views Does it overwrites the question rendering from quanda.php? Must have a valid viewPath too. */
-    private $overwrite_question_views=false;
-
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
     private $xmlFile;
 

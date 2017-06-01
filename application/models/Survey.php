@@ -702,9 +702,6 @@ class Survey extends LSActiveRecord
     public function getSurveyinfo()
     {
         $iSurveyID = $this->sid;
-        $baselang = $this->language;
-
-        $condition = array('sid' => $iSurveyID, 'language' => $baselang);
 
         //// TODO : replace this with a HAS MANY relation !
         $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
@@ -984,9 +981,7 @@ class Survey extends LSActiveRecord
      */
     public function getbuttons()
     {
-        $sSummaryUrl  = App()->createUrl("/admin/survey/sa/view/surveyid/".$this->sid);
         $sEditUrl     = App()->createUrl("/admin/survey/sa/editlocalsettings/surveyid/".$this->sid);
-        $sDeleteUrl   = App()->createUrl("/admin/survey/sa/delete/surveyid/".$this->sid);
         $sStatUrl     = App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/".$this->sid);
         $sAddGroup    = App()->createUrl("/admin/questiongroups/sa/add/surveyid/".$this->sid);;
         $sAddquestion = App()->createUrl("/admin/questions/sa/newquestion/surveyid/".$this->sid);;
@@ -1012,9 +1007,8 @@ class Survey extends LSActiveRecord
             }
         }
 
-        $previewUrl = Yii::app()->createUrl("survey/index/sid/");
-        $previewUrl .= '/'.$this->sid;
-
+        //$previewUrl = Yii::app()->createUrl("survey/index/sid/");
+        //$previewUrl .= '/'.$this->sid;
         //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open"  ></span></a> ';
 
         return $button;

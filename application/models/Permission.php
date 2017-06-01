@@ -372,7 +372,6 @@ class Permission extends LSActiveRecord
         $oEvent->set('aNewPermissions',$aFilteredPermissions);
         $oEvent->set('iSurveyID',$iEntityID);
         $oEvent->set('iUserID',$iUserID);
-        $result = App()->getPluginManager()->dispatchEvent($oEvent);
 
         // Only the original superadmin may change the superadmin permissions
         if (Yii::app()->session['loginID']!=1) {
