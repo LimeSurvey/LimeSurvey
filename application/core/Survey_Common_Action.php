@@ -572,19 +572,15 @@ class Survey_Common_Action extends CAction
     /**
     * Shows admin menu for question
     *
-    * @param int Survey id
-    * @param int Group id
-    * @param int Question id
-    * @param string action
+    * @param array $aData
     */
-    function _questionbar($aData)
+    public function _questionbar($aData)
     {
-        if(isset($aData['questionbar']))
-        {
-            if (is_object($aData['oSurvey']))
-            {
+        if(isset($aData['questionbar'])) {
+            if (is_object($aData['oSurvey'])) {
 
                 $iSurveyID = $aData['surveyid'];
+                /** @var Survey $oSurvey */
                 $oSurvey = $aData['oSurvey'];
                 $gid = $aData['gid'];
                 $qid = $aData['qid'];
@@ -1067,8 +1063,7 @@ class Survey_Common_Action extends CAction
 
     /**
     * Show survey summary
-    * @param int Survey id
-    * @param string Action to be performed
+     * @param array $aData
     */
     public function _surveysummary($aData)
     {

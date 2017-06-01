@@ -127,7 +127,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Check availability of LDAP Apache Module
      *
-     * @return unknown_type
+     * @return null
      */
     public function beforeActivate()
     {
@@ -142,7 +142,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Create a LDAP user
      *
-     * @return unknown_type
+     * @return null
      */
     public function createNewUser()
     {

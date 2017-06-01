@@ -3,7 +3,7 @@
     $list = "<div class='container'>";
     $list .= "<div class='row'>";
     $divideToggle = true;
-
+    /** @var Survey[] $publicSurveys */
     foreach($publicSurveys as $survey)
     {
          $outputSurveys++;
@@ -153,9 +153,9 @@
         "SURVEYLISTHEADING"=> $listheading,
         "SURVEYLIST"=> $list,
     );
+    // FIXME makeLanguageChanger() is not accessible from here??
     $data['languagechanger'] = makeLanguageChanger(App()->language);
     /* must register script if template don't do it */
     App()->clientScript->registerScript("ExtendedStartpageToolTip","$('.surveytitle,.view-stats').tooltip()",CClientScript::POS_READY);
     $oTemplate = Template::model()->getInstance("default");
     echo templatereplace(file_get_contents($oTemplate->pstplPath."/surveylist.pstpl"),$aReplacementData,$data,'survey['.__LINE__.']');
-?>
