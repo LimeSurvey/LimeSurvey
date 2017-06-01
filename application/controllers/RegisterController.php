@@ -471,7 +471,7 @@ class RegisterController extends LSYii_Controller {
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
         Yii::app()->clientScript->registerPackage( 'survey-template' );
 
-        $this->sTemplate=$oTemplate->name;
+        $this->sTemplate=$oTemplate->sTemplateName;
         if(!$this->sMessage){
             $this->aGlobalData['languagechanger']=makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
             $this->aReplacementData['content']=self::getRegisterForm($iSurveyId);
