@@ -338,17 +338,19 @@ class templates extends Survey_Common_Action
         if ($templatename=='') {
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
+
         // This can happen if the global default template is deleted
-        if (!Template::checkIfTemplateExists($templatename))
-        {
+        if (!Template::checkIfTemplateExists($templatename)){
             // Redirect to the default template
             Yii::app()->setFlashMessage(sprintf(gT('Template %s does not exist.'),htmlspecialchars($templatename,ENT_QUOTES)),'error');
             $this->getController()->redirect(array('admin/templates/sa/view/','templatename'=>'default'));
         }
+
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage=Yii::app()->clientScript->packages['bootstrap'];
 
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
+        //var_dump($aViewUrls); die();
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap']=$aBootstrapPackage;
@@ -704,13 +706,13 @@ class templates extends Survey_Common_Action
             //~ }
 
 
-            $myoutput = implode("\n", $myoutput);
+            //$myoutput = implode("\n", $myoutput);
 
 
 
             App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'survey_runtime.js');
             /* register template package : PS : use asset :) */
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
+            Yii::app()->clientScript->registerPackage( 'survey-template-'.$templatename );
             /* some needed utils script from limesurvey-public package */
             App()->getClientScript()->registerScript("activateActionLink","activateActionLink();",CClientScript::POS_END);/* show the button if needed */
 
@@ -870,7 +872,7 @@ class templates extends Survey_Common_Action
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
-        $files = $this->getValidScreenFiles($templatename);
+        $files    = $this->getValidScreenFiles($templatename);
         $cssfiles = $this->_initcssfiles($oEditedTemplate);
 
 
@@ -882,89 +884,82 @@ class templates extends Survey_Common_Action
         // Standard screens
         // Only these may be viewed
         $screens=array();
-        $screens['surveylist'] =  gT('Survey List Page','unescaped');
-        $screens['welcome'] = gT('Welcome Page','unescaped');
-        $screens['question'] = gT('Question Page','unescaped');
-        $screens['completed'] = gT('Completed Page','unescaped');
-        $screens['clearall'] = gT('Clear All Page','unescaped');
-        $screens['register'] = gT('Register Page','unescaped');
-        $screens['load'] = gT('Load Page','unescaped');
-        $screens['save'] = gT('Save Page','unescaped');
-        $screens['printanswers'] = gT('Print answers page','unescaped');
-        $screens['printablesurvey'] = gT('Printable survey page','unescaped');
 
-        /* pstpl file list */
+        $screens['clearall']        = gT('Clear All Page','unescaped');
+        $screens['errors']          = gT('Errors','unescaped');
+        $screens['welcome']         = gT('Welcome Page','unescaped');       // first page
+        $screens['load']            = gT('Load Page','unescaped');
+        $screens['surveylist']      = gT('Survey List Page','unescaped');
+
+        $screens['question']        = gT('Question Page','unescaped');      // main
+        $screens['completed']       = gT('Completed Page','unescaped');     // submit?
+
+        $screens['register']        = gT('Register Page','unescaped');      // still todo?
+
+        $screens['save']            = gT('Save Page','unescaped');
+        $screens['printanswers']    = gT('Print answers page','unescaped');         // todo?
+        $screens['printablesurvey'] = gT('Printable survey page','unescaped');      // todo ?
+
+        /* Twig layout */
         /* used for call AND for pstl editable files list */
-        $SurveyList = array('startpage.pstpl',
-            'surveylist.pstpl',
-            'endpage.pstpl'
-        );
-        $Welcome = array('startpage.pstpl',
-            'welcome.pstpl',
-            'privacy.pstpl',
-            'navigator.pstpl',
-            'endpage.pstpl'
-        );
+        /* should contains datas for inclusion ??? */
+        $SurveyList = array('layout_survey_list.twig',);
+
+        $Welcome = array('layout_first_page.twig',);
+
         /* Not used : data updated during rendering */
-        $Question = array('startpage.pstpl',
-            'survey.pstpl',
-            'startgroup.pstpl',
-            'groupdescription.pstpl',
-            'question.pstpl',
-            'endgroup.pstpl',
-            'navigator.pstpl',
-            'endpage.pstpl'
-        );
-        $CompletedTemplate = array(
-            'startpage.pstpl',
-            'assessment.pstpl',
-            'completed.pstpl',
-            'endpage.pstpl'
-        );
+        $Question = array('layout_main.twig',);
+
+        $CompletedTemplate = array('layout_submit.twig',);
+
         /* Not used */
-        $Clearall = array('startpage.pstpl',
-            'clearall.pstpl',
+        $Clearall = array('layout_clearall.twig',);
+
+        /* Not used */
+        $Save = array('layout_save.twig',);
+
+        /* Not used */
+        $Load = array('layout_load.twig',);
+
+        /** TODO: TWIG
+        // Not used
+        $printtemplate = array('startpage.pstpl',
+            'printanswers.pstpl',
             'endpage.pstpl'
         );
-        /* Not used */
+        // Not used
+        $printablesurveytemplate = array('print_survey.pstpl',
+            'print_group.pstpl',
+            'print_question.pstpl'
+        );
+
+        // Not used
         $Register = array('startpage.pstpl',
             'survey.pstpl',
             'register.pstpl',
             'endpage.pstpl'
         );
-        /* Not used */
-        $Save = array('startpage.pstpl',
-            'save.pstpl',
-            'endpage.pstpl'
-        );
-        /* Not used */
-        $Load = array('startpage.pstpl',
-            'load.pstpl',
-            'endpage.pstpl'
-        );
-        /* Not used */
-        $printtemplate = array('startpage.pstpl',
-            'printanswers.pstpl',
-            'endpage.pstpl'
-        );
-        /* Not used */
-        $printablesurveytemplate = array('print_survey.pstpl',
-            'print_group.pstpl',
-            'print_question.pstpl'
-        );
+        */
+
         $file_version = "LimeSurvey template editor " . Yii::app()->getConfig('versionnumber');
+
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
+
         $templatename = sanitize_dirname($templatename);
+
         // Checks if screen name is in the list of allowed screen names
         if (!isset($screens[$screenname]))
         {
             Yii::app()->user->setFlash('error',gT('Invalid screen name'));
             $this->getController()->redirect(array("admin/templates/sa/upload"));
         }
+
+        /**  TODO: TWIG
         if (is_file(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename . DIRECTORY_SEPARATOR.'question_start.pstpl')) {
             $files[] = 'question_start.pstpl';
             $Question[] = 'question_start.pstpl';
         }
+        **/
 
         /* See if we found the file to be edited inside template */
         /* @todo must control if is updatable : in updatable file OR is a view */
@@ -983,8 +978,9 @@ class templates extends Survey_Common_Action
         // Make sure file is within the template path
         if (strpos($sEditFile,realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename))===false)
         {
-            $editfile='startpage.pstpl';
+            $editfile='layout_first_page.twig';
         }
+
         $extension = substr(strrchr($editfile, "."), 1);
         $highlighter = 'html';
         if ($extension == 'css' || $extension == 'js')
@@ -1030,7 +1026,7 @@ class templates extends Survey_Common_Action
         $thissurvey['surveyls_url'] = "http://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
         $thissurvey['usecaptcha'] = "A";
-        $percentcomplete = makegraph(6, 10);
+        $percentcomplete = 0; //makegraph(6, 10);
 
         $groupname = gT("Group 1: The first lot of questions");
         $groupdescription = gT("This group description is fairly vacuous, but quite important.");
@@ -1056,6 +1052,7 @@ class templates extends Survey_Common_Action
         $templateurl = getTemplateURL($templatename);
 
         // Save these variables in an array
+        // TODO: remove the useless datas for twig
         $aData['thissurvey'] = $thissurvey;
         $aData['percentcomplete'] = $percentcomplete;
         $aData['groupname'] = $groupname;
@@ -1077,7 +1074,9 @@ class templates extends Survey_Common_Action
         $aData['templatename'] = $templatename;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
+
         /* always here, even if hidden or in navigator , for button : if nopt in navigator : must be hidden by default */
+        /* TODO : TWIG
         $aGlobalReplacements = array(
             'SAVE_LINKS' =>  $this->getController()->renderPartial("/survey/system/actionLink/saveSave",array(
                 'submit'=>'', // Don't do the action, just for display
@@ -1101,8 +1100,11 @@ class templates extends Survey_Common_Action
                 'confirmvalue'=>'confirm',
             ),true),
         );
+        */
+        $aGlobalReplacements = array();
         $myoutput[] = "";
 
+        // TODO: TWIG
         switch ($screenname)
         {
             case 'surveylist':
@@ -1110,11 +1112,13 @@ class templates extends Survey_Common_Action
                     'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
                     'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
                 );
+
                 $aReplacementSurveyList = array(
                     "SURVEYCONTACT" => sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail")),
                     "SURVEYLISTHEADING" => gT("The following surveys are available:"),
                     "SURVEYLIST" => $this->getController()->renderPartial('/admin/templates/templateeditor_surveylist_view', $aSurveyList, true),
                 );
+
                 //$aData['surveylist'] = $aSurveyListTexts;
                 $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacementSurveyList);
                 $myoutput[] = "";
@@ -1191,6 +1195,7 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'welcome':
+                /*
                 $sMoveNext = App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"ls-move-btn ls-move-next-btn"),true);
                 $aData['aReplacements'] = array_merge($aGlobalReplacements,array(
                     'MOVEPREVBUTTON' => '',
@@ -1201,6 +1206,9 @@ class templates extends Survey_Common_Action
                 foreach ($files as $qs) {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }
+                */
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('aSurveyInfo'=>$thissurvey), true);
+                //var_dump($myoutput); die();
                 break;
 
             case 'register':
@@ -1328,7 +1336,7 @@ class templates extends Survey_Common_Action
                 $myoutput[] = "\n";
                 break;
         }
-        $myoutput[] = "</html>";
+        //$myoutput[] = "</html>";
 
         $jsfiles =  $this->_getEditableJsFiles($oEditedTemplate);
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
@@ -1403,6 +1411,7 @@ class templates extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'templates', $aViewUrls = array(), $aData = array())
     {
+        //var_dump($aViewUrls);
         //$aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
