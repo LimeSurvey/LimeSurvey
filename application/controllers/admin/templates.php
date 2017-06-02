@@ -885,21 +885,22 @@ class templates extends Survey_Common_Action
         // Only these may be viewed
         $screens=array();
 
-        $screens['clearall']        = gT('Clear All Page','unescaped');
-        $screens['errors']          = gT('Errors','unescaped');
-        $screens['welcome']         = gT('Welcome Page','unescaped');       // first page
-        $screens['load']            = gT('Load Page','unescaped');
-        $screens['surveylist']      = gT('Survey List Page','unescaped');
 
+
+        $screens['welcome']         = gT('Welcome Page','unescaped');       // first page*
         $screens['question']        = gT('Question Page','unescaped');      // main
         $screens['completed']       = gT('Completed Page','unescaped');     // submit?
-
-        $screens['register']        = gT('Register Page','unescaped');      // still todo?
-
+        $screens['clearall']        = gT('Clear All Page','unescaped');
+        $screens['load']            = gT('Load Page','unescaped');
         $screens['save']            = gT('Save Page','unescaped');
-        $screens['printanswers']    = gT('Print answers page','unescaped');         // todo?
-        $screens['printablesurvey'] = gT('Printable survey page','unescaped');      // todo ?
+        $screens['surveylist']      = gT('Survey List Page','unescaped');
+        $screens['errors']          = gT('Errors','unescaped');
+        
+        // TODO: $screens['register']        = gT('Register Page','unescaped');      // still todo?
 
+
+        //TODO: $screens['printanswers']    = gT('Print answers page','unescaped');         // todo?
+        //TODO: $screens['printablesurvey'] = gT('Printable survey page','unescaped');      // todo ?
         /* Twig layout */
         /* used for call AND for pstl editable files list */
         /* should contains datas for inclusion ??? */
