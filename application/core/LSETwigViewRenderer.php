@@ -141,7 +141,10 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         $oTemplate = $this->getTemplateForView($sView);
         $line      = file_get_contents($oTemplate->viewPath.$sView);
-        $this->renderTemplateFromString( $line, $aDatas, $bReturn);
+        $result = $this->renderTemplateFromString( $line, $aDatas, $bReturn);
+        if ($bReturn){
+            return $result;
+        }
     }
 
     private function getTemplateForView($sView)
@@ -206,17 +209,21 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oTwigTemplate = $twig->createTemplate($line);
         $nvLine        = $oTwigTemplate->render($aDatas, false);
 
-        ob_start(function($buffer, $phase)
-        {
-            App()->getClientScript()->render($buffer);
-            App()->getClientScript()->reset();
-            return $buffer;
-        });
+        if (!$bReturn){
+            ob_start(function($buffer, $phase)
+            {
+                App()->getClientScript()->render($buffer);
+                App()->getClientScript()->reset();
+                return $buffer;
+            });
 
-        ob_implicit_flush(false);
-        echo $nvLine;
-        ob_flush();
+            ob_implicit_flush(false);
+            echo $nvLine;
+            ob_flush();
 
-        Yii::app()->end();
+            Yii::app()->end();
+        }else{
+            return $nvLine;
+        }
     }
 }
