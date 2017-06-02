@@ -1108,6 +1108,8 @@ class templates extends Survey_Common_Action
         switch ($screenname)
         {
             case 'surveylist':
+
+                /*
                 $aSurveyList = array(
                     'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
                     'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
@@ -1126,7 +1128,8 @@ class templates extends Survey_Common_Action
                 foreach ($files as $qs)
                 {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
-                }
+                }*/
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$thissurvey), true);                
                 break;
 
             case 'question':
