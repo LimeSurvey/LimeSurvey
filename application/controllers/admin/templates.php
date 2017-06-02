@@ -1271,7 +1271,7 @@ class templates extends Survey_Common_Action
 
                 $myoutput[] = "\n";
                 */
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_load.twig", array('aSurveyInfo'=>$thissurvey), true);                
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_load.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
             case 'clearall':
@@ -1287,13 +1287,16 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'completed':
+                /*
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $files=$CompletedTemplate;
                 $myoutput[] = "";
                 foreach ($files as $qs)
                 {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
-                }
+                }*/
+                $thissurvey['aCompleted']['showDefault'] = true;
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_submit.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
             case 'printablesurvey':
                 $aData['aReplacements'] = $aGlobalReplacements;
