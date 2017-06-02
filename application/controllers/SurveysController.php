@@ -31,7 +31,7 @@
             //$oTemplate->registerAssets();
 
 
-            $this->sTemplate = $oTemplate->name;
+            $this->sTemplate = $oTemplate->sTemplateName;
             //Yii::app()->clientScript->registerPackage( 'survey-template' );
             //Yii::app()->clientScript->registerPackage( 'survey-template-'.$oTemplate->sTemplateName );
             //var_dump('survey-template-'.$oTemplate->sTemplateName);
@@ -70,7 +70,7 @@
         {
             $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
 
-            $this->sTemplate = $oTemplate->name;
+            $this->sTemplate = $oTemplate->sTemplateName;
 
             $error = Yii::app()->errorHandler->error;
             if ($error){
@@ -82,4 +82,3 @@
         }
 
     }
-?>
