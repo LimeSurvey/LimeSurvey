@@ -1238,6 +1238,7 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'save':
+                /*
                 $files=$Save;
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
@@ -1252,6 +1253,8 @@ class templates extends Survey_Common_Action
                  $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/save.pstpl", $aData, $oEditedTemplate));
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = "\n";
+                */
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_save.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
             case 'load':
