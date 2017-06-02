@@ -1028,6 +1028,9 @@ class templates extends Survey_Common_Action
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
         $thissurvey['usecaptcha'] = "A";
         $thissurvey['showprogress'] = true;
+        $thissurvey['aNavigator']['show'] = true;
+        $thissurvey['aNavigator']['aMoveNext']['show'] = true;
+        $thissurvey['aNavigator']['aMovePrev']['show'] = true;
         $percentcomplete = 0; //makegraph(6, 10);
 
         $groupname = gT("Group 1: The first lot of questions");
