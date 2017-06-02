@@ -1135,6 +1135,8 @@ class templates extends Survey_Common_Action
 
             case 'question':
                 $files=$Question;
+
+                /*
                 $myoutput[] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_meta_view', array(), true);
 
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startpage.pstpl", $aData, $oEditedTemplate));
@@ -1145,6 +1147,7 @@ class templates extends Survey_Common_Action
 
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startgroup.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/groupdescription.pstpl", $aData, $oEditedTemplate));
+                */
 
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
@@ -1161,10 +1164,13 @@ class templates extends Survey_Common_Action
                         'vtip'=>gT('Hint when response is valid')
                     ), true),
                 );
+
                 $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacements);
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/question.pstpl", $aData, $oEditedTemplate));
 
+                //$myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/question.pstpl", $aData, $oEditedTemplate));
+
+/*
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT('Please explain something in detail:'),
                     'QUESTION_CODE' => 'Q2 ',
@@ -1184,6 +1190,7 @@ class templates extends Survey_Common_Action
 
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endgroup.pstpl", $aData, $oEditedTemplate));
 
+
                 // Normally output by survey_runtime
                 $myoutput = array_merge($myoutput, array('</div>'));
                 $sMovePrev = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>"moveprev",'class'=>"ls-move-btn ls-move-previous-btn"),true);
@@ -1196,6 +1203,67 @@ class templates extends Survey_Common_Action
                 ));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/navigator.pstpl", $aData, $oEditedTemplate));
                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endpage.pstpl", $aData, $oEditedTemplate));
+                */
+                /*
+                array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefzef" ["gseq"]=> int(0) ["showdescription"]=> bool(true)
+                 ["description"]=> string(6) "zefzef" ["aQuestions"]=> array(1) { [1]=> array(12) { ["qid"]=> string(1) "1" ["code"]=> string(6) "zefzef" ["number"]=> int(1) ["text"]=> string(6) "zefzef" ["SGQ"]=> string(10) "527286X1X1" ["mandatory"]=> string(0) "" ["input_error_class"]=> string(0) "" ["valid_message"]=> string(0) "" ["file_valid_message"]=> string(0) "" ["man_message"]=> string(0) "" ["answer"]=> string(324) "
+                */
+
+                $thissurvey['aGroups'][1]["name"]            = $groupname;
+                $thissurvey['aGroups'][1]["showdescription"] = true;
+                $thissurvey['aGroups'][1]["description"]     = $groupdescription;
+
+/*
+Exit and clear survey
+0%
+array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefzef" ["gseq"]=> int(0)
+ ["showdescription"]=> bool(true) ["description"]=> string(6) "zefzef"
+ ["aQuestions"]=> array(1) { [1]=> array(12) { ["qid"]=> string(1) "1" ["code"]=> string(12) "questioncode" ["number"]=> int(1)
+ ["text"]=> string(13) "question text" ["SGQ"]=> string(10) "527286X1X1" ["mandatory"]=> string(0) ""
+ ["input_error_class"]=> string(0) "" ["valid_message"]=> string(0) "" ["file_valid_message"]=> string(0) "" ["man_message"]=> string(0) ""
+ ["answer"]=> string(324) "
+
+
+
+     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
+     'QUESTION_CODE' => 'Q1 ',
+     'QUESTIONHELP' => $this->getController()->renderPartial('/survey/questions/question_help/questionhelp', array('classes' => '','questionHelp'=>gT("This is some helpful text.")), true),
+     'QUESTION_MANDATORY' => $this->getController()->renderPartial('/survey/questions/question_help/asterisk', array(), true),
+     'QUESTION_MAN_CLASS' => ' mandatory',
+     'QUESTION_ESSENTIALS' => 'id="question1"',
+     'QUESTION_CLASS' => 'list-radio',
+     'QUESTION_NUMBER' => '1',
+     'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('/survey/questions/question_help/em-tip',array(
+         'coreId'=>"vmsg_4496_num_answers",
+         'coreClass'=>"em-tip ",// Unsure for this one
+         'vtip'=>gT('Hint when response is valid')
+     ), true),
+*/
+
+                $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
+                $thissurvey['aGroups'][1]["aQuestions"][1]["code"]          = 'Q1 ';
+                $thissurvey['aGroups'][1]["aQuestions"][1]["text"]          = gT("How many roads must a man walk down?");
+                $thissurvey['aGroups'][1]["aQuestions"][1]["mandatory"]     = true;
+                $thissurvey['aGroups'][1]["aQuestions"][1]["valid_message"] = '<div id="vmsg_1_default" class="ls-question-message ls-em-tip em_default ls-em-success"><span class="fa fa-exclamation-circle" aria-hidden="true"></span>Choose one of the following answers</div>';
+                $thissurvey['aGroups'][1]["aQuestions"][1]["answer"]        = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array(), true);
+                $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["show"]  = true;
+                $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["text"]  = "This is some helpful text.";
+
+
+
+
+                $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
+                $thissurvey['aGroups'][1]["aQuestions"][2]["code"]          = 'Q2 ';
+                $thissurvey['aGroups'][1]["aQuestions"][2]["text"]          = gT("Please explain something in detail:");
+                $thissurvey['aGroups'][1]["aQuestions"][2]["mandatory"]     = false;
+                $thissurvey['aGroups'][1]["aQuestions"][2]["valid_message"] = '<div id="vmsg_4496_num_answers" class="em_num_answers emtip error"><span class="fa fa-exclamation-circle" aria-hidden="true"></span>Hint when response is not valid</div>';
+                $thissurvey['aGroups'][1]["aQuestions"][2]["answer"]        = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
+                $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["show"]  = true;
+                $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["text"]  = "This is some helpful text.";
+
+
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_main.twig", array('aSurveyInfo'=>$thissurvey), true);
+
                 break;
 
             case 'welcome':
