@@ -1129,7 +1129,7 @@ class templates extends Survey_Common_Action
                 {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }*/
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$thissurvey), true);                
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
             case 'question':
@@ -1272,12 +1272,15 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'clearall':
+                /*
                 $files=$Clearall;
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/clearall.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = "\n";
+                */
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_clearall.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
             case 'completed':
