@@ -894,8 +894,8 @@ class templates extends Survey_Common_Action
         $screens['load']            = gT('Load Page','unescaped');
         $screens['save']            = gT('Save Page','unescaped');
         $screens['surveylist']      = gT('Survey List Page','unescaped');
-        $screens['errors']          = gT('Errors','unescaped');
-        
+        $screens['error']           = gT('Error','unescaped');
+
         // TODO: $screens['register']        = gT('Register Page','unescaped');      // still todo?
 
 
@@ -1350,6 +1350,12 @@ class templates extends Survey_Common_Action
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
 
                 $myoutput[] = "\n";
+                break;
+
+            case 'error':
+                $thissurvey['aError']['title'] = gT("Error");
+                $thissurvey['aError']['message'] = gT("This is an error message example");
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
         }
         //$myoutput[] = "</html>";
