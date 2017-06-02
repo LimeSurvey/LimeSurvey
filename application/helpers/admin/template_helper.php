@@ -166,6 +166,10 @@ function gettemplatefilename($template, $templatefile) {
     $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
     switch (pathinfo($templatefile, PATHINFO_EXTENSION))
     {
+        case 'twig':
+            $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
+            return $oEditedTemplate->viewPath.$templatefile;
+            break;
         case 'pstpl':
             $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
             return $oEditedTemplate->viewPath.$templatefile;
