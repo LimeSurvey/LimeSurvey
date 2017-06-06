@@ -35,6 +35,25 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.65.1 (build 170502) to 2.65.2 (build 170606) June 6, 2017
+-New feature: Add some collapse feature to remotecontrol function list (Denis Chenu)
+-New feature: RemoteControl : allow to get all attributes in get function (Denis Chenu)
+-Fixed issue #12368: RemoteControl: properties that are available are not shown (Denis Chenu)
+-Fixed issue #12372: Unsuitable CAPTCHA (markusfluer)
+-Fixed issue #12432: Reflected XSS in Notifications (thanks to mrbreaker) (Denis Chenu)
+-Fixed issue #12433: [security] Reflected XSS (Thanks to mrbreaker) (Denis Chenu)
+-Fixed issue #12436: [security] Potential SQL injection through Notifications (Denis Chenu)
+-Fixed issue #12450: DataEntry not opening with array filter questions (Tõnis Ormisson)
+-Fixed issue #12452: Numeric vars are treated as string during comparison (Carsten Schmitz)
+-Fixed issue: Saveall display even if completed (ImperatorTheo)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Spanish (Chile) by jrojas
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.65.0 (build 170502) to 2.65.1 (build 170522) May 22, 2017
 -Fixed issue #12258: Incorrect date validation when using mm-yyyy dateformat (Olle Haerstedt)
 -Fixed issue #12371: 5-point array question with semantic differential has bold font on left side and normal font on right side (LouisGac)
