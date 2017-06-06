@@ -405,11 +405,7 @@
 			}
 			this.find('.' + settings.tableClass).children('tbody').children('tr').children('td').children('input[name="' + column_id + '"]').each(function (i) {
 				if (this.checked) {
-                    var val = keys.eq(i).text();
-                    if (val == '') {
-                        val = $(this).val();
-                    }
-					checked.push(val);
+					checked.push(keys.eq(i).text());
 				}
 			});
 			return checked;
