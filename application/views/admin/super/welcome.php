@@ -28,7 +28,7 @@
     <?php if($bShowLogo):?>
         <div class="row">
             <div class="jumbotron" id="welcome-jumbotron">
-                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" style="display: inline;" />
+                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" style="display: inline; max-width:60%;" />
                 <p class="hidden-xs" ><?php echo PRESENTATION; // Defined in AdminController?></p>
             </div>
         </div>
@@ -108,7 +108,7 @@
         <div class="col-sm-12 list-surveys">
             <h3><?php eT('Survey list'); ?></h3>
             <?php
-                $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(                        
+                $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
                             'model'            => $oSurveySearch,
                             'bRenderSearchBox' => $bShowSurveyListSearch,
                         ));
