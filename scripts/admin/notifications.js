@@ -112,6 +112,9 @@ $(document).ready(function() {
                     notificationIsRead(that);
                     $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
                 });
+            },
+            error: function(response) {
+                log(response);
             }
         });
     }

@@ -29,17 +29,18 @@ class NotificationController extends Survey_Common_Action
     {
         $this->checkPermission();
 
-        if((string)(int)$notId!==(string)$notId) {
-            throw new CHttpException(403,gT("Invalid notification id"));
+        header('Content-type: application/json');
+
+        if ((string) (int) $notId !== (string) $notId) {
+            echo json_encode(array('error' => 'Invalid notification id'));
+            Yii::app()->end();
         }
         $not = Notification::model()->findByPk($notId);
 
         if ($not) {
-            header('Content-type: application/json');
             echo json_encode(array('result' => $not->getAttributes()));
         } else {
-            throw new CHttpException(404,printf(gT("Notification %s not found"),$notId));
-            //echo json_encode(array('error' => 'Found no notification with id ' . $notId));
+            echo json_encode(array('error' => 'Found no notification with id ' . (int) $notId));
         }
     }
 
@@ -52,22 +53,21 @@ class NotificationController extends Survey_Common_Action
     public function notificationRead($notId)
     {
         $this->checkPermission();
-        if((string)(int)$notId!==(string)$notId) {
-            throw new CHttpException(403,gT("Invalid notification id"));
-        }
-        try
-        {
-            $not = Notification::model()->findByPk($notId);
-            $result = $not->markAsRead();
-            header('Content-type: application/json');
-            echo json_encode(array('result' => $result));
-        }
-        catch (Exception $ex)
-        {
-            header('Content-type: application/json');
-            echo json_encode(array('error' => $ex->getMessage()));
+
+        header('Content-type: application/json');
+
+        if ((string) (int) $notId !== (string) $notId) {
+            echo json_encode(array('error' => 'Invalid notification id'));
+            Yii::app()->end();
         }
 
+        try {
+            $not = Notification::model()->findByPk($notId);
+            $result = $not->markAsRead();
+            echo json_encode(array('result' => $result));
+        } catch (Exception $ex) {
+            echo json_encode(array('error' => $ex->getMessage()));
+        }
     }
 
     /**
@@ -91,7 +91,7 @@ class NotificationController extends Survey_Common_Action
     public function clearAllNotifications($surveyId = null)
     {
         Notification::model()->deleteAll(
-            'entity = :entity AND entity_id = :entity_id' ,
+            'entity = :entity AND entity_id = :entity_id',
             array(":entity"=>'user',":entity_id"=>Yii::app()->user->id)
         );
 
@@ -110,8 +110,9 @@ class NotificationController extends Survey_Common_Action
     protected function checkPermission()
     {
         // Abort if user is not logged in
-        if(Yii::app()->user->isGuest) {
-            throw new CHttpException(401);
+        if (Yii::app()->user->isGuest) {
+            echo 'No permission';
+            Yii::app()->end();
         }
     }
 
@@ -137,7 +138,7 @@ class NotificationController extends Survey_Common_Action
         $params=array(
             'sa' => 'clearAllNotifications',
         );
-        if($surveyId) {
+        if ($surveyId) {
             $params['surveyId'] = $surveyId;
         }
         $data['clearAllNotificationsUrl'] = Yii::app()->createUrl('admin/notification', $params);
