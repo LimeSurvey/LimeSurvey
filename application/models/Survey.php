@@ -1247,6 +1247,7 @@ class Survey extends LSActiveRecord
         return 'N';
     }
 
+
     /**
     * Method to make an approximation on how long a survey will last
     * Approx is 3 questions each minute.
