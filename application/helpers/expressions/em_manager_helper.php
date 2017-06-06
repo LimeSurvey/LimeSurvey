@@ -943,21 +943,16 @@
                 }
                 $_subqid = $subqid;
 
-                // fix values
                 if (preg_match('/^@\d+X\d+X\d+.*@$/',$value)) {
                     $value = substr($value,1,-1);
-                }
-                else if (preg_match('/^{.+}$/',$value)) {
+                } elseif (preg_match('/^{.+}$/',$value)) {
                         $value = substr($value,1,-1);
+                } elseif ($row['method'] == 'RX') {
+                    if (!preg_match('#^/.*/$#',$value)) {
+                        $value = '"/' . $value . '/"';  // if not surrounded by slashes, add them.
                     }
-                    else if ($row['method'] == 'RX') {
-                            if (!preg_match('#^/.*/$#',$value))
-                            {
-                                $value = '"/' . $value . '/"';  // if not surrounded by slashes, add them.
-                            }
-                    }
-                    else {
-                        $value = '"' . $value . '"';
+                } elseif ((string)(float) $value !== (string) $value ) {
+                    $value = '"' . $value . '"';
                 }
 
                 // add equation
