@@ -278,7 +278,11 @@ li.responsive-content
 #surveys-list-jumbotron {
     text-align: center;
 }
-
+#surveys-list-jumbotron img.site-surveylist-logo {
+    max-width: 35%;
+    display: block;
+    margin: 15px auto;
+}
 /*#outerframeContainer {
     height: 100%;
 }*/

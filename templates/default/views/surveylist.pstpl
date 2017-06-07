@@ -3,7 +3,9 @@
 
 <div class="row" id="surveys-list-container">
     <div class="jumbotron" id="surveys-list-jumbotron">
-        {SITELOGO}
+        <p class="text-center">
+            {SITELOGO}
+        </p>
         <p class="">
             {SITENAME}
         </p>
