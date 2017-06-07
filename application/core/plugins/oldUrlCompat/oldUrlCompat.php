@@ -3,7 +3,7 @@
  * Plugin to redirect old url system (index.php?sid=surveyid) to the new url
  *
  * @author Denis Chenu <denis@sondages.pro>
- * @copyright 2016 LimeSurvey team <http://www.limesurvey.org>
+ * @copyright 2016 LimeSurvey team <https://www.limesurvey.org>
  * @license GPL v3
  * @version 0.0.1
  *

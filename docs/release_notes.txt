@@ -35,7 +35,7 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.65.1 (build 170502) to 2.65.2 (build 170606) June 6, 2017
+Changes from 2.65.1 (build 170522) to 2.65.2 (build 170606) June 6, 2017
 -New feature: Add some collapse feature to remotecontrol function list (Denis Chenu)
 -New feature: RemoteControl : allow to get all attributes in get function (Denis Chenu)
 -Fixed issue #12368: RemoteControl: properties that are available are not shown (Denis Chenu)
