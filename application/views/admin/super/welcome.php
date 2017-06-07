@@ -28,7 +28,7 @@
     <?php if($bShowLogo):?>
         <div class="row">
             <div class="jumbotron" id="welcome-jumbotron">
-                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" style="display: inline; max-width:60%;" />
+                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
                 <p class="hidden-xs" ><?php echo PRESENTATION; // Defined in AdminController?></p>
             </div>
         </div>
