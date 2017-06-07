@@ -229,7 +229,7 @@ html {
   padding-bottom: 10px;
   background-color: transparent; }
 #welcome-jumbotron>img{
-  max-width: 40%;
+  width: 350px;
 }
 .surveymanagerbar {
   margin-top: -20px;
