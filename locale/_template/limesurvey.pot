@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-06-06 15:13:20+00:00\n"
+"POT-Creation-Date: 2017-06-07 11:18:17+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11246,9 +11246,9 @@ msgid "Message:"
 msgstr ""
 
 #: application/views/admin/authentication/ajaxLogin.php:13
-#: application/views/admin/authentication/ajaxLogin.php:109
+#: application/views/admin/authentication/ajaxLogin.php:108
 #: application/views/admin/authentication/login.php:23
-#: application/views/admin/authentication/login.php:118
+#: application/views/admin/authentication/login.php:117
 msgid "Log in"
 msgstr ""
 
@@ -11261,14 +11261,14 @@ msgstr ""
 msgid "Authentication method"
 msgstr ""
 
-#: application/views/admin/authentication/ajaxLogin.php:98
-#: application/views/admin/authentication/login.php:107
+#: application/views/admin/authentication/ajaxLogin.php:97
+#: application/views/admin/authentication/login.php:106
 msgid "Demo mode: Login credentials are prefilled - just click the Login button."
 msgstr ""
 
-#: application/views/admin/authentication/ajaxLogin.php:115
+#: application/views/admin/authentication/ajaxLogin.php:114
 #: application/views/admin/authentication/error.php:8
-#: application/views/admin/authentication/login.php:124
+#: application/views/admin/authentication/login.php:123
 msgid "Forgot your password?"
 msgstr ""
 
