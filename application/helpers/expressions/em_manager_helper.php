@@ -8701,12 +8701,24 @@ EOD;
                                     // For an explanation of the exclamation mark, see this thread:
                                     // http://stackoverflow.com/questions/43740037/datetime-converts-wrong-when-system-time-is-30-march
                                     $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
-                                    $newValue = $dateTime->format("Y-m-d H:i");
-                                    $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);
-                                    if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
-                                        $value = $newValue;
+
+                                    if ($dateTime === false) {
+                                        // Can happen if e.g. default answer is date('Y-m-d') but date format d.m.Y.
+                                        $message = sprintf(
+                                            'Could not convert date %s to format %s. Please check your date format settings.',
+                                            trim($value),
+                                            $aDateFormatData['phpdate']
+                                        );
+                                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
                                     } else {
-                                        $value = "";// Or $value="INVALID" ? : dropdown is OK with this not default.
+                                        $convertedValue = $dateTime->format("Y-m-d H:i");
+                                        $newValue = $dateTime->format($aDateFormatData['phpdate']);
+                                        $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $convertedValue);
+                                        if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
+                                            $value = $newValue;
+                                        } else {
+                                            $value = "";// Or $value="INVALID" ? : dropdown is OK with this not default.
+                                        }
                                     }
                                 }
                                 break;
