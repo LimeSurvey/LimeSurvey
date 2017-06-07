@@ -1,15 +1,10 @@
-<h3 class="pagetitle"><?php eT('Edit template permissions');?></h3>
+<h3 class="pagetitle"><?php printf(gT('Edit template permissions for user %s'),"<em>".\CHtml::encode($oUser->users_name)."</em>");?></h3>
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-6 col-lg-offset-3 content-right">
 
         <?php echo CHtml::form(array("admin/user/sa/usertemplates"), 'post', array('name'=>'modtemplaterightsform', 'id'=>'modtemplaterightsform')); ?>
         <table id="user-template-permissions" class="table table-striped activecell" style="margin:0 auto;">
             <thead>
-                <tr>
-                    <th colspan="2" class="header">
-                        <?php eT('Set templates that this user may access');?>: <?php echo htmlspecialchars($postuser);?>
-                    </th>
-                </tr>
                 <tr>
                     <th>
                         <?php eT('Template name');?>
@@ -20,7 +15,7 @@
                 </tr>
                 <tr>
                     <th>
-                        &nbsp;
+                        <?php eT('All templates');?>
                     </th>
                     <th>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -39,7 +34,7 @@
                     <td colspan="2">
                         <input type="submit" class="hidden" value="<?php eT('Save settings');?>" />
                         <input type="hidden" name="action" value="usertemplates" />
-                        <input type="hidden" name="uid" value="<?php echo $postuserid;?>" />
+                        <input type="hidden" name="uid" value="<?php echo $oUser->uid;?>" />
                     </td>
                 </tr>
             </tfoot>
