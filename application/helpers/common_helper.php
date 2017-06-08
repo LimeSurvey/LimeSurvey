@@ -109,7 +109,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 * @param string $SelectedCode Value of the Question Type (defaults to "T")
 * @param string $ReturnType Type of output from this function (defaults to selector)
 *
-* @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
+* @return array|string depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
 *
 * Explanation of questiontype array:
 *
@@ -1109,7 +1109,7 @@ function getUserList($outputformat='fullinfoarray')
 *
 * @param string $surveyid  The survey ID
 * @param string $languagecode The language code - if not given the base language of the particular survey is used
-* @return array Returns array with survey info or false, if survey does not exist
+* @return array|bool Returns array with survey info or false, if survey does not exist
 */
 function getSurveyInfo($surveyid, $languagecode='')
 {
@@ -1119,22 +1119,17 @@ function getSurveyInfo($surveyid, $languagecode='')
     $thissurvey=false;
     $oSurvey = Survey::model()->findByPk($surveyid);
     // Do job only if this survey exist
-    if(!$oSurvey)
-    {
+    if(!$oSurvey) {
         return false;
     }
     // if no language code is set then get the base language one
-    if ((!isset($languagecode) || $languagecode==''))
-    {
+    if ((!isset($languagecode) || $languagecode=='')) {
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
 
-    if(isset($staticSurveyInfo[$surveyid][$languagecode]) )
-    {
+    if(isset($staticSurveyInfo[$surveyid][$languagecode]) ) {
         $thissurvey=$staticSurveyInfo[$surveyid][$languagecode];
-    }
-    else
-    {
+    } else {
         $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
@@ -1622,18 +1617,17 @@ function validateEmailAddress($sEmailAddress){
 
 /**
 * Validate an list of email addresses - either as array or as semicolon-limited text
-* @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+* @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
 *
 * @param mixed $aEmailAddressList  Email address to check
 */
 function validateEmailAddresses($aEmailAddressList){
   $aOutList=false;
-  if (!is_array($aEmailAddressList))
-  {
+  if (!is_array($aEmailAddressList)) {
      $aEmailAddressList=explode(';',$aEmailAddressList);
   }
-  foreach ($aEmailAddressList as $sEmailAddress)
-  {
+
+  foreach ($aEmailAddressList as $sEmailAddress) {
       $sEmailAddress= trim($sEmailAddress);
       if (validateEmailAddress($sEmailAddress)){
          $aOutList=$sEmailAddress;
@@ -2880,7 +2874,7 @@ function flattenText($sTextToFlatten, $bKeepSpan=false, $bDecodeHTMLEntities=fal
 
 /**
 * getArrayFilterExcludesCascadesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
-* @return returns a keyed nested array, keyed by the qid of the question, containing cascade information
+* @return array a keyed nested array, keyed by the qid of the question, containing cascade information
 */
 function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid")
 {
@@ -3024,7 +3018,7 @@ function getArrayFiltersForQuestion($qid)
 
 /**
 * getGroupsByQuestion($surveyid)
-* @return returns a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
+* @return array a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
 */
 function getGroupsByQuestion($surveyid) {
     $output=array();
@@ -3032,7 +3026,7 @@ function getGroupsByQuestion($surveyid) {
     $surveyid=sanitize_int($surveyid);
     $result=Question::model()->findAllByAttributes(array("sid"=>$surveyid));
 
-    foreach ($qresult->readAll() as $val)
+    foreach ($result->readAll() as $val)
     {
         $output[$val['qid']]=$val['gid'];
     }

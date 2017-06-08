@@ -76,7 +76,7 @@ class Zend_XmlRpc_Generator_XmlWriter extends Zend_XmlRpc_Generator_GeneratorAbs
      * Close an previously opened XML element
      *
      * @param string $name
-     * @return void
+     * @return self
      */
     protected function _closeElement($name)
     {

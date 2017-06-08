@@ -4029,8 +4029,8 @@ function do_gender($ia)
 // ---------------------------------------------------------------
 /**
 * Construct answer part array_5point
-* @param $ia
-* @return unknown_type
+* @param array $ia
+* @return array
 */
 function do_array_5point($ia)
 {
@@ -4240,8 +4240,8 @@ function do_array_5point($ia)
 // ---------------------------------------------------------------
 /**
 * Construct answer part array_10point
-* @param $ia
-* @return unknown_type
+* @param array $ia
+* @return array
 */
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_array_10point($ia)

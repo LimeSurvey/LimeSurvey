@@ -2085,7 +2085,7 @@ function XSSFilterArray(&$array)
 * Import survey from an TSV file template that does not require or allow assigning of GID or QID values.
 * NOTE:  This currently only supports import of one language
 * @param string $sFullFilePath
-* @return type
+* @return array
 *
 * @author TMSWhite
 */

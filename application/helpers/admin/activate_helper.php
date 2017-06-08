@@ -107,7 +107,7 @@ function checkGroup($postsid)
 * checks questions in a survey for consistency
 * @param integer $postsid
 * @param integer $iSurveyID
-* @return array $faildcheck
+* @return array|bool $faildcheck
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
 {

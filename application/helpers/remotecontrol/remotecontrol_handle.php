@@ -1553,8 +1553,8 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey
-    * @param struct $aParticipantData Data of the participants to be added
-    * @param bool Optional - Defaults to true and determins if the access token automatically created
+    * @param array $aParticipantData Data of the participants to be added
+    * @param bool $bCreateToken Optional - Defaults to true and determins if the access token automatically created
     * @return array The values added
     */
     public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken=true)
@@ -2304,15 +2304,16 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey to insert responses
-    * @param struct $aResponseData The actual response
-    * @return int The response ID
+    * @param array $aResponseData The actual response
+    * @return int|array The response ID
     */
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+
         $oSurvey=Survey::model()->findByPk($iSurveyID);
-        if (is_null($oSurvey))
-        {
+
+        if (is_null($oSurvey)) {
             return array('status' => 'Error: Invalid survey ID');
         }
 

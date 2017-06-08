@@ -216,7 +216,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
 *
 * @param $field array field from SPSSFieldMap
 * @param string $language
-* @return array or false
+* @return array|bool
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     $length_vallabel = 120;
