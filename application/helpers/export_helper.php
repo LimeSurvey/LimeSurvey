@@ -68,14 +68,15 @@ function strSplitUnicode($str, $l = 0) {
 }
 
 /**
-* Exports CSV response data for SPSS and R
-*
-* @param mixed $iSurveyID The survey ID
-* @param string $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
-* @param string $na Value for N/A data
-* @param sep Quote separator. Use '\'' for SPSS, '"' for R
-* @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
-*/
+ * Exports CSV response data for SPSS and R
+ *
+ * @param mixed $iSurveyID The survey ID
+ * @param string $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
+ * @param string $na Value for N/A data
+ * @param string $q sep Quote separator. Use '\'' for SPSS, '"' for R
+ * @param bool $header logical $header If TRUE, adds SQGA code as column headings (used by export to R)
+ * @param string $sLanguage
+ */
 function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE, $sLanguage='') {
 
     // Build array that has to be returned

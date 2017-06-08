@@ -369,7 +369,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
 * @param string $surveyid
 * @param string $gid
 *
-* @return The Gid of the previous group
+* @return int The Gid of the previous group
 */
 function getGidPrevious($surveyid, $gid)
 {
@@ -400,7 +400,7 @@ function getGidPrevious($surveyid, $gid)
 * @param string $gid
 * @param string $qid
 *
-* @return This Qid of the previous question
+* @return integer This Qid of the previous question
 */
 function getQidPrevious($surveyid, $gid, $qid)
 {
@@ -433,7 +433,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 * @param string $surveyid
 * @param string $gid
 *
-* @return The Gid of the next group
+* @return integer The Gid of the next group
 */
 function getGidNext($surveyid, $gid)
 {
@@ -466,7 +466,7 @@ function getGidNext($surveyid, $gid)
 * @param string $gid
 * @param string $qid
 *
-* @return This Qid of the previous question
+* @return integer This Qid of the previous question
 */
 function getQidNext($surveyid, $gid, $qid)
 {
@@ -2369,7 +2369,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
 /**
 * Returns true if the given survey has a File Upload Question Type
-* @param $surveyid The survey ID
 * @param integer $iSurveyID
 * @return bool
 */
@@ -2598,12 +2597,11 @@ function dbQuoteAll($value)
 * - it is intended to be used before any response data is saved to the response table
 *
 * @param mixed $sValue A string to be sanitized
-* @return A sanitized string, otherwise the unmodified original variable
+* @return string A sanitized string, otherwise the unmodified original variable
 */
 function stripCtrlChars($sValue)
 {
-    if (is_string($sValue))
-    {
+    if (is_string($sValue)) {
         $sValue=preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F]/u', '', $sValue);
     }
     return $sValue;
@@ -2968,7 +2966,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
 /**
 * getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
-* @return returns an array of codes that were selected else returns false
+* @return array an array of codes that were selected else returns false
 */
 function getArrayFiltersForQuestion($qid)
 {
@@ -3036,7 +3034,7 @@ function getGroupsByQuestion($surveyid) {
 
 /**
 * getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
-* @return returns an array of codes that were selected else returns false
+* @return array returns an array of codes that were selected else returns false
 */
 function getArrayFilterExcludesForQuestion($qid)
 {
@@ -3891,7 +3889,7 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 * Check if the time shoul be rendered also
 *
 * @param string $sDate
-* @param boolean withTime
+* @param boolean $withTime
 * @return string
 */
 function convertToGlobalSettingFormat($sDate,$withTime=false)
@@ -4010,12 +4008,13 @@ function getTemplateURL($sTemplateName)
 }
 
 /**
-* Return an array of subquestions for a given sid/qid
-*
-* @param int $sid
-* @param int $qid
-* @param $sLanguage Language of the subquestion text
-*/
+ * Return an array of subquestions for a given sid/qid
+ *
+ * @param int $sid
+ * @param int $qid
+ * @param string $sLanguage Language of the subquestion text
+ * @return array
+ */
 function getSubQuestions($sid, $qid, $sLanguage) {
 
     static $subquestions;
@@ -5896,8 +5895,8 @@ function ls_json_encode($content)
 /**
  * Decode a json string, sometimes needs stripslashes
  *
- * @param type $jsonString
- * @return type
+ * @param string $jsonString
+ * @return mixed
  */
 function json_decode_ls($jsonString)
 {
@@ -5991,10 +5990,10 @@ function arraySwapAssoc($key1, $key2, $array) {
 *
 * This public static function will strip tags from a string, split it at its max_length and ellipsize
 *
-* @param    string        string to ellipsize
-* @param    integer        max length of string
-* @param    mixed        int (1|0) or float, .5, .2, etc for position to split
-* @param    string        ellipsis ; Default '...'
+* @param    string  $sString        string to ellipsize
+* @param    integer $iMaxLength       max length of string
+* @param    mixed   $fPosition       int (1|0) or float, .5, .2, etc for position to split
+* @param    string  $sEllipsis      ellipsis ; Default '...'
 * @return    string        ellipsized string
 */
 function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;')

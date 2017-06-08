@@ -1192,8 +1192,8 @@ class SurveyRuntimeHelper {
     /**
     * Construction of replacement array, actually doing it with redata
     *
-    * @param $aQuestionQanda : array from qanda helper
-    * @return aray of replacement for question.psptl
+    * @param array $aQuestionQanda : array from qanda helper
+    * @return array of replacement for question.psptl
     **/
     public static function getQuestionReplacement($aQuestionQanda)
     {

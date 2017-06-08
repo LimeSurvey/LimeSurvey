@@ -270,7 +270,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param integer $iSurveyID - ID of the Survey
-    * @param array|struct $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
+    * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
     * @return array Of succeeded and failed nodifications according to internal validation
     */
     public function set_survey_properties($sSessionKey, $iSurveyID, $aSurveyData)
@@ -757,7 +757,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param integer $iSurveyID  - ID of the Survey
-    * @param array|struct $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
+    * @param array $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @param string $sLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
     * @return array Status=>OK, when save successful otherwise error text.
     */
@@ -1075,7 +1075,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param integer $iGroupID  - ID of the Survey
-    * @param array|struct $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
+    * @param array $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @return array Of succeeded and failed modifications according to internal validation.
     */
     public function set_group_properties($sSessionKey, $iGroupID, $aGroupData)
@@ -1149,7 +1149,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int iQuestionID ID of the Question to delete
+    * @param int $iQuestionID ID of the Question to delete
     * @return array|int ID of the deleted Question or status
     */
     public function delete_question($sSessionKey, $iQuestionID)
@@ -1458,7 +1458,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param integer $iQuestionID  - ID of the question
-    * @param array|struct $aQuestionData - An array with the particular fieldnames as keys and their values to set on that particular question
+    * @param array $aQuestionData - An array with the particular fieldnames as keys and their values to set on that particular question
     * @param string $sLanguage Optional parameter language for multilingual questions
     * @return array Of succeeded and failed modifications according to internal validation.
     */
@@ -1646,7 +1646,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey to get token properties
-    * @param array|struct|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
+    * @param array|int $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
     * @param array $aTokenProperties The properties to get
     * @return array The requested values
     */
@@ -1706,8 +1706,8 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID Id of the Survey that participants belong
-    * @param array|struct|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
-    * @param array|struct $aTokenData Data to change
+    * @param array|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
+    * @param array $aTokenData Data to change
     * @return array Result of the change action
     */
     public function set_participant_properties($sSessionKey, $iSurveyID, $aTokenQueryProperties, $aTokenData)
@@ -1812,7 +1812,7 @@ class remotecontrol_handle
     * @param int  $iLimit Number of participants to return
     * @param bool $bUnused If you want unused tokens, set true
     * @param bool|array $aAttributes The extented attributes that we want
-    * @param array|struct $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com')
+    * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com')
     * @return array The list of tokens
     */
     public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false, $aAttributes=false, $aConditions=array() )
@@ -2369,7 +2369,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID Id of the Survey to update response
-    * @param struct $aResponseData The actual response
+    * @param array $aResponseData The actual response
     * @return mixed TRUE(bool) on success. errormessage on error
     */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)

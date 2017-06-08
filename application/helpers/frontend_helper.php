@@ -1799,8 +1799,7 @@ function doAssessment($surveyid)
 /**
 * Update SESSION VARIABLE: grouplist
 * A list of groups in this survey, ordered by group name.
-* @param int surveyid
-* @param string language
+* @param string $language
 * @param integer $surveyid
 */
 function UpdateGroupList($surveyid, $language)

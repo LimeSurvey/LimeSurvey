@@ -205,24 +205,25 @@ class viewHelper
             return $separator.$sString;
         }
     }
+
     /**
-    * Return a string fixed according to option
-    *
-    * @param $sString :the string
-    * @param $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
-    * @param $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
-    * @param $sEllipsis if abbreviated : the char to put at end (or middle)
-    * @param $fPosition if abbreviated position to split (in % : 0 to 1)
-    *
-    */
+     * Return a string fixed according to option
+     *
+     * @param string $sString :the string
+     * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
+     * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
+     * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
+     * @param mixed $fPosition if abbreviated position to split (in % : 0 to 1)
+     *
+     * @return string
+     */
     public static function flatEllipsizeText($sString,$bFlat=true,$iAbbreviated=0,$sEllipsis='...',$fPosition = 1)
     {
-        if($bFlat || $iAbbreviated)
-        {
+        if($bFlat || $iAbbreviated) {
             $sString = flattenText($sString, false, true);
         }
-        if($iAbbreviated)
-        {
+
+        if($iAbbreviated) {
             $sString = ellipsize($sString, $iAbbreviated, $fPosition, $sEllipsis);
         }
         return $sString;

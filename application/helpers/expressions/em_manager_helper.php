@@ -10278,8 +10278,8 @@ EOD;
          * Convert non-latin numerics in string to latin numerics
          * Used for datepicker (Hindi, Arabic numbers)
          *
-         * @param string str
-         * @param string lang
+         * @param string $str
+         * @param string $lang
          * @return string
          */
         public static function convertNonLatinNumerics($str, $lang)

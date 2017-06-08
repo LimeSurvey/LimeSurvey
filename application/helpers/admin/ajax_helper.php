@@ -83,8 +83,7 @@ class AjaxHelper
 
     /**
      * Echo $str with json header
-     * @param string str
-     * @param JsonOutput $str
+     * @param string $str
      * @return void
      */
     private static function echoString($str)

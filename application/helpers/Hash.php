@@ -100,6 +100,7 @@ class Hash {
 		if (strpos($path, '[') === false) {
 			$tokens = explode('.', $path);
 		} else {
+		    // FIXME !
 			$tokens = String::tokenize($path, '.', '[', ']');
 		}
 
