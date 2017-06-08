@@ -91,7 +91,7 @@ class SurveyRuntimeHelper {
         $this->makeLanguageChanger();                                           //  language changer can be used on any entry screen, so it must be set first
 
         extract($args);
-        $this->param = $param;
+        //$this->param = $param;
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
@@ -1648,7 +1648,7 @@ class SurveyRuntimeHelper {
         extract($args);
 
         $this->LEMsessid = 'survey_' . $this->iSurveyid;
-        $this->aSurveyInfo                 = (!$thissurvey)?getSurveyInfo($this->iSurveyid):$thissurvey;
+        $this->aSurveyInfo                 = getSurveyInfo($this->iSurveyid);
         $this->aSurveyInfo['surveyUrl']    = App()->createUrl("/survey/index",array("sid"=>$this->iSurveyid));
 
         // TODO: check this:
@@ -1673,6 +1673,7 @@ class SurveyRuntimeHelper {
         }
 
         if ($this->sSurveyMode == 'group' && $this->previewgrp){
+            // FIXME $param not defined
             $_gid = sanitize_int($param['gid']);
 
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], 'group', $this->aSurveyOptions, false, $this->LEMdebugLevel);
@@ -1697,6 +1698,7 @@ class SurveyRuntimeHelper {
             $groupdescription = $this->groupdescription = $this->aStepInfo['gtext'];
 
         }elseif($this->sSurveyMode == 'question' && $this->previewquestion){
+                // FIXME $param not defined
                 $_qid       = sanitize_int($param['qid']);
                 LimeExpressionManager::StartSurvey($this->iSurveyid, 'question', $this->aSurveyOptions, false, $this->LEMdebugLevel);
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);

@@ -1221,7 +1221,7 @@ class Survey_Common_Action extends CAction
 
         //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
         //        $aData['tableusage'] = getDBTableUsage($iSurveyID);
-        // ToDo: Table usage is calculated on every menu display which is too slow with bug surveys.
+        // ToDo: Table usage is calculated on every menu display which is too slow with big surveys.
         // Needs to be moved to a database field and only updated if there are question/subquestions added/removed (it's currently also not functional due to the port)
         //
 

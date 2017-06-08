@@ -792,6 +792,7 @@ class statistics_helper {
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
+            //FIXME $iQuestionIDlength not defined!!
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
@@ -1596,6 +1597,7 @@ class statistics_helper {
      * @param string $outputType
      * @param integer $usegraph
      * @param boolean $browse
+     * @return array
      */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -1604,6 +1606,7 @@ class statistics_helper {
         $statisticsoutput="";
         $sDatabaseType = Yii::app()->db->getDriverName();
         $astatdata=array();
+        $sColumnName = null;
 
         //loop though the array which contains all answer data
         $ColumnName_RM=array();
@@ -2259,14 +2262,15 @@ class statistics_helper {
                     $cachefilename = '';
                     if($outputType == 'xls' || $outputType == 'pdf')
                     {
+                        /**
+                         *
+                         //FIXME $MyCache is undefined
                         $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                         *
+                         */
                     }
 
                 }
-            }
-            else
-            {
-
             }
 
 
@@ -2385,6 +2389,8 @@ class statistics_helper {
         $sDatabaseType      = Yii::app()->db->getDriverName();
         $tempdir            = Yii::app()->getConfig("tempdir");
         $astatdata          = array();
+
+        $sColumnName = null;
 
         if ($usegraph==1 && $outputType != 'html')
         {

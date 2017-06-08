@@ -716,9 +716,11 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
  * @param integer $surveyid : the survey id
  * @param string $subquestionName : the target name
  * @param array $aQuestionAttributes : the attribute of the question (for array_filter_style actually)
+ * @deprecated not used & broken
  */
 function getExpressionManagerClass($surveyid,$subquestionName,$aQuestionAttributes=null)
 {
+    $rowname = null; // butaforia
     if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
     {
 

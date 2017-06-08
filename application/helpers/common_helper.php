@@ -2974,7 +2974,8 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
 /**
 * getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
-* @return returns an array of codes that were selected else returns false
+* @return array an array of codes that were selected else returns false
+ * @deprecated not used
 */
 function getArrayFiltersForQuestion($qid)
 {
@@ -2991,6 +2992,7 @@ function getArrayFiltersForQuestion($qid)
         {
             if ($fields[2] == $val)
             {
+                /** Broken code below ...
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
                 //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
@@ -3002,6 +3004,8 @@ function getArrayFiltersForQuestion($qid)
                     if (Yii::app()->session[$fields[1].$code['title']] == "Y"
                     || Yii::app()->session[$fields[1]] == $code['title'])             array_push($selected,$code['title']);
                 }
+
+                 */
 
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
@@ -3024,7 +3028,8 @@ function getArrayFiltersForQuestion($qid)
 
 /**
 * getGroupsByQuestion($surveyid)
-* @return returns a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
+* @return array a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
+ * @deprecated  not used
 */
 function getGroupsByQuestion($surveyid) {
     $output=array();
@@ -3032,7 +3037,7 @@ function getGroupsByQuestion($surveyid) {
     $surveyid=sanitize_int($surveyid);
     $result=Question::model()->findAllByAttributes(array("sid"=>$surveyid));
 
-    foreach ($qresult->readAll() as $val)
+    foreach ($result->readAll() as $val)
     {
         $output[$val['qid']]=$val['gid'];
     }
@@ -4245,30 +4250,21 @@ function isNumericInt($mStr)
 */
 function short_implode($sDelimeter, $sHyphen, $aArray)
 {
-    if (sizeof($aArray) < Yii::app()->getConfig('minlengthshortimplode'))
-    {
+    if (sizeof($aArray) < Yii::app()->getConfig('minlengthshortimplode')) {
         sort($aArray);
         return implode($sDelimeter, $aArray);
-    }
-    else
-    {
+    } else {
         sort($aArray);
         $iIndexA = 0;
         $iIndexB = 1;
-        while ($iIndexA < sizeof($aArray))
-        {
-            if ($iIndexA == 0)
-            {
+        $sResult = null;
+        while ($iIndexA < sizeof($aArray)) {
+            if ($iIndexA == 0) {
                 $sResult = $aArray[$iIndexA];
-            }
-            else
-            {
-                if (strlen($sResult) > Yii::app()->getConfig('maxstringlengthshortimplode') - strlen($sDelimeter) - 3)
-                {
+            } else {
+                if (strlen($sResult) > Yii::app()->getConfig('maxstringlengthshortimplode') - strlen($sDelimeter) - 3) {
                     return $sResult.$sDelimeter.'...';
-                }
-                else
-                {
+                } else {
                     $sResult = $sResult.$sDelimeter.$aArray[$iIndexA];
                 }
             }
@@ -5634,7 +5630,7 @@ function getDBTableUsage($surveyid){
                 $length = $length + 8;
                 break;
             case 'L':
-                $legth++;
+                $length++;
                 break;
             case 'I':
             case 'I4':
