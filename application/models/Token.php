@@ -230,8 +230,6 @@ abstract class Token extends Dynamic
         //Exit early if there are not empty tokens
         if (count($tkresult)===0) return array(0,0);
 
-        //get token length from survey settings
-        $tlrow = Survey::model()->findByAttributes(array("sid"=>$surveyId));
 
         //Add some criteria to select only the token field
         $criteria = $this->getDbCriteria();

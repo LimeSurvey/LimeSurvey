@@ -141,7 +141,10 @@ class UserGroup extends LSActiveRecord {
             $id = getLastInsertID($this->tableName()); //Yii::app()->db->Insert_Id(db_table_name_nq('user_groups'),'ugid');
             if($id > 0) {
                    $user_in_groups_query = 'INSERT INTO {{user_in_groups}} (ugid, uid) VALUES (:ugid, :uid)';
-                   $command = Yii::app()->db->createCommand($user_in_groups_query)->bindParam(":ugid", $id, PDO::PARAM_INT)->bindParam(":uid", $iLoginID, PDO::PARAM_INT)->query();
+                   Yii::app()->db->createCommand($user_in_groups_query)
+                       ->bindParam(":ugid", $id, PDO::PARAM_INT)
+                       ->bindParam(":uid", $iLoginID, PDO::PARAM_INT)
+                       ->query();
             }
             return $id;
         }
