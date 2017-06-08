@@ -788,7 +788,9 @@ class userstatistics_helper {
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
-            //FIXME $iQuestionIDlength not defined!!
+            /**
+              FIXME $iQuestionIDlength not defined!!
+             */
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
             $qtitle=$nresult->title;
             $qtype=$nresult->type;

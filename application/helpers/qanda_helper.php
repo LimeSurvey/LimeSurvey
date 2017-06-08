@@ -720,7 +720,9 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
  */
 function getExpressionManagerClass($surveyid,$subquestionName,$aQuestionAttributes=null)
 {
-    $rowname = null; // butaforia
+    /**
+    FIXME $rowname not defined!!
+     */
     if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
     {
 
