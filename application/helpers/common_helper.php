@@ -6102,9 +6102,10 @@ function array_diff_assoc_recursive($array1, $array2) {
 }
 
 
-    /**
-     * @param string $sSize
-     */
+/**
+ * @param string $sSize
+ * @return bool|int|string
+ */
     function convertPHPSizeToBytes($sSize)
     {
         //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)

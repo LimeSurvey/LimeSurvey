@@ -2055,10 +2055,11 @@ class statistics_helper {
                                 } else {
                                     $percentage = 0;
                                 }
+                                break;
 
                             default:
-                            $aggregatedPercentage = 'na';
-                            break;
+                                $aggregatedPercentage = 'na';
+                                break;
                         }
 
 
@@ -3187,10 +3188,11 @@ class statistics_helper {
                             } else {
                                 $percentage = 0;
                             }
+                            break;
 
                         default:
-                        $aggregatedPercentage = 'na';
-                        break;
+                            $aggregatedPercentage = 'na';
+                            break;
                     }
 
 
