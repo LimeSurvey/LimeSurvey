@@ -167,5 +167,3 @@
             fclose($this->handle);
         }
     }
-
-?>

@@ -33,5 +33,3 @@
         }
         Yii::trace($msg, 'vardump');
     }
-    
-?>
