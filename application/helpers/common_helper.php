@@ -3312,17 +3312,14 @@ function isCaptchaEnabled($screen, $captchamode='')
             break;
         case 'saveandloadscreen':
             if ($captchamode == 'A' ||
-            $captchamode == 'C' ||
-            $captchamode == 'D' ||
-            $captchamode == 'S')
-            {
+                $captchamode == 'C' ||
+                $captchamode == 'D' ||
+                $captchamode == 'S') {
+
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
-            return true;
             break;
         default:
             return true;

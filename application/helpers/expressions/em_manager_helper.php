@@ -4289,7 +4289,6 @@
             'default'=>'',
             'rootVarName'=>'this',
             'subqtext'=>'',
-            'rowdivid'=>'',
             );
 
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
