@@ -6312,11 +6312,7 @@ function do_array_dual($ia)
             // Get attributes for Headers and Prefix/Suffix
             if (trim($aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
                 list ($ddprefix, $ddsuffix) =explode("|",$aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
-                $ddprefix = $ddprefix;
-                $ddsuffix = $ddsuffix;
-            }
-            else
-            {
+            } else {
                 $ddprefix =null;
                 $ddsuffix=null;
             }

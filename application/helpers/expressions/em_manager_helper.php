@@ -3526,11 +3526,11 @@
                     );
                 }
                 // now combine all classes of validation equations
-                $veqns = array();
                 foreach ($parts as $vclass=>$eqns)
                 {
                     $veqns[$vclass] = '(' . implode(' and ', $eqns) . ')';
                 }
+                $veqns = array();
 
 
                 $this->qid2validationEqn[$qid] = array(
@@ -4987,7 +4987,7 @@
         }
 
         /**
-         * @return void
+         * @return mixed
          */
         static function NavigateBackwards()
         {
@@ -9158,7 +9158,7 @@ EOD;
         /**
          * @param string $op
          * @param string $name
-         * @param string $value
+         * @param double $value
          * @return int
          */
         public static function SetVariableValue($op,$name,$value)
