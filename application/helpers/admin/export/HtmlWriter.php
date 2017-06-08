@@ -47,7 +47,7 @@
 			$this->openTag('head');
 			$this->tag('meta', array('charset' => 'utf-8'));
             $this->tag('style', 'td { border: 1px solid black }');
-			$this->closeTag('head');
+			$this->closeTag();
             $this->openTag('body');
             // Title of the survey.
             $this->tag('h1',  array(

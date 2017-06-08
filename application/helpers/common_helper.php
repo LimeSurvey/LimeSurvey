@@ -4541,7 +4541,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
             'language' => $language
             );
 
-            Answer::model()->update($data,$where);
+            Answer::model()->updateRecord($data,$where);
 
         } // Enf if modified
     } // end while qentry
@@ -5606,9 +5606,14 @@ function doFooter()
     echo getFooter();
 }
 
+/**
+ * @param $surveyid
+ * @return array|bool
+ * @deprecated
+ */
 function getDBTableUsage($surveyid){
     Yii::app()->loadHelper('admin/activate');
-    $arrCols = activateSurvey($surveyid,$surveyid,'admin.php',true);
+    $arrCols = activateSurvey($surveyid,true);
 
     $length = 1;
     foreach ($arrCols['fields'] as $col){

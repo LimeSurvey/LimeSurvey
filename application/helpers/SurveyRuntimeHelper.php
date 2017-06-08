@@ -165,7 +165,7 @@ class SurveyRuntimeHelper {
                     //Get the answers/inputnames
                     // TMSW - can content of retrieveAnswers() be provided by LEM?  Review scope of what it provides.
                     // TODO - retrieveAnswers is slow - queries database separately for each question. May be fixed in _CI or _YII ports, so ignore for now
-                    list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia, $this->iSurveyid);
+                    list($plus_qanda, $plus_inputnames) = retrieveAnswers($ia);
 
                     if ($plus_qanda){
                         $plus_qanda[] = $ia[4];
@@ -1023,7 +1023,7 @@ class SurveyRuntimeHelper {
                 //Check for assessments
                 if ($this->aSurveyInfo['assessments'] == "Y"){
                     $this->aSurveyInfo['aAssessments']['show'] = true;
-                    $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid, true);
+                    $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid);
                 }
 
                 $redata = compact(array_keys(get_defined_vars()));
@@ -1046,7 +1046,7 @@ class SurveyRuntimeHelper {
                 $this->aSurveyInfo['aAssessments']['show'] = false;
                 if ($this->aSurveyInfo['assessments'] == "Y"){
                     $this->aSurveyInfo['aAssessments']['show'] = true;
-                    $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid, true);
+                    $this->aSurveyInfo['aAssessments'] = doAssessment($this->iSurveyid);
                 }
 
                 // End text
