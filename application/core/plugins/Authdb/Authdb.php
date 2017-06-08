@@ -28,7 +28,7 @@ class Authdb extends AuthPluginBase
     /**
      * Create a DB user
      *
-     * @return unknown_type
+     * @return null
      */
     public function createNewUser()
     {

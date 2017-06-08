@@ -142,7 +142,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Create a LDAP user
      *
-     * @return unknown_type
+     * @return null
      */
     public function createNewUser()
     {

@@ -2175,11 +2175,11 @@ class ExpressionManager {
     }
 
   /**
-     * Split a soure string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
-     * This verson properly handles nested curly braces and curly braces within strings within curly braces - both of which are needed to better support JavaScript
+     * Split a source string into STRING vs. EXPRESSION, where the latter is surrounded by unescaped curly braces.
+     * This version properly handles nested curly braces and curly braces within strings within curly braces - both of which are needed to better support JavaScript
      * Users still need to add a space or carriage return after opening braces (and ideally before closing braces too) to avoid  having them treated as expressions.
      * @param string $src
-     * @return string
+     * @return array
      */
     public function asSplitStringOnExpressions($src)
     {
