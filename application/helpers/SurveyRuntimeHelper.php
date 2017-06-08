@@ -1698,7 +1698,9 @@ class SurveyRuntimeHelper {
             $groupdescription = $this->groupdescription = $this->aStepInfo['gtext'];
 
         }elseif($this->sSurveyMode == 'question' && $this->previewquestion){
-                // FIXME $param not defined
+            /**
+             * FIXME $param not defined
+             */
                 $_qid       = sanitize_int($param['qid']);
 
                 LimeExpressionManager::StartSurvey($this->iSurveyid, 'question', $this->aSurveyOptions, false, $this->LEMdebugLevel);
