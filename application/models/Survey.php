@@ -529,7 +529,7 @@ class Survey extends LSActiveRecord
      */
     public function getGoogleanalyticsapikey(){
         if($this->googleanalyticsapikey === "9999useGlobal9999") {
-            return getGlobalSetting(googleanalyticsapikey);
+            return getGlobalSetting('googleanalyticsapikey');
         } else {
             return $this->googleanalyticsapikey;
         }

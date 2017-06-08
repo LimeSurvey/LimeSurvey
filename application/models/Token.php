@@ -241,6 +241,7 @@ abstract class Token extends Dynamic
         }
         $newtokencount = 0;
         $invalidtokencount=0;
+        $newtoken = null;
         foreach ($tkresult as $tkrow) {
             $bIsValidToken = false;
             while ($bIsValidToken == false && $invalidtokencount<50) {

@@ -84,7 +84,7 @@ class UserGroup extends LSActiveRecord {
 
         $query = 'SELECT * FROM '.$this->tableName().' '.$where_string;
 
-        $data = createCommand($query)->query()->resultAll();
+        $data = $this->connection->createCommand($query)->query()->resultAll();
 
         return $data;
     }

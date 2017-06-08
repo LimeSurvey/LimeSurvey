@@ -69,18 +69,20 @@ class Label extends LSActiveRecord
     }
 
 
-	function getAllRecords($condition=FALSE)
+    /**
+     * @param mixed|bool $condition
+     * @return static[]
+     */
+    public function getAllRecords($condition=FALSE)
 	{
+        $criteria = new CDbCriteria;
 		if ($condition != FALSE) {
 		    foreach ($condition as $item => $value) {
-			    //FIXME this is broken: $criteria is not initiated
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
 
-		$data = $this->findAll($criteria);
-
-        return $data;
+        return $this->findAll($criteria);
 	}
 
     /**
@@ -89,7 +91,7 @@ class Label extends LSActiveRecord
      */
 	public function getLabelCodeInfo($lid)
     {
-		return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from(tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
+		return Yii::app()->db->createCommand()->select('code, title, sortorder, language, assessment_value')->order('language, sortorder, code')->where('lid=:lid')->from($this->tableName())->bindParam(":lid", $lid, PDO::PARAM_INT)->query()->readAll();
     }
 
 	function insertRecords($data)
