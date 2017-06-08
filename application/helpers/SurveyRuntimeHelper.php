@@ -565,7 +565,7 @@ class SurveyRuntimeHelper {
 
             //THE FOLLOWING DEALS WITH SUBMITTING ANSWERS AND COMPLETING AN ACTIVE SURVEY
             //don't use cookies if tokens are being used
-            if ($this->aSurveyInfo['active'] == "Y"){
+            if (!empty($this->aSurveyInfo['active']) && $this->aSurveyInfo['active'] == "Y"){
                 global $tokensexist;
                 if ($this->aSurveyInfo['usecookie'] == "Y" && $tokensexist != 1) {
                     setcookie("LS_" . $this->iSurveyid . "_STATUS", "COMPLETE", time() + 31536000); //Cookie will expire in 365 days

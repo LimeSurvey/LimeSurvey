@@ -22,12 +22,12 @@
 <li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item form-group {{ extra_class }}' {{ sDisplayStyle }} >
     <input
         type="checkbox"
-        name="{{ name.title }}"
-        id="answer{{ name.title }}"
+        name="{{ myfname }}"
+        id="answer{{ myfname }}"
         value="Y"
         {{ checkedState }}
     />
-    <label for="answer{{ name.title }}" class="checkbox-label control-label">{{ question }}</label>
+    <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ question }}</label>
     <input
         type="hidden"
         name="java{{ myfname }}"

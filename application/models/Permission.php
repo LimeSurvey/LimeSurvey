@@ -286,6 +286,7 @@ class Permission extends LSActiveRecord
      */
     public static function getPermissions($iUserID, $iEntityID=null, $sEntityName=null)
     {
+        $aBasePermissions = array();
         if ($sEntityName=='survey') {
             $aBasePermissions=Permission::model()->getSurveyBasePermissions();
         } elseif ($sEntityName=='global') {
@@ -327,6 +328,7 @@ class Permission extends LSActiveRecord
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck=false)
     {
         $iUserID = sanitize_int($iUserID);
+        $aBasePermissions = array();
         // Filter global permissions on save
         if ($sEntityName=='global') {
             $aBasePermissions=Permission::model()->getGlobalBasePermissions();
@@ -372,7 +374,6 @@ class Permission extends LSActiveRecord
         $oEvent->set('aNewPermissions',$aFilteredPermissions);
         $oEvent->set('iSurveyID',$iEntityID);
         $oEvent->set('iUserID',$iUserID);
-        $result = App()->getPluginManager()->dispatchEvent($oEvent);
 
         // Only the original superadmin may change the superadmin permissions
         if (Yii::app()->session['loginID']!=1) {

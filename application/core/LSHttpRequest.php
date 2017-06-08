@@ -88,15 +88,11 @@ class LSHttpRequest extends CHttpRequest
        $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
        $referrer = ($baseReferrer != $baseRequestUri)?$referrer:null;
         //Use alternative url if the $referrer is still available in the checkLoopInNavigationStack
-        if( ($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer)) )
-        {
+        if( ($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer)) ) {
             // Checks if the alternative url should be used
-            if(isset($sAlternativeUrl))
-            {
+            if(isset($sAlternativeUrl)) {
                 $referrer = $sAlternativeUrl;
-            }
-            else 
-            {
+            } else {
                return App()->createUrl('admin/index');
             }
        }

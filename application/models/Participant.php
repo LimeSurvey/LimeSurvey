@@ -1011,7 +1011,6 @@ class Participant extends LSActiveRecord
         //As we iterate through the conditions we build up the $command query by adding conditions to it
         //
         $i = 0;
-        $tobedonelater = array();
         $start = $limit * $page - $limit;
         $command = new CDbCriteria;
         $command->condition = '';
@@ -1708,8 +1707,6 @@ class Participant extends LSActiveRecord
     {
         Yii::app()->loadHelper('common');
 
-        // Existing token attribute columns, from table tokens_{surveyId}
-        $tokenAttributeColumns = $this->getTokenAttributes($surveyId);
 
         // If automapping is enabled then update the token field properties with the mapped CPDB field ID
         if($options['createautomap']) {
@@ -1718,6 +1715,8 @@ class Participant extends LSActiveRecord
 
         // Add existing attribute columns to mappedAttributes. TODO: Why?
         // TODO: What is id here? Could it overwrite something?
+        // Existing token attribute columns, from table tokens_{surveyId}
+        //$tokenAttributeColumns = $this->getTokenAttributes($surveyId);
         //foreach ($tokenAttributeColumns as $id => $columnName)
         //{
             //$mappedAttributes[$id] = $columnName;  // $name is 'attribute_1', which will clash with postgres
@@ -1854,16 +1853,13 @@ class Participant extends LSActiveRecord
         $duplicate = 0;
         $sucessfull = 0;
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
-        $pid = "";
 
         /* Grab all the existing attribute field names from the tokens table */
         $arr = Yii::app()->db->createCommand()->select('*')->from("{{tokens_$surveyid}}")->queryRow();
         if (is_array($arr)) {
             $tokenfieldnames = array_keys($arr);
-            $tokenattributefieldnames = array_filter($tokenfieldnames, 'filterForAttributes');
-        } else {
-            $tokenattributefieldnames = array();
         }
+
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {
             foreach ($aAttributesToBeCreated as $key => $value) //creating new central attribute

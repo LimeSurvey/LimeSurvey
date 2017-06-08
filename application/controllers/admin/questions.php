@@ -1418,12 +1418,13 @@ class questions extends Survey_Common_Action
 
             if (is_object($oQuestion))
             {
-                $aResults[$iQid]['question']  = viewHelper::flatEllipsizeText($oQuestion->question,true,0);
-                $aResults[$iQid]['result']    = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true );
+                $aResults[$iQid]['title']  = viewHelper::flatEllipsizeText($oQuestion->question,true,0);
+                $result = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true );
+                $aResults[$iQid]['result']   = $result['status'];
             }
         }
 
-        Yii::app()->getController()->renderPartial('/admin/survey/Question/massive_actions/_action_results', array('aResults'=>$aResults,'successLabel'=>gT('Deleted')));
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT('Deleted')));
     }
 
     /**

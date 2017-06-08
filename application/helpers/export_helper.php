@@ -729,8 +729,15 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     $squery = "SELECT *
     FROM {{surveys}}
     WHERE sid=$iSurveyID";
+
     //Exclude some fields from the export
-    buildXMLFromQuery($xmlwriter,$squery,'',array('owner_id','active','datecreated'));
+    $excludeFromSurvey = array('owner_id','active','datecreated');
+    if (isset($exclude['dates']) && $exclude['dates']){
+        $excludeFromSurvey[] = 'startdate';
+        $excludeFromSurvey[] = 'expires';
+    }
+
+    buildXMLFromQuery($xmlwriter,$squery,'',$excludeFromSurvey);
 
     // Survey language settings
     $slsquery = "SELECT *

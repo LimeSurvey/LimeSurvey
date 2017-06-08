@@ -374,7 +374,7 @@ class Survey_Common_Action extends CAction
     /**
      * Display the update notification
      */
-    function _updatenotification()
+    public function _updatenotification()
     {
         // Lower dbversionnumbers will not have the notifications table.
         if (Yii::app()->getConfig('dbversionnumber') < 259) {
@@ -386,29 +386,22 @@ class Survey_Common_Action extends CAction
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
             $urlUpdate = Yii::app()->createUrl("admin/update");
-            $urlUpdateNotificationState = Yii::app()->createUrl("admin/update/sa/notificationstate");
             $currentVersion = Yii::app()->getConfig("buildnumber");
             $superadmins = User::model()->getSuperAdmins();
 
-            if($updateNotification->result)
-            {
-                if($updateNotification->security_update)
-                {
+            if($updateNotification->result) {
+                if($updateNotification->security_update) {
                     UniqueNotification::broadcast(array(
                         'title' => gT('Security update!')." (".gT("Current version: ").$currentVersion.")",
                         'message' => gT('A security update is available.')." <a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
                     ), $superadmins);
-                }
-                else if(Yii::app()->session['unstable_update'] )
-                {
+                } else if(Yii::app()->session['unstable_update'] ) {
                     UniqueNotification::broadcast(array(
                         'title' => gT('New UNSTABLE update available')." (".gT("Current version: ").$currentVersion.")",
                         'markAsNew' => false,
                         'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
                     ), $superadmins);
-                }
-                else
-                {
+                } else {
                     UniqueNotification::broadcast(array(
                         'title' => gT('New update available')." (".gT("Current version: ").$currentVersion.")",
                         'markAsNew' => false,
@@ -1185,52 +1178,37 @@ class Survey_Common_Action extends CAction
             $aData['language'] = getLanguageNameFromCode($aSurveyInfo['language'], false);
         }
 
-        // get the rowspan of the Additionnal languages row
-        // is at least 1 even if no additionnal language is present
-        $additionnalLanguagesCount = count($aAdditionalLanguages);
-        $first = true;
-         if ($aSurveyInfo['surveyls_urldescription'] == "")
-        {
+        if ($aSurveyInfo['surveyls_urldescription'] == "") {
             $aSurveyInfo['surveyls_urldescription'] = htmlspecialchars($aSurveyInfo['surveyls_url']);
         }
 
-        if ($aSurveyInfo['surveyls_url'] != "")
-        {
+        if ($aSurveyInfo['surveyls_url'] != "") {
             $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\">".flattenText($aSurveyInfo['surveyls_urldescription'])."</a>";
-        }
-        else
-        {
+        } else {
             $aData['endurl'] = "-";
         }
 
         $aData['sumcount3'] = $sumcount3;
         $aData['sumcount2'] = $sumcount2;
 
-        if ($activated == "N")
-        {
+        if ($activated == "N") {
             $aData['activatedlang'] = gT("No");
-        }
-        else
-        {
+        } else {
             $aData['activatedlang'] = gT("Yes");
         }
 
         $aData['activated'] = $activated;
-        if ($activated == "Y")
-        {
+        if ($activated == "Y") {
             $aData['surveydb'] = Yii::app()->db->tablePrefix . "survey_" . $iSurveyID;
         }
 
         $aData['warnings'] = "";
-        if ($activated == "N" && $sumcount3 == 0)
-        {
+        if ($activated == "N" && $sumcount3 == 0) {
             $aData['warnings'] = gT("Survey cannot be activated yet.") . "<br />\n";
-            if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create'))
-            {
+            if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add question groups") . "]</span><br />";
             }
-            if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create'))
-            {
+            if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add questions") . "]</span><br />";
             }
         }

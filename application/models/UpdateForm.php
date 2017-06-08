@@ -239,6 +239,7 @@ class UpdateForm extends CFormModel
      * @param int $downloadid the id of the download on the server
      * @param string $tobuild
      * @return object
+     * //TODO $downloadid not used locally
      */
     public function downloadUpdateFile($downloadid, $tobuild)
     {
@@ -689,7 +690,7 @@ class UpdateForm extends CFormModel
             }
         } else {
             $backupDb->result = FALSE;
-            $backupDb->message = htmlspecialchars(db_backup_failed);
+            $backupDb->message = htmlspecialchars('db_backup_failed');
         }
         return $backupDb;
 
