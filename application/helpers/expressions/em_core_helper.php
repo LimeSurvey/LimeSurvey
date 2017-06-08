@@ -499,7 +499,7 @@ class ExpressionManager {
             }
             else
             {
-                $this-RDP_AddError(self::gT("Unbalanced equation - values left on stack"),NULL);
+                $this->RDP_AddError(self::gT("Unbalanced equation - values left on stack"),NULL);
                 return false;
             }
         }
