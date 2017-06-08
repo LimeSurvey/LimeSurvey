@@ -1700,6 +1700,7 @@ class SurveyRuntimeHelper {
         }elseif($this->sSurveyMode == 'question' && $this->previewquestion){
                 // FIXME $param not defined
                 $_qid       = sanitize_int($param['qid']);
+
                 LimeExpressionManager::StartSurvey($this->iSurveyid, 'question', $this->aSurveyOptions, false, $this->LEMdebugLevel);
                 $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
                 $this->aMoveResult= LimeExpressionManager::JumpTo($qSec+1,true,false,true);
