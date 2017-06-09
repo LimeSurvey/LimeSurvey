@@ -3,7 +3,9 @@
 
 <div class="row" id="surveys-list-container">
     <div class="jumbotron" id="surveys-list-jumbotron">
-        {SITELOGO}
+        <p class="text-center">
+            {SITELOGO}
+        </p>
         <p class="">
             {SITENAME}
         </p>
@@ -28,13 +30,11 @@
 <div id="surveyListFooter" class="well">
     <div class="container">
         <p>
-            <a href="http://www.limesurvey.org" target="_blank">
+            <a href="https://www.limesurvey.org" target="_blank">
                 <img src="{TEMPLATEURL}poweredby.png" alt="LimeSurvey Survey Software" />
                 </a>
                 <br />
-                <a href="http://www.limesurvey.org" target="_blank">
-                The Online Survey Tool
-                </a>
+                <a href="https://www.limesurvey.org" target="_blank">The Online Survey Software</a>
                 - Free & Open Source
                 <br />
         </p>

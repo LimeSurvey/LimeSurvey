@@ -591,25 +591,23 @@ class UserAction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'users.js');
         $postuserid = (int) Yii::app()->request->getPost("uid");
-        $aData['postuser']  = flattenText(Yii::app()->request->getPost("user"));
-        $aData['postemail'] = flattenText(Yii::app()->request->getPost("email"));
-        $aData['postuserid'] = $postuserid;
-        $aData['postfull_name'] = flattenText(Yii::app()->request->getPost("full_name"));
+        $oUser = User::model()->findByAttributes(array('uid' => $postuserid));
+        if(!$oUser) {
+            // @todo : review to send a 403
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
+        $aData['oUser']=$oUser;
         $this->_refreshtemplates();
         $templaterights=array();
-        foreach (getUserList() as $usr)
+
+        $trights = Permission::model()->findAllByAttributes(array('uid' => $oUser->uid,'entity'=>'template'));
+        foreach ($trights as $srow)
         {
-            if ($usr['uid'] == $postuserid)
-            {
-                $trights = Permission::model()->findAllByAttributes(array('uid' => $usr['uid'],'entity'=>'template'));
-                foreach ($trights as $srow)
-                {
-                    $templaterights[$srow["permission"]] = array("use"=>$srow["read_p"]);
-                }
-                $templates = Template::model()->findAll();
-                $aData['data'] = array('templaterights'=>$templaterights,'templates'=>$templates);
-            }
+            $templaterights[$srow["permission"]] = array("use"=>$srow["read_p"]);
         }
+        $templates = Template::model()->findAll();
+        $aData['data'] = array('templaterights'=>$templaterights,'templates'=>$templates);
+
 
         $aData['fullpagebar']['savebutton']['form'] = 'modtemplaterightsform';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
