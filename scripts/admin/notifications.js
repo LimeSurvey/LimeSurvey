@@ -173,7 +173,7 @@ $(document).ready(function() {
     function showError(response) {
         var status= response.status || LS.lang.errorUnknow;
         var responseText= response.responseText || LS.lang.unknowText;
-        $('#admin-notification-modal .modal-title').html(LS.lang.errorUnknow.replace("%s",status));
+        $('#admin-notification-modal .modal-title').html(LS.lang.errorTitle.replace("%s",status));
         $('#admin-notification-modal .modal-body-text').html(responseText);
         $('#admin-notification-modal .modal-content').addClass('panel-danger');
         //$('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
