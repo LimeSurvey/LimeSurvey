@@ -55,6 +55,8 @@ class TemplateConfiguration extends CFormModel
     /** @var TemplateConfiguration $oMotherTemplate The template name */
     public $oMotherTemplate;
 
+    public $templateEditor;
+
 
     /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
     private $iSurveyId='';
@@ -296,6 +298,7 @@ class TemplateConfiguration extends CFormModel
         $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
         $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
         $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR  : $this->oMotherTemplate->filesPath;
+        $this->templateEditor          = (isset($this->config->engine->template_editor))           ?  $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
 
         // Not mandatory (use package dependances)
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
