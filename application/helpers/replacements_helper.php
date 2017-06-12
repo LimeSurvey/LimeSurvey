@@ -526,7 +526,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_loadform .='<div class="col-sm-12 form-group">
                 <label class="col-md-4 col-sm-12 control-label">
-                    <p class="col-sm-6 col-md-12 remove-padding">'.gT("Please enter the letters you see below:").'</p>
+                    <p class="col-sm-6 col-md-12 remove-padding">'.gT("Please solve the following captcha:").'</p>
                     <span class="col-sm-6 col-md-12">';
         $_loadform .=Yii::app()->getController()->widget('CCaptcha',array(
                     'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
