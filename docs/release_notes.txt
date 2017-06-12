@@ -35,13 +35,27 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.65.3 (build 170607) to 2.65.4 (build 170612) June 12, 2017
+-Fixed issue #12225: [security] Cross-Site Scripting (Denis Chenu)
+-Fixed issue #12417: Error when creating a question group multiple languages and using MSSQL (Carsten Schmitz)
+-Fixed issue #12463: "Quick add.." replace function does not work anymore (Denis Chenu)
+-Fixed issue: Fixed confusing captcha (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by DonMul, Han
+#Updated translation: Dutch (Informal) by DonMul, Han
+#Updated translation: Italian by darpao, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Slovenian by lado
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.65.2 (build 170606) to 2.65.3 (build 170607) June 7, 2017
 -Fixed issue: LimeSurvey logos too big
 -Fixed issue #12460: Filtering statistics based on numeric question details (e.g. "Number less than X") has no effect (LouisGac)
 #Updated translation: French (France) by arnaud21
 #Updated translation: Polish by elissa
 #Updated translation: Polish (Informal) by elissa
-
 
 Changes from 2.65.1 (build 170522) to 2.65.2 (build 170606) June 6, 2017
 -New feature: Add some collapse feature to remotecontrol function list (Denis Chenu)
@@ -60,7 +74,6 @@ Changes from 2.65.1 (build 170522) to 2.65.2 (build 170606) June 6, 2017
 #Updated translation: Portuguese (Portugal) by samarta
 #Updated translation: Spanish (Chile) by jrojas
 #Updated translation: Turkish by kayazeren
-
 
 Changes from 2.65.0 (build 170502) to 2.65.1 (build 170522) May 22, 2017
 -Fixed issue #12258: Incorrect date validation when using mm-yyyy dateformat (Olle Haerstedt)
