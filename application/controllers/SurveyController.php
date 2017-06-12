@@ -73,7 +73,7 @@ class SurveyController extends LSYii_Controller
             'captcha' => array(
               'class'=>'CaptchaExtendedAction',
               // if needed, modify settings
-              'mode'=>CaptchaExtendedAction::MODE_LOGICAL,
+              'mode'=>CaptchaExtendedAction::MODE_MATH,
             )
         );
     }

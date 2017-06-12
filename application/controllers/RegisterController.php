@@ -41,7 +41,7 @@ class RegisterController extends LSYii_Controller {
         return array(
             'captcha' => array(
                 'class' => 'CaptchaExtendedAction',
-                'mode'=>CaptchaExtendedAction::MODE_LOGICAL
+                'mode'=>CaptchaExtendedAction::MODE_MATH
             )
         );
     }
