@@ -1381,6 +1381,7 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
                 }*/
                 $thissurvey['aCompleted']['showDefault'] = true;
                 $thissurvey['aCompleted']['aPrintAnswers']['show'] = true;
+                $thissurvey['aCompleted']['aPublicStatistics']['show'] = true;
 
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->completed;
                 $files             = $aSurveyListConfig['file'];
