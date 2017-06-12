@@ -1366,6 +1366,7 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = "\n";
                 */
+
                 $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_clearall.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
@@ -1379,8 +1380,11 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }*/
                 $thissurvey['aCompleted']['showDefault'] = true;
+                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->completed;
+                $files             = $aSurveyListConfig['file'];
                 $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_submit.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
+
             case 'printablesurvey':
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $files=$printablesurveytemplate;
