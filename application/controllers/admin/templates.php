@@ -1134,7 +1134,12 @@ class templates extends Survey_Common_Action
                 {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }*/
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$thissurvey), true);
+//                $files = $oTemplate->;
+                //$files = ;
+
+                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->surveylist;
+                $files             = $aSurveyListConfig['file'];
+                $myoutput          = Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
             case 'question':
