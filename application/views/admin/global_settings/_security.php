@@ -49,7 +49,7 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-5 control-label"  for="force_ssl">
+    <label class="col-sm-5 control-label"  for="x_frame_options">
     <?php if (Yii::app()->getConfig("demoMode")==true){ ?>
     <span class="text-danger asterisk"></span>
     <?php }; ?>
