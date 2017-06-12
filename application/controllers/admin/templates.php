@@ -1380,6 +1380,8 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }*/
                 $thissurvey['aCompleted']['showDefault'] = true;
+                $thissurvey['aCompleted']['aPrintAnswers']['show'] = true;
+
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->completed;
                 $files             = $aSurveyListConfig['file'];
                 $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_submit.twig", array('aSurveyInfo'=>$thissurvey), true);
