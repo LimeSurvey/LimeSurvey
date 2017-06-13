@@ -1467,6 +1467,11 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
         $jsfiles =  $this->_getEditableJsFiles($oEditedTemplate);
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
 
+        // XML Behaviour: if only one file, then $files is just a string
+        if (!is_array($files) && is_string($files)){
+            $files   = array(0=>$files);
+        }
+
         if (is_array($files))
         {
             $match = 0;
