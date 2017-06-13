@@ -1144,20 +1144,8 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'question':
-                $files=$Question;
-
-                /*
-                $myoutput[] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_meta_view', array(), true);
-
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startpage.pstpl", $aData, $oEditedTemplate));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
-
-                // Normally output by survey_runtime
-                $myoutput = array_merge($myoutput, array('<div id="group-0">'));
-
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/startgroup.pstpl", $aData, $oEditedTemplate));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/groupdescription.pstpl", $aData, $oEditedTemplate));
-                */
+                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->question;
+                $files             = $aSurveyListConfig['file'];
 
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
@@ -1178,78 +1166,12 @@ class templates extends Survey_Common_Action
                 $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array(), true);
                 $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacements);
 
-                //$myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/question.pstpl", $aData, $oEditedTemplate));
-
-/*
-                $aReplacements = array(
-                    'QUESTION_TEXT' => gT('Please explain something in detail:'),
-                    'QUESTION_CODE' => 'Q2 ',
-                    'QUESTIONHELP' => '',
-                    'QUESTION_ESSENTIALS' => 'id="question2"',
-                    'QUESTION_CLASS' => 'text-long input-error',
-                    'QUESTION_NUMBER' => '2',
-                    'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('//survey/questions/question_help/em-tip',array(
-                        'coreId'=>"vmsg_4496_num_answers",
-                        'coreClass'=>"em-tip text-danger",// Unsure for this one, text-danger is set in JS only
-                        'vtip'=>gT('Hint when response is not valid')
-                    ), true),
-                );
-                $aReplacements['ANSWER'] = $this->getController()->renderPartial('/admin/templates/templateeditor_question_answer_view', array('alt' => true), true);
-                $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacements);
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/question.pstpl", $aData, $oEditedTemplate));
-
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endgroup.pstpl", $aData, $oEditedTemplate));
-
-
-                // Normally output by survey_runtime
-                $myoutput = array_merge($myoutput, array('</div>'));
-                $sMovePrev = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>"moveprev",'class'=>"ls-move-btn ls-move-previous-btn"),true);
-                $sMoveNext = App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"ls-move-btn ls-move-next-btn"),true);
-
-                $aData['aReplacements'] = array_merge($aGlobalReplacements,array(
-                    'MOVEPREVBUTTON' => $sMovePrev,
-                    'MOVENEXTBUTTON' => $sMoveNext,
-                    'NAVIGATOR' => "$sMovePrev $sMoveNext",
-                ));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/navigator.pstpl", $aData, $oEditedTemplate));
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/endpage.pstpl", $aData, $oEditedTemplate));
-                */
-                /*
-                array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefzef" ["gseq"]=> int(0) ["showdescription"]=> bool(true)
-                 ["description"]=> string(6) "zefzef" ["aQuestions"]=> array(1) { [1]=> array(12) { ["qid"]=> string(1) "1" ["code"]=> string(6) "zefzef" ["number"]=> int(1) ["text"]=> string(6) "zefzef" ["SGQ"]=> string(10) "527286X1X1" ["mandatory"]=> string(0) "" ["input_error_class"]=> string(0) "" ["valid_message"]=> string(0) "" ["file_valid_message"]=> string(0) "" ["man_message"]=> string(0) "" ["answer"]=> string(324) "
-                */
-
+                // Group Datas
                 $thissurvey['aGroups'][1]["name"]            = $groupname;
                 $thissurvey['aGroups'][1]["showdescription"] = true;
                 $thissurvey['aGroups'][1]["description"]     = $groupdescription;
 
-/*
-Exit and clear survey
-0%
-array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefzef" ["gseq"]=> int(0)
- ["showdescription"]=> bool(true) ["description"]=> string(6) "zefzef"
- ["aQuestions"]=> array(1) { [1]=> array(12) { ["qid"]=> string(1) "1" ["code"]=> string(12) "questioncode" ["number"]=> int(1)
- ["text"]=> string(13) "question text" ["SGQ"]=> string(10) "527286X1X1" ["mandatory"]=> string(0) ""
- ["input_error_class"]=> string(0) "" ["valid_message"]=> string(0) "" ["file_valid_message"]=> string(0) "" ["man_message"]=> string(0) ""
- ["answer"]=> string(324) "
-
-
-
-     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
-     'QUESTION_CODE' => 'Q1 ',
-     'QUESTIONHELP' => $this->getController()->renderPartial('/survey/questions/question_help/questionhelp', array('classes' => '','questionHelp'=>gT("This is some helpful text.")), true),
-     'QUESTION_MANDATORY' => $this->getController()->renderPartial('/survey/questions/question_help/asterisk', array(), true),
-     'QUESTION_MAN_CLASS' => ' mandatory',
-     'QUESTION_ESSENTIALS' => 'id="question1"',
-     'QUESTION_CLASS' => 'list-radio',
-     'QUESTION_NUMBER' => '1',
-     'QUESTION_VALID_MESSAGE'=>$this->getController()->renderPartial('/survey/questions/question_help/em-tip',array(
-         'coreId'=>"vmsg_4496_num_answers",
-         'coreClass'=>"em-tip ",// Unsure for this one
-         'vtip'=>gT('Hint when response is valid')
-     ), true),
-*/
-
+                // Question 1 Datas
                 $thissurvey['aGroups'][1]["aQuestions"][1]["qid"]           = "1";
                 $thissurvey['aGroups'][1]["aQuestions"][1]["code"]          = 'Q1 ';
                 $thissurvey['aGroups'][1]["aQuestions"][1]["text"]          = gT("How many roads must a man walk down?");
@@ -1259,9 +1181,7 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
                 $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["show"]  = true;
                 $thissurvey['aGroups'][1]["aQuestions"][1]["help"]["text"]  = "This is some helpful text.";
 
-
-
-
+                // Question 2 Datas
                 $thissurvey['aGroups'][1]["aQuestions"][2]["qid"]           = "1";
                 $thissurvey['aGroups'][1]["aQuestions"][2]["code"]          = 'Q2 ';
                 $thissurvey['aGroups'][1]["aQuestions"][2]["text"]          = gT("Please explain something in detail:");
@@ -1271,8 +1191,11 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
                 $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["show"]  = true;
                 $thissurvey['aGroups'][1]["aQuestions"][2]["help"]["text"]  = "This is some helpful text.";
 
+                // This is just to prevent getAllClasses to retreive .ls-hidden CSS class
+                $thissurvey['aGroups'][1]["aQuestions"][1]['templateeditor'] = true;
+                $thissurvey['aGroups'][1]["aQuestions"][2]['templateeditor'] = true;
 
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_main.twig", array('aSurveyInfo'=>$thissurvey), true);
+                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_main.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
 
                 break;
 
