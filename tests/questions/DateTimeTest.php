@@ -43,12 +43,6 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         );
         if ($result) {
             self::$surveyId = $result['newsid'];
-            // TODO: Login programmatically instead.
-            $query = 'UPDATE lime_surveys SET owner_id = 1 WHERE sid = :sid';
-            $command = \Yii::app()->db->createCommand($query);
-            $command->execute([
-                'sid' => self::$surveyId
-            ]);
         } else {
             die('Fatal error: Could not import survey');
         }
