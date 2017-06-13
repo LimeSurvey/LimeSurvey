@@ -30,7 +30,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_975622.lss';
         if (!file_exists($surveyFile)) {
-            die('Fatal: found no survey file');
+            die('Fatal error: found no survey file');
         }
 
         $translateLinksFields = false;
@@ -169,17 +169,17 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             'assessments' => ($thissurvey['assessments'] == 'Y'),
             'datestamp' => ($thissurvey['datestamp'] == 'Y'),
             'deletenonvalues'=>\Yii::app()->getConfig('deletenonvalues'),
-            'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY), // TODO set this to true if in admin mode but not if running a survey
+            'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),
             'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
             'radix'=>$radix,
-            'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : NULL),
+            'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : null),
             'savetimings' => ($thissurvey['savetimings'] == "Y"),
             'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
             'startlanguage'=>(isset(App()->language) ? App()->language : $thissurvey['language']),
             'target' => \Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
             'tempdir' => \Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
             'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
-            'token' => (isset($clienttoken) ? $clienttoken : NULL),
+            'token' => (isset($clienttoken) ? $clienttoken : null),
         );
         return $surveyOptions;
     }
@@ -269,5 +269,31 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($flashes, 'No error message');
 
         \Yii::app()->user->setStateKeyPrefix($originalPrefix);
+    }
+
+    /**
+     * q1 is hidden question with default answer "now".
+     * @group q1
+     */
+    public function testQ1()
+    {
+        list($question, $group, $sgqa) = $this->getSgqa('q1');
+        $surveyMode = 'group';
+        $LEMdebugLevel = 0;
+        $surveyOptions = $this->getSurveyOptions();
+        \LimeExpressionManager::StartSurvey(
+            self::$surveyId,
+            $surveyMode,
+            $surveyOptions,
+            false,
+            $LEMdebugLevel
+        );
+        //$_POST['relevance' . $qid] = 1;
+        //$_POST['relevanceG' . $gseq] = 1;
+        $moveResult = \LimeExpressionManager::NavigateForwards();
+        $result = \LimeExpressionManager::ProcessCurrentResponses();
+        $moveResult = \LimeExpressionManager::NavigateForwards();
+        $result = \LimeExpressionManager::ProcessCurrentResponses();
+        $this->assertEquals(date('Y-m-d'), $_SESSION['survey_' . self::$surveyId][$sgqa]);
     }
 }
