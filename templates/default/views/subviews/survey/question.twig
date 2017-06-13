@@ -17,7 +17,7 @@
     It will render a question. It's included in the for loop in group.twig
 
     Here, you have access to the array aQuestion that contains the data of the current question.
-    To see what's inside aQuestion, turn debug mode on, and copy the following line to the end of this file: 
+    To see what's inside aQuestion, turn debug mode on, and copy the following line to the end of this file:
     {{ dump(aQuestion) }}
 
     All content of aQuestion itself is generated from qanda_helper.
@@ -28,10 +28,15 @@
 
 
 {# Showing question code/number is a survey level setting, so it's inside the array aSurveyInfo #}
-{% set aShow     = aSurveyInfo.aShow     %}
+{% set aShow        = aSurveyInfo.aShow   %}
+{% set sClasses     = ''   %}
+
+{% if not (aQuestion.templateeditor) %}
+    {% set sClasses     = getAllQuestionClasses( aQuestion.qid )     %}
+{% endif %}
 
 <!-- Question -->
-<div id="question{{ aQuestion.qid }}" class=" {{ getAllQuestionClasses( aQuestion.qid ) }} {{ aQuestion.input_error_class }} question-container row">
+<div id="question{{ aQuestion.qid }}" class=" {{ sClasses }} {{ aQuestion.input_error_class }} question-container row">
 
     <!-- Question text -->
     <div class="question-title-container bg-primary col-xs-12">

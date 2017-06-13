@@ -135,21 +135,27 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
     }
 
+    public function renderTemplateForTemplateEditor($sView, $aDatas, $oEditedTemplate)
+    {
+        $oTemplate = $this->getTemplateForView($sView, $oEditedTemplate);
+        $line      = file_get_contents($oTemplate->viewPath.$sView);
+        $result = $this->renderTemplateFromString( $line, $aDatas, $oTemplate, true);
+        return $result;
+    }
 
     public function renderTemplateFromFile($sView, $aDatas, $bReturn)
     {
-        $oTemplate = $this->getTemplateForView($sView);
+        $oRTemplate = Template::model()->getInstance();
+        $oTemplate = $this->getTemplateForView($sView, $oRTemplate);
         $line      = file_get_contents($oTemplate->viewPath.$sView);
-        $result = $this->renderTemplateFromString( $line, $aDatas, $bReturn);
+        $result = $this->renderTemplateFromString( $line, $aDatas, $oTemplate, $bReturn);
         if ($bReturn){
             return $result;
         }
     }
 
-    private function getTemplateForView($sView)
+    private function getTemplateForView($sView, $oRTemplate)
     {
-        $oRTemplate = Template::model()->getInstance();
-
         while (!file_exists($oRTemplate->viewPath.$sView)){
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
@@ -170,11 +176,10 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param array   $aDatas   Array containing the datas needed to render the view ($thissurvey)
      * @param boolean $bReturn  Should the function echo the result, or just returns it?
      */
-    public function renderTemplateFromString( $line, $aDatas, $bReturn)
+    public function renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn=false)
     {
         $this->_twig  = $twig = parent::getTwig();
         $loader       = $this->_twig->getLoader();
-        $oRTemplate   = Template::model()->getInstance();
         $loader->addPath($oRTemplate->viewPath);
         Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
 
