@@ -1459,6 +1459,10 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
             case 'error':
                 $thissurvey['aError']['title'] = gT("Error");
                 $thissurvey['aError']['message'] = gT("This is an error message example");
+
+                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->error;
+                $files             = $aSurveyListConfig['file'];
+
                 $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
         }
