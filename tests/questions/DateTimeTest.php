@@ -58,8 +58,22 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public static function teardownAfterClass()
     {
         // TODO: Delete questions and groups.
-        $result1 = \Survey::model()->deleteAll('sid = :sid', array('sid' => self::$surveyId));
-        $result2 = \SurveyLanguageSetting::model()->deleteAll('surveyls_survey_id = :sid', array('sid' => self::$surveyId));
+        $result1 = \Survey::model()->deleteAll(
+            'sid = :sid',
+            ['sid' => self::$surveyId]
+        );
+        $result2 = \SurveyLanguageSetting::model()->deleteAll(
+            'surveyls_survey_id = :sid',
+            ['sid' => self::$surveyId]
+        );
+        $result3 = \Question::model()->deleteAll(
+            'sid = :sid',
+            ['sid' => self::$surveyId]
+        );
+        $result4 = \QuestionGroup::model()->deleteAll(
+            'sid = :sid',
+            ['sid' => self::$surveyId]
+        );
         if (!$result1 || !$result2) {
             die('Fatal error: Could not cleanup after tests: Could not delete imported survey');
         }
