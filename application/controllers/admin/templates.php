@@ -1355,6 +1355,10 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
 
                 $myoutput[] = "\n";
                 */
+                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->load;
+                $files             = $aSurveyListConfig['file'];
+
+
                 $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_load.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
