@@ -1367,6 +1367,8 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = "\n";
                 */
+                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->clearall;
+                $files             = $aSurveyListConfig['file'];
 
                 $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_clearall.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
