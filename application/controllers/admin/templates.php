@@ -895,6 +895,7 @@ class templates extends Survey_Common_Action
         $screens['save']            = gT('Save Page','unescaped');
         $screens['surveylist']      = gT('Survey List Page','unescaped');
         $screens['error']           = gT('Error','unescaped');
+        $screens['assessments']     = gT('Assessments','unescaped');
 
         // TODO: $screens['register']        = gT('Register Page','unescaped');      // still todo?
 
@@ -1385,6 +1386,23 @@ array(1) { [1]=> array(10) { ["class"]=> string(0) "" ["name"]=> string(6) "zefz
 
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->completed;
                 $files             = $aSurveyListConfig['file'];
+                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_submit.twig", array('aSurveyInfo'=>$thissurvey), true);
+                break;
+
+            case 'assessments':
+                $thissurvey['aAssessments']['show'] = true;
+
+                // Datas for assessments
+                $thissurvey['aAssessments']["datas"]["total"][0]               = array("name" => gT("Welcome to the Assessment"), "min" => "0", "max" => "3", "message" => gT("You got {TOTAL} points out of 3 possible points."));
+                $thissurvey['aAssessments']["datas"]["total"]["show"]          = true;
+                $thissurvey['aAssessments']["datas"]["subtotal"]["show"]       = true;
+                $thissurvey['aAssessments']["datas"]["subtotal"]["datas"][2]   = 3;
+                $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
+                $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
+
+                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->assessments;
+                $files             = $aSurveyListConfig['file'];
+
                 $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_submit.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
