@@ -746,11 +746,19 @@ class Survey extends LSActiveRecord
         $condition = array('sid' => $iSurveyID, 'language' => $baselang);
 
         //// TODO : replace this with a HAS MANY relation !
-        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
+        $sumresult1 = Survey::model()->with(
+            array(
+                'languagesettings' => array(
+                    'condition' => 'surveyls_language = language'
+                )
+            ))->find(
+                'sid = :surveyid',
+                array(':surveyid' => $iSurveyID)
+            ); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            $this->getController()->redirect(array("admin/index"));
+            Yii::app()->getController()->redirect(array("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
