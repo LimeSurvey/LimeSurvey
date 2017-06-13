@@ -10265,6 +10265,16 @@ EOD;
             return $result;
         }
 
+        /**
+         * Set currentQset. Used by unit-tests.
+         * @param array $val
+         * @return void
+         */
+        public function setCurrentQset(array $val)
+        {
+            $this->currentQset = $val;
+        }
+
     }
 
     /**
