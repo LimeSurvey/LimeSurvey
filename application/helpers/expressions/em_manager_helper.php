@@ -8711,9 +8711,8 @@ EOD;
                                         );
                                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
                                     } else {
-                                        $convertedValue = $dateTime->format("Y-m-d H:i");
-                                        $newValue = $dateTime->format($aDateFormatData['phpdate']);
-                                        $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $convertedValue);
+                                        $newValue = $dateTime->format("Y-m-d H:i");
+                                        $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
