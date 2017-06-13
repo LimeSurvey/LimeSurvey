@@ -77,6 +77,11 @@ function dirReport($dir, $write)
                <td><?php echo $mbstringPresent; ?></td>
         </tr>
         <tr>
+               <td><?php eT("PHP zlib library");?></td>
+               <td><span class='fa fa-check text-success' alt="Yes"></span></td>
+               <td><?php echo $zlibPresent ; ?></td>
+        </tr>
+        <tr>
                <td><?php eT("PHP/PECL JSON library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Yes"></span></td>
                <td><?php echo $bJSONPresent; ?></td>
@@ -115,27 +120,22 @@ function dirReport($dir, $write)
         </thead>
         <tbody>
         <tr>
-               <td>PHP GD library</td>
+               <td><?php eT("PHP GD library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
                <td><?php echo $gdPresent ; ?></td>
         </tr>
         <tr>
-               <td>PHP LDAP library</td>
+               <td><?php eT("PHP LDAP library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
                <td><?php echo $ldapPresent ; ?></td>
         </tr>
         <tr>
-               <td>PHP zip library</td>
+               <td><?php eT("PHP zip library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
                <td><?php echo $zipPresent ; ?></td>
         </tr>
         <tr>
-               <td>PHP zlib library</td>
-               <td><span class='fa fa-check text-success' alt="Check"></span></td>
-               <td><?php echo $zlibPresent ; ?></td>
-        </tr>
-        <tr>
-               <td>PHP imap library</td>
+               <td><?php eT("PHP imap library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
                <td><?php echo $bIMAPPresent ; ?></td>
         </tr>

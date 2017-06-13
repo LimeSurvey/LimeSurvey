@@ -885,6 +885,11 @@ class InstallerController extends CController {
         if (!check_PHPFunction('mb_convert_encoding', $aData['mbstringPresent']))
             $bProceed = false;
 
+        // zlib library check    
+        if (!check_PHPFunction('zlib_get_coding_type', $aData['zlibPresent']))  {
+            $bProceed = false;
+        }
+
         // JSON library check
         if (!check_PHPFunction('json_encode', $aData['bJSONPresent']))
             $bProceed = false;
