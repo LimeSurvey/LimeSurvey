@@ -35,6 +35,16 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.65.4 (build 170612) to 2.65.5 (build 170613) June 13, 2017
+-Fixed issue: Date questions do not properly save the date
+-Fixed issue #11868: Zlib library missing (Carsten Schmitz)
+-Fixed issue #11995: Removing language from global settings produces fatal error (Carsten Schmitz)
+-Fixed issue #12031:Download files button in Response detail screen mislabelled (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
 Changes from 2.65.3 (build 170607) to 2.65.4 (build 170612) June 12, 2017
 -Fixed issue #12225: [security] Cross-Site Scripting (Denis Chenu)
 -Fixed issue #12417: Error when creating a question group multiple languages and using MSSQL (Carsten Schmitz)
