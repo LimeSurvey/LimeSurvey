@@ -212,7 +212,7 @@
                     <?php if ($bHasFile): ?>
                     <a class="btn btn-default" href='<?php echo Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$id)); ?>' role="button" >
                         <span class="glyphicon  glyphicon-download-alt text-success"></span>
-                        <?php eT("Delete this entry"); ?>
+                        <?php eT("Download files"); ?>
                     </a>
                     <?php endif;?>
 
