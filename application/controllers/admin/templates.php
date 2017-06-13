@@ -772,33 +772,16 @@ class templates extends Survey_Common_Action
     * @return string[]
     */
     protected function getValidScreenFiles($templatename)
-    {
-        $aScreenFiles = array('assessment.pstpl',
-            'clearall.pstpl',
-            'completed.pstpl',
-            'endgroup.pstpl',
-            'endpage.pstpl',
-            'groupdescription.pstpl',
-            'load.pstpl',
-            'navigator.pstpl',
-            'printanswers.pstpl',
-            'privacy.pstpl',
-            'question.pstpl',
-            'register.pstpl',
-            'save.pstpl',
-            'surveylist.pstpl',
-            'startgroup.pstpl',
-            'startpage.pstpl',
-            'survey.pstpl',
-            'welcome.pstpl',
-            'print_survey.pstpl',
-            'print_group.pstpl',
-            'print_question.pstpl');
+    {        
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
 
-        /// TODO : use config.xml
-        if (is_file(Yii::app()->getConfig('usertemplaterootdir') . '/' . $templatename . '/question_start.pstpl'))
-            $aScreenFiles[] = 'question_start.pstpl';
+        $aScreenFiles = array();
+        $filesFromXML = (array) $oEditedTemplate->templateEditor->screens->xpath('//file');
 
+        foreach( $filesFromXML as $file){
+                $aScreenFiles[] = (string) $file;
+        }
+        $aScreenFiles = array_unique($aScreenFiles);
         return $aScreenFiles;
     }
 
@@ -1243,7 +1226,7 @@ class templates extends Survey_Common_Action
 
             case 'save':
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->save;
-                $files             = $aSurveyListConfig['file'];                
+                $files             = $aSurveyListConfig['file'];
                 $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_save.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
