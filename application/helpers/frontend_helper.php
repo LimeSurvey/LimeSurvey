@@ -1690,7 +1690,7 @@ function doAssessment($surveyid)
 
                                 $aAttributes     = getQuestionAttributeValues($field['qid']);
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
-                                $total           = $total+(int)$aAttributes['assessment_value'];
+                            //    $total           = $total+(int)$aAttributes['assessment_value'];
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
                             }
                         }else{
@@ -1701,7 +1701,7 @@ function doAssessment($surveyid)
                             if ($usresult){
                                 $usrow              = $usresult->read();
                                 $assessmentValue    = $usrow['assessment_value'];
-                                $total              = $total+$usrow['assessment_value'];
+                            //    $total              = $total+$usrow['assessment_value'];
                             }
                         }
 
