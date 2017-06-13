@@ -81,3 +81,12 @@
 
     </li>
 <?php endif; ?>
+<?php
+    $notificationLanguageString=array(
+        'errorTitle' => gT("Error : %s"),
+        'errorUnknow' => gT("unknown"),
+        'unknowText' => gT("An unknown error occurred"),
+    );
+    $script = "LS.lang = $.extend(LS.lang,".json_encode($notificationLanguageString).")\n;";
+    Yii::app()->getClientScript()->registerScript('notificationLanguageString',$script,CClientScript::POS_HEAD);
+?>

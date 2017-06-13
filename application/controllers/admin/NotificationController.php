@@ -28,20 +28,15 @@ class NotificationController extends Survey_Common_Action
     public function getNotificationAsJSON($notId)
     {
         $this->checkPermission();
-
-        header('Content-type: application/json');
-
         if ((string) (int) $notId !== (string) $notId) {
-            echo json_encode(array('error' => 'Invalid notification id'));
-            Yii::app()->end();
+            
         }
         $not = Notification::model()->findByPk($notId);
-
-        if ($not) {
-            echo json_encode(array('result' => $not->getAttributes()));
-        } else {
-            echo json_encode(array('error' => 'Found no notification with id ' . (int) $notId));
+        if(!$not) {
+            throw new CHttpException(404,sprintf(gT("Notification %s not found"),$notId));
         }
+        header('Content-type: application/json');
+        echo json_encode(array('result' => $not->getAttributes()));
     }
 
     /**
@@ -54,20 +49,16 @@ class NotificationController extends Survey_Common_Action
     {
         $this->checkPermission();
 
-        header('Content-type: application/json');
-
         if ((string) (int) $notId !== (string) $notId) {
-            echo json_encode(array('error' => 'Invalid notification id'));
-            Yii::app()->end();
+            throw new CHttpException(403,gT("Invalid notification id"));
         }
-
-        try {
-            $not = Notification::model()->findByPk($notId);
-            $result = $not->markAsRead();
-            echo json_encode(array('result' => $result));
-        } catch (Exception $ex) {
-            echo json_encode(array('error' => $ex->getMessage()));
+        $not = Notification::model()->findByPk($notId);
+        if(!$not) {
+            throw new CHttpException(404,sprintf(gT("Notification %s not found"),$notId));
         }
+        $result = $not->markAsRead();
+        header('Content-type: application/json');
+        echo json_encode(array('result' => $result));
     }
 
     /**
@@ -79,7 +70,6 @@ class NotificationController extends Survey_Common_Action
     public function actionGetMenuWidget($surveyId = null, $showLoader = false)
     {
         $this->checkPermission();
-
         echo self::getMenuWidget($surveyId, $showLoader);
     }
 
@@ -111,8 +101,7 @@ class NotificationController extends Survey_Common_Action
     {
         // Abort if user is not logged in
         if (Yii::app()->user->isGuest) {
-            echo 'No permission';
-            Yii::app()->end();
+            throw new CHttpException(401);
         }
     }
 
