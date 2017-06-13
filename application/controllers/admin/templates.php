@@ -699,17 +699,6 @@ class templates extends Survey_Common_Action
             App()->getClientScript()->reset();
             @fwrite($fnew, getHeader());
 
-
-            //~ foreach ($cssfiles as $cssfile)
-            //~ {
-                //~ $myoutput = str_replace($cssfile, $cssfile . "?t=$time", $myoutput);
-            //~ }
-
-
-            //$myoutput = implode("\n", $myoutput);
-
-
-
             App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'survey_runtime.js');
             /* register template package : PS : use asset :) */
             Yii::app()->clientScript->registerPackage( 'survey-template-'.$templatename );
@@ -772,7 +761,7 @@ class templates extends Survey_Common_Action
     * @return string[]
     */
     protected function getValidScreenFiles($templatename)
-    {        
+    {
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
 
         $aScreenFiles = array();
@@ -1123,7 +1112,7 @@ class templates extends Survey_Common_Action
 
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->surveylist;
                 $files             = $aSurveyListConfig['file'];
-                $myoutput          = Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$thissurvey), true);
+                $myoutput          = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_survey_list.twig", array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'question':
@@ -1197,7 +1186,7 @@ class templates extends Survey_Common_Action
                 */
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->welcome_page;
                 $files             = $aSurveyListConfig['file'];
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('aSurveyInfo'=>$thissurvey), true);
+                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_first_page.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 //var_dump($myoutput); die();
                 break;
 
@@ -1227,7 +1216,7 @@ class templates extends Survey_Common_Action
             case 'save':
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->save;
                 $files             = $aSurveyListConfig['file'];
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_save.twig", array('aSurveyInfo'=>$thissurvey), true);
+                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_save.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'load':
@@ -1251,7 +1240,7 @@ class templates extends Survey_Common_Action
                 $files             = $aSurveyListConfig['file'];
 
 
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_load.twig", array('aSurveyInfo'=>$thissurvey), true);
+                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_load.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'clearall':
@@ -1266,7 +1255,7 @@ class templates extends Survey_Common_Action
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->clearall;
                 $files             = $aSurveyListConfig['file'];
 
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_clearall.twig", array('aSurveyInfo'=>$thissurvey), true);
+                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_clearall.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'completed':
@@ -1284,7 +1273,7 @@ class templates extends Survey_Common_Action
 
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->completed;
                 $files             = $aSurveyListConfig['file'];
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_submit.twig", array('aSurveyInfo'=>$thissurvey), true);
+                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_submit.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'assessments':
@@ -1301,7 +1290,7 @@ class templates extends Survey_Common_Action
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->assessments;
                 $files             = $aSurveyListConfig['file'];
 
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_submit.twig", array('aSurveyInfo'=>$thissurvey), true);
+                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_submit.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'printablesurvey':
@@ -1361,7 +1350,7 @@ class templates extends Survey_Common_Action
                 $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->error;
                 $files             = $aSurveyListConfig['file'];
 
-                $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo'=>$thissurvey), true);
+                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_errors.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
         }
         //$myoutput[] = "</html>";
