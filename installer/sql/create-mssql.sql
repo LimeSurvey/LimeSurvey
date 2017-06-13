@@ -365,7 +365,7 @@ PRIMARY KEY ( [id] )
 --
 CREATE TABLE [prefix_settings_global] (
 [stg_name] varchar(50) NOT NULL default '',
-[stg_value] nvarchar(255) NOT NULL default '',
+[stg_value] varchar(max) NOT NULL,
 PRIMARY KEY  ([stg_name])
 );
 
@@ -610,4 +610,4 @@ CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[stat
 --
 -- Version Info
 --
-INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '260');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '262');
