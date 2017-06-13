@@ -16,7 +16,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     public static $surveyId = null;
 
     /**
-     * 
+     * Import survey in tests/surveys/.
      */
     public static function setupBeforeClass()
     {
@@ -41,6 +41,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         );
         if ($result) {
             self::$surveyId = $result['newsid'];
+            // TODO: Login programmatically instead.
             $query = 'UPDATE lime_surveys SET owner_id = 1 WHERE sid = :sid';
             $command = \Yii::app()->db->createCommand($query);
             $command->execute([
@@ -52,6 +53,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Destroy what had been imported.
      */
     public static function teardownAfterClass()
     {
@@ -64,16 +66,15 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * 
+     * @param string $title
+     * @return array
      */
-    public function testBasic()
+    protected function getSgqa($title)
     {
-        $em = \LimeExpressionManager::singleton();
-
         $question = \Question::model()->find(
             'title = :title AND sid = :sid',
             [
-                'title' => 'q2',
+                'title' => $title,
                 'sid'   => self::$surveyId
             ]
         );
@@ -96,6 +97,14 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             $question->qid
         );
 
+        return [$question, $group, $sgqa];
+    }
+
+    /**
+     * "currentQset" in EM.
+     */
+    protected function getQuestionSetForQ2(\Question $question, \QuestionGroup $group, $sgqa)
+    {
         $qset = array($question->qid => array
             (
                 'info' => array
@@ -146,13 +155,19 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
                 'sumRemainingEqn' => ''
             )
         );
-        $em->setCurrentQset($qset);
+        return $qset;
+    }
 
-        $surveyId = 975622;
-        $LEMdebugLevel = 0;
-        $thissurvey = \getSurveyInfo($surveyId);
+    /**
+     * Get survey options for imported survey.
+     * @return array
+     */
+    protected function getSurveyOptions()
+    {
+        $thissurvey = \getSurveyInfo(self::$surveyId);
         $radix = \getRadixPointData($thissurvey['surveyls_numberformat']);
         $radix = $radix['separator'];
+        $LEMdebugLevel = 0;
         $surveyOptions = array(
             'active' => ($thissurvey['active'] == 'Y'),
             'allowsave' => ($thissurvey['allowsave'] == 'Y'),
@@ -172,9 +187,31 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
             'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
             'token' => (isset($clienttoken) ? $clienttoken : NULL),
         );
+        return $surveyOptions;
+    }
+
+    /**
+     * Test wrong date input and error message.
+     */
+    public function testWrongInput()
+    {
+        list($question, $group, $sgqa) = $this->getSgqa('q2');
+
+        $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
+
+        $em = \LimeExpressionManager::singleton();
+        $em->setCurrentQset($qset);
 
         $surveyMode = 'group';
-        \LimeExpressionManager::StartSurvey($surveyId, $surveyMode, $surveyOptions, false, $LEMdebugLevel);
+        $LEMdebugLevel = 0;
+        $surveyOptions = $this->getSurveyOptions();
+        \LimeExpressionManager::StartSurvey(
+            self::$surveyId,
+            $surveyMode,
+            $surveyOptions,
+            false,
+            $LEMdebugLevel
+        );
 
         $qid = $question->qid;
         $gseq = 0;
@@ -183,12 +220,60 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $_POST[$sgqa] = 'asd';
 
         $result = \LimeExpressionManager::ProcessCurrentResponses();
-        var_dump($result);
+        $this->assertNotEmpty($result);
+        $this->assertEquals(1, count($result), 'One question from ProcessCurrentResponses');
+        $this->assertEquals('asd', $result[$sgqa]['value']);
 
         $originalPrefix = \Yii::app()->user->getStateKeyPrefix();
-        \Yii::app()->user->setStateKeyPrefix('frontend' . $surveyId);
+        \Yii::app()->user->setStateKeyPrefix('frontend' . self::$surveyId);
         $flashes = \Yii::app()->user->getFlashes();
-        var_dump($flashes);
+
+        $this->assertNotEmpty($flashes);
+        $this->assertEquals(1, count($flashes), 'One error message');
+
+        \Yii::app()->user->setStateKeyPrefix($originalPrefix);
+    }
+
+    /**
+     * Test correct date.
+     */
+    public function testCorrectDateFormat()
+    {
+        list($question, $group, $sgqa) = $this->getSgqa('q2');
+
+        $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
+
+        $em = \LimeExpressionManager::singleton();
+        $em->setCurrentQset($qset);
+
+        $surveyMode = 'group';
+        $LEMdebugLevel = 0;
+        $surveyOptions = $this->getSurveyOptions();
+        \LimeExpressionManager::StartSurvey(
+            self::$surveyId,
+            $surveyMode,
+            $surveyOptions,
+            false,
+            $LEMdebugLevel
+        );
+
+        $qid = $question->qid;
+        $gseq = 0;
+        $_POST['relevance' . $qid] = 1;
+        $_POST['relevanceG' . $gseq] = 1;
+        $_POST[$sgqa] = '23/12/2016';
+
+        $result = \LimeExpressionManager::ProcessCurrentResponses();
+        $this->assertNotEmpty($result);
+        $this->assertEquals(1, count($result), 'One question from ProcessCurrentResponses');
+        $this->assertEquals('2016-12-23 00:00', $result[$sgqa]['value']);
+
+        $originalPrefix = \Yii::app()->user->getStateKeyPrefix();
+        \Yii::app()->user->setStateKeyPrefix('frontend' . self::$surveyId);
+        $flashes = \Yii::app()->user->getFlashes();
+
+        $this->assertEmpty($flashes, 'No error message');
+
         \Yii::app()->user->setStateKeyPrefix($originalPrefix);
     }
 }

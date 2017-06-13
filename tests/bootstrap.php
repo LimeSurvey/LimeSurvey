@@ -223,3 +223,7 @@ if (!file_exists(APPPATH . 'config/config' . EXT)) {
 
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config);
+
+set_error_handler(function($no, $msg, $file, $line, $context) {
+    error_log($file . ':' . $line . ': ' . $msg);
+}, E_ERROR & E_WARNING & E_PARSE);
