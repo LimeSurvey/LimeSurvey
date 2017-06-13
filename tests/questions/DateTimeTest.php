@@ -26,6 +26,8 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         \Yii::import('application.helpers.admin.import_helper', true);
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
 
+        \Yii::app()->session['loginID'] = 1;
+
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_975622.lss';
         if (!file_exists($surveyFile)) {
             die('Fatal: found no survey file');
@@ -57,25 +59,9 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public static function teardownAfterClass()
     {
-        // TODO: Delete questions and groups.
-        $result1 = \Survey::model()->deleteAll(
-            'sid = :sid',
-            ['sid' => self::$surveyId]
-        );
-        $result2 = \SurveyLanguageSetting::model()->deleteAll(
-            'surveyls_survey_id = :sid',
-            ['sid' => self::$surveyId]
-        );
-        $result3 = \Question::model()->deleteAll(
-            'sid = :sid',
-            ['sid' => self::$surveyId]
-        );
-        $result4 = \QuestionGroup::model()->deleteAll(
-            'sid = :sid',
-            ['sid' => self::$surveyId]
-        );
-        if (!$result1 || !$result2) {
-            die('Fatal error: Could not cleanup after tests: Could not delete imported survey');
+        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
+        if (!$result) {
+            die('Fatal error: Could not clean up survey ' . self::$surveyId);
         }
     }
 
