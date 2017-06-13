@@ -29,12 +29,16 @@ class Boxes extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('url, title, ico, desc, page', 'required'),
-            array('position', 'numerical', 'integerOnly'=>true),
-            array('usergroup', 'numerical', 'integerOnly'=>true, 'min'=>-3),
+           // array('custom_classname,url, ico'),
+            array('custom_content, title, desc, page', 'required'),
+            array('url, ico', 'required', 'on' => 'isDefaultContent'),
+            array('custom_classname', 'required', 'on' => 'isCustomContent'),
+            array('url, ico,custom_classname', 'safe'),
+            array('position', 'numerical', 'integerOnly' => true),
+            array('usergroup', 'numerical', 'integerOnly' => true, 'min' => -3),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on'=>'search'),
+            array('id, position, url, title, ico, desc, page, usergroup', 'safe', 'on' => 'search'),
         );
     }
 
@@ -45,8 +49,7 @@ class Boxes extends CActiveRecord
     {
         // NOTE: you may need to adjust the relation name and the related
         // class name for the relations automatically generated below.
-        return array(
-        );
+        return array();
     }
 
     /**
@@ -62,7 +65,9 @@ class Boxes extends CActiveRecord
             'ico' => gT('Icon:'),
             'desc' => gT('Description:'),
             'page' => gT('Name of the page where the box should be shown'),
-            'usergroup'=> gT('Display this box to:')
+            'usergroup' => gT('Display this box to:'),
+            'custom_classname' => gT('Custom widget classname:'),
+            'custom_content' => gT('Use custom widget?')
         );
     }
 
@@ -82,24 +87,24 @@ class Boxes extends CActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('position',$this->position);
-        $criteria->compare('url',$this->url,true);
-        $criteria->compare('title',$this->title,true);
-        $criteria->compare('ico',$this->ico,true);
-        $criteria->compare('desc',$this->desc,true);
-        $criteria->compare('page',$this->page,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('position', $this->position);
+        $criteria->compare('url', $this->url, true);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('ico', $this->ico, true);
+        $criteria->compare('desc', $this->desc, true);
+        $criteria->compare('page', $this->page, true);
 
         return new CActiveDataProvider($this, array(
-            'criteria'=>$criteria,
+            'criteria' => $criteria,
         ));
     }
 
     public function getSpanIcon()
     {
-        $spanicon = '<span class="icon-'.$this->ico.' text-success"></span>';
+        $spanicon = '<span class="icon-' . $this->ico . ' text-success"></span>';
         return $spanicon;
     }
 
@@ -108,25 +113,19 @@ class Boxes extends CActiveRecord
         $usergroupid = $this->usergroup;
 
         // Can't use switch because of empty case
-        if ( empty($usergroupid) || $usergroupid=='-2'  )
-        {
+        if (empty($usergroupid) || $usergroupid == '-2') {
             return gT('Only Superadmin');
-        }
-        elseif ( $usergroupid=='-1' )
-        {
+        } elseif ($usergroupid == '-1') {
             return gT('Everybody');
-        }
-        elseif ( $usergroupid=='-3' )
-        {
+        } elseif ($usergroupid == '-3') {
             return gT('Nobody');
-        }
-        else
-        {
+        } else {
             $oUsergroup = UserGroup::model()->findByPk($usergroupid);
 
             // The group doesn't exist anymore
-            if(!is_object($oUsergroup))
+            if (!is_object($oUsergroup)) {
                 return gT("Can't find user group!");
+            }
 
             return $oUsergroup->name;
         }
@@ -136,12 +135,12 @@ class Boxes extends CActiveRecord
     {
 
         $url = Yii::app()->createUrl("/admin/homepagesettings/sa/update/id/");
-        $url .= '/'.$this->id;
-        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        $url .= '/' . $this->id;
+        $button = '<a class="btn btn-default" href="' . $url . '" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
 
         $url = Yii::app()->createUrl("/admin/homepagesettings/sa/delete/id/");
-        $url .= '/'.$this->id;
-        $button .= '<a class="btn btn-default" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this box ?').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
+        $url .= '/' . $this->id;
+        $button .= '<a class="btn btn-default" href="' . $url . '" role="button" data-confirm="' . gT('Are you sure you want to delete this box ?') . '"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
         return $button;
     }
 
@@ -217,13 +216,22 @@ class Boxes extends CActiveRecord
         return count($this->icons);
     }
 
+    public function getYesNoOptions()
+    {
+        $aOptions = array();
+        $aOptions[false] = gT('No');
+        $aOptions[true] = gT('Yes');
+
+        return $aOptions;
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
      * @return Boxes the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         return parent::model($className);
     }

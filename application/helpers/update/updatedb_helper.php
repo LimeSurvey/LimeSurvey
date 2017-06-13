@@ -1772,6 +1772,8 @@ function createBoxes250()
         'img' => 'text',
         'desc' => 'text',
         'page'=>'text',
+        'custom_classname' => 'text',
+        'custom_content' => 'integer'
     ));
 
     $oDB->createCommand()->insert('{{boxes}}', array(

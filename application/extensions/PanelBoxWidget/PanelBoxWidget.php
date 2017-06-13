@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Class PanelBoxWidget
+ *
+ * As an option you could can call a custom widget view from a plugin directory
+ *
+ */
 class PanelBoxWidget extends CWidget
 {
     public $fromDb = false; // If set to 1, the widget will look for the box definition inside the database
@@ -14,6 +20,8 @@ class PanelBoxWidget extends CWidget
     public $display = 'singlebox';
     public $boxesbyrow = 3;
     public $external = false;
+    public $iCustomContentIsActive = 0;
+    public $sCustomWidgetClass;
 
     public function run()
     {
@@ -21,8 +29,15 @@ class PanelBoxWidget extends CWidget
             if ($this->fromDb) {
                 $this->setValuesFromDb();
             }
-
-            return $this->renderBox();
+            // Render custom widget class switch is on and a class is filled in
+            if ($this->iCustomContentIsActive == 1) {
+                if (class_exists($this->sCustomWidgetClass)) {
+                    $oCustomWidget = new $this->sCustomWidgetClass();
+                    $oCustomWidget->renderBox();
+                }
+            } else {
+                return $this->renderBox();
+            }
         } elseif ($this->display = 'allboxesinrows') {
             return $this->renderRows();
         }
@@ -52,6 +67,8 @@ class PanelBoxWidget extends CWidget
             $this->ico = $box->ico;
             $this->description = $box->desc;
             $this->usergroup = $box->usergroup;
+            $this->iCustomContentIsActive = $box->custom_content;
+            $this->sCustomWidgetClass = $box->custom_classname;
         } else {
             $this->position = '1';
             $this->url = '';
@@ -98,8 +115,6 @@ class PanelBoxWidget extends CWidget
 
             // It's the first box to show, we must display row header, and have an offset
             if ($boxcount == 1 && $canSeeBox) {
-
-
                 $this->render('row_header');
                 $bIsRowOpened = true;
                 $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
@@ -158,11 +173,9 @@ class PanelBoxWidget extends CWidget
                     return false;
                 }
             }
-
             if (Yii::app()->user->isInUserGroup($box->usergroup)) {
                 return true;
             }
         }
     }
-
 }

@@ -6,161 +6,197 @@
 /* @var $icons array */
 ?>
 
-            <?php $form=$this->beginWidget('CActiveForm', array(
-                'id'=>'boxes-form',
-                // Please note: When you enable ajax validation, make sure the corresponding
-                // controller action is handling ajax validation correctly.
-                // There is a call to performAjaxValidation() commented in generated controller code.
-                // See class documentation of CActiveForm for details on this.
-                'enableAjaxValidation'=>false,
-                'htmlOptions'=>array(
-                    'class'=>"form-horizontal",
+<?php $form = $this->beginWidget('CActiveForm', array(
+    'id' => 'boxes-form',
+    // Please note: When you enable ajax validation, make sure the corresponding
+    // controller action is handling ajax validation correctly.
+    // There is a call to performAjaxValidation() commented in generated controller code.
+    // See class documentation of CActiveForm for details on this.
+    'enableAjaxValidation' => false,
+    'htmlOptions' => array(
+        'class' => "form-horizontal o-homepage-box-form",
+    )
+)); ?>
+<p class="note"><?php printf(gT('Fields with %s*%s are required.'), '<span class="required">', '</span>'); ?></p>
+
+<?php if ($form->errorSummary($model)): ?>
+    <div class="alert alert-danger" role="alert">
+        <?php echo $form->errorSummary($model); ?>
+    </div>
+<?php endif; ?>
+
+<div class="form-group">
+    <?php echo $form->labelEx($model, 'position', array('class' => 'control-label col-sm-2')); ?>
+    <div class='col-sm-2'>
+        <?php echo $form->numberField($model, 'position', array('class' => 'form-control')); ?>
+    </div>
+    <?php if ($form->error($model, 'position')): ?>
+        <div class="col-sm-2 text-danger">
+            <?php echo $form->error($model, 'position'); ?>
+        </div>
+    <?php endif; ?>
+</div>
+
+<div class="form-group">
+    <?php echo $form->labelEx($model, 'custom_content', array('class' => 'control-label col-sm-2')); ?>
+    <div class='col-sm-2'>
+        <?php echo $form->dropDownList(
+            $model,
+            'custom_content',
+            $model->getYesNoOptions(),
+            array(
+                'class' => 'form-control',
+                'options' => array(//$model['custom_view'] => array('selected' => true)
                 )
-            )); ?>
-                <p class="note"><?php printf(gT('Fields with %s*%s are required.'),'<span class="required">','</span>'); ?></p>
+            )
+        ); ?>
+    </div>
+</div>
 
-                <?php if($form->errorSummary($model)):?>
-                    <div class="alert alert-danger" role="alert">
-                        <?php echo $form->errorSummary($model); ?>
-                    </div>
-                <?php endif;?>
+<div class="form-group o-homepage-box-form__class-name">
+    <?php echo $form->labelEx($model, 'custom_classname',
+        array('class' => 'control-label col-sm-2', 'required' => true)); ?>
+    <div class='col-sm-2'>
+        <?php echo $form->textField($model, 'custom_classname', array('class' => 'form-control')); ?>
+    </div>
+    <?php if ($form->error($model, 'custom_classname')): ?>
+        <div class="col-sm-2 text-danger">
+            <?php echo $form->error($model, 'custom_classname'); ?>
+        </div>
+    <?php endif; ?>
+</div>
 
+<div class="form-group o-homepage-box-form__url">
+    <?php echo $form->labelEx($model, 'url', array('class' => 'control-label col-sm-2')); ?>
+    <div class='col-sm-2'>
+        <?php echo $form->textField($model, 'url', array('class' => 'form-control')); ?>
+    </div>
+    <?php if ($form->error($model, 'url')): ?>
+        <div class='col-sm-2 text-danger'>
+            <?php echo $form->error($model, 'url'); ?>
+        </div>
+    <?php endif; ?>
+</div>
 
-                <div class="form-group">
-                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'position'); ?></label>
-                    <div class='col-sm-2'>
-                        <?php echo $form->numberField($model,'position', array('class' => 'form-control')); ?>
-                    </div>
-                    <?php if($form->error($model,'position')):?>
-                        <div class="col-sm-2 text-danger">
-                            <?php echo $form->error($model,'position'); ?>
-                        </div>
-                    <?php endif;?>
-                </div>
+<div class="form-group">
+    <?php echo $form->labelEx($model, 'title', array('class' => 'control-label col-sm-2')); ?>
+    <div class='col-sm-2'>
+        <?php echo $form->textField($model, 'title', array('class' => 'form-control')); ?>
+    </div>
+    <?php if ($form->error($model, 'title')): ?>
+        <div class="col-sm-2 text-danger">
+            <?php echo $form->error($model, 'title'); ?>
+        </div>
+    <?php endif; ?>
+</div>
 
-                <div class="form-group">
-                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'url'); ?></label>
-                    <div class='col-sm-2'>
-                        <?php echo $form->textField($model,'url',array('class' => 'form-control')); ?>
-                    </div>
-                    <?php if($form->error($model,'url')):?>
-                        <div class='col-sm-2 text-danger'>
-                            <?php echo $form->error($model,'url'); ?>
-                        </div>
-                    <?php endif;?>
-                </div>
-
-                <div class="form-group">
-                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'title'); ?></label>
-                    <div class='col-sm-2'>
-                        <?php echo $form->textField($model,'title',array('class' => 'form-control')); ?>
-                    </div>
-                    <?php if($form->error($model,'title')):?>
-                        <div class="col-sm-2 text-danger">
-                            <?php echo $form->error($model,'title'); ?>
-                        </div>
-                    <?php endif;?>
-                </div>
-
-                <div class="form-group">
-                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'ico'); ?></label>
-                    <div class='col-sm-2'>
-                        <div class='btn-group'>
-                            <button type='button' class='btn btn-default dropdown-toggle limebutton form-control' data-toggle='dropdown' aria-hashpopup='true' aria-expanded='false'>
-                                <?php eT('Select icon'); ?>
-                                <span class='caret'></span>
-                            </button>
-                            <ul class='dropdown-menu'>
-                                <li>
-                                <div class='row' style='width: 400px;'>
-                                    <div class='col-sm-4'>
-                                        <ul class='list-unstyled'>
-                                            <?php for ($i = 0; $i < $icons_length / 3; $i++): ?>
-                                                 <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>' class='option-icon <?php echo $icons[$i]; ?>'></span></a></li>
-                                            <?php endfor; ?>
-                                        </ul>
-                                    </div>
-                                    <div class='col-sm-4'>
-                                        <ul class='list-unstyled'>
-                                            <?php for ($i = $icons_length / 3; $i < $icons_length / 3 + $icons_length / 3; $i++): ?>
-                                                <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>' class='option-icon <?php echo $icons[$i]; ?>'></span></a></li>
-                                            <?php endfor; ?>
-                                        </ul>
-                                    </div>
-                                    <div class='col-sm-4'>
-                                        <ul class='list-unstyled'>
-                                            <?php for ($i = $icons_length / 3 + $icons_length / 3; $i < $icons_length; $i++): ?>
-                                                <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>' class='option-icon <?php echo $icons[$i]; ?>'></span></a></li>
-                                            <?php endfor; ?>
-                                        </ul>
-                                    </div>
-                                </div>
-                                </li>
+<div class="form-group o-homepage-box-form__icon-select">
+    <?php echo $form->labelEx($model, 'ico', array('class' => 'control-label col-sm-2', 'required' => true)); ?>
+    <div class='col-sm-2'>
+        <div class='btn-group'>
+            <button type='button' class='btn btn-default dropdown-toggle limebutton form-control' data-toggle='dropdown'
+                    aria-hashpopup='true' aria-expanded='false'>
+                <?php eT('Select icon'); ?>
+                <span class='caret'></span>
+            </button>
+            <ul class='dropdown-menu'>
+                <li>
+                    <div class='row' style='width: 400px;'>
+                        <div class='col-sm-4'>
+                            <ul class='list-unstyled'>
+                                <?php for ($i = 0; $i < $icons_length / 3; $i++): ?>
+                                    <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>'
+                                                                        class='option-icon <?php echo $icons[$i]; ?>'></span></a>
+                                    </li>
+                                <?php endfor; ?>
                             </ul>
                         </div>
-                        <span>&nbsp;<?php echo eT('Chosen icon:'); ?></span>&nbsp;<span id='chosen-icon'></span>
-                        <?php echo $form->textField($model,'ico',array('size'=>60,'maxlength'=>255, 'class' => 'form-control hidden')); ?>
-                    </div>
-
-                    <?php if ($form->error($model,'ico')):?>
-                        <div class="col-sm-2 text-danger">
-                            <?php echo $form->error($model,'ico'); ?>
+                        <div class='col-sm-4'>
+                            <ul class='list-unstyled'>
+                                <?php for ($i = $icons_length / 3; $i < $icons_length / 3 + $icons_length / 3; $i++): ?>
+                                    <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>'
+                                                                        class='option-icon <?php echo $icons[$i]; ?>'></span></a>
+                                    </li>
+                                <?php endfor; ?>
+                            </ul>
                         </div>
-                    <?php endif;?>
-                </div>
-
-                <div class="form-group">
-                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'desc'); ?></label>
-                    <div class='col-sm-4'>
-                        <?php echo $form->textArea($model,'desc',array('rows'=>6, 'cols'=>50, 'class' => 'form-control')); ?>
-                    </div>
-                    <?php if($form->error($model,'desc')):?>
-                        <div class="col-sm-2 text-danger" role="alert">
-                            <?php echo $form->error($model,'desc'); ?>
+                        <div class='col-sm-4'>
+                            <ul class='list-unstyled'>
+                                <?php for ($i = $icons_length / 3 + $icons_length / 3; $i < $icons_length; $i++): ?>
+                                    <li class='icon-'><a href="#"><span data-icon='<?php echo $icons[$i]; ?>'
+                                                                        class='option-icon <?php echo $icons[$i]; ?>'></span></a>
+                                    </li>
+                                <?php endfor; ?>
+                            </ul>
                         </div>
-                    <?php endif;?>
-                </div>
-
-                <!-- Page -->
-                <div class="form-group">
-                    <?php if($action=='create'): ?>
-                        <input name="Boxes[page]" id="Boxes_page" type="hidden" value="welcome">
-                    <?php else:?>
-                        <?php echo $form->hiddenField($model,'page',array()); ?>
-                    <?php endif;?>
-                </div>
-
-                <div class="form-group">
-                    <label class='control-label col-sm-2'><?php echo $form->labelEx($model,'usergroup'); ?></label>
-                    <div class='col-sm-2'>
-                        <?php
-                            $options_array = CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name');
-                            $options_array[-1]=gT('Everybody');
-                            $options_array[-2]=gT('Only admin');
-                            $options_array[-3]=gT('Nobody');
-                        ?>
-                        <?php echo $form->dropDownList(
-                            $model,
-                            'usergroup',
-                            $options_array,
-                            array(
-                                'class' => 'form-control',
-                                'options' => array(
-                                    $model['usergroup'] => array('selected' => true)
-                                )
-                            )
-                        ); ?>
                     </div>
+                </li>
+            </ul>
+        </div>
+        <span>&nbsp;<?php echo eT('Chosen icon:'); ?></span>&nbsp;<span id='chosen-icon'></span>
+        <?php echo $form->textField($model, 'ico',
+            array('size' => 60, 'maxlength' => 255, 'class' => 'form-control hidden')); ?>
+    </div>
 
-                    <?php if($form->error($model,'usergroup')):?>
-                        <div class="col-sm-2 text-danger">
-                            <?php echo $form->error($model,'usergroup'); ?>
-                        </div>
-                    <?php endif;?>
-                </div>
+    <?php if ($form->error($model, 'ico')): ?>
+        <div class="col-sm-2 text-danger">
+            <?php echo $form->error($model, 'ico'); ?>
+        </div>
+    <?php endif; ?>
+</div>
 
-                <div class="form-group buttons">
-                    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'form-control hidden')); ?>
-                </div>
+<div class="form-group o-homepage-box-form__desc">
+    <?php echo $form->labelEx($model, 'desc', array('class' => 'control-label col-sm-2')); ?>
+    <div class='col-sm-4'>
+        <?php echo $form->textArea($model, 'desc', array('rows' => 6, 'cols' => 50, 'class' => 'form-control')); ?>
+    </div>
+    <?php if ($form->error($model, 'desc')): ?>
+        <div class="col-sm-2 text-danger" role="alert">
+            <?php echo $form->error($model, 'desc'); ?>
+        </div>
+    <?php endif; ?>
+</div>
 
-            <?php $this->endWidget(); ?>
+<!-- Page -->
+<div class="form-group">
+    <?php if ($action == 'create'): ?>
+        <input name="Boxes[page]" id="Boxes_page" type="hidden" value="welcome">
+    <?php else: ?>
+        <?php echo $form->hiddenField($model, 'page', array()); ?>
+    <?php endif; ?>
+</div>
+
+<div class="form-group">
+    <?php echo $form->labelEx($model, 'usergroup', array('class' => 'control-label col-sm-2')); ?>
+    <div class='col-sm-2'>
+        <?php
+        $options_array = CHtml::listData(UserGroup::model()->findAll(), 'ugid', 'name');
+        $options_array[-1] = gT('Everybody');
+        $options_array[-2] = gT('Only admin');
+        $options_array[-3] = gT('Nobody');
+        ?>
+        <?php echo $form->dropDownList(
+            $model,
+            'usergroup',
+            $options_array,
+            array(
+                'class' => 'form-control',
+                'options' => array(
+                    $model['usergroup'] => array('selected' => true)
+                )
+            )
+        ); ?>
+    </div>
+
+    <?php if ($form->error($model, 'usergroup')): ?>
+        <div class="col-sm-2 text-danger">
+            <?php echo $form->error($model, 'usergroup'); ?>
+        </div>
+    <?php endif; ?>
+</div>
+
+<div class="form-group buttons">
+    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class' => 'form-control hidden')); ?>
+</div>
+
+<?php $this->endWidget(); ?>
