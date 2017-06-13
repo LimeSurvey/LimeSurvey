@@ -1242,22 +1242,8 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'save':
-                /*
-                $files=$Save;
-                $aData['aReplacements'] = $aGlobalReplacements;
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $aData['aReplacements']['SAVEHEADING'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/heading",array(),true);
-                $aData['aReplacements']['SAVEMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/message",array(),true);
-                $aData['aReplacements']['SAVEALERT'] = App()->getController()->renderPartial("/survey/frontpage/saveForm/anonymized",array(),true);
-                $aData['aReplacements']['SAVEERROR'] = "";
-                $saveForm  = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-save'));
-                $saveForm .= App()->getController()->renderPartial("/survey/frontpage/saveForm/form",array('captcha'=>false),true);
-                $saveForm .= CHtml::endForm();
-                $aData['aReplacements']['SAVEFORM'] = $saveForm;
-                 $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/save.pstpl", $aData, $oEditedTemplate));
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = "\n";
-                */
+                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->save;
+                $files             = $aSurveyListConfig['file'];                
                 $myoutput = Yii::app()->twigRenderer->renderTemplateFromFile("layout_save.twig", array('aSurveyInfo'=>$thissurvey), true);
                 break;
 
