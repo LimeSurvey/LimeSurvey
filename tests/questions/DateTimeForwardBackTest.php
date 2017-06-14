@@ -156,5 +156,4 @@ class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
         $survey->active = 'N';
         $survey->save();
     }
-
 }
