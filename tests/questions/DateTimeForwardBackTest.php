@@ -4,10 +4,6 @@ namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
 
-class DummyController extends \LSYii_Controller
-{
-}
-
 /**
  * @since 2017-06-13
  */
@@ -78,9 +74,6 @@ class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
      */
     public function testQ1()
     {
-        $this->markTestSkipped('How to unit-test qanda?');
-        return;
-
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('G1Q00001', self::$surveyId);
         $surveyMode = 'group';
         $LEMdebugLevel = 0;
@@ -102,7 +95,7 @@ class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['status' => 'OK'], $result, 'Activate survey is OK');
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
-        \Yii::app()->setController(new DummyController(1));
+        \Yii::app()->setController(new \CController('dummyid'));
         buildsurveysession(self::$surveyId);
         $result = \LimeExpressionManager::StartSurvey(
             self::$surveyId,
@@ -128,35 +121,29 @@ class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
         $_POST['thisstep'] = 1;
         $_POST['sid'] = self::$surveyId;
         $_POST[$sgqa] = '10:00';
+        $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
+        $_SESSION['survey_' . self::$surveyId]['step'] = 1;
 
         $moveResult = \LimeExpressionManager::NavigateForwards();
         $result = \LimeExpressionManager::ProcessCurrentResponses();
+        $this->assertEquals($result[$sgqa]['value'], '1970-01-01 10:00');
 
         $moveResult = \LimeExpressionManager::NavigateForwards();
-        $result = \LimeExpressionManager::ProcessCurrentResponses();
+        // Result is empty dummy text question.
+        \LimeExpressionManager::ProcessCurrentResponses();
 
-        $moveResult = \LimeExpressionManager::NavigateBackwards();
-        $result = \LimeExpressionManager::ProcessCurrentResponses();
-        $moveResult = \LimeExpressionManager::NavigateForwards();
-        $moveResult = \LimeExpressionManager::NavigateForwards();
-        print_r($moveResult);
-        $result = \LimeExpressionManager::ProcessCurrentResponses();
-        print_r($result);
-        print_r($_POST);
-        //$this->assertEquals('10:00', $_SESSION['survey_' . self::$surveyId][$sgqa]);
-
+        // Check answer in database.
         $query = 'SELECT * FROM lime_survey_' . self::$surveyId;
-        print_r($query);
         $result = \Yii::app()->db->createCommand($query)->queryAll();
-        print_r($result);
+        $this->assertEquals($result[0][$sgqa], '1970-01-01 10:00:00', 'Answer in database is 10:00');
+
+        // Check result from qanda.
         $qanda = \retrieveAnswers(
             $_SESSION['survey_' . self::$surveyId]['fieldarray'][0],
             self::$surveyId
         );
-        print_r($qanda);
-        print_r($_SESSION['survey_' . self::$surveyId][$sgqa]);
-
-
+        $this->assertEquals(false, strpos($qanda[0][1], "val('11:00')"), 'No 11:00 value from qanda');
+        $this->assertNotEquals(false, strpos($qanda[0][1], "val('10:00')"), 'One 10:00 value from qanda');
 
         $surveyId = self::$surveyId;
         $date     = date('YmdHis');
