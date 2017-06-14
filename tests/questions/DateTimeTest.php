@@ -11,6 +11,11 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
+     * @var TestHelper
+     */
+    protected static $testHelper = null;
+
+    /**
      * @var int
      */
     public static $surveyId = null;
@@ -27,6 +32,8 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         \Yii::import('application.helpers.expressions.em_manager_helper', true);
 
         \Yii::app()->session['loginID'] = 1;
+
+        self::$testHelper = new TestHelper();
 
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_975622.lss';
         if (!file_exists($surveyFile)) {
@@ -57,41 +64,6 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         if (!$result) {
             die('Fatal error: Could not clean up survey ' . self::$surveyId);
         }
-    }
-
-    /**
-     * @param string $title
-     * @return array
-     */
-    protected function getSgqa($title)
-    {
-        $question = \Question::model()->find(
-            'title = :title AND sid = :sid',
-            [
-                'title' => $title,
-                'sid'   => self::$surveyId
-            ]
-        );
-
-        $this->assertNotEmpty($question);
-
-        $group = \QuestionGroup::model()->find(
-            'gid = :gid',
-            [
-                'gid' => $question->gid
-            ]
-        );
-
-        $this->assertNotEmpty($group);
-
-        $sgqa = sprintf(
-            '%sX%sX%s',
-            self::$surveyId,
-            $group->gid,
-            $question->qid
-        );
-
-        return [$question, $group, $sgqa];
     }
 
     /**
@@ -153,43 +125,11 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get survey options for imported survey.
-     * @return array
-     */
-    protected function getSurveyOptions()
-    {
-        $thissurvey = \getSurveyInfo(self::$surveyId);
-        $radix = \getRadixPointData($thissurvey['surveyls_numberformat']);
-        $radix = $radix['separator'];
-        $LEMdebugLevel = 0;
-        $surveyOptions = array(
-            'active' => ($thissurvey['active'] == 'Y'),
-            'allowsave' => ($thissurvey['allowsave'] == 'Y'),
-            'anonymized' => ($thissurvey['anonymized'] != 'N'),
-            'assessments' => ($thissurvey['assessments'] == 'Y'),
-            'datestamp' => ($thissurvey['datestamp'] == 'Y'),
-            'deletenonvalues'=>\Yii::app()->getConfig('deletenonvalues'),
-            'hyperlinkSyntaxHighlighting' => (($LEMdebugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY),
-            'ipaddr' => ($thissurvey['ipaddr'] == 'Y'),
-            'radix'=>$radix,
-            'refurl' => (($thissurvey['refurl'] == "Y" && isset($_SESSION[$LEMsessid]['refurl'])) ? $_SESSION[$LEMsessid]['refurl'] : null),
-            'savetimings' => ($thissurvey['savetimings'] == "Y"),
-            'surveyls_dateformat' => (isset($thissurvey['surveyls_dateformat']) ? $thissurvey['surveyls_dateformat'] : 1),
-            'startlanguage'=>(isset(App()->language) ? App()->language : $thissurvey['language']),
-            'target' => \Yii::app()->getConfig('uploaddir').DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$thissurvey['sid'].DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR,
-            'tempdir' => \Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR,
-            'timeadjust' => (isset($timeadjust) ? $timeadjust : 0),
-            'token' => (isset($clienttoken) ? $clienttoken : null),
-        );
-        return $surveyOptions;
-    }
-
-    /**
      * Test wrong date input and error message.
      */
     public function testWrongInput()
     {
-        list($question, $group, $sgqa) = $this->getSgqa('q2');
+        list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
 
         $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
 
@@ -198,7 +138,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
         $surveyMode = 'group';
         $LEMdebugLevel = 0;
-        $surveyOptions = $this->getSurveyOptions();
+        $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
         \LimeExpressionManager::StartSurvey(
             self::$surveyId,
             $surveyMode,
@@ -233,7 +173,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function testCorrectDateFormat()
     {
-        list($question, $group, $sgqa) = $this->getSgqa('q2');
+        list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
 
         $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
 
@@ -242,7 +182,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
 
         $surveyMode = 'group';
         $LEMdebugLevel = 0;
-        $surveyOptions = $this->getSurveyOptions();
+        $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
         \LimeExpressionManager::StartSurvey(
             self::$surveyId,
             $surveyMode,
@@ -277,10 +217,10 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public function testQ1()
     {
-        list($question, $group, $sgqa) = $this->getSgqa('q1');
+        list($question, $group, $sgqa) = self::$testHelper->getSgqa('q1', self::$surveyId);
         $surveyMode = 'group';
         $LEMdebugLevel = 0;
-        $surveyOptions = $this->getSurveyOptions();
+        $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
         \LimeExpressionManager::StartSurvey(
             self::$surveyId,
             $surveyMode,

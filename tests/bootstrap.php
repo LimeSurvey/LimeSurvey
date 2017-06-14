@@ -227,3 +227,5 @@ Yii::createApplication('LSYii_Application', $config);
 set_error_handler(function($no, $msg, $file, $line, $context) {
     error_log($file . ':' . $line . ': ' . $msg);
 }, E_ERROR & E_WARNING & E_PARSE);
+
+require_once(__DIR__ . '/TestHelper.php');
