@@ -167,6 +167,7 @@ function gettemplatefilename($template, $templatefile) {
     switch (pathinfo($templatefile, PATHINFO_EXTENSION))
     {
         case 'twig':
+            // TODO: recursivity
             $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
             return $oEditedTemplate->viewPath.$templatefile;
             break;

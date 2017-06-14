@@ -719,6 +719,8 @@ class templates extends Survey_Common_Action
             $sTemplateEditorMode = getGlobalSetting('templateeditormode', 'full');
         }
         $sExtension=substr(strrchr($editfile, '.'), 1);
+
+        // Select ACE editor mode
         switch ($sExtension)
         {
             case 'css':$sEditorFileType='css';
@@ -726,6 +728,8 @@ class templates extends Survey_Common_Action
             case 'pstpl':$sEditorFileType='html';
                 break;
             case 'js':$sEditorFileType='javascript';
+                break;
+            case 'twig':$sEditorFileType='twig';
                 break;
             default: $sEditorFileType='html';
                 break;
