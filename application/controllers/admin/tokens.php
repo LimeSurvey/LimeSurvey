@@ -1509,7 +1509,7 @@ class tokens extends Survey_Common_Action
                                 }
                             }
                             $tokenoutput .= htmlspecialchars(ReplaceFields("{$emrow['tid']}: {FIRSTNAME} {LASTNAME} ({EMAIL})", $fieldsarray)). "<br />\n";
-                            if (Yii::app()->getConfig("emailsmtpdebug") == 2)
+                            if (Yii::app()->getConfig("emailsmtpdebug") > 1)
                             {
                                 $tokenoutput .= $maildebug;
                             }

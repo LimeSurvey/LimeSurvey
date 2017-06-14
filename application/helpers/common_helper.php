@@ -2821,7 +2821,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     $sent=$mail->Send();
     $maildebug=$mail->ErrorInfo;
     if ($emailsmtpdebug>0) {
-        $maildebug .= '<li>'. gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
+        $maildebug .= '<strong>'. gT('SMTP debug output:').'</strong><pre>'.\CHtml::encode(ob_get_contents()).'</pre>';
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;
