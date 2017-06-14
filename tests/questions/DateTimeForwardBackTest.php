@@ -4,10 +4,6 @@ namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
 
-class DummyController extends \LSYii_Controller
-{
-}
-
 /**
  * @since 2017-06-13
  */
@@ -99,7 +95,7 @@ class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['status' => 'OK'], $result, 'Activate survey is OK');
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
-        \Yii::app()->setController(new DummyController(1));
+        \Yii::app()->setController(new \CController('dummyid'));
         buildsurveysession(self::$surveyId);
         $result = \LimeExpressionManager::StartSurvey(
             self::$surveyId,
