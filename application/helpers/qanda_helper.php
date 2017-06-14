@@ -1066,8 +1066,8 @@ function do_date($ia)
         $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
-            $datetimeobj = new Date_Time_Converter($dateoutput , "!Y-m-d H:i");
-            $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
+            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', trim($dateoutput));
+            $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
         }
 
 
@@ -1089,8 +1089,8 @@ function do_date($ia)
         $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
-            $datetimeobj = new Date_Time_Converter($dateoutput , "!Y-m-d H:i");
-            $dateoutput  = $datetimeobj->convert($dateformatdetails['phpdate']);
+            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', trim($dateoutput));
+            $dateoutput  = $datetimeobj->format($dateformatdetails['phpdate']);
         }
 
         // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
