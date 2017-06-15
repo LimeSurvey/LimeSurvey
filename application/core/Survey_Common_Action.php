@@ -65,18 +65,7 @@ class Survey_Common_Action extends CAction
 
         if (!empty($params['iSurveyId']))
         {
-            if(!Survey::model()->findByPk($params['iSurveyId']))
-            {
-                $this->getController()->error('Invalid survey id');
-            }
-            elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read'))
-            {
-                $this->getController()->error('No permission');
-            }
-            else
-            {
-                LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
-            }
+            LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
         }
 
         // Check if the method is public and of the action class, not its parents
@@ -158,25 +147,53 @@ class Survey_Common_Action extends CAction
             }
         }
 
+        /* Control sid,gid and qid params validity see #12434 */
         // Fill param with according existing param, replace existing parameters.
         // iGroupId/gid can be found with qid/iQuestionId
-        if(isset($params['iQuestionId']))
-        {
+        if(isset($params['iQuestionId'])) {
+            if((string)(int)$params['iQuestionId']!==(string)$params['iQuestionId']) { // pgsql need filtering before find
+                throw new CHttpException(403,gT("Invalid question id"));
+            }
             $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
-            if($oQuestion)
-            {
+            if(!$oQuestion) {
+                throw new CHttpException(404,gT("Question not found"));
+            }
+            if(!isset($params['iGroupId'])) {
                 $params['iGroupId']=$params['gid']=$oQuestion->gid;
             }
         }
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
-        if(isset($params['iGroupId']))
-        {
+        if(isset($params['iGroupId'])) {
+            if((string)(int)$params['iGroupId']!==(string)$params['iGroupId']) { // pgsql need filtering before find
+                throw new CHttpException(403,gT("Invalid group id"));
+            }
             $oGroup=QuestionGroup::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
-            if($oGroup)
-            {
+            if(!$oGroup) {
+                throw new CHttpException(404,gT("Group not found"));
+            }
+            if(!isset($params['iSurveyId'])) {
                 $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oGroup->sid;
             }
         }
+        // Finally control validity of sid
+        if(isset($params['iSurveyId'])) {
+            if((string)(int)$params['iSurveyId']!==(string)$params['iSurveyId']) { // pgsql need filtering before find
+                // 403 mean The request was valid, but the server is refusing action.
+                throw new CHttpException(403,gT("Invalid survey id"));
+            }
+            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
+            if(!$oSurvey) {
+                throw new CHttpException(404,gT("Survey not found"));
+            }
+            // Minimal permission needed, extra permission must be tested in each controller
+            if (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
+                // 403 mean (too) The user might not have the necessary permissions for a resource.
+                // 401 semantically means "unauthenticated"
+                throw new CHttpException(403);
+            }
+            $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oSurvey->sid;
+        }
+        // Finally return the populated array
 
         // Finally return the populated array
         return $params;
