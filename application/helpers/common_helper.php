@@ -3893,9 +3893,8 @@ function useFirebug()
 */
 function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 {
-    Yii::import('application.libraries.Date_Time_Converter', true);
-    $date = new Date_Time_Converter($value, $fromdateformat);
-    return $date->convert($todateformat);
+    $date = DateTime::createFromFormat($fromdateformat, $value);
+    return $date->format($todateformat);
 }
 
 /**

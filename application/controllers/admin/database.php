@@ -1153,7 +1153,6 @@ class database extends Survey_Common_Action
                 /* Date management */
                 Yii::app()->loadHelper('surveytranslator');
                 $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
-                Yii::app()->loadLibrary('Date_Time_Converter');
                 $startdate = App()->request->getPost('startdate');
                 if (trim($startdate)=="")
                 {
@@ -1161,9 +1160,8 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new date_time_converter($startdate,$formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
-                    $startdate=$datetimeobj->convert("Y-m-d H:i:s");
+                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $startdate );
+                    $startdate=$datetimeobj->format("Y-m-d H:i:s");
                 }
                 $expires = App()->request->getPost('expires');
                 if (trim($expires)=="")
@@ -1172,8 +1170,8 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
-                    $expires=$datetimeobj->convert("Y-m-d H:i:s");
+                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $expires);
+                    $expires=$datetimeobj->format("Y-m-d H:i:s");
                 }
 
                 // Only owner and superadmins may change the survey owner
