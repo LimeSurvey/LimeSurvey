@@ -1693,8 +1693,8 @@ function do_list_radio($ia)
 
         $answer .= $startitem;
         $answer .= "\t$hiddenfield\n";
-        $answer .='        <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
-        <label for="answer'.$ia[1].$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
+        $answer .='        <input class="radio" type="radio" value="'.$ansrow['code'].'" name="'.$ia[1].'" id="answer'.$ia[1].'s'.$ansrow['code'].'"'.$check_ans.' onclick="if (document.getElementById(\'answer'.$ia[1].'othertext\') != null) document.getElementById(\'answer'.$ia[1].'othertext\').value=\'\';'.$checkconditionFunction.'(this.value, this.name, this.type)" />
+        <label for="answer'.$ia[1].'s'.$ansrow['code'].'" class="answertext">'.$ansrow['answer'].'</label>
         '.$wrapper['item-end'];
 
         ++$rowcounter;
@@ -3620,7 +3620,7 @@ function do_shortfreetext($ia)
             . gT('Click to set the location or drag and drop the pin. You may may also enter coordinates').'</div>';
             $question_text['help'] = gT('Click to set the location or drag and drop the pin. You may may also enter coordinates');
         }
-	}
+    }
     else
     {
         //no question attribute set, use common input text field
