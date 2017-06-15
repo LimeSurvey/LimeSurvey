@@ -1595,6 +1595,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 263) {
+            // Dummy version update for hash table in installation SQL.
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>263),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     }
     catch(Exception $e)
     {
@@ -1622,7 +1628,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     $superadmins = User::model()->getSuperAdmins();
     Notification::broadcast(array(
         'title' => gT('Database update'),
-        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '262')
+        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '263')
     ), $superadmins);
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);
