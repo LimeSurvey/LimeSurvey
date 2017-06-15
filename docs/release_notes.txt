@@ -35,6 +35,20 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.65.5 (build 170613) to 2.65.6 (build 170613) June 15, 2017
+-Fixed issue: DateTime increased when going forward and back (Olle Haerstedt)
+-Fixed issue: Missing hash column in notifications table (Olle Haerstedt)
+-Fixed issue: Replacement fields are unsorted (Carsten Schmitz)
+-Fixed issue: Replacement fields editor not properly working (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Turkish by kayazeren
+
+
 Changes from 2.65.4 (build 170612) to 2.65.5 (build 170613) June 13, 2017
 -Fixed issue: Date questions do not properly save the date
 -Fixed issue #11868: Zlib library missing (Carsten Schmitz)
