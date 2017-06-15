@@ -145,7 +145,7 @@ class Survey_Common_Action extends CAction
         /* Control sid,gid and qid params validity see #12434 */
         // Fill param with according existing param, replace existing parameters.
         // iGroupId/gid can be found with qid/iQuestionId
-        if(isset($params['iQuestionId'])) {
+        if(isset($params['iQuestionId']) && $params['iQuestionId']!=='') {
             if((string)(int)$params['iQuestionId']!==(string)$params['iQuestionId']) { // pgsql need filtering before find
                 throw new CHttpException(403,gT("Invalid question id"));
             }
@@ -158,7 +158,7 @@ class Survey_Common_Action extends CAction
             }
         }
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
-        if(isset($params['iGroupId'])) {
+        if(isset($params['iGroupId']) && $params['iGroupId']!=='') {
             if((string)(int)$params['iGroupId']!==(string)$params['iGroupId']) { // pgsql need filtering before find
                 throw new CHttpException(403,gT("Invalid group id"));
             }
@@ -171,7 +171,7 @@ class Survey_Common_Action extends CAction
             }
         }
         // Finally control validity of sid
-        if(isset($params['iSurveyId'])) {
+        if(isset($params['iSurveyId']) && $params['iSurveyId']!=='') {
             if((string)(int)$params['iSurveyId']!==(string)$params['iSurveyId']) { // pgsql need filtering before find
                 // 403 mean The request was valid, but the server is refusing action.
                 throw new CHttpException(403,gT("Invalid survey id"));
