@@ -603,6 +603,7 @@ CREATE TABLE prefix_notifications (
     [display_class] nvarchar(31) DEFAULT 'default',
     [created] datetime NOT NULL,
     [first_read] datetime DEFAULT NULL,
+    [hash] nvarchar(64) DEFAULT '',
     PRIMARY KEY ([id])
 );
 CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);
