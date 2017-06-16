@@ -6148,6 +6148,7 @@ function decide_sm_col($prefix, $suffix)
  * sense.
  * Used when fetching answer for do_date, where answer can come from a default
  * answer expression like date('Y').
+ * Will also truncate date('c') to format Y-m-d H:i.
  * @param string $dateString
  * @return string
  */
@@ -6172,6 +6173,15 @@ function fillDate($dateString) {
         // Complete, return as is.
         case 16:
             return $dateString;
+            break;
+        // Assume date('c')
+        case 25:
+            $date = DateTime::createFromFormat('!c', $dateString);
+            if ($date) {
+                return $date->format('Y-m-d H:i');
+            } else {
+                return '';
+            }
             break;
         default:
             return '';
