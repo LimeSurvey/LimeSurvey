@@ -1067,10 +1067,10 @@ function do_date($ia)
         if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
             $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', trim($dateoutput));
-            if ($datetimeobj) {
+            if($datetimeobj) {
                 $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
             } else {
-                $dateoutput = '';
+                $dateoutput = '';  // Imported value and some old survey can have 0000-00-00 00:00:00
             }
         }
 
