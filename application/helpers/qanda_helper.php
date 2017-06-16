@@ -6176,7 +6176,7 @@ function fillDate($dateString) {
             break;
         // Assume date('c')
         case 25:
-            $date = DateTime::createFromFormat('!c', $dateString);
+            $date = new DateTime($dateString);
             if ($date) {
                 return $date->format('Y-m-d H:i');
             } else {
