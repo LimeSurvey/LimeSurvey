@@ -69,10 +69,12 @@ class DateTimeDefaultAnswerExpressionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the question with wrong default answer expression.
+     * Test the question with lacking default answer expression,
+     * date('Y-m-d'), will be filled with ' 00:00' to work with
+     * createFromFormat.
      * @group expr
      */
-    public function testWrongDefaultAnswerExpression()
+    public function testDefaultAnswerExpressionFill()
     {
         global $thissurvey;
         $thissurvey = self::$surveyId;
@@ -127,21 +129,11 @@ class DateTimeDefaultAnswerExpressionTest extends \PHPUnit_Framework_TestCase
             'Showing todays date'
         );
 
-        // NB: Empty value, since default answer expression is not parsed by qanda.
-        /*
-        $this->assertNotEquals(
-            false,
-            strpos($qanda[0][1], "val('')"),
-            'Showing empty date due to wrong expression'
-        );
-         */
-
-        // NB: Value below is todays date in format Y-m-d, which can't be
-        // parsed by qanda (expects Y-m-d H:i).
-        // $_SESSION['survey_' . self::$surveyId][$sgqa]);
     }
 
     /**
+     * Test full default answer expression,
+     * date('Y-m-d H:i').
      * @group expr2
      */
     public function testCorrectDefaultAnswerExpression()
@@ -201,4 +193,61 @@ class DateTimeDefaultAnswerExpressionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test default answer, date format HH:MM, expression
+     * date('HH:ii'). Return empty value.
+     */
+    public function testWrongDefaultAnswerExpression()
+    {
+        global $thissurvey;
+        $thissurvey = self::$surveyId;
+
+        list($question, $group, $sgqa) = self::$testHelper->getSgqa('q3', self::$surveyId);
+
+        $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
+
+        \Yii::app()->setConfig('surveyID', self::$surveyId);
+        \Yii::app()->setController(new \CController('dummyid'));
+        buildsurveysession(self::$surveyId);
+        $surveyMode = 'group';
+        $LEMdebugLevel = 0;
+        $result = \LimeExpressionManager::StartSurvey(
+            self::$surveyId,
+            $surveyMode,
+            $surveyOptions,
+            false,
+            $LEMdebugLevel
+        );
+        $this->assertEquals(
+            [
+                'hasNext' => 1,
+                'hasPrevious' => null
+            ],
+            $result
+        );
+
+        // Qanda needs this.
+        $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
+        $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+
+        // Move one step to run expressions.
+        $moveResult = \LimeExpressionManager::NavigateForwards();
+
+        // Check result from qanda.
+        $qanda = \retrieveAnswers(
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][2],  // 2 = third question (q3)
+            self::$surveyId
+        );
+
+        // NB: Empty value, since default answer expression is not parsed by qanda.
+        $this->assertNotEquals(
+            false,
+            strpos($qanda[0][1], "val('')"),
+            'Showing empty date due to wrong expression'
+        );
+
+        // NB: Value below is todays time in format H:i, which can't be
+        // parsed by qanda (expects Y-m-d H:i).
+        //print_r($_SESSION['survey_' . self::$surveyId][$sgqa]);
+    }
 }

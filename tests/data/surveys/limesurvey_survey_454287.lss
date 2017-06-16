@@ -24,6 +24,14 @@
     <defaultvalue><![CDATA[{date('Y-m-d H:i')}]]></defaultvalue>
    </row>
    <row>
+    <qid><![CDATA[4958]]></qid>
+    <scale_id><![CDATA[0]]></scale_id>
+    <sqid><![CDATA[0]]></sqid>
+    <language><![CDATA[pt]]></language>
+    <specialtype/>
+    <defaultvalue><![CDATA[{date('H:i')}]]></defaultvalue>
+   </row>
+   <row>
     <qid><![CDATA[4643]]></qid>
     <scale_id><![CDATA[0]]></scale_id>
     <sqid><![CDATA[0]]></sqid>
@@ -115,6 +123,24 @@
     <same_default><![CDATA[0]]></same_default>
     <relevance><![CDATA[1]]></relevance>
    </row>
+   <row>
+    <qid><![CDATA[4958]]></qid>
+    <parent_qid><![CDATA[0]]></parent_qid>
+    <sid><![CDATA[454287]]></sid>
+    <gid><![CDATA[662]]></gid>
+    <type><![CDATA[D]]></type>
+    <title><![CDATA[q3]]></title>
+    <question/>
+    <preg/>
+    <help/>
+    <other><![CDATA[N]]></other>
+    <mandatory><![CDATA[N]]></mandatory>
+    <question_order><![CDATA[5]]></question_order>
+    <language><![CDATA[pt]]></language>
+    <scale_id><![CDATA[0]]></scale_id>
+    <same_default><![CDATA[0]]></same_default>
+    <relevance><![CDATA[1]]></relevance>
+   </row>
   </rows>
  </questions>
  <question_attributes>
@@ -134,6 +160,11 @@
     <qid><![CDATA[4923]]></qid>
     <attribute><![CDATA[date_max]]></attribute>
     <value><![CDATA["now"]]></value>
+   </row>
+   <row>
+    <qid><![CDATA[4958]]></qid>
+    <attribute><![CDATA[date_format]]></attribute>
+    <value><![CDATA[HH:MM]]></value>
    </row>
   </rows>
  </question_attributes>
