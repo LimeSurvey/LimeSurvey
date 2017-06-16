@@ -114,12 +114,27 @@ class DateTimeDefaultAnswerExpressionTest extends \PHPUnit_Framework_TestCase
             self::$surveyId
         );
 
+        $correctDate = date('d/m/Y');
+        $this->assertNotEquals(
+            false,
+            strpos(
+                $qanda[0][1],
+                sprintf(
+                    "val('%s')",
+                    $correctDate
+                )
+            ),
+            'Showing todays date'
+        );
+
         // NB: Empty value, since default answer expression is not parsed by qanda.
+        /*
         $this->assertNotEquals(
             false,
             strpos($qanda[0][1], "val('')"),
             'Showing empty date due to wrong expression'
         );
+         */
 
         // NB: Value below is todays date in format Y-m-d, which can't be
         // parsed by qanda (expects Y-m-d H:i).
