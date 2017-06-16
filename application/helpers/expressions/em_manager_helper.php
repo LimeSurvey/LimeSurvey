@@ -8703,7 +8703,6 @@ EOD;
                                     $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
 
                                     if ($dateTime === false) {
-                                        // Can happen if e.g. default answer is date('Y-m-d') but date format d.m.Y.
                                         $message = sprintf(
                                             'Could not convert date %s to format %s. Please check your date format settings.',
                                             trim($value),
