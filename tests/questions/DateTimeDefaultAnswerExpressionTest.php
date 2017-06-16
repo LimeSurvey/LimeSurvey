@@ -5,9 +5,9 @@ namespace ls\tests;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @since 2017-06-13
+ * @since 2017-06-16
  */
-class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
+class DateTimeDefaultAnswerExpressionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var TestHelper
@@ -37,7 +37,7 @@ class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
 
         self::$testHelper = new TestHelper();
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_917744.lss';
+        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_454287.lss';
         if (!file_exists($surveyFile)) {
             die('Fatal error: found no survey file');
         }
@@ -69,23 +69,23 @@ class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * q1 is hidden question with default answer "now".
-     * @group q01
+     * Test the question with wrong default answer expression.
+     * @group expr
      */
-    public function testQ1()
+    public function testWrongDefaultAnswerExpression()
     {
-        list($question, $group, $sgqa) = self::$testHelper->getSgqa('G1Q00001', self::$surveyId);
-        $surveyMode = 'group';
-        $LEMdebugLevel = 0;
+        global $thissurvey;
+        $thissurvey = self::$surveyId;
 
-        self::$testHelper->activateSurvey(self::$surveyId);
+        list($question, $group, $sgqa) = self::$testHelper->getSgqa('G1Q00005', self::$surveyId);
 
-        // Must fetch this AFTER survey is activated.
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
         \Yii::app()->setController(new \CController('dummyid'));
         buildsurveysession(self::$surveyId);
+        $surveyMode = 'group';
+        $LEMdebugLevel = 0;
         $result = \LimeExpressionManager::StartSurvey(
             self::$surveyId,
             $surveyMode,
@@ -101,39 +101,23 @@ class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
             $result
         );
 
-        $qid = $question->qid;
-        $gseq = 0;
-        $_POST['relevance' . $qid] = 1;
-        $_POST['relevanceG' . $gseq] = 1;
-        $_POST['lastgroup'] = self::$surveyId . 'X' . $group->gid;
-        $_POST['movenext'] = 'movenext';
-        $_POST['thisstep'] = 1;
-        $_POST['sid'] = self::$surveyId;
-        $_POST[$sgqa] = '10:00';
         $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
 
         $moveResult = \LimeExpressionManager::NavigateForwards();
-        $result = \LimeExpressionManager::ProcessCurrentResponses();
-        $this->assertEquals($result[$sgqa]['value'], '1970-01-01 10:00');
-
-        $moveResult = \LimeExpressionManager::NavigateForwards();
-        // Result is empty dummy text question.
-        \LimeExpressionManager::ProcessCurrentResponses();
-
-        // Check answer in database.
-        $query = 'SELECT * FROM lime_survey_' . self::$surveyId;
-        $result = \Yii::app()->db->createCommand($query)->queryAll();
-        $this->assertEquals($result[0][$sgqa], '1970-01-01 10:00:00', 'Answer in database is 10:00');
 
         // Check result from qanda.
         $qanda = \retrieveAnswers(
             $_SESSION['survey_' . self::$surveyId]['fieldarray'][0],
             self::$surveyId
         );
-        $this->assertEquals(false, strpos($qanda[0][1], "val('11:00')"), 'No 11:00 value from qanda');
-        $this->assertNotEquals(false, strpos($qanda[0][1], "val('10:00')"), 'One 10:00 value from qanda');
 
-        self::$testHelper->deactivateSurvey(self::$surveyId);
+        // NB: Empty value, since default answer expression is not parsed by qanda.
+        $this->assertNotEquals(false, (strpos($qanda[0][1], "val('')")));
+
+        // NB: Value below is todays date in format Y-m-d, which can't be
+        // parsed by qanda (expects Y-m-d H:i).
+        // $_SESSION['survey_' . self::$surveyId][$sgqa]);
     }
+
 }

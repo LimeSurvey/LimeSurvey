@@ -73,4 +73,38 @@ class TestHelper extends \PHPUnit_Framework_TestCase {
         return $surveyOptions;
     }
 
+    /**
+     * @param int $surveyId
+     * @return void
+     */
+    public function activateSurvey($surveyId)
+    {
+        $survey = \Survey::model()->findByPk($surveyId);
+        $survey->anonymized = '';
+        $survey->datestamp = '';
+        $survey->ipaddr = '';
+        $survey->refurl = '';
+        $survey->savetimings = '';
+        $survey->save();
+        \Survey::model()->resetCache();  // Make sure the saved values will be picked up
+
+        $result = \activateSurvey($surveyId);
+        $this->assertEquals(['status' => 'OK'], $result, 'Activate survey is OK');
+    }
+
+    /**
+     * @param int $surveyId
+     * @return void
+     */
+    public function deactivateSurvey($surveyId)
+    {
+        $date     = date('YmdHis');
+        $oldSurveyTableName = \Yii::app()->db->tablePrefix."survey_{$surveyId}";
+        $newSurveyTableName = \Yii::app()->db->tablePrefix."old_survey_{$surveyId}_{$date}";
+        \Yii::app()->db->createCommand()->renameTable($oldSurveyTableName, $newSurveyTableName);
+        $survey = \Survey::model()->findByPk($surveyId);
+        $survey->active = 'N';
+        $result = $survey->save();
+        $this->assertTrue($result);
+    }
 }
