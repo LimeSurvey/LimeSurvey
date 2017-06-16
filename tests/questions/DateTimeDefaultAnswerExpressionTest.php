@@ -101,9 +101,11 @@ class DateTimeDefaultAnswerExpressionTest extends \PHPUnit_Framework_TestCase
             $result
         );
 
+        // Qanda needs this.
         $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
         $_SESSION['survey_' . self::$surveyId]['step'] = 1;
 
+        // Move one step to run expressions.
         $moveResult = \LimeExpressionManager::NavigateForwards();
 
         // Check result from qanda.
@@ -113,11 +115,75 @@ class DateTimeDefaultAnswerExpressionTest extends \PHPUnit_Framework_TestCase
         );
 
         // NB: Empty value, since default answer expression is not parsed by qanda.
-        $this->assertNotEquals(false, (strpos($qanda[0][1], "val('')")));
+        $this->assertNotEquals(
+            false,
+            strpos($qanda[0][1], "val('')"),
+            'Showing empty date due to wrong expression'
+        );
 
         // NB: Value below is todays date in format Y-m-d, which can't be
         // parsed by qanda (expects Y-m-d H:i).
         // $_SESSION['survey_' . self::$surveyId][$sgqa]);
+    }
+
+    /**
+     * @group expr2
+     */
+    public function testCorrectDefaultAnswerExpression()
+    {
+        global $thissurvey;
+        $thissurvey = self::$surveyId;
+
+        list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
+
+        $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
+
+        \Yii::app()->setConfig('surveyID', self::$surveyId);
+        \Yii::app()->setController(new \CController('dummyid'));
+        buildsurveysession(self::$surveyId);
+        $surveyMode = 'group';
+        $LEMdebugLevel = 0;
+        $result = \LimeExpressionManager::StartSurvey(
+            self::$surveyId,
+            $surveyMode,
+            $surveyOptions,
+            false,
+            $LEMdebugLevel
+        );
+        $this->assertEquals(
+            [
+                'hasNext' => 1,
+                'hasPrevious' => null
+            ],
+            $result
+        );
+
+        // Qanda needs this.
+        $_SESSION['survey_' . self::$surveyId]['maxstep'] = 2;
+        $_SESSION['survey_' . self::$surveyId]['step'] = 1;
+
+        // Move one step to run expressions.
+        $moveResult = \LimeExpressionManager::NavigateForwards();
+
+        // Check result from qanda.
+        $qanda = \retrieveAnswers(
+            $_SESSION['survey_' . self::$surveyId]['fieldarray'][1],  // 1 = second question (q2)
+            self::$surveyId
+        );
+
+        $correctDate = date('d/m/Y');
+
+        $this->assertNotEquals(
+            false,
+            strpos(
+                $qanda[0][1],
+                sprintf(
+                    "val('%s')",
+                    $correctDate
+                )
+            ),
+            'Showing todays date'
+        );
     }
 
 }
