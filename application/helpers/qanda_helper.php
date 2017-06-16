@@ -1067,7 +1067,11 @@ function do_date($ia)
         if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
             $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', trim($dateoutput));
-            $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
+            if ($datetimeobj) {
+                $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
+            } else {
+                $dateoutput = '';
+            }
         }
 
 
@@ -1090,7 +1094,11 @@ function do_date($ia)
         if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
             $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', trim($dateoutput));
-            $dateoutput  = $datetimeobj->format($dateformatdetails['phpdate']);
+            if ($datetimeobj) {
+                $dateoutput  = $datetimeobj->format($dateformatdetails['phpdate']);
+            } else {
+                $dateoutput = '';
+            }
         }
 
         // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
