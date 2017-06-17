@@ -1,7 +1,7 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## [Not released]
+## [1.5.3] - 2017-06-17
 
 ### Dev
 - Improve filter on sid, gid and qid
