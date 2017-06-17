@@ -1,7 +1,7 @@
 # Change Log
 Only partial changelog, [commit history](https://framagit.org/Shnoulle/LimeSurvey/commits/2.06_SondagesPro) show all changelog.
 
-## [Unreleased]
+## [1.6.0] - 2017-06-17
 
 ### Fix
 - Unable to install (runtimePath)
