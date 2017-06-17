@@ -115,3 +115,27 @@ function hideQuestionWithRelevanceSubQuestion(){
         }
     });
 }
+/**
+ * Hide parent multiple list 
+ * @see core/package/limesurvey/survey.js:triggerEmRelevanceSubQuestion
+ * @see https://bugs.limesurvey.org/view.php?id=11787
+ * Must be before ready (event happen before ready)
+ */
+function hideMultipleColumn(){
+    $("[id^='question']").on('relevance:on',".multiple-list [id^='javatbd']",function(event,data) {
+        if(event.target != this) return;
+        data = $.extend({style:'hidden'}, data);
+        if(data.style=='hidden'){
+            $(this).closest(".list-unstyled").removeClass("ls-hidden")
+        }
+    });
+    $("[id^='question']").on('relevance:off',".multiple-list [id^='javatbd']",function(event,data) {
+        if(event.target != this) return;
+        data = $.extend({style:'hidden'}, data);
+        if(data.style=='hidden'){
+            if($(this).closest(".list-unstyled").find("[id^='javatbd']:visible").length==0){
+                $(this).closest(".list-unstyled").addClass("ls-hidden");
+            }
+        }
+    });
+}

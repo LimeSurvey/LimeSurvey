@@ -1574,6 +1574,8 @@ function do_list_radio($ia)
     $iColumnWidth = '';
     if ($iNbCols > 1)
     {
+        // Add a class on the wrapper
+        $coreClass .= " multiple-list nbcol-{$iNbCols}";
         // First we calculate the width of each column
         // Max number of column is 12 http://getbootstrap.com/css/#grid
         $iColumnWidth = round(12 / $iNbCols);
@@ -2180,8 +2182,9 @@ function do_multiplechoice($ia)
     $iRowCount        = 0;
     $isOpen           = false;       // Is a column opened
 
-    // TODO: check if still used
-    if($iNbCols > 1) {
+    if ($iNbCols > 1) {
+        // Add a class on the wrapper
+        $coreClass .= " multiple-list nbcol-{$iNbCols}";
         // First we calculate the width of each column
         // Max number of column is 12 http://getbootstrap.com/css/#grid
         $iColumnWidth = round(12 / $iNbCols);
