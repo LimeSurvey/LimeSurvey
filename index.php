@@ -200,10 +200,10 @@ $config = require_once(APPPATH . 'config/internal' . EXT);
 
 if (!file_exists(APPPATH . 'config/config' . EXT)) {
     // If Yii can not start due to unwritable runtimePath, present an error
-    $runtimePath = $config['runtimePath'];
-    if (!is_dir($runtimePath) || !is_writable($runtimePath)) {
+    $sDefaultRuntimePath = realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime');
+    if (!is_dir($sDefaultRuntimePath) || !is_writable($sDefaultRuntimePath)) {
         // @@TODO: present html page styled like the installer
-        die (sprintf('%s should be writable by the webserver (766 or 776).', $runtimePath));
+        die (sprintf('%s should be writable by the webserver (766 or 776).', $sDefaultRuntimePath));
     }
 }
 
