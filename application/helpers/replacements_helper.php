@@ -715,7 +715,7 @@ EOD;
     $coreReplacements['SAVEFORM'] = $_saveform;
     $coreReplacements['SAVEHEADING'] = gT("Save your unfinished survey");
     $coreReplacements['SAVEMESSAGE'] = gT("Enter a name and password for this survey and click save below.")."<br />\n".gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n<span class='emailoptional'>".gT("If you give an email address, an email containing the details will be sent to you.")."</span><br /><br />\n".gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
-    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
+    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config, leave it to be sure to have something (EM setVariableAndTokenMappingsForExpressionManager replace it)
     $coreReplacements['SITENAME'] = Yii::app()->getConfig('sitename');
     $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SUBMITBUTTON'] = $_submitbutton;

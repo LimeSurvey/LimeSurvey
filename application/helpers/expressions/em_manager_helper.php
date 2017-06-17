@@ -3635,7 +3635,13 @@
             $this->qid2validationEqn = array();
             $this->groupSeqInfo = array();
             $this->gseq2relevanceStatus = array();
-
+            /* Fill some static know vars , the used is always $this->knownVars (even if set in templatereplace function) */
+            $this->knownVars['SID'] = array(
+                'code'=>$this->sid,
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
             /* Add the core replacement before question code : needed if use it in equation , use SID to never send error */
             templatereplace("{SID}");
 
@@ -4228,6 +4234,12 @@
                     'jsName'=>'',
                     'readWrite'=>'N',
                 );
+                $this->knownVars['TOKEN'] = array(
+                    'code'=>$_SESSION[$this->sessid]['token'],
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
 
                 $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
                 if($token) {
@@ -4248,13 +4260,13 @@
                 $attrs = array_keys(getTokenFieldsAndNames($surveyid));
 
                 $blankVal = array(
-                'code'=>'',
-                'type'=>'',
-                'jsName_on'=>'',
-                'jsName'=>'',
-                'readWrite'=>'N',
+                    'code'=>'',
+                    'type'=>'',
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
                 );
-
+                // DON'T set $this->knownVars['TOKEN'] = $blankVal; becuase optout/optin can need it, then don't replace this from templatereplace
                 foreach ($attrs as $key)
                 {
                     if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/',$key))
