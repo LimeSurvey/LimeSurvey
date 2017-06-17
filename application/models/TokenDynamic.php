@@ -34,14 +34,14 @@ class TokenDynamic extends LSActiveRecord
             self::sid($sid);
             $refresh = true;
         }
-        
+
         $model = parent::model(__CLASS__);
-        
+
         //We need to refresh if we changed sid
         if ($refresh === true) $model->refreshMetaData();
         return $model;
     }
-      
+
     /**
      * Sets the survey ID for the next model
      *
@@ -92,8 +92,8 @@ class TokenDynamic extends LSActiveRecord
             array('mpid','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
             array('blacklisted', 'in','range'=>array('Y','N'), 'allowEmpty'=>true),
             array('emailstatus', 'default', 'value' => $this->emailstatus),
-            // array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),   
-            // array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),                          
+            // array('validfrom','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
+            // array('validuntil','date', 'format'=>array('yyyy-MM-dd', 'yyyy-MM-dd HH:mm', 'yyyy-MM-dd HH:mm:ss',), 'allowEmpty'=>true),
             // Date rules currently don't work properly with MSSQL, deactivating for now
         );
     }
@@ -102,7 +102,7 @@ class TokenDynamic extends LSActiveRecord
     * Checks to make sure that all required columns exist in this tokens table
     * (some older tokens tables dont' get udated properly)
     *
-    * This method should be moved to db update for 2.05 version so it runs only 
+    * This method should be moved to db update for 2.05 version so it runs only
     * once per token table / backup token table
     */
     public function checkColumns() {
@@ -128,7 +128,7 @@ class TokenDynamic extends LSActiveRecord
         } else {
             // On some installs we have created not null for participant_id and blacklisted fix this
             $columns = array('blacklisted', 'participant_id');
-            
+
             foreach ($columns as $columnname)
             {
                 $definition = $tableSchema->getColumn($columnname);
@@ -144,12 +144,12 @@ class TokenDynamic extends LSActiveRecord
     public function findUninvited($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
         $command = new CDbCriteria;
-        $command->condition = '';    
+        $command->condition = '';
         $command->addCondition("(completed ='N') or (completed='')");
         $command->addCondition("token <> ''");
         $command->addCondition("email <> ''");
 
-        if ($bEmail) { 
+        if ($bEmail) {
             $command->addCondition("(sent = 'N') or (sent = '')");
         } else {
             $command->addCondition("(sent <> 'N') AND (sent <> '')");
@@ -157,20 +157,20 @@ class TokenDynamic extends LSActiveRecord
 
         if ($SQLemailstatuscondition)
             $command->addCondition($SQLemailstatuscondition);
-            
+
         if ($SQLremindercountcondition)
             $command->addCondition($SQLremindercountcondition);
-            
+
         if ($SQLreminderdelaycondition)
             $command->addCondition($SQLreminderdelaycondition);
-            
-        if ($aTokenIds)     
+
+        if ($aTokenIds)
             $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')" );
-            
+
         if ($iMaxEmails)
             $command->limit = $iMaxEmails;
-            
-        $command->order = 'tid';    
+
+        $command->order = 'tid';
 
         $oResult = TokenDynamic::model()->findAll($command);
         return $oResult;
@@ -179,11 +179,11 @@ class TokenDynamic extends LSActiveRecord
     public function findUninvitedIDs($aTokenIds = false, $iMaxEmails = 0, $bEmail = true, $SQLemailstatuscondition = '', $SQLremindercountcondition = '', $SQLreminderdelaycondition = '')
     {
         $command = new CDbCriteria;
-        $command->condition = '';    
+        $command->condition = '';
         $command->addCondition("(completed ='N') or (completed='')");
         $command->addCondition("token <> ''");
         $command->addCondition("email <> ''");
-        if ($bEmail) { 
+        if ($bEmail) {
             $command->addCondition("(sent = 'N') or (sent = '')");
         } else {
             $command->addCondition("(sent <> 'N') AND (sent <> '')");
@@ -191,20 +191,20 @@ class TokenDynamic extends LSActiveRecord
 
         if ($SQLemailstatuscondition)
             $command->addCondition($SQLemailstatuscondition);
-            
+
         if ($SQLremindercountcondition)
             $command->addCondition($SQLremindercountcondition);
-            
+
         if ($SQLreminderdelaycondition)
             $command->addCondition($SQLreminderdelaycondition);
-            
-        if ($aTokenIds)     
+
+        if ($aTokenIds)
             $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')" );
-            
+
         if ($iMaxEmails)
             $command->limit = $iMaxEmails;
-            
-        $command->order = 'tid';    
+
+        $command->order = 'tid';
 
         $oResult=$this->getCommandBuilder()
             ->createFindCommand($this->getTableSchema(), $command)
@@ -212,7 +212,7 @@ class TokenDynamic extends LSActiveRecord
             ->queryColumn();
         return $oResult;
     }
-    
+
     function insertParticipant($data)
     {
             $token = new self;
@@ -252,7 +252,7 @@ class TokenDynamic extends LSActiveRecord
     {
         return Yii::app()->db->createCommand("SELECT tid FROM {{tokens_{$iSurveyID}}} WHERE token IS NULL OR token=''")->queryAll();
     }
-    
+
     public static function countAllAndCompleted($sid)
     {
         $select = array(
@@ -277,11 +277,11 @@ class TokenDynamic extends LSActiveRecord
         //get token length from survey settings
         $tlrow = Survey::model()->findByAttributes(array("sid"=>self::$sid));
         $iTokenLength = $tlrow->tokenlength;
-       
+
         //get all existing tokens
         $criteria = $this->getDbCriteria();
         $criteria->select = 'token';
-        $ntresult = $this->findAllAsArray($criteria);   
+        $ntresult = $this->findAllAsArray($criteria);
         foreach ($ntresult as $tkrow)
         {
             $existingtokens[] = $tkrow['token'];
@@ -299,7 +299,7 @@ class TokenDynamic extends LSActiveRecord
         //update specific token row
         $itresult = $this->updateToken($iTokenID, $newtoken);
         return $newtoken;
-    }  
+    }
 
     /**
      * Creates tokens for all token records that have empty token fields and returns the number
@@ -380,7 +380,7 @@ class TokenDynamic extends LSActiveRecord
     {
         if ($this->usesleft>0)
         {
-            $this->completed='N'; 
+            $this->completed='N';
         }
         return parent::beforeSave();
     }
@@ -414,7 +414,7 @@ class TokenDynamic extends LSActiveRecord
 
     /**
      * Get CDbCriteria for a json search string
-     * 
+     *
      * @param array $condition
      * @return \CDbCriteria
      */
@@ -422,7 +422,7 @@ class TokenDynamic extends LSActiveRecord
     {
         $i=0;
         $j=1;
-        $tobedonelater =array(); 
+        $tobedonelater =array();
         $command = new CDbCriteria;
         $command->condition = '';
         $iNumberOfConditions = (count($condition)+1)/4;
@@ -434,27 +434,27 @@ class TokenDynamic extends LSActiveRecord
             $sValue=$condition[($i*4)+2];
             switch ($sOperator)
             {
-                case 'equal': 
+                case 'equal':
                     $command->addCondition($sFieldname.' = :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = $sValue;
                     break;
-                case 'contains': 
+                case 'contains':
                     $command->addCondition($sFieldname.' LIKE :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = '%'.$sValue.'%';
                     break;
-                case 'notequal': 
+                case 'notequal':
                     $command->addCondition($sFieldname.' <> :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = $sValue;
                     break;
-                case 'notcontains': 
+                case 'notcontains':
                     $command->addCondition($sFieldname.' NOT LIKE :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = '%'.$sValue.'%';
                     break;
-                case 'greaterthan': 
+                case 'greaterthan':
                     $command->addCondition($sFieldname.' > :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = $sValue;
                     break;
-                case 'lessthan': 
+                case 'lessthan':
                     $command->addCondition($sFieldname.' < :condition_'.$i, $sConnectingOperator);
                     $aParams[':condition_'.$i] = $sValue;
                     break;
@@ -474,7 +474,7 @@ class TokenDynamic extends LSActiveRecord
         {
             $command->params = $aParams;
         }
-        
+
         return $command;
     }
 

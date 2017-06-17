@@ -47,12 +47,13 @@
                 <?php } ?>
             </li>
             <?php } else { ?>
-            <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$baselang"); ?>" >
+
+            <li><a accesskey='d' target='_blank' href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$baselang)); ?>" >
                     <img src='<?php echo $sImageURL;?>do.png' alt='<?php echo $icontext;?>' />
                 </a>
             </li>
             <?php } ?>
-                
+
             <?php if($surveylocale || $surveysettings || $surveysecurity || $quotas || $assessments || $surveycontent) { ?>
             <li><a href='#'>
                     <img src='<?php echo $sImageURL;?>edit.png' alt='<?php eT("Survey properties");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
@@ -96,11 +97,11 @@
                             </li>
                             <?php } ?>
                         <?php } ?>
-                	</ul>
+                    </ul>
                 </li>
             <?php } ?>
-            
-            <?php if($surveydelete || $surveytranslate || Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>            
+
+            <?php if($surveydelete || $surveytranslate || Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')) { ?>
             <li><a href="#">
                     <img src='<?php echo $sImageURL;?>tools.png' alt='<?php eT("Tools");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a><ul>
                     <?php if ($surveydelete) { ?>
@@ -145,10 +146,10 @@
                         </li>
                         <?php } ?>
                     <?php } ?>
-                	</ul>
+                    </ul>
                 </li>
-            <?php } ?> 
-            
+            <?php } ?>
+
             <?php if($surveyexport || Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) { ?>
             <li><a href='#'>
                     <img src='<?php echo $sImageURL;?>display_export.png' alt='<?php eT("Display / Export");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
@@ -157,7 +158,7 @@
                         <li><a href='#'>
                             <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("Export...");?></a>
                             <?php } ?>
-                       		<ul>
+                               <ul>
                             <?php if($surveyexport) { ?>
                                 <li><a href='<?php echo $this->createUrl("admin/export/sa/survey/action/exportstructurexml/surveyid/$surveyid");?>' >
                                     <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("Survey structure (.lss)");?></a>
@@ -203,15 +204,15 @@
                             ?>
                             <li><a href='<?php echo $this->createUrl("admin/export/quexml/surveyid/$surveyid");?>' >
                                 <img src='<?php echo $sImageURL;?>export_30.png' alt='' /> <?php eT("queXML PDF export");?></a></li>
-                            <?php 
+                            <?php
                     } ?>
-                	</ul>
+                    </ul>
                 </li>
-            <?php } ?> 
-            
+            <?php } ?>
+
             <?php if($respstatsread || $responsescreate || $responsesread) { ?>
-            	<li><a href='#'><img src='<?php echo $sImageURL;?>responses.png' alt='<?php eT("Responses");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
-            		<ul>
+                <li><a href='#'><img src='<?php echo $sImageURL;?>responses.png' alt='<?php eT("Responses");?>' width="<?php echo $iIconSize;?>" height="<?php echo $iIconSize;?>"/></a>
+                    <ul>
                     <?php if($respstatsread) {
                             if($activated) { ?>
                             <li><a href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid/");?>' >
@@ -239,9 +240,9 @@
                                 <img src='<?php echo $sImageURL;?>saved_disabled_30.png' alt='' /> <?php eT("Partial (saved) responses");?></a></li>
                             <?php }
                     } ?>
-                	</ul>
+                    </ul>
                 </li>
-            <?php } ?>    
+            <?php } ?>
 
             <?php if($surveycontent)
                 {
