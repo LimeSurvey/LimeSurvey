@@ -12,9 +12,9 @@
 /**
  * Expression manager relevance system
  */
-.ls-hidden {display:none !important;}/* Need important : template can set display:block/table etc ... after */
+.js .ls-hidden.ls-unrelevant {display:none}/* 3 class , and don't hide without javascript*/
 .ls-unrelevant{}
-.ls-disabled{opacity:0.4;}
+.js .ls-disabled{opacity:0.4;}
 
 
 /* Some tools

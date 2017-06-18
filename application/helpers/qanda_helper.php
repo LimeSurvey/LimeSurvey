@@ -657,6 +657,40 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
 }
 
 /**
+ * Return class of a specific row (hidden by relevance)
+ * @param string $sqga The sgqa of the subquestion or answer (rowname)
+ * @param array $aQuestionAttributes the question attributes
+ * @return string
+ */
+
+function currentRelevecanceClass($surveyId,$baseName,$name,$aQuestionAttributes) {
+    $relevanceStatus=!isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$name]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$name];
+    if($relevanceStatus) {
+        return "";
+    }
+    $sExcludeAllOther = trim($aQuestionAttributes['exclude_all_others']);
+    $sClass="ls-unrelevant ";
+
+    /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
+    if($sExcludeAllOther) {
+        foreach(explode(';',$sExcludeAllOther) as $sExclude)
+        {
+            $sExclude = $baseName . $sExclude;
+            if ((!isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude])
+                && (isset($_SESSION["survey_{$surveyid}"][$sExclude]) && $_SESSION["survey_{$surveyid}"][$sExclude] == "Y")
+            ) {
+                return "ls-unrelevant ls-disabled";
+            }
+        }
+    }
+
+    $filterStyle=!empty($aQuestionAttributes['array_filter_style']); // Currently null/0/false=> hidden , 1 : disabled
+    if($filterStyle) {
+        return "ls-unrelevant ls-disabled";
+    }
+    return "ls-unrelevant ls-hidden";
+}
+/**
  * @param string $rowname
  */
 function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
@@ -668,45 +702,7 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
     //~ if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
     //~ {
         //~ // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
-        //~ if (isset($aQuestionAttributes['exclude_all_others']))
-        //~ {
-            //~ $disableit=false;
-            //~ foreach(explode(';',trim($aQuestionAttributes['exclude_all_others'])) as $eo)
-            //~ {
-                //~ $eorow = $ia[1] . $eo;
-                //~ if ((!isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow])
-                    //~ && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y"))
-                //~ {
-                    //~ $disableit = true;
-                //~ }
-            //~ }
-            //~ if ($disableit)
-            //~ {
-                //~ $htmltbody2 .= " disabled='disabled'";
-            //~ }
-            //~ else
-            //~ {
-                //~ if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
-                //~ {
-                    //~ $htmltbody2 .= " style='display: none'";
-                //~ }
-                //~ else
-                //~ {
-                    //~ $htmltbody2 .= " disabled='disabled'";
-                //~ }
-            //~ }
-        //~ }
-        //~ else
-        //~ {
-            //~ if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
-            //~ {
-                //~ $htmltbody2 .= " style='display: none'";
-            //~ }
-            //~ else
-            //~ {
-                //~ $htmltbody2 .= " disabled='disabled'";
-            //~ }
-        //~ }
+
     //~ }
 
     //~ return $htmltbody2;
@@ -2211,12 +2207,9 @@ function do_multiplechoice($ia)
         $i++;                                       // general count of loop, to check if the item is the last one for column process. Never reset.
         $iRowCount++;                               // counter of number of row by column. Is reset to zero each time a column is full.
         $myfname     = $ia[1].$ansrow['title'];
-        $extra_class ="";
 
-        /* Check for array_filter */
-        $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+        $relevanceClass=currentRelevecanceClass($iSurveyId,$ia[1],$myfname,$aQuestionAttributes);
         $checkedState  = '';
-
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
@@ -2248,8 +2241,7 @@ function do_multiplechoice($ia)
         // Insert row
         // Display the answer row
         $sRows .= doRender('/survey/questions/answer/multiplechoice/rows/answer_row', array(
-            'extra_class'             => $extra_class,
-            'sDisplayStyle'           => $sDisplayStyle,
+            'relevanceClass'          => $relevanceClass,
             'name'                    => $ia[1],  // field name
             'title'                   => $ansrow['title'],
             'question'                => $ansrow['question'],
@@ -6415,31 +6407,6 @@ function do_array_dual($ia)
     Yii::app()->getClientScript()->registerScript("doDualScaleFunction{$ia[0]}","{$doDualScaleFunction}({$ia[0]});");
 
     return array($answer, $inputnames);
-}
-
-/**
- * Depending on prefix and suffix, the center col will vary
- * on sm screens (xs is always 12).
- * @deprecated or @todo : fix it
- * @param string $prefix
- * @param string $suffix
- * @return int
- */
-function decide_sm_col($prefix, $suffix)
-{
-    if ($prefix !== '' && $suffix !== '')
-    {
-        // Each prefix/suffix has 2 col space
-        return 8;
-    }
-    elseif ($prefix !== '' || $suffix !=='')
-    {
-        return 10;
-    }
-    else
-    {
-        return 12;
-    }
 }
 
 /**
