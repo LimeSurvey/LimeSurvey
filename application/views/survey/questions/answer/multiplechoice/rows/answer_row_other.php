@@ -2,9 +2,7 @@
 /**
  * Multiple Choice Html : item 'other' row
  *
- * @var $sDisplayStyle
  * @var $sDisable
- * @var $sDisplayStyle
  * @var $myfname
  * @var $othertext
  * @var $checkedState
@@ -18,7 +16,7 @@
 ?>
 
 <!-- answer_row_other -->
-    <li id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-text-item form-group form-inline' <?php echo $sDisplayStyle; ?> >
+    <li id='javatbd<?php echo $myfname; ?>' class='question-item answer-item checkbox-text-item form-group form-inline <?php echo $relevanceClass; ?>' >
 
         <!-- Checkbox + label -->
         <div class="form-group checkbox-item othertext-label-checkox-container">

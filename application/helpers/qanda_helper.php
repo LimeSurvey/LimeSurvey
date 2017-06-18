@@ -658,7 +658,9 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
 
 /**
  * Return class of a specific row (hidden by relevance)
- * @param string $sqga The sgqa of the subquestion or answer (rowname)
+ * @param int $surveyId actual survey id
+ * @param string $baseName the base name of the question
+ * @param string $name The name of the question/row to test
  * @param array $aQuestionAttributes the question attributes
  * @return string
  */
@@ -668,16 +670,14 @@ function currentRelevecanceClass($surveyId,$baseName,$name,$aQuestionAttributes)
     if($relevanceStatus) {
         return "";
     }
-    $sExcludeAllOther = trim($aQuestionAttributes['exclude_all_others']);
-    $sClass="ls-unrelevant ";
-
+    $sExcludeAllOther = isset($aQuestionAttributes['exclude_all_others']) ? trim($aQuestionAttributes['exclude_all_others']) : '';
     /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
     if($sExcludeAllOther) {
         foreach(explode(';',$sExcludeAllOther) as $sExclude)
         {
             $sExclude = $baseName . $sExclude;
             if ((!isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude])
-                && (isset($_SESSION["survey_{$surveyid}"][$sExclude]) && $_SESSION["survey_{$surveyid}"][$sExclude] == "Y")
+                && (isset($_SESSION["survey_{$surveyId}"][$sExclude]) && $_SESSION["survey_{$surveyId}"][$sExclude] == "Y")
             ) {
                 return "ls-unrelevant ls-disabled";
             }
@@ -2241,7 +2241,6 @@ function do_multiplechoice($ia)
         // Insert row
         // Display the answer row
         $sRows .= doRender('/survey/questions/answer/multiplechoice/rows/answer_row', array(
-            'relevanceClass'          => $relevanceClass,
             'name'                    => $ia[1],  // field name
             'title'                   => $ansrow['title'],
             'question'                => $ansrow['question'],
@@ -2250,6 +2249,7 @@ function do_multiplechoice($ia)
             'sCheckconditionFunction' => $sCheckconditionFunction,
             'myfname'                 => $myfname,
             'sValue'                  => $sValue,
+            'relevanceClass'          => $relevanceClass,
         ), true);
 
         ////
@@ -2272,7 +2272,7 @@ function do_multiplechoice($ia)
     {
         $iRowCount++;
         $myfname = $ia[1].'other';
-
+        $relevanceClass=currentRelevecanceClass($iSurveyId,$ia[1],$myfname,$aQuestionAttributes);
         $checkedState = '';
         // othercbox can be not display, because only input text goes to database
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])!='')
@@ -2321,7 +2321,6 @@ function do_multiplechoice($ia)
         // Display the answer row
         $sRows .= doRender('/survey/questions/answer/multiplechoice/rows/answer_row_other', array(
             'myfname'                    => $myfname,
-            'sDisplayStyle'              => (isset($sDisplayStyle))?$sDisplayStyle:'',
             'othertext'                  => $othertext,
             'checkedState'               => $checkedState,
             'kpclass'                    => $kpclass,
@@ -2329,6 +2328,7 @@ function do_multiplechoice($ia)
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => $checkconditionFunction,
             'sValueHidden'               => $sValueHidden,
+            'relevanceClass'          => $relevanceClass,
         ), true);
 
         ////
