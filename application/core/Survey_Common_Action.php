@@ -386,7 +386,7 @@ class Survey_Common_Action extends CAction
     /**
      * Display the update notification
      */
-    function _updatenotification()
+    protected function _updatenotification()
     {
         // Never use Notification model for database update.
         // TODO: Real fix: No database queries while doing database update, meaning
