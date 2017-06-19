@@ -410,7 +410,8 @@ class Survey_Common_Action extends CAction
                 {
                     UniqueNotification::broadcast(array(
                         'title' => gT('Security update!')." (".gT("Current version: ").$currentVersion.")",
-                        'message' => gT('A security update is available.')." <a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
+                        'message' => gT('A security update is available.')." <a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>",
+                        'importance' => Notification::HIGH_IMPORTANCE
                     ), $superadmins);
                 }
                 else if(Yii::app()->session['unstable_update'] )
@@ -418,7 +419,8 @@ class Survey_Common_Action extends CAction
                     UniqueNotification::broadcast(array(
                         'title' => gT('New UNSTABLE update available')." (".gT("Current version: ").$currentVersion.")",
                         'markAsNew' => false,
-                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
+                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>",
+                        'importance' => Notification::HIGH_IMPORTANCE
                     ), $superadmins);
                 }
                 else
@@ -426,7 +428,8 @@ class Survey_Common_Action extends CAction
                     UniqueNotification::broadcast(array(
                         'title' => gT('New update available')." (".gT("Current version: ").$currentVersion.")",
                         'markAsNew' => false,
-                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
+                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>",
+                        'importance' => Notification::HIGH_IMPORTANCE
                     ), $superadmins);
                 }
             }
