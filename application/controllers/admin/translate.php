@@ -372,11 +372,6 @@ class translate extends Survey_Common_Action {
                                 'onchange' => "window.open(this.options[this.selectedIndex].value,'_top')"
                             )
                         );
-        $language_list .= CHtml::closeTag('div');
-        $language_list .= CHtml::closeTag('div');
-        $language_list .= CHtml::closeTag('div');
-        $language_list .= CHtml::closeTag('div');
-        $language_list .= '';
         if ( count(Survey::model()->findByPk($iSurveyID)->additionalLanguages) > 1 )
         {
             $selected = ( ! isset($tolang) ) ? "selected" : "";
@@ -408,6 +403,9 @@ class translate extends Survey_Common_Action {
 
         $language_list .= CHtml::closeTag('select');
         $language_list .= CHtml::closeTag('div'); // End of menubar-right
+        $language_list .= CHtml::closeTag('div');
+        $language_list .= CHtml::closeTag('div');
+        $language_list .= CHtml::closeTag('div');
 
         return $language_list;
     }
@@ -830,13 +828,13 @@ class translate extends Survey_Common_Action {
 
         $translateoutput = "";
         $translateoutput .= CHtml::openTag('table', array('class'=>'translate'));
-        $translateoutput .= CHtml::openTag('tr');
         if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
         {
-            $translateoutput.='<colgroup valign="top" width="8%" />';
+            $translateoutput.='<colgroup width="8%" />';
         }
-        $translateoutput .= '<colgroup valign="top" width="37" />';
-        $translateoutput .= '<colgroup valign="top" width="55%" />';
+        $translateoutput .= '<colgroup width="37" />';
+        $translateoutput .= '<colgroup width="55%" />';
+        $translateoutput .= CHtml::openTag('tr');
         if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
         {
             $translateoutput .= CHtml::tag('th', array(), CHtml::tag('b', array(), gT('Question code / ID')));
@@ -900,7 +898,7 @@ class translate extends Survey_Common_Action {
                                 ),
                                 showJavaScript($textfrom)
                             );
-        $translateoutput .= CHtml::openTag('td', array('valign'=>'middle'));
+        $translateoutput .= CHtml::openTag('td');
         $translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
         $translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
         if (is_numeric($iScaleID)) $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
