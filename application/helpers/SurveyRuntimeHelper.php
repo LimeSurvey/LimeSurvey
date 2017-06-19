@@ -1293,7 +1293,7 @@ class SurveyRuntimeHelper {
         /* Add the relevance class */
         if (!$lemQuestionInfo['relevant'])
         {
-            $aQuestionClass[]='ls-unrelevant';
+            $aQuestionClass[]='ls-irrelevant';
             $aQuestionClass[]='ls-hidden';
         }
         if ($lemQuestionInfo['hidden']){ /* Can use aQuestionAttributes too */

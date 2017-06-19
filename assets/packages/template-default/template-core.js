@@ -92,31 +92,31 @@ function triggerEmClassChangeTemplate(){
     });
 }
 /**
- * Hide question if all sub-questions is hidden
+ * Hide/show question if all sub-questions is hidden
  * @see core/package/limesurvey/survey.js:triggerEmRelevanceSubQuestion
  * @see https://bugs.limesurvey.org/view.php?id=10055 (partial)
  * Must be before ready (event happen before ready)
  */
 function hideQuestionWithRelevanceSubQuestion(){
-    $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
+    $("[id^='question']:not(.ls-irrelevant)").on('relevance:on',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
         if(data.style=='hidden'){
-            $(this).closest("[id^='question']:not(.ls-unrelevant)").removeClass("ls-hidden")
+            $(this).closest("[id^='question']").removeClass("ls-hidden")
         }
     });
-    $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
+    $("[id^='question']:not(.ls-hidden)").on('relevance:off',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
         if(data.style=='hidden'){
             if($(this).closest("[id^='question']").find("[id^='javatbd']:visible").length==0){
-                $(this).closest("[id^='question']").addClass("ls-hidden");// ls-hidden only is used only for Equation question type actually (but think must fix and use another class)
+                $(this).closest("[id^='question']").addClass("ls-hidden");
             }
         }
     });
 }
 /**
- * Hide parent multiple list 
+ * Hide/show parent multiple list 
  * @see core/package/limesurvey/survey.js:triggerEmRelevanceSubQuestion
  * @see https://bugs.limesurvey.org/view.php?id=11787
  * Must be before ready (event happen before ready)

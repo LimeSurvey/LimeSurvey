@@ -679,16 +679,16 @@ function currentRelevecanceClass($surveyId,$baseName,$name,$aQuestionAttributes)
             if ((!isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude])
                 && (isset($_SESSION["survey_{$surveyId}"][$sExclude]) && $_SESSION["survey_{$surveyId}"][$sExclude] == "Y")
             ) {
-                return "ls-unrelevant ls-disabled";
+                return "ls-irrelevant ls-disabled";
             }
         }
     }
 
     $filterStyle=!empty($aQuestionAttributes['array_filter_style']); // Currently null/0/false=> hidden , 1 : disabled
     if($filterStyle) {
-        return "ls-unrelevant ls-disabled";
+        return "ls-irrelevant ls-disabled";
     }
-    return "ls-unrelevant ls-hidden";
+    return "ls-irrelevant ls-hidden";
 }
 /**
  * @param string $rowname

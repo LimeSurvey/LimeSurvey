@@ -1914,7 +1914,7 @@ function checkCompletedQuota($surveyid,$return=false)
             ////Create filtering
             // Array of field with quota array value
             $aQuotaFields=array();
-            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
+            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is irrelevant (em_manager_helper line 6548)
             $aQuotaRelevantFieldnames=array();
             // To count number of hidden questions
             $aQuotaQid=array();

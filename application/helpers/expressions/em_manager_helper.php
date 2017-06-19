@@ -6206,7 +6206,7 @@
                         {
                             $relevantSQs[] = $sgqa;
                         }
-                        // This just remove the last ranking : don't control validity of answers done: user can rank unrelevant answers .... See Bug #09774
+                        // This just remove the last ranking : don't control validity of answers done: user can rank irrelevant answers .... See Bug #09774
                         continue;
                     }
 
@@ -6675,7 +6675,7 @@
             /**
              * Control value against value from survey : see #11611
              */
-            $sgqas = explode('|',$LEM->qid2code[$qid]); /* Must remove all session alert, even if unrelevant or hidden */
+            $sgqas = explode('|',$LEM->qid2code[$qid]); /* Must remove all session alert, even if irrelevant or hidden */
             foreach($sgqas as $sgqa)
             {
                 $validityString=self::getValidityString($sgqa);
@@ -10323,7 +10323,7 @@ EOD;
                         break;
                     case '!': //List - dropdown
                     case 'L': //LIST drop-down/radio-button list
-                        if(substr($sgq,-5)!='other')// We must validate $value==="0", then don't use empty. $value is not set if unrelevant , then don't use $value!==null
+                        if(substr($sgq,-5)!='other')// We must validate $value==="0", then don't use empty. $value is not set if irrelevant , then don't use $value!==null
                         {
                             if($value=="-oth-")
                             {
