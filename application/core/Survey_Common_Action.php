@@ -388,8 +388,8 @@ class Survey_Common_Action extends CAction
      */
     function _updatenotification()
     {
-        // Lower dbversionnumbers will not have the notifications table.
-        if (Yii::app()->getConfig('dbversionnumber') < 259) {
+        // Lower dbversionnumbers will not have the notifications table or the hash column.
+        if (Yii::app()->getConfig('dbversionnumber') < 263) {
             return;
         }
 
