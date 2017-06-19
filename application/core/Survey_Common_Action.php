@@ -388,8 +388,10 @@ class Survey_Common_Action extends CAction
      */
     function _updatenotification()
     {
-        // Lower dbversionnumbers will not have the notifications table or the hash column.
-        if (Yii::app()->getConfig('dbversionnumber') < 263) {
+        // Never use Notification model for database update.
+        // TODO: Real fix: No database queries while doing database update, meaning
+        // don't call _renderWrappedTemplate.
+        if (get_class($this) == 'databaseupdate') {
             return;
         }
 
