@@ -457,7 +457,7 @@ class templates extends Survey_Common_Action
     * @access public
     * @return void
     */
-    public function templatecopy()
+    public function atemplatecopy()
     {
         if (!Permission::model()->hasGlobalPermission('templates','create'))
         {
@@ -492,6 +492,56 @@ class templates extends Survey_Common_Action
         }
         else
         {
+            $this->getController()->redirect(array("admin/templates/sa/view"));
+        }
+    }
+
+
+    /**
+    * Function responsible to copy a template.
+    *
+    * @access public
+    * @return void
+    */
+    public function templatecopy()
+    {
+        if (!Permission::model()->hasGlobalPermission('templates','create')){
+            die('No permission');
+        }
+
+        $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
+        $copydir = sanitize_dirname(Yii::app()->request->getPost("copydir"));
+        $action  = Yii::app()->request->getPost("action");
+
+        if ($newname && $copydir) {
+            // Copies all the files from one template directory to a new one
+            Yii::app()->loadHelper('admin/template');
+            $newdirname  = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
+            $copydirname = getTemplatePath($copydir);
+            $oFileHelper = new CFileHelper;
+            $mkdirresult = mkdir_p($newdirname);
+
+            if ($mkdirresult == 1) {
+                // We just copy the while directory structure, but only the xml file
+                $oFileHelper->copyDirectory($copydirname,$newdirname, array('fileTypes' => array('xml')));
+                $templatename = $newname;
+                //TemplateConfiguration::removeAllNodes($newdirname);
+                TemplateConfiguration::extendsConfig($copydir, $newname );
+                $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
+            }
+
+            elseif ($mkdirresult == 2)
+            {
+                Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
+                $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$copydir));
+            }
+            else
+            {
+                Yii::app()->setFlashMessage(sprintf(gT("Unable to create directory `%s`."), $newname),'error');
+                Yii::app()->setFlashMessage(gT("Please check the directory permissions."));
+                $this->getController()->redirect(array("admin/templates/sa/view"));
+            }
+        }else{
             $this->getController()->redirect(array("admin/templates/sa/view"));
         }
     }
