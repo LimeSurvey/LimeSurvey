@@ -138,105 +138,97 @@ class translate extends Survey_Common_Action {
      */
     private function _displayUntranslatedFields($iSurveyID, $tolang, $baselang, $tab_names, $baselangdesc, $tolangdesc)
     {
+      // Define aData
         $aData['surveyid'] = $iSurveyID;
         $aData['tab_names'] = $tab_names;
         $aData['tolang'] = $tolang;
         $aData['baselang'] = $baselang;
+        $aData['baselangdesc'] = $baselangdesc;
+        $aData['tolangdesc'] = $tolangdesc;
 
-        foreach( $tab_names as $type )
-        {
-            $aData['amTypeOptions'][] = $this->setupTranslateFields($type);
-        }
-
+        //This is for the tab navbar
+        $aData['amTypeOptions'] = array_map(array($this,'setupTranslateFields'),$tab_names);
         $aViewUrls['translateformheader_view'][] = $aData;
+
+        //Set the output as empty
         $aViewUrls['output'] = '';
         // Define content of each tab
-        $count = 0;
-        foreach( $tab_names as $type )
-        {
-            $amTypeOptions = $this->setupTranslateFields($type);
-            $type2 = $amTypeOptions["associated"];
 
+        //iterate through all tabs
+        $allTabNames = count($tab_names);
+        for($i=0;$i<$allTabNames;$i++ )
+        {
+          $type= $tab_names[$i];
+            $amTypeOptions = $this->setupTranslateFields($type);
+            // Setup form
+            $evenRow = FALSE; //deprecated => using css
+
+            $all_fields_empty = TRUE;
+            
+            $resultbase = $this->query($type, "querybase", $iSurveyID, $tolang, $baselang);
+            $resultto = $this->query($type, "queryto", $iSurveyID, $tolang, $baselang);
+
+            $type2 = $amTypeOptions["associated"];
             $associated = FALSE;
             if ( ! empty($type2) )
             {
                 $associated = TRUE;
+                //get type otions again again
                 $amTypeOptions2 = $this->setupTranslateFields($type2);
                 $resultbase2 = $this->query($type, "querybase", $iSurveyID, $tolang, $baselang);
                 $resultto2 = $this->query($type, "queryto", $iSurveyID, $tolang, $baselang);
             }
-            // Setup form
-            // start a counter in order to number the input fields for each record
-            $i = 0;
-            $evenRow = FALSE;
-            $all_fields_empty = TRUE;
 
-            $resultbase = $this->query($type, "querybase", $iSurveyID, $tolang, $baselang);
-            $resultto = $this->query($type, "queryto", $iSurveyID, $tolang, $baselang);
-            $aData['baselangdesc'] = $baselangdesc;
-            $aData['tolangdesc'] = $tolangdesc;
             $aData['type'] = $type;
-
-            if($count<1)
-            {
-                $aData['activeTab']=true;
-                $count++;
-            }
-            else
-            {
-                $aData['activeTab']=false;
-            }
-
+            $aData['activeTab']=($i<1);
             $aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
             $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatetabs_view", $aData, true);
-            foreach ( $resultbase as $rowfrom )
+
+            for($j=0;$j<count($resultbase);$j++)
             {
+              $rowfrom = $resultbase[$j];
                 $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
-                $textto = $resultto[$i][$amTypeOptions["dbColumn"]];
+                
+                $textto = $resultto[$j][$amTypeOptions["dbColumn"]];
                 if ( $associated )
                 {
-                    $textfrom2 = htmlspecialchars_decode($resultbase2[$i][$amTypeOptions2["dbColumn"]]);
-                    $textto2 = $resultto2[$i][$amTypeOptions2["dbColumn"]];
+                    $textfrom2 = htmlspecialchars_decode($resultbase2[$j][$amTypeOptions2["dbColumn"]]);
+                    $textto2 = $resultto2[$j][$amTypeOptions2["dbColumn"]];
                 }
-
+               
                 $gid = ( $amTypeOptions["gid"] == TRUE ) ? $gid = $rowfrom['gid'] : NULL;
                 $qid = ( $amTypeOptions["qid"] == TRUE ) ? $qid = $rowfrom['qid'] : NULL;
 
                 $textform_length = strlen(trim($textfrom));
-                if ( $textform_length > 0 )
-                {
-                    $all_fields_empty = FALSE;
-                }
 
-                $aData['textfrom'] = $textfrom;
-                $aData['textfrom2'] = $textfrom2;
-                $aData['textto'] = $textto;
-                $aData['textto2'] = $textto2;
-                $aData['rowfrom'] = $rowfrom;
-                $aData['rowfrom2'] = $resultbase2;
-                $aData['evenRow'] = $evenRow;
-                $aData['gid'] = $gid;
-                $aData['qid'] = $qid;
-                $aData['amTypeOptions'] = $amTypeOptions;
-                $aData['amTypeOptions2'] = $amTypeOptions2;
-                $aData['i'] = $i;
-                $aData['type'] = $type;
-                $aData['type2'] = $type2;
-                $aData['associated'] = $associated;
+                $all_fields_empty = !( $textform_length > 0 );
 
-                $evenRow = !($evenRow);
+                $aData = $aData + array(
+                  'textfrom' => $this->_cleanup($textfrom, array()),
+                  'textfrom2' => $this->_cleanup($textfrom2, array()),
+                  'textto' => $this->_cleanup($textto, array()),
+                  'textto2' => $this->_cleanup($textto2, array()),
+                  'rowfrom' => $rowfrom,
+                  'rowfrom2' => $resultbase2,
+                  'evenRow' => $evenRow,
+                  'gid' => $gid,
+                  'qid' => $qid,
+                  'amTypeOptions' => $amTypeOptions,
+                  'amTypeOptions2' => $amTypeOptions2,
+                  'i' => $j,
+                  'type' => $type,
+                  'type2' => $type2,
+                  'associated' => $associated,
+                );
                 $aData['translateFields'] = $this->displayTranslateFields($iSurveyID, $gid, $qid, $type,
-                                            $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow);
+                                            $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $j, $rowfrom, $evenRow);
                 if ($associated && strlen(trim((string)$textfrom2)) > 0)
                 {
-                    $evenRow = !($evenRow);
                     $aData['translateFields'] .= $this->displayTranslateFields($iSurveyID, $gid, $qid, $type2,
-                                            $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $i, $resultbase2[$i], $evenRow);
+                                            $amTypeOptions2, $baselangdesc, $tolangdesc, $textfrom2, $textto2, $j, $resultbase2[$j], $evenRow);
                 }
 
                 $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatefields_view", $aData, true);
-
-                $i++;
             } // end while
 
             $aData['all_fields_empty'] = $all_fields_empty;
@@ -244,10 +236,9 @@ class translate extends Survey_Common_Action {
             $aData['bReadOnly']=!Permission::model()->hasSurveyPermission($iSurveyID, 'translations', 'update');
             $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatefieldsfooter_view", $aData, true);
         } // end foreach
-
         // Submit buttonrender
         $aViewUrls['translatefooter_view'][] = $aData;
-
+        // var_dump($aViewUrls);
         return $aViewUrls;
     }
 
@@ -408,6 +399,12 @@ class translate extends Survey_Common_Action {
         $language_list .= CHtml::closeTag('div');
 
         return $language_list;
+    }
+
+    private function _cleanup($string, $options=array()){
+        $oTidy = new tidy;
+        $cleansedString = $oTidy->repairString($string);
+        return $cleansedString;
     }
 
     /**
@@ -827,21 +824,21 @@ class translate extends Survey_Common_Action {
     {
 
         $translateoutput = "";
-        $translateoutput .= CHtml::openTag('table', array('class'=>'translate'));
-        if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
-        {
-            $translateoutput.='<colgroup width="8%" />';
-        }
-        $translateoutput .= '<colgroup width="37" />';
-        $translateoutput .= '<colgroup width="55%" />';
-        $translateoutput .= CHtml::openTag('tr');
-        if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
-        {
-            $translateoutput .= CHtml::tag('th', array(), CHtml::tag('b', array(), gT('Question code / ID')));
-        }
-        $translateoutput .= CHtml::tag('th', array(), CHtml::tag('b', array(), $baselangdesc));
-        $translateoutput .= CHtml::tag('th', array(), CHtml::tag('b', array(), $tolangdesc));
-        $translateoutput .= CHtml::closeTag("tr");
+        $translateoutput .= CHtml::openTag('div', array('class'=>'container-fluid'));
+          // if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
+          // {
+          //     $translateoutput.='<colgroup width="8%" />';
+          // }
+          //$translateoutput .= '<colgroup width="37" />';
+          //$translateoutput .= '<colgroup width="55%" />';
+          $translateoutput .= CHtml::openTag('div', array('class' => 'row'));
+            if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
+            {
+                $translateoutput .= CHtml::tag('div', array('class'=>'col-md-2'), CHtml::tag('b', array(), gT('Question code / ID')));
+            }
+            $translateoutput .= CHtml::tag('div', array('class'=>'col-sm-5'), CHtml::tag('b', array(), $baselangdesc));
+            $translateoutput .= CHtml::tag('div', array('class'=>'col-sm-5'), CHtml::tag('b', array(), $tolangdesc));
+          $translateoutput .= CHtml::closeTag("div");
 
         return $translateoutput;
     }
@@ -866,67 +863,64 @@ class translate extends Survey_Common_Action {
     $baselangdesc, $tolangdesc, $textfrom, $textto, $i, $rowfrom, $evenRow)
     {
         $translateoutput = "";
-        $translateoutput .= CHtml::openTag('tr', array('class' => ( $evenRow ) ? 'odd' : 'even'));
+        $translateoutput .= CHtml::openTag('div', array('class'=>'row'));
+          $value1 = ( ! empty($amTypeOptions["id1"]) ) ? $rowfrom[$amTypeOptions["id1"]] : "";
+          $value2 = ( ! empty($amTypeOptions["id2"]) ) ? $rowfrom[$amTypeOptions["id2"]] : "";
+          $iScaleID = ( ! empty($amTypeOptions["scaleid"]) ) ? $rowfrom[$amTypeOptions["scaleid"]] : "";
+          // Display text in original language
+          // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
+          if ($type=='answer')
+          {
+              //print_r($rowfrom->attributes);die();
+              $translateoutput .= CHtml::tag("div",array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->questions->title)." (".$rowfrom->questions->qid.")");
+          }
+          if ($type=='question_help' || $type=='question')
+          {
+              //print_r($rowfrom->attributes);die();
+              $translateoutput .= CHtml::tag("div",array("class"=>'col-sm-2'),htmlspecialchars($rowfrom->title)." ({$rowfrom->qid})");
+          }
+          else if ($type=='subquestion')
+          {
+              //print_r($rowfrom->attributes);die();
+              $translateoutput .= CHtml::tag("div",array("class"=>'col-sm-2'),htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid})");
+          }
 
-        $value1 = ( ! empty($amTypeOptions["id1"]) ) ? $rowfrom[$amTypeOptions["id1"]] : "";
-        $value2 = ( ! empty($amTypeOptions["id2"]) ) ? $rowfrom[$amTypeOptions["id2"]] : "";
-        $iScaleID = ( ! empty($amTypeOptions["scaleid"]) ) ? $rowfrom[$amTypeOptions["scaleid"]] : "";
+          $translateoutput .= CHtml::tag(
+                                  'div',
+                                  array(
+                                      'class' => '_from_ col-sm-5',
+                                      'id' => "${type}_from_${i}"
+                                  ),
+                                  showJavaScript($textfrom)
+                              );
 
-        // Display text in original language
-        // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
-        if ($type=='answer')
-        {
-            //print_r($rowfrom->attributes);die();
-            $translateoutput .= "<td>".htmlspecialchars($rowfrom->questions->title)." ({$rowfrom->questions->qid})</td>\n";
-        }
-        if ($type=='question_help' || $type=='question')
-        {
-            //print_r($rowfrom->attributes);die();
-            $translateoutput .= "<td>".htmlspecialchars($rowfrom->title)." ({$rowfrom->qid})</td>\n";
-        }
-        else if ($type=='subquestion')
-        {
-            //print_r($rowfrom->attributes);die();
-            $translateoutput .= "<td>".htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid})</td>\n";
-        }
+          $translateoutput .= CHtml::openTag('div', array('class'=>'col-sm-5'));
 
-        $translateoutput .= CHtml::tag(
-                                'td',
-                                array(
-                                    'class' => '_from_',
-                                    'id' => "${type}_from_${i}"
-                                ),
-                                showJavaScript($textfrom)
-                            );
-        $translateoutput .= CHtml::openTag('td');
-        $translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
-        $translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
-        if (is_numeric($iScaleID)) $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
+            $translateoutput .= CHtml::hiddenField("{$type}_id1_{$i}", $value1);
+            $translateoutput .= CHtml::hiddenField("{$type}_id2_{$i}", $value2);
+            if (is_numeric($iScaleID)) $translateoutput .= CHtml::hiddenField("{$type}_scaleid_{$i}", $iScaleID);
+            $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
+            $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
+            $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
+                                    array(
+                                        'class' => 'col-sm-10',
+                                        'cols' => '75',
+                                        'rows' => $nrows,
+                                    )
+                                );
+            $htmleditor_data = array(
+                "edit" . $type ,
+                $type . "_newvalue_" . $i,
+                htmlspecialchars($textto),
+                $iSurveyID,
+                $gid,
+                $qid,
+                "translate" . $amTypeOptions["HTMLeditorType"]
+            );
+            $translateoutput .= $this->_loadEditor($amTypeOptions, $htmleditor_data);
 
-        $nrows = max($this->calc_nrows($textfrom), $this->calc_nrows($textto));
-
-        $translateoutput .= CHtml::hiddenField("{$type}_oldvalue_{$i}", $textto);
-        $translateoutput .= CHtml::textArea("{$type}_newvalue_{$i}", $textto,
-                                array(
-                                    'class' => 'col-sm-10',
-                                    'cols' => '75',
-                                    'rows' => $nrows,
-                                )
-                            );
-
-        $htmleditor_data = array(
-            "edit" . $type ,
-            $type . "_newvalue_" . $i,
-            htmlspecialchars($textto),
-            $iSurveyID,
-            $gid,
-            $qid,
-            "translate" . $amTypeOptions["HTMLeditorType"]
-        );
-        $translateoutput .= $this->_loadEditor($amTypeOptions, $htmleditor_data);
-
-        $translateoutput .= CHtml::closeTag("td");
-        $translateoutput .= CHtml::closeTag("tr");
+          $translateoutput .= CHtml::closeTag("div");
+        $translateoutput .= CHtml::closeTag("div");
 
         return $translateoutput;
     }
@@ -978,7 +972,9 @@ class translate extends Survey_Common_Action {
     */
     private function displayTranslateFieldsFooter()
     {
-        $translateoutput = CHtml::closeTag("table");
+         $translateoutput = CHtml::closeTag("div");
+        $translateoutput = CHtml::closeTag("div");
+      $translateoutput = CHtml::closeTag("div");
 
         return $translateoutput;
     }
