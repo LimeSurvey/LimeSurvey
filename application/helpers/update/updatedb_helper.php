@@ -1556,12 +1556,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->createTable('{{notifications}}', array(
                 'id' => 'pk',
                 'entity' => 'string(15) not null',
-                'entity_id' => 'int not null',
+                'entity_id' => 'integer not null',
                 'title' => 'string not null',  // varchar(255) in postgres
                 'message' => 'text not null',
-                'status' => 'string(15) default \'new\'',
-                'importance' => 'int default 1',
-                'display_class' => 'string(31) default \'default\'',
+                'status' => "string(15) not null default 'new' ",
+                'importance' => 'integer default 1',
+                'display_class' => "string(31) default \'default\'",
                 'created' => 'datetime not null',
                 'first_read' => 'datetime null'
             ));
