@@ -27,7 +27,6 @@ if (!defined('BASEPATH'))
  * @property string $adminemail
  * @property string $anonymized
  * @property string $faxto
- * @property string $format
  * @property string $savetimings
  * @property string $template Template name
  * @property string $language
@@ -45,7 +44,6 @@ if (!defined('BASEPATH'))
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
- * @property string $htmlemail
  * @property string $sendconfirmation
  * @property string $tokenanswerspersistence
  * @property string $assessments
@@ -100,7 +98,7 @@ class Survey extends LSActiveRecord
      */
     public $format = 'G';
     /**
-     * @var string $htmlemail : Y : all email related to this survey us HTML format
+     * @var string $htmlemail : Y : all email related to this survey use HTML format
      */
     public $htmlemail='Y';
 
