@@ -295,17 +295,17 @@ class TemplateConfiguration extends CFormModel
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
-        $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
-        $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
-        $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR  : $this->oMotherTemplate->filesPath;
-        $this->templateEditor          = (isset($this->config->engine->template_editor))           ?  $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
+
+        $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
+        $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->filesPath;
+        $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ?  $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
+        $this->siteLogo                 = (!empty($this->config->xpath("//logo")))            ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
 
         // Not mandatory (use package dependances)
-        $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
-        $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : '';
-        $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                                      : array();
+        $this->cssFramework             = (!empty($this->config->xpath("//cssframework")))    ? $this->config->engine->cssframework                                                                                  : '';
+        $this->packages                 = (!empty($this->config->xpath("//packages")))        ? $this->config->engine->packages                                                                                      : array();
 
-        /* Add depend package according to packages */
+        // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
     }
 
