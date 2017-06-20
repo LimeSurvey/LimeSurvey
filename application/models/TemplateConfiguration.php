@@ -134,6 +134,86 @@ class TemplateConfiguration extends CFormModel
         return $this->sTemplateurl;
     }
 
+    /**
+     * This function will update the config file of a given template so that it extends another one
+     * 
+     * It will:
+     * 1. Delete files and engine nodes
+     * 2. Update the name of the template
+     * 3. Change the creation/modification date to the current date
+     * 4. Change the autor name to the current logged in user
+     * 5. Change the author email to the admin email
+     *
+     * Used in template editor
+     * Both templates and configuration files must exist before using this function
+     *
+     * It's used when extending a template from template editor
+     * @param   string  $sToExtends     the name of the template to extend
+     * @param   string  $sNewName       the name of the new template
+     */
+    static public function extendsConfig($sToExtends, $sNewName)
+    {
+        $sConfigPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
+
+        // First we get the XML file
+        libxml_disable_entity_loader(false);
+        $oNewManifest = new DOMDocument();
+        $oNewManifest->load($sConfigPath."/config.xml");
+        $oConfig            = $oNewManifest->getElementsByTagName('config')->item(0);
+
+        // Then we delete the nodes that should be inherit
+        $aNodesToDelete     = array();
+        $aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
+        $aNodesToDelete[]   = $oConfig->getElementsByTagName('engine')->item(0);
+
+        foreach($aNodesToDelete as $node){
+            $oConfig->removeChild($node);
+        }
+
+        // We replace the name by the new name
+        $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
+
+        $oOldNameNode   = $oMetadatas->getElementsByTagName('name')->item(0);
+        $oNvNameNode    = $oNewManifest->createElement('name', $sNewName);
+        $oMetadatas->replaceChild($oNvNameNode, $oOldNameNode);
+
+        // We change the date
+        $today          = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+        $oOldDateNode   = $oMetadatas->getElementsByTagName('creationDate')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('creationDate', $today);
+        $oMetadatas->replaceChild($oNvDateNode, $oOldDateNode);
+
+        $oOldUpdateNode = $oMetadatas->getElementsByTagName('last_update')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('last_update', $today);
+        $oMetadatas->replaceChild($oNvDateNode, $oOldUpdateNode);
+
+        // We change the author name
+        $oOldAuthorNode   = $oMetadatas->getElementsByTagName('author')->item(0);
+        $oNvAuthorNode    = $oNewManifest->createElement('author', Yii::app()->user->name);
+        $oMetadatas->replaceChild($oNvAuthorNode, $oOldAuthorNode);
+
+        // We change the author email
+        $oOldMailNode   = $oMetadatas->getElementsByTagName('authorEmail')->item(0);
+        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(getGlobalSetting('siteadminemail')));
+        $oMetadatas->replaceChild($oNvMailNode, $oOldMailNode);
+
+        // TODO: provide more datas in the post variable such as description, url, copyright, etc
+
+        // We add the extend parameter
+        $oExtendsNode    = $oNewManifest->createElement('extends', $sToExtends);
+
+        // We test if mother template already extends another template
+        if(!empty($oMetadatas->getElementsByTagName('extends')->item(0))){
+            $oMetadatas->replaceChild($oExtendsNode, $oMetadatas->getElementsByTagName('extends')->item(0));
+        }else{
+            $oMetadatas->appendChild($oExtendsNode);
+        }
+
+        $oNewManifest->save($sConfigPath."/config.xml");
+
+        libxml_disable_entity_loader(true);
+    }
+
 
     /**
      * Create a package for the asset manager.
