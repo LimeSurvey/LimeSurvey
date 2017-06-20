@@ -634,4 +634,4 @@ CREATE TABLE prefix_settings_user (
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '264');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '292');
