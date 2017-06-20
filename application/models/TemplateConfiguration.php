@@ -151,8 +151,8 @@ class TemplateConfiguration extends CFormModel
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-        $aCssFiles   = (array) $oTemplate->config->files->css->filename;        // The CSS files of this template
-        $aJsFiles    = (array) $oTemplate->config->files->js->filename;         // The JS files of this template
+        $aCssFiles   = isset($oTemplate->config->files->css->filename)?(array) $oTemplate->config->files->css->filename:array();        // The CSS files of this template
+        $aJsFiles    = isset($oTemplate->config->files->js->filename)? (array) $oTemplate->config->files->js->filename:array();         // The JS files of this template
         $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
         // Remove/Replace mother files
