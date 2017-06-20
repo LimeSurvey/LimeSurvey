@@ -42,20 +42,6 @@
         </logo>
     </files>
 
-    <!--
-        Here the list of the css/js files the user is allowed to edit from the template editor.
-        If the template does not contain any reference to external images, those files will be published one by one with the asset manager.
-        So any edition of those files will update the tmp/asset directory, and users will not need to refresh browser cache
-    -->
-    <files_editable>
-            <css>
-                <filename>css/template.css</filename>
-                <filename>css/bootstrap.css</filename>
-            </css>
-            <js>
-                <filename>scripts/template.js</filename>
-            </js>
-    </files_editable>
 
     <!-- Here datas about how LimeSurvey should load the template -->
     <engine>
@@ -147,7 +133,7 @@
 
                 <save>
                     <file type="view" role="layout">layout_save.twig</file>
-                </save>     
+                </save>
             </screens>
 
         </template_editor>

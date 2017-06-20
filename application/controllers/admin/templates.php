@@ -788,6 +788,9 @@ class templates extends Survey_Common_Action
     */
     protected function _initcssfiles(TemplateConfiguration $oEditedTemplate, $editable=false)
     {
+        return array();
+        // TODO : this should be part of the template editor configuration now
+
         // If editable CSS files are required, and if they are defined in the template config file
         if($editable && is_object($oEditedTemplate->config->files_editable->css))
         {
@@ -803,6 +806,10 @@ class templates extends Survey_Common_Action
 
     protected function _getEditableJsFiles($oEditedTemplate)
     {
+
+        return array();
+        // TODO : this should be part of the template editor configuration now
+
         // If editable JS files are defined in the template config file
         if(is_object($oEditedTemplate->config->files_editable->js))
         {
