@@ -770,7 +770,7 @@ class templates extends Survey_Common_Action
         if (Yii::app()->session['templateeditormode'] !== 'default') {
             $sTemplateEditorMode = Yii::app()->session['templateeditormode'];
         } else {
-            $sTemplateEditorMode = getGlobalSetting('templateeditormode', 'full');
+            $sTemplateEditorMode = getGlobalSetting('templateeditormode');
         }
         $sExtension=substr(strrchr($editfile, '.'), 1);
         switch ($sExtension)
