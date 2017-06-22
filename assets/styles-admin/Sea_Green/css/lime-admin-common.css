@@ -1492,6 +1492,16 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
 #systemoverview {
   margin: 1em 0 1em 0; }
 
+#systemoverview .info div {
+	font-size: 14px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-weight: 500;
+	line-height: 1.1;
+	color: inherit;
+	text-align: center;
+}
+
 /**
  * Ajax loader
  * from : http://codepen.io/weaintplastic/pen/qEMZbx

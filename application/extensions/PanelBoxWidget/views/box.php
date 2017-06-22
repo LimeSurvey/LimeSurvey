@@ -5,13 +5,14 @@
         echo ' data-target="_blank"';
     } ?> >
         <div class="panel-heading">
-            <h3 class="panel-title"><?php eT($title); ?></h3>
+            <h1 class="panel-title"><?php eT($title); ?></h1>
         </div>
         <div class="panel-body">
             <div class="panel-body-ico">
                 <a href="<?php echo $url; ?>"<?php if ($external) {
                     echo ' target="_blank"';
                 } ?>>
+		<span class="sr-only"><?php eT($title); ?></span>
                 <span class="icon-<?php echo $ico; ?>" style="font-size: 4em">
                 </span>
                 </a>
