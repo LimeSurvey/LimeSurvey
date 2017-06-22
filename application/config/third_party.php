@@ -370,5 +370,14 @@ return array(
             'jquery.autocomplete'.$minVersion.'.js'
         ),
     ),
-
+    'jszip' => array(
+        'basePath' => 'third_party.jszip',
+        'js' => array(
+            'jszip.js',
+            'fileSaver.js',
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    )
 );

@@ -58,6 +58,8 @@ $internalConfig = array(
         // This line just point application.vendor.Twig to application/third_party/Twig
         // @see: ETwigViewRenderer::$twigPathAlias
         'application.vendor.Twig'=>'application.third_party.Twig',
+        // 'CaptchaExtendedAction' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedAction.php'),
+        // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
 
     'modules'=>array(
@@ -84,12 +86,13 @@ $internalConfig = array(
         'application.models.*',
         'application.controllers.*',
         'application.modules.*',
-
         'bootstrap.helpers.*',
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
-        'third_party.Twig.*'
+        'third_party.Twig.*',
+        'ext.captchaExtended.CaptchaExtendedAction',
+        'ext.captchaExtended.CaptchaExtendedValidator'
 
     ),
     'preload' => array ('log'),

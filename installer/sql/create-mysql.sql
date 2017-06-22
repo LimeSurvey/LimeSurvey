@@ -369,7 +369,7 @@ CREATE TABLE `prefix_sessions`(
 --
 CREATE TABLE `prefix_settings_global` (
   `stg_name` varchar(50) NOT NULL default '',
-  `stg_value` varchar(255) NOT NULL default '',
+  `stg_value` text NOT NULL,
   PRIMARY KEY (`stg_name`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -611,6 +611,7 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     `hash` VARCHAR(64) DEFAULT NULL COMMENT 'Hash of title, message and entity to avoid duplication',
     `created` DATETIME NOT NULL,
     `first_read` DATETIME DEFAULT NULL,
+    `hash` VARCHAR(64) DEFAULT '',
     PRIMARY KEY (`id`),
     INDEX(`entity`, `entity_id`, `status`),
     INDEX(`hash`)

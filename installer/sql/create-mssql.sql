@@ -366,7 +366,7 @@ PRIMARY KEY ( [id] )
 --
 CREATE TABLE [prefix_settings_global] (
 [stg_name] varchar(50) NOT NULL default '',
-[stg_value] nvarchar(255) NOT NULL default '',
+[stg_value] varchar(max) NOT NULL,
 PRIMARY KEY  ([stg_name])
 );
 
@@ -605,6 +605,7 @@ CREATE TABLE prefix_notifications (
     [hash] nvarchar(64) DEFAULT NULL,
     [created] datetime NOT NULL,
     [first_read] datetime DEFAULT NULL,
+    [hash] nvarchar(64) DEFAULT '',
     PRIMARY KEY ([id])
 );
 CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);

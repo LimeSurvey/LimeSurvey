@@ -1509,12 +1509,12 @@ class tokens extends Survey_Common_Action
                                 }
                             }
                             $tokenoutput .= htmlspecialchars(ReplaceFields("{$emrow['tid']}: {FIRSTNAME} {LASTNAME} ({EMAIL})", $fieldsarray)). "<br />\n";
-                            if (Yii::app()->getConfig("emailsmtpdebug") == 2)
+                            if (Yii::app()->getConfig("emailsmtpdebug") > 1)
                             {
                                 $tokenoutput .= $maildebug;
                             }
                         } else {
-                            $tokenoutput .= htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) failed. Error message:",'unescaped') . " " . $maildebug , $fieldsarray)). "<br />";
+                            $tokenoutput .= sprintf(htmlspecialchars(ReplaceFields("{$emrow['tid']}: {FIRSTNAME} {LASTNAME} ({EMAIL}). Error message: %s", $fieldsarray)),$maildebug) . "<br />\n";
                             $bSendError=true;
                         }
                     }

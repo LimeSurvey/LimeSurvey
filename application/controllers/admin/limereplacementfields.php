@@ -231,6 +231,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['TOKEN:FIRSTNAME']= gT("First name from token");
                 $replFields['TOKEN:LASTNAME']= gT("Last name from token");
                 $replFields['SURVEYNAME']= gT("Survey title");
+                $replFields['SID']= gT("Survey ID");
                 $replFields['SURVEYDESCRIPTION']= gT("Survey description");
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription) {
@@ -250,6 +251,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['TOKEN:FIRSTNAME']= gT("First name from token");
                 $replFields['TOKEN:LASTNAME']= gT("Last name from token");
                 $replFields['SURVEYNAME']= gT("Survey title");
+                $replFields['SID']= gT("Survey ID");
                 $replFields['SURVEYDESCRIPTION']= gT("Survey description");
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
@@ -273,6 +275,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['FIRSTNAME']= gT("First name from token");
                 $replFields['LASTNAME']= gT("Last name from token");
                 $replFields['SURVEYNAME']= gT("Survey title");
+                $replFields['SID']= gT("Survey ID");
                 $replFields['SURVEYDESCRIPTION']= gT("Survey description");
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)
@@ -291,6 +294,7 @@ class limereplacementfields extends Survey_Common_Action
                 $replFields['LASTNAME']= gT("Last name from token");
                 $replFields['EMAIL']= gT("Email from token");
                 $replFields['SURVEYNAME']= gT("Survey title");
+                $replFields['SID']= gT("Survey ID");
                 $replFields['SURVEYDESCRIPTION']= gT("Survey description");
                 $attributes = getTokenFieldsAndNames($surveyid, true);
                 foreach ($attributes as $attributefield => $attributedescription)

@@ -1134,8 +1134,12 @@ function do_date($ia)
         $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
-            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
-            $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
+            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
+            if($datetimeobj) {
+                $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
+            } else {
+                $dateoutput = '';  // Imported value and some old survey can have 0000-00-00 00:00:00
+            }
         }
 
 
@@ -1160,8 +1164,12 @@ function do_date($ia)
         $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
-            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
-            $dateoutput  = $datetimeobj->convert($dateformatdetails['phpdate']);
+            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
+            if ($datetimeobj) {
+                $dateoutput  = $datetimeobj->format($dateformatdetails['phpdate']);
+            } else {
+                $dateoutput = '';
+            }
         }
 
         // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
@@ -4180,8 +4188,9 @@ function do_array_5point($ia)
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_answertext', array(
-                'answerwidth'=>$answerwidth,
-                'answertext2'=>$answertext2,
+                'class'=>'answertextright',
+                'style'=>'text-align:left',
+                'th_content'=>$answertext2,
             ), true);
         }
         elseif ($right_exists)
@@ -6458,6 +6467,54 @@ function getLabelInputWidth($labelAttributeWidth,$inputAttributeWidth){
         $defaultWidth,
     );
 }
+/**
+ * Take a date string and fill out missing parts, like day, hour, minutes
+ * (not seconds).
+ * If string is NOT in standard date format (Y-m-d H:i), this methods makes no
+ * sense.
+ * Used when fetching answer for do_date, where answer can come from a default
+ * answer expression like date('Y').
+ * Will also truncate date('c') to format Y-m-d H:i.
+ * @param string $dateString
+ * @return string
+ */
+function fillDate($dateString) {
+    switch (strlen($dateString)) {
+        // Only year
+        case 4:
+            return $dateString . '-01-01 00:00';
+            break;
+        // Year and month
+        case 7:
+            return $dateString . '-01 00:00';
+            break;
+        // Year, month and day
+        case 10:
+            return $dateString . ' 00:00';
+            break;
+        // Year, month day and hour
+        case 13:
+            return $dateString . ':00';
+            break;
+        // Complete, return as is.
+        case 16:
+            return $dateString;
+            break;
+        // Assume date('c')
+        case 25:
+            $date = new DateTime($dateString);
+            if ($date) {
+                return $date->format('Y-m-d H:i');
+            } else {
+                return '';
+            }
+            break;
+        default:
+            return '';
+            break;
+    }
+}
+
 /**
  * Render the question view.
  *

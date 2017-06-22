@@ -29,7 +29,6 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $adminemail
  * @property string $anonymized
  * @property string $faxto
- * @property string $format
  * @property string $savetimings
  * @property string $template Template name
  * @property string $language
@@ -48,7 +47,6 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
- * @property string $htmlemail
  * @property string $sendconfirmation
  * @property string $tokenanswerspersistence
  * @property string $assessments
@@ -104,11 +102,14 @@ class Survey extends LSActiveRecord
      * @var array $findByPkCache
      */
     protected $findByPkCache = array();
-    /* Default settings for new survey */
 
-    /** @var string $format This settings happen for whole new Survey, not only admin/survey/sa/newsurvey */
+    /**
+     * @var string $format : A : All in one, G : Group by group, Q : question by question
+     */
     public $format = 'G';
-    /** @var string $htmlemail */
+    /**
+     * @var string $htmlemail : Y : all email related to this survey use HTML format
+     */
     public $htmlemail='Y';
 
     // TODO unused??
@@ -704,10 +705,19 @@ class Survey extends LSActiveRecord
         $iSurveyID = $this->sid;
 
         //// TODO : replace this with a HAS MANY relation !
-        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
-        if (is_null($sumresult1)) {
+        $sumresult1 = Survey::model()->with(
+            array(
+                'languagesettings' => array(
+                    'condition' => 'surveyls_language = language'
+                )
+            ))->find(
+                'sid = :surveyid',
+                array(':surveyid' => $iSurveyID)
+            ); //$sumquery1, 1) ; //Checked
+        if (is_null($sumresult1))
+        {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            $this->getController()->redirect(array("admin/index"));
+            Yii::app()->getController()->redirect(array("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
 
         $surveyinfo = $sumresult1->attributes;
@@ -1169,6 +1179,7 @@ class Survey extends LSActiveRecord
 
         return 'N';
     }
+
 
     /**
     * Method to make an approximation on how long a survey will last

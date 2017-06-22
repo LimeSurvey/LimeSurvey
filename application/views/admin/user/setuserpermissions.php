@@ -5,7 +5,7 @@
 ?>
 
 <!-- set user permissions -->
-<h3 class="pagetitle"><?php printf(gT("Edit user permissions for user %s"),"<span style='font-style:italic'>".htmlspecialchars($oUser->users_name)."</span>"); ?></h3>
+<h3 class="pagetitle"><?php printf(gT("Edit user permissions for user %s"),"<em>".\CHtml::encode($oUser->users_name)."</em>"); ?></h3>
 
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-10 col-lg-offset-1">

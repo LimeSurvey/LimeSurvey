@@ -64,18 +64,8 @@ class Survey_Common_Action extends CAction
         $params = $this->_addPseudoParams($params);
 
         if (!empty($params['iSurveyId'])) {
-            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
-            if(!$oSurvey) {
-                Yii::app()->setFlashMessage(gT("Invalid survey ID"),'error');
-                $this->getController()->redirect(array("admin/index"));
-            } elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
-                Yii::app()->setFlashMessage(gT("No permission"), 'error');
-                $this->getController()->redirect(array("admin/index"));
-            } else {
-                LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
-            }
+            LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
         }
-
         // Check if the method is public and of the action class, not its parents
         // ReflectionClass gets us the methods of the class and parent class
         // If the above method existence check passed, it might not be neceessary that it is of the action class
@@ -110,8 +100,7 @@ class Survey_Common_Action extends CAction
     private function _addPseudoParams($params)
     {
         // Return if params isn't an array
-        if (empty($params) || !is_array($params))
-        {
+        if (empty($params) || !is_array($params)) {
             return $params;
         }
 
@@ -143,7 +132,7 @@ class Survey_Common_Action extends CAction
         // with that key's value in the params
         // (only if that place is empty)
         foreach ($pseudos as $key => $pseudo) {
-            if (!empty($params[$key])) {
+            if (isset($params[$key])) {
                 $pseudo = (array) $pseudo;
                 foreach ($pseudo as $pseud) {
                     if (empty($params[$pseud])) {
@@ -153,29 +142,52 @@ class Survey_Common_Action extends CAction
             }
         }
 
+        /* Control sid,gid and qid params validity see #12434 */
         // Fill param with according existing param, replace existing parameters.
         // iGroupId/gid can be found with qid/iQuestionId
-        if(isset($params['iQuestionId']))
-        {
-            if((int) $params['iQuestionId'] >0 )
-            { //Check if the transfered iQuestionId is numeric to prevent Errors with postgresql
-                $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
-                if($oQuestion)
-                {
-                    $params['iGroupId']=$params['gid']=$oQuestion->gid;
-                }
+        if(!empty($params['iQuestionId'])) {
+            if((string)(int)$params['iQuestionId']!==(string)$params['iQuestionId']) { // pgsql need filtering before find
+                throw new CHttpException(403,gT("Invalid question id"));
+            }
+            $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
+            if(!$oQuestion) {
+                throw new CHttpException(404,gT("Question not found"));
+            }
+            if(!isset($params['iGroupId'])) {
+                $params['iGroupId']=$params['gid']=$oQuestion->gid;
             }
         }
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
-        if(isset($params['iGroupId']))
-        {
+        if(!empty($params['iGroupId'])) {
+            if((string)(int)$params['iGroupId']!==(string)$params['iGroupId']) { // pgsql need filtering before find
+                throw new CHttpException(403,gT("Invalid group id"));
+            }
             $oGroup=QuestionGroup::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
-            if($oGroup)
-            {
+            if(!$oGroup) {
+                throw new CHttpException(404,gT("Group not found"));
+            }
+            if(!isset($params['iSurveyId'])) {
                 $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oGroup->sid;
             }
         }
-
+        // Finally control validity of sid
+        if(!empty($params['iSurveyId'])) {
+            if((string)(int)$params['iSurveyId']!==(string)$params['iSurveyId']) { // pgsql need filtering before find
+                // 403 mean The request was valid, but the server is refusing action.
+                throw new CHttpException(403,gT("Invalid survey id"));
+            }
+            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
+            if(!$oSurvey) {
+                throw new CHttpException(404,gT("Survey not found"));
+            }
+            // Minimal permission needed, extra permission must be tested in each controller
+            if (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
+                // 403 mean (too) The user might not have the necessary permissions for a resource.
+                // 401 semantically means "unauthenticated"
+                throw new CHttpException(403);
+            }
+            $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oSurvey->sid;
+        }
         // Finally return the populated array
         return $params;
     }
@@ -374,39 +386,57 @@ class Survey_Common_Action extends CAction
     /**
      * Display the update notification
      */
-    public function _updatenotification()
+    protected function _updatenotification()
     {
-        // Lower dbversionnumbers will not have the notifications table.
-        if (Yii::app()->getConfig('dbversionnumber') < 259) {
+        // Never use Notification model for database update.
+        // TODO: Real fix: No database queries while doing database update, meaning
+        // don't call _renderWrappedTemplate.
+        if (get_class($this) == 'databaseupdate') {
             return;
         }
 
-        if( !Yii::app()->user->isGuest && Yii::app()->getConfig('updatable'))
-        {
+        if (!Yii::app()->user->isGuest && Yii::app()->getConfig('updatable')) {
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
             $urlUpdate = Yii::app()->createUrl("admin/update");
             $currentVersion = Yii::app()->getConfig("buildnumber");
             $superadmins = User::model()->getSuperAdmins();
 
-            if($updateNotification->result) {
-                if($updateNotification->security_update) {
-                    UniqueNotification::broadcast(array(
-                        'title' => gT('Security update!')." (".gT("Current version: ").$currentVersion.")",
-                        'message' => gT('A security update is available.')." <a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
-                    ), $superadmins);
-                } else if(Yii::app()->session['unstable_update'] ) {
-                    UniqueNotification::broadcast(array(
-                        'title' => gT('New UNSTABLE update available')." (".gT("Current version: ").$currentVersion.")",
-                        'markAsNew' => false,
-                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
-                    ), $superadmins);
+            if ($updateNotification->result) {
+                if ($updateNotification->security_update) {
+                    UniqueNotification::broadcast(
+                        array(
+                            'title' => gT('Security update!')." (".gT("Current version: ")
+                                . $currentVersion.")",
+                            'message' => gT('A security update is available.')." <a href=".$urlUpdate.">"
+                                . gT('Click here to use ComfortUpdate.')."</a>",
+                            'importance' => Notification::HIGH_IMPORTANCE
+                        ),
+                        $superadmins
+                    );
+                } elseif (Yii::app()->session['unstable_update']) {
+                    UniqueNotification::broadcast(
+                        array(
+                            'title' => gT('New UNSTABLE update available')." ("
+                                . gT("Current version: ").$currentVersion.")",
+                            'markAsNew' => false,
+                            'message' => gT('A security update is available.')."<a href=".$urlUpdate.">"
+                                . gT('Click here to use ComfortUpdate.')."</a>",
+                            'importance' => Notification::HIGH_IMPORTANCE
+                        ),
+                        $superadmins
+                    );
                 } else {
-                    UniqueNotification::broadcast(array(
-                        'title' => gT('New update available')." (".gT("Current version: ").$currentVersion.")",
-                        'markAsNew' => false,
-                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
-                    ), $superadmins);
+                    UniqueNotification::broadcast(
+                        array(
+                            'title' => gT('New update available')." (".gT("Current version: ").$currentVersion.")",
+                            'markAsNew' => false,
+                            'message' => gT('A security update is available.')."<a href=".$urlUpdate.">"
+                                . gT('Click here to use ComfortUpdate.')."</a>",
+                            'importance' => Notification::HIGH_IMPORTANCE
+                        ),
+                        $superadmins
+                    );
                 }
             }
         }

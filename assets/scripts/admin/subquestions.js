@@ -202,21 +202,22 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
 
     // We convert them to json for the request
     $codes = JSON.stringify(codes);
-
     //We build the datas for the request
-    datas                  = 'surveyid='+$elDatas.data('surveyid');
-    datas                 += '&gid='+$elDatas.data('gid');
-    datas                 += '&qid='+qid;
-    datas                 += '&codes='+$codes;
-    datas                 += '&scale_id='+scale_id;
-    datas                 += '&type=subquestion';
-    datas                 += '&position=';
-    datas                 += '&first='+first;
-    datas                 += '&language='+language+'';
+    datas = {
+        'surveyid' : $elDatas.data('surveyid'),
+        'gid' : $elDatas.data('gid'),
+        'qid' : $elDatas.data('qid'),
+        'codes' : $codes,
+        'scale_id' : scale_id, // In $elDatas.data('scale-id') ?
+        'type' : 'subquestion',
+        'position' : null,
+        'first' : first,
+        'language' : language,
+    }
 
     // We get the HTML of the new row to insert
      $.ajax({
-        type: "GET",
+        type: "GET", // We don't update DB, no need post
         url: $url,
         data: datas,
         success: function(htmlrow) {
