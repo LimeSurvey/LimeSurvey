@@ -103,5 +103,16 @@ return array(
             'bootstrap-slider',
         )
     ),
+    'adminpanel' => array(
+        'devBaseUrl' => 'assets/packages/adminpanel/build/',
+        'basePath' => 'core.adminpanel.build',
+        'coreScriptPosition'=>CClientScript::POS_END,
+        'defaultScriptFilePosition' =>CClientScript::POS_END,
+        'defaultScriptPosition' =>CClientScript::POS_END,
+        'position' =>CClientScript::POS_END,
+        'js' => array(
+            'lsadminpanel.js'
+        )
+    )
 
 );

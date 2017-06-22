@@ -19,8 +19,17 @@
     {
         $showSideMenu = true;
     }
+    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/surveyid/$surveyid");
 ?>
-<?php
+
+<div style="position:absolute; width:300px;left:0;"> 
+    <div id="vue-side-menu-app">
+        <sidebar :options="[]" get-questions-url="<?=$getQuestionsUrl ?>" :translate="{settings: '<?php eT("Survey Settings");?>', structure:'<?php eT("Survey Structure");?>' }"></sidebar>
+    </div>
+</div>
+
+<?php 
+/*
     // TODO : move to controller
     $bSurveyIsActive = (isset($surveyIsActive))?$surveyIsActive:$oSurvey->active=='Y';
     $sidemenu = (isset($sidemenu))?$sidemenu:array();
@@ -189,3 +198,5 @@
             </div><!-- /.navbar-collapse -->
         </nav>
  </div>
+*/
+?>

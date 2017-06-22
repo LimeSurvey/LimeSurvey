@@ -4,7 +4,6 @@
  * Inserted in all pages
  */
 ?>
-
 <!-- Footer -->
 <footer class='footer'>
     <div class="container-fluid">

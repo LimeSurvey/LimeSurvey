@@ -416,10 +416,71 @@ class SurveyAdmin extends Survey_Common_Action
            $aData['showLastQuestion'] = false;
         }
         $aData['templateapiversion'] = Template::model()->getTemplateConfiguration(null,$iSurveyID)->getApiVersion();
+        $cs = Yii::app()->clientScript;
+        $cs->registerPackage('adminpanel');
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
 
+    /**
+     * Ajaxified get questiongroup with containing questions
+     * 
+     *
+     */
+    public function getAjaxQuestionGroupArray($surveyid){
+        $iSurveyID = sanitize_int($surveyid);
+        $survey    = Survey::model()->findByPk($iSurveyID);
+        $baselang  = $survey->language;
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
+        $lastquestion = getGlobalSetting($setting_entry);
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+        $lastquestiongroup = getGlobalSetting($setting_entry);
+        $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $baselang), array('order'=>'group_order ASC'));
+        $aGroupViewable = array();
+        if(count($aGroups))
+        {
+            foreach($aGroups as $group)
+            {
+                $curGroup = $group->attributes;
+                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$baselang), array('order'=>'question_order ASC'));
+                $curGroup['questions'] = array();
+                foreach($group->aQuestions as $question)
+                {
+                    if(is_object($question))
+                    {
+                        $curQuestion = $question->attributes;
+                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question,true,60,'[...]',0.5);
+                        $curGroup['questions'][] =  $curQuestion;
+                    }
+                
+                }
+                $aGroupViewable[] = $curGroup;
+            }
+        }
 
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => array(
+                    'groups' => $aGroupViewable,
+                    'settings' => array(
+                        'lastquestion' => $lastquestion,
+                        'lastquestiongroup' => $lastquestiongroup,
+                    ),
+                    // 'debug' => [
+                    //     $iSurveyID,
+                    //     $survey,
+                    //     $baselang,
+                    //     $setting_entry,
+                    //     $lastquestion,
+                    //     $setting_entry,
+                    //     $lastquestiongroup
+                    // ]
+                )
+            ),
+            false,
+            false
+        );
+    }
 
     /**
     * Load list question groups view for a specified by $iSurveyID
@@ -1597,6 +1658,8 @@ class SurveyAdmin extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-json');
         App()->clientScript->registerPackage('bootstrap-switch');
         App()->getClientScript()->registerPackage('jquery-datatable');
+        App()->clientScript->defaultScriptFilePosition=CClientScript::POS_END;
+        App()->clientScript->registerPackage('adminpanel');
 
     }
 

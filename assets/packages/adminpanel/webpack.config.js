@@ -48,20 +48,29 @@ module.exports = {
             loader: "sass-loader" // compiles Sass to CSS
           }
         ]
+      },
+      {
+        test: /\.vue$/,
+        use: 'vue-loader'
       }
     ],
     loaders: [
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
+        loader: [
+          'babel-loader',
+          "eslint-loader"
+          ],
         query: {
           presets: ['es2015']
         }
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: [
+          'vue-loader'
+          ],
       },
       {
         loader: "sass-loader",
