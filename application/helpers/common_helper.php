@@ -3894,7 +3894,12 @@ function useFirebug()
 function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 {
     $date = DateTime::createFromFormat($fromdateformat, $value);
-    return $date->format($todateformat);
+    if ($date) {
+        return $date->format($todateformat);
+    } else {
+        $date = new DateTime($value);
+        return $date->format($todateformat);
+    }
 }
 
 /**
