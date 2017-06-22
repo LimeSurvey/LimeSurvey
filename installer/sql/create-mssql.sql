@@ -607,7 +607,7 @@ CREATE TABLE prefix_notifications (
     PRIMARY KEY ([id])
 );
 CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);
-CREATE INDEX [notif_hash_index ] ON [prefix_notifications] ([hash]);
+CREATE INDEX [notif_hash_index] ON [prefix_notifications] ([hash]);
 
 --
 -- Version Info
