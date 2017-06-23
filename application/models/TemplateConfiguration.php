@@ -160,6 +160,26 @@ class TemplateConfiguration extends CFormModel
     }
 
     /**
+     * Returns the layout file name for a given screen
+     *
+     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
+     * @return  string  the file name
+     */
+    public function getLayoutForScreen($sScreen)
+    {
+        $filesFromXML = $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
+
+        foreach( $filesFromXML as $file){
+
+            if ( $file->attributes()->role == "layout" ){
+                return (string) $file;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * This function will update the config file of a given template so that it extends another one
      *
      * It will:
