@@ -784,7 +784,7 @@ class templates extends Survey_Common_Action
                 break;
         }
 
-        $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
+        $editableCssFiles = $this->_initcssfiles($oEditedTemplate);
         $filesdir = $oEditedTemplate->filesPath;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
@@ -839,41 +839,38 @@ class templates extends Survey_Common_Action
     * @param boolean $editable
     * @return array
     */
-    protected function _initcssfiles(TemplateConfiguration $oEditedTemplate, $editable=false)
+    protected function _initcssfiles(TemplateConfiguration $oEditedTemplate)
     {
-        return array();
-        // TODO : this should be part of the template editor configuration now
 
-        // If editable CSS files are required, and if they are defined in the template config file
-        if($editable && is_object($oEditedTemplate->config->files_editable->css))
-        {
-            $aCssFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
+        $aScreenFiles = array();
+        $filesFromXML = (array) $oEditedTemplate->templateEditor->screens->xpath('//file');
+
+        foreach( $filesFromXML as $file){
+
+            if ( $file->attributes()->type == 'css' ){
+                $aScreenFiles[] = (string) $file;
+            }
         }
-        // Else we get all the CSS files
-        else
-        {
-            $aCssFiles = (array) $oEditedTemplate->config->files->css->filename;
-        }
-        return $aCssFiles;
+
+        $aScreenFiles = array_unique($aScreenFiles);
+        return $aScreenFiles;
+
     }
 
-    protected function _getEditableJsFiles($oEditedTemplate)
+    protected function _getEditableJsFiles(TemplateConfiguration $oEditedTemplate)
     {
+        $aScreenFiles = array();
+        $filesFromXML = (array) $oEditedTemplate->templateEditor->screens->xpath('//file');
 
-        return array();
-        // TODO : this should be part of the template editor configuration now
+        foreach( $filesFromXML as $file){
 
-        // If editable JS files are defined in the template config file
-        if(is_object($oEditedTemplate->config->files_editable->js))
-        {
-            $aJsFiles = (array) $oEditedTemplate->config->files_editable->js->filename;
+            if ( $file->attributes()->type == 'js' ){
+                $aScreenFiles[] = (string) $file;
+            }
         }
-        // Else we get all the JS files
-        else
-        {
-            $aJsFiles = (array) $oEditedTemplate->config->files->js->filename;
-        }
-        return $aJsFiles;
+
+        $aScreenFiles = array_unique($aScreenFiles);
+        return $aScreenFiles;
     }
 
     /**
