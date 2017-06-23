@@ -57,7 +57,7 @@
 
         $content = $survey->localizedTitle;
         $content .= "<span class='pull-right clearfix'>"
-                        ."<span href='#' class='fa fa-question-circle' onclick='return false;' data-html='true' data-toggle=\"popover\" title=\"".gT("Survey information")."\" data-content='".$tooltips."'>&nbsp;</span>"
+                        ."&nbsp;<span href='#' class='fa fa-question-circle' onclick='return false;' data-html='true' data-toggle=\"popover\" title=\"".gT("Survey information")."\" data-content='".$tooltips."'></span>"
                         ."</span>";
 
         $list .= CHtml::link(
