@@ -606,6 +606,7 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
+
         if (returnGlobal('changes')) {
             $changedtext = returnGlobal('changes');
             $changedtext = str_replace('<?', '', $changedtext);
@@ -631,8 +632,8 @@ class templates extends Survey_Common_Action
         $cssfiles        = $oEditedTemplate->getValidScreenFiles("css");
         $jsfiles         = $oEditedTemplate->getValidScreenFiles("js");
 
-        if ($action == "templatesavechanges" && $changedtext)
-        {
+
+        if ($action == "templatesavechanges" && $changedtext){
             Yii::app()->loadHelper('admin/template');
             $changedtext = str_replace("\r\n", "\n", $changedtext);
 
@@ -922,39 +923,12 @@ class templates extends Survey_Common_Action
             $this->getController()->redirect(array("admin/templates/sa/upload"));
         }
 
-        /**  TODO: TWIG
-        if (is_file(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename . DIRECTORY_SEPARATOR.'question_start.pstpl')) {
-            $files[] = 'question_start.pstpl';
-            $Question[] = 'question_start.pstpl';
-        }
-        **/
-
         /* See if we found the file to be edited inside template */
         /* @todo must control if is updatable : in updatable file OR is a view */
         /* Actually allow to update any file exemple css/template-core.css */
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
-        if (file_exists(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile)){
-            /* the file seems a simple file */
-            $sEditFile=realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile);
-        }elseif (file_exists($oEditedTemplate->viewPath. DIRECTORY_SEPARATOR.$editfile)){
-            /* the file seems a view file */
-            $sEditFile=realpath($oEditedTemplate->viewPath. DIRECTORY_SEPARATOR.$editfile);
-        }else{
-            /* the file seems to be invalid */
-            $sEditFile='';
-        }
-        // Make sure file is within the template path
-        if (strpos($sEditFile,realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename))===false)
-        {
-            $editfile='layout_first_page.twig';
-        }
 
-        $extension = substr(strrchr($editfile, "."), 1);
-        $highlighter = 'html';
-        if ($extension == 'css' || $extension == 'js')
-        {
-            $highlighter = $extension;
-        }
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+
         // @TODO: Proper language code conversion
         $sLanguageCode = 'en';
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');
