@@ -135,8 +135,31 @@ class TemplateConfiguration extends CFormModel
     }
 
     /**
+     * Used from the template editor.
+     * It returns an array of editable files by screen for a given file type
+     *
+     * @param   string  $sType the type of files (view/css/js)
+     * @return  array   array ( [screen name] => array([files]) )
+     */
+    public function getValidScreenFiles($sType = "view")
+    {
+        $aScreenFiles = array();
+        $filesFromXML = (array) $this->templateEditor->screens->xpath('//file');
+
+        foreach( $filesFromXML as $file){
+
+            if ( $file->attributes()->type == $sType ){
+                $aScreenFiles[] = (string) $file;
+            }
+        }
+
+        $aScreenFiles = array_unique($aScreenFiles);
+        return $aScreenFiles;
+    }
+
+    /**
      * This function will update the config file of a given template so that it extends another one
-     * 
+     *
      * It will:
      * 1. Delete files and engine nodes
      * 2. Update the name of the template
