@@ -231,7 +231,7 @@ class templates extends Survey_Common_Action
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
         $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
-        $cssfiles = $this->_initcssfiles($oEditedTemplate);
+        $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
         $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
         $tempdir = Yii::app()->getConfig('tempdir');
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
@@ -627,9 +627,9 @@ class templates extends Survey_Common_Action
         $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
         $screenname      = returnGlobal('screenname');
         $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
-        $aScreenFiles    = $this->getValidScreenFiles($sTemplateName);
-        $cssfiles        = $this->_initcssfiles($oEditedTemplate);
-        $jsfiles         = $this->_getEditableJsFiles($oEditedTemplate);
+        $aScreenFiles    = $oEditedTemplate->getValidScreenFiles("view");
+        $cssfiles        = $oEditedTemplate->getValidScreenFiles("css");
+        $jsfiles         = $oEditedTemplate->getValidScreenFiles("js");
 
         if ($action == "templatesavechanges" && $changedtext)
         {
@@ -784,7 +784,7 @@ class templates extends Survey_Common_Action
                 break;
         }
 
-        $editableCssFiles = $this->_initcssfiles($oEditedTemplate);
+        $editableCssFiles = $oEditedTemplate->getValidScreenFiles("css");
         $filesdir = $oEditedTemplate->filesPath;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
@@ -804,73 +804,6 @@ class templates extends Survey_Common_Action
         $aViewUrls['templatesummary_view'][] = $aData;
 
         return $aViewUrls;
-    }
-
-    /**
-    * Function that initialises file data.
-    *
-    * @access protected
-    * @param string $templatename
-    * @return string[]
-    */
-    protected function getValidScreenFiles($templatename)
-    {
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
-
-        $aScreenFiles = array();
-        $filesFromXML = (array) $oEditedTemplate->templateEditor->screens->xpath('//file');
-
-        foreach( $filesFromXML as $file){
-
-            if ( $file->attributes()->type == 'view' ){
-                $aScreenFiles[] = (string) $file;
-            }
-        }
-
-        $aScreenFiles = array_unique($aScreenFiles);
-        return $aScreenFiles;
-    }
-
-    /**
-    * Function that initialises cssfile data.
-    *
-    * @access protected
-    * @param TemplateConfiguration $oEditedTemplate
-    * @param boolean $editable
-    * @return array
-    */
-    protected function _initcssfiles(TemplateConfiguration $oEditedTemplate)
-    {
-
-        $aScreenFiles = array();
-        $filesFromXML = (array) $oEditedTemplate->templateEditor->screens->xpath('//file');
-
-        foreach( $filesFromXML as $file){
-
-            if ( $file->attributes()->type == 'css' ){
-                $aScreenFiles[] = (string) $file;
-            }
-        }
-
-        $aScreenFiles = array_unique($aScreenFiles);
-        return $aScreenFiles;
-
-    }
-
-    protected function _getEditableJsFiles(TemplateConfiguration $oEditedTemplate)
-    {
-        $aScreenFiles = array();
-        $filesFromXML = (array) $oEditedTemplate->templateEditor->screens->xpath('//file');
-
-        foreach( $filesFromXML as $file){
-
-            if ( $file->attributes()->type == 'js' ){
-                $aScreenFiles[] = (string) $file;
-            }
-        }
-
-        $aScreenFiles = array_unique($aScreenFiles);
-        return $aScreenFiles;
     }
 
     /**
@@ -905,8 +838,8 @@ class templates extends Survey_Common_Action
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
-        $files    = $this->getValidScreenFiles($templatename);
-        $cssfiles = $this->_initcssfiles($oEditedTemplate);
+        $files    = $oEditedTemplate->getValidScreenFiles("view");
+        $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
 
 
         // Standard Support Files
@@ -1416,7 +1349,7 @@ class templates extends Survey_Common_Action
         }
         //$myoutput[] = "</html>";
 
-        $jsfiles =  $this->_getEditableJsFiles($oEditedTemplate);
+        $jsfiles =  $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
 
         // XML Behaviour: if only one file, then $files is just a string
