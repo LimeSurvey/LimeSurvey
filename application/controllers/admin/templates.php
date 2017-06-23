@@ -1166,26 +1166,6 @@ class templates extends Survey_Common_Action
             $files   = array(0=>$files);
         }
 
-        if (is_array($files))
-        {
-            $match = 0;
-            if (in_array($editfile,$files) || in_array($editfile,$aCssAndJsfiles))
-            {
-                $match=1;
-            }
-
-            if ($match == 0)
-            {
-                if (count($files) > 0)
-                {
-                    $editfile = $files[0];
-                }
-                else
-                {
-                    $editfile = "";
-                }
-            }
-        }
 
         // Get list of 'otherfiles'
         // We can't use $oTemplate->otherFiles, because of retrocompatibility with 2.06 template and the big mess of it mixing files
@@ -1204,6 +1184,42 @@ class templates extends Survey_Common_Action
 
             closedir($handle);
         }
+
+
+
+        $editfile = $oEditedTemplate->getFilePathForEdition($editfile, array_merge($files, $aCssAndJsfiles));
+                /*
+                if (is_array($files))
+                {
+                    $match = 0;
+                    if (in_array($editfile,$files) || in_array($editfile,$aCssAndJsfiles))
+                    {
+                        $match=1;
+                    }
+
+                    if ($match == 0)
+                    {
+                        if (count($files) > 0)
+                        {
+                            $editfile = $files[0];
+                        }
+                        else
+                        {
+                            $editfile = "";
+                        }
+                    }
+                }
+                */
+
+
+                $extension = substr(strrchr($editfile, "."), 1);
+                $highlighter = 'html';
+                if ($extension == 'css' || $extension == 'js')
+                {
+                    $highlighter = $extension;
+                }
+
+
 
 
         $aData['codelanguage'] = $sLanguageCode;
