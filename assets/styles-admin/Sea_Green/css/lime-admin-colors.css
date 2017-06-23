@@ -1313,7 +1313,8 @@ fieldset[disabled] .btn-link:focus {
   .panel-primary > .panel-heading {
     color: #ffffff;
     background-color: #328637;
-    border: 1px solid #328637; }
+    border: 1px solid #328637; 
+    font-weight: 500; }
     .panel-primary > .panel-heading + .panel-collapse .panel-body {
       border-top-color: #328637; }
   .panel-primary > .panel-footer + .panel-collapse .panel-body {

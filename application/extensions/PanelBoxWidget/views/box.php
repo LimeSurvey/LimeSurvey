@@ -5,7 +5,7 @@
         echo ' data-target="_blank"';
     } ?> >
         <div class="panel-heading">
-            <h3 class="panel-title"><?php eT($title); ?></h3>
+            <div class="panel-title"><?php eT($title); ?></div>
         </div>
         <div class="panel-body">
             <div class="panel-body-ico">
@@ -13,6 +13,7 @@
                     echo ' target="_blank"';
                 } ?>>
                 <span class="icon-<?php echo $ico; ?>" style="font-size: 4em">
+		<span class="sr-only"><?php eT($title); ?></span>
                 </span>
                 </a>
             </div>

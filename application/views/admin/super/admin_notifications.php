@@ -4,6 +4,7 @@
         <a aria-expanded='false' 
             href='#'>
             <span class='fa fa-bell text-muted'></span>
+	    <span class='sr-only'><?php eT('Notifications');?></span>
         </a>
     </li>
 <?php elseif($showLoader): ?>
@@ -17,6 +18,7 @@
             <?php endif; ?>
 
             <span class='caret'></span>
+	    <span class='sr-only'><?php eT('Notifications');?></span>
         </a>
         <ul class='dropdown-menu' role='menu'>
             <li>
@@ -35,6 +37,7 @@
             <?php endif; ?>
 
             <span class='caret'></span>
+	    <span class='sr-only'><?php eT('Notifications');?></span>
         </a>
 
         <ul id='notification-outer-ul' class='dropdown-menu' role='menu'>

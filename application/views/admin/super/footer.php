@@ -13,6 +13,7 @@
             <div class="col-xs-6 col-sm-4 ">
                 <a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
                     <span class="glyphicon glyphicon-info-sign" id="info-footer"></span>
+		    <span class="sr-only"><?php eT('Limesurvey online manual');?></span>
                 </a>
             </div>
 
@@ -52,7 +53,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><?php eT("Confirm"); ?></h4>
+                <div class="modal-title"><?php eT("Confirm"); ?></div>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
@@ -90,7 +91,7 @@
         <div class="modal-content panel-danger">
             <div class="modal-header panel-heading">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><?php eT("Error"); ?></h4>
+                <div class="modal-title"><?php eT("Error"); ?></div>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("An error occurred."); ?></p>
@@ -109,7 +110,7 @@
         <div class="modal-content panel-success">
             <div class="modal-header panel-heading">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><?php eT("Success"); ?></h4>
+                <div class="modal-title"><?php eT("Success"); ?></div>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php /* This must be set in Javascript */ ?></p>
@@ -128,7 +129,7 @@
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
             <div class="modal-header panel-heading">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+                <div class="modal-title"></div>
                 <span class='notification-date text-muted'></span>
             </div>
             <div class="modal-body">
