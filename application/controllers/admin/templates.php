@@ -1029,13 +1029,11 @@ class templates extends Survey_Common_Action
         $aGlobalReplacements       = array();
         $myoutput[]                = "";
 
-        $files = $oEditedTemplate->getValidScreenFiles("view", $screenname);
+        $files       = $oEditedTemplate->getValidScreenFiles("view", $screenname);
+        $sLayoutFile = $oEditedTemplate->getLayoutForScreen($screenname);
 
         switch ($screenname)
         {
-            case 'surveylist':
-                $myoutput          = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_survey_list.twig", array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-                break;
 
             case 'question':
                 $aReplacements = array(
@@ -1085,16 +1083,10 @@ class templates extends Survey_Common_Action
                 // This is just to prevent getAllClasses to retreive .ls-hidden CSS class
                 $thissurvey['aGroups'][1]["aQuestions"][1]['templateeditor'] = true;
                 $thissurvey['aGroups'][1]["aQuestions"][2]['templateeditor'] = true;
-
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_main.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-
-                break;
-
-            case 'welcome':
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_first_page.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'register':
+                $sLayoutFile = ""; // TODO
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
 
                 $aData = array(
@@ -1116,24 +1108,10 @@ class templates extends Survey_Common_Action
                 $myoutput[] = "\n";
                 break;
 
-            case 'save':
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_save.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-                break;
-
-            case 'load':
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_load.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-                break;
-
-            case 'clearall':
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_clearall.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-                break;
-
             case 'completed':
                 $thissurvey['aCompleted']['showDefault'] = true;
                 $thissurvey['aCompleted']['aPrintAnswers']['show'] = true;
                 $thissurvey['aCompleted']['aPublicStatistics']['show'] = true;
-
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_submit.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'assessments':
@@ -1146,11 +1124,10 @@ class templates extends Survey_Common_Action
                 $thissurvey['aAssessments']["datas"]["subtotal"]["datas"][2]   = 3;
                 $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
                 $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
-
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_submit.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'printablesurvey':
+                $sLayoutFile = "TODO";
                 $aData['aReplacements'] = $aGlobalReplacements;
                 $questionoutput = array();
                 foreach (file("$templatedir/print_question.pstpl") as $op)
@@ -1191,6 +1168,7 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'printanswers':
+                $sLayoutFile = "TODO";
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/printanswers.pstpl"), array('ANSWERTABLE' => $printoutput), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
@@ -1201,11 +1179,10 @@ class templates extends Survey_Common_Action
             case 'error':
                 $thissurvey['aError']['title'] = gT("Error");
                 $thissurvey['aError']['message'] = gT("This is an error message example");
-
-
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_errors.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
         }
+
+        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
 
         $jsfiles =  $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
