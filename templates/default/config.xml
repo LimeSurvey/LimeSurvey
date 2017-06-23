@@ -106,7 +106,7 @@
                     <file type="js">./scripts/template.js</file>
                 </surveylist>
 
-                <welcome_page>
+                <welcome>
                     <file type="view" role="layout">layout_first_page.twig</file>
                     <file type="view" role="subview">./subviews/welcome.twig</file>
                     <file type="view" role="subview">./subviews/warnings.twig</file>
@@ -114,7 +114,7 @@
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>
-                </welcome_page>
+                </welcome>
 
                 <completed>
                     <file type="view" role="layout">layout_submit.twig</file>
