@@ -14,7 +14,7 @@ namespace ls\ajax;
 class AjaxHelper
 {
     /**
-     * As createAbsoluteUrl, but appends param ajax = 1 to url
+     * As Yii createUrl, but appends param ajax = 1 to url
      * Use when creating Ajax action links, like button clicks that
      * will open modals or save data.
      * @param string $route
@@ -24,7 +24,7 @@ class AjaxHelper
     public static function createUrl($route, array $params = array())
     {
         $params['ajax'] = 1;
-        return App()->createAbsoluteUrl($route, $params);
+        return App()->createUrl($route, $params);
     }
     /**
      * Echoes json with result set as $msg

@@ -2812,7 +2812,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     $sent=$mail->Send();
     $maildebug=$mail->ErrorInfo;
     if ($emailsmtpdebug>0) {
-        $maildebug .= '<li>'. gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
+        $maildebug .= '<br><strong>'. gT('SMTP debug output:').'</strong><pre>'.\CHtml::encode(ob_get_contents()).'</pre>';
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;
@@ -2967,6 +2967,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 /**
 * getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
 * @return array an array of codes that were selected else returns false
+* @deprecated not used
 */
 function getArrayFiltersForQuestion($qid)
 {
@@ -2983,6 +2984,7 @@ function getArrayFiltersForQuestion($qid)
         {
             if ($fields[2] == $val)
             {
+                /** Broken code below ...
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
                 //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
@@ -2994,6 +2996,8 @@ function getArrayFiltersForQuestion($qid)
                     if (Yii::app()->session[$fields[1].$code['title']] == "Y"
                     || Yii::app()->session[$fields[1]] == $code['title'])             array_push($selected,$code['title']);
                 }
+
+                 */
 
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
@@ -3017,6 +3021,7 @@ function getArrayFiltersForQuestion($qid)
 /**
 * getGroupsByQuestion($surveyid)
 * @return array a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
+* @deprecated  not used
 */
 function getGroupsByQuestion($surveyid) {
     $output=array();
@@ -3460,6 +3465,8 @@ function getNextCode($sourcecode)
 */
 function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
+    $iOldSurveyID = (int)$iOldSurveyID; 
+    $iNewSurveyID = (int)$iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey')
     {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/'.$iOldSurveyID.'\/)';
@@ -3879,9 +3886,13 @@ function useFirebug()
 */
 function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 {
-    Yii::import('application.libraries.Date_Time_Converter', true);
-    $date = new Date_Time_Converter($value, $fromdateformat);
-    return $date->convert($todateformat);
+    $date = DateTime::createFromFormat($fromdateformat, $value);
+    if ($date) {
+        return $date->format($todateformat);
+    } else {
+        $date = new DateTime($value);
+        return $date->format($todateformat);
+    }
 }
 
 /**
@@ -4235,30 +4246,21 @@ function isNumericInt($mStr)
 */
 function short_implode($sDelimeter, $sHyphen, $aArray)
 {
-    if (sizeof($aArray) < Yii::app()->getConfig('minlengthshortimplode'))
-    {
+    if (sizeof($aArray) < Yii::app()->getConfig('minlengthshortimplode')) {
         sort($aArray);
         return implode($sDelimeter, $aArray);
-    }
-    else
-    {
+    } else {
         sort($aArray);
         $iIndexA = 0;
         $iIndexB = 1;
-        while ($iIndexA < sizeof($aArray))
-        {
-            if ($iIndexA == 0)
-            {
+        $sResult = null;
+        while ($iIndexA < sizeof($aArray)) {
+            if ($iIndexA == 0) {
                 $sResult = $aArray[$iIndexA];
-            }
-            else
-            {
-                if (strlen($sResult) > Yii::app()->getConfig('maxstringlengthshortimplode') - strlen($sDelimeter) - 3)
-                {
+            } else {
+                if (strlen($sResult) > Yii::app()->getConfig('maxstringlengthshortimplode') - strlen($sDelimeter) - 3) {
                     return $sResult.$sDelimeter.'...';
-                }
-                else
-                {
+                } else {
                     $sResult = $sResult.$sDelimeter.$aArray[$iIndexA];
                 }
             }
@@ -4531,7 +4533,7 @@ function translateInsertansTags($newsid,$oldsid,$fieldnames)
             'language' => $language
             );
 
-            Answer::model()->update($data,$where);
+            Answer::model()->updateRecord($data,$where);
 
         } // Enf if modified
     } // end while qentry
@@ -4554,7 +4556,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0]))
             {
-                $sOldCode=preg_quote($sOldCode,'/');
+                $sOldCode=preg_quote($sOldCode,'~');
                 $arQuestion->relevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->relevance,-1,$iCount);
                 $bModified = $bModified || $iCount;
                 $arQuestion->question=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->question,-1,$iCount);
@@ -4572,7 +4574,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
         $bModified=false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
-            $sOldCode=preg_quote($sOldCode,'/');
+            $sOldCode=preg_quote($sOldCode,'~');
             $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
             $bModified = $bModified || $iCount;
             $arGroup->description=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->description,-1,$iCount);
@@ -5351,7 +5353,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 
             if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}
             $link = Yii::app()->getController()->createUrl("/admin/usergroups/sa/view/ugid/".$gn['ugid']);
-            $selecter .=" value='{$link}'>{$gn['name']}</option>\n";
+            $selecter .=" value='{$link}'>".\CHtml::encode($gn['name'])."</option>\n";
             $simplegidarray[] = $gn['ugid'];
         }
     }
@@ -5390,7 +5392,7 @@ function getGroupUserList($ugid)
         foreach($surveynames as $sv)
         {
             $surveyselecter .= "<option";
-            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
+            $surveyselecter .=" value='{$sv['uid']}'>".\CHtml::encode($sv['users_name'])." (".\CHtml::encode($sv['full_name']).")</option>\n";
         }
     }
     $surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;
@@ -5596,9 +5598,14 @@ function doFooter()
     echo getFooter();
 }
 
+/**
+ * @param $surveyid
+ * @return array|bool
+ * @deprecated
+ */
 function getDBTableUsage($surveyid){
     Yii::app()->loadHelper('admin/activate');
-    $arrCols = activateSurvey($surveyid,$surveyid,'admin.php',true);
+    $arrCols = activateSurvey($surveyid,true);
 
     $length = 1;
     foreach ($arrCols['fields'] as $col){
@@ -5619,7 +5626,7 @@ function getDBTableUsage($surveyid){
                 $length = $length + 8;
                 break;
             case 'L':
-                $legth++;
+                $length++;
                 break;
             case 'I':
             case 'I4':
@@ -5770,7 +5777,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
             in_array($sv['uid'],$authorizedUsersList))
         {
             $surveyselecter .= "<option";
-            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
+            $surveyselecter .=" value='{$sv['uid']}'>".\CHtml::encode($sv['users_name'])." ".\CHtml::encode($sv['full_name'])."</option>\n";
             $svexist = true;
         }
     }

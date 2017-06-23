@@ -788,6 +788,9 @@ class userstatistics_helper {
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
+            /**
+              FIXME $iQuestionIDlength not defined!!
+             */
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
@@ -1594,6 +1597,7 @@ class userstatistics_helper {
      * @param mixed $sql
      * @param integer $usegraph
      * @param boolean $browse
+     * @return array
      */
     protected function displayResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage) {
 
@@ -1604,6 +1608,7 @@ class userstatistics_helper {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
         $astatdata=array();
+        $sColumnName = null;
         if ($usegraph==1)
         {
             //for creating graphs we need some more scripts which are included here

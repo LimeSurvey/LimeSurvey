@@ -897,8 +897,9 @@ class questions extends Survey_Common_Action
     /**
     * AJAX Method to QuickAdd multiple Rows AJAX-based
     */
-    public function getSubquestionRowQuickAdd( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible='' )
+    public function getSubquestionRowQuickAdd( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position=null, $assessmentvisible='' )
     {
+        $qid = '{{quid_placeholder}}';
         echo $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible );
     }
     /**

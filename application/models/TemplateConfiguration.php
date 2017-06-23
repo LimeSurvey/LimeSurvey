@@ -55,6 +55,8 @@ class TemplateConfiguration extends CFormModel
     /** @var TemplateConfiguration $oMotherTemplate The template name */
     public $oMotherTemplate;
 
+    public $templateEditor;
+
 
     /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
     private $iSurveyId='';
@@ -132,6 +134,86 @@ class TemplateConfiguration extends CFormModel
         return $this->sTemplateurl;
     }
 
+    /**
+     * This function will update the config file of a given template so that it extends another one
+     * 
+     * It will:
+     * 1. Delete files and engine nodes
+     * 2. Update the name of the template
+     * 3. Change the creation/modification date to the current date
+     * 4. Change the autor name to the current logged in user
+     * 5. Change the author email to the admin email
+     *
+     * Used in template editor
+     * Both templates and configuration files must exist before using this function
+     *
+     * It's used when extending a template from template editor
+     * @param   string  $sToExtends     the name of the template to extend
+     * @param   string  $sNewName       the name of the new template
+     */
+    static public function extendsConfig($sToExtends, $sNewName)
+    {
+        $sConfigPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
+
+        // First we get the XML file
+        libxml_disable_entity_loader(false);
+        $oNewManifest = new DOMDocument();
+        $oNewManifest->load($sConfigPath."/config.xml");
+        $oConfig            = $oNewManifest->getElementsByTagName('config')->item(0);
+
+        // Then we delete the nodes that should be inherit
+        $aNodesToDelete     = array();
+        $aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
+        $aNodesToDelete[]   = $oConfig->getElementsByTagName('engine')->item(0);
+
+        foreach($aNodesToDelete as $node){
+            $oConfig->removeChild($node);
+        }
+
+        // We replace the name by the new name
+        $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
+
+        $oOldNameNode   = $oMetadatas->getElementsByTagName('name')->item(0);
+        $oNvNameNode    = $oNewManifest->createElement('name', $sNewName);
+        $oMetadatas->replaceChild($oNvNameNode, $oOldNameNode);
+
+        // We change the date
+        $today          = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+        $oOldDateNode   = $oMetadatas->getElementsByTagName('creationDate')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('creationDate', $today);
+        $oMetadatas->replaceChild($oNvDateNode, $oOldDateNode);
+
+        $oOldUpdateNode = $oMetadatas->getElementsByTagName('last_update')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('last_update', $today);
+        $oMetadatas->replaceChild($oNvDateNode, $oOldUpdateNode);
+
+        // We change the author name
+        $oOldAuthorNode   = $oMetadatas->getElementsByTagName('author')->item(0);
+        $oNvAuthorNode    = $oNewManifest->createElement('author', Yii::app()->user->name);
+        $oMetadatas->replaceChild($oNvAuthorNode, $oOldAuthorNode);
+
+        // We change the author email
+        $oOldMailNode   = $oMetadatas->getElementsByTagName('authorEmail')->item(0);
+        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(getGlobalSetting('siteadminemail')));
+        $oMetadatas->replaceChild($oNvMailNode, $oOldMailNode);
+
+        // TODO: provide more datas in the post variable such as description, url, copyright, etc
+
+        // We add the extend parameter
+        $oExtendsNode    = $oNewManifest->createElement('extends', $sToExtends);
+
+        // We test if mother template already extends another template
+        if(!empty($oMetadatas->getElementsByTagName('extends')->item(0))){
+            $oMetadatas->replaceChild($oExtendsNode, $oMetadatas->getElementsByTagName('extends')->item(0));
+        }else{
+            $oMetadatas->appendChild($oExtendsNode);
+        }
+
+        $oNewManifest->save($sConfigPath."/config.xml");
+
+        libxml_disable_entity_loader(true);
+    }
+
 
     /**
      * Create a package for the asset manager.
@@ -149,8 +231,8 @@ class TemplateConfiguration extends CFormModel
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-        $aCssFiles   = (array) $oTemplate->config->files->css->filename;        // The CSS files of this template
-        $aJsFiles    = (array) $oTemplate->config->files->js->filename;         // The JS files of this template
+        $aCssFiles   = isset($oTemplate->config->files->css->filename)?(array) $oTemplate->config->files->css->filename:array();        // The CSS files of this template
+        $aJsFiles    = isset($oTemplate->config->files->js->filename)? (array) $oTemplate->config->files->js->filename:array();         // The JS files of this template
         $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
         // Remove/Replace mother files
@@ -293,16 +375,17 @@ class TemplateConfiguration extends CFormModel
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
-        $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
-        $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
-        $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR  : $this->oMotherTemplate->filesPath;
+
+        $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
+        $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->filesPath;
+        $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ?  $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
+        $this->siteLogo                 = (!empty($this->config->xpath("//logo")))            ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
 
         // Not mandatory (use package dependances)
-        $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
-        $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : '';
-        $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                                      : array();
+        $this->cssFramework             = (!empty($this->config->xpath("//cssframework")))    ? $this->config->engine->cssframework                                                                                  : '';
+        $this->packages                 = (!empty($this->config->xpath("//packages")))        ? $this->config->engine->packages                                                                                      : array();
 
-        /* Add depend package according to packages */
+        // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
     }
 

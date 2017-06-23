@@ -52,9 +52,8 @@ class Usergroups extends Survey_Common_Action
 
                 foreach ($eguresult as $egurow)
                 {
-                    $to[] = $egurow->users->users_name . ' <' . $egurow->users->email . '>';
+                    $to[] = \CHtml::encode($egurow->users->users_name) . ' <' . $egurow->users->email . '>';
                 }
-
                 $from_user_result = User::model()->findByPk(Yii::app()->session['loginID']);
                 $from_user_row = $from_user_result;
 

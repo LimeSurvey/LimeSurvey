@@ -110,7 +110,7 @@ class ExportSurveyResultsService
                 
         $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState);
         
-        $writer->write($survey, $sLanguageCode, $oOptions,true);
+        $writer->write($survey, $sLanguageCode, $oOptions);
         $result = $writer->close();
         
         // Close resultset if needed

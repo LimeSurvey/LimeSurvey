@@ -8,7 +8,7 @@
 
     <!-- List survey publicly -->
     <div class="form-group">
-        <label class="col-sm-6 control-label" for='public'><?php  eT("List survey publicly:");?></label>
+        <label class="col-sm-6 control-label" for='listpublic'><?php  eT("List survey publicly:");?></label>
         <div class="col-sm-6">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                 'name' => 'listpublic',

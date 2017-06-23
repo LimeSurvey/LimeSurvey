@@ -1723,26 +1723,18 @@ function tokensExport($iSurveyID)
     $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}}");
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
-    if ($sEmailFiter!='')
-    {
-        if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib')))
-        {
-            $oRecordSet->andWhere("CAST(email as varchar) like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
-        }
-        else
-        {
-            $oRecordSet->andWhere("email like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
+    if ($sEmailFiter!='') {
+        if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib'))) {
+            $oRecordSet->andWhere("CAST(email as varchar) like ".dbQuoteAll('%'.$sEmailFiter.'%'));
+        } else {
+            $oRecordSet->andWhere("email like ".dbQuoteAll('%'.$sEmailFiter.'%'));
         }
     }
-    if ($iTokenStatus==1)
-    {
+    if ($iTokenStatus==1) {
         $oRecordSet->andWhere("completed<>'N'");
-    }
-    elseif ($iTokenStatus==2)
-    {
+    } elseif ($iTokenStatus==2) {
         $oRecordSet->andWhere("completed='N'");
-        if ($bIsNotAnonymous)
-        {
+        if ($bIsNotAnonymous) {
             $oRecordSet->andWhere("token not in (select token from {{survey_$iSurveyID}} group by token)");
         }
     }

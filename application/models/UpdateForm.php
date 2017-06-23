@@ -440,9 +440,13 @@ class UpdateForm extends CFormModel
         }
 
         // Format the array for presentation in the view
-        if (count($readonlyfiles)) {
-            foreach (array_unique($readonlyfiles) as $aFile) {
-                $aReadOnlyFiles[]=substr($aFile,strlen(Yii::app()->getConfig("rootdir")));
+        if (count($readonlyfiles))
+        {
+            foreach (array_unique($readonlyfiles) as $sFile)
+            {
+                // If substr return wrong, the root directory is not writable
+                $sCleanFile = substr($sFile,strlen(Yii::app()->getConfig("rootdir")));
+                $aReadOnlyFiles[] = ($sCleanFile)?$sCleanFile:$sFile;
             }
             sort($aReadOnlyFiles);
             $readonlyfiles=$aReadOnlyFiles;
@@ -709,8 +713,8 @@ class UpdateForm extends CFormModel
         $checkedfile->file = '';
 
         // We check if the file read only
-        if ($file['type'] == 'A' && !file_exists($this->rootdir . $file['file'])
-            || ($file['type'] == 'D' && file_exists($this->rootdir . $file['file']))) {
+        if ($file['type'] == 'A' && !file_exists($this->rootdir . $file['file']) || ($file['type'] == 'D' && file_exists($this->rootdir . $file['file'])))
+        {
 
             $searchpath = $this->rootdir . $file['file'];
             $is_writable = is_writable(dirname($searchpath));
@@ -892,7 +896,6 @@ class UpdateForm extends CFormModel
             }
         }
 
-        //var_dump($return); die();
         return($return);
     }
 

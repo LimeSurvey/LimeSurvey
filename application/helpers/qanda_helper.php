@@ -656,6 +656,40 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
 }
 
 /**
+ * Return class of a specific row (hidden by relevance)
+ * @param int $surveyId actual survey id
+ * @param string $baseName the base name of the question
+ * @param string $name The name of the question/row to test
+ * @param array $aQuestionAttributes the question attributes
+ * @return string
+ */
+
+function currentRelevecanceClass($surveyId,$baseName,$name,$aQuestionAttributes) {
+    $relevanceStatus=!isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$name]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$name];
+    if($relevanceStatus) {
+        return "";
+    }
+    $sExcludeAllOther = isset($aQuestionAttributes['exclude_all_others']) ? trim($aQuestionAttributes['exclude_all_others']) : '';
+    /* EM don't set difference between relevance in session, if exclude_all_others is set , just ls-disabled */
+    if($sExcludeAllOther) {
+        foreach(explode(';',$sExcludeAllOther) as $sExclude)
+        {
+            $sExclude = $baseName . $sExclude;
+            if ((!isset($_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude]) || $_SESSION["survey_{$surveyId}"]['relevanceStatus'][$sExclude])
+                && (isset($_SESSION["survey_{$surveyId}"][$sExclude]) && $_SESSION["survey_{$surveyId}"][$sExclude] == "Y")
+            ) {
+                return "ls-irrelevant ls-disabled";
+            }
+        }
+    }
+
+    $filterStyle=!empty($aQuestionAttributes['array_filter_style']); // Currently null/0/false=> hidden , 1 : disabled
+    if($filterStyle) {
+        return "ls-irrelevant ls-disabled";
+    }
+    return "ls-irrelevant ls-hidden";
+}
+/**
  * @param string $rowname
  */
 function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
@@ -667,45 +701,7 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
     //~ if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
     //~ {
         //~ // If using exclude_all_others, then need to know whether irrelevant rows should be hidden or disabled
-        //~ if (isset($aQuestionAttributes['exclude_all_others']))
-        //~ {
-            //~ $disableit=false;
-            //~ foreach(explode(';',trim($aQuestionAttributes['exclude_all_others'])) as $eo)
-            //~ {
-                //~ $eorow = $ia[1] . $eo;
-                //~ if ((!isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow]) || $_SESSION["survey_{$surveyid}"]['relevanceStatus'][$eorow])
-                    //~ && (isset($_SESSION[$eorow]) && $_SESSION[$eorow] == "Y"))
-                //~ {
-                    //~ $disableit = true;
-                //~ }
-            //~ }
-            //~ if ($disableit)
-            //~ {
-                //~ $htmltbody2 .= " disabled='disabled'";
-            //~ }
-            //~ else
-            //~ {
-                //~ if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
-                //~ {
-                    //~ $htmltbody2 .= " style='display: none'";
-                //~ }
-                //~ else
-                //~ {
-                    //~ $htmltbody2 .= " disabled='disabled'";
-                //~ }
-            //~ }
-        //~ }
-        //~ else
-        //~ {
-            //~ if (!isset($aQuestionAttributes['array_filter_style']) || $aQuestionAttributes['array_filter_style'] == '0')
-            //~ {
-                //~ $htmltbody2 .= " style='display: none'";
-            //~ }
-            //~ else
-            //~ {
-                //~ $htmltbody2 .= " disabled='disabled'";
-            //~ }
-        //~ }
+
     //~ }
 
     //~ return $htmltbody2;
@@ -715,9 +711,13 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
  * @param integer $surveyid : the survey id
  * @param string $subquestionName : the target name
  * @param array $aQuestionAttributes : the attribute of the question (for array_filter_style actually)
+ * @deprecated not used & broken
  */
 function getExpressionManagerClass($surveyid,$subquestionName,$aQuestionAttributes=null)
 {
+    /**
+    FIXME $rowname not defined!!
+     */
     if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
     {
 
@@ -1137,8 +1137,12 @@ function do_date($ia)
         $dateoutput=trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
-            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
-            $dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
+            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
+            if($datetimeobj) {
+                $dateoutput = $datetimeobj->format($dateformatdetails['phpdate']);
+            } else {
+                $dateoutput = '';  // Imported value and some old survey can have 0000-00-00 00:00:00
+            }
         }
 
 
@@ -1163,8 +1167,12 @@ function do_date($ia)
         $dateoutput = trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]]);
         if ($dateoutput != '' && $dateoutput != 'INVALID')
         {
-            $datetimeobj = new Date_Time_Converter($dateoutput , "Y-m-d H:i");
-            $dateoutput  = $datetimeobj->convert($dateformatdetails['phpdate']);
+            $datetimeobj = DateTime::createFromFormat('!Y-m-d H:i', fillDate(trim($dateoutput)));
+            if ($datetimeobj) {
+                $dateoutput  = $datetimeobj->format($dateformatdetails['phpdate']);
+            } else {
+                $dateoutput = '';
+            }
         }
 
         // Max length of date : Get the date of 1999-12-30 at 32:59:59 to be sure to have space with non leading 0 format
@@ -1573,6 +1581,8 @@ function do_list_radio($ia)
     $iColumnWidth = '';
     if ($iNbCols > 1)
     {
+        // Add a class on the wrapper
+        $coreClass .= " multiple-list nbcol-{$iNbCols}";
         // First we calculate the width of each column
         // Max number of column is 12 http://getbootstrap.com/css/#grid
         $iColumnWidth = round(12 / $iNbCols);
@@ -2178,8 +2188,9 @@ function do_multiplechoice($ia)
     $iRowCount        = 0;
     $isOpen           = false;       // Is a column opened
 
-    // TODO: check if still used
-    if($iNbCols > 1) {
+    if ($iNbCols > 1) {
+        // Add a class on the wrapper
+        $coreClass .= " multiple-list nbcol-{$iNbCols}";
         // First we calculate the width of each column
         // Max number of column is 12 http://getbootstrap.com/css/#grid
         $iColumnWidth = round(12 / $iNbCols);
@@ -2206,12 +2217,9 @@ function do_multiplechoice($ia)
         $i++;                                       // general count of loop, to check if the item is the last one for column process. Never reset.
         $iRowCount++;                               // counter of number of row by column. Is reset to zero each time a column is full.
         $myfname     = $ia[1].$ansrow['title'];
-        $extra_class ="";
 
-        /* Check for array_filter */
-        $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
+        $relevanceClass=currentRelevecanceClass($iSurveyId,$ia[1],$myfname,$aQuestionAttributes);
         $checkedState  = '';
-
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
@@ -2243,8 +2251,6 @@ function do_multiplechoice($ia)
         // Insert row
         // Display the answer row
         $sRows .= doRender('/survey/questions/answer/multiplechoice/rows/answer_row', array(
-            'extra_class'             => $extra_class,
-            'sDisplayStyle'           => $sDisplayStyle,
             'name'                    => $ia[1],  // field name
             'title'                   => $ansrow['title'],
             'question'                => $ansrow['question'],
@@ -2253,6 +2259,7 @@ function do_multiplechoice($ia)
             'sCheckconditionFunction' => $sCheckconditionFunction,
             'myfname'                 => $myfname,
             'sValue'                  => $sValue,
+            'relevanceClass'          => $relevanceClass,
         ), true);
 
         ////
@@ -2275,7 +2282,7 @@ function do_multiplechoice($ia)
     {
         $iRowCount++;
         $myfname = $ia[1].'other';
-
+        $relevanceClass=currentRelevecanceClass($iSurveyId,$ia[1],$myfname,$aQuestionAttributes);
         $checkedState = '';
         // othercbox can be not display, because only input text goes to database
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) && trim($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname])!='')
@@ -2324,7 +2331,6 @@ function do_multiplechoice($ia)
         // Display the answer row
         $sRows .= doRender('/survey/questions/answer/multiplechoice/rows/answer_row_other', array(
             'myfname'                    => $myfname,
-            'sDisplayStyle'              => (isset($sDisplayStyle))?$sDisplayStyle:'',
             'othertext'                  => $othertext,
             'checkedState'               => $checkedState,
             'kpclass'                    => $kpclass,
@@ -2332,6 +2338,7 @@ function do_multiplechoice($ia)
             'oth_checkconditionFunction' => $oth_checkconditionFunction,
             'checkconditionFunction'     => $checkconditionFunction,
             'sValueHidden'               => $sValueHidden,
+            'relevanceClass'          => $relevanceClass,
         ), true);
 
         ////
@@ -4180,8 +4187,9 @@ function do_array_5point($ia)
         {
             $answertext2=substr($answertext2,strpos($answertext2,'|')+1);
             $answer_tds .= doRender('/survey/questions/answer/arrays/5point/rows/cells/answer_td_answertext', array(
-                'answerwidth'=>$answerwidth,
-                'answertext2'=>$answertext2,
+                'class'=>'answertextright',
+                'style'=>'text-align:left',
+                'th_content'=>$answertext2,
             ), true);
         }
         elseif ($right_exists)
@@ -6405,31 +6413,6 @@ function do_array_dual($ia)
 }
 
 /**
- * Depending on prefix and suffix, the center col will vary
- * on sm screens (xs is always 12).
- * @deprecated or @todo : fix it
- * @param string $prefix
- * @param string $suffix
- * @return int
- */
-function decide_sm_col($prefix, $suffix)
-{
-    if ($prefix !== '' && $suffix !== '')
-    {
-        // Each prefix/suffix has 2 col space
-        return 8;
-    }
-    elseif ($prefix !== '' || $suffix !=='')
-    {
-        return 10;
-    }
-    else
-    {
-        return 12;
-    }
-}
-
-/**
  * Find the label / input width
  * @param string|int labelwidth from attribute
  * @param string|int inputwidth from attribute
@@ -6478,6 +6461,54 @@ function getLabelInputWidth($labelAttributeWidth,$inputAttributeWidth){
         $defaultWidth,
     );
 }
+/**
+ * Take a date string and fill out missing parts, like day, hour, minutes
+ * (not seconds).
+ * If string is NOT in standard date format (Y-m-d H:i), this methods makes no
+ * sense.
+ * Used when fetching answer for do_date, where answer can come from a default
+ * answer expression like date('Y').
+ * Will also truncate date('c') to format Y-m-d H:i.
+ * @param string $dateString
+ * @return string
+ */
+function fillDate($dateString) {
+    switch (strlen($dateString)) {
+        // Only year
+        case 4:
+            return $dateString . '-01-01 00:00';
+            break;
+        // Year and month
+        case 7:
+            return $dateString . '-01 00:00';
+            break;
+        // Year, month and day
+        case 10:
+            return $dateString . ' 00:00';
+            break;
+        // Year, month day and hour
+        case 13:
+            return $dateString . ':00';
+            break;
+        // Complete, return as is.
+        case 16:
+            return $dateString;
+            break;
+        // Assume date('c')
+        case 25:
+            $date = new DateTime($dateString);
+            if ($date) {
+                return $date->format('Y-m-d H:i');
+            } else {
+                return '';
+            }
+            break;
+        default:
+            return '';
+            break;
+    }
+}
+
 /**
  * Render the question view.
  *

@@ -162,7 +162,7 @@ class LS_Twig_Extension extends Twig_Extension
 
         /* Add the relevance class */
         if (!$lemQuestionInfo['relevant']){
-            $aQuestionClass .= ' ls-unrelevant';
+            $aQuestionClass .= ' ls-irrelevant';
             $aQuestionClass .= ' ls-hidden';
         }
 
