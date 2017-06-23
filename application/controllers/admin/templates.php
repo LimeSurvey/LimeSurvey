@@ -347,10 +347,9 @@ class templates extends Survey_Common_Action
         }
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
-        $aBootstrapPackage=Yii::app()->clientScript->packages['bootstrap'];
+        $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap'];
 
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
-        //var_dump($aViewUrls); die();
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap']=$aBootstrapPackage;
@@ -822,8 +821,12 @@ class templates extends Survey_Common_Action
         $filesFromXML = (array) $oEditedTemplate->templateEditor->screens->xpath('//file');
 
         foreach( $filesFromXML as $file){
+
+            if ( $file->attributes()->type == 'view' ){
                 $aScreenFiles[] = (string) $file;
+            }
         }
+
         $aScreenFiles = array_unique($aScreenFiles);
         return $aScreenFiles;
     }
