@@ -127,11 +127,10 @@ class LSHttpRequest extends CHttpRequest
     }
 
     /**
-     * Method to check if an url is part of the stack
-     * Returns true, when an url is saved in the stack
-     * @param string $referrerURL The URL that is checked against the stack
-     * @return bool
-     */
+    * Method to check if an url is part of the stack
+    * @return bool Returns true, when an url is saved in the stack
+    * @param string $referrerURL The URL that is checked against the stack
+    */
     protected function checkLoopInNavigationStack($referrerURL)
     {
         $navStack = App()->session['LSNAVSTACK'];
