@@ -1347,6 +1347,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                         $plugin->name = 'Authwebserver';
                         $plugin->active = 1;
                         $plugin->save();
+                        /** @var Authwebserver $plugin */
                         $plugin = App()->getPluginManager()->loadPlugin('Authwebserver', $plugin->id);
                         $aPluginSettings = $plugin->getPluginSettings(true);
                         $aDefaultSettings = array();

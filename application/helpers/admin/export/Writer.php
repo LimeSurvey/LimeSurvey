@@ -9,6 +9,7 @@
 abstract class Writer implements IWriter
 {
     protected $sLanguageCode;
+    /** @var Translator $translator */
     protected $translator;
     public $filename;
     public $webfilename;
