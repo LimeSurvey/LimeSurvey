@@ -1024,30 +1024,11 @@ class templates extends Survey_Common_Action
         $templateurl = getTemplateURL($templatename);
 
         // Save these variables in an array
-        // TODO: remove the useless datas for twig
-        $aData['thissurvey'] = $thissurvey;
-        $aData['percentcomplete'] = $percentcomplete;
-        $aData['groupname'] = $groupname;
-        $aData['groupdescription'] = $groupdescription;
-        $aData['navigator'] = $navigator;
-        $aData['help'] = gT("This is some help text.");
-        $aData['surveyformat'] = $surveyformat;
-        $aData['totalquestions'] = $totalquestions;
-        $aData['completed'] = $completed;
-        $aData['notanswered'] = $notanswered;
-        $aData['privacy'] = $privacy;
-        $aData['surveyid'] = $surveyid;
-        $aData['sid'] = $surveyid;
-        $aData['token'] = $token;
-        $aData['assessments'] = $assessments;
-        $aData['printoutput'] = $printoutput;
-        $aData['templatedir'] = $templatedir;
-        $aData['templateurl'] = $templateurl;
-        $aData['templatename'] = $templatename;
-        $aData['screenname'] = $screenname;
-        $aData['editfile'] = $editfile;
-        $aGlobalReplacements = array();
-        $myoutput[] = "";
+        $aData['thissurvey']       = $thissurvey;
+
+        $aGlobalReplacements       = array();
+        $myoutput[]                = "";
+
         $files = $oEditedTemplate->getValidScreenFiles("view", $screenname);
 
         switch ($screenname)
