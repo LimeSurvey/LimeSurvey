@@ -5,7 +5,7 @@
         echo ' data-target="_blank"';
     } ?> >
         <div class="panel-heading">
-            <h1 class="panel-title"><?php eT($title); ?></h1>
+            <div class="panel-title"><?php eT($title); ?></div>
         </div>
         <div class="panel-body">
             <div class="panel-body-ico">
