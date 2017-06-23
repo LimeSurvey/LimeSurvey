@@ -40,6 +40,7 @@ if (!defined('BASEPATH'))
  * @property QuestionGroup $groups  //TODO should be singular
  * @property Question $parents      //TODO should be singular
  * @property Question[] $subquestions
+ * @property string $SGQA SGQA Identificator
  */
 class Question extends LSActiveRecord
 {
@@ -298,6 +299,14 @@ class Question extends LSActiveRecord
             }
         }
         return $aAttributeNames;
+    }
+
+    /**
+     * Get the question SGQA Identificator
+     * @return string
+     */
+    public function getSGQA(){
+        return $this->primaryKey.'X'.$this->groups->primaryKey.'X'.$this->survey->primaryKey;
     }
 
     /**
