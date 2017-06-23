@@ -1370,7 +1370,7 @@ class export extends Survey_Common_Action {
      */
     private function _exportPrintableHtmls($iSurveyID,$readFile = true){
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $assetsDir = Template::getTemplateURL($oSurvey->template);
+        $assetsDir = substr(Template::getTemplateURL($oSurvey->template),1);
         $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
         $aLanguages = $oSurvey->getAllLanguages();
 
