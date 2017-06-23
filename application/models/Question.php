@@ -40,6 +40,7 @@ if (!defined('BASEPATH'))
  * @property QuestionGroup $groups  //TODO should be singular
  * @property Question $parents      //TODO should be singular
  * @property Question[] $subquestions
+ * @property string[] $quotableTypes Question types that can be used for quotas
  */
 class Question extends LSActiveRecord
 {
@@ -1055,6 +1056,10 @@ class Question extends LSActiveRecord
         $criteria->compare('parent_qid',$this->qid);
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
         Question::model()->deleteAll($criteria);// Must log count of deleted ?
+    }
+    /** @return array */
+    public static function getQuotableTypes(){
+        return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!');
     }
 
 }
