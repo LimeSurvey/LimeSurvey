@@ -138,13 +138,15 @@ class TemplateConfiguration extends CFormModel
      * Used from the template editor.
      * It returns an array of editable files by screen for a given file type
      *
-     * @param   string  $sType the type of files (view/css/js)
-     * @return  array   array ( [screen name] => array([files]) )
+     * @param   string  $sType      the type of files (view/css/js)
+     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
+     * @return  array   array       ( [screen name] => array([files]) )
      */
-    public function getValidScreenFiles($sType = "view")
+    public function getValidScreenFiles($sType = "view", $sScreen=null)
     {
         $aScreenFiles = array();
-        $filesFromXML = (array) $this->templateEditor->screens->xpath('//file');
+
+        $filesFromXML = (is_null($sScreen)) ? (array) $this->templateEditor->screens->xpath('//file') : $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
 
         foreach( $filesFromXML as $file){
 
