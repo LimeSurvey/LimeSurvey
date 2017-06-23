@@ -338,17 +338,17 @@ function getQuestionMapData($sField, $qsid)
 }
 
 /** Builds the list of addon SQL select statements
-*   that builds the query result set
-*
-*   @param $allfields   An array containing the names of the fields/answers we want to display in the statistics summary
-*   @param $fieldmap    The fieldmap for the survey
-*   @param $language    The language to use
-*
-*   @return array $selects array of individual select statements that can be added/appended to
-*                          the 'where' portion of a SQL statement to restrict the result set
-*                          ie: array("`FIELDNAME`='Y'", "`FIELDNAME2`='Hello'");
-*
-*/
+ *   that builds the query result set
+ *
+ *   @param array    $allfields   An array containing the names of the fields/answers we want to display in the statistics summary
+ *   @param integer  $surveyid
+ *   @param string   $language    The language to use
+ *
+ *   @return array $selects array of individual select statements that can be added/appended to
+ *                          the 'where' portion of a SQL statement to restrict the result set
+ *                          ie: array("`FIELDNAME`='Y'", "`FIELDNAME2`='Hello'");
+ *
+ */
 function buildSelects($allfields, $surveyid, $language) {
 
     //Create required variables
@@ -2341,10 +2341,11 @@ class userstatistics_helper {
                             } else {
                                 $percentage = 0;
                             }
+                            break;
 
                         default:
-                        $aggregatedPercentage = 'na';
-                        break;
+                            $aggregatedPercentage = 'na';
+                            break;
                     }
 
 
@@ -2799,7 +2800,7 @@ class userstatistics_helper {
     * @param string $outputType Optional - Can be xls, html or pdf - Defaults to pdf
     * @param string $pdfOutput Sets the target for the PDF output: DD=File download , F=Save file to local disk
     * @param boolean $browse  Show browse buttons
-    * @return buffer
+    * @return string|null
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
@@ -3146,13 +3147,10 @@ class userstatistics_helper {
 
                 $this->workbook->close();
 
-                if($pdfOutput=='F')
-                {
+                if($pdfOutput=='F') {
                     return $sFileName;
-                }
-                else
-                {
-                    return;
+                } else {
+                    return null;
                 }
                 break;
 
@@ -3263,18 +3261,18 @@ class userstatistics_helper {
             case 1:
             case 3:
                 // Need at least 4 records
-                if ($recordCount<4) return;
+                if ($recordCount<4) return null;
                 break;
             case 2:
                 // Need at least 2 records
-                if ($recordCount<2) return;
+                if ($recordCount<2) return null;
                 break;
 
             case 0:
                 return $recordCount;
 
             default:
-                return;
+                return null;
                 break;
         }
 

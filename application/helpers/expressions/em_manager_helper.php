@@ -2654,6 +2654,7 @@
                             {
                                 case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
                                     $subqValidSelector = $sq['jsVarName_on'];
+                                    break;
                                 case 'N': //NUMERICAL QUESTION TYPE
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                     $sq_eqn = '( is_int('.$sq_name.') || is_empty('.$sq_name.') )';
@@ -3525,11 +3526,11 @@
                     );
                 }
                 // now combine all classes of validation equations
-                $veqns = array();
                 foreach ($parts as $vclass=>$eqns)
                 {
                     $veqns[$vclass] = '(' . implode(' and ', $eqns) . ')';
                 }
+                $veqns = array();
 
 
                 $this->qid2validationEqn[$qid] = array(
@@ -4301,7 +4302,6 @@
             'default'=>'',
             'rootVarName'=>'this',
             'subqtext'=>'',
-            'rowdivid'=>'',
             );
 
             $this->runtimeTimings[] = array(__METHOD__ . ' - process fieldMap',(microtime(true) - $now));
@@ -4999,7 +4999,7 @@
         }
 
         /**
-         * @return void
+         * @return mixed
          */
         static function NavigateBackwards()
         {
@@ -6315,6 +6315,7 @@
                                         $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=false;
                                     }
                                 }
+                                break;
                             case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                             case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                             case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
@@ -9162,7 +9163,7 @@ EOD;
         /**
          * @param string $op
          * @param string $name
-         * @param string $value
+         * @param double $value
          * @return int
          */
         public static function SetVariableValue($op,$name,$value)
@@ -10282,8 +10283,8 @@ EOD;
          * Convert non-latin numerics in string to latin numerics
          * Used for datepicker (Hindi, Arabic numbers)
          *
-         * @param string str
-         * @param string lang
+         * @param string $str
+         * @param string $lang
          * @return string
          */
         public static function convertNonLatinNumerics($str, $lang)
@@ -10556,6 +10557,3 @@ EOD;
         }
         return ($a['qseq'] < $b['qseq']) ? -1 : 1;
     }
-
-
-?>

@@ -337,9 +337,9 @@ function getQuestionMapData($sField, $qsid)
 /** Builds the list of addon SQL select statements
 *   that builds the query result set
 *
-*   @param $allfields   An array containing the names of the fields/answers we want to display in the statistics summary
-*   @param $fieldmap    The fieldmap for the survey
-*   @param $language    The language to use
+*   @param array    $allfields   An array containing the names of the fields/answers we want to display in the statistics summary
+*   @param integer  $surveyid
+*   @param string   $language    The language to use
 *
 *   @return array $selects array of individual select statements that can be added/appended to
 *                          the 'where' portion of a SQL statement to restrict the result set
@@ -2060,10 +2060,11 @@ class statistics_helper {
                                 } else {
                                     $percentage = 0;
                                 }
+                                break;
 
                             default:
-                            $aggregatedPercentage = 'na';
-                            break;
+                                $aggregatedPercentage = 'na';
+                                break;
                         }
 
 
@@ -3195,10 +3196,11 @@ class statistics_helper {
                             } else {
                                 $percentage = 0;
                             }
+                            break;
 
                         default:
-                        $aggregatedPercentage = 'na';
-                        break;
+                            $aggregatedPercentage = 'na';
+                            break;
                     }
 
 
