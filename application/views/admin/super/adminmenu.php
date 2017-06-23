@@ -70,6 +70,7 @@
                 <a style="padding-left: 5px;padding-right: 5px;" href="#" class="dropdown-toggle" data-toggle="dropdown">
 		    <span class="sr-only">Toggle Dropdown</span>
                     <span style="margin-left: 0px;" class="caret"></span>
+		    <span class="sr-only"><?php eT("Surveys");?></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
                          <?php if (Permission::model()->hasGlobalPermission('surveys','create')): ?>
@@ -125,6 +126,7 @@
                           <?php echo $menu->getLabel(); ?>
                           &nbsp;
                           <span class="caret"></span>
+			  <span class='sr-only'><?php echo $menu->getLabel(); ?></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
                             <?php foreach ($menu->getMenuItems() as $menuItem): ?>

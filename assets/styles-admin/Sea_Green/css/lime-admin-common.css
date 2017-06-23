@@ -1492,14 +1492,10 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
 #systemoverview {
   margin: 1em 0 1em 0; }
 
-#systemoverview .info div {
-	font-size: 14px;
+.systemoverview {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	font-weight: 500;
-	line-height: 1.1;
-	color: inherit;
-	text-align: center;
 }
 
 /**
@@ -1683,6 +1679,11 @@ span[data-tooltip] {
 
 .modal {
   top: 50px; }
+
+.modal-title {
+	font-weight: 500;
+	font-size: 17px;
+}
 
 #tokensidemenu {
   border-top: 1px solid #e3e3e3; }

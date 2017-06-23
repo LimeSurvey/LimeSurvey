@@ -121,7 +121,7 @@
     <div class="row  hidden-sm  hidden-md hidden-lg ">
         <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
-                <h2 class="panel-title"><?php eT('List surveys');?></h2>
+                <div class="panel-title"><?php eT('List surveys');?></div>
             </div>
             <div class="panel-body">
                 <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'>
@@ -134,12 +134,13 @@
 
         <div class="panel panel-primary panel-clickable" id="panel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
-                <h2 class="panel-title"><?php eT('Edit global settings');?></h2>
+                <div class="panel-title"><?php eT('Edit global settings');?></div>
             </div>
             <div class="panel-body">
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
-                    <span class="icon-settings" style="font-size: 4em"></span>
-                    <span class="sr-only"><?php eT('Edit global settings');?></span>
+                    <span class="icon-settings" style="font-size: 4em">
+                    </span>
+		    <span class="sr-only"><?php eT('Edit global settings');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'><?php eT('Edit global settings');?></a>
             </div>

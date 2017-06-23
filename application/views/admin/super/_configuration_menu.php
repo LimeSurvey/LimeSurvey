@@ -21,6 +21,7 @@
         <span class="icon-settings" ></span>
         <?php eT('Configuration');?>
         <span class="caret"></span>
+	<span class="sr-only"><?php eT('Configuration');?></span>
     </a>
     <ul class="dropdown-menu mega-dropdown-menu" id="mainmenu-dropdown">
 
@@ -34,7 +35,7 @@
                         <span class="glyphicon glyphicon-info-sign" id="info-header"></span>
                     </div>
                     <div class="info">
-                        <div class="text-center"><?php eT("System overview"); ?></div>
+                        <div class="text-center" class="systemoverview"><?php eT("System overview"); ?></div>
                         <dl class="dl-horizontal">
                             <dt class="text-info"><?php eT('Users');?></dt>
                             <dd><?php echo $userscount;?></dd>
