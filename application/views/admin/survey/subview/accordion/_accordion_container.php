@@ -23,6 +23,7 @@
             <h4 class="panel-title">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
+		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#generaloptions" aria-expanded="true" aria-controls="generaloptions">
                     <?php eT("General options");?>
@@ -43,6 +44,7 @@
             <h4 class="panel-title">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
+		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#presentationoptions" aria-expanded="false" aria-controls="presentationoptions">
                     <?php  eT("Presentation & navigation"); ?>
@@ -62,6 +64,7 @@
             <h4 class="panel-title">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
+		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#publicationoptions" aria-expanded="false" aria-controls="publicationoptions">
                     <?php  eT("Publication & access control"); ?>
@@ -81,6 +84,7 @@
             <h4 class="panel-title">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
+		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#notificationoptions" aria-expanded="false" aria-controls="notificationoptions">
                     <?php  eT("Notification & data management"); ?>
@@ -100,6 +104,7 @@
             <h4 class="panel-title">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                     <span class="glyphicon glyphicon-chevron-left"></span>
+		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#tokensoptions" aria-expanded="false" aria-controls="tokensoptions">
                     <?php  eT("Tokens"); ?>
@@ -121,6 +126,7 @@
                 <h4 class="panel-title">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="glyphicon glyphicon-chevron-left"></span>
+			<span class="sr-only">Expand/Collapse</span>
                     </a>
                     <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#integrationoptions" aria-expanded="false" aria-controls="integrationoptions">
                         <?php  eT("Panel integration"); ?>
