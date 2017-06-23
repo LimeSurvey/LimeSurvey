@@ -127,7 +127,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     /**
      * Check availability of LDAP Apache Module
      *
-     * @return unknown_type
+     * @return null
      */
     public function beforeActivate()
     {

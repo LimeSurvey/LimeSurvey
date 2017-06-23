@@ -22,7 +22,7 @@
         </a>
         <ul class='dropdown-menu' role='menu'>
             <li>
-                <a><span class='fa fa-spinner fa-spin'></span></a>
+                <a><span class='fa fa-spinner fa-spin'></span><span class='sr-only'>Loading notifications</span></a>
             </li>
         </ul>
     </li>

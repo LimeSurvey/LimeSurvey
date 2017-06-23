@@ -33,15 +33,13 @@ class Authdb extends AuthPluginBase
     public function createNewUser()
     {
         // Do nothing if the user to be added is not DB type
-        if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB')
-        {
+        if (flattenText(Yii::app()->request->getPost('user_type')) != 'DB') {
             return;
         }
         $oEvent = $this->getEvent();
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
         $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
-        if (!validateEmailAddress($new_email))
-        {
+        if (!validateEmailAddress($new_email)) {
             $oEvent->set('errorCode',self::ERROR_INVALID_EMAIL);
             $oEvent->set('errorMessageTitle',gT("Failed to add user"));
             $oEvent->set('errorMessageBody',gT("The email address is not valid."));
@@ -50,8 +48,7 @@ class Authdb extends AuthPluginBase
         $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
         $new_pass = createPassword();
         $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
-        if (!$iNewUID)
-        {
+        if (!$iNewUID) {
             $oEvent->set('errorCode',self::ERROR_ALREADY_EXISTING_USER);
             $oEvent->set('errorMessageTitle','');
             $oEvent->set('errorMessageBody',gT("Failed to add user"));
@@ -179,7 +176,7 @@ class Authdb extends AuthPluginBase
     /**
      * Set the onetime password
      *
-     * @param type $onepass
+     * @param string $onepass
      * @return Authdb
      */
     protected function setOnePass($onepass)

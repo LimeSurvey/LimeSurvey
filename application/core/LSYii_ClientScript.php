@@ -50,7 +50,7 @@ class LSYii_ClientScript extends CClientScript {
      * Remove a package from coreScript.
      * It can be useful when mixing backend/frontend rendering (see: template editor)
      *
-     * @var $name of the package to remove
+     * @var string $sName of the package to remove
      */
     public function unregisterPackage($sName)
     {

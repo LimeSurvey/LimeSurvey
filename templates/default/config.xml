@@ -96,27 +96,37 @@
                     <file type="view" role="subview">./subviews/progess_bar.twig</file>
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/language_changer.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
                 </question>
 
                 <surveylist>
                     <file type="view" role="layout">layout_survey_list.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
                 </surveylist>
 
-                <welcome_page>
+                <welcome>
                     <file type="view" role="layout">layout_first_page.twig</file>
                     <file type="view" role="subview">./subviews/welcome.twig</file>
                     <file type="view" role="subview">./subviews/warnings.twig</file>
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
-                </welcome_page>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
+                </welcome>
 
                 <completed>
                     <file type="view" role="layout">layout_submit.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
                 </completed>
 
                 <assessments>
                     <file type="view" role="layout">layout_submit.twig</file>
                     <file type="view" role="subview">./subviews/assessments.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
                 </assessments>
 
                 <error>
@@ -125,14 +135,20 @@
 
                 <clearall>
                     <file type="view" role="layout">layout_clearall.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
                 </clearall>
 
                 <load>
                     <file type="view" role="layout">layout_load.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
                 </load>
 
                 <save>
                     <file type="view" role="layout">layout_save.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
                 </save>
             </screens>
 

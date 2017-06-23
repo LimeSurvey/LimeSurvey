@@ -648,7 +648,6 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
                             'time_limit_warning'=>$time_limit_warning,
                             'time_limit_warning_2'=>$time_limit_warning_2,
                             'time_limit_warning_display_time'=>$time_limit_warning_display_time,
-                            'time_limit_warning_display_time'=>$time_limit_warning_display_time,
                             'time_limit_warning_2_display_time'=>$time_limit_warning_2_display_time,
                             'disable'=>$disable,
                         ),
@@ -712,9 +711,13 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
  * @param integer $surveyid : the survey id
  * @param string $subquestionName : the target name
  * @param array $aQuestionAttributes : the attribute of the question (for array_filter_style actually)
+ * @deprecated not used & broken
  */
 function getExpressionManagerClass($surveyid,$subquestionName,$aQuestionAttributes=null)
 {
+    /**
+    FIXME $rowname not defined!!
+     */
     if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
     {
 
@@ -2128,7 +2131,6 @@ function do_ranking($ia)
                     'basename'          => $ia[1],
                     'max_answers'       => $max_answers,
                     'min_answers'       => $min_answers,
-                    'answers'           => $answers,
                     'choice_title'      => $choice_title,
                     'rank_title'        => $rank_title,
                     'showpopups'        => $aQuestionAttributes["showpopups"],
@@ -2886,7 +2888,6 @@ function do_multipleshorttext($ia)
                     'prefix'                 => $prefix,
                     'myfname'                => $myfname,
                     'question'               => $ansrow['question'],
-                    'prefix'                 => $prefix,
                     'kpclass'                => $kpclass,
                     'dispVal'                => $dispVal,
                     'suffix'                 => $suffix,
@@ -2905,7 +2906,6 @@ function do_multipleshorttext($ia)
                     'prefix'                 => $prefix,
                     'myfname'                => $myfname,
                     'question'               => $ansrow['question'],
-                    'prefix'                 => $prefix,
                     'kpclass'                => $kpclass,
                     'dispVal'                => $dispVal,
                     'suffix'                 => $suffix,
@@ -3279,7 +3279,6 @@ function do_multiplenumeric($ia)
                         'equals_num_value' => $equals_num_value,
                         'id'               => $ia[0],
                         'basename'         => $ia[1],
-                        'prefix'           => $prefix,
                         'suffix'           => $suffix,
                         'sumRemainingEqn'  => (isset($qinfo))?$qinfo['sumRemainingEqn']:'',
                         'displaytotal'     => $displaytotal,
@@ -4037,8 +4036,8 @@ function do_gender($ia)
 // ---------------------------------------------------------------
 /**
 * Construct answer part array_5point
-* @param $ia
-* @return unknown_type
+* @param array $ia
+* @return array
 */
 function do_array_5point($ia)
 {
@@ -4249,8 +4248,8 @@ function do_array_5point($ia)
 // ---------------------------------------------------------------
 /**
 * Construct answer part array_10point
-* @param $ia
-* @return unknown_type
+* @param array $ia
+* @return array
 */
 // TMSW TODO - Can remove DB query by passing in answer list from EM
 function do_array_10point($ia)
@@ -5312,7 +5311,6 @@ function do_array_texts($ia)
                                 'myfname'           =>  $myfname,
                                 'coreRowClass'      => $coreRowClass,
                                 'answertext'        =>  $answertext,
-                                'answerwidth'=>$answerwidth,
                                 'error'             =>  $error,
                                 'value'             =>  $value,
                                 'answer_tds'        =>  $answer_tds,
@@ -6322,11 +6320,7 @@ function do_array_dual($ia)
             // Get attributes for Headers and Prefix/Suffix
             if (trim($aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']])!='') {
                 list ($ddprefix, $ddsuffix) =explode("|",$aQuestionAttributes['dropdown_prepostfix'][$_SESSION['survey_'.Yii::app()->getConfig('surveyID')]['s_lang']]);
-                $ddprefix = $ddprefix;
-                $ddsuffix = $ddsuffix;
-            }
-            else
-            {
+            } else {
                 $ddprefix =null;
                 $ddsuffix=null;
             }

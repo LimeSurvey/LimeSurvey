@@ -231,7 +231,7 @@ class templates extends Survey_Common_Action
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
         $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
-        $cssfiles = $this->_initcssfiles($oEditedTemplate);
+        $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
         $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
         $tempdir = Yii::app()->getConfig('tempdir');
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
@@ -347,10 +347,9 @@ class templates extends Survey_Common_Action
         }
 
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
-        $aBootstrapPackage=Yii::app()->clientScript->packages['bootstrap'];
+        $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap'];
 
         $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
-        //var_dump($aViewUrls); die();
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap']=$aBootstrapPackage;
@@ -607,6 +606,7 @@ class templates extends Survey_Common_Action
         {
             die('No permission');
         }
+
         if (returnGlobal('changes')) {
             $changedtext = returnGlobal('changes');
             $changedtext = str_replace('<?', '', $changedtext);
@@ -628,12 +628,12 @@ class templates extends Survey_Common_Action
         $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
         $screenname      = returnGlobal('screenname');
         $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
-        $aScreenFiles    = $this->getValidScreenFiles($sTemplateName);
-        $cssfiles        = $this->_initcssfiles($oEditedTemplate);
-        $jsfiles         = $this->_getEditableJsFiles($oEditedTemplate);
+        $aScreenFiles    = $oEditedTemplate->getValidScreenFiles("view");
+        $cssfiles        = $oEditedTemplate->getValidScreenFiles("css");
+        $jsfiles         = $oEditedTemplate->getValidScreenFiles("js");
 
-        if ($action == "templatesavechanges" && $changedtext)
-        {
+
+        if ($action == "templatesavechanges" && $changedtext){
             Yii::app()->loadHelper('admin/template');
             $changedtext = str_replace("\r\n", "\n", $changedtext);
 
@@ -785,7 +785,7 @@ class templates extends Survey_Common_Action
                 break;
         }
 
-        $editableCssFiles = $this->_initcssfiles($oEditedTemplate, true);
+        $editableCssFiles = $oEditedTemplate->getValidScreenFiles("css");
         $filesdir = $oEditedTemplate->filesPath;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
@@ -805,72 +805,6 @@ class templates extends Survey_Common_Action
         $aViewUrls['templatesummary_view'][] = $aData;
 
         return $aViewUrls;
-    }
-
-    /**
-    * Function that initialises file data.
-    *
-    * @access protected
-    * @param string $templatename
-    * @return string[]
-    */
-    protected function getValidScreenFiles($templatename)
-    {
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
-
-        $aScreenFiles = array();
-        $filesFromXML = (array) $oEditedTemplate->templateEditor->screens->xpath('//file');
-
-        foreach( $filesFromXML as $file){
-                $aScreenFiles[] = (string) $file;
-        }
-        $aScreenFiles = array_unique($aScreenFiles);
-        return $aScreenFiles;
-    }
-
-    /**
-    * Function that initialises cssfile data.
-    *
-    * @access protected
-    * @param TemplateConfiguration $oEditedTemplate
-    * @param boolean $editable
-    * @return array
-    */
-    protected function _initcssfiles(TemplateConfiguration $oEditedTemplate, $editable=false)
-    {
-        return array();
-        // TODO : this should be part of the template editor configuration now
-
-        // If editable CSS files are required, and if they are defined in the template config file
-        if($editable && is_object($oEditedTemplate->config->files_editable->css))
-        {
-            $aCssFiles = (array) $oEditedTemplate->config->files_editable->css->filename;
-        }
-        // Else we get all the CSS files
-        else
-        {
-            $aCssFiles = (array) $oEditedTemplate->config->files->css->filename;
-        }
-        return $aCssFiles;
-    }
-
-    protected function _getEditableJsFiles($oEditedTemplate)
-    {
-
-        return array();
-        // TODO : this should be part of the template editor configuration now
-
-        // If editable JS files are defined in the template config file
-        if(is_object($oEditedTemplate->config->files_editable->js))
-        {
-            $aJsFiles = (array) $oEditedTemplate->config->files_editable->js->filename;
-        }
-        // Else we get all the JS files
-        else
-        {
-            $aJsFiles = (array) $oEditedTemplate->config->files->js->filename;
-        }
-        return $aJsFiles;
     }
 
     /**
@@ -905,8 +839,8 @@ class templates extends Survey_Common_Action
         //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('admin/template');
-        $files    = $this->getValidScreenFiles($templatename);
-        $cssfiles = $this->_initcssfiles($oEditedTemplate);
+        $files    = $oEditedTemplate->getValidScreenFiles("view");
+        $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
 
 
         // Standard Support Files
@@ -989,39 +923,12 @@ class templates extends Survey_Common_Action
             $this->getController()->redirect(array("admin/templates/sa/upload"));
         }
 
-        /**  TODO: TWIG
-        if (is_file(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename . DIRECTORY_SEPARATOR.'question_start.pstpl')) {
-            $files[] = 'question_start.pstpl';
-            $Question[] = 'question_start.pstpl';
-        }
-        **/
-
         /* See if we found the file to be edited inside template */
         /* @todo must control if is updatable : in updatable file OR is a view */
         /* Actually allow to update any file exemple css/template-core.css */
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
-        if (file_exists(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile)){
-            /* the file seems a simple file */
-            $sEditFile=realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename. DIRECTORY_SEPARATOR.$editfile);
-        }elseif (file_exists($oEditedTemplate->viewPath. DIRECTORY_SEPARATOR.$editfile)){
-            /* the file seems a view file */
-            $sEditFile=realpath($oEditedTemplate->viewPath. DIRECTORY_SEPARATOR.$editfile);
-        }else{
-            /* the file seems to be invalid */
-            $sEditFile='';
-        }
-        // Make sure file is within the template path
-        if (strpos($sEditFile,realpath(Yii::app()->getConfig('usertemplaterootdir') . DIRECTORY_SEPARATOR . $templatename))===false)
-        {
-            $editfile='layout_first_page.twig';
-        }
 
-        $extension = substr(strrchr($editfile, "."), 1);
-        $highlighter = 'html';
-        if ($extension == 'css' || $extension == 'js')
-        {
-            $highlighter = $extension;
-        }
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+
         // @TODO: Proper language code conversion
         $sLanguageCode = 'en';
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');
@@ -1091,95 +998,18 @@ class templates extends Survey_Common_Action
         $templateurl = getTemplateURL($templatename);
 
         // Save these variables in an array
-        // TODO: remove the useless datas for twig
-        $aData['thissurvey'] = $thissurvey;
-        $aData['percentcomplete'] = $percentcomplete;
-        $aData['groupname'] = $groupname;
-        $aData['groupdescription'] = $groupdescription;
-        $aData['navigator'] = $navigator;
-        $aData['help'] = gT("This is some help text.");
-        $aData['surveyformat'] = $surveyformat;
-        $aData['totalquestions'] = $totalquestions;
-        $aData['completed'] = $completed;
-        $aData['notanswered'] = $notanswered;
-        $aData['privacy'] = $privacy;
-        $aData['surveyid'] = $surveyid;
-        $aData['sid'] = $surveyid;
-        $aData['token'] = $token;
-        $aData['assessments'] = $assessments;
-        $aData['printoutput'] = $printoutput;
-        $aData['templatedir'] = $templatedir;
-        $aData['templateurl'] = $templateurl;
-        $aData['templatename'] = $templatename;
-        $aData['screenname'] = $screenname;
-        $aData['editfile'] = $editfile;
+        $aData['thissurvey']       = $thissurvey;
 
-        /* always here, even if hidden or in navigator , for button : if nopt in navigator : must be hidden by default */
-        /* TODO : TWIG
-        $aGlobalReplacements = array(
-            'SAVE_LINKS' =>  $this->getController()->renderPartial("/survey/system/actionLink/saveSave",array(
-                'submit'=>'', // Don't do the action, just for display
-                'class'=>'ls-link-action ls-link-saveall'
-            ),true),
-            'CLEARALL_LINKS' =>   $this->getController()->renderPartial("/survey/system/actionLink/clearAll",array(
-                'class'=>'ls-link-action ls-link-clearall',
-                'submit'=>'',
-                'confirm'=>'',
-            ),true),
-            'SAVE' =>  $this->getController()->renderPartial("/survey/system/actionButton/saveSave",array(
-                'value'=>'saveall',
-                'name'=>'saveall',
-                'class'=>'ls-saveaction ls-saveall'
-            ),true),
-            'CLEARALL' =>   $this->getController()->renderPartial("/survey/system/actionButton/clearAll",array(
-                'value'=>'clearall',
-                'name'=>'clearall',
-                'class'=>'ls-clearaction ls-clearall',
-                'confirmedby'=>'confirm-clearall',
-                'confirmvalue'=>'confirm',
-            ),true),
-        );
-        */
-        $aGlobalReplacements = array();
-        $myoutput[] = "";
+        $aGlobalReplacements       = array();
+        $myoutput[]                = "";
 
-        // TODO: TWIG
+        $files       = $oEditedTemplate->getValidScreenFiles("view", $screenname);
+        $sLayoutFile = $oEditedTemplate->getLayoutForScreen($screenname);
+
         switch ($screenname)
         {
-            case 'surveylist':
-
-                /*
-                $aSurveyList = array(
-                    'publicSurveys' => Survey::model()->active()->open()->public()->with('languagesettings')->findAll(),
-                    'futureSurveys' => Survey::model()->active()->registration()->public()->with('languagesettings')->findAll(),
-                );
-
-                $aReplacementSurveyList = array(
-                    "SURVEYCONTACT" => sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail")),
-                    "SURVEYLISTHEADING" => gT("The following surveys are available:"),
-                    "SURVEYLIST" => $this->getController()->renderPartial('/admin/templates/templateeditor_surveylist_view', $aSurveyList, true),
-                );
-
-                //$aData['surveylist'] = $aSurveyListTexts;
-                $aData['aReplacements'] = array_merge($aGlobalReplacements,$aReplacementSurveyList);
-                $myoutput[] = "";
-                $files=$SurveyList;
-                foreach ($files as $qs)
-                {
-                    $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
-                }*/
-//                $files = $oTemplate->;
-                //$files = ;
-
-                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->surveylist;
-                $files             = $aSurveyListConfig['file'];
-                $myoutput          = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_survey_list.twig", array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-                break;
 
             case 'question':
-                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->question;
-                $files             = $aSurveyListConfig['file'];
-
                 $aReplacements = array(
                     'QUESTION_TEXT' => gT("How many roads must a man walk down?"),
                     'QUESTION_CODE' => 'Q1 ',
@@ -1227,32 +1057,10 @@ class templates extends Survey_Common_Action
                 // This is just to prevent getAllClasses to retreive .ls-hidden CSS class
                 $thissurvey['aGroups'][1]["aQuestions"][1]['templateeditor'] = true;
                 $thissurvey['aGroups'][1]["aQuestions"][2]['templateeditor'] = true;
-
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_main.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-
-                break;
-
-            case 'welcome':
-                /*
-                $sMoveNext = App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"ls-move-btn ls-move-next-btn"),true);
-                $aData['aReplacements'] = array_merge($aGlobalReplacements,array(
-                    'MOVEPREVBUTTON' => '',
-                    'MOVENEXTBUTTON' => $sMoveNext,
-                    'NAVIGATOR' => "$sMoveNext",
-                ));
-                $files=$Welcome ;
-                foreach ($files as $qs) {
-                    $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
-                }
-                */
-                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->welcome_page;
-                $files             = $aSurveyListConfig['file'];
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_first_page.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-                //var_dump($myoutput); die();
                 break;
 
             case 'register':
-                $files=$Register;
+                $sLayoutFile = ""; // TODO
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
 
                 $aData = array(
@@ -1274,67 +1082,10 @@ class templates extends Survey_Common_Action
                 $myoutput[] = "\n";
                 break;
 
-            case 'save':
-                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->save;
-                $files             = $aSurveyListConfig['file'];
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_save.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-                break;
-
-            case 'load':
-                /*
-                $files=$Load;
-                $aData['aReplacements'] = $aGlobalReplacements;
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(),$aData['aReplacements'], 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $aData['aReplacements']['LOADHEADING'] = App()->getController()->renderPartial("/survey/frontpage/loadForm/heading",array(),true);
-                $aData['aReplacements']['LOADMESSAGE'] = App()->getController()->renderPartial("/survey/frontpage/loadForm/message",array(),true);
-                $aData['aReplacements']['LOADERROR'] = "";
-                $loadForm  = CHtml::beginForm(array("/survey/index","sid"=>$surveyid), 'post',array('id'=>'form-load'));
-                $loadForm .= App()->getController()->renderPartial("/survey/frontpage/loadForm/form",array('captcha'=>false),true);
-                $loadForm .= CHtml::endForm();
-                $aData['aReplacements']['LOADFORM'] = $loadForm;
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/load.pstpl", $aData, $oEditedTemplate));
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), $aData['aReplacements'], $aData['aReplacements'], 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-
-                $myoutput[] = "\n";
-                */
-                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->load;
-                $files             = $aSurveyListConfig['file'];
-
-
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_load.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-                break;
-
-            case 'clearall':
-                /*
-                $files=$Clearall;
-                $aData['aReplacements'] = $aGlobalReplacements;
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/clearall.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = "\n";
-                */
-                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->clearall;
-                $files             = $aSurveyListConfig['file'];
-
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_clearall.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
-                break;
-
             case 'completed':
-                /*
-                $aData['aReplacements'] = $aGlobalReplacements;
-                $files=$CompletedTemplate;
-                $myoutput[] = "";
-                foreach ($files as $qs)
-                {
-                    $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
-                }*/
                 $thissurvey['aCompleted']['showDefault'] = true;
                 $thissurvey['aCompleted']['aPrintAnswers']['show'] = true;
                 $thissurvey['aCompleted']['aPublicStatistics']['show'] = true;
-
-                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->completed;
-                $files             = $aSurveyListConfig['file'];
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_submit.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'assessments':
@@ -1347,16 +1098,11 @@ class templates extends Survey_Common_Action
                 $thissurvey['aAssessments']["datas"]["subtotal"]["datas"][2]   = 3;
                 $thissurvey['aAssessments']["datas"]["subtotal_score"][1]      = 3;
                 $thissurvey['aAssessments']["datas"]["total_score"]            = 3;
-
-                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->assessments;
-                $files             = $aSurveyListConfig['file'];
-
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_submit.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
 
             case 'printablesurvey':
+                $sLayoutFile = "TODO";
                 $aData['aReplacements'] = $aGlobalReplacements;
-                $files=$printablesurveytemplate;
                 $questionoutput = array();
                 foreach (file("$templatedir/print_question.pstpl") as $op)
                 {
@@ -1396,7 +1142,7 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'printanswers':
-                $files=$printtemplate;
+                $sLayoutFile = "TODO";
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/printanswers.pstpl"), array('ANSWERTABLE' => $printoutput), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
                 $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
@@ -1407,16 +1153,12 @@ class templates extends Survey_Common_Action
             case 'error':
                 $thissurvey['aError']['title'] = gT("Error");
                 $thissurvey['aError']['message'] = gT("This is an error message example");
-
-                $aSurveyListConfig = (array) $oEditedTemplate->templateEditor->screens->error;
-                $files             = $aSurveyListConfig['file'];
-
-                $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor("layout_errors.twig",array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
                 break;
         }
-        //$myoutput[] = "</html>";
 
-        $jsfiles =  $this->_getEditableJsFiles($oEditedTemplate);
+        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
+
+        $jsfiles =  $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
 
         // XML Behaviour: if only one file, then $files is just a string
@@ -1424,26 +1166,6 @@ class templates extends Survey_Common_Action
             $files   = array(0=>$files);
         }
 
-        if (is_array($files))
-        {
-            $match = 0;
-            if (in_array($editfile,$files) || in_array($editfile,$aCssAndJsfiles))
-            {
-                $match=1;
-            }
-
-            if ($match == 0)
-            {
-                if (count($files) > 0)
-                {
-                    $editfile = $files[0];
-                }
-                else
-                {
-                    $editfile = "";
-                }
-            }
-        }
 
         // Get list of 'otherfiles'
         // We can't use $oTemplate->otherFiles, because of retrocompatibility with 2.06 template and the big mess of it mixing files
@@ -1462,6 +1184,42 @@ class templates extends Survey_Common_Action
 
             closedir($handle);
         }
+
+
+
+        $editfile = $oEditedTemplate->getFilePathForEdition($editfile, array_merge($files, $aCssAndJsfiles));
+                /*
+                if (is_array($files))
+                {
+                    $match = 0;
+                    if (in_array($editfile,$files) || in_array($editfile,$aCssAndJsfiles))
+                    {
+                        $match=1;
+                    }
+
+                    if ($match == 0)
+                    {
+                        if (count($files) > 0)
+                        {
+                            $editfile = $files[0];
+                        }
+                        else
+                        {
+                            $editfile = "";
+                        }
+                    }
+                }
+                */
+
+
+                $extension = substr(strrchr($editfile, "."), 1);
+                $highlighter = 'html';
+                if ($extension == 'css' || $extension == 'js')
+                {
+                    $highlighter = $extension;
+                }
+
+
 
 
         $aData['codelanguage'] = $sLanguageCode;

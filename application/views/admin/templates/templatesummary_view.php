@@ -8,7 +8,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         <div class="col-lg-12">
 
             <?php App()->getClientScript()->registerPackage('jquery-ace'); ?>
-            <h4><?php echo sprintf(gT("Editing file '%s'"),$editfile); ?></h4>
+            <h4><?php echo sprintf(gT("Viewing file '%s'"),$editfile); ?></h4>
 
             <?php if (!is_writable($templates[$templatename])):?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
@@ -43,7 +43,8 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
             echo CHtml::hiddenField('editfile', $editfile);
             echo CHtml::hiddenField('action', 'templatesavechanges');
-            echo CHtml::textArea('changes', isset($editfile)?filetext($templatename,$editfile,$templates):'',array('rows'=>'20',
+
+            echo CHtml::textArea('changes', isset($editfile)?file_get_contents($editfile):'',array('rows'=>'20',
                 'cols'=>'40',
                 'data-filetype'=>$sEditorFileType,
                 'class'=>'ace '.$sTemplateEditorMode,

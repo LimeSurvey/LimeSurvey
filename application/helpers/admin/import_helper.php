@@ -1546,7 +1546,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     translateInsertansTags($iNewSID,$iOldSID,$aOldNewFieldmap);
     replaceExpressionCodes($iNewSID,$aQuestionCodeReplacements);
     if (count($aQuestionCodeReplacements)) {
-          array_unshift($results['importwarnings'] , "<span class='warningtitle'>".gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.').'</span)>');
+          array_unshift($results['importwarnings'] , "<span class='warningtitle'>".gT('Attention: Several question codes were updated. Please check these carefully as the update  may not be perfect with customized expressions.').'</span>');
     }
     LimeExpressionManager::RevertUpgradeConditionsToRelevance($iNewSID);
     LimeExpressionManager::UpgradeConditionsToRelevance($iNewSID);
@@ -2086,7 +2086,7 @@ function XSSFilterArray(&$array)
 * Import survey from an TSV file template that does not require or allow assigning of GID or QID values.
 * NOTE:  This currently only supports import of one language
 * @param string $sFullFilePath
-* @return type
+* @return array
 *
 * @author TMSWhite
 */
@@ -2110,7 +2110,7 @@ function TSVImportSurvey($sFullFilePath)
         // UTF16 Byte Order Mark present
         $encoding = 'UTF-16';
     } else {
-        $file_sample = fread($handle, 1000) + 'e'; //read first 1000 bytes
+        $file_sample = fread($handle, 1000) . 'e'; //read first 1000 bytes
         // + e is a workaround for mb_string bug
         rewind($handle);
 

@@ -111,20 +111,19 @@
         }
 
         /**
-         * Renders a question and recurses into subquestions.
-         * @param type $question
+         * Renders a question and recurses into sub-questions.
+         * @param Question $question
          */
         protected function renderQuestion($question, $value, $header)
         {
-            if (isset($value) && strlen($value) > 0)
-            {
+            if (isset($value) && strlen($value) > 0) {
                 $this->openTag('tr', array(
                     'data-qid'  => $question['qid'],
                     'class' => 'question'
                 ));
 
-                   $this->tag('td', $header);
-                   $this->tag('td', $value);
+                $this->tag('td', $header);
+                $this->tag('td', $value);
                 $this->closeTag();
             }
         }
@@ -167,5 +166,3 @@
             fclose($this->handle);
         }
     }
-
-?>

@@ -499,7 +499,7 @@ class ExpressionManager {
             }
             else
             {
-                $this-RDP_AddError(self::gT("Unbalanced equation - values left on stack"),NULL);
+                $this->RDP_AddError(self::gT("Unbalanced equation - values left on stack"),NULL);
                 return false;
             }
         }
@@ -1659,7 +1659,7 @@ class ExpressionManager {
      * Get information about the variable, including JavaScript name, read-write status, and whether set on current page.
      * @param string $name
      * @param string|null $attr
-     * @param string default
+     * @param string $default
      * @return string
      */
     private function GetVarAttribute($name,$attr,$default)
@@ -2720,12 +2720,12 @@ function exprmgr_sumifop($args)
  *
  * @author Johannes Weberhofer, 2013
  *
- * @param numeric $fValueToReplace
- * @param numeric $iStrict - 1 for exact matches only otherwise interpolation the
- * 		  closest value should be returned
+ * @param double $fValueToReplace
+ * @param integer $iStrict - 1 for exact matches only otherwise interpolation the
+ *          closest value should be returned
  * @param string $sTranslateFromList - comma seperated list of numeric values to translate from
  * @param string $sTranslateToList - comma seperated list of numeric values to translate to
- * @return numeric
+ * @return integer|null
  */
 function exprmgr_convert_value($fValueToReplace, $iStrict, $sTranslateFromList, $sTranslateToList)
 {
@@ -3027,4 +3027,3 @@ function exprmgr_unique($args)
     }
     return true;
 }
-?>

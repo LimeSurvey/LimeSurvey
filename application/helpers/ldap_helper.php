@@ -315,5 +315,3 @@ function prepareLdapQuery($queryId)
     $ldap_queries[$queryId] = array_map('strtolower',$ldap_queries[$queryId]);
     $ldap_queries[$queryId]['name']=$QueryName;
 }
-
-?>

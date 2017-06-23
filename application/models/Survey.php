@@ -81,6 +81,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property User $owner
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
+ * @property Question[] $quotableQuestions
  *
  * @property array $fullAnswers
  * @property array $partialAnswers
@@ -686,7 +687,7 @@ class Survey extends LSActiveRecord
     /**
      * Attribute renamed to questionindex in dbversion 169
      * Y maps to 1 otherwise 0;
-     * @param type $value
+     * @param string $value
      */
     public function setAllowjumps($value)
     {
@@ -1259,6 +1260,45 @@ class Survey extends LSActiveRecord
             $this->sSurveyUrl = App()->createUrl('survey/index', array('sid' => $this->sid, 'lang' => $surveylang));
         }
         return $this->sSurveyUrl;
+    }
+
+
+    /**
+     * @return Question[]
+     */
+    public function getQuotableQuestions()
+    {
+        $criteria = $this->getQuestionOrderCriteria();
+
+        $criteria->addColumnCondition(array(
+            't.sid' => $this->sid,
+            't.language' => $this->language,
+            'parent_qid' => 0,
+
+        ));
+
+        $criteria->addInCondition('t.type',Question::getQuotableTypes());
+
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAll($criteria);
+        return $questions;
+    }
+
+    /**
+     * Get the DB criteria to get questions as ordered in survey
+     * @return CDbCriteria
+     */
+    private function getQuestionOrderCriteria(){
+        $criteria=new CDbCriteria;
+        $criteria->select = Yii::app()->db->quoteColumnName('t.*');
+        $criteria->with=array(
+            'survey.groups',
+        );
+        $criteria->order =Yii::app()->db->quoteColumnName('groups.group_order').','
+            .Yii::app()->db->quoteColumnName('t.question_order');
+        $criteria->addCondition('`groups`.`gid` =`t`.`gid`','AND');
+        return $criteria;
+
     }
 
 }

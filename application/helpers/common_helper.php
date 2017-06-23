@@ -109,7 +109,7 @@ function quoteText($sText, $sEscapeMode = 'html')
 * @param string $SelectedCode Value of the Question Type (defaults to "T")
 * @param string $ReturnType Type of output from this function (defaults to selector)
 *
-* @return depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
+* @return array|string depending on $ReturnType param, returns a straight "array" of question types, or an <option></option> list
 *
 * Explanation of questiontype array:
 *
@@ -369,7 +369,7 @@ function getQuestions($surveyid,$gid,$selectedqid)
 * @param string $surveyid
 * @param string $gid
 *
-* @return The Gid of the previous group
+* @return int The Gid of the previous group
 */
 function getGidPrevious($surveyid, $gid)
 {
@@ -400,7 +400,7 @@ function getGidPrevious($surveyid, $gid)
 * @param string $gid
 * @param string $qid
 *
-* @return This Qid of the previous question
+* @return integer This Qid of the previous question
 */
 function getQidPrevious($surveyid, $gid, $qid)
 {
@@ -433,7 +433,7 @@ function getQidPrevious($surveyid, $gid, $qid)
 * @param string $surveyid
 * @param string $gid
 *
-* @return The Gid of the next group
+* @return integer The Gid of the next group
 */
 function getGidNext($surveyid, $gid)
 {
@@ -466,7 +466,7 @@ function getGidNext($surveyid, $gid)
 * @param string $gid
 * @param string $qid
 *
-* @return This Qid of the previous question
+* @return integer This Qid of the previous question
 */
 function getQidNext($surveyid, $gid, $qid)
 {
@@ -1109,7 +1109,7 @@ function getUserList($outputformat='fullinfoarray')
 *
 * @param string $surveyid  The survey ID
 * @param string $languagecode The language code - if not given the base language of the particular survey is used
-* @return array Returns array with survey info or false, if survey does not exist
+* @return array|bool Returns array with survey info or false, if survey does not exist
 */
 function getSurveyInfo($surveyid, $languagecode='')
 {
@@ -1119,22 +1119,17 @@ function getSurveyInfo($surveyid, $languagecode='')
     $thissurvey=false;
     $oSurvey = Survey::model()->findByPk($surveyid);
     // Do job only if this survey exist
-    if(!$oSurvey)
-    {
+    if(!$oSurvey) {
         return false;
     }
     // if no language code is set then get the base language one
-    if ((!isset($languagecode) || $languagecode==''))
-    {
+    if ((!isset($languagecode) || $languagecode=='')) {
         $languagecode=Survey::model()->findByPk($surveyid)->language;
     }
 
-    if(isset($staticSurveyInfo[$surveyid][$languagecode]) )
-    {
+    if(isset($staticSurveyInfo[$surveyid][$languagecode]) ) {
         $thissurvey=$staticSurveyInfo[$surveyid][$languagecode];
-    }
-    else
-    {
+    } else {
         $result = SurveyLanguageSetting::model()->with('survey')->findByPk(array('surveyls_survey_id' => $surveyid, 'surveyls_language' => $languagecode));
         if (is_null($result)) {
             // When additional language was added, but not saved it does not exists
@@ -1622,18 +1617,17 @@ function validateEmailAddress($sEmailAddress){
 
 /**
 * Validate an list of email addresses - either as array or as semicolon-limited text
-* @returns List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
+* @return string List with valid email addresses - invalid email addresses are filtered - false if none of the email addresses are valid
 *
 * @param mixed $aEmailAddressList  Email address to check
 */
 function validateEmailAddresses($aEmailAddressList){
   $aOutList=false;
-  if (!is_array($aEmailAddressList))
-  {
+  if (!is_array($aEmailAddressList)) {
      $aEmailAddressList=explode(';',$aEmailAddressList);
   }
-  foreach ($aEmailAddressList as $sEmailAddress)
-  {
+
+  foreach ($aEmailAddressList as $sEmailAddress) {
       $sEmailAddress= trim($sEmailAddress);
       if (validateEmailAddress($sEmailAddress)){
          $aOutList=$sEmailAddress;
@@ -2375,7 +2369,6 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
 /**
 * Returns true if the given survey has a File Upload Question Type
-* @param $surveyid The survey ID
 * @param integer $iSurveyID
 * @return bool
 */
@@ -2604,12 +2597,11 @@ function dbQuoteAll($value)
 * - it is intended to be used before any response data is saved to the response table
 *
 * @param mixed $sValue A string to be sanitized
-* @return A sanitized string, otherwise the unmodified original variable
+* @return string A sanitized string, otherwise the unmodified original variable
 */
 function stripCtrlChars($sValue)
 {
-    if (is_string($sValue))
-    {
+    if (is_string($sValue)) {
         $sValue=preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x80-\x9F]/u', '', $sValue);
     }
     return $sValue;
@@ -2880,7 +2872,7 @@ function flattenText($sTextToFlatten, $bKeepSpan=false, $bDecodeHTMLEntities=fal
 
 /**
 * getArrayFilterExcludesCascadesForGroup() queries the database and produces a list of array_filter_exclude questions and targets with in the same group
-* @return returns a keyed nested array, keyed by the qid of the question, containing cascade information
+* @return array a keyed nested array, keyed by the qid of the question, containing cascade information
 */
 function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid")
 {
@@ -2974,7 +2966,8 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
 /**
 * getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
-* @return returns an array of codes that were selected else returns false
+* @return array an array of codes that were selected else returns false
+* @deprecated not used
 */
 function getArrayFiltersForQuestion($qid)
 {
@@ -2991,6 +2984,7 @@ function getArrayFiltersForQuestion($qid)
         {
             if ($fields[2] == $val)
             {
+                /** Broken code below ...
                 // we found the target question, now we need to know what the answers where, we know its a multi!
                 $fields[0]=sanitize_int($fields[0]);
                 //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
@@ -3002,6 +2996,8 @@ function getArrayFiltersForQuestion($qid)
                     if (Yii::app()->session[$fields[1].$code['title']] == "Y"
                     || Yii::app()->session[$fields[1]] == $code['title'])             array_push($selected,$code['title']);
                 }
+
+                 */
 
                 //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
                 //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
@@ -3024,7 +3020,8 @@ function getArrayFiltersForQuestion($qid)
 
 /**
 * getGroupsByQuestion($surveyid)
-* @return returns a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
+* @return array a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
+* @deprecated  not used
 */
 function getGroupsByQuestion($surveyid) {
     $output=array();
@@ -3032,7 +3029,7 @@ function getGroupsByQuestion($surveyid) {
     $surveyid=sanitize_int($surveyid);
     $result=Question::model()->findAllByAttributes(array("sid"=>$surveyid));
 
-    foreach ($qresult->readAll() as $val)
+    foreach ($result->readAll() as $val)
     {
         $output[$val['qid']]=$val['gid'];
     }
@@ -3042,7 +3039,7 @@ function getGroupsByQuestion($surveyid) {
 
 /**
 * getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
-* @return returns an array of codes that were selected else returns false
+* @return array returns an array of codes that were selected else returns false
 */
 function getArrayFilterExcludesForQuestion($qid)
 {
@@ -3312,17 +3309,14 @@ function isCaptchaEnabled($screen, $captchamode='')
             break;
         case 'saveandloadscreen':
             if ($captchamode == 'A' ||
-            $captchamode == 'C' ||
-            $captchamode == 'D' ||
-            $captchamode == 'S')
-            {
+                $captchamode == 'C' ||
+                $captchamode == 'D' ||
+                $captchamode == 'S') {
+
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
-            return true;
             break;
         default:
             return true;
@@ -3906,7 +3900,7 @@ function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 * Check if the time shoul be rendered also
 *
 * @param string $sDate
-* @param boolean withTime
+* @param boolean $withTime
 * @return string
 */
 function convertToGlobalSettingFormat($sDate,$withTime=false)
@@ -4025,12 +4019,13 @@ function getTemplateURL($sTemplateName)
 }
 
 /**
-* Return an array of subquestions for a given sid/qid
-*
-* @param int $sid
-* @param int $qid
-* @param $sLanguage Language of the subquestion text
-*/
+ * Return an array of subquestions for a given sid/qid
+ *
+ * @param int $sid
+ * @param int $qid
+ * @param string $sLanguage Language of the subquestion text
+ * @return array
+ */
 function getSubQuestions($sid, $qid, $sLanguage) {
 
     static $subquestions;
@@ -4251,30 +4246,21 @@ function isNumericInt($mStr)
 */
 function short_implode($sDelimeter, $sHyphen, $aArray)
 {
-    if (sizeof($aArray) < Yii::app()->getConfig('minlengthshortimplode'))
-    {
+    if (sizeof($aArray) < Yii::app()->getConfig('minlengthshortimplode')) {
         sort($aArray);
         return implode($sDelimeter, $aArray);
-    }
-    else
-    {
+    } else {
         sort($aArray);
         $iIndexA = 0;
         $iIndexB = 1;
-        while ($iIndexA < sizeof($aArray))
-        {
-            if ($iIndexA == 0)
-            {
+        $sResult = null;
+        while ($iIndexA < sizeof($aArray)) {
+            if ($iIndexA == 0) {
                 $sResult = $aArray[$iIndexA];
-            }
-            else
-            {
-                if (strlen($sResult) > Yii::app()->getConfig('maxstringlengthshortimplode') - strlen($sDelimeter) - 3)
-                {
+            } else {
+                if (strlen($sResult) > Yii::app()->getConfig('maxstringlengthshortimplode') - strlen($sDelimeter) - 3) {
                     return $sResult.$sDelimeter.'...';
-                }
-                else
-                {
+                } else {
                     $sResult = $sResult.$sDelimeter.$aArray[$iIndexA];
                 }
             }
@@ -5640,7 +5626,7 @@ function getDBTableUsage($surveyid){
                 $length = $length + 8;
                 break;
             case 'L':
-                $legth++;
+                $length++;
                 break;
             case 'I':
             case 'I4':
@@ -5916,8 +5902,8 @@ function ls_json_encode($content)
 /**
  * Decode a json string, sometimes needs stripslashes
  *
- * @param type $jsonString
- * @return type
+ * @param string $jsonString
+ * @return mixed
  */
 function json_decode_ls($jsonString)
 {
@@ -6011,10 +5997,10 @@ function arraySwapAssoc($key1, $key2, $array) {
 *
 * This public static function will strip tags from a string, split it at its max_length and ellipsize
 *
-* @param    string        string to ellipsize
-* @param    integer        max length of string
-* @param    mixed        int (1|0) or float, .5, .2, etc for position to split
-* @param    string        ellipsis ; Default '...'
+* @param    string  $sString        string to ellipsize
+* @param    integer $iMaxLength       max length of string
+* @param    mixed   $fPosition       int (1|0) or float, .5, .2, etc for position to split
+* @param    string  $sEllipsis      ellipsis ; Default '...'
 * @return    string        ellipsized string
 */
 function ellipsize($sString, $iMaxLength, $fPosition = 1, $sEllipsis = '&hellip;')
@@ -6116,9 +6102,10 @@ function array_diff_assoc_recursive($array1, $array2) {
 }
 
 
-    /**
-     * @param string $sSize
-     */
+/**
+ * @param string $sSize
+ * @return bool|int|string
+ */
     function convertPHPSizeToBytes($sSize)
     {
         //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)

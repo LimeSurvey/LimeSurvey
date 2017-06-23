@@ -59,7 +59,7 @@ abstract class Zend_XmlRpc_Value_Collection extends Zend_XmlRpc_Value
     /**
      * Return the value of this object, convert the XML-RPC native collection values into a PHP array
      *
-     * @return arary
+     * @return array
      */
     public function getValue()
     {

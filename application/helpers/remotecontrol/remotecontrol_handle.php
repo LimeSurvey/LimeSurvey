@@ -316,9 +316,9 @@ class remotecontrol_handle
     * 
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param integer $iSurveyID The ID of the Survey
-    * @param array|struct $aSurveyData An array with the particular properties as keys and their values to set on that particular Survey
-    * @return array In case of success Notifications according to internal validation of each params set
+    * @param integer $iSurveyID - ID of the Survey
+    * @param array $aSurveyData - An array with the particular fieldnames as keys and their values to set on that particular Survey
+    * @return array Of succeeded and failed nodifications according to internal validation
     */
     public function set_survey_properties($sSessionKey, $iSurveyID, $aSurveyData)
     {
@@ -839,7 +839,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param integer $iSurveyID  - ID of the Survey
-    * @param array|struct $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
+    * @param array $aSurveyLocaleData - An array with the particular fieldnames as keys and their values to set on that particular survey
     * @param string $sLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
     * @return array in case of success 'status'=>'OK', when save successful otherwise error text.
     */
@@ -1168,9 +1168,9 @@ class remotecontrol_handle
     * 
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param integer $iGroupID ID of the Survey
-    * @param array|struct $aGroupData array with the particular fieldnames as keys and their values to set on that particular survey
-    * @return array in case of partial success : return array of each properties with status according to internal validation.
+    * @param integer $iGroupID  - ID of the Survey
+    * @param array $aGroupData - An array with the particular fieldnames as keys and their values to set on that particular survey
+    * @return array Of succeeded and failed modifications according to internal validation.
     */
     public function set_group_properties($sSessionKey, $iGroupID, $aGroupData)
     {
@@ -1243,7 +1243,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int iQuestionID ID of the Question to delete
+    * @param int $iQuestionID ID of the Question to delete
     * @return array|int ID of the deleted Question or status
     */
     public function delete_question($sSessionKey, $iQuestionID)
@@ -1318,6 +1318,7 @@ class remotecontrol_handle
     */
     public function import_question($sSessionKey, $iSurveyID,$iGroupID, $sImportData, $sImportDataType, $sMandatory='N', $sNewQuestionTitle=NULL, $sNewqQuestion=NULL, $sNewQuestionHelp=NULL)
     {
+        $bOldEntityLoaderState = null;
         if ($this->_checkSessionKey($sSessionKey))
         {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -1569,7 +1570,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param integer $iQuestionID  - ID of the question
-    * @param array|struct $aQuestionData - An array with the particular fieldnames as keys and their values to set on that particular question
+    * @param array $aQuestionData - An array with the particular fieldnames as keys and their values to set on that particular question
     * @param string $sLanguage Optional parameter language for multilingual questions
     * @return array Of succeeded and failed modifications according to internal validation.
     */
@@ -1669,9 +1670,9 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey
-    * @param struct $aParticipantData Data of the participants to be added
-    * @param bool $bCreateToken (optional) generate the new token, defaults to true 
-    * @return array in case of partial success the final participant data
+    * @param array $aParticipantData Data of the participants to be added
+    * @param bool $bCreateToken Optional - Defaults to true and determins if the access token automatically created
+    * @return array The values added
     */
     public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken=true)
     {
@@ -1764,8 +1765,8 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey to get token properties
-    * @param array|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
-    * @param array $aTokenProperties (optional) properties to get, default to all
+    * @param array|int $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
+    * @param array $aTokenProperties The properties to get
     * @return array The requested values
     */
     public function get_participant_properties($sSessionKey, $iSurveyID, $aTokenQueryProperties, $aTokenProperties=null)
@@ -1822,7 +1823,7 @@ class remotecontrol_handle
     *
     * @access public
     * @param string $sSessionKey Auth credentials
-    * @param int $iSurveyID Id of the Survey that participants belongs to
+    * @param int $iSurveyID Id of the Survey that participants belong
     * @param array|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
     * @param array $aTokenData Data to change
     * @return array Result of the change action
@@ -1930,11 +1931,11 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey to list participants
-    * @param int $iStart (optional) start id of the token list, default to 0
-    * @param int $iLimit (optional) number of participants to return, default to 10
-    * @param bool $bUnused (optional) If you want unused tokens (not completed survey), default to false
-    * @param false|array $aAttributes The extented attributes that we want
-    * @param array $aConditions (optional) conditions to limit the list, @example ['email' => 'info@example.com']
+    * @param int $iStart Start id of the token list
+    * @param int  $iLimit Number of participants to return
+    * @param bool $bUnused If you want unused tokens, set true
+    * @param bool|array $aAttributes The extented attributes that we want
+    * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com')
     * @return array The list of tokens
     */
     public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false, $aAttributes=false, $aConditions=array() )
@@ -2445,15 +2446,16 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID ID of the Survey to insert responses
-    * @param struct $aResponseData The actual response
-    * @return int The response ID
+    * @param array $aResponseData The actual response
+    * @return int|array The response ID
     */
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+
         $oSurvey=Survey::model()->findByPk($iSurveyID);
-        if (is_null($oSurvey))
-        {
+
+        if (is_null($oSurvey)) {
             return array('status' => 'Error: Invalid survey ID');
         }
 
@@ -2509,7 +2511,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID Id of the Survey to update response
-    * @param struct $aResponseData The actual response
+    * @param array $aResponseData The actual response
     * @return mixed TRUE(bool) on success. errormessage on error
     */
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)

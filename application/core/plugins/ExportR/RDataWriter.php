@@ -28,8 +28,8 @@ class RDataWriter extends CsvWriter {
     /**
      * Perform response transformation, for example F/M for female/male will be mapped to 1/2 values
      *
-     * @param type $value
-     * @param type $fieldType
+     * @param string $value
+     * @param string $fieldType
      * @param FormattingOptions $oOptions
      * @return mixed
      */
