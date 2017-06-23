@@ -180,6 +180,25 @@ class TemplateConfiguration extends CFormModel
     }
 
     /**
+     * Retreives the absolute path for a file to edit (current template, mother template, etc)
+     * Also perform few checks (permission to edit? etc)
+     *
+     * @param string $sfile relative path to the file to edit
+     */
+    public function getFilePathForEdition($sFile, $aAllowedFiles=null)
+    {
+
+        // Check if the file is allowed for edition ($aAllowedFiles is produced via getValidScreenFiles() )
+        if (is_array($aAllowedFiles)){
+            if (!in_array($sFile, $aAllowedFiles)){
+                return false;
+            }
+        }
+
+        return $this->getFilePath($sFile, $this);
+    }
+
+    /**
      * This function will update the config file of a given template so that it extends another one
      *
      * It will:
@@ -569,6 +588,47 @@ class TemplateConfiguration extends CFormModel
             throw error ? Only for admin template editor ? disable and reset to default ?
         }*/
         return array();
+    }
+
+    private function getTemplateForFile($sFile, $oRTemplate)
+    {
+        while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
+    }
+
+    /**
+     * Get the file path for a given template.
+     * It will check if css/js (relative to path), or view (view path)
+     * It will search for current template and mother templates
+     *
+     * @param   string  $sFile          relative path to the file
+     * @param   string  $oTemplate      the template where to look for (and its mother templates)
+     */
+    private function getFilePath($sFile, $oTemplate)
+    {
+        // Remove relative path
+        $sFile = trim($sFile, '.');
+        $sFile = trim($sFile, '/');
+
+        // Retreive the correct template for this file (can be a mother template)
+        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
+
+        if($oTemplate instanceof TemplateConfiguration){
+            if(file_exists($oTemplate->path.'/'.$sFile)){
+                return $oTemplate->path.'/'.$sFile;
+            }elseif(file_exists($oTemplate->viewPath.$sFile)){
+                return $oTemplate->viewPath.$sFile;
+            }
+        }
+        return false;
     }
 
 }
