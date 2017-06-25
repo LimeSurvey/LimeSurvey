@@ -1561,7 +1561,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'message' => 'text not null',
                 'status' => "string(15) not null default 'new' ",
                 'importance' => 'integer default 1',
-                'display_class' => "string(31) default \'default\'",
+                'display_class' => "string(31) default 'default'",
                 'created' => 'datetime not null',
                 'first_read' => 'datetime null'
             ));
