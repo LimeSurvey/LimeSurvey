@@ -3,5 +3,8 @@
         <testsuite name="Questions">
             <directory>tests/questions</directory>
         </testsuite>
+        <testsuite name="Helpers">
+            <directory>tests/helpers</directory>
+        </testsuite>
     </testsuites>
 </phpunit>

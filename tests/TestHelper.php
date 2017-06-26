@@ -2,7 +2,24 @@
 
 namespace ls\tests;
 
-class TestHelper extends \PHPUnit_Framework_TestCase {
+class TestHelper extends \PHPUnit_Framework_TestCase
+{
+
+    /**
+     * Import all helpers etc.
+     * @return void
+     */
+    public function importAll()
+    {
+        \Yii::import('application.helpers.common_helper', true);
+        \Yii::import('application.helpers.replacements_helper', true);
+        \Yii::import('application.helpers.surveytranslator_helper', true);
+        \Yii::import('application.helpers.admin.import_helper', true);
+        \Yii::import('application.helpers.expressions.em_manager_helper', true);
+        \Yii::import('application.helpers.expressions.em_manager_helper', true);
+        \Yii::import('application.helpers.qanda_helper', true);
+        \Yii::app()->loadHelper('admin/activate');
+    }
 
     /**
      * @param string $title
