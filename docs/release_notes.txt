@@ -35,6 +35,16 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.67.0 (build 170622) to 2.67.1 (build 170626) June 26, 2017
+-Fixed issue #12414: exporting printable - template assets not visible in some extractors (eg windows default) (#701) (Tõnis Ormisson)
+-Fixed issue: Error in database update syntax (Olle Harstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by kkd
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) June 22, 2017
 -New feature: Opting out of a survey requires a one-click confirmation (Carsten Schmitz)
 -Fixed issue #12476: Quicktranslation tabs not working (markusfluer)
