@@ -17,25 +17,17 @@ class UpdateDbHelperTest extends TestBaseClass
         $db = \Yii::app()->getDb();
 
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        //var_dump($config);
 
-        // Get database name from connection string.
-        /*
-        $oldConnectionString = $db->connectionString;
-        var_dump($db->connectionString);
-        $arr = explode(';', $db->connectionString);
-        var_dump($arr);
-        die;
-        $this->assertEquals(4, count($ar));
-        $ar = explode('=', $ar[2]);
-        $this->assertEquals(2, count($ar));
-        $this->assertEquals($ar[0], 'dbname');
-         */
-
+        // Check that we're using MySQL.
         $conStr = \Yii::app()->db->connectionString;
         $isMysql = substr($conStr, 0, 5) === 'mysql';
+        if (!$isMysql) {
+            $this->markTestSkipped('Only works on MySQL');
+            return;
+        }
         $this->assertTrue($isMysql, 'This test only works on MySQL');
 
+        // Get database name.
         preg_match("/dbname=([^;]*)/", \Yii::app()->db->connectionString, $matches);
         $this->assertEquals(2, count($matches));
         $oldDatabase = $matches[1];
@@ -62,13 +54,22 @@ class UpdateDbHelperTest extends TestBaseClass
         // Run everything
         $inst = new \InstallerController('foobar');
         $inst->connection = \Yii::app()->db;
+
+        // Check SQL file.
         $file = __DIR__ . '/../data/sql/create-mysql.153.sql';
         $this->assertFileExists($file);
+
+        // Run SQL install file.
         $result = $inst->_executeSQLFile($file, 'lime_');
-        var_dump($result);
+        $this->assertEquals([], $result, 'No error messages');
+
+        // Run upgrade.
         $result = \db_upgrade_all(153);
-        var_dump($result);
-        var_dump(\Yii::app()->user->getFlashes());
+        $this->assertTrue($result, 'Upgrade successful');
+
+        // Check error messages.
+        $flashes = \Yii::app()->user->getFlashes();
+        $this->assertEmpty($flashes, 'No flash error messages');
 
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
@@ -76,11 +77,9 @@ class UpdateDbHelperTest extends TestBaseClass
 
         try {
             $result = $db->createCommand('DROP DATABASE __test_update_helper')->execute();
-            var_dump($result);
-            //$this->assertEquals(0, $result, 'Could drop database');
         } catch (\CDbException $ex) {
             $msg = $ex->getMessage();
-            // This error is OK.
+            // Only this error is OK.
             $this->assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
         }
     }
