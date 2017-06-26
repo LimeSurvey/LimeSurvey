@@ -1132,8 +1132,8 @@ class templates extends Survey_Common_Action
             closedir($handle);
         }
 
+        $editfile = (empty($editfile))?$sLayoutFile:$editfile;
         $editfile = $oEditedTemplate->getFilePathForEdition($editfile, array_merge($files, $aCssAndJsfiles));
-
 
         $extension = substr(strrchr($editfile, "."), 1);
         $highlighter = 'html';
