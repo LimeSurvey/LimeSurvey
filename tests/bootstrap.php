@@ -229,3 +229,4 @@ set_error_handler(function($no, $msg, $file, $line, $context) {
 }, E_ERROR & E_WARNING & E_PARSE);
 
 require_once(__DIR__ . '/TestHelper.php');
+require_once(__DIR__ . '/TestBaseClass.php');

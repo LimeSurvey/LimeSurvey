@@ -7,13 +7,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * @since 2017-06-16
  */
-class DateTimeDefaultAnswerExpressionTest extends \PHPUnit_Framework_TestCase
+class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 {
-    /**
-     * @var TestHelper
-     */
-    protected static $testHelper = null;
-
     /**
      * @var int
      */

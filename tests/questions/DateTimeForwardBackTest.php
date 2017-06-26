@@ -7,13 +7,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * @since 2017-06-13
  */
-class DateTimeForwardBackTest extends \PHPUnit_Framework_TestCase
+class DateTimeForwardBackTest extends TestBaseClass
 {
-    /**
-     * @var TestHelper
-     */
-    protected static $testHelper = null;
-
     /**
      * @var int
      */
