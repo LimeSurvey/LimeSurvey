@@ -12,7 +12,7 @@ class UpdateDbHelperTest extends TestBaseClass
     /**
      * Run db_upgrade_all().
      */
-    public function testBasic()
+    public function testDbUpgradeAll()
     {
         $db = \Yii::app()->getDb();
 
@@ -61,7 +61,7 @@ class UpdateDbHelperTest extends TestBaseClass
 
         // Run SQL install file.
         $result = $inst->_executeSQLFile($file, 'lime_');
-        $this->assertEquals([], $result, 'No error messages');
+        $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
 
         // Run upgrade.
         $result = \db_upgrade_all(153);
