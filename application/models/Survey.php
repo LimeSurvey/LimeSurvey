@@ -93,12 +93,10 @@ class Survey extends LSActiveRecord
      */
     protected $findByPkCache = array();
 
-    /**
-     * @var string $format : A : All in one, G : Group by group, Q : question by question
-     */
+    /** @var string  A : All in one, G : Group by group, Q : question by question */
     public $format = 'G';
     /**
-     * @var string $htmlemail : Y : all email related to this survey use HTML format
+     * @property string $htmlemail Y mean all email related to this survey use HTML format
      */
     public $htmlemail='Y';
 
