@@ -139,9 +139,10 @@ class AdminTheme extends CFormModel
             Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
             App()->bootstrap->registerTooltipAndPopover();                                                               // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
 
-            App()->getClientScript()->registerPackage('jqueryui');          // jqueryui
+            App()->getClientScript()->registerPackage('jqueryui');      // jqueryui
             App()->getClientScript()->registerPackage('js-cookie');     // js-cookie
-            App()->getClientScript()->registerPackage('fontawesome');       // fontawesome      ??? TODO: check if neede
+            App()->getClientScript()->registerPackage('fontawesome');   // fontawesome      ??? TODO: check if neede
+            App()->getClientScript()->registerPackage('adminpanel');    // Combined scripts and style for the new admin panel
         }
 
         $aCssFiles = array();

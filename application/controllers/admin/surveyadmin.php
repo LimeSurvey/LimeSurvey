@@ -416,8 +416,6 @@ class SurveyAdmin extends Survey_Common_Action
            $aData['showLastQuestion'] = false;
         }
         $aData['templateapiversion'] = Template::model()->getTemplateConfiguration(null,$iSurveyID)->getApiVersion();
-        $cs = Yii::app()->clientScript;
-        $cs->registerPackage('adminpanel');
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
 
@@ -456,7 +454,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aGroupViewable[] = $curGroup;
             }
         }
-
+ 
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
@@ -465,6 +463,86 @@ class SurveyAdmin extends Survey_Common_Action
                     'settings' => array(
                         'lastquestion' => $lastquestion,
                         'lastquestiongroup' => $lastquestiongroup,
+                    ),
+                    // 'debug' => [
+                    //     $iSurveyID,
+                    //     $survey,
+                    //     $baselang,
+                    //     $setting_entry,
+                    //     $lastquestion,
+                    //     $setting_entry,
+                    //     $lastquestiongroup
+                    // ]
+                )
+            ),
+            false,
+            false
+        );
+    }
+
+    /**
+     * Ajaxified get MenuItems with containing questions
+     * 
+     *
+     */
+    public function getAjaxMenuArray($surveyid){
+        $iSurveyID = sanitize_int($surveyid);
+        $survey    = Survey::model()->findByPk($iSurveyID);
+        $baselang  = $survey->language;
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID;
+        $lastquestion = getGlobalSetting($setting_entry);
+        $setting_entry = 'last_question_'.Yii::app()->user->getId().'_'.$iSurveyID.'_gid';
+        $lastquestiongroup = getGlobalSetting($setting_entry);
+        $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID, "language" => $baselang), array('order'=>'group_order ASC'));
+        $aGroupViewable = array();
+        if(count($aGroups))
+        {
+            foreach($aGroups as $group)
+            {
+                $curGroup = $group->attributes;
+                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$baselang), array('order'=>'question_order ASC'));
+                $curGroup['questions'] = array();
+                foreach($group->aQuestions as $question)
+                {
+                    if(is_object($question))
+                    {
+                        $curQuestion = $question->attributes;
+                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question,true,60,'[...]',0.5);
+                        $curGroup['questions'][] =  $curQuestion;
+                    }
+                
+                }
+                $aGroupViewable[] = $curGroup;
+            }
+        }
+
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => array(
+                    'menuEntries' => [
+                        [
+                            'active' => true,
+                            'icon' => 'fa fa-list',
+                            'name' => gT('Overview'),
+                            'link' => $this->getController()->createUrl("admin/survey/sa/view", ['surveyid' => $surveyid])
+                        ],
+                        [
+                            'active' => false,
+                            'icon' => 'fa fa-cogs',
+                            'name' => gT('General Settings'),
+                            'link' => $this->getController()->createUrl("admin/survey/sa/editlocalsettings",['surveyid' => $surveyid])
+                        ],
+                        [
+                            'active' => false,
+                            'icon' => 'fa fa-language',
+                            'name' => gT('Language'),
+                            'link' => '#stillToCome'
+                        ],
+                    ],
+                    'settings' => array(
+                        'extrasettings' => false,
+                        'parseHTML' => false,
                     ),
                     // 'debug' => [
                     //     $iSurveyID,

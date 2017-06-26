@@ -24,22 +24,22 @@ $x-directions: center flex-start flex-end space-between space-around;
     display: flex;
 
     @each $alignment in $y-directions{
-        .align-item-#{$alignment} {
+        &.align-item-#{$alignment} {
             @include alignitems($alignment);
         }
     }
 
     @each $alignment in $x-directions{
-        .align-content-#{$alignment}{
+        &.align-content-#{$alignment}{
             @include aligncontent($alignment);
         }
     }
 
     &.wrap{
-        -ms-flex-wrap: 'wrap';
-        -webkit-flex-wrap: 'wrap';
-        -moz-flex-wrap: 'wrap';
-        flex-wrap: 'wrap';
+        -ms-flex-wrap: wrap;
+        -webkit-flex-wrap: wrap;
+        -moz-flex-wrap: wrap;
+        flex-wrap: wrap;
     }
 
 }

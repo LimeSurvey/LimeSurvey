@@ -26850,7 +26850,7 @@ Vue$3.compile = compileToFunctions;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(10)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(11)(module)))
 
 /***/ }),
 /* 2 */
@@ -26954,7 +26954,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(14)
+var listToStyles = __webpack_require__(15)
 
 /*
 type StyleObject = {
@@ -27320,7 +27320,7 @@ module.exports = g;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(8);
-module.exports = __webpack_require__(32);
+module.exports = __webpack_require__(33);
 
 
 /***/ }),
@@ -27330,25 +27330,61 @@ module.exports = __webpack_require__(32);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_sidebar_vue__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_sidebar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_sidebar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_topbar_vue__ = __webpack_require__(27);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_topbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_topbar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_topbar_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_topbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_topbar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pjax__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pjax___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pjax__);
 
 
 
 
 
 
-const sidemenu = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */](
+
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+
+const AppState = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+  state: {
+    surveyid: 0,
+    language: ''
+  },
+  mutations: {
+    updateSurveyId (state, newSurveyId) {
+      state.surveyid = newSurveyId
+    },
+    changeLanguage (state, language) {
+      state.language = language;
+    }    
+  }
+});
+
+if(document.getElementById('vue-side-menu-app')){
+  const sidemenu = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */](
   {  
     el: '#vue-side-menu-app',
+    store: AppState,
     components: {
-      'sidebar' : __WEBPACK_IMPORTED_MODULE_2__components_sidebar_vue___default.a,
+      'sidebar' : __WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue___default.a,
+    },
+    mounted(){
+       this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
     } 
 });
+}
+new __WEBPACK_IMPORTED_MODULE_5_pjax___default.a({
+  elements: "a.pjax", // default is "a[href], form[action]"
+  selectors: [
+    "sidebody", 
+    "topbar", 
+    "headerbar", 
+    ]
+})
+
 // const topmenu = new Vue(
 //   {  
 //     el: '#vue-top-menu-app',
@@ -27550,6 +27586,819 @@ process.umask = function() { return 0; };
 
 /***/ }),
 /* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export Store */
+/* unused harmony export mapState */
+/* unused harmony export mapMutations */
+/* unused harmony export mapGetters */
+/* unused harmony export mapActions */
+/**
+ * vuex v2.3.0
+ * (c) 2017 Evan You
+ * @license MIT
+ */
+var applyMixin = function (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    var usesInit = Vue.config._lifecycleHooks.indexOf('init') > -1;
+    Vue.mixin(usesInit ? { init: vuexInit } : { beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+};
+
+var devtoolHook =
+  typeof window !== 'undefined' &&
+  window.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+/**
+ * Deep copy the given object considering circular structure.
+ * This function caches all nested objects and its copies.
+ * If it detects circular structure, use cached copy to avoid infinite loop.
+ *
+ * @param {*} obj
+ * @param {Array<Object>} cache
+ * @return {*}
+ */
+
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  this._children = Object.create(null);
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors$1 = { namespaced: {} };
+
+prototypeAccessors$1.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors$1 );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  var this$1 = this;
+
+  // register root module (Vuex.Store options)
+  this.root = new Module(rawRootModule, false);
+
+  // register all nested modules
+  if (rawRootModule.modules) {
+    forEachValue(rawRootModule.modules, function (rawModule, key) {
+      this$1.register([key], rawModule, false);
+    });
+  }
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update(this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  var parent = this.get(path.slice(0, -1));
+  var newModule = new Module(rawModule, runtime);
+  parent.addChild(path[path.length - 1], newModule);
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+function update (targetModule, newModule) {
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        console.warn(
+          "[vuex] trying to add a new module '" + key + "' on hot reloading, " +
+          'manual reload is needed'
+        );
+        return
+      }
+      update(targetModule.getChild(key), newModule.modules[key]);
+    }
+  }
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  assert(Vue, "must call Vue.use(Vuex) before creating a store instance.");
+  assert(typeof Promise !== 'undefined', "vuex requires a Promise polyfill in this browser.");
+
+  var state = options.state; if ( state === void 0 ) state = {};
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.concat(devtoolPlugin).forEach(function (plugin) { return plugin(this$1); });
+};
+
+var prototypeAccessors = { state: {} };
+
+prototypeAccessors.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors.state.set = function (v) {
+  assert(false, "Use store.replaceState() to explicit replace store state.");
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    console.error(("[vuex] unknown mutation type: " + type));
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+  this._subscribers.forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (options && options.silent) {
+    console.warn(
+      "[vuex] mutation type: " + type + ". Silent option has been removed. " +
+      'Use the filter functionality in the vue-devtools'
+    );
+  }
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var entry = this._actions[type];
+  if (!entry) {
+    console.error(("[vuex] unknown action type: " + type));
+    return
+  }
+  return entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload)
+};
+
+Store.prototype.subscribe = function subscribe (fn) {
+  var subs = this._subscribers;
+  if (subs.indexOf(fn) < 0) {
+    subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  assert(typeof getter === 'function', "store.watch only accepts a function.");
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule) {
+  if (typeof path === 'string') { path = [path]; }
+  assert(Array.isArray(path), "module path must be a string or an Array.");
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path));
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+  assert(Array.isArray(path), "module path must be a string or an Array.");
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors );
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    computed[key] = function () { return fn(store); };
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var namespacedType = namespace + key;
+    registerAction(store, namespacedType, action, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (!store._actions[type]) {
+          console.error(("[vuex] unknown local action type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (!store._mutations[type]) {
+          console.error(("[vuex] unknown local mutation type: " + (args.type) + ", global type: " + type));
+          return
+        }
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  var gettersProxy = {};
+
+  var splitPos = namespace.length;
+  Object.keys(store.getters).forEach(function (type) {
+    // skip if the target getter is not match this namespace
+    if (type.slice(0, splitPos) !== namespace) { return }
+
+    // extract local getter type
+    var localType = type.slice(splitPos);
+
+    // Add a port to the getters proxy.
+    // Define as getter property because
+    // we do not want to evaluate the getters in this time.
+    Object.defineProperty(gettersProxy, localType, {
+      get: function () { return store.getters[type]; },
+      enumerable: true
+    });
+  });
+
+  return gettersProxy
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler(local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload, cb) {
+    var res = handler({
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload, cb);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    console.error(("[vuex] duplicate getter key: " + type));
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    assert(store._committing, "Do not mutate vuex store state outside mutation handlers.");
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.length
+    ? path.reduce(function (state, key) { return state[key]; }, state)
+    : state
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  assert(typeof type === 'string', ("Expects string as the type, but found " + (typeof type) + "."));
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue) {
+    console.error(
+      '[vuex] already installed. Vue.use(Vuex) should be called only once.'
+    );
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+// auto install in dist mode
+if (typeof window !== 'undefined' && window.Vue) {
+  install(window.Vue);
+}
+
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      if (namespace && !getModuleByNamespace(this.$store, 'mapMutations', namespace)) {
+        return
+      }
+      return this.$store.commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if (!(val in this.$store.getters)) {
+        console.error(("[vuex] unknown getter: " + val));
+        return
+      }
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    val = namespace + val;
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      if (namespace && !getModuleByNamespace(this.$store, 'mapActions', namespace)) {
+        return
+      }
+      return this.$store.dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+function normalizeMap (map) {
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if (!module) {
+    console.error(("[vuex] module namespace not found in " + helper + "(): " + namespace));
+  }
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '2.3.0',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (index_esm);
+
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -27577,19 +28426,19 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(12)
+  __webpack_require__(13)
 }
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(15),
+  __webpack_require__(16),
   /* template */
-  __webpack_require__(26),
+  __webpack_require__(27),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -27621,13 +28470,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(13);
+var content = __webpack_require__(14);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -27647,7 +28496,7 @@ if(false) {
 }
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(undefined);
@@ -27661,7 +28510,7 @@ exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 200, 200, 
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 /**
@@ -27694,7 +28543,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27703,7 +28552,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue__);
 
 
@@ -27718,68 +28567,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mixins: [__WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__["a" /* default */]],
     props: {
         'translate': { type: Object },
-        'getQuestionsUrl': { type: String }
+        'getQuestionsUrl': { type: String },
+        'getMenuUrl': { type: String }
     },
     data: () => {
         return {
             'currentTab': 'settings',
-            'questiongroups': []
+            'questiongroups': [],
+            'mainMenu': []
         };
     },
     computed: {
-        // questiongroups(){
-        //     //here will be the ajax call to get all survey questiongroups and questions
-        //     return [
-        //         {
-        //             'name': "Question Group",
-        //             'questions' :[
-        //                 {
-        //                     'name': 'Question 1',
-        //                     'code': 'qu1'
-        //                 },
-        //                 {
-        //                     'name': 'Question 2',
-        //                     'code': 'qu2'
-        //                 }
-        //             ]
-        //         },
-        //         {
-        //             'name': "Question Group2",
-        //             'questions' :[
-        //                 {
-        //                     'name': 'Question 3',
-        //                     'code': 'qu1'
-        //                 },
-        //                 {
-        //                     'name': 'Question 4',
-        //                     'code': 'qu2'
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // },
-        mainMenu() {
-            //Here will be an ajax call to get all possible items for the survey menu
-            return [{
-                'icon': 'fa fa-street-view',
-                'link': '#gotoOverview',
-                'description': 'Survey overview page',
-                'name': 'Overview',
-                'active': true
-            }, {
-                'icon': 'fa fa-gears',
-                'link': '#gotoGeneralSettings',
-                'description': 'General Survey Settings',
-                'name': 'General',
-                'active': false
-            }, {
-                'icon': 'fa fa-language',
-                'link': '#gotoLanguageSettings',
-                'description': 'Language Settings',
-                'name': 'Language',
-                'active': false
-            }];
-        },
         maxSideBarHeight() {
             let positionTop = $('#surveybarid').offset();
             let positionBottom = $('footer').offset();
@@ -27803,23 +28601,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             self.questiongroups = result.data.groups;
             self.$forceUpdate();
         });
+        this.get(this.getMenuUrl).then(result => {
+            console.log(result);
+            self.mainMenu = result.data.menuEntries;
+            self.$forceUpdate();
+        });
     }
 });
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(17)
+  __webpack_require__(18)
 }
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(19),
+  __webpack_require__(20),
   /* template */
-  __webpack_require__(25),
+  __webpack_require__(26),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -27851,13 +28654,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(18);
+var content = __webpack_require__(19);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -27877,7 +28680,7 @@ if(false) {
 }
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(undefined);
@@ -27891,7 +28694,7 @@ exports.push([module.i, "\n.bigIcons {\n    font-size: 24px;\n}\n.border-bottom{
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27900,7 +28703,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questions_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questions_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__questions_vue__);
 
 
@@ -27947,19 +28750,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(21)
+  __webpack_require__(22)
 }
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(23),
-  /* template */
   __webpack_require__(24),
+  /* template */
+  __webpack_require__(25),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -27991,13 +28794,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(22);
+var content = __webpack_require__(23);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -28017,7 +28820,7 @@ if(false) {
 }
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(undefined);
@@ -28031,7 +28834,7 @@ exports.push([module.i, "\n.margin-right {\n  margin-right: 5px;\n}\n.padding-le
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28065,7 +28868,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -28102,7 +28905,7 @@ if (false) {
 }
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -28161,7 +28964,7 @@ if (false) {
 }
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -28205,7 +29008,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_vm._v(_vm._s(_vm.translate.structure))])])]), _vm._v(" "), _c('ul', {
     staticClass: "list-group"
-  }, _vm._l((_vm.mainMenu), function(menuItem) {
+  }, _vm._l((_vm.mainMenu), function(menuItem, index) {
     return _c('li', {
       directives: [{
         name: "show",
@@ -28218,7 +29021,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "padding": "0"
       }
     }, [_c('a', {
-      staticClass: "ls-flex-row nowrap align-item-center align-content-center",
+      staticClass: "ls-flex-row nowrap align-item-center align-content-center pjax",
       attrs: {
         "href": menuItem.link,
         "title": menuItem.description,
@@ -28266,19 +29069,19 @@ if (false) {
 }
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(28)
+  __webpack_require__(29)
 }
 var Component = __webpack_require__(4)(
   /* script */
-  __webpack_require__(30),
-  /* template */
   __webpack_require__(31),
+  /* template */
+  __webpack_require__(32),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -28310,13 +29113,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(29);
+var content = __webpack_require__(30);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -28336,7 +29139,7 @@ if(false) {
 }
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(undefined);
@@ -28350,7 +29153,7 @@ exports.push([module.i, "", ""]);
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28362,14 +29165,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        'mainHref': { type: String },
+        'mainTitle': { type: String }
+    }
+});
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c("div")
+  return _c('div', {
+    staticClass: "row container-fluid"
+  }, [_c('div', {
+    staticClass: "col-xs-12 col-md-12"
+  }, [_c('h3', {
+    attrs: {
+      "id": "survey_title"
+    }
+  }, [_c('a', {
+    attrs: {
+      "href": _vm.mainHref
+    }
+  }, [_vm._v(_vm._s(_vm.mainTitle))])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -28380,13 +29200,13 @@ if (false) {
 }
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(33);
+var content = __webpack_require__(34);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -28394,7 +29214,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(34)(content, options);
+var update = __webpack_require__(35)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -28411,7 +29231,7 @@ if(false) {
 }
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)(undefined);
@@ -28419,13 +29239,13 @@ exports = module.exports = __webpack_require__(2)(undefined);
 
 
 // module
-exports.push([module.i, ".ls-flex, .ls-flex-row, .ls-flex-column {\n  display: -moz-flex;\n  display: -webkit-flex;\n  display: flex; }\n  .ls-flex .align-item-center, .ls-flex-row .align-item-center, .ls-flex-column .align-item-center {\n    -ms-align-items: center;\n    -webkit-align-items: center;\n    -moz-align-items: center;\n    align-items: center; }\n  .ls-flex .align-item-flex-start, .ls-flex-row .align-item-flex-start, .ls-flex-column .align-item-flex-start {\n    -ms-align-items: flex-start;\n    -webkit-align-items: flex-start;\n    -moz-align-items: flex-start;\n    align-items: flex-start; }\n  .ls-flex .align-item-flex-end, .ls-flex-row .align-item-flex-end, .ls-flex-column .align-item-flex-end {\n    -ms-align-items: flex-end;\n    -webkit-align-items: flex-end;\n    -moz-align-items: flex-end;\n    align-items: flex-end; }\n  .ls-flex .align-item-baseline, .ls-flex-row .align-item-baseline, .ls-flex-column .align-item-baseline {\n    -ms-align-items: baseline;\n    -webkit-align-items: baseline;\n    -moz-align-items: baseline;\n    align-items: baseline; }\n  .ls-flex .align-item-stretch, .ls-flex-row .align-item-stretch, .ls-flex-column .align-item-stretch {\n    -ms-align-items: stretch;\n    -webkit-align-items: stretch;\n    -moz-align-items: stretch;\n    align-items: stretch; }\n  .ls-flex .align-content-center, .ls-flex-row .align-content-center, .ls-flex-column .align-content-center {\n    -ms-justify-content: center;\n    -webkit-justify-content: center;\n    -moz-justify-content: center;\n    justify-content: center; }\n  .ls-flex .align-content-flex-start, .ls-flex-row .align-content-flex-start, .ls-flex-column .align-content-flex-start {\n    -ms-justify-content: flex-start;\n    -webkit-justify-content: flex-start;\n    -moz-justify-content: flex-start;\n    justify-content: flex-start; }\n  .ls-flex .align-content-flex-end, .ls-flex-row .align-content-flex-end, .ls-flex-column .align-content-flex-end {\n    -ms-justify-content: flex-end;\n    -webkit-justify-content: flex-end;\n    -moz-justify-content: flex-end;\n    justify-content: flex-end; }\n  .ls-flex .align-content-space-between, .ls-flex-row .align-content-space-between, .ls-flex-column .align-content-space-between {\n    -ms-justify-content: space-between;\n    -webkit-justify-content: space-between;\n    -moz-justify-content: space-between;\n    justify-content: space-between; }\n  .ls-flex .align-content-space-around, .ls-flex-row .align-content-space-around, .ls-flex-column .align-content-space-around {\n    -ms-justify-content: space-around;\n    -webkit-justify-content: space-around;\n    -moz-justify-content: space-around;\n    justify-content: space-around; }\n  .ls-flex.wrap, .wrap.ls-flex-row, .wrap.ls-flex-column {\n    -ms-flex-wrap: 'wrap';\n    -webkit-flex-wrap: 'wrap';\n    -moz-flex-wrap: 'wrap';\n    flex-wrap: 'wrap'; }\n\n.ls-flex-row {\n  -ms-flex-direction: row;\n  -webkit-flex-direction: row;\n  -moz-flex-direction: row;\n  flex-direction: row;\n  width: 100%; }\n\n.ls-flex-column {\n  -ms-flex-direction: column;\n  -webkit-flex-direction: column;\n  -moz-flex-direction: column;\n  flex-direction: column; }\n\n.background-muted {\n  background: #cdcdcd; }\n  .background-muted > li {\n    background: #cdcdcd; }\n\n.ls-ba .list-group > .list-group-item {\n  padding: 10px 0;\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid #323232;\n  margin-bottom: 1px; }\n  .ls-ba .list-group > .list-group-item .list-group {\n    margin-bottom: 0; }\n    .ls-ba .list-group > .list-group-item .list-group .list-group-item {\n      padding-left: 15px; }\n      .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {\n        border-bottom: 0; }\n    .ls-ba .list-group > .list-group-item .list-group:first-of-type {\n      border-top: 1px solid #323232; }\n", ""]);
+exports.push([module.i, ".ls-flex, .ls-flex-row, .ls-flex-column {\n  display: -moz-flex;\n  display: -webkit-flex;\n  display: flex; }\n  .ls-flex.align-item-center, .align-item-center.ls-flex-row, .align-item-center.ls-flex-column {\n    -ms-align-items: center;\n    -webkit-align-items: center;\n    -moz-align-items: center;\n    align-items: center; }\n  .ls-flex.align-item-flex-start, .align-item-flex-start.ls-flex-row, .align-item-flex-start.ls-flex-column {\n    -ms-align-items: flex-start;\n    -webkit-align-items: flex-start;\n    -moz-align-items: flex-start;\n    align-items: flex-start; }\n  .ls-flex.align-item-flex-end, .align-item-flex-end.ls-flex-row, .align-item-flex-end.ls-flex-column {\n    -ms-align-items: flex-end;\n    -webkit-align-items: flex-end;\n    -moz-align-items: flex-end;\n    align-items: flex-end; }\n  .ls-flex.align-item-baseline, .align-item-baseline.ls-flex-row, .align-item-baseline.ls-flex-column {\n    -ms-align-items: baseline;\n    -webkit-align-items: baseline;\n    -moz-align-items: baseline;\n    align-items: baseline; }\n  .ls-flex.align-item-stretch, .align-item-stretch.ls-flex-row, .align-item-stretch.ls-flex-column {\n    -ms-align-items: stretch;\n    -webkit-align-items: stretch;\n    -moz-align-items: stretch;\n    align-items: stretch; }\n  .ls-flex.align-content-center, .align-content-center.ls-flex-row, .align-content-center.ls-flex-column {\n    -ms-justify-content: center;\n    -webkit-justify-content: center;\n    -moz-justify-content: center;\n    justify-content: center; }\n  .ls-flex.align-content-flex-start, .align-content-flex-start.ls-flex-row, .align-content-flex-start.ls-flex-column {\n    -ms-justify-content: flex-start;\n    -webkit-justify-content: flex-start;\n    -moz-justify-content: flex-start;\n    justify-content: flex-start; }\n  .ls-flex.align-content-flex-end, .align-content-flex-end.ls-flex-row, .align-content-flex-end.ls-flex-column {\n    -ms-justify-content: flex-end;\n    -webkit-justify-content: flex-end;\n    -moz-justify-content: flex-end;\n    justify-content: flex-end; }\n  .ls-flex.align-content-space-between, .align-content-space-between.ls-flex-row, .align-content-space-between.ls-flex-column {\n    -ms-justify-content: space-between;\n    -webkit-justify-content: space-between;\n    -moz-justify-content: space-between;\n    justify-content: space-between; }\n  .ls-flex.align-content-space-around, .align-content-space-around.ls-flex-row, .align-content-space-around.ls-flex-column {\n    -ms-justify-content: space-around;\n    -webkit-justify-content: space-around;\n    -moz-justify-content: space-around;\n    justify-content: space-around; }\n  .ls-flex.wrap, .wrap.ls-flex-row, .wrap.ls-flex-column {\n    -ms-flex-wrap: wrap;\n    -webkit-flex-wrap: wrap;\n    -moz-flex-wrap: wrap;\n    flex-wrap: wrap; }\n\n.ls-flex-row {\n  -ms-flex-direction: row;\n  -webkit-flex-direction: row;\n  -moz-flex-direction: row;\n  flex-direction: row;\n  width: 100%; }\n\n.ls-flex-column {\n  -ms-flex-direction: column;\n  -webkit-flex-direction: column;\n  -moz-flex-direction: column;\n  flex-direction: column; }\n\n.background-muted {\n  background: #cdcdcd; }\n  .background-muted > li {\n    background: #cdcdcd; }\n\n.ls-ba .list-group > .list-group-item {\n  padding: 10px 0;\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid #323232;\n  margin-bottom: 1px; }\n  .ls-ba .list-group > .list-group-item .list-group {\n    margin-bottom: 0; }\n    .ls-ba .list-group > .list-group-item .list-group .list-group-item {\n      padding-left: 15px; }\n      .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {\n        border-bottom: 0; }\n    .ls-ba .list-group > .list-group-item .list-group:first-of-type {\n      border-top: 1px solid #323232; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -28471,7 +29291,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(35);
+var	fixUrls = __webpack_require__(36);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -28784,7 +29604,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports) {
 
 
@@ -28876,6 +29696,875 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+/* global HTMLCollection: true */
+
+module.exports = function(els, fn, context) {
+  if (els instanceof HTMLCollection || els instanceof NodeList || els instanceof Array) {
+    return Array.prototype.forEach.call(els, fn, context)
+  }
+  // assume simple dom element
+  return fn.call(context, els)
+}
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(37)
+
+module.exports = function(els, events, listener, useCapture) {
+  events = (typeof events === "string" ? events.split(" ") : events)
+
+  events.forEach(function(e) {
+    forEachEls(els, function(el) {
+      el.addEventListener(e, listener, useCapture)
+    })
+  })
+}
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports) {
+
+module.exports = function(obj) {
+  if (null === obj || "object" != typeof obj) {
+    return obj
+  }
+  var copy = obj.constructor()
+  for (var attr in obj) {
+    if (obj.hasOwnProperty(attr)) {
+      copy[attr] = obj[attr]
+    }
+  }
+  return copy
+}
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var clone = __webpack_require__(39)
+var executeScripts = __webpack_require__(41)
+
+var forEachEls = __webpack_require__(37)
+
+var newUid = __webpack_require__(43)
+
+var on = __webpack_require__(38)
+// var off = require("./lib/events/on.js")
+var trigger = __webpack_require__(44)
+
+
+var Pjax = function(options) {
+    this.firstrun = true
+
+    var parseOptions = __webpack_require__(45);
+    parseOptions.apply(this,[options])
+    this.log("Pjax options", this.options)
+
+    this.maxUid = this.lastUid = newUid()
+
+    this.parseDOM(document)
+
+    on(window, "popstate", function(st) {
+      if (st.state) {
+        var opt = clone(this.options)
+        opt.url = st.state.url
+        opt.title = st.state.title
+        opt.history = false
+
+        if (st.state.uid < this.lastUid) {
+          opt.backward = true
+        }
+        else {
+          opt.forward = true
+        }
+        this.lastUid = st.state.uid
+
+        // @todo implement history cache here, based on uid
+        this.loadUrl(st.state.url, opt)
+      }
+    }.bind(this))
+  }
+
+Pjax.prototype = {
+  log: __webpack_require__(46),
+
+  getElements: __webpack_require__(47),
+
+  parseDOM: __webpack_require__(48),
+
+  refresh: __webpack_require__(50),
+
+  reload: __webpack_require__(51),
+
+  attachLink: __webpack_require__(52),
+
+  forEachSelectors: function(cb, context, DOMcontext) {
+    return __webpack_require__(54).bind(this)(this.options.selectors, cb, context, DOMcontext)
+  },
+
+  switchSelectors: function(selectors, fromEl, toEl, options) {
+    return __webpack_require__(55).bind(this)(this.options.switches, this.options.switchesOptions, selectors, fromEl, toEl, options)
+  },
+
+  // too much problem with the code below
+  // + it’s too dangerous
+//   switchFallback: function(fromEl, toEl) {
+//     this.switchSelectors(["head", "body"], fromEl, toEl)
+//     // execute script when DOM is like it should be
+//     Pjax.executeScripts(document.querySelector("head"))
+//     Pjax.executeScripts(document.querySelector("body"))
+//   }
+
+  latestChance: function(href) {
+    window.location = href
+  },
+
+  onSwitch: function() {
+    trigger(window, "resize scroll")
+  },
+
+  loadContent: function(html, options) {
+    var tmpEl = document.implementation.createHTMLDocument()
+
+    // parse HTML attributes to copy them
+    // since we are forced to use documentElement.innerHTML (outerHTML can't be used for <html>)
+    var htmlRegex = /<html[^>]+>/gi
+    var htmlAttribsRegex = /\s?[a-z:]+(?:\=(?:\'|\")[^\'\">]+(?:\'|\"))*/gi
+    var matches = html.match(htmlRegex)
+    if (matches && matches.length) {
+      matches = matches[0].match(htmlAttribsRegex)
+      if (matches.length) {
+        matches.shift()
+        matches.forEach(function(htmlAttrib) {
+          var attr = htmlAttrib.trim().split("=")
+          if (attr.length === 1) {
+            tmpEl.documentElement.setAttribute(attr[0], true)
+          }
+          else {
+            tmpEl.documentElement.setAttribute(attr[0], attr[1].slice(1, -1))
+          }
+        })
+      }
+    }
+
+    tmpEl.documentElement.innerHTML = html
+    this.log("load content", tmpEl.documentElement.attributes, tmpEl.documentElement.innerHTML.length)
+
+    // Clear out any focused controls before inserting new page contents.
+    // we clear focus on non form elements
+    if (document.activeElement && !document.activeElement.value) {
+      try {
+        document.activeElement.blur()
+      } catch (e) { }
+    }
+
+    // try {
+    this.switchSelectors(this.options.selectors, tmpEl, document, options)
+
+    // FF bug: Won’t autofocus fields that are inserted via JS.
+    // This behavior is incorrect. So if theres no current focus, autofocus
+    // the last field.
+    //
+    // http://www.w3.org/html/wg/drafts/html/master/forms.html
+    var autofocusEl = Array.prototype.slice.call(document.querySelectorAll("[autofocus]")).pop()
+    if (autofocusEl && document.activeElement !== autofocusEl) {
+      autofocusEl.focus();
+    }
+
+    // execute scripts when DOM have been completely updated
+    this.options.selectors.forEach(function(selector) {
+      forEachEls(document.querySelectorAll(selector), function(el) {
+        executeScripts(el)
+      })
+    })
+    // }
+    // catch(e) {
+    //   if (this.options.debug) {
+    //     this.log("Pjax switch fail: ", e)
+    //   }
+    //   this.switchFallback(tmpEl, document)
+    // }
+  },
+
+  doRequest: __webpack_require__(57),
+
+  loadUrl: function(href, options) {
+    this.log("load href", href, options)
+
+    trigger(document, "pjax:send", options);
+
+    // Do the request
+    this.doRequest(href, function(html) {
+      // Fail if unable to load HTML via AJAX
+      if (html === false) {
+        trigger(document,"pjax:complete pjax:error", options)
+
+        return
+      }
+
+      // Clear out any focused controls before inserting new page contents.
+      document.activeElement.blur()
+
+      try {
+        this.loadContent(html, options)
+      }
+      catch (e) {
+        if (!this.options.debug) {
+          if (console && console.error) {
+            console.error("Pjax switch fail: ", e)
+          }
+          this.latestChance(href)
+          return
+        }
+        else {
+          throw e
+        }
+      }
+
+      if (options.history) {
+        if (this.firstrun) {
+          this.lastUid = this.maxUid = newUid()
+          this.firstrun = false
+          window.history.replaceState({
+            url: window.location.href,
+            title: document.title,
+            uid: this.maxUid
+          },
+          document.title)
+        }
+
+        // Update browser history
+        this.lastUid = this.maxUid = newUid()
+        window.history.pushState({
+          url: href,
+          title: options.title,
+          uid: this.maxUid
+        },
+          options.title,
+          href)
+      }
+
+      this.forEachSelectors(function(el) {
+        this.parseDOM(el)
+      }, this)
+
+      // Fire Events
+      trigger(document,"pjax:complete pjax:success", options)
+
+      options.analytics()
+
+      // Scroll page to top on new page load
+      if (options.scrollTo !== false) {
+        if (options.scrollTo.length > 1) {
+          window.scrollTo(options.scrollTo[0], options.scrollTo[1])
+        }
+        else {
+          window.scrollTo(0, options.scrollTo)
+        }
+      }
+    }.bind(this))
+  }
+}
+
+Pjax.isSupported = __webpack_require__(58);
+
+//arguably could do `if( require("./lib/is-supported.js")()) {` but that might be a little to simple
+if (Pjax.isSupported()) {
+  module.exports = Pjax
+}
+// if there isn’t required browser functions, returning stupid api
+else {
+  var stupidPjax = function() {}
+  for (var key in Pjax.prototype) {
+    if (Pjax.prototype.hasOwnProperty(key) && typeof Pjax.prototype[key] === "function") {
+      stupidPjax[key] = stupidPjax
+    }
+  }
+
+  module.exports = stupidPjax
+}
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(37)
+var evalScript = __webpack_require__(42)
+// Finds and executes scripts (used for newly added elements)
+// Needed since innerHTML does not run scripts
+module.exports = function(el) {
+  // console.log("going to execute scripts for ", el)
+  forEachEls(el.querySelectorAll("script"), function(script) {
+    if (!script.type || script.type.toLowerCase() === "text/javascript") {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script)
+      }
+      evalScript(script)
+    }
+  })
+}
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+module.exports = function(el) {
+  // console.log("going to execute script", el)
+
+  var code = (el.text || el.textContent || el.innerHTML || "")
+  var head = document.querySelector("head") || document.documentElement
+  var script = document.createElement("script")
+
+  if (code.match("document.write")) {
+    if (console && console.log) {
+      console.log("Script contains document.write. Can’t be executed correctly. Code skipped ", el)
+    }
+    return false
+  }
+
+  script.type = "text/javascript"
+  try {
+    script.appendChild(document.createTextNode(code))
+  }
+  catch (e) {
+    // old IEs have funky script nodes
+    script.text = code
+  }
+
+  // execute
+  head.insertBefore(script, head.firstChild)
+  head.removeChild(script) // avoid pollution
+
+  return true
+}
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports) {
+
+module.exports = (function() {
+  var counter = 0
+  return function() {
+    var id = ("pjax" + (new Date().getTime())) + "_" + counter
+    counter++
+    return id
+  }
+})()
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(37)
+
+module.exports = function(els, events, opts) {
+  events = (typeof events === "string" ? events.split(" ") : events)
+
+  events.forEach(function(e) {
+    var event // = new CustomEvent(e) // doesn't everywhere yet
+    event = document.createEvent("HTMLEvents")
+    event.initEvent(e, true, true)
+    event.eventName = e
+    if (opts) {
+      Object.keys(opts).forEach(function(key) {
+        event[key] = opts[key]
+      })
+    }
+
+    forEachEls(els, function(el) {
+      var domFix = false
+      if (!el.parentNode && el !== document && el !== window) {
+        // THANKS YOU IE (9/10//11 concerned)
+        // dispatchEvent doesn't work if element is not in the dom
+        domFix = true
+        document.body.appendChild(el)
+      }
+      el.dispatchEvent(event)
+      if (domFix) {
+        el.parentNode.removeChild(el)
+      }
+    })
+  })
+}
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports) {
+
+/* global _gaq: true, ga: true */
+
+module.exports = function(options){
+  this.options = options
+  this.options.elements = this.options.elements || "a[href], form[action]"
+  this.options.selectors = this.options.selectors || ["title", ".js-Pjax"]
+  this.options.switches = this.options.switches || {}
+  this.options.switchesOptions = this.options.switchesOptions || {}
+  this.options.history = this.options.history || true
+  this.options.analytics = this.options.analytics || function() {
+    // options.backward or options.foward can be true or undefined
+    // by default, we do track back/foward hit
+    // https://productforums.google.com/forum/#!topic/analytics/WVwMDjLhXYk
+    if (window._gaq) {
+      _gaq.push(["_trackPageview"])
+    }
+    if (window.ga) {
+      ga("send", "pageview", {page: location.pathname, title: document.title})
+    }
+  }
+  this.options.scrollTo = (typeof this.options.scrollTo === 'undefined') ? 0 : this.options.scrollTo;
+  this.options.cacheBust = (typeof this.options.cacheBust === 'undefined') ? true : this.options.cacheBust
+  this.options.debug = this.options.debug || false
+
+  // we can’t replace body.outerHTML or head.outerHTML
+  // it create a bug where new body or new head are created in the dom
+  // if you set head.outerHTML, a new body tag is appended, so the dom get 2 body
+  // & it break the switchFallback which replace head & body
+  if (!this.options.switches.head) {
+    this.options.switches.head = this.switchElementsAlt
+  }
+  if (!this.options.switches.body) {
+    this.options.switches.body = this.switchElementsAlt
+  }
+  if (typeof options.analytics !== "function") {
+    options.analytics = function() {}
+  }
+}
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+  if (this.options.debug && console) {
+    if (typeof console.log === "function") {
+      console.log.apply(console, arguments);
+    }
+    // ie is weird
+    else if (console.log) {
+      console.log(arguments);
+    }
+  }
+}
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports) {
+
+module.exports = function(el) {
+  return el.querySelectorAll(this.options.elements)
+}
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(37)
+
+var parseElement = __webpack_require__(49)
+
+module.exports = function(el) {
+  forEachEls(this.getElements(el), parseElement, this)
+}
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports) {
+
+module.exports = function(el) {
+  switch (el.tagName.toLowerCase()) {
+  case "a":
+    // only attach link if el does not already have link attached
+    if (!el.hasAttribute('data-pjax-click-state')) {
+      this.attachLink(el)
+    }
+    break
+
+  case "form":
+    throw "Pjax doesnt support <form> yet."
+    break
+
+  default:
+    throw "Pjax can only be applied on <a> or <form> submit"
+  }
+}
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports) {
+
+module.exports = function(el) {
+  this.parseDOM(el || document)
+}
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+  window.location.reload()
+}
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(53)
+
+var on = __webpack_require__(38)
+var clone = __webpack_require__(39)
+
+var attrClick = "data-pjax-click-state"
+var attrKey = "data-pjax-keyup-state"
+
+var linkAction = function(el, event) {
+  // Don’t break browser special behavior on links (like page in new window)
+  if (event.which > 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+    el.setAttribute(attrClick, "modifier")
+    return
+  }
+
+  // we do test on href now to prevent unexpected behavior if for some reason
+  // user have href that can be dynamically updated
+
+  // Ignore external links.
+  if (el.protocol !== window.location.protocol || el.host !== window.location.host) {
+    el.setAttribute(attrClick, "external")
+    return
+  }
+
+  // Ignore click if we are on an anchor on the same page
+  if (el.pathname === window.location.pathname && el.hash.length > 0) {
+    el.setAttribute(attrClick, "anchor-present")
+    return
+  }
+
+  // Ignore anchors on the same page (keep native behavior)
+  if (el.hash && el.href.replace(el.hash, "") === window.location.href.replace(location.hash, "")) {
+    el.setAttribute(attrClick, "anchor")
+    return
+  }
+
+  // Ignore empty anchor "foo.html#"
+  if (el.href === window.location.href.split("#")[0] + "#") {
+    el.setAttribute(attrClick, "anchor-empty")
+    return
+  }
+
+  event.preventDefault()
+
+  // don’t do "nothing" if user try to reload the page by clicking the same link twice
+  if (
+    this.options.currentUrlFullReload &&
+    el.href === window.location.href.split("#")[0]
+  ) {
+    el.setAttribute(attrClick, "reload")
+    this.reload()
+    return
+  }
+
+  el.setAttribute(attrClick, "load")
+  this.loadUrl(el.href, clone(this.options))
+}
+
+var isDefaultPrevented = function(event) {
+  return event.defaultPrevented || event.returnValue === false;
+}
+
+module.exports = function(el) {
+  var that = this
+
+  on(el, "click", function(event) {
+    if (isDefaultPrevented(event)) {
+      return
+    }
+
+    linkAction.call(that, el, event)
+  })
+
+  on(el, "keyup", function(event) {
+    if (isDefaultPrevented(event)) {
+      return
+    }
+
+    // Don’t break browser special behavior on links (like page in new window)
+    if (event.which > 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      el.setAttribute(attrKey, "modifier")
+      return
+    }
+
+    if (event.keyCode == 13) {
+      linkAction.call(that, el, event)
+    }
+  }.bind(this))
+}
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports) {
+
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function(oThis) {
+    if (typeof this !== "function") {
+      // closest thing possible to the ECMAScript 5 internal IsCallable function
+      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable")
+    }
+
+    var aArgs = Array.prototype.slice.call(arguments, 1)
+    var that = this
+    var Fnoop = function() {}
+    var fBound = function() {
+      return that.apply(this instanceof Fnoop && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)))
+    }
+
+    Fnoop.prototype = this.prototype
+    fBound.prototype = new Fnoop()
+
+    return fBound
+  }
+}
+
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(37)
+
+module.exports = function(selectors, cb, context, DOMcontext) {
+  DOMcontext = DOMcontext || document
+  selectors.forEach(function(selector) {
+    forEachEls(DOMcontext.querySelectorAll(selector), cb, context)
+  })
+}
+
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(37)
+
+var defaultSwitches = __webpack_require__(56)
+
+module.exports = function(switches, switchesOptions, selectors, fromEl, toEl, options) {
+  selectors.forEach(function(selector) {
+    var newEls = fromEl.querySelectorAll(selector)
+    var oldEls = toEl.querySelectorAll(selector)
+    if (this.log) {
+      this.log("Pjax switch", selector, newEls, oldEls)
+    }
+    if (newEls.length !== oldEls.length) {
+      // forEachEls(newEls, function(el) {
+      //   this.log("newEl", el, el.outerHTML)
+      // }, this)
+      // forEachEls(oldEls, function(el) {
+      //   this.log("oldEl", el, el.outerHTML)
+      // }, this)
+      throw "DOM doesn’t look the same on new loaded page: ’" + selector + "’ - new " + newEls.length + ", old " + oldEls.length
+    }
+
+    forEachEls(newEls, function(newEl, i) {
+      var oldEl = oldEls[i]
+      if (this.log) {
+        this.log("newEl", newEl, "oldEl", oldEl)
+      }
+      if (switches[selector]) {
+        switches[selector].bind(this)(oldEl, newEl, options, switchesOptions[selector])
+      }
+      else {
+        defaultSwitches.outerHTML.bind(this)(oldEl, newEl, options)
+      }
+    }, this)
+  }, this)
+}
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var on = __webpack_require__(38)
+// var off = require("./lib/events/on.js")
+// var trigger = require("./lib/events/trigger.js")
+
+
+module.exports = {
+  outerHTML: function(oldEl, newEl) {
+    oldEl.outerHTML = newEl.outerHTML
+    this.onSwitch()
+  },
+
+  innerHTML: function(oldEl, newEl) {
+    oldEl.innerHTML = newEl.innerHTML
+    oldEl.className = newEl.className
+    this.onSwitch()
+  },
+
+  sideBySide: function(oldEl, newEl, options, switchOptions) {
+    var forEach = Array.prototype.forEach
+    var elsToRemove = []
+    var elsToAdd = []
+    var fragToAppend = document.createDocumentFragment()
+    // height transition are shitty on safari
+    // so commented for now (until I found something ?)
+    // var relevantHeight = 0
+    var animationEventNames = "animationend webkitAnimationEnd MSAnimationEnd oanimationend"
+    var animatedElsNumber = 0
+    var sexyAnimationEnd = function(e) {
+          if (e.target != e.currentTarget) {
+            // end triggered by an animation on a child
+            return
+          }
+
+          animatedElsNumber--
+          if (animatedElsNumber <= 0 && elsToRemove) {
+            elsToRemove.forEach(function(el) {
+              // browsing quickly can make the el
+              // already removed by last page update ?
+              if (el.parentNode) {
+                el.parentNode.removeChild(el)
+              }
+            })
+
+            elsToAdd.forEach(function(el) {
+              el.className = el.className.replace(el.getAttribute("data-pjax-classes"), "")
+              el.removeAttribute("data-pjax-classes")
+              // Pjax.off(el, animationEventNames, sexyAnimationEnd, true)
+            })
+
+            elsToAdd = null // free memory
+            elsToRemove = null // free memory
+
+            // assume the height is now useless (avoid bug since there is overflow hidden on the parent)
+            // oldEl.style.height = "auto"
+
+            // this is to trigger some repaint (example: picturefill)
+            this.onSwitch()
+            // Pjax.trigger(window, "scroll")
+          }
+        }.bind(this)
+
+    // Force height to be able to trigger css animation
+    // here we get the relevant height
+    // oldEl.parentNode.appendChild(newEl)
+    // relevantHeight = newEl.getBoundingClientRect().height
+    // oldEl.parentNode.removeChild(newEl)
+    // oldEl.style.height = oldEl.getBoundingClientRect().height + "px"
+
+    switchOptions = switchOptions || {}
+
+    forEach.call(oldEl.childNodes, function(el) {
+      elsToRemove.push(el)
+      if (el.classList && !el.classList.contains("js-Pjax-remove")) {
+        // for fast switch, clean element that just have been added, & not cleaned yet.
+        if (el.hasAttribute("data-pjax-classes")) {
+          el.className = el.className.replace(el.getAttribute("data-pjax-classes"), "")
+          el.removeAttribute("data-pjax-classes")
+        }
+        el.classList.add("js-Pjax-remove")
+        if (switchOptions.callbacks && switchOptions.callbacks.removeElement) {
+          switchOptions.callbacks.removeElement(el)
+        }
+        if (switchOptions.classNames) {
+          el.className += " " + switchOptions.classNames.remove + " " + (options.backward ? switchOptions.classNames.backward : switchOptions.classNames.forward)
+        }
+        animatedElsNumber++
+        on(el, animationEventNames, sexyAnimationEnd, true)
+      }
+    })
+
+    forEach.call(newEl.childNodes, function(el) {
+      if (el.classList) {
+        var addClasses = ""
+        if (switchOptions.classNames) {
+          addClasses = " js-Pjax-add " + switchOptions.classNames.add + " " + (options.backward ? switchOptions.classNames.forward : switchOptions.classNames.backward)
+        }
+        if (switchOptions.callbacks && switchOptions.callbacks.addElement) {
+          switchOptions.callbacks.addElement(el)
+        }
+        el.className += addClasses
+        el.setAttribute("data-pjax-classes", addClasses)
+        elsToAdd.push(el)
+        fragToAppend.appendChild(el)
+        animatedElsNumber++
+        on(el, animationEventNames, sexyAnimationEnd, true)
+      }
+    })
+
+    // pass all className of the parent
+    oldEl.className = newEl.className
+    oldEl.appendChild(fragToAppend)
+
+    // oldEl.style.height = relevantHeight + "px"
+  }
+}
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports) {
+
+module.exports = function(location, callback) {
+  var request = new XMLHttpRequest()
+
+  request.onreadystatechange = function() {
+    if (request.readyState === 4) {
+      if (request.status === 200) {
+        callback(request.responseText, request)
+      }
+      else {
+        callback(null, request)
+      }
+    }
+  }
+
+  // Add a timestamp as part of the query string if cache busting is enabled
+  if (this.options.cacheBust) {
+    location += (!/[?&]/.test(location) ? "?" : "&") + new Date().getTime()
+  }
+
+  request.open("GET", location, true)
+  request.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+  request.send(null)
+  return request
+}
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+  // Borrowed wholesale from https://github.com/defunkt/jquery-pjax
+  return window.history &&
+    window.history.pushState &&
+    window.history.replaceState &&
+    // pushState isn’t reliable on iOS until 5.
+    !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]\D|WebApps\/.+CFNetwork)/)
+}
 
 
 /***/ })
