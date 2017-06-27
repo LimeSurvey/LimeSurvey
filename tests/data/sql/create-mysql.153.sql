@@ -312,7 +312,7 @@ CREATE TABLE `prefix_surveys` (
 -- 
 CREATE TABLE `prefix_surveys_languagesettings` (
   `surveyls_survey_id` INT UNSIGNED NOT NULL DEFAULT 0,
-  `surveyls_language` varchar(45) NULL DEFAULT 'en',
+  `surveyls_language` varchar(45) NOT NULL DEFAULT 'en',
   `surveyls_title` varchar(200) NOT NULL,
   `surveyls_description` TEXT NULL,
   `surveyls_welcometext` TEXT NULL,
