@@ -10,6 +10,21 @@ use PHPUnit\Framework\TestCase;
 class UpdateDbHelperTest extends TestBaseClass
 {
     /**
+     * Tear down fixtures.
+     */
+    public static function teardownAfterClass()
+    {
+        $dbo = \Yii::app()->getDb();
+        try {
+            $dbo->createCommand('DROP DATABASE __test_update_helper')->execute();
+        } catch (\CDbException $ex) {
+            $msg = $ex->getMessage();
+            // Only this error is OK.
+            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
+        }
+    }
+
+    /**
      * Run db_upgrade_all().
      */
     public function testDbUpgradeAll()
@@ -75,12 +90,6 @@ class UpdateDbHelperTest extends TestBaseClass
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
 
-        try {
-            $result = $db->createCommand('DROP DATABASE __test_update_helper')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            $this->assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
+        // Database is deleted in teardownAfterClass().
     }
 }
