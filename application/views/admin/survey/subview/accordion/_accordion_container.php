@@ -4,6 +4,7 @@
  *
  * @var $data
  */
+var_dump($data);
 ?>
 <!-- Enable aufo-focus on element via url hash -->
 <script>
@@ -37,7 +38,7 @@
         </div>
     </div>
 
-
+<?/*
     <!-- Presentation & navigation  -->
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading-presentationoptions">
@@ -119,7 +120,7 @@
     </div>
 
     <!-- Edition Mode -->
-    <?php if($data['action']=='editsurveysettings'):?>
+    <?php if($data['action']=='surveygeneralsettings'):?>
         <!-- Panel integration -->
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading-integrationoptions">
@@ -161,5 +162,6 @@
                 </div>
             </div>
         </div>
+        */?>
     <?php endif;?>
 </div>

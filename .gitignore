@@ -1,6 +1,8 @@
 
 # Never include config.php
 /application/config/config.php
+# ignore CAssetManager for debugging
+/framework/web/CAssetManager.php
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*
@@ -76,5 +78,3 @@ launch.json
 !/plugins/Demo/
 !/plugins/AuditLog/
 enabletests
-
-

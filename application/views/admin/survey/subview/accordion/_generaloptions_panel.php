@@ -4,11 +4,13 @@
 */
 ?>
 <!-- General options -->
-
-<?php if($action=='editsurveysettings'):?>
     <?php
     $yii = Yii::app();
     $controller = $yii->getController();
+    $action = 'editsurveysettings';
+?>
+<?php if($action=='editsurveysettings'):?>
+    <?php
     $sConfirmLanguage="$(document).on('submit','#globalsetting',function(){\n"
     . "  if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){\n"
     . "    return false;\n"

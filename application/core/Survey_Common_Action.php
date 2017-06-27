@@ -218,6 +218,7 @@ class Survey_Common_Action extends CAction
         return call_user_func_array(array($this, $sa), $func_args);
     }
 
+
     /**
     * Renders template(s) wrapped in header and footer
     *

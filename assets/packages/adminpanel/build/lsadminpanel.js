@@ -27376,14 +27376,14 @@ if(document.getElementById('vue-side-menu-app')){
     } 
 });
 }
-new __WEBPACK_IMPORTED_MODULE_5_pjax___default.a({
-  elements: "a.pjax", // default is "a[href], form[action]"
-  selectors: [
-    "sidebody", 
-    "topbar", 
-    "headerbar", 
-    ]
-})
+
+const pjaxed = new __WEBPACK_IMPORTED_MODULE_5_pjax___default.a({
+          elements: "a.pjax", // default is "a[href], form[action]"
+          selectors: [
+            "#in_survey_common"
+            ]
+        });
+
 
 // const topmenu = new Vue(
 //   {  
@@ -28603,7 +28603,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         this.get(this.getMenuUrl).then(result => {
             console.log(result);
+            let locationUrl = document.createElement('a');
+            locationUrl.href = location.href;
             self.mainMenu = result.data.menuEntries;
+            __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.each(self.mainMenu, (menuitem, i) => {
+                let checkUrl = document.createElement('a');checkUrl.href = menuitem.link;
+                menuitem.active = locationUrl.pathname == checkUrl.pathname;
+                console.log(menuitem.active, locationUrl.pathname, checkUrl.pathname, menuitem.link, locationUrl.pathname == checkUrl.pathname);
+            });
             self.$forceUpdate();
         });
     }
@@ -29023,7 +29030,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('a', {
       staticClass: "ls-flex-row nowrap align-item-center align-content-center pjax",
       attrs: {
-        "href": menuItem.link,
+        "href": menuItem.link + '?pjax=true',
         "title": menuItem.description,
         "data-toggle": "tooltip"
       }
@@ -29033,8 +29040,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "padding": "15px 10px"
       }
     }, [_c('i', {
+      staticClass: "fa",
       class: menuItem.icon
-    }, [_vm._v(" ")]), _vm._v("  \n                                " + _vm._s(menuItem.name) + "\n                    ")]), _vm._v(" "), (menuItem.active) ? _c('div', {
+    }, [_vm._v(" ")]), _vm._v("  \n                                " + _vm._s(menuItem.title) + "\n                    ")]), _vm._v(" "), (menuItem.active) ? _c('div', {
       staticClass: "col-sm-2 background white",
       staticStyle: {
         "padding": "15px 10px"
