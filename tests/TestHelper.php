@@ -126,4 +126,62 @@ class TestHelper extends \PHPUnit_Framework_TestCase
         $result = $survey->save();
         $this->assertTrue($result);
     }
+
+    /**
+     * Overwrite the db component with a new
+     * configuration and database.
+     * Before you run this, you might want to save
+     * the old db config in a variable, so you can 
+     * reconnect to it after you're done with the new
+     * database.
+     *   $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+     *
+     * @param string $databaseName
+     * @return boolean True at success.
+     */
+    public function connectToNewDatabase($databaseName)
+    {
+        $db = \Yii::app()->getDb();
+
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+
+        // Check that we're using MySQL.
+        $conStr = \Yii::app()->db->connectionString;
+        $isMysql = substr($conStr, 0, 5) === 'mysql';
+        if (!$isMysql) {
+            $this->markTestSkipped('Only works on MySQL');
+            return false;
+        }
+        $this->assertTrue($isMysql, 'This test only works on MySQL');
+
+        // Get database name.
+        preg_match("/dbname=([^;]*)/", \Yii::app()->db->connectionString, $matches);
+        $this->assertEquals(2, count($matches));
+        $oldDatabase = $matches[1];
+
+        try {
+            $result = $db->createCommand(
+                sprintf(
+                    'CREATE DATABASE %s DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
+                    $databaseName
+                )
+            )->execute();
+            $this->assertEquals(1, $result, 'Could create database');
+        } catch (\CDbException $ex) {
+            $msg = $ex->getMessage();
+            // This error is OK.
+            $this->assertTrue(strpos($msg, 'database exists') !== false);
+        }
+
+        // Connect to new database.
+        $db->setActive(false);
+        $newConfig = $config;
+        $newConfig['components']['db']['connectionString'] = str_replace(
+            'dbname=' . $oldDatabase,
+            'dbname=' . $databaseName,
+            $config['components']['db']['connectionString']
+        );
+        \Yii::app()->setComponent('db', $newConfig['components']['db'], false);
+        return true;
+    }
 }
