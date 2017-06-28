@@ -121,7 +121,7 @@ class TemplateConfiguration extends CFormModel
     }
 
     /**
-    * This function returns the complete URL path to a given template name
+    * Returns the complete URL path to a given template name
     *
     * @param string $sTemplateName
     * @return string template url
@@ -602,20 +602,6 @@ class TemplateConfiguration extends CFormModel
             throw error ? Only for admin template editor ? disable and reset to default ?
         }*/
         return array();
-    }
-
-    private function getTemplateForFile($sFile, $oRTemplate)
-    {
-        while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
-            $oMotherTemplate = $oRTemplate->oMotherTemplate;
-            if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                return false;
-                break;
-            }
-            $oRTemplate = $oMotherTemplate;
-        }
-
-        return $oRTemplate;
     }
 
     /**
