@@ -19,6 +19,7 @@ return array(
 
     // jQuery
     'jquery' => array(
+        'devBaseUrl' => 'third_party/jquery',
         'basePath' => 'third_party.jquery',
         'js' => array(
             'jquery-3.1.1'.$minVersion.'.js',
@@ -60,14 +61,16 @@ return array(
 
     'fontawesome' => array(
         //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
-        'basePath' => 'third_party.fontawesome',
+        'devBaseUrl' => 'fonts/fontawesome/',
+        'basePath' => 'fonts.fontawesome',
         'css'=> array(
-            'css/font-awesome.min.css',
+            'css/font-awesome'.$minVersion.'.css',
         ),
     ),
 
     // jQuery UI
     'jqueryui' => array(
+        'devBaseUrl' => 'third_party/jquery-ui',
         'basePath' => 'third_party.jquery-ui',
         'js' => array(
             'jquery-ui'.$minVersion.'.js',
@@ -189,6 +192,7 @@ return array(
 
     // Ace
     'ace' => array(
+        'devBaseUrl' => 'third_party/ace',
         'basePath' => 'third_party.ace',
         'js' => array(
             'ace.js'
@@ -200,6 +204,7 @@ return array(
 
     // jQuery Ace
      'jquery-ace' => array(
+         'devBaseUrl' => 'third_party/jquery-ace',
          'basePath' => 'third_party.jquery-ace',
         'js' => array(
             'jquery.ace.js',
@@ -233,6 +238,7 @@ return array(
 
     // Decimal.js calculate in js
     'decimal' => array(
+        'devBaseUrl' => 'third_party/decimal',
         'basePath' => 'third_party.decimal',
         'js' => array(
             'decimal.js'
