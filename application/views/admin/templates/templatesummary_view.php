@@ -56,12 +56,19 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <br/>
                 <?php if (Permission::model()->hasGlobalPermission('templates','update')):?>
                     <?php if (is_writable($templates[$templatename])):?>
-                        <input type='submit' class='btn btn-default' value='<?php eT("Save changes"); ?>'
                             <?php if (!is_template_editable($templatename)):?>
                                 disabled='disabled' alt='<?php eT("Changes cannot be saved to a standard template."); ?>'
                                 <?php endif; ?>
+
+                        <?php
+                            $sSaveText = ( $oEditedTemplate->getTemplateForFile($relativePathEditfile, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName)?gT("Save changes"):gT("Copy to local template and save changes");
+                        ?>
+
+
+                            <input type='submit' class='btn btn-default' value='<?php echo $sSaveText; ?>'
                             />
                         <?php endif; ?>
+
                     <?php endif; ?>
             </p>
             </form>
@@ -73,7 +80,6 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <div>
                 <?php eT("Other files:"); ?>
                 <br/>
-                <?php // TODO printf(gT("(path for css: %s)"), $filespath) ?>
                 <?php
                 echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post');
                 echo CHtml::listBox('otherfile','',array_combine($otherfiles,$otherfiles),array('size'=>11,'class'=>"form-control")); ?>
