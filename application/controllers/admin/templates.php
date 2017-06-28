@@ -623,32 +623,40 @@ class templates extends Survey_Common_Action
             }
         }
 
-        $action          = returnGlobal('action');
-        $editfile        = returnGlobal('editfile');
-        $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
-        $screenname      = returnGlobal('screenname');
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
-        $aScreenFiles    = $oEditedTemplate->getValidScreenFiles("view");
-        $cssfiles        = $oEditedTemplate->getValidScreenFiles("css");
-        $jsfiles         = $oEditedTemplate->getValidScreenFiles("js");
+        $action               = returnGlobal('action');
+        $editfile             = returnGlobal('editfile');
+        $relativePathEditfile = returnGlobal('relativePathEditfile');
+        $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
+        $screenname           = returnGlobal('screenname');
+        $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName);
+        $aScreenFiles         = $oEditedTemplate->getValidScreenFiles("view");
+        $cssfiles             = $oEditedTemplate->getValidScreenFiles("css");
+        $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
 
 
         if ($action == "templatesavechanges" && $changedtext){
             Yii::app()->loadHelper('admin/template');
             $changedtext = str_replace("\r\n", "\n", $changedtext);
 
-            if ($editfile){
+
+            if ($relativePathEditfile){
                 // Check if someone tries to submit a file other than one of the allowed filenames
                 if (
-                in_array($editfile,$aScreenFiles)===false &&
-                in_array($editfile,$cssfiles)===false &&
-                in_array($editfile,$jsfiles)===false
+                in_array($relativePathEditfile,$aScreenFiles)===false &&
+                in_array($relativePathEditfile,$cssfiles)===false &&
+                in_array($relativePathEditfile,$jsfiles)===false
                 ){
                     Yii::app()->user->setFlash('error',gT('Invalid template name'));
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
 
-                $savefilename = gettemplatefilename($sTemplateName, $editfile);
+
+                //$savefilename = $oEditedTemplate
+                if( !file_exists($oEditedTemplate->path.'/'.$relativePathEditfile) && !file_exists($oEditedTemplate->viewPath.$relativePathEditfile) ){
+                    $oEditedTemplate->extendsFile($relativePathEditfile);
+                }
+
+                $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile);
 
                 if (is_writable($savefilename)){
 
@@ -715,7 +723,7 @@ class templates extends Survey_Common_Action
     * @param array $myoutput
     * @return void
     */
-    protected function _templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
+    protected function _templatesummary($templatename, $screenname, $editfile, $relativePathEditfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
     {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
@@ -784,6 +792,7 @@ class templates extends Survey_Common_Action
         $filesdir = $oEditedTemplate->filesPath;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
+        $aData['relativePathEditfile'] = $relativePathEditfile;
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
         $aData['templates'] = $templates;
@@ -1106,7 +1115,7 @@ class templates extends Survey_Common_Action
 
         $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
 
-        $jsfiles =  $oEditedTemplate->getValidScreenFiles("js");
+        $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
 
         // XML Behaviour: if only one file, then $files is just a string
@@ -1135,9 +1144,9 @@ class templates extends Survey_Common_Action
         }
 
         $editfile = (empty($editfile))?$sLayoutFile:$editfile;
-        $editfile = $oEditedTemplate->getFilePathForEdition($editfile, array_merge($files, $aCssAndJsfiles));
+        $sEditfile = $oEditedTemplate->getFilePathForEdition($editfile, array_merge($files, $aCssAndJsfiles));
 
-        $extension = substr(strrchr($editfile, "."), 1);
+        $extension = substr(strrchr($sEditfile, "."), 1);
         $highlighter = 'html';
         if ($extension == 'css' || $extension == 'js'){
             $highlighter = $extension;
@@ -1149,7 +1158,7 @@ class templates extends Survey_Common_Action
         $aData['templatename'] = $templatename;
         $aData['templateapiversion'] = $oEditedTemplate->getApiVersion();
         $aData['templates'] = $aAllTemplates;
-        $aData['editfile'] = $editfile;
+        $aData['editfile'] = $sEditfile;
         $aData['screenname'] = $screenname;
         $aData['tempdir'] = Yii::app()->getConfig('tempdir');
         $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
@@ -1158,7 +1167,7 @@ class templates extends Survey_Common_Action
         if ($showsummary)
         {
             //$aCssfileseditable = (array) $oEditedTemplate->config->files_editable->css->filename;
-            $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
+            $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
 
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');

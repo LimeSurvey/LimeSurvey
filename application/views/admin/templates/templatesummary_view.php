@@ -42,6 +42,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
             echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
             echo CHtml::hiddenField('editfile', $editfile);
+            echo CHtml::hiddenField('relativePathEditfile', $relativePathEditfile);
             echo CHtml::hiddenField('action', 'templatesavechanges');
 
             echo CHtml::textArea('changes', (!empty($editfile))?file_get_contents($editfile):'',array('rows'=>'20',
