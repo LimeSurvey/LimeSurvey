@@ -104,7 +104,7 @@ return array(
         )
     ),
     'adminpanel' => array(
-        'devBaseUrl' => 'assets/packages/adminpanel/build/',
+        //'devBaseUrl' => 'assets/packages/adminpanel/build/',
         'basePath' => 'core.adminpanel.build',
         'coreScriptPosition'=>CClientScript::POS_END,
         'defaultScriptFilePosition' =>CClientScript::POS_END,
