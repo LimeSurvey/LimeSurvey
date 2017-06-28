@@ -213,8 +213,23 @@ class TemplateConfiguration extends CFormModel
         return $this->getFilePath($sFile, $this);
     }
 
+    public function getTemplateForFile($sFile, $oRTemplate)
+    {
+        while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
+    }
+
+
     /**
-     * This function will update the config file of a given template so that it extends another one
+     * Update the config file of a given template so that it extends another one
      *
      * It will:
      * 1. Delete files and engine nodes
