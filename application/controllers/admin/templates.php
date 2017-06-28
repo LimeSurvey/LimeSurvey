@@ -790,6 +790,7 @@ class templates extends Survey_Common_Action
 
         $editableCssFiles = $oEditedTemplate->getValidScreenFiles("css");
         $filesdir = $oEditedTemplate->filesPath;
+        $aData['oEditedTemplate']   = $oEditedTemplate;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
         $aData['relativePathEditfile'] = $relativePathEditfile;
