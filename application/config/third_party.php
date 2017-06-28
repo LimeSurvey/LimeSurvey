@@ -27,16 +27,17 @@ return array(
     ),
     // Bootstrap
     // This package replace the Yiistrap register() function
-    // Then instead of using the composer dependency system for templates (will be used for LS3)
+    // Then instead of using the composer dependency system for templates
     // We can use the package dependency system (easier for now)
     'bootstrap' => array(
-        'basePath' => 'bootstrap',
+        'devBaseUrl' => 'assets/packages/bootstrap/',
+        'basePath' => 'core.bootstrap',
         'css'=> array(
-            'css/bootstrap.css',/* Admin need it, not public */
-            'css/yiistrap.css',
+            'bootstrap'.$minVersion.'.css',/* Admin need it, not public */
+            'yiistrap'.$minVersion.'.css',
         ),
         'js'=>array(
-            'js/bootstrap'.$minVersion.'.js'
+            'bootstrap'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
