@@ -6,12 +6,12 @@ This Entries can either point to a general template file, or to a newly created 
  -->
 <config core="true">
     <name>generalsettings</name>
-    <title>Edit survey text elements</title>
+    <title>Presentation &amp; navigation settings</title>
     <menu>
-        <title>Survey texts</title>
-        <description>Edit survey text elements</description>
+        <title>Presentation</title>
+        <description>Edit presentation and navigation settings</description>
         <classes></classes>
-        <icon type="fontawesome">fa-file-text-o</icon>
+        <icon type="fontawesome">fa-eye-slash</icon>
     </menu>
     <version>1.0.0</version>
     <action>surveygeneralsettings</action>
@@ -19,9 +19,7 @@ This Entries can either point to a general template file, or to a newly created 
     <template>/admin/survey/editLocalSettings_main_view</template>
     <!-- Hopefully we will have time to recreate the geneartion of the admin pages through a.e. TWIG -->
     <partial>/admin/survey/subview/tab_edit_view</partial>
-    <language>
-        <partial>/admin/survey/editLocalSettings_view</partial>
-    </language>
+    <language> </language>
     <permission>surveylocale</permission>
     <permissionGrade>read</permissionGrade>
     <classes>col-sm-12 col-md-7 content-right</classes>
@@ -29,5 +27,5 @@ This Entries can either point to a general template file, or to a newly created 
     For now we will define a method in surveyadmin
     <data></data>
     -->
-    <getdatamethod>_generalTabEditSurvey</getdatamethod>
+    <getdatamethod>_tabPresentationNavigation</getdatamethod>
 </config>

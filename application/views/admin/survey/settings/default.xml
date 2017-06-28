@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+This is a config file for the default menu in the survey settings.
+All Entries in the surveysettings will need to have xml-files
+ -->
+<config core="true">
+    <name>surveysetting</name>
+    <title>Surveysettings</title>
+    <menuentries>
+        <entry>generalsettings</entry>
+        <entry>surveytexts</entry>
+        <entry>presentation</entry>
+        <entry>publication</entry>
+        <entry>panelintegration</entry>
+        <entry>tokens</entry>
+        <entry>ressources</entry>
+    </menuentries>
+    <version>1.0.0</version>
+</config>

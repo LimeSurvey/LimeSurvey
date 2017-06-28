@@ -5,11 +5,11 @@ All Entries in the surveysettings will need to have xml-files
 This Entries can either point to a general template file, or to a newly created user template
  -->
 <config core="true">
-    <name>generalsettings</name>
-    <title>Edit survey text elements</title>
+    <name>plugins</name>
+    <title>Plugin settings</title>
     <menu>
-        <title>Survey texts</title>
-        <description>Edit survey text elements</description>
+        <title>Plugins</title>
+        <description>Edit plugin settings</description>
         <classes></classes>
         <icon type="fontawesome">fa-file-text-o</icon>
     </menu>
@@ -18,10 +18,8 @@ This Entries can either point to a general template file, or to a newly created 
     <!-- This is currently necessary, though the generation of the admin pages is not finished at all -->
     <template>/admin/survey/editLocalSettings_main_view</template>
     <!-- Hopefully we will have time to recreate the geneartion of the admin pages through a.e. TWIG -->
-    <partial>/admin/survey/subview/tab_edit_view</partial>
-    <language>
-        <partial>/admin/survey/editLocalSettings_view</partial>
-    </language>
+    <partial>/admin/survey/subview/accordion/_plugins_panel</partial>
+    <language></language>
     <permission>surveylocale</permission>
     <permissionGrade>read</permissionGrade>
     <classes>col-sm-12 col-md-7 content-right</classes>

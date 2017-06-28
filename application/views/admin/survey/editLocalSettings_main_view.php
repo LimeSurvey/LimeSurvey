@@ -18,21 +18,19 @@ if(isset($scripts))
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <?php
-        $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>$sTitle)); ?>
-        <h3 class="pagetitle"><?php echo $pageTitle; ?></h3>
+        $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>$entryData['title'])); ?>
+        <h3 class="pagetitle"><?php echo $entryData['title']; ?></h3>
 
         <!-- Edition container -->
 
         <!-- Form -->
         <div class="col-xs-12">
-            <?php echo CHtml::form(array("admin/database/index/".$panel['action']), 'post', array('id'=>$panel['name'],'name'=>$panel['name'],'class'=>'form-horizontal form30')); ?>
+            <?php echo CHtml::form(array("admin/database/index/".$entryData['action']), 'post', array('id'=>$entryData['name'],'name'=>$entryData['name'],'class'=>'form-horizontal form30')); ?>
 
             <div class="row">
-                <?php if (Permission::model()->hasSurveyPermission($iSurveyID, $panel['permission'], $panel['permissionGrade'])):?>
-                    <div class="<?=$panel['classes']?>">
-                        <?php $this->renderPartial($panel['template'],$panel['data']); ?>
-                    </div>
-                <?php endif; ?>
+                <div class="<?=$entryData['classes']?>">
+                    <?php $this->renderPartial($entryData['partial'],$templateData); ?>
+                </div>
             </div>
 
             <!--
@@ -42,7 +40,7 @@ if(isset($scripts))
             Now, the "import ressources" is outside the global form, in a modal ( subview/import_ressources_modal.php)
             So the globalsetting form needs its own submit button
             -->
-            <input type="hidden" name="action" value="<?=$panel['action']?>" />
+            <input type="hidden" name="action" value="<?=$entryData['action']?>" />
             <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" />
             <input type="hidden" name="language" value="<?php echo $surveyls_language; ?>" />
             <input type='submit' class="hide" id="globalsetting_submit" />

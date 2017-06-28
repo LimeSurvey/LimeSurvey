@@ -491,12 +491,8 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = sanitize_int($surveyid);
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
-        //$menu_items = $this->_collectMenuItems($currentMenu);
-
-        return Yii::app()->getController()->renderPartial(
-            '/admin/super/_renderJson',
-            array(
-                'data' => array(
+        $menus = $survey->getSurveyMenus(); 
+        $propArray = array(
                     'menuEntries' => [
                         [
                             'active' => false,
@@ -516,7 +512,12 @@ class SurveyAdmin extends Survey_Common_Action
                             'name' => gT('Language'),
                             'link' => $this->getController()->createUrl("admin/survey/sa/editlanguagesettings",['surveyid' => $surveyid])
                         ],
-                    ],
+                    ]);
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => [
+                    'menues'=> $menus,
                     'settings' => array(
                         'extrasettings' => false,
                         'parseHTML' => false,
@@ -530,7 +531,7 @@ class SurveyAdmin extends Survey_Common_Action
                     //     $setting_entry,
                     //     $lastquestiongroup
                     // ]
-                )
+                ]
             ),
             false,
             false
@@ -926,23 +927,83 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * New system of rendering content
+     * Based on yii submenu rendering
+     *
+     * @param [int] $iSurveyID
+     * @param [string] $subaction
+     * @return void
+     */
+     public function rendersidemenulink($iSurveyID, $subaction){
+        $aViewUrls = $aData = $activePanels = [];
+        $menuaction = (String) $subaction;
+        $iSurveyID = sanitize_int($iSurveyID);
+
+        //Get all languages 
+        $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        array_unshift($grplangs, $baselang);
+
+        //Get surveyinfo
+        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+
+        //@TODO add language checks here
+        $menuEntry = SurveymenuEntries::model()->find(['condition' => 'name="'.$menuaction.'"']);
+
+        $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
+        
+        if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade)))
+        {
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
+            Yii::app()->end();
+        }
+
+        if( empty($menuEntry->data))
+        {
+            $templateData = call_user_func_array(array($this,$menuEntry->getdatamethod), array('surveyid'=> $iSurveyID, 'esrow' => $esrow));
+        } 
+        else 
+        {
+            $templateData = $menuEntry->data;
+        }
+        
+        $templateData = array_merge($this->_getGeneralTemplateData($iSurveyID), $templateData);
+
+        $this->_registerScriptFiles();
+        Yii::app()->loadHelper("admin/htmleditor");
+
+        //Start collecting aData
+        $aData['surveyid'] = $iSurveyID;
+        $aData['menuaction'] = $menuaction;
+        $aData['template'] = $menuEntry->template;
+        $aData['templateData'] = $templateData;
+        $aData['surveyls_language'] = $baselang;
+        $aData['action'] = $menuEntry->action;
+        $aData['entryData'] = $menuEntry->attributes;
+        $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;  
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['surveybar']['savebutton']['form'] = 'globalsetting';
+        $aData['surveybar']['savebutton']['useformid'] = 'true';
+        $aData['surveybar']['saveandclosebutton']['form'] = true;
+        $aData['surveybar']['closebutton']['url'] = $this->getController()->createUrl("'admin/survey/sa/view/",['surveyid' => $iSurveyID]); // Close button
+
+        $aViewUrls[] = $menuEntry->template;
+
+        $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
+     }
+        
+    /**
      * Edit surveytexts and general settings
      */
 
      public function surveygeneralsettings($iSurveyID){
         $aViewUrls = $aData = $activePanels = array();
-
-        $pageTitle=gT("Edit survey text elements and settings");
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
-        {
-            $pageTitle=gT("Edit survey text elements");
-        }
-        elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') && Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
-        {
-            $pageTitle=gT("Edit survey settings");
-        }
-
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
+        
+
+
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')))
         {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
@@ -962,7 +1023,7 @@ class SurveyAdmin extends Survey_Common_Action
         $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
         $baselang = Survey::model()->findByPk($iSurveyID)->language;
         array_unshift($grplangs, $baselang);
-
+        ###
         Yii::app()->loadHelper("admin/htmleditor");
 
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
@@ -1555,17 +1616,8 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
-    /**
-    * survey::_generalTabEditSurvey()
-    * Load "General" tab of edit survey screen.
-    * @param mixed $iSurveyID
-    * @param mixed $esrow
-    * @return
-    */
-    private function _generalTabEditSurvey($iSurveyID, $esrow)
-    {
-        $aData['action'] = "editsurveysettings";
-        $aData['esrow'] = $esrow;
+    private function _getGeneralTemplateData($iSurveyID){
+        //$aData['action'] = "editsurveysettings";
         $aData['surveyid'] = $iSurveyID;
 
         // Get users, but we only need id and name (NOT password etc)
@@ -1577,6 +1629,24 @@ class SurveyAdmin extends Survey_Common_Action
         }
         // Sort users by name
         asort($aData['users']);
+        return $aData;
+    }
+
+    private function _getTextEditData($iSurveyID, $esrow){
+
+    }
+
+    /**
+    * survey::_generalTabEditSurvey()
+    * Load "General" tab of edit survey screen.
+    * @param mixed $iSurveyID
+    * @param mixed $esrow
+    * @return
+    */
+    private function _generalTabEditSurvey($iSurveyID, $esrow)
+    {
+        $aData['esrow'] = $esrow;
+
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $iSurveyID);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
@@ -1590,7 +1660,7 @@ class SurveyAdmin extends Survey_Common_Action
     * @param mixed $esrow
     * @return
     */
-    private function _tabPresentationNavigation($esrow)
+    private function _tabPresentationNavigation($iSurveyID, $esrow)
     {
         global $showxquestions, $showgroupinfo, $showqnumcode;
 
@@ -1613,7 +1683,7 @@ class SurveyAdmin extends Survey_Common_Action
     * @param mixed $esrow
     * @return
     */
-    private function _tabPublicationAccess($esrow)
+    private function _tabPublicationAccess($iSurveyID, $esrow)
     {
         $aDateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
         $startdate = '';
@@ -1644,7 +1714,7 @@ class SurveyAdmin extends Survey_Common_Action
     * @param mixed $esrow
     * @return
     */
-    private function _tabNotificationDataManagement($esrow)
+    private function _tabNotificationDataManagement($iSurveyID, $esrow)
     {
         $aData['esrow'] = $esrow;
         return $aData;
@@ -1656,14 +1726,14 @@ class SurveyAdmin extends Survey_Common_Action
     * @param mixed $esrow
     * @return
     */
-    private function _tabTokens($esrow)
+    private function _tabTokens($iSurveyID, $esrow)
     {
         $aData = array();
         $aData['esrow'] = $esrow;
         return $aData;
     }
 
-    private function _tabPanelIntegration($esrow)
+    private function _tabPanelIntegration($iSurveyID, $esrow)
     {
         $aData = array();
         return $aData;
@@ -1675,7 +1745,7 @@ class SurveyAdmin extends Survey_Common_Action
      * @param mixed $iSurveyID
      * @return
      */
-    private function _tabResourceManagement($iSurveyID)
+    private function _tabResourceManagement($iSurveyID, $esrow)
     {
         global $sCKEditorURL;
 

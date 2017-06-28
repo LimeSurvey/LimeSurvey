@@ -28574,7 +28574,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             'currentTab': 'settings',
             'questiongroups': [],
-            'mainMenu': []
+            'menues': []
         };
     },
     computed: {
@@ -28592,6 +28592,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         activeTab(currentTab) {
             return this.currentTab === currentTab;
+        },
+        checkIsActive(link) {
+            let locationUrl = document.createElement('a');locationUrl.href = location.href;
+            let checkUrl = document.createElement('a');checkUrl.href = link;
+            console.log(locationUrl.pathname, checkUrl.pathname, link, locationUrl.pathname == checkUrl.pathname);
+            return locationUrl.pathname == checkUrl.pathname;
         }
     },
     mounted() {
@@ -28603,14 +28609,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         });
         this.get(this.getMenuUrl).then(result => {
             console.log(result);
-            let locationUrl = document.createElement('a');
-            locationUrl.href = location.href;
-            self.mainMenu = result.data.menuEntries;
-            __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.each(self.mainMenu, (menuitem, i) => {
-                let checkUrl = document.createElement('a');checkUrl.href = menuitem.link;
-                menuitem.active = locationUrl.pathname == checkUrl.pathname;
-                console.log(menuitem.active, locationUrl.pathname, checkUrl.pathname, menuitem.link, locationUrl.pathname == checkUrl.pathname);
-            });
+            self.menues = result.data.menues;
             self.$forceUpdate();
         });
     }
@@ -29013,44 +29012,51 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.changeTab('questiontree')
       }
     }
-  }, [_vm._v(_vm._s(_vm.translate.structure))])])]), _vm._v(" "), _c('ul', {
-    staticClass: "list-group"
-  }, _vm._l((_vm.mainMenu), function(menuItem, index) {
-    return _c('li', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (_vm.activeTab('settings')),
-        expression: "activeTab('settings')"
-      }],
-      staticClass: "list-group-item",
-      staticStyle: {
-        "padding": "0"
-      }
-    }, [_c('a', {
-      staticClass: "ls-flex-row nowrap align-item-center align-content-center pjax",
+  }, [_vm._v(_vm._s(_vm.translate.structure))])])]), _vm._v(" "), _vm._l((_vm.menues), function(menu) {
+    return _c('ul', {
+      key: menu.title,
+      staticClass: "list-group",
       attrs: {
-        "href": menuItem.link + '?pjax=true',
-        "title": menuItem.description,
-        "data-toggle": "tooltip"
+        "title": menu.title
       }
-    }, [_c('div', {
-      class: menuItem.active ? 'col-sm-10 selected' : 'col-sm-12',
-      staticStyle: {
-        "padding": "15px 10px"
-      }
-    }, [_c('i', {
-      staticClass: "fa",
-      class: menuItem.icon
-    }, [_vm._v(" ")]), _vm._v("  \n                                " + _vm._s(menuItem.title) + "\n                    ")]), _vm._v(" "), (menuItem.active) ? _c('div', {
-      staticClass: "col-sm-2 background white",
-      staticStyle: {
-        "padding": "15px 10px"
-      }
-    }, [_c('i', {
-      staticClass: "fa fa-chevron-right"
-    }, [_vm._v(" ")])]) : _vm._e()])])
-  })), _vm._v(" "), _c('div', {
+    }, _vm._l((menu.entries), function(menuItem, index) {
+      return _c('li', {
+        directives: [{
+          name: "show",
+          rawName: "v-show",
+          value: (_vm.activeTab('settings')),
+          expression: "activeTab('settings')"
+        }],
+        key: menuItem.id,
+        staticClass: "list-group-item",
+        staticStyle: {
+          "padding": "0"
+        }
+      }, [_c('a', {
+        staticClass: "ls-flex-row nowrap align-item-center align-content-center pjax",
+        attrs: {
+          "href": menuItem.link + '?menu=' + menu.menu_title,
+          "title": menuItem.menu_description,
+          "data-toggle": "tooltip"
+        }
+      }, [_c('div', {
+        class: _vm.checkIsActive(menuItem.link) ? 'col-sm-10 selected' : 'col-sm-12',
+        staticStyle: {
+          "padding": "15px 10px"
+        }
+      }, [_c('i', {
+        staticClass: "fa",
+        class: 'fa-' + menuItem.menu_icon
+      }, [_vm._v(" ")]), _vm._v("  \n                                " + _vm._s(menuItem.menu_title) + "\n                    ")]), _vm._v(" "), (_vm.checkIsActive(menuItem.link)) ? _c('div', {
+        staticClass: "col-sm-2 background white",
+        staticStyle: {
+          "padding": "15px 10px"
+        }
+      }, [_c('i', {
+        staticClass: "fa fa-chevron-right"
+      }, [_vm._v(" ")])]) : _vm._e()])])
+    }))
+  }), _vm._v(" "), _c('div', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -29066,7 +29072,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "editentity": _vm.editEntity,
       "openentity": _vm.openEntity
     }
-  })], 1)])])
+  })], 1)], 2)])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
