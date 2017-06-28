@@ -198,6 +198,21 @@ class TemplateConfiguration extends CFormModel
         return $this->getFilePath($sFile, $this);
     }
 
+
+    public function extendsFile($sFile)
+    {
+
+        if( !file_exists($this->path.'/'.$sFile) && !file_exists($this->viewPath.$sFile) ){
+
+            // Copy file from mother template to local directory
+            $sRfilePath = $this->getFilePath($sFile, $this);
+            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.'/'.$sFile;
+            copy ( $sRfilePath,  $sLfilePath );
+        }
+
+        return $this->getFilePath($sFile, $this);
+    }
+
     /**
      * This function will update the config file of a given template so that it extends another one
      *
