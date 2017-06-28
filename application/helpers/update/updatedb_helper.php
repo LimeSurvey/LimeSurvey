@@ -860,7 +860,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
             addPrimaryKey('sessions', array('id'));
             addColumn('{{surveys_languagesettings}}','surveyls_attributecaptions',"TEXT");
-            addColumn('{{surveys}}','sendconfirmation',"string(1) default 'Y'");
 
             upgradeSurveys156();
 

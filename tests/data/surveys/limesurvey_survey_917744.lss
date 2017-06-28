@@ -174,8 +174,8 @@
   <rows>
    <row>
     <sid><![CDATA[917744]]></sid>
-    <admin><![CDATA[Paulo Oliveira]]></admin>
-    <adminemail><![CDATA[psoliveira@med.up.pt]]></adminemail>
+    <admin><![CDATA[Admin]]></admin>
+    <adminemail><![CDATA[example@example.net]]></adminemail>
     <anonymized><![CDATA[N]]></anonymized>
     <faxto/>
     <format><![CDATA[G]]></format>
@@ -202,7 +202,7 @@
     <assessments><![CDATA[N]]></assessments>
     <usecaptcha><![CDATA[N]]></usecaptcha>
     <usetokens><![CDATA[N]]></usetokens>
-    <bounce_email><![CDATA[psoliveira@med.up.pt]]></bounce_email>
+    <bounce_email><![CDATA[example@example.net]]></bounce_email>
     <attributedescriptions><![CDATA[{"attribute_1":{"description":"sexo","mandatory":"N","show_register":"N","cpdbmap":""}}]]></attributedescriptions>
     <emailresponseto/>
     <emailnotificationto/>

@@ -7,14 +7,8 @@ use PHPUnit\Framework\TestCase;
 /**
  * @since 2017-06-13
  */
-class DateTimeTest extends \PHPUnit_Framework_TestCase
+class DateTimeTest extends TestBaseClass
 {
-
-    /**
-     * @var TestHelper
-     */
-    protected static $testHelper = null;
-
     /**
      * @var int
      */
@@ -25,15 +19,7 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
      */
     public static function setupBeforeClass()
     {
-        \Yii::import('application.helpers.common_helper', true);
-        \Yii::import('application.helpers.replacements_helper', true);
-        \Yii::import('application.helpers.surveytranslator_helper', true);
-        \Yii::import('application.helpers.admin.import_helper', true);
-        \Yii::import('application.helpers.expressions.em_manager_helper', true);
-
         \Yii::app()->session['loginID'] = 1;
-
-        self::$testHelper = new TestHelper();
 
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_975622.lss';
         if (!file_exists($surveyFile)) {

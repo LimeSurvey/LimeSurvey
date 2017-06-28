@@ -197,7 +197,7 @@
    <row>
     <sid><![CDATA[975622]]></sid>
     <admin><![CDATA[Administrator]]></admin>
-    <adminemail><![CDATA[your-email@example.net]]></adminemail>
+    <adminemail><![CDATA[example@example.net]]></adminemail>
     <anonymized><![CDATA[N]]></anonymized>
     <faxto/>
     <format><![CDATA[G]]></format>
@@ -224,7 +224,7 @@
     <assessments><![CDATA[N]]></assessments>
     <usecaptcha><![CDATA[N]]></usecaptcha>
     <usetokens><![CDATA[N]]></usetokens>
-    <bounce_email><![CDATA[your-email@example.net]]></bounce_email>
+    <bounce_email><![CDATA[example@example.net]]></bounce_email>
     <emailresponseto/>
     <emailnotificationto/>
     <tokenlength><![CDATA[15]]></tokenlength>
