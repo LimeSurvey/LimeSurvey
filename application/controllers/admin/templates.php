@@ -333,8 +333,10 @@ class templates extends Survey_Common_Action
     * @param string $templatename
     * @return void
     */
-    public function index($editfile, $screenname = 'welcome', $templatename = '')
+    public function index($editfile = '', $screenname = 'welcome', $templatename = '')
     {
+
+
         if ($templatename=='') {
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
