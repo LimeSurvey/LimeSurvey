@@ -454,10 +454,9 @@ class TemplateConfiguration extends CFormModel
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
-
-        $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
-        $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->filesPath;
-        $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ?  $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
+        $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR    : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
+        $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
+        $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ? $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
         $this->siteLogo                 = (!empty($this->config->xpath("//logo")))            ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
 
         // Not mandatory (use package dependances)
