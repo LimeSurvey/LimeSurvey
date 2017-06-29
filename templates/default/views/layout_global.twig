@@ -14,54 +14,73 @@
     This is the global layout that will be used to displayed most pages (less the error page)
     Other layout extend it, and will replace/extends the block "content".
 #}
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
+{% if( not ( aSurveyInfo.options.ajaxmode == "on" and getPost('ajax')=="on"  )) %}
+    <!DOCTYPE html>
+    <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }}">
 
-    {# Headers, metadata, etc #}
-    {{ include('./subviews/head.twig') }}
+        {# Headers, metadata, etc #}
+        {{ include('./subviews/head.twig') }}
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+    </html>
 
-        {# Bootstrap Navigation Bar: the top menu #}
-        {% block nav_bar %}
-            {{ include('./subviews/nav_bar.twig') }}
-        {% endblock %}
+    <body class="default lang-{{surveylanguage}} {{surveyformat}}" >
+{% else %}
+    {{ unregisterPackage('limesurvey-public') }}
+    {{ unregisterPackage('template-default') }}
+    {{ unregisterPackage('bootstrap') }}
+    {{ unregisterPackage('jquery') }}
+    {{ unregisterPackage('bootstrap-template')}}
+    {{ unregisterPackage('fontawesome')}}
+    {{ unregisterPackage('template-default-ltr')}}
+    {{ unregisterPackage('survey-template-default')}}
+    {{ unregisterPackage('decimal')}}
+    {{ listCoreScripts() }}
+{% endif %}
 
-        {# Top Container: in this template, it contains only  #}
-        {% block progress %}
-            {{ include('./subviews/progess_bar.twig') }}
-        {% endblock %}
+{% block body %}
 
-        <!-- Outer Frame Container -->
-        <div class="outerframe container" id="outerframeContainer">
+    {# Bootstrap Navigation Bar: the top menu #}
+    {% block nav_bar %}
+        {{ include('./subviews/nav_bar.twig') }}
+    {% endblock %}
 
-            <!-- Main Row -->
-            <div id="main-row">
-                <!-- Main Col -->
-                <div class="col-centered" id="main-col">
+    {# Top Container: in this template, it contains only  #}
+    {% block progress %}
+        {{ include('./subviews/progess_bar.twig') }}
+    {% endblock %}
 
-                    {# This is the main block that will be replaced/extended by other layouts#}
-                    {% block content %}
+    <!-- Outer Frame Container -->
+    <div class="outerframe container" id="outerframeContainer">
+
+        <!-- Main Row -->
+        <div id="main-row">
+            <!-- Main Col -->
+            <div class="col-centered" id="main-col">
+
+                {# This is the main block that will be replaced/extended by other layouts#}
+                {% block content %}
                     {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
                     {{ include('./subviews/warnings.twig') }}
+                {% endblock %}
+            </div> <!-- main col -->
+        </div> <!-- main row -->
+    </div> <!-- outer frame container -->
 
-                    {% endblock %}
-                </div> <!-- main col -->
-            </div> <!-- main row -->
-        </div> <!-- outer frame container -->
+    {# Bootstrap alert modal #}
+    {{ include('./subviews/bootstrap_alert_modal.twig') }}
 
-        {# Bootstrap alert modal #}
-        {{ include('./subviews/bootstrap_alert_modal.twig') }}
+    <!-- some template.js function launched before ready -->
+    <script type="text/javascript">
+    /*<![CDATA[*/
+        sliderSuffixClone();
+        fixBodyPadding();
+        hideQuestionWithRelevanceSubQuestion();
+        hideEmptyPart();
+    /*]]>*/
+    </script>
+{% endblock %}
 
-        <!-- some template.js function launched before ready -->
-        <script type="text/javascript">
-        /*<![CDATA[*/
-            sliderSuffixClone();
-            fixBodyPadding();
-            hideQuestionWithRelevanceSubQuestion();
-            hideEmptyPart();
-        /*]]>*/
-        </script>
+{% if( not ( aSurveyInfo.options.ajaxmode == "on" and getPost('ajax')=="on"  )) %}
     </body>
-</html>
-<!-- end of startpage.twig -->
+    </html>
+{% endif %}
