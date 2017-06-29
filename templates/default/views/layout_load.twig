@@ -16,7 +16,7 @@
     Depending on survey config, a navigator allowing user to change his response can be shown, and a end url
 
     Form data are in: aSurveyInfo.aLoadForm (errors, css classes, captcha, etc)
-    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file: 
+    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file:
     {{ dump(aSurveyInfo.aLoadForm ) }} )
 
     (¯`·._.·(¯`·._.·  Advanced ·._.·´¯)·._.·´¯)
@@ -27,156 +27,127 @@
     @see: http://www.yiiframework.com/wiki/48/by-example-chtml/ , http://www.yiiframework.com/doc/api/1.1/CHtml
 
 #}
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
-    {# Headers, metadatas, etc #}
-    {{ include('./subviews/head.twig') }}
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
 
-        {# Bootstrap Navigation Bar: the top menu #}
-        {{ include('./subviews/nav_bar.twig') }}
+{# Replace the content block #}
+{% block content %}
 
-        <!-- Outer Frame Container -->
-        <div class="outerframe container" id="outerframeContainer">
+    {# render the layout_global content block #}
+    {{ parent() }}
 
-            <!-- Main Row -->
-            <div id="main-row">
-                <!-- Main Col -->
-                <div class="col-centered" id="main-col">
+        {# This will display the script and the hidden inputs needed for Expression Manager #}
+        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-                    {# include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
-                    {{ include('./subviews/warnings.twig') }}
+        <div class="well clearfix save-message">
+            <div class="h2">{{ "Load unfinished survey" | t }}</div>
+            <div class="text-info">
+                <p> {{ "You can load a survey that you have previously saved from this screen." | t }} </p>
+                <p> {{ "Type in the 'name' you used to save the survey, and the password." | t }} </p>
+            </div>
+        </div>
 
-                        {# This will display the script and the hidden inputs needed for Expression Manager #}
-                        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+        <div class="load-form">
 
-                        <div class="well clearfix save-message">
-                            <div class="h2">{{ "Load unfinished survey" | t }}</div>
-                            <div class="text-info">
-                                <p> {{ "You can load a survey that you have previously saved from this screen." | t }} </p>
-                                <p> {{ "Type in the 'name' you used to save the survey, and the password." | t }} </p>
-                            </div>
+            {% if count(aSurveyInfo.aLoadForm.aErrors) > 0 %}
+                <ul class='alert alert-danger list-unstyled' role='alert'>
+                    {% for key,error in aSurveyInfo.aLoadForm.aErrors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {#
+                array of attributes of the form tag.
+                To add a new attribute, just add an entry:
+                'attribute' : 'value',
+            #}
+            {% set htmlOptions = {
+                    'id'          : 'form-load',
+                    'name'        : 'form-load',
+                    'class'       : 'ls-form',
+                }
+            %}
+
+            {#
+                It generates the opening form tag and the CRSF token
+                It uses the Yii fuction CHtml::form
+                @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
+            #}
+            <!-- Save Form -->
+            {{
+                C.Html.form(
+                    ( aSurveyInfo.surveyUrl ),
+                    'post',
+                    (htmlOptions)
+                )
+            }}
+                <!-- Hidden fields  -->
+                {{  aSurveyInfo.aLoadForm.sHiddenField }}
+
+                <!-- Name and Password -->
+                <div class='save-survey-form form-horizontal'>
+
+                    <!-- Saved name  -->
+                    <div class='form-group save-survey-row save-survey-name'>
+                        <label class='control-label col-sm-3 load-survey-label' for='savename'>
+                            {{ "Saved name:" | t }}
+                            <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
+                            <span class="sr-only text-danger asterisk">{{ "Mandatory" | t }}<span>
+                        </label>
+                        <div class='col-sm-7 save-survey-input input-cell'>
+                            <input class='form-control' type='text' id='loadname' name='loadname' value='' required>
                         </div>
 
-                        <div class="load-form">
+                    </div>
 
-                            {% if count(aSurveyInfo.aLoadForm.aErrors) > 0 %}
-                                <ul class='alert alert-danger list-unstyled' role='alert'>
-                                    {% for key,error in aSurveyInfo.aLoadForm.aErrors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+                    <!-- Password -->
+                    <div class='form-group load-survey-row load-survey-password'>
+                        <label class='control-label col-sm-3 load-survey-label label-cell' for='loadpass'>
+                            {{ "Password:" | t }}
+                            <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
+                            <span class="sr-only text-danger asterisk">{{ "Mandatory" | t }}<span>
+                        </label>
 
-                            {#
-                                array of attributes of the form tag.
-                                To add a new attribute, just add an entry:
-                                'attribute' : 'value',
-                            #}
-                            {% set htmlOptions = {
-                                    'id'          : 'form-load',
-                                    'name'        : 'form-load',
-                                    'class'       : 'ls-form',
-                                }
-                            %}
+                        <div class='col-sm-7 save-survey-input input-cell'>
+                            <input class='form-control' type='password' id='loadpass' name='loadpass' value='' required>
+                        </div>
+                    </div>
 
-                            {#
-                                It generates the opening form tag and the CRSF token
-                                It uses the Yii fuction CHtml::form
-                                @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
-                            #}
-                            <!-- Save Form -->
-                            {{
-                                C.Html.form(
-                                    ( aSurveyInfo.surveyUrl ),
-                                    'post',
-                                    (htmlOptions)
-                                )
-                            }}
-                                <!-- Hidden fields  -->
-                                {{  aSurveyInfo.aLoadForm.sHiddenField }}
-
-                                <!-- Name and Password -->
-                                <div class='save-survey-form form-horizontal'>
-
-                                    <!-- Saved name  -->
-                                    <div class='form-group save-survey-row save-survey-name'>
-                                        <label class='control-label col-sm-3 load-survey-label' for='savename'>
-                                            {{ "Saved name:" | t }}
-                                            <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
-                                            <span class="sr-only text-danger asterisk">{{ "Mandatory" | t }}<span>
-                                        </label>
-                                        <div class='col-sm-7 save-survey-input input-cell'>
-                                            <input class='form-control' type='text' id='loadname' name='loadname' value='' required>
-                                        </div>
-
+                    {% if aSurveyInfo.aLoadForm.aCaptcha.show %}
+                        <!-- Captcha -->
+                        <div class='form-group save-survey-row save-survey-captcha'>
+                            <label class='control-label col-sm-3 save-survey-label label-cell' for='loadsecurity'>
+                                {{ "Security question:" | t }}
+                            </label>
+                            <div class='col-sm-7 save-survey-input input-cell'>
+                                <div class='input-group'>
+                                    <div class='input-group-addon captcha-image' >
+                                        <img src='{{ aSurveyInfo.aLoadForm.aCaptcha.sImageUrl }}' alt='captcha' />
                                     </div>
-
-                                    <!-- Password -->
-                                    <div class='form-group load-survey-row load-survey-password'>
-                                        <label class='control-label col-sm-3 load-survey-label label-cell' for='loadpass'>
-                                            {{ "Password:" | t }}
-                                            <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
-                                            <span class="sr-only text-danger asterisk">{{ "Mandatory" | t }}<span>
-                                        </label>
-
-                                        <div class='col-sm-7 save-survey-input input-cell'>
-                                            <input class='form-control' type='password' id='loadpass' name='loadpass' value='' required>
-                                        </div>
-                                    </div>
-
-                                    {% if aSurveyInfo.aLoadForm.aCaptcha.show %}
-                                        <!-- Captcha -->
-                                        <div class='form-group save-survey-row save-survey-captcha'>
-                                            <label class='control-label col-sm-3 save-survey-label label-cell' for='loadsecurity'>
-                                                {{ "Security question:" | t }}
-                                            </label>
-                                            <div class='col-sm-7 save-survey-input input-cell'>
-                                                <div class='input-group'>
-                                                    <div class='input-group-addon captcha-image' >
-                                                        <img src='{{ aSurveyInfo.aLoadForm.aCaptcha.sImageUrl }}' alt='captcha' />
-                                                    </div>
-                                                    <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-
-                                    <!-- laod button -->
-                                    <div class='form-group save-survey-row save-survey-submit'>
-                                        <div class='col-sm-7 col-md-offset-3 save-survey-input input-cell'>
-                                            <button type='submit' id='loadbutton' name="loadall" class='btn btn-default' value='reload'>
-                                                {{ "Load now" | t }}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            <div class='return-to-survey'>
-                                <div class="url-wrapper url-wrapper-survey-return">
-                                    <a href="{{ aSurveyInfo.surveyUrl }}" class="ls-return">{{ "Return to survey" }}</a>
+                                    <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/>
                                 </div>
                             </div>
                         </div>
-                </div> <!-- main col -->
-            </div> <!-- main row -->
-        </div> <!-- outer frame container -->
+                    {% endif %}
 
-        {# Bootstrap alert modal #}
-        {{ include('./subviews/bootstrap_alert_modal.twig') }}
+                    <!-- laod button -->
+                    <div class='form-group save-survey-row save-survey-submit'>
+                        <div class='col-sm-7 col-md-offset-3 save-survey-input input-cell'>
+                            <button type='submit' id='loadbutton' name="loadall" class='btn btn-default' value='reload'>
+                                {{ "Load now" | t }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- some template.js function launched before ready -->
-        <script type="text/javascript">
-        /*<![CDATA[*/
-            sliderSuffixClone();
-            fixBodyPadding();
-            hideQuestionWithRelevanceSubQuestion();
-            hideEmptyPart();
-        /*]]>*/
-        </script>
-    </body>
-</html>
-<!-- end of startpage.twig -->
+
+            <div class='return-to-survey'>
+                <div class="url-wrapper url-wrapper-survey-return">
+                    <a href="{{ aSurveyInfo.surveyUrl }}" class="ls-return">{{ "Return to survey" }}</a>
+                </div>
+            </div>
+        </div>
+{% endblock %}
