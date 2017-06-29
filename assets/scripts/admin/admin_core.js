@@ -99,7 +99,7 @@ $(document).ready(function(){
                 $('#survey-action-container').animate({
             "height": "toggle", "opacity": "toggle"
         });
-                $('#survey-action-chevron').toggleClass('fa-chevron-right').toggleClass('fa-chevron-down');
+                $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
             },
             error :  function(html, statut){
                 alert('error');

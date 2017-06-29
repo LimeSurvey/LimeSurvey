@@ -23,7 +23,12 @@ $surveyid = $surveyinfo['sid'];
 ?>
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
-    <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?><span data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="fa fa-chevron-right"></span></h3>
+    <h3 id="survey-action-title">
+    <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">
+        <i class="fa fa-caret-down"></i>
+    </button>&nbsp;&nbsp;
+    <?php eT('Survey quick actions'); ?>
+    </h3>
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-sm-12 content-right">
 
