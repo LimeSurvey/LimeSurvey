@@ -43,6 +43,7 @@ $internalConfig = array(
         // Third party path
         'third_party' => realpath(__DIR__ . '/../../third_party'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
+        'fonts' => realpath(__DIR__ . '/../../fonts'),
 
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
