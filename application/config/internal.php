@@ -241,7 +241,7 @@ $internalConfig = array(
             ),
 
             'sandboxConfig' => array(
-                'tags' => array('if', 'for', 'set', 'autoescape'),
+                'tags' => array('if', 'for', 'set', 'autoescape', 'block'),
                 'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
