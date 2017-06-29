@@ -13,75 +13,40 @@
     adding the warning message "Your survey responses have not been recorded. This survey is not yet active." to  aSurveyInfo.errorHtml.messages
 
 #}
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
-    {# Headers, metadatas, etc #}
-    {{ include('./subviews/head.twig') }}
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+{# Replace the content block #}
+{% block content %}
 
-        {# Bootstrap Navigation Bar: the top menu #}
-        {{ include('./subviews/nav_bar.twig') }}
-
-        {# Top Container: in this template, it contains only  #}
-        {{ include('./subviews/progess_bar.twig') }}
-
-        <!-- Outer Frame Container -->
-        <div class="outerframe container" id="outerframeContainer">
-
-            <!-- Main Row -->
-            <div id="main-row">
-
-                <!-- Main Col -->
-                <div class="col-centered" id="main-col">
-
-                    {# include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
-                    {{ include('./subviews/warnings.twig') }}
-
-                    {# include the form opening tag #}
-                    <!-- main form -->
-                    {{ include('./subviews/start_form.twig') }}
+    {# render the layout_global content block #}
+    {{ parent() }}
 
 
-                        <div class="completed-wrapper">
-                            <div class='completed-text'>
-                                {# Assessments #}
-                                {% if (aSurveyInfo.aAssessments.show) %}
-                                    {{ include('./subviews/assessments.twig') }}
-                                {% endif %}
-
-                                <br />
-                                <strong>
-                                    <font size='2' color='red'>
-                                        {{ "Did Not Save" | t }}
-                                    </font>
-                                </strong>
-                                <br /><br />
-
-                                {{ "Your survey responses have not been recorded. This survey is not yet active." | t }})
-                                <br /><br />
-                            </div>
-                        </div>
+    {# include the form opening tag #}
+    <!-- main form -->
+    {{ include('./subviews/start_form.twig') }}
 
 
-                    </form> <!-- main form -->
-                </div> <!-- main col -->
-            </div> <!-- main row -->
-        </div> <!-- outer frame container -->
+        <div class="completed-wrapper">
+            <div class='completed-text'>
+                {# Assessments #}
+                {% if (aSurveyInfo.aAssessments.show) %}
+                    {{ include('./subviews/assessments.twig') }}
+                {% endif %}
 
-        {# Bootstrap alert modal #}
-        {{ include('./subviews/bootstrap_alert_modal.twig') }}
+                <br />
+                <strong>
+                    <font size='2' color='red'>
+                        {{ "Did Not Save" | t }}
+                    </font>
+                </strong>
+                <br /><br />
 
-        <!-- some template.js function launched before ready -->
-        <script type="text/javascript">
-        /*<![CDATA[*/
-            sliderSuffixClone();
-            fixBodyPadding();
-            hideQuestionWithRelevanceSubQuestion();
-            hideEmptyPart();
-        /*]]>*/
-        </script>
-    </body>
-</html>
-<!-- end of startpage.twig -->
+                {{ "Your survey responses have not been recorded. This survey is not yet active." | t }})
+                <br /><br />
+            </div>
+        </div>
+    </form> <!-- main form -->
+{% endblock %}
