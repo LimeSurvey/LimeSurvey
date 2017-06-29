@@ -189,6 +189,14 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $loader->addPath($oRTemplate->viewPath);
         }
 
+        // Add the template options
+        foreach($oRTemplate->oOptions as $oOption){
+            foreach($oOption as $key => $value){
+                $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+            }
+        }
+
+
         // Plugin for blocks replacement
         // TODO: add blocks to template....
         $event = new PluginEvent('beforeTwigRenderTemplate');

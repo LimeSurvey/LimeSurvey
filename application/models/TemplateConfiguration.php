@@ -57,6 +57,9 @@ class TemplateConfiguration extends CFormModel
 
     public $templateEditor;
 
+    /** @var SimpleXMLElement $oOptions The template options */
+    public $oOptions;
+
 
     /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
     private $iSurveyId='';
@@ -473,6 +476,15 @@ class TemplateConfiguration extends CFormModel
         $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
         $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ? $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
         $this->siteLogo                 = (!empty($this->config->xpath("//logo")))            ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
+
+        // Options are optional
+        if (!empty($this->config->xpath("//options"))){
+            $this->oOptions = $this->config->xpath("//options");
+        }elseif(!empty($this->oMotherTemplate->oOptions)){
+            $this->oOptions = $this->oMotherTemplate->oOptions;
+        }else{
+            $this->oOptions = "";
+        }
 
         // Not mandatory (use package dependances)
         $this->cssFramework             = (!empty($this->config->xpath("//cssframework")))    ? $this->config->engine->cssframework                                                                                  : '';
