@@ -23,7 +23,7 @@ $surveyid = $surveyinfo['sid'];
 ?>
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
-    <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?><span data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="glyphicon glyphicon-chevron-right"></span></h3>
+    <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?><span data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="fa fa-chevron-right"></span></h3>
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-sm-12 content-right">
 
@@ -49,7 +49,7 @@ $surveyid = $surveyinfo['sid'];
                             <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->
                             <div class="alert alert-info alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                                <span class="glyphicon glyphicon-info-sign" ></span>&nbsp;&nbsp;&nbsp;
+                                <span class="fa fa-info-sign" ></span>&nbsp;&nbsp;&nbsp;
                                 <?php eT('Set below if your questions are shown one at a time, group by group or all on one page.');?>
                             </div>
                         <?php endif;?>
@@ -256,7 +256,7 @@ $surveyid = $surveyinfo['sid'];
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>" >
-                                                    <span class="glyphicon glyphicon-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
@@ -278,7 +278,7 @@ $surveyid = $surveyinfo['sid'];
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="#" >
-                                                    <span class="glyphicon glyphicon-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">

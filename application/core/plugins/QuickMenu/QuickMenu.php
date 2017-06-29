@@ -19,31 +19,31 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         ),
         'activateSurvey' => array(
             'type' => 'checkbox',
-            'label' => 'Activate survey&nbsp;<span class="glyphicon glyphicon-play"></span>',
+            'label' => 'Activate survey&nbsp;<span class="fa fa-play"></span>',
             'default' => '0',
             'help' => 'Needed permission: Survey activation - Update'
         ),
         'deactivateSurvey' => array(
             'type' => 'checkbox',
-            'label' => 'Deactivate survey&nbsp;<span class="glyphicon glyphicon-stop"></span>',
+            'label' => 'Deactivate survey&nbsp;<span class="fa fa-stop"></span>',
             'default' => '0',
             'help' => 'Needed permission: Survey activation - Update'
         ),
         'testSurvey' => array(
             'type' => 'checkbox',
-            'label' => 'Test or execute survey&nbsp;<span class="glyphicon glyphicon-cog"></span>',
+            'label' => 'Test or execute survey&nbsp;<span class="fa fa-cog"></span>',
             'default' => '0',
             'help' => 'Available for everyone. Uses survey base language.'
         ),
         'listQuestions' => array(
             'type' => 'checkbox',
-            'label' => 'List questions&nbsp;<span class="glyphicon glyphicon-list"></span>',
+            'label' => 'List questions&nbsp;<span class="fa fa-list"></span>',
             'default' => '0',
             'help' => 'Needed permission: Survey content - View'
         ),
         'listQuestionGroups' => array(
             'type' => 'checkbox',
-            'label' => 'List question groups&nbsp;<span class="glyphicon glyphicon-list"></span>',
+            'label' => 'List question groups&nbsp;<span class="fa fa-list"></span>',
             'default' => '0',
             'help' => 'Needed permission: Survey content - View'
         ),
@@ -85,7 +85,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         ),
         'tokenManagement' => array(
             'type' => 'checkbox',
-            'label' => 'Survey participants&nbsp;<span class="glyphicon glyphicon-user"></span>',
+            'label' => 'Survey participants&nbsp;<span class="fa fa-user"></span>',
             'default' => '0',
             'help' => 'Needed permission: Token - View'
         ),
@@ -103,7 +103,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         ),
         'statistics' => array(
             'type' => 'checkbox',
-            'label' => 'Statistics&nbsp;<span class="glyphicon glyphicon-stats"></span>',
+            'label' => 'Statistics&nbsp;<span class="fa fa-stats"></span>',
             'default' => '0',
             'help' => 'Needed permission: Statistics - View'
         ),
@@ -223,7 +223,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'name' => 'activateSurvey',
                 'href' => Yii::app()->getController()->createUrl("admin/survey/sa/activate/surveyid/$surveyId"),
                 'tooltip' => gT('Activate survey'),
-                'iconClass' => 'glyphicon glyphicon-play navbar-brand',
+                'iconClass' => 'fa fa-play navbar-brand',
                 'showOnlyWhenSurveyIsDeactivated' => true,
                 'neededPermission' => array('surveyactivation', 'update')
             )),
@@ -231,7 +231,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'name' => 'deactivateSurvey',
                 'href' => Yii::app()->getController()->createUrl("admin/survey/sa/deactivate/surveyid/$surveyId"),
                 'tooltip' => gT('Stop this survey'),
-                'iconClass' => 'glyphicon glyphicon-stop navbar-brand',
+                'iconClass' => 'fa fa-stop navbar-brand',
                 'showOnlyWhenSurveyIsActivated' => true,
                 'neededPermission' => array('surveyactivation', 'update')
             )),
@@ -240,20 +240,20 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'openInNewTab' => true,
                 'href' => Yii::app()->getController()->createUrl("survey/index",array('sid'=>$surveyId, 'newtest'=>"Y",'lang'=>$baselang)),
                 'tooltip' => $activated ? gT('Execute survey') : gT('Test survey'),
-                'iconClass' => 'glyphicon glyphicon-cog navbar-brand'
+                'iconClass' => 'fa fa-cog navbar-brand'
             )),
             'listQuestions' => new QuickMenuButton(array(
                 'name' => 'listQuestions',
                 'href' => Yii::app()->createUrl("admin/survey/sa/listquestions/surveyid/$surveyId"),
                 'tooltip' => gT('List questions'),
-                'iconClass' => 'glyphicon glyphicon-list navbar-brand',
+                'iconClass' => 'fa fa-list navbar-brand',
                 'neededPermission' => array('surveycontent', 'read')
             )),
             'listQuestionGroups' => new QuickMenuButton(array(
                 'name' => 'listQuestionGroups',
                 'href' => Yii::app()->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyId"),
                 'tooltip' => gT('List question groups'),
-                'iconClass' => 'glyphicon glyphicon-list navbar-brand',
+                'iconClass' => 'fa fa-list navbar-brand',
                 'neededPermission' => array('surveycontent', 'read')
             )),
             'surveySettings' => new QuickMenuButton(array(
@@ -302,7 +302,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'name' => 'tokenManagement',
                 'href' => Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/$surveyId"),
                 'tooltip' => gT('Survey participants'),
-                'iconClass' => 'glyphicon glyphicon-user navbar-brand',
+                'iconClass' => 'fa fa-user navbar-brand',
                 'neededPermission' => array('tokens', 'read')
             )),
             'cpdb' => new QuickMenuButton(array(
@@ -325,7 +325,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'href' => Yii::app()->getController()->createUrl("admin/responses/sa/browse/surveyid/$surveyId/"),
                 'href' => Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyId"),
                 'tooltip' => gT('Statistics'),
-                'iconClass' => 'glyphicon glyphicon-stats navbar-brand',
+                'iconClass' => 'fa fa-stats navbar-brand',
                 'showOnlyWhenSurveyIsActivated' => true,
                 'neededPermission' => array('statistics', 'read')
             )),
@@ -345,7 +345,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
             'openInNewTab' => false,
             'href' => Yii::app()->getController()->createUrl("admin/participants/sa/displayParticipants"),
             'tooltip' => gT('Central participant database'),
-            'iconClass' => 'glyphicon TODO: Icon navbar-brand'
+            'iconClass' => 'fa TODO: Icon navbar-brand'
         );
          */
     }

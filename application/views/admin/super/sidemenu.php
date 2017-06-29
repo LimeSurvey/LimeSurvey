@@ -75,7 +75,7 @@
                         <!-- Brand -->
                         <a id='sidemenu-home' class="col-sm-7 navbar-brand hideside toggleside" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>">
                             <div class="brand-name-wrapper hidden-xs">
-                                    <span class="glyphicon glyphicon-home"></span>&nbsp;
+                                    <span class="fa fa-home"></span>&nbsp;
                                     <?php eT("Survey");?>
                             </div>
                         </a>
@@ -84,19 +84,19 @@
                         <?php if (getLanguageRTL($_SESSION['adminlang'])): ?>
                             <div class='col-sm-5'>
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
-                                    <span class="glyphicon glyphicon-chevron-left" ></span>
+                                    <span class="fa fa-chevron-left" ></span>
                                 </a>
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
-                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                    <span class="fa fa-chevron-right"></span>
                                 </a>
                             </div>
                         <?php else: ?>
                             <div class='col-sm-5'>
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronStretch">
-                                    <span class="glyphicon glyphicon-chevron-right" ></span>
+                                    <span class="fa fa-chevron-right" ></span>
                                 </a>
                                 <a class="btn btn-default hide-button hidden-xs opened pull-right" id="chevronClose">
-                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    <span class="fa fa-chevron-left"></span>
                                 </a>
                             </div>
                         <?php endif; ?>
@@ -115,7 +115,7 @@
                     <!-- Question & Groups-->
                     <li class="panel panel-default dropdownlvl1" id="dropdown">
                         <a data-toggle="collapse" id="questions-groups-collapse" href="#dropdown-lvl1" <?php if( isset($sidemenu["questiongroups"]) ) echo 'aria-expanded="true"'; ?>  >
-                            <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Questions and groups:');?>
+                            <span class="fa fa-folder-open"></span> <?php eT('Questions and groups:');?>
                             <span class="caret"></span>
                         </a>
 
@@ -136,7 +136,7 @@
                                         <li class="toWhite <?php if( isset($sidemenu["listquestiongroups"]) ) echo 'active'; ?>">
                                             <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
                                             <a href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
-                                                <span class="glyphicon glyphicon-list"></span>
+                                                <span class="fa fa-list"></span>
                                                 <?php eT("List question groups");?>
                                             </a>
                                         </li>
@@ -144,7 +144,7 @@
                                         <!-- List Questions -->
                                         <li class="toWhite <?php if( isset($sidemenu["listquestions"]) ) echo 'active'; ?>">
                                             <a href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
-                                                <span class="glyphicon glyphicon-list"></span>
+                                                <span class="fa fa-list"></span>
                                                 <?php eT("List questions");?>
                                             </a>
                                         </li>
@@ -179,7 +179,7 @@
                     <?php if($tokenmanagement):?>
                         <li id="tokensidemenu" class="toWhite  <?php if( isset($sidemenu["token_menu"]) ) echo 'active'; ?> ">
                             <a href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>">
-                                <span class="glyphicon glyphicon-user"></span>
+                                <span class="fa fa-user"></span>
                                 <?php eT("Survey participants");?>
                             </a>
                         </li>
@@ -190,7 +190,7 @@
                     <!-- Survey List -->
                     <li class="toWhite" >
                         <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys/"); ?>" class="" >
-                            <span class="glyphicon glyphicon-step-backward"></span>
+                            <span class="fa fa-step-backward"></span>
                             <?php eT("Return to survey list");?>
                         </a>
                     </li>

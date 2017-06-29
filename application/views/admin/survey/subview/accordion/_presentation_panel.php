@@ -5,7 +5,7 @@
 ?>
 
 <!-- Presentation panel -->
-<div id='presentation' class="container">
+<div id='presentation' class="container-fluid">
     <div class="col-sm-12 col-md-6">
         <!-- Navigation delay -->
         <div class="form-group">

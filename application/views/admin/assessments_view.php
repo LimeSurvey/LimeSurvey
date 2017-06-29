@@ -68,7 +68,7 @@
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments','delete')):  ?>
                         <div class='pull-left'>
                         <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post');?>
-                            <span class="ui-pg-button glyphicon text-danger glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="" onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")) { $(this).parent().submit(); }' data-original-title="<?php echo eT("Delete assessment"); ?>">
+                            <span class="ui-pg-button fa text-danger fa-trash" data-toggle="tooltip" data-placement="bottom" title="" onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")) { $(this).parent().submit(); }' data-original-title="<?php echo eT("Delete assessment"); ?>">
                             </span>
                              <input type='hidden' name='action' value='assessmentdelete' />
                              <input type='hidden' name='id' value='<?php echo $assess['id'];?>' />

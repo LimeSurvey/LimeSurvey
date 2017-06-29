@@ -4,7 +4,7 @@
  */
 ?>
 <!-- Notification panel -->
-<div id='notification'  class="container">
+<div id='notification'  class="container-fluid">
 
     <div class="col-sm-12 col-md-6">
         <!-- Date Stamp -->

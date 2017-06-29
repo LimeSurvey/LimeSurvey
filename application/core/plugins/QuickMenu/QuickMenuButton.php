@@ -26,7 +26,7 @@ class QuickMenuButton implements ArrayAccess {
     public $tooltip = '';
 
     /**
-     * @var string - Class with glyphicon
+     * @var string - Class with fa
      */
     public $iconClass;
 

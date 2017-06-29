@@ -6,8 +6,11 @@
  * @var $surveyid
  * @var $surveyls_language
  */
+
  $count=0;
- ?>
+ if(isset($scripts))
+    echo $scripts;
+?>
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
     <?php foreach ($aTabTitles as $i=>$eachtitle):?>
         <li role="presentation" class="<?php if($count==0) {echo "active"; }?>">

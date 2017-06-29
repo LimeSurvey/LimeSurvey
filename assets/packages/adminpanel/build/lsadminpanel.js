@@ -60,11 +60,26 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports) {
+
+/* global HTMLCollection: true */
+
+module.exports = function(els, fn, context) {
+  if (els instanceof HTMLCollection || els instanceof NodeList || els instanceof Array) {
+    return Array.prototype.forEach.call(els, fn, context)
+  }
+  // assume simple dom element
+  return fn.call(context, els)
+}
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9758,10 +9773,10 @@ Vue$3.compile = compileToFunctions;
 
 /* harmony default export */ __webpack_exports__["a"] = (Vue$3);
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(9), __webpack_require__(6)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(12), __webpack_require__(8)))
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -26850,10 +26865,10 @@ Vue$3.compile = compileToFunctions;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(11)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(14)(module)))
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 /*
@@ -26935,7 +26950,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -26954,7 +26969,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(15)
+var listToStyles = __webpack_require__(18)
 
 /*
 type StyleObject = {
@@ -27156,7 +27171,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -27253,7 +27268,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -27289,7 +27304,24 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 6 */
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(0)
+
+module.exports = function(els, events, listener, useCapture) {
+  events = (typeof events === "string" ? events.split(" ") : events)
+
+  events.forEach(function(e) {
+    forEachEls(els, function(el) {
+      el.addEventListener(e, listener, useCapture)
+    })
+  })
+}
+
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports) {
 
 var g;
@@ -27316,28 +27348,46 @@ module.exports = g;
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 9 */
+/***/ (function(module, exports) {
 
-__webpack_require__(8);
-module.exports = __webpack_require__(33);
+module.exports = function(obj) {
+  if (null === obj || "object" != typeof obj) {
+    return obj
+  }
+  var copy = obj.constructor()
+  for (var attr in obj) {
+    if (obj.hasOwnProperty(attr)) {
+      copy[attr] = obj[attr]
+    }
+  }
+  return copy
+}
 
 
 /***/ }),
-/* 8 */
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(11);
+module.exports = __webpack_require__(55);
+
+
+/***/ }),
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_topbar_vue__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_topbar_vue__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_topbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_topbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pjax__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pjax__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pjax___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pjax__);
 
 
@@ -27395,7 +27445,7 @@ const pjaxed = new __WEBPACK_IMPORTED_MODULE_5_pjax___default.a({
 
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -27585,7 +27635,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28398,7 +28448,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -28426,19 +28476,19 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(13)
+  __webpack_require__(16)
 }
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(16),
+  __webpack_require__(19),
   /* template */
-  __webpack_require__(27),
+  __webpack_require__(30),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -28470,17 +28520,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(14);
+var content = __webpack_require__(17);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("56fb79a0", content, false);
+var update = __webpack_require__(4)("56fb79a0", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -28496,10 +28546,10 @@ if(false) {
 }
 
 /***/ }),
-/* 14 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(undefined);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
@@ -28510,7 +28560,7 @@ exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 200, 200, 
 
 
 /***/ }),
-/* 15 */
+/* 18 */
 /***/ (function(module, exports) {
 
 /**
@@ -28543,16 +28593,16 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 16 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue__);
 
 
@@ -28616,19 +28666,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 17 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(18)
+  __webpack_require__(21)
 }
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(20),
+  __webpack_require__(23),
   /* template */
-  __webpack_require__(26),
+  __webpack_require__(29),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -28660,17 +28710,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 18 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(19);
+var content = __webpack_require__(22);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("2f55db9c", content, false);
+var update = __webpack_require__(4)("2f55db9c", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -28686,10 +28736,10 @@ if(false) {
 }
 
 /***/ }),
-/* 19 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(undefined);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
@@ -28700,16 +28750,16 @@ exports.push([module.i, "\n.bigIcons {\n    font-size: 24px;\n}\n.border-bottom{
 
 
 /***/ }),
-/* 20 */
+/* 23 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questions_vue__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questions_vue__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__questions_vue__);
 
 
@@ -28756,19 +28806,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(22)
+  __webpack_require__(25)
 }
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(24),
+  __webpack_require__(27),
   /* template */
-  __webpack_require__(25),
+  __webpack_require__(28),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -28800,17 +28850,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(23);
+var content = __webpack_require__(26);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("0fed309c", content, false);
+var update = __webpack_require__(4)("0fed309c", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -28826,10 +28876,10 @@ if(false) {
 }
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(undefined);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
@@ -28840,15 +28890,15 @@ exports.push([module.i, "\n.margin-right {\n  margin-right: 5px;\n}\n.padding-le
 
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(6);
 
 
 
@@ -28874,7 +28924,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -28911,7 +28961,7 @@ if (false) {
 }
 
 /***/ }),
-/* 26 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -28970,7 +29020,7 @@ if (false) {
 }
 
 /***/ }),
-/* 27 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29083,19 +29133,19 @@ if (false) {
 }
 
 /***/ }),
-/* 28 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(29)
+  __webpack_require__(32)
 }
-var Component = __webpack_require__(4)(
+var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(31),
+  __webpack_require__(34),
   /* template */
-  __webpack_require__(32),
+  __webpack_require__(35),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -29127,17 +29177,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 29 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(30);
+var content = __webpack_require__(33);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(3)("7c75192a", content, false);
+var update = __webpack_require__(4)("7c75192a", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -29153,10 +29203,10 @@ if(false) {
 }
 
 /***/ }),
-/* 30 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(undefined);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
@@ -29167,13 +29217,13 @@ exports.push([module.i, "", ""]);
 
 
 /***/ }),
-/* 31 */
+/* 34 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 
 
@@ -29187,7 +29237,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 32 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29214,13 +29264,832 @@ if (false) {
 }
 
 /***/ }),
-/* 33 */
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var clone = __webpack_require__(9)
+var executeScripts = __webpack_require__(37)
+
+var forEachEls = __webpack_require__(0)
+
+var newUid = __webpack_require__(39)
+
+var on = __webpack_require__(7)
+// var off = require("./lib/events/on.js")
+var trigger = __webpack_require__(40)
+
+
+var Pjax = function(options) {
+    this.firstrun = true
+
+    var parseOptions = __webpack_require__(41);
+    parseOptions.apply(this,[options])
+    this.log("Pjax options", this.options)
+
+    this.maxUid = this.lastUid = newUid()
+
+    this.parseDOM(document)
+
+    on(window, "popstate", function(st) {
+      if (st.state) {
+        var opt = clone(this.options)
+        opt.url = st.state.url
+        opt.title = st.state.title
+        opt.history = false
+
+        if (st.state.uid < this.lastUid) {
+          opt.backward = true
+        }
+        else {
+          opt.forward = true
+        }
+        this.lastUid = st.state.uid
+
+        // @todo implement history cache here, based on uid
+        this.loadUrl(st.state.url, opt)
+      }
+    }.bind(this))
+  }
+
+Pjax.prototype = {
+  log: __webpack_require__(42),
+
+  getElements: __webpack_require__(43),
+
+  parseDOM: __webpack_require__(44),
+
+  refresh: __webpack_require__(46),
+
+  reload: __webpack_require__(47),
+
+  attachLink: __webpack_require__(48),
+
+  forEachSelectors: function(cb, context, DOMcontext) {
+    return __webpack_require__(50).bind(this)(this.options.selectors, cb, context, DOMcontext)
+  },
+
+  switchSelectors: function(selectors, fromEl, toEl, options) {
+    return __webpack_require__(51).bind(this)(this.options.switches, this.options.switchesOptions, selectors, fromEl, toEl, options)
+  },
+
+  // too much problem with the code below
+  // + it’s too dangerous
+//   switchFallback: function(fromEl, toEl) {
+//     this.switchSelectors(["head", "body"], fromEl, toEl)
+//     // execute script when DOM is like it should be
+//     Pjax.executeScripts(document.querySelector("head"))
+//     Pjax.executeScripts(document.querySelector("body"))
+//   }
+
+  latestChance: function(href) {
+    window.location = href
+  },
+
+  onSwitch: function() {
+    trigger(window, "resize scroll")
+  },
+
+  loadContent: function(html, options) {
+    var tmpEl = document.implementation.createHTMLDocument()
+
+    // parse HTML attributes to copy them
+    // since we are forced to use documentElement.innerHTML (outerHTML can't be used for <html>)
+    var htmlRegex = /<html[^>]+>/gi
+    var htmlAttribsRegex = /\s?[a-z:]+(?:\=(?:\'|\")[^\'\">]+(?:\'|\"))*/gi
+    var matches = html.match(htmlRegex)
+    if (matches && matches.length) {
+      matches = matches[0].match(htmlAttribsRegex)
+      if (matches.length) {
+        matches.shift()
+        matches.forEach(function(htmlAttrib) {
+          var attr = htmlAttrib.trim().split("=")
+          if (attr.length === 1) {
+            tmpEl.documentElement.setAttribute(attr[0], true)
+          }
+          else {
+            tmpEl.documentElement.setAttribute(attr[0], attr[1].slice(1, -1))
+          }
+        })
+      }
+    }
+
+    tmpEl.documentElement.innerHTML = html
+    this.log("load content", tmpEl.documentElement.attributes, tmpEl.documentElement.innerHTML.length)
+
+    // Clear out any focused controls before inserting new page contents.
+    // we clear focus on non form elements
+    if (document.activeElement && !document.activeElement.value) {
+      try {
+        document.activeElement.blur()
+      } catch (e) { }
+    }
+
+    // try {
+    this.switchSelectors(this.options.selectors, tmpEl, document, options)
+
+    // FF bug: Won’t autofocus fields that are inserted via JS.
+    // This behavior is incorrect. So if theres no current focus, autofocus
+    // the last field.
+    //
+    // http://www.w3.org/html/wg/drafts/html/master/forms.html
+    var autofocusEl = Array.prototype.slice.call(document.querySelectorAll("[autofocus]")).pop()
+    if (autofocusEl && document.activeElement !== autofocusEl) {
+      autofocusEl.focus();
+    }
+
+    // execute scripts when DOM have been completely updated
+    this.options.selectors.forEach(function(selector) {
+      forEachEls(document.querySelectorAll(selector), function(el) {
+        executeScripts(el)
+      })
+    })
+    // }
+    // catch(e) {
+    //   if (this.options.debug) {
+    //     this.log("Pjax switch fail: ", e)
+    //   }
+    //   this.switchFallback(tmpEl, document)
+    // }
+  },
+
+  doRequest: __webpack_require__(53),
+
+  loadUrl: function(href, options) {
+    this.log("load href", href, options)
+
+    trigger(document, "pjax:send", options);
+
+    // Do the request
+    this.doRequest(href, function(html) {
+      // Fail if unable to load HTML via AJAX
+      if (html === false) {
+        trigger(document,"pjax:complete pjax:error", options)
+
+        return
+      }
+
+      // Clear out any focused controls before inserting new page contents.
+      document.activeElement.blur()
+
+      try {
+        this.loadContent(html, options)
+      }
+      catch (e) {
+        if (!this.options.debug) {
+          if (console && console.error) {
+            console.error("Pjax switch fail: ", e)
+          }
+          this.latestChance(href)
+          return
+        }
+        else {
+          throw e
+        }
+      }
+
+      if (options.history) {
+        if (this.firstrun) {
+          this.lastUid = this.maxUid = newUid()
+          this.firstrun = false
+          window.history.replaceState({
+            url: window.location.href,
+            title: document.title,
+            uid: this.maxUid
+          },
+          document.title)
+        }
+
+        // Update browser history
+        this.lastUid = this.maxUid = newUid()
+        window.history.pushState({
+          url: href,
+          title: options.title,
+          uid: this.maxUid
+        },
+          options.title,
+          href)
+      }
+
+      this.forEachSelectors(function(el) {
+        this.parseDOM(el)
+      }, this)
+
+      // Fire Events
+      trigger(document,"pjax:complete pjax:success", options)
+
+      options.analytics()
+
+      // Scroll page to top on new page load
+      if (options.scrollTo !== false) {
+        if (options.scrollTo.length > 1) {
+          window.scrollTo(options.scrollTo[0], options.scrollTo[1])
+        }
+        else {
+          window.scrollTo(0, options.scrollTo)
+        }
+      }
+    }.bind(this))
+  }
+}
+
+Pjax.isSupported = __webpack_require__(54);
+
+//arguably could do `if( require("./lib/is-supported.js")()) {` but that might be a little to simple
+if (Pjax.isSupported()) {
+  module.exports = Pjax
+}
+// if there isn’t required browser functions, returning stupid api
+else {
+  var stupidPjax = function() {}
+  for (var key in Pjax.prototype) {
+    if (Pjax.prototype.hasOwnProperty(key) && typeof Pjax.prototype[key] === "function") {
+      stupidPjax[key] = stupidPjax
+    }
+  }
+
+  module.exports = stupidPjax
+}
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(0)
+var evalScript = __webpack_require__(38)
+// Finds and executes scripts (used for newly added elements)
+// Needed since innerHTML does not run scripts
+module.exports = function(el) {
+  // console.log("going to execute scripts for ", el)
+  forEachEls(el.querySelectorAll("script"), function(script) {
+    if (!script.type || script.type.toLowerCase() === "text/javascript") {
+      if (script.parentNode) {
+        script.parentNode.removeChild(script)
+      }
+      evalScript(script)
+    }
+  })
+}
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports) {
+
+module.exports = function(el) {
+  // console.log("going to execute script", el)
+
+  var code = (el.text || el.textContent || el.innerHTML || "")
+  var head = document.querySelector("head") || document.documentElement
+  var script = document.createElement("script")
+
+  if (code.match("document.write")) {
+    if (console && console.log) {
+      console.log("Script contains document.write. Can’t be executed correctly. Code skipped ", el)
+    }
+    return false
+  }
+
+  script.type = "text/javascript"
+  try {
+    script.appendChild(document.createTextNode(code))
+  }
+  catch (e) {
+    // old IEs have funky script nodes
+    script.text = code
+  }
+
+  // execute
+  head.insertBefore(script, head.firstChild)
+  head.removeChild(script) // avoid pollution
+
+  return true
+}
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports) {
+
+module.exports = (function() {
+  var counter = 0
+  return function() {
+    var id = ("pjax" + (new Date().getTime())) + "_" + counter
+    counter++
+    return id
+  }
+})()
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(0)
+
+module.exports = function(els, events, opts) {
+  events = (typeof events === "string" ? events.split(" ") : events)
+
+  events.forEach(function(e) {
+    var event // = new CustomEvent(e) // doesn't everywhere yet
+    event = document.createEvent("HTMLEvents")
+    event.initEvent(e, true, true)
+    event.eventName = e
+    if (opts) {
+      Object.keys(opts).forEach(function(key) {
+        event[key] = opts[key]
+      })
+    }
+
+    forEachEls(els, function(el) {
+      var domFix = false
+      if (!el.parentNode && el !== document && el !== window) {
+        // THANKS YOU IE (9/10//11 concerned)
+        // dispatchEvent doesn't work if element is not in the dom
+        domFix = true
+        document.body.appendChild(el)
+      }
+      el.dispatchEvent(event)
+      if (domFix) {
+        el.parentNode.removeChild(el)
+      }
+    })
+  })
+}
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports) {
+
+/* global _gaq: true, ga: true */
+
+module.exports = function(options){
+  this.options = options
+  this.options.elements = this.options.elements || "a[href], form[action]"
+  this.options.selectors = this.options.selectors || ["title", ".js-Pjax"]
+  this.options.switches = this.options.switches || {}
+  this.options.switchesOptions = this.options.switchesOptions || {}
+  this.options.history = this.options.history || true
+  this.options.analytics = this.options.analytics || function() {
+    // options.backward or options.foward can be true or undefined
+    // by default, we do track back/foward hit
+    // https://productforums.google.com/forum/#!topic/analytics/WVwMDjLhXYk
+    if (window._gaq) {
+      _gaq.push(["_trackPageview"])
+    }
+    if (window.ga) {
+      ga("send", "pageview", {page: location.pathname, title: document.title})
+    }
+  }
+  this.options.scrollTo = (typeof this.options.scrollTo === 'undefined') ? 0 : this.options.scrollTo;
+  this.options.cacheBust = (typeof this.options.cacheBust === 'undefined') ? true : this.options.cacheBust
+  this.options.debug = this.options.debug || false
+
+  // we can’t replace body.outerHTML or head.outerHTML
+  // it create a bug where new body or new head are created in the dom
+  // if you set head.outerHTML, a new body tag is appended, so the dom get 2 body
+  // & it break the switchFallback which replace head & body
+  if (!this.options.switches.head) {
+    this.options.switches.head = this.switchElementsAlt
+  }
+  if (!this.options.switches.body) {
+    this.options.switches.body = this.switchElementsAlt
+  }
+  if (typeof options.analytics !== "function") {
+    options.analytics = function() {}
+  }
+}
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+  if (this.options.debug && console) {
+    if (typeof console.log === "function") {
+      console.log.apply(console, arguments);
+    }
+    // ie is weird
+    else if (console.log) {
+      console.log(arguments);
+    }
+  }
+}
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports) {
+
+module.exports = function(el) {
+  return el.querySelectorAll(this.options.elements)
+}
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(0)
+
+var parseElement = __webpack_require__(45)
+
+module.exports = function(el) {
+  forEachEls(this.getElements(el), parseElement, this)
+}
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports) {
+
+module.exports = function(el) {
+  switch (el.tagName.toLowerCase()) {
+  case "a":
+    // only attach link if el does not already have link attached
+    if (!el.hasAttribute('data-pjax-click-state')) {
+      this.attachLink(el)
+    }
+    break
+
+  case "form":
+    throw "Pjax doesnt support <form> yet."
+    break
+
+  default:
+    throw "Pjax can only be applied on <a> or <form> submit"
+  }
+}
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports) {
+
+module.exports = function(el) {
+  this.parseDOM(el || document)
+}
+
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+  window.location.reload()
+}
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(49)
+
+var on = __webpack_require__(7)
+var clone = __webpack_require__(9)
+
+var attrClick = "data-pjax-click-state"
+var attrKey = "data-pjax-keyup-state"
+
+var linkAction = function(el, event) {
+  // Don’t break browser special behavior on links (like page in new window)
+  if (event.which > 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+    el.setAttribute(attrClick, "modifier")
+    return
+  }
+
+  // we do test on href now to prevent unexpected behavior if for some reason
+  // user have href that can be dynamically updated
+
+  // Ignore external links.
+  if (el.protocol !== window.location.protocol || el.host !== window.location.host) {
+    el.setAttribute(attrClick, "external")
+    return
+  }
+
+  // Ignore click if we are on an anchor on the same page
+  if (el.pathname === window.location.pathname && el.hash.length > 0) {
+    el.setAttribute(attrClick, "anchor-present")
+    return
+  }
+
+  // Ignore anchors on the same page (keep native behavior)
+  if (el.hash && el.href.replace(el.hash, "") === window.location.href.replace(location.hash, "")) {
+    el.setAttribute(attrClick, "anchor")
+    return
+  }
+
+  // Ignore empty anchor "foo.html#"
+  if (el.href === window.location.href.split("#")[0] + "#") {
+    el.setAttribute(attrClick, "anchor-empty")
+    return
+  }
+
+  event.preventDefault()
+
+  // don’t do "nothing" if user try to reload the page by clicking the same link twice
+  if (
+    this.options.currentUrlFullReload &&
+    el.href === window.location.href.split("#")[0]
+  ) {
+    el.setAttribute(attrClick, "reload")
+    this.reload()
+    return
+  }
+
+  el.setAttribute(attrClick, "load")
+  this.loadUrl(el.href, clone(this.options))
+}
+
+var isDefaultPrevented = function(event) {
+  return event.defaultPrevented || event.returnValue === false;
+}
+
+module.exports = function(el) {
+  var that = this
+
+  on(el, "click", function(event) {
+    if (isDefaultPrevented(event)) {
+      return
+    }
+
+    linkAction.call(that, el, event)
+  })
+
+  on(el, "keyup", function(event) {
+    if (isDefaultPrevented(event)) {
+      return
+    }
+
+    // Don’t break browser special behavior on links (like page in new window)
+    if (event.which > 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      el.setAttribute(attrKey, "modifier")
+      return
+    }
+
+    if (event.keyCode == 13) {
+      linkAction.call(that, el, event)
+    }
+  }.bind(this))
+}
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports) {
+
+if (!Function.prototype.bind) {
+  Function.prototype.bind = function(oThis) {
+    if (typeof this !== "function") {
+      // closest thing possible to the ECMAScript 5 internal IsCallable function
+      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable")
+    }
+
+    var aArgs = Array.prototype.slice.call(arguments, 1)
+    var that = this
+    var Fnoop = function() {}
+    var fBound = function() {
+      return that.apply(this instanceof Fnoop && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)))
+    }
+
+    Fnoop.prototype = this.prototype
+    fBound.prototype = new Fnoop()
+
+    return fBound
+  }
+}
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(0)
+
+module.exports = function(selectors, cb, context, DOMcontext) {
+  DOMcontext = DOMcontext || document
+  selectors.forEach(function(selector) {
+    forEachEls(DOMcontext.querySelectorAll(selector), cb, context)
+  })
+}
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var forEachEls = __webpack_require__(0)
+
+var defaultSwitches = __webpack_require__(52)
+
+module.exports = function(switches, switchesOptions, selectors, fromEl, toEl, options) {
+  selectors.forEach(function(selector) {
+    var newEls = fromEl.querySelectorAll(selector)
+    var oldEls = toEl.querySelectorAll(selector)
+    if (this.log) {
+      this.log("Pjax switch", selector, newEls, oldEls)
+    }
+    if (newEls.length !== oldEls.length) {
+      // forEachEls(newEls, function(el) {
+      //   this.log("newEl", el, el.outerHTML)
+      // }, this)
+      // forEachEls(oldEls, function(el) {
+      //   this.log("oldEl", el, el.outerHTML)
+      // }, this)
+      throw "DOM doesn’t look the same on new loaded page: ’" + selector + "’ - new " + newEls.length + ", old " + oldEls.length
+    }
+
+    forEachEls(newEls, function(newEl, i) {
+      var oldEl = oldEls[i]
+      if (this.log) {
+        this.log("newEl", newEl, "oldEl", oldEl)
+      }
+      if (switches[selector]) {
+        switches[selector].bind(this)(oldEl, newEl, options, switchesOptions[selector])
+      }
+      else {
+        defaultSwitches.outerHTML.bind(this)(oldEl, newEl, options)
+      }
+    }, this)
+  }, this)
+}
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var on = __webpack_require__(7)
+// var off = require("./lib/events/on.js")
+// var trigger = require("./lib/events/trigger.js")
+
+
+module.exports = {
+  outerHTML: function(oldEl, newEl) {
+    oldEl.outerHTML = newEl.outerHTML
+    this.onSwitch()
+  },
+
+  innerHTML: function(oldEl, newEl) {
+    oldEl.innerHTML = newEl.innerHTML
+    oldEl.className = newEl.className
+    this.onSwitch()
+  },
+
+  sideBySide: function(oldEl, newEl, options, switchOptions) {
+    var forEach = Array.prototype.forEach
+    var elsToRemove = []
+    var elsToAdd = []
+    var fragToAppend = document.createDocumentFragment()
+    // height transition are shitty on safari
+    // so commented for now (until I found something ?)
+    // var relevantHeight = 0
+    var animationEventNames = "animationend webkitAnimationEnd MSAnimationEnd oanimationend"
+    var animatedElsNumber = 0
+    var sexyAnimationEnd = function(e) {
+          if (e.target != e.currentTarget) {
+            // end triggered by an animation on a child
+            return
+          }
+
+          animatedElsNumber--
+          if (animatedElsNumber <= 0 && elsToRemove) {
+            elsToRemove.forEach(function(el) {
+              // browsing quickly can make the el
+              // already removed by last page update ?
+              if (el.parentNode) {
+                el.parentNode.removeChild(el)
+              }
+            })
+
+            elsToAdd.forEach(function(el) {
+              el.className = el.className.replace(el.getAttribute("data-pjax-classes"), "")
+              el.removeAttribute("data-pjax-classes")
+              // Pjax.off(el, animationEventNames, sexyAnimationEnd, true)
+            })
+
+            elsToAdd = null // free memory
+            elsToRemove = null // free memory
+
+            // assume the height is now useless (avoid bug since there is overflow hidden on the parent)
+            // oldEl.style.height = "auto"
+
+            // this is to trigger some repaint (example: picturefill)
+            this.onSwitch()
+            // Pjax.trigger(window, "scroll")
+          }
+        }.bind(this)
+
+    // Force height to be able to trigger css animation
+    // here we get the relevant height
+    // oldEl.parentNode.appendChild(newEl)
+    // relevantHeight = newEl.getBoundingClientRect().height
+    // oldEl.parentNode.removeChild(newEl)
+    // oldEl.style.height = oldEl.getBoundingClientRect().height + "px"
+
+    switchOptions = switchOptions || {}
+
+    forEach.call(oldEl.childNodes, function(el) {
+      elsToRemove.push(el)
+      if (el.classList && !el.classList.contains("js-Pjax-remove")) {
+        // for fast switch, clean element that just have been added, & not cleaned yet.
+        if (el.hasAttribute("data-pjax-classes")) {
+          el.className = el.className.replace(el.getAttribute("data-pjax-classes"), "")
+          el.removeAttribute("data-pjax-classes")
+        }
+        el.classList.add("js-Pjax-remove")
+        if (switchOptions.callbacks && switchOptions.callbacks.removeElement) {
+          switchOptions.callbacks.removeElement(el)
+        }
+        if (switchOptions.classNames) {
+          el.className += " " + switchOptions.classNames.remove + " " + (options.backward ? switchOptions.classNames.backward : switchOptions.classNames.forward)
+        }
+        animatedElsNumber++
+        on(el, animationEventNames, sexyAnimationEnd, true)
+      }
+    })
+
+    forEach.call(newEl.childNodes, function(el) {
+      if (el.classList) {
+        var addClasses = ""
+        if (switchOptions.classNames) {
+          addClasses = " js-Pjax-add " + switchOptions.classNames.add + " " + (options.backward ? switchOptions.classNames.forward : switchOptions.classNames.backward)
+        }
+        if (switchOptions.callbacks && switchOptions.callbacks.addElement) {
+          switchOptions.callbacks.addElement(el)
+        }
+        el.className += addClasses
+        el.setAttribute("data-pjax-classes", addClasses)
+        elsToAdd.push(el)
+        fragToAppend.appendChild(el)
+        animatedElsNumber++
+        on(el, animationEventNames, sexyAnimationEnd, true)
+      }
+    })
+
+    // pass all className of the parent
+    oldEl.className = newEl.className
+    oldEl.appendChild(fragToAppend)
+
+    // oldEl.style.height = relevantHeight + "px"
+  }
+}
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports) {
+
+module.exports = function(location, callback) {
+  var request = new XMLHttpRequest()
+
+  request.onreadystatechange = function() {
+    if (request.readyState === 4) {
+      if (request.status === 200) {
+        callback(request.responseText, request)
+      }
+      else {
+        callback(null, request)
+      }
+    }
+  }
+
+  // Add a timestamp as part of the query string if cache busting is enabled
+  if (this.options.cacheBust) {
+    location += (!/[?&]/.test(location) ? "?" : "&") + new Date().getTime()
+  }
+
+  request.open("GET", location, true)
+  request.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+  request.send(null)
+  return request
+}
+
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+  // Borrowed wholesale from https://github.com/defunkt/jquery-pjax
+  return window.history &&
+    window.history.pushState &&
+    window.history.replaceState &&
+    // pushState isn’t reliable on iOS until 5.
+    !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]\D|WebApps\/.+CFNetwork)/)
+}
+
+
+/***/ }),
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(34);
+var content = __webpack_require__(56);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -29228,7 +30097,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(35)(content, options);
+var update = __webpack_require__(57)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -29245,10 +30114,10 @@ if(false) {
 }
 
 /***/ }),
-/* 34 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(2)(undefined);
+exports = module.exports = __webpack_require__(3)(undefined);
 // imports
 
 
@@ -29259,7 +30128,7 @@ exports.push([module.i, ".ls-flex, .ls-flex-row, .ls-flex-column {\n  display: -
 
 
 /***/ }),
-/* 35 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -29305,7 +30174,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(36);
+var	fixUrls = __webpack_require__(58);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -29618,7 +30487,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 36 */
+/* 58 */
 /***/ (function(module, exports) {
 
 
@@ -29710,875 +30579,6 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports) {
-
-/* global HTMLCollection: true */
-
-module.exports = function(els, fn, context) {
-  if (els instanceof HTMLCollection || els instanceof NodeList || els instanceof Array) {
-    return Array.prototype.forEach.call(els, fn, context)
-  }
-  // assume simple dom element
-  return fn.call(context, els)
-}
-
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var forEachEls = __webpack_require__(37)
-
-module.exports = function(els, events, listener, useCapture) {
-  events = (typeof events === "string" ? events.split(" ") : events)
-
-  events.forEach(function(e) {
-    forEachEls(els, function(el) {
-      el.addEventListener(e, listener, useCapture)
-    })
-  })
-}
-
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports) {
-
-module.exports = function(obj) {
-  if (null === obj || "object" != typeof obj) {
-    return obj
-  }
-  var copy = obj.constructor()
-  for (var attr in obj) {
-    if (obj.hasOwnProperty(attr)) {
-      copy[attr] = obj[attr]
-    }
-  }
-  return copy
-}
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var clone = __webpack_require__(39)
-var executeScripts = __webpack_require__(41)
-
-var forEachEls = __webpack_require__(37)
-
-var newUid = __webpack_require__(43)
-
-var on = __webpack_require__(38)
-// var off = require("./lib/events/on.js")
-var trigger = __webpack_require__(44)
-
-
-var Pjax = function(options) {
-    this.firstrun = true
-
-    var parseOptions = __webpack_require__(45);
-    parseOptions.apply(this,[options])
-    this.log("Pjax options", this.options)
-
-    this.maxUid = this.lastUid = newUid()
-
-    this.parseDOM(document)
-
-    on(window, "popstate", function(st) {
-      if (st.state) {
-        var opt = clone(this.options)
-        opt.url = st.state.url
-        opt.title = st.state.title
-        opt.history = false
-
-        if (st.state.uid < this.lastUid) {
-          opt.backward = true
-        }
-        else {
-          opt.forward = true
-        }
-        this.lastUid = st.state.uid
-
-        // @todo implement history cache here, based on uid
-        this.loadUrl(st.state.url, opt)
-      }
-    }.bind(this))
-  }
-
-Pjax.prototype = {
-  log: __webpack_require__(46),
-
-  getElements: __webpack_require__(47),
-
-  parseDOM: __webpack_require__(48),
-
-  refresh: __webpack_require__(50),
-
-  reload: __webpack_require__(51),
-
-  attachLink: __webpack_require__(52),
-
-  forEachSelectors: function(cb, context, DOMcontext) {
-    return __webpack_require__(54).bind(this)(this.options.selectors, cb, context, DOMcontext)
-  },
-
-  switchSelectors: function(selectors, fromEl, toEl, options) {
-    return __webpack_require__(55).bind(this)(this.options.switches, this.options.switchesOptions, selectors, fromEl, toEl, options)
-  },
-
-  // too much problem with the code below
-  // + it’s too dangerous
-//   switchFallback: function(fromEl, toEl) {
-//     this.switchSelectors(["head", "body"], fromEl, toEl)
-//     // execute script when DOM is like it should be
-//     Pjax.executeScripts(document.querySelector("head"))
-//     Pjax.executeScripts(document.querySelector("body"))
-//   }
-
-  latestChance: function(href) {
-    window.location = href
-  },
-
-  onSwitch: function() {
-    trigger(window, "resize scroll")
-  },
-
-  loadContent: function(html, options) {
-    var tmpEl = document.implementation.createHTMLDocument()
-
-    // parse HTML attributes to copy them
-    // since we are forced to use documentElement.innerHTML (outerHTML can't be used for <html>)
-    var htmlRegex = /<html[^>]+>/gi
-    var htmlAttribsRegex = /\s?[a-z:]+(?:\=(?:\'|\")[^\'\">]+(?:\'|\"))*/gi
-    var matches = html.match(htmlRegex)
-    if (matches && matches.length) {
-      matches = matches[0].match(htmlAttribsRegex)
-      if (matches.length) {
-        matches.shift()
-        matches.forEach(function(htmlAttrib) {
-          var attr = htmlAttrib.trim().split("=")
-          if (attr.length === 1) {
-            tmpEl.documentElement.setAttribute(attr[0], true)
-          }
-          else {
-            tmpEl.documentElement.setAttribute(attr[0], attr[1].slice(1, -1))
-          }
-        })
-      }
-    }
-
-    tmpEl.documentElement.innerHTML = html
-    this.log("load content", tmpEl.documentElement.attributes, tmpEl.documentElement.innerHTML.length)
-
-    // Clear out any focused controls before inserting new page contents.
-    // we clear focus on non form elements
-    if (document.activeElement && !document.activeElement.value) {
-      try {
-        document.activeElement.blur()
-      } catch (e) { }
-    }
-
-    // try {
-    this.switchSelectors(this.options.selectors, tmpEl, document, options)
-
-    // FF bug: Won’t autofocus fields that are inserted via JS.
-    // This behavior is incorrect. So if theres no current focus, autofocus
-    // the last field.
-    //
-    // http://www.w3.org/html/wg/drafts/html/master/forms.html
-    var autofocusEl = Array.prototype.slice.call(document.querySelectorAll("[autofocus]")).pop()
-    if (autofocusEl && document.activeElement !== autofocusEl) {
-      autofocusEl.focus();
-    }
-
-    // execute scripts when DOM have been completely updated
-    this.options.selectors.forEach(function(selector) {
-      forEachEls(document.querySelectorAll(selector), function(el) {
-        executeScripts(el)
-      })
-    })
-    // }
-    // catch(e) {
-    //   if (this.options.debug) {
-    //     this.log("Pjax switch fail: ", e)
-    //   }
-    //   this.switchFallback(tmpEl, document)
-    // }
-  },
-
-  doRequest: __webpack_require__(57),
-
-  loadUrl: function(href, options) {
-    this.log("load href", href, options)
-
-    trigger(document, "pjax:send", options);
-
-    // Do the request
-    this.doRequest(href, function(html) {
-      // Fail if unable to load HTML via AJAX
-      if (html === false) {
-        trigger(document,"pjax:complete pjax:error", options)
-
-        return
-      }
-
-      // Clear out any focused controls before inserting new page contents.
-      document.activeElement.blur()
-
-      try {
-        this.loadContent(html, options)
-      }
-      catch (e) {
-        if (!this.options.debug) {
-          if (console && console.error) {
-            console.error("Pjax switch fail: ", e)
-          }
-          this.latestChance(href)
-          return
-        }
-        else {
-          throw e
-        }
-      }
-
-      if (options.history) {
-        if (this.firstrun) {
-          this.lastUid = this.maxUid = newUid()
-          this.firstrun = false
-          window.history.replaceState({
-            url: window.location.href,
-            title: document.title,
-            uid: this.maxUid
-          },
-          document.title)
-        }
-
-        // Update browser history
-        this.lastUid = this.maxUid = newUid()
-        window.history.pushState({
-          url: href,
-          title: options.title,
-          uid: this.maxUid
-        },
-          options.title,
-          href)
-      }
-
-      this.forEachSelectors(function(el) {
-        this.parseDOM(el)
-      }, this)
-
-      // Fire Events
-      trigger(document,"pjax:complete pjax:success", options)
-
-      options.analytics()
-
-      // Scroll page to top on new page load
-      if (options.scrollTo !== false) {
-        if (options.scrollTo.length > 1) {
-          window.scrollTo(options.scrollTo[0], options.scrollTo[1])
-        }
-        else {
-          window.scrollTo(0, options.scrollTo)
-        }
-      }
-    }.bind(this))
-  }
-}
-
-Pjax.isSupported = __webpack_require__(58);
-
-//arguably could do `if( require("./lib/is-supported.js")()) {` but that might be a little to simple
-if (Pjax.isSupported()) {
-  module.exports = Pjax
-}
-// if there isn’t required browser functions, returning stupid api
-else {
-  var stupidPjax = function() {}
-  for (var key in Pjax.prototype) {
-    if (Pjax.prototype.hasOwnProperty(key) && typeof Pjax.prototype[key] === "function") {
-      stupidPjax[key] = stupidPjax
-    }
-  }
-
-  module.exports = stupidPjax
-}
-
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var forEachEls = __webpack_require__(37)
-var evalScript = __webpack_require__(42)
-// Finds and executes scripts (used for newly added elements)
-// Needed since innerHTML does not run scripts
-module.exports = function(el) {
-  // console.log("going to execute scripts for ", el)
-  forEachEls(el.querySelectorAll("script"), function(script) {
-    if (!script.type || script.type.toLowerCase() === "text/javascript") {
-      if (script.parentNode) {
-        script.parentNode.removeChild(script)
-      }
-      evalScript(script)
-    }
-  })
-}
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-module.exports = function(el) {
-  // console.log("going to execute script", el)
-
-  var code = (el.text || el.textContent || el.innerHTML || "")
-  var head = document.querySelector("head") || document.documentElement
-  var script = document.createElement("script")
-
-  if (code.match("document.write")) {
-    if (console && console.log) {
-      console.log("Script contains document.write. Can’t be executed correctly. Code skipped ", el)
-    }
-    return false
-  }
-
-  script.type = "text/javascript"
-  try {
-    script.appendChild(document.createTextNode(code))
-  }
-  catch (e) {
-    // old IEs have funky script nodes
-    script.text = code
-  }
-
-  // execute
-  head.insertBefore(script, head.firstChild)
-  head.removeChild(script) // avoid pollution
-
-  return true
-}
-
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports) {
-
-module.exports = (function() {
-  var counter = 0
-  return function() {
-    var id = ("pjax" + (new Date().getTime())) + "_" + counter
-    counter++
-    return id
-  }
-})()
-
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var forEachEls = __webpack_require__(37)
-
-module.exports = function(els, events, opts) {
-  events = (typeof events === "string" ? events.split(" ") : events)
-
-  events.forEach(function(e) {
-    var event // = new CustomEvent(e) // doesn't everywhere yet
-    event = document.createEvent("HTMLEvents")
-    event.initEvent(e, true, true)
-    event.eventName = e
-    if (opts) {
-      Object.keys(opts).forEach(function(key) {
-        event[key] = opts[key]
-      })
-    }
-
-    forEachEls(els, function(el) {
-      var domFix = false
-      if (!el.parentNode && el !== document && el !== window) {
-        // THANKS YOU IE (9/10//11 concerned)
-        // dispatchEvent doesn't work if element is not in the dom
-        domFix = true
-        document.body.appendChild(el)
-      }
-      el.dispatchEvent(event)
-      if (domFix) {
-        el.parentNode.removeChild(el)
-      }
-    })
-  })
-}
-
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports) {
-
-/* global _gaq: true, ga: true */
-
-module.exports = function(options){
-  this.options = options
-  this.options.elements = this.options.elements || "a[href], form[action]"
-  this.options.selectors = this.options.selectors || ["title", ".js-Pjax"]
-  this.options.switches = this.options.switches || {}
-  this.options.switchesOptions = this.options.switchesOptions || {}
-  this.options.history = this.options.history || true
-  this.options.analytics = this.options.analytics || function() {
-    // options.backward or options.foward can be true or undefined
-    // by default, we do track back/foward hit
-    // https://productforums.google.com/forum/#!topic/analytics/WVwMDjLhXYk
-    if (window._gaq) {
-      _gaq.push(["_trackPageview"])
-    }
-    if (window.ga) {
-      ga("send", "pageview", {page: location.pathname, title: document.title})
-    }
-  }
-  this.options.scrollTo = (typeof this.options.scrollTo === 'undefined') ? 0 : this.options.scrollTo;
-  this.options.cacheBust = (typeof this.options.cacheBust === 'undefined') ? true : this.options.cacheBust
-  this.options.debug = this.options.debug || false
-
-  // we can’t replace body.outerHTML or head.outerHTML
-  // it create a bug where new body or new head are created in the dom
-  // if you set head.outerHTML, a new body tag is appended, so the dom get 2 body
-  // & it break the switchFallback which replace head & body
-  if (!this.options.switches.head) {
-    this.options.switches.head = this.switchElementsAlt
-  }
-  if (!this.options.switches.body) {
-    this.options.switches.body = this.switchElementsAlt
-  }
-  if (typeof options.analytics !== "function") {
-    options.analytics = function() {}
-  }
-}
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports) {
-
-module.exports = function() {
-  if (this.options.debug && console) {
-    if (typeof console.log === "function") {
-      console.log.apply(console, arguments);
-    }
-    // ie is weird
-    else if (console.log) {
-      console.log(arguments);
-    }
-  }
-}
-
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports) {
-
-module.exports = function(el) {
-  return el.querySelectorAll(this.options.elements)
-}
-
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var forEachEls = __webpack_require__(37)
-
-var parseElement = __webpack_require__(49)
-
-module.exports = function(el) {
-  forEachEls(this.getElements(el), parseElement, this)
-}
-
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports) {
-
-module.exports = function(el) {
-  switch (el.tagName.toLowerCase()) {
-  case "a":
-    // only attach link if el does not already have link attached
-    if (!el.hasAttribute('data-pjax-click-state')) {
-      this.attachLink(el)
-    }
-    break
-
-  case "form":
-    throw "Pjax doesnt support <form> yet."
-    break
-
-  default:
-    throw "Pjax can only be applied on <a> or <form> submit"
-  }
-}
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports) {
-
-module.exports = function(el) {
-  this.parseDOM(el || document)
-}
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-module.exports = function() {
-  window.location.reload()
-}
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(53)
-
-var on = __webpack_require__(38)
-var clone = __webpack_require__(39)
-
-var attrClick = "data-pjax-click-state"
-var attrKey = "data-pjax-keyup-state"
-
-var linkAction = function(el, event) {
-  // Don’t break browser special behavior on links (like page in new window)
-  if (event.which > 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-    el.setAttribute(attrClick, "modifier")
-    return
-  }
-
-  // we do test on href now to prevent unexpected behavior if for some reason
-  // user have href that can be dynamically updated
-
-  // Ignore external links.
-  if (el.protocol !== window.location.protocol || el.host !== window.location.host) {
-    el.setAttribute(attrClick, "external")
-    return
-  }
-
-  // Ignore click if we are on an anchor on the same page
-  if (el.pathname === window.location.pathname && el.hash.length > 0) {
-    el.setAttribute(attrClick, "anchor-present")
-    return
-  }
-
-  // Ignore anchors on the same page (keep native behavior)
-  if (el.hash && el.href.replace(el.hash, "") === window.location.href.replace(location.hash, "")) {
-    el.setAttribute(attrClick, "anchor")
-    return
-  }
-
-  // Ignore empty anchor "foo.html#"
-  if (el.href === window.location.href.split("#")[0] + "#") {
-    el.setAttribute(attrClick, "anchor-empty")
-    return
-  }
-
-  event.preventDefault()
-
-  // don’t do "nothing" if user try to reload the page by clicking the same link twice
-  if (
-    this.options.currentUrlFullReload &&
-    el.href === window.location.href.split("#")[0]
-  ) {
-    el.setAttribute(attrClick, "reload")
-    this.reload()
-    return
-  }
-
-  el.setAttribute(attrClick, "load")
-  this.loadUrl(el.href, clone(this.options))
-}
-
-var isDefaultPrevented = function(event) {
-  return event.defaultPrevented || event.returnValue === false;
-}
-
-module.exports = function(el) {
-  var that = this
-
-  on(el, "click", function(event) {
-    if (isDefaultPrevented(event)) {
-      return
-    }
-
-    linkAction.call(that, el, event)
-  })
-
-  on(el, "keyup", function(event) {
-    if (isDefaultPrevented(event)) {
-      return
-    }
-
-    // Don’t break browser special behavior on links (like page in new window)
-    if (event.which > 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-      el.setAttribute(attrKey, "modifier")
-      return
-    }
-
-    if (event.keyCode == 13) {
-      linkAction.call(that, el, event)
-    }
-  }.bind(this))
-}
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports) {
-
-if (!Function.prototype.bind) {
-  Function.prototype.bind = function(oThis) {
-    if (typeof this !== "function") {
-      // closest thing possible to the ECMAScript 5 internal IsCallable function
-      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable")
-    }
-
-    var aArgs = Array.prototype.slice.call(arguments, 1)
-    var that = this
-    var Fnoop = function() {}
-    var fBound = function() {
-      return that.apply(this instanceof Fnoop && oThis ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)))
-    }
-
-    Fnoop.prototype = this.prototype
-    fBound.prototype = new Fnoop()
-
-    return fBound
-  }
-}
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var forEachEls = __webpack_require__(37)
-
-module.exports = function(selectors, cb, context, DOMcontext) {
-  DOMcontext = DOMcontext || document
-  selectors.forEach(function(selector) {
-    forEachEls(DOMcontext.querySelectorAll(selector), cb, context)
-  })
-}
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var forEachEls = __webpack_require__(37)
-
-var defaultSwitches = __webpack_require__(56)
-
-module.exports = function(switches, switchesOptions, selectors, fromEl, toEl, options) {
-  selectors.forEach(function(selector) {
-    var newEls = fromEl.querySelectorAll(selector)
-    var oldEls = toEl.querySelectorAll(selector)
-    if (this.log) {
-      this.log("Pjax switch", selector, newEls, oldEls)
-    }
-    if (newEls.length !== oldEls.length) {
-      // forEachEls(newEls, function(el) {
-      //   this.log("newEl", el, el.outerHTML)
-      // }, this)
-      // forEachEls(oldEls, function(el) {
-      //   this.log("oldEl", el, el.outerHTML)
-      // }, this)
-      throw "DOM doesn’t look the same on new loaded page: ’" + selector + "’ - new " + newEls.length + ", old " + oldEls.length
-    }
-
-    forEachEls(newEls, function(newEl, i) {
-      var oldEl = oldEls[i]
-      if (this.log) {
-        this.log("newEl", newEl, "oldEl", oldEl)
-      }
-      if (switches[selector]) {
-        switches[selector].bind(this)(oldEl, newEl, options, switchesOptions[selector])
-      }
-      else {
-        defaultSwitches.outerHTML.bind(this)(oldEl, newEl, options)
-      }
-    }, this)
-  }, this)
-}
-
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var on = __webpack_require__(38)
-// var off = require("./lib/events/on.js")
-// var trigger = require("./lib/events/trigger.js")
-
-
-module.exports = {
-  outerHTML: function(oldEl, newEl) {
-    oldEl.outerHTML = newEl.outerHTML
-    this.onSwitch()
-  },
-
-  innerHTML: function(oldEl, newEl) {
-    oldEl.innerHTML = newEl.innerHTML
-    oldEl.className = newEl.className
-    this.onSwitch()
-  },
-
-  sideBySide: function(oldEl, newEl, options, switchOptions) {
-    var forEach = Array.prototype.forEach
-    var elsToRemove = []
-    var elsToAdd = []
-    var fragToAppend = document.createDocumentFragment()
-    // height transition are shitty on safari
-    // so commented for now (until I found something ?)
-    // var relevantHeight = 0
-    var animationEventNames = "animationend webkitAnimationEnd MSAnimationEnd oanimationend"
-    var animatedElsNumber = 0
-    var sexyAnimationEnd = function(e) {
-          if (e.target != e.currentTarget) {
-            // end triggered by an animation on a child
-            return
-          }
-
-          animatedElsNumber--
-          if (animatedElsNumber <= 0 && elsToRemove) {
-            elsToRemove.forEach(function(el) {
-              // browsing quickly can make the el
-              // already removed by last page update ?
-              if (el.parentNode) {
-                el.parentNode.removeChild(el)
-              }
-            })
-
-            elsToAdd.forEach(function(el) {
-              el.className = el.className.replace(el.getAttribute("data-pjax-classes"), "")
-              el.removeAttribute("data-pjax-classes")
-              // Pjax.off(el, animationEventNames, sexyAnimationEnd, true)
-            })
-
-            elsToAdd = null // free memory
-            elsToRemove = null // free memory
-
-            // assume the height is now useless (avoid bug since there is overflow hidden on the parent)
-            // oldEl.style.height = "auto"
-
-            // this is to trigger some repaint (example: picturefill)
-            this.onSwitch()
-            // Pjax.trigger(window, "scroll")
-          }
-        }.bind(this)
-
-    // Force height to be able to trigger css animation
-    // here we get the relevant height
-    // oldEl.parentNode.appendChild(newEl)
-    // relevantHeight = newEl.getBoundingClientRect().height
-    // oldEl.parentNode.removeChild(newEl)
-    // oldEl.style.height = oldEl.getBoundingClientRect().height + "px"
-
-    switchOptions = switchOptions || {}
-
-    forEach.call(oldEl.childNodes, function(el) {
-      elsToRemove.push(el)
-      if (el.classList && !el.classList.contains("js-Pjax-remove")) {
-        // for fast switch, clean element that just have been added, & not cleaned yet.
-        if (el.hasAttribute("data-pjax-classes")) {
-          el.className = el.className.replace(el.getAttribute("data-pjax-classes"), "")
-          el.removeAttribute("data-pjax-classes")
-        }
-        el.classList.add("js-Pjax-remove")
-        if (switchOptions.callbacks && switchOptions.callbacks.removeElement) {
-          switchOptions.callbacks.removeElement(el)
-        }
-        if (switchOptions.classNames) {
-          el.className += " " + switchOptions.classNames.remove + " " + (options.backward ? switchOptions.classNames.backward : switchOptions.classNames.forward)
-        }
-        animatedElsNumber++
-        on(el, animationEventNames, sexyAnimationEnd, true)
-      }
-    })
-
-    forEach.call(newEl.childNodes, function(el) {
-      if (el.classList) {
-        var addClasses = ""
-        if (switchOptions.classNames) {
-          addClasses = " js-Pjax-add " + switchOptions.classNames.add + " " + (options.backward ? switchOptions.classNames.forward : switchOptions.classNames.backward)
-        }
-        if (switchOptions.callbacks && switchOptions.callbacks.addElement) {
-          switchOptions.callbacks.addElement(el)
-        }
-        el.className += addClasses
-        el.setAttribute("data-pjax-classes", addClasses)
-        elsToAdd.push(el)
-        fragToAppend.appendChild(el)
-        animatedElsNumber++
-        on(el, animationEventNames, sexyAnimationEnd, true)
-      }
-    })
-
-    // pass all className of the parent
-    oldEl.className = newEl.className
-    oldEl.appendChild(fragToAppend)
-
-    // oldEl.style.height = relevantHeight + "px"
-  }
-}
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports) {
-
-module.exports = function(location, callback) {
-  var request = new XMLHttpRequest()
-
-  request.onreadystatechange = function() {
-    if (request.readyState === 4) {
-      if (request.status === 200) {
-        callback(request.responseText, request)
-      }
-      else {
-        callback(null, request)
-      }
-    }
-  }
-
-  // Add a timestamp as part of the query string if cache busting is enabled
-  if (this.options.cacheBust) {
-    location += (!/[?&]/.test(location) ? "?" : "&") + new Date().getTime()
-  }
-
-  request.open("GET", location, true)
-  request.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-  request.send(null)
-  return request
-}
-
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports) {
-
-module.exports = function() {
-  // Borrowed wholesale from https://github.com/defunkt/jquery-pjax
-  return window.history &&
-    window.history.pushState &&
-    window.history.replaceState &&
-    // pushState isn’t reliable on iOS until 5.
-    !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]\D|WebApps\/.+CFNetwork)/)
-}
 
 
 /***/ })

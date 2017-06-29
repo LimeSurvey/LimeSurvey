@@ -969,7 +969,6 @@ class SurveyAdmin extends Survey_Common_Action
         }
         
         $templateData = array_merge($this->_getGeneralTemplateData($iSurveyID), $templateData);
-
         $this->_registerScriptFiles();
         Yii::app()->loadHelper("admin/htmleditor");
 
@@ -1020,15 +1019,15 @@ class SurveyAdmin extends Survey_Common_Action
         //This method creates the text edition and the general settings
         $aData['panels'] = [];
 
-        $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        array_unshift($grplangs, $baselang);
         ###
         Yii::app()->loadHelper("admin/htmleditor");
 
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
-        $aTabTitles = $aTabContents=  array();
 
+        $aTabTitles = $aTabContents=  array();
+        $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        array_unshift($grplangs, $baselang);
         foreach ($grplangs as $i => $sLang)
         {
             // this one is created to get the right default texts fo each language
@@ -1633,6 +1632,39 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     private function _getTextEditData($iSurveyID, $esrow){
+        Yii::app()->loadHelper("admin/htmleditor");
+        $aTabTitles = $aTabContents=  array();
+        $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        array_unshift($grplangs, $baselang);
+
+        $aData['scripts'] = PrepareEditorScript(false, $this->getController());
+        foreach ($grplangs as $i => $sLang)
+        {
+            $aLanguageData = $this->_getGeneralTemplateData($iSurveyID);
+
+            // this one is created to get the right default texts fo each language
+            Yii::app()->loadHelper('database');
+            Yii::app()->loadHelper('surveytranslator');
+
+            $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
+            $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
+
+            if ($aSurveyLanguageSettings['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
+            {
+                $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
+            }
+
+            $aLanguageData['aSurveyLanguageSettings'] = $aSurveyLanguageSettings;
+            $aLanguageData['action'] = "surveygeneralsettings";
+            $aLanguageData['i'] = $i;
+            $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+            $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aLanguageData, true);
+        }
+
+        $aData['aTabContents'] = $aTabContents;
+        $aData['aTabTitles'] = $aTabTitles;
+        return $aData;
 
     }
 
@@ -1736,6 +1768,8 @@ class SurveyAdmin extends Survey_Common_Action
     private function _tabPanelIntegration($iSurveyID, $esrow)
     {
         $aData = array();
+        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
+        $aData['questions'] = $oResult;
         return $aData;
     }
 

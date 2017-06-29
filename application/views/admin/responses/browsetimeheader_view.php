@@ -82,7 +82,7 @@
         <tr>
             <td colspan=<?php echo $fncount + 2; ?>>
                 <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'delete')) { ?>
-                    <span id='imgDeleteMarkedResponses' title='<?php eT('Delete marked responses'); ?>' class="glyphicon glyphicon-trash"/>
+                    <span id='imgDeleteMarkedResponses' title='<?php eT('Delete marked responses'); ?>' class="fa fa-trash"/>
                 <?php } ?>
             </td>
         </tr>

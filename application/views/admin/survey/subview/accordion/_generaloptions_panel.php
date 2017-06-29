@@ -48,7 +48,7 @@
     Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
     ?>
 <!-- Container -->
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <!-- Base language -->
