@@ -53,7 +53,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title"><?php eT("Confirm"); ?></h3>
+                <div class="h3 modal-title"><?php eT("Confirm"); ?></div>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
@@ -91,7 +91,7 @@
         <div class="modal-content panel-danger">
             <div class="modal-header panel-heading">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title"><?php eT("Error"); ?></h3>
+                <div class="h3 modal-title"><?php eT("Error"); ?></div>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php eT("An error occurred."); ?></p>
@@ -110,7 +110,7 @@
         <div class="modal-content panel-success">
             <div class="modal-header panel-heading">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title"><?php eT("Success"); ?></h3>
+                <div class="h3 modal-title"><?php eT("Success"); ?></div>
             </div>
             <div class="modal-body">
                 <p class='modal-body-text'><?php /* This must be set in Javascript */ ?></p>
@@ -129,9 +129,9 @@
         <div class="modal-content">  <?php // JS add not.type as panel-type, e.g. panel-default, panel-danger ?>
             <div class="modal-header panel-heading">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">
-			<span class="sr-only">Notifications</span>
-		</h3>
+                <div class="h3 modal-title">
+			<span class="sr-only"><?php eT("Notifications"); ?></span>
+		</div>
                 <span class='notification-date text-muted'></span>
             </div>
             <div class="modal-body">
