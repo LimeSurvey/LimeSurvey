@@ -541,30 +541,23 @@ class Survey extends LSActiveRecord
         $oDefaultMenu = Surveymenu::model()->findByPk(1);
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
+        
+        $entries = [];
         $defaultMenuEntries = $oDefaultMenu->surveymenuEntries;
+        foreach($defaultMenuEntries as $menuEntry){
+            $aEntry = $menuEntry->attributes;
+            $aEntry['link'] = $aEntry['menu_link'] 
+                        ?  App()->getController()->createUrl($aEntry['menu_link'],['surveyid' => $this->sid])
+                        : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
+            $entries[] = $aEntry;
+        }  
+
         $aResult = [
             "title" => $oDefaultMenu->title,
             "description" => $oDefaultMenu->description,
-            "entries" => [
-                [
-                    'id'=> "0",
-                    'link'=> App()->getController()->createUrl("admin/survey/sa/view",['surveyid' => $this->sid]),
-                    'menu_class'=> "",
-                    'menu_description'=> "Survey overwiew",
-                    'menu_icon'=> "list",
-                    'menu_icon_type'=> "fontawesome",
-                    'menu_id'=> "1",
-                    'menu_title'=> "Overview",
-                    'name'=> "overview",
-                    'title'=> "General overview",
-                ]
-            ]
+            "entries" => $entries
         ];
-        foreach($defaultMenuEntries as $menuEntry){
-            $aEntry = $menuEntry->attributes;
-            $aEntry['link'] = App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
-            $aResult["entries"][] = $aEntry;
-        }  
+
         return $aResult;
     }   
 

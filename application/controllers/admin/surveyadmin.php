@@ -492,27 +492,7 @@ class SurveyAdmin extends Survey_Common_Action
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
         $menus = $survey->getSurveyMenus(); 
-        $propArray = array(
-                    'menuEntries' => [
-                        [
-                            'active' => false,
-                            'icon' => 'fa fa-list',
-                            'name' => gT('Overview'),
-                            'link' => $this->getController()->createUrl("admin/survey/sa/view", ['surveyid' => $surveyid])
-                        ],
-                        [
-                            'active' => false,
-                            'icon' => 'fa fa-cogs',
-                            'name' => gT('General Settings'),
-                            'link' => $this->getController()->createUrl("admin/survey/sa/surveygeneralsettings",['surveyid' => $surveyid])
-                        ],
-                        [
-                            'active' => false,
-                            'icon' => 'fa fa-language',
-                            'name' => gT('Language'),
-                            'link' => $this->getController()->createUrl("admin/survey/sa/editlanguagesettings",['surveyid' => $surveyid])
-                        ],
-                    ]);
+
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
@@ -521,16 +501,7 @@ class SurveyAdmin extends Survey_Common_Action
                     'settings' => array(
                         'extrasettings' => false,
                         'parseHTML' => false,
-                    ),
-                    // 'debug' => [
-                    //     $iSurveyID,
-                    //     $survey,
-                    //     $baselang,
-                    //     $setting_entry,
-                    //     $lastquestion,
-                    //     $setting_entry,
-                    //     $lastquestiongroup
-                    // ]
+                    )
                 ]
             ),
             false,
@@ -1925,7 +1896,6 @@ class SurveyAdmin extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-json');
         App()->clientScript->registerPackage('bootstrap-switch');
         App()->getClientScript()->registerPackage('jquery-datatable');
-        App()->clientScript->defaultScriptFilePosition=CClientScript::POS_END;
         App()->clientScript->registerPackage('adminpanel');
 
     }

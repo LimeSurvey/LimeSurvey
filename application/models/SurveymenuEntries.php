@@ -13,6 +13,7 @@
  * @property string $menu_description
  * @property string $menu_icon
  * @property string $menu_class
+ * @property string $menu_link
  * @property string $action
  * @property string $template
  * @property string $partial
@@ -50,11 +51,11 @@ class SurveymenuEntries extends LSActiveRecord
 		return array(
 			array('changed_at', 'required'),
 			array('menu_id, priority, changed_by, created_by', 'numerical', 'integerOnly'=>true),
-			array('title, menu_title, menu_icon, menu_class, action, template, partial, permission, permissionGrade, classes, getdatamethod', 'length', 'max'=>255),
+			array('title, menu_title, menu_icon, menu_class, menu_link, action, template, partial, permission, permissionGrade, classes, getdatamethod', 'length', 'max'=>255),
 			array('description, menu_description, language, data, created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, menu_id, priority, title, description, menu_title, menu_description, menu_icon, menu_class, action, template, partial, language, permission, permissionGrade, classes, data, getdatamethod, changed_at, changed_by, created_at, created_by', 'safe', 'on'=>'search'),
+			array('id, menu_id, priority, title, description, menu_title, menu_description, menu_icon, menu_class, menu_link, action, template, partial, language, permission, permissionGrade, classes, data, getdatamethod, changed_at, changed_by, created_at, created_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -85,6 +86,7 @@ class SurveymenuEntries extends LSActiveRecord
 			'menu_description' => 'Menu Description',
 			'menu_icon' => 'Menu Icon',
 			'menu_class' => 'Menu Class',
+			'menu_link' => 'Menu link',
 			'action' => 'Action',
 			'template' => 'Template',
 			'partial' => 'Partial',
@@ -128,6 +130,7 @@ class SurveymenuEntries extends LSActiveRecord
 		$criteria->compare('menu_description',$this->menu_description,true);
 		$criteria->compare('menu_icon',$this->menu_icon,true);
 		$criteria->compare('menu_class',$this->menu_class,true);
+		$criteria->compare('menu_link',$this->menu_link,true);
 		$criteria->compare('action',$this->action,true);
 		$criteria->compare('template',$this->template,true);
 		$criteria->compare('partial',$this->partial,true);

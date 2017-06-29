@@ -27381,14 +27381,17 @@ module.exports = __webpack_require__(55);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_topbar_vue__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_topbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_topbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pjax__ = __webpack_require__(36);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_pjax___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_pjax__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_localstorage__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_localstorage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_localstorage__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_topbar_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_topbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_topbar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pjax__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pjax___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_pjax__);
+
 
 
 
@@ -27397,6 +27400,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
+__WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_2_vue_localstorage___default.a);
 
 const AppState = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
   state: {
@@ -27419,7 +27423,7 @@ if(document.getElementById('vue-side-menu-app')){
     el: '#vue-side-menu-app',
     store: AppState,
     components: {
-      'sidebar' : __WEBPACK_IMPORTED_MODULE_3__components_sidebar_vue___default.a,
+      'sidebar' : __WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue___default.a,
     },
     mounted(){
        this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
@@ -27427,7 +27431,7 @@ if(document.getElementById('vue-side-menu-app')){
 });
 }
 
-const pjaxed = new __WEBPACK_IMPORTED_MODULE_5_pjax___default.a({
+const pjaxed = new __WEBPACK_IMPORTED_MODULE_6_pjax___default.a({
           elements: "a.pjax", // default is "a[href], form[action]"
           selectors: [
             "#in_survey_common"
@@ -28646,20 +28650,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         checkIsActive(link) {
             let locationUrl = document.createElement('a');locationUrl.href = location.href;
             let checkUrl = document.createElement('a');checkUrl.href = link;
-            console.log(locationUrl.pathname, checkUrl.pathname, link, locationUrl.pathname == checkUrl.pathname);
             return locationUrl.pathname == checkUrl.pathname;
+        },
+        sortedMenu(entries) {
+            let retVal = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(entries, a => {
+                return parseInt(a.priority);
+            }, ['desc']);
+            return retVal;
         }
     },
     mounted() {
         const self = this;
+        this.menues = JSON.parse(self.$localStorage.get('menues', JSON.stringify([])));
+        this.questiongroups = JSON.parse(self.$localStorage.get('questiongroups', JSON.stringify([])));
         this.get(this.getQuestionsUrl).then(result => {
             console.log(result);
             self.questiongroups = result.data.groups;
+            self.$localStorage.set('questiongroups', JSON.stringify(self.questiongroups));
             self.$forceUpdate();
         });
         this.get(this.getMenuUrl).then(result => {
             console.log(result);
-            self.menues = result.data.menues;
+            self.menues = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(result.data.menues, a => {
+                return parseInt(a.priority);
+            }, ['desc']);
+            self.$localStorage.set('menues', JSON.stringify(self.menues));
             self.$forceUpdate();
         });
     }
@@ -29069,7 +29084,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "title": menu.title
       }
-    }, _vm._l((menu.entries), function(menuItem, index) {
+    }, _vm._l((_vm.sortedMenu(menu.entries)), function(menuItem, index) {
       return _c('li', {
         directives: [{
           name: "show",
@@ -29090,21 +29105,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           "data-toggle": "tooltip"
         }
       }, [_c('div', {
-        class: _vm.checkIsActive(menuItem.link) ? 'col-sm-10 selected' : 'col-sm-12',
+        staticClass: "col-sm-10",
+        class: _vm.checkIsActive(menuItem.link) ? 'selected' : '',
         staticStyle: {
           "padding": "15px 10px"
         }
       }, [_c('i', {
         staticClass: "fa",
         class: 'fa-' + menuItem.menu_icon
-      }, [_vm._v(" ")]), _vm._v("  \n                                " + _vm._s(menuItem.menu_title) + "\n                    ")]), _vm._v(" "), (_vm.checkIsActive(menuItem.link)) ? _c('div', {
-        staticClass: "col-sm-2 background white",
+      }, [_vm._v(" ")]), _vm._v("  \n                                "), _c('span', {
+        domProps: {
+          "innerHTML": _vm._s(menuItem.menu_title)
+        }
+      })]), _vm._v(" "), _c('div', {
+        staticClass: "col-sm-2 text-center",
+        class: _vm.checkIsActive(menuItem.link) ? 'background white' : '',
         staticStyle: {
           "padding": "15px 10px"
         }
       }, [_c('i', {
         staticClass: "fa fa-chevron-right"
-      }, [_vm._v(" ")])]) : _vm._e()])])
+      }, [_vm._v(" ")])])])])
     }))
   }), _vm._v(" "), _c('div', {
     directives: [{
@@ -30579,6 +30600,189 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
+
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * vue-local-storage v0.2.0
+ * (c) 2017 Abdelrahman Awad
+ * @license MIT
+ */
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.VeeValidate = factory());
+}(this, (function () { 'use strict';
+
+var ls$1 = window.localStorage;
+
+var VueLocalStorage = function VueLocalStorage () {
+  this._properties = {};
+};
+
+/**
+ * Get value from localStorage
+ *
+ * @param {String} lsKey
+ * @param {*} defaultValue
+ * @returns {*}
+ */
+VueLocalStorage.prototype.get = function get (lsKey, defaultValue) {
+    var this$1 = this;
+    if ( defaultValue === void 0 ) defaultValue = null;
+
+  if (ls$1[lsKey]) {
+    var type = String;
+
+    for (var key in this$1._properties) {
+      if (key === lsKey) {
+        type = this$1._properties[key].type;
+        break
+      }
+    }
+
+    return this._process(type, ls$1[lsKey])
+  }
+
+  return defaultValue !== null ? defaultValue : null
+};
+
+/**
+ * Set localStorage value
+ *
+ * @param {String} lsKey
+ * @param {*} value
+ * @returns {*}
+ */
+VueLocalStorage.prototype.set = function set (lsKey, value) {
+    var this$1 = this;
+
+  for (var key in this$1._properties) {
+    var type = this$1._properties[key].type;
+
+    if ((key === lsKey) && [Array, Object].includes(type)) {
+      ls$1.setItem(lsKey, JSON.stringify(value));
+
+      return value
+    }
+  }
+
+  ls$1.setItem(lsKey, value);
+
+  return value
+};
+
+/**
+ * Remove value from localStorage
+ *
+ * @param {String} lsKey
+ */
+VueLocalStorage.prototype.remove = function remove (lsKey) {
+  return ls$1.removeItem(lsKey)
+};
+
+/**
+ * Add new property to localStorage
+ *
+ * @param {String} key
+ * @param {function} type
+ * @param {*} defaultValue
+ */
+VueLocalStorage.prototype.addProperty = function addProperty (key, type, defaultValue) {
+  type = type || String;
+
+  this._properties[key] = { type: type };
+
+  if (!ls$1[key] && defaultValue !== null) {
+    ls$1.setItem(key, [Array, Object].includes(type) ? JSON.stringify(defaultValue) : defaultValue);
+  }
+};
+
+/**
+ * Process the value before return it from localStorage
+ *
+ * @param {String} type
+ * @param {*} value
+ * @returns {*}
+ * @private
+ */
+VueLocalStorage.prototype._process = function _process (type, value) {
+  switch (type) {
+    case Boolean:
+      return value === 'true'
+    case Number:
+      return parseInt(value, 10)
+    case Array:
+      try {
+        var array = JSON.parse(value);
+
+        return Array.isArray(array) ? array : []
+      } catch (e) {
+        return []
+      }
+    case Object:
+      try {
+        return JSON.parse(value)
+      } catch (e) {
+        return {}
+      }
+    default:
+      return value
+  }
+};
+
+var VueLocalStorage$1 = new VueLocalStorage();
+
+var ls = window.localStorage;
+
+try {
+  var test = '__vue-localstorage-test__';
+
+  ls.setItem(test, test);
+  ls.removeItem(test);
+} catch (e) {
+  console.error('Local storage is not supported');
+}
+
+var index = {
+  /**
+   * Install vue-local-storage plugin
+   *
+   * @param {Vue} Vue
+   * @param {Object} options
+   */
+  install: function (Vue, options) {
+    if ( options === void 0 ) options = {};
+
+    var name = options.name || 'localStorage';
+
+    Vue.mixin({
+      created: function created () {
+        var this$1 = this;
+
+        if (this.$options[name]) {
+          Object.keys(this.$options[name]).forEach(function (key) {
+            var ref = [this$1.$options[name][key].type, this$1.$options[name][key].default];
+            var type = ref[0];
+            var defaultValue = ref[1];
+
+            VueLocalStorage$1.addProperty(key, type, defaultValue);
+          });
+        }
+      }
+    });
+
+    Vue[name] = VueLocalStorage$1;
+    Vue.prototype[("$" + name)] = VueLocalStorage$1;
+  }
+};
+
+return index;
+
+})));
 
 
 /***/ })

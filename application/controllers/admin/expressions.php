@@ -49,16 +49,18 @@ class Expressions extends Survey_Common_Action {
                 $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
                 if(Yii::app()->request->getQuery('gid')!='')
                 {
-                    $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$aData['surveyid'].'/gid/'.sanitize_int(Yii::app()->request->getQuery('gid'));
+                    $aData['questiongroupbar']['closebutton']['url'] = $this->getController()->createUrl('admin/questiongroups/sa/view/',['surveyid'=> $surveyid, 'gid'=> sanitize_int(Yii::app()->request->getQuery('gid'))]);
                 }
                 else
                 {
-                    $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$aData['surveyid'];
+                    $aData['surveybar']['closebutton']['url'] =  $this->getController()->createUrl('/admin/survey/sa/view/',['surveyid'=> $surveyid]);
                 }
 
                 if(Yii::app()->request->getQuery('qid')!='')
                    {
-                    $aData['questiongroupbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$aData['surveyid'].'/gid/'.sanitize_int(Yii::app()->request->getQuery('gid')).'/qid/'.sanitize_int(Yii::app()->request->getQuery('qid'));
+                    $aData['questiongroupbar']['closebutton']['url'] = $this->getController()->createUrl(
+                        'admin/questiongroups/sa/view/',
+                        ['surveyid'=> $surveyid, 'gid'=> sanitize_int(Yii::app()->request->getQuery('gid')), 'qid'=> sanitize_int(Yii::app()->request->getQuery('qid'))]);
                     $aData['gid'] = sanitize_int(Yii::app()->request->getQuery('gid'));
                 }
             }
