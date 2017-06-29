@@ -26,10 +26,10 @@ class templates extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        if (!Permission::model()->hasGlobalPermission('templates','read'))
-        {
+        if (!Permission::model()->hasGlobalPermission('templates','read')){
             die('No permission');
         }
+
         parent::runWithParams($params);
     }
 
@@ -333,8 +333,10 @@ class templates extends Survey_Common_Action
     * @param string $templatename
     * @return void
     */
-    public function index($editfile = 'startpage.pstpl', $screenname = 'welcome', $templatename = '')
+    public function index($editfile = '', $screenname = 'welcome', $templatename = '')
     {
+
+
         if ($templatename=='') {
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
@@ -602,8 +604,7 @@ class templates extends Survey_Common_Action
     public function templatesavechanges()
     {
 
-        if (!Permission::model()->hasGlobalPermission('templates','update'))
-        {
+        if (!Permission::model()->hasGlobalPermission('templates','update')){
             die('No permission');
         }
 
@@ -617,51 +618,54 @@ class templates extends Survey_Common_Action
         if (returnGlobal('changes_cp')) {
             $changedtext = returnGlobal('changes_cp');
             $changedtext = str_replace('<?', '', $changedtext);
-            if (get_magic_quotes_gpc())
-            {
+            if (get_magic_quotes_gpc()){
                 $changedtext = stripslashes($changedtext);
             }
         }
 
-        $action          = returnGlobal('action');
-        $editfile        = returnGlobal('editfile');
-        $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
-        $screenname      = returnGlobal('screenname');
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
-        $aScreenFiles    = $oEditedTemplate->getValidScreenFiles("view");
-        $cssfiles        = $oEditedTemplate->getValidScreenFiles("css");
-        $jsfiles         = $oEditedTemplate->getValidScreenFiles("js");
+        $action               = returnGlobal('action');
+        $editfile             = returnGlobal('editfile');
+        $relativePathEditfile = returnGlobal('relativePathEditfile');
+        $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
+        $screenname           = returnGlobal('screenname');
+        $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName);
+        $aScreenFiles         = $oEditedTemplate->getValidScreenFiles("view");
+        $cssfiles             = $oEditedTemplate->getValidScreenFiles("css");
+        $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
 
 
         if ($action == "templatesavechanges" && $changedtext){
             Yii::app()->loadHelper('admin/template');
             $changedtext = str_replace("\r\n", "\n", $changedtext);
 
-            if ($editfile)
-            {
+
+            if ($relativePathEditfile){
                 // Check if someone tries to submit a file other than one of the allowed filenames
                 if (
-                in_array($editfile,$aScreenFiles)===false &&
-                in_array($editfile,$cssfiles)===false &&
-                in_array($editfile,$jsfiles)===false
-                )
-                {
+                in_array($relativePathEditfile,$aScreenFiles)===false &&
+                in_array($relativePathEditfile,$cssfiles)===false &&
+                in_array($relativePathEditfile,$jsfiles)===false
+                ){
                     Yii::app()->user->setFlash('error',gT('Invalid template name'));
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
 
-                $savefilename = gettemplatefilename($sTemplateName, $editfile);
 
-                if (is_writable($savefilename))
-                {
-                    if (!$handle = fopen($savefilename, 'w'))
-                    {
+                //$savefilename = $oEditedTemplate
+                if( !file_exists($oEditedTemplate->path.'/'.$relativePathEditfile) && !file_exists($oEditedTemplate->viewPath.$relativePathEditfile) ){
+                    $oEditedTemplate->extendsFile($relativePathEditfile);
+                }
+
+                $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile);
+
+                if (is_writable($savefilename)){
+
+                    if (!$handle = fopen($savefilename, 'w')){
                         Yii::app()->user->setFlash('error',gT('Could not open file '). $savefilename);
                         $this->getController()->redirect(array("admin/templates/sa/upload"));
                     }
 
-                    if (!fwrite($handle, $changedtext))
-                    {
+                    if (!fwrite($handle, $changedtext)){
                         Yii::app()->user->setFlash('error',gT('Could not write file '). $savefilename);
                         $this->getController()->redirect(array("admin/templates/sa/upload"));
                     }
@@ -669,16 +673,15 @@ class templates extends Survey_Common_Action
                     $oEditedTemplate->actualizeLastUpdate();
 
                     fclose($handle);
-                }
-                else
-                {
+                }else{
                     Yii::app()->user->setFlash('error',"The file $savefilename is not writable");
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
 
             }
         }
-        $this->getController()->redirect(array('admin/templates/','sa'=>'view','editfile'=>$editfile,'screenname'=>$screenname,'templatename'=>$sTemplateName));
+
+        $this->getController()->redirect(array('admin/templates/','sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname,'templatename'=>$sTemplateName));
     }
 
     /**
@@ -720,7 +723,7 @@ class templates extends Survey_Common_Action
     * @param array $myoutput
     * @return void
     */
-    protected function _templatesummary($templatename, $screenname, $editfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
+    protected function _templatesummary($templatename, $screenname, $editfile, $relativePathEditfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
     {
         $tempdir = Yii::app()->getConfig("tempdir");
         $tempurl = Yii::app()->getConfig("tempurl");
@@ -787,8 +790,10 @@ class templates extends Survey_Common_Action
 
         $editableCssFiles = $oEditedTemplate->getValidScreenFiles("css");
         $filesdir = $oEditedTemplate->filesPath;
+        $aData['oEditedTemplate']   = $oEditedTemplate;
         $aData['screenname'] = $screenname;
         $aData['editfile'] = $editfile;
+        $aData['relativePathEditfile'] = $relativePathEditfile;
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
         $aData['templates'] = $templates;
@@ -853,7 +858,6 @@ class templates extends Survey_Common_Action
         $screens=array();
 
 
-
         $screens['welcome']         = gT('Welcome Page','unescaped');       // first page*
         $screens['question']        = gT('Question Page','unescaped');      // main
         $screens['completed']       = gT('Completed Page','unescaped');     // submit?
@@ -863,52 +867,6 @@ class templates extends Survey_Common_Action
         $screens['surveylist']      = gT('Survey List Page','unescaped');
         $screens['error']           = gT('Error','unescaped');
         $screens['assessments']     = gT('Assessments','unescaped');
-
-        // TODO: $screens['register']        = gT('Register Page','unescaped');      // still todo?
-
-
-        //TODO: $screens['printanswers']    = gT('Print answers page','unescaped');         // todo?
-        //TODO: $screens['printablesurvey'] = gT('Printable survey page','unescaped');      // todo ?
-        /* Twig layout */
-        /* used for call AND for pstl editable files list */
-        /* should contains datas for inclusion ??? */
-        $SurveyList = array('layout_survey_list.twig',);
-
-        $Welcome = array('layout_first_page.twig',);
-
-        /* Not used : data updated during rendering */
-        $Question = array('layout_main.twig',);
-
-        $CompletedTemplate = array('layout_submit.twig',);
-
-        /* Not used */
-        $Clearall = array('layout_clearall.twig',);
-
-        /* Not used */
-        $Save = array('layout_save.twig',);
-
-        /* Not used */
-        $Load = array('layout_load.twig',);
-
-        /** TODO: TWIG
-        // Not used
-        $printtemplate = array('startpage.pstpl',
-            'printanswers.pstpl',
-            'endpage.pstpl'
-        );
-        // Not used
-        $printablesurveytemplate = array('print_survey.pstpl',
-            'print_group.pstpl',
-            'print_question.pstpl'
-        );
-
-        // Not used
-        $Register = array('startpage.pstpl',
-            'survey.pstpl',
-            'register.pstpl',
-            'endpage.pstpl'
-        );
-        */
 
         $file_version = "LimeSurvey template editor " . Yii::app()->getConfig('versionnumber');
 
@@ -1158,7 +1116,7 @@ class templates extends Survey_Common_Action
 
         $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
 
-        $jsfiles =  $oEditedTemplate->getValidScreenFiles("js");
+        $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
 
         // XML Behaviour: if only one file, then $files is just a string
@@ -1170,6 +1128,7 @@ class templates extends Survey_Common_Action
         // Get list of 'otherfiles'
         // We can't use $oTemplate->otherFiles, because of retrocompatibility with 2.06 template and the big mess of it mixing files
         $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
+
         $otherfiles = array();
         if ( file_exists($filesdir) && $handle = opendir($filesdir))
         {
@@ -1185,42 +1144,14 @@ class templates extends Survey_Common_Action
             closedir($handle);
         }
 
+        $editfile = (empty($editfile))?$sLayoutFile:$editfile;
+        $sEditfile = $oEditedTemplate->getFilePathForEdition($editfile, array_merge($files, $aCssAndJsfiles));
 
-
-        $editfile = $oEditedTemplate->getFilePathForEdition($editfile, array_merge($files, $aCssAndJsfiles));
-                /*
-                if (is_array($files))
-                {
-                    $match = 0;
-                    if (in_array($editfile,$files) || in_array($editfile,$aCssAndJsfiles))
-                    {
-                        $match=1;
-                    }
-
-                    if ($match == 0)
-                    {
-                        if (count($files) > 0)
-                        {
-                            $editfile = $files[0];
-                        }
-                        else
-                        {
-                            $editfile = "";
-                        }
-                    }
-                }
-                */
-
-
-                $extension = substr(strrchr($editfile, "."), 1);
-                $highlighter = 'html';
-                if ($extension == 'css' || $extension == 'js')
-                {
-                    $highlighter = $extension;
-                }
-
-
-
+        $extension = substr(strrchr($sEditfile, "."), 1);
+        $highlighter = 'html';
+        if ($extension == 'css' || $extension == 'js'){
+            $highlighter = $extension;
+        }
 
         $aData['codelanguage'] = $sLanguageCode;
         $aData['highlighter'] = $highlighter;
@@ -1228,7 +1159,7 @@ class templates extends Survey_Common_Action
         $aData['templatename'] = $templatename;
         $aData['templateapiversion'] = $oEditedTemplate->getApiVersion();
         $aData['templates'] = $aAllTemplates;
-        $aData['editfile'] = $editfile;
+        $aData['editfile'] = $sEditfile;
         $aData['screenname'] = $screenname;
         $aData['tempdir'] = Yii::app()->getConfig('tempdir');
         $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
@@ -1237,8 +1168,9 @@ class templates extends Survey_Common_Action
         if ($showsummary)
         {
             //$aCssfileseditable = (array) $oEditedTemplate->config->files_editable->css->filename;
-            $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
+            $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
+
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');
         return $aViewUrls;
     }

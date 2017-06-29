@@ -709,6 +709,9 @@ function linksInDialog()
                 iframe.attr("src", "");
             }
         });
+
+	iframe.contents().find('head').append('<title>'+$(this).attr("title")+'</title>');
+
         $(document).on('click','a[target=dialog]',function(event){
             event.preventDefault();
             var src = $(this).attr("href");

@@ -121,7 +121,7 @@ class TemplateConfiguration extends CFormModel
     }
 
     /**
-    * This function returns the complete URL path to a given template name
+    * Returns the complete URL path to a given template name
     *
     * @param string $sTemplateName
     * @return string template url
@@ -198,8 +198,38 @@ class TemplateConfiguration extends CFormModel
         return $this->getFilePath($sFile, $this);
     }
 
+
+    public function extendsFile($sFile)
+    {
+
+        if( !file_exists($this->path.'/'.$sFile) && !file_exists($this->viewPath.$sFile) ){
+
+            // Copy file from mother template to local directory
+            $sRfilePath = $this->getFilePath($sFile, $this);
+            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.'/'.$sFile;
+            copy ( $sRfilePath,  $sLfilePath );
+        }
+
+        return $this->getFilePath($sFile, $this);
+    }
+
+    public function getTemplateForFile($sFile, $oRTemplate)
+    {
+        while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
+    }
+
+
     /**
-     * This function will update the config file of a given template so that it extends another one
+     * Update the config file of a given template so that it extends another one
      *
      * It will:
      * 1. Delete files and engine nodes
@@ -439,10 +469,9 @@ class TemplateConfiguration extends CFormModel
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
-
-        $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
-        $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->filesPath;
-        $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ?  $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
+        $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR    : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
+        $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
+        $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ? $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
         $this->siteLogo                 = (!empty($this->config->xpath("//logo")))            ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
 
         // Not mandatory (use package dependances)
@@ -588,20 +617,6 @@ class TemplateConfiguration extends CFormModel
             throw error ? Only for admin template editor ? disable and reset to default ?
         }*/
         return array();
-    }
-
-    private function getTemplateForFile($sFile, $oRTemplate)
-    {
-        while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
-            $oMotherTemplate = $oRTemplate->oMotherTemplate;
-            if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                return false;
-                break;
-            }
-            $oRTemplate = $oMotherTemplate;
-        }
-
-        return $oRTemplate;
     }
 
     /**

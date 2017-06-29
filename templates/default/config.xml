@@ -87,6 +87,7 @@
         <template_editor>
             <screens>
                 <question>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="layout">layout_main.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/question.twig</file>
@@ -101,12 +102,14 @@
                 </question>
 
                 <surveylist>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="layout">layout_survey_list.twig</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>
                 </surveylist>
 
                 <welcome>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="layout">layout_first_page.twig</file>
                     <file type="view" role="subview">./subviews/welcome.twig</file>
                     <file type="view" role="subview">./subviews/warnings.twig</file>
@@ -117,12 +120,14 @@
                 </welcome>
 
                 <completed>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="layout">layout_submit.twig</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>
                 </completed>
 
                 <assessments>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="layout">layout_submit.twig</file>
                     <file type="view" role="subview">./subviews/assessments.twig</file>
                     <file type="css">./css/template.css</file>
@@ -134,18 +139,21 @@
                 </error>
 
                 <clearall>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="layout">layout_clearall.twig</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>
                 </clearall>
 
                 <load>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="layout">layout_load.twig</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>
                 </load>
 
                 <save>
+                    <file type="view" role="layout">layout_global.twig</file>
                     <file type="view" role="layout">layout_save.twig</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>

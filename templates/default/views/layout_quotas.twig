@@ -15,133 +15,102 @@
     Depending on survey config, a navigator allowing the respondent to change their responses can be shown, and a end url.
 
     Quotas data are in: aSurveyInfo.aQuotas
-    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file: 
+    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file:
     {{ dump(aSurveyInfo.aQuotas ) }} )
 #}
 
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
 
-    {# Headers, metadata, etc #}
-    {{ include('./subviews/head.twig') }}
+{# Replace the content block #}
+{% block content %}
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+    {# Include the form opening tag #}
+    {{ include('./subviews/start_form.twig') }} <!-- main form -->
 
-        {# Bootstrap Navigation Bar: the top menu #}
-        {{ include('./subviews/nav_bar.twig') }}
-
-        {# Top Container: in this template, it contains only  #}
-        {{ include('./subviews/progess_bar.twig') }}
-
-        <!-- Outer Frame Container -->
-        <div class="outerframe container" id="outerframeContainer">
-
-            <!-- Main Row -->
-            <div id="main-row">
-                <!-- Main Col -->
-                <div class="col-centered" id="main-col">
-
-                    {# Include the form opening tag #}
-                    {{ include('./subviews/start_form.twig') }} <!-- main form -->
-
-                        {# This will display the script and the hidden inputs needed for Expression Manager #}
-                        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+        {# This will display the script and the hidden inputs needed for Expression Manager #}
+        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
 
-                        {# completed#}
-                        <div class="completed-wrapper">
+        {# completed#}
+        <div class="completed-wrapper">
 
-                            {# LS 2.50 Plugins HTML NOTE: plugins should now use the event defined in LSETwigViewRenderer::renderTemplateFromString() #}
-                            {{ aSurveyInfo.aQuotas.sPluginBlocks }}
+            {# LS 2.50 Plugins HTML NOTE: plugins should now use the event defined in LSETwigViewRenderer::renderTemplateFromString() #}
+            {{ aSurveyInfo.aQuotas.sPluginBlocks }}
 
-                            <div class='completed-text'>
-                                <div class='quotamessage limesurveycore'>
-                                    {{ aSurveyInfo.aQuotas.sMessage  }}
-                                </div>
+            <div class='completed-text'>
+                <div class='quotamessage limesurveycore'>
+                    {{ aSurveyInfo.aQuotas.sMessage  }}
+                </div>
 
-                                {# Navigator for quota page is pretty different from the classical navigator. So we can't include the navigator.twig #}
-                                {% if (aSurveyInfo.aQuotas.bShowNavigator) %}
+                {# Navigator for quota page is pretty different from the classical navigator. So we can't include the navigator.twig #}
+                {% if (aSurveyInfo.aQuotas.bShowNavigator) %}
 
-                                        {#
-                                            array of attributes of the form tag.
-                                            To add a new attribute, just add an entry:
-                                            'attribute' : 'value',
-                                        #}
-                                        {% set htmlOptions = {
-                                                'id'          : 'limesurvey',
-                                                'name'        : 'limesurvey',
-                                                'autocomplete': 'off',
-                                                'class'       : 'survey-form-container QuotaMessage',
-                                            }
-                                        %}
+                        {#
+                            array of attributes of the form tag.
+                            To add a new attribute, just add an entry:
+                            'attribute' : 'value',
+                        #}
+                        {% set htmlOptions = {
+                                'id'          : 'limesurvey',
+                                'name'        : 'limesurvey',
+                                'autocomplete': 'off',
+                                'class'       : 'survey-form-container QuotaMessage',
+                            }
+                        %}
 
-                                        {#
-                                            It generates the opening form tag and the CRSF token
-                                            It uses the Yii fuction CHtml::form
-                                            @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
-                                        #}
-                                        <!-- Quota form for navigator -->
-                                        {{
-                                            C.Html.form(
-                                                ( aSurveyInfo.surveyUrl ),
-                                                'post',
-                                                (htmlOptions)
-                                                )
-                                        }}
+                        {#
+                            It generates the opening form tag and the CRSF token
+                            It uses the Yii fuction CHtml::form
+                            @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
+                        #}
+                        <!-- Quota form for navigator -->
+                        {{
+                            C.Html.form(
+                                ( aSurveyInfo.surveyUrl ),
+                                'post',
+                                (htmlOptions)
+                                )
+                        }}
 
-                                            <div class="navigator row" id="navigator-container">
-                                                <div class="col-xs-6 text-left">
-                                                    <!-- Previous button container -->
-                                                    <div class="col-xs-6 text-left">
-                                                        <!-- Button previous -->
-                                                        <button type="submit" value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" name="move" class=" ls-move-btn ls-move-previous-btn btn btn-lg btn-default" accesskey="p">
-                                                            {{ "Previous" | t }}
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-6 text-right">
-                                                    <!-- Button submit -->
-                                                    <button type="submit" value="confirmquota" name="move" class=" ls-move-btn ls-move-submit-btn btn btn-lg btn-primary" accesskey="l">
-                                                        {{ "Submit" | t }}
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            <input type="hidden" name="sid"      value="{{ aSurveyInfo.sid  }}" />
-                                            <input type="hidden" name="token"    value="{{ aSurveyInfo.aQuotas.sClientToken }}" />
-                                            <input type="hidden" name="thisstep" value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" />
-
-                                            {% for field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
-                                                <input type="hidden" name="{{ field }}"   value="{{ post }}" />
-                                            {% endfor %}
-
-                                        </form>
-                                {% endif %}
-
-                                {% if(aSurveyInfo.aQuotas.sUrl != '') %}
-                                    <div class="url-wrapper url-wrapper-survey-quotaurl">
-                                        <a href="{{ aSurveyInfo.aQuotas.sUrl }}" class="ls-endurl ls-quotaurl">
-                                            {{ aSurveyInfo.aQuotas.sUrlDescription }}
-                                        </a>
+                            <div class="navigator row" id="navigator-container">
+                                <div class="col-xs-6 text-left">
+                                    <!-- Previous button container -->
+                                    <div class="col-xs-6 text-left">
+                                        <!-- Button previous -->
+                                        <button type="submit" value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" name="move" class=" ls-move-btn ls-move-previous-btn btn btn-lg btn-default" accesskey="p">
+                                            {{ "Previous" | t }}
+                                        </button>
                                     </div>
-                                {% endif %}
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <!-- Button submit -->
+                                    <button type="submit" value="confirmquota" name="move" class=" ls-move-btn ls-move-submit-btn btn btn-lg btn-primary" accesskey="l">
+                                        {{ "Submit" | t }}
+                                    </button>
+                                </div>
                             </div>
-                        </div>
 
-                    </form> <!-- main form -->
-                </div> <!-- main col -->
-            </div> <!-- main row -->
-        </div> <!-- outer frame container -->
+                            <input type="hidden" name="sid"      value="{{ aSurveyInfo.sid  }}" />
+                            <input type="hidden" name="token"    value="{{ aSurveyInfo.aQuotas.sClientToken }}" />
+                            <input type="hidden" name="thisstep" value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" />
 
-        <!-- some template.js function launched before ready -->
-        <script type="text/javascript">
-        /*<![CDATA[*/
-            sliderSuffixClone();
-            fixBodyPadding();
-            hideQuestionWithRelevanceSubQuestion();
-            hideEmptyPart();
-        /*]]>*/
-        </script>
-    </body>
-</html>
-<!-- end of startpage.twig -->
+                            {% for field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
+                                <input type="hidden" name="{{ field }}"   value="{{ post }}" />
+                            {% endfor %}
+
+                        </form>
+                {% endif %}
+
+                {% if(aSurveyInfo.aQuotas.sUrl != '') %}
+                    <div class="url-wrapper url-wrapper-survey-quotaurl">
+                        <a href="{{ aSurveyInfo.aQuotas.sUrl }}" class="ls-endurl ls-quotaurl">
+                            {{ aSurveyInfo.aQuotas.sUrlDescription }}
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </form> <!-- main form -->
+
+{% endblock %}

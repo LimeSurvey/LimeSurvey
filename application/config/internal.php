@@ -43,6 +43,7 @@ $internalConfig = array(
         // Third party path
         'third_party' => realpath(__DIR__ . '/../../third_party'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
+        'fonts' => realpath(__DIR__ . '/../../fonts'),
 
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
@@ -240,7 +241,7 @@ $internalConfig = array(
             ),
 
             'sandboxConfig' => array(
-                'tags' => array('if', 'for', 'set', 'autoescape'),
+                'tags' => array('if', 'for', 'set', 'autoescape', 'block'),
                 'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),

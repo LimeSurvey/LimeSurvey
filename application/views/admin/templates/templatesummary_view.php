@@ -15,36 +15,114 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <?php eT("You can't save changes because the template directory is not writable."); ?>
                 </div>
-                <?php endif; ?>
+            <?php endif; ?>
         </div>
     </div>
 
     <div class="row template-sum">
-        <div class="col-lg-2" id='templateleft'>
-            <div style="padding-left:1em;">
-                <?php eT("Standard files:"); ?><br>
-                <?php
-                $aSelectOptions=array(
-                    gT("Screen part files")=>array_combine($files,$files),
-                    gT("JavaScript files")=>array_combine($jsfiles,$jsfiles),
-                    gT("CSS files")=>array_combine($cssfiles,$cssfiles));
+        <div class="col-sm-2" id='templateleft'>
+            <div >
+                <?php eT("Screen part files:"); ?>
+                <div class="col-sm-12 well" style="padding-left: 0;">
 
-                echo CHtml::listBox('editfile',$editfile,$aSelectOptions,
-                    array('class'=>'form-control','size'=>'20',
-                        'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename))."'); uri.addQueryParam('editfile',this.value); window.open(uri.toString(), '_top')"
-                ));
-                ?>
+                    <?php foreach ($files as $file):?>
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <a
+                                    href  = "<?php echo $this->createUrl('admin/templates', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>"
+                                    class = "<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>"
+                                    >
+                                    <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                                </a>
+                            </div>
+                            <div class="col-sm-3">
+                                <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName):?>
+                                    <span class="label label-success">
+                                        <?php eT("local"); ?>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="label label-danger">
+                                        <?php eT("inherited"); ?>
+                                    </span>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                    <?php endforeach;?>
+                </div>
+            </div>
+
+            <div>
+                <?php eT("JavaScript files:"); ?>
+                <div class="col-sm-12 well">
+
+                    <?php foreach ($jsfiles as $file):?>
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <a
+                                    href="<?php echo $this->createUrl('admin/templates', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>"
+                                    class = "<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>"
+                                >
+                                    <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                                </a>
+                            </div>
+                            <div class="col-sm-3">
+                                <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName):?>
+                                    <span class="label label-success">
+                                        <?php eT("local"); ?>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="label label-danger">
+                                        <?php eT("inherited"); ?>
+                                    </span>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                    <?php endforeach;?>
+                </div>
+            </div>
+
+            <div >
+                <?php eT("CSS files:"); ?>
+                <div class="col-sm-12 well">
+
+                    <?php foreach ($cssfiles as $file):?>
+                        <div class="row">
+                            <div class="col-sm-9">
+                                <a
+                                    href="<?php echo $this->createUrl('admin/templates', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>"
+                                    class = "<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>"
+                                >
+                                    <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                                </a>
+                            </div>
+                            <div class="col-sm-3">
+                                <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName):?>
+                                    <span class="label label-success">
+                                        <?php eT("local"); ?>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="label label-danger">
+                                        <?php eT("inherited"); ?>
+                                    </span>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                    <?php endforeach;?>
+                </div>
             </div>
         </div>
+
+
         <div class="col-lg-8 templateeditor">
             <?php echo CHtml::form(array('admin/templates/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
 
             <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
             echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
             echo CHtml::hiddenField('editfile', $editfile);
+            echo CHtml::hiddenField('relativePathEditfile', $relativePathEditfile);
             echo CHtml::hiddenField('action', 'templatesavechanges');
 
-            echo CHtml::textArea('changes', isset($editfile)?file_get_contents($editfile):'',array('rows'=>'20',
+            echo CHtml::textArea('changes', (!empty($editfile))?file_get_contents($editfile):'',array('rows'=>'20',
                 'cols'=>'40',
                 'data-filetype'=>$sEditorFileType,
                 'class'=>'ace '.$sTemplateEditorMode,
@@ -53,14 +131,21 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             ?>
             <p class='text-center'>
                 <br/>
-                <?php if (Permission::model()->hasGlobalPermission('templates','update')):?>
-                    <?php if (is_writable($templates[$templatename])):?>
-                        <input type='submit' class='btn btn-default' value='<?php eT("Save changes"); ?>'
-                            <?php if (!is_template_editable($templatename)):?>
-                                disabled='disabled' alt='<?php eT("Changes cannot be saved to a standard template."); ?>'
-                                <?php endif; ?>
+                    <?php if (Permission::model()->hasGlobalPermission('templates','update')):?>
+
+                        <?php
+                            $sSaveText = ( $oEditedTemplate->getTemplateForFile($relativePathEditfile, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName)?gT("Save changes"):gT("Copy to local template and save changes");
+                        ?>
+
+                        <?php if (is_writable($templates[$templatename])):?>
+
+                            <input type='submit' class='btn btn-default' value='<?php echo $sSaveText; ?>'
+                                <?php if (!is_template_editable($templatename)):?>
+                                    disabled='disabled' alt='<?php eT("Changes cannot be saved to a standard template."); ?>'
+                                    <?php endif; ?>
                             />
                         <?php endif; ?>
+
                     <?php endif; ?>
             </p>
             </form>
@@ -72,7 +157,6 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <div>
                 <?php eT("Other files:"); ?>
                 <br/>
-                <?php // TODO printf(gT("(path for css: %s)"), $filespath) ?>
                 <?php
                 echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post');
                 echo CHtml::listBox('otherfile','',array_combine($otherfiles,$otherfiles),array('size'=>11,'class'=>"form-control")); ?>
