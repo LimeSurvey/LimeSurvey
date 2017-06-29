@@ -15,69 +15,37 @@
     It is displayed only on "question by question" or "group by group" mode, when the welcome message is activated.
 
 #}
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
-    {# Headers, metadata, etc #}
-    {{ include('./subviews/head.twig') }}
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+{# Replace the content block #}
+{% block content %}
 
-        {# Bootstrap Navigation Bar: the top menu #}
-        {{ include('./subviews/nav_bar.twig') }}
+    {# render the layout_global content block #}
+    {{ parent() }}
 
-        {# Top Container: in this template, it contains only  #}
-        {{ include('./subviews/progess_bar.twig') }}
+    {# Include the form opening tag #}
+    {{ include('./subviews/start_form.twig') }} <!-- main form -->
 
-        <!-- Outer Frame Container -->
-        <div class="outerframe container" id="outerframeContainer">
+        {# This will display the script and the hidden inputs needed for Expression Manager #}
+        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-            <!-- Main Row -->
-            <div id="main-row">
-                <!-- Main Col -->
-                <div class="col-centered" id="main-col">
+        {# Include the alert for no JavaScript #}
+        {{ include('./subviews/no_js_alert.twig') }}
 
-                    {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
-                    {{ include('./subviews/warnings.twig') }}
-DEFAULT
-                    {# Include the form opening tag #}
-                    {{ include('./subviews/start_form.twig') }} <!-- main form -->
+        {# Include the language changer selector #}
+        {{ include('./subviews/language_changer.twig') }}
 
-                        {# This will display the script and the hidden inputs needed for Expression Manager #}
-                        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+        {# If survey mode is "All in One", this will add the welcome/privacy messages (if activated) #}
+        {{ include('./subviews/welcome.twig') }}
 
-                        {# Include the alert for no JavaScript #}
-                        {{ include('./subviews/no_js_alert.twig') }}
+        {% if(aSurveyInfo.anonymized) == "Y" %}
+            {{ include('./subviews/privacy/privacy.twig') }}
+        {% endif %}
 
-                        {# Include the language changer selector #}
-                        {{ include('./subviews/language_changer.twig') }}
+        {# Presents the navigator #}
+        {{ include('./subviews/navigation/navigator.twig') }}
+    </form> <!-- main form -->
 
-                        {# If survey mode is "All in One", this will add the welcome/privacy messages (if activated) #}
-                        {{ include('./subviews/welcome.twig') }}
-
-                        {% if(aSurveyInfo.anonymized) == "Y" %}
-                            {{ include('./subviews/privacy/privacy.twig') }}
-                        {% endif %}
-
-                        {# Presents the navigator #}
-                        {{ include('./subviews/navigation/navigator.twig') }}
-                    </form> <!-- main form -->
-                </div> <!-- main col -->
-            </div> <!-- main row -->
-        </div> <!-- outer frame container -->
-
-        {# Bootstrap alert modal #}
-        {{ include('./subviews/bootstrap_alert_modal.twig') }}
-
-        <!-- some template.js function launched before ready -->
-        <script type="text/javascript">
-        /*<![CDATA[*/
-            sliderSuffixClone();
-            fixBodyPadding();
-            hideQuestionWithRelevanceSubQuestion();
-            hideEmptyPart();
-        /*]]>*/
-        </script>
-    </body>
-</html>
-<!-- end of startpage.twig -->
+{% endblock %}
