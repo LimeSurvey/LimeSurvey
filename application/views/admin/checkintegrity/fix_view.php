@@ -1,4 +1,4 @@
-<h3 class="pagetitle"><?php eT("Check data integrity");?></h3>
+<div class="pagetitle h3"><?php eT("Check data integrity");?></div>
         
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-12">

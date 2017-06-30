@@ -22,7 +22,7 @@
     }
     ?>
     <!-- Page Title-->
-    <h3>
+    <div class="pagetitle h3">
         <?php
         if ($adding)
         {
@@ -38,7 +38,7 @@
             echo ': <em>'.$eqrow['title'].'</em> (ID:'.$qid.')';
         }
         ?>
-    </h3>
+    </div>
 
     <div class="row">
         <!-- Form for the whole page-->

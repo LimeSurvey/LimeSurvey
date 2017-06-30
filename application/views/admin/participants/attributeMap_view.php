@@ -20,9 +20,9 @@
 </script>
 
 <div class='header ui-widget-header'>
-    <h3 class='pagetitle'>
+    <div class='pagetitle h3'>
         <?php eT("Map your participant attributes to an existing token attribute or create a new one"); ?>
-    </h3>
+    </div>
 </div>
 <?php
     $columncount = 0;

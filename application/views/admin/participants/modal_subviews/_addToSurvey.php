@@ -4,7 +4,7 @@
 ); ?>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></h4>
+        <div class="modal-title h4" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></div>
     </div>
 
     <div class="modal-body form-horizontal">

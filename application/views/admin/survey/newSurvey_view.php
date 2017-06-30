@@ -15,7 +15,7 @@
     templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
 </script>
 
-<h3 class="pagetitle"><?php eT("Create, import, or copy survey"); ?></h3>
+<div class="pagetitle h3"><?php eT("Create, import, or copy survey"); ?></div>
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-12">
         <!-- tabs -->

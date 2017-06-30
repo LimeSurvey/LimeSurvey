@@ -1,4 +1,4 @@
-<h3 class="pagetitle"><?php eT("Editing user");?></h3>
+<div class="pagetitle h3"><?php eT("Editing user");?></div>
 
 <div class="row" style="margin-bottom: 100px">
 <div class="col-lg-12 content-right">

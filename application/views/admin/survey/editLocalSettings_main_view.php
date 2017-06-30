@@ -31,7 +31,7 @@ $data = array('aTabTitles'=>$aTabTitles, 'aTabContents'=>$aTabContents, 'has_per
             $sTitle=gT("Edit survey settings");
         }
         $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>$sTitle)); ?>
-        <h3 class="pagetitle"><?php echo $sTitle; ?></h3>
+        <div class="pagetitle h3"><?php echo $sTitle; ?></div>
 
         <!-- Edition container -->
 
