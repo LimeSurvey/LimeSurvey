@@ -9,7 +9,7 @@
 
 ?>
 
-<div id='dlgEditParameter###'>
+<div id='dlgEditParameter'>
     <div id='dlgForm' class='form-horizontal'>
         <div class='row'>
             <div class='form-group'>

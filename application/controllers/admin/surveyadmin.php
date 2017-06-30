@@ -440,6 +440,7 @@ class SurveyAdmin extends Survey_Common_Action
             foreach($aGroups as $group)
             {
                 $curGroup = $group->attributes;
+                $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid]);
                 $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$baselang), array('order'=>'question_order ASC'));
                 $curGroup['questions'] = array();
                 foreach($group->aQuestions as $question)
@@ -447,6 +448,7 @@ class SurveyAdmin extends Survey_Common_Action
                     if(is_object($question))
                     {
                         $curQuestion = $question->attributes;
+                        $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid', $question->qid]);
                         $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question,true,60,'[...]',0.5);
                         $curGroup['questions'][] =  $curQuestion;
                     }

@@ -4,5 +4,5 @@ header('Content-type: application/json');
 $this->layout=false;
 
 echo CJavaScript::jsonEncode($data); 
-
+Yii::app()->end()
 ?>

@@ -10,6 +10,17 @@
         var strnogroup='<?php eT("There are no groups available.", "js");?>';
     -->
 </script>
+<div class="container-fluid">
+<?php if($asessementNotActivated):?>
+
+    <div class="row text-center">
+        <div class="jumbotron message-box <?php echo isset($asessementNotActivated['class']) ? $asessementNotActivated['class'] : ""; ?>">
+            <h2 ><?php echo $asessementNotActivated['title'];?></h2>
+            <?php echo $asessementNotActivated['message'];?>
+        </div>
+    </div>
+</form>
+<?php else:?>
 
 <h4><?php eT("Assessment rules");?></h4>
 
@@ -252,3 +263,5 @@
     </form>
 <?php endif; ?>
 </div></div></div><!-- opened in controller -->
+<?php endif;?>
+</div>

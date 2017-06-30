@@ -61,6 +61,7 @@ class Expressions extends Survey_Common_Action {
                     $aData['questiongroupbar']['closebutton']['url'] = $this->getController()->createUrl(
                         'admin/questiongroups/sa/view/',
                         ['surveyid'=> $surveyid, 'gid'=> sanitize_int(Yii::app()->request->getQuery('gid')), 'qid'=> sanitize_int(Yii::app()->request->getQuery('qid'))]);
+                    
                     $aData['gid'] = sanitize_int(Yii::app()->request->getQuery('gid'));
                 }
             }

@@ -26865,7 +26865,7 @@ Vue$3.compile = compileToFunctions;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(14)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(15)(module)))
 
 /***/ }),
 /* 3 */
@@ -26969,7 +26969,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(18)
+var listToStyles = __webpack_require__(19)
 
 /*
 type StyleObject = {
@@ -27370,7 +27370,7 @@ module.exports = function(obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(11);
-module.exports = __webpack_require__(55);
+module.exports = __webpack_require__(56);
 
 
 /***/ }),
@@ -27381,15 +27381,15 @@ module.exports = __webpack_require__(55);
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_localstorage__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_localstorage__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_localstorage___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_localstorage__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_topbar_vue__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_topbar_vue__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_topbar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_topbar_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pjax__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pjax__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_pjax___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_pjax__);
 
 
@@ -28453,6 +28453,189 @@ var index_esm = {
 
 /***/ }),
 /* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * vue-local-storage v0.2.0
+ * (c) 2017 Abdelrahman Awad
+ * @license MIT
+ */
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.VeeValidate = factory());
+}(this, (function () { 'use strict';
+
+var ls$1 = window.localStorage;
+
+var VueLocalStorage = function VueLocalStorage () {
+  this._properties = {};
+};
+
+/**
+ * Get value from localStorage
+ *
+ * @param {String} lsKey
+ * @param {*} defaultValue
+ * @returns {*}
+ */
+VueLocalStorage.prototype.get = function get (lsKey, defaultValue) {
+    var this$1 = this;
+    if ( defaultValue === void 0 ) defaultValue = null;
+
+  if (ls$1[lsKey]) {
+    var type = String;
+
+    for (var key in this$1._properties) {
+      if (key === lsKey) {
+        type = this$1._properties[key].type;
+        break
+      }
+    }
+
+    return this._process(type, ls$1[lsKey])
+  }
+
+  return defaultValue !== null ? defaultValue : null
+};
+
+/**
+ * Set localStorage value
+ *
+ * @param {String} lsKey
+ * @param {*} value
+ * @returns {*}
+ */
+VueLocalStorage.prototype.set = function set (lsKey, value) {
+    var this$1 = this;
+
+  for (var key in this$1._properties) {
+    var type = this$1._properties[key].type;
+
+    if ((key === lsKey) && [Array, Object].includes(type)) {
+      ls$1.setItem(lsKey, JSON.stringify(value));
+
+      return value
+    }
+  }
+
+  ls$1.setItem(lsKey, value);
+
+  return value
+};
+
+/**
+ * Remove value from localStorage
+ *
+ * @param {String} lsKey
+ */
+VueLocalStorage.prototype.remove = function remove (lsKey) {
+  return ls$1.removeItem(lsKey)
+};
+
+/**
+ * Add new property to localStorage
+ *
+ * @param {String} key
+ * @param {function} type
+ * @param {*} defaultValue
+ */
+VueLocalStorage.prototype.addProperty = function addProperty (key, type, defaultValue) {
+  type = type || String;
+
+  this._properties[key] = { type: type };
+
+  if (!ls$1[key] && defaultValue !== null) {
+    ls$1.setItem(key, [Array, Object].includes(type) ? JSON.stringify(defaultValue) : defaultValue);
+  }
+};
+
+/**
+ * Process the value before return it from localStorage
+ *
+ * @param {String} type
+ * @param {*} value
+ * @returns {*}
+ * @private
+ */
+VueLocalStorage.prototype._process = function _process (type, value) {
+  switch (type) {
+    case Boolean:
+      return value === 'true'
+    case Number:
+      return parseInt(value, 10)
+    case Array:
+      try {
+        var array = JSON.parse(value);
+
+        return Array.isArray(array) ? array : []
+      } catch (e) {
+        return []
+      }
+    case Object:
+      try {
+        return JSON.parse(value)
+      } catch (e) {
+        return {}
+      }
+    default:
+      return value
+  }
+};
+
+var VueLocalStorage$1 = new VueLocalStorage();
+
+var ls = window.localStorage;
+
+try {
+  var test = '__vue-localstorage-test__';
+
+  ls.setItem(test, test);
+  ls.removeItem(test);
+} catch (e) {
+  console.error('Local storage is not supported');
+}
+
+var index = {
+  /**
+   * Install vue-local-storage plugin
+   *
+   * @param {Vue} Vue
+   * @param {Object} options
+   */
+  install: function (Vue, options) {
+    if ( options === void 0 ) options = {};
+
+    var name = options.name || 'localStorage';
+
+    Vue.mixin({
+      created: function created () {
+        var this$1 = this;
+
+        if (this.$options[name]) {
+          Object.keys(this.$options[name]).forEach(function (key) {
+            var ref = [this$1.$options[name][key].type, this$1.$options[name][key].default];
+            var type = ref[0];
+            var defaultValue = ref[1];
+
+            VueLocalStorage$1.addProperty(key, type, defaultValue);
+          });
+        }
+      }
+    });
+
+    Vue[name] = VueLocalStorage$1;
+    Vue.prototype[("$" + name)] = VueLocalStorage$1;
+  }
+};
+
+return index;
+
+})));
+
+
+/***/ }),
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -28480,19 +28663,19 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(16)
+  __webpack_require__(17)
 }
 var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(19),
+  __webpack_require__(20),
   /* template */
-  __webpack_require__(30),
+  __webpack_require__(31),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -28524,13 +28707,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(17);
+var content = __webpack_require__(18);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -28550,7 +28733,7 @@ if(false) {
 }
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -28564,7 +28747,7 @@ exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 200, 200, 
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 /**
@@ -28597,7 +28780,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28606,7 +28789,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__questionsgroups_vue__);
 
 
@@ -28642,6 +28825,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         editEntity() {},
         openEntity() {},
         changeTab(currentTab) {
+            this.$localStorage.set('currentTab', currentTab);
             this.currentTab = currentTab;
         },
         activeTab(currentTab) {
@@ -28661,8 +28845,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted() {
         const self = this;
+        //first load old settings from localStorage
         this.menues = JSON.parse(self.$localStorage.get('menues', JSON.stringify([])));
         this.questiongroups = JSON.parse(self.$localStorage.get('questiongroups', JSON.stringify([])));
+        this.currentTab = self.$localStorage.get('currentTab', 'settings');
+
+        //then retrieve the current menues via ajax
         this.get(this.getQuestionsUrl).then(result => {
             console.log(result);
             self.questiongroups = result.data.groups;
@@ -28681,19 +28869,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(21)
+  __webpack_require__(22)
 }
 var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(23),
+  __webpack_require__(24),
   /* template */
-  __webpack_require__(29),
+  __webpack_require__(30),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -28725,13 +28913,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(22);
+var content = __webpack_require__(23);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -28751,7 +28939,7 @@ if(false) {
 }
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -28765,7 +28953,7 @@ exports.push([module.i, "\n.bigIcons {\n    font-size: 24px;\n}\n.border-bottom{
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28774,7 +28962,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_lodash__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_runAjax_js__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questions_vue__ = __webpack_require__(24);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questions_vue__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__questions_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__questions_vue__);
 
 
@@ -28816,24 +29004,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 this.active.push(sIndex);
             }
             this.$forceUpdate();
+            this.$localStorage.set('active', JSON.stringify(this.active));
+        },
+        openQuestionGroup(questionGroup, index) {
+            this.toggleActivation(index);
+            this.$emit('entityLoaded', questionGroup);
         }
+    },
+    mounted() {
+        this.active = JSON.parse(this.$localStorage.get('active', '[]'));
     }
 });
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(25)
+  __webpack_require__(26)
 }
 var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(27),
-  /* template */
   __webpack_require__(28),
+  /* template */
+  __webpack_require__(29),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -28865,13 +29061,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(26);
+var content = __webpack_require__(27);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -28891,7 +29087,7 @@ if(false) {
 }
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -28905,7 +29101,7 @@ exports.push([module.i, "\n.margin-right {\n  margin-right: 5px;\n}\n.padding-le
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28925,7 +29121,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         questions: { type: Array }
     },
     data: () => {
-        return {};
+        return {
+            active: false
+        };
     },
     computed: {},
     methods: {
@@ -28933,13 +29131,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return index == this.questions.length;
         },
         openQuestion(question) {
-            this.$emit('openEntity', { type: 'question', model: question });
+            this.$emit('openEntity', { type: 'question', model: question });location.href = question.link;
         }
     }
 });
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -28955,7 +29153,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }
     }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
       attrs: {
-        "href": "#",
+        "href": question.link,
         "data-toggle": "tootltip",
         "title": question.question
       },
@@ -28976,7 +29174,7 @@ if (false) {
 }
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -28990,7 +29188,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, _vm._l((_vm.questiongroups), function(questiongroup, index) {
     return _c('li', {
       staticClass: "list-group-item ls-flex-column",
-      class: _vm.isActive(index) ? 'active' : ''
+      class: _vm.isActive(index) ? 'selected' : ''
     }, [_c('div', {
       staticClass: "col-sm-12 ls-flex-row nowrap margin-bottom"
     }, [_c('i', {
@@ -29001,11 +29199,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
       staticClass: "col-sm-12",
       attrs: {
-        "href": "#"
+        "href": questiongroup.link
       },
       on: {
         "click": function($event) {
-          _vm.openQuestionGroup(questiongroup)
+          _vm.openQuestionGroup(questiongroup, index)
         }
       }
     }, [_vm._v(" \n                    " + _vm._s(questiongroup.group_name) + " \n                    "), _c('span', {
@@ -29035,7 +29233,7 @@ if (false) {
 }
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29154,19 +29352,19 @@ if (false) {
 }
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(32)
+  __webpack_require__(33)
 }
 var Component = __webpack_require__(5)(
   /* script */
-  __webpack_require__(34),
-  /* template */
   __webpack_require__(35),
+  /* template */
+  __webpack_require__(36),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -29198,13 +29396,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(33);
+var content = __webpack_require__(34);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -29224,7 +29422,7 @@ if(false) {
 }
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -29238,7 +29436,7 @@ exports.push([module.i, "", ""]);
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -29258,7 +29456,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -29285,25 +29483,25 @@ if (false) {
 }
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var clone = __webpack_require__(9)
-var executeScripts = __webpack_require__(37)
+var executeScripts = __webpack_require__(38)
 
 var forEachEls = __webpack_require__(0)
 
-var newUid = __webpack_require__(39)
+var newUid = __webpack_require__(40)
 
 var on = __webpack_require__(7)
 // var off = require("./lib/events/on.js")
-var trigger = __webpack_require__(40)
+var trigger = __webpack_require__(41)
 
 
 var Pjax = function(options) {
     this.firstrun = true
 
-    var parseOptions = __webpack_require__(41);
+    var parseOptions = __webpack_require__(42);
     parseOptions.apply(this,[options])
     this.log("Pjax options", this.options)
 
@@ -29333,24 +29531,24 @@ var Pjax = function(options) {
   }
 
 Pjax.prototype = {
-  log: __webpack_require__(42),
+  log: __webpack_require__(43),
 
-  getElements: __webpack_require__(43),
+  getElements: __webpack_require__(44),
 
-  parseDOM: __webpack_require__(44),
+  parseDOM: __webpack_require__(45),
 
-  refresh: __webpack_require__(46),
+  refresh: __webpack_require__(47),
 
-  reload: __webpack_require__(47),
+  reload: __webpack_require__(48),
 
-  attachLink: __webpack_require__(48),
+  attachLink: __webpack_require__(49),
 
   forEachSelectors: function(cb, context, DOMcontext) {
-    return __webpack_require__(50).bind(this)(this.options.selectors, cb, context, DOMcontext)
+    return __webpack_require__(51).bind(this)(this.options.selectors, cb, context, DOMcontext)
   },
 
   switchSelectors: function(selectors, fromEl, toEl, options) {
-    return __webpack_require__(51).bind(this)(this.options.switches, this.options.switchesOptions, selectors, fromEl, toEl, options)
+    return __webpack_require__(52).bind(this)(this.options.switches, this.options.switchesOptions, selectors, fromEl, toEl, options)
   },
 
   // too much problem with the code below
@@ -29433,7 +29631,7 @@ Pjax.prototype = {
     // }
   },
 
-  doRequest: __webpack_require__(53),
+  doRequest: __webpack_require__(54),
 
   loadUrl: function(href, options) {
     this.log("load href", href, options)
@@ -29513,7 +29711,7 @@ Pjax.prototype = {
   }
 }
 
-Pjax.isSupported = __webpack_require__(54);
+Pjax.isSupported = __webpack_require__(55);
 
 //arguably could do `if( require("./lib/is-supported.js")()) {` but that might be a little to simple
 if (Pjax.isSupported()) {
@@ -29533,11 +29731,11 @@ else {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var forEachEls = __webpack_require__(0)
-var evalScript = __webpack_require__(38)
+var evalScript = __webpack_require__(39)
 // Finds and executes scripts (used for newly added elements)
 // Needed since innerHTML does not run scripts
 module.exports = function(el) {
@@ -29554,7 +29752,7 @@ module.exports = function(el) {
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = function(el) {
@@ -29589,7 +29787,7 @@ module.exports = function(el) {
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports) {
 
 module.exports = (function() {
@@ -29603,7 +29801,7 @@ module.exports = (function() {
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var forEachEls = __webpack_require__(0)
@@ -29640,7 +29838,7 @@ module.exports = function(els, events, opts) {
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports) {
 
 /* global _gaq: true, ga: true */
@@ -29683,7 +29881,7 @@ module.exports = function(options){
 }
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -29700,7 +29898,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = function(el) {
@@ -29709,12 +29907,12 @@ module.exports = function(el) {
 
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var forEachEls = __webpack_require__(0)
 
-var parseElement = __webpack_require__(45)
+var parseElement = __webpack_require__(46)
 
 module.exports = function(el) {
   forEachEls(this.getElements(el), parseElement, this)
@@ -29722,7 +29920,7 @@ module.exports = function(el) {
 
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = function(el) {
@@ -29745,7 +29943,7 @@ module.exports = function(el) {
 
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports) {
 
 module.exports = function(el) {
@@ -29754,7 +29952,7 @@ module.exports = function(el) {
 
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -29763,10 +29961,10 @@ module.exports = function() {
 
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(49)
+__webpack_require__(50)
 
 var on = __webpack_require__(7)
 var clone = __webpack_require__(9)
@@ -29858,7 +30056,7 @@ module.exports = function(el) {
 
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports) {
 
 if (!Function.prototype.bind) {
@@ -29884,7 +30082,7 @@ if (!Function.prototype.bind) {
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var forEachEls = __webpack_require__(0)
@@ -29898,12 +30096,12 @@ module.exports = function(selectors, cb, context, DOMcontext) {
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var forEachEls = __webpack_require__(0)
 
-var defaultSwitches = __webpack_require__(52)
+var defaultSwitches = __webpack_require__(53)
 
 module.exports = function(switches, switchesOptions, selectors, fromEl, toEl, options) {
   selectors.forEach(function(selector) {
@@ -29939,7 +30137,7 @@ module.exports = function(switches, switchesOptions, selectors, fromEl, toEl, op
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var on = __webpack_require__(7)
@@ -30060,7 +30258,7 @@ module.exports = {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports) {
 
 module.exports = function(location, callback) {
@@ -30090,7 +30288,7 @@ module.exports = function(location, callback) {
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -30104,13 +30302,13 @@ module.exports = function() {
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(56);
+var content = __webpack_require__(57);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -30118,7 +30316,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(57)(content, options);
+var update = __webpack_require__(58)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -30135,7 +30333,7 @@ if(false) {
 }
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(3)(undefined);
@@ -30149,7 +30347,7 @@ exports.push([module.i, ".ls-flex, .ls-flex-row, .ls-flex-column {\n  display: -
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -30195,7 +30393,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(58);
+var	fixUrls = __webpack_require__(59);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -30508,7 +30706,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports) {
 
 
@@ -30600,189 +30798,6 @@ module.exports = function (css) {
 	// send back the fixed css
 	return fixedCss;
 };
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/**
- * vue-local-storage v0.2.0
- * (c) 2017 Abdelrahman Awad
- * @license MIT
- */
-(function (global, factory) {
-	 true ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.VeeValidate = factory());
-}(this, (function () { 'use strict';
-
-var ls$1 = window.localStorage;
-
-var VueLocalStorage = function VueLocalStorage () {
-  this._properties = {};
-};
-
-/**
- * Get value from localStorage
- *
- * @param {String} lsKey
- * @param {*} defaultValue
- * @returns {*}
- */
-VueLocalStorage.prototype.get = function get (lsKey, defaultValue) {
-    var this$1 = this;
-    if ( defaultValue === void 0 ) defaultValue = null;
-
-  if (ls$1[lsKey]) {
-    var type = String;
-
-    for (var key in this$1._properties) {
-      if (key === lsKey) {
-        type = this$1._properties[key].type;
-        break
-      }
-    }
-
-    return this._process(type, ls$1[lsKey])
-  }
-
-  return defaultValue !== null ? defaultValue : null
-};
-
-/**
- * Set localStorage value
- *
- * @param {String} lsKey
- * @param {*} value
- * @returns {*}
- */
-VueLocalStorage.prototype.set = function set (lsKey, value) {
-    var this$1 = this;
-
-  for (var key in this$1._properties) {
-    var type = this$1._properties[key].type;
-
-    if ((key === lsKey) && [Array, Object].includes(type)) {
-      ls$1.setItem(lsKey, JSON.stringify(value));
-
-      return value
-    }
-  }
-
-  ls$1.setItem(lsKey, value);
-
-  return value
-};
-
-/**
- * Remove value from localStorage
- *
- * @param {String} lsKey
- */
-VueLocalStorage.prototype.remove = function remove (lsKey) {
-  return ls$1.removeItem(lsKey)
-};
-
-/**
- * Add new property to localStorage
- *
- * @param {String} key
- * @param {function} type
- * @param {*} defaultValue
- */
-VueLocalStorage.prototype.addProperty = function addProperty (key, type, defaultValue) {
-  type = type || String;
-
-  this._properties[key] = { type: type };
-
-  if (!ls$1[key] && defaultValue !== null) {
-    ls$1.setItem(key, [Array, Object].includes(type) ? JSON.stringify(defaultValue) : defaultValue);
-  }
-};
-
-/**
- * Process the value before return it from localStorage
- *
- * @param {String} type
- * @param {*} value
- * @returns {*}
- * @private
- */
-VueLocalStorage.prototype._process = function _process (type, value) {
-  switch (type) {
-    case Boolean:
-      return value === 'true'
-    case Number:
-      return parseInt(value, 10)
-    case Array:
-      try {
-        var array = JSON.parse(value);
-
-        return Array.isArray(array) ? array : []
-      } catch (e) {
-        return []
-      }
-    case Object:
-      try {
-        return JSON.parse(value)
-      } catch (e) {
-        return {}
-      }
-    default:
-      return value
-  }
-};
-
-var VueLocalStorage$1 = new VueLocalStorage();
-
-var ls = window.localStorage;
-
-try {
-  var test = '__vue-localstorage-test__';
-
-  ls.setItem(test, test);
-  ls.removeItem(test);
-} catch (e) {
-  console.error('Local storage is not supported');
-}
-
-var index = {
-  /**
-   * Install vue-local-storage plugin
-   *
-   * @param {Vue} Vue
-   * @param {Object} options
-   */
-  install: function (Vue, options) {
-    if ( options === void 0 ) options = {};
-
-    var name = options.name || 'localStorage';
-
-    Vue.mixin({
-      created: function created () {
-        var this$1 = this;
-
-        if (this.$options[name]) {
-          Object.keys(this.$options[name]).forEach(function (key) {
-            var ref = [this$1.$options[name][key].type, this$1.$options[name][key].default];
-            var type = ref[0];
-            var defaultValue = ref[1];
-
-            VueLocalStorage$1.addProperty(key, type, defaultValue);
-          });
-        }
-      }
-    });
-
-    Vue[name] = VueLocalStorage$1;
-    Vue.prototype[("$" + name)] = VueLocalStorage$1;
-  }
-};
-
-return index;
-
-})));
 
 
 /***/ })

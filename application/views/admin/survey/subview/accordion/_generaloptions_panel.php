@@ -3,6 +3,16 @@
 * General options
 */
 ?>
+<script type="text/javascript">
+    var jsonUrl = '';
+    var sAction = '';
+    var sParameter = '';
+    var sTargetQuestion = '';
+    var sNoParametersDefined = '';
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sURLParameters = '';
+    var sAddParam = '';
+</script>
 <!-- General options -->
     <?php
     $yii = Yii::app();

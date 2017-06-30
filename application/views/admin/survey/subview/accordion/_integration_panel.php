@@ -6,10 +6,9 @@
     $yii = Yii::app();
     $controller = $yii->getController();
 ?>
-
 <!-- Datatable translation-data -->
 <script type="text/javascript">
-    var jsonUrl = "<?php echo App()->createUrl('admin/survey', array('sa' => 'getUrlParamsJson', 'surveyid' => $surveyid))?>";
+    var jsonUrl = "<?php echo App()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $surveyid))?>";
     var imageUrl = "<?php echo $yii->getConfig("adminimageurl");?>";
     var sProgress = "<?php  eT('Showing _START_ to _END_ of _TOTAL_ entries','js');?>";
     var sAction = "<?php  eT('Action','js');?>";

@@ -5,8 +5,9 @@
 ?>
 
 <script type="text/javascript">
-    standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
-    templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
+    var standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
+    var templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
+    var formId = '<?=$entryData['name']?>';
 </script>
 
 <?php
@@ -43,10 +44,9 @@ if(isset($scripts))
             <input type="hidden" name="action" value="<?=$entryData['action']?>" />
             <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" />
             <input type="hidden" name="language" value="<?php echo $surveyls_language; ?>" />
+            <input type="hidden" name="responsejson" value="1" />
             <input type='submit' class="hide" id="globalsetting_submit" />
             </form>
         </div>
-
-        <?php //$this->renderPartial('/admin/survey/subview/import_ressources_modal', $settings_data); ?>
     </div>
 </div>

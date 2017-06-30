@@ -130,6 +130,25 @@ $(document).ready(function(){
             $('#btnSave').show();
         }
     });
+
+    $('#'+formId).on('submit', function(e){
+        e.preventDefault();
+        var data = $(this).serializeArray();
+        var uri = $(this).attr('action');
+        console.log({'Data' : data, 'URI' : uri});
+        $.ajax({
+            url: uri,
+            method:'POST',
+            data: data,
+            success: function(result){
+                console.log({result: result});
+                location.reload();
+            },
+            error: function(result){
+                console.log({result: result});
+            }
+        });
+    });
 });
 /**
  * Bind to submit event
@@ -304,3 +323,4 @@ function guidGenerator() {
     };
     return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
 }
+

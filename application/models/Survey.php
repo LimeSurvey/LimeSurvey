@@ -546,6 +546,10 @@ class Survey extends LSActiveRecord
         $defaultMenuEntries = $oDefaultMenu->surveymenuEntries;
         foreach($defaultMenuEntries as $menuEntry){
             $aEntry = $menuEntry->attributes;
+            if((!empty($entry['permission']) && !empty($entry['permission_grade']) && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade'])))
+                continue;
+
+            
             $aEntry['link'] = $aEntry['menu_link'] 
                         ?  App()->getController()->createUrl($aEntry['menu_link'],['surveyid' => $this->sid])
                         : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
