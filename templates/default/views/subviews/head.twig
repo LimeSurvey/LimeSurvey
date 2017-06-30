@@ -39,6 +39,8 @@
         // Submit the form with Ajax
         function ajaxSubmit(){
 
+            var numPost = 0;
+
             // First we get the value of the button clicked  (movenext, submit, prev, etc)
             var move = "";
             $(".ls-move-btn").on("click", function(){
@@ -48,6 +50,12 @@
             // If the user try to submit the form
             $(document).on("submit", "#limesurvey", function (e) {
                 e.preventDefault();
+
+                // Prevent multiposting
+                numPost++;
+                if ( numPost > 1){
+                    return;
+                }
 
                 var sUrl  = $(this).attr("action");
                 var aPost = $(this).serialize();
@@ -62,21 +70,22 @@
                    data     : aPost,
 
                    success : function(body_html, statut){
+
                        $("body").empty().append(body_html);
-                       //console.log(body_html);
 
                        // This chunk of script will eval all the scripts of the loaded body
                        var scriptElements = $("body").find('script');
+                       
                        for (i = 0; i < scriptElements.length; i ++) {
                            var scriptElement = document.createElement('SCRIPT');
                            scriptElement.type = 'text/javascript';
+
                            if (!scriptElements[i].src) {
                                scriptElement.innerHTML = scriptElements[i].innerHTML;
                            } else {
                                scriptElement.src = scriptElements[i].src;
                            }
                            document.head.appendChild(scriptElement);
-                           // console.log(scriptElement);
                        }
 
                        // We reapply the function to the new form
