@@ -88,6 +88,8 @@
                     </div>
 
                     <!--Delete exported tokens -->
+                    <?php if (Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete')) { ?>
+
                     <div class="form-group control-group " data-name="tokendeleteexported">
                         <label class="default control-label col-lg-2 col-sm-5 col-md-2" for="tokendeleteexported">
                             <?php eT('Delete exported participants:'); ?>
@@ -105,6 +107,7 @@
                             <?php eT('Warning: Deleted participants entries cannot be recovered.'); ?>
                         </div>
                     </div>
+                    <?php } ?>
                 </div>
                 <div class="buttons control-group hidden"><button class="btn" type="submit" name="submit"><?php eT('Export tokens'); ?></button></div>
             </form>

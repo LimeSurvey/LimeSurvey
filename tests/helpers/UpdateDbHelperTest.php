@@ -55,6 +55,19 @@ class UpdateDbHelperTest extends TestBaseClass
         $result = $inst->_executeSQLFile($file, 'lime_');
         $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
 
+        // Dump database to file.
+        $output = array();
+        $result = exec(
+            sprintf(
+                'mysqldump -u %s -p%s __test_install_script > tests/data/tmp/__test_install_script-dump.sql',
+                $config['components']['db']['username'],
+                $config['components']['db']['password']
+            ),
+            $output
+        );
+        $this->assertEmpty($output, 'No output from mysqldump');
+        $this->assertEmpty($result, 'No last line output from mysqldump');
+
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
@@ -63,6 +76,7 @@ class UpdateDbHelperTest extends TestBaseClass
     /**
      * Run db_upgrade_all() from dbversion 153, to make sure
      * there are no conflicts or syntax errors.
+     * @group upgradeall
      */
     public function testDbUpgradeAll()
     {
@@ -91,6 +105,19 @@ class UpdateDbHelperTest extends TestBaseClass
         // Check error messages.
         $flashes = \Yii::app()->user->getFlashes();
         $this->assertEmpty($flashes, 'No flash error messages');
+
+        // Dump database to file.
+        $output = array();
+        $result = exec(
+            sprintf(
+                'mysqldump -u %s -p%s __test_update_helper > tests/data/tmp/__test_update_helper-dump.sql',
+                $config['components']['db']['username'],
+                $config['components']['db']['password']
+            ),
+            $output
+        );
+        $this->assertEmpty($output, 'No output from mysqldump');
+        $this->assertEmpty($result, 'No last line output from mysqldump');
 
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
