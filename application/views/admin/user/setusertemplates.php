@@ -1,4 +1,4 @@
-<h3 class="pagetitle"><?php printf(gT('Edit template permissions for user %s'),"<em>".\CHtml::encode($oUser->users_name)."</em>");?></h3>
+<div class="pagetitle h3"><?php printf(gT('Edit template permissions for user %s'),"<em>".\CHtml::encode($oUser->users_name)."</em>");?></div>
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-6 col-lg-offset-3 content-right">
 

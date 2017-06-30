@@ -6,7 +6,7 @@
 </script>
 
 <div class="container-fluid welcome full-page-wrapper">
-<h3 class="pagetitle"><?php eT("Global settings"); ?></h3>
+<div class="pagetitle h3"><?php eT("Global settings"); ?></div>
 
 <ul class="nav nav-tabs" id="settingTabs">
         <li role="presentation" class="active"><a role="tab" data-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>

@@ -234,7 +234,8 @@ html {
 .surveymanagerbar {
   margin-top: -20px;
   padding-top: 5px; }
-  .surveymanagerbar h3 {
+
+.surveymanagerbar .h3 {
     margin-top: 5px;
     font-weight: 300;
     font-size: 1.5em; }

@@ -1,6 +1,6 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title" id="participant_edit_modal"><?php if ($editType == 'add'): eT('Add participant'); else: eT('Edit participant'); endif; ?></h4>
+    <div class="modal-title h4" id="participant_edit_modal"><?php if ($editType == 'add'): eT('Add participant'); else: eT('Edit participant'); endif; ?></div>
 </div>
 <div class="modal-body edit-participant-modal-body form-horizontal">
 <?php

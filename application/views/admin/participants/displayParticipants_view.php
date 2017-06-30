@@ -1,5 +1,5 @@
 <div class="col-xs-12">
-    <h3 class="pagetitle row">
+    <div class="pagetitle h3 row">
         <div class="col-xs-8 ">
             <?php eT("Central participant management"); ?>
         </div>
@@ -10,7 +10,7 @@
                 <?php eT("Add new participant"); ?>
             </button>
         </div>
-    </h3>
+    </div>
 <div class="row" style="margin-bottom: 100px">
   <div class="container-fluid">
         <?php 
