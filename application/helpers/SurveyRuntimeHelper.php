@@ -775,8 +775,6 @@ class SurveyRuntimeHelper {
     {
 
         // retrieve datas from local variable
-        $this->aMoveResult       = false;
-
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])){
 
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
