@@ -184,16 +184,18 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
 
         // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
-        if (Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'] ){
-            $languagecode =  Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'];
-        }elseif ($aDatas['aSurveyInfo']['sid']  && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])){
-            $languagecode = Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->language;
-        }else{
-            $languagecode = Yii::app()->getConfig('defaultlang');
-        }
+        if (!empty($aDatas['aSurveyInfo']['sid'])){
+            if (Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'] ){
+                $languagecode =  Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'];
+            }elseif ($aDatas['aSurveyInfo']['sid']  && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])){
+                $languagecode = Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->language;
+            }else{
+                $languagecode = Yii::app()->getConfig('defaultlang');
+            }
 
-        $aDatas["aSurveyInfo"]['languagecode'] = $languagecode;
-        $aDatas["aSurveyInfo"]['dir']          = (getLanguageRTL($languagecode))?"rtl":"ltr";
+            $aDatas["aSurveyInfo"]['languagecode'] = $languagecode;
+            $aDatas["aSurveyInfo"]['dir']          = (getLanguageRTL($languagecode))?"rtl":"ltr";
+        }
 
         // Add all mother templates path
         while($oRTemplate->oMotherTemplate instanceof TemplateConfiguration){
@@ -247,7 +249,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
             Yii::app()->end();
         }else{
-            echo $nvLine;
+            return $nvLine;
         }
     }
 }
