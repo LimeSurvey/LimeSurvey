@@ -42,6 +42,11 @@
         </logo>
     </files>
 
+    <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
+    <options>
+        <!-- will be available with aSurveyInfo.options.ajaxmode -->
+        <ajaxmode>on</ajaxmode>
+    </options>
 
     <!-- Here datas about how LimeSurvey should load the template -->
     <engine>

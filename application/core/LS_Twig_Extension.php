@@ -229,7 +229,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function getTemplateForRessource($sRessource)
     {
         $oRTemplate = Template::model()->getInstance();
-        
+
         while (!file_exists($oRTemplate->path.'/'.$sRessource)){
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
@@ -256,6 +256,23 @@ class LS_Twig_Extension extends Twig_Extension
     public static function getQuery($sName, $sDefaultValue=null)
     {
         return Yii::app()->request->getQuery($sName, $sDefaultValue);
+    }
+
+    public static function unregisterPackage($name)
+    {
+        return Yii::app()->getClientScript()->unregisterPackage($name);        
+    }
+
+    public static function listCoreScripts()
+    {
+        foreach(Yii::app()->getClientScript()->coreScripts as $key => $package){
+
+            echo "<hr>";
+            echo "$key: <br>";
+            var_dump($package);
+
+        }
+
     }
 
 

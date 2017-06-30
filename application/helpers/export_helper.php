@@ -1830,7 +1830,7 @@ function tokensExport($iSurveyID)
         $aExportedTokens[] = $brow['tid'];
     }
 
-    if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
+    if (Yii::app()->request->getPost('tokendeleteexported') && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete') && !empty($aExportedTokens))
     {
         Token::model($iSurveyID)->deleteByPk($aExportedTokens);
     }

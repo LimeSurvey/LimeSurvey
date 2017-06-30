@@ -244,17 +244,6 @@ class SurveyRuntimeHelper {
 
         Yii::app()->loadHelper('surveytranslator');
 
-        // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
-        if (Yii::app()->session['survey_'.$this->iSurveyid]['s_lang'] ){
-            $languagecode =  Yii::app()->session['survey_'.$this->iSurveyid]['s_lang'];
-        }elseif ($this->iSurveyid  && Survey::model()->findByPk($this->iSurveyid)){
-            $languagecode = Survey::model()->findByPk($this->iSurveyid)->language;
-        }else{
-            $languagecode = Yii::app()->getConfig('defaultlang');
-        }
-
-        $this->aSurveyInfo['languagecode'] = $languagecode;
-        $this->aSurveyInfo['dir']          = (getLanguageRTL($languagecode))?"rtl":"ltr";
         $this->aSurveyInfo['upload_file']  = $upload_file;
         $hiddenfieldnames           = $this->aSurveyInfo['hiddenfieldnames']  = implode("|", $inputnames);
 

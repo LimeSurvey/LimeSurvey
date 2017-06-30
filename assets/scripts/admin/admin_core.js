@@ -698,7 +698,7 @@ if ('ab'.substr(-1) != 'b') {
 function linksInDialog()
 {
     $(function () {
-        var iframe = $('<iframe id="dialog" allowfullscreen></iframe>');
+        var iframe = $('<iframe id="dialog" title='+$(this).attr("title")+' allowfullscreen></iframe>');
         var dialog = $("<div></div>").append(iframe).appendTo("body").dialog({
             autoOpen: false,
             modal: false,
@@ -710,7 +710,9 @@ function linksInDialog()
             }
         });
 
+	// 508 fixes
 	iframe.contents().find('head').append('<title>'+$(this).attr("title")+'</title>');
+	$('.ui-dialog-titlebar-close').append('<span class="sr-only">Close</span>');
 
         $(document).on('click','a[target=dialog]',function(event){
             event.preventDefault();

@@ -32,5 +32,71 @@
 
     <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
     <link rel="shortcut icon" href="{{ aSurveyInfo.oTemplate.sTemplateurl }}favicon.ico" />
+
+    {# Ajax mode #}
+    {% if(aSurveyInfo.options.ajaxmode == "on") %}
+    <script>
+        // Submit the form with Ajax
+        function ajaxSubmit(){
+
+            // First we get the value of the button clicked  (movenext, submit, prev, etc)
+            var move = "";
+            $(".ls-move-btn").on("click", function(){
+                move = $(this).attr("value");
+            });
+
+            // If the user try to submit the form
+            $(document).on("submit", "#limesurvey", function (e) {
+                e.preventDefault();
+
+                var sUrl  = $(this).attr("action");
+                var aPost = $(this).serialize();
+
+                // We add the value of the button clicked to the post request
+                aPost += "&move="+move;
+
+                $.ajax({
+                   url      : sUrl,
+                   type     : 'POST',
+                   dataType : 'html',
+                   data     : aPost,
+
+                   success : function(body_html, statut){
+                       $("body").empty().append(body_html);
+                       //console.log(body_html);
+
+                       // This chunk of script will eval all the scripts of the loaded body
+                       var scriptElements = $("body").find('script');
+                       for (i = 0; i < scriptElements.length; i ++) {
+                           var scriptElement = document.createElement('SCRIPT');
+                           scriptElement.type = 'text/javascript';
+                           if (!scriptElements[i].src) {
+                               scriptElement.innerHTML = scriptElements[i].innerHTML;
+                           } else {
+                               scriptElement.src = scriptElements[i].src;
+                           }
+                           document.head.appendChild(scriptElement);
+                           // console.log(scriptElement);
+                       }
+
+                       // We reapply the function to the new form
+                       ajaxSubmit();
+
+                   },
+
+                   error : function(result, statut, erreur){
+                       alert("ERROR");
+                       console.log(result);
+                   }
+                });
+            });
+        }
+
+        $( document ).ready( function(){
+            ajaxSubmit();
+        });
+    </script>
+    {% endif %}
+
     {{ include('./subviews/google_analytics.twig') }}
 </head>
