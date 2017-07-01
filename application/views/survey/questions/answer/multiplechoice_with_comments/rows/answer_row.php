@@ -24,7 +24,7 @@
  */
 ?>
 <!-- answer_row -->
-<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group clearfix'>
+<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group'>
     <!-- Checkbox + label -->
     <div class="col-sm-<?php echo $sLabelWidth; ?> col-xs-12">
         <div class="checkbox-item answer-item form-group">
@@ -51,7 +51,6 @@
 
     <!-- Comment -->
     <div class="col-sm-<?php echo $sInputContainerWidth; ?> col-xs-12 answer-item text-item comment-item">
-        <div class=" ">
             <input
                 class='form-control <?php echo $kpclass; ?>'
                 type='text'
@@ -60,7 +59,6 @@
                 value='<?php echo $inputCOmmentValue; ?>'
                 aria-labelledby='label-<?php echo $id;?>'
             />
-        </div>
     </div>
 </li>
 <!-- end of answer_row -->
