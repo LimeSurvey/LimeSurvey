@@ -2,6 +2,8 @@
 /**
 * General options
 */
+/** @var Survey $oSurvey */
+$oSurvey = Survey::model()->findByPk($surveyid);
 ?>
 <!-- General options -->
 
@@ -60,10 +62,8 @@
         <div class="col-sm-9">
             <?php
             $aAllLanguages=getLanguageDataRestricted (false,'short');
-            foreach(Survey::model()->findByPk($surveyid)->additionalLanguages as $sSurveyLang)
-            {
-                if(!array_key_exists($sSurveyLang,$aAllLanguages))
-                {
+            foreach($oSurvey->additionalLanguages as $sSurveyLang) {
+                if(!array_key_exists($sSurveyLang,$aAllLanguages)) {
                     $aAllLanguages[$sSurveyLang]=getLanguageNameFromCode($sSurveyLang,false);
                 }
             }
@@ -73,13 +73,13 @@
                 'asDropDownList' => true,
                 'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
                 'data' => $aAllLanguages,
-                'value' => Survey::model()->findByPk($surveyid)->additionalLanguages,
+                'value' => $oSurvey->additionalLanguages,
                 'name' => 'additional_languages',
                 'pluginOptions' => array(
                     'placeholder' => gt('Select additional languages','unescaped'),
             )));
             ?>
-            <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ',Survey::model()->findByPk($surveyid)->additionalLanguages); ?>'>
+            <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ',$oSurvey->additionalLanguages); ?>'>
         </div>
     </div>
 

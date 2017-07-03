@@ -96,17 +96,16 @@ class Save
         }
 
         /* Construction of the form */
-        if(function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', Survey::model()->findByPk($iSurveyId)->usecaptcha)){
+        if(function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $oSurvey->usecaptcha)){
             $captcha = Yii::app()->getController()->createUrl('/verification/image',array('sid'=>$iSurveyId));
-        }else{
+        } else {
             $captcha = null;
         }
 
         $saveForm  = CHtml::beginForm(array("/survey/index","sid"=>$iSurveyId), 'post',array('id'=>'form-save','class'=>'ls-form'));
         $saveForm .= CHtml::hiddenField('savesubmit','save');
         $saveForm .= App()->getController()->renderPartial("/survey/frontpage/saveForm/form",array('captcha'=>$captcha),true);
-
-        if ($clienttoken){
+        if ($clienttoken) {
             $saveForm .= CHtml::hiddenField('token',$clienttoken);
         }
 

@@ -3601,6 +3601,9 @@
         */
         private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
         {
+            /** @var Survey $oSurvey */
+            $oSurvey = Survey::model()->findByPk($surveyid);
+
             if (isset($_SESSION['LEMforceRefresh'])) {
                 unset($_SESSION['LEMforceRefresh']);
                 $forceRefresh=true;
@@ -3612,7 +3615,7 @@
             $this->em->SetSurveyMode($this->surveyMode);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
-            $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
+            $fieldmap=createFieldMap($oSurvey,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
             $this->sessid = 'survey_' . $this->sid;
             $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
@@ -4228,8 +4231,7 @@
             }
             $this->q2subqInfo = $q2subqInfo;
             // Now set tokens
-            if (Survey::model()->hasTokens($surveyid) && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
-            {
+            if ($oSurvey->hasTokens() && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '') {
                 //Gather survey data for tokenised surveys, for use in presenting questions
                 $this->knownVars['TOKEN:TOKEN'] = array(
                     'code'=>$_SESSION[$this->sessid]['token'],
@@ -10218,12 +10220,13 @@ EOD;
          */
         public function loadTokenInformation($iSurveyId, $sToken = null, $bAnonymize = false)
         {
-            if (!Survey::model()->hasTokens($iSurveyId))
-            {
+            /** @var Survey $oSurvey */
+            $oSurvey = Survey::model()->findByPk($iSurveyId);
+
+            if (!$oSurvey->hasTokens()) {
                 return;
             }
-            if ($sToken === null && isset($_SESSION[$this->sessid]['token']))
-            {
+            if ($sToken === null && isset($_SESSION[$this->sessid]['token'])) {
                 $sToken = $_SESSION[$this->sessid]['token'];
             }
 
@@ -10231,12 +10234,9 @@ EOD;
                 'token' => $sToken
             ));
 
-            if ($oToken)
-            {
-                foreach ($oToken->attributes as $attribute => $value)
-                {
-                    if ($bAnonymize)
-                    {
+            if ($oToken) {
+                foreach ($oToken->attributes as $attribute => $value) {
+                    if ($bAnonymize) {
                         $value = "";
                     }
                     $this->knownVars["TOKEN:" . strtoupper($attribute)] = array(
@@ -10247,8 +10247,7 @@ EOD;
                     );
                 }
             }
-            else
-            {
+            else {
                 // Read list of available tokens from the tokens table so that preview and error checking works correctly
                 $blankVal = array(
                     'code'=>'',
@@ -10256,8 +10255,7 @@ EOD;
                     'jsName'=>'',
                     'readWrite'=>'N',
                 );
-                foreach (Token::model($iSurveyId)->tableSchema->columnNames as $attribute)
-                {
+                foreach (Token::model($iSurveyId)->tableSchema->columnNames as $attribute) {
                     $this->knownVars['TOKEN:' . strtoupper($attribute)] = $blankVal;
                 }
             }

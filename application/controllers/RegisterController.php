@@ -95,9 +95,8 @@ class RegisterController extends LSYii_Controller {
         $oSurvey=Survey::model()->find("sid=:sid",array(':sid'=>$iSurveyId));
 
         $sLanguage = Yii::app()->request->getParam('lang');
-        if (!$sLanguage)
-        {
-            $sLanguage = Survey::model()->findByPk($iSurveyId)->language;
+        if (!$sLanguage) {
+            $sLanguage = $oSurvey->language;
         }
 
         if (!$oSurvey){

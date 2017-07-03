@@ -45,32 +45,30 @@ class responses extends Survey_Common_Action
      */
     private function _getData($params)
     {
-        if (is_numeric($params))
-        {
+        if (is_numeric($params)) {
             $iSurveyId = $params;
-        }
-        elseif (is_array($params))
-        {
+        } elseif (is_array($params)) {
             extract($params);
         }
         $aData = array();
         // Set the variables in an array
         $aData['surveyid'] = $aData['iSurveyId'] = (int) $iSurveyId;
-        if (!empty($iId))
-        {
+        if (!empty($iId)) {
             $aData['iId'] = (int) $iId;
         }
         $aData['imageurl'] = Yii::app()->getConfig('imageurl');
         $aData['action'] = Yii::app()->request->getParam('action');
         $aData['all']=Yii::app()->request->getParam('all');
         $thissurvey=getSurveyInfo($iSurveyId);
+
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
         if(!$thissurvey)// Already done in Survey_Common_Action
         {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
             $this->getController()->redirect(array("admin/index"));
-        }
-        elseif($thissurvey['active'] != 'Y')
-        {
+        } elseif($oSurvey->isActive) {
             Yii::app()->session['flashmessage'] = gT("This survey has not been activated. There are no results to browse.");
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/{$iSurveyId}"));
         }
@@ -79,22 +77,17 @@ class responses extends Survey_Common_Action
 
         $aData['surveyinfo'] = $thissurvey;
 
-        if (Yii::app()->request->getParam('browselang'))
-        {
+        if (Yii::app()->request->getParam('browselang')) {
             $aData['language'] = Yii::app()->request->getParam('browselang');
-            $aData['languagelist'] = $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-            $aData['languagelist'][] = Survey::model()->findByPk($iSurveyId)->language;
-            if (!in_array($aData['language'], $languagelist))
-            {
+            $aData['languagelist'] = $oSurvey->allLanguages;
+            if (!in_array($aData['language'], $oSurvey->additionalLanguages)) {
                 $aData['language'] = $thissurvey['language'];
             }
-        }
-        else
-        {
+        } else {
             $aData['language'] = $thissurvey['language'];
         }
 
-        $aData['qulanguage'] = Survey::model()->findByPk($iSurveyId)->language;
+        $aData['qulanguage'] = $oSurvey->language;
 
         $aData['surveyoptions'] = '';
         $aData['browseoutput']  = '';
@@ -134,6 +127,9 @@ class responses extends Survey_Common_Action
     {
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
+            /** @var Survey $oSurvey */
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
+
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
             $sBrowseLanguage = $aData['language'];
 
@@ -141,7 +137,7 @@ class responses extends Survey_Common_Action
 
             $aViewUrls = array();
 
-            $fieldmap = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
+            $fieldmap = createFieldMap($oSurvey, 'full', false, false, $aData['language']);
             $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID);// Boolean : show (or not) the token
             if(!Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) // If not allowed to read: remove it
             {
@@ -149,8 +145,7 @@ class responses extends Survey_Common_Action
                 $bHaveToken=false;
             }
             //add token to top of list if survey is not private
-            if ($bHaveToken)
-            {
+            if ($bHaveToken) {
                 $fnames[] = array("token", gT("Token ID"), 'code'=>'token');
                 $fnames[] = array("firstname", gT("First name"), 'code'=>'firstname');// or token:firstname ?
                 $fnames[] = array("lastname", gT("Last name"), 'code'=>'lastname');
@@ -391,6 +386,8 @@ class responses extends Survey_Common_Action
      */
     public function browse($iSurveyId)
     {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
             App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'listresponse.js');
@@ -403,7 +400,7 @@ class responses extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
             $aData['issuperadmin']      = Permission::model()->hasGlobalPermission('superadmin');
             $aData['hasUpload']         = hasFileUploadQuestion($iSurveyId);
-            $aData['fieldmap']          = createFieldMap($iSurveyId, 'full', true, false, $aData['language']);
+            $aData['fieldmap']          = createFieldMap($oSurvey, 'full', true, false, $aData['language']);
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
             ////////////////////

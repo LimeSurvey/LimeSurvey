@@ -85,14 +85,14 @@ class OptoutController extends LSYii_Controller {
             $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
         //Check that there is a SID
         // Get passed language from form, so that we dont lose this!
-        if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
-        {
-            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        }
-        else
-        {
+        if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
+            $sBaseLanguage = $oSurvey->language;
+        } else {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }
 
@@ -102,27 +102,19 @@ class OptoutController extends LSYii_Controller {
 
         if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}")){
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }
-        else
-        {
+        } else {
             LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$sToken,false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token'=>$sToken));
 
-            if (!isset($oToken))
-            {
+            if (!isset($oToken)) {
                 $sMessage = gT('You are not a participant in this survey.');
                 //throw new CHttpException(404, "You are not a participant in this survey.");
-            }
-            else
-            {
-                if (substr($oToken->emailstatus, 0, strlen('OptOut')) !== 'OptOut')
-                {
+            } else {
+                if (substr($oToken->emailstatus, 0, strlen('OptOut')) !== 'OptOut') {
                     $oToken->emailstatus = 'OptOut';
                     $oToken->save();
                     $sMessage = gT('You have been successfully removed from this survey.');
-                }
-                else
-                {
+                } else {
                     $sMessage = gT('You have been already removed from this survey.');
                 }
             }
@@ -147,54 +139,41 @@ class OptoutController extends LSYii_Controller {
             $this->redirect(array('/'));
         }
         $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
         //Check that there is a SID
         // Get passed language from form, so that we dont lose this!
-        if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
-        {
-            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        }
-        else
-        {
+        if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode) {
+            $sBaseLanguage = $oSurvey->language;
+        } else {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }
         Yii::app()->setLanguage($sBaseLanguage);
 
         $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
 
-        if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}"))
-        {
+        if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}")) {
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }
-        else
-        {
+        } else {
             LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$sToken,false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $sToken));
-            if (!isset($oToken))
-            {
+            if (!isset($oToken)) {
                 $sMessage = gT('You are not a participant in this survey.');
-            }
-            else
-            {
-                if (substr($oToken->emailstatus, 0, strlen('OptOut')) !== 'OptOut')
-                {
+            } else {
+                if (substr($oToken->emailstatus, 0, strlen('OptOut')) !== 'OptOut') {
                     $oToken->emailstatus = 'OptOut';
                     $oToken->save();
                     $sMessage = gT('You have been successfully removed from this survey.');
-                }
-                else
-                {
+                } else {
                     $sMessage = gT('You have been already removed from this survey.');
-                }
-                if(!empty($oToken->participant_id))
-                {
+                } if(!empty($oToken->participant_id)) {
                     //Participant also exists in central db
                     $oParticipant = Participant::model()->findByPk($oToken->participant_id);
-                    if($oParticipant->blacklisted=="Y")
-                    {
+                    if($oParticipant->blacklisted=="Y") {
                         $sMessage .= "<br />";
                         $sMessage .= gT("You have already been removed from the central participants list for this site");
-                    } else
-                    {
+                    } else {
                         $oParticipant->blacklisted='Y';
                         $oParticipant->save();
                         $sMessage .= "<br />";

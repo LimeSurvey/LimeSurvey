@@ -33,19 +33,17 @@ class Assessments extends Survey_Common_Action
     public function index($iSurveyID)
     {
         $iSurveyID = sanitize_int($iSurveyID);
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $sAction = Yii::app()->request->getParam('action');
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read'))
-        {
-            $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-            $surveyLanguage = Survey::model()->findByPk($iSurveyID)->language;
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read')) {
 
             Yii::app()->session['FileManagerContext'] = "edit:assessments:{$iSurveyID}";
 
-            array_unshift($languages, $surveyLanguage); // makes an array with ALL the languages supported by the survey -> $assessmentlangs
 
-            Yii::app()->setConfig("baselang", $surveyLanguage);
-            Yii::app()->setConfig("assessmentlangs", $languages);
+            Yii::app()->setConfig("baselang", $oSurvey->language);
+            Yii::app()->setConfig("assessmentlangs", $oSurvey->allLanguages);
 
             if ($sAction == "assessmentadd")
                 $this->_add($iSurveyID);
@@ -57,10 +55,8 @@ class Assessments extends Survey_Common_Action
                 $this->_delete($iSurveyID, $_POST['id']);
 
 
-            $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage);
-        }
-        else
-        {
+            $this->_showAssessments($iSurveyID, $sAction, $oSurvey->language);
+        } else {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array("admin/"));
         }

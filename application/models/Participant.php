@@ -1411,10 +1411,13 @@ class Participant extends LSActiveRecord
      */
     private function updateTokenFieldProperties($surveyId, array $mappedAttributes)
     {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyId);
+
         foreach($mappedAttributes as $key => $iIDAttributeCPDB) {
             if(is_numeric($iIDAttributeCPDB)) {
                 /* Update the attribute descriptions info */
-                $tokenAttributes = Survey::model()->findByPk($surveyId)->tokenattributes;
+                $tokenAttributes = $oSurvey->tokenAttributes;
                 $tokenAttributes[$key]['cpdbmap'] = $iIDAttributeCPDB;
                 Yii::app()->db
                     ->createCommand()
@@ -1848,6 +1851,9 @@ class Participant extends LSActiveRecord
      */
     public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
     {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyId);
+
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
         $tokenid = json_decode($tokenid_string);
         $duplicate = 0;
@@ -1965,7 +1971,7 @@ class Participant extends LSActiveRecord
         }
 
         if ($createautomap=="true") {
-            $aAttributes=Survey::model()->findByPk($surveyid)->tokenattributes;
+            $aAttributes=$oSurvey->tokenAttributes;
             if (!empty($aAttributesToBeCreated)) {
                 // If automapping is enabled then update the token field properties with the mapped CPDB field ID
                 foreach ($aAttributesToBeCreated as $tatt => $cpdbatt) {

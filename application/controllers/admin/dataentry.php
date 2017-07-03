@@ -507,10 +507,11 @@ class dataentry extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $id = sanitize_int($id);
         $aViewUrls = array();
-        $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        $sDataEntryLanguage = $oSurvey->language;
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
-        {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update')) {
             $surveytable = "{{survey_".$surveyid.'}}';
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
 
@@ -526,8 +527,7 @@ class dataentry extends Survey_Common_Action
             $fnresult=$fnresult->readAll();
 
             $fnrows = array(); //Create an empty array in case FetchRow does not return any rows
-            foreach ($fnresult as $fnrow)
-            {
+            foreach ($fnresult as $fnrow) {
                 $fnrows[] = $fnrow;
                 $private=$fnrow['anonymized'];
             } // Get table output into array
@@ -537,7 +537,7 @@ class dataentry extends Survey_Common_Action
 
             $fnames['completed'] = array('fieldname'=>"completed", 'question'=>gT("Completed"), 'type'=>'completed');
 
-            $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage));
+            $fnames=array_merge($fnames,createFieldMap($oSurvey,'full',false,false,$sDataEntryLanguage));
             // Fix private if disallowed to view token
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','read'))
                 unset($fnames['token']);
@@ -586,7 +586,7 @@ class dataentry extends Survey_Common_Action
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
 
-                $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+                $fieldmap = createFieldMap($oSurvey,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
                 $results1 = array();
                 foreach($fieldmap as $fm)
                 {
@@ -998,17 +998,13 @@ class dataentry extends Survey_Common_Action
                             $lresult = dbExecuteAssoc($lquery);
 
 
-                            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                            $baselang = Survey::model()->findByPk($surveyid)->language;
-                            array_unshift($slangs,$baselang);
 
                             $aDataentryoutput.= "<select name='{$fname['fieldname']}' class='form-control'>\n";
                             $aDataentryoutput .= "<option value=''";
                             if ($idrow[$fname['fieldname']] == "") {$aDataentryoutput .= " selected='selected'";}
                             $aDataentryoutput .= ">".gT("Please choose")."..</option>\n";
 
-                            foreach ($slangs as $lang)
-                            {
+                            foreach ($oSurvey->allLanguages as $lang) {
                                 $aDataentryoutput.="<option value='{$lang}'";
                                 if ($lang == $idrow[$fname['fieldname']]) {$aDataentryoutput .= " selected='selected'";}
                                 $aDataentryoutput.=">".getLanguageNameFromCode($lang,false)."</option>\n";
@@ -1448,27 +1444,27 @@ class dataentry extends Survey_Common_Action
         if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
         $surveyid = sanitize_int($surveyid);
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
         $id = Yii::app()->request->getPost('id');
         $lang = Yii::app()->request->getPost('lang');
 
-        if ($subaction == "update"  && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
-        {
+        if ($subaction == "update"  && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update')) {
 
-            $baselang = Survey::model()->findByPk($surveyid)->language;
+            $baselang = $oSurvey->language;
             Yii::app()->loadHelper("database");
             $surveytable = "{{survey_".$surveyid.'}}';
 
-            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+            $fieldmap = createFieldMap($oSurvey,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
             // restet token if user is not allowed to update
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) // If not allowed to read: remove it
             {
                 unset($fieldmap['token']);
             }
             // unset timings
-            foreach ($fieldmap as $fname)
-            {
-                if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time")
-                {
+            foreach ($fieldmap as $fname) {
+                if ($fname['type'] == "interview_time" || $fname['type'] == "page_time" || $fname['type'] == "answer_time") {
                     unset($fieldmap[$fname['fieldname']]);
                 }
             }
@@ -1476,30 +1472,20 @@ class dataentry extends Survey_Common_Action
             $thissurvey = getSurveyInfo($surveyid);
             $updateqr = "UPDATE $surveytable SET \n";
 
-            foreach ($fieldmap as $irow)
-            {
+            foreach ($fieldmap as $irow) {
                 $fieldname=$irow['fieldname'];
                 if ($fieldname=='id') continue;
-                if (isset($_POST[$fieldname]))
-                {
+                if (isset($_POST[$fieldname])) {
                     $thisvalue=$_POST[$fieldname];
-                }
-                else
-                {
+                } else {
                     $thisvalue="";
                 }
-                if ($irow['type'] == 'lastpage')
-                {
+                if ($irow['type'] == 'lastpage') {
                     $thisvalue=0;
-                }
-                elseif ($irow['type'] == 'D')
-                {
-                    if ($thisvalue == "")
-                    {
+                } elseif ($irow['type'] == 'D') {
+                    if ($thisvalue == "") {
                         $updateqr .= dbQuoteID($fieldname)." = NULL, \n";
-                    }
-                    else
-                    {
+                    } else {
                         $qidattributes = getQuestionAttributeValues($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
@@ -1568,6 +1554,8 @@ class dataentry extends Survey_Common_Action
     {
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
 
         $aData = array(
@@ -1575,8 +1563,7 @@ class dataentry extends Survey_Common_Action
             'lang' => $lang
         );
 
-        if ($subaction == "insert" && Permission::model()->hasSurveyPermission($surveyid,'responses','create'))
-        {
+        if ($subaction == "insert" && Permission::model()->hasSurveyPermission($surveyid,'responses','create')) {
             $surveytable = "{{survey_{$surveyid}}}";
             $thissurvey = getSurveyInfo($surveyid);
             $errormsg = "";
@@ -1591,8 +1578,7 @@ class dataentry extends Survey_Common_Action
             $lastanswfortoken = ''; // check if a previous answer has been submitted or saved
             $rlanguage = '';
 
-            if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid,'tokens','update'))
-            {
+            if (Yii::app()->request->getPost('token') && Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) {
                 $tokencompleted = "";
                 $tcquery = "SELECT completed from {{tokens_{$surveyid}}} WHERE token=".dbQuoteAll($_POST['token']);
                 $tcresult = dbExecuteAssoc($tcquery);
@@ -1699,20 +1685,16 @@ class dataentry extends Survey_Common_Action
                 }
 
                 //BUILD THE SQL TO INSERT RESPONSES
-                $baselang = Survey::model()->findByPk($surveyid)->language;
-                $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+                $baselang = $oSurvey->language;
+                $fieldmap = createFieldMap($oSurvey,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
                 $insert_data = array();
 
                 $_POST['startlanguage'] = $baselang;
                 if ($thissurvey['datestamp'] == "Y") { $_POST['startdate'] = $_POST['datestamp']; }
-                if (isset($_POST['closerecord']))
-                {
-                    if ($thissurvey['datestamp'] == "Y")
-                    {
+                if (isset($_POST['closerecord'])) {
+                    if ($thissurvey['datestamp'] == "Y") {
                         $_POST['submitdate'] = dateShift(date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
-                    }
-                    else
-                    {
+                    } else {
                         $_POST['submitdate'] = date("Y-m-d H:i",mktime(0,0,0,1,1,1980));
                     }
                 }
@@ -1797,6 +1779,7 @@ class dataentry extends Survey_Common_Action
                         $submitdate = $_POST['closedate'];
                     }
                     else {
+                        // FIXME $timeadjust missing
                         $submitdate = dateShift(date("Y-m-d H:i:s"), "Y-m-d", $timeadjust);
                     }
 
@@ -1892,8 +1875,7 @@ class dataentry extends Survey_Common_Action
                                 "language", "sent", "completed");
                             $values = array("'".$saver['identifier']."'", "'".$saver['identifier']."'", "'".$saver['email']."'", "'".$password."'",
                                 "'".randomChars(15)."'", "'".$saver['language']."'", "'"."N"."'");
-
-                            $SQL = "INSERT INTO $token_table
+                            $SQL = "INSERT INTO $tokens_table
                                 (".implode(',',$columns).")
                                 VALUES
                                 (".implode(',',$values).")";
@@ -1956,22 +1938,21 @@ class dataentry extends Survey_Common_Action
     public function view($surveyid, $lang=NULL)
     {
         $surveyid = sanitize_int($surveyid);
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
         $lang = isset($_GET['lang']) ? $_GET['lang'] : NULL;
         if(isset($lang)) $lang=sanitize_languagecode($lang);
         $aViewUrls = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
-        {
-            $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
+        if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')) {
+            $sDataEntryLanguage = $oSurvey->language;
             $surveyinfo=getSurveyInfo($surveyid);
 
-            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-            array_unshift($slangs,$baselang);
+            $baselang = $oSurvey->language;
 
-            if(is_null($lang) || !in_array($lang,$slangs))
-            {
-                $sDataEntryLanguage = $baselang;
+            if(is_null($lang) || !in_array($lang,$oSurvey->allLanguages)) {
+                $sDataEntryLanguage = $oSurvey->language;
             } else {
                 $sDataEntryLanguage = $lang;
             }
@@ -2235,10 +2216,8 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case "I": //Language Switch
-                            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                            $sbaselang = Survey::model()->findByPk($surveyid)->language;
-                            array_unshift($slangs,$sbaselang);
-                            $cdata['slangs'] = $slangs;
+
+                            $cdata['slangs'] = $oSurvey->allLanguages;
 
                             break;
                         case "P": //Multiple choice with comments checkbox + text
@@ -2384,13 +2363,10 @@ class dataentry extends Survey_Common_Action
             $aData['surveyid'] = $surveyid;
             $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
 
-            if ($thissurvey['active'] == "Y" && $thissurvey['allowsave'] == "Y")
-            {
-                $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                $sbaselang = Survey::model()->findByPk($surveyid)->language;
-                array_unshift($slangs,$sbaselang);
-                $aData['slangs'] = $slangs;
-                $aData['baselang'] = $baselang;
+            if ($oSurvey->isActive && $thissurvey['allowsave'] == "Y") {
+
+                $aData['slangs'] = $oSurvey->allLanguages;
+                $aData['baselang'] = $oSurvey->language;
             }
 
             $aViewUrls[] = 'active_html_view';

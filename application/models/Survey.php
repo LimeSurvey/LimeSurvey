@@ -77,7 +77,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $googleanalyticsapikey
  *
  * @property Permission[] $permissions
- * @property SurveyLanguageSetting[] $languagesettings
+ * @property SurveyLanguageSetting[] $languagesettings indexed by languagecode
  * @property User $owner
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
@@ -89,6 +89,10 @@ use \ls\pluginmanager\PluginEvent;
  * @property integer $countPartialAnswers
  * @property integer $countTotalAnswers
  * @property array $surveyinfo
+ * @property string[] $additionalLanguages Additional languages to base language
+ * @property string[] $allLanguages All languages (additional and base)
+ * @property boolean $isActive Whether survey is active or not
+ * @property array $tokenAttributes
  * @property string creationDate Creation date formatted according to user format
  * @property string startDateFormatted Start date formatted according to user format
  * @property string expiryDateFormatted Expiry date formatted according to user format
@@ -302,9 +306,8 @@ class Survey extends LSActiveRecord
     /**
     * fixSurveyAttribute to fix and/or add some survey attribute
     * - Fix template name to be sure template exist
-     * //FIXME $event input parameter is overridden always remove from implementations
     */
-    public function fixSurveyAttribute($event)
+    public function fixSurveyAttribute()
     {
         $event = new PluginEvent('afterFindSurvey');
         $event->set('surveyid',$this->sid);
@@ -333,8 +336,10 @@ class Survey extends LSActiveRecord
             // Reset to default only if different from actual value
             if(!$this->isNewRecord){
                 $oSurvey=self::model()->findByPk($this->sid);
-                if($oSurvey->template != $sTemplateName)// No need to test !is_null($oSurvey)
+                // No need to test !is_null($oSurvey)
+                if($oSurvey->template != $sTemplateName){
                     $sTemplateName = Yii::app()->getConfig('defaulttemplate');
+                }
             } else {
                 $sTemplateName = Yii::app()->getConfig('defaulttemplate');
             }
@@ -347,7 +352,7 @@ class Survey extends LSActiveRecord
     * Actually only test if user have minimal access to survey (read)
     * @access public
     * @param int $loginID
-    * @return CActiveRecord
+    * @return Survey
     *
     * TODO: replace this by a correct relation
     */
@@ -379,31 +384,32 @@ class Survey extends LSActiveRecord
     public function getAdditionalLanguages()
     {
         $sLanguages = trim($this->additional_languages);
-        if ($sLanguages != '')
+        if ($sLanguages != ''){
             return explode(' ', $sLanguages);
-        else
+        } else {
             return array();
+        }
     }
 
     /**
-    * Returns all languages array
-    *
-    * @access public
-    * @return array
-    */
+     * Returns all languages array
+     *
+     * @access public
+     * @return array
+     */
     public function getAllLanguages()
     {
-        $sLanguages = self::getAdditionalLanguages();
-        array_unshift($sLanguages,$this->language);
-        return $sLanguages;
+        $aLanguages = $this->getAdditionalLanguages();
+        array_unshift($aLanguages,$this->language);
+        return $aLanguages;
     }
 
     /**
-    * Returns the additional token attributes
-    *
-    * @access public
-    * @return array
-    */
+     * Returns the additional token attributes
+     *
+     * @access public
+     * @return array
+     */
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
@@ -463,12 +469,11 @@ class Survey extends LSActiveRecord
      * Returns true in a token table exists for the given $surveyId
      *
      * @staticvar array $tokens
-     * @param int $iSurveyID
      * @return boolean
      */
-    public function hasTokens($iSurveyID) {
+    public function hasTokens() {
         static $tokens = array();
-        $iSurveyID = (int) $iSurveyID;
+        $iSurveyID = $this->primaryKey;
 
         if (!isset($tokens[$iSurveyID])) {
             // Make sure common_helper is loaded
@@ -490,7 +495,7 @@ class Survey extends LSActiveRecord
      */
     public function getHasTokens()
     {
-        $hasTokens = $this->hasTokens($this->sid) ;
+        $hasTokens = $this->hasTokens() ;
         if($hasTokens) {
             return gT('Yes');
         } else {

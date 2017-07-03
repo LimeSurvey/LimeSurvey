@@ -330,6 +330,9 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
 {
+    /** @var Survey $oSurvey */
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
+
     $typeMap = array(
         '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
         'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -365,21 +368,20 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
     );
 
     if (empty($sLanguage)){
-        $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
+        $sLanguage=$oSurvey->language;
     }
-    $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
+    $fieldmap = createFieldMap($oSurvey,'full',false,false,$sLanguage);
 
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
     // ... and if the survey uses anonymized responses
-    $sSurveyAnonymized=Survey::model()->findByPk($iSurveyID)->anonymized;
+    $sSurveyAnonymized=$oSurvey->anonymized;
 
     $iFieldNumber=0;
     $fields=array();
     if ($bTokenTableExists && $sSurveyAnonymized == 'N' && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=getTokenFieldsAndNames($iSurveyID,false);
-        foreach ($tokenattributes as $attributefield=>$attributedescription)
-        {
+        foreach ($tokenattributes as $attributefield=>$attributedescription) {
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
                 $iFieldNumber++;

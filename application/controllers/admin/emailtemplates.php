@@ -30,39 +30,32 @@ class emailtemplates extends Survey_Common_Action {
     function index($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
 
         Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
         initKcfinder();
 
-        if(isset($iSurveyId) && getEmailFormat($iSurveyId) == 'html')
-        {
+        if(isset($iSurveyId) && getEmailFormat($iSurveyId) == 'html') {
             $ishtml = true;
-        }
-        else
-        {
+        } else {
             $ishtml = false;
         }
 
-        $grplangs = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($iSurveyId)->language;
-        array_unshift($grplangs,$baselang);
 
         $sEditScript = PrepareEditorScript(false, $this->getController());
         $aData['attrib'] = array();
         $aData['bplangs'] = array();
         $aData['defaulttexts'] = array();
-        if ($ishtml)
-        {
+        if ($ishtml) {
             $sEscapeMode='html';
-        }
-        else
-        {
+        } else {
             $sEscapeMode='unescaped';
         }
-        foreach ($grplangs as $key => $grouplang)
-        {
+        foreach ($oSurvey->allLanguages as $key => $grouplang) {
             $aData['bplangs'][$key] = $grouplang;
             $aData['attrib'][$key] = SurveyLanguageSetting::model()->find('surveyls_survey_id = :ssid AND surveyls_language = :ls', array(':ssid' => $iSurveyId, ':ls' => $grouplang));
             $aData['attrib'][$key]['attachments'] = unserialize($aData['attrib'][$key]['attachments']);
@@ -85,7 +78,7 @@ class emailtemplates extends Survey_Common_Action {
 
         $aData['surveyid'] = $iSurveyId;
         $aData['ishtml'] = $ishtml;
-        $aData['grplangs'] = $grplangs;
+        $aData['grplangs'] = $oSurvey->allLanguages;
         $this->_renderWrappedTemplate('emailtemplates', array('output' => $sEditScript, 'emailtemplates_view'), $aData);
     }
 
@@ -95,39 +88,28 @@ class emailtemplates extends Survey_Common_Action {
      */
     function update($iSurveyId)
     {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
         $uploadUrl = Yii::app()->getBaseUrl(true) . substr(Yii::app()->getConfig('uploadurl'),strlen(Yii::app()->getConfig('publicurl'))-1);
         // We need the real path since we check that the resolved file name starts with this path.
         $uploadDir = realpath(Yii::app()->getConfig('uploaddir'));
         $sSaveMethod=Yii::app()->request->getPost('save','');
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale','update') && $sSaveMethod!='')
-        {
-            $languagelist = Survey::model()->findByPk($iSurveyId)->additionalLanguages;
-            $languagelist[] = Survey::model()->findByPk($iSurveyId)->language;
-            array_filter($languagelist);
-            foreach ($languagelist as $langname)
-            {
-                if (isset($_POST['attachments'][$langname]))
-                {
-                    foreach ($_POST['attachments'][$langname] as $template => &$attachments)
-                    {
-                        foreach ($attachments as  $index => &$attachment)
-                        {
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'surveylocale','update') && $sSaveMethod!='') {
+            foreach ($oSurvey->allLanguages as $langname) {
+                if (isset($_POST['attachments'][$langname])) {
+                    foreach ($_POST['attachments'][$langname] as $template => &$attachments) {
+                        foreach ($attachments as  $index => &$attachment) {
                             // We again take the real path.
                             $localName = realpath(urldecode(str_replace($uploadUrl, $uploadDir, $attachment['url'])));
-                            if ($localName !== false)
-                            {
-                                if (strpos($localName, $uploadDir) === 0)
-                                {
+                            if ($localName !== false) {
+                                if (strpos($localName, $uploadDir) === 0) {
                                     $attachment['url'] = $localName;
                                     $attachment['size'] = filesize($localName);
-                                }
-                                else
-                                {
+                                } else {
                                     unset($attachments[$index]);
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 unset($attachments[$index]);
                             }
                         }

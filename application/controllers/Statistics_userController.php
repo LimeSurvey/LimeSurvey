@@ -50,9 +50,13 @@ class Statistics_userController extends SurveyController {
     /**
      * @param int $surveyid
      * @param string $language
+     * @throws CHttpException
      */
     public function actionAction($surveyid,$language=null)
     {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
         $sLanguage = $language;
         $this->sLanguage = $language;
 
@@ -137,12 +141,9 @@ class Statistics_userController extends SurveyController {
             }
         }
         // Set language for questions and labels to base language of this survey
-        if ($sLanguage== null || !in_array($sLanguage,Survey::model()->findByPk($iSurveyID)->getAllLanguages()))
-        {
-            $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        }
-        else
-        {
+        if ($sLanguage== null || !in_array($sLanguage,$oSurvey->getAllLanguages())) {
+            $sLanguage = $oSurvey->language;
+        } else {
             $sLanguage=sanitize_languagecode($sLanguage);
         }
         //set survey language for translations

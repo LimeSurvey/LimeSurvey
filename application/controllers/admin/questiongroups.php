@@ -155,6 +155,8 @@ class questiongroups extends Survey_Common_Action
         /////
         $iSurveyID = $surveyid = sanitize_int($surveyid);
         $aViewUrls = $aData = array();
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
         {
@@ -162,9 +164,8 @@ class questiongroups extends Survey_Common_Action
 
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
-            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-            $grplangs[] = $baselang;
+            $grplangs = $oSurvey->allLanguages;
+            $baselang = $oSurvey->language;
             $grplangs = array_reverse($grplangs);
             App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'questiongroup.js');
 
@@ -175,7 +176,7 @@ class questiongroups extends Survey_Common_Action
             $aData['baselang'] = $baselang;
 
             $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $surveyinfo = $oSurvey->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
             $aData['surveybar']['importquestiongroup'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;  // Close button
@@ -202,10 +203,10 @@ class questiongroups extends Survey_Common_Action
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
         {
             Yii::app()->loadHelper('surveytranslator');
+            /** @var Survey $oSurvey */
+            $oSurvey = Survey::model()->findByPk($surveyid);
 
-            $sSurveyLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
-            foreach ($sSurveyLanguages as $sLanguage)
-            {
+            foreach ($oSurvey->allLanguages as $sLanguage) {
                 $oGroup=new QuestionGroup;
                 $oGroup->sid=$surveyid;
                 if(isset($newGroupID)){
@@ -241,19 +242,14 @@ class questiongroups extends Survey_Common_Action
 
             Yii::app()->setFlashMessage(gT("New question group was saved."));
             Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'),'<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">','</a>'),'info');
-            if(Yii::app()->request->getPost('close-after-save') === 'true')
-            {
+            if(Yii::app()->request->getPost('close-after-save') === 'true') {
                 $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
-            }
-            else
-            {
+            } else {
                 // After save, go to edit
                 $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$newGroupID"));
             }
 
-        }
-        else
-        {
+        } else {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
@@ -297,8 +293,10 @@ class questiongroups extends Survey_Common_Action
     {
         $aData = array();
         $aData['surveyid'] = $iSurveyID = $surveyid;
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aData['gid'] = $gid;
-        $baselang = Survey::model()->findByPk($surveyid)->language;
+        $baselang = $oSurvey->language;
         $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         $aData['condarray'] = $condarray;
 
@@ -314,7 +312,7 @@ class questiongroups extends Survey_Common_Action
 
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['group_name'] = $grow['group_name'];
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
         $aData['surveyIsActive'] = $surveyinfo['active']=='Y';
         $aData['questiongroupbar']['buttons']['view'] = true;
@@ -341,6 +339,8 @@ class questiongroups extends Survey_Common_Action
     public function edit($surveyid, $gid)
     {
         $surveyid = $iSurveyID = sanitize_int($surveyid);
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
@@ -351,11 +351,10 @@ class questiongroups extends Survey_Common_Action
             Yii::app()->loadHelper('admin/htmleditor');
             Yii::app()->loadHelper('surveytranslator');
 
-            $aAdditionalLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
             // TODO: This is not an array, but a string "en"
-            $aBaseLanguage = Survey::model()->findByPk($surveyid)->language;
+            $aBaseLanguage = $oSurvey->language;
 
-            $aLanguages = array_merge(array($aBaseLanguage), $aAdditionalLanguages);
+            $aLanguages = $oSurvey->allLanguages;
 
             $grplangs = array_flip($aLanguages);
 
@@ -419,7 +418,7 @@ class questiongroups extends Survey_Common_Action
             $aData['tabtitles'] = $aTabTitles;
             $aData['aBaseLanguage'] = $aBaseLanguage;
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+            $surveyinfo = $oSurvey->surveyinfo;
             $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
             ///////////
@@ -451,20 +450,14 @@ class questiongroups extends Survey_Common_Action
         $gid = (int) $gid;
         $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
         $surveyid = $group->sid;
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
-        {
+        if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update')) {
             Yii::app()->loadHelper('surveytranslator');
 
-            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-
-            array_push($grplangs, $baselang);
-
-            foreach ($grplangs as $grplang)
-            {
-                if (isset($grplang) && $grplang != "")
-                {
+            foreach ($oSurvey->allLanguages as $grplang) {
+                if (isset($grplang) && $grplang != "") {
                     $group_name = $_POST['group_name_' . $grplang];
                     $group_description = $_POST['description_' . $grplang];
 

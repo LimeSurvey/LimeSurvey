@@ -28,16 +28,15 @@ class printablesurvey extends Survey_Common_Action
     function index($surveyid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
-        if(!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
-        {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if(!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')) {
             $aData['surveyid'] = $surveyid;
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have permission to access this page.');
             $message['class']= "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
-        }
-        else
-        {
+        } else {
             /* Remove admin css and js */
             Yii::app()->clientScript->reset();
             $aSurveyInfo=getSurveyInfo($surveyid,$lang);
@@ -58,8 +57,7 @@ class printablesurvey extends Survey_Common_Action
             $dateformattype = $aSurveyInfo['surveyls_dateformat'];
             Yii::app()->loadHelper('surveytranslator');
 
-            if (!is_null($surveyexpirydate))
-            {
+            if (!is_null($surveyexpirydate)) {
                 $dformat=getDateFormatData($dateformattype);
                 $dformat=$dformat['phpdate'];
 
@@ -69,29 +67,21 @@ class printablesurvey extends Survey_Common_Action
 
                 $surveyexpirydate = date($dformat,$expirytimestamp);
 
-                if(!empty($expirytimeofday_h) || !empty($expirytimeofday_m))
-                {
+                if(!empty($expirytimeofday_h) || !empty($expirytimeofday_m)) {
                     $surveyexpirydate .= ' &ndash; '.$expirytimeofday_h.':'.$expirytimeofday_m;
                 };
                 sprintf(gT("Please submit by %s"), $surveyexpirydate);
-            }
-            else
-            {
+            } else {
                 $surveyexpirydate='';
             }
             //Fix $templatename : control if print_survey.pstpl exist
             $oTemplate = Template::model()->getTemplateConfiguration($templatename);
             $sFullTemplatePath = $oTemplate->path;
-            if($oTemplate->pstplPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl')
-            {
+            if($oTemplate->pstplPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl') {
                 $templatename = $templatename;// Change nothing
-            }
-            elseif(is_file(getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
-            {
+            } elseif(is_file(getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR.'print_survey.pstpl')) {
                 $templatename=Yii::app()->getConfig("defaulttemplate");
-            }
-            else
-            {
+            } else {
                 $templatename="default";
             }
             $sFullTemplatePath = $oTemplate->path . DIRECTORY_SEPARATOR;
@@ -116,8 +106,7 @@ class printablesurvey extends Survey_Common_Action
 
             $condition = "sid = '{$surveyid}' AND language = '{$sLanguageCode}'";
             $degresult = QuestionGroup::model()->getAllGroups($condition, array('group_order'));  //xiao,
-            if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber))
-            {
+            if (!isset($surveyfaxto) || !$surveyfaxto and isset($surveyfaxnumber)) {
                 $surveyfaxto=$surveyfaxnumber; //Use system fax number if none is set in survey.
             }
 
@@ -126,13 +115,8 @@ class printablesurvey extends Survey_Common_Action
 
             //if $showsgqacode is enabled at config.php show table name for reference
             $showsgqacode = Yii::app()->getConfig("showsgqacode");
-            if(isset($showsgqacode) && $showsgqacode == true)
-            {
+            if(isset($showsgqacode) && $showsgqacode == true) {
                 $surveyname =  $surveyname."<br />[".gT('Database')." ".gT('table').": $surveytable]";
-            }
-            else
-            {
-                $surveyname = $surveyname;
             }
 
             /* Get the HTML tag */
@@ -169,12 +153,11 @@ class printablesurvey extends Survey_Common_Action
             $mapquestionsNumbers=Array();
             $answertext = '';   // otherwise can throw an error on line 1617
 
-            $fieldmap = createFieldMap($surveyid,'full',false,false,$sLanguageCode);
+            $fieldmap = createFieldMap($oSurvey,'full',false,false,$sLanguageCode);
 
             // =========================================================
             // START doin the business:
-            foreach ($degresult->readAll() as $degrow)
-            {
+            foreach ($degresult->readAll() as $degrow) {
                 // ---------------------------------------------------
                 // START doing groups
                 $deqresult=Question::model()->getQuestions($surveyid, $degrow['gid'], $sLanguageCode, 0, '"I"');
@@ -184,12 +167,9 @@ class printablesurvey extends Survey_Common_Action
                 // Perform a case insensitive natural sort on group name then question title of a multidimensional array
                 usort($deqrows, 'groupOrderThenQuestionOrder');
 
-                if ($degrow['description'])
-                {
+                if ($degrow['description']) {
                     $group_desc = $degrow['description'];
-                }
-                else
-                {
+                } else {
                     $group_desc = '';
                 }
 
@@ -203,23 +183,19 @@ class printablesurvey extends Survey_Common_Action
                 $bGroupHasVisibleQuestions = false;
                 $gid = $degrow['gid'];
                 //Alternate bgcolor for different groups
-                if (!isset($group['ODD_EVEN']) || $group['ODD_EVEN'] == ' g-row-even')
-                {
-                    $group['ODD_EVEN'] = ' g-row-odd';}
-                else
-                {
+                if (!isset($group['ODD_EVEN']) || $group['ODD_EVEN'] == ' g-row-even') {
+                    $group['ODD_EVEN'] = ' g-row-odd';
+                } else {
                     $group['ODD_EVEN'] = ' g-row-even';
                 }
 
                 //Loop through questions
-                foreach ($deqrows as $deqrow)
-                {
+                foreach ($deqrows as $deqrow) {
                     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
                     // START doing questions
 
                     $qidattributes=QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
-                    if ($qidattributes['hidden'] == 1 && $deqrow['type'] != '*')
-                    {
+                    if ($qidattributes['hidden'] == 1 && $deqrow['type'] != '*') {
                         continue;
                     }
                     $bGroupHasVisibleQuestions = true;
@@ -235,14 +211,11 @@ class printablesurvey extends Survey_Common_Action
                     $scenarioresult=Condition::model()->getScenarios($deqrow['qid']);
                     $scenarioresult = $scenarioresult->readAll();
                     //Loop through distinct scenarios, thus grouping them together.
-                    foreach ($scenarioresult as $scenariorow)
-                    {
-                        if( $s == 0 && count($scenarioresult) > 1)
-                        {
+                    foreach ($scenarioresult as $scenariorow) {
+                        if( $s == 0 && count($scenarioresult) > 1) {
                             $sExplanation .= '<div class="scenario">'." -------- Scenario {$scenariorow['scenario']} --------</div>\n\n";
                         }
-                        if($s > 0)
-                        {
+                        if($s > 0) {
                             $sExplanation .= '<div class="scenario">'.' -------- '.gT("or")." Scenario {$scenariorow['scenario']} --------</div>\n\n";
                         }
 
@@ -252,13 +225,11 @@ class printablesurvey extends Survey_Common_Action
                         $distinctresult=Condition::model()->getSomeConditions(array('cqid','method', 'cfieldname'), $conditions1, array('cqid'),array('cqid', 'method','cfieldname'));
 
                         //Loop through each condition for a particular scenario.
-                        foreach ($distinctresult->readAll() as $distinctrow)
-                        {
+                        foreach ($distinctresult->readAll() as $distinctrow) {
                             $condition = "qid = '{$distinctrow['cqid']}' AND parent_qid = 0 AND language = '{$sLanguageCode}'";
                             $subresult=Question::model()->find($condition);
 
-                            if($x > 0)
-                            {
+                            if($x > 0) {
                                 $sExplanation .= ' <em class="scenario-and-separator">'.gT('and').'</em> ';
                             }
                             if(trim($distinctrow['method'])=='') //If there is no method chosen assume "equals"
@@ -267,36 +238,21 @@ class printablesurvey extends Survey_Common_Action
                             }
 
                             if($distinctrow['cqid']){ // cqid != 0  ==> previous answer match
-                                if($distinctrow['method']=='==')
-                                {
+                                if($distinctrow['method']=='==') {
                                     $sExplanation .= gT("Answer was")." ";
-                                }
-                                elseif($distinctrow['method']=='!=')
-                                {
+                                } elseif($distinctrow['method']=='!=') {
                                     $sExplanation .= gT("Answer was NOT")." ";
-                                }
-                                elseif($distinctrow['method']=='<')
-                                {
+                                } elseif($distinctrow['method']=='<') {
                                     $sExplanation .= gT("Answer was less than")." ";
-                                }
-                                elseif($distinctrow['method']=='<=')
-                                {
+                                } elseif($distinctrow['method']=='<=') {
                                     $sExplanation .= gT("Answer was less than or equal to")." ";
-                                }
-                                elseif($distinctrow['method']=='>=')
-                                {
+                                } elseif($distinctrow['method']=='>=') {
                                     $sExplanation .= gT("Answer was greater than or equal to")." ";
-                                }
-                                elseif($distinctrow['method']=='>')
-                                {
+                                } elseif($distinctrow['method']=='>') {
                                     $sExplanation .= gT("Answer was greater than")." ";
-                                }
-                                elseif($distinctrow['method']=='RX')
-                                {
+                                } elseif($distinctrow['method']=='RX') {
                                     $sExplanation .= gT("Answer matched (regexp)")." ";
-                                }
-                                else
-                                {
+                                } else {
                                     $sExplanation .= gT("Answer was")." ";
                                 }
                             }
@@ -342,8 +298,7 @@ class printablesurvey extends Survey_Common_Action
                             $conresult=Condition::model()->getConditionsQuestions($distinctrow['cqid'],$deqrow['qid'],$scenariorow['scenario'],$sLanguageCode);
 
                             $conditions=array();
-                            foreach ($conresult->readAll() as $conrow)
-                            {
+                            foreach ($conresult->readAll() as $conrow) {
 
                                 $postans="";
                                 $value=$conrow['value'];
@@ -404,8 +359,7 @@ class printablesurvey extends Survey_Common_Action
 
                                             $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND scale_id=1 AND language='{$sLanguageCode}'";
                                             $fresult=Answer::model()->getAllRecords($condition);
-                                            foreach($fresult->readAll() as $frow)
-                                            {
+                                            foreach($fresult->readAll() as $frow) {
                                                 $postans=$frow['answer'];
                                                 $conditions[]=$frow['answer'];
                                             } // while
@@ -418,8 +372,7 @@ class printablesurvey extends Survey_Common_Action
                                         $condition="qid='{$conrow['cqid']}' AND code='{$conrow['value']}' AND language='{$sLanguageCode}'";
                                         $ansresult=Answer::model()->findAll($condition);
 
-                                        foreach ($ansresult as $ansrow)
-                                        {
+                                        foreach ($ansresult as $ansrow) {
                                             $conditions[]=$ansrow['answer'];
                                         }
                                         if($conrow['value'] == "-oth-") {

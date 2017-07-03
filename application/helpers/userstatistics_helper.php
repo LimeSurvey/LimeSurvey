@@ -351,13 +351,15 @@ function getQuestionMapData($sField, $qsid)
  */
 function buildSelects($allfields, $surveyid, $language) {
 
+    /** @var Survey $oSurvey */
+    $oSurvey = Survey::model()->findByPk($surveyid);
+
     //Create required variables
     $selects=array();
     $aQuestionMap=array();
 
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
-    foreach ($fieldmap as $field)
-    {
+    $fieldmap=createFieldMap($oSurvey, "full", false, false, $language);
+    foreach ($fieldmap as $field) {
         if(isset($field['qid']) && $field['qid']!='')
             $aQuestionMap[]=$field['sid'].'X'.$field['gid'].'X'.$field['qid'];
     }
@@ -632,7 +634,10 @@ class userstatistics_helper {
     *                       "qquestion"=>The description of the question,
     *                       "qtype"=>The question type code
     */
-    protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage,$browse=true) {
+    protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage,$browse=true)
+    {
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
 
         //Set up required variables
         $alist=array();
@@ -641,7 +646,7 @@ class userstatistics_helper {
         $qtype="";
         $statlang = $oLanguage;
         $firstletter = substr($rt, 0, 1);
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
+        $fieldmap=createFieldMap($oSurvey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput="";
         $qqid = "";
@@ -2805,6 +2810,9 @@ class userstatistics_helper {
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
 
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
@@ -2816,9 +2824,8 @@ class userstatistics_helper {
         $this->pdf=array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
 
         //pick the best font file if font setting is 'auto'
-        if (is_null($sLanguageCode))
-        {
-            $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+        if (is_null($sLanguageCode)) {
+            $sLanguageCode =  $oSurvey->language;
         }
         Yii::app()->setLanguage($sLanguageCode);
 
@@ -2839,7 +2846,7 @@ class userstatistics_helper {
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
 
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $sLanguageCode);
+        $fieldmap=createFieldMap($oSurvey, "full", false, false, $sLanguageCode);
 
         // Set language for questions and answers to base language of this survey
         $language=$sLanguageCode;

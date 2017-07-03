@@ -1,5 +1,8 @@
+<?php
+/** @var Survey $oSurvey */
+$oSurvey = Survey::model()->findByPk($surveyid);
+?>
 <?php $myfield = "{$surveyid}X{$flt[1]}X{$flt[0]}"; $niceqtext=flattenText($flt[5]); ?>
-
 <?php
 
     //$specialQuestionTypes = array("M","P","T","S","Q","|","","N","K","D");
@@ -312,10 +315,7 @@
 
 
             case "I": // Language
-                $survlangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                $survlangs[] = Survey::model()->findByPk($surveyid)->language;
-                foreach ($survlangs  as $availlang)
-                {
+                foreach ($oSurvey->allLanguages  as $availlang) {
                     echo "\t<option value='".$availlang."'";
 
                     //pre-select values which were marked before
