@@ -33,7 +33,6 @@
 .eslintrc
 .eslintignore
 node_modules/
-assets/**/src/
 third_party/**/src/
 third_party/**/docs/
 third_party/**/scripts/

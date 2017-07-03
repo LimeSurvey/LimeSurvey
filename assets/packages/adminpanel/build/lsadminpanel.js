@@ -28923,13 +28923,13 @@ var content = __webpack_require__(23);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("2f55db9c", content, false);
+var update = __webpack_require__(4)("0b69b227", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-deb8eee2\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./questionsgroups.vue", function() {
-     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-deb8eee2\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./questionsgroups.vue");
+   module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-deb8eee2\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./questionsgroups.vue", function() {
+     var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-deb8eee2\",\"scoped\":false,\"hasInlineConfig\":false}!../../node_modules/sass-loader/lib/loader.js!../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./questionsgroups.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -28947,7 +28947,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.bigIcons {\n    font-size: 24px;\n}\n.border-bottom{\n    border-bottom: 1px solid #323232;\n}\n.margin-bottom{\n    padding-bottom: 5px;\n}\n\n", ""]);
+exports.push([module.i, "\n.selected {\n  background-color: #EEF6EF;\n  box-shadow: 1px2px 4px #EEF6EF inset;\n}\n.bigIcons {\n  font-size: 24px;\n}\n.border-bottom {\n  border-bottom: 1px solid #323232;\n}\n.margin-bottom {\n  padding-bottom: 5px;\n}\n.ls-ba .list-group > .list-group-item {\n  padding: 10px 0;\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid #323232;\n  margin-bottom: 1px;\n}\n.ls-ba .list-group > .list-group-item .list-group {\n    background: #DEF0DF;\n    margin-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item {\n      background: transparent;\n      padding-left: 15px;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {\n        border-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group:first-of-type {\n      border-top: 1px solid #323232;\n}\n", ""]);
 
 // exports
 
@@ -28983,7 +28983,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             active: []
         };
     },
-    computed: {},
+    computed: {
+        calculatedHeight() {
+            let containerHeight = $('.mainMenu').height();
+            console.log($('#question-tree-container'));
+            console.log('containerHeight', containerHeight);
+            return containerHeight - 175;
+        }
+    },
     methods: {
         onDragover(index) {
             index = 'index_' + index;
@@ -29179,7 +29186,10 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ls-flex-column  ls-ba",
+    staticClass: "ls-flex-column ls-ba",
+    style: ({
+      height: _vm.calculatedHeight + 'px'
+    }),
     attrs: {
       "id": "questionexplorer"
     }
@@ -29332,7 +29342,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       value: (_vm.activeTab('questiontree')),
       expression: "activeTab('questiontree')"
     }],
-    staticClass: "row fill-height"
+    staticClass: "row fill-height ls-ba"
   }, [_c('questionexplorer', {
     attrs: {
       "questiongroups": _vm.questiongroups
