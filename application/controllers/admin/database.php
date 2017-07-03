@@ -1121,29 +1121,25 @@ class database extends Survey_Common_Action
      */
     private function actionInsertCopyQuestion($iSurveyID)
     {
+        /** @var Survey $survey */
         $survey = Survey::model()->findByPk($iSurveyID);
         $sBaseLanguage = $survey->language;
 
         // Abort if survey is active
-        if ($survey->active !== 'N')
-        {
+        if ($survey->active !== 'N') {
             Yii::app()->setFlashMessage(gT("You can't insert a new question when the survey is active."),'error');
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/".$survey->sid), "refresh");
         }
 
-        if (strlen(Yii::app()->request->getPost('title')) < 1)
-        {
+        if (strlen(Yii::app()->request->getPost('title')) < 1) {
             /* Already done in model : must control if return a good system or not here : BUT difficult to submit an empty string here */
             Yii::app()->setFlashMessage(gT("The question could not be added. You must enter at least a question code."),'error');
-        }
-        else
-        {
+        } else {
             // For Bootstrap Version usin YiiWheels switch :
             $_POST['mandatory'] = ( Yii::app()->request->getPost('mandatory') == '1' ) ? 'Y' : 'N' ;
             $_POST['other'] = ( Yii::app()->request->getPost('other') == '1' ) ? 'Y' : 'N' ;
 
-            if (Yii::app()->request->getPost('questionposition',"")!="")
-            {
+            if (Yii::app()->request->getPost('questionposition',"")!="") {
                 $iQuestionOrder= intval(Yii::app()->request->getPost('questionposition'));
                 //Need to renumber all questions on or after this
                 $sQuery = "UPDATE {{questions}} SET question_order=question_order+1 WHERE gid=:gid AND question_order >= :order";
@@ -1159,6 +1155,10 @@ class database extends Survey_Common_Action
             $sQuestionHelp=$this->oFixCKeditor->fixCKeditor($sQuestionHelp);
 
             $this->iQuestionID=0;
+
+            /** @var Question $oOldQuestion */
+            $oOldQuestion = Question::model()->findByPk(returnGlobal('oldqid'));
+
             $oQuestion= new Question;
             $oQuestion->sid = $iSurveyID;
             $oQuestion->gid = $this->iQuestionGroupID;
@@ -1177,27 +1177,22 @@ class database extends Survey_Common_Action
             $oQuestion->question_order = $iQuestionOrder;
             $oQuestion->language = $sBaseLanguage;
             $oQuestion->save();
-            if($oQuestion)
-            {
+            if($oQuestion) {
                 $this->iQuestionID=$oQuestion->qid;
             }
+
             $aErrors=$oQuestion->getErrors();
-            if(count($aErrors))
-            {
-                foreach($aErrors as $sAttribute=>$aStringErrors)
-                {
+            if(count($aErrors)) {
+                foreach($aErrors as $sAttribute=>$aStringErrors) {
                     foreach($aStringErrors as $sStringErrors)
                         Yii::app()->setFlashMessage(sprintf(gT("Question could not be created with error on %s: %s"), $sAttribute,$sStringErrors),'error');
                 }
             }
             // Add other languages
-            if ($this->iQuestionID)
-            {
-                $addlangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-                foreach ($addlangs as $alang)
-                {
-                    if ($alang != "")
-                    {
+            if ($this->iQuestionID) {
+                $addlangs = $survey->additionalLanguages;
+                foreach ($addlangs as $alang) {
+                    if ($alang != "") {
                         $oQuestion= new Question;
                         $oQuestion->qid = $this->iQuestionID;
                         $oQuestion->sid = $iSurveyID;
@@ -1217,10 +1212,8 @@ class database extends Survey_Common_Action
                         switchMSSQLIdentityInsert('questions',false);
 
                         $aErrors=$oQuestion->getErrors();
-                        if(count($aErrors))
-                        {
-                            foreach($aErrors as $sAttribute=>$aStringErrors)
-                            {
+                        if(count($aErrors)) {
+                            foreach($aErrors as $sAttribute=>$aStringErrors) {
                                 foreach($aStringErrors as $sStringErrors)
                                     Yii::app()->setFlashMessage(sprintf(gT("Question in language %s could not be created with error on %s: %s"), $alang, $sAttribute,$sStringErrors),'error');
                             }
@@ -1240,30 +1233,24 @@ class database extends Survey_Common_Action
 
             } else {
                 if (Yii::app()->request->getPost('action') == 'copyquestion') {
-                    if (returnGlobal('copysubquestions') == 1)
-                    {
+                    if (returnGlobal('copysubquestions') == 1) {
                         $aSQIDMappings = array();
-                        $r1 = Question::model()->getSubQuestions(returnGlobal('oldqid'));
+                        $r1 = $oOldQuestion->subquestions;
                         $aSubQuestions = $r1->readAll();
 
-                        foreach ($aSubQuestions as $qr1)
-                        {
+                        foreach ($aSubQuestions as $qr1) {
                             $qr1['parent_qid'] = $this->iQuestionID;
                             $oldqid= '';
-                            if (isset($aSQIDMappings[$qr1['qid']]))
-                            {
+                            if (isset($aSQIDMappings[$qr1['qid']])) {
                                 $qr1['qid'] = $aSQIDMappings[$qr1['qid']];
-                            }
-                            else
-                            {
+                            } else {
                                 $oldqid = $qr1['qid'];
                                 unset($qr1['qid']);
                             }
 
                             $qr1['gid'] = $this->iQuestionGroupID;
                             $iInsertID = Question::model()->insertRecords($qr1);
-                            if (!isset($qr1['qid']))
-                            {
+                            if (!isset($qr1['qid'])) {
                                 $aSQIDMappings[$oldqid] = $iInsertID;
                             }
                         }

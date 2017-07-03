@@ -321,22 +321,6 @@ class Question extends LSActiveRecord
             ->query();
     }
 
-    /**
-     * @deprecated use relation $question->subquestions
-     * @param integer $parent_qid
-     * @return CDbDataReader
-     */
-    function getSubQuestions($parent_qid)
-    {
-        return Yii::app()->db->createCommand()
-            ->select()
-            ->from(self::tableName())
-            ->where('parent_qid=:parent_qid')
-            ->bindParam(":parent_qid", $parent_qid, PDO::PARAM_INT)
-            ->order('question_order asc')
-            ->query();
-    }
-
 
     /**
      * This function is only called from surveyadmin.php

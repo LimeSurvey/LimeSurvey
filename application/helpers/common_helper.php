@@ -1952,12 +1952,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $aquery.=" and questions.qid={$questionid} ";
     }
     $aquery.=" ORDER BY group_order, question_order";
-    $aresult = Yii::app()->db->createCommand($aquery)->queryAll();
+    /** @var Question[] $questions */
+    $questions = Yii::app()->db->createCommand($aquery)->queryAll();
     $questionSeq=-1; // this is incremental question sequence across all groups
     $groupSeq=-1;
     $_groupOrder=-1;
 
-    foreach ($aresult as $arow) //With each question, create the appropriate field(s))
+    foreach ($questions as $arow) //With each question, create the appropriate field(s))
     {
         ++$questionSeq;
 
