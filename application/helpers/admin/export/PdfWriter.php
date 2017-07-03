@@ -18,10 +18,8 @@ class PdfWriter extends Writer
     public function init(SurveyObj $survey, $sLanguageCode, FormattingOptions $oOptions)
     {
         parent::init($survey, $sLanguageCode, $oOptions);
-        $pdforientation=Yii::app()->getConfig('pdforientation');
 
-        if ($oOptions->output=='file')
-        {
+        if ($oOptions->output=='file') {
             $this->pdfDestination = 'F';
         } else {
             $this->pdfDestination = 'D';

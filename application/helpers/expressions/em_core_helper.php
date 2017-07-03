@@ -305,7 +305,6 @@ class ExpressionManager {
             if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
             {
                 $bBothNumeric=false;
-                $bBothString=true;
                 $bMismatchType=false;
                 $arg1[0]=strval($arg1[0]);
                 $arg2[0]=strval($arg2[0]);
@@ -1430,9 +1429,7 @@ class ExpressionManager {
         $tokens = $this->RDP_tokens;
         $errCount = count($errs);
         $errIndex = 0;
-        $aClass=array();
-        if ($errCount > 0)
-        {
+        if ($errCount > 0) {
             usort($errs,"cmpErrorTokens");
         }
         $stringParts=array();
@@ -2016,7 +2013,6 @@ class ExpressionManager {
         }
         $func = $this->RDP_ValidFunctions[$name];
         $funcName = $func[0];
-        $numArgs = count($params);
         $result=1;  // default value for $this->RDP_onlyparse
         if (function_exists($funcName)) {
             $numArgsAllowed = array_slice($func, 5);    // get array of allowable argument counts from end of $func
