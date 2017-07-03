@@ -1,9 +1,9 @@
 <div class="col-lg-12 list-surveys">
-    <h3><?php eT("User group"); ?> : <?php echo $groupname; ?></h3>
+    <div class="pagetitle h3"><?php eT("User group"); ?> : <?php echo $groupname; ?></div>
 
     <div class="row">
         <div class="col-lg-12 content-right text-center">
-            <h4><?php eT("Group members"); ?></h4>
+            <div class="h4"><?php eT("Group members"); ?></div>
 
             <?php if(isset($groupfound)):?>
                 <strong><?php eT("Group description: ");?></strong>

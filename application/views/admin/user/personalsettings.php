@@ -6,7 +6,7 @@
 
 <div class="container-fluid welcome full-page-wrapper">
     <?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44 form-horizontal', 'id'=>'personalsettings','autocomplete'=>"off")); ?>
-    <h3 class="pagetitle"><?php eT("Your profile"); ?></h3>
+    <div class="pagetitle h3"><?php eT("Your profile"); ?></div>
         <div class="form-group">
             <?php echo CHtml::label(gT("User name:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
              <div class="col-sm-3">
@@ -41,7 +41,7 @@
              </div>
         </div>
     <!-- form -->
-    <h3 class="pagetitle"><?php eT("Your personal settings"); ?></h3>
+    <div class="pagetitle h3"><?php eT("Your personal settings"); ?></div>
 
     <!-- form -->
 

@@ -1,4 +1,4 @@
-<h3 class="pagetitle"><?php echo sprintf(gT("Settings for plugin: %s"), $plugin['name']); ?></h3>
+<div class="pagetitle h3"><?php echo sprintf(gT("Settings for plugin: %s"), $plugin['name']); ?></div>
 
 <div class="col-md-6 col-md-offset-1">
 <?php

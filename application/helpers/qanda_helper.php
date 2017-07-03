@@ -2377,7 +2377,7 @@ function do_multiplechoice_withcomments($ia)
     global $thissurvey;
     $kpclass    = testKeypad($thissurvey['nokeyboard']);                                                            // Virtual keyboard (probably obsolete today)
     $inputnames = array();
-
+    $coreClass="ls-answers answers-list checkbox-text-list";
     $checkconditionFunction = "checkconditions";
     $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
@@ -2471,15 +2471,11 @@ function do_multiplechoice_withcomments($ia)
     }
 
     $sRows = "";
-    $sDisplayStyle = '';
     $inputCOmmentValue = '';
     $checked = '';
     foreach ($toIterate as $ansrow)
     {
         $myfname = $ia[1].$ansrow['title'];
-
-        /* Check for array_filter */
-        $sDisplayStyle = return_display_style($ia, $aQuestionAttributes, $thissurvey, $myfname);
 
         if($label_width < strlen(trim(strip_tags($ansrow['question']))))
         {
@@ -2507,7 +2503,6 @@ function do_multiplechoice_withcomments($ia)
 
         $inputCOmmentValue = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname2],ENT_QUOTES);
         $sRows .= doRender('/survey/questions/answer/multiplechoice_with_comments/rows/answer_row', array(
-            'sDisplayStyle'                 => (isset($sDisplayStyle))?$sDisplayStyle:'',
             'kpclass'                       => $kpclass,
             'title'                         => '',
             'liclasses'                     => 'responsive-content question-item answer-item checkbox-text-item',
@@ -2563,7 +2558,6 @@ function do_multiplechoice_withcomments($ia)
             'liid'                          => 'javatbd'.$myfname,
             'kpclass'                       => $kpclass,
             'title'                         => gT('Other'),
-            'sDisplayStyle'                 => $sDisplayStyle,
             'name'                          => $myfname,
             'id'                            => 'answer'.$myfname,
             'value'                         => $value, // TODO : check if it should be the same than javavalue
@@ -2584,8 +2578,6 @@ function do_multiplechoice_withcomments($ia)
         $inputnames[]=$myfname;
         $inputnames[]=$myfname2;
     }
-
-    $coreClass = '';  // TODO
 
     $answer = doRender('/survey/questions/answer/multiplechoice_with_comments/answer', array(
         'sRows' => $sRows,

@@ -1,7 +1,7 @@
 <div class="col-lg-12 list-surveys">
-    <h3>
+    <div class="h3">
         <?php echo sprintf(gT("Editing user group (Owner: %s)"), Yii::app()->session['user']); ?>
-    </h3>
+    </div>
 
     <div class="row">
         <?php echo CHtml::form(array("admin/usergroups/sa/edit/ugid/{$ugid}"), 'post', array('class'=>'col-md-6 col-md-offset-3', 'id'=>'usergroupform', 'name'=>'usergroupform')); ?>

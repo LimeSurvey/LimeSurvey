@@ -87,11 +87,10 @@ class SurveyRuntimeHelper {
     {
         // Survey settings
         $this->setSurveySettings( $surveyid, $args);
+
         // Start rendering
         $this->makeLanguageChanger();                                           //  language changer can be used on any entry screen, so it must be set first
-
         extract($args);
-        //$this->param = $param;
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
@@ -775,8 +774,6 @@ class SurveyRuntimeHelper {
     {
 
         // retrieve datas from local variable
-        $this->aMoveResult       = false;
-
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])){
 
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], $this->sSurveyMode, $this->aSurveyOptions, false, $this->LEMdebugLevel);
@@ -1137,6 +1134,7 @@ class SurveyRuntimeHelper {
     private function setVarFromArgs($args)
     {
         extract($args);
+        $this->param = $param;
 
         // Todo: check which ones are really needed
         $this->LEMskipReprocessing    = isset( $LEMskipReprocessing    )?$LEMskipReprocessing    :null ;
