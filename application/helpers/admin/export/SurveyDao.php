@@ -37,7 +37,7 @@ class SurveyDao
         if (empty($intId))
         {
             //The id given to us is not an integer, croak.
-            safeDie("An invalid survey ID was encountered: $sid");
+            safeDie("An invalid survey ID was encountered");
         }
 
         //Load groups

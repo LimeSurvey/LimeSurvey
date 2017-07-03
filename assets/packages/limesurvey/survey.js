@@ -23,18 +23,18 @@ function triggerEmRelevanceQuestion(){
     /* Action on this question */
     $("[id^='question']").on('relevance:on',function(event,data) {
         if(event.target != this) return; /* @todo : attach only to this. Use http://stackoverflow.com/a/6411507/2239406 solution for now. Don't want to stop propagation. */
-        $(this).removeClass("ls-unrelevant ls-hidden");
+        $(this).removeClass("ls-irrelevant ls-hidden");
     });
     $("[id^='question']").on('relevance:off',function(event,data) {
         if(event.target != this) return;
-        $(this).addClass("ls-unrelevant ls-hidden");
+        $(this).addClass("ls-irrelevant ls-hidden");
     });
     /* In all in one mode : need updating group too */
-    $(".allinone [id^='group-']:not(.ls-unrelevant) [id^='question']").on('relevance:on',function(event,data) {
+    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:on',function(event,data) {
         if(event.target != this) return;
         $(this).closest("[id^='group-']").removeClass("ls-hidden");
     });
-    $(".allinone [id^='group-']:not(.ls-unrelevant) [id^='question']").on('relevance:off',function(event,data) {
+    $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:off',function(event,data) {
         if(event.target != this) return;
         if($(this).closest("[id^='group-']").find("[id^='question']").length==$(this).closest("[id^='group-']").find("[id^='question'].ls-hidden").length){
             $(this).closest("[id^='group-']").addClass("ls-hidden");
@@ -45,11 +45,11 @@ function triggerEmRelevanceQuestion(){
 function triggerEmRelevanceGroup(){
     $("[id^='group-']").on('relevance:on',function(event,data) {
         if(event.target != this) return;
-        $(this).removeClass("ls-unrelevant ls-hidden");
+        $(this).removeClass("ls-irrelevant ls-hidden");
     });
     $("[id^='group-']").on('relevance:off',function(event,data) {
         if(event.target != this) return;
-        $(this).addClass("ls-unrelevant ls-hidden");
+        $(this).addClass("ls-irrelevant ls-hidden");
     });
 }
 /* On sub-question and answers-list */
@@ -57,7 +57,7 @@ function triggerEmRelevanceSubQuestion(){
     $("[id^='question']").on('relevance:on',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
-        $(this).removeClass("ls-unrelevant ls-"+data.style);
+        $(this).removeClass("ls-irrelevant ls-"+data.style);
         if(data.style=='disabled'){
             $(event.target).find('input').prop("disabled", false );
         }
@@ -69,7 +69,7 @@ function triggerEmRelevanceSubQuestion(){
     $("[id^='question']").on('relevance:off',"[id^='javatbd']",function(event,data) {
         if(event.target != this) return; // not needed now, but after (2016-11-07)
         data = $.extend({style:'hidden'}, data);
-        $(this).addClass("ls-unrelevant ls-"+data.style);
+        $(this).addClass("ls-irrelevant ls-"+data.style);
         if(data.style=='disabled'){
             $(event.target).find('input').prop("disabled", true );
         }

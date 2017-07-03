@@ -55,6 +55,11 @@ class TemplateConfiguration extends CFormModel
     /** @var TemplateConfiguration $oMotherTemplate The template name */
     public $oMotherTemplate;
 
+    public $templateEditor;
+
+    /** @var SimpleXMLElement $oOptions The template options */
+    public $oOptions;
+
 
     /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
     private $iSurveyId='';
@@ -67,9 +72,6 @@ class TemplateConfiguration extends CFormModel
 
     /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
     private $depends = array();
-
-    /** @var bool $overwrite_question_views Does it overwrites the question rendering from quanda.php? Must have a valid viewPath too. */
-    private $overwrite_question_views=false;
 
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
     private $xmlFile;
@@ -122,7 +124,7 @@ class TemplateConfiguration extends CFormModel
     }
 
     /**
-    * This function returns the complete URL path to a given template name
+    * Returns the complete URL path to a given template name
     *
     * @param string $sTemplateName
     * @return string template url
@@ -133,6 +135,180 @@ class TemplateConfiguration extends CFormModel
             $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
         }
         return $this->sTemplateurl;
+    }
+
+    /**
+     * Used from the template editor.
+     * It returns an array of editable files by screen for a given file type
+     *
+     * @param   string  $sType      the type of files (view/css/js)
+     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
+     * @return  array   array       ( [screen name] => array([files]) )
+     */
+    public function getValidScreenFiles($sType = "view", $sScreen=null)
+    {
+        $aScreenFiles = array();
+
+        $filesFromXML = (is_null($sScreen)) ? (array) $this->templateEditor->screens->xpath('//file') : $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
+
+        foreach( $filesFromXML as $file){
+
+            if ( $file->attributes()->type == $sType ){
+                $aScreenFiles[] = (string) $file;
+            }
+        }
+
+        $aScreenFiles = array_unique($aScreenFiles);
+        return $aScreenFiles;
+    }
+
+    /**
+     * Returns the layout file name for a given screen
+     *
+     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
+     * @return  string  the file name
+     */
+    public function getLayoutForScreen($sScreen)
+    {
+        $filesFromXML = $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
+
+        foreach( $filesFromXML as $file){
+
+            if ( $file->attributes()->role == "layout" ){
+                return (string) $file;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Retreives the absolute path for a file to edit (current template, mother template, etc)
+     * Also perform few checks (permission to edit? etc)
+     *
+     * @param string $sfile relative path to the file to edit
+     */
+    public function getFilePathForEdition($sFile, $aAllowedFiles=null)
+    {
+
+        // Check if the file is allowed for edition ($aAllowedFiles is produced via getValidScreenFiles() )
+        if (is_array($aAllowedFiles)){
+            if (!in_array($sFile, $aAllowedFiles)){
+                return false;
+            }
+        }
+
+        return $this->getFilePath($sFile, $this);
+    }
+
+
+    public function extendsFile($sFile)
+    {
+
+        if( !file_exists($this->path.'/'.$sFile) && !file_exists($this->viewPath.$sFile) ){
+
+            // Copy file from mother template to local directory
+            $sRfilePath = $this->getFilePath($sFile, $this);
+            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.'/'.$sFile;
+            copy ( $sRfilePath,  $sLfilePath );
+        }
+
+        return $this->getFilePath($sFile, $this);
+    }
+
+    public function getTemplateForFile($sFile, $oRTemplate)
+    {
+        while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
+    }
+
+
+    /**
+     * Update the config file of a given template so that it extends another one
+     *
+     * It will:
+     * 1. Delete files and engine nodes
+     * 2. Update the name of the template
+     * 3. Change the creation/modification date to the current date
+     * 4. Change the autor name to the current logged in user
+     * 5. Change the author email to the admin email
+     *
+     * Used in template editor
+     * Both templates and configuration files must exist before using this function
+     *
+     * It's used when extending a template from template editor
+     * @param   string  $sToExtends     the name of the template to extend
+     * @param   string  $sNewName       the name of the new template
+     */
+    static public function extendsConfig($sToExtends, $sNewName)
+    {
+        $sConfigPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
+
+        // First we get the XML file
+        libxml_disable_entity_loader(false);
+        $oNewManifest = new DOMDocument();
+        $oNewManifest->load($sConfigPath."/config.xml");
+        $oConfig            = $oNewManifest->getElementsByTagName('config')->item(0);
+
+        // Then we delete the nodes that should be inherit
+        $aNodesToDelete     = array();
+        $aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
+        $aNodesToDelete[]   = $oConfig->getElementsByTagName('engine')->item(0);
+
+        foreach($aNodesToDelete as $node){
+            $oConfig->removeChild($node);
+        }
+
+        // We replace the name by the new name
+        $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
+
+        $oOldNameNode   = $oMetadatas->getElementsByTagName('name')->item(0);
+        $oNvNameNode    = $oNewManifest->createElement('name', $sNewName);
+        $oMetadatas->replaceChild($oNvNameNode, $oOldNameNode);
+
+        // We change the date
+        $today          = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
+        $oOldDateNode   = $oMetadatas->getElementsByTagName('creationDate')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('creationDate', $today);
+        $oMetadatas->replaceChild($oNvDateNode, $oOldDateNode);
+
+        $oOldUpdateNode = $oMetadatas->getElementsByTagName('last_update')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('last_update', $today);
+        $oMetadatas->replaceChild($oNvDateNode, $oOldUpdateNode);
+
+        // We change the author name
+        $oOldAuthorNode   = $oMetadatas->getElementsByTagName('author')->item(0);
+        $oNvAuthorNode    = $oNewManifest->createElement('author', Yii::app()->user->name);
+        $oMetadatas->replaceChild($oNvAuthorNode, $oOldAuthorNode);
+
+        // We change the author email
+        $oOldMailNode   = $oMetadatas->getElementsByTagName('authorEmail')->item(0);
+        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(getGlobalSetting('siteadminemail')));
+        $oMetadatas->replaceChild($oNvMailNode, $oOldMailNode);
+
+        // TODO: provide more datas in the post variable such as description, url, copyright, etc
+
+        // We add the extend parameter
+        $oExtendsNode    = $oNewManifest->createElement('extends', $sToExtends);
+
+        // We test if mother template already extends another template
+        if(!empty($oMetadatas->getElementsByTagName('extends')->item(0))){
+            $oMetadatas->replaceChild($oExtendsNode, $oMetadatas->getElementsByTagName('extends')->item(0));
+        }else{
+            $oMetadatas->appendChild($oExtendsNode);
+        }
+
+        $oNewManifest->save($sConfigPath."/config.xml");
+
+        libxml_disable_entity_loader(true);
     }
 
 
@@ -152,8 +328,8 @@ class TemplateConfiguration extends CFormModel
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-        $aCssFiles   = (array) $oTemplate->config->files->css->filename;        // The CSS files of this template
-        $aJsFiles    = (array) $oTemplate->config->files->js->filename;         // The JS files of this template
+        $aCssFiles   = isset($oTemplate->config->files->css->filename)?(array) $oTemplate->config->files->css->filename:array();        // The CSS files of this template
+        $aJsFiles    = isset($oTemplate->config->files->js->filename)? (array) $oTemplate->config->files->js->filename:array();         // The JS files of this template
         $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
         // Remove/Replace mother files
@@ -296,16 +472,25 @@ class TemplateConfiguration extends CFormModel
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
-        $this->viewPath                 = (isset($this->config->engine->viewdirectory))            ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR   : $this->oMotherTemplate->viewPath;
-        $this->siteLogo                 = (isset($this->config->files->logo))                      ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
-        $this->filesPath                = (isset($this->config->engine->filesdirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR  : $this->oMotherTemplate->filesPath;
+        $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR    : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
+        $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
+        $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ? $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
+        $this->siteLogo                 = (!empty($this->config->xpath("//logo")))            ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
+
+        // Options are optional
+        if (!empty($this->config->xpath("//options"))){
+            $this->oOptions = $this->config->xpath("//options");
+        }elseif(!empty($this->oMotherTemplate->oOptions)){
+            $this->oOptions = $this->oMotherTemplate->oOptions;
+        }else{
+            $this->oOptions = "";
+        }
 
         // Not mandatory (use package dependances)
-        $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
-        $this->cssFramework->name       = (isset($this->config->engine->cssframework->name))       ? $this->config->engine->cssframework->name                                                                            : '';
-        $this->packages                 = (isset($this->config->engine->packages))                 ? $this->config->engine->packages                                                                                      : array();
+        $this->cssFramework             = (!empty($this->config->xpath("//cssframework")))    ? $this->config->engine->cssframework                                                                                  : '';
+        $this->packages                 = (!empty($this->config->xpath("//packages")))        ? $this->config->engine->packages                                                                                      : array();
 
-        /* Add depend package according to packages */
+        // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
     }
 
@@ -444,6 +629,33 @@ class TemplateConfiguration extends CFormModel
             throw error ? Only for admin template editor ? disable and reset to default ?
         }*/
         return array();
+    }
+
+    /**
+     * Get the file path for a given template.
+     * It will check if css/js (relative to path), or view (view path)
+     * It will search for current template and mother templates
+     *
+     * @param   string  $sFile          relative path to the file
+     * @param   string  $oTemplate      the template where to look for (and its mother templates)
+     */
+    private function getFilePath($sFile, $oTemplate)
+    {
+        // Remove relative path
+        $sFile = trim($sFile, '.');
+        $sFile = trim($sFile, '/');
+
+        // Retreive the correct template for this file (can be a mother template)
+        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
+
+        if($oTemplate instanceof TemplateConfiguration){
+            if(file_exists($oTemplate->path.'/'.$sFile)){
+                return $oTemplate->path.'/'.$sFile;
+            }elseif(file_exists($oTemplate->viewPath.$sFile)){
+                return $oTemplate->viewPath.$sFile;
+            }
+        }
+        return false;
     }
 
 }

@@ -306,8 +306,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_datestamp = '-';
     }
-
-    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
+    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y" && !$iscompleted)
     {
         $_saveall = doHtmlSaveAll(isset($move)?$move:NULL);
         $aSaveAllButtons = getSaveLinks(isset($move)?$move:NULL);
@@ -416,7 +415,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         if (file_exists ($oTemplate->path.'/'.$oTemplate->siteLogo ))
         {
-            $sitelogo= '<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'" alt=""/>';
+            $sitelogo= '<img class="img-responsive site-surveylist-logo custom custom-margin top-15 bottom-15" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'" alt=""/>';
         }
     }
 

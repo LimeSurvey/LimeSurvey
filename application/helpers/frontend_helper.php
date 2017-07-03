@@ -1690,7 +1690,7 @@ function doAssessment($surveyid)
 
                                 $aAttributes     = getQuestionAttributeValues($field['qid']);
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
-                                $total           = $total+(int)$aAttributes['assessment_value'];
+                            //    $total           = $total+(int)$aAttributes['assessment_value'];
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
                             }
                         }else{
@@ -1701,7 +1701,7 @@ function doAssessment($surveyid)
                             if ($usresult){
                                 $usrow              = $usresult->read();
                                 $assessmentValue    = $usrow['assessment_value'];
-                                $total              = $total+$usrow['assessment_value'];
+                            //    $total              = $total+$usrow['assessment_value'];
                             }
                         }
 
@@ -1799,8 +1799,7 @@ function doAssessment($surveyid)
 /**
 * Update SESSION VARIABLE: grouplist
 * A list of groups in this survey, ordered by group name.
-* @param int surveyid
-* @param string language
+* @param string $language
 * @param integer $surveyid
 */
 function UpdateGroupList($surveyid, $language)
@@ -1914,7 +1913,7 @@ function checkCompletedQuota($surveyid,$return=false)
             ////Create filtering
             // Array of field with quota array value
             $aQuotaFields=array();
-            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
+            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is irrelevant (em_manager_helper line 6548)
             $aQuotaRelevantFieldnames=array();
             // To count number of hidden questions
             $aQuotaQid=array();

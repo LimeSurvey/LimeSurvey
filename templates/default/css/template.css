@@ -57,9 +57,14 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 /**
  * Navigator
  */
- 
- .save-clearall-wrapper {
-	 margin-top: 0.75em;
+
+ #navigator-container {
+     padding-bottom: 1em;
+ }
+ #navigator-container > hr
+ {
+    margin-top: 0px;
+    margin-bottom: 0px;
  }
 
 /**
@@ -196,6 +201,16 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 #surveys-list-jumbotron {
     text-align: center;
 }
+
+#surveys-list-jumbotron img.site-surveylist-logo {
+    max-width: 35%;
+    display: block;
+    margin: 15px auto;
+}
+
+/*#outerframeContainer {
+    height: 100%;
+}*/
 
 #surveyListFooter {
     width: 100%;
@@ -723,4 +738,3 @@ div.yes-no .btn-group label {
 p.return-to-survey{
     clear:left;
 }
-

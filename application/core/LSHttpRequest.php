@@ -88,15 +88,11 @@ class LSHttpRequest extends CHttpRequest
        $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
        $referrer = ($baseReferrer != $baseRequestUri)?$referrer:null;
         //Use alternative url if the $referrer is still available in the checkLoopInNavigationStack
-        if( ($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer)) )
-        {
+        if( ($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer)) ) {
             // Checks if the alternative url should be used
-            if(isset($sAlternativeUrl))
-            {
+            if(isset($sAlternativeUrl)) {
                 $referrer = $sAlternativeUrl;
-            }
-            else 
-            {
+            } else {
                return App()->createUrl('admin/index');
             }
        }
@@ -132,17 +128,15 @@ class LSHttpRequest extends CHttpRequest
 
     /**
     * Method to check if an url is part of the stack
-    * Returns true, when an url is saved in the stack
-    * @param $referrerURL The URL that is checked against the stack 
+    * @return bool Returns true, when an url is saved in the stack
+    * @param string $referrerURL The URL that is checked against the stack
     */
     protected function checkLoopInNavigationStack($referrerURL)
     {
         $navStack = App()->session['LSNAVSTACK'];
-        foreach($navStack as $url)
-        {
+        foreach($navStack as $url) {
             $refEqualsUrl = ($referrerURL == $url);
-              if ($refEqualsUrl)
-              {
+              if ($refEqualsUrl) {
                   return true;
               }
         }

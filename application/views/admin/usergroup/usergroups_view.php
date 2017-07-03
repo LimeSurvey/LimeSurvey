@@ -8,15 +8,15 @@
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="col-lg-12">
-    <h3><?php eT('User groups list'); ?></h3>
+    <div class="pagetitle h3"><?php eT('User groups list'); ?></div>
     
-    <h4><?php 
+    <div class="h4"><?php 
             if (!Permission::model()->hasGlobalPermission('superadmin','read'))
             {
                 eT('My user groups');
             }
         ?>
-    </h4>
+    </div>
 
     <div class="row">
         <div class="col-lg-12 content-right">

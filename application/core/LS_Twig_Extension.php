@@ -91,15 +91,14 @@ class LS_Twig_Extension extends Twig_Extension
     /**
      * Publish a script file from template directory, using or not the asset manager (depending on configuration)
      * In any twig file, you can register a template script file doing: {{ registerTemplateScript($sTemplateScriptFileName) }}
-     * @param string $sGeneralScriptFileName name of the script file to publish in general script directory (it should contains the subdirectories)
+     * @param string $sTemplateScriptFileName name of the script file to publish in general script directory (it should contains the subdirectories)
      */
     public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
     {
         $oTemplate = self::getTemplateForRessource($sTemplateScriptFileName);
-
         $position = self::getPosition($position);
         Yii::app()->getClientScript()->registerScriptFile(
-            $oRTemplate->sTemplateUrl .
+            $oTemplate->sTemplateUrl .
             $sTemplateScriptFileName,
             $position,
             $htmlOptions
@@ -163,7 +162,7 @@ class LS_Twig_Extension extends Twig_Extension
 
         /* Add the relevance class */
         if (!$lemQuestionInfo['relevant']){
-            $aQuestionClass .= ' ls-unrelevant';
+            $aQuestionClass .= ' ls-irrelevant';
             $aQuestionClass .= ' ls-hidden';
         }
 
@@ -230,7 +229,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function getTemplateForRessource($sRessource)
     {
         $oRTemplate = Template::model()->getInstance();
-        
+
         while (!file_exists($oRTemplate->path.'/'.$sRessource)){
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
@@ -257,6 +256,23 @@ class LS_Twig_Extension extends Twig_Extension
     public static function getQuery($sName, $sDefaultValue=null)
     {
         return Yii::app()->request->getQuery($sName, $sDefaultValue);
+    }
+
+    public static function unregisterPackage($name)
+    {
+        return Yii::app()->getClientScript()->unregisterPackage($name);        
+    }
+
+    public static function listCoreScripts()
+    {
+        foreach(Yii::app()->getClientScript()->coreScripts as $key => $package){
+
+            echo "<hr>";
+            echo "$key: <br>";
+            var_dump($package);
+
+        }
+
     }
 
 

@@ -107,7 +107,7 @@ function checkGroup($postsid)
 * checks questions in a survey for consistency
 * @param integer $postsid
 * @param integer $iSurveyID
-* @return array $faildcheck
+* @return array|bool $faildcheck
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
 {
@@ -426,7 +426,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     }
 
     if ($simulate){
-        return array('dbengine'=>$CI->db->databasetabletype, 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$arrSim);
+        return array('dbengine'=>Yii::app()->db->getDriverName(), 'dbtype'=>Yii::app()->db->driverName, 'fields'=>$arrSim);
     }
 
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey

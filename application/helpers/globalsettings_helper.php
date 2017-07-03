@@ -82,5 +82,3 @@ function setGlobalSetting($settingname, $settingvalue)
 
     Yii::app()->setConfig($settingname, $settingvalue);
 }
-
-?>

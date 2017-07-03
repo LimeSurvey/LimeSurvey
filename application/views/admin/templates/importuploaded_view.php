@@ -29,7 +29,7 @@
     <div class="col-sm-11 col-sm-offset-1 content-right">
         <!-- Message box from super admin -->
         <div class="jumbotron message-box <?php echo $class;?>">
-            <h2 ><?php eT("Import template result:") ?></h2>
+            <div class="h2><?php eT("Import template result:") ?></div>
 
             <p class='lead <?php echo $statusClass;?>'>
                 <?php echo $status ?>

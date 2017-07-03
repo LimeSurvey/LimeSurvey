@@ -87,7 +87,7 @@
                                     <div class='col-sm-6'>
                                         <div class="htmleditor">
                                             <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
-                                            <?php echo getEditor("email-inv", "message_$language", "[" . gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
+                                            <?php echo getEditor("email-invitation", "message_$language", "[" . gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                         </div>
                                     </div>
                                 </div>

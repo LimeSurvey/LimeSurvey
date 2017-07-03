@@ -12,7 +12,9 @@
      */
     function App()
     {
-        return Yii::app();
+        /** @var LSYii_Application $app */
+        $app = Yii::app();
+        return $app;
     }
 
 
@@ -33,5 +35,3 @@
         }
         Yii::trace($msg, 'vardump');
     }
-    
-?>

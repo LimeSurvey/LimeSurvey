@@ -55,20 +55,21 @@ class LabelSet extends LSActiveRecord
         );
     }
 
-	function getAllRecords($condition=FALSE)
+
+    /**
+     * @param mixed|bool $condition
+     * @return static[]
+     */
+    public function getAllRecords($condition=FALSE)
 	{
-		if ($condition != FALSE)
-        {
-		    foreach ($condition as $item => $value)
-			{
-			    // FIXME this is broken
+        $criteria = new CDbCriteria;
+		if ($condition != FALSE) {
+		    foreach ($condition as $item => $value) {
 				$criteria->addCondition($item.'="'.$value.'"');
 			}
         }
 
-		$data = $this->findAll($criteria);
-
-        return $data;
+		return $this->findAll($criteria);
 	}
 
     /**

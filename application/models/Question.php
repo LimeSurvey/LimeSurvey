@@ -767,7 +767,6 @@ class Question extends LSActiveRecord
 
         $url         = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
         $url        .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
-        $button      = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
         $editurl     = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");

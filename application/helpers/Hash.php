@@ -100,6 +100,7 @@ class Hash {
 		if (strpos($path, '[') === false) {
 			$tokens = explode('.', $path);
 		} else {
+		    // FIXME !
 			$tokens = String::tokenize($path, '.', '[', ']');
 		}
 
@@ -386,7 +387,7 @@ class Hash {
  * @param array $data Source array from which to extract the data
  * @param string $paths An array containing one or more Hash::extract()-style key paths
  * @param string $format Format string into which values will be inserted, see sprintf()
- * @return array An array of strings extracted from `$path` and formatted with `$format`
+ * @return array|null An array of strings extracted from `$path` and formatted with `$format`
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::format
  * @see sprintf()
  * @see Hash::extract()
@@ -396,7 +397,7 @@ class Hash {
 		$count = count($paths);
 
 		if (!$count) {
-			return;
+			return null;
 		}
 
 		for ($i = 0; $i < $count; $i++) {

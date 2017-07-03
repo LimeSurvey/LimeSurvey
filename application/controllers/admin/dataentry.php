@@ -710,8 +710,8 @@ class dataentry extends Survey_Common_Action
                             ;
                             if ($idrow[$fname['fieldname']]!='')
                             {
-                                $datetimeobj = new Date_Time_Converter($idrow[$fname['fieldname']], "Y-m-d H:i:s");
-                                $thisdate = $datetimeobj->convert($dateformatdetails['phpdate']);
+                                $datetimeobj = DateTime::createFromFormat("!Y-m-d H:i:s", $idrow[$fname['fieldname']]);
+                                $thisdate = $datetimeobj->format($dateformatdetails['phpdate']);
                             }
                             else
                             {
@@ -1503,12 +1503,10 @@ class dataentry extends Survey_Common_Action
                         $qidattributes = getQuestionAttributeValues($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
-                        $this->getController()->loadLibrary('Date_Time_Converter');
-                        $datetimeobj = new date_time_converter($thisvalue,$dateformatdetails['phpdate']) ;
+                        $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
                         //need to check if library get initialized with new value of constructor or not.
 
-                        //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
-                        $updateqr .= dbQuoteID($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
+                        $updateqr .= dbQuoteID($fieldname)." = '{$datetimeobj->format("Y-m-d H:i:s")}', \n";
                     }
                 }
                 elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
@@ -1766,11 +1764,10 @@ class dataentry extends Survey_Common_Action
                         }
                         elseif ($irow['type'] == 'D')
                         {
-                            Yii::app()->loadLibrary('Date_Time_Converter');
                             $qidattributes = getQuestionAttributeValues($irow['qid']);
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
-                            $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
-                            $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
+                            $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
+                            $insert_data[$fieldname] = $datetimeobj->format("Y-m-d H:i:s");
                         }
                         else
                         {
@@ -2466,23 +2463,21 @@ class dataentry extends Survey_Common_Action
         if(!empty($qidattributes['array_filter']))
         {
 
-            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid));
-            if(is_object($newquestiontext))
-            {
-                $newquestiontext->getAttribute('question');
+            /** @var Question $question */
+            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filte'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            if($question) {
                 $output .= "\n<p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext)))."
+                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($question->question)))."
                 </p>\n";
             }
         }
         if(!empty($qidattributes['array_filter_exclude']))
         {
-            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid));
-            if(is_object($newquestiontext))
-            {
-                $newquestiontext->getAttribute('question');
+            /** @var Question $question */
+            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            if($question) {
                 $output .= "\n    <p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext))."
+                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($question->question))."
                 </p>\n";
             }
         }

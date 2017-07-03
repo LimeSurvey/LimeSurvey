@@ -124,10 +124,8 @@ class SurveyLanguageSetting extends LSActiveRecord
      * Defines the customs validation rule lsdefault
      *
      * @param mixed $attribute
-     * TODO $params is unused in method
-     * @param mixed $params
      */
-    public function lsdefault($attribute,$params)
+    public function lsdefault($attribute)
     {
         $oSurvey=Survey::model()->findByPk($this->surveyls_survey_id);
         $sEmailFormat=$oSurvey->htmlemail=='Y'?'html':'';

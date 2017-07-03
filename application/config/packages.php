@@ -65,8 +65,8 @@ return array(
     ),
 
     'bootstrap-rtl'=>array( /* Adding boostrap rtl package */
-        'devBaseUrl'  => 'assets/packages/bootstrap-rtl/',
-        'basePath' => 'core.bootstrap-rtl',
+        'devBaseUrl'  => 'assets/packages/bootstrap/',
+        'basePath' => 'core.bootstrap',
         'css'=> array(
             'bootstrap-rtl.css',
         ),

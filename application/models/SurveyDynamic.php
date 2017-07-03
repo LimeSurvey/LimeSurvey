@@ -284,7 +284,6 @@ class SurveyDynamic extends LSActiveRecord
         // Delete icon
         if (Permission::model()->hasSurveyPermission(self::$sid,'responses','delete')) {
             $aPostDatas = json_encode(array('sResponseId'=>$this->id));
-            //$button .= '<a class="deleteresponse btn btn-default btn-xs" href="'.$sDeleteUrl.'" role="button" data-toggle="modal" data-ajax="true" data-post="'.$aPostDatas.'" data-target="#confirmation-modal" data-tooltip="true" title="'. sprintf(gT('Delete response %s'),$this->id).'"><span class="glyphicon glyphicon-trash text-danger" ></span></a>';
             $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='". sprintf(gT('Delete response %s'),$this->id)."'><span class='glyphicon glyphicon-trash text-danger' ></span></a>";
         }
 
@@ -516,7 +515,6 @@ class SurveyDynamic extends LSActiveRecord
      */
     public function getTokenForGrid()
     {
-        $sToken = '';
         if(is_object($this->tokens) && ! is_null($this->tokens->tid) ) {
             $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='".self::$sid."' data-tid='".$this->tokens->tid."'  data-url='".App()->createUrl("admin/tokens",array("sa"=>"edit","iSurveyId"=>self::$sid,"iTokenId"=>$this->tokens->tid, 'ajax'=>'true'))."' data-toggle='tooltip' title='".gT("Edit this survey participant")."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
         } else {

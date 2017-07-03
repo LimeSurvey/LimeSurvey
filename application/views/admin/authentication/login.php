@@ -93,7 +93,6 @@
                                     'data' => $languageData,
                                     'pluginOptions' => array(
                                     'options' => array(
-                                        'width' => '230px'
                                     ),
                                     'htmlOptions' => array(
                                         'id' => 'loginlang'

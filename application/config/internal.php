@@ -43,6 +43,7 @@ $internalConfig = array(
         // Third party path
         'third_party' => realpath(__DIR__ . '/../../third_party'),
         'core' => realpath(__DIR__ . '/../../assets/packages'),
+        'fonts' => realpath(__DIR__ . '/../../fonts'),
 
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
@@ -58,6 +59,8 @@ $internalConfig = array(
         // This line just point application.vendor.Twig to application/third_party/Twig
         // @see: ETwigViewRenderer::$twigPathAlias
         'application.vendor.Twig'=>'application.third_party.Twig',
+        // 'CaptchaExtendedAction' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedAction.php'),
+        // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
 
     'modules'=>array(
@@ -84,12 +87,13 @@ $internalConfig = array(
         'application.models.*',
         'application.controllers.*',
         'application.modules.*',
-
         'bootstrap.helpers.*',
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
-        'third_party.Twig.*'
+        'third_party.Twig.*',
+        'ext.captchaExtended.CaptchaExtendedAction',
+        'ext.captchaExtended.CaptchaExtendedValidator'
 
     ),
     'preload' => array ('log'),
@@ -214,6 +218,8 @@ $internalConfig = array(
                 'registerGeneralScript'   => 'LS_Twig_Extension::registerGeneralScript',
                 'registerTemplateScript'  => 'LS_Twig_Extension::registerTemplateScript',
                 'registerScript'          => 'LS_Twig_Extension::registerScript',
+                'unregisterPackage'       => 'LS_Twig_Extension::unregisterPackage',
+                'listCoreScripts'         => 'LS_Twig_Extension::listCoreScripts',
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
@@ -237,7 +243,7 @@ $internalConfig = array(
             ),
 
             'sandboxConfig' => array(
-                'tags' => array('if', 'for', 'set', 'autoescape'),
+                'tags' => array('if', 'for', 'set', 'autoescape', 'block'),
                 'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
@@ -248,7 +254,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'unregisterPackage', 'listCoreScripts', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
             ),
 
         ),

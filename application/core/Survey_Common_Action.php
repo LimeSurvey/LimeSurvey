@@ -64,18 +64,8 @@ class Survey_Common_Action extends CAction
         $params = $this->_addPseudoParams($params);
 
         if (!empty($params['iSurveyId'])) {
-            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
-            if(!$oSurvey) {
-                Yii::app()->setFlashMessage(gT("Invalid survey ID"),'error');
-                $this->getController()->redirect(array("admin/index"));
-            } elseif (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
-                Yii::app()->setFlashMessage(gT("No permission"), 'error');
-                $this->getController()->redirect(array("admin/index"));
-            } else {
-                LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
-            }
+            LimeExpressionManager::SetSurveyId($params['iSurveyId']); // must be called early - it clears internal cache if a new survey is being used
         }
-
         // Check if the method is public and of the action class, not its parents
         // ReflectionClass gets us the methods of the class and parent class
         // If the above method existence check passed, it might not be neceessary that it is of the action class
@@ -110,8 +100,7 @@ class Survey_Common_Action extends CAction
     private function _addPseudoParams($params)
     {
         // Return if params isn't an array
-        if (empty($params) || !is_array($params))
-        {
+        if (empty($params) || !is_array($params)) {
             return $params;
         }
 
@@ -143,7 +132,7 @@ class Survey_Common_Action extends CAction
         // with that key's value in the params
         // (only if that place is empty)
         foreach ($pseudos as $key => $pseudo) {
-            if (!empty($params[$key])) {
+            if (isset($params[$key])) {
                 $pseudo = (array) $pseudo;
                 foreach ($pseudo as $pseud) {
                     if (empty($params[$pseud])) {
@@ -153,29 +142,52 @@ class Survey_Common_Action extends CAction
             }
         }
 
+        /* Control sid,gid and qid params validity see #12434 */
         // Fill param with according existing param, replace existing parameters.
         // iGroupId/gid can be found with qid/iQuestionId
-        if(isset($params['iQuestionId']))
-        {
-            if((int) $params['iQuestionId'] >0 )
-            { //Check if the transfered iQuestionId is numeric to prevent Errors with postgresql
-                $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
-                if($oQuestion)
-                {
-                    $params['iGroupId']=$params['gid']=$oQuestion->gid;
-                }
+        if(!empty($params['iQuestionId'])) {
+            if((string)(int)$params['iQuestionId']!==(string)$params['iQuestionId']) { // pgsql need filtering before find
+                throw new CHttpException(403,gT("Invalid question id"));
+            }
+            $oQuestion=Question::model()->find("qid=:qid",array(":qid"=>$params['iQuestionId']));//Move this in model to use cache
+            if(!$oQuestion) {
+                throw new CHttpException(404,gT("Question not found"));
+            }
+            if(!isset($params['iGroupId'])) {
+                $params['iGroupId']=$params['gid']=$oQuestion->gid;
             }
         }
         // iSurveyId/iSurveyID/sid can be found with gid/iGroupId
-        if(isset($params['iGroupId']))
-        {
+        if(!empty($params['iGroupId'])) {
+            if((string)(int)$params['iGroupId']!==(string)$params['iGroupId']) { // pgsql need filtering before find
+                throw new CHttpException(403,gT("Invalid group id"));
+            }
             $oGroup=QuestionGroup::model()->find("gid=:gid",array(":gid"=>$params['iGroupId']));//Move this in model to use cache
-            if($oGroup)
-            {
+            if(!$oGroup) {
+                throw new CHttpException(404,gT("Group not found"));
+            }
+            if(!isset($params['iSurveyId'])) {
                 $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oGroup->sid;
             }
         }
-
+        // Finally control validity of sid
+        if(!empty($params['iSurveyId'])) {
+            if((string)(int)$params['iSurveyId']!==(string)$params['iSurveyId']) { // pgsql need filtering before find
+                // 403 mean The request was valid, but the server is refusing action.
+                throw new CHttpException(403,gT("Invalid survey id"));
+            }
+            $oSurvey=Survey::model()->findByPk($params['iSurveyId']);
+            if(!$oSurvey) {
+                throw new CHttpException(404,gT("Survey not found"));
+            }
+            // Minimal permission needed, extra permission must be tested in each controller
+            if (!Permission::model()->hasSurveyPermission($params['iSurveyId'], 'survey', 'read')) {
+                // 403 mean (too) The user might not have the necessary permissions for a resource.
+                // 401 semantically means "unauthenticated"
+                throw new CHttpException(403);
+            }
+            $params['iSurveyId']=$params['iSurveyID']=$params['surveyid']=$params['sid']=$oSurvey->sid;
+        }
         // Finally return the populated array
         return $params;
     }
@@ -374,46 +386,57 @@ class Survey_Common_Action extends CAction
     /**
      * Display the update notification
      */
-    function _updatenotification()
+    protected function _updatenotification()
     {
-        // Lower dbversionnumbers will not have the notifications table.
-        if (Yii::app()->getConfig('dbversionnumber') < 259) {
+        // Never use Notification model for database update.
+        // TODO: Real fix: No database queries while doing database update, meaning
+        // don't call _renderWrappedTemplate.
+        if (get_class($this) == 'databaseupdate') {
             return;
         }
 
-        if( !Yii::app()->user->isGuest && Yii::app()->getConfig('updatable'))
-        {
+        if (!Yii::app()->user->isGuest && Yii::app()->getConfig('updatable')) {
             $updateModel = new UpdateForm();
             $updateNotification = $updateModel->updateNotification;
             $urlUpdate = Yii::app()->createUrl("admin/update");
-            $urlUpdateNotificationState = Yii::app()->createUrl("admin/update/sa/notificationstate");
             $currentVersion = Yii::app()->getConfig("buildnumber");
             $superadmins = User::model()->getSuperAdmins();
 
-            if($updateNotification->result)
-            {
-                if($updateNotification->security_update)
-                {
-                    UniqueNotification::broadcast(array(
-                        'title' => gT('Security update!')." (".gT("Current version: ").$currentVersion.")",
-                        'message' => gT('A security update is available.')." <a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
-                    ), $superadmins);
-                }
-                else if(Yii::app()->session['unstable_update'] )
-                {
-                    UniqueNotification::broadcast(array(
-                        'title' => gT('New UNSTABLE update available')." (".gT("Current version: ").$currentVersion.")",
-                        'markAsNew' => false,
-                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
-                    ), $superadmins);
-                }
-                else
-                {
-                    UniqueNotification::broadcast(array(
-                        'title' => gT('New update available')." (".gT("Current version: ").$currentVersion.")",
-                        'markAsNew' => false,
-                        'message' => gT('A security update is available.')."<a href=".$urlUpdate.">".gT('Click here to use ComfortUpdate.')."</a>"
-                    ), $superadmins);
+            if ($updateNotification->result) {
+                if ($updateNotification->security_update) {
+                    UniqueNotification::broadcast(
+                        array(
+                            'title' => gT('Security update!')." (".gT("Current version: ")
+                                . $currentVersion.")",
+                            'message' => gT('A security update is available.')." <a href=".$urlUpdate.">"
+                                . gT('Click here to use ComfortUpdate.')."</a>",
+                            'importance' => Notification::HIGH_IMPORTANCE
+                        ),
+                        $superadmins
+                    );
+                } elseif (Yii::app()->session['unstable_update']) {
+                    UniqueNotification::broadcast(
+                        array(
+                            'title' => gT('New UNSTABLE update available')." ("
+                                . gT("Current version: ").$currentVersion.")",
+                            'markAsNew' => false,
+                            'message' => gT('A security update is available.')."<a href=".$urlUpdate.">"
+                                . gT('Click here to use ComfortUpdate.')."</a>",
+                            'importance' => Notification::HIGH_IMPORTANCE
+                        ),
+                        $superadmins
+                    );
+                } else {
+                    UniqueNotification::broadcast(
+                        array(
+                            'title' => gT('New update available')." (".gT("Current version: ").$currentVersion.")",
+                            'markAsNew' => false,
+                            'message' => gT('A security update is available.')."<a href=".$urlUpdate.">"
+                                . gT('Click here to use ComfortUpdate.')."</a>",
+                            'importance' => Notification::HIGH_IMPORTANCE
+                        ),
+                        $superadmins
+                    );
                 }
             }
         }
@@ -572,19 +595,15 @@ class Survey_Common_Action extends CAction
     /**
     * Shows admin menu for question
     *
-    * @param int Survey id
-    * @param int Group id
-    * @param int Question id
-    * @param string action
+    * @param array $aData
     */
-    function _questionbar($aData)
+    public function _questionbar($aData)
     {
-        if(isset($aData['questionbar']))
-        {
-            if (is_object($aData['oSurvey']))
-            {
+        if(isset($aData['questionbar'])) {
+            if (is_object($aData['oSurvey'])) {
 
                 $iSurveyID = $aData['surveyid'];
+                /** @var Survey $oSurvey */
                 $oSurvey = $aData['oSurvey'];
                 $gid = $aData['gid'];
                 $qid = $aData['qid'];
@@ -1067,8 +1086,7 @@ class Survey_Common_Action extends CAction
 
     /**
     * Show survey summary
-    * @param int Survey id
-    * @param string Action to be performed
+     * @param array $aData
     */
     public function _surveysummary($aData)
     {
@@ -1190,52 +1208,37 @@ class Survey_Common_Action extends CAction
             $aData['language'] = getLanguageNameFromCode($aSurveyInfo['language'], false);
         }
 
-        // get the rowspan of the Additionnal languages row
-        // is at least 1 even if no additionnal language is present
-        $additionnalLanguagesCount = count($aAdditionalLanguages);
-        $first = true;
-         if ($aSurveyInfo['surveyls_urldescription'] == "")
-        {
+        if ($aSurveyInfo['surveyls_urldescription'] == "") {
             $aSurveyInfo['surveyls_urldescription'] = htmlspecialchars($aSurveyInfo['surveyls_url']);
         }
 
-        if ($aSurveyInfo['surveyls_url'] != "")
-        {
+        if ($aSurveyInfo['surveyls_url'] != "") {
             $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\">".flattenText($aSurveyInfo['surveyls_urldescription'])."</a>";
-        }
-        else
-        {
+        } else {
             $aData['endurl'] = "-";
         }
 
         $aData['sumcount3'] = $sumcount3;
         $aData['sumcount2'] = $sumcount2;
 
-        if ($activated == "N")
-        {
+        if ($activated == "N") {
             $aData['activatedlang'] = gT("No");
-        }
-        else
-        {
+        } else {
             $aData['activatedlang'] = gT("Yes");
         }
 
         $aData['activated'] = $activated;
-        if ($activated == "Y")
-        {
+        if ($activated == "Y") {
             $aData['surveydb'] = Yii::app()->db->tablePrefix . "survey_" . $iSurveyID;
         }
 
         $aData['warnings'] = "";
-        if ($activated == "N" && $sumcount3 == 0)
-        {
+        if ($activated == "N" && $sumcount3 == 0) {
             $aData['warnings'] = gT("Survey cannot be activated yet.") . "<br />\n";
-            if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create'))
-            {
+            if ($sumcount2 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add question groups") . "]</span><br />";
             }
-            if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create'))
-            {
+            if ($sumcount3 == 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'create')) {
                 $aData['warnings'] .= "<span class='statusentryhighlight'>[" . gT("You need to add questions") . "]</span><br />";
             }
         }
@@ -1243,7 +1246,7 @@ class Survey_Common_Action extends CAction
 
         //return (array('column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
         //        $aData['tableusage'] = getDBTableUsage($iSurveyID);
-        // ToDo: Table usage is calculated on every menu display which is too slow with bug surveys.
+        // ToDo: Table usage is calculated on every menu display which is too slow with big surveys.
         // Needs to be moved to a database field and only updated if there are question/subquestions added/removed (it's currently also not functional due to the port)
         //
 

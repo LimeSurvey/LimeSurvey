@@ -28,14 +28,14 @@
     LimeSurvey uses Bootstrap.
     See: https://getbootstrap.com
 
-    This template is an instance of Bootswatch Theme Flatly. 
+    This template is an instance of Bootswatch Theme Flatly.
     See: https://bootswatch.com/
 
 
 
     (¯`·._.·(¯`·._.· Twig Engine  ·._.·´¯)·._.·´¯)
 
-    The template engine uses Twig. 
+    The template engine uses Twig.
     See: http://twig.sensiolabs.org/
 
     The main variable is aSurveyInfo. It's an array containing the main information about the survey.
@@ -52,7 +52,7 @@
 
     (¯`·._.·(¯`·._.· Twig Engine: advanced  ·._.·´¯)·._.·´¯)
 
-    For security reason, Twig is in a sandBox. 
+    For security reason, Twig is in a sandBox.
     About sandBox, see: http://twig.sensiolabs.org/doc/2.x/api.html#sandbox-extension
 
     Available functions/Object Methods are defined in internal.php: components => twigRenderer
@@ -70,81 +70,49 @@
 
     NOTE: Feel free to ask for functions, variables, etc, that you feel are missing - https://bugs.limesurvey.org/my_view_page.php
 #}
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
-    {# Headers, metadatas, etc #}
-    {{ include('./subviews/head.twig') }}
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
 
-        {# Bootstrap Navigation Bar: the top menu #}
-        {{ include('./subviews/nav_bar.twig') }}
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
 
-        {# Progress bar  #}
-        {{ include('./subviews/progess_bar.twig') }}
+{# Replace the content block #}
+{% block content %}
 
-        <!-- Outer Frame Container -->
-        <div class="outerframe container" id="outerframeContainer">
+    {# render the layout_global content block #}
+    {{ parent() }}
 
-            <!-- Main Row -->
-            <div id="main-row">
-                {{ include('./subviews/flash_message.twig') }}
+    {# Include the form opening tag #}
+    {{ include('./subviews/start_form.twig') }} <!-- main form -->
 
-                <!-- Main Col -->
-                <div class="col-centered" id="main-col">
+        {# This will display the script and the hidden inputs needed for Expression Manager #}
+        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-                    {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
-                    {{ include('./subviews/warnings.twig') }}
+        {# Include the alert for no JavaScript #}
+        {{ include('./subviews/no_js_alert.twig') }}
 
-                    {# Include the form opening tag #}
-                    {{ include('./subviews/start_form.twig') }} <!-- main form -->
+        {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
+        {{ include('./subviews/privacy/allinone_mode_welcome_privacy.twig') }}
 
-                        {# This will display the script and the hidden inputs needed for Expression Manager #}
-                        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+        {#
+            PRESENT THE QUESTION GROUPS
 
-                        {# Include the alert for no JavaScript #}
-                        {{ include('./subviews/no_js_alert.twig') }}
+            This is the main part. It will render each question group for this page (depending of Survey Mode setting )
+            Each group will then render its own questions
 
-                        {# If survey mode is "All in One", it will add the welcome/privacy messages if needed #}
-                        {{ include('./subviews/privacy/allinone_mode_welcome_privacy.twig') }}
+         #}
+        {% for  aGroup in aSurveyInfo.aGroups %}
+            {{ include('./subviews/survey/group.twig') }}
+        {% endfor %}
 
-                        {#
-                            PRESENT THE QUESTION GROUPS
+        {# Presents the navigator #}
+        {% if aSurveyInfo.aNavigator.show %}
+            {{ include('./subviews/navigation/navigator.twig') }}
+        {% endif %}
 
-                            This is the main part. It will render each question group for this page (depending of Survey Mode setting )
-                            Each group will then render its own questions
+        {# Data shown when LEM debug timing mode is ON #}
+        {{ include('./subviews/LEMDebug.twig') }}
 
-                         #}
-                        {% for  aGroup in aSurveyInfo.aGroups %}
-                            {{ include('./subviews/survey/group.twig') }}
-                        {% endfor %}
-
-                        {# Presents the navigator #}
-                        {% if aSurveyInfo.aNavigator.show %}
-                            {{ include('./subviews/navigation/navigator.twig') }}
-                        {% endif %}
-
-                        {# Data shown when LEM debug timing mode is ON #}
-                        {{ include('./subviews/LEMDebug.twig') }}
-
-                    </form> <!-- main form -->
-                </div> <!-- main col -->
-            </div> <!-- main row -->
-        </div> <!-- outer frame container -->
-
-        {# Bootstrap alert modal #}
-        {{ include('./subviews/bootstrap_alert_modal.twig') }}
-
-        <!-- some template.js function launched before ready -->
-        <script type="text/javascript">
-        /*<![CDATA[*/
-            sliderSuffixClone();
-            fixBodyPadding();
-            hideQuestionWithRelevanceSubQuestion();
-            hideEmptyPart();
-        /*]]>*/
-        </script>
-    </body>
-</html>
-<!-- end of startpage.twig -->
+    </form> <!-- main form -->
+    
+{% endblock %}

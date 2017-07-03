@@ -133,7 +133,7 @@ class questionIndexHelper {
             $groupInfo['step'] = $step + 1;
             $stepInfo = isset($stepInfos[$step]) ? $stepInfos[$step]: array('show'=>true,'anyUnanswered'=>null,'anyErrors'=>null);
             if( ($type>1 || $groupInfo['step'] <= $sessionLem['maxstep'])
-                && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // $stepInfo['show'] is incomplete (for unrelevant group after the 'not submitted due to error group') GroupIsRelevant control it really
+                && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // $stepInfo['show'] is incomplete (for irrelevant group after the 'not submitted due to error group') GroupIsRelevant control it really
             ){
                 /* string to EM : leave fix (remove script , flatten other ...) to view */
                 $stepIndex[$step]=array(
