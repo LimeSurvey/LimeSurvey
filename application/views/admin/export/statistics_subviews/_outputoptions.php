@@ -1,6 +1,6 @@
     <div class="panel panel-primary" id="panel-1">
         <div class="panel-heading">
-            <h4 class="panel-title"><?php eT("Output options"); ?></h4>
+            <div class="panel-title h4"><?php eT("Output options"); ?></div>
         </div>
         <div class="panel-body">
             <div class='form-group'>
