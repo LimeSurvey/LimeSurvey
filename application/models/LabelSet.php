@@ -100,12 +100,12 @@ class LabelSet extends LSActiveRecord
 
             // View labelset
             $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
-            $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View labels').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+            $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View labels').'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
 
             // Edit labelset
             if(Permission::model()->hasGlobalPermission('labelsets','update')) {
                 $url = Yii::app()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid");
-                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit label set').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit label set').'" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
             }
 
             // Export labelset
@@ -117,7 +117,7 @@ class LabelSet extends LSActiveRecord
             // Delete labelset
             if(Permission::model()->hasGlobalPermission('labelsets','delete')) {
                 $url = Yii::app()->createUrl("admin/labels/sa/delete/lid/$this->lid");
-                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete label set').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this label set?').'"><span class="glyphicon glyphicon-trash text-warning"></span></a>';
+                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete label set').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this label set?').'"><span class="fa fa-trash text-warning"></span></a>';
             }
 
             return $button;

@@ -19,7 +19,7 @@
     <?php endif;?>
 
 <a data-toggle="collapse" id="explorer-collapse" href="#explorer-lvl1">
-    <span class="glyphicon glyphicon-folder-open"></span> <?php eT('Question explorer');?>
+    <span class="fa fa-folder-open"></span> <?php eT('Question explorer');?>
     <span class="caret" ></span>
 </a>
 
@@ -41,7 +41,7 @@
                                 data-placement="bottom"
                                 title="<?php eT('Add a group');?>"
                                 href="<?php echo $this->createUrl("/admin/questiongroups/sa/add/surveyid/$iSurveyId"); ?>">
-                                <span class="glyphicon glyphicon-plus-sign"></span>
+                                <span class="fa fa-plus-sign"></span>
                                 <?php eT('Add group');?>
                             </a>
                         </div>
@@ -65,21 +65,21 @@
                             <div class="col-sm-1" id="questions-container-<?php echo $aGroup->gid; ?>">
                                 <!-- add question to this group -->
                                 <a  data-toggle="tooltip" data-placement="top" style="padding: 0" title="<?php eT('Add a question to this group');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questions/sa/newquestion/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
-                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                    <span class="fa fa-plus-sign"></span>
                                 </a>
                             </div>
                             <?php elseif (Permission::model()->hasSurveyPermission($iSurveyId, 'surveycontent', 'create')): ?>
                             <div class="col-sm-1" style="padding: 0" id="questions-container-<?php echo $aGroup->gid; ?>">
                                 <!-- add question to this group -->
                                 <a title="<?php eT("You can't add questions while the survey is active.");?>" class='disabled question-explorer-add-question' href="#" data-toggle="tooltip" data-placement="top">
-                                    <span class="glyphicon glyphicon-plus-sign"></span>
+                                    <span class="fa fa-plus-sign"></span>
                                 </a>
                             </div>
                             <?php endif;?>
                         <div class="col-sm-1">
                             <!-- add question to this group -->
                             <a  data-toggle="tooltip" data-placement="top"  title="<?php eT('Group summary');?>" class="question-explorer-add-question" href="<?php echo $this->createUrl("/admin/questiongroups/sa/view/surveyid/$iSurveyId/gid/$aGroup->gid"); ?>">
-                                <span class="glyphicon glyphicon-list"></span>
+                                <span class="fa fa-list"></span>
                             </a>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                                             <!-- Active question -->
                                             <div  class="question-link active" >
                                                 <span class="question-collapse-title">
-                                                    <span class="glyphicon glyphicon-list-alt"></span>
+                                                    <span class="fa fa-list-alt"></span>
                                                     <strong>
                                                         <?php echo sanitize_html_string(strip_tags($question->title));?>
                                                     </strong>
@@ -111,7 +111,7 @@
                                             <!-- Other questions -->
                                             <a href="<?php echo $this->createUrl("/admin/questions/sa/view/surveyid/$iSurveyId/gid/".$aGroup->gid."/qid/".$question->qid); ?>" class="question-link" >
                                                 <span class="question-collapse-title">
-                                                    <span class="glyphicon glyphicon-list"></span>
+                                                    <span class="fa fa-list"></span>
                                                     <strong>
                                                         <?php echo sanitize_html_string(strip_tags($question->title));?>
                                                     </strong>

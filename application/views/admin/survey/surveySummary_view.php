@@ -23,7 +23,12 @@ $surveyid = $surveyinfo['sid'];
 ?>
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
-    <h3 id="survey-action-title"><?php eT('Survey quick actions'); ?><span data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="glyphicon glyphicon-chevron-right"></span></h3>
+    <h3 id="survey-action-title">
+    <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">
+        <i class="fa fa-caret-down"></i>
+    </button>&nbsp;&nbsp;
+    <?php eT('Survey quick actions'); ?>
+    </h3>
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-sm-12 content-right">
 
@@ -49,7 +54,7 @@ $surveyid = $surveyinfo['sid'];
                             <!-- If you want a single page survey, just add a single group, and switch on "Show questions group by group -->
                             <div class="alert alert-info alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                                <span class="glyphicon glyphicon-info-sign" ></span>&nbsp;&nbsp;&nbsp;
+                                <span class="fa fa-info-sign" ></span>&nbsp;&nbsp;&nbsp;
                                 <?php eT('Set below if your questions are shown one at a time, group by group or all on one page.');?>
                             </div>
                         <?php endif;?>
@@ -256,7 +261,7 @@ $surveyid = $surveyinfo['sid'];
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>" >
-                                                    <span class="glyphicon glyphicon-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
@@ -278,7 +283,7 @@ $surveyid = $surveyinfo['sid'];
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="#" >
-                                                    <span class="glyphicon glyphicon-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
@@ -323,176 +328,190 @@ $surveyid = $surveyinfo['sid'];
             </div>
         </div>
 
+    <div class="row">
+        <!-- Survey summary -->
+        <h3 class="col-sm-12"><?php eT('Survey summary'); ?></h3>
 
-    <!-- Survey summary -->
-    <h3><?php eT('Survey summary'); ?></h3>
-        <div class="row">
-            <div class="col-sm-12 content-right">
-
-                <!-- for very small screens -->
-                <div class="hidden-sm  hidden-md hidden-lg ">
-                    <p>
-                        <?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?>
-                    </p>
-
-                    <p>
-                        <strong><?php neT("Survey URL:|Survey URLs:",count($aAdditionalLanguages)+1);?></strong><br/>
-                        <small><em><?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?></em></small><br/>
-                            <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
-                            <?php
-                                // TODO : move to controller
-                                $textLink = substr ( $tmp_url, 0 , 56 );
-                                if ( strlen($textLink) < strlen($tmp_url) )
-                                    $textLink .= '...';
-                            ?>
-                            <small><a href='<?php echo $tmp_url?>' target='_blank'><?php echo $textLink;?></a>
-                        </small>
-
-                    </p>
+        <h4 class="col-sm-12"><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></h4>
+        <div class="col-sm-12 col-md-6">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <strong> <?php neT("Survey URL:|Survey URLs:",count($aAdditionalLanguages)+1);?></strong>
                 </div>
-                    <h4><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></h4>
-               <!-- Table for big screens -->
-                <table class="items table hidden-xs" id='surveydetails'>
-
-
-                    <!-- Survey URL -->
-                    <tr>
-                        <td class='col-sm-2'>
-                            <strong> <?php neT("Survey URL:|Survey URLs:",count($aAdditionalLanguages)+1);?></strong>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
-
+                <!-- List group -->
+                <ul class="list-group">
                     <!-- Base language -->
-                    <tr>
-                        <td style="border-top: none; padding-left: 2em">
-                           <?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?>  <?php eT('(Base language)');?>:
-                        </td>
-                        <td style="border-top: none;" >
-                            <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
-                            <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
-                        </td>
-                    </tr>
-
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                <?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?>  <?php eT('(Base language)');?>:
+                            </div>
+                            <div class="col-8">
+                                <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
+                                <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
+                            </div>
+                        </div>
+                    </li>
                     <!-- Additional languages  -->
                     <?php foreach ($aAdditionalLanguages as $langname): ?>
-                        <tr>
-                            <td  style="border-top: none; padding-left: 2em">
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
                                 <?php echo getLanguageNameFromCode($langname,false).":";?>
-                            </td>
-                            <td  style="border-top: none;" >
+                            </div>
+                            <div class="col-8">
                                 <?php $tmp_url = $this->createAbsoluteUrl("/survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$langname)); ?>
                                 <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
-                            </td>
-                        </tr>
+                            </div>
+                        </div>
+                    </li>
                     <?php endforeach; ?>
-
                     <!-- End URL -->
-                    <tr>
-                        <td   style="border-top: none; padding-left: 2em">
-                            <?php eT("End URL:");?>
-                        </td>
-                        <td style="border-top: none">
-                            <?php echo $endurl;?>
-                        </td>
-                    </tr>
-
-                    <!-- Survey's texts -->
-                    <tr>
-                        <td><strong><?php eT("Survey texts");?>:</strong></td>
-                        <td></td>
-                    </tr>
-
-                    <!-- Description -->
-                    <tr>
-                        <td style="border-top: none; padding-left: 2em">
-                            <?php eT("Description:");?>
-                        </td>
-                        <td style="border-top: none;" >
-                            <?php
-                                if (trim($surveyinfo['surveyls_description']) != '')
-                                {
-                                    templatereplace(flattenText($surveyinfo['surveyls_description']));
-                                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
-                                }
-                            ?>
-                        </td>
-                    </tr>
-
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                <?php eT("End URL:");?>
+                            </div>
+                            <div class="col-8">
+                                    <?php echo $endurl;?>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <!-- Survey's texts -->
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <strong><?php eT("Survey texts");?>:</strong>
+                </div>
+                <!-- List group -->
+                <ul class="list-group">
+                        <!-- Description -->
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                <?php eT("Description:");?>
+                            </div>
+                            <div class="col-8">
+                                <?php
+                                    if (trim($surveyinfo['surveyls_description']) != '')
+                                    {
+                                        templatereplace(flattenText($surveyinfo['surveyls_description']));
+                                        echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                    }
+                                ?>
+                            </div>
+                        </div>
+                    </li>
                     <!-- Welcome -->
-                    <tr>
-                        <td style="border-top: none; padding-left: 2em">
-                            <?php eT("Welcome:");?>
-                        </td>
-                        <td style="border-top: none;" >
-                            <?php
-                                templatereplace(flattenText($surveyinfo['surveyls_welcometext']));
-                                echo LimeExpressionManager::GetLastPrettyPrintExpression();
-                            ?>
-                        </td>
-                    </tr>
-
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                <?php eT("Welcome:");?>
+                            </div>
+                            <div class="col-8">
+                                <?php
+                                    templatereplace(flattenText($surveyinfo['surveyls_welcometext']));
+                                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                ?>
+                            </div>
+                        </div>
+                    </li>
+                    
                     <!-- End message -->
-                    <tr>
-                        <td style="border-top: none; padding-left: 2em">
-                            <?php eT("End message:");?>
-                        </td>
-                        <td style="border-top: none;" >
-                            <?php
-                                templatereplace(flattenText($surveyinfo['surveyls_endtext']));
-                                echo LimeExpressionManager::GetLastPrettyPrintExpression();
-                            ?>
-                        </td>
-                    </tr>
+                    <li class="list-group-item">
+                        <div class="ls-flex-row col-12">
+                            <div class="col-4">
+                                <?php eT("End message:");?>
+                            </div>
+                            <div class="col-8">
+                                    <?php
+                                    templatereplace(flattenText($surveyinfo['surveyls_endtext']));
+                                    echo LimeExpressionManager::GetLastPrettyPrintExpression();
+                                ?>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">    
+        <div class="col-sm-12 col-md-6">
+            <ul class="list-group">
                     <!-- Administrator -->
-                    <tr>
-                        <td>
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
                             <strong><?php eT("Administrator:");?></strong>
-                        </td>
-                        <td>
-                            <?php echo flattenText("{$surveyinfo['admin']} ({$surveyinfo['adminemail']})");?>
-                        </td>
-                    </tr>
+                        </div>
+                        <div class="col-8">
+                                <?php echo flattenText("{$surveyinfo['admin']} ({$surveyinfo['adminemail']})");?>
+                        </div>
+                    </div>
+                </li>
+                <!-- Fax to -->
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            <strong><?php eT("Fax to:");?></strong>
+                        </div>
+                        <div class="col-8">
+                            <?php echo flattenText($surveyinfo['faxto']);?>
+                        </div>
+                    </div>
+                </li>
+                
+                <!-- Number of questions/groups -->
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            <strong><?php eT("Number of questions/groups:");?></strong>
+                        </div>
+                        <div class="col-8">
+                            <?php echo $sumcount3."/".$sumcount2;?>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-                    <!-- Fax to -->
-                    <?php if (trim($surveyinfo['faxto'])!=''): ?>
-                        <tr>
-                            <td>
-                                <strong><?php eT("Fax to:");?></strong>
-                            </td>
-                            <td>
-                                <?php echo flattenText($surveyinfo['faxto']);?>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
-
-                    <!-- Start date/time -->
-                    <tr>
-                        <td>
+        <div class="col-sm-12 col-md-6">
+            <ul class="list-group">
+                <!-- Start date/time -->
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
                             <strong><?php eT("Start date/time:");?></strong>
-                        </td>
-                        <td>
+                        </div>
+                        <div class="col-8">
                             <?php echo $startdate;?>
-                        </td>
-                    </tr>
-
-                    <!-- Expiry date/time -->
-                    <tr>
-                        <td>
+                        </div>
+                    </div>
+                </li>
+                <!-- Expiration date/time -->
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
                             <strong><?php eT("Expiration date/time:");?></strong>
-                        </td>
-                        <td>
+                        </div>
+                        <div class="col-8">
                             <?php echo $expdate;?>
-                        </td>
-                    </tr>
-
-                    <!-- Template -->
-                    <tr>
-                        <td>
+                        </div>
+                    </div>
+                </li>
+                
+                <!-- Template -->
+                <li class="list-group-item">
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
                             <strong><?php eT("Template:");?></strong>
-                        </td>
-                        <td>
+                        </div>
+                        <div class="col-8">
                             <?php $templatename = $surveyinfo['template'];
                             if (Permission::model()->hasGlobalPermission('templates','read'))
                             {
@@ -505,43 +524,62 @@ $surveyid = $surveyinfo['sid'];
                                 echo $templatename;
                             }
                             ?>
-                        </td>
-
-                    </tr>
-
-                    <!-- Number of questions/groups -->
-                    <tr>
-                        <td>
-                            <strong><?php eT("Number of questions/groups:");?></strong>
-                        </td>
-                        <td>
-                            <?php echo $sumcount3."/".$sumcount2;?>
-                        </td>
-                    </tr>
-
-                    <!-- Hints  -->
-                    <tr>
-                        <td>
-                            <strong><?php eT("Survey settings:");?></strong>
-                        </td>
-                        <td>
-                            <?php echo $warnings.$hints;?>
-                        </td>
-                    </tr>
-
-                    <!-- usage -->
-                    <?php if ($tableusage != false){
-                            if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){
-                                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
-                                $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2); ?>
-                                <tr><td><strong><?php eT("Table column usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
-                                <tr><td><strong><?php eT("Table size usage");?>: </strong></td><td><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div></td></tr>
-                            <?php }
-                            elseif (($arrCols['dbtype'] == 'mssql')||($arrCols['dbtype'] == 'postgre')||($arrCols['dbtype'] == 'dblib')){
-                                $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2); ?>
-                                <tr><td><strong><?php eT("Table column usage");?>: </strong></td><td><strong><?php echo $column_usage;?>%</strong><div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> </td></tr>
-                            <?php }
-                        } ?>
-                </table>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <!-- Hints  -->
+            <div class="ls-flex-row col-12">
+                <div class="col-4">
+                    <strong><?php eT("Survey settings:");?></strong>
+                </div>
+                <div class="col-8">
+                    <?php echo $warnings.$hints;?>
+                </div>
             </div>
         </div>
+
+        <div class="col-sm-12 col-md-6">
+        <!-- usage -->
+        <?php if ($tableusage != false){
+                if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){
+                    $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2);
+                    $size_usage =  round($tableusage['size'][0]/$tableusage['size'][1] * 100,2); ?>
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                                <strong><?php eT("Table column usage");?>: </strong>
+                        </div>
+                        <div class="col-8">
+                                <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> 
+                        </div>
+                    </div>
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            <strong><?php eT("Table size usage");?>: </strong>
+                        </div>
+                        <div class="col-8">
+                            <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $size_usage;?>'></div>
+                        </div>
+                    </div>
+                <?php }
+                elseif (($arrCols['dbtype'] == 'mssql')||($arrCols['dbtype'] == 'postgre')||($arrCols['dbtype'] == 'dblib')){
+                    $column_usage = round($tableusage['column'][0]/$tableusage['column'][1] * 100,2); ?>
+                    <div class="ls-flex-row col-12">
+                        <div class="col-4">
+                            <strong><?php eT("Table column usage");?>: </strong>
+                        </div>
+                        <div class="col-8">
+                            <strong><?php echo $column_usage;?>%</strong>
+                            <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> 
+                        </div>
+                    </div>
+                <?php }
+            } ?>
+            </div>      
+        </div>
+    </div>
+</div>

@@ -315,7 +315,7 @@ function createNewLabelTR(alternate,first){
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
     else
         x = x + "<td>"
-        + "<span class='glyphicon glyphicon-move text-success'></span>"
+        + "<span class='fa fa-move text-success'></span>"
         + "</td><td>"
         + "<input type='hidden' class='hiddencode' value='###codeval###' />"
         + "<input type='text' class='codeval form-control  ' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"
@@ -324,12 +324,12 @@ function createNewLabelTR(alternate,first){
 
     x = x + "<td><input class=' form-control  ' name=\"title_###lang###_###next###\"  type=\"text\" value=\"\" size=\"80\" maxlength=\"3000\" >"+
     "<a title=\"\" id=\"title_###lang###_###next###_ctrl\" href=\"javascript:start_popup_editor('title_###lang###_###next###','[Label:](###lang###)','','','','editlabel','labels')\">"+
-    "<span class=\"glyphicon glyphicon-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
-    "<span style=\"display: none;\" class=\"glyphicon glyphicon-pencil  text-success\" name=\"title_###lang###_###next###_popupctrldis\"  id=\"title_###lang###_###next###_popupctrldis\" alt=\"\"></span>"+
+    "<span class=\"fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrlena\" id=\"title_###lang###_###next###_popupctrlena\" alt=\"\"></span>"+
+    "<span style=\"display: none;\" class=\"fa fa-pencil  text-success\" name=\"title_###lang###_###next###_popupctrldis\"  id=\"title_###lang###_###next###_popupctrldis\" alt=\"\"></span>"+
     "</a></td>";
 
     if (first)
-        x = x + "<td style=\"text-align: center;\">&nbsp<span class=\"btnaddanswer icon-add text-success\"></span> <span class=\"btndelanswer\ glyphicon glyphicon-trash  text-warning\"></span></td>";
+        x = x + "<td style=\"text-align: center;\">&nbsp<span class=\"btnaddanswer icon-add text-success\"></span> <span class=\"btndelanswer\ fa fa-trash  text-warning\"></span></td>";
 
     x = x + "</tr>";
 

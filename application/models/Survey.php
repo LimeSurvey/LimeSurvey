@@ -214,6 +214,7 @@ class Survey extends LSActiveRecord
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
+            'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
         );
     }
 
@@ -536,6 +537,66 @@ class Survey extends LSActiveRecord
     }
 
 
+    private function _getDefaultSurveyMenu(){
+        $oDefaultMenu = Surveymenu::model()->findByPk(1);
+        //Posibility to add more languages to the database is given, so it is possible to add a call by language
+        //Also for peripheral menues we may add submenus someday.
+        
+        $entries = [];
+        $defaultMenuEntries = $oDefaultMenu->surveymenuEntries;
+        foreach($defaultMenuEntries as $menuEntry){
+            $aEntry = $menuEntry->attributes;
+            if((!empty($entry['permission']) && !empty($entry['permission_grade']) && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade'])))
+                continue;
+
+            
+            $aEntry['link'] = $aEntry['menu_link'] 
+                        ?  App()->getController()->createUrl($aEntry['menu_link'],['surveyid' => $this->sid])
+                        : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
+            $entries[] = $aEntry;
+        }  
+
+        $aResult = [
+            "title" => $oDefaultMenu->title,
+            "description" => $oDefaultMenu->description,
+            "entries" => $entries
+        ];
+
+        return $aResult;
+    }   
+
+
+    /**
+     * Get surveymenu configuration
+     * This will be made bigger in future releases, but right now it only collects the default menu-entries
+     */
+    public function getSurveyMenus(){
+        
+        $aSurveyMenus = [];
+
+        //Get the default menu
+        $aSurveyMenus[] = $this->_getDefaultSurveyMenu();
+
+        //get all survey specific menus
+        foreach($this->surveymenus as $menu){
+            $aMenuResult = [
+                "title" => $menu->title,
+                "description" => $menu->description,
+                "entries" => []
+            ];
+            
+            foreach($menu->surveymenuEntries as $menuEntry){
+                $aEntry = $menuEntry->attributes;
+                $aEntry['link'] = App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
+                $aMenuResult["entries"][] = $aEntry;
+            }
+            $aSurveyMenus[] = $aMenuResult;
+        }
+
+        //soon to come => Event to add menus for plugins
+
+        return $aSurveyMenus;
+    }
 
     /**
     * Creates a new survey - does some basic checks of the suppplied data
@@ -998,11 +1059,11 @@ class Survey extends LSActiveRecord
         $button = '';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('General settings & texts').'"><span class="glyphicon glyphicon-cog" ></span><span class="sr-only">'.gT('General settings & texts').'</span></a>';
+            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('General settings & texts').'"><span class="fa fa-cog" ></span></a>';
         }
 
         if(Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active=='Y' ) {
-            $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="glyphicon glyphicon-stats text-success" ></span><span class="sr-only">'.gT('Statistics').'</span></a>';
+            $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="fa fa-stats text-success" ></span></a>';
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
@@ -1018,7 +1079,7 @@ class Survey extends LSActiveRecord
 
         //$previewUrl = Yii::app()->createUrl("survey/index/sid/");
         //$previewUrl .= '/'.$this->sid;
-        //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open"  ></span></a> ';
+        //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="fa fa-eye-open"  ></span></a> ';
 
         return $button;
     }

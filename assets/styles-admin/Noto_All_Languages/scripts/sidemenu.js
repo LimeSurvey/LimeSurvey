@@ -250,7 +250,7 @@ $(document).ready(function(){
             {
                 width: '100%',
             }, 500, function() {
-                $('.handleAccordion span').removeClass('glyphicon-chevron-left').addClass('glyphicon-chevron-right');
+                $('.handleAccordion span').removeClass('fa-chevron-left').addClass('fa-chevron-right');
                 $('.handleAccordion').removeClass('opened').addClass('stretched');
                 $('.handleAccordion').removeClass('disabled');
         });
@@ -267,7 +267,7 @@ $(document).ready(function(){
                 width: '41.66666666666667%',// Bootstrap value for col-sm-5
                 //width: '33.33333333333333%', // Bootstrap value for col-sm-4
             }, 500, function() {
-                $('.handleAccordion span').removeClass('glyphicon-chevron-right').addClass('glyphicon-chevron-left');
+                $('.handleAccordion span').removeClass('fa-chevron-right').addClass('fa-chevron-left');
                 $('.handleAccordion').removeClass('stretched').addClass('opened');
                 $('.handleAccordion').removeClass('disabled');
 

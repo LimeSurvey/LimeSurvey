@@ -89,18 +89,14 @@ class PanelBoxWidget extends CWidget
         $boxes = self::getBoxes();
         $boxcount = 0;
         $bIsRowOpened = false;
+                $this->render('row_header');
         foreach ($boxes as $box) {
 
             $canSeeBox = self::canSeeBox($box);
-            if ($canSeeBox) {
-                $boxcount = $boxcount + 1;
-            }
-
             // It's the first box to show, we must display row header, and have an offset
-            if ($boxcount == 1 && $canSeeBox) {
+            if ($canSeeBox) {
 
 
-                $this->render('row_header');
                 $bIsRowOpened = true;
                 $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
                     'display' => 'singlebox',
@@ -116,19 +112,8 @@ class PanelBoxWidget extends CWidget
                     'offset' => '',
                 ));
             }
-
-            // If it is the last box, we should close the box
-            if ($boxcount == $this->boxesbyrow) {
-                $this->render('row_footer');
-                $boxcount = 0;
-                $bIsRowOpened = false;
-            }
         }
-
-        // If the last row has not been closed, we close it
-        if ($bIsRowOpened == true) {
             $this->render('row_footer');
-        }
     }
 
     protected function canSeeBox($box = '')

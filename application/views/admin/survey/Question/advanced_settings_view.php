@@ -19,7 +19,7 @@ $categoryNum=0;
             <div class="panel-heading" role="tab">
                 <h4 class="panel-title">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="fa fa-chevron-left"></span>
                     </a>
                     <a id="button-collapse<?php echo $categoryNum ?>" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-cat<?php echo $categoryNum ?>" aria-expanded="false" aria-controls="collapse-cat<?php echo $categoryNum ?>">
                         <?php echo $aAttribute['category']; ?>

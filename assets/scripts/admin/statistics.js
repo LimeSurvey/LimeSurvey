@@ -1,12 +1,12 @@
 function toggleSection(chevron, section) {
     section.toggle();
-    chevron.toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+    chevron.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
 }
 
 function hideSection(chevron, section) {
     section.hide();
-    chevron.removeClass('glyphicon-chevron-up');
-    chevron.addClass('glyphicon-chevron-down');
+    chevron.removeClass('fa-chevron-up');
+    chevron.addClass('fa-chevron-down');
 }
 
 /**
@@ -216,8 +216,8 @@ var onDocumentReady = function () {
         hideSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters'));
         hideSection($('#responsefilters-chevron'), $('#filterchoices'))
         $('#statisticsoutput').show();
-        $('#statistics-render-chevron').removeClass('glyphicon-chevron-up');
-        $('#statistics-render-chevron').addClass('glyphicon-chevron-down');
+        $('#statistics-render-chevron').removeClass('fa-chevron-up');
+        $('#statistics-render-chevron').addClass('fa-chevron-down');
         $('#view-stats-alert-info').hide();
         $('#statsContainerLoading').show();
         //alert('ok');

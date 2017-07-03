@@ -195,8 +195,8 @@
         }
         $htmlcode .= ""
         . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext,ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='{$class}'>\n"
-        . "\t<span class='glyphicon glyphicon-pencil btneditanswerena' id='".$fieldname."_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='".gT("Start HTML editor in a popup window")."'></span>"
-        . "\t<span class='glyphicon glyphicon-pencil btneditanswerdis' id='".$fieldname."_popupctrldis'  style='display:none'  ></span>"
+        . "\t<span class='fa fa-pencil btneditanswerena' id='".$fieldname."_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='".gT("Start HTML editor in a popup window")."'></span>"
+        . "\t<span class='fa fa-pencil btneditanswerdis' id='".$fieldname."_popupctrldis'  style='display:none'  ></span>"
         . "</a>\n";
 
         return $htmlcode;

@@ -218,6 +218,7 @@ class Survey_Common_Action extends CAction
         return call_user_func_array(array($this, $sa), $func_args);
     }
 
+
     /**
     * Renders template(s) wrapped in header and footer
     *
@@ -268,6 +269,7 @@ class Survey_Common_Action extends CAction
             $this->_titlebar($aData);
 
             //// Each view will call the correct bar as a subview.
+            $this->_surveysidemenu($aData);
             $this->_surveybar($aData);
             $this->_nquestiongroupbar($aData);
             $this->_questionbar($aData);
@@ -282,7 +284,6 @@ class Survey_Common_Action extends CAction
             $this->_notifications();
 
             //// Here the main content views.
-            $this->_surveysidemenu($aData);
             $this->_listquestiongroups($aData);
             $this->_listquestions($aData);
             $this->_nsurveysummary($aData);

@@ -417,7 +417,7 @@ $(document).ready(function() {
         <option value='greaterthan'>"+searchtypes[4]+"</option>\n\
         <option value='lessthan'>"+searchtypes[5]+"</option>\n\
         </select></td>\n\<td><input class='form-control' type='text' id='conditiontext_"+conditionid+"' /></td>\n\
-        <td><span data-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button glyphicon glyphicon-trash text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
+        <td><span data-toggle='tooltip' title='" + sDelete + "' class='ui-pg-button fa fa-trash text-danger' onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='ui-icon removebutton'"+conditionid+"></span>\n\
         <span data-toggle='tooltip' title='" + sAdd + "' class='ui-pg-button addcondition-button ui-icon text-success icon-add' style='margin-bottom:4px'></span></td></tr><tr></tr>";
         $('#searchtable tr:last').after(html);
         $('[data-toggle="tooltip"]').tooltip()

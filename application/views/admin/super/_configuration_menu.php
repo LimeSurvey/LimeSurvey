@@ -31,7 +31,7 @@
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
                 <div class="box" id="systemoverview">
                     <div class="box-icon">
-                        <span class="glyphicon glyphicon-info-sign" id="info-header"></span>
+                        <span class="fa fa-info-sign" id="info-header"></span>
                     </div>
                     <div class="info">
                         <div class="text-center"><?php eT("System overview"); ?></div>

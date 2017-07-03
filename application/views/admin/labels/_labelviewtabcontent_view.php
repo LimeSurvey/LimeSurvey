@@ -39,7 +39,7 @@ $codeids = '';
                                 <td><?php echo $row['code'] ?></td><td><?php echo $row['assessment_value'] ?></td>
                                 <?php else:?>
                                 <td>
-                                    <span class="glyphicon glyphicon-move text-success"></span>
+                                    <span class="fa fa-move text-success"></span>
                                 </td>
 
                                 <td>
@@ -59,7 +59,7 @@ $codeids = '';
                             <td style='text-align:center;'>
                                 <?php if ($first && Permission::model()->hasGlobalPermission('labelsets','update')):?>
                                     <span class="icon-add btnaddanswer text-success"></span> <?php // eT("Insert a new label after this one") ?>
-                                    <span class="glyphicon glyphicon-trash  text-warning btndelanswer"></span> <?php //eT("Delete this label") ?>
+                                    <span class="fa fa-trash  text-warning btndelanswer"></span> <?php //eT("Delete this label") ?>
                                     <?php endif;?>
                             </td>
                         </tr>

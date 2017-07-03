@@ -1,0 +1,23 @@
+.ls-ba{
+    .list-group{
+        >.list-group-item {
+            padding: 10px 0;
+            border: 0;
+            border-radius: 0;
+            border-bottom: 1px solid #323232;
+            margin-bottom: 1px;
+            .list-group{
+                margin-bottom:0;
+                .list-group-item{
+                    padding-left:15px;
+                    &:last-of-type {
+                        border-bottom: 0;
+                    }
+                }
+                &:first-of-type {
+                    border-top: 1px solid #323232;
+                }
+            }
+        }
+    }
+}

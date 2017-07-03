@@ -49,7 +49,7 @@
                     <!-- Edit label set -->
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','update')):?>
                         <a class="btn btn-default" href="<?php echo $this->createUrl("admin/labels/sa/editlabelset/lid/".$lid);?>" role="button">
-                            <span class="glyphicon glyphicon-pencil  text-success"></span>
+                            <span class="fa fa-pencil  text-success"></span>
                             <?php eT("Edit label set"); ?>
                         </a>
                         <?php endif; ?>
@@ -69,7 +69,7 @@
                 <?php if (isset($labelbar['buttons']['delete']) && $labelbar['buttons']['delete'] == true ): ?>
                     <?php if (Permission::model()->hasGlobalPermission('labelsets','delete')): ?>
                         <a class="btn btn-default" role="button" data-action='deletelabelset' data-url='<?php echo $this->createUrl("admin/labels/sa/process"); ?>' data-confirm='<?php eT('Do you really want to delete this label set?'); ?>' >
-                            <span class="glyphicon glyphicon-trash  text-warning"></span>
+                            <span class="fa fa-trash  text-warning"></span>
                             <?php eT("Delete label set"); ?>
                         </a>
                         <?php endif; ?>
@@ -88,7 +88,7 @@
 
                 <!-- return to admin panel -->
                 <a class="btn btn-default pull-right" href="<?php echo $this->createUrl('admin/index'); ?>" role="button" style="display: block">
-                    <span class="glyphicon glyphicon-backward"></span>
+                    <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php eT('Return to admin home'); ?>
                 </a>
@@ -98,7 +98,7 @@
             <!-- edition action buttons -->
             <?php if (isset($labelbar['buttons']['edition'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $labelbar['savebutton']['form']; ?>">
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="fa fa-ok"></span>
 
                     <?php echo $labelbar['savebutton']['text'];?>
                 </a>
@@ -107,7 +107,7 @@
             <!-- Close -->
             <?php if(isset($labelbar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $labelbar['closebutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-close"></span>
+                    <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
                 <?php endif;?>

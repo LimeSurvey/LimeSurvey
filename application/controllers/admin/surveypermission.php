@@ -122,7 +122,7 @@ class surveypermission extends Survey_Common_Action {
                     if($PermissionRow['uid']!=Yii::app()->user->getId() || Permission::model()->hasGlobalPermission('superadmin','read')) // Can not update own security
                     {
                         $surveysecurity .= CHtml::form(array("admin/surveypermission/sa/set/surveyid/{$iSurveyID}"), 'post', array('style'=>"display:inline;"))
-                        ."<button type='submit' class='btn btn-default btn-xs'><span class='glyphicon glyphicon-pencil text-success' data-toggle='tooltip' title='".gT("Edit permissions")."'></span></button>";
+                        ."<button type='submit' class='btn btn-default btn-xs'><span class='fa fa-pencil text-success' data-toggle='tooltip' title='".gT("Edit permissions")."'></span></button>";
                         $surveysecurity .= \CHtml::hiddenField('action','setsurveysecurity');
                         $surveysecurity .= \CHtml::hiddenField('user',$PermissionRow['users_name']);
                         $surveysecurity .= \CHtml::hiddenField('uid',$PermissionRow['uid']);
@@ -138,7 +138,7 @@ class surveypermission extends Survey_Common_Action {
                     ));
                     $deleteConfirmMessage = gT("Are you sure you want to delete this entry?");
                     $surveysecurity .= "<a data-target='#confirmation-modal' data-toggle='modal' data-message='{$deleteConfirmMessage}' data-href='{$deleteUrl}' type='submit' class='btn-xs btn btn-default'>
-                        <span class='glyphicon glyphicon-trash text-warning' data-toggle='tooltip' title='".gT("Delete")."'></span>
+                        <span class='fa fa-trash text-warning' data-toggle='tooltip' title='".gT("Delete")."'></span>
                         </a>";
                 }
 
