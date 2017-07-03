@@ -13,9 +13,9 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title" id="importRessourcesModalLabel">
+                <div class="modal-title h4" id="importRessourcesModalLabel">
                     <?php  eT("Import resources ZIP archive"); ?>
-                </h4>
+                </div>
             </div>
             <?php echo CHtml::form(array('admin/survey/sa/importsurveyresources'), 'post', array('id'=>'importsurveyresources', 'name'=>'importsurveyresources', 'class'=>'form30', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'. gT('Please select a file to import!', 'js').'");')); ?>
             <div class="modal-body">

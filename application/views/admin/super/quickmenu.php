@@ -8,6 +8,7 @@
     >
         <div class='quick-icon-wrapper'>
             <span class="glyphicon glyphicon-home navbar-brand"></span>
+	    <span class="sr-only"><?php eT("Survey"); ?></span>
         </div>
     </a>
 
