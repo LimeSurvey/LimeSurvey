@@ -2122,7 +2122,6 @@ function TSVImportSurvey($sFullFilePath)
 
     $file = stream_get_contents($handle);
     fclose($handle);
-    debugbreak();
     // fix Excel non-breaking space
     $file = str_replace("0xC20xA0",' ',$file);
     // Replace all different newlines styles with \n
