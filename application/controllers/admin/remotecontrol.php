@@ -66,10 +66,9 @@ class remotecontrol extends Survey_Common_Action
                 }
                 LSjsonRPCServer::handle($oHandler);
             }
-			foreach (App()->log->routes as $route)
-			{
-				$route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
-			}
+            foreach (App()->log->routes as $route) {
+                $route->enabled = $route->enabled && !($route instanceOf CWebLogRoute);
+            }
 
             exit;
         } else {
@@ -80,15 +79,14 @@ class remotecontrol extends Survey_Common_Action
                     /* @var $method ReflectionMethod */
                     if (substr($method->getName(),0,1) !== '_') {
                         $list[$method->getName()] = array(
-                            'description' => str_replace(array("\r", "\r\n", "\n"), "<br/>", $method->getDocComment()),
-                            'parameters'  => $method->getParameters()
+                            'description' => $method->getDocComment(),
+                            'parameters'  => $method->getParameters(),
                         );
                     }
                 }
                 ksort($list);
                 $aData['method'] = $RPCType;
                 $aData['list'] = $list;
-                $aData['display']['menu_bars'] = false; // Hide normal menu bar
                 $this->_renderWrappedTemplate('remotecontrol', array('index_view'), $aData);
             }
         }

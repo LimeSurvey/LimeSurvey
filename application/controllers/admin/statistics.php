@@ -117,6 +117,7 @@ class statistics extends Survey_Common_Action {
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'statistics.js');
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'json-js/json2.min.js');
 
+        yii::app()->clientScript->registerPackage('jszip');
         $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
 
         //Select public language file
@@ -471,7 +472,7 @@ class statistics extends Survey_Common_Action {
         $showtextinline = (int)Yii::app()->request->getPost('showtextinline',0);
         $aData['showtextinline'] = $showtextinline;
         $aData['usegraph'] = $usegraph;
-        
+
         //Show Summary results
         if (isset($summary) && $summary)
         {
@@ -493,7 +494,7 @@ class statistics extends Survey_Common_Action {
             }
 
         }    //end if -> show summary results
-                
+
         $aData['sStatisticsLanguage']=$statlang;
         $aData['output'] = $statisticsoutput;
         $aData['summary'] = $summary;
@@ -807,6 +808,7 @@ class statistics extends Survey_Common_Action {
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'statistics.js');
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'json-js/json2.min.js');
         yii::app()->clientScript->registerPackage('jspdf');
+        yii::app()->clientScript->registerPackage('jszip');
         echo $this->_renderWrappedTemplate('export', 'statistics_user_view', $aData);
      }
 
@@ -816,7 +818,7 @@ class statistics extends Survey_Common_Action {
         $sIncompleteAnswers = Yii::app()->request->getPost('state');
         if (in_array($sIncompleteAnswers,array('all', 'complete', 'incomplete')))
         {
-            Yii::app()->session['incompleteanswers']= $sIncompleteAnswers;            
+            Yii::app()->session['incompleteanswers']= $sIncompleteAnswers;
         }
 
     }

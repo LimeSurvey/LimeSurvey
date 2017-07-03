@@ -261,7 +261,6 @@
         ,LimeReplacementFieldsSID : \"".$surveyID."\"
         ,LimeReplacementFieldsGID : \"".$gID."\"
         ,LimeReplacementFieldsQID : \"".$qID."\"
-        ,LimeReplacementFieldsType : \"".$fieldtype."\"
         ,LimeReplacementFieldsAction : \"".$action."\"
         ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
         ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
@@ -284,4 +283,3 @@ CKEDITOR.editorConfig = function( config )
         return $htmlcode;
     }
 
-?>

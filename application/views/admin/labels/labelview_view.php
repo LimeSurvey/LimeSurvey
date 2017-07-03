@@ -7,7 +7,7 @@
 <?php $this->renderPartial("./labels/_labelviewquickadd_view", array()); ?>
 
 <div class="col-sm-12 labels">
-    <h3 class="pagetitle"><?php eT("Labels") ?></h3>
+    <div class="pagetitle h3"><?php eT("Labels") ?></div>
     <div class="row">
 
         <!-- Left content -->

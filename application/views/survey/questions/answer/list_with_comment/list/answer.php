@@ -27,26 +27,26 @@
                 echo $sRows;
             ?>
         </ul>
-        <!-- EM use id , but no need to submit -->
-        <input
-                type="hidden"
-                name="<?php echo $java_name;?>"
-                id="<?php echo $java_id;?>"
-                value="<?php echo $java_value;?>"
-                disabled
-              />
+        <?php
+        /* Value for expression manager javascript (use id) ; no need to submit */
+        echo \CHtml::hiddenField($java_name,$java_value,array(
+            'id' => $java_id,
+            'disabled' => true,
+        ));
+        ?>
     </div>
 
     <div class="form-group answer-item text-item col-sm-6 col-xs-12">
         <label class="control-label" for="<?php echo $id; ?>">
             <?php echo $hint_comment;?>:
         </label>
-        <textarea
-                class="form-control <?php echo $kpclass; ?>"
-                name="<?php echo $name; ?>"
-                id="<?php echo $id; ?>"
-                rows="<?php echo $tarows;?>"
-                ><?php echo $comment_saved;?></textarea>
+        <?php
+        echo \CHtml::textArea($name,$comment_saved,array(
+            'id' => $id,
+            'class' => "form-control {$kpclass}",
+            'rows' => $tarows
+        ));
+        ?>
     </div>
 </div>
 

@@ -91,7 +91,7 @@ table.ls-answers input[type="checkbox"],table.ls-answers input[type="radio"]{mar
 .dir-ltr .radio-item .ls-label-xs-visibility,.dir-ltr .checkbox-item .ls-label-xs-visibility{left:auto;margin-left:-20px;}
 .dir-rtl .radio-item .ls-label-xs-visibility,.dir-rtl .checkbox-item .ls-label-xs-visibility{right:auto;margin-right:-20px;}
 
-/* no argin on label : no margiun after and before too */
+/* no margin on label : no margin after and before too */
 .dir-ltr .radio-item label.ls-label-xs-visibility::before,.dir-ltr .checkbox-item label.ls-label-xs-visibility::before{margin-left:0;}
 .dir-rtl .radio-item label.ls-label-xs-visibility::before,.dir-rtl .checkbox-item label.ls-label-xs-visibility::before{margin-right:0;}
 .dir-ltr .radio-item label.ls-label-xs-visibility::after,.dir-ltr .checkbox-item label.ls-label-xs-visibility::after {margin-left:0;padding-left:0;}
@@ -110,6 +110,8 @@ table.ls-answers input[type="checkbox"],table.ls-answers input[type="radio"]{mar
 }
 .dir-ltr .radio-item label.ls-label-xs-visibility > * ,.dir-ltr .checkbox-item label.ls-label-xs-visibility > * {left:-10000px;}
 .dir-rtl .radio-item label.ls-label-xs-visibility > * ,.dir-rtl .checkbox-item label.ls-label-xs-visibility > * {left:-10000px;}
+/* hide answers for text-display question */
+.boilerplate .answer-container {display:none;}
 
 /*
 Max width before this PARTICULAR table gets nasty

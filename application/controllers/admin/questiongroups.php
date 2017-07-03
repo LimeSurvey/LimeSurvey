@@ -210,6 +210,7 @@ class questiongroups extends Survey_Common_Action
                 $oGroup=new QuestionGroup;
                 $oGroup->sid=$surveyid;
                 if(isset($newGroupID)){
+                    switchMSSQLIdentityInsert('groups',true);
                     $oGroup->gid=$newGroupID;
                 }
                 $oGroup->group_name = Yii::app()->request->getPost('group_name_' . $sLanguage,"");
@@ -224,6 +225,10 @@ class questiongroups extends Survey_Common_Action
                 if($oGroup->save()){
                     if(!isset($newGroupID)){
                         $newGroupID=$oGroup->gid;
+                    }
+                    else
+                    {
+                        switchMSSQLIdentityInsert('groups',true);
                     }
                 }else{
                     Yii::app()->setFlashMessage(CHtml::errorSummary($oGroup),'error');

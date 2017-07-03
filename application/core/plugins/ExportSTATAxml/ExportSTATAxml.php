@@ -72,7 +72,6 @@ class ExportSTATAxml extends \ls\pluginmanager\PluginBase {
     public function newExport()
     {
         $event = $this->getEvent();
-        $type = $event->get('type');
 
         $pluginsettings=$this->getPluginSettings(true);
         $writer = new STATAxmlWriter($pluginsettings);

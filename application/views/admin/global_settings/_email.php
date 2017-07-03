@@ -38,7 +38,8 @@
 <div class="form-group">
     <label class="col-sm-4  control-label"  for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
     <div class="col-sm-6">
-        <input class="form-control"  type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>" />&nbsp;<span class='hint'><?php eT("Enter your hostname and port, e.g.: my.smtp.com:25"); ?></span>
+        <input class="form-control"  type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>" />
+        <p class="help-block"><?php printf("Enter your hostname and port, e.g.: %s","smtp.example.org:25"); ?></p>
     </div>
 </div>
 <div class="form-group">

@@ -447,7 +447,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
      *  Save order after drag-n-drop sorting
      *
      *  @param LSHttpRequest $request
-     *  @return void
+     *  @return string
      */
     public function saveOrder(LSHttpRequest $request)
     {
@@ -455,13 +455,10 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
 
         $userId = Yii::app()->user->getId();
 
-        try
-        {
+        try {
             $this->deleteOldSortings($userId);
             $this->insertNewSortings($userId, $buttons);
-        }
-        catch(Exception $ex)
-        {
+        } catch(Exception $ex) {
             // Any error is sent as JSON to client
             return json_encode(array(
                 'result' => 'error',

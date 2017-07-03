@@ -83,7 +83,9 @@ class ETwigViewRenderer extends CApplicationComponent implements IViewRenderer
 
         $this->_paths[] = $app->getBasePath();
 
-        $loader = new Twig_Loader_Filesystem($this->_paths);
+        //$loader = new Twig_Loader_Filesystem($this->_paths);
+        // LSHack
+        $loader = new Twig_Loader_Filesystem();
 
         $defaultOptions = array(
             'autoescape' => false, // false because other way Twig escapes all HTML in templates

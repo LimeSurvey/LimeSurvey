@@ -1,6 +1,6 @@
 
 
-        <h3 class="pagetitle"><?php eT("Upload template file") ?></h3>
+        <div class="pagetitle h3"><?php eT("Upload template file") ?></div>
         <?php echo CHtml::form(array('admin/templates/sa/upload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
             <input type='hidden' name='lid' value='$lid' />
             <input type='hidden' name='action' value='templateupload' />

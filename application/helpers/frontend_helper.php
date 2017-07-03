@@ -829,7 +829,7 @@ function buildsurveysession($surveyid,$preview=false)
     $sLangCode                        = App()->language;
     $thissurvey                       = getSurveyInfo($surveyid,$sLangCode);
     $oTemplate                        = Template::model()->getInstance('', $surveyid);
-    App()->getController()->sTemplate = $oTemplate->name;                                   // It's going to be hard to be sure this is used ....
+    App()->getController()->sTemplate = $oTemplate->sTemplateName;                                   // It's going to be hard to be sure this is used ....
     $sTemplatePath                    = $oTemplate->path;
     $sTemplateViewPath                = $oTemplate->viewPath;
 
@@ -1423,7 +1423,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
 
-            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_user_forms.twig"), array('aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('aSurveyInfo'=>$thissurvey), false);
             break;
 
         case "register": //Register new user
@@ -1514,16 +1514,15 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
     // Template settings
     $surveyid          = $thissurvey['sid'];
     $oTemplate         = Template::model()->getInstance('', $surveyid);
-    $sTemplateViewPath = $oTemplate->viewPath;
-    $oTemplate->registerAssets();
-    Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
+
+    //$oTemplate->registerAssets();
 
     $aError = array();
     $aError['title']      = ($sTitle != '')?$sTitle:gT("This survey cannot be tested or completed for the following reason(s):");
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
-    Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_errors.twig"), array('aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -1691,7 +1690,7 @@ function doAssessment($surveyid)
 
                                 $aAttributes     = getQuestionAttributeValues($field['qid']);
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
-                                $total           = $total+(int)$aAttributes['assessment_value'];
+                            //    $total           = $total+(int)$aAttributes['assessment_value'];
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
                             }
                         }else{
@@ -1702,7 +1701,7 @@ function doAssessment($surveyid)
                             if ($usresult){
                                 $usrow              = $usresult->read();
                                 $assessmentValue    = $usrow['assessment_value'];
-                                $total              = $total+$usrow['assessment_value'];
+                            //    $total              = $total+$usrow['assessment_value'];
                             }
                         }
 
@@ -1800,8 +1799,7 @@ function doAssessment($surveyid)
 /**
 * Update SESSION VARIABLE: grouplist
 * A list of groups in this survey, ordered by group name.
-* @param int surveyid
-* @param string language
+* @param string $language
 * @param integer $surveyid
 */
 function UpdateGroupList($surveyid, $language)
@@ -1915,7 +1913,7 @@ function checkCompletedQuota($surveyid,$return=false)
             ////Create filtering
             // Array of field with quota array value
             $aQuotaFields=array();
-            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
+            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is irrelevant (em_manager_helper line 6548)
             $aQuotaRelevantFieldnames=array();
             // To count number of hidden questions
             $aQuotaQid=array();
@@ -2038,8 +2036,7 @@ function checkCompletedQuota($surveyid,$return=false)
             header("Location: ".$sUrl);
         }
     }
-
-    Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_quotas.twig"), array('aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -2115,7 +2112,6 @@ function display_first_page($thissurvey) {
     // Template init
     $oTemplate         = Template::model()->getInstance('', $surveyid);
     $sTemplatePath     = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->viewPath;
 
     LimeExpressionManager::StartProcessingPage();
     LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page
@@ -2144,7 +2140,8 @@ function display_first_page($thissurvey) {
     LimeExpressionManager::FinishProcessingPage();
 
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
-    Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_first_page.twig"), array('aSurveyInfo'=>$thissurvey), false);
+
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('aSurveyInfo'=>$thissurvey), false);
 }
 
 /**

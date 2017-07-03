@@ -98,7 +98,7 @@ $surveyid = $surveyinfo['sid'];
                                     <div class="col-sm-6">
                                         <div class="panel panel-primary disabled" id="panel-1">
                                             <div class="panel-heading">
-                                                <h4 class="panel-title"><?php eT('Add group');?></h4>
+                                                <div class="panel-title h4"><?php eT('Add group');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
@@ -117,7 +117,7 @@ $surveyid = $surveyinfo['sid'];
                                     <div class="col-sm-6" >
                                         <div class="panel panel-primary disabled" id="panel-2">
                                             <div class="panel-heading">
-                                                <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
+                                                <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
@@ -143,7 +143,7 @@ $surveyid = $surveyinfo['sid'];
                                     <div class="col-sm-6">
                                         <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
                                             <div class="panel-heading">
-                                                <h4 class="panel-title"><?php eT('Add group');?></h4>
+                                                <div class="panel-title h4"><?php eT('Add group');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
@@ -163,7 +163,7 @@ $surveyid = $surveyinfo['sid'];
                                         <div class="col-sm-6" >
                                             <div class="panel panel-primary disabled" id="panel-2">
                                                 <div class="panel-heading">
-                                                    <h4 class="panel-title  disabled"><?php eT('Add question');?></h4>
+                                                    <div class="panel-title h4 disabled"><?php eT('Add question');?></div>
                                                 </div>
                                                 <div class="panel-body  ">
                                                     <div class="panel-body-ico">
@@ -187,7 +187,7 @@ $surveyid = $surveyinfo['sid'];
                                         <div class="col-sm-6">
                                             <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
                                                 <div class="panel-heading">
-                                                    <h4 class="panel-title"><?php eT('Add question');?></h4>
+                                                    <div class="panel-title h4"><?php eT('Add question');?></div>
                                                 </div>
                                                 <div class="panel-body">
                                                     <div class="panel-body-ico">
@@ -213,7 +213,7 @@ $surveyid = $surveyinfo['sid'];
                                 <?php if($surveylocale && $surveysettings): ?>
                                     <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>">
                                         <div class="panel-heading">
-                                            <h4 class="panel-title"><?php eT('Edit text elements and general settings');?></h4>
+                                            <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
@@ -229,7 +229,7 @@ $surveyid = $surveyinfo['sid'];
                                 <?php else: ?>
                                     <div class="panel panel-primary disabled" id="panel-3" >
                                         <div class="panel-heading">
-                                            <h4 class="panel-title"><?php eT('Edit text elements and general settings');?></h4>
+                                            <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
@@ -251,7 +251,7 @@ $surveyid = $surveyinfo['sid'];
                                 <div class="col-sm-6">
                                     <div class="panel panel-primary panel-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>">
                                         <div class="panel-heading">
-                                            <h4 class="panel-title"><?php eT("Statistics");?></h4>
+                                            <div class="panel-title h4"><?php eT("Statistics");?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
@@ -273,7 +273,7 @@ $surveyid = $surveyinfo['sid'];
                                 <div class="col-sm-6">
                                     <div class="panel panel-primary disabled" id="panel-4">
                                         <div class="panel-heading">
-                                            <h4 class="panel-title"><?php eT("Responses & statistics");?></h4>
+                                            <div class="panel-title h4"><?php eT("Responses & statistics");?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">

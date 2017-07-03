@@ -188,10 +188,10 @@ class Template extends LSActiveRecord
 
         $sFiteredTemplateName=self::templateNameFilter($sTemplateName);
         if (self::isStandardTemplate($sFiteredTemplateName)) {
-            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$sFiteredTemplateName;
+            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$sFiteredTemplateName.'/';
         }
         else {
-            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$sFiteredTemplateName;
+            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$sFiteredTemplateName.'/';
         }
     }
 

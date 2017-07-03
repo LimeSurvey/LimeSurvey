@@ -12,6 +12,20 @@
  *
  */
 
+ /*
+ * NOTE 1 : To refresh the assets, the base directory of the template must be updated.
+ * NOTE 2: By default, Asset Manager is off when debug mode is on.
+ *
+ * Developers should then think about :
+ * 1. refreshing their brower's cache (ctrl + F5) to see their changes
+ * 2. update the config.xml last_update before pushing, to be sure that end users will have the new version
+ *
+ *
+ * For more detail, see :
+ *  http://www.yiiframework.com/doc/api/1.1/CClientScript#addPackage-detail
+ *  http://www.yiiframework.com/doc/api/1.1/YiiBase#setPathOfAlias-detail
+ */
+
 class LSYii_ClientScript extends CClientScript {
 
     /**
@@ -36,12 +50,29 @@ class LSYii_ClientScript extends CClientScript {
      * Remove a package from coreScript.
      * It can be useful when mixing backend/frontend rendering (see: template editor)
      *
-     * @var $name of the package to remove
+     * @var string $sName of the package to remove
      */
     public function unregisterPackage($sName)
     {
         if(!empty($this->coreScripts[$sName])){
             unset($this->coreScripts[$sName]);
+        }
+    }
+
+    /**
+     * Remove a file from a given package
+     *
+     * @var $sPackageName   string  name of the package
+     * @var $sType          string  css/js
+     * @var $sFileName      string name of the file to remove
+     */
+    public function removeFileFromPackage($sPackageName, $sType, $sFileName )
+    {
+        if (!empty(Yii::app()->clientScript->packages[$sPackageName])){
+            if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])){
+                $key = array_search( $sFileName,Yii::app()->clientScript->packages[$sPackageName][$sType]);
+                unset(Yii::app()->clientScript->packages[$sPackageName][$sType][$key]);
+            }
         }
     }
 
@@ -77,6 +108,71 @@ class LSYii_ClientScript extends CClientScript {
         parent::registerCssFile($url,$media);                    // We publish the script
     }
 
+    /**
+     * The method will first check if a devbaseUrl parameter is provided,
+     * so when debug mode is on, it doens't use the asset manager
+     */
+    public function registerPackage($name)
+    {
+        if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
+            parent::registerPackage( $name );
+        }else{
+
+            // We first convert the current package to devBaseUrl
+            $this->convertDevBaseUrl($name);
+
+            // Then we do the same for all its dependencies
+            $aDepends = $this->getRecursiveDependencies($name);
+            foreach($aDepends as $package){
+                $this->convertDevBaseUrl($package);
+            }
+
+            parent::registerPackage( $name );
+        }
+    }
+
+    /**
+     * Return a list of all the recursive dependencies of a packages
+     * eg: If a package A depends on B, and B depends on C, getRecursiveDependencies('A') will return {B,C}
+     */
+    public function getRecursiveDependencies($sPackageName)
+    {
+        $aPackages     = Yii::app()->clientScript->packages;
+        if ( array_key_exists('depends', $aPackages[$sPackageName]) ){
+            $aDependencies = $aPackages[$sPackageName]['depends'];
+
+            foreach ($aDependencies as $sDpackageName){
+                if($aPackages[$sPackageName]['depends']){
+                    $aRDependencies = $this->getRecursiveDependencies($sDpackageName);                  // Recursive call
+                    if (is_array($aRDependencies)){
+                        $aDependencies = array_unique(array_merge($aDependencies, $aRDependencies));
+                    }
+                }
+            }
+            return $aDependencies;
+        }
+        return array();
+    }
+
+
+    /**
+     * Convert one package to baseUrl 
+     */
+    private function convertDevBaseUrl($package)
+    {
+        $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
+
+        // This will overwrite the package definition using a base url instead of a base path
+        // The package must have a devBaseUrl, else it will remain unchanged (for core/external package)
+        if( array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
+            Yii::app()->clientScript->addPackage( $package, array(
+                'baseUrl'   => $aOldPackageDefinition['devBaseUrl'],                                 // Don't use asset manager
+                'css'       => array_key_exists('css', $aOldPackageDefinition)?$aOldPackageDefinition['css']:array(),
+                'js'        => array_key_exists('js', $aOldPackageDefinition)?$aOldPackageDefinition['js']:array(),
+                'depends'   => array_key_exists('depends', $aOldPackageDefinition)?$aOldPackageDefinition['depends']:array(),
+            ) );
+        }
+    }
 
     /**
      * This function will analyze the url of a file (css/js) to register

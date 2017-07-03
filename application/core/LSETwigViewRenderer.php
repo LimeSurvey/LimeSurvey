@@ -26,7 +26,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
      public  $sandboxConfig = array();
      private $_twig;
-     private $forcedPath = null;
 
     /**
      * Adds custom extensions
@@ -68,7 +67,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
         $this->_twig = parent::getTwig();                                       // Twig object
         $loader      = $this->_twig->getLoader();                               // Twig Template loader
-        $oTemplate   = Template::model()->getInstance($thissurvey['template']); // Template configuration
 
         $requiredView = Yii::getPathOfAlias('application.views').$sView;        // By default, the required view is the core view
         $loader->setPaths(App()->getBasePath().'/views/');                      // Core views path
@@ -137,16 +135,39 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
     }
 
-    /**
-     * Only use for renderTemplateFromString for now, to force the path of included twig files (in renderTemplateFromString: the template files)
-     * It's necessary for the twig include statments: by default, those views would be looked into application/views instead of the template's views directory.
-     * @param string $sPath  the path that will be used to render the views.
-     */
-    public function setForcedPath($sPath)
+    public function renderTemplateForTemplateEditor($sView, $aDatas, $oEditedTemplate)
     {
-        $this->forcedPath=$sPath;
+        $oTemplate = $this->getTemplateForView($sView, $oEditedTemplate);
+        $line      = file_get_contents($oTemplate->viewPath.$sView);
+        $result = $this->renderTemplateFromString( $line, $aDatas, $oTemplate, true);
+        return $result;
     }
 
+    public function renderTemplateFromFile($sView, $aDatas, $bReturn)
+    {
+        $oRTemplate = Template::model()->getInstance();
+        $oTemplate = $this->getTemplateForView($sView, $oRTemplate);
+        $line      = file_get_contents($oTemplate->viewPath.$sView);
+        $result = $this->renderTemplateFromString( $line, $aDatas, $oTemplate, $bReturn);
+        if ($bReturn){
+            return $result;
+        }
+    }
+
+    private function getTemplateForView($sView, $oRTemplate)
+    {
+        while (!file_exists($oRTemplate->viewPath.$sView)){
+
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
+    }
 
     /**
      * Render a string, not a file. It's used from template replace function.
@@ -155,16 +176,40 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param array   $aDatas   Array containing the datas needed to render the view ($thissurvey)
      * @param boolean $bReturn  Should the function echo the result, or just returns it?
      */
-    public function renderTemplateFromString( $line, $aDatas, $bReturn)
+    public function renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn=false)
     {
-        $this->_twig      = $twig = parent::getTwig();
+        $this->_twig  = $twig = parent::getTwig();
+        $loader       = $this->_twig->getLoader();
+        $loader->addPath($oRTemplate->viewPath);
+        Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
 
-        // At this point, forced path should not be nulled.
-        // It contains the path to the template's view directory for twig include statements
-        if (!is_null($this->forcedPath)){
-            $loader       = $this->_twig->getLoader();
-            $loader->setPaths($this->forcedPath);
+        // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
+        if (!empty($aDatas['aSurveyInfo']['sid'])){
+            if (Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'] ){
+                $languagecode =  Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'];
+            }elseif ($aDatas['aSurveyInfo']['sid']  && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])){
+                $languagecode = Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->language;
+            }else{
+                $languagecode = Yii::app()->getConfig('defaultlang');
+            }
+
+            $aDatas["aSurveyInfo"]['languagecode'] = $languagecode;
+            $aDatas["aSurveyInfo"]['dir']          = (getLanguageRTL($languagecode))?"rtl":"ltr";
         }
+
+        // Add all mother templates path
+        while($oRTemplate->oMotherTemplate instanceof TemplateConfiguration){
+            $oRTemplate = $oRTemplate->oMotherTemplate;
+            $loader->addPath($oRTemplate->viewPath);
+        }
+
+        // Add the template options
+        foreach($oRTemplate->oOptions as $oOption){
+            foreach($oOption as $key => $value){
+                $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+            }
+        }
+
 
         // Plugin for blocks replacement
         // TODO: add blocks to template....
@@ -190,17 +235,21 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oTwigTemplate = $twig->createTemplate($line);
         $nvLine        = $oTwigTemplate->render($aDatas, false);
 
-        ob_start(function($buffer, $phase)
-        {
-            App()->getClientScript()->render($buffer);
-            App()->getClientScript()->reset();
-            return $buffer;
-        });
+        if (!$bReturn){
+            ob_start(function($buffer, $phase)
+            {
+                App()->getClientScript()->render($buffer);
+                App()->getClientScript()->reset();
+                return $buffer;
+            });
 
-        ob_implicit_flush(false);
-        echo $nvLine;
-        ob_flush();
+            ob_implicit_flush(false);
+            echo $nvLine;
+            ob_flush();
 
-        Yii::app()->end();
+            Yii::app()->end();
+        }else{
+            return $nvLine;
+        }
     }
 }

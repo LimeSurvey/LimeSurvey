@@ -353,7 +353,7 @@ function sanitize($input, $flags, $min='', $max='')
     if($flags & PARANOID) $input = sanitize_paranoid_string($input, $min, $max);
     if($flags & INT) $input = sanitize_int($input, $min, $max);
     if($flags & FLOAT) $input = sanitize_float($input, $min, $max);
-    if($flags & HTML) $input = sanitize_html_string($input, $min, $max);
+    if($flags & HTML) $input = sanitize_html_string($input);
     if($flags & LDAP) $input = sanitize_ldap_string($input, $min, $max);
     if($flags & SYSTEM) $input = sanitize_system_string($input, $min, $max);
     return $input;
@@ -382,8 +382,8 @@ function check_float($input, $min='', $max='')
 
 function check_html_string($input, $min='', $max='')
 {
-    if($input != sanitize_html_string($input, $min, $max))
-    return FALSE;
+    if($input != sanitize_html_string($input))
+        return FALSE;
     return TRUE;
 }
 
@@ -397,8 +397,8 @@ function check_ldap_string($input, $min='', $max='')
 
 function check_system_string($input, $min='', $max='')
 {
-    if($input != sanitize_system_string($input, $min, $max, TRUE))
-    return FALSE;
+    if($input != sanitize_system_string($input, $min, $max))
+        return FALSE;
     return TRUE;
 }
 
@@ -410,9 +410,9 @@ function check($input, $flags, $min='', $max='')
     if($flags & PARANOID) $input = sanitize_paranoid_string($input, $min, $max);
     if($flags & INT) $input = sanitize_int($input, $min, $max);
     if($flags & FLOAT) $input = sanitize_float($input, $min, $max);
-    if($flags & HTML) $input = sanitize_html_string($input, $min, $max);
+    if($flags & HTML) $input = sanitize_html_string($input);
     if($flags & LDAP) $input = sanitize_ldap_string($input, $min, $max);
-    if($flags & SYSTEM) $input = sanitize_system_string($input, $min, $max, TRUE);
+    if($flags & SYSTEM) $input = sanitize_system_string($input, $min, $max);
     if($input != $oldput)
     return FALSE;
     return TRUE;

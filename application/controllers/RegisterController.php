@@ -48,8 +48,8 @@ class RegisterController extends LSYii_Controller {
     {
         return array(
             'captcha' => array(
-                'class' => 'CCaptchaAction',
-                'backColor'=>0xf6f6f6
+                'class' => 'CaptchaExtendedAction',
+                'mode'=>CaptchaExtendedAction::MODE_MATH
             )
         );
     }
@@ -470,7 +470,7 @@ class RegisterController extends LSYii_Controller {
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
         Yii::app()->clientScript->registerPackage( 'survey-template' );
 
-        $this->sTemplate=$oTemplate->name;
+        $this->sTemplate=$oTemplate->sTemplateName;
         if(!$this->sMessage){
             $this->aGlobalData['languagechanger']=makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
             $this->aReplacementData['content']=self::getRegisterForm($iSurveyId);

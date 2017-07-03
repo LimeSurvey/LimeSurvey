@@ -43,6 +43,7 @@ class index extends CAction {
 
         Yii::app()->setConfig('surveyID',$surveyid);
         Yii::app()->setConfig('move',$move);
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
 
         if (is_null($thissurvey) && !is_null($surveyid))
             $thissurvey = getSurveyInfo($surveyid);
@@ -407,9 +408,8 @@ class index extends CAction {
 
             $aLoadForm['aErrors']    = empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
             $thissurvey['aLoadForm'] = $aLoadForm;
-            Yii::app()->twigRenderer->setForcedPath($oTemplate->viewPath);
-            $oTemplate->registerAssets();
-            Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($oTemplate->viewPath."layout_load.twig"), array('aSurveyInfo'=>$thissurvey), false);
+            //$oTemplate->registerAssets();
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_load.twig", array('aSurveyInfo'=>$thissurvey), false);
         }
 
 

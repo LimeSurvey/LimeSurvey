@@ -25,7 +25,7 @@ $active = (isset($_GET['tab']))?$_GET['tab']:'create';
 
     <!-- Create -->
     <li role="presentation" <?php if($active=='create'){echo 'class="active"';}?>>
-        <a data-toggle="tab" href='#general'>
+        <a role="tab" data-toggle="tab" href='#general'>
             <?php  eT("Create"); ?>
         </a>
     </li>
@@ -34,14 +34,14 @@ $active = (isset($_GET['tab']))?$_GET['tab']:'create';
     <?php if ($action == "newsurvey"): ?>
         <!-- Import -->
         <li role="presentation" <?php if($active=='import'){echo 'class="active"';}?>>
-            <a data-toggle="tab" href="#import">
+            <a role="tab" data-toggle="tab" href="#import">
                 <?php  eT("Import"); ?>
             </a>
         </li>
 
         <!-- Copy -->
         <li role="presentation" <?php if($active=='copy'){echo 'class="active"';}?>>
-            <a data-toggle="tab" href="#copy">
+            <a role="tab" data-toggle="tab" href="#copy">
                 <?php  eT("Copy"); ?>
             </a>
         </li>
@@ -50,14 +50,14 @@ $active = (isset($_GET['tab']))?$_GET['tab']:'create';
 
         <!-- Panel integration -->
         <li role="presentation">
-            <a data-toggle="tab" href="#panelintegration">
+            <a role="tab" data-toggle="tab" href="#panelintegration">
                 <?php  eT("Panel integration"); ?>
             </a>
         </li>
 
         <!-- Resources -->
         <li role="presentation">
-            <a data-toggle="tab" href="#resources">
+            <a role="tab" data-toggle="tab" href="#resources">
                 <?php  eT("Resources"); ?>
             </a>
         </li>
@@ -65,7 +65,7 @@ $active = (isset($_GET['tab']))?$_GET['tab']:'create';
         <!-- Plugins -->
         <?php if(isset($pluginSettings)): ?>
             <li role="presentation">
-                <a data-toggle="tab" href="#pluginsettings">
+                <a role="tab" data-toggle="tab" href="#pluginsettings">
                     <?php  eT("Plugins"); ?>
                 </a>
             </li>

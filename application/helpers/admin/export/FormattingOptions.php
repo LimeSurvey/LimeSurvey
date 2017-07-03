@@ -49,14 +49,14 @@ class FormattingOptions
     /**
     * Indicates whether to use Expression Manager code
     *
-    * @var bolean
+    * @var boolean
     */
     public $useEMCode;
 
     /**
     * What is the caracters to separate code and text
     *
-    * @var bolean
+    * @var boolean
     */
     public $headCodeTextSeparator;
 

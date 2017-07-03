@@ -20,8 +20,10 @@
 #}
 
 {# Register script for modal #}
-{{ registerScript('startPopup',"LSvar.startPopups=" ~ aSurveyInfo.jPopup, "POS_HEAD") }}
-{{ registerScript('showStartPopups',"showStartPopups();", "POS_END") }}
+{% if(aSurveyInfo.jPopup) %}
+    {{ registerScript('startPopup',"LSvar.startPopups=" ~ aSurveyInfo.jPopup, "POS_HEAD") }}
+    {{ registerScript('showStartPopups',"showStartPopups();", "POS_END") }}
+{% endif %}
 
 <!-- Bootstrap Modal Alert -->
 <div id="bootstrap-alert-box-modal" class="modal fade">

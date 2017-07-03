@@ -20,8 +20,14 @@
 <tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list <?php echo ($odd) ? "ls-odd" : "ls-even"; ?> <?php echo ($error) ? " has-error" : ""; ?>" role="radiogroup" aria-labelledby="answertext<?php echo $myfname;?>">
     <!-- Answer text /  Errors -->
     <th class="answertext control-label<?php if($error){ echo " error-mandatory";} ?><?php echo ($answerwidth==0)? " sr-only":""; ?>" id="answertext<?php echo $myfname;?>">
-         <?php echo $answertext;?>
-        <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value; ?>" />
+        <?php echo $answertext;?>
+        <?php
+        /* Value for expression manager javascript (use id) ; no need to submit */
+        echo \CHtml::hiddenField("java{$myfname}",$value,array(
+            'id' => "java{$myfname}",
+            'disabled' => true,
+        ));
+        ?>
     </th>
 
     <!-- Yes -->

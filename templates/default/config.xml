@@ -42,20 +42,11 @@
         </logo>
     </files>
 
-    <!--
-        Here the list of the css/js files the user is allowed to edit from the template editor.
-        If the template does not contain any reference to external images, those files will be published one by one with the asset manager.
-        So any edition of those files will update the tmp/asset directory, and users will not need to refresh browser cache
-    -->
-    <files_editable>
-            <css>
-                <filename>css/template.css</filename>
-                <filename>css/bootstrap.css</filename>
-            </css>
-            <js>
-                <filename>scripts/template.js</filename>
-            </js>
-    </files_editable>
+    <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
+    <options>
+        <!-- will be available with aSurveyInfo.options.ajaxmode -->
+        <ajaxmode>on</ajaxmode>
+    </options>
 
     <!-- Here datas about how LimeSurvey should load the template -->
     <engine>
@@ -93,5 +84,87 @@
                 <package>template-default-rtl</package>
             </rtl>
         </packages>
+
+        <!--
+            List of pages/files for tempalte editor
+            When a user select a page, the related files will be offer in the editable files
+        -->
+        <template_editor>
+            <screens>
+                <question>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_main.twig</file>
+                    <file type="view" role="subview">./subviews/survey/group.twig</file>
+                    <file type="view" role="subview">./subviews/survey/question.twig</file>
+                    <file type="view" role="subview">./subviews/nav_bar.twig</file>
+                    <file type="view" role="subview">./subviews/head.twig</file>
+                    <file type="view" role="subview">./subviews/warnings.twig</file>
+                    <file type="view" role="subview">./subviews/progess_bar.twig</file>
+                    <file type="view" role="subview">./subviews/no_js_alert.twig</file>
+                    <file type="view" role="subview">./subviews/language_changer.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
+                </question>
+
+                <surveylist>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_survey_list.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
+                </surveylist>
+
+                <welcome>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_first_page.twig</file>
+                    <file type="view" role="subview">./subviews/welcome.twig</file>
+                    <file type="view" role="subview">./subviews/warnings.twig</file>
+                    <file type="view" role="subview">./subviews/no_js_alert.twig</file>
+                    <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
+                </welcome>
+
+                <completed>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_submit.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
+                </completed>
+
+                <assessments>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_submit.twig</file>
+                    <file type="view" role="subview">./subviews/assessments.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
+                </assessments>
+
+                <error>
+                    <file type="view" role="layout">layout_errors.twig</file>
+                </error>
+
+                <clearall>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_clearall.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
+                </clearall>
+
+                <load>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_load.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
+                </load>
+
+                <save>
+                    <file type="view" role="layout">layout_global.twig</file>
+                    <file type="view" role="layout">layout_save.twig</file>
+                    <file type="css">./css/template.css</file>
+                    <file type="js">./scripts/template.js</file>
+                </save>
+            </screens>
+
+        </template_editor>
     </engine>
 </config>

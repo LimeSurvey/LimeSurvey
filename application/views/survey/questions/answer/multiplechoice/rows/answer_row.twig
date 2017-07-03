@@ -19,22 +19,20 @@
  */
 #}
 <!-- answer_row -->
-<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item form-group {{ extra_class }}' {{ sDisplayStyle }} >
+<li id='javatbd{{ myfname }}' class='question-item answer-item checkbox-item form-group {{ relevanceClass }}' >
     <input
         type="checkbox"
-        name="{{ name.title }}"
-        id="answer{{ name.title }}"
+        name="{{ myfname }}"
+        id="answer{{ myfname }}"
         value="Y"
         {{ checkedState }}
-        onclick='cancelBubbleThis(event); {{ sCheckconditionFunction }}'
     />
-
-    <label for="answer{{ name.title }}" class="checkbox-label control-label">{{ question }}</label>
+    <label for="answer{{ myfname }}" class="checkbox-label control-label">{{ question }}</label>
     <input
         type="hidden"
         name="java{{ myfname }}"
         id="java{{ myfname }}"
-        value="{{ sValue }}"
+        value="{{ C.Html.encode( sValue ) }}"
     />
 </li>
 <!-- end of answer_row -->

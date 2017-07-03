@@ -1,5 +1,5 @@
 <div class="col-xs-12 ">
-    <h3 class="pagetitle row">
+    <div class="pagetitle row h3">
         <div class="col-xs-8 ">
             <?php eT("Attribute management"); ?>
         </div>
@@ -10,7 +10,7 @@
                 <?php eT("Add new attribute"); ?>
             </button>
         </div>
-    </h3>
+    </div>
 
     <div class="row">
         <div class="container-fluid">

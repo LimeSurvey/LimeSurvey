@@ -350,7 +350,7 @@ class TokenDynamic extends LSActiveRecord
             }
         }
         //update specific token row
-        $itresult = $this->updateToken($iTokenID, $newtoken);
+        $this->updateToken($iTokenID, $newtoken);
         return $newtoken;
     }
 
@@ -400,7 +400,7 @@ class TokenDynamic extends LSActiveRecord
                 }
             }
             if($bIsValidToken) {
-                $itresult = $this->updateToken($tkrow['tid'], $newtoken);
+                $this->updateToken($tkrow['tid'], $newtoken);
                 $newtokencount++;
             }
             else {
@@ -607,7 +607,6 @@ class TokenDynamic extends LSActiveRecord
      */
     public function getStandardColsForGrid()
     {
-        $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         return array(
             array(
                 'id'=>'tid',

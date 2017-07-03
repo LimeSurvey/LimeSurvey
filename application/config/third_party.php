@@ -8,7 +8,7 @@
 /* This allow us to use minified version according to debug */
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
-$minVersion = ($debug>2) ? "":".min";
+$minVersion = ($debug>0) ? "":".min";
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
 if(isset($_GET['isAjax'])){
@@ -19,6 +19,7 @@ return array(
 
     // jQuery
     'jquery' => array(
+        'devBaseUrl' => 'third_party/jquery',
         'basePath' => 'third_party.jquery',
         'js' => array(
             'jquery-3.1.1'.$minVersion.'.js',
@@ -27,16 +28,17 @@ return array(
     ),
     // Bootstrap
     // This package replace the Yiistrap register() function
-    // Then instead of using the composer dependency system for templates (will be used for LS3)
+    // Then instead of using the composer dependency system for templates
     // We can use the package dependency system (easier for now)
     'bootstrap' => array(
-        'basePath' => 'bootstrap',
+        'devBaseUrl' => 'assets/packages/bootstrap/',
+        'basePath' => 'core.bootstrap',
         'css'=> array(
-            'css/bootstrap.css',/* Admin need it, not public */
-            'css/yiistrap.css',
+            'bootstrap'.$minVersion.'.css',/* Admin need it, not public */
+            'yiistrap'.$minVersion.'.css',
         ),
         'js'=>array(
-            'js/bootstrap'.$minVersion.'.js'
+            'bootstrap'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',
@@ -59,14 +61,16 @@ return array(
 
     'fontawesome' => array(
         //'basePath' => 'third_party.bootstrap', // Need fix third_party alias
-        'basePath' => 'third_party.fontawesome',
+        'devBaseUrl' => 'fonts/fontawesome/',
+        'basePath' => 'fonts.fontawesome',
         'css'=> array(
-            'css/font-awesome.min.css',
+            'css/font-awesome'.$minVersion.'.css',
         ),
     ),
 
     // jQuery UI
     'jqueryui' => array(
+        'devBaseUrl' => 'third_party/jquery-ui',
         'basePath' => 'third_party.jquery-ui',
         'js' => array(
             'jquery-ui'.$minVersion.'.js',
@@ -188,6 +192,7 @@ return array(
 
     // Ace
     'ace' => array(
+        'devBaseUrl' => 'third_party/ace',
         'basePath' => 'third_party.ace',
         'js' => array(
             'ace.js'
@@ -199,6 +204,7 @@ return array(
 
     // jQuery Ace
      'jquery-ace' => array(
+         'devBaseUrl' => 'third_party/jquery-ace',
          'basePath' => 'third_party.jquery-ace',
         'js' => array(
             'jquery.ace.js',
@@ -232,6 +238,7 @@ return array(
 
     // Decimal.js calculate in js
     'decimal' => array(
+        'devBaseUrl' => 'third_party/decimal',
         'basePath' => 'third_party.decimal',
         'js' => array(
             'decimal.js'
@@ -370,5 +377,14 @@ return array(
             'jquery.autocomplete'.$minVersion.'.js'
         ),
     ),
-
+    'jszip' => array(
+        'basePath' => 'third_party.jszip',
+        'js' => array(
+            'jszip.js',
+            'fileSaver.js',
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    )
 );

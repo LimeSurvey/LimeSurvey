@@ -337,9 +337,9 @@ function getQuestionMapData($sField, $qsid)
 /** Builds the list of addon SQL select statements
 *   that builds the query result set
 *
-*   @param $allfields   An array containing the names of the fields/answers we want to display in the statistics summary
-*   @param $fieldmap    The fieldmap for the survey
-*   @param $language    The language to use
+*   @param array    $allfields   An array containing the names of the fields/answers we want to display in the statistics summary
+*   @param integer  $surveyid
+*   @param string   $language    The language to use
 *
 *   @return array $selects array of individual select statements that can be added/appended to
 *                          the 'where' portion of a SQL statement to restrict the result set
@@ -798,6 +798,9 @@ class statistics_helper {
             list($qsid, $qgid, $qqid) = explode("X", substr($rt, 1, strlen($rt)), 3);
 
             //select details for this question
+            /**
+            FIXME $iQuestionIDlength not defined!!
+             */
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>substr($qqid, 0, $iQuestionIDlength)));
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
@@ -1602,6 +1605,7 @@ class statistics_helper {
      * @param string $outputType
      * @param integer $usegraph
      * @param boolean $browse
+     * @return array
      */
     protected function displaySimpleResults($outputs, $results, $rt, $outputType, $surveyid, $sql, $usegraph, $browse, $sLanguage)
     {
@@ -1610,6 +1614,7 @@ class statistics_helper {
         $statisticsoutput="";
         $sDatabaseType = Yii::app()->db->getDriverName();
         $astatdata=array();
+        $sColumnName = null;
 
         //loop though the array which contains all answer data
         $ColumnName_RM=array();
@@ -2061,10 +2066,11 @@ class statistics_helper {
                                 } else {
                                     $percentage = 0;
                                 }
+                                break;
 
                             default:
-                            $aggregatedPercentage = 'na';
-                            break;
+                                $aggregatedPercentage = 'na';
+                                break;
                         }
 
 
@@ -2231,7 +2237,7 @@ class statistics_helper {
             //-------------------------- PCHART OUTPUT ----------------------------
             list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
             $qsid = $surveyid;
-            $aattr = getQuestionAttributeValues($outputs['parentqid'], substr($rt, 0, 1));
+            $aattr = getQuestionAttributeValues($outputs['parentqid']);
 
             //PCHART has to be enabled and we need some data
             //
@@ -2265,14 +2271,15 @@ class statistics_helper {
                     $cachefilename = '';
                     if($outputType == 'xls' || $outputType == 'pdf')
                     {
+                        /**
+                         *
+                         //FIXME $MyCache is undefined
                         $cachefilename = createChart($qqid, $qsid, $bShowPieChart, $lbl, $gdata, $grawdata, $MyCache, $sLanguage, $outputs['qtype']);
+                         *
+                         */
                     }
 
                 }
-            }
-            else
-            {
-
             }
 
 
@@ -2391,6 +2398,8 @@ class statistics_helper {
         $sDatabaseType      = Yii::app()->db->getDriverName();
         $tempdir            = Yii::app()->getConfig("tempdir");
         $astatdata          = array();
+
+        $sColumnName = null;
 
         if ($usegraph==1 && $outputType != 'html')
         {
@@ -3193,10 +3202,11 @@ class statistics_helper {
                             } else {
                                 $percentage = 0;
                             }
+                            break;
 
                         default:
-                        $aggregatedPercentage = 'na';
-                        break;
+                            $aggregatedPercentage = 'na';
+                            break;
                     }
 
 
@@ -3595,7 +3605,7 @@ class statistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = getQuestionAttributeValues($outputs['parentqid'], substr($rt, 0, 1));
+        $aattr = getQuestionAttributeValues($outputs['parentqid']);
 
         //PCHART has to be enabled and we need some data
         //

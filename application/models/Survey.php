@@ -29,7 +29,6 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $adminemail
  * @property string $anonymized
  * @property string $faxto
- * @property string $format
  * @property string $savetimings
  * @property string $template Template name
  * @property string $language
@@ -48,7 +47,6 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
- * @property string $htmlemail
  * @property string $sendconfirmation
  * @property string $tokenanswerspersistence
  * @property string $assessments
@@ -83,6 +81,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property User $owner
  * @property QuestionGroup[] $groups
  * @property Quota[] $quotas
+ * @property Question[] $quotableQuestions
  *
  * @property array $fullAnswers
  * @property array $partialAnswers
@@ -108,11 +107,12 @@ class Survey extends LSActiveRecord
      * @var array $findByPkCache
      */
     protected $findByPkCache = array();
-    /* Default settings for new survey */
 
-    /** @var string $format This settings happen for whole new Survey, not only admin/survey/sa/newsurvey */
+    /** @var string  A : All in one, G : Group by group, Q : question by question */
     public $format = 'G';
-    /** @var string $htmlemail */
+    /**
+     * @property string $htmlemail Y mean all email related to this survey use HTML format
+     */
     public $htmlemail='Y';
 
     // TODO unused??
@@ -534,7 +534,7 @@ class Survey extends LSActiveRecord
      */
     public function getGoogleanalyticsapikey(){
         if($this->googleanalyticsapikey === "9999useGlobal9999") {
-            return getGlobalSetting(googleanalyticsapikey);
+            return getGlobalSetting('googleanalyticsapikey');
         } else {
             return $this->googleanalyticsapikey;
         }
@@ -690,7 +690,7 @@ class Survey extends LSActiveRecord
     /**
      * Attribute renamed to questionindex in dbversion 169
      * Y maps to 1 otherwise 0;
-     * @param type $value
+     * @param string $value
      */
     public function setAllowjumps($value)
     {
@@ -707,15 +707,21 @@ class Survey extends LSActiveRecord
     public function getSurveyinfo()
     {
         $iSurveyID = $this->sid;
-        $baselang = $this->language;
-
-        $condition = array('sid' => $iSurveyID, 'language' => $baselang);
 
         //// TODO : replace this with a HAS MANY relation !
-        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
-        if (is_null($sumresult1)) {
+        $sumresult1 = Survey::model()->with(
+            array(
+                'languagesettings' => array(
+                    'condition' => 'surveyls_language = language'
+                )
+            ))->find(
+                'sid = :surveyid',
+                array(':surveyid' => $iSurveyID)
+            ); //$sumquery1, 1) ; //Checked
+        if (is_null($sumresult1))
+        {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            $this->getController()->redirect(array("admin/index"));
+            Yii::app()->getController()->redirect(array("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
 
         $surveyinfo = $sumresult1->attributes;
@@ -858,10 +864,10 @@ class Survey extends LSActiveRecord
             $sStart = convertToGlobalSettingFormat( $sStart );
 
             // Icon generaton (for CGridView)
-            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'),$sStop).'"><span class="fa  fa-play text-success"></span></a>';
-            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'),$sStop).'"><span class="fa fa fa-step-forward text-warning"></span></a>';
-            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'),$sStart).'"><span class="fa  fa-clock-o text-warning"></span></a>';
-
+            $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'),$sStop).'"><span class="fa  fa-play text-success"></span><span class="sr-only">'.sprintf(gT('End: %s'),$sStop).'</span></a>';
+            $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'),$sStop).'"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">'.sprintf(gT('Expired: %s'),$sStop).'</span></a>';
+            $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'),$sStart).'"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">'.sprintf(gT('Start: %s'),$sStart).'</span></a>';
+ 
             // Icon parsing
             if ( $bExpired || $bWillRun ) {
                 // Expire prior to will start
@@ -989,9 +995,7 @@ class Survey extends LSActiveRecord
      */
     public function getbuttons()
     {
-        $sSummaryUrl  = App()->createUrl("/admin/survey/sa/view/surveyid/".$this->sid);
         $sEditUrl     = App()->createUrl("/admin/survey/sa/editlocalsettings/surveyid/".$this->sid);
-        $sDeleteUrl   = App()->createUrl("/admin/survey/sa/delete/surveyid/".$this->sid);
         $sStatUrl     = App()->createUrl("/admin/statistics/sa/simpleStatistics/surveyid/".$this->sid);
         $sAddGroup    = App()->createUrl("/admin/questiongroups/sa/add/surveyid/".$this->sid);;
         $sAddquestion = App()->createUrl("/admin/questions/sa/newquestion/surveyid/".$this->sid);;
@@ -999,27 +1003,26 @@ class Survey extends LSActiveRecord
         $button = '';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('General settings & texts').'"><span class="glyphicon glyphicon-cog" ></span></a>';
+            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('General settings & texts').'"><span class="glyphicon glyphicon-cog" ></span><span class="sr-only">'.gT('General settings & texts').'</span></a>';
         }
 
         if(Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active=='Y' ) {
-            $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="glyphicon glyphicon-stats text-success" ></span></a>';
+            $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="glyphicon glyphicon-stats text-success" ></span><span class="sr-only">'.gT('Statistics').'</span></a>';
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
             if($this->active!='Y') {
                 $groupCount = QuestionGroup::model()->countByAttributes(array('sid' => $this->sid, 'language' => $this->language)); //Checked
                 if($groupCount > 0) {
-                    $button .= '<a class="btn btn-default" href="'.$sAddquestion.'" role="button" data-toggle="tooltip" title="'.gT('Add new question').'"><span class="icon-add text-success" ></span></a>';
+                    $button .= '<a class="btn btn-default" href="'.$sAddquestion.'" role="button" data-toggle="tooltip" title="'.gT('Add new question').'"><span class="icon-add text-success" ></span><span class="sr-only">'.gT('Add new question').'</span></a>';
                 } else {
-                    $button .= '<a class="btn btn-default" href="'.$sAddGroup.'" role="button" data-toggle="tooltip" title="'.gT('Add new group').'"><span class="icon-add text-success" ></span></a>';
+                    $button .= '<a class="btn btn-default" href="'.$sAddGroup.'" role="button" data-toggle="tooltip" title="'.gT('Add new group').'"><span class="icon-add text-success" ></span><span class="sr-only">'.gT('Add new group').'</span></a>';
                 }
             }
         }
 
-        $previewUrl = Yii::app()->createUrl("survey/index/sid/");
-        $previewUrl .= '/'.$this->sid;
-
+        //$previewUrl = Yii::app()->createUrl("survey/index/sid/");
+        //$previewUrl .= '/'.$this->sid;
         //$button = '<a class="btn btn-default open-preview" aria-data-url="'.$previewUrl.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="glyphicon glyphicon-eye-open"  ></span></a> ';
 
         return $button;
@@ -1181,6 +1184,7 @@ class Survey extends LSActiveRecord
         return 'N';
     }
 
+
     /**
     * Method to make an approximation on how long a survey will last
     * Approx is 3 questions each minute.
@@ -1259,6 +1263,45 @@ class Survey extends LSActiveRecord
             $this->sSurveyUrl = App()->createUrl('survey/index', array('sid' => $this->sid, 'lang' => $surveylang));
         }
         return $this->sSurveyUrl;
+    }
+
+
+    /**
+     * @return Question[]
+     */
+    public function getQuotableQuestions()
+    {
+        $criteria = $this->getQuestionOrderCriteria();
+
+        $criteria->addColumnCondition(array(
+            't.sid' => $this->sid,
+            't.language' => $this->language,
+            'parent_qid' => 0,
+
+        ));
+
+        $criteria->addInCondition('t.type',Question::getQuotableTypes());
+
+        /** @var Question[] $questions */
+        $questions = Question::model()->findAll($criteria);
+        return $questions;
+    }
+
+    /**
+     * Get the DB criteria to get questions as ordered in survey
+     * @return CDbCriteria
+     */
+    private function getQuestionOrderCriteria(){
+        $criteria=new CDbCriteria;
+        $criteria->select = Yii::app()->db->quoteColumnName('t.*');
+        $criteria->with=array(
+            'survey.groups',
+        );
+        $criteria->order =Yii::app()->db->quoteColumnName('groups.group_order').','
+            .Yii::app()->db->quoteColumnName('t.question_order');
+        $criteria->addCondition('`groups`.`gid` =`t`.`gid`','AND');
+        return $criteria;
+
     }
 
 }

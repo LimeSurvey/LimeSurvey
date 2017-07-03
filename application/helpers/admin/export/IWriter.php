@@ -8,7 +8,7 @@ interface IWriter
     * See Survey and SurveyDao objects for information on loading a survey
     * and results from the database.
     *
-    * @param Survey $survey
+    * @param SurveyObj $survey
     * @param string $sLanguageCode
     * @param FormattingOptions $oOptions
     */

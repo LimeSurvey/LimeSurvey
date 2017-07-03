@@ -45,20 +45,17 @@
                 <label class="control-label" for="answer<?php echo $ansrow['myfid0']; ?>" id="label-<?php echo $ansrow['myfname']; ?>">
                     <?php echo $ansrow['question']; ?>
                 </label>
-                <input
-                    type="hidden"
-                    disabled="disabled"
-                    name="java<?php echo $ansrow['myfid0']; ?>"
-                    id="java<?php echo $ansrow['myfid0']; ?>"
-                    value="<?php echo $ansrow['sActualAnswer0']; ?>"
-                />
-                <input
-                    type="hidden"
-                    disabled="disabled"
-                    name="java<?php echo $ansrow['myfid1']; ?>"
-                    id="java<?php echo $ansrow['myfid1']; ?>"
-                    value="<?php echo $ansrow['sActualAnswer1']; ?>"
-                />
+                <?php
+                /* Value for expression manager javascript (use id) ; no need to submit */
+                echo \CHtml::hiddenField("java{$ansrow['myfid0']}",$ansrow['sActualAnswer0'],array(
+                    'id' => "java{$ansrow['myfid0']}",
+                    'disabled' => true,
+                ));
+                echo \CHtml::hiddenField("java{$ansrow['myfid1']}",$ansrow['sActualAnswer1'],array(
+                    'id' => "java{$ansrow['myfid1']}",
+                    'disabled' => true,
+                ));
+                ?>
             </th>
 
             <!-- First dropdown -->

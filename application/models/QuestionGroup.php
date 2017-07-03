@@ -163,6 +163,7 @@ class QuestionGroup extends LSActiveRecord
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aSurveyLanguages=$oSurvey->allLanguages;
         $bFirst = true;
+        $iGroupID = null;
         foreach ($aSurveyLanguages as $sLanguage) {
             if ($bFirst) {
                 $iGroupID=$this->insertRecords($aQuestionGroupData[$sLanguage]);
