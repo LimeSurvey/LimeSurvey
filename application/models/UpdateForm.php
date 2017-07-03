@@ -241,7 +241,7 @@ class UpdateForm extends CFormModel
      * @return object
      * //TODO $downloadid not used locally
      */
-    public function downloadUpdateFile($downloadid, $tobuild)
+    public function downloadUpdateFile($downloadid=null, $tobuild)
     {
         $getters = '/index.php?r=updates/download&frombuild='.$this->build.'&tobuild='.$tobuild;
         $getters .= "&access_token=".$_REQUEST['access_token'];
@@ -801,55 +801,9 @@ class UpdateForm extends CFormModel
         return $files;
     }
 
-    /**
-     * Check if a file / dir is writable AND/OR if it has enough freespace
-     * @param object $obj an object containing the name of the file/directory to check, and what must be checked
-     * @return stdClass the result of the test
-     */
-    private function _fileSystemCheck($obj)
-    {
-        $check = new stdClass();
-        $check->name = $obj->name;
-
-        if ($obj->writableCheck) {
-            $check->writable = is_writable( $obj->name );
-        } else {
-            $check->writable = 'pass';
-        }
-
-        if ($obj->freespaceCheck) {
-            $check->freespace = (disk_free_space( $obj->name ) > $obj->minfreespace );
-        } else {
-            $check->freespace = 'pass';
-        }
-
-        $check->name = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $check->name);
-
-        return $check;
-    }
-
-    /**
-     * build the file / Directory path using APPATH, and then call the check method
-     * @param object $obj an object containing the name of the file/directory to check, and what must be checked
-     * @return stdClass the result of the test
-     */
-    private function _fileSystemCheckAppath($obj)
-    {
-        $obj->name = APPPATH . $obj->name;
-        return  $this->_fileSystemCheck($obj);
-    }
 
 
-    /**
-     * build the file / Directory path using getConfig(), and then call the check method
-     * @param object $obj an object containing the name of the file/directory to check, and what must be checked
-     * @return stdClass the result of the test
-     */
-    private function _fileSystemCheckConfig($obj)
-    {
-        $obj->name = Yii::app()->getConfig($obj->name);
-        return  $this->_fileSystemCheck($obj);
-    }
+
 
     /**
      * Get the required minimal php version for destination build from server, and compare it to local php version.
@@ -962,7 +916,7 @@ class UpdateForm extends CFormModel
         curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_FILE, $pFile);
-        $content = curl_exec($ch);
+        curl_exec($ch);
         $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE); // But we want the header to be returned to the controller so we can check if a file has been returned
         curl_close($ch);
 

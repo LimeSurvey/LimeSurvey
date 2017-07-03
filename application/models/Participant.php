@@ -1372,34 +1372,6 @@ class Participant extends LSActiveRecord
     }
 
     /**
-     * Get column names from token attributes for a survey.
-     *
-     * A token attribute has id (auto increment), attribute field (always "attribte_" + number),
-     * and field description (e.g. "my attribute" or "gender")
-     *
-     * @param int $surveyId
-     * @return array E.g. [11 => 'attribute_36', ...]
-     */
-    private function getTokenAttributes($surveyId)
-    {
-        $tokenTableSchema = Yii::app()->db
-            ->schema
-            ->getTable("{{tokens_$surveyId}}");
-
-        $result = array();
-
-        $i = 1;
-        foreach ($tokenTableSchema->columns as $columnName => $columnObject) {
-            if (strpos($columnName, 'attribute_') !== false) {
-                $result[$i] = $columnName;
-            }
-            $i += 1;
-        }
-
-        return $result;
-    }
-
-    /**
      * Update stuff?
      * If automapping is enabled then update the token field properties with the mapped CPDB field ID
      * TODO: What is this?
@@ -1853,12 +1825,6 @@ class Participant extends LSActiveRecord
         $duplicate = 0;
         $sucessfull = 0;
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
-
-        /* Grab all the existing attribute field names from the tokens table */
-        $arr = Yii::app()->db->createCommand()->select('*')->from("{{tokens_$surveyid}}")->queryRow();
-        if (is_array($arr)) {
-            $tokenfieldnames = array_keys($arr);
-        }
 
         /* Create CPDB attributes */
         if (!empty($aAttributesToBeCreated)) {

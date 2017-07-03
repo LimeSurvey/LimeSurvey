@@ -146,7 +146,7 @@ class SurveyTimingDynamic extends LSActiveRecord
      * @return CActiveDataProvider
      * // TODO $language is not used locally
      */
-    public function search($iSurveyID, $language)
+    public function search($iSurveyID, $language=null)
     {
         $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 
