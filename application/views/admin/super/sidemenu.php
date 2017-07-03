@@ -23,7 +23,7 @@
     $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/surveyid/$surveyid");
 ?>
 
-<div style="position:absolute; width:300px;left:0;"> 
+<div style="position:absolute; width:300px;left:0;" id="side-menu-container"> 
     <div id="vue-side-menu-app" data-surveyid='<?=$surveyid?>'>
         <sidebar :options="[]" get-questions-url="<?=$getQuestionsUrl ?>" get-menu-url="<?=$getMenuUrl ?>" :translate="{settings: '<?php eT("Survey Settings");?>', structure:'<?php eT("Survey Structure");?>' }"></sidebar>
     </div>

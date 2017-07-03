@@ -27405,7 +27405,8 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODU
 const AppState = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
   state: {
     surveyid: 0,
-    language: ''
+    language: '',
+    maxHeight: 0
   },
   mutations: {
     updateSurveyId (state, newSurveyId) {
@@ -27413,6 +27414,9 @@ const AppState = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store
     },
     changeLanguage (state, language) {
       state.language = language;
+    },
+    changeMaxHeight(state, newHeight){
+      state.maxHeight = newHeight;
     }    
   }
 });
@@ -27427,7 +27431,8 @@ if(document.getElementById('vue-side-menu-app')){
     },
     mounted(){
        this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
-    } 
+       this.$store.commit('changeMaxHeight', ($('#in_survey_common').height()-35));
+    }
 });
 }
 
@@ -27446,7 +27451,11 @@ const pjaxed = new __WEBPACK_IMPORTED_MODULE_6_pjax___default.a({
 //       'topbar' : Topbar,
 //     } 
 // });
-
+// For now this is only correcting the php rendered top-bar
+$(document).ready(()=>{
+  let width = ($('body').width() - 310)+'px';
+  $('#surveybarid').width(width);
+})
 
 /***/ }),
 /* 12 */
@@ -28947,7 +28956,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.selected {\n  background-color: #EEF6EF;\n  box-shadow: 1px2px 4px #EEF6EF inset;\n}\n.bigIcons {\n  font-size: 24px;\n}\n.border-bottom {\n  border-bottom: 1px solid #323232;\n}\n.margin-bottom {\n  padding-bottom: 5px;\n}\n.ls-ba .list-group > .list-group-item {\n  padding: 10px 0;\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid #323232;\n  margin-bottom: 1px;\n}\n.ls-ba .list-group > .list-group-item .list-group {\n    background: #DEF0DF;\n    margin-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item {\n      background: transparent;\n      padding-left: 15px;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {\n        border-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group:first-of-type {\n      border-top: 1px solid #323232;\n}\n", ""]);
+exports.push([module.i, "\n.selected {\n  background-color: #EEF6EF;\n  box-shadow: 1px2px 4px #EEF6EF inset;\n}\n.bigIcons {\n  font-size: 24px;\n}\n.border-bottom {\n  border-bottom: 1px solid #323232;\n}\n.margin-bottom {\n  padding-bottom: 5px;\n}\n.ls-ba .list-group > .list-group-item {\n  padding: 10px 0;\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid #323232;\n  margin-bottom: 1px;\n}\n.ls-ba .list-group > .list-group-item .list-group {\n    background: #DEF0DF;\n    margin-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item {\n      background: transparent;\n      padding-left: 15px;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {\n        border-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group:first-of-type {\n      border-top: 1px solid #323232;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", ""]);
 
 // exports
 
@@ -28985,10 +28994,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     computed: {
         calculatedHeight() {
-            let containerHeight = $('.mainMenu').height();
-            console.log($('#question-tree-container'));
+            let containerHeight = this.$store.state.maxHeight;
+            console.log(this.$store);
             console.log('containerHeight', containerHeight);
-            return containerHeight - 175;
+            return containerHeight - 100;
         }
     },
     methods: {
@@ -29186,7 +29195,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ls-flex-column ls-ba",
+    staticClass: "ls-flex-column ls-ba ",
     style: ({
       height: _vm.calculatedHeight + 'px'
     }),
@@ -30351,7 +30360,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, ".ls-flex, .ls-flex-row, .ls-flex-column {\n  display: -moz-flex;\n  display: -webkit-flex;\n  display: flex; }\n  .ls-flex.align-item-center, .align-item-center.ls-flex-row, .align-item-center.ls-flex-column {\n    -ms-align-items: center;\n    -webkit-align-items: center;\n    -moz-align-items: center;\n    align-items: center; }\n  .ls-flex.align-item-flex-start, .align-item-flex-start.ls-flex-row, .align-item-flex-start.ls-flex-column {\n    -ms-align-items: flex-start;\n    -webkit-align-items: flex-start;\n    -moz-align-items: flex-start;\n    align-items: flex-start; }\n  .ls-flex.align-item-flex-end, .align-item-flex-end.ls-flex-row, .align-item-flex-end.ls-flex-column {\n    -ms-align-items: flex-end;\n    -webkit-align-items: flex-end;\n    -moz-align-items: flex-end;\n    align-items: flex-end; }\n  .ls-flex.align-item-baseline, .align-item-baseline.ls-flex-row, .align-item-baseline.ls-flex-column {\n    -ms-align-items: baseline;\n    -webkit-align-items: baseline;\n    -moz-align-items: baseline;\n    align-items: baseline; }\n  .ls-flex.align-item-stretch, .align-item-stretch.ls-flex-row, .align-item-stretch.ls-flex-column {\n    -ms-align-items: stretch;\n    -webkit-align-items: stretch;\n    -moz-align-items: stretch;\n    align-items: stretch; }\n  .ls-flex.align-content-center, .align-content-center.ls-flex-row, .align-content-center.ls-flex-column {\n    -ms-justify-content: center;\n    -webkit-justify-content: center;\n    -moz-justify-content: center;\n    justify-content: center; }\n  .ls-flex.align-content-flex-start, .align-content-flex-start.ls-flex-row, .align-content-flex-start.ls-flex-column {\n    -ms-justify-content: flex-start;\n    -webkit-justify-content: flex-start;\n    -moz-justify-content: flex-start;\n    justify-content: flex-start; }\n  .ls-flex.align-content-flex-end, .align-content-flex-end.ls-flex-row, .align-content-flex-end.ls-flex-column {\n    -ms-justify-content: flex-end;\n    -webkit-justify-content: flex-end;\n    -moz-justify-content: flex-end;\n    justify-content: flex-end; }\n  .ls-flex.align-content-space-between, .align-content-space-between.ls-flex-row, .align-content-space-between.ls-flex-column {\n    -ms-justify-content: space-between;\n    -webkit-justify-content: space-between;\n    -moz-justify-content: space-between;\n    justify-content: space-between; }\n  .ls-flex.align-content-space-around, .align-content-space-around.ls-flex-row, .align-content-space-around.ls-flex-column {\n    -ms-justify-content: space-around;\n    -webkit-justify-content: space-around;\n    -moz-justify-content: space-around;\n    justify-content: space-around; }\n  .ls-flex.wrap, .wrap.ls-flex-row, .wrap.ls-flex-column {\n    -ms-flex-wrap: wrap;\n    -webkit-flex-wrap: wrap;\n    -moz-flex-wrap: wrap;\n    flex-wrap: wrap; }\n\n.ls-flex-row {\n  -ms-flex-direction: row;\n  -webkit-flex-direction: row;\n  -moz-flex-direction: row;\n  flex-direction: row;\n  width: 100%; }\n\n.ls-flex-column {\n  -ms-flex-direction: column;\n  -webkit-flex-direction: column;\n  -moz-flex-direction: column;\n  flex-direction: column; }\n\n.background-muted {\n  background: #cdcdcd; }\n  .background-muted > li {\n    background: #cdcdcd; }\n\n.ls-ba .list-group > .list-group-item {\n  padding: 10px 0;\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid #323232;\n  margin-bottom: 1px; }\n  .ls-ba .list-group > .list-group-item .list-group {\n    margin-bottom: 0; }\n    .ls-ba .list-group > .list-group-item .list-group .list-group-item {\n      padding-left: 15px; }\n      .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {\n        border-bottom: 0; }\n    .ls-ba .list-group > .list-group-item .list-group:first-of-type {\n      border-top: 1px solid #323232; }\n", ""]);
+exports.push([module.i, ".ls-flex, .ls-flex-row, .ls-flex-column {\n  display: -moz-flex;\n  display: -webkit-flex;\n  display: flex; }\n  .ls-flex.align-item-center, .align-item-center.ls-flex-row, .align-item-center.ls-flex-column {\n    -ms-align-items: center;\n    -webkit-align-items: center;\n    -moz-align-items: center;\n    align-items: center; }\n  .ls-flex.align-item-flex-start, .align-item-flex-start.ls-flex-row, .align-item-flex-start.ls-flex-column {\n    -ms-align-items: flex-start;\n    -webkit-align-items: flex-start;\n    -moz-align-items: flex-start;\n    align-items: flex-start; }\n  .ls-flex.align-item-flex-end, .align-item-flex-end.ls-flex-row, .align-item-flex-end.ls-flex-column {\n    -ms-align-items: flex-end;\n    -webkit-align-items: flex-end;\n    -moz-align-items: flex-end;\n    align-items: flex-end; }\n  .ls-flex.align-item-baseline, .align-item-baseline.ls-flex-row, .align-item-baseline.ls-flex-column {\n    -ms-align-items: baseline;\n    -webkit-align-items: baseline;\n    -moz-align-items: baseline;\n    align-items: baseline; }\n  .ls-flex.align-item-stretch, .align-item-stretch.ls-flex-row, .align-item-stretch.ls-flex-column {\n    -ms-align-items: stretch;\n    -webkit-align-items: stretch;\n    -moz-align-items: stretch;\n    align-items: stretch; }\n  .ls-flex.align-content-center, .align-content-center.ls-flex-row, .align-content-center.ls-flex-column {\n    -ms-justify-content: center;\n    -webkit-justify-content: center;\n    -moz-justify-content: center;\n    justify-content: center; }\n  .ls-flex.align-content-flex-start, .align-content-flex-start.ls-flex-row, .align-content-flex-start.ls-flex-column {\n    -ms-justify-content: flex-start;\n    -webkit-justify-content: flex-start;\n    -moz-justify-content: flex-start;\n    justify-content: flex-start; }\n  .ls-flex.align-content-flex-end, .align-content-flex-end.ls-flex-row, .align-content-flex-end.ls-flex-column {\n    -ms-justify-content: flex-end;\n    -webkit-justify-content: flex-end;\n    -moz-justify-content: flex-end;\n    justify-content: flex-end; }\n  .ls-flex.align-content-space-between, .align-content-space-between.ls-flex-row, .align-content-space-between.ls-flex-column {\n    -ms-justify-content: space-between;\n    -webkit-justify-content: space-between;\n    -moz-justify-content: space-between;\n    justify-content: space-between; }\n  .ls-flex.align-content-space-around, .align-content-space-around.ls-flex-row, .align-content-space-around.ls-flex-column {\n    -ms-justify-content: space-around;\n    -webkit-justify-content: space-around;\n    -moz-justify-content: space-around;\n    justify-content: space-around; }\n  .ls-flex.wrap, .wrap.ls-flex-row, .wrap.ls-flex-column {\n    -ms-flex-wrap: wrap;\n    -webkit-flex-wrap: wrap;\n    -moz-flex-wrap: wrap;\n    flex-wrap: wrap; }\n  .ls-flex .col-1, .ls-flex-row .col-1, .ls-flex-column .col-1 {\n    width: 8.33333; }\n  .ls-flex .col-2, .ls-flex-row .col-2, .ls-flex-column .col-2 {\n    width: 16.66667; }\n  .ls-flex .col-3, .ls-flex-row .col-3, .ls-flex-column .col-3 {\n    width: 25; }\n  .ls-flex .col-4, .ls-flex-row .col-4, .ls-flex-column .col-4 {\n    width: 33.33333; }\n  .ls-flex .col-5, .ls-flex-row .col-5, .ls-flex-column .col-5 {\n    width: 41.66667; }\n  .ls-flex .col-6, .ls-flex-row .col-6, .ls-flex-column .col-6 {\n    width: 50; }\n  .ls-flex .col-7, .ls-flex-row .col-7, .ls-flex-column .col-7 {\n    width: 58.33333; }\n  .ls-flex .col-8, .ls-flex-row .col-8, .ls-flex-column .col-8 {\n    width: 66.66667; }\n  .ls-flex .col-9, .ls-flex-row .col-9, .ls-flex-column .col-9 {\n    width: 75; }\n  .ls-flex .col-10, .ls-flex-row .col-10, .ls-flex-column .col-10 {\n    width: 83.33333; }\n  .ls-flex .col-11, .ls-flex-row .col-11, .ls-flex-column .col-11 {\n    width: 91.66667; }\n  .ls-flex .col-12, .ls-flex-row .col-12, .ls-flex-column .col-12 {\n    width: 100; }\n\n.ls-flex-row {\n  -ms-flex-direction: row;\n  -webkit-flex-direction: row;\n  -moz-flex-direction: row;\n  flex-direction: row;\n  width: 100%; }\n\n.ls-flex-column {\n  -ms-flex-direction: column;\n  -webkit-flex-direction: column;\n  -moz-flex-direction: column;\n  flex-direction: column; }\n\n.background-muted {\n  background: #cdcdcd; }\n  .background-muted > li {\n    background: #cdcdcd; }\n\n.ls-ba .list-group > .list-group-item {\n  padding: 10px 0;\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid #323232;\n  margin-bottom: 1px; }\n  .ls-ba .list-group > .list-group-item .list-group {\n    margin-bottom: 0; }\n    .ls-ba .list-group > .list-group-item .list-group .list-group-item {\n      padding-left: 15px; }\n      .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {\n        border-bottom: 0; }\n    .ls-ba .list-group > .list-group-item .list-group:first-of-type {\n      border-top: 1px solid #323232; }\n\n#sidebar {\n  padding-top: 15px; }\n\n.menubar.surveybar {\n  position: absolute;\n  top: 105px;\n  left: 305px;\n  width: 85%; }\n\n#in_survey_common {\n  padding-top: 65px; }\n", ""]);
 
 // exports
 

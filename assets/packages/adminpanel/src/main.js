@@ -12,7 +12,8 @@ Vue.use(VueLocalStorage);
 const AppState = new Vuex.Store({
   state: {
     surveyid: 0,
-    language: ''
+    language: '',
+    maxHeight: 0
   },
   mutations: {
     updateSurveyId (state, newSurveyId) {
@@ -20,6 +21,9 @@ const AppState = new Vuex.Store({
     },
     changeLanguage (state, language) {
       state.language = language;
+    },
+    changeMaxHeight(state, newHeight){
+      state.maxHeight = newHeight;
     }    
   }
 });
@@ -34,7 +38,8 @@ if(document.getElementById('vue-side-menu-app')){
     },
     mounted(){
        this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
-    } 
+       this.$store.commit('changeMaxHeight', ($('#in_survey_common').height()-35));
+    }
 });
 }
 
@@ -53,3 +58,8 @@ const pjaxed = new Pjax({
 //       'topbar' : Topbar,
 //     } 
 // });
+// For now this is only correcting the php rendered top-bar
+$(document).ready(()=>{
+  let width = ($('body').width() - 310)+'px';
+  $('#surveybarid').width(width);
+})

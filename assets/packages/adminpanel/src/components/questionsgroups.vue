@@ -19,10 +19,10 @@ export default {
     },
     computed: {
         calculatedHeight() {
-            let containerHeight = $('.mainMenu').height();
-            console.log($('#question-tree-container'));
+            let containerHeight = this.$store.state.maxHeight;
+            console.log(this.$store);
             console.log('containerHeight',containerHeight);
-            return (containerHeight - 175);
+            return (containerHeight - 100);
         }
     },
     methods: {
@@ -56,7 +56,7 @@ export default {
 }
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column ls-ba" :style="{height: calculatedHeight+'px'}">
+    <div id="questionexplorer" class="ls-flex-column ls-ba " :style="{height: calculatedHeight+'px'}">
         <ul class="list-group">
             <li v-for="(questiongroup,index) in questiongroups" class="list-group-item ls-flex-column" v-bind:class="isActive(index) ? 'selected' : ''" >
                 <div class="col-sm-12 ls-flex-row nowrap margin-bottom">
@@ -111,5 +111,8 @@ export default {
                 }
             }
         }
+    }
+    #questionexplorer{
+        overflow: auto;
     }
 </style>
