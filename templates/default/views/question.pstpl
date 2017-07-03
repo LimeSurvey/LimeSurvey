@@ -9,7 +9,6 @@
                 </div>
 
             </div>
-        </div>
 
         <!-- Question valid message -->
         <div class="row question-wrapper">
@@ -35,3 +34,4 @@
             </div>
         </div>
     </div>
+        </div>
