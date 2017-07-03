@@ -1824,18 +1824,19 @@ class questions extends Survey_Common_Action
     {
         $match=(int)returnglobal('match');
         $surveyid=returnglobal('sid');
-        if ($match==1)
-        {
-            $language=GetBaseLanguageFromSurveyID($surveyid);
-        }
-        else
-        {
+
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
+        if ($match==1) {
+            $language=$oSurvey->language;
+        } else {
             $language=null;
         }
+
         $resultdata=getlabelsets($language);
         // Label set title really don't need HTML
-        foreach($resultdata as &$aResult)
-        {
+        foreach($resultdata as &$aResult) {
             $aResult = array_map('flattenText', $aResult);
         }
         header('Content-type: application/json');

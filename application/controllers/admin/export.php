@@ -128,6 +128,9 @@ class export extends Survey_Common_Action {
     {
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
 
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
         if ( ! isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
 
@@ -170,10 +173,10 @@ class export extends Survey_Common_Action {
         if ( ! $sExportType )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$oSurvey->language);
             if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
-                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,$oSurvey->language);
             }
             $iFieldCount = count($aFieldMap);
 
@@ -662,6 +665,9 @@ class export extends Survey_Common_Action {
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $subaction = Yii::app()->request->getParam('subaction');
 
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+
         //Exports all responses to a survey in special "Verified Voting" format.
         if ( ! Permission::model()->hasSurveyPermission($iSurveyId, 'responses','export') )
         {
@@ -674,23 +680,21 @@ class export extends Survey_Common_Action {
             $aData['selectincansstate']=incompleteAnsFilterState();
             $aData['surveyid'] = $iSurveyId;
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oSurvey->language);
 
-            Survey::model()->findByPk($iSurveyId)->language;
             $surveytable = "{{survey_$iSurveyId}}";
             // Control if fieldcode are unique
             $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
-            foreach ( $fieldnames as $field )
-            {
+            foreach ( $fieldnames as $field ) {
                 $fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
                 $fieldcode[]=viewHelper::getFieldCode($fielddata,array("LEMcompat"=>true));
             }
             $aData['uniquefieldcode']=(count(array_unique ($fieldcode))==count($fieldcode)); // Did we need more control ?
             $aData['vvversionseleted']=($aData['uniquefieldcode'])?2:1;
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
+            $surveyinfo = $oSurvey->surveyinfo;
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-            $aData["surveyinfo"] = $surveyinfo;
+            $aData["surveyinfo"] = $oSurvey->surveyinfo;
             $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
 
             $aData['sidemenu']['state'] = false;
@@ -699,9 +703,7 @@ class export extends Survey_Common_Action {
             $aData['menu']['close'] =  true;
 
             $this->_renderWrappedTemplate('export', 'vv_view', $aData);
-        }
-        elseif ( isset($iSurveyId) && $iSurveyId )
-        {
+        } elseif ( isset($iSurveyId) && $iSurveyId ) {
             //Export is happening
             $extension = sanitize_paranoid_string(returnGlobal('extension'));
             $vvVersion = (int) Yii::app()->request->getPost('vvversion');
@@ -712,33 +714,28 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oSurvey->language);
             $surveytable = "{{survey_$iSurveyId}}";
 
-            Survey::model()->findByPk($iSurveyId)->language;
 
             $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
 
             //Create the human friendly first line
             $firstline = "";
             $secondline = "";
-            foreach ( $fieldnames as $field )
-            {
+            foreach ( $fieldnames as $field ) {
                 $fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
 
-                if ( count($fielddata) < 1 )
-                {
+                if ( count($fielddata) < 1 ) {
                     $firstline .= $field;
-                }
-                else
-                {
+                } else {
                     $firstline.=preg_replace('/\s+/', ' ', strip_tags($fielddata['question']));
                 }
                 $firstline .= $s;
-                if($vvVersion==2){
+                if($vvVersion==2) {
                     $fieldcode=viewHelper::getFieldCode($fielddata,array("LEMcompat"=>true));
                     $fieldcode=($fieldcode)?$fieldcode:$field;// $fieldcode is empty for token if there are no token table
-                }else{
+                } else {
                     $fieldcode=$field;
                 }
                 $secondline .= $fieldcode.$s;
@@ -748,12 +745,9 @@ class export extends Survey_Common_Action {
             $vvoutput .= $secondline . "\n";
             $query = "SELECT * FROM ".Yii::app()->db->quoteTableName($surveytable);
 
-            if (incompleteAnsFilterState() == "incomplete")
-            {
+            if (incompleteAnsFilterState() == "incomplete") {
                 $query .= " WHERE submitdate IS NULL ";
-            }
-            elseif (incompleteAnsFilterState() == "complete")
-            {
+            } elseif (incompleteAnsFilterState() == "complete") {
                 $query .= " WHERE submitdate >= '01/01/1980' ";
             }
             $result = Yii::app()->db->createCommand($query)->query();
