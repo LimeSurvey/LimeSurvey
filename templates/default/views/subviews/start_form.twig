@@ -11,7 +11,7 @@
 
     (¯`·._.·(¯`·._.· Start Form ·._.·´¯)·._.·´¯)
 
-    This file generate the opening form tag and the CRSF token for the main survey Form.
+    This file generates the opening form tag and the CRSF token for the main survey Form.
     eg:
         <form enctype="multipart/form-data" id="limesurvey" name="limesurvey" autocomplete="off" class="survey-form-container" action="index.php/289445" method="post">
         <input type="hidden" value="393e1f3e91d6fb062b8c67d39771bb674de337ca" name="YII_CSRF_TOKEN">
@@ -19,7 +19,7 @@
     It uses the Yii fuction CHtml::form
     @see: http://www.yiiframework.com/doc/api/1.1/CHtml#form-detail
 
-    The hidden submit button is used for any submition (triggered via JS event)
+    The hidden submit button is used for any submission (triggered via JS event).
 #}
 
 {#
@@ -51,6 +51,9 @@
         (htmlOptions)
     )
 }}
+
+<!-- Ajax value -->
+<input type='hidden' name='ajax' value='{{ aSurveyInfo.options.ajaxmode }}' id='ajax' />
 
 <!-- Field Names -->
 <input type='hidden' name='fieldnames' value='{{ aSurveyInfo.hiddenfieldnames }}' id='fieldnames' />

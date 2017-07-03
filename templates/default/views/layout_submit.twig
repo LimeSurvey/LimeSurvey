@@ -11,111 +11,77 @@
 
     (¯`·._.·(¯`·._.· Submit Layout  ·._.·´¯)·._.·´¯)
 
-    This page is displayed after user submitted the survey
-    It could be visually very different (no header, etc)
+    This page is displayed after user submits the survey.
+    It could be, visually, very different (no header, etc).
 
-    It shows the end text, assessments, print answer, and statistics
+    It shows the end text, assessments, print answer, and statistics.
 
-    Datas are in: aSurveyInfo.aCompleted and aSurveyInfo.aAssessments
-    to show those datas, turn debug mode on, and uncomment: {{ dump(aSurveyInfo.aCompleted ) }}
+    Data are in: aSurveyInfo.aCompleted and aSurveyInfo.aAssessments.
+    To show this data, turn debug mode on and copy the following line to the end of the <body> element in this file:
+    {{ dump(aSurveyInfo.aCompleted ) }}
 #}
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
-    {# Headers, metadatas, etc #}
-    {{ include('./subviews/head.twig') }}
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+{# Replace the content block #}
+{% block content %}
 
-        {# Bootstrap Navigation Bar: the top menu #}
-        {{ include('./subviews/nav_bar.twig') }}
-
-        {# Top Container: in this template #}
-        {{ include('./subviews/progess_bar.twig') }}
-
-        <!-- Outer Frame Container -->
-        <div class="outerframe container" id="outerframeContainer">
-
-            <!-- Main Row -->
-            <div id="main-row">
-                {{ include('./subviews/flash_message.twig') }}
-
-                <!-- Main Col -->
-                <div class="col-centered" id="main-col">
-
-                    {# include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
-                    {{ include('./subviews/warnings.twig') }}
-
-                    {# include the form opening tag #}
-                    <!-- main form -->
-                    {{ include('./subviews/start_form.twig') }}
-
-                        {# This will display the script and the hidden inputs needed for Expression Manager #}
-                        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
-
-                        <div class="completed-wrapper">
-                            <div class='completed-text'>
-                                {% if (aSurveyInfo.aCompleted.showDefault == true) %}
-                                    <p>{{ "Thank you!" | t }}</p>
-                                    <p>{{ "Your survey responses have been recorded." | t }}</p>
-                                {% else %}
-                                    {{ aSurveyInfo.aCompleted.sEndText }}
-                                {% endif %}
-
-                                {# Assessments #}
-                                {% if (aSurveyInfo.aAssessments.show) %}
-                                    {{ include('./subviews/assessments.twig') }}
-                                {% endif %}
-
-                                {#  Link to Print Answer Preview #}
-                                {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
-                                    <!--  Link to Print Answer Preview -->
-                                    <div class="url-wrapper url-wrapper-survey-print">
-                                        <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" class="ls-print">
-                                            {{ "Print your answers." | t }}
-                                        </a>
-                                    </div>
-                                {% endif %}
-
-                                {# Link to Public statistics #}
-                                {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
-                                    <!-- Link to Public statistics -->
-                                    <div class="url-wrapper url-wrapper-survey-print">
-                                        <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" class="ls-print">
-                                            {{ "View the statistics for this survey." | t }}
-                                        </a>
-                                    </div>
-                                {% endif %}
-
-                                {# Before LS3 Master, this should be replace by a Twig block logic #}
-                                {{ aSurveyInfo.aCompleted.sPluginHTML }}
-
-                                {# NOTE: not very clear what the old replacement keyword {URL} was doing  #}
-                                {{ aSurveyInfo.aCompleted.sSurveylsUrl }}
-
-                                {# Data shown when LEM debug timing mode is ON #}
-                                {{ include('./subviews/LEMDebug.twig') }}
-                            </div>
-                        </div>
+    {# render the layout_global content block #}
+    {{ parent() }}
 
 
-                    </form> <!-- main form -->
-                </div> <!-- main col -->
-            </div> <!-- main row -->
-        </div> <!-- outer frame container -->
 
-        {# Bootstrap alert modal #}
-        {{ include('./subviews/bootstrap_alert_modal.twig') }}
+    {# include the form opening tag #}
+    <!-- main form -->
+    {{ include('./subviews/start_form.twig') }}
 
-        <!-- some template.js function launched before ready -->
-        <script type="text/javascript">
-        /*<![CDATA[*/
-            sliderSuffixClone();
-            fixBodyPadding();
-            hideQuestionWithRelevanceSubQuestion();
-            hideEmptyPart();
-        /*]]>*/
-        </script>
-    </body>
-</html>
-<!-- end of startpage.twig -->
+        {# This will display the script and the hidden inputs needed for Expression Manager #}
+        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+        <div class="completed-wrapper">
+            <div class='completed-text'>
+                {% if (aSurveyInfo.aCompleted.showDefault == true) %}
+                    <p>{{ "Thank you!" | t }}</p>
+                    <p>{{ "Your survey responses have been recorded." | t }}</p>
+                {% else %}
+                    {{ aSurveyInfo.aCompleted.sEndText }}
+                {% endif %}
+
+                {# Assessments #}
+                {% if (aSurveyInfo.aAssessments.show) %}
+                    {{ include('./subviews/assessments.twig') }}
+                {% endif %}
+
+                {#  Link to Print Answer Preview #}
+                {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
+                    <!--  Link to Print Answer Preview -->
+                    <div class="url-wrapper url-wrapper-survey-print">
+                        <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" class="ls-print">
+                            {{ "Print your answers." | t }}
+                        </a>
+                    </div>
+                {% endif %}
+
+                {# Link to Public statistics #}
+                {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
+                    <!-- Link to Public statistics -->
+                    <div class="url-wrapper url-wrapper-survey-print">
+                        <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" class="ls-print">
+                            {{ "View the statistics for this survey." | t }}
+                        </a>
+                    </div>
+                {% endif %}
+
+                {# Before LS3 Master, this should be replace by a Twig block logic #}
+                {{ aSurveyInfo.aCompleted.sPluginHTML }}
+
+                {# NOTE: not very clear what the old replacement keyword {URL} was doing  #}
+                {{ aSurveyInfo.aCompleted.sSurveylsUrl }}
+
+                {# Data shown when LEM debug timing mode is ON #}
+                {{ include('./subviews/LEMDebug.twig') }}
+            </div>
+        </div>
+    </form> <!-- main form -->
+{% endblock %}

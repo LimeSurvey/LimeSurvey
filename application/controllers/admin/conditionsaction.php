@@ -353,7 +353,7 @@ class conditionsaction extends Survey_Common_Action {
 
             if ($scenariocount > 0)
             {
-                $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'checkgroup.js');
+                App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'checkgroup.js');
                 foreach ($scenarios as $scenarionr) {
 
                     if ($s == 0 && $scenariocount > 1) {
@@ -1796,7 +1796,7 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getCopyForm($qid, $gid, array $conditionsList, array $pquestions)
     {
-        $this->registerScriptFile('ADMIN_SCRIPT_PATH', 'checkgroup.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'checkgroup.js');
 
         $url = $this->getcontroller()->createUrl(
             '/admin/conditions/sa/index/subaction/copyconditions/',
@@ -1834,7 +1834,7 @@ class conditionsaction extends Survey_Common_Action {
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
 
-        $this->registerScriptFile('ADMIN_SCRIPT_PATH', 'conditions.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'conditions.js');
 
         if ($subaction == "editthiscondition" && isset($p_cid)) {
             $title = gT("Edit condition");

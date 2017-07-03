@@ -156,24 +156,6 @@ function loadanswers()
     }
 }
 
-function makegraph($currentstep, $total)
-{
-    global $thissurvey;
-
-
-    Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'lime-progress.css');
-    $size = intval(($currentstep-1)/$total*100);
-
-    $graph='
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="'.$size.'" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: '.$size.'%;">
-            '.$size.'%
-        </div>
-    </div>';
-
-
-    return $graph;
-}
 
 /**
 * This function creates the language selector for a particular survey
@@ -253,7 +235,7 @@ function getLanguageChangerDatas($sSelectedLanguage="")
 *
 * @param mixed $sSelectedLanguage The language in which all information is shown
 */
-function makeLanguageChanger($sSelectedLanguage)
+function getLanguageChangerDatasPublicList($sSelectedLanguage)
 {
     $aLanguages=getLanguageDataRestricted(true);// Order by native
     if(count($aLanguages)>1)
@@ -268,48 +250,14 @@ function makeLanguageChanger($sSelectedLanguage)
             'aListLang' => $aListLang ,
             'sClass'    => $sClass    ,
         );
-        $sHTMLCode = Yii::app()->getController()->renderPartial('/surveys/LanguageChangerForm', $languageChangerDatas, true);
-        return $sHTMLCode;
+
+        return $languageChangerDatas;
     }
     else
     {
         return false;
     }
 }
-
-/**
- * Construct flash message container
- * Used in templatereplace to replace {FLASHMESSAGE} in startpage.tstpl
- *
- * @return string
- */
-function makeFlashMessage() {
-    global $surveyid;
-    $html = "";
-
-    $language = Yii::app()->getLanguage();
-    $originalPrefix = Yii::app()->user->getStateKeyPrefix();
-    // Bug in Yii? Getting the state-key prefix changes the locale, so set the language manually after.
-    Yii::app()->setLanguage($language);
-    Yii::app()->user->setStateKeyPrefix('frontend');
-
-    $mapYiiToBootstrapClass = array(
-        'error' => 'danger',
-        'success' => 'success',
-        'notice' => 'info'
-        // no warning in Yii?
-    );
-
-    foreach (Yii::app()->user->getFlashes() as $key => $message) {
-        $html .= "<div class='alert alert-" . $mapYiiToBootstrapClass[$key] . " alert-dismissible flash-" . $key . "'>" . $message . "</div>\n";
-    }
-
-    Yii::app()->user->setStateKeyPrefix($originalPrefix);
-
-    return $html;
-}
-
-
 
 /**
 * checkUploadedFileValidity used in SurveyRuntimeHelper
@@ -883,9 +831,9 @@ function buildsurveysession($surveyid,$preview=false)
     $sLangCode                        = App()->language;
     $thissurvey                       = getSurveyInfo($surveyid,$sLangCode);
     $oTemplate                        = Template::model()->getInstance('', $surveyid);
-    App()->getController()->sTemplate = $oTemplate->name;                                   // It's going to be hard to be sure this is used ....
+    App()->getController()->sTemplate = $oTemplate->sTemplateName;                                   // It's going to be hard to be sure this is used ....
     $sTemplatePath                    = $oTemplate->path;
-    $sTemplateViewPath                = $oTemplate->pstplPath;
+    $sTemplateViewPath                = $oTemplate->viewPath;
 
 
     // Reset all the session variables and start again
@@ -1477,9 +1425,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
 
-            echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_user_forms.twig"), array('aSurveyInfo'=>$thissurvey), false);
-            // With a good logic in survey runtime, we could avoid those exits
-            Yii::app()->end();
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('aSurveyInfo'=>$thissurvey), false);
             break;
 
         case "register": //Register new user
@@ -1570,94 +1516,15 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
     // Template settings
     $surveyid          = $thissurvey['sid'];
     $oTemplate         = Template::model()->getInstance('', $surveyid);
-    $sTemplateViewPath = $oTemplate->pstplPath;
-    $oTemplate->registerAssets();
-    Yii::app()->twigRenderer->setForcedPath($sTemplateViewPath);
+
+    //$oTemplate->registerAssets();
 
     $aError = array();
     $aError['title']      = ($sTitle != '')?$sTitle:gT("This survey cannot be tested or completed for the following reason(s):");
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
-    echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_errors.twig"), array('aSurveyInfo'=>$thissurvey), false);
-    Yii::app()->end();
-}
-
-
-/**
-* This function creates the form elements in the survey navigation bar
-* Adding a hidden input for default behaviour without javascript
-* Use button name="move" for real browser (with or without javascript) and IE6/7/8 with javascript
-*
-* TODO: TWIG IT !
-*/
-function surveymover()
-{
-    $surveyid=Yii::app()->getConfig('surveyID');
-    $thissurvey=getSurveyInfo($surveyid);
-
-    $sMoveNext          = "movenext";
-    $sMovePrev          = "";
-    $iSessionStep       = (isset($_SESSION['survey_'.$surveyid]['step']))?$_SESSION['survey_'.$surveyid]['step']:false;
-    $iSessionMaxStep    = (isset($_SESSION['survey_'.$surveyid]['maxstep']))?$_SESSION['survey_'.$surveyid]['maxstep']:false;
-    $iSessionTotalSteps = (isset($_SESSION['survey_'.$surveyid]['totalsteps']))?$_SESSION['survey_'.$surveyid]['totalsteps']:false;
-    $sClass             = "ls-move-btn";
-    $sSurveyMover       = "";
-
-    // Count down
-    if ($thissurvey['navigationdelay'] > 0 && ($iSessionMaxStep!==false && $iSessionMaxStep == $iSessionStep)){
-        $sClass .= " disabled";
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."/navigator-countdown.js");
-        App()->getClientScript()->registerScript('navigator_countdown',"navigator_countdown(" . $thissurvey['navigationdelay'] . ");\n",CClientScript::POS_BEGIN);
-     }
-
-    // Previous ?
-    if ($thissurvey['format'] != "A" && ($thissurvey['allowprev'] != "N")
-        && $iSessionStep
-        && !($iSessionStep == 1 && $thissurvey['showwelcome'] == 'N')
-        && !Yii::app()->getConfig('previewmode')
-    ){
-        $sMovePrev = "moveprev";
-     }
-
-    // Submit ?
-    if ($iSessionStep && ($iSessionStep == $iSessionTotalSteps)
-        || $thissurvey['format'] == 'A'
-        )
-    {
-        $sMoveNext = "movesubmit";
-    }
-
-    // todo Remove Next if needed (exemple quota show previous only: maybe other, but actually don't use surveymover)
-    if (Yii::app()->getConfig('previewmode')){
-        $sMoveNext="";
-    }
-
-
-    // Construction of mover
-    if ($sMovePrev){
-        // TODO: Twig it !
-        $sMovePrevButton = App()->getController()->renderPartial("/survey/system/actionButton/movePrevious",array('value'=>$sMovePrev,'class'=>"$sClass ls-move-previous-btn"),true);
-        //$sSurveyMover.= CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass));
-        //~ $sMovePrevButton = CHtml::htmlButton($sLangMoveprev,array('type'=>'submit','id'=>"{$sMovePrev}btn",'value'=>$sMovePrev,'name'=>$sMovePrev,'accesskey'=>'p','class'=>$sClass." btn-default"));
-    }else{
-        $sMovePrevButton = '';
-    }
-
-    if ($sMoveNext){
-        if($sMoveNext == "movesubmit"){
-            // TODO: Twig it !
-            $sMoveNextButton = App()->getController()->renderPartial("/survey/system/actionButton/moveSubmit",array('value'=>"movesubmit",'class'=>"$sClass ls-move-submit-btn"),true);
-        }else{
-            // TODO: Twig it !
-            $sMoveNextButton = App()->getController()->renderPartial("/survey/system/actionButton/moveNext",array('value'=>"movenext",'class'=>"$sClass ls-move-next-btn"),true);
-        }
-        //~ $sMoveNextButton = CHtml::htmlButton($sLangMovenext,array('type'=>'submit','id'=>"{$sMoveNext}btn",'value'=>$sMoveNext,'name'=>$sMoveNext,'accesskey'=>$sAccessKeyNext,'class'=>$sClass." btn-primary"));
-    }else{
-        $sMoveNextButton = '';
-    }
-
-    return array('sMovePrevButton' => $sMovePrevButton, 'sMoveNextButton'=>$sMoveNextButton);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -1761,9 +1628,8 @@ function getNavigatorDatas()
 * Caculate assessement scores
 *
 * @param mixed $surveyid
-* @param boolean $returndataonly - only returns an array with data
 */
-function doAssessment($surveyid, $returndataonly=false)
+function doAssessment($surveyid)
 {
 
 
@@ -1824,7 +1690,7 @@ function doAssessment($surveyid, $returndataonly=false)
 
                                 $aAttributes     = getQuestionAttributeValues($field['qid']);
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
-                                $total           = $total+(int)$aAttributes['assessment_value'];
+                            //    $total           = $total+(int)$aAttributes['assessment_value'];
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
                             }
                         }else{
@@ -1835,7 +1701,7 @@ function doAssessment($surveyid, $returndataonly=false)
                             if ($usresult){
                                 $usrow              = $usresult->read();
                                 $assessmentValue    = $usrow['assessment_value'];
-                                $total              = $total+$usrow['assessment_value'];
+                            //    $total              = $total+$usrow['assessment_value'];
                             }
                         }
 
@@ -1913,62 +1779,19 @@ function doAssessment($surveyid, $returndataonly=false)
         if (isset($subtotal) && is_array($subtotal)){
             $assessment['subtotal']['show']  = true;
             $assessment['subtotal']['datas'] = $subtotal;
-
-            foreach($subtotal as $key=>$val){
-                if (isset($assessment['group'][$key])){
-
-                    foreach($assessment['group'][$key] as $assessed){
-
-                        if ($val >= $assessed['min'] && $val <= $assessed['max'] && $returndataonly===false){
-                            $assessments .= "\t<!-- GROUP ASSESSMENT: Score: $val Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-                            <table class='assessments'>
-                            <tr>
-                            <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['name'])."
-                            </th>
-                            </tr>
-                            <tr>
-                            <td>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), $assessed['message'])."
-                            </td>
-                            </tr>
-                            </table><br />\n";
-                        }
-                    }
-                }
-            }
         }
 
         $assessment['total']['show'] = false;
 
         if (isset($assessment['total'])){
-
             $assessment['total']['show'] = true;
-            foreach($assessment['total'] as $assessed){
-
-                if ($total >= $assessed['min'] && $total <= $assessed['max'] && $returndataonly===false){
-
-                    $assessments .= "\t\t\t<!-- TOTAL ASSESSMENT: Score: $total Min: ".$assessed['min']." Max: ".$assessed['max']."-->
-                    <table class='assessments' align='center'>
-                    <tr>
-                    <th>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['name']))."
-                    </th>
-                    </tr>
-                    <tr>
-                    <td>".str_replace(array("{PERC}", "{TOTAL}"), array($val, $total), stripslashes($assessed['message']))."
-                    </td>
-                    </tr>
-                    </table>\n";
-                }
-            }
         }
 
-        if ($returndataonly==true) {
-            $assessment['subtotal_score'] = (isset($subtotal))?$subtotal:'';
-            $assessment['total_score']    = (isset($total))?$total:'';
-            //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
-            return array('show'=>true, 'datas' => $assessment);
-        }else {
-            return $assessments;
-        }
+        $assessment['subtotal_score'] = (isset($subtotal))?$subtotal:'';
+        $assessment['total_score']    = (isset($total))?$total:'';
+        //$aDatas     = array('total' => $total, 'assessment' => $assessment, 'subtotal' => $subtotal, );
+        return array('show'=>true, 'datas' => $assessment);
+
     }
 }
 
@@ -1976,8 +1799,7 @@ function doAssessment($surveyid, $returndataonly=false)
 /**
 * Update SESSION VARIABLE: grouplist
 * A list of groups in this survey, ordered by group name.
-* @param int surveyid
-* @param string language
+* @param string $language
 * @param integer $surveyid
 */
 function UpdateGroupList($surveyid, $language)
@@ -2091,7 +1913,7 @@ function checkCompletedQuota($surveyid,$return=false)
             ////Create filtering
             // Array of field with quota array value
             $aQuotaFields=array();
-            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is unrelevant (em_manager_helper line 6548)
+            // Array of fieldnames with relevance value : EM fill $_SESSION with default value even is irrelevant (em_manager_helper line 6548)
             $aQuotaRelevantFieldnames=array();
             // To count number of hidden questions
             $aQuotaQid=array();
@@ -2151,7 +1973,7 @@ function checkCompletedQuota($surveyid,$return=false)
 
     $oTemplate = Template::model()->getInstance('', $surveyid);
     $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->pstplPath;
+    $sTemplateViewPath = $oTemplate->viewPath;
 
 
     $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
@@ -2214,9 +2036,7 @@ function checkCompletedQuota($surveyid,$return=false)
             header("Location: ".$sUrl);
         }
     }
-
-    echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_quotas.twig"), array('aSurveyInfo'=>$thissurvey), false);
-    Yii::app()->end();
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -2292,7 +2112,6 @@ function display_first_page($thissurvey) {
     // Template init
     $oTemplate         = Template::model()->getInstance('', $surveyid);
     $sTemplatePath     = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->pstplPath;
 
     LimeExpressionManager::StartProcessingPage();
     LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page
@@ -2321,7 +2140,8 @@ function display_first_page($thissurvey) {
     LimeExpressionManager::FinishProcessingPage();
 
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
-    echo Yii::app()->twigRenderer->renderTemplateFromString( file_get_contents($sTemplateViewPath."layout_first_page.twig"), array('aSurveyInfo'=>$thissurvey), false);
+
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -2461,38 +2281,6 @@ function getSideBodyClass($sideMenustate = false)
     }
 
     return $class;
-}
-
-
-/**
- * Render the question view.
- * @deprecated this function was not used here , we render , not renderPartial
- * By default, it just renders the required core view from application/views/survey/...
- * If the Survey template is configured to overwrite the question views, then the function will check if the required view exist in the template directory
- * and then will use this one to render the question.
- *
- * @param string    $sView      name of the view to be rendered.
- * @param array     $aData      data to be extracted into PHP variables and made available to the view script
- * @param boolean   $bReturn    whether the rendering result should be returned instead of being displayed to end users (should be always true)
- */
- function doFRender($sView, $aData, $bReturn=true)
-{
-    global $thissurvey;
-    if(isset($thissurvey['template']))
-    {
-        $sTemplate = $thissurvey['template'];
-        $oTemplate = Template::model()->getInstance($sTemplate);                // we get the template configuration
-        if($oTemplate->overwrite_question_views===true && Yii::app()->getConfig('allow_templates_to_overwrite_views'))                         // If it's configured to overwrite the views
-        {
-            $requiredView = $oTemplate->viewPath.ltrim($sView, '/');            // Then we check if it has its own version of the required view
-            if( file_exists($requiredView.'.php') )                             // If it the case, the function will render this view
-            {
-                Yii::setPathOfAlias('survey.template.view', $requiredView);     // to render a view from an absolute path outside of application/, path alias must be used.
-                $sView = 'survey.template.view';                                // See : http://www.yiiframework.com/doc/api/1.1/CController#getViewFile-detail
-            }
-        }
-    }
-    return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
 }
 
 /**

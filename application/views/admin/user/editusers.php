@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<h3 class="pagetitle"><?php eT("User control");?></h3>
+<div class="pagetitle h3"><?php eT("User control");?></div>
     <div class="row">
         <div class="col-md-2 col-sm-4 col-xs-12  col-md-offset-10 col-sm-offset-8">
             <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-primary btn-block"><?php eT("Add user");?></button>

@@ -393,6 +393,10 @@ class quotas extends Survey_Common_Action
     function new_answer($iSurveyId, $sSubAction = 'new_answer')
     {
         $iSurveyId = sanitize_int($iSurveyId);
+
+        /** @var Survey $oSurvey */
+        $oSurvey =  Survey::model()->findByPk($iSurveyId);
+
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
         $sBaseLang = $aData['sBaseLang'];
@@ -406,21 +410,17 @@ class quotas extends Survey_Common_Action
                 $quota_name = $aQuotaDetails['name'];
             }
 
-            $result = Question::model()->findAllByAttributes(array('type' => array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!'), 'sid' => $iSurveyId, 'language' => $sBaseLang, 'parent_qid' => 0));
-            if (empty($result))
-            {
+            $result = $oSurvey->quotableQuestions;
+            if (empty($result)) {
                 $aViewUrls[] = 'newanswererror_view';
-            }
-            else
-            {
+            } else {
                 $aData['newanswer_result'] = $result;
                 $aData['quota_name'] = $quota_name;
                 $aViewUrls[] = 'newanswer_view';
             }
         }
 
-        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
-        {
+        if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create')) {
             $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
 
             foreach ($result as $aQuotaDetails){
@@ -645,7 +645,7 @@ class quotas extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction = 'quotas', $aViewUrls = array(), $aData = array())
     {
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'quotas.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'quotas.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

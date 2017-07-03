@@ -11,15 +11,13 @@
 <label for="othertext<?php echo $name; ?>" class="sr-only">
     <?php echo $label; ?>
 </label>
-<input
-    class="form-control"
-    type="text"
-    id="<?php echo $name; ?>othertext"
-    name="<?php echo $name; ?>other"
-    style='<?php echo $display; ?>'
-    value='<?php echo $value?>'
-    aria-labelledby='answer<?php echo $name."-oth-" ?>'
-/>
+<?php
+echo \CHtml::textField("{$name}other",$value,array(
+    'id' => "{$name}othertext",
+    'style' => $display,
+    'aria-labelledby' => "answer{$name}-oth-",
+));
+?>
 
 <script>
 if($("#answer<?php echo $name; ?>").val()!="-oth-"){

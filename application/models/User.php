@@ -369,18 +369,20 @@ class User extends LSActiveRecord
                     ));
 
                 $deleteUser = "<button
-                    data-toggle='modal'
-                    data-href='#'
-                    data-onclick='$.post(".$deleteUrl.",
-                            {action: \"deluser\", uid:\"".$this->uid."\", user: \"".htmlspecialchars($oUser['full_name'])."\"});'
-                    data-target='#confirmation-modal'
-    
-                    data-uid='".$this->uid."'
-                    data-action='deluser'
-                    data-message='".gT("Delete this user")."'
-                    class='btn btn-default btn-xs'>
-                        <span class='fa fa-trash  text-danger'></span>
-                    </button>";
+                data-toggle='modal'
+                data-href='#'
+                data-onclick='$.post(".$deleteUrl.",{
+                  action: \"deluser\",
+                  uid:\"".$this->uid."\",
+                  user: \"".htmlspecialchars($oUser['full_name'])."\",
+                  });'
+                data-target='#confirmation-modal'
+                data-uid='".$this->uid."'
+                data-action='deluser'
+                data-message='".gT("Delete this user")."'
+                class='btn btn-default btn-xs'>
+                    <span class='fa fa-trash  text-danger'></span>
+                </button>";
             }
         } else {
             if (Permission::model()->hasGlobalPermission('superadmin','read')

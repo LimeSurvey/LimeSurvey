@@ -40,6 +40,7 @@ if (!defined('BASEPATH'))
  * @property QuestionGroup $groups  //TODO should be singular
  * @property Question $parents      //TODO should be singular
  * @property Question[] $subquestions
+ * @property string[] $quotableTypes Question types that can be used for quotas
  */
 class Question extends LSActiveRecord
 {
@@ -766,7 +767,6 @@ class Question extends LSActiveRecord
 
         $url         = Yii::app()->createUrl("/admin/questions/sa/view/surveyid/");
         $url        .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
-        $button      = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
         $editurl     = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
@@ -1056,6 +1056,10 @@ class Question extends LSActiveRecord
         $criteria->compare('parent_qid',$this->qid);
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
         Question::model()->deleteAll($criteria);// Must log count of deleted ?
+    }
+    /** @return array */
+    public static function getQuotableTypes(){
+        return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!');
     }
 
 }

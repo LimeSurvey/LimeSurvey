@@ -147,8 +147,8 @@ class export extends Survey_Common_Action {
 
         Yii::app()->loadHelper("admin/exportresults");
 
-        $this->registerScriptFile( 'SCRIPT_PATH', '/expressions/em_javascript.js');
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', '/exportresults.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . '/expressions/em_javascript.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . '/exportresults.js');
 
         $sExportType = Yii::app()->request->getPost('type');
         $sHeadingFormat = Yii::app()->request->getPost('headstyle');
@@ -1371,7 +1371,7 @@ class export extends Survey_Common_Action {
      */
     private function _exportPrintableHtmls($iSurveyID,$readFile = true){
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $assetsDir = Template::getTemplateURL($oSurvey->template);
+        $assetsDir = substr(Template::getTemplateURL($oSurvey->template),1);
         $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
         $aLanguages = $oSurvey->getAllLanguages();
 

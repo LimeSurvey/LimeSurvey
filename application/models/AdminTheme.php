@@ -198,69 +198,6 @@ class AdminTheme extends CFormModel
 
     }
 
-
-
-    /**
-     * Register a JS File from the correct directory (publict style, style, upload, etc) using the correct method (with / whithout asset manager)
-     * This function is called from the different controllers when they want to register a specific css file.
-     *
-     * @var string $sPath  'PUBLIC' for /styles-public/, else templates/styles ('PUBLIC' is an heritage from 2.06, which was using constants to that goal.)
-     * @var string $sFile   the name of the css file
-     */
-    public function registerCssFile( $sPath='template', $sFile='' )
-    {
-        // We check if we should use the asset manager or not
-        if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager')) {
-            $path = ($sPath == 'PUBLIC')?dirname(Yii::app()->request->scriptFile).'/styles-public/':$this->path . '/css/';         // We get the wanted path
-            App()->getClientScript()->registerCssFile(  App()->getAssetManager()->publish($path.$sFile) );                         // We publish the asset
-        } else {
-            $url = ($sPath == 'PUBLIC')?Yii::app()->getConfig('publicstyleurl'):$this->sTemplateUrl.'/css/';                        // We get the wanted url
-            App()->getClientScript()->registerCssFile( $url.$sFile );                                                               // We publish the css file
-        }
-    }
-
-    /**
-     * @param string $cPATH
-     * @param string $sFile
-     */
-    public function registerScriptFile( $cPATH, $sFile )
-    {
-        self::staticRegisterScriptFile( $cPATH, $sFile );
-    }
-
-    /**
-     * Register a Css File from the correct directory (publict style, style, upload, etc) using the correct method (with / whithout asset manager)
-     * This function is called from the different controllers when they want to register a specific css file
-     * Static method is necessary to avoid to init the admin theme to register admin_core script... (see: AdminController::_init())
-     *
-     * @var string $sPath  'SCRIPT_PATH' for root/scripts/ ; 'ADMIN_SCRIPT_PATH' for root/scripts/admin/; else templates/scripts (uppercase is an heritage from 2.06, which was using constants )
-     * @var string $sFile   the name of the js file
-     * @param string $cPATH
-     * @param string $sFile
-     */
-    static public function staticRegisterScriptFile( $cPATH, $sFile )
-    {
-        $bIsInAdminTheme = !($cPATH == 'ADMIN_SCRIPT_PATH' || $cPATH == 'SCRIPT_PATH');                                             // we check if the path required is in Admin Theme itself.
-        // If not, it's or a normal script (like ranking.js) or an admin script
-        if (!$bIsInAdminTheme) {
-            $sAdminScriptPath = realpath ( Yii::app()->basePath .'/../scripts/admin/') . '/';
-            $sScriptPath      = realpath ( Yii::app()->basePath .'/../scripts/') . '/';
-            $path = ($cPATH == 'ADMIN_SCRIPT_PATH')?$sAdminScriptPath:$sScriptPath;                                                 // We get the wanted path
-            $url  = ($cPATH == 'ADMIN_SCRIPT_PATH')?Yii::app()->getConfig('adminscripts'):Yii::app()->getConfig('generalscripts');  // We get the wanted url defined in config
-        } else {
-            // FIXME $this not available in static context
-            $path = $this->path.'/scripts/';
-            $url  = $this->sTemplateUrl.'/scripts/';
-        }
-
-        // We check if we should use the asset manager or not
-        if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager')) {
-            App()->getClientScript()->registerScriptFile( App()->getAssetManager()->publish( $path . $sFile ));                      // We publish the asset
-        } else {
-            App()->getClientScript()->registerScriptFile( $url . $sFile );                                                          // We publish the script
-        }
-    }
-
     /**
      * Get instance of theme object.
      * Will instantiate the Admin Theme object first time it is called.

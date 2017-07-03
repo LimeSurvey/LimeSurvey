@@ -34,7 +34,7 @@
                         <span class="glyphicon glyphicon-info-sign" id="info-header"></span>
                     </div>
                     <div class="info">
-                        <h5 class="text-center"><?php eT("System overview"); ?></h5>
+                        <div class="text-center"><?php eT("System overview"); ?></div>
                         <dl class="dl-horizontal">
                             <dt class="text-info"><?php eT('Users');?></dt>
                             <dd><?php echo $userscount;?></dd>

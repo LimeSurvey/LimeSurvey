@@ -73,6 +73,5 @@ class ListSurveysWidget extends CWidget
 
         $this->render('listSurveys');
 
-
     }
 }

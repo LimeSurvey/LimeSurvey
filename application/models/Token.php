@@ -230,8 +230,6 @@ abstract class Token extends Dynamic
         //Exit early if there are not empty tokens
         if (count($tkresult)===0) return array(0,0);
 
-        //get token length from survey settings
-        $tlrow = Survey::model()->findByAttributes(array("sid"=>$surveyId));
 
         //Add some criteria to select only the token field
         $criteria = $this->getDbCriteria();
@@ -243,6 +241,7 @@ abstract class Token extends Dynamic
         }
         $newtokencount = 0;
         $invalidtokencount=0;
+        $newtoken = null;
         foreach ($tkresult as $tkrow) {
             $bIsValidToken = false;
             while ($bIsValidToken == false && $invalidtokencount<50) {
@@ -283,14 +282,15 @@ abstract class Token extends Dynamic
         return parent::create($surveyId, $scenario);
     }
 
-        public function relations()
-        {
-            $result = array(
-                'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
-                'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
-                'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
-            );
-            return $result;
+    public function relations()
+    {
+        $result = array(
+            'responses' => array(self::HAS_MANY, 'Response_' . $this->dynamicId, array('token' => 'token')),
+            'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}"),
+            'surveylink' => array(self::BELONGS_TO, 'SurveyLink', array('participant_id' => 'participant_id'), 'on' => "survey_id = {$this->dynamicId}")
+        );
+        return $result;
+    }
 
     /** @inheritdoc */
     public function save($runValidation = true, $attributes = null)

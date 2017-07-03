@@ -442,7 +442,7 @@ class questions extends Survey_Common_Action
         $surveyid = sanitize_int($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'answers.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'answers.js');
         App()->getClientScript()->registerPackage('jquery-selectboxes');
 
         $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
@@ -653,7 +653,7 @@ class questions extends Survey_Common_Action
         $aData['gid'] = $gid = sanitize_int($gid);
         $aData['qid'] = $qid = sanitize_int($qid);
 
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'subquestions.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'subquestions.js');
         App()->getClientScript()->registerPackage('jquery-blockUI');
         App()->getClientScript()->registerPackage('jquery-selectboxes');
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";
@@ -897,8 +897,9 @@ class questions extends Survey_Common_Action
     /**
     * AJAX Method to QuickAdd multiple Rows AJAX-based
     */
-    public function getSubquestionRowQuickAdd( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible='' )
+    public function getSubquestionRowQuickAdd( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position=null, $assessmentvisible='' )
     {
+        $qid = '{{quid_placeholder}}';
         echo $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible );
     }
     /**
@@ -1119,7 +1120,7 @@ class questions extends Survey_Common_Action
             $oQuestionGroup = QuestionGroup::model()->find(array('condition'=>'sid=:sid', 'params'=> array(':sid'=>$surveyid), 'order'=>'group_order') );
         }
         $aData['oQuestionGroup'] = $oQuestionGroup;
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questions.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'questions.js');
 
         $aData['adding'] = true;
         $aData['copying'] = false;
@@ -1370,7 +1371,7 @@ class questions extends Survey_Common_Action
                 $oqresult = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang, 'parent_qid'=> 0), array('order' => 'question_order'));
                 $aData['oqresult'] = $oqresult;
             }
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questions.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'questions.js');
 
             $aData['sValidateUrl'] = ($adding || $copying)?$this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid)):$this->getController()->createUrl('admin/questions', array('sa' => 'ajaxValidate','surveyid'=>$surveyid,'qid'=>$qid));
 
@@ -1418,12 +1419,13 @@ class questions extends Survey_Common_Action
 
             if (is_object($oQuestion))
             {
-                $aResults[$iQid]['question']  = viewHelper::flatEllipsizeText($oQuestion->question,true,0);
-                $aResults[$iQid]['result']    = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true );
+                $aResults[$iQid]['title']  = viewHelper::flatEllipsizeText($oQuestion->question,true,0);
+                $result = $this->delete($oQuestion->sid, $oQuestion->gid, $iQid, true );
+                $aResults[$iQid]['result']   = $result['status'];
             }
         }
 
-        Yii::app()->getController()->renderPartial('/admin/survey/Question/massive_actions/_delete_results', array('aResults'=>$aResults));
+        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT('Deleted')));
     }
 
     /**

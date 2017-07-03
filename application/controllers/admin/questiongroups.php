@@ -166,7 +166,7 @@ class questiongroups extends Survey_Common_Action
             $baselang = Survey::model()->findByPk($surveyid)->language;
             $grplangs[] = $baselang;
             $grplangs = array_reverse($grplangs);
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'questiongroup.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'questiongroup.js');
 
             $aData['display']['menu_bars']['surveysummary'] = 'addgroup';
             $aData['surveyid'] = $surveyid;
@@ -209,6 +209,7 @@ class questiongroups extends Survey_Common_Action
                 $oGroup=new QuestionGroup;
                 $oGroup->sid=$surveyid;
                 if(isset($newGroupID)){
+                    switchMSSQLIdentityInsert('groups',true);
                     $oGroup->gid=$newGroupID;
                 }
                 $oGroup->group_name = Yii::app()->request->getPost('group_name_' . $sLanguage,"");
@@ -223,6 +224,10 @@ class questiongroups extends Survey_Common_Action
                 if($oGroup->save()){
                     if(!isset($newGroupID)){
                         $newGroupID=$oGroup->gid;
+                    }
+                    else
+                    {
+                        switchMSSQLIdentityInsert('groups',true);
                     }
                 }else{
                     Yii::app()->setFlashMessage(CHtml::errorSummary($oGroup),'error');

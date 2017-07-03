@@ -18,7 +18,7 @@
             ),
             'AuditLog_Log_UserLogout' => array(
                 'type' => 'checkbox',
-                'label' => 'Log if user has logged out',
+                'label' =>  'Log if user has logged out',                                                
                 'default' => '1',
             ),
             'AuditLog_Log_UserFailedLoginAttempt' => array(
@@ -325,7 +325,6 @@
                 $oAutoLog->action="import";
                 $oAutoLog->newvalues=json_encode($aValues);
                 $oAutoLog->fields=implode(',',array_keys($aValues));
-                $oAutoLog->reason=App()->request->getPost("reason");
                 $oAutoLog->save();
             }
         }

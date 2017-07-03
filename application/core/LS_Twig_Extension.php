@@ -50,23 +50,96 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerPublicCssFile($sPublicCssFileName)
     {
-        if (!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
+        Yii::app()->getClientScript()->registerCssFile(
+            Yii::app()->getConfig('publicstyleurl') .
+            $sPublicCssFileName
+        );
+    }
 
-            // Publish the css file as an asset and then register it
-            Yii::app()->getClientScript()->registerCssFile(                     // 2. Register the CSS file (add the <link rel="stylesheet" type="text/css" href=".../tmp/.../file.css"... to the HTML page)
-                Yii::app()->getAssetManager()->publish(                         // 1. Publish the asset     (copy the file.css to tmp/.../assets/... directory)
-                    Yii::app()->getConfig('publicstylepath') .                  // NOTE: assets needs a path, not an url, because the file is first moved to the tmp directory
-                    $sPublicCssFileName
-                )
-            );
-        }else{
 
-            // Directly register the CSS file without using the asset manager
-            Yii::app()->getClientScript()->registerCssFile(
-                Yii::app()->getConfig('publicstyleurl') .                       // NOTE: URL can be use, because it will only add a link to that url (add the <link rel="stylesheet" type="text/css" href="url.../file.css")
-                $sPublicCssFileName
-            );
+    /**
+     * Publish a css file from template directory, using or not the asset manager (depending on configuration)
+     * In any twig file, you can register a template css file doing: {{ registerTemplateCssFile($sTemplateCssFileName) }}
+     * @param string $sTemplateCssFileName name of the CSS file to publish in template directory (it should contains the subdirectories)
+     */
+    public static function registerTemplateCssFile($sTemplateCssFileName)
+    {
+        $oTemplate = self::getTemplateForRessource($sTemplateCssFileName);
+
+        Yii::app()->getClientScript()->registerCssFile(
+            $oTemplate->sTemplateUrl .
+            $sTemplateCssFileName
+        );
+    }
+
+    /**
+     * Publish a script file from general script directory, using or not the asset manager (depending on configuration)
+     * In any twig file, you can register a general script file doing: {{ registerGeneralScript($sGeneralScriptFileName) }}
+     * @param string $sGeneralScriptFileName name of the script file to publish in general script directory (it should contains the subdirectories)
+     */
+    public static function registerGeneralScript($sGeneralScriptFileName, $position=null, array $htmlOptions=array())
+    {
+        $position = self::getPosition($position);
+        Yii::app()->getClientScript()->registerScriptFile(
+            App()->getConfig('generalscripts') .
+            $sGeneralScriptFileName,
+            $position,
+            $htmlOptions
+        );
+    }
+
+    /**
+     * Publish a script file from template directory, using or not the asset manager (depending on configuration)
+     * In any twig file, you can register a template script file doing: {{ registerTemplateScript($sTemplateScriptFileName) }}
+     * @param string $sTemplateScriptFileName name of the script file to publish in general script directory (it should contains the subdirectories)
+     */
+    public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
+    {
+        $oTemplate = self::getTemplateForRessource($sTemplateScriptFileName);
+        $position = self::getPosition($position);
+        Yii::app()->getClientScript()->registerScriptFile(
+            $oTemplate->sTemplateUrl .
+            $sTemplateScriptFileName,
+            $position,
+            $htmlOptions
+        );
+    }
+
+    /**
+     * Publish a script
+     * In any twig file, you can register a script doing: {{ registerScript($sId, $sScript) }}
+     */
+    public static function registerScript($id, $script, $position=null, array $htmlOptions=array())
+    {
+        $position = self::getPosition($position);
+        Yii::app()->getClientScript()->registerScript(
+            $id,
+            $script,
+            $position,
+            $htmlOptions
+        );
+    }
+
+    public static function getPosition($position){
+        switch($position) {
+            case "POS_HEAD":
+                $position = CClientScript::POS_HEAD;
+            break;
+
+            case "POS_BEGIN":
+                $position = CClientScript::POS_BEGIN;
+            break;
+
+            case "POS_END":
+                $position = CClientScript::POS_END;
+            break;
+
+            default:
+                $position = '';
+                break;
         }
+
+        return $position;
     }
 
     /**
@@ -89,7 +162,7 @@ class LS_Twig_Extension extends Twig_Extension
 
         /* Add the relevance class */
         if (!$lemQuestionInfo['relevant']){
-            $aQuestionClass .= ' ls-unrelevant';
+            $aQuestionClass .= ' ls-irrelevant';
             $aQuestionClass .= ' ls-hidden';
         }
 
@@ -123,10 +196,51 @@ class LS_Twig_Extension extends Twig_Extension
     public static function renderCaptcha()
     {
         App()->getController()->widget('CCaptcha',array(
-        'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
-        'buttonType' => 'button',
-        'buttonLabel' => gt('Reload image','unescaped')
+            'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
+            'buttonType' => 'button',
+            'buttonLabel' => gt('Reload image','unescaped')
         ));
+    }
+
+    public static function assetPublish($sRessource)
+    {
+        return App()->getAssetManager()->publish($sRessource);
+    }
+
+    /**
+     * @var $sImagePath  string                 the image path relative to the template root
+     * @var $alt         string                 the alternative text display
+     * @var $htmlOptions array                  additional HTML attribute
+     */
+    public static function image($sImagePath, $alt='', $htmlOptions=array ( ) )
+    {
+        // Reccurence on templates to find the file
+        $oTemplate = self::getTemplateForRessource($sImagePath);
+
+        if($oTemplate){
+            $sUrlImgAsset = self::assetPublish($oTemplate->path.'/'.$sImagePath);
+        }else{
+            // TODO: publish a default image "not found"
+        }
+
+        return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
+    }
+
+    public static function getTemplateForRessource($sRessource)
+    {
+        $oRTemplate = Template::model()->getInstance();
+
+        while (!file_exists($oRTemplate->path.'/'.$sRessource)){
+
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
     }
 
     public static function getPost($sName, $sDefaultValue=null)
@@ -143,5 +257,23 @@ class LS_Twig_Extension extends Twig_Extension
     {
         return Yii::app()->request->getQuery($sName, $sDefaultValue);
     }
+
+    public static function unregisterPackage($name)
+    {
+        return Yii::app()->getClientScript()->unregisterPackage($name);        
+    }
+
+    public static function listCoreScripts()
+    {
+        foreach(Yii::app()->getClientScript()->coreScripts as $key => $package){
+
+            echo "<hr>";
+            echo "$key: <br>";
+            var_dump($package);
+
+        }
+
+    }
+
 
 }

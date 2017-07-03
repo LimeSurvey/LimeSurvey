@@ -8,7 +8,7 @@
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="col-sm-12 list-surveys">
-    <h3><?php eT('Survey list'); ?></h3>
+    <div class="pagetitle h3"><?php eT('Survey list'); ?></div>
 
     <!-- Survey List widget -->
     <?php $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(

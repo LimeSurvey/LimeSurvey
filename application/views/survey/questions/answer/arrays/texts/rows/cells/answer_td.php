@@ -17,21 +17,23 @@
     <label class="ls-label-xs-visibility" for="answer<?php echo $myfname2; ?>">
         <?php echo $labelText;?>
     </label>
-    <input
-        type="text"
-        name="<?php echo $myfname2; ?>"
-        id="answer<?php echo $myfname2; ?>"
-        class="form-control <?php echo $kpclass; ?>"
-        <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
-        <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
-        value="<?php echo $value;?>"
-        data-number='<?php echo $isNumber; ?>'
-        data-integer='<?php echo $isInteger; ?>'
-    />
-    <input
-        type="hidden"
-        name="java<?php echo $myfname2;?>"
-        id="java<?php echo $myfname2; ?>"
-    />
+    <?php
+    /* Value for expression manager javascript (use id) ; no need to submit */
+    echo \CHtml::textField($myfname2,$value,array(
+        'id' => "answer{$myfname2}",
+        'class' => "form-control {$kpclass}",
+        'size' => ($inputsize ? $inputsize : null),
+        'maxlength' => ($maxlength ? $maxlength : null),
+        'data-number' => $isNumber,
+        'data-integer' => $isInteger,
+    ));
+    ?>
+    <?php
+    /* Value for expression manager is needed here ? Unsure (20170518) */
+    echo \CHtml::hiddenField("java{$myfname2}",$value,array(
+        'id' => "java{$myfname2}",
+        'disabled' => true,
+    ));
+    ?>
 </td>
 <!-- end of answer_td -->

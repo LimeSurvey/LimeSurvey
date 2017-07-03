@@ -67,7 +67,8 @@
                 </a>
             </li>
             <li class="dropdown dropdown-split-right">
-                <a  style="padding-left: 5px;padding-right: 5px;" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <a style="padding-left: 5px;padding-right: 5px;" href="#" class="dropdown-toggle" data-toggle="dropdown">
+		    <span class="sr-only">Toggle Dropdown</span>
                     <span style="margin-left: 0px;" class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">

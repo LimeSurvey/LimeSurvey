@@ -74,9 +74,9 @@ class update extends Survey_Common_Action
         $serverAnswer = $updateModel->getUpdateInfo($buttons);
         $aData['serverAnswer'] = $serverAnswer;
         $aData['fullpagebar']['update'] = true;
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/comfortupdate.js');
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/buildComfortButtons.js');
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'comfortupdate/displayComfortStep.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'comfortupdate/comfortupdate.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'comfortupdate/buildComfortButtons.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'comfortupdate/displayComfortStep.js');
 
         $this->_renderWrappedTemplate('update', '_updateContainer', $aData);
     }
@@ -333,7 +333,7 @@ class update extends Survey_Common_Action
 
                 if (Yii::app()->request->getPost('datasupdateinfo'))
                 {
-                    $updateinfos= json_decode( base64_decode( Yii::app()->request->getPost('datasupdateinfo') ),true);
+                    $updateinfos= (array) json_decode( base64_decode( Yii::app()->request->getPost('datasupdateinfo') ),true);
 
                     $updateModel = new UpdateForm();
                     $backupInfos = $updateModel->backupFiles($updateinfos);

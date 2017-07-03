@@ -11,7 +11,7 @@
 
     (¯`·._.·(¯`·._.· Top Container·._.·´¯)·._.·´¯)
 
-    This file generate the top container: it's above the form it self, and contains the progress bar.
+    This file generates the top container. It's above the form itself, and contains the progress bar.
     The progress bar is a Bootstrap progress bar.
     @see: http://getbootstrap.com/components/#progress
 
@@ -21,7 +21,7 @@
 <div class="top-container">
     <div class="container top-content">
         {% if aSurveyInfo.format != 'A' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
-            {{ registerPublicCssFile('lime-progress.css') }}
+            {{  registerPublicCssFile('lime-progress.css') }}
 
             {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
             <div class="progress">

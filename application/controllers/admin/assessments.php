@@ -83,7 +83,7 @@ class Assessments extends Survey_Common_Action
         $aData['surveybar']['savebutton']['form'] = true;
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['gid']=null;
-        $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'assessments.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'assessments.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

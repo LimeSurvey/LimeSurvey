@@ -193,7 +193,7 @@ class LSYii_Application extends CWebApplication
     *
     * @access public
     * @param string $name
-    * @param type $default Value to return when not found, default is false
+    * @param boolean|mixed $default Value to return when not found, default is false
     * @return mixed
     */
     public function getConfig($name, $default = false)
@@ -234,7 +234,9 @@ class LSYii_Application extends CWebApplication
      */
     public function getPluginManager()
     {
-        return $this->getComponent('pluginManager');
+        /** @var PluginManager $pluginManager */
+        $pluginManager =$this->getComponent('pluginManager');
+        return $pluginManager;
     }
 
     /**

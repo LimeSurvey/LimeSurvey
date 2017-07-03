@@ -49,7 +49,7 @@
                 </button>
             {% else %}
                 <!-- Button Next -->
-                <button type="submit" value="movenext" name="move" class=" {{ aNavigator.disabled }} ls-move-next-btn ls-move-submit-btn btn btn-lg btn-primary" accesskey="n">
+                <button type="submit" value="movenext" name="move" class=" {{ aNavigator.disabled }} ls-move-btn ls-move-next-btn ls-move-submit-btn btn btn-lg btn-primary" accesskey="n">
                     {{ "Next" | t }}
                 </button>
             {% endif %}
@@ -76,19 +76,6 @@
                 {{ "Resume later" | t }}
             </button>
         {% endif %}
-
-        <!-- Button exit and clear survey -->
-        <div class="form-inline ls-move-form">
-            <label class="form-group hidden">
-                <input value="confirm" type="checkbox" name="confirm-clearall">
-                <span class="control-label">
-                    {{ "Please confirm you want to clear your response?" | t }}
-                </span>
-            </label>
-            <button type="submit" value="clearall" name="move" class="ls-clearaction ls-clearall btn btn-link" data-confirmedby="confirm-clearall" title="This action need confirmation.">
-                {{ "Exit and clear survey" | t }}
-            </button>
-        </div>
 
     </div>
 </div>

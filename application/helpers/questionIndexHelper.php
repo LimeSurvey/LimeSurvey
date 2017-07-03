@@ -81,6 +81,7 @@ class questionIndexHelper {
 
         return self::$instance;
     }
+    
     /**
      * Get the array of all step for this session
      *
@@ -132,7 +133,7 @@ class questionIndexHelper {
             $groupInfo['step'] = $step + 1;
             $stepInfo = isset($stepInfos[$step]) ? $stepInfos[$step]: array('show'=>true,'anyUnanswered'=>null,'anyErrors'=>null);
             if( ($type>1 || $groupInfo['step'] <= $sessionLem['maxstep'])
-                && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // $stepInfo['show'] is incomplete (for unrelevant group after the 'not submitted due to error group') GroupIsRelevant control it really
+                && LimeExpressionManager::GroupIsRelevant($groupInfo['gid']) // $stepInfo['show'] is incomplete (for irrelevant group after the 'not submitted due to error group') GroupIsRelevant control it really
             ){
                 /* string to EM : leave fix (remove script , flatten other ...) to view */
                 $stepIndex[$step]=array(
@@ -237,69 +238,4 @@ class questionIndexHelper {
         return $stepIndex;
     }
 
-    /**
-     * Return html for list of link
-     * @return string : html to be used
-     */
-    public function getIndexLink()
-    {
-        $indexItems=$this->getIndexItems();
-        if(!empty($indexItems)){
-            Yii::app()->getClientScript()->registerScript("activateActionLink","activateActionLink();",\CClientScript::POS_END);
-            return $this->getIndexHtml($this->surveyFormat,'link');
-        }else{
-            return '';
-        }
-    }
-
-    /**
-     * Return html for list of button
-     * @return string : html to be used
-     */
-    public function getIndexButton()
-    {
-        $indexItems=$this->getIndexItems();
-        if(!empty($indexItems)){
-            Yii::app()->getClientScript()->registerScript("manageIndex","manageIndex();",\CClientScript::POS_END);
-            return $this->getIndexHtml($this->surveyFormat);
-        }else{
-            return '';
-        }
-    }
-    /**
-     * Return html with params
-     * @param string : $surveyFormat (G|S)
-     * @param string : $viewType (link|button)
-     *
-     * @return string : html to be used
-     */
-    private function getIndexHtml($surveyFormat,$viewType='button')
-    {
-        switch($surveyFormat){
-            case 'G':
-                $viewFile="groupIndex";
-                break;
-            case 'S':
-                $viewFile="questionIndex";
-                break;
-            default:
-                Yii::log("Uknow survey format for question index, must be G or S.", 'error','application.helpers.questionIndexHelper');
-                return "";
-        }
-        switch($viewType){
-            case 'button':
-                break;
-            case 'link':
-                $viewFile.="MenuLink";
-                break;
-            default:
-                Yii::log("Uknow view type for question index, must be button or link.", 'error','application.helpers.questionIndexHelper');
-                return "";
-        }
-        Yii::import('application.helpers.viewHelper', true);
-        return Yii::app()->getController()->renderPartial("/survey/system/surveyIndex/{$viewFile}",array(
-            'type'=>$this->indexType,
-            'indexItems'=>$this->indexItems,
-        ),true);
-    }
 }

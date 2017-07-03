@@ -29,8 +29,7 @@ class RegisterController extends LSYii_Controller {
     public $aReplacementData= array();
     /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
     public $aGlobalData= array();
-    /* @var boolean did we need survey.pstpl when using layout */
-    public $bStartSurvey= true;
+
 
     /**
     * The array of errors to be displayed
@@ -49,8 +48,8 @@ class RegisterController extends LSYii_Controller {
     {
         return array(
             'captcha' => array(
-                'class' => 'CCaptchaAction',
-                'backColor'=>0xf6f6f6
+                'class' => 'CaptchaExtendedAction',
+                'mode'=>CaptchaExtendedAction::MODE_MATH
             )
         );
     }
@@ -472,7 +471,7 @@ class RegisterController extends LSYii_Controller {
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
         Yii::app()->clientScript->registerPackage( 'survey-template' );
 
-        $this->sTemplate=$oTemplate->name;
+        $this->sTemplate=$oTemplate->sTemplateName;
         if(!$this->sMessage){
             $this->aGlobalData['languagechanger']=makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
             $this->aReplacementData['content']=self::getRegisterForm($iSurveyId);

@@ -11,9 +11,15 @@
 
     (¯`·._.·(¯`·._.· Header  ·._.·´¯)·._.·´¯)
 
-    This file generate the headers.
-    Most of the time, it will not the right place to add your own JS/CSS. Use the config.xml file for that.
+    This file generates the headers.
+    Most of the time, it is not the right place to add your own JS/CSS - instead, use the config.xml file for that.
 #}
+
+{% if(aSurveyInfo.jYesNo) %}
+    {{ registerScript('activateConfirmLanguage',"$.extend(LSvar.lang," ~ aSurveyInfo.jYesNo ~ ")", "POS_BEGIN") }}
+{% endif %}
+{{ registerScript('activateActionLink',"activateActionLink();", "POS_END") }}
+{{ registerScript('activateConfirmButton',"activateConfirmButton();", "POS_END") }}
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -26,5 +32,80 @@
 
     <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
     <link rel="shortcut icon" href="{{ aSurveyInfo.oTemplate.sTemplateurl }}favicon.ico" />
+
+    {# Ajax mode #}
+    {% if(aSurveyInfo.options.ajaxmode == "on") %}
+    <script>
+        // Submit the form with Ajax
+        function ajaxSubmit(){
+
+            var numPost = 0;
+
+            // First we get the value of the button clicked  (movenext, submit, prev, etc)
+            var move = "";
+            $(".ls-move-btn").on("click", function(){
+                move = $(this).attr("value");
+            });
+
+            // If the user try to submit the form
+            $(document).on("submit", "#limesurvey", function (e) {
+                e.preventDefault();
+
+                // Prevent multiposting
+                numPost++;
+                if ( numPost > 1){
+                    return;
+                }
+
+                var sUrl  = $(this).attr("action");
+                var aPost = $(this).serialize();
+
+                // We add the value of the button clicked to the post request
+                aPost += "&move="+move;
+
+                $.ajax({
+                   url      : sUrl,
+                   type     : 'POST',
+                   dataType : 'html',
+                   data     : aPost,
+
+                   success : function(body_html, statut){
+
+                       $("body").empty().append(body_html);
+
+                       // This chunk of script will eval all the scripts of the loaded body
+                       var scriptElements = $("body").find('script');
+                       
+                       for (i = 0; i < scriptElements.length; i ++) {
+                           var scriptElement = document.createElement('SCRIPT');
+                           scriptElement.type = 'text/javascript';
+
+                           if (!scriptElements[i].src) {
+                               scriptElement.innerHTML = scriptElements[i].innerHTML;
+                           } else {
+                               scriptElement.src = scriptElements[i].src;
+                           }
+                           document.head.appendChild(scriptElement);
+                       }
+
+                       // We reapply the function to the new form
+                       ajaxSubmit();
+
+                   },
+
+                   error : function(result, statut, erreur){
+                       alert("ERROR");
+                       console.log(result);
+                   }
+                });
+            });
+        }
+
+        $( document ).ready( function(){
+            ajaxSubmit();
+        });
+    </script>
+    {% endif %}
+
     {{ include('./subviews/google_analytics.twig') }}
 </head>

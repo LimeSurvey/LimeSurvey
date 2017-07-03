@@ -24,7 +24,7 @@
  */
 ?>
 <!-- answer_row -->
-<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group clearfix'  <?php echo $sDisplayStyle ;?>>
+<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group'>
     <!-- Checkbox + label -->
     <div class="col-sm-<?php echo $sLabelWidth; ?> col-xs-12">
         <div class="checkbox-item answer-item form-group">
@@ -39,21 +39,18 @@
               />
 
             <label id="label-<?php echo $id;?>" for="<?php echo $id;?>" class="control-label checkbox-label"><?php echo $labeltext;?></label>
-
-            <?php if($javainput):?>
-                <input
-                type='hidden'
-                name='<?php echo $javaname?>'
-                id='<?php echo $javaname?>'
-                value='<?php echo $javavalue;?>'
-                />
-            <?php endif;?>
+            <?php
+            /* Value for expression manager javascript (use val()) ; no need to submit */
+            echo \CHtml::hiddenField($javaname,$javavalue,array(
+                'id' => $javaname,
+                'disabled' => true,
+            ));
+            ?>
         </div>
     </div>
 
     <!-- Comment -->
-    <div class="col-sm-<?php echo $sInputContainerWidth; ?> col-xs-12">
-        <div class="form-group answer-item text-item comment-item">
+    <div class="col-sm-<?php echo $sInputContainerWidth; ?> col-xs-12 answer-item text-item comment-item">
             <input
                 class='form-control <?php echo $kpclass; ?>'
                 type='text'
@@ -62,7 +59,6 @@
                 value='<?php echo $inputCOmmentValue; ?>'
                 aria-labelledby='label-<?php echo $id;?>'
             />
-        </div>
     </div>
 </li>
 <!-- end of answer_row -->

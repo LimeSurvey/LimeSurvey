@@ -142,6 +142,7 @@
                         <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey());?>
                         <?php echo CHtml::hiddenField('action','quotas');?>
                         <?php echo CHtml::hiddenField('subaction','new_quota');?>
+                        <input type="button" class="btn btn-default" value="<?php eT("Quick CSV report");?>" onClick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/quickreport/y") ?>', '_top')" />                                                
                         <?php echo CHtml::submitButton(gT("Add new quota"),array(
                             'name'=>'submit',
                             'class'=>'quota_new btn btn-default',

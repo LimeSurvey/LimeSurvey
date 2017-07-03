@@ -6,17 +6,17 @@
 </script>
 
 <div class="container-fluid welcome full-page-wrapper">
-<h3 class="pagetitle"><?php eT("Global settings"); ?></h3>
+<div class="pagetitle h3"><?php eT("Global settings"); ?></div>
 
 <ul class="nav nav-tabs" id="settingTabs">
-        <li role="presentation" class="active"><a data-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
-        <li role="presentation" ><a data-toggle="tab" href='#general'><?php eT("General"); ?></a></li>
-        <li role="presentation" ><a data-toggle="tab" href='#email'><?php eT("Email settings"); ?></a></li>
-        <li role="presentation" ><a data-toggle="tab" href='#bounce'><?php eT("Bounce settings"); ?></a></li>
-        <li role="presentation" ><a data-toggle="tab" href='#security'><?php eT("Security"); ?></a></li>
-        <li role="presentation" ><a data-toggle="tab" href='#presentation'><?php eT("Presentation"); ?></a></li>
-        <li role="presentation" ><a data-toggle="tab" href='#language'><?php eT("Language"); ?></a></li>
-        <li role="presentation" ><a data-toggle="tab" href='#interfaces'><?php eT("Interfaces"); ?></a></li>
+        <li role="presentation" class="active"><a role="tab" data-toggle="tab" href='#overview'><?php eT("Overview"); ?></a></li>
+        <li role="presentation" ><a role="tab" data-toggle="tab" href='#general'><?php eT("General"); ?></a></li>
+        <li role="presentation" ><a role="tab" data-toggle="tab" href='#email'><?php eT("Email settings"); ?></a></li>
+        <li role="presentation" ><a role="tab" data-toggle="tab" href='#bounce'><?php eT("Bounce settings"); ?></a></li>
+        <li role="presentation" ><a role="tab" data-toggle="tab" href='#security'><?php eT("Security"); ?></a></li>
+        <li role="presentation" ><a role="tab" data-toggle="tab" href='#presentation'><?php eT("Presentation"); ?></a></li>
+        <li role="presentation" ><a role="tab" data-toggle="tab" href='#language'><?php eT("Language"); ?></a></li>
+        <li role="presentation" ><a role="tab" data-toggle="tab" href='#interfaces'><?php eT("Interfaces"); ?></a></li>
 </ul>
 
 <?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'form-horizontal','id'=>'frmglobalsettings','name'=>'frmglobalsettings'));?>

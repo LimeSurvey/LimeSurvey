@@ -11,51 +11,18 @@
 
     (¯`·._.·(¯`·._.· Clear All Layout  ·._.·´¯)·._.·´¯)
 
-    This is what is shown when user cleared the survey (only show "Restart this survey")
+     This file displays the page shown to a respondent when they have cleared the survey (only show "Restart this survey")
     NOTE: It probably doesn't need to be a separated layout.
 #}
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
 
-    {# Headers, metadatas, etc #}
-    {{ include('./subviews/head.twig') }}
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
-
-        {# Bootstrap Navigation Bar: the top menu #}
-        {{ include('./subviews/nav_bar.twig') }}
-
-        <!-- Outer Frame Container -->
-        <div class="outerframe container" id="outerframeContainer">
-
-            <!-- Main Row -->
-            <div id="main-row">
-                <!-- Main Col -->
-                <div class="col-centered" id="main-col">
-
-                    <div class='return-to-survey'>
-                        <div class="url-wrapper url-wrapper-survey-return">
-                            <a href="{{ aSurveyInfo.surveyUrl }}" class="ls-return">{{ "Restart this Survey" | t}}</a>
-                        </div>
-                    </div>
-                </div>
-
-                </div> <!-- main col -->
-            </div> <!-- main row -->
-        </div> <!-- outer frame container -->
-
-        {# Bootstrap alert modal #}
-        {{ include('./subviews/bootstrap_alert_modal.twig') }}
-
-        <!-- some template.js function launched before ready -->
-        <script type="text/javascript">
-        /*<![CDATA[*/
-            sliderSuffixClone();
-            fixBodyPadding();
-            hideQuestionWithRelevanceSubQuestion();
-            hideEmptyPart();
-        /*]]>*/
-        </script>
-    </body>
-</html>
-<!-- end of startpage.twig -->
+{# Replace the content block #}
+{% block content %}
+    <div class='return-to-survey'>
+        <div class="url-wrapper url-wrapper-survey-return">
+            <a href="{{ aSurveyInfo.surveyUrl }}" class="ls-return">{{ "Restart this Survey" | t}}</a>
+        </div>
+    </div>
+{% endblock %}

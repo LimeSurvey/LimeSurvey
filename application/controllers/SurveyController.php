@@ -23,8 +23,7 @@ class SurveyController extends LSYii_Controller
     public $aReplacementData= array();
     /* @var array Global data when use templatereplace function  in layout, @see templatereplace $redata */
     public $aGlobalData= array();
-    /* @var boolean did we need survey.pstpl when using layout */
-    public $bStartSurvey= false;
+
     /**
      * Initialises this controller, does some basic checks and setups
      *
@@ -81,8 +80,9 @@ class SurveyController extends LSYii_Controller
             'uploader' => 'application.controllers.uploader',
             'verification' => 'application.controllers.verification',
             'captcha' => array(
-                'class' => 'CCaptchaAction',
-                'backColor'=>0xf6f6f6
+              'class'=>'CaptchaExtendedAction',
+              // if needed, modify settings
+              'mode'=>CaptchaExtendedAction::MODE_MATH,
             )
         );
     }

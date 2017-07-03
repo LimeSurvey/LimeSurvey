@@ -24,7 +24,13 @@
     <!-- Answer text /  Errors -->
     <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php echo ($answerwidth==0)? " sr-only":""; ?>">
         <?php echo $answertext;?>
-        <input type="hidden" name="java<?php echo $myfname;?>" id="java<?php echo $myfname;?>" value="<?php echo $value;?>" />
+        <?php
+        /* Value for expression manager javascript (use id) ; no need to submit */
+        echo \CHtml::hiddenField("java{$myfname}",$value,array(
+            'id' => "java{$myfname}",
+            'disabled' => true,
+        ));
+        ?>
     </th>
 
     <!-- Increase -->

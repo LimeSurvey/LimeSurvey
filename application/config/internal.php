@@ -42,7 +42,8 @@ $internalConfig = array(
     'aliases' => array(
         // Third party path
         'third_party' => realpath(__DIR__ . '/../../third_party'),
-        'core' => realpath(__DIR__ . '/../../application/core/packages'),
+        'core' => realpath(__DIR__ . '/../../assets/packages'),
+        'fonts' => realpath(__DIR__ . '/../../fonts'),
 
         // yiistrap configuration
         'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
@@ -58,6 +59,8 @@ $internalConfig = array(
         // This line just point application.vendor.Twig to application/third_party/Twig
         // @see: ETwigViewRenderer::$twigPathAlias
         'application.vendor.Twig'=>'application.third_party.Twig',
+        // 'CaptchaExtendedAction' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedAction.php'),
+        // 'CaptchaExtendedValidator' => realpath(__DIR__ . '/../extensions/captchaExtended/CaptchaExtendedValidator.php')
     ),
 
     'modules'=>array(
@@ -84,12 +87,13 @@ $internalConfig = array(
         'application.models.*',
         'application.controllers.*',
         'application.modules.*',
-
         'bootstrap.helpers.*',
         'bootstrap.widgets.*',
         'bootstrap.behaviors.*',
         'yiiwheels.widgets.select2.WhSelect2',
-        'third_party.Twig.*'
+        'third_party.Twig.*',
+        'ext.captchaExtended.CaptchaExtendedAction',
+        'ext.captchaExtended.CaptchaExtendedValidator'
 
     ),
     'preload' => array ('log'),
@@ -107,7 +111,8 @@ $internalConfig = array(
             'packages' => array_merge(
                 require('third_party.php'),
                 require('packages.php')
-            )
+            ),
+            'class' => 'application.core.LSYii_ClientScript'
         ),
 
         'urlManager' => array(
@@ -117,7 +122,7 @@ $internalConfig = array(
         ),
         // These are defaults and are later overwritten in LSYii_Application by a path based on config tempdir/tempurl
         'assetManager' => array(
-            'excludeFiles' => array("config.xml", "assessment.pstpl", "clearall.pstpl",  "completed.pstpl",  "endgroup.pstpl",  "endpage.pstpl",  "groupdescription.pstpl",  "load.pstpl",  "navigator.pstpl",  "printanswers.pstpl",  "print_group.pstpl",  "print_question.pstpl",  "print_survey.pstpl",  "privacy.pstpl",  "question.pstpl",  "register.pstpl",  "save.pstpl",  "startgroup.pstpl",  "startpage.pstpl",  "surveylist.pstpl",  "survey.pstpl",  "welcome.pstpl" ),
+            'excludeFiles' => array("config.xml" ),
         ),
 
         'request' => array(
@@ -204,22 +209,32 @@ $internalConfig = array(
                 'html' => 'CHtml'
             ),
             'functions' => array(
-                'flatEllipsizeText'     => 'viewHelper::flatEllipsizeText',
-                'getLanguageData'       => 'viewHelper::getLanguageData',
-                'array_flip'            => 'array_flip',
-                'array_intersect_key'   => 'array_intersect_key',
-                'registerPublicCssFile' => 'LS_Twig_Extension::registerPublicCssFile',
-                'getAllQuestionClasses' => 'LS_Twig_Extension::getAllQuestionClasses',
-                'intval'                => 'intval',
-                'empty'                 => 'empty',
-                'count'                 => 'count',
-                'reset'                 => 'reset',
-                'renderCaptcha'         => 'LS_Twig_Extension::renderCaptcha',
-                'getPost'               => 'LS_Twig_Extension::getPost',
-                'getParam'              => 'LS_Twig_Extension::getParam',
-                'getQuery'              => 'LS_Twig_Extension::getQuery',
-                'isset'                 => 'isset',
-                'str_replace'           => 'str_replace',
+                'flatEllipsizeText'       => 'viewHelper::flatEllipsizeText',
+                'getLanguageData'         => 'viewHelper::getLanguageData',
+                'array_flip'              => 'array_flip',
+                'array_intersect_key'     => 'array_intersect_key',
+                'registerPublicCssFile'   => 'LS_Twig_Extension::registerPublicCssFile',
+                'registerTemplateCssFile' => 'LS_Twig_Extension::registerTemplateCssFile',
+                'registerGeneralScript'   => 'LS_Twig_Extension::registerGeneralScript',
+                'registerTemplateScript'  => 'LS_Twig_Extension::registerTemplateScript',
+                'registerScript'          => 'LS_Twig_Extension::registerScript',
+                'unregisterPackage'       => 'LS_Twig_Extension::unregisterPackage',
+                'listCoreScripts'         => 'LS_Twig_Extension::listCoreScripts',
+                'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
+                'intval'                  => 'intval',
+                'empty'                   => 'empty',
+                'count'                   => 'count',
+                'reset'                   => 'reset',
+                'renderCaptcha'           => 'LS_Twig_Extension::renderCaptcha',
+                'getPost'                 => 'LS_Twig_Extension::getPost',
+                'getParam'                => 'LS_Twig_Extension::getParam',
+                'getQuery'                => 'LS_Twig_Extension::getQuery',
+                'isset'                   => 'isset',
+                'str_replace'             => 'str_replace',
+                'assetPublish'            => 'LS_Twig_Extension::assetPublish',
+                'image'                   => 'LS_Twig_Extension::image',
+                'sprintf'                 => 'sprintf',
+                'gT'                      => 'gT',
             ),
             'filters' => array(
                 'jencode' => 'CJSON::encode',
@@ -228,29 +243,20 @@ $internalConfig = array(
             ),
 
             'sandboxConfig' => array(
-                'tags' => array('if', 'for', 'set', 'autoescape'),
+                'tags' => array('if', 'for', 'set', 'autoescape', 'block'),
                 'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
                 'methods' => array(
-                    'ETwigViewRendererStaticClassProxy' =>  array("textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
+                    'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
                     'Survey'                            =>  array("getAllLanguages"),
                     'LSHttpRequest'                     =>  array("getParam"),
                 ),
                 'properties' => array(
-                    'ETwigViewRendererYiiCoreStaticClassesProxy'=>array("Html"),
-                    'LSYii_Application'                 =>  array("request"),
+                    'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
+                    'LSYii_Application'                          => array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace' ),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'unregisterPackage', 'listCoreScripts', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
             ),
 
-            // Change template syntax to Smarty-like (not recommended)
-            // Could be use to manage potential conflict with Expression Manager
-            /*
-            'lexerOptions' => array(
-                'tag_comment'  => array('{*', '*}'),
-                'tag_block'    => array('{', '}'),
-                'tag_variable' => array('{$', '}')
-            ),
-            */
         ),
     )
 );

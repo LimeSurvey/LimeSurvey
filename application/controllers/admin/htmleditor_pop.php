@@ -39,8 +39,7 @@ class htmleditor_pop extends Survey_Common_Action
             $aData['sControlIdDis'] = $aData['sFieldName'] . '_popupctrldis';
             $aData['toolbarname'] = 'popup';
             $aData['htmlformatoption'] = '';
-
-            if (in_array($aData['sFieldType'], array('email-inv', 'email-reg', 'email-conf', 'email-rem')))
+            if (in_array($aData['sFieldType'], array('email-invitation', 'email-registration', 'email-confirmation', 'email-reminder')))
             {
                 $aData['htmlformatoption'] = ',fullPage:true';
             }

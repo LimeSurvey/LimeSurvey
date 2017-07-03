@@ -19,12 +19,13 @@
 <tr id="javatbd<?php echo $myfname;?>" class="<?php echo $coreRowClass;?> <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php if($error){ echo " ls-error-mandatory";} ?><?php if($error && $layout=="checkbox"){ echo " has-error";} ?>" role="group" aria-labelledby="answertext<?php echo $myfname;?>">
     <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php if($error && $layout!="checkbox"){ echo " text-danger";} ?><?php echo ($answerwidth==0)? " sr-only":""; ?>">
         <?php echo $answertext; ?>
-        <input
-            type="hidden"
-            name="java<?php echo $myfname;?>"
-            id="java<?php echo $myfname;?>"
-            value="<?php echo $row_value;?>"
-        />
+        <?php
+        /* Value for expression manager javascript ? Used ? */
+        echo \CHtml::hiddenField("java{$myfname}",$row_value,array(
+            'id' => "java{$myfname}",
+            'disabled' => true,
+        ));
+        ?>
     </th>
 
     <?php

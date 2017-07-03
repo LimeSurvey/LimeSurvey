@@ -55,7 +55,6 @@ class QuotaLanguageSetting extends LSActiveRecord
 	 */
 	public function relations()
 	{
-		$alias = $this->getTableAlias();
 		return array(
 			'quota' => array(self::BELONGS_TO, 'Quota', 'quotals_quota_id'),
 		);

@@ -37,7 +37,7 @@
             <span class="caret"></span>
         </a>
 
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu" id="langs-container" style="overflow: scroll">
             {# List of available languages.  #}
             {% for value, lang in aLCD.aListLang %}
                 <li class="index-item">
@@ -76,6 +76,7 @@
 <script>
 // Method for link
 $(document).ready(function(){
+    $('#langs-container').height($('#main-row').height());
     $('.ls-language-link').on('click', function(){
         var lang = $(this).data('limesurvey-lang');
 
@@ -91,7 +92,6 @@ $(document).ready(function(){
             $("<form>", {
                 "class":'ls-js-hidden',
                 "html": '<input type="hidden" name="lang" value="' + lang + '" />',
-                "action": target,
                 "method": 'get'
             }).appendTo(document.body).submit();
         }

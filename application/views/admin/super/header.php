@@ -50,8 +50,8 @@
 
     <?php echo $datepickerlang;?>
     <title><?php echo $sitename;?></title>
-    <link rel="shortcut icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="<?php echo $baseurl;?>styles/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?php echo $baseurl;?>assets/styles-admin/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="<?php echo $baseurl;?>assets/styles-admin/favicon.ico" type="image/x-icon" />
     <?php echo $firebug ?>
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
@@ -61,6 +61,7 @@
 <!-- Loading wrapper -->
 <div id='ls-loading'>
     <span id='ls-loading-spinner' class='fa fa-spinner fa-spin fa-4x'></span>
+    <span class='sr-only'><?php eT('Loading'); ?></span>
 </div>
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>

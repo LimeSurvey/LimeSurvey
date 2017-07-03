@@ -48,16 +48,18 @@ class ExportSurveyResultsService
      * @var array
      */
     protected $_exports;
-    
+
     /**
-    * Root function for any export results action
-    *
-    * @param mixed $iSurveyId
-    * @param mixed $sLanguageCode
-    * @param csv|doc|pdf|xls $sExportPlugin Type of export
-    * @param FormattingOptions $oOptions
-    * @param string $sFilter 
-    */
+     * Root function for any export results action
+     *
+     * @param mixed $iSurveyId
+     * @param mixed $sLanguageCode
+     * @param string $sExportPlugin Type of export
+     * @param FormattingOptions $oOptions
+     * @param string $sFilter
+     * @return
+     * @throws Exception
+     */
     function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter = '')
     {
         //Do some input validation.
@@ -108,7 +110,7 @@ class ExportSurveyResultsService
                 
         $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState);
         
-        $writer->write($survey, $sLanguageCode, $oOptions,true);
+        $writer->write($survey, $sLanguageCode, $oOptions);
         $result = $writer->close();
         
         // Close resultset if needed

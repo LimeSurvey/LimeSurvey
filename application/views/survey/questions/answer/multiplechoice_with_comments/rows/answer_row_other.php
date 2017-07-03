@@ -24,14 +24,14 @@
  */
 ?>
 <!-- answer_row -->
-<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group other-item clearfix' <?php echo $sDisplayStyle ;?>>
+<li id="javatbd<?php echo $name; ?>" class='row checkbox-text-item form-group other-item clearfix'>
 
     <!-- Checkbox + label -->
     <div class="col-sm-<?php echo $sLabelWidth; ?> col-xs-12">
         <div class="form-group answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too -->
             <label for="<?php echo $id;?>" class="label-text control-label ls-input-group-extra" id="label-<?php echo $id;?>" ><?php echo $labeltext;?></label>
             <input
-               class="other-text form-control input-sm multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
+               class="other-text form-control input multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
                type="text"
                name="<?php echo $name; ?>"
                id="<?php echo $id;?>"

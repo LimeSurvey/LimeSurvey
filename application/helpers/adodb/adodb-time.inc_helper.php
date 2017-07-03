@@ -1435,6 +1435,3 @@ function adodb_strftime($fmt, $ts=false,$is_gmt=false)
     $ret = adodb_date($fmtdate, $ts, $is_gmt);
     return $ret;
 }
-
-
-?>

@@ -68,14 +68,15 @@ function strSplitUnicode($str, $l = 0) {
 }
 
 /**
-* Exports CSV response data for SPSS and R
-*
-* @param mixed $iSurveyID The survey ID
-* @param string $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
-* @param string $na Value for N/A data
-* @param sep Quote separator. Use '\'' for SPSS, '"' for R
-* @param logical $header If TRUE, adds SQGA code as column headings (used by export to R)
-*/
+ * Exports CSV response data for SPSS and R
+ *
+ * @param mixed $iSurveyID The survey ID
+ * @param string $iLength Maximum text lenght data, usually 255 for SPSS <v16 and 16384 for SPSS 16 and later
+ * @param string $na Value for N/A data
+ * @param string $q sep Quote separator. Use '\'' for SPSS, '"' for R
+ * @param bool $header logical $header If TRUE, adds SQGA code as column headings (used by export to R)
+ * @param string $sLanguage
+ */
 function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE, $sLanguage='') {
 
     // Build array that has to be returned
@@ -216,7 +217,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
 *
 * @param $field array field from SPSSFieldMap
 * @param string $language
-* @return array or false
+* @return array|bool
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     $length_vallabel = 120;
@@ -732,8 +733,15 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
     $squery = "SELECT *
     FROM {{surveys}}
     WHERE sid=$iSurveyID";
+
     //Exclude some fields from the export
-    buildXMLFromQuery($xmlwriter,$squery,'',array('owner_id','active','datecreated'));
+    $excludeFromSurvey = array('owner_id','active','datecreated');
+    if (isset($exclude['dates']) && $exclude['dates']){
+        $excludeFromSurvey[] = 'startdate';
+        $excludeFromSurvey[] = 'expires';
+    }
+
+    buildXMLFromQuery($xmlwriter,$squery,'',$excludeFromSurvey);
 
     // Survey language settings
     $slsquery = "SELECT *
@@ -1718,26 +1726,18 @@ function tokensExport($iSurveyID)
     $oRecordSet = Yii::app()->db->createCommand()->from("{{tokens_$iSurveyID}}");
     $databasetype = Yii::app()->db->getDriverName();
     $oRecordSet->where("1=1");
-    if ($sEmailFiter!='')
-    {
-        if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib')))
-        {
-            $oRecordSet->andWhere("CAST(email as varchar) like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
-        }
-        else
-        {
-            $oRecordSet->andWhere("email like ".dbQuoteAll('%'.$sEmailFiter.'%', true));
+    if ($sEmailFiter!='') {
+        if (in_array($databasetype, array('mssql', 'sqlsrv', 'dblib'))) {
+            $oRecordSet->andWhere("CAST(email as varchar) like ".dbQuoteAll('%'.$sEmailFiter.'%'));
+        } else {
+            $oRecordSet->andWhere("email like ".dbQuoteAll('%'.$sEmailFiter.'%'));
         }
     }
-    if ($iTokenStatus==1)
-    {
+    if ($iTokenStatus==1) {
         $oRecordSet->andWhere("completed<>'N'");
-    }
-    elseif ($iTokenStatus==2)
-    {
+    } elseif ($iTokenStatus==2) {
         $oRecordSet->andWhere("completed='N'");
-        if ($bIsNotAnonymous)
-        {
+        if ($bIsNotAnonymous) {
             $oRecordSet->andWhere("token not in (select token from {{survey_$iSurveyID}} group by token)");
         }
     }
@@ -1833,7 +1833,7 @@ function tokensExport($iSurveyID)
         $aExportedTokens[] = $brow['tid'];
     }
 
-    if (Yii::app()->request->getPost('tokendeleteexported') && !empty($aExportedTokens))
+    if (Yii::app()->request->getPost('tokendeleteexported') && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete') && !empty($aExportedTokens))
     {
         Token::model($iSurveyID)->deleteByPk($aExportedTokens);
     }

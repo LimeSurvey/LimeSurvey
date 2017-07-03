@@ -141,8 +141,7 @@ class LSYii_Validators extends CValidator {
         foreach($aValues as $key=>$aValue){
             if($aValue[2]=="STRING")
                 $sNewValue.=$bCountIsOk ? $aFilteredValues[$key][0]:$filter->purify($aValue[0]);// If EM is broken : can throw invalid $key
-            else
-            {
+            else {
                 $sExpression=trim($aValue[0], '{}');
                 $sNewValue.="{";
                 $aParsedExpressions=$oExpressionManager->Tokenize($sExpression,true);

@@ -26,48 +26,55 @@
 #}
 
 {# Question index in group by group mode #}
-{% if aSurveyInfo.format == 'G' %}
-    <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
-    <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            {{ "Question index" | t }}
-            <span class="caret"></span>
-        </a>
 
-        <ul class="dropdown-menu">
-            {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
-            {% for step, indexItem in aSurveyInfo.aQuestionIndex.items %}
-                {% set statusClass = ''  %}
-                {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
-                    {% set statusClass = statusClass ~ ' bg-warning'  %}
-                {% endif %}
-                {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true   %}
-                    {% set statusClass = statusClass ~ ' bg-danger'  %}
-                {% endif %}
-                {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
-                    {% set statusClass = statusClass ~  ' disabled'  %}
-                {% endif %}
+{% if (aSurveyInfo.aQuestionIndex.bShow == true) %}
+    {% if aSurveyInfo.format == 'G' %}
+        <!-- Question index, group, {{ aSurveyInfo.aQuestionIndex.type }} -->
+        <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                {{ "Question index" | t }}
+                <span class="caret"></span>
+            </a>
+
+            <ul class="dropdown-menu">
+                {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
+                {% for step, indexItem in aSurveyInfo.aQuestionIndex.items %}
+                    {% set statusClass = ''  %}
+
+                    {% if attribute(indexItem.stepStatus, 'index-item-unanswered') is defined and attribute(indexItem.stepStatus, 'index-item-unanswered') == true  %}
+                        {% set statusClass = statusClass ~ ' bg-warning'  %}
+                    {% endif %}
+
+                    {% if attribute(indexItem.stepStatus, 'index-item-error') is defined and attribute(indexItem.stepStatus, 'index-item-error') == true   %}
+                        {% set statusClass = statusClass ~ ' bg-danger'  %}
+                    {% endif %}
+
+                    {% if attribute(indexItem.stepStatus, 'index-item-current') is defined and attribute(indexItem.stepStatus, 'index-item-current') == true %}
+                        {% set statusClass = statusClass ~  ' disabled'  %}
+                    {% endif %}
 
 
-                <li class="{{ indexItem.coreClass }} {{ statusClass }}">
-                    <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'>
-                        {{ indexItem.text }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </li>
-{% endif %}
+                    <li class="{{ indexItem.coreClass }} {{ statusClass }}">
+                        <a href='{{ indexItem.url }}' data-limesurvey-submit='{{ indexItem.submit }}'>
+                            {{ indexItem.text }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
 
-{# Question index in question by question mode #}
-{% if aSurveyInfo.format == 'S' %}
-    <!-- Question index, question by question, {{ aSurveyInfo.aQuestionIndex.type }} -->
-    <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-            {{ "Question index" | t }}
-            <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
+    {# Question index in question by question mode #}
+    {% if aSurveyInfo.format == 'S' %}
+        <!-- Question index, question by question, {{ aSurveyInfo.aQuestionIndex.type }} -->
+        <li class="dropdown ls-index-menu ls-no-js-hidden index-menu-{{ aSurveyInfo.aQuestionIndex.type }}">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                {{ "Question index" | t }}
+                <span class="caret"></span>
+            </a>
+
+            <ul class="dropdown-menu">
+
             {% for group in aSurveyInfo.indexItems %}
                 {# TODO: move back this logic to SurveyRuntime, and provide a ready to use indexItem.statusClass #}
                 <li>
@@ -96,6 +103,8 @@
                     </ul>
                 </li>
             {% endfor %}
-        </ul>
-    </li>
+
+            </ul>
+        </li>
+    {% endif %}
 {% endif %}
