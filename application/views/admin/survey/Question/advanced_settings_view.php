@@ -20,6 +20,7 @@ $categoryNum=0;
                 <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
                         <span class="fa fa-chevron-left"></span>
+			<span class="sr-only"><?php eT("Expand/Collapse");?></span>
                     </a>
                     <a id="button-collapse<?php echo $categoryNum ?>" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-cat<?php echo $categoryNum ?>" aria-expanded="false" aria-controls="collapse-cat<?php echo $categoryNum ?>">
                         <?php echo $aAttribute['category']; ?>

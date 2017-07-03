@@ -9,7 +9,7 @@
 <!-- New question language tabs -->
 <ul class="nav nav-tabs" style="margin-right: 8px;" >
     <li role="presentation" class="active">
-        <a data-toggle="tab" href="#<?php echo $eqrow['language']; ?>">
+        <a role="tab" data-toggle="tab" href="#<?php echo $eqrow['language']; ?>">
             <?php echo getLanguageNameFromCode($eqrow['language'],false); ?> (<?php eT("Base language"); ?>)
         </a>
     </li>

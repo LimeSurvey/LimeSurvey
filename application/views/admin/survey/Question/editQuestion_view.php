@@ -93,6 +93,7 @@
                                 <div class="panel-title h4">
                                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
                                         <span class="fa fa-chevron-left"></span>
+					<span class="sr-only"><?php eT("Expand/Collapse");?></span>
                                     </a>
                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-copy" aria-expanded="false" aria-controls="collapse-copy">
                                         <?php eT("Copy options"); ?>
@@ -150,6 +151,7 @@
                             <div class="panel-title h4">
                                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
                                     <span class="fa fa-chevron-left"></span>
+				    <span class="sr-only"><?php eT("Expand/Collapse");?></span>
                                 </a>
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
                                     <?php eT("General options");?>

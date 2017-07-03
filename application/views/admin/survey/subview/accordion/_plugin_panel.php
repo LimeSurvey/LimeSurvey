@@ -19,6 +19,7 @@
                 <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
+			<span class="sr-only"><?php eT("Expand/Collapse");?></span>
                     </a>
                     <a id="button-plugin<?php echo $id; ?>" class="collapsed" data-parent="#accordion" role="button" data-toggle="collapse" href="#plugin<?php echo $id; ?>" aria-expanded="false" aria-controls="plugin<?php echo $id; ?>">
                         <?php printf(gT("Settings for plugin %s"), $plugin['name']); ?>
