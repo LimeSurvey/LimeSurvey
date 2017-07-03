@@ -43,7 +43,7 @@ $x-directions: center flex-start flex-end space-between space-around;
     }
 
     @for $i from 1 through 12 {
-        .col-#{$i} { width: 100*( $i/12); }
+        .col-#{$i} { width: 100*( $i/12)*1%; }
     }
 
 }
