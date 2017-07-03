@@ -31,6 +31,53 @@ class database extends Survey_Common_Action
      */
     private $iQuestionID;
 
+    private $updateableFields = [
+                'owner_id' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'admin' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'faxto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'format' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'expires' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'additional_languages' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'startdate' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'template' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'assessments' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'anonymized' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'savetimings' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'datestamp' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'ipaddr' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'refurl' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'publicgraphs' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'usecookie' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'allowregister' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'allowsave' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'navigationdelay' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'printanswers' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'publicstatistics' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'autoredirect' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'showxquestions' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'showgroupinfo' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'showqnumcode' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'shownoanswer' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'showwelcome' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'allowprev' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'questionindex' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'nokeyboard' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'showprogress' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'listpublic' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'htmlemail' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'sendconfirmation' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'tokenanswerspersistence' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'alloweditaftercompletion' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'emailresponseto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'emailnotificationto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'googleanalyticsapikeysetting' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'googleanalyticsstyle' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'tokenlength' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'bounce_email' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+            ];
+        private $updatedFields = [];
+
     /**
      * @var object LSYii_Validators
      * @todo : use model (and validate if we do it in model rules)
@@ -54,7 +101,7 @@ class database extends Survey_Common_Action
         $this->oFixCKeditor= new LSYii_Validators;
         $this->oFixCKeditor->fixCKeditor=true;
         $this->oFixCKeditor->xssfilter=false;
-
+        
         if ($sAction == "updatedefaultvalues" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update')){
             $this->actionUpdateDefaultValues($iSurveyID);
         }
@@ -75,7 +122,6 @@ class database extends Survey_Common_Action
         }
 
         $this->getController()->redirect(array("/admin"),"refresh");
-
     }
 
     /**
@@ -879,7 +925,7 @@ class database extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
         {
-
+            $surveyTextSave = false;
             foreach ($languagelist as $langname)
             {
                 if ($langname)
@@ -887,6 +933,7 @@ class database extends Survey_Common_Action
 
                     $sURLDescription = html_entity_decode(Yii::app()->request->getPost('urldescrip_'.$langname), ENT_QUOTES, "UTF-8");
                     $sURL = html_entity_decode(Yii::app()->request->getPost('url_'.$langname), ENT_QUOTES, "UTF-8");
+                    $data = array();
 
                     // Fix bug with FCKEditor saving strange BR types
                     $short_title = Yii::app()->request->getPost('short_title_'.$langname);
@@ -898,24 +945,36 @@ class database extends Survey_Common_Action
                     $description=$this->oFixCKeditor->fixCKeditor($description);
                     $welcome=$this->oFixCKeditor->fixCKeditor($welcome);
                     $endtext=$this->oFixCKeditor->fixCKeditor($endtext);
+                    $dateformat = Yii::app()->request->getPost('dateformat_'.$langname);
+                    $numberformat = Yii::app()->request->getPost('numberformat_'.$langname);
 
-                    $data = array(
-                        'surveyls_title' => $short_title,
-                        'surveyls_description' => $description,
-                        'surveyls_welcometext' => $welcome,
-                        'surveyls_endtext' => $endtext,
-                        'surveyls_url' => $sURL,
-                        'surveyls_urldescription' => $sURLDescription,
-                        'surveyls_dateformat' => Yii::app()->request->getPost('dateformat_'.$langname),
-                        'surveyls_numberformat' => Yii::app()->request->getPost('numberformat_'.$langname)
-                    );
+                    if(!empty($short_title))
+                        $data['surveyls_title'] = $short_title;
+                    if(!empty($description))
+                        $data['surveyls_description'] = $description;
+                    if(!empty($welcome))
+                        $data['surveyls_welcometext'] = $welcome;
+                    if(!empty($endtext))
+                        $data['surveyls_endtext'] = $endtext;
+                    if(!empty($sURL))
+                        $data['surveyls_url'] = $sURL;
+                    if(!empty($sURLDescription))
+                        $data['surveyls_urldescription'] = $sURLDescription;
+                    if(!empty($dateformat))
+                        $data['surveyls_dateformat'] = $dateformat;
+                    if(!empty($numberformat))
+                        $data['surveyls_numberformat'] = $numberformat;
+
                     $SurveyLanguageSetting=SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
-                    $SurveyLanguageSetting->attributes=$data;
-                    $SurveyLanguageSetting->save(); // save the change to database
-
+                    $SurveyLanguageSetting->setAttributes($data);
+                    $save = false;
+                    $save = $SurveyLanguageSetting->save(); // save the change to database
+                    if((!empty($short_title)) || (!empty($description)) || (!empty($welcome)) || (!empty($endtext)) || (!empty($sURL)) || (!empty($sURLDescription)) || (!empty($dateformat)) || (!empty($numberformat)))
+                        $surveyTextSave = $save;
                 }
             }
-            Yii::app()->setFlashMessage(gT("Survey text elements successfully saved."));
+            if($surveyTextSave)
+                Yii::app()->setFlashMessage(gT("Survey text elements successfully saved."));
         }
         ////////////////////////////////////////////////////////////////////////////////////
         // General settings (copy / paste from surveyadmin::update)
@@ -939,7 +998,7 @@ class database extends Survey_Common_Action
             Yii::app()->loadHelper('surveytranslator');
             $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $startdate = App()->request->getPost('startdate');
+            $startdate = $this->_filterEmptyFields($oSurvey,'startdate');
             if (trim($startdate)=="")
             {
                 $startdate=null;
@@ -950,7 +1009,7 @@ class database extends Survey_Common_Action
                 $datetimeobj = new date_time_converter($startdate,$formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
                 $startdate=$datetimeobj->convert("Y-m-d H:i:s");
             }
-            $expires = App()->request->getPost('expires');
+            $expires = $this->_filterEmptyFields($oSurvey,'expires');
             if (trim($expires)=="")
             {
                 $expires=null;
@@ -964,53 +1023,57 @@ class database extends Survey_Common_Action
             // Only owner and superadmins may change the survey owner
             if ($oSurvey->owner_id == Yii::app()->session['loginID'] || Permission::model()->hasGlobalPermission('superadmin','read'))
             {
-                $oSurvey->owner_id = Yii::app()->request->getPost('owner_id');
+                $oSurvey->owner_id = $this->_filterEmptyFields($oSurvey,'owner_id');
             }
-            $oSurvey->admin =  Yii::app()->request->getPost('admin');
+
+            //$oSurvey, $fieldArray, $newValue
+            $oSurvey->admin =  $this->_filterEmptyFields($oSurvey,'admin');
             $oSurvey->expires =  $expires;
             $oSurvey->startdate =  $startdate;
-            $oSurvey->faxto = App()->request->getPost('faxto');
-            $oSurvey->format = App()->request->getPost('format');
-            $oSurvey->template = Yii::app()->request->getPost('template');
-            $oSurvey->assessments = App()->request->getPost('assessments')=='1'?'Y':'N';
-            $oSurvey->additional_languages =  implode(' ',Yii::app()->request->getPost('additional_languages',array()));
+            $oSurvey->faxto = $this->_filterEmptyFields($oSurvey,'faxto');
+            $oSurvey->format = $this->_filterEmptyFields($oSurvey,'format');
+            $oSurvey->template = $this->_filterEmptyFields($oSurvey,'template');
+            $oSurvey->assessments = $this->_filterEmptyFields($oSurvey,'assessments');
+            $oSurvey->additional_languages =  $this->_filterEmptyFields($oSurvey,'additional_languages', implode(' ',Yii::app()->request->getPost('additional_languages',array())));
+
             if ($oSurvey->active!='Y')
             {
-                $oSurvey->anonymized = App()->request->getPost('anonymized')=='1'?'Y':'N';
-                $oSurvey->savetimings = App()->request->getPost('savetimings')=='1'?'Y':'N';
-                $oSurvey->datestamp = App()->request->getPost('datestamp')=='1'?'Y':'N';
-                $oSurvey->ipaddr = App()->request->getPost('ipaddr')=='1'?'Y':'N';
-                $oSurvey->refurl = App()->request->getPost('refurl')=='1'?'Y':'N';
+                $oSurvey->anonymized =  $this->_filterEmptyFields($oSurvey,'anonymized');
+                $oSurvey->savetimings =  $this->_filterEmptyFields($oSurvey,'savetimings');
+                $oSurvey->datestamp =  $this->_filterEmptyFields($oSurvey,'datestamp');
+                $oSurvey->ipaddr =  $this->_filterEmptyFields($oSurvey,'ipaddr');
+                $oSurvey->refurl =  $this->_filterEmptyFields($oSurvey,'refurl');
             }
-            $oSurvey->publicgraphs = App()->request->getPost('publicgraphs')=='1'?'Y':'N';
-            $oSurvey->usecookie = App()->request->getPost('usecookie')=='1'?'Y':'N';
-            $oSurvey->allowregister = App()->request->getPost('allowregister')=='1'?'Y':'N';
-            $oSurvey->allowsave = App()->request->getPost('allowsave')=='1'?'Y':'N';
-            $oSurvey->navigationdelay = App()->request->getPost('navigationdelay');
-            $oSurvey->printanswers = App()->request->getPost('printanswers')=='1'?'Y':'N';
-            $oSurvey->publicstatistics = App()->request->getPost('publicstatistics')=='1'?'Y':'N';
-            $oSurvey->autoredirect = App()->request->getPost('autoredirect')=='1'?'Y':'N';
-            $oSurvey->showxquestions = App()->request->getPost('showxquestions')=='1'?'Y':'N';
-            $oSurvey->showgroupinfo = App()->request->getPost('showgroupinfo');
-            $oSurvey->showqnumcode = App()->request->getPost('showqnumcode');
-            $oSurvey->shownoanswer = App()->request->getPost('shownoanswer')=='1'?'Y':'N';
-            $oSurvey->showwelcome = App()->request->getPost('showwelcome')=='1'?'Y':'N';
-            $oSurvey->allowprev = App()->request->getPost('allowprev')=='1'?'Y':'N';
-            $oSurvey->questionindex = App()->request->getPost('questionindex');
-            $oSurvey->nokeyboard = App()->request->getPost('nokeyboard')=='1'?'Y':'N';
-            $oSurvey->showprogress = App()->request->getPost('showprogress')=='1'?'Y':'N';
-            $oSurvey->listpublic = App()->request->getPost('listpublic')=='1'?'Y':'N';
-            $oSurvey->htmlemail = App()->request->getPost('htmlemail')=='1'?'Y':'N';
-            $oSurvey->sendconfirmation = App()->request->getPost('sendconfirmation')=='1'?'Y':'N';
-            $oSurvey->tokenanswerspersistence = App()->request->getPost('tokenanswerspersistence')=='1'?'Y':'N';
-            $oSurvey->alloweditaftercompletion = App()->request->getPost('alloweditaftercompletion')=='1'?'Y':'N';
+
+            $oSurvey->publicgraphs = $this->_filterEmptyFields($oSurvey,'publicgraphs');
+            $oSurvey->usecookie = $this->_filterEmptyFields($oSurvey,'usecookie');
+            $oSurvey->allowregister = $this->_filterEmptyFields($oSurvey,'allowregister');
+            $oSurvey->allowsave = $this->_filterEmptyFields($oSurvey,'allowsave');
+            $oSurvey->navigationdelay = $this->_filterEmptyFields($oSurvey,'navigationdelay');
+            $oSurvey->printanswers = $this->_filterEmptyFields($oSurvey,'printanswers');
+            $oSurvey->publicstatistics = $this->_filterEmptyFields($oSurvey,'publicstatistics');
+            $oSurvey->autoredirect = $this->_filterEmptyFields($oSurvey,'autoredirect');
+            $oSurvey->showxquestions = $this->_filterEmptyFields($oSurvey,'showxquestions');
+            $oSurvey->showgroupinfo = $this->_filterEmptyFields($oSurvey,'showgroupinfo');
+            $oSurvey->showqnumcode = $this->_filterEmptyFields($oSurvey,'showqnumcode');
+            $oSurvey->shownoanswer = $this->_filterEmptyFields($oSurvey,'shownoanswer');
+            $oSurvey->showwelcome = $this->_filterEmptyFields($oSurvey,'showwelcome');
+            $oSurvey->allowprev = $this->_filterEmptyFields($oSurvey,'allowprev');
+            $oSurvey->questionindex = $this->_filterEmptyFields($oSurvey,'questionindex');
+            $oSurvey->nokeyboard = $this->_filterEmptyFields($oSurvey,'nokeyboard');
+            $oSurvey->showprogress = $this->_filterEmptyFields($oSurvey,'showprogress');
+            $oSurvey->listpublic = $this->_filterEmptyFields($oSurvey,'listpublic');
+            $oSurvey->htmlemail = $this->_filterEmptyFields($oSurvey,'htmlemail');
+            $oSurvey->sendconfirmation = $this->_filterEmptyFields($oSurvey,'sendconfirmation');
+            $oSurvey->tokenanswerspersistence = $this->_filterEmptyFields($oSurvey,'tokenanswerspersistence');
+            $oSurvey->alloweditaftercompletion = $this->_filterEmptyFields($oSurvey,'alloweditaftercompletion');
             $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
-            $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
-            $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
-            $oSurvey->googleanalyticsapikeysetting = App()->request->getPost('googleanalyticsapikeysetting');
+            $oSurvey->emailresponseto = $this->_filterEmptyFields($oSurvey,'emailresponseto');
+            $oSurvey->emailnotificationto = $this->_filterEmptyFields($oSurvey,'emailnotificationto');
+            $oSurvey->googleanalyticsapikeysetting = $this->_filterEmptyFields($oSurvey,'googleanalyticsapikeysetting');
             if( $oSurvey->googleanalyticsapikeysetting == "Y")
             {
-                $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+                $oSurvey->googleanalyticsapikey = $this->_filterEmptyFields($oSurvey,'googleanalyticsapikey');
             }
             else if( $oSurvey->googleanalyticsapikeysetting == "G")
             {
@@ -1021,10 +1084,13 @@ class database extends Survey_Common_Action
                 $oSurvey->googleanalyticsapikey = "";
             }
 
-            $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
-            $oSurvey->tokenlength = (App()->request->getPost('tokenlength')<5  || App()->request->getPost('tokenlength')>36)?15:App()->request->getPost('tokenlength');
-            $oSurvey->adminemail = App()->request->getPost('adminemail');
-            $oSurvey->bounce_email = App()->request->getPost('bounce_email');
+            $oSurvey->googleanalyticsstyle = $this->_filterEmptyFields($oSurvey,'googleanalyticsstyle');
+            
+            $tokenlength = $this->_filterEmptyFields($oSurvey,'tokenlength');
+            $oSurvey->tokenlength = ($tokenlength <5  || $tokenlength>36) ? 15 : $tokenlength;
+
+            $oSurvey->adminemail = $this->_filterEmptyFields($oSurvey,'adminemail');
+            $oSurvey->bounce_email = $this->_filterEmptyFields($oSurvey,'bounce_email');
 
             $event = new PluginEvent('beforeSurveySettingsSave');
             $event->set('modifiedSurvey', $oSurvey);
@@ -1040,6 +1106,7 @@ class database extends Survey_Common_Action
                 tracevar($oSurvey->getErrors());
             }
         }
+
         /* Reload $oSurvey (language are fixed : need it ?) */
         $oSurvey=Survey::model()->findByPk($iSurveyID);
 
@@ -1079,7 +1146,7 @@ class database extends Survey_Common_Action
         // Url params in json
         $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'),true);
         SurveyURLParameter::model()->deleteAllByAttributes(array('sid'=>$iSurveyID));
-        if(isset($aURLParams))
+        if(!empty($aURLParams))
         {
             foreach($aURLParams as $aURLParam)
             {
@@ -1107,11 +1174,73 @@ class database extends Survey_Common_Action
             }
         }
 
-        ////////////////////////////////////////
-        if(Yii::app()->request->getPost('close-after-save') === 'true'){
-            $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+        if(Yii::app()->request->getPost('responsejson',0) == 1)
+        {
+
+            $updatedFields = $this->updatedFields;
+            $this->updatedFields = [];
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success' => true,
+                        'updated'=> $updatedFields,
+                        'DEBUG' => [$_POST,$oSurvey->attributes]
+                    ],
+                ),
+                false,
+                false
+            );
+        }  
+        else 
+        {
+            ////////////////////////////////////////
+            if(Yii::app()->request->getPost('close-after-save') === 'true'){
+                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/'.$iSurveyID));
+            }
+
+            $referrer = Yii::app()->request->urlReferrer;
+            if($referrer)
+            {
+                $this->getController()->redirect(array($referrer));
+            } 
+            else 
+            {
+                $this->getController()->redirect(array('/admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
+            }
         }
-        $this->getController()->redirect(array('/admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID));
+
+    }
+
+    private function _filterEmptyFields(&$oSurvey, $fieldArrayName, $newValue=null){
+        if($newValue === null)
+        {
+            $newValue = App()->request->getPost($fieldArrayName, '');
+        }
+
+        $newValue = trim($newValue);
+
+        if(empty($newValue))
+        {
+            $newValue = $oSurvey->{$fieldArrayName};
+
+        } 
+        else 
+        {
+            $this->updatedFields[] = $fieldArrayName;
+        }
+
+        $options = $this->updateableFields[$fieldArrayName];
+        switch($options['type']){
+            case 'yesno':
+                if($newValue != 'Y' || $newValue != 'N')
+                    $newValue = $newValue=='1' ? 'Y' : 'N';
+            break;
+            case 'Int' : 
+                $newValue = (int) $newValue;
+        }  
+
+        return $newValue;
     }
 
     /**

@@ -60,7 +60,7 @@ class CAssetManager extends CApplicationComponent
 	 *
 	 * @since 1.1.5
 	 */
-	public $linkAssets=false;
+	public $linkAssets=true;
 	/**
 	 * @var array list of directories and files which should be excluded from the publishing process.
 	 * Defaults to exclude '.svn' and '.gitignore' files only. This option has no effect if {@link linkAssets} is enabled.

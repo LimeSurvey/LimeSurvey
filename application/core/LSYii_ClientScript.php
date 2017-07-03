@@ -199,4 +199,61 @@ class LSYii_ClientScript extends CClientScript {
 
         return array('toPublish'=>($sType=='toPublish'), 'sPathToFile' => $sPath );
     }
+
+
+	/**
+	 * Renders the specified core javascript library.
+	 */
+	public function renderCoreScripts()
+	{
+		if($this->coreScripts===null)
+			return;
+		$cssFiles=array();
+		$jsFiles=array();
+		$jsFilesPositioned=array();
+		foreach($this->coreScripts as $name=>$package)
+		{
+			$baseUrl=$this->getPackageBaseUrl($name);
+			if(!empty($package['js']))
+			{
+				foreach($package['js'] as $js){
+					if(isset($package['position'])){
+                        $jsFilesPositioned[$package['position']][$baseUrl.'/'.$js]=$baseUrl.'/'.$js;
+                    } else {
+                        $jsFiles[$baseUrl.'/'.$js]=$baseUrl.'/'.$js;
+                    }
+                }
+			}
+			if(!empty($package['css']))
+			{
+				foreach($package['css'] as $css)
+					$cssFiles[$baseUrl.'/'.$css]='';
+			}
+		}
+		// merge in place
+		if($cssFiles!==array())
+		{
+			foreach($this->cssFiles as $cssFile=>$media)
+				$cssFiles[$cssFile]=$media;
+			$this->cssFiles=$cssFiles;
+		}
+		if($jsFiles!==array())
+		{
+			if(isset($this->scriptFiles[$this->coreScriptPosition]))
+			{
+				foreach($this->scriptFiles[$this->coreScriptPosition] as $url => $value)
+					$jsFiles[$url]=$value;
+			}
+			$this->scriptFiles[$this->coreScriptPosition]=$jsFiles;
+		}
+		if($jsFilesPositioned!==array())
+		{
+            foreach($jsFilesPositioned as $position=>$fileArray){
+    			if(isset($this->scriptFiles[$position]))
+                    foreach($this->scriptFiles[$position] as $url => $value)
+					    $fileArray[$url]=$value;
+			    $this->scriptFiles[$position]=$fileArray;
+            }
+		}
+	}
 }

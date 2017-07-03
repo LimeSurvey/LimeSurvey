@@ -10,7 +10,7 @@
                 <!-- Display tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/tokens/sa/browse/surveyid/$surveyid"); ?>' role="button">
-                        <span class="glyphicon glyphicon-list-alt text-success"></span>
+                        <span class="fa fa-list-alt text-success"></span>
                         <?php eT("Display participants"); ?>
                     </a>
                 <?php endif; ?>
@@ -210,14 +210,14 @@
             <?php if(isset($token_bar['savebutton']['form'])):?>
 
                 <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
-                    <span class="glyphicon glyphicon-ok" ></span>
+                    <span class="fa fa-ok" ></span>
                     <?php eT("Save");?>
                 </a>
             <?php endif;?>
 
             <?php if(isset($token_bar['exportbutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="glyphicon glyphicon glyphicon-export" ></span>
+                    <span class="fa fa fa-export" ></span>
                        <?php eT("Download CSV file"); ?>
                 </a>
             <?php endif;?>
@@ -225,7 +225,7 @@
             <!-- Close -->
             <?php if(isset($token_bar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $token_bar['closebutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-close" ></span>
+                    <span class="fa fa-close" ></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
@@ -233,7 +233,7 @@
             <!-- Return -->
             <?php if(isset($token_bar['returnbutton'])):?>
                 <a class="btn btn-default" href="<?php echo $token_bar['returnbutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-step-backward" ></span>
+                    <span class="fa fa-step-backward" ></span>
                     <?php echo $token_bar['returnbutton']['text'];?>
                 </a>
             <?php endif;?>

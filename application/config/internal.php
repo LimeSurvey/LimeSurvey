@@ -65,11 +65,10 @@ $internalConfig = array(
 
     'modules'=>array(
             'gii'=>array(
-                //'class'=>'system.gii.GiiModule',
-                //'password'=>'toto',
-                // 'ipFilters'=>array(...a list of IPs...),
-                // 'newFileMode'=>0666,
-                // 'newDirMode'=>0777,
+                'class'=>'system.gii.GiiModule',
+                'password'=>'toto',
+                 'newFileMode'=>0666,
+                 'newDirMode'=>0777,
             ),
         ),
 

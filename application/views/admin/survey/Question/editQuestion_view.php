@@ -92,7 +92,7 @@
                             <div class="panel-heading" role="tab" id="heading-copy">
                                 <h4 class="panel-title">
                                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                        <span class="fa fa-chevron-left"></span>
                                     </a>
                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-copy" aria-expanded="false" aria-controls="collapse-copy">
                                         <?php eT("Copy options"); ?>
@@ -149,7 +149,7 @@
                         <div class="panel-heading" role="tab" id="headingOne">
                             <h4 class="panel-title">
                                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    <span class="fa fa-chevron-left"></span>
                                 </a>
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
                                     <?php eT("General options");?>
@@ -311,7 +311,7 @@
                     </div>
                     <?php if (!$copying): ?>
                     <div class="loader-advancedquestionsettings text-center">
-                        <span class="glyphicon glyphicon-refresh" style="font-size:3em;" aria-hidden='true'></span>
+                        <span class="fa fa-refresh" style="font-size:3em;" aria-hidden='true'></span>
                     </div>
                         <!-- Advanced settings -->
                     <?php endif; ?>

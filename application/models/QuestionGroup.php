@@ -277,21 +277,21 @@ class QuestionGroup extends LSActiveRecord
         // Add question to this group
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$this->sid/gid/$this->gid");
-            $button .= '<a class="btn btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-plus-sign " ></span></a>';
+            $button .= '<a class="btn btn-default list-btn ' . ($surveyIsActive ? 'disabled' : '') . ' "  data-toggle="tooltip"  data-placement="left" title="'.gT('Add new question to group').'" href="'.$url.'" role="button"><span class="fa fa-plus-sign " ></span></a>';
         }
 
         // Group edition
         // Edit
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update')) {
             $url = Yii::app()->createUrl("admin/questiongroups/sa/edit/surveyid/$this->sid/gid/$this->gid");
-            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="glyphicon glyphicon-pencil " ></span></a>';
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Edit group').'"><span class="fa fa-pencil " ></span></a>';
         }
 
         // View summary
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'read')) {
             $url = Yii::app()->createUrl("/admin/questiongroups/sa/view/surveyid/");
             $url .= '/'.$this->sid.'/gid/'.$this->gid;
-            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="glyphicon glyphicon-list-alt " ></span></a>';
+            $button .= '  <a class="btn btn-default  list-btn" href="'.$url.'" role="button" data-toggle="tooltip" title="'.gT('Group summary').'"><span class="fa fa-list-alt " ></span></a>';
         }
 
         // Delete
@@ -301,14 +301,14 @@ class QuestionGroup extends LSActiveRecord
                 $confirm = 'if (confirm(\''.gT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js").'\')) { window.open(\''.Yii::app()->createUrl("admin/questiongroups/sa/delete/surveyid/$this->sid/gid/$this->gid").'\',\'_top\'); };';
                 $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
                 onclick="'.$confirm.'">
-                <span class="text-danger glyphicon glyphicon-trash"></span>
+                <span class="text-danger fa fa-trash"></span>
                 </a>';
             }
             else {
                 $alert = 'alert(\''.gT("Impossible to delete this group because there is at least one question having a condition on its content","js").'\'); return false;';
                 $button .= '<a class="btn btn-default"  data-toggle="tooltip" title="'.gT("Delete").'" href="#" role="button"
                 onclick="'.$alert.'">
-                <span class="text-danger glyphicon glyphicon-trash"></span>
+                <span class="text-danger fa fa-trash"></span>
                 </a>';
             }
         }

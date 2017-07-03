@@ -254,12 +254,12 @@ class UserGroup extends LSActiveRecord {
 
         // View users
         $url = Yii::app()->createUrl("admin/usergroups/sa/view/ugid/$this->ugid");
-        $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View users').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+        $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View users').'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
 
         // Edit user group
         if(Permission::model()->hasGlobalPermission('usergroups','update')) {
             $url = Yii::app()->createUrl("admin/usergroups/sa/edit/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit user group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit user group').'" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
         }
 
         // Mail to user group
@@ -270,7 +270,7 @@ class UserGroup extends LSActiveRecord {
         // Delete user group
         if(Permission::model()->hasGlobalPermission('usergroups','delete')) {
             $url = Yii::app()->createUrl("admin/usergroups/sa/delete/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete user group').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this user group?').'"><span class="glyphicon glyphicon-trash text-warning"></span></a>';
+            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete user group').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this user group?').'"><span class="fa fa-trash text-warning"></span></a>';
         }
 
         return $button;

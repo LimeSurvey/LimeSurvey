@@ -267,24 +267,24 @@ class SurveyDynamic extends LSActiveRecord
         $button       = "";
 
         // View detail icon
-        $button .= '<a class="btn btn-default btn-xs" href="'.$sViewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+        $button .= '<a class="btn btn-default btn-xs" href="'.$sViewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="fa fa-list-alt" ></span></a>';
 
         // Edit icon
         if (Permission::model()->hasSurveyPermission(self::$sid,'responses','update')) {
-            $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Edit this response").'"><span class="glyphicon glyphicon-pencil text-success" ></span></a>';
+            $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Edit this response").'"><span class="fa fa-pencil text-success" ></span></a>';
         }
 
         // Download icon
         if (hasFileUploadQuestion(self::$sid)) {
             if (Response::model(self::$sid)->findByPk($this->id)->getFiles()) {
-                $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
+                $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><span class="fa fa-download-alt downloadfile text-success" ></span></a>';
             }
         }
 
         // Delete icon
         if (Permission::model()->hasSurveyPermission(self::$sid,'responses','delete')) {
             $aPostDatas = json_encode(array('sResponseId'=>$this->id));
-            $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='". sprintf(gT('Delete response %s'),$this->id)."'><span class='glyphicon glyphicon-trash text-danger' ></span></a>";
+            $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='". sprintf(gT('Delete response %s'),$this->id)."'><span class='fa fa-trash text-danger' ></span></a>";
         }
 
         return $button;
@@ -516,7 +516,7 @@ class SurveyDynamic extends LSActiveRecord
     public function getTokenForGrid()
     {
         if(is_object($this->tokens) && ! is_null($this->tokens->tid) ) {
-            $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='".self::$sid."' data-tid='".$this->tokens->tid."'  data-url='".App()->createUrl("admin/tokens",array("sa"=>"edit","iSurveyId"=>self::$sid,"iTokenId"=>$this->tokens->tid, 'ajax'=>'true'))."' data-toggle='tooltip' title='".gT("Edit this survey participant")."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-pencil'></span></a>";
+            $sToken = "<a class='btn btn-default btn-xs edit-token' href='#' data-sid='".self::$sid."' data-tid='".$this->tokens->tid."'  data-url='".App()->createUrl("admin/tokens",array("sa"=>"edit","iSurveyId"=>self::$sid,"iTokenId"=>$this->tokens->tid, 'ajax'=>'true'))."' data-toggle='tooltip' title='".gT("Edit this survey participant")."'>".strip_tags($this->token)."&nbsp;&nbsp;&nbsp;<span class='fa fa-pencil'></span></a>";
         } else {
             $sToken = '<span class="badge badge-success">'.strip_tags($this->token).'</span>';
         }

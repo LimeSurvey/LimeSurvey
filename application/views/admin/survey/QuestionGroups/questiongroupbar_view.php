@@ -111,14 +111,14 @@
 
                             <!-- can delete group and question -->
                             <a class="btn btn-default" onclick="if (confirm('<?php eT("Deleting this group will also delete any questions and answers it contains. Are you sure you want to continue?","js"); ?>')) { window.open('<?php echo $this->createUrl("admin/questiongroups/sa/delete/surveyid/$surveyid/gid/$gid"); ?>','_top'); }" role="button">
-                                <span class="glyphicon glyphicon-trash"></span>
+                                <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>
                             </a>
                         <?php else: ?>
 
                             <!-- there is at least one question having a condition on its content -->
                             <a href='<?php echo $this->createUrl("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$gid"); ?>'  class="btn btn-default" onclick="alert('<?php eT("Impossible to delete this group because there is at least one question having a condition on its content","js"); ?>'); return false;">
-                                <span class="glyphicon glyphicon-trash"></span>
+                                <span class="fa fa-trash"></span>
                                 <?php eT("Delete current question group"); ?>
                             </a>
                         <?php endif; ?>
@@ -126,7 +126,7 @@
 
                         <!-- Activated -->
                         <button type="button" class="btn btn-default btntooltip readonly" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete this question group because the survey is currently active."); ?>" >
-                            <span class="glyphicon glyphicon-trash"></span>
+                            <span class="fa fa-trash"></span>
                             <?php eT("Delete current question group"); ?>
                         </button>
                     <?php endif; ?>
@@ -244,7 +244,7 @@
             <?php if(isset($questiongroupbar['savebutton']['form'])):?>
                 <?php if(!isset($copying) || !$copying): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="fa fa-ok"></span>
                     <?php eT("Save");?>
                 </a>
             <?php endif; ?>
@@ -252,7 +252,7 @@
             <!-- Save and close -->
             <?php if(isset($questiongroupbar['saveandclosebutton'])):?>
                 <a id="save-and-close-button" class="btn btn-default" role="button">
-                    <span class="glyphicon glyphicon-saved"></span>
+                    <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
             <?php endif; ?>
@@ -261,7 +261,7 @@
             <!-- Close -->
             <?php if(isset($questiongroupbar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $questiongroupbar['closebutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-close"></span>
+                    <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
@@ -269,7 +269,7 @@
             <!-- return -->
             <?php if(isset($questiongroupbar['returnbutton']['url'])):?>
                 <a class="btn btn-default" href="<?php echo $questiongroupbar['returnbutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-step-backward"></span>
+                    <span class="fa fa-step-backward"></span>
                     <?php echo $questiongroupbar['returnbutton']['text'];?>
                 </a>
             <?php endif;?>

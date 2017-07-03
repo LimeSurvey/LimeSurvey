@@ -271,7 +271,7 @@
                                   <!-- Delete survey -->
                                   <li>
                                       <a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"); ?>">
-                                        <span class="glyphicon glyphicon-trash" ></span>
+                                        <span class="fa fa-trash" ></span>
                                         <?php eT("Delete survey");?>
                                       </a>
                                   </li>
@@ -466,7 +466,7 @@
                                   <!-- Printable version -->
                                   <li>
                                       <a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
-                                          <span class="glyphicon glyphicon-print"></span>
+                                          <span class="fa fa-print"></span>
                                           <?php eT("Printable survey");?>
                                       </a>
                                   </li>
@@ -478,7 +478,7 @@
                                       <?php foreach ($languagelist as $tmp_lang): ?>
                                           <li>
                                               <a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid/lang/$tmp_lang");?>'>
-                                                  <span class="glyphicon glyphicon-print"></span>
+                                                  <span class="fa fa-print"></span>
                                                   <?php echo getLanguageNameFromCode($tmp_lang,false);?>
                                               </a>
                                           </li>
@@ -491,7 +491,7 @@
                 <!-- Token -->
                 <?php if($tokenmanagement):?>
                     <a class="btn btn-default  btntooltip hidden-xs" href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>" role="button">
-                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="fa fa-user"></span>
                         <?php eT("Survey participants");?>
                     </a>
                 <?php endif; ?>
@@ -593,13 +593,13 @@
                     <!-- List Groups -->
                         <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
                         <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
-                            <span class="glyphicon glyphicon-list"></span>
+                            <span class="fa fa-list"></span>
                             <?php eT("List question groups");?>
                         </a>
 
                     <!-- List Questions -->
                         <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
-                            <span class="glyphicon glyphicon-list"></span>
+                            <span class="fa fa-list"></span>
                             <?php eT("List questions");?>
                         </a>
                 <?php endif; ?>
@@ -627,7 +627,7 @@
 
                 <!-- Save -->
                 <a class="btn btn-success" href="#" role="button" id="save-button" >
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="fa fa-ok"></span>
                     <?php if(isset($surveybar['savebutton']['text']))
                     {
                         echo $surveybar['savebutton']['text'];
@@ -640,7 +640,7 @@
                 <!-- Save and close -->
                 <?php if(isset($surveybar['saveandclosebutton'])):?>
                     <a class="btn btn-default" href="#" role="button" id='save-and-close-button'>
-                        <span class="glyphicon glyphicon-saved"></span>
+                        <span class="fa fa-saved"></span>
                         <?php eT("Save and close");?>
                     </a>
                 <?php endif; ?>
@@ -649,7 +649,7 @@
             <!-- Close -->
             <?php if(isset($surveybar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $surveybar['closebutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-close"></span>
+                    <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
