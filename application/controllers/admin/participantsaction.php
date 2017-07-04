@@ -1850,14 +1850,14 @@ class participantsaction extends Survey_Common_Action
                 if ($iShareUserId != 0) {
                     /** @var User $oUser */
                     $oUser = User::model()->findByPk($iShareUserId);
-                    $sSharename = $oUser->users_name;
+                    $sSharename = $oUser->full_name;
                 } else {
                     $sSharename = 'All users';
                 }
                 /** @var User $owner */
                 $owner = User::model()->findByPk($row['owner_uid']);
                 $aData->rows[$i]['id'] = $row['participant_id']."--".$row['share_uid']; //This is the unique combination per record
-                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $owner->users_name, $row['date_added'], $row['can_edit']);
+                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $owner->full_name, $row['date_added'], $row['can_edit']);
                 $i++;
             }
 
@@ -1875,7 +1875,7 @@ class participantsaction extends Survey_Common_Action
                 if ($iShareUserId != 0) {
                     /** @var User $oUser */
                     $oUser = User::model()->findByPk($iShareUserId);
-                    $sSharename = $oUser->users_name;
+                    $sSharename = $oUser->full_name;
                 } else {
                     $sSharename = 'All users';
                 }
