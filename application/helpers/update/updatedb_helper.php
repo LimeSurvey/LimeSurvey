@@ -1683,9 +1683,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * Survey menue table
          * @since 2017-07-03
          */
-        if ($iOldDBVersion < 292) {
+        if ($iOldDBVersion < 293) {
             $oTransaction = $oDB->beginTransaction();
-            createSurveyMenuTable293($oDb);
+            createSurveyMenuTable293($oDB);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>293),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -1716,14 +1716,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     $superadmins = User::model()->getSuperAdmins();
     Notification::broadcast(array(
         'title' => gT('Database update'),
-        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '292')
+        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '293')
     ), $superadmins);
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);
     return true;
 }
 
-function createSurveyMenuTable293(&$oDB){
+function createSurveyMenuTable293($oDB) {
     $oDB->createCommand()->createTable('{{surveymenu}}', array(
         "id" => "int(11) NOT NULL ",
         "parent_id" => "int(11) DEFAULT NULL",
@@ -1736,12 +1736,28 @@ function createSurveyMenuTable293(&$oDB){
         "changed_by" => "int(11) NOT NULL DEFAULT '0'",
         "created_at" => "timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'",
         "created_by" => "int(11) NOT NULL DEFAULT '0'",
-        'PRIMARY KEY ("id")',
+        'PRIMARY KEY (`id`)',
         'KEY `parent_id` (`parent_id`)',
         'KEY `order` (`order`)',
         'KEY `title` (`title`(250))'
     ));
-    $oDB->createCommand()->insert('{{surveymenu}}', array(1,NULL,NULL,0,0,'surveymenu','Main survey menu',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0));    
+
+    $oDB->createCommand()->insert(
+        '{{surveymenu}}',
+        array(
+            'id' => 1,
+            'parent_id' => NULL,
+            'survey_id' => NULL,
+            'order' => 0,
+            'level' => 0,
+            'title' => 'surveymenu',
+            'description' => 'Main survey menu',
+            'changed_at' => date('Y-m-d H:i:s'),
+            'changed_by' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => 0
+        )
+    );
     
     $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
         "id" => "int(11) NOT NULL ",
