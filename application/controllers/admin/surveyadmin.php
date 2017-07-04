@@ -448,8 +448,8 @@ class SurveyAdmin extends Survey_Common_Action
                     if(is_object($question))
                     {
                         $curQuestion = $question->attributes;
-                        $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid', $question->qid]);
-                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question,true,60,'[...]',0.5);
+                        $curQuestion['link'] = $this->getController()->createUrl("admin/questions/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
+                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question,true,20,'[...]',1);
                         $curGroup['questions'][] =  $curQuestion;
                     }
                 

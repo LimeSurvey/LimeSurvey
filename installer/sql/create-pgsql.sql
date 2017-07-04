@@ -561,7 +561,7 @@ CREATE TABLE prefix_templates (
 
 CREATE TABLE prefix_boxes (
   "id" SERIAL,
-  "position" int DEFAULT NULL ,
+  "position" integer DEFAULT NULL ,
   "url" text NOT NULL ,
   "title" text NOT NULL ,
   "ico" text DEFAULT NULL,
@@ -632,7 +632,103 @@ CREATE TABLE prefix_settings_user (
     CONSTRAINT prefix_user_settings_pkey PRIMARY KEY (uid, entity, entity_id, stg_name)
 );
 
+
+--
+-- Surveymenu
+-- 
+
+CREATE TABLE prefix_surveymenu (
+  "id" integer NOT NULL,
+  "parent_id" integer DEFAULT NULL,
+  "survey_id" integer DEFAULT NULL,
+  "order" integer DEFAULT '0',
+  "level" integer DEFAULT '0',
+  "title" character varying(255)  NOT NULL DEFAULT '',
+  "description" text ,
+  "changed_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "changed_by" integer NOT NULL DEFAULT '0',
+  "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "created_by" integer NOT NULL DEFAULT '0',
+  PRIMARY KEY ("id")
+);
+
+create index parent_id_index on prefix_surveymenu (parent_id);
+create index order_index on prefix_surveymenu ("order");
+create index title_index on prefix_surveymenu (title);
+
+
+INSERT INTO prefix_surveymenu VALUES (1,NULL,NULL,0,0,'surveymenu','Main survey menu',NOW(),0,NOW(),0);
+
+CREATE TABLE prefix_surveymenu_entries (
+  "id" integer NOT NULL ,
+  "menu_id" integer DEFAULT NULL,
+  "order" integer DEFAULT '0',
+  "name" character varying(255)  NOT NULL DEFAULT '',
+  "title" character varying(255)  NOT NULL DEFAULT '',
+  "menu_title" character varying(255)  NOT NULL DEFAULT '',
+  "menu_description" text ,
+  "menu_icon" character varying(255)  NOT NULL DEFAULT '',
+  "menu_icon_type" character varying(255)  NOT NULL DEFAULT '',
+  "menu_class" character varying(255)  NOT NULL DEFAULT '',
+  "menu_link" character varying(255)  NOT NULL DEFAULT '',
+  "action" character varying(255)  NOT NULL DEFAULT '',
+  "template" character varying(255)  NOT NULL DEFAULT '',
+  "partial" character varying(255)  NOT NULL DEFAULT '',
+  "classes" character varying(255)  NOT NULL DEFAULT '',
+  "permission" character varying(255)  NOT NULL DEFAULT '',
+  "permission_grade" character varying(255)  DEFAULT NULL,
+  "data" text ,
+  "getdatamethod" character varying(255)  NOT NULL DEFAULT '',
+  "language" character varying(255)  NOT NULL DEFAULT 'en-GB',
+  "changed_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "changed_by" integer NOT NULL DEFAULT '0',
+  "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "created_by" integer NOT NULL DEFAULT '0',
+  PRIMARY KEY (id),
+  FOREIGN KEY (menu_id) REFERENCES  prefix_surveymenu (id) ON DELETE CASCADE
+);
+
+create index order_index on prefix_surveymenu_entries ("order");
+create index title_index on prefix_surveymenu_entries (title);
+create index menu_title_index on prefix_surveymenu_entries (menu_title);
+
+INSERT INTO prefix_surveymenu_entries VALUES 
+(1,1,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','',NULL,'','en-GB',NOW(),0,NOW(),0),
+(2,1,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',NOW(),0,NOW(),0),
+(3,1,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',NOW(),0,NOW(),0),
+(4,1,4,'presentation','Presentation &amp; navigation settings','Presentation','Edit presentation and navigation settings','eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',NOW(),0,NOW(),0),
+(5,1,5,'publication','Publication and access control settings','Publication &amp; access','Edit settings for publicationa and access control','key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',NOW(),0,NOW(),0),
+(6,1,6,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(7,1,7,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',NOW(),0,NOW(),0),
+(8,1,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(9,1,9,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(10,1,10,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',NOW(),0,NOW(),0),
+(11,1,11,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(12,1,12,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',NOW(),0,NOW(),0),
+(13,1,13,'ressources','Add/Edit ressources to the survey','Ressources','Add/Edit ressources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',NOW(),0,NOW(),0);
+
+CREATE OR REPLACE FUNCTION upd_timestamp() RETURNS TRIGGER 
+LANGUAGE plpgsql
+AS
+$$
+BEGIN
+    NEW.changed_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER update_timestamp_menues
+  BEFORE UPDATE
+  ON prefix_surveymenu
+  FOR EACH ROW
+  EXECUTE PROCEDURE upd_timestamp();
+CREATE TRIGGER update_timestamp_menue_entries
+  BEFORE UPDATE
+  ON prefix_surveymenu_entries
+  FOR EACH ROW
+  EXECUTE PROCEDURE upd_timestamp();
+
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '292');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '293');
