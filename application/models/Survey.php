@@ -22,46 +22,46 @@ use \ls\pluginmanager\PluginEvent;
  *
  * @property integer $sid Survey ID
  * @property integer $owner_id
- * @property string $admin
- * @property string $active
- * @property string $expires Expiry date
- * @property string $startdate
- * @property string $adminemail
- * @property string $anonymized
+ * @property string $admin Survey Admin's full name
+ * @property string $active Whether survey is acive or not (Y/N)
+ * @property string $expires Expiry date (YYYY-MM-DD hh:mm:ss)
+ * @property string $startdate Survey Start date (YYYY-MM-DD hh:mm:ss)
+ * @property string $adminemail Survey administrator email address
+ * @property string $anonymized Whether survey is anonymized or not (Y/N)
  * @property string $faxto
  * @property string $format A : All in one, G : Group by group, Q : question by question
- * @property string $savetimings
+ * @property string $savetimings Whether survey timings are saved (Y/N)
  * @property string $template Template name
- * @property string $language
- * @property string $additional_languages
- * @property string $datestamp
- * @property string $usecookie
- * @property string $allowsave
+ * @property string $language Survey base language
+ * @property string $additional_languages Survey additional languages delimited by space ' '
+ * @property string $datestamp Whether respondents' datestamps will be saved (Y/N)
+ * @property string $usecookie Are cookies used to prevent repeated participation (Y/N)
+ * @property string $allowsave Is participant allowed save and resume later (Y/N)
  * @property integer $autonumber_start
- * @property integer $tokenlength
- * @property string $autoredirect
- * @property string $allowprev
- * @property string $printanswers
- * @property string $ipaddr
- * @property string $refurl
- * @property string $datecreated
- * @property string $publicstatistics
- * @property string $publicgraphs
- * @property string $listpublic
- * @property string $htmlemail Y mean all email related to this survey use HTML format
- * @property string $sendconfirmation
- * @property string $tokenanswerspersistence
- * @property string $assessments
+ * @property integer $tokenlength Token length: MIN:5 MAX:36
+ * @property string $autoredirect Automatically load URL when survey complete: (Y/N)
+ * @property string $allowprev Allow backwards navigation (Y/N)
+ * @property string $printanswers Participants may print answers: (Y/N)
+ * @property string $ipaddr Whether Participants IP address will be saved: (Y/N)
+ * @property string $refurl Save referrer URL: (Y/N)
+ * @property string $datecreated Date survey was created (YYYY-MM-DD hh:mm:ss)
+ * @property string $publicstatistics Public statistics: (Y/N)
+ * @property string $publicgraphs Show graphs in public statistics: (Y/N)
+ * @property string $listpublic List survey publicly: (Y/N)
+ * @property string $htmlemail Use HTML format for token emails: (Y/N)
+ * @property string $sendconfirmation Send confirmation emails:(Y/N)
+ * @property string $tokenanswerspersistence Enable token-based response persistence: (Y/N)
+ * @property string $assessments Enable assessment mode: (Y/N)
  * @property string $usecaptcha
  * @property string $usetokens
- * @property string $bounce_email
+ * @property string $bounce_email Bounce email address
  * @property string $attributedescriptions
- * @property string $emailresponseto
- * @property integer $emailnotificationto
- * @property string $showxquestions
- * @property string $showgroupinfo
- * @property string $shownoanswer
- * @property string $showqnumcode
+ * @property string $emailresponseto e-mail address to send detailed admin notification email to
+ * @property integer $emailnotificationto Email address to send basic admin notification email to
+ * @property string $showxquestions Show "There are X questions in this survey": (Y/N)
+ * @property string $showgroupinfo Show group name and/or group description: (Y/N)
+ * @property string $shownoanswer Show "No answer": (Y/N)
+ * @property string $showqnumcode Show question number and/or code: (Y/N)
  * @property integer $bouncetime
  * @property string $bounceprocessing
  * @property string $bounceaccounttype
@@ -69,14 +69,14 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $bounceaccountpass
  * @property string $bounceaccountencryption
  * @property string $bounceaccountuser
- * @property string $showwelcome
- * @property string $showprogress
- * @property integer $questionindex
- * @property integer $navigationdelay
- * @property string $nokeyboard
- * @property string $alloweditaftercompletion
- * @property string $googleanalyticsstyle
- * @property string $googleanalyticsapikey
+ * @property string $showwelcome Show welcome screen: (Y/N)
+ * @property string $showprogress how progress bar: (Y/N)
+ * @property integer $questionindex Show question index / allow jumping (0: diabled; 1: Incremental; 2: Full)
+ * @property integer $navigationdelay Navigation delay (seconds)
+ * @property string $nokeyboard Show on-screen keyboard: (Y/N)
+ * @property string $alloweditaftercompletion Allow multiple responses or update responses with one token: (Y/N)
+ * @property string $googleanalyticsstyle Google Analytics style: (0: off; 1:Default; 2:Survey-SID/Group)
+ * @property string $googleanalyticsapikey Google Analytics Tracking ID
  *
  * @property Permission[] $permissions
  * @property SurveyLanguageSetting[] $languagesettings
