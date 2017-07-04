@@ -258,21 +258,6 @@ class User extends LSActiveRecord
             ->queryRow();
     }
 
-    /**
-     * Returns id of user
-     *
-     * @access public
-     * @return string
-     */
-    public function getID($sUserName)
-    {
-        $oUser = User::model()->findByAttributes(array(
-            'users_name' => $sUserName
-        ));
-        if ($oUser) {
-            return $oUser->uid;
-        }
-    }
 
     /**
      * Finds user by username
