@@ -11,14 +11,14 @@
 
 <?php echo PrepareEditorScript(false, $this); $active = 1;?>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Add question group"); ?></h3>
+    <div class="pagetitle h3"><?php eT("Add question group"); ?></div>
     <div class="row">
 
         <!-- Tabs -->
         <ul class="nav nav-tabs" >
             <?php foreach ($grplangs as $grouplang): ?>
                 <li role="presentation" class="<?php if($active){ echo 'active'; $active=0; }?>">
-                    <a data-toggle="tab" href="#<?php echo $grouplang; ?>">
+                    <a role="tab" data-toggle="tab" href="#<?php echo $grouplang; ?>">
                             <?php echo getLanguageNameFromCode($grouplang,false);
                             if ($grouplang==$baselang) { ?> (<?php eT("Base language"); ?>) <?php } ?>
                     </a>

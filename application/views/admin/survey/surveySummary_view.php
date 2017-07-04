@@ -23,12 +23,12 @@ $surveyid = $surveyinfo['sid'];
 ?>
     <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
-    <h3 id="survey-action-title">
+    <div id="survey-action-title" class="h3 pagetitle">
     <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">
         <i class="fa fa-caret-down"></i>
     </button>&nbsp;&nbsp;
     <?php eT('Survey quick actions'); ?>
-    </h3>
+    </div>
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-sm-12 content-right">
 
@@ -109,6 +109,7 @@ $surveyid = $surveyinfo['sid'];
                                                 <div class="panel-body-ico">
                                                     <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
+							<span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
@@ -128,6 +129,7 @@ $surveyid = $surveyinfo['sid'];
                                                 <div class="panel-body-ico">
                                                     <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
+							<span class="sr-only"><?php eT('Add new question');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
@@ -154,6 +156,7 @@ $surveyid = $surveyinfo['sid'];
                                                 <div class="panel-body-ico">
                                                     <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
+							<span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
@@ -174,12 +177,14 @@ $surveyid = $surveyinfo['sid'];
                                                     <div class="panel-body-ico">
                                                         <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
+							    <span class="sr-only"><?php eT("You must first create a question group."); ?></span>
                                                         </a>
                                                     </div>
                                                     <div  class="panel-body-link">
                                                         <p>
                                                             <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You must first create a question group."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>" >
                                                                 <?php eT("Add new question"); ?>
+								<span class="sr-only"><?php eT("Add new question"); ?></span>
                                                             </a>
                                                         </p>
                                                     </div>
@@ -198,6 +203,7 @@ $surveyid = $surveyinfo['sid'];
                                                     <div class="panel-body-ico">
                                                         <a  href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>" >
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
+							    <span class="sr-only"><?php eT('Add question');?></span>
                                                         </a>
                                                     </div>
                                                     <div  class="panel-body-link">
@@ -224,6 +230,7 @@ $surveyid = $surveyinfo['sid'];
                                             <div class="panel-body-ico">
                                                 <a  href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>" >
                                                     <span class="icon-edit text-success"  style="font-size: 3em;"></span>
+						    <span class="sr-only"><?php eT('Edit text elements and general settings');?></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
@@ -240,6 +247,7 @@ $surveyid = $surveyinfo['sid'];
                                             <div class="panel-body-ico">
                                                 <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-toggle="tooltip" >
                                                     <span class="icon-edit text-success"  style="font-size: 3em;"></span>
+						    <span class="sr-only"><?php eT('Edit text elements and general settings');?></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
@@ -262,6 +270,7 @@ $surveyid = $surveyinfo['sid'];
                                             <div class="panel-body-ico">
                                                 <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>" >
                                                     <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
+						    <span class="sr-only"><?php eT("Statistics");?></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
@@ -284,6 +293,7 @@ $surveyid = $surveyinfo['sid'];
                                             <div class="panel-body-ico">
                                                 <a  href="#" >
                                                     <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
+						    <span class="sr-only"><?php eT("Responses & statistics");?></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
@@ -330,9 +340,9 @@ $surveyid = $surveyinfo['sid'];
 
     <div class="row">
         <!-- Survey summary -->
-        <h3 class="col-sm-12"><?php eT('Survey summary'); ?></h3>
+        <div class="col-sm-12 h3 pagetitle"><?php eT('Survey summary'); ?></div>
 
-        <h4 class="col-sm-12"><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></h4>
+        <div class="col-sm-12 h4"><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></div>
         <div class="col-sm-12 col-md-6">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
