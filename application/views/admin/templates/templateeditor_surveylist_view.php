@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var Survey[] $publicSurveys
+ */
     $outputSurveys = 0;
     $list = "<div class='surveys-list-container'>";
     $list .= "<ul class='list-unstyled surveys-list'>";
@@ -19,7 +22,7 @@
             $colClass="col-xs-12";
         }
         $surveyLine = CHtml::link(
-            $survey->localizedTitle,
+            $survey->currentLanguageSettings->surveyls_title,
             array(
                 'survey/index',
                 'sid' => $survey->sid,
@@ -63,7 +66,7 @@
                 $surveylang=App()->language;
             }
             $surveyLine = CHtml::link(
-                $survey->localizedTitle,
+                $survey->currentLanguageSettings->surveyls_title,
                 array(
                     'survey/index',
                     'sid' => $survey->sid,

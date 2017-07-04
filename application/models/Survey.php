@@ -89,6 +89,8 @@ use \ls\pluginmanager\PluginEvent;
  * @property integer $countPartialAnswers
  * @property integer $countTotalAnswers
  * @property array $surveyinfo
+ * @property string $localizedTitle Survey Title in current language
+ * @property SurveyLanguageSetting $currentLanguageSettings Survey languagesettings in currently active language
  * @property string creationDate Creation date formatted according to user format
  * @property string startDateFormatted Start date formatted according to user format
  * @property string expiryDateFormatted Expiry date formatted according to user format
@@ -147,17 +149,17 @@ class Survey extends LSActiveRecord
         );
     }
 
+
     /**
-     * Returns the title of the survey. Uses the current language and
-     * falls back to the surveys' default language if the current language is not available.
-     * @return string
+     * The Survey languagesettings in currently active language. Falls back to the surveys' default language if the current language is not available.
+     * @return SurveyLanguageSetting
      */
-    public function getLocalizedTitle()
+    public function getCurrentLanguageSettings()
     {
         if (isset($this->languagesettings[App()->language])) {
-            return $this->languagesettings[App()->language]->surveyls_title;
+            return $this->languagesettings[App()->language];
         } else {
-            return $this->languagesettings[$this->language]->surveyls_title;
+            return $this->languagesettings[$this->language];
         }
     }
 
@@ -719,7 +721,11 @@ class Survey extends LSActiveRecord
         return false;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @return Survey
+     *
+     */
     public function findByPk($pk, $condition = '', $params = array()) {
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
