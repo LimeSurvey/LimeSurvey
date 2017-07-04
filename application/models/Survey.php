@@ -20,7 +20,7 @@ use \ls\pluginmanager\PluginEvent;
 /**
  * Class Survey
  *
- * @property integer $sid primary key
+ * @property integer $sid Survey ID
  * @property integer $owner_id
  * @property string $admin
  * @property string $active
@@ -29,6 +29,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $adminemail
  * @property string $anonymized
  * @property string $faxto
+ * @property string $format A : All in one, G : Group by group, Q : question by question
  * @property string $savetimings
  * @property string $template Template name
  * @property string $language
@@ -47,6 +48,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
+ * @property string $htmlemail Y mean all email related to this survey use HTML format
  * @property string $sendconfirmation
  * @property string $tokenanswerspersistence
  * @property string $assessments
@@ -104,12 +106,7 @@ class Survey extends LSActiveRecord
      */
     protected $findByPkCache = array();
 
-    /** @var string  A : All in one, G : Group by group, Q : question by question */
-    public $format = 'G';
-    /**
-     * @property string $htmlemail Y mean all email related to this survey use HTML format
-     */
-    public $htmlemail='Y';
+
 
     // TODO unused??
     /** @var null $full_answers_account */
@@ -134,6 +131,12 @@ class Survey extends LSActiveRecord
     public function init()
     {
         /** @inheritdoc */
+
+        // Set the default values
+        $this->htmlemail = 'Y';
+        $this->format = 'G';
+
+
         $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
         $validator= new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
@@ -195,9 +198,9 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * @inheritdoc
-    * @return Survey
-    */
+     * @inheritdoc
+     * @return Survey
+     */
     public static function model($class = __CLASS__)
     {
         return parent::model($class);
@@ -225,7 +228,7 @@ class Survey extends LSActiveRecord
             'open' => array('condition' => '(startdate <= :now1 OR startdate IS NULL) AND (expires >= :now2 OR expires IS NULL)', 'params' => array(
                 ':now1' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust")),
                 ':now2' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i:s", Yii::app()->getConfig("timeadjust"))
-                )
+            )
             ),
             'public' => array('condition' => "listpublic = 'Y'"),
             'registration' => array('condition' => "allowregister = 'Y' AND startdate > :now3 AND (expires < :now4 OR expires IS NULL)", 'params' => array(
@@ -300,10 +303,10 @@ class Survey extends LSActiveRecord
 
 
     /**
-    * fixSurveyAttribute to fix and/or add some survey attribute
-    * - Fix template name to be sure template exist
+     * fixSurveyAttribute to fix and/or add some survey attribute
+     * - Fix template name to be sure template exist
      * //FIXME $event input parameter is overridden always remove from implementations
-    */
+     */
     public function fixSurveyAttribute($event)
     {
         $event = new PluginEvent('afterFindSurvey');
@@ -343,14 +346,14 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * permission scope for this model
-    * Actually only test if user have minimal access to survey (read)
-    * @access public
-    * @param int $loginID
-    * @return CActiveRecord
-    *
-    * TODO: replace this by a correct relation
-    */
+     * permission scope for this model
+     * Actually only test if user have minimal access to survey (read)
+     * @access public
+     * @param int $loginID
+     * @return CActiveRecord
+     *
+     * TODO: replace this by a correct relation
+     */
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
@@ -371,11 +374,11 @@ class Survey extends LSActiveRecord
 
 
     /**
-    * Returns additional languages formatted into a string
-    *
-    * @access public
-    * @return array
-    */
+     * Returns additional languages formatted into a string
+     *
+     * @access public
+     * @return array
+     */
     public function getAdditionalLanguages()
     {
         $sLanguages = trim($this->additional_languages);
@@ -386,11 +389,11 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * Returns all languages array
-    *
-    * @access public
-    * @return array
-    */
+     * Returns all languages array
+     *
+     * @access public
+     * @return array
+     */
     public function getAllLanguages()
     {
         $sLanguages = self::getAdditionalLanguages();
@@ -399,11 +402,11 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * Returns the additional token attributes
-    *
-    * @access public
-    * @return array
-    */
+     * Returns the additional token attributes
+     *
+     * @access public
+     * @return array
+     */
     public function getTokenAttributes()
     {
         $attdescriptiondata = decodeTokenAttributes($this->attributedescriptions);
@@ -430,10 +433,10 @@ class Survey extends LSActiveRecord
                     $fieldname = substr($attdescription, 0, strpos($attdescription, '='));
                     $desc = substr($attdescription, strpos($attdescription, '=') + 1);
                     $fields[$fieldname] = array(
-                    'description' => $desc,
-                    'mandatory' => 'N',
-                    'show_register' => 'N',
-                    'cpdbmap' =>''
+                        'description' => $desc,
+                        'mandatory' => 'N',
+                        'show_register' => 'N',
+                        'cpdbmap' =>''
                     );
                     $languagesettings[$fieldname] = $desc;
                 }
@@ -448,12 +451,12 @@ class Survey extends LSActiveRecord
         foreach ($attdescriptiondata as $sKey=>$aValues) {
             if (!is_array($aValues)) $aValues=array();
             if(preg_match("/^attribute_[0-9]{1,}$/",$sKey)) {
-              $aCompleteData[$sKey]= array_merge(array(
-                      'description' => '',
-                      'mandatory' => 'N',
-                      'show_register' => 'N',
-                      'cpdbmap' =>''
-                      ),$aValues);
+                $aCompleteData[$sKey]= array_merge(array(
+                    'description' => '',
+                    'mandatory' => 'N',
+                    'show_register' => 'N',
+                    'cpdbmap' =>''
+                ),$aValues);
             }
         }
         return $aCompleteData;
@@ -498,7 +501,7 @@ class Survey extends LSActiveRecord
         }
     }
 
-     /**
+    /**
      * Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
      * @return string
      */
@@ -519,13 +522,13 @@ class Survey extends LSActiveRecord
         if($value == "G") {
             $this->googleanalyticsapikey = "9999useGlobal9999";
         } else if($value == "N") {
-           $this->googleanalyticsapikey = "";
+            $this->googleanalyticsapikey = "";
         }
     }
 
-     /**
+    /**
      * Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
-      * @return string
+     * @return string
      */
     public function getGoogleanalyticsapikey(){
         if($this->googleanalyticsapikey === "9999useGlobal9999") {
@@ -538,11 +541,11 @@ class Survey extends LSActiveRecord
 
 
     /**
-    * Creates a new survey - does some basic checks of the suppplied data
-    *
-    * @param array $aData Array with fieldname=>fieldcontents data
-    * @return integer The new survey id
-    */
+     * Creates a new survey - does some basic checks of the suppplied data
+     *
+     * @param array $aData Array with fieldname=>fieldcontents data
+     * @return integer The new survey id
+     */
     public function insertNewSurvey($aData)
     {
         do {
@@ -573,13 +576,13 @@ class Survey extends LSActiveRecord
     }
 
     /**
-    * Deletes a survey and all its data
-    *
-    * @access public
-    * @param int $iSurveyID
-    * @param bool @recursive
-    * @return boolean
-    */
+     * Deletes a survey and all its data
+     *
+     * @access public
+     * @param int $iSurveyID
+     * @param bool @recursive
+     * @return boolean
+     */
     public function deleteSurvey($iSurveyID, $recursive=true)
     {
 
@@ -710,9 +713,9 @@ class Survey extends LSActiveRecord
                     'condition' => 'surveyls_language = language'
                 )
             ))->find(
-                'sid = :surveyid',
-                array(':surveyid' => $iSurveyID)
-            ); //$sumquery1, 1) ; //Checked
+            'sid = :surveyid',
+            array(':surveyid' => $iSurveyID)
+        ); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
@@ -862,7 +865,7 @@ class Survey extends LSActiveRecord
             $sIconRunning = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('End: %s'),$sStop).'"><span class="fa  fa-play text-success"></span><span class="sr-only">'.sprintf(gT('End: %s'),$sStop).'</span></a>';
             $sIconExpired = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Expired: %s'),$sStop).'"><span class="fa fa fa-step-forward text-warning"></span><span class="sr-only">'.sprintf(gT('Expired: %s'),$sStop).'</span></a>';
             $sIconFuture  = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.sprintf(gT('Start: %s'),$sStart).'"><span class="fa  fa-clock-o text-warning"></span><span class="sr-only">'.sprintf(gT('Start: %s'),$sStart).'</span></a>';
- 
+
             // Icon parsing
             if ( $bExpired || $bWillRun ) {
                 // Expire prior to will start
@@ -1032,34 +1035,34 @@ class Survey extends LSActiveRecord
 
         $sort = new CSort();
         $sort->attributes = array(
-          'survey_id'=>array(
-            'asc'=>'t.sid asc',
-            'desc'=>'t.sid desc',
-          ),
-          'title'=>array(
-            'asc'=>'correct_relation_defaultlanguage.surveyls_title asc',
-            'desc'=>'correct_relation_defaultlanguage.surveyls_title desc',
-          ),
+            'survey_id'=>array(
+                'asc'=>'t.sid asc',
+                'desc'=>'t.sid desc',
+            ),
+            'title'=>array(
+                'asc'=>'correct_relation_defaultlanguage.surveyls_title asc',
+                'desc'=>'correct_relation_defaultlanguage.surveyls_title desc',
+            ),
 
-          'creation_date'=>array(
-            'asc'=>'t.datecreated asc',
-            'desc'=>'t.datecreated desc',
-          ),
+            'creation_date'=>array(
+                'asc'=>'t.datecreated asc',
+                'desc'=>'t.datecreated desc',
+            ),
 
-          'owner'=>array(
-            'asc'=>'owner.users_name asc',
-            'desc'=>'owner.users_name desc',
-          ),
+            'owner'=>array(
+                'asc'=>'owner.users_name asc',
+                'desc'=>'owner.users_name desc',
+            ),
 
-          'anonymized_responses'=>array(
-            'asc'=>'t.anonymized asc',
-            'desc'=>'t.anonymized desc',
-          ),
+            'anonymized_responses'=>array(
+                'asc'=>'t.anonymized asc',
+                'desc'=>'t.anonymized desc',
+            ),
 
-          'running'=>array(
-            'asc'=>'t.active asc, t.expires asc',
-            'desc'=>'t.active desc, t.expires desc',
-          ),
+            'running'=>array(
+                'asc'=>'t.active asc, t.expires asc',
+                'desc'=>'t.active desc, t.expires desc',
+            ),
 
         );
         $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
@@ -1181,10 +1184,10 @@ class Survey extends LSActiveRecord
 
 
     /**
-    * Method to make an approximation on how long a survey will last
-    * Approx is 3 questions each minute.
-    * @return double
-    */
+     * Method to make an approximation on how long a survey will last
+     * Approx is 3 questions each minute.
+     * @return double
+     */
     public function calculateEstimatedTime ()
     {
         //@TODO make the time_per_question variable user configureable
