@@ -614,7 +614,6 @@ CREATE TABLE prefix_notifications (
     "hash" character varying(64) DEFAULT NULL,
     "created" timestamp NOT NULL,
     "first_read" timestamp DEFAULT NULL,
-    "hash" character varying(64) DEFAULT '',
     CONSTRAINT prefix_notifications_pkey PRIMARY KEY (id)
 );
 CREATE INDEX prefix_index ON prefix_notifications USING btree (entity, entity_id, status);
