@@ -274,6 +274,20 @@ class User extends LSActiveRecord
     }
 
     /**
+     * Finds user by username
+     * @param string $sUserName
+     * @return User
+     */
+    public static function findByUsername($sUserName)
+    {
+        /** @var User $oUser */
+        $oUser = User::model()->findByAttributes(array(
+            'users_name' => $sUserName
+        ));
+        return $oUser;
+    }
+
+    /**
      * Updates user password hash
      *
      * @param int $iUserID The User ID
