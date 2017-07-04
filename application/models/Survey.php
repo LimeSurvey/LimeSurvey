@@ -111,9 +111,6 @@ class Survey extends LSActiveRecord
      */
     public $htmlemail='Y';
 
-    // TODO unused??
-    /** @var null $full_answers_account */
-    public $full_answers_account=null;
 
     // TODO unused??
     public $partial_answers_account=null;
