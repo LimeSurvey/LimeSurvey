@@ -247,16 +247,6 @@ class User extends LSActiveRecord
         return $result;
     }
 
-    public function getuidfromparentid($parentid)
-    {
-        // TODO via relation $oUser->parent->primaryKey
-        return Yii::app()->db->createCommand()
-            ->select('uid')
-            ->from('{{users}}')
-            ->where('parent_id = :parent_id')
-            ->bindParam(":parent_id", $parentid, PDO::PARAM_INT)
-            ->queryRow();
-    }
     /**
      * Returns id of user
      *
