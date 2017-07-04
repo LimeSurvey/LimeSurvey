@@ -989,7 +989,11 @@ class Survey extends LSActiveRecord
         if ($this->active!='Y') {
             return 0;
         } else {
-            $answers = Yii::app()->db->createCommand('select count(*) from '.$sResponseTable.' where submitdate IS NOT NULL')->queryScalar();
+            $answers = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from($sResponseTable)
+                ->where('submitdate IS NOT NULL')
+                ->queryScalar();
             return $answers;
         }
     }
@@ -1004,7 +1008,11 @@ class Survey extends LSActiveRecord
         if ($this->active!='Y') {
             return 0;
         } else {
-            $answers = Yii::app()->db->createCommand('select count(*) from '.$table.' where submitdate IS NULL')->queryScalar();
+            $answers = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from($table)
+                ->where('submitdate IS NULL')
+                ->queryScalar();
             return $answers;
         }
     }
