@@ -31,7 +31,6 @@
  * @property string $modified Time modified
  *
  * @property Permission[] $permissions
- * @property string $name Full name of user
  */
 class User extends LSActiveRecord
 {
