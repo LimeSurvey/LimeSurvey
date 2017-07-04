@@ -129,6 +129,7 @@ class SurveyRuntimeHelper {
         //Iterate through the questions about to be displayed:
         $inputnames = array();
         $vpopup     = $fpopup = false;
+        $upload_file = null;
 
         foreach ($_SESSION[$this->LEMsessid]['grouplist'] as $gl){
             $gid     = $gl['gid'];
