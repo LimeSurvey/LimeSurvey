@@ -2477,8 +2477,8 @@ class dataentry extends Survey_Common_Action
 
 
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-            $aData["surveyinfo"] = $surveyinfo;
+            $survey = Survey::model()->findByPk($iSurveyId);
+            $aData["survey"] = $survey;
             $aData['title_bar']['title'] = gT("Data entry");
         }
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
