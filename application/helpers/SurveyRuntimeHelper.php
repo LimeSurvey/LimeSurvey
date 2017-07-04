@@ -750,10 +750,11 @@ class SurveyRuntimeHelper {
 
     /**
      * Set prev step in session depending on move type
+     * If not in a specific page, prevstep stock the value of step just before it get updated
      */
     private function setPrevStep()
     {
-        $_SESSION[$this->LEMsessid]['prevstep'] = (!in_array($this->move,array("clearall","changelang","saveall","reload", null)))?$_SESSION[$this->LEMsessid]['step']:$this->move; // Accepted $this->sMove without error
+        $_SESSION[$this->LEMsessid]['prevstep'] = (in_array($this->move,array("clearall","changelang","saveall","reload", null)) && !empty($this->move))?$this->move:$_SESSION[$this->LEMsessid]['step'];
     }
 
     /**
