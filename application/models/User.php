@@ -16,9 +16,8 @@
  * Class User
  *
  * @property integer $uid
- * @property string $users_name
+ * @property string $users_name User's full name
  * @property string $password
- * @property string $full_name
  * @property integer $parent_id
  * @property string $lang
  * @property string $email
@@ -31,6 +30,7 @@
  * @property string $modified Time modified
  *
  * @property Permission[] $permissions
+ * @property string $name Full name of user
  */
 class User extends LSActiveRecord
 {
@@ -225,27 +225,6 @@ class User extends LSActiveRecord
         return $result->row();
     }
 
-    /**
-     * Returns full name of user
-     *
-     * @access public
-     * @param integer $userid
-     * @return string
-     */
-    public function getName($userid)
-    {
-        // TODO should be accessed via $oUser->name (without param)
-        static $aOwnerCache = array();
-
-        if (array_key_exists($userid, $aOwnerCache)) {
-            $result = $aOwnerCache[$userid];
-        } else {
-            $result = Yii::app()->db->createCommand()->select('full_name')->from('{{users}}')->where("uid = :userid")->bindParam(":userid", $userid, PDO::PARAM_INT)->queryRow();
-            $aOwnerCache[$userid] = $result;
-        }
-
-        return $result;
-    }
 
     public function getuidfromparentid($parentid)
     {
@@ -257,6 +236,7 @@ class User extends LSActiveRecord
             ->bindParam(":parent_id", $parentid, PDO::PARAM_INT)
             ->queryRow();
     }
+
     /**
      * Returns id of user
      *
@@ -349,7 +329,7 @@ class User extends LSActiveRecord
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setusertemplates');
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('admin/user/sa/setasadminchild');
 
-        $oUser = $this->getName($this->uid);
+
         if($this->uid == Yii::app()->user->getId())
         {
             $editUser = "<button
@@ -357,7 +337,7 @@ class User extends LSActiveRecord
             title='".gT("Edit this user")."'
             data-url='".$editUrl."'
             data-uid='".$this->uid."'
-            data-user='".$oUser['full_name']."'
+            data-user='".$this->users_name."'
             data-action='modifyuser'
             class='btn btn-default btn-xs action_usercontrol_button'>
                 <span class='fa fa-pencil text-success'></span>
@@ -374,7 +354,7 @@ class User extends LSActiveRecord
                 data-onclick='$.post(".$deleteUrl.",{
                   action: \"deluser\",
                   uid:\"".$this->uid."\",
-                  user: \"".htmlspecialchars($oUser['full_name'])."\",
+                  user: \"".htmlspecialchars($this->users_name)."\",
                   });'
                 data-target='#confirmation-modal'
                 data-uid='".$this->uid."'
@@ -390,7 +370,7 @@ class User extends LSActiveRecord
                 || (Permission::model()->hasGlobalPermission('users','update')
                 && $this->parent_id == Yii::app()->session['loginID'])) {
 
-                $editUser = "<button data-toggle='tooltip' data-url='".$editUrl."' data-user='".htmlspecialchars($oUser['full_name'])."' data-uid='".$this->uid."' data-action='modifyuser' title='".gT("Edit this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
+                $editUser = "<button data-toggle='tooltip' data-url='".$editUrl."' data-user='".htmlspecialchars($this->users_name)."' data-uid='".$this->uid."' data-action='modifyuser' title='".gT("Edit this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='fa fa-pencil text-success'></span></button>";
             }
 
             if (((Permission::model()->hasGlobalPermission('superadmin','read') &&
@@ -399,14 +379,14 @@ class User extends LSActiveRecord
                 $this->parent_id == Yii::app()->session['loginID'])) && $this->uid!=1) {
 
                 //'admin/user/sa/setuserpermissions'
-                    $setPermissionsUser = "<button data-toggle='tooltip' data-user='".htmlspecialchars($oUser['full_name'])."' data-url='".$setPermissionsUrl."' data-uid='".$this->uid."' data-action='setuserpermissions' title='".gT("Set global permissions for this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
+                    $setPermissionsUser = "<button data-toggle='tooltip' data-user='".htmlspecialchars($this->users_name)."' data-url='".$setPermissionsUrl."' data-uid='".$this->uid."' data-action='setuserpermissions' title='".gT("Set global permissions for this user")."' type='submit' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-security text-success'></span></button>";
                 }
             if ((Permission::model()->hasGlobalPermission('superadmin','read')
                 || Permission::model()->hasGlobalPermission('templates','read'))
                 && $this->uid!=1) {
 
                 //'admin/user/sa/setusertemplates')
-                    $setTemplatePermissionUser = "<button type='submit' data-user='".htmlspecialchars($oUser['full_name'])."' data-url='".$setTemplatePermissionsUrl."' data-uid='".$this->uid."' data-action='setusertemplates' data-toggle='tooltip' title='".gT("Set template permissions for this user")."' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
+                    $setTemplatePermissionUser = "<button type='submit' data-user='".htmlspecialchars($this->users_name)."' data-url='".$setTemplatePermissionsUrl."' data-uid='".$this->uid."' data-action='setusertemplates' data-toggle='tooltip' title='".gT("Set template permissions for this user")."' class='btn btn-default btn-xs action_usercontrol_button'><span class='icon-templatepermissions text-success'></span></button>";
                 }
                 if ((Permission::model()->hasGlobalPermission('superadmin','read')
                     || (Permission::model()->hasGlobalPermission('users','delete')
@@ -425,7 +405,7 @@ class User extends LSActiveRecord
                         data-target='#confirmation-modal'
                         data-url='".$deleteUrl."'
                         data-uid='".$this->uid."'
-                        data-user='".htmlspecialchars($oUser['full_name'])."'
+                        data-user='".htmlspecialchars($this->users_name)."'
                         data-action='deluser'
                         data-onclick='triggerRunAction($(\"#delete_user_".$this->uid."\"))'
                         data-message='".gT("Do you want to delete this user?")."'
@@ -436,7 +416,7 @@ class User extends LSActiveRecord
 
                 if (Yii::app()->session['loginID'] == "1" && $this->parent_id !=1 ) {
                 //'admin/user/sa/setasadminchild'
-                    $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".htmlspecialchars($oUser['full_name'])."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
+                    $changeOwnership = "<button data-toggle='tooltip' data-url='".$changeOwnershipUrl."' data-user='".htmlspecialchars($this->users_name)."' data-uid='".$this->uid."' data-action='setasadminchild' title='".gT("Take ownership")."' class='btn btn-default btn-xs action_usercontrol_button' type='submit'><span class='icon-takeownership text-success'></span></button>";
                 }
         }
         return "<div>"

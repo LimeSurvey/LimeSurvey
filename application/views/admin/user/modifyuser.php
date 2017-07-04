@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var User $oUser
+ */
+print_r($oUser->users_name);
+?>
 <div class="pagetitle h3"><?php eT("Editing user");?></div>
 
 <div class="row" style="margin-bottom: 100px">
@@ -37,5 +43,6 @@
     <input type='submit' class="hidden" value='<?php eT("Save");?>' />
     <input type='hidden' name='action' value='moduser' />
 </p>
-</form>
+
+<?php echo CHtml::endForm()?>
 
