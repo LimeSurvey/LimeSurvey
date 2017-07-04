@@ -257,6 +257,7 @@ class User extends LSActiveRecord
             ->bindParam(":parent_id", $parentid, PDO::PARAM_INT)
             ->queryRow();
     }
+
     /**
      * Returns id of user
      *
