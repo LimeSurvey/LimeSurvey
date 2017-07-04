@@ -2,7 +2,6 @@
 /**
  * @var User $oUser
  */
-print_r($oUser->users_name);
 ?>
 <div class="pagetitle h3"><?php eT("Editing user");?></div>
 
