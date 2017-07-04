@@ -85,9 +85,9 @@ use \ls\pluginmanager\PluginEvent;
  *
  * @property array $fullAnswers
  * @property array $partialAnswers
- * @property integer $countFullAnswers
- * @property integer $countPartialAnswers
- * @property integer $countTotalAnswers
+ * @property integer $countFullAnswers Full-answers count
+ * @property integer $countPartialAnswers Full-answers count
+ * @property integer $countTotalAnswers Total-answers count
  * @property array $surveyinfo
  * @property string creationDate Creation date formatted according to user format
  * @property string startDateFormatted Start date formatted according to user format
@@ -113,10 +113,6 @@ class Survey extends LSActiveRecord
 
     public $searched_value;
 
-    /** @var integer $fac Full-answers count*/
-    private $fac;
-    /** @var integer $pac Partial-answers count*/
-    private $pac;
 
     private $sSurveyUrl;
 
@@ -988,20 +984,13 @@ class Survey extends LSActiveRecord
      */
     public function getCountFullAnswers()
     {
-        if($this->fac!==null) {
-            return $this->fac;
+        $sResponseTable = '{{survey_' . $this->sid . '}}';
+        Yii::app()->cache->flush();
+        if ($this->active!='Y') {
+            return 0;
         } else {
-            $sResponseTable = '{{survey_' . $this->sid . '}}';
-            Yii::app()->cache->flush();
-            if ($this->active!='Y') {
-                $this->fac = 0;
-                // TODO Why string?
-                return '0';
-            } else {
-                $answers = Yii::app()->db->createCommand('select count(*) from '.$sResponseTable.' where submitdate IS NOT NULL')->queryScalar();
-                $this->fac = $answers;
-                return $answers;
-            }
+            $answers = Yii::app()->db->createCommand('select count(*) from '.$sResponseTable.' where submitdate IS NOT NULL')->queryScalar();
+            return $answers;
         }
     }
 
@@ -1010,19 +999,13 @@ class Survey extends LSActiveRecord
      */
     public function getCountPartialAnswers()
     {
-        if($this->pac!==null) {
-            return $this->pac;
+        $table = '{{survey_' . $this->sid . '}}';
+        Yii::app()->cache->flush();
+        if ($this->active!='Y') {
+            return 0;
         } else {
-            $table = '{{survey_' . $this->sid . '}}';
-            Yii::app()->cache->flush();
-            if ($this->active!='Y') {
-                $this->pac = 0;
-                return 0;
-            } else {
-                $answers = Yii::app()->db->createCommand('select count(*) from '.$table.' where submitdate IS NULL')->queryScalar();
-                $this->pac = $answers;
-                return $answers;
-            }
+            $answers = Yii::app()->db->createCommand('select count(*) from '.$table.' where submitdate IS NULL')->queryScalar();
+            return $answers;
         }
     }
 
@@ -1031,12 +1014,7 @@ class Survey extends LSActiveRecord
      */
     public function getCountTotalAnswers()
     {
-        // TODO why we have pac & fac & then countFullAnswers etc? same thing!
-        if ($this->pac!==null && $this->fac!==null) {
-            return ($this->pac + $this->fac);
-        } else {
-            return ($this->countFullAnswers + $this->countPartialAnswers);
-        }
+        return ($this->countFullAnswers + $this->countPartialAnswers);
     }
 
     /**
