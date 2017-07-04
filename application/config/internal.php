@@ -219,6 +219,7 @@ $internalConfig = array(
                 'registerScript'          => 'LS_Twig_Extension::registerScript',
                 'unregisterPackage'       => 'LS_Twig_Extension::unregisterPackage',
                 'unregisterScriptFile'    => 'LS_Twig_Extension::unregisterScriptFile',
+                'unregisterScriptForAjax' => 'LS_Twig_Extension::unregisterScriptForAjax',
                 'listCoreScripts'         => 'LS_Twig_Extension::listCoreScripts',
                 'listScriptFiles'         => 'LS_Twig_Extension::listScriptFiles',
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',

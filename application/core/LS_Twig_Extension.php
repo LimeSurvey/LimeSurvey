@@ -268,6 +268,27 @@ class LS_Twig_Extension extends Twig_Extension
         return Yii::app()->getClientScript()->unregisterScriptFile($name);
     }
 
+    /**
+     * Unregister all packages/script files for AJAX rendering
+     */
+    public static function unregisterScriptForAjax()
+    {        
+        $oTemplate            = Template::model()->getInstance();
+        $sTemplatePackageName = 'limesurvey-'.$oTemplate->sTemplateName;
+        self::unregisterPackage($sTemplatePackageName);
+        self::unregisterPackage('template-default');
+        self::unregisterPackage('bootstrap');
+        self::unregisterPackage('jquery');
+        self::unregisterPackage('bootstrap-template');
+        self::unregisterPackage('fontawesome');
+        self::unregisterPackage('template-default-ltr');
+        self::unregisterPackage('survey-template-default');
+        self::unregisterPackage('decimal');
+        self::unregisterScriptFile('/assets/scripts/survey_runtime.js');
+        self::unregisterScriptFile('/assets/scripts/admin/expression.js');
+        self::unregisterScriptFile('/assets/scripts/nojs.js');
+        self::unregisterScriptFile('/assets/scripts/expressions/em_javascript.js');
+    }
 
     public static function listCoreScripts()
     {
