@@ -260,8 +260,14 @@ class LS_Twig_Extension extends Twig_Extension
 
     public static function unregisterPackage($name)
     {
-        return Yii::app()->getClientScript()->unregisterPackage($name);        
+        return Yii::app()->getClientScript()->unregisterPackage($name);
     }
+
+    public static function unregisterScriptFile($name)
+    {
+        return Yii::app()->getClientScript()->unregisterScriptFile($name);
+    }
+
 
     public static function listCoreScripts()
     {
@@ -272,7 +278,17 @@ class LS_Twig_Extension extends Twig_Extension
             var_dump($package);
 
         }
+    }
 
+    public static function listScriptFiles()
+    {
+        foreach(Yii::app()->getClientScript()->getScriptFiles() as $key => $file){
+
+            echo "<hr>";
+            echo "$key: <br>";
+            var_dump($file);
+
+        }
     }
 
 

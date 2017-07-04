@@ -25,6 +25,9 @@
 
     <body class="default lang-{{surveylanguage}} {{surveyformat}}" >
 {% else %}
+<script>
+alert('OK');
+</script>
     {{ unregisterPackage('limesurvey-public') }}
     {{ unregisterPackage('template-default') }}
     {{ unregisterPackage('bootstrap') }}
@@ -34,6 +37,10 @@
     {{ unregisterPackage('template-default-ltr')}}
     {{ unregisterPackage('survey-template-default')}}
     {{ unregisterPackage('decimal')}}
+    {{ unregisterScriptFile('/assets/scripts/survey_runtime.js')}}
+    {{ unregisterScriptFile('/assets/scripts/admin/expression.js')}}
+    {{ unregisterScriptFile('/assets/scripts/nojs.js')}}
+    {{ unregisterScriptFile('/assets/scripts/expressions/em_javascript.js')}}
 {% endif %}
 
 {% block body %}
