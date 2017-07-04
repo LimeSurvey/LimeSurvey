@@ -611,7 +611,6 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     `hash` VARCHAR(64) DEFAULT NULL COMMENT 'Hash of title, message and entity to avoid duplication',
     `created` DATETIME NOT NULL,
     `first_read` DATETIME DEFAULT NULL,
-    `hash` VARCHAR(64) DEFAULT '',
     PRIMARY KEY (`id`),
     INDEX(`entity`, `entity_id`, `status`),
     INDEX(`hash`)
