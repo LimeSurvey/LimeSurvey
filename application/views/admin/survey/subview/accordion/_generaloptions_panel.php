@@ -56,7 +56,9 @@
     return true;
     };";
     Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
+    // var_dump($owner);
     ?>
+
 <!-- Container -->
 <div class="container-fluid">
     <div class="row">
@@ -65,7 +67,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label" ><?php  eT("Base language:") ; ?></label>
                 <div class="col-sm-9" style="padding-top: 7px;">
-                    <?php echo getLanguageNameFromCode($esrow['language'],false) ?>
+                    <?php echo getLanguageNameFromCode($esrow['language'],false); ?>
                 </div>
             </div>
 
@@ -75,7 +77,8 @@
                 <div class="col-sm-9">
                     <?php
                     $aAllLanguages=getLanguageDataRestricted (false,'short');
-                    foreach(Survey::model()->findByPk($surveyid)->additionalLanguages as $sSurveyLang)
+                    $aAdditionalLanguages = (isset($surveyid) && $surveyid!=0) ?  Survey::model()->findByPk($surveyid)->additionalLanguages : [];
+                    foreach( $aAdditionalLanguages as $sSurveyLang)
                     {
                         if(!array_key_exists($sSurveyLang,$aAllLanguages))
                         {
@@ -88,13 +91,13 @@
                         'asDropDownList' => true,
                         'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
                         'data' => $aAllLanguages,
-                        'value' => Survey::model()->findByPk($surveyid)->additionalLanguages,
+                        'value' =>  $aAdditionalLanguages,
                         'name' => 'additional_languages',
                         'pluginOptions' => array(
                             'placeholder' => gt('Select additional languages','unescaped'),
                     )));
                     ?>
-                    <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ',Survey::model()->findByPk($surveyid)->additionalLanguages); ?>'>
+                    <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $aAdditionalLanguages); ?>'>
                 </div>
             </div>
 
@@ -107,7 +110,7 @@
                         Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                             'asDropDownList' => true,
                             'htmlOptions'=>array('style'=>"width: 80%"),
-                            'data' => $users,
+                            'data' => isset($users) ?  $users : [],
                             'value' => $esrow['owner_id'],
                             'name' => 'owner_id',
                             'pluginOptions' => array(
@@ -118,28 +121,33 @@
                 </div>
                 <?php endif;?>
 
-
             <!-- Administrator -->
             <div class="form-group">
+                <?php //Switch for creation/editing ?>
+                <?php $admin = empty($esrow['admin']) ? $owner['full_name'] : $esrow['admin']; ?>
                 <label class="col-sm-3 control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
                 <div class="col-sm-9">
-                    <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($esrow['admin']); ?>" />
+                    <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" />
                 </div>
             </div>
 
             <!-- Admin email -->
             <div class="form-group">
+                <?php //Switch for creation/editing ?>
+                <?php $admin_email = empty($esrow['adminemail']) ? $owner['email'] : $esrow['adminemail']; ?>
                 <label class="col-sm-3 control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
                 <div class="col-sm-9">
-                    <input class="form-control" type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($esrow['adminemail']); ?>" />
+                    <input class="form-control" type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($admin_email); ?>" />
                 </div>
             </div>
 
             <!-- Bounce email -->
             <div class="form-group">
+                <?php //Switch for creation/editing ?>
+                <?php $bounce_email = empty($esrow['bounce_email']) ? $owner['bounce_email'] : $esrow['bounce_email']; ?>
                 <label class="col-sm-3 control-label"  for='bounce_email'><?php  eT("Bounce email:"); ?></label>
                 <div class="col-sm-9">
-                    <input class="form-control" type='email' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($esrow['bounce_email']); ?>" />
+                    <input class="form-control" type='email' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" />
                 </div>
             </div>
 
