@@ -47,6 +47,8 @@
         <animatebody>off</animatebody>
         <!-- see https://daneden.github.io/animate.css/ -->
         <bodyanimation>lightSpeedIn</bodyanimation>
+        <animatequestion>off</animatequestion>
+        <questionanimation>flipInX</questionanimation>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the template -->
