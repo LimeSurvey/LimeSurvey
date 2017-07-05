@@ -29313,7 +29313,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }, [_c('a', {
         staticClass: "ls-flex-row nowrap align-item-center align-content-center pjax",
         attrs: {
-          "href": menuItem.link + '?menu=' + menu.menu_title,
+          "href": menuItem.link,
           "title": menuItem.menu_description,
           "data-toggle": "tooltip"
         }

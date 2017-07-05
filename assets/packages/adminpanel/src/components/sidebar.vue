@@ -85,7 +85,7 @@ export default {
 
             <ul class="list-group" v-for="menu in menues" :title="menu.title" v-bind:key="menu.title" > 
                 <li v-for="(menuItem, index) in sortedMenu(menu.entries)" class="list-group-item" style="padding:0;"  v-show="activeTab('settings')" v-bind:key="menuItem.id">
-                    <a :href="menuItem.link+'?menu='+menu.menu_title" :title="menuItem.menu_description" data-toggle="tooltip"  class="ls-flex-row nowrap align-item-center align-content-center pjax">
+                    <a :href="menuItem.link" :title="menuItem.menu_description" data-toggle="tooltip"  class="ls-flex-row nowrap align-item-center align-content-center pjax">
                         <div class="col-sm-10" v-bind:class=" checkIsActive(menuItem.link) ? 'selected' : ''" style="padding:15px 10px;" >
                                     <i class="fa" :class="'fa-'+menuItem.menu_icon">&nbsp;</i>&nbsp; 
                                     <span v-html="menuItem.menu_title"></span>
