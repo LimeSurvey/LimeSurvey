@@ -35,11 +35,6 @@
         <print_css>
             <filename>css/print_template.css</filename>
         </print_css>
-
-        <!-- The logo is used for now only for Surveys List  -->
-        <logo>
-            <filename>files/logo.png</filename>
-        </logo>
     </files>
 
     <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
