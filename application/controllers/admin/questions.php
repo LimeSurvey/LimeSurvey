@@ -475,7 +475,7 @@ class questions extends Survey_Common_Action
     * @param int $surveyid
     * @param int $gid
     * @param int $qid
-    * @return void
+    * @return array
     */
     public function _editansweroptions($surveyid, $gid, $qid)
     {
@@ -687,7 +687,7 @@ class questions extends Survey_Common_Action
     * @param int $surveyid
     * @param int $gid
     * @param int $qid
-    * @return void
+    * @return array
     */
     public function _editsubquestion($surveyid, $gid, $qid)
     {
@@ -1435,7 +1435,7 @@ class questions extends Survey_Common_Action
     * @param int $surveyid
     * @param int $gid
     * @param int $qid
-    * @return void
+    * @return array
     */
     public function delete($surveyid, $gid, $qid, $ajax=false)
     {

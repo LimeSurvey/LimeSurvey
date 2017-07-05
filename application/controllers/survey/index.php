@@ -99,7 +99,7 @@ class index extends CAction {
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'restart-survey',
-                $aMessage,
+                $asMessage,
                 $aUrl,
                 $aErrors
             );

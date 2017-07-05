@@ -336,7 +336,6 @@ class conditionsaction extends Survey_Common_Action {
         {
 
             //3: Get other conditions currently set for this question
-            $conditionscount = 0;
             $s=0;
 
             $scenariocount = count($scenarios);
@@ -1826,6 +1825,7 @@ class conditionsaction extends Survey_Common_Action {
      * Get html for add/edit condition form
      * @param array $args
      * @return string
+     * //FIXME a lot of broken things here!! is this used at all?
      */
     protected function getEditConditionForm(array $args)
     {
