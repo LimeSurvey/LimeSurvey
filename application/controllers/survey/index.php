@@ -655,13 +655,6 @@ class index extends CAction {
     }
 
 
-    /**
-     * @deprecated
-     */
-    function _printTemplateContent($sTemplateFile, &$redata, $iDebugLine = -1)
-    {
-        echo templatereplace(file_get_contents($sTemplateFile),array(),$redata,'survey['.$iDebugLine.']');
-    }
 }
 
 /* End of file survey.php */
