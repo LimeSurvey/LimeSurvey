@@ -1200,14 +1200,7 @@ class Survey_Common_Action extends CAction
             $aData['expdate'] = "-";
         }
 
-        if (!$aSurveyInfo['language'])
-        {
-            $aData['language'] = getLanguageNameFromCode($currentadminlang, false);
-        }
-        else
-        {
-            $aData['language'] = getLanguageNameFromCode($aSurveyInfo['language'], false);
-        }
+        $aData['language'] = getLanguageNameFromCode($aSurveyInfo['language'], false);
 
         if ($aSurveyInfo['surveyls_urldescription'] == "") {
             $aSurveyInfo['surveyls_urldescription'] = htmlspecialchars($aSurveyInfo['surveyls_url']);
