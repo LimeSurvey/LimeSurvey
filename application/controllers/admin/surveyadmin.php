@@ -2048,7 +2048,6 @@ class SurveyAdmin extends Survey_Common_Action
             $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
             if (!$iNewSurveyid){
                 die('Survey could not be created.');
-                App()->end();
             }
             // Prepare locale data for surveys_language_settings table
             $sTitle          = Yii::app()->request->getPost('surveyls_title');

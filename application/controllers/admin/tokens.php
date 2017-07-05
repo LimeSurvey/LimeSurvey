@@ -1825,19 +1825,13 @@ class tokens extends Survey_Common_Action
                                     // * if filterblankemail is set (default): at least an email address
                                     $myfirstname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['firstname_attr']]);
                                     $mylastname = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['lastname_attr']]);
-                                    if (isset($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]))
-                                    {
+                                    if (isset($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']])) {
                                         $myemail = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['email_attr']]);
-                                        $myemail = $myemail;
                                         ++$xv;
-                                    }
-                                    elseif ($filterblankemail !== true)
-                                    {
+                                    } elseif ($filterblankemail !== true) {
                                         $myemail = '';
                                         ++$xv;
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         $meetminirequirements = false;
                                     }
                                 }

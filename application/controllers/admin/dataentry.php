@@ -2268,6 +2268,7 @@ class dataentry extends Survey_Common_Action
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = dbExecuteAssoc($meaquery);
                             $cdata['mearesult'] = $mearesult->readAll();
+                            break;
 
                         case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
