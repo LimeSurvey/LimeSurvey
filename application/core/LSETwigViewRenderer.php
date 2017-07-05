@@ -63,8 +63,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
     public function render( $sView, $aData, $bReturn=true)
     {
-        global $thissurvey;
-
         $this->_twig = parent::getTwig();                                       // Twig object
         $loader      = $this->_twig->getLoader();                               // Twig Template loader
 

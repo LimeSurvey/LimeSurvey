@@ -166,8 +166,6 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         $oEvent = $this->getEvent();
 
         // Get configuration settings:
-        $ldapserver     = $this->get('server');
-        $ldapport       = $this->get('ldapport');
         $ldapmode       = $this->get('ldapmode');
         $searchuserattribute    = $this->get('searchuserattribute');
         $extrauserfilter      = $this->get('extrauserfilter');
@@ -441,8 +439,6 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         }
 
         // Get configuration settings:
-        $ldapserver 		= $this->get('server');
-        $ldapport   		= $this->get('ldapport');
         $suffix     		= $this->get('domainsuffix');
         $prefix     		= $this->get('userprefix');
         $searchuserattribute    = $this->get('searchuserattribute');
