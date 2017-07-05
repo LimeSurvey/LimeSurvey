@@ -146,11 +146,17 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
         $aData                = $this->_generalTabNewSurvey();
+        $aData                = array_merge($aData, $this->_getGeneralTemplateData(0));
         $aData['esrow']       = $esrow;
-        $aData                = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-        $aData                = array_merge($aData, $this->_tabPublicationAccess($esrow));
-        $aData                = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
-        $aData                = array_merge($aData, $this->_tabTokens($esrow));
+        
+        //Prepare the edition panes
+
+        $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData(0,$esrow));
+        $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey(0,$esrow));
+        $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation(0,$esrow));
+        $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess(0,$esrow));
+        $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement(0,$esrow));
+        $aData['tokensettingsdata']         = array_merge($aData, $this->_tabTokens(0,$esrow));
 
         $aViewUrls[]          = 'newSurvey_view';
 
@@ -448,8 +454,8 @@ class SurveyAdmin extends Survey_Common_Action
                     if(is_object($question))
                     {
                         $curQuestion = $question->attributes;
-                        $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid', $question->qid]);
-                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question,true,60,'[...]',0.5);
+                        $curQuestion['link'] = $this->getController()->createUrl("admin/questions/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid, 'qid'=>$question->qid]);
+                        $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question,true,20,'[...]',1);
                         $curGroup['questions'][] =  $curQuestion;
                     }
                 
@@ -1100,7 +1106,7 @@ class SurveyAdmin extends Survey_Common_Action
                 // this one is created to get the right default texts fo each language
                 Yii::app()->loadHelper('database');
                 Yii::app()->loadHelper('surveytranslator');
-
+                
                 $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
                 $aTabTitles[$sLang] = getLanguageNameFromCode($esrow['surveyls_language'], false);
 
@@ -1606,39 +1612,60 @@ class SurveyAdmin extends Survey_Common_Action
 
     private function _getTextEditData($iSurveyID, $esrow){
         Yii::app()->loadHelper("admin/htmleditor");
-        $aTabTitles = $aTabContents=  array();
-        $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        array_unshift($grplangs, $baselang);
-
+        $aData = $aTabTitles = $aTabContents = array();
+        
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
-        foreach ($grplangs as $i => $sLang)
-        {
-            $aLanguageData = $this->_getGeneralTemplateData($iSurveyID);
+        
+        if($iSurveyID !== 0){
+            $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+            $baselang = Survey::model()->findByPk($iSurveyID)->language;
+            array_unshift($grplangs, $baselang);
 
-            // this one is created to get the right default texts fo each language
-            Yii::app()->loadHelper('database');
-            Yii::app()->loadHelper('surveytranslator');
-
-            $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
-            $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
-
-            if ($aSurveyLanguageSettings['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
+            foreach ($grplangs as $i => $sLang)
             {
-                $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
-            }
+                $aLanguageData = $this->_getGeneralTemplateData($iSurveyID);
+                // this one is created to get the right default texts fo each language
+                Yii::app()->loadHelper('database');
+                Yii::app()->loadHelper('surveytranslator');
+                
+                $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
 
-            $aLanguageData['aSurveyLanguageSettings'] = $aSurveyLanguageSettings;
-            $aLanguageData['action'] = "surveygeneralsettings";
-            $aLanguageData['i'] = $i;
-            $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-            $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aLanguageData, true);
+                $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
+
+                if ($aSurveyLanguageSettings['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
+                {
+                    $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
+                }
+
+                $aLanguageData['aSurveyLanguageSettings'] = $aSurveyLanguageSettings;
+                $aLanguageData['action'] = "surveygeneralsettings";
+                $aLanguageData['i'] = $i;
+                $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+                $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aLanguageData, true);
+            }
+        } else {
+
+            $baseLang = Yii::app()->session['adminlang'];
+            $aTabTitles[$baseLang] = getLanguageNameFromCode($baseLang,false).' (' . gT("Base language") . ')';
+            $aLanguageData['aSurveyLanguageSettings'] = [
+                'surveyls_language' => $baseLang,
+                'surveyls_title' => '',
+                'surveyls_description' => '',
+                'surveyls_url' => '',
+                'surveyls_urldescription' => '',
+                'surveyls_numberformat' => '',
+                'surveyls_welcometext' => '',
+                'surveyls_endtext' => '',
+                'surveyls_dateformat' => Yii::app()->session['dateformat'],
+            ];
+            $aLanguageData['surveyid'] = 0;
+
+            $aTabContents = $aLanguageData;
         }
 
         $aData['aTabContents'] = $aTabContents;
         $aData['aTabTitles'] = $aTabTitles;
         return $aData;
-
     }
 
     /**
@@ -1915,7 +1942,7 @@ class SurveyAdmin extends Survey_Common_Action
             if (Yii::app()->request->getPost('surveyls_title')=='')
             {
                 Yii::app()->session['flashmessage'] = gT("Survey could not be created because it did not have a title");
-                redirect($this->getController()->createUrl('admin'));
+                $this->getController()->redirect($this->getController()->createUrl('admin'));
                 return;
             }
 
@@ -1962,7 +1989,7 @@ class SurveyAdmin extends Survey_Common_Action
             'faxto' => App()->request->getPost('faxto'),
             'format' => App()->request->getPost('format'),
             'savetimings' => App()->request->getPost('savetimings')=='1'?'Y':'N',
-            'language' => App()->request->getPost('language'),
+            'language' => App()->request->getPost('language', Yii::app()->session['adminlang']),
             'datestamp' => App()->request->getPost('datestamp')=='1'?'Y':'N',
             'ipaddr' => App()->request->getPost('ipaddr')=='1'?'Y':'N',
             'refurl' => App()->request->getPost('refurl')=='1'?'Y':'N',
@@ -1994,6 +2021,7 @@ class SurveyAdmin extends Survey_Common_Action
             'emailresponseto' => App()->request->getPost('emailresponseto'),
             'tokenlength' => $iTokenLength,
             );
+            //var_dump($aInsertData);
 
             $warning = '';
             // make sure we only update emails if they are valid
@@ -2018,9 +2046,10 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
-            if (!$iNewSurveyid)
+            if (!$iNewSurveyid){
                 die('Survey could not be created.');
-
+                App()->end();
+            }
             // Prepare locale data for surveys_language_settings table
             $sTitle          = Yii::app()->request->getPost('surveyls_title');
             $sDescription    = Yii::app()->request->getPost('description');

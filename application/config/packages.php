@@ -112,6 +112,9 @@ return array(
         'position' =>CClientScript::POS_END,
         'js' => array(
             'lsadminpanel.js'
+        ),
+        'css' => array(
+            'lsadminpanel.css'
         )
     )
 

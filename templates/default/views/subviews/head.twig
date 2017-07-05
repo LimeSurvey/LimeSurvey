@@ -71,22 +71,17 @@
 
                    success : function(body_html, statut){
 
-                       $("body").empty().append(body_html);
+                       $('.toRemoveOnAjax').each(function(){
+                           $(this).remove();
+                       });
 
-                       // This chunk of script will eval all the scripts of the loaded body
-                       var scriptElements = $("body").find('script');
-                       
-                       for (i = 0; i < scriptElements.length; i ++) {
-                           var scriptElement = document.createElement('SCRIPT');
-                           scriptElement.type = 'text/javascript';
+                       var $dataScripts = $(body_html).filter('script');
 
-                           if (!scriptElements[i].src) {
-                               scriptElement.innerHTML = scriptElements[i].innerHTML;
-                           } else {
-                               scriptElement.src = scriptElements[i].src;
-                           }
-                           document.head.appendChild(scriptElement);
-                       }
+                       $("body").empty().append($.parseHTML(body_html));
+
+                       $dataScripts.each(function() {
+                           $(this).attr('type', 'text/javascript').addClass('toRemoveOnAjax').appendTo('head');
+                       });
 
                        // We reapply the function to the new form
                        ajaxSubmit();

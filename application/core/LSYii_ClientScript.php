@@ -37,6 +37,11 @@ class LSYii_ClientScript extends CClientScript {
         return $this->cssFiles;
     }
 
+    public function getScriptFiles()
+    {
+        return $this->scriptFiles;
+    }
+
     /**
      * cssFicoreScripts is protected on CClientScript. It can be useful to access it for debugin purpose
      * @return array
@@ -56,6 +61,13 @@ class LSYii_ClientScript extends CClientScript {
     {
         if(!empty($this->coreScripts[$sName])){
             unset($this->coreScripts[$sName]);
+        }
+    }
+
+    public function unregisterScriptFile($sName)
+    {
+        if(!empty($this->scriptFiles[0]["$sName"])){
+            unset($this->scriptFiles[0]["$sName"]);
         }
     }
 
@@ -156,7 +168,7 @@ class LSYii_ClientScript extends CClientScript {
 
 
     /**
-     * Convert one package to baseUrl 
+     * Convert one package to baseUrl
      */
     private function convertDevBaseUrl($package)
     {

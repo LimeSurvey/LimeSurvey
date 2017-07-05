@@ -25,15 +25,7 @@
 
     <body class="default lang-{{surveylanguage}} {{surveyformat}}" >
 {% else %}
-    {{ unregisterPackage('limesurvey-public') }}
-    {{ unregisterPackage('template-default') }}
-    {{ unregisterPackage('bootstrap') }}
-    {{ unregisterPackage('jquery') }}
-    {{ unregisterPackage('bootstrap-template')}}
-    {{ unregisterPackage('fontawesome')}}
-    {{ unregisterPackage('template-default-ltr')}}
-    {{ unregisterPackage('survey-template-default')}}
-    {{ unregisterPackage('decimal')}}
+    {{ unregisterScriptForAjax()}}
 {% endif %}
 
 {% block body %}
