@@ -48,7 +48,7 @@
     {% endblock %}
 
     <!-- Outer Frame Container -->
-    <div class="outerframe container" id="outerframeContainer">
+    <div class="outerframe container {% if (aSurveyInfo.options.animate == "on") %} {{ aSurveyInfo.options.animation }} {%endif%}" id="outerframeContainer">
 
         <!-- Main Row -->
         <div id="main-row">

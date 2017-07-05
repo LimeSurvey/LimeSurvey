@@ -28,6 +28,7 @@
     <files>
         <css>
             <filename>css/template.css</filename>
+            <filename>css/animate.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
@@ -43,6 +44,9 @@
         <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
         <backgroundimage>on</backgroundimage>
+        <animate>on</animate>
+        <!-- see https://daneden.github.io/animate.css/ -->
+        <animation>animated lightSpeedIn</animation>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the template -->
