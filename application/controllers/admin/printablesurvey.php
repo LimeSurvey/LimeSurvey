@@ -82,18 +82,14 @@ class printablesurvey extends Survey_Common_Action
             //Fix $templatename : control if print_survey.pstpl exist
             $oTemplate = Template::model()->getTemplateConfiguration($templatename);
             $sFullTemplatePath = $oTemplate->path;
-            if($oTemplate->pstplPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl')
-            {
-                $templatename = $templatename;// Change nothing
+            if($oTemplate->pstplPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl') {
             }
-            elseif(is_file(getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR.'print_survey.pstpl'))
-            {
+            elseif(is_file(getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR.'print_survey.pstpl')) {
                 $templatename=Yii::app()->getConfig("defaulttemplate");
-            }
-            else
-            {
+            } else {
                 $templatename="default";
             }
+
             $sFullTemplatePath = $oTemplate->path . DIRECTORY_SEPARATOR;
             $sFullTemplateUrl = Template::model()->getTemplateURL($templatename)."/";
             if (!defined('PRINT_TEMPLATE_DIR')) define('PRINT_TEMPLATE_DIR' , $sFullTemplatePath , true);
@@ -126,13 +122,8 @@ class printablesurvey extends Survey_Common_Action
 
             //if $showsgqacode is enabled at config.php show table name for reference
             $showsgqacode = Yii::app()->getConfig("showsgqacode");
-            if(isset($showsgqacode) && $showsgqacode == true)
-            {
+            if(isset($showsgqacode) && $showsgqacode == true) {
                 $surveyname =  $surveyname."<br />[".gT('Database')." ".gT('table').": $surveytable]";
-            }
-            else
-            {
-                $surveyname = $surveyname;
             }
 
             /* Get the HTML tag */
@@ -379,12 +370,13 @@ class printablesurvey extends Survey_Common_Action
                                     } // switch
                                     break;
                                     case "E":
-                                    switch($conrow['value'])
-                                    {
-                                        case "I": $conditions[]=gT("Increase"); break;
-                                        case "D": $conditions[]=gT("Decrease"); break;
-                                        case "S": $conditions[]=gT("Same"); break;
-                                    }
+                                        switch($conrow['value'])
+                                        {
+                                            case "I": $conditions[]=gT("Increase"); break;
+                                            case "D": $conditions[]=gT("Decrease"); break;
+                                            case "S": $conditions[]=gT("Same"); break;
+                                        }
+                                        break;
                                     case "1":
                                         $labelIndex=preg_match("/^[^#]+#([01]{1})$/",$conrow['cfieldname']);
                                         if ($labelIndex == 0)
@@ -483,7 +475,7 @@ class printablesurvey extends Survey_Common_Action
                                         $thiscquestion=$fieldmap[$conrow['cfieldname']];
                                         $condition="parent_qid='{$conrow['cqid']}' AND title='{$thiscquestion['aid']}' AND language='{$sLanguageCode}'";
                                         $ansresult= Question::model()->findAll($condition);
-                                        $cqidattributes = getQuestionAttributeValues($conrow['cqid']);
+                                        $cqidattributes = QuestionAttribute::model()->getQuestionAttributes($conrow['cqid']);
                                         if ($labelIndex == 0)
                                         {
                                             if (trim($cqidattributes['dualscale_headerA'][$sLanguageCode]) != '') {
@@ -887,6 +879,7 @@ class printablesurvey extends Survey_Common_Action
                                 // ==================================================================
                             case "Q":  //MULTIPLE SHORT TEXT
                                 $aWidth=$this->getColumnWidth($qidattributes['label_input_columns'],$qidattributes['text_input_columns']);
+                                break;
                             case "K":  //MULTIPLE NUMERICAL
                                 //~ $question['QUESTION_TYPE_HELP'] = "";
                                 $width=(isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;

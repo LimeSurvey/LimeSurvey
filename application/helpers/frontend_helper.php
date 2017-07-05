@@ -279,7 +279,7 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
             {
                 if ($fieldmap[$field]['type'] == "|" && !strrpos($fieldmap[$field]['fieldname'], "_filecount"))
                 {
-                    $validation= getQuestionAttributeValues($fieldmap[$field]['qid']);
+                    $validation= QuestionAttribute::model()->getQuestionAttributes($fieldmap[$field]['qid']);
 
                     $filecount = 0;
 
@@ -1688,7 +1688,7 @@ function doAssessment($surveyid)
                         if (($field['type'] == "M") || ($field['type'] == "P")){
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y"){
 
-                                $aAttributes     = getQuestionAttributeValues($field['qid']);
+                                $aAttributes     = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
                             //    $total           = $total+(int)$aAttributes['assessment_value'];
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
@@ -2280,7 +2280,7 @@ function getSideBodyClass($sideMenustate = false)
         throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
     }
 
-    return $class;
+    return "";$class;
 }
 
 /**

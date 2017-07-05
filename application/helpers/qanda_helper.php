@@ -847,7 +847,7 @@ function do_equation($ia)
 function do_5pointchoice($ia)
 {
     $checkconditionFunction = "checkconditions";
-    //$aQuestionAttributes=  getQuestionAttributeValues($ia[0]);
+    //$aQuestionAttributes=  QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
     $inputnames = array();
 
@@ -2154,7 +2154,7 @@ function do_multiplechoice($ia)
     $sSurveyLang            = $_SESSION['survey_'.$iSurveyId]['s_lang']; // survey language
     $coreClass="ls-answers checkbox-list answers-list";
     // Question attribute variables
-    $aQuestionAttributes    = getQuestionAttributeValues($ia[0]);                                                                                                          // Question attributes
+    $aQuestionAttributes    = QuestionAttribute::model()->getQuestionAttributes($ia[0]);                                                                                                          // Question attributes
     $othertext              = (trim($aQuestionAttributes['other_replace_text'][$sSurveyLang])!='')?$aQuestionAttributes['other_replace_text'][$sSurveyLang]:gT('Other:');  // text for 'other'
     $iNbCols                = (trim($aQuestionAttributes['display_columns'])!='')?$aQuestionAttributes['display_columns']:1;                                               // number of columns
     if ($aQuestionAttributes['other_numbers_only']==1)

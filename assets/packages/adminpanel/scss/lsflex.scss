@@ -24,7 +24,7 @@ $x-directions: center flex-start flex-end space-between space-around;
     display: flex;
 
     @each $alignment in $y-directions{
-        &.align-item-#{$alignment} {
+        &.align-items-#{$alignment} {
             @include alignitems($alignment);
         }
     }
@@ -41,8 +41,11 @@ $x-directions: center flex-start flex-end space-between space-around;
         -moz-flex-wrap: wrap;
         flex-wrap: wrap;
     }
-
+    
     @for $i from 1 through 12 {
+        .grow-#{$i}{
+            flex-grow: $i;
+        }
         .col-#{$i} { width: 100*( $i/12)*1%; }
     }
 
@@ -64,4 +67,8 @@ $x-directions: center flex-start flex-end space-between space-around;
     -webkit-flex-direction: column;
     -moz-flex-direction: column;
     flex-direction: column;
+
+    &.fill{
+        height:100%;
+    }
 }

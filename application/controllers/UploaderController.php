@@ -138,7 +138,7 @@ class UploaderController extends SurveyController {
             {
                 throw new CHttpException(400);// See for debug > 1
             }
-            $aAttributes=getQuestionAttributeValues($aFieldMap[$sFieldName]['qid']);
+            $aAttributes=QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
 
             $maxfilesize = (int) $aAttributes['max_filesize'];
             $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
@@ -332,7 +332,7 @@ class UploaderController extends SurveyController {
         $qid = (int)Yii::app()->request->getParam('qid');
         $minfiles = (int)Yii::app()->request->getParam('minfiles');
         $maxfiles = (int)Yii::app()->request->getParam('maxfiles');
-        $qidattributes=getQuestionAttributeValues($qid);
+        $qidattributes=QuestionAttribute::model()->getQuestionAttributes($qid);
         $qidattributes['max_filesize']=floor(min($qidattributes['max_filesize']*1024,getMaximumFileUploadSize())/1024);
         $body = '</head><body class="uploader">
             <div class="model-container clearfix">
