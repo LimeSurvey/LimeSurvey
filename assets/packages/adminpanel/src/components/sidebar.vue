@@ -41,10 +41,18 @@ export default {
         checkIsActive(link){
             let locationUrl = document.createElement('a'); locationUrl.href = location.href;
             let checkUrl = document.createElement('a'); checkUrl.href=link;
-            return ( locationUrl.pathname == checkUrl.pathname ); 
+            console.log({
+                locationUrl : locationUrl.pathname,                    
+                checkUrl : checkUrl.pathname          
+            });
+            if(locationUrl.pathname == '/index.php'){
+                return (locationUrl.search == checkUrl.search);
+            } else {
+                return ( locationUrl.pathname == checkUrl.pathname ); 
+            }
         },
         sortedMenu(entries){
-            let retVal = _.orderBy(entries,(a)=>{return parseInt(a.priority)}, ['desc']);
+            let retVal = _.orderBy(entries,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
             return retVal;
         }
     },
@@ -64,7 +72,7 @@ export default {
         })
         this.get(this.getMenuUrl).then( (result) =>{
             console.log(result);
-            self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt(a.priority)},['desc']);
+            self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
             self.$localStorage.set('menues', JSON.stringify(self.menues));
             self.$forceUpdate();
         })
@@ -74,12 +82,12 @@ export default {
 <template>
     <div id="sidebar" v-bind:style="{'height': maxSideBarHeight}" class="overflow-y-enabled">
         <div class="mainMenu container-fluid col-sm-12 fill-height">
-            <div class="btn-group btn-group-justified margin b15 a15 ">
+            <div class="btn-group btn-group-justified ls-space margin bottom-15 top-5 ">
                 <div class="btn-group" role="group">
-                    <button class="btn " :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
+                    <button class="btn force color white onhover" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
                 </div>
                 <div class="btn-group" role="group">
-                    <button class="btn " :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
+                    <button class="btn force color white onhover" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
                 </div>
             </div>
 
@@ -105,34 +113,16 @@ export default {
 </template>
 <style lang="scss">
 .selected{
-    background-color: rgba(200,200,200,0.8);
-    box-shadow: 1px2px 4px rgba(200,200,200,0.8) inset;
+    background-color: rgba(200,255,200,0.4);
+    box-shadow: 1px2px 4px rgba(200,255,200,0.4) inset;
 }
+
 .background.white{
     background-color: rgba(255,255,255,1);
     box-shadow: none;
 }
-.margin{
-    &.b15{
-        margin-bottom: 15px;
-    }
-    &.b10{
-        margin-bottom: 10px;
-    }
-    &.b5{
-        margin-bottom: 5px;
-    }
-    &.t15{
-        margin-top: 15px;
-    }
-    &.t10{
-        margin-top: 10px;
-    }
-    &.t5{
-        margin-top: 5px;
-    }
-    .overflow-y-enabled{
-        overflow-y: auto;
-    }
+
+.overflow-y-enabled{
+    overflow-y: auto;
 }
 </style>

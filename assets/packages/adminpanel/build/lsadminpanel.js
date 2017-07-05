@@ -28745,7 +28745,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 200, 200, 0.8);\n  box-shadow: 1px2px 4px rgba(200, 200, 200, 0.8) inset;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.margin.b15 {\n  margin-bottom: 15px;\n}\n.margin.b10 {\n  margin-bottom: 10px;\n}\n.margin.b5 {\n  margin-bottom: 5px;\n}\n.margin.t15 {\n  margin-top: 15px;\n}\n.margin.t10 {\n  margin-top: 10px;\n}\n.margin.t5 {\n  margin-top: 5px;\n}\n.margin .overflow-y-enabled {\n  overflow-y: auto;\n}\n", ""]);
+exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 255, 200, 0.4);\n  box-shadow: 1px2px 4px rgba(200, 255, 200, 0.4) inset;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.overflow-y-enabled {\n  overflow-y: auto;\n}\n", ""]);
 
 // exports
 
@@ -28838,12 +28838,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         checkIsActive(link) {
             let locationUrl = document.createElement('a');locationUrl.href = location.href;
             let checkUrl = document.createElement('a');checkUrl.href = link;
-            return locationUrl.pathname == checkUrl.pathname;
+            console.log({
+                locationUrl: locationUrl.pathname,
+                checkUrl: checkUrl.pathname
+            });
+            if (locationUrl.pathname == '/index.php') {
+                return locationUrl.search == checkUrl.search;
+            } else {
+                return locationUrl.pathname == checkUrl.pathname;
+            }
         },
         sortedMenu(entries) {
             let retVal = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(entries, a => {
-                return parseInt(a.priority);
-            }, ['desc']);
+                return parseInt(a.order || 999999);
+            }, ['asc']);
             return retVal;
         }
     },
@@ -28864,7 +28872,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.get(this.getMenuUrl).then(result => {
             console.log(result);
             self.menues = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(result.data.menues, a => {
-                return parseInt(a.priority);
+                return parseInt(a.order || 999999);
             }, ['desc']);
             self.$localStorage.set('menues', JSON.stringify(self.menues));
             self.$forceUpdate();
@@ -29263,14 +29271,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "mainMenu container-fluid col-sm-12 fill-height"
   }, [_c('div', {
-    staticClass: "btn-group btn-group-justified margin b15 a15 "
+    staticClass: "btn-group btn-group-justified ls-space margin bottom-15 top-5 "
   }, [_c('div', {
     staticClass: "btn-group",
     attrs: {
       "role": "group"
     }
   }, [_c('button', {
-    staticClass: "btn ",
+    staticClass: "btn force color white onhover",
     class: _vm.activeTab('settings') ? 'btn-primary' : 'btn-default',
     on: {
       "click": function($event) {
@@ -29283,7 +29291,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "role": "group"
     }
   }, [_c('button', {
-    staticClass: "btn ",
+    staticClass: "btn force color white onhover",
     class: _vm.activeTab('questiontree') ? 'btn-primary' : 'btn-default',
     on: {
       "click": function($event) {

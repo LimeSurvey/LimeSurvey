@@ -10,3 +10,9 @@
 #side-menu-container{
     width: 20%;
 }
+
+.btn-primary.force.color.white.onhover{
+    &:hover, &:active,&:focus{
+        color:white;
+    }
+}

@@ -273,3 +273,6 @@ div[class^="col-"].nofloat, div[class*=" col-"].nofloat {
 
 #side-menu-container {
   width: 20%; }
+
+.btn-primary.force.color.white.onhover:hover, .btn-primary.force.color.white.onhover:active, .btn-primary.force.color.white.onhover:focus {
+  color: white; }
