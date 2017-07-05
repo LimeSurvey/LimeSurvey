@@ -1,7 +1,5 @@
 <?php
 /**
- * Send email invitations
-
  * @var AdminController $this
  * @var Survey $oSurvey
  */

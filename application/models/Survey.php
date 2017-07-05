@@ -98,6 +98,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string[] $allLanguages All survey languages
  * @property string[] $additionalLanguages Additional survey languages
  * @property array $tokenAttributes Additional token attribute names
+ * @property bool $isActive Whether Survey is active
  *
  */
 class Survey extends LSActiveRecord
