@@ -74,6 +74,12 @@
                        $('.toRemoveOnAjax').each(function(){
                            $(this).remove();
                        });
+                       var currentUrl = window.location.href;
+                       var cleanUrl = currentUrl.replace("&newtest=Y", "");
+
+                       if (currentUrl != cleanUrl){
+                           window.history.pushState({"html":body_html,"pageTitle":"pwet"},"", cleanUrl);
+                       }
 
                        var $dataScripts = $(body_html).filter('script');
 
