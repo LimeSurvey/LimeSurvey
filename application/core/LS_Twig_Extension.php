@@ -67,7 +67,7 @@ class LS_Twig_Extension extends Twig_Extension
         $oTemplate = self::getTemplateForRessource($sTemplateCssFileName);
 
         Yii::app()->getClientScript()->registerCssFile(
-            $oTemplate->sTemplateUrl .
+            $oTemplate->getTemplateURL() .
             $sTemplateCssFileName
         );
     }
@@ -272,7 +272,7 @@ class LS_Twig_Extension extends Twig_Extension
      * Unregister all packages/script files for AJAX rendering
      */
     public static function unregisterScriptForAjax()
-    {        
+    {
         $oTemplate            = Template::model()->getInstance();
         $sTemplatePackageName = 'limesurvey-'.$oTemplate->sTemplateName;
         self::unregisterPackage($sTemplatePackageName);
