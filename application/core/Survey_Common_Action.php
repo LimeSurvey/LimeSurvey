@@ -33,11 +33,12 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Override runWithParams() implementation in CAction to help us parse
-    * requests with subactions.
-    *
-    * @param array $params URL Parameters
-    */
+     * Override runWithParams() implementation in CAction to help us parse
+     * requests with subactions.
+     *
+     * @param array $params URL Parameters
+     * @return bool
+     */
     public function runWithParams($params)
     {
         // Default method that would be called if the subaction and run() do not exist
@@ -87,16 +88,17 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Some functions have different parameters, which are just an alias of the
-    * usual parameters we're getting in the url. This function just populates
-    * those variables so that we don't end up in an error.
-    *
-    * This is also used while rendering wrapped template
-    * {@link Survey_Common_Action::_renderWrappedTemplate()}
-    *
-    * @param array $params Parameters to parse and populate
-    * @return array Populated parameters
-    */
+     * Some functions have different parameters, which are just an alias of the
+     * usual parameters we're getting in the url. This function just populates
+     * those variables so that we don't end up in an error.
+     *
+     * This is also used while rendering wrapped template
+     * {@link Survey_Common_Action::_renderWrappedTemplate()}
+     *
+     * @param array $params Parameters to parse and populate
+     * @return array Populated parameters
+     * @throws CHttpException
+     */
     private function _addPseudoParams($params)
     {
         // Return if params isn't an array
@@ -202,13 +204,13 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Routes the action into correct subaction
-    *
-    * @access protected
-    * @param string $sa
-    * @param string[] $get_vars
-    * @return void
-    */
+     * Routes the action into correct subaction
+     *
+     * @access protected
+     * @param string $sa
+     * @param string[] $get_vars
+     * @return mixed
+     */
     protected function route($sa, array $get_vars)
     {
         $func_args = array();
@@ -455,6 +457,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * Survey summary
+     * @param array $aData
      */
     function _nsurveysummary($aData)
     {
@@ -470,6 +473,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * Header
+     * @param array $aData
      */
     function _showHeaders($aData)
     {
@@ -483,17 +487,18 @@ class Survey_Common_Action extends CAction
 
 
     /**
-    * _showadminmenu() function returns html text for the administration button bar
-    *
-    * @access public
-    * @global string $homedir
-    * @global string $scriptname
-    * @global string $surveyid
-    * @global string $setfont
-    * @global string $imageurl
-    * @global int $surveyid
-    * @return string $adminmenu
-    */
+     * _showadminmenu() function returns html text for the administration button bar
+     *
+     * @access public
+     * @param $aData
+     * @return string
+     * @global string $homedir
+     * @global string $scriptname
+     * @global string $surveyid
+     * @global string $setfont
+     * @global string $imageurl
+     * @global int $surveyid
+     */
     public function _showadminmenu($aData)
     {
         // We don't wont the admin menu to be shown in login page
@@ -547,6 +552,7 @@ class Survey_Common_Action extends CAction
 
             $this->getController()->renderPartial("/admin/super/adminmenu", $aData);
         }
+        return null;
     }
 
     function _titlebar($aData)
@@ -1031,6 +1037,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * Returns content from event beforeSideMenuRender
+     * @param array $aData
      * @return string
      */
     protected function beforeSideMenuRender(array $aData)
@@ -1043,8 +1050,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * listquestion groups
+     * @param array $aData
      */
-    private function _listquestiongroups($aData)
+    private function _listquestiongroups(array $aData)
     {
         if ( isset($aData['display']['menu_bars']['listquestiongroups']) )
         {
@@ -1200,14 +1208,7 @@ class Survey_Common_Action extends CAction
             $aData['expdate'] = "-";
         }
 
-        if (!$aSurveyInfo['language'])
-        {
-            $aData['language'] = getLanguageNameFromCode($currentadminlang, false);
-        }
-        else
-        {
-            $aData['language'] = getLanguageNameFromCode($aSurveyInfo['language'], false);
-        }
+        $aData['language'] = getLanguageNameFromCode($aSurveyInfo['language'], false);
 
         if ($aSurveyInfo['surveyls_urldescription'] == "") {
             $aSurveyInfo['surveyls_urldescription'] = htmlspecialchars($aSurveyInfo['surveyls_url']);
@@ -1269,9 +1270,10 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Browse Menu Bar
-    */
-    public function _browsemenubar($aData)
+     * Browse Menu Bar
+     * @param array $aData
+     */
+    public function _browsemenubar(array $aData)
     {
         if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid']))
         {
@@ -1296,11 +1298,13 @@ class Survey_Common_Action extends CAction
             $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
         }
     }
+
     /**
-    * Load menu bar of user group controller.
-    * @return void
-    */
-    public function _userGroupBar($aData)
+     * Load menu bar of user group controller.
+     * @param array $aData
+     * @return void
+     */
+    public function _userGroupBar(array $aData)
     {
         $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0 ;
         if (!empty($aData['display']['menu_bars']['user_group']))
@@ -1348,6 +1352,7 @@ class Survey_Common_Action extends CAction
     /**
      * @param string $extractdir
      * @param string $destdir
+     * @return array
      */
     protected function _filterImportedResources($extractdir, $destdir)
     {

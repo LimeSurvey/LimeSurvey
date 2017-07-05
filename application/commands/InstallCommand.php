@@ -89,6 +89,7 @@
 
         /**
          * @param string $sFileName
+         * @return array|boolean
          */
         function _executeSQLFile($sFileName)
         {
@@ -130,6 +131,8 @@
 
         /**
          * @param string $sProperty
+         * @param string $connectionString
+         * @return null
          */
         function getDBConnectionStringProperty($sProperty, $connectionString = null)
         {
@@ -141,6 +144,7 @@
             if ( preg_match('/'.$sProperty.'=([^;]*)/', $connectionString, $aMatches) == 1 ) {
                 return $aMatches[1];
             }
+            return null;
         }
 
 
@@ -190,4 +194,3 @@
         }
 
     }
-?>

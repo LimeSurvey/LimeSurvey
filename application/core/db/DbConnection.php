@@ -42,4 +42,3 @@ class DbConnection extends \CDbConnection
             return "'" . addcslashes(str_replace("'", "''", $str), "\000\n\r\\\032") . "'";
     }
 }
-?>
