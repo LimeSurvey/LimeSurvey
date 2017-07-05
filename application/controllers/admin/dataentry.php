@@ -2475,7 +2475,6 @@ class dataentry extends Survey_Common_Action
             if(isset($_POST['sid']))
                 $iSurveyId = $_POST['sid'];
 
-
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
             $survey = Survey::model()->findByPk($iSurveyId);
             $aData["survey"] = $survey;
