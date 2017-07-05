@@ -152,7 +152,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         if ($bReturn){
             return $result;
         }
-        return;
+        return null;
     }
 
     private function getTemplateForView($sView, $oRTemplate)
