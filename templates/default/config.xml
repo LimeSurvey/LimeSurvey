@@ -41,6 +41,7 @@
     <options>
         <!-- will be available with aSurveyInfo.options.ajaxmode -->
         <ajaxmode>on</ajaxmode>
+        <brandlogo>on</brandlogo>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the template -->
