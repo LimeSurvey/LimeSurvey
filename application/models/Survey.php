@@ -94,6 +94,9 @@ use \ls\pluginmanager\PluginEvent;
  * @property string startDateFormatted Start date formatted according to user format
  * @property string expiryDateFormatted Expiry date formatted according to user format
  * @property string[] $allLanguages All survey languages
+ * @property string[] $additionalLanguages Additional survey languages
+ * @property array $tokenAttributes Additional token attribute names
+ *
  */
 class Survey extends LSActiveRecord
 {
