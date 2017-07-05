@@ -1576,7 +1576,7 @@ class conditionsaction extends Survey_Common_Action {
 
                 foreach ($aresult as $arows)
                 {
-                    $attr = getQuestionAttributeValues($rows['qid']);
+                    $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                     $sLanguage=$this->language;
                     // dualscale_header are allways set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];

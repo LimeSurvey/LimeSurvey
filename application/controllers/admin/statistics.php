@@ -571,7 +571,7 @@ class statistics extends Survey_Common_Action {
             $aFieldmap=createFieldMap($qsid,'full',false,false,$sStatisticsLanguage);
             $qtype=$aFieldmap[$sQCode]['type'];
             $qqid=$aFieldmap[$sQCode]['qid'];
-            $aattr = getQuestionAttributeValues($qqid);
+            $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
             $field = substr($_POST['id'], 1);
 
             switch ($_POST['cmd']) {
@@ -697,7 +697,7 @@ class statistics extends Survey_Common_Action {
 
                 // Double scale cases
                 case ":":
-                    $qidattributes=getQuestionAttributeValues($row['qid']);
+                    $qidattributes=QuestionAttribute::model()->getQuestionAttributes($row['qid']);
                     if(!$qidattributes['input_boxes'])
                     {
                         $qid = $row['qid'];

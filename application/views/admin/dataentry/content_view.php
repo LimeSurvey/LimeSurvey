@@ -50,7 +50,7 @@
 
             //DATE
             case "D":
-                //                            $qidattributes = getQuestionAttributeValues($deqrow['qid'], $deqrow['type']);
+                //                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($deqrow['qid'], $deqrow['type']);
                 $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                 ?>
             <div class="col-sm-10 has-feedback">

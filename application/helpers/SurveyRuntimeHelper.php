@@ -155,7 +155,7 @@ class SurveyRuntimeHelper {
                         continue;
                     }
 
-                    $qidattributes = getQuestionAttributeValues($ia[0]);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
                     if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)){
                         continue;
@@ -1217,7 +1217,7 @@ class SurveyRuntimeHelper {
         /* Need actual EM status */
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         /* Allow Question Attribute to update some part */
-        $aQuestionAttributes = getQuestionAttributeValues($iQid);
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
 
         $iSurveyId=Yii::app()->getConfig('surveyID');// Or : by SGQA of question ? by Question::model($iQid)->sid;
         //~ $oSurveyId=Survey::model()->findByPk($iSurveyId); // Not used since 2.50
