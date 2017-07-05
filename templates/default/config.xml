@@ -49,6 +49,8 @@
         <bodyanimation>lightSpeedIn</bodyanimation>
         <animatequestion>off</animatequestion>
         <questionanimation>flipInX</questionanimation>
+        <animatealert>on</animatealert>
+        <alertanimation>shake</alertanimation>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the template -->

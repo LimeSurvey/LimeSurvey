@@ -38,7 +38,7 @@
 {% if aSurveyInfo.errorHtml.show %}
     {% for aMessage in aSurveyInfo.errorHtml.messages  %}
         <!-- Error Html warnings -->
-        <p class=' {# Uncomment to hide when popup is on { aSurveyInfo.errorHtml.hiddenClass } #}  fade in alert-dismissible ls-questions-have-errors alert alert-danger' role='alert'>
+        <p class=' {# Uncomment to hide when popup is on { aSurveyInfo.errorHtml.hiddenClass } #}  fade in alert-dismissible ls-questions-have-errors alert alert-danger {% if (aSurveyInfo.options.animatealert == "on") %} animated {{ aSurveyInfo.options.alertanimation }} {%endif%}' role='alert'>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
             {{ aMessage }}
         </p>
