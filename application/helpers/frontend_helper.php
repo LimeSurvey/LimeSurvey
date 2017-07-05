@@ -2280,7 +2280,7 @@ function getSideBodyClass($sideMenustate = false)
         throw new \CException("Unknown value for sideMenuBehaviour: $sideMenuBehaviour");
     }
 
-    return $class;
+    return "";$class;
 }
 
 /**

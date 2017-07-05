@@ -22,12 +22,12 @@
     $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/surveyid/$surveyid");
     $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/surveyid/$surveyid");
 ?>
-
-<div style="position:absolute; width:300px;left:0;" id="side-menu-container"> 
+<div class="ls-flex col-sm-4 col-md-4 col-lg-3 hidden-xs nofloat">
     <div id="vue-side-menu-app" data-surveyid='<?=$surveyid?>'>
-        <sidebar :options="[]" get-questions-url="<?=$getQuestionsUrl ?>" get-menu-url="<?=$getMenuUrl ?>" :translate="{settings: '<?php eT("Survey Settings");?>', structure:'<?php eT("Survey Structure");?>' }"></sidebar>
+        <sidebar :options="[]" get-questions-url="<?=$getQuestionsUrl ?>" get-menu-url="<?=$getMenuUrl ?>" :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>' }"></sidebar>
     </div>
 </div>
+
 
 <?php 
 /*

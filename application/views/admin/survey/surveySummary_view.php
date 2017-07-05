@@ -343,7 +343,7 @@ $surveyid = $surveyinfo['sid'];
         <div class="col-sm-12 h3 pagetitle"><?php eT('Survey summary'); ?></div>
 
         <div class="col-sm-12 h4"><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></div>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-md-12 col-lg-6">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">
@@ -391,7 +391,7 @@ $surveyid = $surveyinfo['sid'];
                 </ul>
             </div>
         </div>
-        <div class="col-sm-12 col-md-6">
+        <div class="col-md-12 col-lg-6">
             <!-- Survey's texts -->
             <div class="panel panel-default">
                 <!-- Default panel contents -->
@@ -451,7 +451,7 @@ $surveyid = $surveyinfo['sid'];
         </div>
     </div>
     <div class="row">    
-        <div class="col-sm-12 col-md-6">
+        <div class="col-md-12 col-lg-6">
             <ul class="list-group">
                     <!-- Administrator -->
                 <li class="list-group-item">
@@ -490,7 +490,7 @@ $surveyid = $surveyinfo['sid'];
             </ul>
         </div>
 
-        <div class="col-sm-12 col-md-6">
+        <div class="col-md-12 col-lg-6">
             <ul class="list-group">
                 <!-- Start date/time -->
                 <li class="list-group-item">
@@ -541,7 +541,7 @@ $surveyid = $surveyinfo['sid'];
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-6">
+        <div class="col-md-12 col-lg-6">
             <!-- Hints  -->
             <div class="ls-flex-row col-12">
                 <div class="col-4">
@@ -553,7 +553,7 @@ $surveyid = $surveyinfo['sid'];
             </div>
         </div>
 
-        <div class="col-sm-12 col-md-6">
+        <div class="col-md-12 col-lg-6">
         <!-- usage -->
         <?php if ($tableusage != false){
                 if ($tableusage['dbtype']=='mysql' || $tableusage['dbtype']=='mysqli'){

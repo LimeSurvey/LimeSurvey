@@ -27450,11 +27450,7 @@ const pjaxed = new __WEBPACK_IMPORTED_MODULE_6_pjax___default.a({
 //       'topbar' : Topbar,
 //     } 
 // });
-// For now this is only correcting the php rendered top-bar
-$(document).ready(()=>{
-  let width = ($('body').width() - 310)+'px';
-  $('#surveybarid').width(width);
-})
+
 
 /***/ }),
 /* 12 */
@@ -28955,7 +28951,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.selected {\n  background-color: #EEF6EF;\n  box-shadow: 1px2px 4px #EEF6EF inset;\n}\n.bigIcons {\n  font-size: 24px;\n}\n.border-bottom {\n  border-bottom: 1px solid #323232;\n}\n.margin-bottom {\n  padding-bottom: 5px;\n}\n.ls-ba .list-group > .list-group-item {\n  padding: 10px 0;\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid #323232;\n  margin-bottom: 1px;\n}\n.ls-ba .list-group > .list-group-item .list-group {\n    background: #DEF0DF;\n    margin-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item {\n      background: transparent;\n      padding-left: 15px;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {\n        border-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group:first-of-type {\n      border-top: 1px solid #323232;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", ""]);
+exports.push([module.i, "\n.selected {\n  background-color: #EEF6EF;\n  box-shadow: 1px2px 4px #EEF6EF inset;\n}\n.bigIcons {\n  font-size: 24px;\n}\n.border-bottom {\n  border-bottom: 1px solid #323232;\n}\n.margin-bottom {\n  padding-bottom: 5px;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", ""]);
 
 // exports
 
@@ -29205,17 +29201,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "list-group"
   }, _vm._l((_vm.questiongroups), function(questiongroup, index) {
     return _c('li', {
+      key: questiongroup.gid,
       staticClass: "list-group-item ls-flex-column",
       class: _vm.isActive(index) ? 'selected' : ''
     }, [_c('div', {
-      staticClass: "col-sm-12 ls-flex-row nowrap margin-bottom"
+      staticClass: "col-12 ls-flex-row nowrap margin-bottom"
     }, [_c('i', {
       staticClass: "fa fa-bars bigIcons",
       attrs: {
         "draggable": "true"
       }
     }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
-      staticClass: "col-sm-12",
+      staticClass: "col-12",
       attrs: {
         "href": questiongroup.link
       },

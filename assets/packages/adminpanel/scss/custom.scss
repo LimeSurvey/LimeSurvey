@@ -3,12 +3,14 @@
 }
 
 .menubar.surveybar{
-    position: absolute;
-    top:105px;
-    left:305px;
-    width:85%;
+    width:100%;
+    margin: 8px auto;
 }
 
-#in_survey_common{
-    padding-top:65px
+#vue-side-body-app {
+    margin-left: auto;
+}
+
+#side-menu-container{
+    width: 20%;
 }

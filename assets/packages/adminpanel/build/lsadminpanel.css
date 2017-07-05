@@ -261,14 +261,18 @@
     .ls-ba .list-group > .list-group-item .list-group:first-of-type {
       border-top: 1px solid #323232; }
 
+div[class^="col-"].nofloat, div[class*=" col-"].nofloat {
+  float: none; }
+
 #sidebar {
   padding-top: 15px; }
 
 .menubar.surveybar {
-  position: absolute;
-  top: 105px;
-  left: 305px;
-  width: 85%; }
+  width: 100%;
+  margin: 8px auto; }
 
-#in_survey_common {
-  padding-top: 65px; }
+#vue-side-body-app {
+  margin-left: auto; }
+
+#side-menu-container {
+  width: 20%; }

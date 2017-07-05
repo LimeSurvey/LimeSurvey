@@ -148,7 +148,7 @@
                 <?php endif; ?>
 
                 <!-- Survey Properties -->
-                <?php if(!isset($surveybar['active_survey_properties']) && $showSurveyPropertiesMenu):?>
+                <?php if(!isset($surveybar['active_survey_properties']) && $showSurveyPropertiesMenu && 1==2):?>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="icon-edit" ></span>
