@@ -87,6 +87,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }else{
             return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
         }
+        return null;
     }
 
     /**
@@ -151,6 +152,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         if ($bReturn){
             return $result;
         }
+        return;
     }
 
     private function getTemplateForView($sView, $oRTemplate)
@@ -252,5 +254,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }else{
             return $nvLine;
         }
+        return null;
     }
 }

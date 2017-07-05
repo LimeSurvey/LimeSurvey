@@ -179,7 +179,7 @@ class LS_Twig_Extension extends Twig_Extension
             $aQuestionClass .= ' ls-hidden';
         }
 
-        $aQuestionAttributes = getQuestionAttributeValues($iQid);
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
 
         //add additional classes
         if(isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass']!=""){

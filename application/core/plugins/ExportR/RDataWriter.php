@@ -98,5 +98,6 @@ class RDataWriter extends CsvWriter {
                 return $value;
                 break;
         }
+        return null;
     }
 }

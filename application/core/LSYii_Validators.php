@@ -44,7 +44,9 @@ class LSYii_Validators extends CValidator {
     {
         if(Yii::app()->getConfig('DBVersion')< 172) // Permission::model exist only after 172 DB version
             return $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
+
         $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'));
+        return null;
     }
 
     protected function validateAttribute($object,$attribute)

@@ -204,13 +204,13 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Routes the action into correct subaction
-    *
-    * @access protected
-    * @param string $sa
-    * @param string[] $get_vars
-    * @return void
-    */
+     * Routes the action into correct subaction
+     *
+     * @access protected
+     * @param string $sa
+     * @param string[] $get_vars
+     * @return mixed
+     */
     protected function route($sa, array $get_vars)
     {
         $func_args = array();
@@ -491,7 +491,7 @@ class Survey_Common_Action extends CAction
      *
      * @access public
      * @param $aData
-     * @return string $adminmenu
+     * @return string
      * @global string $homedir
      * @global string $scriptname
      * @global string $surveyid
@@ -552,6 +552,7 @@ class Survey_Common_Action extends CAction
 
             $this->getController()->renderPartial("/admin/super/adminmenu", $aData);
         }
+        return null;
     }
 
     function _titlebar($aData)
