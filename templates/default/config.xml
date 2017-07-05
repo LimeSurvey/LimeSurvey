@@ -44,10 +44,10 @@
         <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
         <backgroundimage>on</backgroundimage>
-        <animatebody>off</animatebody>
+        <animatebody>on</animatebody>
         <!-- see https://daneden.github.io/animate.css/ -->
         <bodyanimation>lightSpeedIn</bodyanimation>
-        <animatequestion>off</animatequestion>
+        <animatequestion>on</animatequestion>
         <questionanimation>flipInX</questionanimation>
         <animatealert>on</animatealert>
         <alertanimation>shake</alertanimation>
