@@ -95,6 +95,7 @@ class STATAxmlWriter extends Writer
 
     /**
      * @param SurveyObj $survey
+     * @param string $sLanguage
      * @param FormattingOptions $oOptions
      * @return mixed
      */

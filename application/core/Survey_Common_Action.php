@@ -457,6 +457,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * Survey summary
+     * @param array $aData
      */
     function _nsurveysummary($aData)
     {
@@ -472,6 +473,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * Header
+     * @param array $aData
      */
     function _showHeaders($aData)
     {
@@ -485,17 +487,18 @@ class Survey_Common_Action extends CAction
 
 
     /**
-    * _showadminmenu() function returns html text for the administration button bar
-    *
-    * @access public
-    * @global string $homedir
-    * @global string $scriptname
-    * @global string $surveyid
-    * @global string $setfont
-    * @global string $imageurl
-    * @global int $surveyid
-    * @return string $adminmenu
-    */
+     * _showadminmenu() function returns html text for the administration button bar
+     *
+     * @access public
+     * @param $aData
+     * @return string $adminmenu
+     * @global string $homedir
+     * @global string $scriptname
+     * @global string $surveyid
+     * @global string $setfont
+     * @global string $imageurl
+     * @global int $surveyid
+     */
     public function _showadminmenu($aData)
     {
         // We don't wont the admin menu to be shown in login page
@@ -1033,6 +1036,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * Returns content from event beforeSideMenuRender
+     * @param array $aData
      * @return string
      */
     protected function beforeSideMenuRender(array $aData)
@@ -1045,8 +1049,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * listquestion groups
+     * @param array $aData
      */
-    private function _listquestiongroups($aData)
+    private function _listquestiongroups(array $aData)
     {
         if ( isset($aData['display']['menu_bars']['listquestiongroups']) )
         {
@@ -1264,9 +1269,10 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Browse Menu Bar
-    */
-    public function _browsemenubar($aData)
+     * Browse Menu Bar
+     * @param array $aData
+     */
+    public function _browsemenubar(array $aData)
     {
         if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid']))
         {
@@ -1291,11 +1297,13 @@ class Survey_Common_Action extends CAction
             $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
         }
     }
+
     /**
-    * Load menu bar of user group controller.
-    * @return void
-    */
-    public function _userGroupBar($aData)
+     * Load menu bar of user group controller.
+     * @param array $aData
+     * @return void
+     */
+    public function _userGroupBar(array $aData)
     {
         $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0 ;
         if (!empty($aData['display']['menu_bars']['user_group']))

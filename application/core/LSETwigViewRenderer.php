@@ -56,9 +56,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Renders a general view file.
      *
-     * @param string $sourceFile the view file path
-     * @param mixed $data the data to be passed to the view
-     * @param boolean $return whether the rendering result should be returned
+     * @param string $sView the view file path
+     * @param mixed $aData the data to be passed to the view
+     * @param boolean $bReturn whether the rendering result should be returned
      * @return mixed the rendering result, or null if the rendering result is not needed.
      */
     public function render( $sView, $aData, $bReturn=true)
@@ -173,6 +173,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      *
      * @param string $line The line of HTML/Twig to render
      * @param array $aDatas Array containing the datas needed to render the view ($thissurvey)
+     * @param TemplateConfiguration $oRTemplate
      * @param boolean $bReturn Should the function echo the result, or just returns it?
      * @return string
      */

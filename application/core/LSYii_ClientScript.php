@@ -93,6 +93,10 @@ class LSYii_ClientScript extends CClientScript {
      * If debug mode is ON, we don't use the asset manager, so developpers just have to refresh their browser cache to reload the new scripts.
      * To make developper life easier, if they want to register a single script file, they can use App()->getClientScript()->registerScriptFile({url to script file})
      * if the file exist in local file system and debug mode is off, it will find the path to the file, and it will publish it via the asset manager
+     * @param string $url
+     * @param string $position
+     * @param array $htmlOptions
+     * @return void|static
      */
     public function registerScriptFile($url, $position=null, array $htmlOptions=array())
     {
@@ -123,6 +127,8 @@ class LSYii_ClientScript extends CClientScript {
     /**
      * The method will first check if a devbaseUrl parameter is provided,
      * so when debug mode is on, it doens't use the asset manager
+     * @param string $name
+     * @return void|static
      */
     public function registerPackage($name)
     {
@@ -169,6 +175,7 @@ class LSYii_ClientScript extends CClientScript {
 
     /**
      * Convert one package to baseUrl
+     * @param string $package
      */
     private function convertDevBaseUrl($package)
     {
@@ -189,6 +196,8 @@ class LSYii_ClientScript extends CClientScript {
     /**
      * This function will analyze the url of a file (css/js) to register
      * It will check if it can be published via the asset manager and if so will retreive its path
+     * @param $sUrl
+     * @return array
      */
     private function analyzeUrl($sUrl)
     {
