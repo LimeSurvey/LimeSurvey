@@ -24,9 +24,16 @@
     </html>
 
     <body class="default lang-{{surveylanguage}} {{surveyformat}}" >
+
+    {% if (aSurveyInfo.options.backgroundimage == "on") %}
+        {{ registerTemplateCssFile("css/background-image.css") }}
+    {% endif %}
+
 {% else %}
     {{ unregisterScriptForAjax()}}
 {% endif %}
+
+
 
 {% block body %}
 
