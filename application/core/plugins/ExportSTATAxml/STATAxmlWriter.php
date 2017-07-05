@@ -96,6 +96,7 @@ class STATAxmlWriter extends Writer
     /**
      * @param SurveyObj $survey
      * @param FormattingOptions $oOptions
+     * @return mixed
      */
     function createStataFieldmap($survey, $sLanguage, $oOptions)
     {

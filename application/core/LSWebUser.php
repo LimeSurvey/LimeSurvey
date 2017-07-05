@@ -54,6 +54,7 @@
 
         /**
          * @param string $key
+         * @return mixed|null
          */
         public function getState($key, $defaultValue = null)
         {

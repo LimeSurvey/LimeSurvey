@@ -211,6 +211,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @var $sImagePath  string                 the image path relative to the template root
      * @var $alt         string                 the alternative text display
      * @var $htmlOptions array                  additional HTML attribute
+     * @return string
      */
     public static function image($sImagePath, $alt='', $htmlOptions=array ( ) )
     {

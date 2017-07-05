@@ -94,8 +94,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * It first checks if the question use a template (set in display attributes)
      * If it is the case, it will use the views of that template, else, it will render the core view.
      *
-     * @param string $sView     Name of the view to render
-     * @param array  $aData     Datas for the view
+     * @param string $sView Name of the view to render
+     * @param array $aData Datas for the view
+     * @return string
      */
     public function renderQuestion( $sView, $aData)
     {
@@ -170,9 +171,10 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Render a string, not a file. It's used from template replace function.
      *
-     * @param string  $line     The line of HTML/Twig to render
-     * @param array   $aDatas   Array containing the datas needed to render the view ($thissurvey)
-     * @param boolean $bReturn  Should the function echo the result, or just returns it?
+     * @param string $line The line of HTML/Twig to render
+     * @param array $aDatas Array containing the datas needed to render the view ($thissurvey)
+     * @param boolean $bReturn Should the function echo the result, or just returns it?
+     * @return string
      */
     public function renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn=false)
     {

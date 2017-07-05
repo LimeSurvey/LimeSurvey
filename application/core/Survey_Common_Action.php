@@ -33,11 +33,12 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Override runWithParams() implementation in CAction to help us parse
-    * requests with subactions.
-    *
-    * @param array $params URL Parameters
-    */
+     * Override runWithParams() implementation in CAction to help us parse
+     * requests with subactions.
+     *
+     * @param array $params URL Parameters
+     * @return bool
+     */
     public function runWithParams($params)
     {
         // Default method that would be called if the subaction and run() do not exist
@@ -87,16 +88,17 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Some functions have different parameters, which are just an alias of the
-    * usual parameters we're getting in the url. This function just populates
-    * those variables so that we don't end up in an error.
-    *
-    * This is also used while rendering wrapped template
-    * {@link Survey_Common_Action::_renderWrappedTemplate()}
-    *
-    * @param array $params Parameters to parse and populate
-    * @return array Populated parameters
-    */
+     * Some functions have different parameters, which are just an alias of the
+     * usual parameters we're getting in the url. This function just populates
+     * those variables so that we don't end up in an error.
+     *
+     * This is also used while rendering wrapped template
+     * {@link Survey_Common_Action::_renderWrappedTemplate()}
+     *
+     * @param array $params Parameters to parse and populate
+     * @return array Populated parameters
+     * @throws CHttpException
+     */
     private function _addPseudoParams($params)
     {
         // Return if params isn't an array
@@ -1341,6 +1343,7 @@ class Survey_Common_Action extends CAction
     /**
      * @param string $extractdir
      * @param string $destdir
+     * @return array
      */
     protected function _filterImportedResources($extractdir, $destdir)
     {
