@@ -1083,6 +1083,8 @@ class SurveyAdmin extends Survey_Common_Action
         $aViewUrls = $aData = array();
 
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData['oSurvey'] = $survey;
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
         {
@@ -1137,8 +1139,8 @@ class SurveyAdmin extends Survey_Common_Action
             $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
             $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
             $aData = array_merge($aData, $this->_tabTokens($esrow));
-            $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
-            $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
+            $aData = array_merge($aData, $this->_tabPanelIntegration($iSurveyID, $esrow));
+            $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID,$esrow));
 
             $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
@@ -1163,6 +1165,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
+
 
             $aViewUrls[] = 'editLocalSettings_main_view';
         }

@@ -1,7 +1,10 @@
 <?php
 /**
-* General container for edit survey action
-*/
+ * General container for edit survey action
+ *
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
 ?>
 
 <script type="text/javascript">
