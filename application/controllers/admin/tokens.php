@@ -453,7 +453,7 @@ class tokens extends Survey_Common_Action
             'lastname' => flattenText(Yii::app()->request->getPost('lastname')),
             'email' => flattenText(Yii::app()->request->getPost('email')),
             'emailstatus' => flattenText(Yii::app()->request->getPost('emailstatus')),
-            'token' => sanitize_token(Yii::app()->request->getPost('token')),
+            'token' => Token::sanitizeToken(Yii::app()->request->getPost('token')),
             'language' => flattenText(Yii::app()->request->getPost('language')),
             'sent' => flattenText(Yii::app()->request->getPost('sent')),
             'remindersent' => flattenText(Yii::app()->request->getPost('remindersent')),
@@ -488,7 +488,7 @@ class tokens extends Survey_Common_Action
                 'lastname' => flattenText(Yii::app()->request->getPost('lastname')),
                 'email' => flattenText(Yii::app()->request->getPost('email')),
                 'emailstatus' => flattenText(Yii::app()->request->getPost('emailstatus')),
-                'token' => sanitize_token(Yii::app()->request->getPost('token')),
+                'token' => Token::sanitizeToken(Yii::app()->request->getPost('token')),
                 'language' => flattenText(Yii::app()->request->getPost('language')),
                 'sent' => flattenText(Yii::app()->request->getPost('sent')),
                 'remindersent' => flattenText(Yii::app()->request->getPost('remindersent')),
@@ -585,7 +585,7 @@ class tokens extends Survey_Common_Action
                 $validuntil = $datetimeobj->convert('Y-m-d H:i:s');
             }
 
-            $sanitizedtoken = sanitize_token($request->getPost('token'));
+            $sanitizedtoken = Token::sanitizeToken($request->getPost('token'));
 
             $aData = array(
                 'firstname' => flattenText($request->getPost('firstname')),
@@ -707,7 +707,7 @@ class tokens extends Survey_Common_Action
             $aTokenData['lastname'] = flattenText($request->getPost('lastname'));
             $aTokenData['email'] = flattenText($request->getPost('email'));
             $aTokenData['emailstatus'] = flattenText($request->getPost('emailstatus'));
-            $sSanitizedToken = sanitize_token($request->getPost('token'));
+            $sSanitizedToken = Token::sanitizeToken($request->getPost('token'));
             $aTokenData['token'] = $sSanitizedToken;
             $aTokenData['language'] = sanitize_languagecode($request->getPost('language'));
             $aTokenData['sent'] = flattenText($request->getPost('sent'));
@@ -2204,7 +2204,7 @@ class tokens extends Survey_Common_Action
 
                         if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim($aWriteArray['token'])!='')
                         {
-                            if (trim($aWriteArray['token']) != sanitize_token($aWriteArray['token']))
+                            if (trim($aWriteArray['token']) != Token::sanitizeToken($aWriteArray['token']))
                             {
                                 $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']),CHtml::encode($aWriteArray['token']));
                                 $bInvalidToken=true;
