@@ -102,18 +102,7 @@ class SurveyObj
 
 
 
-    public function getQuestionText($fieldName)
-    {
-        $question = $this->fieldMap[$fieldName];
-        if ($question)
-        {
-            return $question['question'];
-        }
-        else
-        {
-            return false;
-        }
-    }
+
 
 
     /**
