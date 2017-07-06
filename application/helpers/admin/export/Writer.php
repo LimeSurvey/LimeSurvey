@@ -353,16 +353,6 @@ abstract class Writer implements IWriter
     }
 
 
-    /**
-    * Mimic old functionnality, leave it if some plugin use it
-    * No core plugin seems to use it, and function name seem broken (?)
-    * @deprecated
-    */
-    public function getCodeFieldSubHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
-    {
-        $fieldName['question']="";
-        return $this->getFullFieldSubHeading($oSurvey,$oOptions,$fieldName);
-    }
 
     /**
     * This method will be called once for every row of data that needs to be
