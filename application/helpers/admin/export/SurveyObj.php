@@ -104,28 +104,6 @@ class SurveyObj
 
 
 
-
-    /**
-    * Returns an array containing all child question rows for the given parent
-    * question ID.  If no children are found then an empty array is
-    * returned.
-    *
-    * @param int $parentQuestionId
-    * @return array[int]array[string]mixed
-    */
-    public function getSubQuestionArrays($parentQuestionId)
-    {
-        $results = array();
-        foreach ($this->questions as $question)
-        {
-            if ($question['parent_qid'] == $parentQuestionId)
-            {
-                $results[$question['qid']] = $question;
-            }
-        }
-        return $results;
-    }
-
     /**
     * Returns the full answer for the question that matches $fieldName
     * and the answer that matches the $answerCode.  If a match cannot
