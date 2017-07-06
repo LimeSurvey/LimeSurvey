@@ -1775,13 +1775,14 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
+    $survey = Survey::model()->findByPk($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
     /* Check if $sLanguage is a survey valid language (else $fieldmap is empty) */
     if($sLanguage=='' || !in_array($sLanguage,Survey::model()->findByPk($surveyid)->getAllLanguages())){
-        $sLanguage=Survey::model()->findByPk($surveyid)->language;
+        $sLanguage=$survey->language;
     }
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
@@ -1824,9 +1825,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
-    $prow = Survey::model()->findByPk($surveyid)->getAttributes(); //Checked
+    $prow = $survey->getAttributes(); //Checked
 
-    if ($prow['anonymized'] == "N" && Survey::model()->hasTokens($surveyid)) {
+    if ($prow['anonymized'] == "N" && $survey->hasTokensTable ) {
         $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
         if ($style == "full")
         {
@@ -3655,7 +3656,8 @@ function filterForAttributes ($fieldname)
 */
 function GetAttributeFieldNames($iSurveyID)
 {
-    if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
+    $survey=Survey::model()->findByPk($iSurveyID);
+    if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName))
         return Array();
 
     return array_filter(array_keys($table->columns), 'filterForAttributes');
@@ -3670,7 +3672,8 @@ function GetAttributeFieldNames($iSurveyID)
 */
 function GetParticipantAttributes($iSurveyID)
 {
-    if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
+    $survey=Survey::model()->findByPk($iSurveyID);
+    if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName))
         return Array();
     return getTokenFieldsAndNames($iSurveyID,true);
 }
