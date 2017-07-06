@@ -44,12 +44,6 @@ class SurveyObj
     */
     public $questions;
 
-    /**
-    * The tokens in the survey.
-    *
-    * @var array[int][string]mixed
-    */
-    public $tokens;
 
     /**
      * When relevant holds the available fields from the token table
