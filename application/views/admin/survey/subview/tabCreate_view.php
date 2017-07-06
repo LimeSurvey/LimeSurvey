@@ -32,8 +32,8 @@ PrepareEditorScript(false, $this);
         </div>
         <div class="grow-10 ls-space padding left-10 right-10">
             <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
-                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#general-settings" data-toggle="tab"><?=gT("General settings")?></a></li>
-                <li><a class="create_survey_wizard_tabs" data-count="2" href="#texts" data-toggle="tab"><?=gT("Survey texts")?></a></li>
+                <li class="active"><a class="create_survey_wizard_tabs" data-count="1" href="#texts" data-toggle="tab"><?=gT("Survey texts")?></a></li>
+                <li><a class="create_survey_wizard_tabs" data-count="2" href="#general-settings" data-toggle="tab"><?=gT("General settings")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="3" href="#presentation" data-toggle="tab"><?=gT("Presentation & navigation")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="4" href="#publication" data-toggle="tab"><?=gT("Publication & access control")?></a></li>
                 <li><a class="create_survey_wizard_tabs" data-count="5" href="#data-management" data-toggle="tab"><?=gT("Notification & data management")?></a></li>
@@ -48,11 +48,11 @@ PrepareEditorScript(false, $this);
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-10 ls-space padding left-10 right-10">
             <div class="tab-content">
-                <div class="tab-pane active" id="general-settings" data-count="1">
-                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_generaloptions_panel', $generalsettingsdata); ?>
-                </div>
-                <div class="tab-pane" id="texts" data-count="2">
+                <div class="tab-pane active" id="texts" data-count="1">
                     <?php echo $this->renderPartial('/admin/survey/subview/_create_survey_text', $edittextdata); ?>
+                </div>
+                <div class="tab-pane" id="general-settings" data-count="2">
+                    <?php echo $this->renderPartial('/admin/survey/subview/accordion/_generaloptions_panel', $generalsettingsdata); ?>
                 </div>
                 <div class="tab-pane" id="presentation" data-count="3">
                     <?php echo $this->renderPartial('/admin/survey/subview/accordion/_presentation_panel', $presentationsettingsdata); ?>

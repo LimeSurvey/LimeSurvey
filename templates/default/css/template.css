@@ -216,8 +216,13 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
     width: 100%;
     text-align: center;
     margin-bottom: 0;
-    padding-bottom: 0;
+    padding-bottom: 80px;
+    padding-top: 10px;
     margin-top: 10px;
+
+    bottom: 0px;
+    height: 60px;
+    background-color: rgba(236, 240, 241, 0.2);
 }
 
 /**
@@ -324,7 +329,7 @@ Responsive navbar-brand image CSS
 .logo-container {
   padding: 0px;
   float: left;
-  
+
   font-size: 18px;
   line-height: 20px;
 }

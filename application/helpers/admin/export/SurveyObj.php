@@ -214,7 +214,7 @@ class SurveyObj
                     if (strpos($fullAnswer,".")!==false) {
                         $fullAnswer=rtrim(rtrim($fullAnswer,"0"),".");
                     }
-                    $qidattributes = getQuestionAttributeValues($questionId);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questionId);
                     if (isset($qidattributes['num_value_int_only']) && $qidattributes['num_value_int_only']) {
                         $fullAnswer=number_format($fullAnswer, 0, '', '');
                     }

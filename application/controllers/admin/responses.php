@@ -179,7 +179,7 @@ class responses extends Survey_Common_Action
                 }
                 elseif ($field['aid'] !== 'filecount')
                 {
-                    $qidattributes = getQuestionAttributeValues($field['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
 
                     for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                     {

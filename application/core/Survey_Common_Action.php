@@ -269,9 +269,12 @@ class Survey_Common_Action extends CAction
             LimeExpressionManager::StartProcessingPage(false,true);
 
             $this->_titlebar($aData);
-
+            //// TODO : Move this div inside each correct view ASAP !
+            echo '<div class="ls-flex-row align-items-flex-center align-content-center">';
             //// Each view will call the correct bar as a subview.
             $this->_surveysidemenu($aData);
+            //// TODO : Move this div inside each correct view ASAP !
+            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-12">';
             $this->_surveybar($aData);
             $this->_nquestiongroupbar($aData);
             $this->_questionbar($aData);
@@ -280,7 +283,7 @@ class Survey_Common_Action extends CAction
             $this->_organizequestionbar($aData);
 
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="container-fluid" id="in_survey_common"><div class="row">';
+            echo '<div class="container-fluid ls-flex-column fill col-12" id="in_survey_common">';
 
             $this->_updatenotification();
             $this->_notifications();
@@ -357,7 +360,9 @@ class Survey_Common_Action extends CAction
             }
         }
 
-        //// TODO : Move this div inside each correct view ASAP !
+        //// TODO : Move this divs inside each correct view ASAP !
+        echo '</div>' ;
+        echo '</div>' ;
         echo '</div>' ;
 
         if (!empty($aData['surveyid']))
@@ -628,7 +633,7 @@ class Survey_Common_Action extends CAction
 
                 $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
                 if (is_null($qrrow)) return;
-                $questionsummary = "<div class='menubar'>\n";
+                $questionsummary = "";
 
                 // Check if other questions in the Survey are dependent upon this question
                 $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");

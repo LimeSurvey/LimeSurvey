@@ -1453,7 +1453,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case 'D':
                 if (trim($sValue)!='')
                 {
-                    $qidattributes = getQuestionAttributeValues($fields['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
                     $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
@@ -2183,7 +2183,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         elseif ($arow['type'] == "|")
         {
-            $qidattributes= getQuestionAttributeValues($arow['qid']);
+            $qidattributes= QuestionAttribute::model()->getQuestionAttributes($arow['qid']);
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                 'type'=>$arow['type'],
@@ -2496,16 +2496,6 @@ function buildLabelSetCheckSumArray()
 }
 
 
-/**
-* Returns a flat array with all question attributes for the question only (and the qid we gave it)!
-* @deprecated : use QuestionAttribute::model()->getQuestionAttributes($iQID); directly
-* @param integer $iQID The question ID
-* @return array $bOrderByNative=>value, attribute=>value} or false if the question ID does not exist (anymore)
-*/
-function getQuestionAttributeValues($iQID)
-{
-    return QuestionAttribute::model()->getQuestionAttributes($iQID);
-}
 
 /**
 *
@@ -2893,7 +2883,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
         $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qresult = getQuestionAttributeValues($qrow['qid']);
+        $qresult = QuestionAttribute::model()->getQuestionAttributes($qrow['qid']);
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -2970,7 +2960,7 @@ function getArrayFiltersForQuestion($qid)
     $qid=sanitize_int($qid);
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributeValues($qid);
+    $attributes = QuestionAttribute::model()->getQuestionAttributes($qid);
     if (isset($attributes['array_filter']) && Yii::app()->session['fieldarray']) {
         $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
         foreach (Yii::app()->session['fieldarray'] as $fields)
@@ -3046,7 +3036,7 @@ function getArrayFilterExcludesForQuestion($qid)
 
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributeValues($qid);
+    $attributes = QuestionAttribute::model()->getQuestionAttributes($qid);
     $excludevals=array();
     if (isset($attributes['array_filter_exclude'])) // We Found a array_filter_exclude attribute
     {
@@ -4162,7 +4152,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     {
         if (!empty($fname['qid']))
         {
-            $attributes = getQuestionAttributeValues($fname['qid']);
+            $attributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
             if (getQuestionAttributeValue($attributes, 'hidden') == 1)
             {
                 continue;

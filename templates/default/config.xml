@@ -44,9 +44,13 @@
         <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
         <backgroundimage>on</backgroundimage>
-        <animate>on</animate>
+        <animatebody>on</animatebody>
         <!-- see https://daneden.github.io/animate.css/ -->
-        <animation>animated lightSpeedIn</animation>
+        <bodyanimation>lightSpeedIn</bodyanimation>
+        <animatequestion>on</animatequestion>
+        <questionanimation>flipInX</questionanimation>
+        <animatealert>on</animatealert>
+        <alertanimation>shake</alertanimation>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the template -->
