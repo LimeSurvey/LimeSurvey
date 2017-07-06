@@ -2957,25 +2957,6 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
 
 /**
-* getGroupsByQuestion($surveyid)
-* @return array a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
-* @deprecated  not used
-*/
-function getGroupsByQuestion($surveyid) {
-    $output=array();
-
-    $surveyid=sanitize_int($surveyid);
-    $result=Question::model()->findAllByAttributes(array("sid"=>$surveyid));
-
-    foreach ($result->readAll() as $val)
-    {
-        $output[$val['qid']]=$val['gid'];
-    }
-    return $output;
-}
-
-
-/**
 * getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
 * @return array returns an array of codes that were selected else returns false
 */
