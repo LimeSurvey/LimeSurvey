@@ -2955,59 +2955,6 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
 
 
-/**
-* getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
-* @return array an array of codes that were selected else returns false
-* @deprecated not used
-*/
-function getArrayFiltersForQuestion($qid)
-{
-    static $cache = array();
-
-    // TODO: Check list_filter values to make sure questions are previous?
-    $qid=sanitize_int($qid);
-    if (isset($cache[$qid])) return $cache[$qid];
-
-    $attributes = QuestionAttribute::model()->getQuestionAttributes($qid);
-    if (isset($attributes['array_filter']) && Yii::app()->session['fieldarray']) {
-        $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-        foreach (Yii::app()->session['fieldarray'] as $fields)
-        {
-            if ($fields[2] == $val)
-            {
-                /** Broken code below ...
-                // we found the target question, now we need to know what the answers where, we know its a multi!
-                $fields[0]=sanitize_int($fields[0]);
-                //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
-                $qresult=Question::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session[$surveyid]['s_lang']), array('order' => "question_order"));
-                $selected = array();
-                //while ($code = $qresult->fetchRow())
-                foreach ($qresult->readAll() as $code)
-                {
-                    if (Yii::app()->session[$fields[1].$code['title']] == "Y"
-                    || Yii::app()->session[$fields[1]] == $code['title'])             array_push($selected,$code['title']);
-                }
-
-                 */
-
-                //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
-                //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
-                $qresult=Question::model()->findAllByAttributes(array("qid"=>$fields[0]));
-                foreach ($qresult->readAll() as $row) {$other=$row['other'];}
-                if($other == "Y")
-                {
-                    if(Yii::app()->session[$fields[1].'other'] && Yii::app()->session[$fields[1].'other'] !="") {array_push($selected, "other");}
-                }
-                $cache[$qid] = $selected;
-                return $cache[$qid];
-            }
-        }
-        $cache[$qid] = false;
-        return $cache[$qid];
-    }
-    $cache[$qid] = false;
-    return $cache[$qid];
-}
 
 /**
 * getGroupsByQuestion($surveyid)
