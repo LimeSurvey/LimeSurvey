@@ -761,6 +761,7 @@ class Survey_Common_Action extends CAction
         if((isset($aData['surveybar'])))
         {
             $iSurveyID = $aData['surveyid'];
+            /** @var Survey $oSurvey */
             $oSurvey = $aData['oSurvey'];
             $gid = isset($aData['gid'])?$aData['gid']:null;
             $surveyinfo = ( isset($aData['surveyinfo']) )?$aData['surveyinfo']:$oSurvey->surveyinfo;
@@ -873,8 +874,7 @@ class Survey_Common_Action extends CAction
             $aData['responsescreate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create');
             $aData['responsesread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read');
             // TOKEN MANAGEMENT BUTTON
-            $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
-            if(!$bTokenExists) {
+            if (!$oSurvey->hasTokensTable) {
                 $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
             }
