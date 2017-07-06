@@ -6,7 +6,6 @@ class SurveyObj
     */
     public $id;
 
-
     /**
     * Answer, codes, and full text to the questions.
     * This is used in conjunction with the fieldMap to produce
@@ -65,9 +64,6 @@ class SurveyObj
     * @var array[int][string]mixed
     */
     public $languageSettings;
-
-
-
 
 
 
