@@ -706,23 +706,7 @@ function return_display_style($ia, $aQuestionAttributes, $thissurvey, $rowname)
 
     //~ return $htmltbody2;
 }
-/**
- * @todo Return the Expression manager class of a subquestion
- * @param integer $surveyid : the survey id
- * @param string $subquestionName : the target name
- * @param array $aQuestionAttributes : the attribute of the question (for array_filter_style actually)
- * @deprecated not used & broken
- */
-function getExpressionManagerClass($surveyid,$subquestionName,$aQuestionAttributes=null)
-{
-    /**
-    FIXME $rowname not defined!!
-     */
-    if (isset($_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname]) && !$_SESSION["survey_{$surveyid}"]['relevanceStatus'][$rowname])
-    {
 
-    }
-}
 /**
  * @param string $rowname
  * @param string $valuename
