@@ -6,11 +6,6 @@ class SurveyObj
     */
     public $id;
 
-    /**
-    * Whether the survey is anonymous or not.
-    * @var boolean
-    */
-    public $anonymous;
 
     /**
     * Answer, codes, and full text to the questions.
@@ -77,28 +72,6 @@ class SurveyObj
     */
     public $languageSettings;
 
-    /**
-    * Returns question arrays ONLY for questions that are part of the
-    * indicated group and are top level (i.e. no subquestions will be
-    * returned).   If there are no then an empty array will be returned.
-    * If $groupId is not set then all top level questions will be
-    * returned regardless of the group they are a part of.
-    */
-    public function getQuestions($groupId = null)
-    {
-        $qs = array();
-        foreach($this->questions as $q)
-        {
-            if ($q['parent_qid'] == 0)
-            {
-                if(empty($groupId) || $q['gid'] == $groupId)
-                {
-                    $qs[] = $q;
-                }
-            }
-        }
-        return $qs;
-    }
 
 
 
