@@ -4036,21 +4036,6 @@ function enforceSSLMode()
     };
 };
 
-/**
-* @deprecated
-* Returns the number of answers matching the quota
-* THIS METHOD IS DEPRECATED AND IS LEFT ONLY FOR COMPATIBILITY REASONS
-* USE THE METHOD ON THE QUOTA CLASS INSTEAD
-*
-* @param int $iSurveyId - Survey identification number //deprecated
-* @param int $quotaid - quota id for which you want to compute the completed field
-* @return mixed - value of matching entries in the result DB or null
-*/
-function getQuotaCompletedCount($iSurveyId, $quotaid)
-{
-  $oQuota = Quota::model()->findByPk($quotaid);
-  return $oQuota->completeCount;
-}
 
 /**
 * Creates an array with details on a particular response for display purposes
