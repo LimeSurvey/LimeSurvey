@@ -100,23 +100,7 @@ class SurveyObj
         return $qs;
     }
 
-    /**
-    * Returns the question code/title for the question that matches the $fieldName.
-    * False is returned if no matching question is found.
-    * @param string $fieldName
-    * @return string (or false)
-    */
-    public function getQuestionCode($fieldName)
-    {
-        if (isset($this->fieldMap[$fieldName]['title']))
-        {
-            return $this->fieldMap[$fieldName]['title'];
-        }
-        else
-        {
-            return false;
-        }
-    }
+
 
     public function getQuestionText($fieldName)
     {
