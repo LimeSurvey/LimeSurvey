@@ -352,15 +352,7 @@ abstract class Writer implements IWriter
         return flattenText($string,false,true,'UTF-8',false);
     }
 
-    /**
-    * Mimic old functionnality, leave it if some plugin use it
-    * No core plugin seems to use it, and function name seem broken (?)
-    * @deprecated
-    */
-    public function getCodeHeading(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName)
-    {
-        return $this->getFullQuestionHeading($oSurvey,$oOptions,$fieldName).$this->getCodeFieldSubHeading($oSurvey,$oOptions,$fieldName);
-    }
+
     /**
     * Mimic old functionnality, leave it if some plugin use it
     * No core plugin seems to use it, and function name seem broken (?)
