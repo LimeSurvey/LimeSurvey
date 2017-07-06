@@ -106,28 +106,6 @@ class SurveyObj
 
 
     /**
-    * Returns all token records that have a token value that matches
-    * the one given.  An empty array is returned if there are no
-    * matching token records.
-    *
-    * @param mixed $token
-    */
-    public function getTokens($token)
-    {
-        $matchingTokens = array();
-
-        foreach($this->tokens as $t)
-        {
-            if ($t['token'] == $token)
-            {
-                $matchingTokens[] = $t;
-            }
-        }
-
-        return $matchingTokens;
-    }
-
-    /**
     * Returns an array containing all child question rows for the given parent
     * question ID.  If no children are found then an empty array is
     * returned.
