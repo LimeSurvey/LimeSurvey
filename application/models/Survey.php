@@ -94,6 +94,8 @@ use \ls\pluginmanager\PluginEvent;
  * @property string creationDate Creation date formatted according to user format
  * @property string startDateFormatted Start date formatted according to user format
  * @property string expiryDateFormatted Expiry date formatted according to user format
+ * @property string $tokensTableName Name of survey tokens table
+ * @property string $hasTokensTable Whether survey has a tokens table or not
  */
 class Survey extends LSActiveRecord
 {
@@ -464,42 +466,21 @@ class Survey extends LSActiveRecord
     }
 
     /**
-     * Returns true in a token table exists for the given $surveyId
-     *
-     * @staticvar array $tokens
-     * @param int $iSurveyID
-     * @return boolean
+     * Return the name of survet tokens table
+     * @return string
      */
-    public function hasTokens($iSurveyID) {
-        static $tokens = array();
-        $iSurveyID = (int) $iSurveyID;
-
-        if (!isset($tokens[$iSurveyID])) {
-            // Make sure common_helper is loaded
-            Yii::import('application.helpers.common_helper', true);
-
-            $tokens_table = "{{tokens_{$iSurveyID}}}";
-            if (tableExists($tokens_table)) {
-                $tokens[$iSurveyID] = true;
-            } else {
-                $tokens[$iSurveyID] = false;
-            }
-        }
-
-        return $tokens[$iSurveyID];
+    public function getTokensTableName(){
+        return "{{tokens_{$this->primaryKey}}}";
     }
 
     /**
-     * @return string
+     * Returns true in a token table exists for survey
+     * @return boolean
      */
-    public function getHasTokens()
-    {
-        $hasTokens = $this->hasTokens($this->sid) ;
-        if($hasTokens) {
-            return gT('Yes');
-        } else {
-            return gT('No');
-        }
+    public function getHasTokensTable() {
+        // Make sure common_helper is loaded
+        Yii::import('application.helpers.common_helper', true);
+        return tableExists($this->tokensTableName);
     }
 
     /**

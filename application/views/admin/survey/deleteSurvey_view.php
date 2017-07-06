@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var AdminController $this
+ * @var Survey $survey
+ */
+
+?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -12,12 +19,12 @@
                     <?php eT("It will also delete any resources/files that have been uploaded for this survey."); ?><br /><br />
                     <?php eT("We recommend that before you delete this survey you export the entire survey from the main administration screen."); ?>
 
-                    <?php if(tableExists("{{survey_{$surveyid}}}")):?>
+                    <?php if($survey->hasTokensTable):?>
                         <span class="text-warning"><?php eT("This survey is active and a responses table exists. If you delete this survey, these responses (and files) will be deleted. We recommend that you export the responses before deleting this survey."); ?></span><br /><br />
                     <?php endif; ?>
 
 
-                    <?php if (tableExists("{{tokens_{$surveyid}}}")): ?>
+                    <?php if ($survey->hasTokensTable): ?>
                         <span class="text-warning"><?php eT("This survey has an associated tokens table. If you delete this survey this tokens table will be deleted. We recommend that you export or backup these tokens before deleting this survey."); ?><br /><br />
                     <?php endif; ?>
 

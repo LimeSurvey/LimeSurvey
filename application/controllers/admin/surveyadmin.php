@@ -860,6 +860,8 @@ class SurveyAdmin extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
         $aData['sidemenu']['state'] = false;
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData['survey'] =$survey;
 
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
