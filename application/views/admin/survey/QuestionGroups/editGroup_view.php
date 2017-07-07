@@ -6,11 +6,11 @@
     <div class="row">
         <div class="col-sm-12 content-right">
             <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Edit Group"))); ?>
-            <h3><?php eT("Edit Group"); ?></h3>
+            <div class="pagetitle h3"><?php eT("Edit Group"); ?></div>
             <ul class="nav nav-tabs" id="edit-group-language-selection">
                 <?php foreach ($tabtitles as $i=>$eachtitle):?>
                     <li role="presentation" class="<?php if($count==0) {echo "active"; $count++;}?>">
-                        <a data-toggle="tab" href="#editgrp_<?php echo $i;?>">
+                        <a role="tab" data-toggle="tab" href="#editgrp_<?php echo $i;?>">
                             <?php echo $eachtitle;?>
                         </a>
                     </li>

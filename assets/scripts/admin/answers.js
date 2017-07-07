@@ -591,7 +591,7 @@ function transferlabels()
                                 tablerows=tablerows+
                                 '<tr class="row_'+k+'" >'+
                                 '   <td>'+
-                                '       <span class="glyphicon glyphicon-move"></span>'+
+                                '       <span class="fa fa-move"></span>'+
                                 '   </td>'+
                                 '   <td>'+
                                 '       <input class="code second-in-answerjs form-control input-lg" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="20" value="'+htmlspecialchars(lsrows[k].code)+'" />'+
@@ -605,12 +605,12 @@ function transferlabels()
 
                                 '   <td>'+
                                 '           <a class="editorLink">'+
-                                '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-                                '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                                '               <span class="fa fa-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
+                                '               <span class="btneditanswerdis fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                                 '           </a>'+
 
                                 '       <span class="btnaddanswer icon-add text-success"></span>'+
-                                '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
+                                '       <span class="btndelanswer fa fa-trash text-warning"></span>'+
                                 '   </td>'+
                                 '</tr>'
                             }
@@ -629,12 +629,12 @@ function transferlabels()
 
                                 '   <td>'+
                                 '           <a class="editorLink">'+
-                                '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-                                '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                                '               <span class="fa fa-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
+                                '               <span class="btneditanswerdis fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                                 '           </a>'+
 
                                 '       <span class="btnaddanswer icon-add text-success"></span>'+
-                                '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
+                                '       <span class="btndelanswer fa fa-trash text-warning"></span>'+
                                 '   </td>'+
                                 '</tr>'
                             }
@@ -658,12 +658,12 @@ function transferlabels()
 
                         '   <td>'+
                         '           <a class="editorLink">'+
-                        '               <span class="glyphicon glyphicon-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
-                        '               <span class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                        '               <span class="fa fa-pencil btneditanswerena" data-toggle="tooltip" data-placement="bottom" title="Start HTML editor in a popup window" ></span>'+
+                        '               <span class="btneditanswerdis fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                         '           </a>'+
 
                         '       <span class="btnaddanswer icon-add text-success" />'+
-                        '       <span class="btndelanswer  glyphicon glyphicon-trash text-warning" />'+
+                        '       <span class="btndelanswer  fa fa-trash text-warning" />'+
                         '   </td>'+
                         '</tr>'
                     }

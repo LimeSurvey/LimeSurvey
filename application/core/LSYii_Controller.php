@@ -25,7 +25,6 @@ abstract class LSYii_Controller extends CController
      * @access public
      * @param string $id
      * @param CWebModule $module
-     * @return void
      */
     public function __construct($id, $module = null)
     {

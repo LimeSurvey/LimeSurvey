@@ -39,20 +39,18 @@ class LSYii_Application extends CWebApplication
 
     /**
      *
-    * Initiates the application
-    *
-    * @access public
-    * @return void
-    */
+     * Initiates the application
+     *
+     * @access public
+     * @param array $aApplicationConfig
+     */
     public function __construct($aApplicationConfig = null)
     {
         /* Using some config part for app config, then load it before*/
         $baseConfig = require(__DIR__ . '/../config/config-defaults.php');
-        if(file_exists(__DIR__ . '/../config/config.php'))
-        {
+        if(file_exists(__DIR__ . '/../config/config.php')) {
             $userConfigs = require(__DIR__ . '/../config/config.php');
-            if(is_array($userConfigs['config']))
-            {
+            if(is_array($userConfigs['config'])) {
                 $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
         }
@@ -126,11 +124,12 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
-    * Loads a library
-    *
-    * @access public
-    * @return void
-    */
+     * Loads a library
+     *
+     * @access public
+     * @param string $library Libraby name
+     * @return void
+     */
     public function loadLibrary($library)
     {
         Yii::import('application.libraries.'.$library, true);
@@ -203,11 +202,12 @@ class LSYii_Application extends CWebApplication
 
 
     /**
-    * For future use, cache the language app wise as well.
-    *
-    * @access public
-    * @return void
-    */
+     * For future use, cache the language app wise as well.
+     *
+     * @access public
+     * @param string $sLanguage
+     * @return void
+     */
     public function setLanguage( $sLanguage )
     {
         $sLanguage=preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
@@ -288,7 +288,7 @@ class LSYii_Application extends CWebApplication
      * @see http://www.yiiframework.com/doc/api/1.1/CApplication#onException-detail
      * Set surveys/error for 404 error
      * @param CExceptionEvent $event
-     * @return : void
+     * @return void
      */
     public function onException($event){
         if(Yii::app() instanceof CWebApplication){

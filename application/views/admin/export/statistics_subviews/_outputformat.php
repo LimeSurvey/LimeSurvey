@@ -1,6 +1,6 @@
     <div class="panel panel-primary " id="panel-1">
         <div class="panel-heading">
-            <h4 class="panel-title"><?php eT("Output format"); ?></h4>
+            <div class="panel-title h4"><?php eT("Output format"); ?></div>
         </div>
         <div class="panel-body">
             <div class="btn-group" data-toggle="buttons">

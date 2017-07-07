@@ -21,8 +21,8 @@ class TemplateException extends Exception {}
 /**
  * Class Template
  *
- * @property string $folder
- * @property integer $creator
+ * @property string $folder Template folder name eg: 'default'
+ * @property integer $creator User ID of Template creator
  */
 class Template extends LSActiveRecord
 {

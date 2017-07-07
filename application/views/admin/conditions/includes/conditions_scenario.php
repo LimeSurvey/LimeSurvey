@@ -55,7 +55,7 @@
                         data-onclick='(function() { document.getElementById("deletescenario<?php echo $scenarionr["scenario"]; ?>").submit(); })'
                         onclick='return false;'
                     >
-                        <span class="glyphicon glyphicon-trash text-danger"></span>
+                        <span class="fa fa-trash text-danger"></span>
                     </button>
 
                     <button
@@ -65,7 +65,7 @@
                         id='editscenariobtn<?php echo $scenarionr['scenario']; ?>'
                         onclick="$('#editscenario<?php echo $scenarionr['scenario']; ?>').toggle('slow'); return false"
                     >
-                        <span class="glyphicon glyphicon-pencil"></span>
+                        <span class="fa fa-pencil"></span>
                     </button>
 
                     <button

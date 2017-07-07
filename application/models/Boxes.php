@@ -132,11 +132,11 @@ class Boxes extends CActiveRecord
 
         $url = Yii::app()->createUrl("/admin/homepagesettings/sa/update/id/");
         $url .= '/'.$this->id;
-        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
 
         $url = Yii::app()->createUrl("/admin/homepagesettings/sa/delete/id/");
         $url .= '/'.$this->id;
-        $button .= '<a class="btn btn-default" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this box ?').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
+        $button .= '<a class="btn btn-default" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this box ?').'"><span class="text-danger fa fa-trash" ></span></a>';
         return $button;
     }
 

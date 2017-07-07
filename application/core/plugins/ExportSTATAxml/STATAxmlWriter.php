@@ -95,7 +95,9 @@ class STATAxmlWriter extends Writer
 
     /**
      * @param SurveyObj $survey
+     * @param string $sLanguage
      * @param FormattingOptions $oOptions
+     * @return mixed
      */
     function createStataFieldmap($survey, $sLanguage, $oOptions)
     {
@@ -708,7 +710,7 @@ class STATAxmlWriter extends Writer
         $xml->endElement(); // close dta
         $xml->endDocument();
 
-        $this->out($xml->outputMemory(), 1);
+        $this->out($xml->outputMemory());
 
         fclose($this->handle);
     }

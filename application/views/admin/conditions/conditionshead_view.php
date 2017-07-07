@@ -13,7 +13,7 @@
                 class='btn btn-warning pull-right condition-header-button'
                 onclick='return false';
             >
-                <span class="glyphicon glyphicon-trash"></span>
+                <span class="fa fa-trash"></span>
                 &nbsp;
                 <?php eT('Delete all conditions'); ?>
             </button>

@@ -28,7 +28,7 @@
 
         <!-- Move icon -->
         <td class="move-icon" >
-            <span class="glyphicon glyphicon-move"></span>
+            <span class="fa fa-move"></span>
         </td>
 
         <!-- Code (title) -->
@@ -129,7 +129,7 @@
 
         <?php if ( $first):?>
             <span class="icon-add text-success btnaddanswer" data-assessmentvisible='<?php echo $assessmentvisible;?>' data-position="<?php echo $position; ?>" data-code="<?php echo $title; ?>" data-scale-id="<?php echo $scale_id; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
-            <span class="glyphicon glyphicon-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
+            <span class="fa fa-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
         <?php endif; ?>
     </td>
 </tr>

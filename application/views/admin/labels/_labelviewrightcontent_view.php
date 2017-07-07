@@ -5,11 +5,11 @@
 
                 <!-- Uploaded resources management -->
                 <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
+                    <div class="panel-title h4">
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <?php eT("Uploaded resources management"); ?>
                         </a>
-                    </h4>
+                    </div>
                 </div> <!-- headingOne -->
 
                 <!-- Body -->

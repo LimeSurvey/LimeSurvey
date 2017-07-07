@@ -54,5 +54,7 @@ $(document).ready(function(){
             return jquery_goodchars(e,'1234567890-');
         }
     )
+
+   
   }
 );

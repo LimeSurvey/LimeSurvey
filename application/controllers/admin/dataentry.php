@@ -505,6 +505,7 @@ class dataentry extends Survey_Common_Action
     {
 
         $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
         $id = sanitize_int($id);
         $aViewUrls = array();
         /** @var Survey $oSurvey */
@@ -652,7 +653,7 @@ class dataentry extends Survey_Common_Action
                     //$aDataentryoutput .= "\t-={$fname[3]}=-"; //Debugging info
                     if(isset($fname['qid']) && isset($fname['type']))
                     {
-                        $qidattributes = getQuestionAttributeValues($fname['qid']);
+                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                     }
                     switch ($fname['type'])
                     {
@@ -778,7 +779,7 @@ class dataentry extends Survey_Common_Action
                             break;
                         case "L": //LIST drop-down
                         case "!": //List (Radio)
-                            $qidattributes=getQuestionAttributeValues($fname['qid']);
+                            $qidattributes=QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (isset($qidattributes['category_separator']) && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
@@ -962,7 +963,7 @@ class dataentry extends Survey_Common_Action
                             break;
 
                         case "M": //Multiple choice checkbox
-                            $qidattributes=getQuestionAttributeValues($fname['qid']);
+                            $qidattributes=QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (trim($qidattributes['display_columns'])!='')
                             {
                                 $dcols=$qidattributes['display_columns'];
@@ -1060,7 +1061,7 @@ class dataentry extends Survey_Common_Action
                             if ($fname['aid']!=='filecount' && isset($idrow[$fname['fieldname'] . '_filecount']) && ($idrow[$fname['fieldname'] . '_filecount'] > 0))
                             {//file metadata
                                 $metadata = json_decode($idrow[$fname['fieldname']], true);
-                                $qAttributes = getQuestionAttributeValues($fname['qid']);
+                                $qAttributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                                 for ($i = 0; ($i < $qAttributes['max_num_of_files']) && isset($metadata[$i]); $i++)
                                 {
                                     if ($qAttributes['show_title'])
@@ -1265,7 +1266,7 @@ class dataentry extends Survey_Common_Action
                             $aDataentryoutput .= "</table>\n";
                             break;
                         case ":": //ARRAY (Multi Flexi) (Numbers)
-                            $qidattributes=getQuestionAttributeValues($fname['qid']);
+                            $qidattributes=QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                                 $maxvalue=$qidattributes['multiflexible_max'];
                                 $minvalue=1;
@@ -1503,7 +1504,7 @@ class dataentry extends Survey_Common_Action
                     }
                     else
                     {
-                        $qidattributes = getQuestionAttributeValues($irow['qid']);
+                        $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
                         $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
@@ -1769,7 +1770,7 @@ class dataentry extends Survey_Common_Action
                         }
                         elseif ($irow['type'] == 'D')
                         {
-                            $qidattributes = getQuestionAttributeValues($irow['qid']);
+                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                             $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
                             $insert_data[$fieldname] = $datetimeobj->format("Y-m-d H:i:s");
@@ -2027,7 +2028,7 @@ class dataentry extends Survey_Common_Action
                 foreach ($deqrows as $deqrow)
                 {
                     $cdata = array();
-                    $qidattributes = getQuestionAttributeValues($deqrow['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                     $cdata['qidattributes'] = $qidattributes;
                     $hidden = (isset($qidattributes['hidden']) ? $qidattributes['hidden'] : 0);
                     // TODO - can questions be hidden?  Are JavaScript variables names used?  Consistently with everywhere else?
@@ -2039,7 +2040,7 @@ class dataentry extends Survey_Common_Action
                     $relevance = trim($qinfo['info']['relevance']);
                     $explanation = trim($qinfo['relEqn']);
                     $validation = trim($qinfo['prettyValidTip']);
-                    $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                    $qidattributes=QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                     $array_filter_help = flattenText($this->_array_filter_help($qidattributes, $sDataEntryLanguage, $surveyid));
 
                     if (($relevance != '' && $relevance != '1') || ($validation != '') || ($array_filter_help != ''))
@@ -2110,7 +2111,7 @@ class dataentry extends Survey_Common_Action
 
                         case "L": //LIST drop-down/radio-button list
                         case "!":
-                            //                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                            //                            $qidattributes=QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                             if ($deqrow['type']=='!' && trim($qidattributes['category_separator'])!='')
                             {
                                 $optCategorySeparator = $qidattributes['category_separator'];
@@ -2255,7 +2256,7 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case "|":
-                            //                            $qidattributes = getQuestionAttributeValues($deqrow['qid']);
+                            //                            $qidattributes = QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                             $cdata['qidattributes'] = $qidattributes;
 
                             $maxfiles = $qidattributes['max_num_of_files'];
@@ -2273,6 +2274,7 @@ class dataentry extends Survey_Common_Action
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
                             $mearesult = dbExecuteAssoc($meaquery);
                             $cdata['mearesult'] = $mearesult->readAll();
+                            break;
 
                         case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
                             $meaquery = "SELECT title, question FROM {{questions}} WHERE parent_qid={$deqrow['qid']} AND language='{$sDataEntryLanguage}' ORDER BY question_order";
@@ -2287,7 +2289,7 @@ class dataentry extends Survey_Common_Action
 
                             break;
                         case ":": //ARRAY (Multi Flexi)
-                            //                            $qidattributes=getQuestionAttributeValues($deqrow['qid']);
+                            //                            $qidattributes=QuestionAttribute::model()->getQuestionAttributes($deqrow['qid']);
                             $minvalue=1;
                             $maxvalue=10;
                             if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) =='') {

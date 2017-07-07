@@ -19,11 +19,12 @@ class UserIdentity extends CUserIdentity
     protected $sOneTimePassword;
 
     /**
-    * Checks whether this user has correctly entered password or not
-    *
-    * @access public
-    * @return bool
-    */
+     * Checks whether this user has correctly entered password or not
+     *
+     * @access public
+     * @param string $sOneTimePassword
+     * @return bool
+     */
     public function authenticate($sOneTimePassword='')
     {    
         if (Yii::app()->getConfig("auth_webserver")==false || $this->username != "")         

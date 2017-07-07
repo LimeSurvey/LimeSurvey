@@ -34,7 +34,6 @@ class Assessments extends Survey_Common_Action
     {
         $iSurveyID = sanitize_int($iSurveyID);
         $sAction = Yii::app()->request->getParam('action');
-
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read'))
         {
             $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -56,6 +55,9 @@ class Assessments extends Survey_Common_Action
             if ($sAction == "assessmentdelete")
                 $this->_delete($iSurveyID, $_POST['id']);
 
+            if($sAction == "asessementactivate")
+                $this->_activateAsessement($iSurveyID);
+
 
             $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage);
         }
@@ -65,6 +67,7 @@ class Assessments extends Survey_Common_Action
             $this->getController()->redirect(array("admin/"));
         }
     }
+
 
     /**
      * Renders template(s) wrapped in header and footer
@@ -117,14 +120,28 @@ class Assessments extends Survey_Common_Action
         $urls['output'] = '<div class="side-body ' . getSideBodyClass(false) . '">';
         $urls['output'] .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Assessments")), true, false);
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
-
+        $aData['asessementNotActivated'] = false;
         if ($surveyinfo['assessments']!='Y')
         {
-
-            $urls['message'] = array('title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader');
+            $aData['asessementNotActivated'] = array(
+                'title' => gT("Assessments mode not activated"), 
+                'message' => gT("Assessment mode for this survey is not activated.").'<br/>'
+                    . gt("If you want to activate it click here:").'<br/>'
+                    . '<a type="submit" class="btn btn-primary" href="'
+                    . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate','surveyid'=> $iSurveyID])
+                    .'">'.gT('Activate asessements').'</a>', 
+                'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
         $urls['assessments_view'][]= $aData;
         $this->_renderWrappedTemplate('', $urls, $aData);
+    }
+
+    private function _activateAsessement($iSurveyID)
+    {
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+        $oSurvey->assessments = "Y";
+        $oSurvey->save();
+        return ['success' => true];
     }
 
     private function _collectGroupData($iSurveyID)

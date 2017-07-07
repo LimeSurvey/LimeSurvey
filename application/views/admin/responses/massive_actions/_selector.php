@@ -16,7 +16,7 @@
             'type'        => 'action',
             'action'      => 'delete',
             'url'         =>  App()->createUrl('/admin/responses/sa/actionDelete/surveyid/'.$_GET['surveyid']),
-            'iconClasses' => 'text-danger glyphicon glyphicon-trash',
+            'iconClasses' => 'text-danger fa fa-trash',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
 
