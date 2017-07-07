@@ -1104,31 +1104,6 @@ function groupOrderThenQuestionOrder($a, $b)
 }
 
 
-
-/**
-* This function rewrites the sortorder for questions inside the named group
-* REMOVED the 2012-08-08 : replaced by Question::model()->updateQuestionOrder
-* @param integer $groupid the group id
-* @param integer $surveyid the survey id
-*/
-/**
-function fixSortOrderQuestions($groupid, $surveyid) //Function rewrites the sortorder for questions
-{
-    $gid = sanitize_int($groupid);
-    $surveyid = sanitize_int($surveyid);
-    $baselang = Survey::model()->findByPk($surveyid)->language;
-
-    $questions = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $baselang));
-    $p = 0;
-    foreach ($questions as $question)
-    {
-        $question->question_order = $p;
-        $question->save();
-        $p++;
-    }
-}
-*/
-
 function shiftOrderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortorder for questions
 {
     $sid=sanitize_int($sid);
