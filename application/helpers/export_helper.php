@@ -16,7 +16,7 @@
 * Strips html tags and replaces new lines
 *
 * @param $string
-* @return $string
+* @return string
 */
 function stripTagsFull($string) {
     $string=html_entity_decode($string, ENT_QUOTES, "UTF-8");
@@ -1477,23 +1477,7 @@ function quexml_export($surveyi, $quexmllan)
     return $dom->saveXML();
 }
 
-/**
-* From adodb
-*
-* Different SQL databases used different methods to combine strings together.
-* This function provides a wrapper.
-*
-* param s    variable number of string parameters
-*
-* Usage: $db->Concat($str1,$str2);
-*
-* @return string string
-*/
-function concat()
-{
-    $arr = func_get_args();
-    return implode('+', $arr);
-}
+
 
 // DUMP THE RELATED DATA FOR A SINGLE QUESTION INTO A SQL FILE FOR IMPORTING LATER ON OR
 // ON ANOTHER SURVEY SETUP DUMP ALL DATA WITH RELATED QID FROM THE FOLLOWING TABLES
