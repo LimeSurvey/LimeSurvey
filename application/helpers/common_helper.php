@@ -3041,13 +3041,14 @@ function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 }
 
 /**
-* This function creates the old fieldnames for survey import
-*
-* @param mixed $iOldSID  The old survey id
-* @param integer $iNewSID  The new survey id
-* @param array $aGIDReplacements An array with group ids (oldgid=>newgid)
-* @param array $aQIDReplacements An array with question ids (oldqid=>newqid)
-*/
+ * This function creates the old fieldnames for survey import
+ *
+ * @param mixed $iOldSID The old survey id
+ * @param integer $iNewSID The new survey id
+ * @param array $aGIDReplacements An array with group ids (oldgid=>newgid)
+ * @param array $aQIDReplacements An array with question ids (oldqid=>newqid)
+ * @return array|bool
+ */
 function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDReplacements)
 {
     $aGIDReplacements=array_flip($aGIDReplacements);
@@ -3087,11 +3088,12 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 }
 
 /**
-* put your comment there...
-*
-* @param mixed $id
-* @param string $type
-*/
+ * put your comment there...
+ *
+ * @param mixed $id
+ * @param string $type
+ * @return bool
+ */
 function hasResources($id,$type='survey')
 {
     $dirname = Yii::app()->getConfig("uploaddir");
@@ -3130,11 +3132,12 @@ function hasResources($id,$type='survey')
 }
 
 /**
-* Creates a random sequence of characters
-*
-* @param mixed $length Length of resulting string
-* @param string $pattern To define which characters should be in the resulting string
-*/
+ * Creates a random sequence of characters
+ *
+ * @param mixed $length Length of resulting string
+ * @param string $pattern To define which characters should be in the resulting string
+ * @return string
+ */
 function randomChars($length,$pattern="23456789abcdefghijkmnpqrstuvwxyz")
 {
     $patternlength = strlen($pattern)-1;
@@ -3212,10 +3215,12 @@ function fixCKeditorText($str)
  * This is a helper function for getAttributeFieldNames
  *
  * @param mixed $fieldname
+ * @return bool
  */
 function filterForAttributes ($fieldname)
 {
-    if (strpos($fieldname,'attribute_')===false) return false; else return true;
+    if (strpos($fieldname,'attribute_')===false) return false;
+    else return true;
 }
 
 /**
@@ -3224,7 +3229,7 @@ function filterForAttributes ($fieldname)
 * @param mixed $iSurveyID  The survey ID
 * @return array The fieldnames
 */
-function GetAttributeFieldNames($iSurveyID)
+function getAttributeFieldNames($iSurveyID)
 {
     $survey=Survey::model()->findByPk($iSurveyID);
     if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName))
@@ -3235,12 +3240,13 @@ function GetAttributeFieldNames($iSurveyID)
 }
 
 /**
-* Returns the full list of attribute token fields including the properties for each field
-* Use this instead of plain Survey::model()->findByPk($iSurveyID)->tokenAttributes calls because Survey::model()->findByPk($iSurveyID)->tokenAttributes may contain old descriptions where the fields does not physically exist
-*
-* @param integer $iSurveyID The Survey ID
-*/
-function GetParticipantAttributes($iSurveyID)
+ * Returns the full list of attribute token fields including the properties for each field
+ * Use this instead of plain Survey::model()->findByPk($iSurveyID)->tokenAttributes calls because Survey::model()->findByPk($iSurveyID)->tokenAttributes may contain old descriptions where the fields does not physically exist
+ *
+ * @param integer $iSurveyID The Survey ID
+ * @return array
+ */
+function getParticipantAttributes($iSurveyID)
 {
     $survey=Survey::model()->findByPk($iSurveyID);
     if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName))
