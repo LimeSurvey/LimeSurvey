@@ -326,39 +326,6 @@ function getGidPrevious($surveyid, $gid)
     return $GidPrev;
 }
 
-/**
-* getQidPrevious() returns the Qid of the question prior to the current active question
-*
-* @param string $surveyid
-* @param string $gid
-* @param string $qid
-*
-* @return integer This Qid of the previous question
-*/
-function getQidPrevious($surveyid, $gid, $qid)
-{
-
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid'=>0),array('order'=>'question_order'));
-
-    $i = 0;
-    $iPrev = -1;
-    if (count($qrows) > 0)
-    {
-
-        foreach ($qrows as $qrow)
-        {
-            $qrow = $qrow->attributes;
-            if ($qid == $qrow['qid']) {$iPrev = $i - 1;}
-            $i += 1;
-        }
-    }
-    if ($iPrev >= 0) {$QidPrev = $qrows[$iPrev]->qid;}
-    else {$QidPrev = "";}
-
-
-    return $QidPrev;
-}
 
 /**
 * getGidNext() returns the Gid of the group next to the current active group
