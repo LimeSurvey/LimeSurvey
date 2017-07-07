@@ -3259,19 +3259,6 @@ function getParticipantAttributes($iSurveyID)
 
 
 /**
-* Retrieves the token field names usable for conditions from the related token table
-*
-* @param mixed $surveyid  The survey ID
-* @return array The fieldnames
-*/
-function getTokenConditionsFieldNames($surveyid)
-{
-    $extra_attrs=getAttributeFieldNames($surveyid);
-    $basic_attrs=Array('firstname','lastname','email','token','language','sent','remindersent','remindercount');
-    return array_merge($basic_attrs,$extra_attrs);
-}
-
-/**
 * Retrieves the attribute names from the related token table
 *
 * @param mixed $surveyid  The survey ID
