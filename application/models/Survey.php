@@ -90,6 +90,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property integer $countFullAnswers
  * @property integer $countPartialAnswers
  * @property integer $countTotalAnswers
+ * @property integer $groupsCount Number of groups in a survey (in base language)
  * @property array $surveyinfo
  * @property string $creationDate Creation date formatted according to user format
  * @property string $startDateFormatted Start date formatted according to user format
@@ -884,7 +885,7 @@ class Survey extends LSActiveRecord
 
         // If the survey is not active, no date test is needed
         if($this->active == 'N') {
-            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span><span class="sr-only">'.gT('Inactive').'"</span</a>';
+            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span><span class="sr-only">'.gT('Inactive').'"</span></a>';
         }
         // If it's active, then we check if not expired
         elseif ($this->expires != '' || $this->startdate != '') {
@@ -1343,6 +1344,16 @@ class Survey extends LSActiveRecord
         $criteria->addCondition('`groups`.`gid` =`t`.`gid`','AND');
         return $criteria;
 
+    }
+    /**
+     * Gets number of groups inside a particular survey
+     */
+    public function getGroupsCount()
+    {
+        //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
+        $condn = array('sid'=>$this->sid,'language'=>$this->language);
+        $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
+        return $sumresult3 ;
     }
 
 }

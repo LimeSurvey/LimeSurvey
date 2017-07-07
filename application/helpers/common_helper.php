@@ -417,6 +417,7 @@ function calculateTotalFileUploadUsage(){
 
 /**
  * @param string $directory
+ * @return int
  */
 function getDirectorySize($directory) {
     $size = 0;
@@ -426,21 +427,6 @@ function getDirectorySize($directory) {
     return $size;
 }
 
-
-/**
-* Gets number of groups inside a particular survey
-*
-* @param string $surveyid
-* @param mixed $lang
-*/
-function getGroupSum($surveyid, $lang)
-{
-    //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
-    $condn = array('sid'=>$surveyid,'language'=>$lang);
-    $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
-
-    return $sumresult3 ;
-}
 
 
 /**
