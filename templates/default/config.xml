@@ -28,6 +28,7 @@
     <files>
         <css>
             <filename>css/template.css</filename>
+            <filename>css/animate.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
@@ -35,17 +36,21 @@
         <print_css>
             <filename>css/print_template.css</filename>
         </print_css>
-
-        <!-- The logo is used for now only for Surveys List  -->
-        <logo>
-            <filename>files/logo.png</filename>
-        </logo>
     </files>
 
     <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
     <options>
         <!-- will be available with aSurveyInfo.options.ajaxmode -->
         <ajaxmode>on</ajaxmode>
+        <brandlogo>on</brandlogo>
+        <backgroundimage>on</backgroundimage>
+        <animatebody>on</animatebody>
+        <!-- see https://daneden.github.io/animate.css/ -->
+        <bodyanimation>lightSpeedIn</bodyanimation>
+        <animatequestion>on</animatequestion>
+        <questionanimation>flipInX</questionanimation>
+        <animatealert>on</animatealert>
+        <alertanimation>shake</alertanimation>
     </options>
 
     <!-- Here datas about how LimeSurvey should load the template -->

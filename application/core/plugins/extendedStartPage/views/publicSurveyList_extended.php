@@ -36,11 +36,8 @@
         if($survey->allowregister == "Y")
         {
             $tooltips .= "<i class=\"fa fa-sign-in\" aria-hidden=\"true\">&nbsp;</i>";
-        }
-        else
-        {
-            if($survey->hasTokens($survey->sid))
-            {
+        } else {
+            if($survey->hasTokensTable) {
                 $tooltips .= "<i class=\"fa fa-key\" aria-hidden=\"true\">&nbsp;</i>";
             }
         }

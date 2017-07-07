@@ -24,9 +24,16 @@
     </html>
 
     <body class="default lang-{{surveylanguage}} {{surveyformat}}" >
+
+    {% if (aSurveyInfo.options.backgroundimage == "on") %}
+        {{ registerTemplateCssFile("css/background-image.css") }}
+    {% endif %}
+
 {% else %}
     {{ unregisterScriptForAjax()}}
 {% endif %}
+
+
 
 {% block body %}
 
@@ -41,7 +48,7 @@
     {% endblock %}
 
     <!-- Outer Frame Container -->
-    <div class="outerframe container" id="outerframeContainer">
+    <div class="outerframe container {% if (aSurveyInfo.options.animatebody == "on") %} animated {{ aSurveyInfo.options.bodyanimation }} {%endif%}" id="outerframeContainer">
 
         <!-- Main Row -->
         <div id="main-row">

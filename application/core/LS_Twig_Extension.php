@@ -67,7 +67,7 @@ class LS_Twig_Extension extends Twig_Extension
         $oTemplate = self::getTemplateForRessource($sTemplateCssFileName);
 
         Yii::app()->getClientScript()->registerCssFile(
-            $oTemplate->sTemplateUrl .
+            $oTemplate->getTemplateURL() .
             $sTemplateCssFileName
         );
     }
@@ -76,6 +76,8 @@ class LS_Twig_Extension extends Twig_Extension
      * Publish a script file from general script directory, using or not the asset manager (depending on configuration)
      * In any twig file, you can register a general script file doing: {{ registerGeneralScript($sGeneralScriptFileName) }}
      * @param string $sGeneralScriptFileName name of the script file to publish in general script directory (it should contains the subdirectories)
+     * @param string $position
+     * @param array $htmlOptions
      */
     public static function registerGeneralScript($sGeneralScriptFileName, $position=null, array $htmlOptions=array())
     {
@@ -92,6 +94,8 @@ class LS_Twig_Extension extends Twig_Extension
      * Publish a script file from template directory, using or not the asset manager (depending on configuration)
      * In any twig file, you can register a template script file doing: {{ registerTemplateScript($sTemplateScriptFileName) }}
      * @param string $sTemplateScriptFileName name of the script file to publish in general script directory (it should contains the subdirectories)
+     * @param string $position
+     * @param array $htmlOptions
      */
     public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
     {
@@ -120,19 +124,23 @@ class LS_Twig_Extension extends Twig_Extension
         );
     }
 
+    /**
+     * @param $position
+     * @return string
+     */
     public static function getPosition($position){
         switch($position) {
             case "POS_HEAD":
                 $position = CClientScript::POS_HEAD;
-            break;
+                break;
 
             case "POS_BEGIN":
                 $position = CClientScript::POS_BEGIN;
-            break;
+                break;
 
             case "POS_END":
                 $position = CClientScript::POS_END;
-            break;
+                break;
 
             default:
                 $position = '';
@@ -171,7 +179,7 @@ class LS_Twig_Extension extends Twig_Extension
             $aQuestionClass .= ' ls-hidden';
         }
 
-        $aQuestionAttributes = getQuestionAttributeValues($iQid);
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
 
         //add additional classes
         if(isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass']!=""){
@@ -211,6 +219,7 @@ class LS_Twig_Extension extends Twig_Extension
      * @var $sImagePath  string                 the image path relative to the template root
      * @var $alt         string                 the alternative text display
      * @var $htmlOptions array                  additional HTML attribute
+     * @return string
      */
     public static function image($sImagePath, $alt='', $htmlOptions=array ( ) )
     {
@@ -272,7 +281,7 @@ class LS_Twig_Extension extends Twig_Extension
      * Unregister all packages/script files for AJAX rendering
      */
     public static function unregisterScriptForAjax()
-    {        
+    {
         $oTemplate            = Template::model()->getInstance();
         $sTemplatePackageName = 'limesurvey-'.$oTemplate->sTemplateName;
         self::unregisterPackage($sTemplatePackageName);

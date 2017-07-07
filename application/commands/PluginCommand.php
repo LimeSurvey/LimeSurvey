@@ -17,7 +17,7 @@
 
         /**
          * Call for cron action
-         * @interval int $interval Minutes for interval
+         * @param int $interval Minutes for interval
          * @return void
          */
         public function actionCron($interval=null)
@@ -46,5 +46,3 @@
         }
 
     }
-
-?>

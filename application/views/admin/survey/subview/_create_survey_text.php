@@ -158,3 +158,9 @@ $surveyid = $aTabContents['surveyid'];
     </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function(){
+        $('#surveyls_title').focus();
+    })
+</script>

@@ -671,7 +671,7 @@ class questions extends Survey_Common_Action
     * @param int $surveyid
     * @param int $gid
     * @param int $qid
-    * @return void
+    * @return array
     */
     public function _editsubquestion($surveyid, $gid, $qid)
     {
@@ -1420,7 +1420,7 @@ class questions extends Survey_Common_Action
     * @param int $surveyid
     * @param int $gid
     * @param int $qid
-    * @return void
+    * @return array
     */
     public function delete($surveyid, $gid, $qid, $ajax=false)
     {
@@ -1809,18 +1809,16 @@ class questions extends Survey_Common_Action
     {
         $match=(int)returnglobal('match');
         $surveyid=returnglobal('sid');
-        if ($match==1)
-        {
-            $language=GetBaseLanguageFromSurveyID($surveyid);
-        }
-        else
-        {
+        $survey = Survey::model()->findByPk($surveyid);
+
+        if ($match==1) {
+            $language=$survey->language;
             $language=null;
         }
+
         $resultdata=getlabelsets($language);
         // Label set title really don't need HTML
-        foreach($resultdata as &$aResult)
-        {
+        foreach($resultdata as &$aResult) {
             $aResult = array_map('flattenText', $aResult);
         }
         header('Content-type: application/json');
@@ -1873,6 +1871,7 @@ class questions extends Survey_Common_Action
     public function preview($surveyid, $qid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
         $qid = sanitize_int($qid);
         $LEMdebugLevel=0;
 
@@ -1895,7 +1894,7 @@ class questions extends Survey_Common_Action
 
         // Use $_SESSION instead of $this->session for frontend features.
         $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
-        $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid, $language);
+        $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($survey, 'full', true, $qid, $language);
 
 
         // Prefill question/answer from defaultvalues

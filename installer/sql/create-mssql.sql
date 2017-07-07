@@ -672,7 +672,7 @@ CREATE TABLE prefix_surveymenu_entries (
   [language] VARCHAR(255)  NOT NULL DEFAULT 'en-GB',
   [changed_at] datetime NOT NULL DEFAULT CURRENT_datetime,
   [changed_by] int(11) NOT NULL DEFAULT '0',
-  [created_at] datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  [created_at] datetime DEFAULT NULL,
   [created_by] int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY ([id]),
   FOREIGN KEY ([menu_id]) REFERENCES  prefix_surveymenu ([id]) ON DELETE CASCADE

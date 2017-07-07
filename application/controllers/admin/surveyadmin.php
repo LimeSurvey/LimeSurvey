@@ -860,6 +860,8 @@ class SurveyAdmin extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
         $aData['sidemenu']['state'] = false;
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData['survey'] =$survey;
 
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
@@ -2051,7 +2053,6 @@ class SurveyAdmin extends Survey_Common_Action
             $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
             if (!$iNewSurveyid){
                 die('Survey could not be created.');
-                App()->end();
             }
             // Prepare locale data for surveys_language_settings table
             $sTitle          = Yii::app()->request->getPost('surveyls_title');
