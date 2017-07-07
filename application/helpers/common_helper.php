@@ -3478,49 +3478,6 @@ function removeBOM($str=""){
     return $str;
 }
 
-/**
-* This function requests the latest update information from the LimeSurvey.org website
-*
-* @returns array Contains update information or false if the request failed for some reason
-*/
-/**********************************************/
-/* This function needs ported still.          */
-/**********************************************/
-function getUpdateInfo()
-{
-    if (getGlobalSetting('SessionName')=='') {
-        setGlobalSetting('SessionName', \Yii::app()->securityManager->generateRandomString(64));
-    }
-
-    $url = "http://update.limesurvey.org/?" . \Yii::app()->urlManager->createPathInfo(array(
-        'build' => Yii::app()->getConfig("buildnumber"),
-        /**
-         * Optionally enable this after user consent. For now it remains disabled.
-         */
-//        'php' => PHP_VERSION,
-        'id' => md5(getGlobalSetting('SessionName')),
-        'crosscheck' => 'true' // Passed as string, should be changed.
-    ), '=', '&');
-
-    $opts = array(
-        'http' => array(
-            'method' => 'GET',
-            'user_agent' => "LimeSurvey ".Yii::app()->getConfig("versionnumber")." build ".Yii::app()->getConfig("buildnumber"),
-            'timeout' => 10,
-            'ignore_errors' => true
-        )
-    );
-    $body = @file_get_contents($url, false, stream_context_create($opts));
-    if ($body != false && (null === $updateInfo = json_decode($body, true))) {
-        $updateInfo = array(
-            'errorhtml' => $body,
-            'errorcode' => $http_response_header
-        );
-    } else {
-        $updateInfo = null;
-    }
-    return $updateInfo;
-}
 
 /**
 * Return the goodchars to be used when filtering input for numbers.
