@@ -336,23 +336,22 @@ class UserAction extends Survey_Common_Action
     public function modifyuser()
     {
 
-        if ( Yii::app()->request->getParam('uid') !=''  )
-        {
+        if ( Yii::app()->request->getParam('uid') !=''  ) {
             $postuserid = (int) Yii::app()->request->getParam("uid");
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
 
 
             if (Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID'] == $postuserid ||
-            (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) )
-            {
+            (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) ) {
                 $sresult = User::model()->parentAndUser($postuserid);
-                if(empty($sresult))
-                {
+                if(empty($sresult)) {
                     Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
                     $this->getController()->redirect(array("admin/user/sa/index"));
                 }
+                $oUser = User::model()->findByPk($postuserid);
                 $aData = array();
+                $aData['oUser'] = $oUser;
                 $aData['aUserData'] = $sresult;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
@@ -389,59 +388,49 @@ class UserAction extends Survey_Common_Action
         $sresultcount = count($sresult);
 
         if ((Permission::model()->hasGlobalPermission('superadmin','read') || $postuserid == Yii::app()->session['loginID'] ||
-        ($sresultcount > 0 && Permission::model()->hasGlobalPermission('users','update'))) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
-        )
-        {
+            ($sresultcount > 0 && Permission::model()->hasGlobalPermission('users','update'))) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)) {
+
             $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');
             $email = html_entity_decode($postemail, ENT_QUOTES, 'UTF-8');
             $sPassword = Yii::app()->request->getPost('password');
 
             $full_name = html_entity_decode($postfull_name, ENT_QUOTES, 'UTF-8');
 
-            if (!validateEmailAddress($email))
-            {
+            if (!validateEmailAddress($email)) {
                 Yii::app()->setFlashMessage( gT("Could not modify user data."). ' '. gT("Email address is not valid."),'error');
                 $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
-            }
-            else
-            {
+            } else {
                 $oRecord = User::model()->findByPk($postuserid);
                 $oRecord->email= $email;
                 $oRecord->full_name= $full_name;
-                if (!empty($sPassword))
-                {
+                if (!empty($sPassword)) {
                     $oRecord->password= hash('sha256', $sPassword);
                 }
                 $uresult = $oRecord->save();    // store result of save in uresult
 
-                if (empty($sPassword))
-                {
+                if (empty($sPassword)) {
                     Yii::app()->setFlashMessage( gT("Success!") .' <br/> '.gT("Password") . ": (" . gT("Unchanged") . ")", 'success');
                     $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
-                }
-                elseif ($uresult && !empty($sPassword)) // When saved successfully
-                {
+
+                } elseif ($uresult && !empty($sPassword)) {
+                    // When saved successfully
+
                     Yii::app()->session['pw_notify'] = $sPassword != '';
                     if ($display_user_password_in_html === true) {
                         $displayedPwd = htmlentities($sPassword);
-                    }
-                    else {
+                    } else {
                         $displayedPwd = preg_replace('/./', '*', $sPassword);
                     }
                     Yii::app()->setFlashMessage( gT("Success!") .' <br/> '.gT("Password") . ": " . $displayedPwd, 'success');
                     $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
-                }
-                else
-                {
+                } else {
                     //Saving the user failed for some reason, message about email is not helpful here
                     // Username and/or email adress already exists.
                     Yii::app()->setFlashMessage(  gT("Could not modify user data."),'error');
                     $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
                 }
             }
-        }
-        else
-        {
+        } else {
             Yii::app()->setFlashMessage(  gT("Could not modify user data."),'error');
             $this->getController()->redirect(array("/admin/"));
         }
