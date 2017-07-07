@@ -2330,16 +2330,6 @@ function categorySort($a, $b)
 
 
 
-// the opposite of the above: takes a POST or GET variable which may or
-// may not have been 'auto-quoted', and return the *unquoted* version.
-// this is useful when the value is destined for a web page (eg) not
-// a SQL query.
-function autoUnescape($str) {
-    if (!isset($str)) {return null;};
-    if (!get_magic_quotes_gpc())
-        return $str;
-    return stripslashes($str);
-}
 
 // make a string safe to include in an HTML 'value' attribute.
 function HTMLEscape($str) {
