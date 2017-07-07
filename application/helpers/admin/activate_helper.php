@@ -278,6 +278,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
     }
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
+    /** @var Survey $oSurvey */
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $oSurvey->fixInvalidQuestions();
     //Get list of questions for the base language
@@ -374,7 +375,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                  */
 
                 $nrOfAnswers = Answer::model()->countByAttributes(
-                    array('qid' => $aRow['qid'],'language'=>Survey::model()->findByPk($iSurveyID)->language)
+                    array('qid' => $aRow['qid'],'language'=>$oSurvey->language)
                 );
                 $oQuestionAttribute = QuestionAttribute::model()->find(
                     "qid = :qid AND attribute = 'max_subquestions'",

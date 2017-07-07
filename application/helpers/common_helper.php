@@ -3069,6 +3069,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
     else {
         $forceRefresh=false;
     }
+    $oNewSurvey = Survey::model()->findByPk($iNewSID);
     $aFieldMap = createFieldMap($oNewSurvey,'short',$forceRefresh,false,$oNewSurvey->language);
 
     $aFieldMappings=array();

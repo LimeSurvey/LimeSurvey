@@ -2443,7 +2443,7 @@ class remotecontrol_handle
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-
+        /** @var Survey $oSurvey */
         $oSurvey=Survey::model()->findByPk($iSurveyID);
 
         if (is_null($oSurvey)) {

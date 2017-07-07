@@ -3789,7 +3789,6 @@ class statistics_helper {
                  $sLanguageCode =  $survey->language;
              }
 
-
              $surveylanguagecodes = $survey->allLanguages;
 
              // Set language for questions and answers to base language of this survey

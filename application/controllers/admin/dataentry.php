@@ -1700,7 +1700,6 @@ class dataentry extends Survey_Common_Action
                     }
                 }
 
-                //BUILD THE SQL TO INSERT RESPONSES
                 $baselang = $survey->language;
                 $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
                 $insert_data = array();
