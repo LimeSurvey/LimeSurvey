@@ -5233,86 +5233,80 @@ function array_diff_assoc_recursive($array1, $array2) {
  * @param string $sSize
  * @return bool|int|string
  */
-    function convertPHPSizeToBytes($sSize)
+function convertPHPSizeToBytes($sSize)
+{
+    //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
+    $sSuffix = substr($sSize, -1);
+    $iValue = substr($sSize, 0, -1);
+    switch(strtoupper($sSuffix)){
+    case 'P':
+        $iValue *= 1024;
+    case 'T':
+        $iValue *= 1024;
+    case 'G':
+        $iValue *= 1024;
+    case 'M':
+        $iValue *= 1024;
+    case 'K':
+        $iValue *= 1024;
+        break;
+    }
+    return $iValue;
+}
+
+function getMaximumFileUploadSize()
+{
+    return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
+}
+
+/**
+ * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
+ *
+ * @param string $oTokenAttributeData The original token attributes as stored in the database
+ * @return array|mixed
+ */
+function decodeTokenAttributes($oTokenAttributeData){
+    if (trim($oTokenAttributeData)=='') return array();
+    if (substr($oTokenAttributeData,0,1)!='{' && substr($oTokenAttributeData,0,1)!='[')
     {
-        //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
-        $sSuffix = substr($sSize, -1);
-        $iValue = substr($sSize, 0, -1);
-        switch(strtoupper($sSuffix)){
-        case 'P':
-            $iValue *= 1024;
-        case 'T':
-            $iValue *= 1024;
-        case 'G':
-            $iValue *= 1024;
-        case 'M':
-            $iValue *= 1024;
-        case 'K':
-            $iValue *= 1024;
-            break;
+        $sSerialType=getSerialClass($oTokenAttributeData);
+        if ($sSerialType=='array') // Safe to decode
+        {
+            $aReturnData=@unserialize($oTokenAttributeData);
         }
-        return $iValue;
+        else // Something else, might be unsafe
+        {
+            return array();
+        }
     }
-
-    function getMaximumFileUploadSize()
+    else
     {
-        return min(convertPHPSizeToBytes(ini_get('post_max_size')), convertPHPSizeToBytes(ini_get('upload_max_filesize')));
+         $aReturnData=@json_decode($oTokenAttributeData,true);
     }
+    if ($aReturnData===false || $aReturnData===null) return array();
+    return $aReturnData;
+}
 
-    /**
-    * Decodes token attribute data because due to bugs in the past it can be written in JSON or be serialized - future format should be JSON as serialized data can be exploited
-    *
-    * @param string $oTokenAttributeData  The original token attributes as stored in the database
-    */
-    function decodeTokenAttributes($oTokenAttributeData){
-        if (trim($oTokenAttributeData)=='') return array();
-        if (substr($oTokenAttributeData,0,1)!='{' && substr($oTokenAttributeData,0,1)!='[')
-        {
-            $sSerialType=getSerialClass($oTokenAttributeData);
-            if ($sSerialType=='array') // Safe to decode
-            {
-                $aReturnData=@unserialize($oTokenAttributeData);
-            }
-            else // Something else, might be unsafe
-            {
-                return array();
-            }
-        }
-        else
-        {
-             $aReturnData=@json_decode($oTokenAttributeData,true);
-        }
-        if ($aReturnData===false || $aReturnData===null) return array();
-        return $aReturnData;
-    }
+/**
+ * @param string $sSerial
+ * @return mixed|null|string
+ */
+function getSerialClass($sSerial) {
+    $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
 
-    /**
-     * @param string $sSerial
-     */
-    function getSerialClass($sSerial) {
-        $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');
+    $aParts = explode(':', $sSerial, 4);
+    return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : (isset($aParts[2]) ? trim($aParts[2], '"') : null);
+}
 
-        $aParts = explode(':', $sSerial, 4);
-        return isset($aTypes[$aParts[0]]) ? $aTypes[$aParts[0]] : (isset($aParts[2]) ? trim($aParts[2], '"') : null);
-    }
-
-    /**
-    * Checks if a string looks like it is a MD5 hash
-    *
-    */
-    function isMd5($sMD5 ='') {
-        return strlen($sMD5) == 32 && ctype_xdigit($sMD5);
-    }
-
-    /**
-    * Force Yii to create a new CSRF token by removing the old one
-    * 
-    */
-    function regenerateCSRFToken(){
-        // Expire the CSRF cookie
-        $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
-        $cookie->expire = time()-3600;
-        Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
-    }
+/**
+* Force Yii to create a new CSRF token by removing the old one
+*
+*/
+function regenerateCSRFToken(){
+    // Expire the CSRF cookie
+    $cookie = new CHttpCookie('YII_CSRF_TOKEN', '');
+    $cookie->expire = time()-3600;
+    Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
+}
 
 // Closing PHP tag intentionally omitted - yes, it is okay
