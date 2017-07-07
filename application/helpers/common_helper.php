@@ -5308,5 +5308,3 @@ function regenerateCSRFToken(){
     $cookie->expire = time()-3600;
     Yii::app()->request->cookies['YII_CSRF_TOKEN'] = $cookie;
 }
-
-// Closing PHP tag intentionally omitted - yes, it is okay
