@@ -3479,22 +3479,23 @@ function removeBOM($str=""){
 }
 
 
-
 /**
-* This function returns the complete directory path to a given template name
-*
-* @param mixed $sTemplateName
-*/
+ * This function returns the complete directory path to a given template name
+ *
+ * @param mixed $sTemplateName
+ * @return string
+ */
 function getTemplatePath($sTemplateName = false)
 {
     return Template::getTemplatePath($sTemplateName);
 }
 
 /**
-* This function returns the complete URL path to a given template name
-*
-* @param mixed $sTemplateName
-*/
+ * This function returns the complete URL path to a given template name
+ *
+ * @param mixed $sTemplateName
+ * @return string
+ */
 function getTemplateURL($sTemplateName)
 {
     return Template::getTemplateURL($sTemplateName);
@@ -3601,14 +3602,15 @@ function enforceSSLMode()
 
 
 /**
-* Creates an array with details on a particular response for display purposes
-* Used in Print answers, Detailed response view and Detailed admin notification email
-*
-* @param mixed $iSurveyID
-* @param mixed $iResponseID
-* @param mixed $sLanguageCode
-* @param boolean $bHonorConditions Apply conditions
-*/
+ * Creates an array with details on a particular response for display purposes
+ * Used in Print answers, Detailed response view and Detailed admin notification email
+ *
+ * @param mixed $iSurveyID
+ * @param mixed $iResponseID
+ * @param mixed $sLanguageCode
+ * @param boolean $bHonorConditions Apply conditions
+ * @return array
+ */
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=true)
 {
     $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
@@ -3691,10 +3693,11 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
 }
 
 /**
-* Check if $str is an integer, or string representation of an integer
-*
-* @param string $mStr
-*/
+ * Check if $str is an integer, or string representation of an integer
+ *
+ * @param string $mStr
+ * @return bool|int
+ */
 function isNumericInt($mStr)
 {
     if(is_int($mStr))
@@ -3764,49 +3767,6 @@ function includeKeypad()
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('third_party') . "jquery-keypad/jquery.keypad.alt.css");
 }
 
-/**
-* getQuotaInformation() returns quota information for the current survey
-* @param string $surveyid - Survey identification number
-* @param null : $deprecated not used
-* @param integer $iQuotaID
-* @return array - nested array, Quotas->Members
-*/
-function getQuotaInformation($surveyid,$deprecated=null,$iQuotaID=null)
-{
-    /** @var Survey $oSurvey */
-    $oSurvey = Survey::model()->findByPk($surveyid);
-
-    Yii::log('getQuotaInformation');
-    $baselang = $oSurvey->language;
-    $aAttributes=array('sid' => $surveyid);
-    if ((int)$iQuotaID)
-    {
-        $aAttributes['id'] = $iQuotaID;
-    }
-
-    $aSurveyQuotasInfo = array();
-
-    // Check all quotas for the current survey
-    if (count($oSurvey->quotas) > 0)
-    {
-        foreach ($oSurvey->quotas as $oQuota)
-        {
-            // Array for each quota
-            $aQuotaInfo = array_merge($oQuota->attributes,$oQuota->currentLanguageSetting->attributes);
-            $aQuotaMembers = QuotaMember::model()->findAllByAttributes(array('quota_id'=>$oQuota->id));
-            //$aQuotaInfo['members'] = $aQuotaMembers->memberInfo;
-            {
-                foreach ($aQuotaMembers as $oQuotaMember)
-                {
-                    $aQuotaInfo['members'][]=$oQuotaMember->memberInfo;
-                }
-            }
-            // Push this quota Information to all survey quota
-            array_push($aSurveyQuotasInfo,$aQuotaInfo);
-        }
-    }
-    return $aSurveyQuotasInfo;
-}
 
 /**
 * This function replaces the old insertans tags with new ones across a survey
