@@ -389,7 +389,7 @@ class update extends Survey_Common_Action
 
                     // this is the last step - Download the zip file, unpack it and replace files accordingly
                     $updateModel = new UpdateForm();
-                    $file = $updateModel->downloadUpdateFile($access_token, $destinationBuild);
+                    $file = $updateModel->downloadUpdateFile($destinationBuild);
 
                     if ($file->result )
                     {

@@ -236,12 +236,10 @@ class UpdateForm extends CFormModel
 
     /**
      * This function requests a download to the server
-     * @param int $downloadid the id of the download on the server
      * @param string $tobuild
      * @return object
-     * //TODO $downloadid not used locally
      */
-    public function downloadUpdateFile($downloadid=null, $tobuild)
+    public function downloadUpdateFile($tobuild)
     {
         $getters = '/index.php?r=updates/download&frombuild='.$this->build.'&tobuild='.$tobuild;
         $getters .= "&access_token=".$_REQUEST['access_token'];
