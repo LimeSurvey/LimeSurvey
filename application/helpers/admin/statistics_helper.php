@@ -1361,7 +1361,7 @@ class statistics_helper {
                     break;
 
                 case ":": //Array (Multiple Flexi) (Numbers)
-                    $aQuestionAttributes=getQuestionAttributeValues($qiqid);
+                    $aQuestionAttributes=QuestionAttribute::model()->getQuestionAttributes($qiqid);
                     if (trim($aQuestionAttributes['multiflexible_max'])!='') {
                         $maxvalue=$aQuestionAttributes['multiflexible_max'];
                     }
@@ -1470,7 +1470,7 @@ class statistics_helper {
                     $sSubquestion = flattenText($questionDesc['question']);
 
                     //get question attributes
-                    $aQuestionAttributes=getQuestionAttributeValues($qqid);
+                    $aQuestionAttributes=QuestionAttribute::model()->getQuestionAttributes($qqid);
 
 
                     //check last character -> label 1
@@ -2204,7 +2204,7 @@ class statistics_helper {
             //-------------------------- PCHART OUTPUT ----------------------------
             list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
             $qsid = $surveyid;
-            $aattr = getQuestionAttributeValues($outputs['parentqid']);
+            $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
 
             //PCHART has to be enabled and we need some data
             //
@@ -3572,7 +3572,7 @@ class statistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = getQuestionAttributeValues($outputs['parentqid']);
+        $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
 
         //PCHART has to be enabled and we need some data
         //

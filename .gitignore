@@ -1,6 +1,8 @@
 
 # Never include config.php
 /application/config/config.php
+# ignore CAssetManager for debugging
+/framework/web/CAssetManager.php
 
 # upload directory : whole except the index.html and readme.txt
 /upload/*
@@ -26,6 +28,20 @@
 !/plugins/index.html
 !/plugins/Demo/
 !/plugins/AuditLog/
+
+#ignore most of the js-build stuff
+.eslintrc
+.eslintignore
+node_modules/
+third_party/**/src/
+third_party/**/docs/
+third_party/**/scripts/
+third_party/**/tests/
+third_party/**/scss/
+third_party/**/less/
+third_party/**/*.sh
+third_party/**/*.md
+third_party/**/gulpfile.js
 
 # RFC and commons directory and files
 /.well-known/
@@ -61,5 +77,3 @@ launch.json
 !/plugins/Demo/
 !/plugins/AuditLog/
 enabletests
-
-

@@ -4,6 +4,7 @@
  *
  * @var $data
  */
+var_dump($data);
 ?>
 <!-- Enable aufo-focus on element via url hash -->
 <script>
@@ -22,7 +23,7 @@
         <div class="panel-heading" role="tab" id="heading-generaloptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#generaloptions" aria-expanded="true" aria-controls="generaloptions">
@@ -37,13 +38,13 @@
         </div>
     </div>
 
-
+<?/*
     <!-- Presentation & navigation  -->
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading-presentationoptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#presentationoptions" aria-expanded="false" aria-controls="presentationoptions">
@@ -63,7 +64,7 @@
         <div class="panel-heading" role="tab" id="heading-publicationoptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#publicationoptions" aria-expanded="false" aria-controls="publicationoptions">
@@ -83,7 +84,7 @@
         <div class="panel-heading" role="tab" id="heading-notificationoptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#notificationoptions" aria-expanded="false" aria-controls="notificationoptions">
@@ -103,7 +104,7 @@
         <div class="panel-heading" role="tab" id="heading-tokensoptions">
             <div class="panel-title h4">
                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
+                    <span class="fa fa-chevron-left"></span>
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#tokensoptions" aria-expanded="false" aria-controls="tokensoptions">
@@ -119,13 +120,13 @@
     </div>
 
     <!-- Edition Mode -->
-    <?php if($data['action']=='editsurveysettings'):?>
+    <?php if($data['action']=='surveygeneralsettings'):?>
         <!-- Panel integration -->
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading-integrationoptions">
                 <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="fa fa-chevron-left"></span>
 			<span class="sr-only">Expand/Collapse</span>
                     </a>
                     <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#integrationoptions" aria-expanded="false" aria-controls="integrationoptions">
@@ -148,7 +149,7 @@
             <div class="panel-heading" role="tab" id="heading-resourcesoptions">
                 <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="fa fa-chevron-left"></span>
                     </a>
                     <a class="collapsed" role="button" data-parent="#accordion" data-toggle="collapse" href="#resourcesoptions" aria-expanded="false" aria-controls="resourcesoptions">
                         <?php  eT("Resources"); ?>
@@ -162,4 +163,5 @@
             </div>
         </div>
     <?php endif;?>
+    */?>
 </div>

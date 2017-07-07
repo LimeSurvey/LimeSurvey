@@ -13,9 +13,9 @@
 
     <div class="panel panel-primary" id="panel-1">
         <div class="panel-heading">
-            <h4 class="panel-title">
+            <div class="panel-title h4">
                 <?php eT("General");?>
-            </h4>
+            </div>
         </div>
 
         <div class="panel-body">

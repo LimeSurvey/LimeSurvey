@@ -16,28 +16,28 @@
  * Class SurveyLanguageSetting
  *
  * @property integer $surveyls_survey_id Survey ID
- * @property string $surveyls_language
- * @property string $surveyls_title
- * @property string $surveyls_description
- * @property string $surveyls_welcometext
- * @property string $surveyls_endtext
- * @property string $surveyls_url
- * @property string $surveyls_urldescription
- * @property string $surveyls_email_invite_subj
- * @property string $surveyls_email_invite
- * @property string $surveyls_email_remind_subj
- * @property string $surveyls_email_remind
- * @property string $surveyls_email_register_subj
- * @property string $surveyls_email_register
- * @property string $surveyls_email_confirm_subj
- * @property string $surveyls_email_confirm
+ * @property string $surveyls_language Language code eg "en"
+ * @property string $surveyls_title Survey title in this language
+ * @property string $surveyls_description Survey description in this language
+ * @property string $surveyls_welcometext Survey welcome-text in this language
+ * @property string $surveyls_endtext Survey end-text in this language
+ * @property string $surveyls_url Survey end-url for this language
+ * @property string $surveyls_urldescription Survey end-url description for this language
+ * @property string $surveyls_email_invite_subj Survey inivitation e-mail subject for this language
+ * @property string $surveyls_email_invite Survey inivitation e-mail body in this language
+ * @property string $surveyls_email_remind_subj Survey reminder e-mail subject for this language
+ * @property string $surveyls_email_remind Survey reminder e-mail body in this language
+ * @property string $surveyls_email_register_subj Survey registration e-mail subject for this language
+ * @property string $surveyls_email_register Survey registration e-mail body in this language
+ * @property string $surveyls_email_confirm_subj Survey confirmation e-mail subject for this language
+ * @property string $surveyls_email_confirm Survey confitmation e-mail body in this language
  * @property string $surveyls_dateformat
  * @property string $surveyls_attributecaptions
- * @property string $surveyls_admin_notification_subj
- * @property string $surveyls_admin_notification
- * @property string $surveyls_admin_responses_subj
- * @property string $surveyls_admin_responses
- * @property string $surveyls_numberformat
+ * @property string $surveyls_admin_notification_subj Subject of basic admin notification e-mail in this language
+ * @property string $surveyls_admin_notification Body of basic admin notification e-mail in this language
+ * @property string $surveyls_admin_responses_subj Subject of detailed admin notification e-mail in this language
+ * @property string $surveyls_admin_responses Body of detailed admin notification e-mail in this language
+ * @property integer $surveyls_numberformat Survey decimal mark for this language (0: '.', 1: ',')
  * @property string $attachments
  *
  * @property Survey $survey

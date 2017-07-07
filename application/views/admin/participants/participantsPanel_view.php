@@ -55,13 +55,13 @@
         <div class="col-md-9">
             <!-- Display participants -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
-                <span class="glyphicon glyphicon-list text-success"></span>
+                <span class="fa fa-list text-success"></span>
                 <?php eT("Display CPDB participants");?>
             </a>
 
             <!-- Information -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
-                <span class="glyphicon glyphicon-list-alt text-success" ></span>
+                <span class="fa fa-list-alt text-success" ></span>
                 <?php eT("Info");?>
             </a>
 
@@ -103,7 +103,7 @@
 
                 <!-- Attribute management -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
-                    <span class="glyphicon glyphicon-tag text-success"></span>
+                    <span class="fa fa-tag text-success"></span>
                     <?php eT("Attributes");?>
                 </a>
 
@@ -111,7 +111,7 @@
 
             <!-- Share panel -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" role="button">
-                <span class="glyphicon glyphicon-share text-success"></span>
+                <span class="fa fa-share text-success"></span>
                 <?php eT("Share panel");?>
             </a>
 
@@ -122,7 +122,7 @@
 
         <div class="col-md-3 text-right">
             <a class="btn btn-default" href="<?php echo $this->createUrl('admin/index'); ?>" role="button">
-                <span class="glyphicon glyphicon-backward"></span>
+                <span class="fa fa-backward"></span>
                 &nbsp;
                 <?php eT('Return to admin home'); ?>
             </a>

@@ -158,7 +158,7 @@
                                                     name="completed-date"
                                                     data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                                     >
-                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                             </div>
                                         </div>
                                     <?php endif;?>
@@ -291,7 +291,7 @@
                                                 name="sent-date"
                                                 data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                             >
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -341,7 +341,7 @@
                                                 name="remind-date"
                                                 data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                             >
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -397,7 +397,7 @@
                                     data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                     data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
                                 >
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                             </div>
                         </div>
 
@@ -414,7 +414,7 @@
                                         data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                         data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
                                     >
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                    <span class="input-group-addon"><span class="fa fa-calendar"></span></span>
                                 </div>
                             </div>
                     </div>

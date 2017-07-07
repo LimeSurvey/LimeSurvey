@@ -13,8 +13,8 @@
         App()->bootstrap->register();
         App()->getClientScript()->registerPackage('fontawesome');
 
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/assets/styles/Sea_Green/css/lime-admin-colors.css');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/assets/styles/Sea_Green/css/lime-admin-common.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/assets/styles-admin/Sea_Green/css/lime-admin-colors.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl . '/assets/styles-admin/Sea_Green/css/lime-admin-common.css');
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
         App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
 

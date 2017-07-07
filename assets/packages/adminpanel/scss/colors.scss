@@ -1,0 +1,9 @@
+$muted: #cdcdcd;
+
+.background-muted {
+    background: $muted;
+    
+    >li{
+        background: $muted;
+    }
+}

@@ -25,14 +25,14 @@
             <!-- Save -->
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="fa fa-ok"></span>
                     <?php eT("Save");?>
                 </a>
             <?php endif;?>
 
             <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
                 <a class="btn btn-default" href="#" role="button" id="save-and-close-form-button" data-form-id="<?php echo $fullpagebar['saveandclosebutton']['form']; ?>">
-                    <span class="glyphicon glyphicon-saved"></span>
+                    <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
             <?php endif; ?>
@@ -40,7 +40,7 @@
             <!-- Close -->
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-close"></span>
+                    <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
@@ -66,7 +66,7 @@
             <!-- Return -->
             <?php if(isset($fullpagebar['returnbutton']['url'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">
-                    <span class="glyphicon glyphicon-backward"></span>
+                    <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>

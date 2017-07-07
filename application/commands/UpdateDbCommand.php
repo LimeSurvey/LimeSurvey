@@ -21,9 +21,11 @@ class UpdateDBCommand extends CConsoleCommand
 {
     /**
      * Update database
+     * @param array $args
      * @return void
+     * @throws CException
      */
-    public function run()
+    public function run($args=null)
     {
         $newDbVersion = (float) Yii::app()->getConfig('dbversionnumber');
         $currentDbVersion = (float) Yii::app()->getConfig('DBVersion');
