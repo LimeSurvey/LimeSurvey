@@ -3354,25 +3354,6 @@ function getTokenFieldsAndNames($surveyid, $bOnlyAttributes = false)
     }
 }
 
-/**
-* Retrieves the token attribute value from the related token table
-*
-* @param mixed $surveyid  The survey ID
-* @param mixed $attrName  The token-attribute field name
-* @param mixed $token  The token code
-* @return string The token attribute value (or null on error)
-*/
-function getAttributeValue($surveyid,$attrName,$token)
-{
-    $attrName=strtolower($attrName);
-    if (!tableExists('tokens_'.$surveyid))
-    {
-        return null;
-    }
-
-    $token = Token::model($surveyid)->findByAttributes(array("token"=>$token));
-    return isset($token->$attrName) ? $token->$attrName : null;
-}
 
 /**
 * This function strips any content between and including <javascript> tags
