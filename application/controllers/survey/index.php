@@ -232,7 +232,7 @@ class index extends CAction {
             // Update the Session var only if needed
             if (App()->language != $sOldLang){
                 UpdateGroupList($surveyid, App()->language);   // to refresh the language strings in the group list session variable
-                UpdateFieldArray();                             // to refresh question titles and question text
+                updateFieldArray();                             // to refresh question titles and question text
             }
         }else{
 
@@ -485,7 +485,7 @@ class index extends CAction {
 
         //Check to see if a refering URL has been captured.
         if (!isset($_SESSION['survey_'.$surveyid]['refurl'])){
-            $_SESSION['survey_'.$surveyid]['refurl']=GetReferringUrl(); // do not overwrite refurl
+            $_SESSION['survey_'.$surveyid]['refurl']=getReferringUrl(); // do not overwrite refurl
         }
 
         // Let's do this only if

@@ -1451,7 +1451,6 @@ function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
 /**
  * @todo Rename
  * @todo Move HTML to view
- * @param array $redata
  * @param string $sTemplateViewPath
  * @param int $totalquestions
  * @param int $iTotalGroupsWithoutQuestions
@@ -1586,10 +1585,11 @@ function getNavigatorDatas()
 }
 
 /**
-* Caculate assessement scores
-*
-* @param mixed $surveyid
-*/
+ * Caculate assessement scores
+ *
+ * @param mixed $surveyid
+ * @return array
+ */
 function doAssessment($surveyid)
 {
 
@@ -1801,7 +1801,7 @@ function UpdateGroupList($surveyid, $language)
 * This function is needed to update it in case the survey is switched to another language
 * @todo: Make 'fieldarray' obsolete by replacing with EM session info
 */
-function UpdateFieldArray()
+function updateFieldArray()
 {
     global $surveyid;
 
@@ -1993,13 +1993,14 @@ function checkCompletedQuota($surveyid,$return=false)
 }
 
 /**
-* encodeEmail : encode admin email in public part
-*
-* @param mixed $mail
-* @param mixed $text
-* @param mixed $class
-* @param mixed $params
-*/
+ * encodeEmail : encode admin email in public part
+ *
+ * @param mixed $mail
+ * @param mixed $text
+ * @param mixed $class
+ * @param mixed $params
+ * @return mixed|string
+ */
 function encodeEmail($mail, $text="", $class="", $params=array())
 {
     $encmail ="";
@@ -2031,7 +2032,7 @@ function encodeEmail($mail, $text="", $class="", $params=array())
 * GetReferringUrl() returns the referring URL
 * @return string
 */
-function GetReferringUrl()
+function getReferringUrl()
 {
     // read it from server variable
     if(isset($_SERVER["HTTP_REFERER"]))
@@ -2199,6 +2200,7 @@ function getMove()
  *
  * @param boolean $sideMenustate - False for pages with collapsed side-menu
  * @return string
+ * @throws CException
  */
 function getSideBodyClass($sideMenustate = false)
 {
@@ -2230,16 +2232,3 @@ function getSideBodyClass($sideMenustate = false)
     return "";$class;
 }
 
-/**
- * For later use, don't remove.
- * @return array<string>
- */
-function cookieConsentLocalization()
-{
-    return array(
-        gT('This website uses cookies. By continuing this survey you approve the data protection policy of the service provider.'),
-        gT('OK'),
-        gT('View policy'),
-        gT('Please be patient until you are forwarded to the final URL.')
-    );
-}
