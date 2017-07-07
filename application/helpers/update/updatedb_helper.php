@@ -1678,6 +1678,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>292),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        /**
+         * Survey menue table
+         * @since 2017-07-03
+         */
+        if ($iOldDBVersion < 293) {
+            $oTransaction = $oDB->beginTransaction();
+            createSurveyMenuTable293($oDB);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>293),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     }
     catch(Exception $e)
     {
@@ -1705,11 +1716,101 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     $superadmins = User::model()->getSuperAdmins();
     Notification::broadcast(array(
         'title' => gT('Database update'),
-        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '292')
+        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '293')
     ), $superadmins);
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);
     return true;
+}
+
+function createSurveyMenuTable293($oDB) {
+    $oDB->createCommand()->createTable('{{surveymenu}}', array(
+        "id" => "int(11) NOT NULL ",
+        "parent_id" => "int(11) DEFAULT NULL",
+        "survey_id" => "int(11) DEFAULT NULL",
+        "order" => "int(11) DEFAULT '0'",
+        "level" => "int(11) DEFAULT '0'",
+        "title" => "character varying(255)  NOT NULL DEFAULT ''",
+        "description" => "text ",
+        "changed_at" => "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+        "changed_by" => "int(11) NOT NULL DEFAULT '0'",
+        "created_at" => "datetime DEFAULT NULL",
+        "created_by" => "int(11) NOT NULL DEFAULT '0'",
+        'PRIMARY KEY (`id`)',
+        'KEY `parent_id` (`parent_id`)',
+        'KEY `order` (`order`)',
+        'KEY `title` (`title`(250))'
+    ));
+
+    $oDB->createCommand()->insert(
+        '{{surveymenu}}',
+        array(
+            'id' => 1,
+            'parent_id' => NULL,
+            'survey_id' => NULL,
+            'order' => 0,
+            'level' => 0,
+            'title' => 'surveymenu',
+            'description' => 'Main survey menu',
+            'changed_at' => date('Y-m-d H:i:s'),
+            'changed_by' => 0,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => 0
+        )
+    );
+    
+    $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
+        "id" => "int(11) NOT NULL ",
+        "menu_id" => "int(11) DEFAULT NULL",
+        "order" => "int(11) DEFAULT '0'",
+        "name" => "character varying(255)  NOT NULL DEFAULT ''",
+        "title" => "character varying(255)  NOT NULL DEFAULT ''",
+        "menu_title" => "character varying(255)  NOT NULL DEFAULT ''",
+        "menu_description" => "text ",
+        "menu_icon" => "character varying(255)  NOT NULL DEFAULT ''",
+        "menu_icon_type" => "character varying(255)  NOT NULL DEFAULT ''",
+        "menu_class" => "character varying(255)  NOT NULL DEFAULT ''",
+        "menu_link" => "character varying(255)  NOT NULL DEFAULT ''",
+        "action" => "character varying(255)  NOT NULL DEFAULT ''",
+        "template" => "character varying(255)  NOT NULL DEFAULT ''",
+        "partial" => "character varying(255)  NOT NULL DEFAULT ''",
+        "classes" => "character varying(255)  NOT NULL DEFAULT ''",
+        "permission" => "character varying(255)  NOT NULL DEFAULT ''",
+        "permission_grade" => "character varying(255)  DEFAULT NULL",
+        "data" => "text ",
+        "getdatamethod" => "character varying(255)  NOT NULL DEFAULT ''",
+        "language" => "character varying(255)  NOT NULL DEFAULT 'en-GB'",
+        "changed_at" => "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+        "changed_by" => "int(11) NOT NULL DEFAULT '0'",
+        "created_at" => "datetime DEFAULT NULL",
+        "created_by" => "int(11) NOT NULL DEFAULT '0'",
+        "PRIMARY KEY (id)",
+        "FOREIGN KEY (menu_id) REFERENCES  prefix_surveymenu (menu_id) ON DELETE CASCADE",
+        "KEY `menu_id` (`menu_id`)",
+        "KEY `order` (`order`)",
+        "KEY `title` (`title`(191))",
+        "KEY `menu_title` (`menu_title`(191))"
+    ));
+
+    $colsToAdd = array("id","menu_id","order","name","title","menu_title","menu_description","menu_icon","menu_icon_type","menu_class","menu_link","action","template","partial","classes","permission","permission_grade","data","getdatamethod","language","changed_at","changed_by","created_at","created_by");
+    $rowsToAdd = array(
+        array(1,1,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(2,1,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(3,1,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(4,1,4,'presentation','Presentation &amp; navigation settings','Presentation','Edit presentation and navigation settings','eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(5,1,5,'publication','Publication and access control settings','Publication &amp; access','Edit settings for publicationa and access control','key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(6,1,6,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(7,1,7,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(8,1,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(9,1,9,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(10,1,10,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(11,1,11,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(12,1,12,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
+        array(13,1,13,'ressources','Add/Edit ressources to the survey','Ressources','Add/Edit ressources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0)
+    );
+    foreach($rowsToAdd as $row){
+        $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd,$row));
+    }
 }
 
 
@@ -1988,7 +2089,6 @@ function upgradeSurveyTables181($sMySQLCollation)
 function upgradeTokenTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
-    $oSchema = Yii::app()->db->schema;
     if(Yii::app()->db->driverName!='pgsql')
     {
         $aTables = dbGetTablesLike("tokens%");
@@ -2344,7 +2444,6 @@ function upgradeTokens145()
 
 function upgradeSurveys145()
 {
-    global $modifyoutputt;
     $sSurveyQuery = "SELECT * FROM {{surveys}} where notification<>'0'";
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
     foreach ( $oSurveyResult->readAll() as $aSurveyRow )
@@ -2378,12 +2477,7 @@ function upgradeSurveys145()
         $aDefaultTexts=templateDefaultTexts($sLanguage,'unescaped');
         unset($sLanguage);
         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
-        $sSurveyUpdateQuery = "update {{surveys_languagesettings}} set
-        email_admin_responses_subj=".$aDefaultTexts['admin_detailed_notification_subject'].",
-        email_admin_responses=".$aDefaultTexts['admin_detailed_notification'].",
-        email_admin_notification_subj=".$aDefaultTexts['admin_notification_subject'].",
-        email_admin_notification=".$aDefaultTexts['admin_notification']."
-        where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];
+
         Yii::app()->getDb()->createCommand()->update('{{surveys_languagesettings}}',array('email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
             'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
             'email_admin_notification_subj'=>$aDefaultTexts['admin_notification_subject'],
@@ -2405,7 +2499,7 @@ function upgradeSurveyPermissions145()
         foreach ( $oPermissionResult as $aPermissionRow )
         {
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission'=>'assessments',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission'=>'assessments',
                 'create_p'=>$aPermissionRow['define_questions'],
                 'read_p'=>$aPermissionRow['define_questions'],
                 'update_p'=>$aPermissionRow['define_questions'],
@@ -2413,7 +2507,7 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'quotas',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'quotas',
                 'create_p'=>$aPermissionRow['define_questions'],
                 'read_p'=>$aPermissionRow['define_questions'],
                 'update_p'=>$aPermissionRow['define_questions'],
@@ -2421,7 +2515,7 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'responses',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'responses',
                 'create_p'=>$aPermissionRow['browse_response'],
                 'read_p'=>$aPermissionRow['browse_response'],
                 'update_p'=>$aPermissionRow['browse_response'],
@@ -2431,23 +2525,23 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'statistics',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'statistics',
                 'read_p'=>$aPermissionRow['browse_response'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'survey',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'survey',
                 'read_p'=>1,
                 'delete_p'=>$aPermissionRow['delete_survey'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveyactivation',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveyactivation',
                 'update_p'=>$aPermissionRow['activate_survey'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveycontent',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveycontent',
                 'create_p'=>$aPermissionRow['define_questions'],
                 'read_p'=>$aPermissionRow['define_questions'],
                 'update_p'=>$aPermissionRow['define_questions'],
@@ -2457,19 +2551,19 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveylocale',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveylocale',
                 'read_p'=>$aPermissionRow['edit_survey_property'],
                 'update_p'=>$aPermissionRow['edit_survey_property'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveysettings',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveysettings',
                 'read_p'=>$aPermissionRow['edit_survey_property'],
                 'update_p'=>$aPermissionRow['edit_survey_property'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'tokens',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'tokens',
                 'create_p'=>$aPermissionRow['activate_survey'],
                 'read_p'=>$aPermissionRow['activate_survey'],
                 'update_p'=>$aPermissionRow['activate_survey'],
@@ -2659,7 +2753,6 @@ function upgradeSurveyTables139()
 // Add the reminders tracking fields
 function upgradeTokenTables134()
 {
-    global $modifyoutput;
     $aTables = dbGetTablesLike("tokens%");
     foreach ( $aTables as $sTable )
     {
@@ -2671,7 +2764,6 @@ function upgradeTokenTables134()
 // Add the reminders tracking fields
 function upgradeTokens128()
 {
-    global $modifyoutput;
     $aTables = dbGetTablesLike("tokens%");
     foreach ( $aTables as $sTable )
     {
@@ -2720,7 +2812,6 @@ function upgradeSurveyTables126()
 
 function upgradeTokenTables126()
 {
-    global $modifyoutput;
     $aTables = dbGetTablesLike("tokens%");
     foreach ( $aTables as $sTable )
     {

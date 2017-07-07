@@ -6,7 +6,9 @@
  * @var $surveyid
  * @var $surveyls_language
  */
-
+if(isset($data)){
+    extract($data);
+}
  $count=0;
  if(isset($scripts))
     echo $scripts;

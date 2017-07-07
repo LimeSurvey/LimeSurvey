@@ -15,14 +15,14 @@
 /**
  * Class UserGroup
  *
- * @property integer $ugid
- * @property string $name
- * @property string $description
- * @property integer $owner_id
+ * @property integer $ugid Model ID (primary key)
+ * @property string $name  Group name (max 20 chars)
+ * @property string $description Group description
+ * @property integer $owner_id Group owner user ID
  *
  * @property User[] $users Users of this group
- * @property User $owner
- * @property integer $countUsers
+ * @property User $owner Group ownre user
+ * @property integer $countUsers Count of users in this group
  */
 class UserGroup extends LSActiveRecord {
 

@@ -467,7 +467,6 @@ function adodb_date_test()
     adodb_date_test_strftime("%A %d %B %Y");
     adodb_date_test_strftime("%H %M S");
 
-    $t = adodb_mktime(0,0,0);
     if (!(adodb_date('Y-m-d') == date('Y-m-d'))) print 'Error in '.adodb_mktime(0,0,0).'<br>';
 
     $t = adodb_mktime(0,0,0,6,1,2102);
@@ -535,8 +534,6 @@ function adodb_date_test()
         $ts = 3600.0*((rand()%60000)+(rand()%60000))+(rand()%60000);
         $s1 = date($fmt,$ts);
         $s2 = adodb_date($fmt,$ts);
-        //print "$s1 <br>$s2 <p>";
-        $pos = strcmp($s1,$s2);
 
         if (($s1) != ($s2)) {
             for ($j=0,$k=strlen($s1); $j < $k; $j++) {
@@ -1405,7 +1402,7 @@ function adodb_strftime($fmt, $ts=false,$is_gmt=false)
                 case 'G': $fmtdate .= '\G?'; break; //?
                 case 'H': $fmtdate .= 'H'; break;
                 case 'I': $fmtdate .= 'h'; break;
-                case 'j': $fmtdate .= '?z'; $parsej = true; break; // wrong as j=1-based, z=0-basd
+                case 'j': $fmtdate .= '?z'; break; // wrong as j=1-based, z=0-basd
                 case 'm': $fmtdate .= 'm'; break;
                 case 'M': $fmtdate .= 'i'; break;
                 case 'n': $fmtdate .= "\n"; break;
@@ -1415,12 +1412,12 @@ function adodb_strftime($fmt, $ts=false,$is_gmt=false)
                 case 'S': $fmtdate .= 's'; break;
                 case 't': $fmtdate .= "\t"; break;
                 case 'T': $fmtdate .= 'H:i:s'; break;
-                case 'u': $fmtdate .= '?u'; $parseu = true; break; // wrong strftime=1-based, date=0-based
-                case 'U': $fmtdate .= '?U'; $parseU = true; break;// wrong strftime=1-based, date=0-based
+                case 'u': $fmtdate .= '?u'; break; // wrong strftime=1-based, date=0-based
+                case 'U': $fmtdate .= '?U'; break;// wrong strftime=1-based, date=0-based
                 case 'x': $fmtdate .= $ADODB_DATE_LOCALE[0]; break;
                 case 'X': $fmtdate .= $ADODB_DATE_LOCALE[1]; break;
-                case 'w': $fmtdate .= '?w'; $parseu = true; break; // wrong strftime=1-based, date=0-based
-                case 'W': $fmtdate .= '?W'; $parseU = true; break;// wrong strftime=1-based, date=0-based
+                case 'w': $fmtdate .= '?w'; break; // wrong strftime=1-based, date=0-based
+                case 'W': $fmtdate .= '?W'; break;// wrong strftime=1-based, date=0-based
                 case 'y': $fmtdate .= 'y'; break;
                 case 'Y': $fmtdate .= 'Y'; break;
                 case 'Z': $fmtdate .= 'T'; break;

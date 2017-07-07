@@ -20,8 +20,6 @@ function CheckForDBUpgrades($subaction = null)
 {
     $dbversionnumber = Yii::app()->getConfig('dbversionnumber');
     $currentDBVersion=GetGlobalSetting('DBVersion');
-    $usertemplaterootdir = Yii::app()->getConfig('usertemplaterootdir');
-    $standardtemplaterootdir = Yii::app()->getConfig('standardtemplaterootdir');
     if (intval($dbversionnumber)>intval($currentDBVersion))
     {
         Yii::app()->loadHelper('update/updatedb');

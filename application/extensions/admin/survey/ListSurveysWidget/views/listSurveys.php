@@ -122,7 +122,7 @@
                         'header' => gT('Closed group'),
                         'name' => 'uses_tokens',
                         'type' => 'raw',
-                        'value'=>'CHtml::link($data->hasTokens, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'value'=>'CHtml::link($data->hasTokensTable ? gT("Yes"):gT("No"), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'htmlOptions' => array('class' => 'has-link'),
                     ),
 

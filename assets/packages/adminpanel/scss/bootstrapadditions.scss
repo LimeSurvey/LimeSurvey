@@ -21,3 +21,9 @@
         }
     }
 }
+
+div[class^="col-"], div[class*=" col-"] {
+    &.nofloat {
+        float: none;
+    }
+}
