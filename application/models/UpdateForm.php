@@ -239,7 +239,6 @@ class UpdateForm extends CFormModel
      * @param string $access_token
      * @param string $tobuild
      * @return object
-     * //TODO $downloadid not used locally
      */
     public function downloadUpdateFile($access_token, $tobuild)
     {
