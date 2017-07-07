@@ -73,7 +73,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     // Local over-rides in case not set above
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
-    if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = Yii::app()->getConfig('surveyID');
 
     if($_surveyid) {
@@ -89,7 +88,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $thissurvey=getSurveyInfo($_surveyid,$s_lang);
     }
-    if (!isset($captchapath)) { $captchapath = ''; }
 
 
     Yii::app()->loadHelper('surveytranslator');
@@ -107,7 +105,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $templatename=Yii::app()->getConfig('defaulttemplate');
     }
-    if(!isset($templatedir)) $templatedir = getTemplatePath($templatename);
     if(!isset($templateurl)) $templateurl = getTemplateURL($templatename)."/";
     if (!$anonymized && isset($thissurvey['anonymized'])) {
         $anonymized=($thissurvey['anonymized']=="Y");
@@ -382,7 +379,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $thissurvey['googleanalyticsapikey'] = $_googleAnalyticsAPIKey;
 
     $_googleAnalyticsStyle = (isset($thissurvey['googleanalyticsstyle']) ? $thissurvey['googleanalyticsstyle'] : '1');
-    $_googleAnalyticsJavaScript = '';
 
     if ( $_googleAnalyticsAPIKey != '' && $_googleAnalyticsStyle ==2 )
     {
@@ -400,7 +396,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
             $gseq=$moveInfo['gseq']+1;
         }
 
-        $_trackURL = $thissurvey['trackURL'] = htmlspecialchars($thissurvey['name'] . '-[' . $surveyid . ']/[' . $gseq . ']-' . $_groupname);
     }
 
     $_endtext = '';
@@ -574,7 +569,6 @@ function getSaveLinks($move="")
         $bAlreadySaved              =   isset($_SESSION['survey_'.$surveyid]['scid']);
         $iSessionStep               =   (isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
         $iSessionMaxStep            =   (isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
-        $sSaveAllButtons="";
 
         // Find out if the user has any saved data
         if ($thissurvey['format'] == 'A')

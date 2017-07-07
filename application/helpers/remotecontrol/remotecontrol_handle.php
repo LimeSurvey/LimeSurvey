@@ -438,7 +438,6 @@ class remotecontrol_handle
     {
         Yii::app()->loadHelper('admin/statistics');
 
-        $tempdir = Yii::app()->getConfig("tempdir");
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -570,7 +569,6 @@ class remotecontrol_handle
     */
     public function get_summary($sSessionKey,$iSurveyID, $sStatName='all')
     {
-        $aPermittedStats = array();
         if ($this->_checkSessionKey($sSessionKey))
         {
             $aPermittedTokenStats = array(
@@ -1062,7 +1060,6 @@ class remotecontrol_handle
                     $iNewgid = $aImportResults['newgid'];
 
                     $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iNewgid));
-                    $slang=$oGroup['language'];
                     if($sNewGroupName!='')
                         $oGroup->setAttribute('group_name',$sNewGroupName);
                     if($sNewGroupDescription!='')
@@ -1857,7 +1854,6 @@ class remotecontrol_handle
                 if (!isset($oToken))
                     return array('status' => 'Error: Invalid tokenid');
 
-                $aResult = array();
                 // Remove fields that may not be modified
                 unset($aTokenData['tid']);
 
@@ -2395,11 +2391,6 @@ class remotecontrol_handle
             if(!tableExists("{{tokens_$iSurveyID}}"))
                 return array('status' => 'Error: No token table');
 
-            if (getEmailFormat($iSurveyID) == 'html')
-                $bHtml = true;
-            else
-                $bHtml = false;
-
             $SQLemailstatuscondition = "emailstatus = 'OK'";
             $SQLremindercountcondition = '';
             $SQLreminderdelaycondition = '';
@@ -2819,12 +2810,9 @@ class remotecontrol_handle
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
 
-        $aResponse = array();
         $aAttributeData = array();
-        $aAttributes = array();
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
         $bIsValidEmail = true;
-        $bDoImport = true;
         $sMandatory = 0;
         $sAttribCount = 0;
         $aResponse = array();
@@ -2892,7 +2880,6 @@ class remotecontrol_handle
                 {
                     //The mandatory fields of email, firstname and lastname
                     $sMandatory++;
-                    $bDoImport = false;
                 }
 
                 // Write to database if record not exists

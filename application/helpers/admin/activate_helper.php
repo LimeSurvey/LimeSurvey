@@ -66,7 +66,7 @@ function fixNumbering($iQuestionID, $iSurveyID)
             SET cqid=$iNewQID,
             cfieldname='".str_replace("X".$iQuestionID, "X".$iNewQID, $aSwitch['cfieldname'])."'
             WHERE cqid=$iQuestionID";
-            $sResult = db_execute_assosc($sQuery);
+            db_execute_assosc($sQuery);
         }
     }
     //Now question_attributes
@@ -193,8 +193,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     foreach ($qorderresult as $qrow) {$qrows[] = $qrow;} // Get table output into array
     usort($qrows, 'groupOrderThenQuestionOrder'); // Perform a case insensitive natural sort on group name then question title of a multidimensional array
     $c=0;
-    foreach ($qrows as $qr)
-    {
+    foreach ($qrows as $qr) {
         $qidorder[]=array($c, $qrow['qid']);
         $c++;
     }
@@ -214,20 +213,16 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
         $cqidfound=0;
         $qidfound=0;
         $b=0;
-        while ($b<$qordercount)
-        {
-            if ($conrow['cqid'] == $qidorder[$b][1])
-            {
+        while ($b<$qordercount) {
+            if ($conrow['cqid'] == $qidorder[$b][1]) {
                 $cqidfound = 1;
                 $b=$qordercount;
             }
-            if ($conrow['qid'] == $qidorder[$b][1])
-            {
+            if ($conrow['qid'] == $qidorder[$b][1]) {
                 $qidfound = 1;
                 $b=$qordercount;
             }
-            if ($qidfound == 1)
-            {
+            if ($qidfound == 1) {
                 $failedcheck[]=array($conrow['qid'], $conrow['question'], ": ".gT("This question has a condition set, however the condition is based on a question that appears after it."), $conrow['gid']);
             }
             $b++;
@@ -236,10 +231,8 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
     $fieldmap = createFieldMap($iSurveyID,'full',true,false,$survey->language,$aDuplicateQIDs);
-    if (count($aDuplicateQIDs))
-    {
-        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate)
-        {
+    if (count($aDuplicateQIDs)) {
+        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate) {
             $sFixLink = "[<a href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
             $failedcheck[]=array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
@@ -275,11 +268,6 @@ function activateSurvey($iSurveyID, $simulate = false)
         Yii::app()->user->setFlash('info', $message);
     }
 
-    $createsurvey='';
-    $activateoutput='';
-    $createsurveytimings='';
-    $fieldstiming = array();
-    $createsurveydirectory=false;
     $aTableDefinition=array();
     $bCreateSurveyDir=false;
     // Specify case sensitive collations for the token
@@ -432,7 +420,6 @@ function activateSurvey($iSurveyID, $simulate = false)
     }
 
     // If last question is of type MCABCEFHP^QKJR let's get rid of the ending coma in createsurvey
-    //$createsurvey = rtrim($createsurvey, ",\n")."\n"; // Does nothing if not ending with a comma
 
     $sTableName = "{{survey_{$iSurveyID}}}";
     Yii::app()->loadHelper("database");
@@ -529,7 +516,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         }
     }
     $sQuery = "UPDATE {{surveys}} SET active='Y' WHERE sid=".$iSurveyID;
-    $acresult = Yii::app()->db->createCommand($sQuery)->query();
+    Yii::app()->db->createCommand($sQuery)->query();
     return $aResult;
 }
 
@@ -564,7 +551,6 @@ function mssql_drop_constraint($fieldname, $tablename)
  */
 function mssql_drop_primary_index($tablename)
 {
-    global $modifyoutput;
     Yii::app()->loadHelper("database");
 
     // find out the constraint name of the old primary key

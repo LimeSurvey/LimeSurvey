@@ -120,18 +120,16 @@ function quoteText($sText, $sEscapeMode = 'html')
 */
 function getQuestionTypeList($SelectedCode = "T", $ReturnType = "selector")
 {
-    $publicurl = Yii::app()->getConfig('publicurl');
 
     $qtypes = Question::typeList();
 
-    if ($ReturnType == "array")
+    if ($ReturnType == "array") {
         return $qtypes;
+    }
 
 
-    if ($ReturnType == "group")
-    {
-        foreach ($qtypes as $qkey => $qtype)
-        {
+    if ($ReturnType == "group") {
+        foreach ($qtypes as $qkey => $qtype) {
             $newqType[$qtype['group']][$qkey] = $qtype;
         }
 
@@ -443,19 +441,22 @@ function getGidNext($surveyid, $gid)
 
     $qresult = QuestionGroup::model()->findAllByAttributes(array('sid' => $surveyid, 'language' => $s_lang), array('order'=>'group_order'));
 
-    $GidNext="";
     $i = 0;
     $iNext = 0;
 
-    foreach ($qresult as $qrow)
-    {
+    foreach ($qresult as $qrow) {
         $qrow = $qrow->attributes;
-        if ($gid == $qrow['gid']) {$iNext = $i + 1;}
+        if ($gid == $qrow['gid']) {
+            $iNext = $i + 1;
+        }
         $i += 1;
     }
 
-    if ($iNext < count($qresult)) {$GidNext = $qresult[$iNext]->gid;}
-    else {$GidNext = "";}
+    if ($iNext < count($qresult)) {
+        $GidNext = $qresult[$iNext]->gid;
+    } else {
+        $GidNext = "";
+    }
     return $GidNext;
 }
 
@@ -1525,22 +1526,16 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case "F":
             case "H":
             case "1":
-                $aConditions=array('qid' => $fields['qid'], 'code' => $sValue, 'language' => $sLanguage);
-                if (isset($fields['scale_id']))
-                {
+                if (isset($fields['scale_id'])) {
                     $iScaleID=$fields['scale_id'];
-                }
-                else
-                {
+                } else {
                     $iScaleID=0;
                 }
                 $result = Answer::model()->getAnswerFromCode($fields['qid'],$sValue,$sLanguage,$iScaleID);
-                foreach($result as $row)
-                {
+                foreach($result as $row) {
                     $this_answer=$row['answer'];
                 } // while
-                if ($sValue == "-oth-")
-                {
+                if ($sValue == "-oth-") {
                     $this_answer=gT("Other",null,$sLanguage);
                 }
                 break;
@@ -1712,8 +1707,7 @@ function validateEmailAddresses($aEmailAddressList){
                     //get number of answers
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
                     $i=0;
-                    foreach($result as $row)
-                    {
+                    foreach($result as $row) {
                         $i++;
                         $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
                         $allfields[]=$myfield2;
@@ -2091,9 +2085,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
                     "qid"=>$arow['qid'],
                     "aid"=>$abrow['title']."_".$answer['title'],
                     "sqid"=>$abrow['qid']);
-                    if ($abrow['other']=="Y") {$alsoother="Y";}
-                    if ($style == "full")
-                    {
+                    if ($style == "full") {
                         $fieldmap[$fieldname]['title']=$arow['title'];
                         $fieldmap[$fieldname]['question']=$arow['question'];
                         $fieldmap[$fieldname]['subquestion1']=$abrow['question'];
@@ -2589,13 +2581,11 @@ function stripCtrlChars($sValue)
 
 // make a string safe to include in a JavaScript String parameter.
 function javascriptEscape($str, $strip_tags=false, $htmldecode=false) {
-    $new_str ='';
 
     if ($htmldecode==true) {
         $str=html_entity_decode($str,ENT_QUOTES,'UTF-8');
     }
-    if ($strip_tags==true)
-    {
+    if ($strip_tags==true) {
         $str=strip_tags($str);
     }
     return str_replace(array('\'','"', "\n", "\r"),
@@ -2686,12 +2676,9 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
         $fromname=trim(substr($from,0, strpos($from,'<')-1));
     }
 
-    $sendername='';
     $senderemail=$sender;
-    if (strpos($sender,'<'))
-    {
+    if (strpos($sender,'<')) {
         $senderemail=substr($sender,strpos($sender,'<')+1,strpos($sender,'>')-1-strpos($sender,'<'));
-        $sendername=trim(substr($sender,0, strpos($sender,'<')-1));
     }
 
     switch ($emailmethod) {

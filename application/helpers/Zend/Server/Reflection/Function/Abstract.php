@@ -260,10 +260,8 @@ abstract class Zend_Server_Reflection_Function_Abstract
     {
         $function           = $this->_reflection;
         $helpText           = '';
-        $signatures         = array();
         $returnDesc         = '';
         $paramCount         = $function->getNumberOfParameters();
-        $paramCountRequired = $function->getNumberOfRequiredParameters();
         $parameters         = $function->getParameters();
         $docBlock           = $function->getDocComment();
 
