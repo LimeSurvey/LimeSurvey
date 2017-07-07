@@ -38,9 +38,7 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
     }
     $rootdir = Yii::app()->getConfig("rootdir");
     $homedir = Yii::app()->getConfig("homedir");
-    $homeurl = Yii::app()->getConfig("homeurl");
     $admintheme = Yii::app()->getConfig("admintheme");
-    $scriptname = Yii::app()->getConfig("scriptname");
     $chartfontfile = Yii::app()->getConfig("chartfontfile");
     $chartfontsize = Yii::app()->getConfig("chartfontsize");
     $alternatechartfontfile = Yii::app()->getConfig("alternatechartfontfile");
@@ -108,8 +106,6 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 
     if (array_sum($gdata ) > 0) //Make sure that the percentages add up to more than 0
     {
-        $graph = "";
-        $p1 = "";
         $i = 0;
         foreach ($gdata as $data)
         {
@@ -125,16 +121,10 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
         if ($totallines>15)
         {
             $gheight=320+(6.7*($totallines-15));
-            $fontsize=7;
-            $legendtop=0.01;
-            $setcentrey=0.5/(($gheight/320));
         }
         else
         {
             $gheight=320;
-            $fontsize=8;
-            $legendtop=0.07;
-            $setcentrey=0.5;
         }
 
         if (!$type) // Bar chart
@@ -151,7 +141,6 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
             }
 
-            if ($maxyvalue<10) {++$maxyvalue;}
 
 
             if ($sLanguageCode=='ar')
@@ -639,7 +628,6 @@ class userstatistics_helper {
         $qtitle="";
         $qquestion="";
         $qtype="";
-        $statlang = $oLanguage;
         $firstletter = substr($rt, 0, 1);
         $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
@@ -689,14 +677,12 @@ class userstatistics_helper {
             $fld = substr($rt, 1, strlen($rt));
             $fielddata=$fieldmap[$fld];
 
-            list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
 
             //get question data
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
             $qquestion=flattenText($nresult->question);
-            $qlid=$nresult->parent_qid;
 
             $mfield=substr($rt, 1, strlen($rt));
 
@@ -713,8 +699,6 @@ class userstatistics_helper {
         {
             //Build an array of legitimate qid's for testing later
             $aQuestionInfo=$fieldmap[substr($rt, 1)];
-            $qsid=$aQuestionInfo['sid'];
-            $qgid=$aQuestionInfo['gid'];
             $qqid=$aQuestionInfo['qid'];
             $qaid=$aQuestionInfo['aid'];
 
@@ -724,8 +708,6 @@ class userstatistics_helper {
             $qtype=$nresult->type;
             $qquestion=flattenText($nresult->question);
 
-            //more substrings
-            $count = substr($qqid, strlen($qqid)-1);
 
             //get answers / subquestion text
             $nresult = Question::model()->find(array('order'=>'question_order',
@@ -795,8 +777,6 @@ class userstatistics_helper {
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
             $qquestion=flattenText($nresult->question);
-            $qlid=$nresult->parent_qid;
-            $qother=$nresult->other;
             /*
             4)      Average size of file per respondent
             5)      Average no. of files
@@ -878,12 +858,6 @@ class userstatistics_helper {
 
                 case 'pdf':
                     $headPDF = array();
-                    $tablePDF = array();
-                    $footPDF = array();
-
-                    $pdfTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
-                    $titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
-
                     $headPDF[] = array(gT("Calculation"),gT("Result"));
 
                     break;
@@ -1064,7 +1038,6 @@ class userstatistics_helper {
 
                     //Display the maximum and minimum figures after the quartiles for neatness
                     $maximum=$row['maximum'];
-                    $minimum=$row['minimum'];
                 }
 
 
@@ -1235,8 +1208,6 @@ class userstatistics_helper {
             //search for key
             $fielddata=$fieldmap[$rt];
             //get SGQA IDs
-            $qsid=$fielddata['sid'];
-            $qgid=$fielddata['gid'];
             $qqid=$fielddata['qid'];
             $qanswer=$fielddata['aid'];
             $qtype=$fielddata['type'];
@@ -1377,7 +1348,7 @@ class userstatistics_helper {
                     break;
 
                 case ":": //Array (Multiple Flexi) (Numbers)
-                    $aQuestionAttributes=getQuestionAttributeValues($qiqid);
+                    $aQuestionAttributes=QuestionAttribute::model()->getQuestionAttributes($qiqid);
                     if (trim($aQuestionAttributes['multiflexible_max'])!='') {
                         $maxvalue=$aQuestionAttributes['multiflexible_max'];
                     }
@@ -1486,7 +1457,7 @@ class userstatistics_helper {
                     $sSubquestion = flattenText($questionDesc['question']);
 
                     //get question attributes
-                    $aQuestionAttributes=getQuestionAttributeValues($qqid);
+                    $aQuestionAttributes=QuestionAttribute::model()->getQuestionAttributes($qqid);
 
 
                     //check last character -> label 1
@@ -2303,8 +2274,6 @@ class userstatistics_helper {
                 //check if data should be aggregated
                 if(Yii::app()->getConfig('showaggregateddata') == 1 && ($outputs['qtype'] == "5" || $outputs['qtype'] == "A"))
                 {
-                    //mark that we have done soemthing special here
-                    $aggregated = true;
 
                     if (($results-$grawdata[5])>0) {
                         $percentage = $grawdata[$i] / ($results - $grawdata[5]) * 100;    // Only answered
@@ -2690,7 +2659,7 @@ class userstatistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = getQuestionAttributeValues($outputs['parentqid']);
+        $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
 
         //PCHART has to be enabled and we need some data
         if ($usegraph == 1) {
@@ -2725,8 +2694,6 @@ class userstatistics_helper {
                     //introduce new counter
                     if (!isset($ci)) {$ci=0;}
 
-                    //increase counter, start value -> 1
-                    $ci++;
                     switch($outputType)
                     {
                         case 'xls':
@@ -2747,7 +2714,7 @@ class userstatistics_helper {
                         case 'html':
                             $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
 
-                            $aattr = getQuestionAttributeValues($qqid);
+                            $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
                             if ($bShowMap) {
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 
@@ -2804,29 +2771,23 @@ class userstatistics_helper {
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
+        $survey = Survey::model()->findByPk($surveyid);
 
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
         Yii::import('application.third_party.ar-php.Arabic', true);
 
-        $sOutputHTML = ""; //This string carries all the actual HTML code to print.
         $sTempDir = Yii::app()->getConfig("tempdir");
 
         $this->pdf=array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
 
         //pick the best font file if font setting is 'auto'
-        if (is_null($sLanguageCode))
-        {
-            $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+        if (is_null($sLanguageCode)) {
+            $sLanguageCode =  $survey->language;
         }
         Yii::app()->setLanguage($sLanguageCode);
 
-        /*
-        * this variable is used in the function shortencode() which cuts off a question/answer title
-        * after $maxchars and shows the rest as tooltip (in html mode)
-        */
-        $maxchars = 13;
         //we collect all the html-output within this variable
         $sOutputHTML ='';
         /**
@@ -2838,8 +2799,6 @@ class userstatistics_helper {
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
-
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $sLanguageCode);
 
         // Set language for questions and answers to base language of this survey
         $language=$sLanguageCode;
@@ -2874,7 +2833,6 @@ class userstatistics_helper {
                     //Get answers. We always use the answer code because the label might be too long elsewise
                     $query = "SELECT code, answer FROM {{answers}} WHERE qid='".$field['qid']."' AND scale_id=0 AND language='{$language}' ORDER BY sortorder, answer";
                     $result = Yii::app()->db->createCommand($query)->query();
-                    $counter2=0;
 
                     //check all the answers
                     foreach ($result->readAll() as $row)
@@ -2979,7 +2937,6 @@ class userstatistics_helper {
             $this->formatBold = &$this->workbook->addFormat(array('Bold'=>1));
             $this->sheet->setInputEncoding('utf-8');
             $this->sheet->setColumn(0,20,20);
-            $separator="~|";
             /**XXX*/
         }
         /**

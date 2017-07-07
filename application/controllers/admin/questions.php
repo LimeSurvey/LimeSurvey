@@ -475,7 +475,7 @@ class questions extends Survey_Common_Action
     * @param int $surveyid
     * @param int $gid
     * @param int $qid
-    * @return void
+    * @return array
     */
     public function _editansweroptions($surveyid, $gid, $qid)
     {
@@ -687,7 +687,7 @@ class questions extends Survey_Common_Action
     * @param int $surveyid
     * @param int $gid
     * @param int $qid
-    * @return void
+    * @return array
     */
     public function _editsubquestion($surveyid, $gid, $qid)
     {
@@ -1435,7 +1435,7 @@ class questions extends Survey_Common_Action
     * @param int $surveyid
     * @param int $gid
     * @param int $qid
-    * @return void
+    * @return array
     */
     public function delete($surveyid, $gid, $qid, $ajax=false)
     {
@@ -1824,18 +1824,16 @@ class questions extends Survey_Common_Action
     {
         $match=(int)returnglobal('match');
         $surveyid=returnglobal('sid');
-        if ($match==1)
-        {
-            $language=GetBaseLanguageFromSurveyID($surveyid);
-        }
-        else
-        {
+        $survey = Survey::model()->findByPk($surveyid);
+
+        if ($match==1) {
+            $language=$survey->language;
             $language=null;
         }
+
         $resultdata=getlabelsets($language);
         // Label set title really don't need HTML
-        foreach($resultdata as &$aResult)
-        {
+        foreach($resultdata as &$aResult) {
             $aResult = array_map('flattenText', $aResult);
         }
         header('Content-type: application/json');

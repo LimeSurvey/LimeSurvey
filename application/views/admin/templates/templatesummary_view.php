@@ -8,7 +8,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
         <div class="col-lg-12">
 
             <?php App()->getClientScript()->registerPackage('jquery-ace'); ?>
-            <h4><?php echo sprintf(gT("Viewing file '%s'"),$editfile); ?></h4>
+            <div class="h4"><?php echo sprintf(gT("Viewing file '%s'"),$editfile); ?></div>
 
             <?php if (!is_writable($templates[$templatename])):?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
@@ -212,7 +212,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel"><?php eT('Tip: How to display a picture in your template?'); ?></h4>
+                        <div class="modal-title h4" id="myModalLabel"><?php eT('Tip: How to display a picture in your template?'); ?></div>
                     </div>
                     <div class="modal-body">
                         <?php eT('To use a picture in a .pstpl file:');?><br/>
@@ -240,9 +240,9 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
 <div class="row template-sum" style="margin-bottom: 100px;">
     <div class="col-lg-12">
-        <h4>
+        <div class="h4">
             <?php eT("Preview:"); ?>
-        </h4>
+        </div>
         <div class="jumbotron message-box">
             <input type='button' value='<?php eT("Mobile"); ?>' id='iphone' class="btn btn-default"/>
             <input type='button' value='640x480' id='x640' class="btn btn-default" />
@@ -262,7 +262,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             else
             { ?>
                 <p>
-                    <iframe id='previewiframe' src='<?php echo $this->createUrl('admin/templates/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
+                    <iframe id='previewiframe' title='Preview' src='<?php echo $this->createUrl('admin/templates/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
                 </p>
             </div>
             <?php

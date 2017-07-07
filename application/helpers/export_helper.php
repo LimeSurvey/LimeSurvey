@@ -238,9 +238,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
             and {{questions}}.qid='".$field['qid']."' ORDER BY sortorder ASC";
             $result= Yii::app()->db->createCommand($query)->query()->readAll(); //Checked
             $num_results = count($result);
-            if ($num_results > 0)
-            {
-                $displayvaluelabel = 0;
+            if ($num_results > 0) {
                 # Build array that has to be returned
                 foreach ($result as $row)
                 {
@@ -249,9 +247,8 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
             }
         }
     } elseif ($field['LStype'] == ':') {
-        $displayvaluelabel = 0;
         //Get the labels that could apply!
-        if (is_null($qidattributes)) $qidattributes=getQuestionAttributeValues($field["qid"]);
+        if (is_null($qidattributes)) $qidattributes=QuestionAttribute::model()->getQuestionAttributes($field["qid"]);
         if (trim($qidattributes['multiflexible_max'])!='') {
             $maxvalue=$qidattributes['multiflexible_max'];
         } else {
@@ -330,6 +327,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
 {
+    $survey = Survey::model()->findByPk($iSurveyID);
     $typeMap = array(
         '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
         'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -365,14 +363,14 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
     );
 
     if (empty($sLanguage)){
-        $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
+        $sLanguage=$survey->language;
     }
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
 
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
     // ... and if the survey uses anonymized responses
-    $sSurveyAnonymized=Survey::model()->findByPk($iSurveyID)->anonymized;
+    $sSurveyAnonymized=$survey->anonymized;
 
     $iFieldNumber=0;
     $fields=array();
@@ -391,10 +389,8 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
         }
     }
 
-    $tempArray = array();
     $fieldnames = array_keys($fieldmap);
     $num_results = count($fieldnames);
-    $num_fields = $num_results;
     $diff = 0;
     $noQID = Array('id', 'token', 'datestamp', 'submitdate', 'startdate', 'startlanguage', 'ipaddr', 'refurl', 'lastpage');
     # Build array that has to be returned
@@ -475,7 +471,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
                 //Get default scale for this type
                 if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
                 //But allow override
-                $aQuestionAttribs = getQuestionAttributeValues($qid);
+                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($qid);
                 if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
             }
 
@@ -632,9 +628,7 @@ function buildXMLFromQuery($xmlwriter, $Query, $tagname='', $excludes = array())
 */
 function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude=array())
 {
-    $sdump = "";
-    if (!isset($exclude['answers']))
-    {
+    if (!isset($exclude['answers'])) {
         //Answer table
         $aquery = "SELECT {{answers}}.*
         FROM {{answers}}, {{questions}}
@@ -1015,13 +1009,9 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
     //$QueryResult = mysql_query($Query) or die ("ERROR: $QueryResult<br />".mysql_error());
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
 
-    $nextcode = "";
-
-    foreach($QueryResult->readAll() as $Row)
-    {
+    foreach($QueryResult->readAll() as $Row) {
         $response = $dom->createElement("response");
-        if ($free == false)
-        {
+        if ($free == false) {
             $fixed = $dom->createElement("fixed");
             $category = $dom->createElement("category");
 
@@ -1791,15 +1781,12 @@ function tokensExport($iSurveyID)
     // Export token line by line and fill $aExportedTokens with token exported
     Yii::import('application.libraries.Date_Time_Converter', true);
     $aExportedTokens = array();
-    while ($brow = $bresult->read())
-    {
-        if (trim($brow['validfrom']!=''))
-        {
+    while ($brow = $bresult->read()) {
+        if (trim($brow['validfrom']!='')) {
             $datetimeobj = new Date_Time_Converter($brow['validfrom'] , "Y-m-d H:i:s");
             $brow['validfrom']=$datetimeobj->convert('Y-m-d H:i');
         }
-        if (trim($brow['validuntil']!=''))
-        {
+        if (trim($brow['validuntil']!='')) {
             $datetimeobj = new Date_Time_Converter($brow['validuntil'] , "Y-m-d H:i:s");
             $brow['validuntil']=$datetimeobj->convert('Y-m-d H:i');
         }
@@ -1818,8 +1805,7 @@ function tokensExport($iSurveyID)
         $tokenoutput .= '"'.trim($brow['remindercount']).'",';
         $tokenoutput .= '"'.trim($brow['completed']).'",';
         $tokenoutput .= '"'.trim($brow['usesleft']).'",';
-        foreach ($attrfieldnames as $attr_name)
-        {
+        foreach ($attrfieldnames as $attr_name) {
             $tokenoutput .='"'.trim($brow[$attr_name]).'",';
         }
         $tokenoutput = substr($tokenoutput,0,-1); // remove last comma
@@ -1830,8 +1816,7 @@ function tokensExport($iSurveyID)
         $aExportedTokens[] = $brow['tid'];
     }
 
-    if (Yii::app()->request->getPost('tokendeleteexported') && Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'delete') && !empty($aExportedTokens))
-    {
+    if (Yii::app()->request->getPost('tokendeleteexported') && Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete') && !empty($aExportedTokens)) {
         Token::model($iSurveyID)->deleteByPk($aExportedTokens);
     }
 }

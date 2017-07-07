@@ -60,34 +60,30 @@ function dbQueryOrFalse($sql)
 
 /**
  * @param string $sql
+ * @return bool|CDbDataReader
  */
 function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
 {
-    $query = Yii::app()->db->createCommand($sql.= " ");
-    if ($numrows)
-    {
-        if ($offset)
-        {
+    $query = Yii::app()->db->createCommand($sql);
+    if ($numrows) {
+        if ($offset) {
             $query->limit($numrows, $offset);
-        }
-        else
-        {
+        } else {
             $query->limit($numrows, 0);
         }
     }
-    if($inputarr)
-    {
+    if($inputarr) {
         $query->bindValues($inputarr);    //Checked
     }
-    try
-    {
+    try {
         $dataset=$query->query();
     }
-    catch (CDbException $e)
-    {
+    catch (CDbException $e) {
         $dataset=false;
     }
-    if (!$dataset && $dieonerror) {safeDie('Error executing query in dbSelectLimitAssoc:'.$query->text);}
+    if (!$dataset && $dieonerror) {
+        safeDie('Error executing query in dbSelectLimitAssoc:'.$query->text);
+    }
     return $dataset;
 }
 

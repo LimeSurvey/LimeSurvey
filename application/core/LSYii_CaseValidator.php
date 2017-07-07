@@ -19,29 +19,22 @@ class LSYii_CaseValidator extends CValidator {
 
     public function validateAttribute($object,$attribute){
 
-        if ($this->type=='upper')
-        {
+        if ($this->type=='upper') {
             if (strtoupper($object->$attribute)==$object->$attribute){
                 return;
-            }
-            else
-            {
+            } else {
                 $this->addError($object, $attribute, gT('Text needs to be uppercase.'));
                 return;
             }
-        }
-        else // default to lowercase
-        {
+        } else {
+            // default to lowercase
             if (strtolower($object->$attribute)==$object->$attribute){
                 return;
-            }
-            else
-            {
+            } else {
                 $this->addError($object, $attribute, gT('Text needs to be lowercase.'));
                 return;
             }
         }
-        return;
     }
 
 }

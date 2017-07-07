@@ -3,12 +3,16 @@
 }
 
 .menubar.surveybar{
-    position: absolute;
-    top:105px;
-    left:305px;
-    width:85%;
+    width:100%;
+    margin: 8px auto;
 }
 
-#in_survey_common{
-    padding-top:65px
+#side-menu-container{
+    width: 20%;
+}
+
+.btn-primary.force.color.white.onhover{
+    &:hover, &:active,&:focus{
+        color:white;
+    }
 }

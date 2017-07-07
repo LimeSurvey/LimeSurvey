@@ -31,6 +31,7 @@ class RDataWriter extends CsvWriter {
      * @param string $value
      * @param string $fieldType
      * @param FormattingOptions $oOptions
+     * @param string $column
      * @return mixed
      */
     protected function transformResponseValue($value, $fieldType, FormattingOptions $oOptions, $column = null) {
@@ -97,5 +98,6 @@ class RDataWriter extends CsvWriter {
                 return $value;
                 break;
         }
+        return null;
     }
 }

@@ -162,6 +162,6 @@ var_dump($data);
                 </div>
             </div>
         </div>
-        */?>
     <?php endif;?>
+    */?>
 </div>

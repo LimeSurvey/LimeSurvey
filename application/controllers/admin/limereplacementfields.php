@@ -17,19 +17,19 @@ class limereplacementfields extends Survey_Common_Action
     public function index()
     {
         $surveyid = intval(App()->request->getQuery('surveyid'));
+        $survey = Survey::model()->findByPk($surveyid);
+
         $gid = intval(App()->request->getQuery('gid'));
         $qid = intval(App()->request->getQuery('qid'));
         $fieldtype = sanitize_xss_string(App()->request->getQuery('fieldtype'));
         $action = sanitize_xss_string(App()->request->getQuery('action'));
-        if (!Yii::app()->session['loginID'])
-        {
+        if (!Yii::app()->session['loginID']) {
             throw new CHttpException(401);
         }
         list($replacementFields, $isInsertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
-        if ($isInsertAnswerEnabled === true)
-        {
+        if ($isInsertAnswerEnabled === true) {
             //2: Get all other questions that occur before this question that are pre-determined answer types
-            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+            $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
 
             $surveyInfo = getSurveyInfo($surveyid);
             $surveyformat = $surveyInfo['format']; // S, G, A
@@ -56,6 +56,7 @@ class limereplacementfields extends Survey_Common_Action
     /**
      * @param integer $gid
      * @param integer $qid
+     * @return array
      */
     private function _getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)
     {
@@ -63,20 +64,15 @@ class limereplacementfields extends Survey_Common_Action
         $isPreviousPageQuestion = true;
         $questionList = array();
 
-        foreach ($fieldmap as $question)
-        {
-            if (empty($question['qid']))
-            {
+        foreach ($fieldmap as $question) {
+            if (empty($question['qid'])) {
                 continue;
             }
 
-            if (is_null($qid) || $this->_shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion))
-            {
+            if (is_null($qid) || $this->_shouldAddQuestion($action, $gid, $qid, $question, $previousQuestion)) {
                 $isPreviousPageQuestion = $this->_addQuestionToList($action, $gid, $question, $questionType, $surveyformat, $isPreviousPageQuestion, $questionList);
                 $previousQuestion = $question;
-            }
-            else
-            {
+            } else {
                 break;
             }
         }

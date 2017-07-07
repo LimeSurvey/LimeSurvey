@@ -26,7 +26,17 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <div class="navbar-brand" >{{ aSurveyInfo.name }}</div>
+
+        {# Logo option #}
+        {% if( aSurveyInfo.options.brandlogo == "on") %}
+            <div class="navbar-brand logo-container" >
+                {{ image('./files/logo_w_s.png', aSurveyInfo.name, {"class": "logo"}) }}
+            </div>
+        {% else %}
+            <div class="navbar-brand" >
+                {{ aSurveyInfo.name }}
+            </div>
+        {% endif %}
     </div>
     <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right navbar-action-link">

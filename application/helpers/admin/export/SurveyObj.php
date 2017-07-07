@@ -7,12 +7,6 @@ class SurveyObj
     public $id;
 
     /**
-    * Whether the survey is anonymous or not.
-    * @var boolean
-    */
-    public $anonymous;
-
-    /**
     * Answer, codes, and full text to the questions.
     * This is used in conjunction with the fieldMap to produce
     * some of the more verbose output in a survey export.
@@ -49,12 +43,6 @@ class SurveyObj
     */
     public $questions;
 
-    /**
-    * The tokens in the survey.
-    *
-    * @var array[int][string]mixed
-    */
-    public $tokens;
 
     /**
      * When relevant holds the available fields from the token table
@@ -77,103 +65,7 @@ class SurveyObj
     */
     public $languageSettings;
 
-    /**
-    * Returns question arrays ONLY for questions that are part of the
-    * indicated group and are top level (i.e. no subquestions will be
-    * returned).   If there are no then an empty array will be returned.
-    * If $groupId is not set then all top level questions will be
-    * returned regardless of the group they are a part of.
-    */
-    public function getQuestions($groupId = null)
-    {
-        $qs = array();
-        foreach($this->questions as $q)
-        {
-            if ($q['parent_qid'] == 0)
-            {
-                if(empty($groupId) || $q['gid'] == $groupId)
-                {
-                    $qs[] = $q;
-                }
-            }
-        }
-        return $qs;
-    }
 
-    /**
-    * Returns the question code/title for the question that matches the $fieldName.
-    * False is returned if no matching question is found.
-    * @param string $fieldName
-    * @return string (or false)
-    */
-    public function getQuestionCode($fieldName)
-    {
-        if (isset($this->fieldMap[$fieldName]['title']))
-        {
-            return $this->fieldMap[$fieldName]['title'];
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public function getQuestionText($fieldName)
-    {
-        $question = $this->fieldMap[$fieldName];
-        if ($question)
-        {
-            return $question['question'];
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-
-    /**
-    * Returns all token records that have a token value that matches
-    * the one given.  An empty array is returned if there are no
-    * matching token records.
-    *
-    * @param mixed $token
-    */
-    public function getTokens($token)
-    {
-        $matchingTokens = array();
-
-        foreach($this->tokens as $t)
-        {
-            if ($t['token'] == $token)
-            {
-                $matchingTokens[] = $t;
-            }
-        }
-
-        return $matchingTokens;
-    }
-
-    /**
-    * Returns an array containing all child question rows for the given parent
-    * question ID.  If no children are found then an empty array is
-    * returned.
-    *
-    * @param int $parentQuestionId
-    * @return array[int]array[string]mixed
-    */
-    public function getSubQuestionArrays($parentQuestionId)
-    {
-        $results = array();
-        foreach ($this->questions as $question)
-        {
-            if ($question['parent_qid'] == $parentQuestionId)
-            {
-                $results[$question['qid']] = $question;
-            }
-        }
-        return $results;
-    }
 
     /**
     * Returns the full answer for the question that matches $fieldName
@@ -214,7 +106,7 @@ class SurveyObj
                     if (strpos($fullAnswer,".")!==false) {
                         $fullAnswer=rtrim(rtrim($fullAnswer,"0"),".");
                     }
-                    $qidattributes = getQuestionAttributeValues($questionId);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($questionId);
                     if (isset($qidattributes['num_value_int_only']) && $qidattributes['num_value_int_only']) {
                         $fullAnswer=number_format($fullAnswer, 0, '', '');
                     }

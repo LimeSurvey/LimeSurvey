@@ -106,7 +106,6 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
 
     if (array_sum($gdata ) > 0) //Make sure that the percentages add up to more than 0
     {
-        $graph = "";
         $i = 0;
         foreach ($gdata as $data)
         {
@@ -122,16 +121,10 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
         if ($totallines>15)
         {
             $gheight=320+(6.7*($totallines-15));
-            $fontsize=7;
-            $legendtop=0.01;
-            $setcentrey=0.5/(($gheight/320));
         }
         else
         {
             $gheight=320;
-            $fontsize=8;
-            $legendtop=0.07;
-            $setcentrey=0.5;
         }
 
         if (!$type) // Bar chart
@@ -147,8 +140,6 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $counter++;
                 if ($datapoint>$maxyvalue) $maxyvalue=$datapoint;
             }
-
-            if ($maxyvalue<10) {++$maxyvalue;}
 
 
             if ($sLanguageCode=='ar')
@@ -696,14 +687,11 @@ class statistics_helper {
             $fld = substr($rt, 1, strlen($rt));
             $fielddata=$fieldmap[$fld];
 
-            list($qanswer, $qlid)=!empty($fielddata['aid']) ? explode("_", $fielddata['aid']) : array("", "");
-
             //get question data
             $nresult = Question::model()->find('language=:language AND parent_qid=0 AND qid=:qid', array(':language'=>$language, ':qid'=>$fielddata['qid']));
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
             $qquestion=flattenText($nresult->question);
-            $qlid=$nresult->parent_qid;
 
             $mfield=substr($rt, 1, strlen($rt));
 
@@ -720,8 +708,6 @@ class statistics_helper {
         {
             //Build an array of legitimate qid's for testing later
             $aQuestionInfo=$fieldmap[substr($rt, 1)];
-            $qsid=$aQuestionInfo['sid'];
-            $qgid=$aQuestionInfo['gid'];
             $qqid=$aQuestionInfo['qid'];
             $qaid=$aQuestionInfo['aid'];
 
@@ -799,8 +785,6 @@ class statistics_helper {
             $qtitle=$nresult->title;
             $qtype=$nresult->type;
             $qquestion=flattenText($nresult->question);
-            $qlid=$nresult->parent_qid;
-            $qother=$nresult->other;
             /*
             4)      Average size of file per respondent
             5)      Average no. of files
@@ -882,12 +866,6 @@ class statistics_helper {
 
                 case 'pdf':
                     $headPDF = array();
-                    $tablePDF = array();
-                    $footPDF = array();
-
-                    $pdfTitle = sprintf(gT("Field summary for %s"),html_entity_decode($qtitle,ENT_QUOTES,'UTF-8'));
-                    $titleDesc = html_entity_decode($qquestion,ENT_QUOTES,'UTF-8');
-
                     $headPDF[] = array(gT("Calculation"),gT("Result"));
 
                     break;
@@ -1244,8 +1222,6 @@ class statistics_helper {
             $fielddata=$fieldmap[$rt];
 
             //get SGQA IDs
-            $qsid=$fielddata['sid'];
-            $qgid=$fielddata['gid'];
             $qqid=$fielddata['qid'];
             $qanswer=$fielddata['aid'];
             $qtype=$fielddata['type'];
@@ -1385,7 +1361,7 @@ class statistics_helper {
                     break;
 
                 case ":": //Array (Multiple Flexi) (Numbers)
-                    $aQuestionAttributes=getQuestionAttributeValues($qiqid);
+                    $aQuestionAttributes=QuestionAttribute::model()->getQuestionAttributes($qiqid);
                     if (trim($aQuestionAttributes['multiflexible_max'])!='') {
                         $maxvalue=$aQuestionAttributes['multiflexible_max'];
                     }
@@ -1494,7 +1470,7 @@ class statistics_helper {
                     $sSubquestion = flattenText($questionDesc['question']);
 
                     //get question attributes
-                    $aQuestionAttributes=getQuestionAttributeValues($qqid);
+                    $aQuestionAttributes=QuestionAttribute::model()->getQuestionAttributes($qqid);
 
 
                     //check last character -> label 1
@@ -1605,7 +1581,6 @@ class statistics_helper {
     {
         /* Set up required variables */
         $TotalCompleted = 0; //Count of actually completed answers
-        $statisticsoutput="";
         $sDatabaseType = Yii::app()->db->getDriverName();
         $astatdata=array();
         $sColumnName = null;
@@ -2005,12 +1980,10 @@ class statistics_helper {
                     if ($outputs['qtype']=='P')
                     {
                         $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$ColumnName_RM[$i]}'></div></td></tr>\n";
-                        $sColumnNameForView = $ColumnName_RM[$i];
                     }
                     else
                     {
                         $extraline.="<div class='statisticsbrowsecolumn' id='columnlist_{$sColumnName}'></div></td></tr>\n";
-                        $sColumnNameForView = $sColumnName;
                     }
                 }
 
@@ -2231,7 +2204,7 @@ class statistics_helper {
             //-------------------------- PCHART OUTPUT ----------------------------
             list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
             $qsid = $surveyid;
-            $aattr = getQuestionAttributeValues($outputs['parentqid']);
+            $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
 
             //PCHART has to be enabled and we need some data
             //
@@ -3599,7 +3572,7 @@ class statistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = getQuestionAttributeValues($outputs['parentqid']);
+        $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
 
         //PCHART has to be enabled and we need some data
         //
@@ -3796,10 +3769,13 @@ class statistics_helper {
     /**
      * Generate simple statistics
      * @param string[] $allfields
+     * @return string
      */
      public function generate_simple_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
      {
+
              $aStatisticsData=array();
+             $survey = Survey::model()->findByPk($surveyid);
 
              Yii::import('application.helpers.surveytranslator_helper', true);
              Yii::import('application.third_party.ar-php.Arabic', true);
@@ -3807,16 +3783,14 @@ class statistics_helper {
              //pick the best font file if font setting is 'auto'
              if (is_null($sLanguageCode))
              {
-                 $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+                 $sLanguageCode =  $survey->language;
              }
-             //Yii::app()->setLanguage($sLanguageCode);
 
-             //Get an array of codes of all available languages in this survey
-             $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
-             $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
+
+             $surveylanguagecodes = $survey->allLanguages;
 
              // Set language for questions and answers to base language of this survey
-             $language=$sLanguageCode;
+             $language=$survey->language;
 
              // This gets all the 'to be shown questions' from the POST and puts these into an array
              $summary = $q2show;
@@ -3920,6 +3894,7 @@ class statistics_helper {
     public function generate_html_chartjs_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
         $aStatisticsData=array();
+        $survey = Survey::model()->findByPk($surveyid);
 
         //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
@@ -3928,23 +3903,18 @@ class statistics_helper {
         Yii::import('application.third_party.ar-php.Arabic', true);
 
         //pick the best font file if font setting is 'auto'
-        if (is_null($sLanguageCode))
-        {
-            $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+        if (is_null($sLanguageCode)) {
+            $sLanguageCode =  $survey->language;
         }
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
-
-        //Get an array of codes of all available languages in this survey
-        $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
-        $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
+        $surveylanguagecodes = $survey->allLanguages;
 
         // Set language for questions and answers to base language of this survey
         $language=$sLanguageCode;
 
-        if($q2show=='all' )
-        {
+        if($q2show=='all' ) {
             $summarySql=" SELECT gid, parent_qid, qid, type "
             ." FROM {{questions}} WHERE parent_qid=0"
             ." AND sid=$surveyid ";
@@ -4145,7 +4115,7 @@ class statistics_helper {
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $outputTarget='I',$sLanguageCode=null, $browse = true)
     {
-
+        $survey = Survey::model()->findByPk($surveyid);
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
@@ -4157,9 +4127,8 @@ class statistics_helper {
         $this->pdf=array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
 
         //pick the best font file if font setting is 'auto'
-        if (is_null($sLanguageCode))
-        {
-            $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+        if (is_null($sLanguageCode)) {
+            $sLanguageCode =  $survey->language;
         }
 
         //we collect all the html-output within this variable
