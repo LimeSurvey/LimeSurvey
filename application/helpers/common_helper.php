@@ -781,7 +781,7 @@ function getGroupList($gid,$surveyid)
 }
 
 
-
+//FIXME rename and/or document this
 function getGroupList3($gid,$surveyid)
 {
     //
@@ -810,17 +810,15 @@ function getGroupList3($gid,$surveyid)
 }
 
 /**
-* put your comment there...
-*
-* @param mixed $gid
-* @param mixed $language
-*/
+ * put your comment there...
+ *
+ * @param mixed $gid
+ * @param mixed $language
+ * @return string
+ */
 function getGroupListLang($gid, $language, $surveyid)
 {
-
-
-
-    $groupselecter="";
+   $groupselecter="";
     if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
 
     $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
@@ -1014,6 +1012,7 @@ function getSurveyInfo($surveyid, $languagecode='')
 * @param mixed $sLanguage Required language translationb object
 * @param string $mode Escape mode for the translation function
 * @return array
+ * // TODO move to template model
 */
 function templateDefaultTexts($sLanguage, $mode='html', $sNewlines='text')
 {
@@ -1105,13 +1104,6 @@ function groupOrderThenQuestionOrder($a, $b)
 }
 
 
-function fixSortOrderAnswers($qid,$surveyid=null) //Function rewrites the sortorder for a group of answers
-{
-    $qid=sanitize_int($qid);
-    $baselang = Survey::model()->findByPk($surveyid)->language;
-
-    Answer::model()->updateSortOrder($qid,$baselang);
-}
 
 /**
 * This function rewrites the sortorder for questions inside the named group
