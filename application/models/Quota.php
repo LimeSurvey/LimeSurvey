@@ -17,13 +17,13 @@
 /**
  * Class Quota
  *
- * @property integer $id
- * @property integer $sid
- * @property string $name
- * @property integer $qlimit
- * @property integer $active
+ * @property integer $id ID (primary key)
+ * @property integer $sid Survey ID
+ * @property string $name Quota name (max 255 chars)
+ * @property integer $qlimit Quota limit
+ * @property integer $active Whether quota is active (0/1)
  * @property integer $action
- * @property integer $autoload_url
+ * @property integer $autoload_url Whether URL is automatically redirected if quota is triggered (0/1)
  *
  * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
  * @property QuotaLanguageSetting $mainLanguagesetting
