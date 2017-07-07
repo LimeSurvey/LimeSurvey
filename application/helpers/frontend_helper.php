@@ -229,10 +229,11 @@ function getLanguageChangerDatas($sSelectedLanguage="")
 }
 
 /**
-* This function creates the language selector for the public survey index page
-*
-* @param mixed $sSelectedLanguage The language in which all information is shown
-*/
+ * This function creates the language selector for the public survey index page
+ *
+ * @param mixed $sSelectedLanguage The language in which all information is shown
+ * @return array|bool
+ */
 function getLanguageChangerDatasPublicList($sSelectedLanguage)
 {
     $aLanguages=getLanguageDataRestricted(true);// Order by native
@@ -1057,36 +1058,6 @@ function initFieldArray($surveyid, array $fieldmap)
     }
 }
 
-/**
- * @param array $aEnterTokenData
- * @param array $subscenarios
- * @param int $surveyid
- * @param boolean $loadsecurity
- * @todo This does not work for some reason, copied the code back. See bug #11739.
- * @return string[] ($renderCaptcha, $FlashError)
- */
-function testCaptcha(array $aEnterTokenData, array $subscenarios, $surveyid, $loadsecurity)
-{
-    $FlashError = '';
-
-    //Apply the captchaEnabled flag to the partial
-    $aEnterTokenData['bCaptchaEnabled'] = true;
-    // IF CAPTCHA ANSWER IS NOT CORRECT OR NOT SET
-    if (!$subscenarios['captchaCorrect'])
-    {
-        if ($loadsecurity)
-        { // was a bad answer
-            $FlashError.=gT("Your answer to the security question was not correct - please try again.");
-        }
-        $renderCaptcha='main';
-    }
-    else{
-        $_SESSION['survey_'.$surveyid]['captcha_surveyaccessscreen']=true;
-        $renderCaptcha='correct';
-    }
-
-    return array ($renderCaptcha, $FlashError);
-}
 
 /**
  * Apply randomizationGroup and randomizationQuestion to session fieldmap
