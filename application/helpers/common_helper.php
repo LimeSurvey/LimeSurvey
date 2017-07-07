@@ -2724,15 +2724,6 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
 
 /**
- * @param string $sString
- */
-function CSVEscape($sString)
-{
-    $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $sString);
-    return '"' . str_replace('"','""', $sString) . '"';
-}
-
-/**
  * @param string $separator
  * @param string $quotechar
  */
