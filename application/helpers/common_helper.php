@@ -2720,12 +2720,10 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 }
 
 
-
-
-
 /**
  * @param string $separator
  * @param string $quotechar
+ * @return array
  */
 function convertCSVRowToArray($string, $separator, $quotechar)
 {
@@ -2746,6 +2744,7 @@ function createPassword()
     return $sPassword;
 }
 
+// TODO input Survey Object
 function languageDropdown($surveyid,$selected)
 {
 
@@ -2765,6 +2764,7 @@ function languageDropdown($surveyid,$selected)
     return $html;
 }
 
+// TODO input Survey Object
 /**
  * Creates a <select> HTML element for language selection for this survey
  *
@@ -2921,17 +2921,6 @@ function isCaptchaEnabled($screen, $captchamode='')
     }
 }
 
-/**
-* used for import[survey|questions|groups]
-*
-* @param mixed $string
-* @return mixed
-*/
-function convertCSVReturnToReturn($string)
-{
-    $string= str_replace('\n', "\n", $string);
-    return str_replace('\%n', '\n', $string);
-}
 
 /**
 * Check if a table does exist in the database
