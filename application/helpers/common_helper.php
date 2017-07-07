@@ -3008,37 +3008,6 @@ function hasTemplateManageRights($userid, $templatefolder) {
     return Permission::model()->hasTemplatePermission($templatefolder, 'read', $userid);
 }
 
-/**
-* This function creates an incrementing answer code based on the previous source-code
-*
-* @param mixed $sourcecode The previous answer code
-*/
-function getNextCode($sourcecode)
-{
-    $i=1;
-    $found=true;
-    $foundnumber=-1;
-    while ($i<=strlen($sourcecode) && $found)
-    {
-        $found=is_numeric(substr($sourcecode,-$i));
-        if ($found)
-        {
-            $foundnumber=substr($sourcecode,-$i);
-            $i++;
-        }
-    }
-    if ($foundnumber==-1)
-    {
-        return($sourcecode);
-    }
-    else
-    {
-        $foundnumber++;
-        $result=substr($sourcecode,0,strlen($sourcecode)-strlen($foundnumber)).$foundnumber;
-        return($result);
-    }
-
-}
 
 /**
 * Translate links which are in any answer/question/survey/email template/label set to their new counterpart
