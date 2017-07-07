@@ -29,7 +29,7 @@ class limereplacementfields extends Survey_Common_Action
         list($replacementFields, $isInsertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
         if ($isInsertAnswerEnabled === true) {
             //2: Get all other questions that occur before this question that are pre-determined answer types
-            $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
+            $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
 
             $surveyInfo = getSurveyInfo($surveyid);
             $surveyformat = $surveyInfo['format']; // S, G, A

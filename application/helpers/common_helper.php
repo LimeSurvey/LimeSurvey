@@ -1429,12 +1429,14 @@ function sendCacheHeaders()
 */
 function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
 {
+
     if ($sValue==null || $sValue=='') return '';
+    $survey = Survey::model()->findByPk($iSurveyID);
     //Fieldcode used to determine question, $sValue used to match against answer code
     //Returns NULL if question type does not suit
     if (strpos($sFieldCode, "{$iSurveyID}X")===0) //Only check if it looks like a real fieldcode
     {
-        $fieldmap = createFieldMap($iSurveyID,'short',false,false,$sLanguage);
+        $fieldmap = createFieldMap($survey,'short',false,false,$sLanguage);
         if (isset($fieldmap[$sFieldCode]))
         {
             $fields = $fieldmap[$sFieldCode];
@@ -1757,19 +1759,18 @@ return $allfields;
 /**
 * This function generates an array containing the fieldcode, and matching data in the same order as the activate script
 *
-* @param string $surveyid The Survey ID
+* @param Survey $survey
 * @param string $style 'short' (default) or 'full' - full creates extra information like default values
 * @param boolean $force_refresh - Forces to really refresh the array, not just take the session copy
-* @param false|int $questionid Limit to a certain qid only (for question preview) - default is false
+* @param bool|int $questionid Limit to a certain qid only (for question preview) - default is false
 * @param string $sLanguage The language to use
 * @param array $aDuplicateQIDs
 * @return array
 */
-function createFieldMap($surveyid, $style='short', $force_refresh=false, $questionid=false, $sLanguage='', &$aDuplicateQIDs=array()) {
+function createFieldMap($survey, $style='short', $force_refresh=false, $questionid=false, $sLanguage='', &$aDuplicateQIDs=array()) {
 
     $sLanguage = sanitize_languagecode($sLanguage);
-    $surveyid = sanitize_int($surveyid);
-    $survey = Survey::model()->findByPk($surveyid);
+    $surveyid = $survey->sid;
     //checks to see if fieldmap has already been built for this page.
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
@@ -2388,6 +2389,8 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
 
     $sLanguage = sanitize_languagecode($sQuestionLanguage);
     $surveyid = sanitize_int($surveyid);
+    $survey = Survey::model()->findByPk($surveyid);
+
     $sOldLanguage=App()->language;
     App()->setLanguage($sLanguage);
 
@@ -2397,7 +2400,7 @@ function createTimingsFieldMap($surveyid, $style='full', $force_refresh=false, $
     }
 
     //do something
-    $fields = createFieldMap($surveyid, $style, $force_refresh, $questionid, $sQuestionLanguage);
+    $fields = createFieldMap($survey, $style, $force_refresh, $questionid, $sQuestionLanguage);
     $fieldmap['interviewtime']=array('fieldname'=>'interviewtime','type'=>'interview_time','sid'=>$surveyid, 'gid'=>'', 'qid'=>'', 'aid'=>'', 'question'=>gT('Total time'), 'title'=>'interviewtime');
     foreach ($fields as $field) {
         if (!empty($field['gid'])) {
@@ -2852,7 +2855,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     $cascaded=array();
     $sources=array();
     $qidtotitle=array();
-    $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
+    $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
 
     if($gid != "") {
         $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
@@ -3408,7 +3411,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
     else {
         $forceRefresh=false;
     }
-    $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,$oNewSurvey->language);
+    $aFieldMap = createFieldMap($oNewSurvey,'short',$forceRefresh,false,$oNewSurvey->language);
 
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
@@ -4036,7 +4039,8 @@ function enforceSSLMode()
 */
 function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorConditions=true)
 {
-    $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$sLanguageCode);
+    $survey = Survey::model()->findByPk($iSurveyID);
+    $aFieldMap = createFieldMap($survey,'full',false,false,$sLanguageCode);
 
     //Get response data
     $idrow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id'=>$iResponseID));

@@ -343,8 +343,9 @@ function buildSelects($allfields, $surveyid, $language) {
     //Create required variables
     $selects=array();
     $aQuestionMap=array();
+    $survey = Survey::model()->findByPk($surveyid);
 
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
+    $fieldmap=createFieldMap($survey, "full", false, false, $language);
     foreach ($fieldmap as $field)
     {
         if(isset($field['qid']) && $field['qid']!='')
@@ -624,12 +625,13 @@ class userstatistics_helper {
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage,$browse=true) {
 
         //Set up required variables
+        $survey = Survey::model()->findByPk($surveyid);
         $alist=array();
         $qtitle="";
         $qquestion="";
         $qtype="";
         $firstletter = substr($rt, 0, 1);
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
+        $fieldmap=createFieldMap($survey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput="";
         $qqid = "";

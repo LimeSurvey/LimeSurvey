@@ -342,8 +342,9 @@ function buildSelects($allfields, $surveyid, $language) {
     //Create required variables
     $selects=array();
     $aQuestionMap=array();
+    $survey = Survey::model()->findByPk($surveyid);
 
-    $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
+    $fieldmap=createFieldMap($survey, "full", false, false, $language);
     foreach ($fieldmap as $field)
     {
         if(isset($field['qid']) && $field['qid']!='')
@@ -605,30 +606,32 @@ class statistics_helper {
     protected $xlsRow = 0;
 
     /**
-    * Builds an array containing information about this particular question/answer combination
-    *
-    * @param string $rt The code passed from the statistics form listing the field/answer (SGQA) combination to be displayed
-    * @param mixed $language The language to present output in
-    * @param mixed $surveyid The survey id
-    * @param string $outputType
-    * @param boolean $browse
-    *
-    * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
-    *                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
-    *                       of the question, and the fieldname where the data is stored.
-    *                       "qtitle"=>The title of the question,
-    *                       "qquestion"=>The description of the question,
-    *                       "qtype"=>The question type code
-    */
+     * Builds an array containing information about this particular question/answer combination
+     *
+     * @param string $rt The code passed from the statistics form listing the field/answer (SGQA) combination to be displayed
+     * @param mixed $language The language to present output in
+     * @param mixed $surveyid The survey id
+     * @param string $outputType
+     * @param boolean $browse
+     *
+     * @output array $output An array containing "alist"=>A list of answers to the question in the form of an array ($alist array
+     *                       contains an array for every field to be displayed - with the Actual Question Code/Title, The text (flattened)
+     *                       of the question, and the fieldname where the data is stored.
+     *                       "qtitle"=>The title of the question,
+     *                       "qquestion"=>The description of the question,
+     *                       "qtype"=>The question type code
+     * @return array
+     */
     protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage,$browse=true)
     {
         //Set up required variables
+        $survey = Survey::model()->findByPk($surveyid);
         $alist=array();
         $qtitle="";
         $qquestion="";
         $qtype="";
         $firstletter = substr($rt, 0, 1);
-        $fieldmap=createFieldMap($surveyid, "full", false, false, $language);
+        $fieldmap=createFieldMap($survey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
         $statisticsoutput="";
         $qqid = "";

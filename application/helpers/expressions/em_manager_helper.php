@@ -3598,7 +3598,7 @@
             $survey = Survey::model()->findByPk($surveyid);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
-            $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
+            $fieldmap=createFieldMap($survey,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
             $this->sessid = 'survey_' . $this->sid;
             $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));

@@ -132,6 +132,8 @@ class responses extends Survey_Common_Action
     */
     public function view($iSurveyID, $iId, $sBrowseLang = '')
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
@@ -141,7 +143,7 @@ class responses extends Survey_Common_Action
 
             $aViewUrls = array();
 
-            $fieldmap = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
+            $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
             $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID);// Boolean : show (or not) the token
             if(!Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) // If not allowed to read: remove it
             {
@@ -391,6 +393,7 @@ class responses extends Survey_Common_Action
      */
     public function browse($iSurveyId)
     {
+        $survey = Survey::model()->findByPk($iSurveyId);
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
             App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'listresponse.js');
@@ -403,7 +406,7 @@ class responses extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
             $aData['issuperadmin']      = Permission::model()->hasGlobalPermission('superadmin');
             $aData['hasUpload']         = hasFileUploadQuestion($iSurveyId);
-            $aData['fieldmap']          = createFieldMap($iSurveyId, 'full', true, false, $aData['language']);
+            $aData['fieldmap']          = createFieldMap($survey, 'full', true, false, $aData['language']);
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
             ////////////////////

@@ -229,7 +229,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($iSurveyID,'full',true,false,$survey->language,$aDuplicateQIDs);
+    $fieldmap = createFieldMap($survey,'full',true,false,$survey->language,$aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
         foreach ($aDuplicateQIDs as $iQID=>$aDuplicate) {
             $sFixLink = "[<a href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
@@ -281,7 +281,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     $oSurvey = Survey::model()->findByPk($iSurveyID);
     $oSurvey->fixInvalidQuestions();
     //Get list of questions for the base language
-    $sFieldMap = createFieldMap($iSurveyID,'full',true,false,$oSurvey->language);
+    $sFieldMap = createFieldMap($oSurvey,'full',true,false,$oSurvey->language);
     //For each question, create the appropriate field(s)
     foreach ($sFieldMap as $j=>$aRow)
     {
