@@ -264,10 +264,12 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
     global $thisstep;
 
+    $survey = Survey::model()->findByPk($surveyid);
+
 
     if (!isset($backok) || $backok != "Y")
     {
-        $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+        $fieldmap = createFieldMap($survey,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
@@ -821,6 +823,8 @@ function buildsurveysession($surveyid,$preview=false)
     global $clienttoken;
     global $tokensexist;
 
+    $survey = Survey::model()->findByPk($surveyid);
+
     $preview                          = ($preview)?$preview:Yii::app()->getConfig('previewmode');
     $sLangCode                        = App()->language;
     $thissurvey                       = getSurveyInfo($surveyid,$sLangCode);
@@ -877,7 +881,7 @@ function buildsurveysession($surveyid,$preview=false)
         $_SESSION['survey_'.$surveyid]['insertarray'][]= "token";
     }
 
-    $fieldmap = $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+    $fieldmap = $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($survey,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
     // first call to initFieldArray
     initFieldArray($surveyid, $fieldmap);
@@ -1622,8 +1626,8 @@ function getNavigatorDatas()
 function doAssessment($surveyid)
 {
 
-
-    $baselang=Survey::model()->findByPk($surveyid)->language;
+    $survey = Survey::model()->findByPk($surveyid);
+    $baselang=$survey->language;
     if(Survey::model()->findByPk($surveyid)->assessments!="Y"){
         return array('show'=>false);
     }
@@ -1658,7 +1662,7 @@ function doAssessment($surveyid)
                     );
                 }
             }
-            $fieldmap = createFieldMap($surveyid, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+            $fieldmap = createFieldMap($survey, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
             $i        = 0;
             $total    = 0;
             $groups   = array();

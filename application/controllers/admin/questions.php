@@ -1886,6 +1886,7 @@ class questions extends Survey_Common_Action
     public function preview($surveyid, $qid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
         $qid = sanitize_int($qid);
         $LEMdebugLevel=0;
 
@@ -1908,7 +1909,7 @@ class questions extends Survey_Common_Action
 
         // Use $_SESSION instead of $this->session for frontend features.
         $_SESSION['survey_'.$surveyid]['s_lang'] = $language;
-        $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($surveyid, 'full', true, $qid, $language);
+        $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($survey, 'full', true, $qid, $language);
 
 
         // Prefill question/answer from defaultvalues

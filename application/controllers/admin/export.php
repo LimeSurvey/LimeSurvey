@@ -681,7 +681,7 @@ class export extends Survey_Common_Action {
             $aData['selectincansstate']=incompleteAnsFilterState();
             $aData['surveyid'] = $iSurveyId;
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$survey->language);
+            $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
 
             $surveytable = "{{survey_$iSurveyId}}";
             // Control if fieldcode are unique
@@ -715,7 +715,7 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$survey->language);
+            $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
             $surveytable = "{{survey_$iSurveyId}}";
 
 

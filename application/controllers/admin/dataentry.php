@@ -539,7 +539,7 @@ class dataentry extends Survey_Common_Action
 
             $fnames['completed'] = array('fieldname'=>"completed", 'question'=>gT("Completed"), 'type'=>'completed');
 
-            $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage));
+            $fnames=array_merge($fnames,createFieldMap($survey,'full',false,false,$sDataEntryLanguage));
             // Fix private if disallowed to view token
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','read'))
                 unset($fnames['token']);
@@ -588,7 +588,7 @@ class dataentry extends Survey_Common_Action
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
 
-                $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
+                $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
                 $results1 = array();
                 foreach($fieldmap as $fm)
                 {
@@ -1459,7 +1459,7 @@ class dataentry extends Survey_Common_Action
 
             Yii::app()->loadHelper("database");
             $surveytable = "{{survey_".$surveyid.'}}';
-            $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
+            $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
             // restet token if user is not allowed to update
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) // If not allowed to read: remove it
             {
@@ -1702,7 +1702,7 @@ class dataentry extends Survey_Common_Action
 
                 //BUILD THE SQL TO INSERT RESPONSES
                 $baselang = $survey->language;
-                $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
+                $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
                 $insert_data = array();
 
                 $_POST['startlanguage'] = $survey->language;

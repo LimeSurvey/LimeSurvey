@@ -2596,7 +2596,7 @@ class remotecontrol_handle
         if(!empty($sLanguageCode) && !in_array($sLanguageCode,$survey->getAllLanguages()) ) return array('status' => 'Language code not found for this survey.');
 
         if (empty($sLanguageCode)) $sLanguageCode=$survey->language;
-        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($survey,'full',true,false,$sLanguageCode));
         if($sDocumentType=='xls'){
             // Cut down to the first 255 fields
             $aFields=array_slice($aFields,0,255);
@@ -2654,7 +2654,7 @@ class remotecontrol_handle
         if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (empty($sLanguageCode)) $sLanguageCode=$survey->language;
-        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($survey,'full',true,false,$sLanguageCode));
         if($sDocumentType=='xls'){
             // Cut down to the first 255 fields
             $aFields=array_slice($aFields,0,255);
