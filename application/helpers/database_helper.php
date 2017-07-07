@@ -16,9 +16,10 @@ if ( !defined('BASEPATH')) exit('No direct script access allowed');
 /**
  *
  * @param string $sql
- * @param array $inputarr
+ * @param array|bool $inputarr
  * @param boolean $silent
- * @return CDbDataReader|boolean
+ * @return bool|CDbDataReader
+ * @throws Exception
  */
 function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
 {
@@ -89,11 +90,11 @@ function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerro
 
 
 /**
-* This functions quotes fieldnames accordingly
-*
-* @param mixed $id Fieldname to be quoted
-*/
-
+ * This functions quotes fieldnames accordingly
+ *
+ * @param mixed $id Fieldname to be quoted
+ * @return mixed|string
+ */
 function dbQuoteID($id)
 {
     switch (Yii::app()->db->getDriverName())
@@ -157,12 +158,13 @@ function dbRandom()
 }
 
 /**
-*  Return a sql statement for finding LIKE named tables
-*  Be aware that you have to escape underscor chars by using a backslash
-* otherwise you might get table names returned you don't want
-*
-* @param mixed $table
-*/
+ *  Return a sql statement for finding LIKE named tables
+ *  Be aware that you have to escape underscor chars by using a backslash
+ * otherwise you might get table names returned you don't want
+ *
+ * @param mixed $table
+ * @return string
+ */
 function dbSelectTablesLike($table)
 {
     switch (Yii::app()->db->getDriverName()) {
