@@ -10,7 +10,7 @@
 
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
-        <span class="glyphicon glyphicon-stats"></span> &nbsp;&nbsp;&nbsp;
+        <span class="fa fa-stats"></span> &nbsp;&nbsp;&nbsp;
         <?php eT("Statistics"); ?>
     </h3>
 

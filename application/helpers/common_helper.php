@@ -1453,7 +1453,7 @@ function getExtendedAnswer($iSurveyID, $sFieldCode, $sValue, $sLanguage)
             case 'D':
                 if (trim($sValue)!='')
                 {
-                    $qidattributes = getQuestionAttributeValues($fields['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($fields['qid']);
                     $dateformatdetails = getDateFormatDataForQID($qidattributes, $iSurveyID);
                     $sValue=convertDateTimeFormat($sValue,"Y-m-d H:i:s",$dateformatdetails['phpdate']);
                 }
@@ -1775,16 +1775,14 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
 
     $sLanguage = sanitize_languagecode($sLanguage);
     $surveyid = sanitize_int($surveyid);
-    /** @var Survey $oSurbey */
-    $oSurvey = Survey::model()->findByPk($surveyid);
-
+    $survey = Survey::model()->findByPk($surveyid);
     //checks to see if fieldmap has already been built for this page.
     if (isset(Yii::app()->session['fieldmap-' . $surveyid . $sLanguage]) && !$force_refresh && $questionid == false) {
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
     /* Check if $sLanguage is a survey valid language (else $fieldmap is empty) */
-    if($sLanguage=='' || !in_array($sLanguage,$oSurvey->allLanguages)){
-        $sLanguage=Survey::model()->findByPk($surveyid)->language;
+    if($sLanguage=='' || !in_array($sLanguage,$survey->allLanguages)){
+        $sLanguage=$survey->language;
     }
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
     if ($style == "full")
@@ -1827,9 +1825,9 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     //Check for any additional fields for this survey and create necessary fields (token and datestamp and ipaddr)
-    $prow = $oSurvey->getAttributes(); //Checked
+    $prow = $survey->getAttributes(); //Checked
 
-    if ($prow['anonymized'] == "N" && Survey::model()->hasTokens($surveyid)) {
+    if ($prow['anonymized'] == "N" && $survey->hasTokensTable ) {
         $fieldmap["token"]=array("fieldname"=>"token", 'sid'=>$surveyid, 'type'=>"token", "gid"=>"", "qid"=>"", "aid"=>"");
         if ($style == "full")
         {
@@ -1920,7 +1918,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
-    $baseLanguage = $oSurvey->language;
+    $baseLanguage = $survey->language;
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
     . " FROM {{defaultvalues}} as a, {{questions}} as b"
     . " WHERE a.qid = b.qid"
@@ -1955,12 +1953,13 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         $aquery.=" and questions.qid={$questionid} ";
     }
     $aquery.=" ORDER BY group_order, question_order";
-    $aresult = Yii::app()->db->createCommand($aquery)->queryAll();
+    /** @var Question[] $questions */
+    $questions = Yii::app()->db->createCommand($aquery)->queryAll();
     $questionSeq=-1; // this is incremental question sequence across all groups
     $groupSeq=-1;
     $_groupOrder=-1;
 
-    foreach ($aresult as $arow) //With each question, create the appropriate field(s))
+    foreach ($questions as $arow) //With each question, create the appropriate field(s))
     {
         ++$questionSeq;
 
@@ -2183,7 +2182,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         }
         elseif ($arow['type'] == "|")
         {
-            $qidattributes= getQuestionAttributeValues($arow['qid']);
+            $qidattributes= QuestionAttribute::model()->getQuestionAttributes($arow['qid']);
                 $fieldname="{$arow['sid']}X{$arow['gid']}X{$arow['qid']}";
                 $fieldmap[$fieldname]=array("fieldname"=>$fieldname,
                 'type'=>$arow['type'],
@@ -2496,16 +2495,6 @@ function buildLabelSetCheckSumArray()
 }
 
 
-/**
-* Returns a flat array with all question attributes for the question only (and the qid we gave it)!
-* @deprecated : use QuestionAttribute::model()->getQuestionAttributes($iQID); directly
-* @param integer $iQID The question ID
-* @return array $bOrderByNative=>value, attribute=>value} or false if the question ID does not exist (anymore)
-*/
-function getQuestionAttributeValues($iQID)
-{
-    return QuestionAttribute::model()->getQuestionAttributes($iQID);
-}
 
 /**
 *
@@ -2894,7 +2883,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
     foreach ($grows as $qrow) // Cycle through questions to see if any have list_filter attributes
     {
         $qidtotitle[$qrow['qid']]=$qrow['title'];
-        $qresult = getQuestionAttributeValues($qrow['qid']);
+        $qresult = QuestionAttribute::model()->getQuestionAttributes($qrow['qid']);
         if (isset($qresult['array_filter_exclude'])) // We Found a array_filter attribute
         {
             $val = $qresult['array_filter_exclude']; // Get the Value of the Attribute ( should be a previous question's title in same group )
@@ -2971,7 +2960,7 @@ function getArrayFiltersForQuestion($qid)
     $qid=sanitize_int($qid);
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributeValues($qid);
+    $attributes = QuestionAttribute::model()->getQuestionAttributes($qid);
     if (isset($attributes['array_filter']) && Yii::app()->session['fieldarray']) {
         $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
         foreach (Yii::app()->session['fieldarray'] as $fields)
@@ -3047,7 +3036,7 @@ function getArrayFilterExcludesForQuestion($qid)
 
     if (isset($cache[$qid])) return $cache[$qid];
 
-    $attributes = getQuestionAttributeValues($qid);
+    $attributes = QuestionAttribute::model()->getQuestionAttributes($qid);
     $excludevals=array();
     if (isset($attributes['array_filter_exclude'])) // We Found a array_filter_exclude attribute
     {
@@ -3665,7 +3654,8 @@ function filterForAttributes ($fieldname)
 */
 function GetAttributeFieldNames($iSurveyID)
 {
-    if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
+    $survey=Survey::model()->findByPk($iSurveyID);
+    if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName))
         return Array();
 
     return array_filter(array_keys($table->columns), 'filterForAttributes');
@@ -3680,7 +3670,8 @@ function GetAttributeFieldNames($iSurveyID)
 */
 function GetParticipantAttributes($iSurveyID)
 {
-    if (!tableExists("{{tokens_{$iSurveyID}}}") || !$table = Yii::app()->db->schema->getTable('{{tokens_'.$iSurveyID.'}}'))
+    $survey=Survey::model()->findByPk($iSurveyID);
+    if (!$survey->hasTokensTable || !$table = Yii::app()->db->schema->getTable($survey->tokensTableName))
         return Array();
     return getTokenFieldsAndNames($iSurveyID,true);
 }
@@ -4168,7 +4159,7 @@ function getFullResponseTable($iSurveyID, $iResponseID, $sLanguageCode, $bHonorC
     {
         if (!empty($fname['qid']))
         {
-            $attributes = getQuestionAttributeValues($fname['qid']);
+            $attributes = QuestionAttribute::model()->getQuestionAttributes($fname['qid']);
             if (getQuestionAttributeValue($attributes, 'hidden') == 1)
             {
                 continue;

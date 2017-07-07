@@ -214,7 +214,7 @@ class UserAction extends Survey_Common_Action
             $sresultcount = 0; // 1 if I am parent of $postuserid
             if (!Permission::model()->hasGlobalPermission('superadmin','read'))
             {
-                $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+                $sresult = User::model()->findAllByAttributes(array('parent_id' => Yii::app()->session['loginID']));
                 $sresultcount = count($sresult);
             }
 

@@ -28,9 +28,6 @@ class TemplateConfiguration extends CFormModel
     /** @var string $sPackageName Name of the asset package of this template*/
     public $sPackageName;
 
-    /** @var  string $siteLogo Name of the logo file (like: logo.png) */
-    public $siteLogo;
-
     /** @var  string $path Path of this template */
     public $path;
 
@@ -475,7 +472,6 @@ class TemplateConfiguration extends CFormModel
         $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR    : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
         $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
         $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ? $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
-        $this->siteLogo                 = (!empty($this->config->xpath("//logo")))            ? $this->config->files->logo->filename                                                       : $this->oMotherTemplate->siteLogo;
 
         // Options are optional
         if (!empty($this->config->xpath("//options"))){

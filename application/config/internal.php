@@ -65,11 +65,10 @@ $internalConfig = array(
 
     'modules'=>array(
             'gii'=>array(
-                //'class'=>'system.gii.GiiModule',
-                //'password'=>'toto',
-                // 'ipFilters'=>array(...a list of IPs...),
-                // 'newFileMode'=>0666,
-                // 'newDirMode'=>0777,
+                'class'=>'system.gii.GiiModule',
+                'password'=>'toto',
+                 'newFileMode'=>0666,
+                 'newDirMode'=>0777,
             ),
         ),
 
@@ -219,7 +218,10 @@ $internalConfig = array(
                 'registerTemplateScript'  => 'LS_Twig_Extension::registerTemplateScript',
                 'registerScript'          => 'LS_Twig_Extension::registerScript',
                 'unregisterPackage'       => 'LS_Twig_Extension::unregisterPackage',
+                'unregisterScriptFile'    => 'LS_Twig_Extension::unregisterScriptFile',
+                'unregisterScriptForAjax' => 'LS_Twig_Extension::unregisterScriptForAjax',
                 'listCoreScripts'         => 'LS_Twig_Extension::listCoreScripts',
+                'listScriptFiles'         => 'LS_Twig_Extension::listScriptFiles',
                 'getAllQuestionClasses'   => 'LS_Twig_Extension::getAllQuestionClasses',
                 'intval'                  => 'intval',
                 'empty'                   => 'empty',
@@ -254,7 +256,7 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                 ),
-                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'unregisterPackage', 'listCoreScripts', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
+                'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'unregisterPackage', 'unregisterScriptFile', 'unregisterScriptForAjax','listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
             ),
 
         ),

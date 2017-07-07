@@ -6,10 +6,9 @@
     $yii = Yii::app();
     $controller = $yii->getController();
 ?>
-
 <!-- Datatable translation-data -->
 <script type="text/javascript">
-    var jsonUrl = "<?php echo App()->createUrl('admin/survey', array('sa' => 'getUrlParamsJson', 'surveyid' => $surveyid))?>";
+    var jsonUrl = "<?php echo App()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $surveyid))?>";
     var imageUrl = "<?php echo $yii->getConfig("adminimageurl");?>";
     var sProgress = "<?php  eT('Showing _START_ to _END_ of _TOTAL_ entries','js');?>";
     var sAction = "<?php  eT('Action','js');?>";
@@ -24,15 +23,16 @@
     var sEditParam = "<?php  eT('Edit URL parameter','js');?>";
     var iSurveyId = "<?php  echo $surveyid; ?>";
 </script>
-
-<!-- datatable container -->
-<div id='panelintegration' class=" tab-pane fade in text-center" >
-    <div class="container-center">
-        <div class="row">
+<!-- Container -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
             <table id="urlparams" class='table dataTable table-striped table-borders' >
-            <thead><tr>
-                <th></th><th><?php eT('Action');?></th><th><?php eT('Parameter');?></th><th><?php eT('Target question');?></th><th></th><th></th><th></th>
-            </tr></thead>
+                <thead>
+                    <tr>
+                        <th></th><th><?php eT('Action');?></th><th><?php eT('Parameter');?></th><th><?php eT('Target question');?></th><th></th><th></th><th></th>
+                    </tr>
+                </thead>
             </table>
             <input type='hidden' id='allurlparams' name='allurlparams' value='' />
         </div>

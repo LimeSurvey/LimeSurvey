@@ -148,7 +148,7 @@
                 <?php endif; ?>
 
                 <!-- Survey Properties -->
-                <?php if(!isset($surveybar['active_survey_properties']) && $showSurveyPropertiesMenu):?>
+                <?php if(!isset($surveybar['active_survey_properties']) && $showSurveyPropertiesMenu && 1==2):?>
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="icon-edit" ></span>
@@ -211,7 +211,102 @@
                                     </a>
                                 </li>
                             <?php endif; ?>
+                      </ul>
+                    </div>
+                <?php elseif (isset($surveybar['active_survey_properties'])):?>
+                        <button type="button" class="btn btn-default btntooltip active">
+                            <span class="icon-expressionmanagercheck" ></span>
+                            <?php echo $surveybar['active_survey_properties']['txt'];?>
+                        </button>
+                <?php endif;?>
 
+
+                <!-- TOOLS  -->
+                <?php if ($showToolsMenu): ?>
+                    <div class="btn-group hidden-xs">
+
+                        <!-- Main button dropdown -->
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="icon-tools" ></span>
+                             <?php eT('Tools');?><span class="caret"></span>
+                        </button>
+
+                        <!-- dropdown -->
+                        <ul class="dropdown-menu">
+                            <?php if ($surveydelete): ?>
+
+                                  <!-- Delete survey -->
+                                  <li>
+                                      <a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"); ?>">
+                                        <span class="fa fa-trash" ></span>
+                                        <?php eT("Delete survey");?>
+                                      </a>
+                                  </li>
+                            <?php endif; ?>
+
+                            <?php if ($surveytranslate): ?>
+                                  <!-- surveytranslate -->
+
+                                <?php if($hasadditionallanguages): ?>
+
+                                        <!-- Quick-translation -->
+                                        <li>
+                                            <a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}");?>">
+                                            <span class="fa fa-language" ></span>
+                                            <?php eT("Quick-translation");?>
+                                            </a>
+                                        </li>
+
+                                <?php else: ?>
+
+                                        <!-- Quick-translation disabled -->
+                                        <li>
+                                            <a href="#" onclick="alert('<?php eT("Currently there are no additional languages configured for this survey.", "js");?>');" >
+                                              <span class="fa fa-language" ></span>
+                                              <?php eT("Quick-translation");?>
+                                            </a>
+                                        </li>
+                                <?php endif; ?>
+                            <?php endif; ?>
+
+                            <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
+                                  <li>
+                                    <?php if ($conditionscount>0):?>
+
+                                          <!-- condition -->
+                                          <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
+                                            <span class="icon-resetsurveylogic" ></span>
+                                            <?php eT("Reset conditions");?>
+                                          </a>
+                                    <?php else: ?>
+
+                                          <!-- condition disabled -->
+                                          <a href="#" onclick="alert('<?php eT("Currently there are no conditions configured for this survey.", "js"); ?>');" >
+                                            <span class="icon-resetsurveylogic" ></span>
+                                            <?php eT("Reset conditions");?>
+                                          </a>
+                                    <?php endif; ?>
+                                  </li>
+
+                            <?php if (isset($extraToolsMenuItems)): ?>
+                                <?php foreach ($extraToolsMenuItems as $menuItem): ?>
+                                    <?php if ($menuItem->isDivider()): ?>
+                                          <li class="divider"></li>
+                                    <?php elseif ($menuItem->isSmallText()): ?>
+                                          <li class="dropdown-header"><?php echo $menuItem->getLabel();?></li>
+                                    <?php else: ?>
+                                          <li>
+                                              <a href="<?php echo $menuItem->getHref(); ?>">
+                                                  <!-- Spit out icon if present -->
+                                                  <?php if ($menuItem->getIconClass() != ''): ?>
+                                                    <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
+                                                  <?php endif; ?>
+                                                  <?php echo $menuItem->getLabel(); ?>
+                                              </a>
+                                          </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                             <?php if($surveycontentread): ?>
                                 <!-- survey content -->
 
@@ -244,128 +339,31 @@
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             <?php endif; ?>
-                      </ul>
-                    </div>
-                <?php elseif (isset($surveybar['active_survey_properties'])):?>
-                        <button type="button" class="btn btn-default btntooltip active">
-                            <span class="icon-expressionmanagercheck" ></span>
-                            <?php echo $surveybar['active_survey_properties']['txt'];?>
-                        </button>
-                <?php endif;?>
+                            <?php if(!$activated): ?>
+                                <li role="separator" class="divider"></li>
 
+                                <!-- Regenerate question codes -->
+                                <li class="dropdown-header">
+                                    <?php eT("Regenerate question codes");?>
+                                </li>
 
-                <!-- TOOLS  -->
-                <?php if ($showToolsMenu): ?>
-                    <div class="btn-group hidden-xs">
+                                <!-- Straight -->
+                                <li>
+                                    <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$surveyid}/subaction/straight"); ?>">
+                                    <span class="icon-resetsurveylogic" ></span>
+                                    <?php eT("Straight");?>
+                                    </a>
+                                </li>
 
-                        <!-- Main button dropdown -->
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="icon-tools" ></span>
-                             <?php eT('Tools');?><span class="caret"></span>
-                        </button>
-
-                        <!-- dropdown -->
-                        <ul class="dropdown-menu">
-                              <?php if ($surveydelete): ?>
-
-                                  <!-- Delete survey -->
-                                  <li>
-                                      <a href="<?php echo $this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"); ?>">
-                                        <span class="glyphicon glyphicon-trash" ></span>
-                                        <?php eT("Delete survey");?>
-                                      </a>
-                                  </li>
-                              <?php endif; ?>
-
-                              <?php if ($surveytranslate): ?>
-                                  <!-- surveytranslate -->
-
-                                  <?php if($hasadditionallanguages): ?>
-
-                                        <!-- Quick-translation -->
-                                        <li>
-                                            <a href="<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}");?>">
-                                            <span class="fa fa-language" ></span>
-                                            <?php eT("Quick-translation");?>
-                                            </a>
-                                        </li>
-
-                                  <?php else: ?>
-
-                                        <!-- Quick-translation disabled -->
-                                        <li>
-                                            <a href="#" onclick="alert('<?php eT("Currently there are no additional languages configured for this survey.", "js");?>');" >
-                                              <span class="fa fa-language" ></span>
-                                              <?php eT("Quick-translation");?>
-                                            </a>
-                                        </li>
-                                  <?php endif; ?>
-                              <?php endif; ?>
-
-                              <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
-                                  <li>
-                                      <?php if ($conditionscount>0):?>
-
-                                          <!-- condition -->
-                                          <a href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/resetsurveylogic/surveyid/{$surveyid}"); ?>">
-                                            <span class="icon-resetsurveylogic" ></span>
-                                            <?php eT("Reset conditions");?>
-                                          </a>
-                                      <?php else: ?>
-
-                                          <!-- condition disabled -->
-                                          <a href="#" onclick="alert('<?php eT("Currently there are no conditions configured for this survey.", "js"); ?>');" >
-                                            <span class="icon-resetsurveylogic" ></span>
-                                            <?php eT("Reset conditions");?>
-                                          </a>
-                                      <?php endif; ?>
-                                  </li>
-
-                              <?php if (isset($extraToolsMenuItems)): ?>
-                                  <?php foreach ($extraToolsMenuItems as $menuItem): ?>
-                                      <?php if ($menuItem->isDivider()): ?>
-                                          <li class="divider"></li>
-                                      <?php elseif ($menuItem->isSmallText()): ?>
-                                          <li class="dropdown-header"><?php echo $menuItem->getLabel();?></li>
-                                      <?php else: ?>
-                                          <li>
-                                              <a href="<?php echo $menuItem->getHref(); ?>">
-                                                  <!-- Spit out icon if present -->
-                                                  <?php if ($menuItem->getIconClass() != ''): ?>
-                                                    <span class="<?php echo $menuItem->getIconClass(); ?>">&nbsp;</span>
-                                                  <?php endif; ?>
-                                                  <?php echo $menuItem->getLabel(); ?>
-                                              </a>
-                                          </li>
-                                      <?php endif; ?>
-                                  <?php endforeach; ?>
-                              <?php endif; ?>
-
-                                  <?php if(!$activated): ?>
-                                              <li role="separator" class="divider"></li>
-
-                                              <!-- Regenerate question codes -->
-                                              <li class="dropdown-header">
-                                                  <?php eT("Regenerate question codes");?>
-                                              </li>
-
-                                              <!-- Straight -->
-                                              <li>
-                                                  <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$surveyid}/subaction/straight"); ?>">
-                                                    <span class="icon-resetsurveylogic" ></span>
-                                                    <?php eT("Straight");?>
-                                                  </a>
-                                              </li>
-
-                                              <!-- By question group -->
-                                              <li>
-                                                <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$surveyid}/subaction/bygroup"); ?>">
-                                                    <span class="icon-resetsurveylogic" ></span>
-                                                    <?php eT("By question group");?>
-                                                </a>
-                                             </li>
-                                  <?php endif; ?>
-                              <?php endif; ?>
+                                <!-- By question group -->
+                                <li>
+                                <a href="<?php echo $this->createUrl("/admin/survey/sa/regenquestioncodes/surveyid/{$surveyid}/subaction/bygroup"); ?>">
+                                    <span class="icon-resetsurveylogic" ></span>
+                                    <?php eT("By question group");?>
+                                </a>
+                                </li>
+                                <?php endif; ?>
+                            <?php endif; ?>
                         </ul>
                     </div>
                 <?php endif; ?>
@@ -466,7 +464,7 @@
                                   <!-- Printable version -->
                                   <li>
                                       <a target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid");?>' >
-                                          <span class="glyphicon glyphicon-print"></span>
+                                          <span class="fa fa-print"></span>
                                           <?php eT("Printable survey");?>
                                       </a>
                                   </li>
@@ -478,7 +476,7 @@
                                       <?php foreach ($languagelist as $tmp_lang): ?>
                                           <li>
                                               <a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid/lang/$tmp_lang");?>'>
-                                                  <span class="glyphicon glyphicon-print"></span>
+                                                  <span class="fa fa-print"></span>
                                                   <?php echo getLanguageNameFromCode($tmp_lang,false);?>
                                               </a>
                                           </li>
@@ -491,7 +489,7 @@
                 <!-- Token -->
                 <?php if($tokenmanagement):?>
                     <a class="btn btn-default  btntooltip hidden-xs" href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>" role="button">
-                        <span class="glyphicon glyphicon-user"></span>
+                        <span class="fa fa-user"></span>
                         <?php eT("Survey participants");?>
                     </a>
                 <?php endif; ?>
@@ -593,13 +591,13 @@
                     <!-- List Groups -->
                         <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
                         <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
-                            <span class="glyphicon glyphicon-list"></span>
+                            <span class="fa fa-list"></span>
                             <?php eT("List question groups");?>
                         </a>
 
                     <!-- List Questions -->
                         <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
-                            <span class="glyphicon glyphicon-list"></span>
+                            <span class="fa fa-list"></span>
                             <?php eT("List questions");?>
                         </a>
                 <?php endif; ?>
@@ -627,7 +625,7 @@
 
                 <!-- Save -->
                 <a class="btn btn-success" href="#" role="button" id="save-button" >
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="fa fa-ok"></span>
                     <?php if(isset($surveybar['savebutton']['text']))
                     {
                         echo $surveybar['savebutton']['text'];
@@ -640,7 +638,7 @@
                 <!-- Save and close -->
                 <?php if(isset($surveybar['saveandclosebutton'])):?>
                     <a class="btn btn-default" href="#" role="button" id='save-and-close-button'>
-                        <span class="glyphicon glyphicon-saved"></span>
+                        <span class="fa fa-saved"></span>
                         <?php eT("Save and close");?>
                     </a>
                 <?php endif; ?>
@@ -649,7 +647,7 @@
             <!-- Close -->
             <?php if(isset($surveybar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $surveybar['closebutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-close"></span>
+                    <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
