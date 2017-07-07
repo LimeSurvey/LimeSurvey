@@ -8189,7 +8189,7 @@ EOD;
             print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
             // Print Table of questions
-            print "<h3>This is a test of dynamic relevance.</h3>";
+            print "<div class='h3'>This is a test of dynamic relevance.</div>";
             print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br />\n";
             print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br />";
             print "<table class='table' border='1'><tr><td>";

@@ -327,6 +327,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
 {
+    $survey = Survey::model()->findByPk($iSurveyID);
     $typeMap = array(
         '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
         'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -362,7 +363,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
     );
 
     if (empty($sLanguage)){
-        $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
+        $sLanguage=$survey->language;
     }
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
 

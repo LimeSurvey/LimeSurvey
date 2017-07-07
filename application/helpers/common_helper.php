@@ -1912,7 +1912,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
     }
 
     // Now overwrite language-specific defaults (if any) base language values for each question that uses same_defaults=1
-    $baseLanguage = getBaseLanguageFromSurveyID($surveyid);
+    $baseLanguage = $survey->language;
     $defaultsQuery = "SELECT a.qid, a.sqid, a.scale_id, a.specialtype, a.defaultvalue"
     . " FROM {{defaultvalues}} as a, {{questions}} as b"
     . " WHERE a.qid = b.qid"
@@ -2458,18 +2458,6 @@ function getSavedCount($surveyid)
     return SavedControl::model()->getCountOfAll($surveyid);
 }
 
-/**
-* Returns the base language from a survey id
-*
-* @deprecated Use Survey::model()->findByPk($surveyid)->language
-* @param int $surveyid
-* @return string
-*/
-function getBaseLanguageFromSurveyID($surveyid)
-{
-    return Survey::model()->findByPk($surveyid)->language;
-}
-
 
 function buildLabelSetCheckSumArray()
 {
@@ -2856,12 +2844,14 @@ function flattenText($sTextToFlatten, $bKeepSpan=false, $bDecodeHTMLEntities=fal
 function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid")
 {
     $surveyid=sanitize_int($surveyid);
+    $survey = Survey::model()->findByPk($surveyid);
+
     $gid=sanitize_int($gid);
 
     $cascaded=array();
     $sources=array();
     $qidtotitle=array();
-    $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+    $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
 
     if($gid != "") {
         $qrows = arraySearchByKey($gid, $fieldmap, 'gid');
@@ -3476,13 +3466,15 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 {
     $aGIDReplacements=array_flip($aGIDReplacements);
     $aQIDReplacements=array_flip($aQIDReplacements);
+    $newSurvey = Survey::model()->findByPk($iNewSID);
+
     if ($iOldSID==$iNewSID) {
         $forceRefresh=true; // otherwise grabs the cached copy and throws undefined index exceptions
     }
     else {
         $forceRefresh=false;
     }
-    $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,getBaseLanguageFromSurveyID($iNewSID));
+    $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,$newSurvey->language);
 
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)

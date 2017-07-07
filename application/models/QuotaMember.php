@@ -16,10 +16,10 @@
 /**
  * Class QuotaMember
  *
- * @property integer $id
+ * @property integer $id ID (primary key)
  * @property integer $sid Survey ID
  * @property integer $qid Question ID
- * @property integer $quota_id
+ * @property integer $quota_id Quota ID
  * @property string $code Answer code
  */
 class QuotaMember extends LSActiveRecord

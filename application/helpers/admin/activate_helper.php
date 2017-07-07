@@ -127,6 +127,8 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # ";" -> Array Multi Flexi Text
     //  # "1" -> MULTI SCALE
 
+    $survey = Survey::model()->findByPk($iSurveyID);
+
     $chkquery = "SELECT qid, question, gid, type FROM {{questions}} WHERE sid={$iSurveyID} and parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
     foreach ($chkresult as $chkrow)
@@ -228,10 +230,9 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    createFieldMap($iSurveyID,'full',true,false,getBaseLanguageFromSurveyID($iSurveyID),$aDuplicateQIDs);
+    $fieldmap = createFieldMap($iSurveyID,'full',true,false,$survey->language,$aDuplicateQIDs);
     if (count($aDuplicateQIDs)) {
-        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate)
-        {
+        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate) {
             $sFixLink = "[<a href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
             $failedcheck[]=array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
@@ -476,7 +477,7 @@ function activateSurvey($iSurveyID, $simulate = false)
 
     if ($oSurvey->savetimings == "Y")
     {
-        $timingsfieldmap = createTimingsFieldMap($iSurveyID,"full",false,false,getBaseLanguageFromSurveyID($iSurveyID));
+        $timingsfieldmap = createTimingsFieldMap($iSurveyID,"full",false,false,$oSurvey->language);
 
         $aTimingTableDefinition = array();
         $aTimingTableDefinition['id'] = $aTableDefinition['id'];
