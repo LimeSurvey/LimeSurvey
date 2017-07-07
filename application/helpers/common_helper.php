@@ -297,55 +297,6 @@ function getTemplateList()
 
 
 /**
-* getQuestions() queries the database for an list of all questions matching the current survey and group id
-*
-* @return string string is returned containing <option></option> formatted list of questions in the current survey and group
-*/
-function getQuestions($surveyid,$gid,$selectedqid)
-{
-
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-    $qrows = Question::model()->findAllByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $s_lang, 'parent_qid' => 0),array('order'=>'question_order'));
-
-    if (!isset($sQuestionselecter)) {$sQuestionselecter="";}
-    foreach ($qrows as $qrow)
-    {
-        $qrow = $qrow->attributes;
-        $qrow['title'] = strip_tags($qrow['title']);
-        $link = Yii::app()->getController()->createUrl("/admin/questions/sa/view/surveyid/".$surveyid."/gid/".$gid."/qid/".$qrow['qid']);
-        $sQuestionselecter .= "<option value='{$link}'";
-        if ($selectedqid == $qrow['qid'])
-        {
-            $sQuestionselecter .= " selected='selected'";
-            $qexists=true;
-        }
-        $sQuestionselecter .=">{$qrow['title']}:";
-        $sQuestionselecter .= " ";
-        $question=flattenText($qrow['question']);
-        if (strlen($question)<35)
-        {
-            $sQuestionselecter .= $question;
-        }
-        else
-        {
-            $sQuestionselecter .= htmlspecialchars(mb_strcut(html_entity_decode($question,ENT_QUOTES,'UTF-8'), 0, 35, 'UTF-8'))."...";
-        }
-        $sQuestionselecter .= "</option>\n";
-    }
-
-    if (!isset($qexists))
-    {
-        $sQuestionselecter = "<option selected='selected'>".gT("Please choose...")."</option>\n".$sQuestionselecter;
-    }
-    else
-    {
-        $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$gid);
-        $sQuestionselecter = "<option value='{$link}'>".gT("None")."</option>\n".$sQuestionselecter;
-    }
-    return $sQuestionselecter;
-}
-
-/**
 * getGidPrevious() returns the Gid of the group prior to the current active group
 *
 * @param string $surveyid
