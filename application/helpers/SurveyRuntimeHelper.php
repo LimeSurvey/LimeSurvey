@@ -28,6 +28,7 @@ class SurveyRuntimeHelper {
     // Preview datas
     private $previewquestion     = false;
     private $previewgrp          = false;
+    private $preview             = false;
 
     // Template datas
     private $oTemplate;                                                         // Template configuration object (set in model TemplateConfiguration)
@@ -1642,6 +1643,7 @@ class SurveyRuntimeHelper {
 
         $this->previewgrp      = ($this->sSurveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $this->previewquestion = ($this->sSurveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $this->preview         = ($this->previewquestion || $this->previewgrp);
         $this->sLangCode       = App()->language;
     }
 
