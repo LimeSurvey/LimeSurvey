@@ -127,6 +127,7 @@ class export extends Survey_Common_Action {
     public function exportresults()
     {
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $survey = Survey::model()->findByPk($iSurveyID);
 
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
         if ( ! isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
@@ -157,7 +158,7 @@ class export extends Survey_Common_Action {
         $sYValue = Yii::app()->request->getPost('convertyto');
         $sNValue = Yii::app()->request->getPost('convertnto');
 
-        $surveybaselang = Survey::model()->findByPk($iSurveyID)->language;
+        $surveybaselang = $survey->language;
         $exportoutput = "";
 
         // Get info about the survey
@@ -170,10 +171,10 @@ class export extends Survey_Common_Action {
         if ( ! $sExportType )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$survey->language);
             if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
-                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,$survey->language);
             }
             $iFieldCount = count($aFieldMap);
 
@@ -660,6 +661,7 @@ class export extends Survey_Common_Action {
     public function vvexport()
     {
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $survey = Survey::model()->findByPk($iSurveyId);
         $subaction = Yii::app()->request->getParam('subaction');
 
         //Exports all responses to a survey in special "Verified Voting" format.
@@ -674,7 +676,7 @@ class export extends Survey_Common_Action {
             $aData['selectincansstate']=incompleteAnsFilterState();
             $aData['surveyid'] = $iSurveyId;
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$survey->language);
 
             Survey::model()->findByPk($iSurveyId)->language;
             $surveytable = "{{survey_$iSurveyId}}";
@@ -712,7 +714,7 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$survey->language);
             $surveytable = "{{survey_$iSurveyId}}";
 
             Survey::model()->findByPk($iSurveyId)->language;

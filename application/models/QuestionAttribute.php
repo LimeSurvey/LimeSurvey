@@ -16,11 +16,11 @@
 /**
  * Class QuestionAttribute
  *
- * @property integer $qaid ID
+ * @property integer $qaid ID Primary key
  * @property integer $qid Question ID
- * @property string $attribute
- * @property string $value
- * @property string $language
+ * @property string $attribute attribute name (max 50 chars)
+ * @property string $value Attribute value
+ * @property string $language Language code eg:'en'
  *
  */
 class QuestionAttribute extends LSActiveRecord

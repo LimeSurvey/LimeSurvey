@@ -1081,7 +1081,6 @@ class translate extends Survey_Common_Action {
 
         header('Content-type: application/json');
         return ls_json_encode($aOutput);
-        Yii::app()->end();
     }
 
     /**

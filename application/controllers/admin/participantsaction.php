@@ -151,6 +151,7 @@ class participantsaction extends Survey_Common_Action
                 break;
             case "deleteMultipleParticipantShare":
                 $this->deleteMultipleParticipantShare();
+                break;
             default:
                 echo "";
                 break;
@@ -390,11 +391,11 @@ class participantsaction extends Survey_Common_Action
         }
         // Deletes from central and token table
         else if ($selectoption == 'ptt') {
-            $deletedParticipants = Participant::model()->deleteParticipantToken($participantIds);
+            Participant::model()->deleteParticipantToken($participantIds);
         }
         // Deletes from central , token and assosiated responses as well
         else if ($selectoption == 'ptta') {
-            $deletedParticipants = Participant::model()->deleteParticipantTokenAnswer($participantIds);
+            Participant::model()->deleteParticipantTokenAnswer($participantIds);
         }
         else {
             // Internal error
@@ -2062,7 +2063,7 @@ class participantsaction extends Survey_Common_Action
 
 
         $aRowToAdd=array();
-        foreach ($records as $key => $row)
+        foreach ($records as $row)
         {
             if (array_key_exists('can_edit', $row)) {
                 $sCanEdit = $row['can_edit'];

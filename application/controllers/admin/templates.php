@@ -721,7 +721,7 @@ class templates extends Survey_Common_Action
     * @param string $cssfiles
     * @param array $otherfiles
     * @param array $myoutput
-    * @return void
+    * @return array
     */
     protected function _templatesummary($templatename, $screenname, $editfile, $relativePathEditfile, $templates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput)
     {

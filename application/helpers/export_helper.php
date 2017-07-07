@@ -251,7 +251,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     } elseif ($field['LStype'] == ':') {
         $displayvaluelabel = 0;
         //Get the labels that could apply!
-        if (is_null($qidattributes)) $qidattributes=getQuestionAttributeValues($field["qid"]);
+        if (is_null($qidattributes)) $qidattributes=QuestionAttribute::model()->getQuestionAttributes($field["qid"]);
         if (trim($qidattributes['multiflexible_max'])!='') {
             $maxvalue=$qidattributes['multiflexible_max'];
         } else {
@@ -330,6 +330,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
 {
+    $survey = Survey::model()->findByPk($iSurveyID);
     $typeMap = array(
         '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
         'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -365,7 +366,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
     );
 
     if (empty($sLanguage)){
-        $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
+        $sLanguage=$survey->language;
     }
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
 
@@ -475,7 +476,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
                 //Get default scale for this type
                 if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
                 //But allow override
-                $aQuestionAttribs = getQuestionAttributeValues($qid);
+                $aQuestionAttribs = QuestionAttribute::model()->getQuestionAttributes($qid);
                 if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
             }
 

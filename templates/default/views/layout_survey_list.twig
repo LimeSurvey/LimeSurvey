@@ -17,24 +17,22 @@
 
 #}
 
+
 {# Call the global layout #}
 {% extends "./layout_global.twig" %}
 
 {# Replace the content block #}
 {% block content %}
+    {{  registerTemplateCssFile('./css/survey-list.css') }}
+
     <div class="row" id="surveys-list-container">
 
         {# include the alert for no JavaScript #}
         {{ include('./subviews/no_js_alert.twig') }}
 
-        <div class="jumbotron" id="surveys-list-jumbotron">
-            <p>
-                {% if  not empty(aSurveyInfo.oTemplate.siteLogo) %}
-                    {% set htmlOptions = {'class': 'img-responsive center-block',} %}
-                    {{ image(aSurveyInfo.oTemplate.siteLogo, "LimeSurvey Survey Software", htmlOptions ) }}
-                {% endif %}
-                {{ aSurveyInfo.sSiteName }}
-            </p>
+        <div class="" id="surveys-list-jumbotron">
+            {{ image('./files/logo_340.png', aSurveyInfo.name, {"class": "img-responsive center-block"}) }}
+            {{ aSurveyInfo.sSiteName }}
         </div>
 
         <div class="col-xs-12 survey-list-heading">
@@ -66,7 +64,7 @@
 
     </div>
 
-    <div id="surveyListFooter" class="well">
+    <div id="surveyListFooter" class="footer">
         <div class="container">
             <p>
                 <a href="http://www.limesurvey.org" target="_blank">

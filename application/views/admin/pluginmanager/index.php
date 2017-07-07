@@ -132,6 +132,10 @@
         ));
     ?>
 </div>
+<!-- 508 -->
+<a name="activate"></a>
+<a name="deactivate"></a>
+
 <input id="ls_action_changestate_type" type="hidden" name="type" value="" />
 <input id="ls_action_changestate_id" type="hidden" name="id" value="" />
 <?php echo CHtml::endForm(); ?>

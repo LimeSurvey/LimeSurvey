@@ -258,7 +258,7 @@ class Usergroups extends Survey_Common_Action
     * Load viewing of a user group screen.
     * @param bool $ugid
     * @param array|bool $header (type=success, warning)(message=localized message)
-    * @return void
+    * @return array
     */
     public function index($ugid = false, $header = false)
     {

@@ -3610,6 +3610,7 @@
             }
             $now = microtime(true);
             $this->em->SetSurveyMode($this->surveyMode);
+            $survey = Survey::model()->findByPk($surveyid);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
             $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
@@ -4228,8 +4229,7 @@
             }
             $this->q2subqInfo = $q2subqInfo;
             // Now set tokens
-            if (Survey::model()->hasTokens($surveyid) && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
-            {
+            if ($survey->hasTokensTable && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '') {
                 //Gather survey data for tokenised surveys, for use in presenting questions
                 $this->knownVars['TOKEN:TOKEN'] = array(
                     'code'=>$_SESSION[$this->sessid]['token'],
@@ -7168,9 +7168,9 @@
             $allJsVarsUsed=array();
             $rowdividList=array();   // list of subquestions needing relevance entries
             /* All function for expression manager */
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js");
+            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js" );
             /* Call the function when trigerring event */
-            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
+            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END,  array("class"=>"toRemoveOnAjax"));
 
             $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
@@ -8221,7 +8221,7 @@ EOD;
             print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
             // Print Table of questions
-            print "<h3>This is a test of dynamic relevance.</h3>";
+            print "<div class='h3'>This is a test of dynamic relevance.</div>";
             print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br />\n";
             print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br />";
             print "<table class='table' border='1'><tr><td>";
@@ -10218,12 +10218,12 @@ EOD;
          */
         public function loadTokenInformation($iSurveyId, $sToken = null, $bAnonymize = false)
         {
-            if (!Survey::model()->hasTokens($iSurveyId))
-            {
+            $survey = Survey::model()->findByPk($iSurveyId);
+
+            if (!$survey->hasTokensTable) {
                 return;
             }
-            if ($sToken === null && isset($_SESSION[$this->sessid]['token']))
-            {
+            if ($sToken === null && isset($_SESSION[$this->sessid]['token'])) {
                 $sToken = $_SESSION[$this->sessid]['token'];
             }
 
@@ -10231,12 +10231,9 @@ EOD;
                 'token' => $sToken
             ));
 
-            if ($oToken)
-            {
-                foreach ($oToken->attributes as $attribute => $value)
-                {
-                    if ($bAnonymize)
-                    {
+            if ($oToken) {
+                foreach ($oToken->attributes as $attribute => $value) {
+                    if ($bAnonymize) {
                         $value = "";
                     }
                     $this->knownVars["TOKEN:" . strtoupper($attribute)] = array(
@@ -10246,9 +10243,7 @@ EOD;
                         'readWrite'=>'N',
                     );
                 }
-            }
-            else
-            {
+            } else {
                 // Read list of available tokens from the tokens table so that preview and error checking works correctly
                 $blankVal = array(
                     'code'=>'',
@@ -10256,8 +10251,7 @@ EOD;
                     'jsName'=>'',
                     'readWrite'=>'N',
                 );
-                foreach (Token::model($iSurveyId)->tableSchema->columnNames as $attribute)
-                {
+                foreach (Token::model($iSurveyId)->tableSchema->columnNames as $attribute) {
                     $this->knownVars['TOKEN:' . strtoupper($attribute)] = $blankVal;
                 }
             }

@@ -36,7 +36,7 @@
 {% endif %}
 
 <!-- Question -->
-<div id="question{{ aQuestion.qid }}" class=" {{ sClasses }} {{ aQuestion.input_error_class }} question-container row">
+<div id="question{{ aQuestion.qid }}" class=" {{ sClasses }} {{ aQuestion.input_error_class }} question-container row {% if (aSurveyInfo.options.animatequestion == "on") %} animated {{ aSurveyInfo.options.questionanimation }} {%endif%}">
 
     <!-- Question text -->
     <div class="question-title-container bg-primary col-xs-12">

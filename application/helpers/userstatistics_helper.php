@@ -1377,7 +1377,7 @@ class userstatistics_helper {
                     break;
 
                 case ":": //Array (Multiple Flexi) (Numbers)
-                    $aQuestionAttributes=getQuestionAttributeValues($qiqid);
+                    $aQuestionAttributes=QuestionAttribute::model()->getQuestionAttributes($qiqid);
                     if (trim($aQuestionAttributes['multiflexible_max'])!='') {
                         $maxvalue=$aQuestionAttributes['multiflexible_max'];
                     }
@@ -1486,7 +1486,7 @@ class userstatistics_helper {
                     $sSubquestion = flattenText($questionDesc['question']);
 
                     //get question attributes
-                    $aQuestionAttributes=getQuestionAttributeValues($qqid);
+                    $aQuestionAttributes=QuestionAttribute::model()->getQuestionAttributes($qqid);
 
 
                     //check last character -> label 1
@@ -2690,7 +2690,7 @@ class userstatistics_helper {
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
         $qsid = $surveyid;
-        $aattr = getQuestionAttributeValues($outputs['parentqid']);
+        $aattr = QuestionAttribute::model()->getQuestionAttributes($outputs['parentqid']);
 
         //PCHART has to be enabled and we need some data
         if ($usegraph == 1) {
@@ -2747,7 +2747,7 @@ class userstatistics_helper {
                         case 'html':
                             $statisticsoutput .= "<img src=\"$tempurl/".$cachefilename."\" border='1' />";
 
-                            $aattr = getQuestionAttributeValues($qqid);
+                            $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
                             if ($bShowMap) {
                                 $statisticsoutput .= "<div id=\"statisticsmap_$rt\" class=\"statisticsmap\"></div>";
 
@@ -2804,6 +2804,7 @@ class userstatistics_helper {
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
+        $survey = Survey::model()->findByPk($surveyid);
 
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
@@ -2816,9 +2817,8 @@ class userstatistics_helper {
         $this->pdf=array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
 
         //pick the best font file if font setting is 'auto'
-        if (is_null($sLanguageCode))
-        {
-            $sLanguageCode =  getBaseLanguageFromSurveyID($surveyid);
+        if (is_null($sLanguageCode)) {
+            $sLanguageCode =  $survey->language;
         }
         Yii::app()->setLanguage($sLanguageCode);
 

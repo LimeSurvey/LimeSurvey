@@ -44,7 +44,9 @@ class LSYii_Validators extends CValidator {
     {
         if(Yii::app()->getConfig('DBVersion')< 172) // Permission::model exist only after 172 DB version
             return $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
+
         $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'));
+        return null;
     }
 
     protected function validateAttribute($object,$attribute)
@@ -74,11 +76,12 @@ class LSYii_Validators extends CValidator {
     }
 
     /**
-    * Remove some empty characters put by CK editor
-    * Did we need to do if user don't use inline HTML editor ?
-    *
-    * @param string $value
-    */
+     * Remove some empty characters put by CK editor
+     * Did we need to do if user don't use inline HTML editor ?
+     *
+     * @param string $value
+     * @return mixed|string
+     */
     public function fixCKeditor($value)
     {
         // Actually don't use it in model : model apply too when import : needed or not ?
@@ -101,11 +104,13 @@ class LSYii_Validators extends CValidator {
         }
         return $value;
     }
+
     /**
-    * Remove any script or dangerous HTML
-    *
-    * @param string $value
-    */
+     * Remove any script or dangerous HTML
+     *
+     * @param string $value
+     * @return string
+     */
     public function xssFilter($value)
     {
         $filter = new CHtmlPurifier();
@@ -160,21 +165,25 @@ class LSYii_Validators extends CValidator {
         gc_collect_cycles(); // To counter a high memory usage of HTML-Purifier
         return $sNewValue;
     }
+
     /**
-    * Defines the customs validation rule for language string
-    *
-    * @param mixed $value
-    */
+     * Defines the customs validation rule for language string
+     *
+     * @param mixed $value
+     * @return mixed
+     */
     public function languageFilter($value)
     {
         // Maybe use the array of language ?
         return preg_replace('/[^a-z0-9-]/i', '', $value);
     }
+
     /**
-    * Defines the customs validation rule for multi language string
-    *
-    * @param mixed $value
-    */
+     * Defines the customs validation rule for multi language string
+     *
+     * @param mixed $value
+     * @return string
+     */
     public function multiLanguageFilter($value)
     {
         $aValue=explode(" ",trim($value));
