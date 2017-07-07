@@ -370,7 +370,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
     // ... and if the survey uses anonymized responses
-    $sSurveyAnonymized=Survey::model()->findByPk($iSurveyID)->anonymized;
+    $sSurveyAnonymized=$survey->anonymized;
 
     $iFieldNumber=0;
     $fields=array();

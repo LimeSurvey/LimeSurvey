@@ -91,9 +91,10 @@ use \ls\pluginmanager\PluginEvent;
  * @property integer $countPartialAnswers
  * @property integer $countTotalAnswers
  * @property array $surveyinfo
- * @property string creationDate Creation date formatted according to user format
- * @property string startDateFormatted Start date formatted according to user format
- * @property string expiryDateFormatted Expiry date formatted according to user format
+ * @property string $creationDate Creation date formatted according to user format
+ * @property string $startDateFormatted Start date formatted according to user format
+ * @property string $expiryDateFormatted Expiry date formatted according to user format
+ * @property string[] $allLanguages
  * @property string $tokensTableName Name of survey tokens table
  * @property string $hasTokensTable Whether survey has a tokens table or not
  */

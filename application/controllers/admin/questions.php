@@ -1828,9 +1828,9 @@ class questions extends Survey_Common_Action
 
         if ($match==1) {
             $language=$survey->language;
-        } else {
             $language=null;
         }
+
         $resultdata=getlabelsets($language);
         // Label set title really don't need HTML
         foreach($resultdata as &$aResult) {

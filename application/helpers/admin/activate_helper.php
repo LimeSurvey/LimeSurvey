@@ -112,7 +112,6 @@ function checkGroup($postsid)
 function checkQuestions($postsid, $iSurveyID, $qtypes)
 {
 
-
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
     //    # "L" -> LIST

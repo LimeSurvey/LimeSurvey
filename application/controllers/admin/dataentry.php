@@ -1457,10 +1457,8 @@ class dataentry extends Survey_Common_Action
         if ($subaction == "update"  && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
         {
 
-            $baselang = Survey::model()->findByPk($surveyid)->language;
             Yii::app()->loadHelper("database");
             $surveytable = "{{survey_".$surveyid.'}}';
-
             $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
             // restet token if user is not allowed to update
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) // If not allowed to read: remove it
@@ -1565,12 +1563,12 @@ class dataentry extends Survey_Common_Action
     /**
     * dataentry::insert()
     * insert new dataentry
-    * @return
     */
     public function insert()
     {
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
+
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
         $survey = Survey::model()->findByPk($surveyid);
 
@@ -1707,16 +1705,12 @@ class dataentry extends Survey_Common_Action
                 $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
                 $insert_data = array();
 
-                $_POST['startlanguage'] = $baselang;
+                $_POST['startlanguage'] = $survey->language;
                 if ($thissurvey['datestamp'] == "Y") { $_POST['startdate'] = $_POST['datestamp']; }
-                if (isset($_POST['closerecord']))
-                {
-                    if ($thissurvey['datestamp'] == "Y")
-                    {
+                if (isset($_POST['closerecord'])) {
+                    if ($thissurvey['datestamp'] == "Y") {
                         $_POST['submitdate'] = dateShift(date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
-                    }
-                    else
-                    {
+                    } else {
                         $_POST['submitdate'] = date("Y-m-d H:i",mktime(0,0,0,1,1,1980));
                     }
                 }

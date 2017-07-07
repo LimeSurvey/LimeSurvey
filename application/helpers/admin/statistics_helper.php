@@ -3773,6 +3773,7 @@ class statistics_helper {
      */
      public function generate_simple_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
      {
+
              $aStatisticsData=array();
              $survey = Survey::model()->findByPk($surveyid);
 
@@ -3784,14 +3785,12 @@ class statistics_helper {
              {
                  $sLanguageCode =  $survey->language;
              }
-             //Yii::app()->setLanguage($sLanguageCode);
 
-             //Get an array of codes of all available languages in this survey
-             $surveylanguagecodes = Survey::model()->findByPk($surveyid)->additionalLanguages;
-             $surveylanguagecodes[] = Survey::model()->findByPk($surveyid)->language;
+
+             $surveylanguagecodes = $survey->allLanguages;
 
              // Set language for questions and answers to base language of this survey
-             $language=$sLanguageCode;
+             $language=$survey->language;
 
              // This gets all the 'to be shown questions' from the POST and puts these into an array
              $summary = $q2show;
@@ -3910,15 +3909,12 @@ class statistics_helper {
 
         //no survey ID? -> come and get one
         if (!isset($surveyid)) {$surveyid=returnGlobal('sid');}
-
-        //Get an array of codes of all available languages in this survey
         $surveylanguagecodes = $survey->allLanguages;
 
         // Set language for questions and answers to base language of this survey
         $language=$sLanguageCode;
 
-        if($q2show=='all' )
-        {
+        if($q2show=='all' ) {
             $summarySql=" SELECT gid, parent_qid, qid, type "
             ." FROM {{questions}} WHERE parent_qid=0"
             ." AND sid=$surveyid ";
@@ -4119,7 +4115,6 @@ class statistics_helper {
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $outputTarget='I',$sLanguageCode=null, $browse = true)
     {
-
         $survey = Survey::model()->findByPk($surveyid);
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper

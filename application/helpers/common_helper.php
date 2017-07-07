@@ -1775,7 +1775,7 @@ function createFieldMap($surveyid, $style='short', $force_refresh=false, $questi
         return Yii::app()->session['fieldmap-' . $surveyid . $sLanguage];
     }
     /* Check if $sLanguage is a survey valid language (else $fieldmap is empty) */
-    if($sLanguage=='' || !in_array($sLanguage,Survey::model()->findByPk($surveyid)->getAllLanguages())){
+    if($sLanguage=='' || !in_array($sLanguage,$survey->allLanguages)){
         $sLanguage=$survey->language;
     }
     $fieldmap["id"]=array("fieldname"=>"id", 'sid'=>$surveyid, 'type'=>"id", "gid"=>"", "qid"=>"", "aid"=>"");
@@ -2848,6 +2848,7 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
     $gid=sanitize_int($gid);
 
+
     $cascaded=array();
     $sources=array();
     $qidtotitle=array();
@@ -3466,7 +3467,12 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 {
     $aGIDReplacements=array_flip($aGIDReplacements);
     $aQIDReplacements=array_flip($aQIDReplacements);
-    $newSurvey = Survey::model()->findByPk($iNewSID);
+
+    /** @var Survey $oNewSurvey */
+    $oNewSurvey = Survey::model()->findByPk($iNewSID);
+
+    /** @var Survey $oOldSurvey */
+    $oOldSurvey = Survey::model()->findByPk($iOldSID);
 
     if ($iOldSID==$iNewSID) {
         $forceRefresh=true; // otherwise grabs the cached copy and throws undefined index exceptions
@@ -3474,7 +3480,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
     else {
         $forceRefresh=false;
     }
-    $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,$newSurvey->language);
+    $aFieldMap = createFieldMap($iNewSID,'short',$forceRefresh,false,$oNewSurvey->language);
 
     $aFieldMappings=array();
     foreach ($aFieldMap as $sFieldname=>$aFieldinfo)
