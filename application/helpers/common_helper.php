@@ -362,34 +362,7 @@ function getGidNext($surveyid, $gid)
     return $GidNext;
 }
 
-/**
-* getQidNext() returns the Qid of the question prior to the current active question
-*
-* @param string $surveyid
-* @param string $gid
-* @param string $qid
-*
-* @return integer This Qid of the previous question
-*/
-function getQidNext($surveyid, $gid, $qid)
-{
 
-    $s_lang = Survey::model()->findByPk($surveyid)->language;
-
-    $qrows = Question::model()->findAllByAttributes(array('gid' => $gid, 'sid' => $surveyid, 'language' => $s_lang, 'parent_qid' => 0), array('order'=>'question_order'));
-    $i = 0;
-    $iNext = 0;
-
-    foreach ($qrows as $qrow)
-    {
-        if ($qid == $qrow->qid && $qid) {$iNext = $i + 1;}
-        $i += 1;
-    }
-
-    if ($iNext < count($qrows)) {$QidNext = $qrows[$iNext]->qid;}
-    else {$QidNext = "";}
-    return $QidNext;
-}
 
 function convertGETtoPOST($url)
 {
