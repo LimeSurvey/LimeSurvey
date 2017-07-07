@@ -746,31 +746,6 @@ function longestString( $new_string , $longest_length )
 
 
 
-/**
-* getNotificationList() returns different options for notifications
-*
-* @param string $notificationcode - the currently selected one
-*
-* @return string string is returned containing <option></option> formatted list of notification methods for current survey
-*/
-function getNotificationList($notificationcode)
-{
-
-    $ntypes = array(
-    "0"=>gT("No email notification"),
-    "1"=>gT("Basic email notification"),
-    "2"=>gT("Detailed email notification with result codes")
-    );
-    if (!isset($ntypeselector)) {$ntypeselector="";}
-    foreach($ntypes as $ntcode=>$ntdescription)
-    {
-        $ntypeselector .= "<option value='$ntcode'";
-        if ($notificationcode == $ntcode) {$ntypeselector .= " selected='selected'";}
-        $ntypeselector .= ">$ntdescription</option>\n";
-    }
-    return $ntypeselector;
-}
-
 
 /**
 * getGroupList() queries the database for a list of all groups matching the current survey sid
