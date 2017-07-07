@@ -3479,19 +3479,6 @@ function removeBOM($str=""){
 }
 
 
-/**
-* Return the goodchars to be used when filtering input for numbers.
-*
-* @param $lang     string    language used, for localisation
-* @param $integer    bool    use only integer
-* @param $negative    bool    allow negative values
-*/
-function getNumericalFormat($lang = 'en', $integer = false, $negative = true) {
-    $goodchars = "0123456789";
-    if ($integer === false) $goodchars .= ".";    //Todo, add localisation
-    if ($negative === true) $goodchars .= "-";    //Todo, check databases
-    return $goodchars;
-}
 
 /**
 * This function returns the complete directory path to a given template name
