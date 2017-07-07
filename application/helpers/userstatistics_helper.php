@@ -2804,8 +2804,7 @@ class userstatistics_helper {
     */
     public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
     {
-        /** @var Survey $oSurvey */
-        $oSurvey = Survey::model()->findByPk($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
 
         $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
@@ -2819,7 +2818,7 @@ class userstatistics_helper {
 
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode)) {
-            $sLanguageCode =  $oSurvey->language;
+            $sLanguageCode =  $survey->language;
         }
         Yii::app()->setLanguage($sLanguageCode);
 

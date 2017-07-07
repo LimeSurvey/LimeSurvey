@@ -1431,7 +1431,7 @@ class SurveyRuntimeHelper {
 
             global $token;
             if($token){
-                $restartparam['token'] = sanitize_token($token);
+                $restartparam['token'] = Token::sanitizeToken($token);
             }
 
             if (Yii::app()->request->getQuery('lang')){

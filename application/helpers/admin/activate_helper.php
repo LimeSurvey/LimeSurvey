@@ -111,9 +111,6 @@ function checkGroup($postsid)
 */
 function checkQuestions($postsid, $iSurveyID, $qtypes)
 {
-    /** @var Survey $oSurvey */
-    $oSurvey = Survey::model()->findByPk($surveyid);
-
 
     //CHECK TO MAKE SURE ALL QUESTION TYPES THAT REQUIRE ANSWERS HAVE ACTUALLY GOT ANSWERS
     //THESE QUESTION TYPES ARE:
@@ -128,6 +125,8 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     //  # ":" -> Array Multi Flexi Numbers
     //  # ";" -> Array Multi Flexi Text
     //  # "1" -> MULTI SCALE
+
+    $survey = Survey::model()->findByPk($iSurveyID);
 
     $chkquery = "SELECT qid, question, gid, type FROM {{questions}} WHERE sid={$iSurveyID} and parent_qid=0";
     $chkresult = Yii::app()->db->createCommand($chkquery)->query()->readAll();
@@ -235,9 +234,11 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
     }
 
     //CHECK THAT ALL THE CREATED FIELDS WILL BE UNIQUE
-    $fieldmap = createFieldMap($iSurveyID,'full',true,false,$oSurvey->language,$aDuplicateQIDs);
-    if (count($aDuplicateQIDs)) {
-        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate) {
+    $fieldmap = createFieldMap($iSurveyID,'full',true,false,$survey->language,$aDuplicateQIDs);
+    if (count($aDuplicateQIDs))
+    {
+        foreach ($aDuplicateQIDs as $iQID=>$aDuplicate)
+        {
             $sFixLink = "[<a href='".Yii::app()->getController()->createUrl("/admin/survey/sa/activate/surveyid/{$iSurveyID}/fixnumbering/{$iQID}")."'>Click here to fix</a>]";
             $failedcheck[]=array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }

@@ -318,7 +318,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $restartparam=array();
         if($_token)
-            $restartparam['token']=sanitize_token($_token);// urlencode with needed with sanitize_token
+            $restartparam['token']=Token::sanitizeToken($_token);// urlencode with needed with sanitize_token
         if (Yii::app()->request->getQuery('lang'))
             $restartparam['lang']=sanitize_languagecode(Yii::app()->request->getQuery('lang'));
         elseif($s_lang)

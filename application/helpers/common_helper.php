@@ -2857,15 +2857,15 @@ function flattenText($sTextToFlatten, $bKeepSpan=false, $bDecodeHTMLEntities=fal
 function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid")
 {
     $surveyid=sanitize_int($surveyid);
+    $survey = Survey::model()->findByPk($surveyid);
+
     $gid=sanitize_int($gid);
 
-    /** @var Survey $oSurvey */
-    $oSurvey = Survey::model()->findByPk($surveyid);
 
     $cascaded=array();
     $sources=array();
     $qidtotitle=array();
-    $fieldmap = createFieldMap($surveyid,'full',false,false,$oSurvey->language);
+    $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
 
     if($gid != "") {
         $qrows = arraySearchByKey($gid, $fieldmap, 'gid');

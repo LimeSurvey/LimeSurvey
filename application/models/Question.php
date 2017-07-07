@@ -18,22 +18,22 @@ if (!defined('BASEPATH'))
 /**
  * Class Question
  *
- * @property integer $qid
- * @property integer $parent_qid
+ * @property integer $qid Question ID. NB! Primary key is qid & language columns combined!
+ * @property integer $parent_qid Questions parent question ID eg for subquestions
  * @property integer $sid Survey ID
- * @property integer $gid QuestionGroup ID
+ * @property integer $gid QuestionGroup ID where question is diepolayed
  * @property string $type
- * @property string $title
- * @property string $question
+ * @property string $title Question Code
+ * @property string $question Question dieplay text. The actual question.
  * @property string $preg
- * @property string $help
- * @property string $other
- * @property string $mandatory
- * @property integer $question_order
- * @property string $language
+ * @property string $help Question help-text for display
+ * @property string $other Other option enabled for question (Y/N)
+ * @property string $mandatory Whther question is mandatory (Y/N)
+ * @property integer $question_order Question order in greoup
+ * @property string $language Question language code. NB! Primary key is qid & language columns combined!
  * @property integer $scale_qid
  * @property integer $same_default Saves if user set to use the same default value across languages in default options dialog
- * @property string $relevance
+ * @property string $relevance Questions relevane equation
  * @property string $modulename
  *
  * @property Survey $survey

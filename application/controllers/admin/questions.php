@@ -1824,13 +1824,10 @@ class questions extends Survey_Common_Action
     {
         $match=(int)returnglobal('match');
         $surveyid=returnglobal('sid');
-
-        /** @var Survey $oSurvey */
-        $oSurvey = Survey::model()->findByPk($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
 
         if ($match==1) {
-            $language=$oSurvey->language;
-        } else {
+            $language=$survey->language;
             $language=null;
         }
 

@@ -17,8 +17,7 @@ class limereplacementfields extends Survey_Common_Action
     public function index()
     {
         $surveyid = intval(App()->request->getQuery('surveyid'));
-        /** @var Survey $oSurvey */
-        $oSurvey = Survey::model()->findByPk($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
 
         $gid = intval(App()->request->getQuery('gid'));
         $qid = intval(App()->request->getQuery('qid'));
@@ -30,7 +29,7 @@ class limereplacementfields extends Survey_Common_Action
         list($replacementFields, $isInsertAnswerEnabled) = $this->_getReplacementFields($fieldtype, $surveyid);
         if ($isInsertAnswerEnabled === true) {
             //2: Get all other questions that occur before this question that are pre-determined answer types
-            $fieldmap = createFieldMap($surveyid,'full',false,false,$oSurvey->language);
+            $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
 
             $surveyInfo = getSurveyInfo($surveyid);
             $surveyformat = $surveyInfo['format']; // S, G, A

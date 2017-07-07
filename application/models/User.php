@@ -15,20 +15,20 @@
 /**
  * Class User
  *
- * @property integer $uid
- * @property string $users_name
- * @property string $password
- * @property string $full_name
+ * @property integer $uid User ID - primary key
+ * @property string $users_name Users username
+ * @property string $password User's password hash
+ * @property string $full_name User's full name
  * @property integer $parent_id
- * @property string $lang
- * @property string $email
- * @property string $htmleditormode
- * @property string $templateeditormode
- * @property string $questionselectormode
- * @property string $one_time_pw
- * @property integer $dateformat
- * @property string $created Time created
- * @property string $modified Time modified
+ * @property string $lang User's preferred language: (auto: automatic | languagecodes eg 'en')
+ * @property string $email User's e-mail address
+ * @property string $htmleditormode User's prefferred HTML editor mode:(default|inline|popup|none)
+ * @property string $templateeditormode User's prefferred template editor mode:(default|full|none)
+ * @property string $questionselectormode User's prefferred Question type selector:(default|full|none)
+ * @property string $one_time_pw User's one-time-password hash
+ * @property integer $dateformat Date format type 1-12
+ * @property string $created Time created Time user was created as 'YYYY-MM-DD hh:mm:ss'
+ * @property string $modified Time modified Time created Time user was modified as 'YYYY-MM-DD hh:mm:ss'
  *
  * @property Permission[] $permissions
  */

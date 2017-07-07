@@ -127,6 +127,7 @@ class export extends Survey_Common_Action {
     public function exportresults()
     {
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $survey = Survey::model()->findByPk($iSurveyID);
 
         /** @var Survey $oSurvey */
         $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -160,7 +161,7 @@ class export extends Survey_Common_Action {
         $sYValue = Yii::app()->request->getPost('convertyto');
         $sNValue = Yii::app()->request->getPost('convertnto');
 
-        $surveybaselang = Survey::model()->findByPk($iSurveyID)->language;
+        $surveybaselang = $survey->language;
         $exportoutput = "";
 
         // Get info about the survey
@@ -173,7 +174,6 @@ class export extends Survey_Common_Action {
         if ( ! $sExportType )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,$oSurvey->language);
             if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
                 $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,$oSurvey->language);
@@ -663,6 +663,7 @@ class export extends Survey_Common_Action {
     public function vvexport()
     {
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $survey = Survey::model()->findByPk($iSurveyId);
         $subaction = Yii::app()->request->getParam('subaction');
 
         /** @var Survey $oSurvey */
@@ -680,7 +681,7 @@ class export extends Survey_Common_Action {
             $aData['selectincansstate']=incompleteAnsFilterState();
             $aData['surveyid'] = $iSurveyId;
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oSurvey->language);
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$survey->language);
 
             $surveytable = "{{survey_$iSurveyId}}";
             // Control if fieldcode are unique
@@ -692,9 +693,9 @@ class export extends Survey_Common_Action {
             $aData['uniquefieldcode']=(count(array_unique ($fieldcode))==count($fieldcode)); // Did we need more control ?
             $aData['vvversionseleted']=($aData['uniquefieldcode'])?2:1;
 
-            $surveyinfo = $oSurvey->surveyinfo;
+            $surveyinfo = $survey->surveyinfo;
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-            $aData["surveyinfo"] = $oSurvey->surveyinfo;
+            $aData["surveyinfo"] = $survey->surveyinfo;
             $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
 
             $aData['sidemenu']['state'] = false;
@@ -714,7 +715,7 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$oSurvey->language);
+            $fieldmap = createFieldMap($iSurveyId,'full',false,false,$survey->language);
             $surveytable = "{{survey_$iSurveyId}}";
 
 

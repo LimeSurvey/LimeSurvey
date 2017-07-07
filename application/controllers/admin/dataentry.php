@@ -508,6 +508,7 @@ class dataentry extends Survey_Common_Action
         $survey = Survey::model()->findByPk($surveyid);
         $id = sanitize_int($id);
         $aViewUrls = array();
+        $survey = Survey::model()->findByPk($surveyid);
         $sDataEntryLanguage = $survey->language;
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
@@ -1440,7 +1441,6 @@ class dataentry extends Survey_Common_Action
     /**
     * dataentry::update()
     * update dataentry
-    * @return
     */
     public function update()
     {
@@ -1449,9 +1449,7 @@ class dataentry extends Survey_Common_Action
         if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
         $surveyid = sanitize_int($surveyid);
-
-        /** @var Survey $oSurvey */
-        $oSurvey = Survey::model()->findByPk($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
 
         $id = Yii::app()->request->getPost('id');
         $lang = Yii::app()->request->getPost('lang');
@@ -1461,8 +1459,7 @@ class dataentry extends Survey_Common_Action
 
             Yii::app()->loadHelper("database");
             $surveytable = "{{survey_".$surveyid.'}}';
-
-            $fieldmap = createFieldMap($surveyid,'full',false,false,$oSurvey->language);
+            $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
             // restet token if user is not allowed to update
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) // If not allowed to read: remove it
             {
@@ -1572,10 +1569,8 @@ class dataentry extends Survey_Common_Action
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
 
-        /** @var Survey $oSurvey */
-        $oSurvey = Survey::model()->findByPk($surveyid);
-
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
+        $survey = Survey::model()->findByPk($surveyid);
 
         $aData = array(
             'surveyid' => $surveyid,
@@ -1706,10 +1701,11 @@ class dataentry extends Survey_Common_Action
                 }
 
                 //BUILD THE SQL TO INSERT RESPONSES
-                $fieldmap = createFieldMap($surveyid,'full',false,false,$oSurvey->language);
+                $baselang = $survey->language;
+                $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
                 $insert_data = array();
 
-                $_POST['startlanguage'] = $oSurvey->language;
+                $_POST['startlanguage'] = $survey->language;
                 if ($thissurvey['datestamp'] == "Y") { $_POST['startdate'] = $_POST['datestamp']; }
                 if (isset($_POST['closerecord'])) {
                     if ($thissurvey['datestamp'] == "Y") {

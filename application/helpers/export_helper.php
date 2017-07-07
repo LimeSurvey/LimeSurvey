@@ -330,9 +330,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 */
 function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
 {
-    /** @var Survey $oSurvey */
-    $oSurvey = Survey::model()->findByPk($iSurveyID);
-
+    $survey = Survey::model()->findByPk($iSurveyID);
     $typeMap = array(
         '5'=>Array('name'=>'5 Point Choice','size'=>1,'SPSStype'=>'F','Scale'=>3),
         'B'=>Array('name'=>'Array (10 Point Choice)','size'=>1,'SPSStype'=>'F','Scale'=>3),
@@ -368,14 +366,14 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
     );
 
     if (empty($sLanguage)){
-        $sLanguage=$oSurvey->language;
+        $sLanguage=$survey->language;
     }
     $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
 
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
     // ... and if the survey uses anonymized responses
-    $sSurveyAnonymized=$oSurvey->anonymized;
+    $sSurveyAnonymized=$survey->anonymized;
 
     $iFieldNumber=0;
     $fields=array();
