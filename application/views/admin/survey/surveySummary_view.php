@@ -6,7 +6,7 @@
  $count= 0;
 
 //TODO : move to controller
-$templates = getTemplateListWithPreviews();
+$templates = Template::getTemplateListWithPreviews();
 //print_r($templates);
 $count = 0;
 $surveyid = $surveyinfo['sid'];

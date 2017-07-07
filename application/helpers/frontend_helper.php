@@ -1874,7 +1874,6 @@ function checkCompletedQuota($surveyid,$return=false)
     if(!$aMatchedQuotas)
     {
         $aMatchedQuotas=array();
-        // $aQuotasInfos = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
         /** @var Quota[] $aQuotas */
         $aQuotas = Quota::model()->findAllByAttributes(array('sid' => $surveyid));
         // if(!$aQuotasInfo || empty($aQuotaInfos)) {

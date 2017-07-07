@@ -459,7 +459,7 @@ class tokens extends Survey_Common_Action
             'usesleft' => flattenText(Yii::app()->request->getPost('usesleft')),
             'validfrom' => $from,
             'validuntil' => $until);
-            $attrfieldnames = GetParticipantAttributes($iSurveyId);
+            $attrfieldnames = getParticipantAttributes($iSurveyId);
             foreach ($attrfieldnames as $attr_name => $desc)
             {
                 $value = flattenText(Yii::app()->request->getPost($attr_name));
@@ -947,7 +947,7 @@ class tokens extends Survey_Common_Action
             $aData['surveyid'] = $iSurveyId;
             $aData['tokenlength'] = $iTokenLength;
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat'],App()->language);
-            $aData['aAttributeFields']=GetParticipantAttributes($iSurveyId);
+            $aData['aAttributeFields']=getParticipantAttributes($iSurveyId);
             $this->_renderWrappedTemplate('token', array( 'dummytokenform'), $aData);
         }
     }
@@ -2094,7 +2094,7 @@ class tokens extends Survey_Common_Action
                         if(Yii::app()->request->getPost('showwarningtoken')){
                             $aMissingAttrFieldName = array_diff($aAttrFieldNames, $aFirstLine);
                             // get list of mandatory attributes
-                            $allAttrFieldNames = GetParticipantAttributes($iSurveyId);
+                            $allAttrFieldNames = getParticipantAttributes($iSurveyId);
                             //if it isn't mandantory field we don't need to show in warning
                             if(!empty($aAttrFieldNames)){
                                 if(!empty($aMissingAttrFieldName)){
