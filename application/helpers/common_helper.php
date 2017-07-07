@@ -12,27 +12,13 @@
 */
 Yii::import('application.helpers.sanitize_helper', true);
 
-/**
-* Simple function to sort the permissions by title
-*
-* @param mixed $aPermissionA  Permission A to compare
-* @param mixed $aPermissionB  Permission B to compare
-*/
-function comparePermission($aPermissionA,$aPermissionB)
-{
-    if($aPermissionA['title'] >$aPermissionB['title']) {
-        return 1;
-    }
-    else {
-        return -1;
-    }
-}
 
 /**
  * Translation helper function
  * @param string $sToTranslate
  * @param string $sEscapeMode Valid values are html (this is the default, js and unescaped
  * @param string $sLanguage
+ * @return mixed|string
  */
 function gT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
 {
@@ -55,6 +41,7 @@ function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
  * @param string $sTextToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
+ * @return mixed|string
  */
 function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 {
@@ -74,12 +61,13 @@ function neT($sToTranslate, $iCount, $sEscapeMode = 'html')
 
 
 /**
-* Quotes a translation according to purpose
-* if sEscapeMode is null, we use HTML method because probably we had to specify null as sEscapeMode upstream
-*
-* @param mixed $sText Text to quote
-* @param string $sEscapeMode Optional - One of the values 'html','js' or 'unescaped' - defaults to 'html'
-*/
+ * Quotes a translation according to purpose
+ * if sEscapeMode is null, we use HTML method because probably we had to specify null as sEscapeMode upstream
+ *
+ * @param mixed $sText Text to quote
+ * @param string $sEscapeMode Optional - One of the values 'html','js' or 'unescaped' - defaults to 'html'
+ * @return mixed|string
+ */
 function quoteText($sText, $sEscapeMode = 'html')
 {
     if ($sEscapeMode === null)
@@ -307,10 +295,6 @@ function getTemplateList()
     return Template::getTemplateList();
 }
 
-function getTemplateListWithPreviews()
-{
-    return Template::getTemplateListWithPreviews();
-}
 
 /**
 * getQuestions() queries the database for an list of all questions matching the current survey and group id
