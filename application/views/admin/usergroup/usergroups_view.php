@@ -89,13 +89,13 @@
         </div>
     </div>
     
-    <h4><?php
+    <div class="h4"><?php
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             eT('Groups to which I belong');
         }
         ?>
-    </h4>
+    </div>
 
     <div class="row">
         <div class="col-lg-12 content-right">
