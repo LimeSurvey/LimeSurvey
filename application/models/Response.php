@@ -36,18 +36,13 @@
          */
         public function getFiles()
         {
-            //TODO wn we not use $this->survey here?
-            /** @var Survey $oSurvey */
-            $oSurvey = Survey::model()->findByPk($this->dynamicId);
-
-            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|','language'=>$oSurvey->language));
+            $survey = Survey::model()->findByPk($this->dynamicId);
+            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|','language'=>$survey->language));
             $files = array();
-            foreach ($questions as $question)
-            {
+            foreach ($questions as $question) {
                 $field = "{$question->sid}X{$question->gid}X{$question->qid}";
                 $data = json_decode(stripslashes($this->getAttribute($field)), true);
-                if (is_array($data))
-                {
+                if (is_array($data)) {
                     $files = array_merge($files, $data);
                 }
             }

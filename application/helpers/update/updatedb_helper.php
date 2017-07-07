@@ -2089,7 +2089,6 @@ function upgradeSurveyTables181($sMySQLCollation)
 function upgradeTokenTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
-    $oSchema = Yii::app()->db->schema;
     if(Yii::app()->db->driverName!='pgsql')
     {
         $aTables = dbGetTablesLike("tokens%");
@@ -2445,7 +2444,6 @@ function upgradeTokens145()
 
 function upgradeSurveys145()
 {
-    global $modifyoutputt;
     $sSurveyQuery = "SELECT * FROM {{surveys}} where notification<>'0'";
     $oSurveyResult = dbExecuteAssoc($sSurveyQuery);
     foreach ( $oSurveyResult->readAll() as $aSurveyRow )
@@ -2479,12 +2477,7 @@ function upgradeSurveys145()
         $aDefaultTexts=templateDefaultTexts($sLanguage,'unescaped');
         unset($sLanguage);
         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification'].$aDefaultTexts['admin_detailed_notification_css'];
-        $sSurveyUpdateQuery = "update {{surveys_languagesettings}} set
-        email_admin_responses_subj=".$aDefaultTexts['admin_detailed_notification_subject'].",
-        email_admin_responses=".$aDefaultTexts['admin_detailed_notification'].",
-        email_admin_notification_subj=".$aDefaultTexts['admin_notification_subject'].",
-        email_admin_notification=".$aDefaultTexts['admin_notification']."
-        where surveyls_survey_id=".$aSurveyRow['surveyls_survey_id'];
+
         Yii::app()->getDb()->createCommand()->update('{{surveys_languagesettings}}',array('email_admin_responses_subj'=>$aDefaultTexts['admin_detailed_notification_subject'],
             'email_admin_responses'=>$aDefaultTexts['admin_detailed_notification'],
             'email_admin_notification_subj'=>$aDefaultTexts['admin_notification_subject'],
@@ -2506,7 +2499,7 @@ function upgradeSurveyPermissions145()
         foreach ( $oPermissionResult as $aPermissionRow )
         {
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission'=>'assessments',
+            Yii::app()->getDb()->createCommand()->insert($sTableName, array('permission'=>'assessments',
                 'create_p'=>$aPermissionRow['define_questions'],
                 'read_p'=>$aPermissionRow['define_questions'],
                 'update_p'=>$aPermissionRow['define_questions'],
@@ -2514,7 +2507,7 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'quotas',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'quotas',
                 'create_p'=>$aPermissionRow['define_questions'],
                 'read_p'=>$aPermissionRow['define_questions'],
                 'update_p'=>$aPermissionRow['define_questions'],
@@ -2522,7 +2515,7 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'responses',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'responses',
                 'create_p'=>$aPermissionRow['browse_response'],
                 'read_p'=>$aPermissionRow['browse_response'],
                 'update_p'=>$aPermissionRow['browse_response'],
@@ -2532,23 +2525,23 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'statistics',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'statistics',
                 'read_p'=>$aPermissionRow['browse_response'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'survey',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'survey',
                 'read_p'=>1,
                 'delete_p'=>$aPermissionRow['delete_survey'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveyactivation',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveyactivation',
                 'update_p'=>$aPermissionRow['activate_survey'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveycontent',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveycontent',
                 'create_p'=>$aPermissionRow['define_questions'],
                 'read_p'=>$aPermissionRow['define_questions'],
                 'update_p'=>$aPermissionRow['define_questions'],
@@ -2558,19 +2551,19 @@ function upgradeSurveyPermissions145()
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveylocale',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveylocale',
                 'read_p'=>$aPermissionRow['edit_survey_property'],
                 'update_p'=>$aPermissionRow['edit_survey_property'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveysettings',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'surveysettings',
                 'read_p'=>$aPermissionRow['edit_survey_property'],
                 'update_p'=>$aPermissionRow['edit_survey_property'],
                 'sid'=>$aPermissionRow['sid'],
                 'uid'=>$aPermissionRow['uid']));
 
-            $sPermissionInsertQuery=Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'tokens',
+            Yii::app()->getDb()->createCommand()->insert($sTableName,array('permission'=>'tokens',
                 'create_p'=>$aPermissionRow['activate_survey'],
                 'read_p'=>$aPermissionRow['activate_survey'],
                 'update_p'=>$aPermissionRow['activate_survey'],
@@ -2760,7 +2753,6 @@ function upgradeSurveyTables139()
 // Add the reminders tracking fields
 function upgradeTokenTables134()
 {
-    global $modifyoutput;
     $aTables = dbGetTablesLike("tokens%");
     foreach ( $aTables as $sTable )
     {
@@ -2772,7 +2764,6 @@ function upgradeTokenTables134()
 // Add the reminders tracking fields
 function upgradeTokens128()
 {
-    global $modifyoutput;
     $aTables = dbGetTablesLike("tokens%");
     foreach ( $aTables as $sTable )
     {
@@ -2821,7 +2812,6 @@ function upgradeSurveyTables126()
 
 function upgradeTokenTables126()
 {
-    global $modifyoutput;
     $aTables = dbGetTablesLike("tokens%");
     foreach ( $aTables as $sTable )
     {

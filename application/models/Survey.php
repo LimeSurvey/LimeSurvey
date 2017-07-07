@@ -90,10 +90,12 @@ use \ls\pluginmanager\PluginEvent;
  * @property integer $countFullAnswers
  * @property integer $countPartialAnswers
  * @property integer $countTotalAnswers
+ * @property integer $groupsCount Number of groups in a survey (in base language)
  * @property array $surveyinfo
- * @property string creationDate Creation date formatted according to user format
- * @property string startDateFormatted Start date formatted according to user format
- * @property string expiryDateFormatted Expiry date formatted according to user format
+ * @property string $creationDate Creation date formatted according to user format
+ * @property string $startDateFormatted Start date formatted according to user format
+ * @property string $expiryDateFormatted Expiry date formatted according to user format
+ * @property string[] $allLanguages
  * @property string $tokensTableName Name of survey tokens table
  * @property string $hasTokensTable Whether survey has a tokens table or not
  */
@@ -883,7 +885,7 @@ class Survey extends LSActiveRecord
 
         // If the survey is not active, no date test is needed
         if($this->active == 'N') {
-            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span></a>';
+            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span><span class="sr-only">'.gT('Inactive').'"</span></a>';
         }
         // If it's active, then we check if not expired
         elseif ($this->expires != '' || $this->startdate != '') {
@@ -918,7 +920,7 @@ class Survey extends LSActiveRecord
         }
         // If it's active, and doesn't have expire date, it's running
         else {
-            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Active').'"><span class="fa fa-play text-success"></span></a>';
+            $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Active').'"><span class="fa fa-play text-success"></span><span class="sr-only">'.gT('Active').'"</span></a>';
             //$running = '<div class="survey-state"><span class="fa fa-play text-success"></span></div>';
         }
 
@@ -1043,11 +1045,11 @@ class Survey extends LSActiveRecord
         $button = '';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'update')) {
-            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('General settings & texts').'"><span class="fa fa-cog" ></span></a>';
+            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('General settings & texts').'"><span class="fa fa-cog" ></span><span class="sr-only">'.gT('General settings & texts').'</span></a>';
         }
 
         if(Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active=='Y' ) {
-            $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="fa fa-stats text-success" ></span></a>';
+            $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="fa fa-stats text-success" ></span><span class="sr-only">'.gT('Statistics').'</span></a>';
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
@@ -1342,6 +1344,16 @@ class Survey extends LSActiveRecord
         $criteria->addCondition('`groups`.`gid` =`t`.`gid`','AND');
         return $criteria;
 
+    }
+    /**
+     * Gets number of groups inside a particular survey
+     */
+    public function getGroupsCount()
+    {
+        //$condn = "WHERE sid=".$surveyid." AND language='".$lang."'"; //Getting a count of questions for this survey
+        $condn = array('sid'=>$this->sid,'language'=>$this->language);
+        $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
+        return $sumresult3 ;
     }
 
 }

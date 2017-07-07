@@ -18,12 +18,12 @@
  *
  * @property integer $gid ID
  * @property integer $sid Survey ID
- * @property string $group_name
- * @property integer $group_order
- * @property string $description
- * @property string $language
- * @property string $randomization_group
- * @property string $grelevance
+ * @property string $group_name Question group display name
+ * @property integer $group_order Group order number (max 100 chars)
+ * @property string $description Group display description
+ * @property string $language Language code (eg: 'en')
+ * @property string $randomization_group  Randomization group
+ * @property string $grelevance Group's relevane equation
  *
  * @property Survey $survey
  * @property Question[] $questions Questions without subquestions

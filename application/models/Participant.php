@@ -536,8 +536,9 @@ class Participant extends LSActiveRecord
             ->queryAll();
         $ownerList = array(''=>"");
         foreach($owner_ids as $id){
-            $user = User::model()->getName($id['owner_uid']);
-            $ownerList[$id['owner_uid']] = $user['full_name'];
+            /** @var User $oUser */
+            $oUser = User::model()->findByPk($id['owner_uid']);
+            $ownerList[$id['owner_uid']] = $oUser->full_name;
         }
         return TbHtml::dropDownList('Participant[owner_uid]',$selected, $ownerList);
         

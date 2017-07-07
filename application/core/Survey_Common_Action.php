@@ -811,7 +811,7 @@ class Survey_Common_Action extends CAction
             $aData['surveysecurity'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'read');
             // CHANGE QUESTION GROUP ORDER BUTTON
             $aData['surveycontentread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
-            $aData['groupsum'] = (getGroupSum($iSurveyID, $surveyinfo['language']) > 1);
+            $aData['groupsum'] = ($oSurvey->groupsCount > 1);
             // SET SURVEY QUOTAS BUTTON
             $aData['quotas'] = Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'read');
             // Assessment menu item

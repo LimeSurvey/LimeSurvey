@@ -28,6 +28,7 @@ class printablesurvey extends Survey_Common_Action
     function index($surveyid, $lang = null)
     {
         $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
         if(!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $aData['surveyid'] = $surveyid;
@@ -160,7 +161,7 @@ class printablesurvey extends Survey_Common_Action
             $mapquestionsNumbers=Array();
             $answertext = '';   // otherwise can throw an error on line 1617
 
-            $fieldmap = createFieldMap($surveyid,'full',false,false,$sLanguageCode);
+            $fieldmap = createFieldMap($survey,'full',false,false,$sLanguageCode);
 
             // =========================================================
             // START doin the business:

@@ -20,7 +20,7 @@ function loadanswers()
 {
     Yii::trace('start', 'survey.loadanswers');
     global $surveyid;
-    global $thissurvey, $thisstep;
+    global $thisstep;
     global $clienttoken;
 
 
@@ -177,9 +177,7 @@ function getLanguageChangerDatas($sSelectedLanguage="")
         $aAllLanguages = getLanguageData(true);
         $aSurveyLangs  = array_intersect_key($aAllLanguages,array_flip($aSurveyLangs)); // Sort languages by their locale name
         $sClass        = "ls-language-changer-item";
-        $btnClass      = 'ls-change-lang';
         $sAction       = Yii::app()->request->getParam('action','');// Different behaviour if preview
-        $sSelected     = "";
 
         $routeParams   = array(
             "sid"=>$surveyid,
@@ -266,10 +264,12 @@ function checkUploadedFileValidity($surveyid, $move, $backok=null)
 {
     global $thisstep;
 
+    $survey = Survey::model()->findByPk($surveyid);
+
 
     if (!isset($backok) || $backok != "Y")
     {
-        $fieldmap = createFieldMap($surveyid,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+        $fieldmap = createFieldMap($survey,'full',false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
         if (isset($_POST['fieldnames']) && $_POST['fieldnames']!="")
         {
@@ -400,7 +400,6 @@ function submittokens($quotaexit=false)
     }
     $clienttoken = $_SESSION['survey_'.$surveyid]['token'];
 
-    $sitename = Yii::app()->getConfig("sitename");
     $emailcharset = Yii::app()->getConfig("emailcharset");
     // Shift the date due to global timeadjust setting
     $today = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
@@ -473,8 +472,6 @@ function submittokens($quotaexit=false)
                     $aReplacementVars[strtoupper($attr_name)] = $token->$attr_name;
                 }
 
-                $dateformatdatat=getDateFormatData($thissurvey['surveyls_dateformat']);
-                $numberformatdatat = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $redata=array('thissurvey'=>$thissurvey);
 
                 // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
@@ -559,7 +556,7 @@ function submittokens($quotaexit=false)
 function sendSubmitNotifications($surveyid)
 {
     // @todo: Remove globals
-    global $thissurvey, $maildebug, $tokensexist;
+    global $thissurvey, $maildebug;
 
     if (trim($thissurvey['adminemail'])=='')
     {
@@ -825,14 +822,14 @@ function buildsurveysession($surveyid,$preview=false)
     /// Yii::trace('start', 'survey.buildsurveysession');
     global $clienttoken;
     global $tokensexist;
-    global $move, $rooturl;
+
+    $survey = Survey::model()->findByPk($surveyid);
 
     $preview                          = ($preview)?$preview:Yii::app()->getConfig('previewmode');
     $sLangCode                        = App()->language;
     $thissurvey                       = getSurveyInfo($surveyid,$sLangCode);
     $oTemplate                        = Template::model()->getInstance('', $surveyid);
     App()->getController()->sTemplate = $oTemplate->sTemplateName;                                   // It's going to be hard to be sure this is used ....
-    $sTemplatePath                    = $oTemplate->path;
     $sTemplateViewPath                = $oTemplate->viewPath;
 
 
@@ -884,7 +881,7 @@ function buildsurveysession($surveyid,$preview=false)
         $_SESSION['survey_'.$surveyid]['insertarray'][]= "token";
     }
 
-    $fieldmap = $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($surveyid,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+    $fieldmap = $_SESSION['survey_'.$surveyid]['fieldmap'] = createFieldMap($survey,'full',true,false,$_SESSION['survey_'.$surveyid]['s_lang']);
 
     // first call to initFieldArray
     initFieldArray($surveyid, $fieldmap);
@@ -1514,9 +1511,8 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
 function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
 {
     // Template settings
-    $surveyid          = $thissurvey['sid'];
-    $oTemplate         = Template::model()->getInstance('', $surveyid);
-
+    //$surveyid          = $thissurvey['sid'];
+    //$oTemplate         = Template::model()->getInstance('', $surveyid);
     //$oTemplate->registerAssets();
 
     $aError = array();
@@ -1543,8 +1539,6 @@ function getNavigatorDatas()
     $iSessionStep       = ( isset( $_SESSION['survey_'.$surveyid]['step']))       ? $_SESSION['survey_'.$surveyid]['step']       : false;
     $iSessionMaxStep    = ( isset( $_SESSION['survey_'.$surveyid]['maxstep']))    ? $_SESSION['survey_'.$surveyid]['maxstep']    : false;
     $iSessionTotalSteps = ( isset( $_SESSION['survey_'.$surveyid]['totalsteps'])) ? $_SESSION['survey_'.$surveyid]['totalsteps'] : false;
-    $sClass             = "ls-move-btn";
-    $sSurveyMover       = "";
 
     // Count down
     $aNavigator['disabled']   = '';
@@ -1632,8 +1626,8 @@ function getNavigatorDatas()
 function doAssessment($surveyid)
 {
 
-
-    $baselang=Survey::model()->findByPk($surveyid)->language;
+    $survey = Survey::model()->findByPk($surveyid);
+    $baselang=$survey->language;
     if(Survey::model()->findByPk($surveyid)->assessments!="Y"){
         return array('show'=>false);
     }
@@ -1668,7 +1662,7 @@ function doAssessment($surveyid)
                     );
                 }
             }
-            $fieldmap = createFieldMap($surveyid, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+            $fieldmap = createFieldMap($survey, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
             $i        = 0;
             $total    = 0;
             $groups   = array();
@@ -1689,8 +1683,6 @@ function doAssessment($surveyid)
                             if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y"){
 
                                 $aAttributes     = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
-                                $assessmentValue = (int)$aAttributes['assessment_value'];
-                            //    $total           = $total+(int)$aAttributes['assessment_value'];
                                 $assessmentValue = (int)$aAttributes['assessment_value'];
                             }
                         }else{
@@ -1773,7 +1765,6 @@ function doAssessment($surveyid)
                 $subtotal[$group] = $grouptotal;
             }
         }
-        $assessments                = "";
         $assessment['subtotal']['show'] = false;
 
         if (isset($subtotal) && is_array($subtotal)){
@@ -1887,7 +1878,7 @@ function checkCompletedQuota($surveyid,$return=false)
     if(!$aMatchedQuotas)
     {
         $aMatchedQuotas=array();
-        // $aQuotasInfos = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        /** @var Quota[] $aQuotas */
         $aQuotas = Quota::model()->findAllByAttributes(array('sid' => $surveyid));
         // if(!$aQuotasInfo || empty($aQuotaInfos)) {
         if(!$aQuotas || empty($aQuotas)) {
@@ -1895,7 +1886,6 @@ function checkCompletedQuota($surveyid,$return=false)
         }
 
         // OK, we have some quota, then find if this $_SESSION have some set
-        $aPostedFields = explode("|",Yii::app()->request->getPost('fieldnames','')); // Needed for quota allowing update
         // foreach ($aQuotasInfos as $aQuotaInfo)
         foreach ($aQuotas as $oQuota)
         {
@@ -1953,7 +1943,7 @@ function checkCompletedQuota($surveyid,$return=false)
                 if($oQuota->qlimit == 0) { // Always add the quota if qlimit==0
                     $aMatchedQuotas[]=$oQuota->viewArray;
                 } else {
-                    $iCompleted=getQuotaCompletedCount($surveyid, $oQuota->id);
+                    $iCompleted=$oQuota->completeCount;
                     if(!is_null($iCompleted) && ((int)$iCompleted >= (int)$oQuota->qlimit )) // This remove invalid quota and not completed
                         $aMatchedQuotas[]=$oQuota->viewArray;
                 }
@@ -1970,11 +1960,6 @@ function checkCompletedQuota($surveyid,$return=false)
     // Now we have all the information we need about the quotas and their status.
     // We need to construct the page and do all needed action
     $aSurveyInfo=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
-
-    $oTemplate = Template::model()->getInstance('', $surveyid);
-    $sTemplatePath = $oTemplate->path;
-    $sTemplateViewPath = $oTemplate->viewPath;
-
 
     $sClientToken=isset($_SESSION['survey_'.$surveyid]['token'])?$_SESSION['survey_'.$surveyid]['token']:"";
     // $redata for templatereplace
@@ -2103,15 +2088,9 @@ function GetReferringUrl()
 * Shows the welcome page, used in group by group and question by question mode
 */
 function display_first_page($thissurvey) {
-    global $token, $surveyid, $navigator;
+    global $token, $surveyid;
 
-    $totalquestions             = $_SESSION['survey_'.$surveyid]['totalquestions'];
     $thissurvey['aNavigator']   = getNavigatorDatas();
-    $sitename                   = Yii::app()->getConfig('sitename');
-
-    // Template init
-    $oTemplate         = Template::model()->getInstance('', $surveyid);
-    $sTemplatePath     = $oTemplate->path;
 
     LimeExpressionManager::StartProcessingPage();
     LimeExpressionManager::StartProcessingGroup(-1, false, $surveyid);  // start on welcome page

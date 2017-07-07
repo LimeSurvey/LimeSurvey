@@ -50,9 +50,7 @@ class ExcelWriter extends Writer
 
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
-        if (!$this->hasOutputHeader)
-        {
-            $columnCounter = 0;
+        if (!$this->hasOutputHeader) {
             $this->workbook->writeSheetRow($this->currentSheet, $headers );
             $this->hasOutputHeader = true;
         }

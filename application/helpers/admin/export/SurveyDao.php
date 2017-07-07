@@ -21,14 +21,16 @@ class SurveyDao
         $intId = sanitize_int($id);
         $survey->id = $intId;
         $survey->info = getSurveyInfo($survey->id);
-        $availableLanguages = Survey::model()->findByPk($intId)->getAllLanguages();
+        $oSurvey = Survey::model()->findByPk($intId);
+
+        $availableLanguages = $oSurvey->allLanguages;
 
         if (is_null($lang) || in_array($lang, $availableLanguages) === false) {
             // use base language when requested language is not found or no specific language is requested
-            $lang = Survey::model()->findByPk($intId)->language;
+            $lang = $oSurvey->language;
         }
         App()->setLanguage($lang);
-        $survey->fieldMap = createFieldMap($intId,'full',true,false,$lang);
+        $survey->fieldMap = createFieldMap($oSurvey,'full',true,false,$lang);
         // Check to see if timings are present and add to fieldmap if needed
         if ($survey->info['savetimings']=="Y") {
             $survey->fieldMap = $survey->fieldMap + createTimingsFieldMap($intId,'full',true,false,$lang);
