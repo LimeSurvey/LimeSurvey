@@ -1875,6 +1875,7 @@ function checkCompletedQuota($surveyid,$return=false)
     {
         $aMatchedQuotas=array();
         // $aQuotasInfos = getQuotaInformation($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
+        /** @var Quota[] $aQuotas */
         $aQuotas = Quota::model()->findAllByAttributes(array('sid' => $surveyid));
         // if(!$aQuotasInfo || empty($aQuotaInfos)) {
         if(!$aQuotas || empty($aQuotas)) {
@@ -1939,7 +1940,7 @@ function checkCompletedQuota($surveyid,$return=false)
                 if($oQuota->qlimit == 0) { // Always add the quota if qlimit==0
                     $aMatchedQuotas[]=$oQuota->viewArray;
                 } else {
-                    $iCompleted=getQuotaCompletedCount($surveyid, $oQuota->id);
+                    $iCompleted=$oQuota->completeCount;
                     if(!is_null($iCompleted) && ((int)$iCompleted >= (int)$oQuota->qlimit )) // This remove invalid quota and not completed
                         $aMatchedQuotas[]=$oQuota->viewArray;
                 }

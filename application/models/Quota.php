@@ -30,6 +30,8 @@
  * @property QuotaLanguageSetting $currentLanguageSetting
  * @property Survey $survey
  * @property QuotaMember[] $quotaMembers
+ *
+ * @property integer $completeCount Count of completed interviews for this quota
  */
 class Quota extends LSActiveRecord
 {

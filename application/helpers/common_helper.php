@@ -2934,78 +2934,6 @@ function getArrayFilterExcludesCascadesForGroup($surveyid, $gid="", $output="qid
 
 
 
-/**
-* getArrayFiltersForQuestion($qid) finds out if a question has an array_filter attribute and what codes where selected on target question
-* @return array an array of codes that were selected else returns false
-* @deprecated not used
-*/
-function getArrayFiltersForQuestion($qid)
-{
-    static $cache = array();
-
-    // TODO: Check list_filter values to make sure questions are previous?
-    $qid=sanitize_int($qid);
-    if (isset($cache[$qid])) return $cache[$qid];
-
-    $attributes = QuestionAttribute::model()->getQuestionAttributes($qid);
-    if (isset($attributes['array_filter']) && Yii::app()->session['fieldarray']) {
-        $val = $attributes['array_filter']; // Get the Value of the Attribute ( should be a previous question's title in same group )
-        foreach (Yii::app()->session['fieldarray'] as $fields)
-        {
-            if ($fields[2] == $val)
-            {
-                /** Broken code below ...
-                // we found the target question, now we need to know what the answers where, we know its a multi!
-                $fields[0]=sanitize_int($fields[0]);
-                //$query = "SELECT title FROM ".db_table_name('questions')." where parent_qid='{$fields[0]}' AND language='".Yii::app()->session[$surveyid]['s_lang']."' order by question_order";
-                $qresult=Question::model()->findAllByAttributes(array("parent_qid"=> $fields[0], "language"=> Yii::app()->session[$surveyid]['s_lang']), array('order' => "question_order"));
-                $selected = array();
-                //while ($code = $qresult->fetchRow())
-                foreach ($qresult->readAll() as $code)
-                {
-                    if (Yii::app()->session[$fields[1].$code['title']] == "Y"
-                    || Yii::app()->session[$fields[1]] == $code['title'])             array_push($selected,$code['title']);
-                }
-
-                 */
-
-                //Now we also need to find out if (a) the question had "other" enabled, and (b) if that was selected
-                //$query = "SELECT other FROM ".db_table_name('questions')." where qid='{$fields[0]}'";
-                $qresult=Question::model()->findAllByAttributes(array("qid"=>$fields[0]));
-                foreach ($qresult->readAll() as $row) {$other=$row['other'];}
-                if($other == "Y")
-                {
-                    if(Yii::app()->session[$fields[1].'other'] && Yii::app()->session[$fields[1].'other'] !="") {array_push($selected, "other");}
-                }
-                $cache[$qid] = $selected;
-                return $cache[$qid];
-            }
-        }
-        $cache[$qid] = false;
-        return $cache[$qid];
-    }
-    $cache[$qid] = false;
-    return $cache[$qid];
-}
-
-/**
-* getGroupsByQuestion($surveyid)
-* @return array a keyed array of groups to questions ie: array([1]=>[2]) question qid 1, is in group gid 2.
-* @deprecated  not used
-*/
-function getGroupsByQuestion($surveyid) {
-    $output=array();
-
-    $surveyid=sanitize_int($surveyid);
-    $result=Question::model()->findAllByAttributes(array("sid"=>$surveyid));
-
-    foreach ($result->readAll() as $val)
-    {
-        $output[$val['qid']]=$val['gid'];
-    }
-    return $output;
-}
-
 
 /**
 * getArrayFilterExcludesForQuestion($qid) finds out if a question has an array_filter_exclude attribute and what codes where selected on target question
@@ -4096,21 +4024,6 @@ function enforceSSLMode()
     };
 };
 
-/**
-* @deprecated
-* Returns the number of answers matching the quota
-* THIS METHOD IS DEPRECATED AND IS LEFT ONLY FOR COMPATIBILITY REASONS
-* USE THE METHOD ON THE QUOTA CLASS INSTEAD
-*
-* @param int $iSurveyId - Survey identification number //deprecated
-* @param int $quotaid - quota id for which you want to compute the completed field
-* @return mixed - value of matching entries in the result DB or null
-*/
-function getQuotaCompletedCount($iSurveyId, $quotaid)
-{
-  $oQuota = Quota::model()->findByPk($quotaid);
-  return $oQuota->completeCount;
-}
 
 /**
 * Creates an array with details on a particular response for display purposes
@@ -5575,84 +5488,6 @@ function getFooter()
 function doFooter()
 {
     echo getFooter();
-}
-
-/**
- * @param $surveyid
- * @return array|bool
- * @deprecated
- */
-function getDBTableUsage($surveyid){
-    Yii::app()->loadHelper('admin/activate');
-    $arrCols = activateSurvey($surveyid,true);
-
-    $length = 1;
-    foreach ($arrCols['fields'] as $col){
-        switch ($col[0]){
-            case 'C':
-                $length = $length + ($col[1]*3) + 1;
-                break;
-            case 'X':
-            case 'B':
-                $length = $length + 12;
-                break;
-            case 'D':
-                $length = $length + 3;
-                break;
-            case 'T':
-            case 'TS':
-            case 'N':
-                $length = $length + 8;
-                break;
-            case 'L':
-                $length++;
-                break;
-            case 'I':
-            case 'I4':
-            case 'F':
-                $length = $length + 4;
-                break;
-            case 'I1':
-                $length = $length + 1;
-                break;
-            case 'I2':
-                $length = $length + 2;
-                break;
-            case 'I8':
-                $length = $length + 8;
-                break;
-        }
-    }
-    if ($arrCols['dbtype'] == 'mysql' || $arrCols['dbtype'] == 'mysqli'){
-        if ($arrCols['dbengine']=='myISAM'){
-            $hard_limit = 4096;
-        }
-        elseif ($arrCols['dbengine'] == "InnoDB"){
-            $hard_limit = 1000;
-        }
-        else{
-            return false;
-        }
-
-        $size_limit = 65535;
-    }
-    elseif ($arrCols['dbtype'] == 'postgre'){
-        $hard_limit = 1600;
-        $size_limit = 0;
-    }
-    elseif ($arrCols['dbtype'] == 'mssql' || $arrCols['dbtype'] == 'dblib'){
-        $hard_limit = 1024;
-        $size_limit = 0;
-    }
-    else{
-        return false;
-    }
-
-    $columns_used = count($arrCols['fields']);
-
-
-
-    return (array( 'dbtype'=>$arrCols['dbtype'], 'column'=>array($columns_used,$hard_limit) , 'size' => array($length, $size_limit) ));
 }
 
 /**
