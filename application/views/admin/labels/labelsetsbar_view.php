@@ -98,7 +98,7 @@
             <!-- edition action buttons -->
             <?php if (isset($labelbar['buttons']['edition'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $labelbar['savebutton']['form']; ?>">
-                    <span class="fa fa-ok"></span>
+                    <span class="fa fa-floppy-o"></span>
 
                     <?php echo $labelbar['savebutton']['text'];?>
                 </a>

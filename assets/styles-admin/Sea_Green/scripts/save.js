@@ -51,7 +51,7 @@ var getForm = function (that) {
     }
     else
     {
-      $form = $('.side-body').find('form');
+      $form = $('#in_survey_common').find('form');
     }
     return $form;
 };
@@ -63,6 +63,9 @@ if ($('#save-button').length > 0){
         var $form = getForm(this);
         closeAfterSaveInput.val("false");
         $form.append(closeAfterSaveInput);
+        console.log(this);
+        console.log(ev);
+        console.log($form);
         formSubmitting = true;
         $form.find('[type="submit"]').first().trigger('click');
     });

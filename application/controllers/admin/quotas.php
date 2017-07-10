@@ -148,6 +148,7 @@ class quotas extends Survey_Common_Action
         /** @var Survey $oSurvey */
         $oSurvey =Survey::model()->findByPk($iSurveyID);
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['subaction'] = gT("Survey quotas");
 
         //$aData['surveybar']['active_survey_properties'] = 'quotas';
         $aData['surveybar']['buttons']['view']= TRUE;

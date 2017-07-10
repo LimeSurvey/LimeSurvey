@@ -22,7 +22,7 @@ $surveyid = $oSurvey->sid;
 
 
 ?>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
+    <?php //$this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
     <div id="survey-action-title" class="h3 pagetitle">
     <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">
@@ -110,7 +110,7 @@ $surveyid = $oSurvey->sid;
                                                 <div class="panel-body-ico">
                                                     <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-							<span class="sr-only"><?php eT('Add new group');?></span>
+							                            <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
@@ -130,7 +130,7 @@ $surveyid = $oSurvey->sid;
                                                 <div class="panel-body-ico">
                                                     <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-							<span class="sr-only"><?php eT('Add new question');?></span>
+							                            <span class="sr-only"><?php eT('Add new question');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
@@ -157,7 +157,7 @@ $surveyid = $oSurvey->sid;
                                                 <div class="panel-body-ico">
                                                     <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>" >
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-							<span class="sr-only"><?php eT('Add new group');?></span>
+							                            <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">

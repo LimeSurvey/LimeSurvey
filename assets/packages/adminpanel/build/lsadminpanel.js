@@ -28745,7 +28745,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 255, 200, 0.4);\n  box-shadow: 1px2px 4px rgba(200, 255, 200, 0.4) inset;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.overflow-y-enabled {\n  overflow-y: auto;\n}\n", ""]);
+exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 255, 200, 0.4);\n  box-shadow: 1px2px 4px rgba(200, 255, 200, 0.4) inset;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n", ""]);
 
 // exports
 
@@ -28809,7 +28809,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: {
         'translate': { type: Object },
         'getQuestionsUrl': { type: String },
-        'getMenuUrl': { type: String }
+        'getMenuUrl': { type: String },
+        'createQuestionGroupLink': { type: String },
+        'createQuestionLink': ''
     },
     data: () => {
         return {
@@ -28838,11 +28840,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         checkIsActive(link) {
             let locationUrl = document.createElement('a');locationUrl.href = location.href;
             let checkUrl = document.createElement('a');checkUrl.href = link;
-            console.log({
-                locationUrl: locationUrl.pathname,
-                checkUrl: checkUrl.pathname
-            });
-            if (locationUrl.pathname == '/index.php') {
+            if (locationUrl.pathname == '/index.php' || locationUrl.pathname == '/') {
                 return locationUrl.search == checkUrl.search;
             } else {
                 return locationUrl.pathname == checkUrl.pathname;
@@ -29213,7 +29211,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "list-group-item ls-flex-column",
       class: _vm.isActive(index) ? 'selected' : ''
     }, [_c('div', {
-      staticClass: "col-12 ls-flex-row nowrap margin-bottom"
+      staticClass: "col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5"
     }, [_c('i', {
       staticClass: "fa fa-bars bigIcons",
       attrs: {
@@ -29261,7 +29259,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "overflow-y-enabled",
+    staticClass: "col-12",
     style: ({
       'height': _vm.maxSideBarHeight
     }),
@@ -29356,7 +29354,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "activeTab('questiontree')"
     }],
     staticClass: "row fill-height ls-ba"
-  }, [_c('questionexplorer', {
+  }, [_c('div', {
+    staticClass: "ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15"
+  }, [((_vm.createQuestionGroupLink != undefined && _vm.createQuestionGroupLink.length > 1)) ? _c('a', {
+    staticClass: "btn btn-small btn-primary",
+    attrs: {
+      "href": _vm.createQuestionGroupLink
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-plus"
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestionGroup))]) : _vm._e(), _vm._v(" "), ((_vm.createQuestionLink != undefined && _vm.createQuestionLink.length > 1)) ? _c('a', {
+    staticClass: "btn btn-small btn-default",
+    attrs: {
+      "href": _vm.createQuestionLink
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-plus-circle"
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('questionexplorer', {
     attrs: {
       "questiongroups": _vm.questiongroups
     },

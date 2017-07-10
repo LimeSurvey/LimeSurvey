@@ -12,7 +12,9 @@ export default {
     props: {
         'translate': {type: Object},
         'getQuestionsUrl' : {type: String},
-        'getMenuUrl' : {type: String}
+        'getMenuUrl' : {type: String},
+        'createQuestionGroupLink' : {type: String},
+        'createQuestionLink' : ''
     },
     data: () => {
         return {
@@ -41,11 +43,7 @@ export default {
         checkIsActive(link){
             let locationUrl = document.createElement('a'); locationUrl.href = location.href;
             let checkUrl = document.createElement('a'); checkUrl.href=link;
-            console.log({
-                locationUrl : locationUrl.pathname,                    
-                checkUrl : checkUrl.pathname          
-            });
-            if(locationUrl.pathname == '/index.php'){
+            if(locationUrl.pathname == '/index.php' || locationUrl.pathname == '/'){
                 return (locationUrl.search == checkUrl.search);
             } else {
                 return ( locationUrl.pathname == checkUrl.pathname ); 
@@ -80,7 +78,7 @@ export default {
 }
 </script>
 <template>
-    <div id="sidebar" v-bind:style="{'height': maxSideBarHeight}" class="overflow-y-enabled">
+    <div id="sidebar" class="col-12" v-bind:style="{'height': maxSideBarHeight}" >
         <div class="mainMenu container-fluid col-sm-12 fill-height">
             <div class="btn-group btn-group-justified ls-space margin bottom-15 top-5 ">
                 <div class="btn-group" role="group">
@@ -106,6 +104,10 @@ export default {
             </ul>
             
             <div class="row fill-height ls-ba" v-show="activeTab('questiontree')">
+                <div class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15">
+                    <a v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" :href="createQuestionGroupLink" class="btn btn-small btn-primary"><i class="fa fa-plus"></i>&nbsp;{{translate.createQuestionGroup}}</a>
+                    <a v-if="( createQuestionLink!=undefined && createQuestionLink.length>1 )" :href="createQuestionLink" class="btn btn-small btn-default"><i class="fa fa-plus-circle"></i>&nbsp;{{translate.createQuestion}}</a>
+                </div>
                 <questionexplorer v-on:editentity="editEntity" v-on:openentity="openEntity" :questiongroups="questiongroups"></questionexplorer>
             </div>
         </div>
@@ -122,7 +124,4 @@ export default {
     box-shadow: none;
 }
 
-.overflow-y-enabled{
-    overflow-y: auto;
-}
 </style>

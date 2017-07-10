@@ -627,7 +627,7 @@
 
                 <!-- Save -->
                 <a class="btn btn-success" href="#" role="button" id="save-button" >
-                    <span class="fa fa-ok"></span>
+                    <span class="fa fa-floppy-o"></span>
                     <?php if(isset($surveybar['savebutton']['text']))
                     {
                         echo $surveybar['savebutton']['text'];
@@ -636,7 +636,9 @@
                         eT("Save");
                     }?>
                 </a>
-
+            
+            <?php endif;?>
+                <?php /*
                 <!-- Save and close -->
                 <?php if(isset($surveybar['saveandclosebutton'])):?>
                     <a class="btn btn-default" href="#" role="button" id='save-and-close-button'>
@@ -644,8 +646,9 @@
                         <?php eT("Save and close");?>
                     </a>
                 <?php endif; ?>
-            <?php endif;?>
+            */ ?>
 
+            <?php /*
             <!-- Close -->
             <?php if(isset($surveybar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $surveybar['closebutton']['url']; ?>" role="button">
@@ -653,6 +656,7 @@
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
+            */ ?>
         </div>
     </div>
 </div>

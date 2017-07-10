@@ -59,7 +59,7 @@ export default {
     <div id="questionexplorer" class="ls-flex-column ls-ba " :style="{height: calculatedHeight+'px'}">
         <ul class="list-group">
             <li v-for="(questiongroup,index) in questiongroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="isActive(index) ? 'selected' : ''" >
-                <div class="col-12 ls-flex-row nowrap margin-bottom">
+                <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
                     <i class="fa fa-bars bigIcons" draggable="true">&nbsp;</i>
                     <a :href="questiongroup.link" @click="openQuestionGroup(questiongroup,index)" class="col-12"> 
                         {{questiongroup.group_name}} 

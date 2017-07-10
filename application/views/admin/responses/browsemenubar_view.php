@@ -149,13 +149,15 @@
         <div class="col-md-7 text-right col-md-offset-5">
             <?php if(isset($menu['save'])): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="fa fa-ok"></span>
+                    <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </a>
+                <?php /*
                 <a class="btn btn-default" href="#" role="button" id="save-and-close-button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
+                */ ?>
             <?php endif;?>
 
             <?php if(isset($menu['export'])): ?>
