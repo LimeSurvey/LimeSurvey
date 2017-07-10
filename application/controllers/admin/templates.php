@@ -848,6 +848,10 @@ class templates extends Survey_Common_Action
         $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
 
 
+        if ($editfile==''){
+            $editfile == $files[0];
+        }
+
         // Standard Support Files
         // These files may be edited or saved
         $supportfiles[] = array('name' => 'print_img_radio.png');
@@ -1163,6 +1167,7 @@ class templates extends Survey_Common_Action
         $aData['screenname'] = $screenname;
         $aData['tempdir'] = Yii::app()->getConfig('tempdir');
         $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
+        $aData['relativePathEditfile'] = $editfile;
         $aViewUrls['templateeditorbar_view'][] = $aData;
 
         if ($showsummary)
