@@ -53,7 +53,7 @@ class surveypermission extends Survey_Common_Action {
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'surveypermissions.js');
 
         $surveysecurity = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
-        $surveysecurity .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Survey permissions")), true, false);
+       // $surveysecurity .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Survey permissions")), true, false);
         $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
         $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
         $result2 = Permission::model()->getUserDetails($iSurveyID);
@@ -241,7 +241,7 @@ class surveypermission extends Survey_Common_Action {
         $aData['sidemenu']['state'] = false;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
-
+        $aData['subaction'] = gT("Survey permissions");
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
         $surveysecurity .= '</div></div></div>';

@@ -149,7 +149,7 @@ class quotas extends Survey_Common_Action
         $oSurvey =Survey::model()->findByPk($iSurveyID);
         $surveyinfo = $oSurvey->surveyinfo;
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
-
+        $aData['subaction'] = gT("Survey quotas");
         //$aData['surveybar']['active_survey_properties'] = 'quotas';
         $aData['surveybar']['buttons']['view']= TRUE;
         $aData['surveybar']['active_survey_properties']['img'] = 'quota';

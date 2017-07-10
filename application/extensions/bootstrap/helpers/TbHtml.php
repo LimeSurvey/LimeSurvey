@@ -405,7 +405,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const ICON_MAP_MARKER = 'fa-map-marker';
     const ICON_MINUS = 'fa-minus';
     const ICON_MINUS_SIGN = 'fa-minus-sign';
-    const ICON_MOVE = 'fa-move';
+    const ICON_MOVE = 'fa-bars bigIcons';
     const ICON_MUSIC = 'fa-music';
     const ICON_NEW_WINDOW = 'fa-new-window';
     const ICON_OFF = 'fa-off';

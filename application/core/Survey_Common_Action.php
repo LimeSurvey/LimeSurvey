@@ -267,7 +267,7 @@ class Survey_Common_Action extends CAction
             // Needed to evaluate EM expressions in question summary
             // See bug #11845
             LimeExpressionManager::StartProcessingPage(false,true);
-
+            $aData['debug'] = $aData;
             $this->_titlebar($aData);
             //// TODO : Move this div inside each correct view ASAP !
             echo '<div class="ls-flex-row align-items-flex-center align-content-center">';

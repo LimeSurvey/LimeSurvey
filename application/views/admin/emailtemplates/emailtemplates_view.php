@@ -27,7 +27,7 @@
 </script>
 
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=> gT("Edit email templates"))); ?>
+    <?php //$this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=> gT("Edit email templates"))); ?>
     <h3><?php eT("Edit email templates"); ?></h3>
 
     <div class="row">

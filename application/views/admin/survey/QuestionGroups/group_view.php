@@ -1,5 +1,5 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup)); ?>
+    <?php //$this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup)); ?>
     <div class="pagetitle h3"><?php eT('Group summary'); ?></div>
     <div class="row">
         <div class="col-lg-12 content-right">

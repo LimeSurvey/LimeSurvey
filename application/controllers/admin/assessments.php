@@ -113,12 +113,13 @@ class Assessments extends Survey_Common_Action
         $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
         $aData['baselang'] = $surveyinfo['language'];
         $aData['action'] = $action;
+        $aData['subaction'] = gT("Assessments");
         $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
         Yii::app()->loadHelper('admin/htmleditor');
 
         $urls['output'] = '<div class="side-body ' . getSideBodyClass(false) . '">';
-        $urls['output'] .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Assessments")), true, false);
+        //$urls['output'] .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Assessments")), true, false);
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
         $aData['asessementNotActivated'] = false;
         if ($surveyinfo['assessments']!='Y')

@@ -447,7 +447,7 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 $curGroup = $group->attributes;
                 $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid]);
-                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$baselang), array('order'=>'question_order ASC'));
+                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$baselang, 'parent_qid'=>0), array('order'=>'question_order ASC'));
                 $curGroup['questions'] = array();
                 foreach($group->aQuestions as $question)
                 {
@@ -929,7 +929,7 @@ class SurveyAdmin extends Survey_Common_Action
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 
         //@TODO add language checks here
-        $menuEntry = SurveymenuEntries::model()->find(['condition' => 'name="'.$menuaction.'"']);
+        $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name'=>$menuaction));
 
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         
@@ -962,6 +962,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['action'] = $menuEntry->action;
         $aData['entryData'] = $menuEntry->attributes;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['subaction'] = $menuEntry->title;  
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;  
         $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = 'globalsetting';

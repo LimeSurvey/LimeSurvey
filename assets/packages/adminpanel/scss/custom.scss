@@ -5,14 +5,67 @@
 .menubar.surveybar{
     width:100%;
     margin: 8px auto;
+    z-index:100;
 }
 
 #side-menu-container{
     width: 20%;
 }
 
+.nooverflow{
+    overflow: hidden;
+}
+
 .btn-primary.force.color.white.onhover{
     &:hover, &:active,&:focus{
         color:white;
+    }
+}
+
+#in_survey_common{
+    padding-bottom: 65px;
+}
+
+ol.breadcrumb.title-bar-breadcrumb{
+    background: transparent;
+    color: white;
+
+    a {
+        color: white;
+        text-decoration: none;
+        line-height: 32px;
+        font-size: 24px;
+
+        &.animate::after {
+            content: '';
+            text-align:right;
+            margin-left:28px;
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width .3s;
+        }
+
+        &.animate:hover::after {
+            width: 90%;
+            //transition: width .3s;
+        }
+        &.animate.home-icon:hover::after {
+            margin-left:0;
+            width: 100% !important;
+        }
+    }
+
+    li{
+        background: transparent;
+        color: white;
+        line-height: 32px;
+        font-size: 24px;
+        &.active{
+            color: #dfdfdf;
+            font-style: italic
+        }
+        
     }
 }
