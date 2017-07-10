@@ -104,14 +104,12 @@ class Assessments extends Survey_Common_Action
         if ($action == "assessmentedit" && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
             $aData = $this->_collectEditData($aData);
         }
-        $surveyinfo = getSurveyInfo($iSurveyID);
-        $aData['surveyinfo'] = $surveyinfo;
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['surveyid'] = $iSurveyID;
         $aData['headings'] = $aHeadings;
         $aData['assessments'] = $oAssessments;
         $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
-        $aData['baselang'] = $surveyinfo['language'];
+        $aData['baselang'] = $oSurvey->language;
         $aData['action'] = $action;
         $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
@@ -121,7 +119,7 @@ class Assessments extends Survey_Common_Action
         $urls['output'] .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Assessments")), true, false);
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
         $aData['asessementNotActivated'] = false;
-        if ($surveyinfo['assessments']!='Y')
+        if ($oSurvey->assessments!='Y')
         {
             $aData['asessementNotActivated'] = array(
                 'title' => gT("Assessments mode not activated"), 

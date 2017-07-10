@@ -1240,7 +1240,6 @@ class Survey_Common_Action extends CAction
 
         $aData['tableusage'] = false;
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
-        $aData['surveyinfo'] = $aSurveyInfo;
         $aData['groups_count'] = $sumcount2;
 
         // We get the state of the quickaction

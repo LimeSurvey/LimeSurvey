@@ -315,7 +315,6 @@ $surveyid = $surveyinfo['sid'];
                             <!-- Template carroussel -->
                             <?php $this->renderPartial( "/admin/survey/subview/_template_carousel", array(
                                 'templates'=>$templates,
-                                'surveyinfo'=>$surveyinfo,
                                 'iSurveyId'=>$surveyid,
                             )); ?>
                         <?php endif; ?>
