@@ -936,11 +936,10 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'browse.css');
 
         $iSurveyId = $aData['iSurveyId'];
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);
     }
 
