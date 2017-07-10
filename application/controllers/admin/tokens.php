@@ -48,9 +48,7 @@ class tokens extends Survey_Common_Action
         Yii::app()->loadHelper("surveytranslator");
 
         $aData['surveyprivate'] = $thissurvey['anonymized'];
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['buttons']['view']=TRUE;
 
@@ -303,6 +301,7 @@ class tokens extends Survey_Common_Action
     public function browse($iSurveyId, $limit = 50, $start = 0, $order = false, $searchstring = false)
     {
         $iSurveyId = sanitize_int($iSurveyId);
+        $survey=Survey::model()->findByPk($iSurveyId);
 
         /* Check permissions */
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'read')) {
@@ -313,7 +312,6 @@ class tokens extends Survey_Common_Action
         // TODO: Why needed?
         App()->clientScript->registerPackage('bootstrap-switch');
 
-        $survey=Survey::model()->findByPk($iSurveyId);
         if (!$survey->hasTokensTable) {
             self::_newtokentable($iSurveyId);
         }
@@ -376,9 +374,7 @@ class tokens extends Survey_Common_Action
         }
 
         $aData['aLanguages']                    = $aLanguages;
-        $surveyinfo                             = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"]                    = $surveyinfo;
-        $aData['title_bar']['title']            = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title']            = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]        = true;
         $aData['sidemenu']['state'] = false;
         $aData['token_bar']['buttons']['view']  = true;
@@ -547,9 +543,7 @@ class tokens extends Survey_Common_Action
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['buttons']['view']=TRUE;
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js');
@@ -795,6 +789,7 @@ class tokens extends Survey_Common_Action
      * @param int $iSurveyId
      * @param string $subaction
      * @return void
+     * @throws Exception
      */
     public function addDummies($iSurveyId, $subaction = '')
     {
@@ -813,11 +808,9 @@ class tokens extends Survey_Common_Action
         $this->getController()->loadHelper("surveytranslator");
 
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData = array();
         $aData['sidemenu']['state'] = false;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['savebutton']['form'] = TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;  // Close button
@@ -960,6 +953,8 @@ class tokens extends Survey_Common_Action
     public function managetokenattributes($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
+        $survey=Survey::model()->findByPk($iSurveyId);
+
         if (!Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') && !Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'update'))
         {
             Yii::app()->session['flashmessage'] = gT("You do not have permission to access this page.");
@@ -973,11 +968,9 @@ class tokens extends Survey_Common_Action
         }
         Yii::app()->loadHelper("surveytranslator");
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData = array();
         $aData['sidemenu']['state'] = false;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;  // Close button
 
@@ -1192,10 +1185,8 @@ class tokens extends Survey_Common_Action
             self::_newtokentable($iSurveyId);
         }
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;  // Close button
 
@@ -1580,11 +1571,9 @@ class tokens extends Survey_Common_Action
     public function exportdialog($iSurveyId)
     {
         $survey=Survey::model()->findByPk($iSurveyId);
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData = array();
 
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=true;
         $aData['sidemenu']['state'] = false;
         $aData['token_bar']['exportbutton']['form']=true;
@@ -1701,10 +1690,8 @@ class tokens extends Survey_Common_Action
         }
 
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;  // Close button
 
@@ -1973,10 +1960,8 @@ class tokens extends Survey_Common_Action
         }
 
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokensimport.js');
@@ -2319,10 +2304,8 @@ class tokens extends Survey_Common_Action
         $aData['thissurvey'] = getSurveyInfo($iSurveyId);
         $aData['surveyid'] = $iSurveyId;
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
 
 
@@ -2477,8 +2460,7 @@ class tokens extends Survey_Common_Action
         $aData['token_bar']['savebutton']['form'] = true;
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
 
         $this->_renderWrappedTemplate('token', array( 'bounce'), $aData);
     }
@@ -2487,7 +2469,7 @@ class tokens extends Survey_Common_Action
      * Handle token form for addnew/edit actions
      * @param int $iSurveyId
      * @param string $subaction
-     * @param int $iTokenId
+     * @param int|string $iTokenId
      * @param boolean $ajax
      * @return void
      */
@@ -2543,18 +2525,15 @@ class tokens extends Survey_Common_Action
         $aData['subaction'] = $subaction;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
-        $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $surveyinfo = $oSurvey->surveyinfo;
         $aData['sidemenu']['state'] = false;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $aData['token_bar']['savebutton']['form'] = TRUE;
         $aData['token_bar']['closebutton']['url'] = 'admin/tokens/sa/index/surveyid/'.$iSurveyId;
 
         if ($ajax)
         {
-            $aData['oSurvey'] = $oSurvey;
+            $aData['oSurvey'] = $survey;
             $aData['ajax'] = true;
             $this->getController()->renderPartial('/admin/token/tokenform', $aData, false, false);
         }
@@ -2669,10 +2648,8 @@ class tokens extends Survey_Common_Action
             $aData['databasetype'] = Yii::app()->db->getDriverName();
             /////////////////////////////
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
         $aData['sidemenu']['state'] = false;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['sidemenu']["token_menu"]=TRUE;
         $this->_renderWrappedTemplate('token', 'tokenwarning', $aData);
         }
