@@ -24,6 +24,7 @@ class translate extends Survey_Common_Action {
     public function index()
     {
         $iSurveyID = sanitize_int($_REQUEST['surveyid']);
+        $survey=Survey::model()->findByPk($iSurveyID);
         $tolang = Yii::app()->getRequest()->getParam('lang');
         $action = Yii::app()->getRequest()->getParam('action');
         $actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
@@ -35,8 +36,8 @@ class translate extends Survey_Common_Action {
         }
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'translation.js');
 
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+        $baselang = $survey->language;
+        $langs = $survey->additionalLanguages;
 
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("admin/htmleditor");
@@ -82,8 +83,7 @@ class translate extends Survey_Common_Action {
         }
 
             $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
