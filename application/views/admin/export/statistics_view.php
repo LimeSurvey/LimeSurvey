@@ -1,8 +1,9 @@
 <?php
-    /**
-    * Statistic main view
-    *
-    */
+/**
+ * Statistic main view
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
 ?>
 
 <!-- Javascript variables  -->

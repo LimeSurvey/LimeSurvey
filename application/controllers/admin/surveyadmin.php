@@ -1602,6 +1602,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     private function _getTextEditData($iSurveyID, $esrow){
         Yii::app()->loadHelper("admin/htmleditor");
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aData = $aTabTitles = $aTabContents = array();
         
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
@@ -1631,6 +1632,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aLanguageData['action'] = "surveygeneralsettings";
                 $aLanguageData['i'] = $i;
                 $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+                $aLanguageData['oSurvey'] = $oSurvey;
                 $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aLanguageData, true);
             }
         } else {

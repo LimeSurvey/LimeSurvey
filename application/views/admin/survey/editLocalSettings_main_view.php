@@ -5,6 +5,8 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
+
+$templateData['oSurvey'] = $oSurvey;
 ?>
 
 <script type="text/javascript">

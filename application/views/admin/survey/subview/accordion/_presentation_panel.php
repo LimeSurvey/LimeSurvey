@@ -1,6 +1,8 @@
 <?php
 /**
  * Presentation panel
+ * @var AdminController $this
+ * @var Survey $oSurvey
  */
 ?>
 <script type="text/javascript">
@@ -20,7 +22,7 @@
         <div class="form-group">
             <label class="col-sm-5 control-label" for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
             <div class="col-sm-7">
-                <input type='text' class="form-control" value="<?php echo $esrow['navigationdelay']; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
+                <input type='text' class="form-control" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
             </div>
         </div>
         <!-- Show question index -->
@@ -30,7 +32,7 @@
 
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'questionindex',
-                    'value'=> $esrow['questionindex'] ,
+                    'value'=> $oSurvey->questionindex ,
                     'selectOptions'=>array(
                         0 => gT('Disabled','unescaped'),
                         1 => gT('Incremental','unescaped'),
@@ -72,7 +74,7 @@
                     <div class="col-sm-7">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'showxquestions',
-                            'value'=> $esrow['showxquestions'] == "Y",
+                            'value'=> $oSurvey->questionindex == "Y",
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
                             ));
@@ -134,9 +136,9 @@
             <?php default: ?>
                 <?php
                     $sel_showgri = array( 'B' => '' , 'D' => '' , 'N' => '' , 'X' => '' );
-                    if (isset($esrow['showgroupinfo']))
+                    if (isset($oSurvey->showgroupinfo))
                     {
-                        $set_showgri = $esrow['showgroupinfo'];
+                        $set_showgri = $oSurvey->showgroupinfo;
                         $sel_showgri[$set_showgri] = ' selected="selected"';
                     }
                     if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X']))
@@ -213,8 +215,8 @@
             <?php default: ?>
                 <?php
                     $sel_showqnc = array( 'B' => '' , 'C' => '' , 'N' => '' , 'X' => '' );
-                    if (isset($esrow['showqnumcode'])) {
-                        $set_showqnc = $esrow['showqnumcode'];
+                    if (isset($oSurvey->showqnumcode)) {
+                        $set_showqnc = $oSurvey->showqnumcode;
                         $sel_showqnc[$set_showqnc] = ' selected="selected"';
                     }
                     if (empty($sel_showqnc['B']) && empty($sel_showqnc['C']) && empty($sel_showqnc['N']) && empty($sel_showqnc['X'])) {
@@ -258,7 +260,7 @@
                     <div class="col-sm-7">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'shownoanswer',
-                            'value'=> $esrow['shownoanswer'] == "Y",
+                            'value'=> $oSurvey->shownoanswer == "Y",
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
                             ));
@@ -289,7 +291,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'showwelcome',
-                    'value'=> $esrow['showwelcome'] == "Y",
+                    'value'=> $oSurvey->showwelcome == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -303,7 +305,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'allowprev',
-                    'value'=> $esrow['allowprev'] == "Y",
+                    'value'=> $oSurvey->allowprev == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -318,7 +320,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'nokeyboard',
-                    'value'=> $esrow['nokeyboard'] == "Y",
+                    'value'=> $oSurvey->nokeyboard == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -332,7 +334,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'showprogress',
-                    'value'=> $esrow['showprogress'] == "Y",
+                    'value'=> $oSurvey->showprogress == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -345,7 +347,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'printanswers',
-                    'value'=> $esrow['printanswers'] == "Y",
+                    'value'=> $oSurvey->printanswers == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -359,7 +361,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'publicstatistics',
-                    'value'=> $esrow['publicstatistics'] == "Y",
+                    'value'=> $oSurvey->publicstatistics == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -373,7 +375,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'publicgraphs',
-                    'value'=> $esrow['publicgraphs'] == "Y",
+                    'value'=> $oSurvey->publicgraphs == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -387,7 +389,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'autoredirect',
-                    'value'=> $esrow['autoredirect'] == "Y",
+                    'value'=> $oSurvey->autoredirect == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
