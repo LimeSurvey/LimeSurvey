@@ -31,8 +31,7 @@ class Index extends Survey_Common_Action
         {
             $aData['showLastSurvey'] = true;
             $iSurveyID = $lastsurvey;
-            $surveyinfo = $survey->surveyinfo;
-            $aData['surveyTitle'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title."(".gT("ID").":".$iSurveyID.")";
             $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
         }
         else
