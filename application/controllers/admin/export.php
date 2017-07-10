@@ -129,8 +129,6 @@ class export extends Survey_Common_Action {
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $survey = Survey::model()->findByPk($iSurveyID);
 
-        /** @var Survey $oSurvey */
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
         if ( ! isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
@@ -252,7 +250,6 @@ class export extends Survey_Common_Action {
                 $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
             }
             $data['aLanguages'] = $aLanguages;    // Pass available exports
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 
             $data['sidemenu']['state'] = false;
             $data['menu']['edition'] = true;
@@ -260,8 +257,7 @@ class export extends Survey_Common_Action {
             $data['menu']['close'] =  true;
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-            $data["surveyinfo"] = $surveyinfo;
-            $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+            $data['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
 
@@ -354,6 +350,7 @@ class export extends Survey_Common_Action {
     {
         global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         //for scale 1=nominal, 2=ordinal, 3=scale
 
         //        $typeMap = $this->_getTypeMap();
@@ -420,11 +417,8 @@ class export extends Survey_Common_Action {
             $data['surveyid'] = $iSurveyID;
             $data['display']['menu_bars']['browse'] = gT('Export results');
 
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            $surveyinfo = $oSurvey->surveyinfo;
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-            $data["surveyinfo"] = $surveyinfo;
-            $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+            $data['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
             $data['sBaseLanguage'] = $oSurvey->language;
 
             $aLanguages=array();
@@ -693,10 +687,8 @@ class export extends Survey_Common_Action {
             $aData['uniquefieldcode']=(count(array_unique ($fieldcode))==count($fieldcode)); // Did we need more control ?
             $aData['vvversionseleted']=($aData['uniquefieldcode'])?2:1;
 
-            $surveyinfo = $survey->surveyinfo;
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-            $aData["surveyinfo"] = $survey->surveyinfo;
-            $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+            $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
 
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
@@ -1248,6 +1240,7 @@ class export extends Survey_Common_Action {
     public function quexml($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
+        $survey = Survey::model()->findByPk($iSurveyID);
 
         $queXMLSettings = $this->_quexmlsettings();
         $aData = array();
@@ -1256,8 +1249,7 @@ class export extends Survey_Common_Action {
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
         array_unshift($aData['slangs'],$aData['baselang']);
 

@@ -182,6 +182,8 @@ class SurveyAdmin extends Survey_Common_Action
     public function editsurveysettings($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         if (is_null($iSurveyID) || !$iSurveyID)
             $this->getController()->error('Invalid survey ID');
 
@@ -223,8 +225,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['data']                                  = $tempData;
 
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['sidemenu']['state'] = false;
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
@@ -527,13 +528,14 @@ class SurveyAdmin extends Survey_Common_Action
     public function listquestiongroups($surveyid)
     {
         $iSurveyID = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false,true);
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData      = array();
 
         $aData['surveyid']                                   = $iSurveyID;
@@ -541,10 +543,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['sidemenu']['questiongroups']                 = true;
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['surveybar']['buttons']['newgroup']           = true;
-        $aData["surveyinfo"]                                 = $surveyinfo;
-        $aData['title_bar']['title']                         = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title']                         = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        $baselang = $survey->language;
         $model    = new QuestionGroup('search');
 
         if (isset($_GET['QuestionGroup']))
