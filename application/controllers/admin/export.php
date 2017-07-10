@@ -1369,12 +1369,10 @@ class export extends Survey_Common_Action {
         $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
         $aLanguages = $oSurvey->getAllLanguages();
 
-        $aSurveyInfo = $oSurvey->getSurveyinfo();
-
         $tempdir = Yii::app()->getConfig("tempdir");
         $zipdir = $this->_tempdir($tempdir);
 
-        $fn = "printable_survey_".CHtml::encode($aSurveyInfo['surveyls_title'])."_{$oSurvey->primaryKey}.zip";
+        $fn = "printable_survey_".CHtml::encode($oSurvey->currentLanguageSettings->surveyls_title)."_{$oSurvey->primaryKey}.zip";
         $zipfile = "$tempdir/".$fn;
 
         Yii::app()->loadLibrary('admin.pclzip');
@@ -1419,7 +1417,6 @@ class export extends Survey_Common_Action {
         $printableSurvey->index($oSurvey->primaryKey,$language);
         $response = ob_get_contents(); //Grab output
         ob_end_clean(); //Discard output buffer
-        $aSurveyInfo = $oSurvey->getSurveyinfo();
 
         $file = "$tempdir/questionnaire_{$oSurvey->getPrimaryKey()}_{$language}.html";
 

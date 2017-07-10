@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var Survey[] $publicSurveys
+ */
+
     $outputSurveys = 0;
     $list = "<div class='container'>";
     $list .= "<div class='row'>";
@@ -6,8 +10,7 @@
     /** @var Survey[] $publicSurveys */
     foreach($publicSurveys as $survey)
     {
-         $outputSurveys++;
-                //echo "IKI :";var_dump( $survey->localizedTitle);
+        $outputSurveys++;
         $divider = ($divideToggle ? " vertical-divider right " : "");
         if ($survey->publicstatistics == "Y")
         {
@@ -52,7 +55,7 @@
         }
         $tooltips .= "<i  class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;</i>&nbsp;".sprintf(gt("%s minutes"),$survey->calculateEstimatedTime());
 
-        $content = $survey->localizedTitle;
+        $content = $survey->currentLanguageSettings->surveyls_title;
         $content .= "<span class='pull-right clearfix'>"
                         ."&nbsp;<span href='#' class='fa fa-question-circle' onclick='return false;' data-html='true' data-toggle=\"popover\" title=\"".gT("Survey information")."\" data-content='".$tooltips."'></span>"
                         ."</span>";
@@ -89,7 +92,7 @@
         {
             $outputSurveys++;
             $list .= CHtml::openTag('div', array('class'=>'col-xs-12'));
-            $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
+            $list .= CHtml::link($survey->currentLanguageSettings->surveyls_title, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
             $list .= CHtml::closeTag('div');
             $list .= CHtml::tag('div', array(
                 'data-regformsurvey' => $survey->sid,

@@ -1085,6 +1085,8 @@ class SurveyAdmin extends Survey_Common_Action
         $aViewUrls = $aData = array();
 
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData['oSurvey'] = $survey;
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
         {
@@ -1139,8 +1141,8 @@ class SurveyAdmin extends Survey_Common_Action
             $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
             $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
             $aData = array_merge($aData, $this->_tabTokens($esrow));
-            $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
-            $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
+            $aData = array_merge($aData, $this->_tabPanelIntegration($iSurveyID, $esrow));
+            $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID,$esrow));
 
             $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
@@ -1165,6 +1167,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
+
 
             $aViewUrls[] = 'editLocalSettings_main_view';
         }
@@ -1692,9 +1695,9 @@ class SurveyAdmin extends Survey_Common_Action
     * survey::_tabPresentationNavigation()
     * Load "Presentation & navigation" tab.
     * @param mixed $esrow
-    * @return
+    * @return array
     */
-    private function _tabPresentationNavigation($iSurveyID, $esrow)
+    private function _tabPresentationNavigation($esrow)
     {
         global $showxquestions, $showgroupinfo, $showqnumcode;
 
@@ -1717,7 +1720,7 @@ class SurveyAdmin extends Survey_Common_Action
     * @param mixed $esrow
     * @return
     */
-    private function _tabPublicationAccess($iSurveyID, $esrow)
+    private function _tabPublicationAccess($esrow)
     {
         $aDateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
         $startdate = '';
@@ -1746,9 +1749,9 @@ class SurveyAdmin extends Survey_Common_Action
     * survey::_tabNotificationDataManagement()
     * Load "Notification & data management" tab.
     * @param mixed $esrow
-    * @return
+    * @return array
     */
-    private function _tabNotificationDataManagement($iSurveyID, $esrow)
+    private function _tabNotificationDataManagement( $esrow)
     {
         $aData['esrow'] = $esrow;
         return $aData;
@@ -1758,9 +1761,9 @@ class SurveyAdmin extends Survey_Common_Action
     * survey::_tabTokens()
     * Load "Tokens" tab.
     * @param mixed $esrow
-    * @return
+    * @return array
     */
-    private function _tabTokens($iSurveyID, $esrow)
+    private function _tabTokens($esrow)
     {
         $aData = array();
         $aData['esrow'] = $esrow;

@@ -92,10 +92,14 @@ use \ls\pluginmanager\PluginEvent;
  * @property integer $countTotalAnswers
  * @property integer $groupsCount Number of groups in a survey (in base language)
  * @property array $surveyinfo
+ * @property SurveyLanguageSetting $currentLanguageSettings Survey languagesettings in currently active language
+ * @property string[] $allLanguages
+ * @property string[] $additionalLanguages Additional survey languages
+ * @property array $tokenAttributes Additional token attribute names
+ * @property bool $isActive Whether Survey is active
  * @property string $creationDate Creation date formatted according to user format
  * @property string $startDateFormatted Start date formatted according to user format
  * @property string $expiryDateFormatted Expiry date formatted according to user format
- * @property string[] $allLanguages
  * @property string $tokensTableName Name of survey tokens table
  * @property string $hasTokensTable Whether survey has a tokens table or not
  */
@@ -154,17 +158,17 @@ class Survey extends LSActiveRecord
         );
     }
 
+
     /**
-     * Returns the title of the survey. Uses the current language and
-     * falls back to the surveys' default language if the current language is not available.
-     * @return string
+     * The Survey languagesettings in currently active language. Falls back to the surveys' default language if the current language is not available.
+     * @return SurveyLanguageSetting
      */
-    public function getLocalizedTitle()
+    public function getCurrentLanguageSettings()
     {
         if (isset($this->languagesettings[App()->language])) {
-            return $this->languagesettings[App()->language]->surveyls_title;
+            return $this->languagesettings[App()->language];
         } else {
-            return $this->languagesettings[$this->language]->surveyls_title;
+            return $this->languagesettings[$this->language];
         }
     }
 
@@ -705,7 +709,11 @@ class Survey extends LSActiveRecord
         return false;
     }
 
-    /** @inheritdoc */
+    /**
+     * @inheritdoc
+     * @return Survey
+     *
+     */
     public function findByPk($pk, $condition = '', $params = array()) {
         if (empty($condition) && empty($params)) {
             if (array_key_exists($pk, $this->findByPkCache)) {
