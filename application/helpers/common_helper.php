@@ -1139,6 +1139,7 @@ function fixMovedQuestionConditions($qid,$oldgid,$newgid, $iSurveyID=NULL) //Fun
 
 /**
  * This function returns POST/REQUEST vars, for some vars like SID and others they are also sanitized
+ * TODO: extends Yii:getParam
  *
  * @param string $stringname
  * @param boolean $bRestrictToString
@@ -3023,7 +3024,7 @@ function hasTemplateManageRights($userid, $templatefolder) {
 */
 function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
-    $iOldSurveyID = (int)$iOldSurveyID; 
+    $iOldSurveyID = (int)$iOldSurveyID;
     $iNewSurveyID = (int)$iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey')
     {
