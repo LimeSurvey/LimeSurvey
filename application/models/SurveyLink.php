@@ -161,7 +161,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getSurveyName()
     {
-       return $this->surveyInfo['surveyls_title'];
+       return $this->survey->currentLanguageSettings->surveyls_title;
     }
 
     /**
