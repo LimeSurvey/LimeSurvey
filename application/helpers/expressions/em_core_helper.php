@@ -305,7 +305,6 @@ class ExpressionManager {
             if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
             {
                 $bBothNumeric=false;
-                $bBothString=true;
                 $bMismatchType=false;
                 $arg1[0]=strval($arg1[0]);
                 $arg2[0]=strval($arg2[0]);
@@ -1430,9 +1429,7 @@ class ExpressionManager {
         $tokens = $this->RDP_tokens;
         $errCount = count($errs);
         $errIndex = 0;
-        $aClass=array();
-        if ($errCount > 0)
-        {
+        if ($errCount > 0) {
             usort($errs,"cmpErrorTokens");
         }
         $stringParts=array();
@@ -2016,7 +2013,6 @@ class ExpressionManager {
         }
         $func = $this->RDP_ValidFunctions[$name];
         $funcName = $func[0];
-        $numArgs = count($params);
         $result=1;  // default value for $this->RDP_onlyparse
         if (function_exists($funcName)) {
             $numArgsAllowed = array_slice($func, 5);    // get array of allowable argument counts from end of $func
@@ -2465,10 +2461,17 @@ class ExpressionManager {
     static function ShowAllowableFunctions()
     {
         $em = new ExpressionManager();
-        $output = "<h3>Functions Available within Expression Manager</h3>\n";
+        $output = "<div class='h3'>Functions Available within Expression Manager</div>\n";
         $output .= "<table border='1'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
         foreach ($em->RDP_ValidFunctions as $name => $func) {
-            $output .= "<tr><td>" . $name . "</td><td>" . $func[2] . "</td><td>" . $func[3] . "</td><td><a href='" . $func[4] . "'>" . $func[4] . "</a>&nbsp;</td></tr>\n";
+            $output .= "<tr><td>" . $name . "</td><td>" . $func[2] . "</td><td>" . $func[3] . "</td><td>";
+
+	    // 508 fix, don't output empty anchor tags
+	    if ($func[4]) {
+		$output .= "<a href='" . $func[4] . "'>" . $func[4] . "</a>";
+	    }
+
+	    $output .= "&nbsp;</td></tr>\n";
         }
         $output .= "</table>\n";
         return $output;

@@ -95,6 +95,7 @@ class conditionsaction extends Survey_Common_Action {
     {
         $request = Yii::app()->request;
         $iSurveyID = sanitize_int($iSurveyID);
+        $survey = Survey::model()->findByPk($iSurveyID);
         $this->iSurveyID = $iSurveyID;
         $this->tokenTableExists = tableExists("{{tokens_$iSurveyID}}");
         $this->tokenFieldsAndNames = getTokenFieldsAndNames($iSurveyID);
@@ -104,8 +105,9 @@ class conditionsaction extends Survey_Common_Action {
         Yii::app()->loadHelper("database");
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+
+        $aData['subaction'] = gT("Conditions designer");
         $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;  // Close button
         $aData['questionbar']['buttons']['conditions'] = TRUE;
 
@@ -336,7 +338,6 @@ class conditionsaction extends Survey_Common_Action {
         {
 
             //3: Get other conditions currently set for this question
-            $conditionscount = 0;
             $s=0;
 
             $scenariocount = count($scenarios);
@@ -1577,7 +1578,7 @@ class conditionsaction extends Survey_Common_Action {
 
                 foreach ($aresult as $arows)
                 {
-                    $attr = getQuestionAttributeValues($rows['qid']);
+                    $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
                     $sLanguage=$this->language;
                     // dualscale_header are allways set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
@@ -1826,6 +1827,7 @@ class conditionsaction extends Survey_Common_Action {
      * Get html for add/edit condition form
      * @param array $args
      * @return string
+     * //FIXME a lot of broken things here!! is this used at all?
      */
     protected function getEditConditionForm(array $args)
     {

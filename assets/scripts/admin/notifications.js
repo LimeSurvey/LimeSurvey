@@ -93,7 +93,6 @@ $(document).ready(function() {
             method: 'GET',
         }).done(function(response) {
 
-            var response = JSON.parse(response);
             var not = response.result;
 
             $('#admin-notification-modal .modal-title').html(not.title);

@@ -322,7 +322,6 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
             )),
             'statistics' => new QuickMenuButton(array(
                 'name' => 'statistics',
-                'href' => Yii::app()->getController()->createUrl("admin/responses/sa/browse/surveyid/$surveyId/"),
                 'href' => Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyId"),
                 'tooltip' => gT('Statistics'),
                 'iconClass' => 'fa fa-stats navbar-brand',
@@ -529,7 +528,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         if ($tableSchema === null)
         {
             Yii::app()->user->setFlash('error', 'Quick-menu plugin has been updated. Please deactivate and activate it again.');
-            return;
+            return null;
         }
 
         $orders = $db->createCommand()

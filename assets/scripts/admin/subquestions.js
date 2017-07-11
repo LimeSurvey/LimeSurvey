@@ -677,7 +677,7 @@ function transferlabels()
                                 tablerows=tablerows+
                                 '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" data-common-id="'+k+'_'+scale_id+'">'+
                                 '   <td>'+
-                                '       <span class="fa fa-move text-success"></span>'+
+                                '       <span class="fa fa-bars bigIcons text-success"></span>'+
                                 '   </td>'+
 
 

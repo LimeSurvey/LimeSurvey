@@ -16,8 +16,8 @@
 /**
  * Class LabelSet
  *
- * @property integer $lid ID
- * @property string $label_name
+ * @property integer $lid ID (primary key)
+ * @property string $label_name Label Name (max 100 chars)
  * @property string $languages
  */
 class LabelSet extends LSActiveRecord

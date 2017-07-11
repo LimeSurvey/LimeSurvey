@@ -111,20 +111,7 @@ abstract class Zend_Server_Abstract implements Zend_Server_Interface
         return $this->_table;
     }
 
-    /**
-     * Lowercase a string
-     *
-     * Lowercase's a string by reference
-     *
-     * @deprecated
-     * @param  string $key
-     * @return string Lower cased string
-     */
-    public static function lowerCase(&$value, &$key)
-    {
-        trigger_error(__CLASS__ . '::' . __METHOD__ . '() is deprecated and will be removed in a future version', E_USER_NOTICE);
-        return $value = strtolower($value);
-    }
+
 
     /**
      * Build callback for method signature

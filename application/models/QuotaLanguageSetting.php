@@ -14,13 +14,13 @@
 */
 
 /**
- * @property integer $quotals_id
- * @property integer $quotals_quota_id
- * @property string $quotals_language
- * @property string $quotals_name
- * @property string $quotals_message
- * @property string $quotals_url
- * @property string $quotals_urldescrip
+ * @property integer $quotals_id ID (primary key)
+ * @property integer $quotals_quota_id Quota ID
+ * @property string $quotals_language Language code eg: 'en'
+ * @property string $quotals_name Quota display name for this language
+ * @property string $quotals_message Quota message for this language
+ * @property string $quotals_url Quota end-URL for this language
+ * @property string $quotals_urldescrip Quota end-URL description for this language
  *
  * @property Quota $quota
  */

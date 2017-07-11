@@ -133,12 +133,12 @@ class UploaderController extends SurveyController {
             //$filename = sanitize_filename($_FILES['uploadfile']['name']);// This remove all non alpha numeric characters and replaced by _ . Leave only one dot .
             $size = 0.001 * $_FILES['uploadfile']['size'];
             $preview = Yii::app()->session['preview'];
-            $aFieldMap = createFieldMap($surveyid,'short',false,false,$sLanguage);
+            $aFieldMap = createFieldMap($oSurvey,'short',false,false,$sLanguage);
             if (!isset($aFieldMap[$sFieldName]))
             {
                 throw new CHttpException(400);// See for debug > 1
             }
-            $aAttributes=getQuestionAttributeValues($aFieldMap[$sFieldName]['qid']);
+            $aAttributes=QuestionAttribute::model()->getQuestionAttributes($aFieldMap[$sFieldName]['qid']);
 
             $maxfilesize = (int) $aAttributes['max_filesize'];
             $valid_extensions_array = explode(",", $aAttributes['allowed_filetypes']);
@@ -332,7 +332,7 @@ class UploaderController extends SurveyController {
         $qid = (int)Yii::app()->request->getParam('qid');
         $minfiles = (int)Yii::app()->request->getParam('minfiles');
         $maxfiles = (int)Yii::app()->request->getParam('maxfiles');
-        $qidattributes=getQuestionAttributeValues($qid);
+        $qidattributes=QuestionAttribute::model()->getQuestionAttributes($qid);
         $qidattributes['max_filesize']=floor(min($qidattributes['max_filesize']*1024,getMaximumFileUploadSize())/1024);
         $body = '</head><body class="uploader">
             <div class="model-container clearfix">

@@ -103,6 +103,7 @@ class CsvWriter extends Writer
     */
     protected function csvEscape($value)
     {
-        return CSVEscape($value);
+        $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $value);
+        return '"' . str_replace('"','""', $sString) . '"';
     }
 }

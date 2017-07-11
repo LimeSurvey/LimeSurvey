@@ -20,7 +20,10 @@ class SurveyTimingDynamic extends LSActiveRecord
 {
     /** @var int $sid Survey id */
     protected static $sid = 0;
-    
+
+    /** @var Survey $survey*/
+    protected static $survey;
+
 	/**
 	 * @inheritdoc
 	 * @return SurveyTimingDynamic
@@ -28,8 +31,10 @@ class SurveyTimingDynamic extends LSActiveRecord
     public static function model($sid = NULL)
     {         
         $refresh = false;
-        if (!is_null($sid)) {
-            self::sid($sid);
+        $survey = Survey::model()->findByPk($sid);
+        if ($survey) {
+            self::sid($survey->sid);
+            self::$survey = $survey;
             $refresh = true;
         }
         
@@ -70,7 +75,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . intval(self::$sid) . '_timings}}';
+        return self::$survey->timingsTableName;
     }
 
     /**

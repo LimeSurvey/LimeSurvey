@@ -49,7 +49,7 @@
 
         <!-- Move icon -->
         <td class="move-icon" >
-            <span class="fa fa-move"></span>
+            <span class="fa fa-bars bigIcons"></span>
         </td>
 
         <!-- Code (title) -->
