@@ -61,6 +61,10 @@ class index extends CAction {
         $surveyExists   = ($surveyid && Survey::model()->findByPk($surveyid));
         $isSurveyActive = ($surveyExists && Survey::model()->findByPk($surveyid)->active=="Y");
 
+        if($surveyExists){
+            $oSurvey = Survey::model()->findByPk($surveyid);
+        }
+
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
 
@@ -262,7 +266,7 @@ class index extends CAction {
         }
 
         //SEE IF SURVEY USES TOKENS
-        if ($surveyExists == 1 && $survey->hasTokensTable){
+        if ($surveyExists == 1 && $oSurvey->hasTokensTable){
             $tokensexist = 1;
         }else{
             $tokensexist = 0;
