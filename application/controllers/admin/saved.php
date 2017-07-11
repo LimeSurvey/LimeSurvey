@@ -54,8 +54,9 @@ class saved extends Survey_Common_Action
      */
     public function delete($iSurveyId, $iSurveyResponseId, $iSavedControlId)
     {
+        $survey = Survey::model()->findByPk($iSurveyId);
         SavedControl::model()->deleteAllByAttributes(array('scid' => $iSavedControlId, 'sid' => $iSurveyId)) or die(gT("Couldn't delete"));
-        Yii::app()->db->createCommand()->delete("{{survey_".intval($iSurveyId)."}}", 'id=:id', array('id' => $iSurveyResponseId)) or die(gT("Couldn't delete"));
+        Yii::app()->db->createCommand()->delete($survey->responsesTableName, 'id=:id', array('id' => $iSurveyResponseId)) or die(gT("Couldn't delete"));
 
         $this->getController()->redirect(array("admin/saved/sa/view/surveyid/{$iSurveyId}"));
     }

@@ -251,6 +251,7 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
 function activateSurvey($iSurveyID, $simulate = false)
 {
     // Event beforeSurveyActivate
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
     $event = new PluginEvent('beforeSurveyActivate');
     $event->set('surveyId', $iSurveyID);
     $event->set('simulate', $simulate);
@@ -278,7 +279,6 @@ function activateSurvey($iSurveyID, $simulate = false)
         $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
     }
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $oSurvey = Survey::model()->findByPk($iSurveyID);
     $oSurvey->fixInvalidQuestions();
     //Get list of questions for the base language
     $sFieldMap = createFieldMap($oSurvey,'full',true,false,$oSurvey->language);
@@ -460,7 +460,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             Yii::app()->db->createCommand($sQuery)->execute();
             // Add back the primaryKey
 
-            Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1,50000), '{{survey_'.$iSurveyID.'}}', 'id');
+            Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1,50000), $oSurvey->responsesTableName, 'id');
         }
         elseif (Yii::app()->db->driverName=='pgsql')
         {

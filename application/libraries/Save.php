@@ -175,6 +175,8 @@ class Save
         global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
 
         $timeadjust = getGlobalSetting('timeadjust');
+        $survey = Survey::model()->findByPk($surveyid);
+
 
         //Check that the required fields have been completed.
         $errormsg = '';
@@ -194,9 +196,7 @@ class Save
         {
             if (!Yii::app()->request->getPost('loadsecurity')
              || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
-             || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']
-            )
-            {
+             || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']) {
                 $this->aSaveErrors[]=gT("The answer to the security question is incorrect.");
             }
         }
@@ -232,7 +232,7 @@ class Save
                 );
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
-                    $srid = getLastInsertID('{{survey_' . $surveyid . '}}');
+                    $srid = getLastInsertID($survey->responsesTableName);
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }
                 else
@@ -327,6 +327,7 @@ class Save
         //We start by generating the first 5 values which are consistent for all rows.
 
         global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
+        $survey = Survey::model()->findByPk($surveyid);
 
         $aSaveForm  = array();
         $timeadjust = getGlobalSetting('timeadjust');
@@ -379,7 +380,7 @@ class Save
                 );
 
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)){
-                    $srid                                  = getLastInsertID('{{survey_' . $surveyid . '}}');
+                    $srid                                  = getLastInsertID($survey->responsesTableName);
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }else{
                     // TODO: $this->aSaveErrors

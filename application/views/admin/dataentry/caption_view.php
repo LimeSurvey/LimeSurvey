@@ -28,7 +28,7 @@
                     </tr>
                 <?php endif; ?>
 
-            <?php if (tableExists('{{tokens_'.$thissurvey['sid'].'}}')) //Give entry field for token id
+            <?php if ($oSurvey->hasTokensTable) //Give entry field for token id
             { ?>
                 <tr>
                 <td valign='top' width='1%'></td>
