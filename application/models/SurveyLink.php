@@ -24,7 +24,6 @@
  *
  * @property Participant $participant
  * @property Survey $survey
- * @property array $surveyInfo
  * @property string $dateFormat
  * @property string|boolean $isSubmitted
  * @property string $checkbox
@@ -138,13 +137,6 @@ class SurveyLink extends LSActiveRecord
         return $dateFormat['phpdate'];
     }
 
-    /**
-     * @return array
-     */
-    public function getSurveyInfo()
-    {
-        return $this->survey->surveyinfo;
-    }
 
     /**
      * @return TokenDynamic
