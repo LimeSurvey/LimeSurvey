@@ -80,6 +80,7 @@ class Template extends LSActiveRecord
         return array(
             'id' => 'ID',
             'name' => 'Name',
+            'title' => 'Title',
             'creation_date' => 'Creation Date',
             'author' => 'Author',
             'author_email' => 'Author Email',
@@ -89,7 +90,7 @@ class Template extends LSActiveRecord
             'version' => 'Version',
             'description' => 'Description',
             'last_update' => 'Last Update',
-            'folder' => 'folder',
+            'folder' => 'Folder',
             'owner_id' => 'Owner',
             'extends_templates_id' => 'Extends Templates',
         );
@@ -135,7 +136,7 @@ class Template extends LSActiveRecord
         }
 
         /* Last solution : default */
-        return 'Default template';
+        return 'default';
     }
 
 
@@ -436,6 +437,7 @@ class Template extends LSActiveRecord
 
         $criteria->compare('id',$this->id,true);
         $criteria->compare('name',$this->name,true);
+        $criteria->compare('title',$this->title,true);
         $criteria->compare('creation_date',$this->creation_date,true);
         $criteria->compare('author',$this->author,true);
         $criteria->compare('author_email',$this->author_email,true);
