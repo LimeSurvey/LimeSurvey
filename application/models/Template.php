@@ -49,15 +49,16 @@ class Template extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name', 'required'),
+            array('name, title', 'required'),
             array('owner_id, extends_templates_id', 'numerical', 'integerOnly'=>true),
             array('name, author', 'length', 'max'=>150),
+            array('title', 'length', 'max'=>100),
             array('author_email, author_url', 'length', 'max'=>255),
             array('version, folder', 'length', 'max'=>45),
             array('creation_date, copyright, license, description, last_update', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, name, creation_date, author, author_email, author_url, copyright, license, version, description, last_update, folder, owner_id, extends_templates_id', 'safe', 'on'=>'search'),
+            array('id, name, title, creation_date, author, author_email, author_url, copyright, license, version, description, last_update, folder, owner_id, extends_templates_id', 'safe', 'on'=>'search'),
         );
     }
 
