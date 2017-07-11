@@ -178,25 +178,19 @@
     {
 
         $htmlcode = '';
-        $imgopts = '';
-        $toolbarname = 'Basic';
 
         if ($fieldtype == 'editanswer' ||
         $fieldtype == 'addanswer' ||
         $fieldtype == 'editlabel' ||
-        $fieldtype == 'addlabel')
-        {
-            $imgopts = "width='16' height='16'";
+        $fieldtype == 'addlabel') {
             $class="editorLink";
-        }
-        else
-        {
+        } else {
             $class="editorLink input-group-addon";
         }
         $htmlcode .= ""
         . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext,ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='{$class}'>\n"
-        . "\t<span class='glyphicon glyphicon-pencil btneditanswerena' id='".$fieldname."_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='".gT("Start HTML editor in a popup window")."'></span>"
-        . "\t<span class='glyphicon glyphicon-pencil btneditanswerdis' id='".$fieldname."_popupctrldis'  style='display:none'  ></span>"
+        . "\t<span class='fa fa-pencil btneditanswerena' id='".$fieldname."_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='".gT("Start HTML editor in a popup window")."'></span>"
+        . "\t<span class='fa fa-pencil btneditanswerdis' id='".$fieldname."_popupctrldis'  style='display:none'  ></span>"
         . "</a>\n";
 
         return $htmlcode;
@@ -205,8 +199,6 @@
     function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
     {
         $htmlcode = '';
-        $imgopts = '';
-        $toolbarname = 'inline';
         $toolbaroption="";
         $sFileBrowserAvailable='';
         $htmlformatoption="";

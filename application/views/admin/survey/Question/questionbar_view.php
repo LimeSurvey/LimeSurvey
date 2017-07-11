@@ -128,12 +128,12 @@ $aReplacementData=array();
                    data-target="#confirmation-modal"
                    data-message="<?php eT("Deleting this question will also delete any answer options and subquestions it includes. Are you sure you want to continue?","js"); ?>"
                    >
-                    <span class="glyphicon glyphicon-trash text-danger"></span>
+                    <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </a>
             <?php else: ?>
                 <a class="btn btn-default readonly btntooltip" href="#" role="button" data-toggle="tooltip" data-placement="bottom" title="<?php eT("You can't delete a question if the survey is active."); ?>">
-                    <span class="glyphicon glyphicon-trash text-danger"></span>
+                    <span class="fa fa-trash text-danger"></span>
                     <?php eT("Delete"); ?>
                 </a>
             <?php endif; ?>
@@ -205,7 +205,7 @@ $aReplacementData=array();
     <?php if(isset($questionbar['buttons']['conditions'])):?>
     <div class="col-sm-12 form form-inline">
         <a class="btn btn-default <?php if(isset($questionbar['buttons']['condition']['conditions'])){echo 'active';}?>" href="<?php echo $this->createUrl("/admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
-            <span class="glyphicon glyphicon-info-sign"></span>
+            <span class="fa fa-info-sign"></span>
             <?php eT("Show conditions for this question");?>
         </a>
 
@@ -225,13 +225,13 @@ $aReplacementData=array();
 
                     <?php if( 1==1 ):?>
                         <a class="btn btn-success" href="#" role="button">
-                            <span class="glyphicon glyphicon-ok"></span>
+                            <span class="fa fa-ok"></span>
                             <?php eT("Save");?>
                         </a>
                     <?php endif;?>
 
                     <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/282267{$surveyid}"); ?>" role="button">
-                        <span class="glyphicon glyphicon-saved"></span>
+                        <span class="fa fa-saved"></span>
                         <?php eT("Save and close");?>
                     </a>
                 <?php endif;?>
@@ -239,7 +239,7 @@ $aReplacementData=array();
                 <!-- Close -->
                 <?php if(isset($questionbar['closebutton']['url'])):?>
                     <a class="btn btn-danger pull-right margin-left" href="<?php echo $questionbar['closebutton']['url']; ?>" role="button">
-                        <span class="glyphicon glyphicon-close"></span>
+                        <span class="fa fa-close"></span>
                         <?php eT("Close");?>
                     </a>
                 <?php endif;?>
@@ -251,7 +251,7 @@ $aReplacementData=array();
 
                 <?php if(isset($questionbar['returnbutton']['url'])):?>
                     <a class="btn btn-default" href="<?php echo $questionbar['returnbutton']['url']; ?>" role="button">
-                        <span class="glyphicon glyphicon-step-backward"></span>
+                        <span class="fa fa-step-backward"></span>
                         <?php echo $questionbar['returnbutton']['text'];?>
                     </a>
                 <?php endif;?>
@@ -267,15 +267,15 @@ $aReplacementData=array();
             <div class='col-md-5 text-right'>
                 <!-- Save buttons -->
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="glyphicon glyphicon-ok"></span>
+                    <span class="fa fa-ok"></span>
                     <?php eT("Save");?>
                 </a>
                 <a class="btn btn-default" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
-                    <span class="glyphicon glyphicon-saved"></span>
+                    <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
                 </a>
                 <a class="btn btn-danger" href="<?php echo $organizebar['closebuttonright']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-close"></span>
+                    <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
             </div>

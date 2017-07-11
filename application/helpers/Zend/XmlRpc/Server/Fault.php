@@ -75,7 +75,6 @@ class Zend_XmlRpc_Server_Fault extends Zend_XmlRpc_Fault
         $this->_exception = $e;
         $code             = 404;
         $message          = 'Unknown error';
-        $exceptionClass   = get_class($e);
 
         foreach (array_keys(self::$_faultExceptionClasses) as $class) {
             if ($e instanceof $class) {

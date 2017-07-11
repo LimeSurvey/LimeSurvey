@@ -187,7 +187,7 @@ class quotas extends Survey_Common_Action
             {
                 $totalquotas += $oQuota->qlimit;
                 $completed = 0;
-                $completed = getQuotaCompletedCount($iSurveyId, $oQuota->primaryKey);
+                $completed = $oQuota->completeCount;
                 $totalcompleted = $totalcompleted + $completed;
                 $csvoutput[] = $oQuota->name . "," . $oQuota->qlimit . "," . $completed . "," . ($oQuota->qlimit - $completed) . "\r\n";
 

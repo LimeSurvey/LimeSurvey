@@ -34,7 +34,6 @@ class Assessments extends Survey_Common_Action
     {
         $iSurveyID = sanitize_int($iSurveyID);
         $sAction = Yii::app()->request->getParam('action');
-
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'read'))
         {
             $languages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
@@ -56,6 +55,9 @@ class Assessments extends Survey_Common_Action
             if ($sAction == "assessmentdelete")
                 $this->_delete($iSurveyID, $_POST['id']);
 
+            if($sAction == "asessementactivate")
+                $this->_activateAsessement($iSurveyID);
+
 
             $this->_showAssessments($iSurveyID, $sAction, $surveyLanguage);
         }
@@ -65,6 +67,7 @@ class Assessments extends Survey_Common_Action
             $this->getController()->redirect(array("admin/"));
         }
     }
+
 
     /**
      * Renders template(s) wrapped in header and footer
@@ -77,9 +80,9 @@ class Assessments extends Survey_Common_Action
     {
         $aData['sidemenu']['state'] = false;
         $iSurveyID=$aData['surveyid'];
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $survey = Survey::model()->findByPk($iSurveyID);
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = true;
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['gid']=null;
@@ -89,6 +92,7 @@ class Assessments extends Survey_Common_Action
 
     private function _showAssessments($iSurveyID, $action)
     {
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $oCriteria = new CDbCriteria(array('order' => 'id ASC'));
         $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID), $oCriteria);
         $aData = $this->_collectGroupData($iSurveyID);
@@ -100,7 +104,6 @@ class Assessments extends Survey_Common_Action
         if ($action == "assessmentedit" && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
             $aData = $this->_collectEditData($aData);
         }
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $surveyinfo = getSurveyInfo($iSurveyID);
         $aData['surveyinfo'] = $surveyinfo;
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
@@ -117,14 +120,28 @@ class Assessments extends Survey_Common_Action
         $urls['output'] = '<div class="side-body ' . getSideBodyClass(false) . '">';
         $urls['output'] .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Assessments")), true, false);
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
-
+        $aData['asessementNotActivated'] = false;
         if ($surveyinfo['assessments']!='Y')
         {
-
-            $urls['message'] = array('title' => gT("Assessments mode not activated"), 'message' => sprintf(gT("Assessment mode for this survey is not activated. You can activate it in the %s survey settings %s (tab 'Notification & data management')."),'<a href="'.$this->getController()->createUrl('admin/survey/sa/editlocalsettings/surveyid/'.$iSurveyID).'">','</a>'), 'class'=> 'warningheader');
+            $aData['asessementNotActivated'] = array(
+                'title' => gT("Assessments mode not activated"), 
+                'message' => gT("Assessment mode for this survey is not activated.").'<br/>'
+                    . gt("If you want to activate it click here:").'<br/>'
+                    . '<a type="submit" class="btn btn-primary" href="'
+                    . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate','surveyid'=> $iSurveyID])
+                    .'">'.gT('Activate asessements').'</a>', 
+                'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
         $urls['assessments_view'][]= $aData;
         $this->_renderWrappedTemplate('', $urls, $aData);
+    }
+
+    private function _activateAsessement($iSurveyID)
+    {
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+        $oSurvey->assessments = "Y";
+        $oSurvey->save();
+        return ['success' => true];
     }
 
     private function _collectGroupData($iSurveyID)

@@ -49,7 +49,7 @@
 
         <!-- Move icon -->
         <td class="move-icon" >
-            <span class="glyphicon glyphicon-move"></span>
+            <span class="fa fa-move"></span>
         </td>
 
         <!-- Code (title) -->
@@ -131,7 +131,7 @@
             ?>
 
             <span class="icon-add text-success btnaddanswer" data-code="<?php echo $title; ?>" data-toggle="tooltip" data-scale-id="<?php echo $scale_id; ?>" data-placement="bottom" title="<?php eT("Insert a new subquestion after this one") ?>"></span>
-            <span class="glyphicon glyphicon-trash text-danger btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
+            <span class="fa fa-trash text-danger btndelanswer"  data-toggle="tooltip" data-placement="bottom" title="<?php eT("Delete this subquestion") ?>"></span>
         <?php endif; ?>
 
     </td>

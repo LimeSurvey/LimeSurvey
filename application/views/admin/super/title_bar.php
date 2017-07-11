@@ -5,3 +5,6 @@
         </div>
     </div>
 </div>
+<!-- <div class='menubar surveymanagerbar'  id="vue-top-menu-app">
+    <topbar main-href="<?php echo Yii::app()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid);?>" main-title="<?php echo $title_bar['title']; ?>"></topbar>
+</div> -->

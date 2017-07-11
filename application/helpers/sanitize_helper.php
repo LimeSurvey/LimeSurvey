@@ -428,12 +428,6 @@ function sanitize_languagecodeS($codestringtosanitize) {
     return implode(" ",$codearray);
 }
 
-/**
- * @deprecated use Token::sanitizeToken($codetosanitize);
- */
-function sanitize_token($codetosanitize) {
-    return Token::sanitizeToken($codetosanitize);
-}
 
 function sanitize_signedint($integer, $min='', $max='')
 {

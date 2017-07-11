@@ -186,14 +186,16 @@ use Template;
         }
 
         /**
-        * Gets a survey response from the database.
-        *
-        * @param int $surveyId
-        * @param int $responseId
-        * @param bool $bMapQuestionCodes
-        */
+         * Gets a survey response from the database.
+         *
+         * @param int $surveyId
+         * @param int $responseId
+         * @param bool $bMapQuestionCodes
+         * @return array
+         */
         public function getResponse($surveyId, $responseId, $bMapQuestionCodes=true)
         {
+            $survey = Survey::model()->findByPk($surveyId);
             $response = \SurveyDynamic::model($surveyId)->findByPk($responseId);
             if (!$bMapQuestionCodes) {
                 return $response;
@@ -203,7 +205,7 @@ use Template;
             {
                 // Now map the response to the question codes if possible, duplicate question codes will result in the
                 // old sidXgidXqid code for the second time the code is found
-                $fieldmap = createFieldMap($surveyId, 'full',null, false, $response->attributes['startlanguage']);
+                $fieldmap = createFieldMap($survey, 'full',null, false, $response->attributes['startlanguage']);
                 $output = array();
                 foreach($response->attributes as $key => $value)
                 {

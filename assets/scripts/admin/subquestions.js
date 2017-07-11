@@ -677,7 +677,7 @@ function transferlabels()
                                 tablerows=tablerows+
                                 '<tr id="row_'+k+'_'+scale_id+'" class="row_'+k+'_'+scale_id+'" data-common-id="'+k+'_'+scale_id+'">'+
                                 '   <td>'+
-                                '       <span class="glyphicon glyphicon-move text-success"></span>'+
+                                '       <span class="fa fa-move text-success"></span>'+
                                 '   </td>'+
 
 
@@ -693,11 +693,11 @@ function transferlabels()
 
                                 '   <td>'+
                                 '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span>'+
-                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena fa fa-pencil text-success"></span>'+
+                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                                 '           </a>'+
                                 '       <span class="btnaddanswer icon-add text-success"></span>'+
-                                '       <span class="btndelanswer glyphicon glyphicon-trash text-warning"></span>'+
+                                '       <span class="btndelanswer fa fa-trash text-warning"></span>'+
                                 '   </td>'+
                                 '   <td>'+
                                 '       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span> <input style="display: none" type="text" size="20" id="relevance_'+randomid+'_'+scale_id+'" name="relevance_'+randomid+'_'+scale_id+'" class="relevance"  value="1"></input>'+
@@ -719,7 +719,7 @@ function transferlabels()
 
                                 '   <td>'+
                                 '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena glyphicon glyphicon-pencil text-success"></span><span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
+                                '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena fa fa-pencil text-success"></span><span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;" ></span>'+
                                 '           </a>'+
 
                                 //'       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
@@ -749,8 +749,8 @@ function transferlabels()
 
                         '   <td>'+
                         '           <a id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_ctrl" href="javascript:start_popup_editor(\'answer_'+languages[x]+'_'+randomid+'_'+scale_id+'\',\'[Subquestion:]('+languages[x]+')\',\''+sID+'\',\''+gID+'\',\''+qID+'\',\'editanswer\',\'editanswer\')" class="editorLink">'+
-                        '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena  glyphicon glyphicon-pencil text-success" ><span>'+
-                        '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  glyphicon glyphicon-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
+                        '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrlena" class="btneditanswerena  fa fa-pencil text-success" ><span>'+
+                        '               <span id="answer_'+languages[x]+'_'+randomid+'_'+scale_id+'_popupctrldis" class="btneditanswerdis  fa fa-pencil text-success" title="Give focus to the HTML editor popup window" style="display: none;"></span>'+
                         '           </a>'+
                         //'       <span class="btntogglerelevance icon-expressionmanagercheck text-success"></span>'+
                         '       <span style="display: none" class="relevance">1</span>'+

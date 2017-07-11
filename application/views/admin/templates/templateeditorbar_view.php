@@ -179,14 +179,14 @@
             <?php if(is_template_editable($templatename)):?>
                 <?php if(Permission::model()->hasGlobalPermission('templates','update')):?>
                     <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
-                        <span class="glyphicon glyphicon-pencil  text-success"></span>
+                        <span class="fa fa-pencil  text-success"></span>
                         <?php eT("Rename"); ?>
                     </a>
                     <?php endif;?>
 
                 <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
                     <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/sa/delete/templatename/'.$templatename); ?>", "_top")'>
-                        <span class="glyphicon glyphicon-trash  text-warning"></span>
+                        <span class="fa fa-trash  text-warning"></span>
                         <?php eT("Delete"); ?>
                     </a>
                     <?php endif;?>
@@ -215,7 +215,7 @@
 
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                    <span class="glyphicon glyphicon-ok" ></span>
+                    <span class="fa fa-ok" ></span>
                     <?php eT("Save");?>
                 </a>
                 <?php endif;?>
@@ -223,14 +223,14 @@
             <!-- Close -->
             <?php if(isset($fullpagebar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
-                    <span class="glyphicon glyphicon-close" ></span>
+                    <span class="fa fa-close" ></span>
                     <?php eT("Close");?>
                 </a>
                 <?php endif;?>
 
             <?php if(isset($fullpagebar['returnbutton'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("/admin"); ?>" role="button">
-                    <span class="glyphicon glyphicon-backward" ></span>
+                    <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
                     <?php eT("Return to admin home"); ?>
                 </a>
@@ -245,7 +245,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><?php eT("Upload template file") ?></h4>
+                    <div class="modal-title h4"><?php eT("Upload template file") ?></div>
                 </div>
                 <?php echo CHtml::form(array('admin/templates/sa/upload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
                 <div class="modal-body">
@@ -272,13 +272,13 @@
     <?php endif;?>
 
 <div class="col-lg-12 templateeditor">
-    <h3><?php eT("Template editor:"); ?> <i><?php echo $templatename; ?></i></h3>
+    <div class="h3"><?php eT("Template editor:"); ?> <i><?php echo $templatename; ?></i></div>
 
 
     <?php if(!is_template_editable($templatename)):?>
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
-            <span class="glyphicon glyphicon-info-sign" ></span>&nbsp;&nbsp;&nbsp;
+            <span class="fa fa-info-sign" ></span>&nbsp;&nbsp;&nbsp;
             <strong>
                 <?php eT('Note: This is a standard template.');?>
             </strong>
@@ -292,7 +292,7 @@
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
             <div class="h4">
-                <span class="glyphicon glyphicon-info-sign" ></span>
+                <span class="fa fa-info-sign" ></span>
                 <?php eT('This template is out of date.');?>
             </div>
             <?php

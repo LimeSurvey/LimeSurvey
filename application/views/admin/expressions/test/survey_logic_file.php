@@ -5,6 +5,7 @@
 <?php if(!$fullPage):?>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
 <?php endif;?>
+
     <h3><?php eT("Edit survey settings");?></h3>
 
     <div class="row">

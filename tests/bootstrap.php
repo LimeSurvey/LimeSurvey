@@ -230,3 +230,4 @@ set_error_handler(function($no, $msg, $file, $line, $context) {
 
 require_once(__DIR__ . '/TestHelper.php');
 require_once(__DIR__ . '/TestBaseClass.php');
+require_once(__DIR__ . '/DummyController.php');

@@ -14237,7 +14237,7 @@ var BFHTimezonesList = {
       for (country in countries) {
         if (countries.hasOwnProperty(country)) {
           if (this.options.flags === true) {
-            $options.append('<li><a tabindex="-1" href="#" data-option="' + country + '"><i class="glyphicon bfh-flag-' + country + '"></i>' + countries[country] + '</a></li>');
+            $options.append('<li><a tabindex="-1" href="#" data-option="' + country + '"><i class="fa bfh-flag-' + country + '"></i>' + countries[country] + '</a></li>');
           } else {
             $options.append('<li><a tabindex="-1" href="#" data-option="' + country + '">' + countries[country] + '</a></li>');
           }
@@ -14253,7 +14253,7 @@ var BFHTimezonesList = {
       value = this.options.country;
 
       if (this.options.flags === true) {
-        this.$element.html('<i class="glyphicon bfh-flag-' + value + '"></i> ' + BFHCountriesList[value]);
+        this.$element.html('<i class="fa bfh-flag-' + value + '"></i> ' + BFHCountriesList[value]);
       } else {
         this.$element.html(BFHCountriesList[value]);
       }
@@ -14447,7 +14447,7 @@ var BFHTimezonesList = {
             } else {
               flag = currency.substr(0,2);
             }
-            $options.append('<li><a tabindex="-1" href="#" data-option="' + currency +  '"><i class="glyphicon bfh-flag-' + flag + '"></i>' + currencies[currency].label + '</a></li>');
+            $options.append('<li><a tabindex="-1" href="#" data-option="' + currency +  '"><i class="fa bfh-flag-' + flag + '"></i>' + currencies[currency].label + '</a></li>');
           } else {
             $options.append('<li><a tabindex="-1" href="#" data-option="' + currency + '">' + currencies[currency].label + '</a></li>');
           }
@@ -14469,7 +14469,7 @@ var BFHTimezonesList = {
         } else {
           flag = value.substr(0,2);
         }
-        this.$element.html('<i class="glyphicon bfh-flag-' + flag + '"></i> ' + BFHCurrenciesList[value].label);
+        this.$element.html('<i class="fa bfh-flag-' + flag + '"></i> ' + BFHCurrenciesList[value].label);
       } else {
         this.$element.html(BFHCurrenciesList[value].label);
       }
@@ -14656,14 +14656,14 @@ var BFHTimezonesList = {
         '<thead>' +
         '<tr class="months-header">' +
         '<th class="month" colspan="4">' +
-        '<a class="previous" href="#"><i class="glyphicon glyphicon-chevron-left"></i></a>' +
+        '<a class="previous" href="#"><i class="fa fa-chevron-left"></i></a>' +
         '<span></span>' +
-        '<a class="next" href="#"><i class="glyphicon glyphicon-chevron-right"></i></a>' +
+        '<a class="next" href="#"><i class="fa fa-chevron-right"></i></a>' +
         '</th>' +
         '<th class="year" colspan="3">' +
-        '<a class="previous" href="#"><i class="glyphicon glyphicon-chevron-left"></i></a>' +
+        '<a class="previous" href="#"><i class="fa fa-chevron-left"></i></a>' +
         '<span></span>' +
-        '<a class="next" href="#"><i class="glyphicon glyphicon-chevron-right"></i></a>' +
+        '<a class="next" href="#"><i class="fa fa-chevron-right"></i></a>' +
         '</th>' +
         '</tr>' +
         '<tr class="days-header">' +
@@ -15056,7 +15056,7 @@ var BFHTimezonesList = {
   $.fn.bfhdatepicker.Constructor = BFHDatePicker;
 
   $.fn.bfhdatepicker.defaults = {
-    icon: 'glyphicon glyphicon-calendar',
+    icon: 'fa fa-calendar',
     align: 'left',
     input: 'form-control',
     placeholder: '',
@@ -15825,7 +15825,7 @@ var BFHTimezonesList = {
         if (languages.hasOwnProperty(language)) {
           if (languages[language].hasOwnProperty('name')) {
             if (this.options.flags === true) {
-              $options.append('<li><a tabindex="-1" href="#" data-option="' + language + '_' + languages[language].country + '"><i class="glyphicon bfh-flag-' + languages[language].country + '"></i>' + languages[language].name.toProperCase() + '</a></li>');
+              $options.append('<li><a tabindex="-1" href="#" data-option="' + language + '_' + languages[language].country + '"><i class="fa bfh-flag-' + languages[language].country + '"></i>' + languages[language].name.toProperCase() + '</a></li>');
             } else {
               $options.append('<li><a tabindex="-1" href="#" data-option="' + language + '_' + languages[language].country + '">' + languages[language].name.toProperCase() + ' (' + BFHCountriesList[languages[language].country] + ')</a></li>');
             }
@@ -15846,7 +15846,7 @@ var BFHTimezonesList = {
       if (value.indexOf('_') !== -1) {
         value = value.split('_');
         if (this.options.flags === true) {
-          this.$element.html('<i class="glyphicon bfh-flag-' + value[1] + '"></i> ' + BFHLanguagesList[value[0]].toProperCase());
+          this.$element.html('<i class="fa bfh-flag-' + value[1] + '"></i> ' + BFHLanguagesList[value[0]].toProperCase());
         } else {
           this.$element.html(BFHLanguagesList[value[0]].toProperCase() + ' (' + BFHCountriesList[value[1]] + ')');
         }
@@ -15970,8 +15970,8 @@ var BFHTimezonesList = {
       
       if (this.options.buttons === true) {
         this.$element.wrap('<div class="input-group"></div>');
-        this.$element.parent().append('<span class="input-group-addon bfh-number-btn inc"><span class="glyphicon glyphicon-chevron-up"></span></span>');
-        this.$element.parent().append('<span class="input-group-addon bfh-number-btn dec"><span class="glyphicon glyphicon-chevron-down"></span></span>');
+        this.$element.parent().append('<span class="input-group-addon bfh-number-btn inc"><span class="fa fa-chevron-up"></span></span>');
+        this.$element.parent().append('<span class="input-group-addon bfh-number-btn dec"><span class="fa fa-chevron-down"></span></span>');
       }
       
       this.$element.on('change.bfhnumber.data-api', BFHNumber.prototype.change);
@@ -17636,7 +17636,7 @@ var BFHTimezonesList = {
   $.fn.bfhtimepicker.Constructor = BFHTimePicker;
 
   $.fn.bfhtimepicker.defaults = {
-    icon: 'glyphicon glyphicon-time',
+    icon: 'fa fa-time',
     align: 'left',
     input: 'form-control',
     placeholder: '',

@@ -1,6 +1,10 @@
 <?php
 /**
  * This view displays the tabs for the question creation
+ *
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ * @var array $eqrow
  */
 ?>
 <?php PrepareEditorScript(true, $this); ?>
@@ -9,11 +13,11 @@
 <!-- New question language tabs -->
 <ul class="nav nav-tabs" style="margin-right: 8px;" >
     <li role="presentation" class="active">
-        <a data-toggle="tab" href="#<?php echo $eqrow['language']; ?>">
-            <?php echo getLanguageNameFromCode($eqrow['language'],false); ?> (<?php eT("Base language"); ?>)
+        <a role="tab" data-toggle="tab" href="#<?php echo $oSurvey->language; ?>">
+            <?php echo getLanguageNameFromCode($oSurvey->language,false); ?> (<?php eT("Base language"); ?>)
         </a>
     </li>
-    <?php foreach  ($addlanguages as $addlanguage):?>
+    <?php foreach  ($oSurvey->additionalLanguages as $addlanguage):?>
         <li role="presentation">
             <a data-toggle="tab" href="#<?php echo $addlanguage; ?>">
                 <?php echo getLanguageNameFromCode($addlanguage,false); ?>
@@ -26,7 +30,7 @@
 <div class="tab-content">
 
     <!-- Base Language tab-pane -->
-    <div id="<?php echo $eqrow['language']; ?>" class="tab-pane fade in active">
+    <div id="<?php echo $oSurvey->language; ?>" class="tab-pane fade in active">
 
         <!-- Question Code -->
         <div class="form-group">
@@ -39,22 +43,22 @@
 
         <!-- Question Text -->
         <div class="form-group">
-                <label class="col-sm-3 control-label" for='question_<?php echo $eqrow['language']; ?>'><?php eT("Question:"); ?></label>
+                <label class="col-sm-3 control-label" for='question_<?php echo $oSurvey->language; ?>'><?php eT("Question:"); ?></label>
                 <div class="col-sm-9">
                 <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("question_{$eqrow['language']}",$eqrow['question'],array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$eqrow['language']}")); ?>
-                    <?php echo getEditor("question-text","question_".$eqrow['language'], "[".gT("Question:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
+                    <?php echo CHtml::textArea("question_{$oSurvey->language}",$eqrow['question'],array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"question_{$oSurvey->language}")); ?>
+                    <?php echo getEditor("question-text","question_".$oSurvey->language, "[".gT("Question:", "js")."](".$oSurvey->language.")",$surveyid,$gid,$qid,$action); ?>
                 </div>
                 </div>
         </div>
 
         <!-- Question Help -->
         <div class="form-group">
-                <label class="col-sm-3 control-label" for='help_<?php echo $eqrow['language']; ?>'><?php eT("Help:"); ?></label>
+                <label class="col-sm-3 control-label" for='help_<?php echo $oSurvey->language; ?>'><?php eT("Help:"); ?></label>
                 <div class="col-sm-9">
                 <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("help_{$eqrow['language']}",$eqrow['help'],array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$eqrow['language']}")); ?>
-                    <?php echo getEditor("question-help","help_".$eqrow['language'], "[".gT("Help:", "js")."](".$eqrow['language'].")",$surveyid,$gid,$qid,$action); ?>
+                    <?php echo CHtml::textArea("help_$oSurvey->language}",$eqrow['help'],array('class'=>'form-control','cols'=>'60','rows'=>'4','id'=>"help_{$oSurvey->language}")); ?>
+                    <?php echo getEditor("question-help","help_".$oSurvey->language, "[".gT("Help:", "js")."](".$oSurvey->language.")",$surveyid,$gid,$qid,$action); ?>
                 </div>
                 </div>
         </div>
@@ -88,7 +92,7 @@
         <?php endforeach;?>
     <?php else:?>
 
-        <?php foreach  ($addlanguages as $addlanguage): ?>
+        <?php foreach  ($oSurvey->additionalLanguages as $addlanguage): ?>
             <div id="<?php echo $addlanguage; ?>"  class="tab-pane fade">
 
                 <div class="form-group">
