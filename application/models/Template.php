@@ -68,7 +68,7 @@ class Template extends LSActiveRecord
     public function relations()
     {
         return array(
-            'globalConfig' => array(self::HAS_ONE, 'TemplateConfiguration', array('templates_name' => 'name') , 'condition'=>("sid IS NULL AND gsid IS NULL") ),
+
         );
     }
 
