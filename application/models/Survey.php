@@ -501,7 +501,7 @@ class Survey extends LSActiveRecord
      * @return string
      */
     public function getTokensTableName(){
-        return "{{tokens_{$this->primaryKey}}}";
+        return "{{tokens_".$this->primaryKey."}}";
     }
 
     /**
@@ -509,7 +509,7 @@ class Survey extends LSActiveRecord
      * @return string
      */
     public function getTimingsTableName(){
-        return "{{survey_{".$this->primaryKey."}_timings}}";
+        return "{{survey_".$this->primaryKey."_timings}}";
     }
 
     /**
