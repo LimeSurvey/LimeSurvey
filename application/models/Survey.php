@@ -101,16 +101,18 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $startDateFormatted Start date formatted according to user format
  * @property string $expiryDateFormatted Expiry date formatted according to user format
  * @property string $tokensTableName Name of survey tokens table
+ * @property string $timingsTableName Name of survey timings table
  * @property string $hasTokensTable Whether survey has a tokens table or not
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  *
  * All Y/N columns in the model can be accessed as boolean values:
  * @property bool $isActive Whether Survey is active
  * @property bool $isAnonymized Whether survey is anonymized or not
+ * @property bool $isSaveTimings Whether survey timings are saved
  * @property bool $isDateStamp Whether respondents' datestamps will be saved
  * @property bool $isUseCookie Are cookies used to prevent repeated participation
  * @property bool $isAllowRegister Allow public registration
- * @property bool $isAallowSave Is participant allowed save and resume later
+ * @property bool $isAllowSave Is participant allowed save and resume later
  * @property bool $isAutoRedirect Automatically load URL when survey complete
  * @property bool $isAllowPrev Allow backwards navigation
  * @property bool $isPrintAnswers Participants may print answers
@@ -493,11 +495,19 @@ class Survey extends LSActiveRecord
     }
 
     /**
-     * Return the name of survet tokens table
+     * Return the name of survey tokens table
      * @return string
      */
     public function getTokensTableName(){
         return "{{tokens_{$this->primaryKey}}}";
+    }
+
+    /**
+     * Return the name of survey timings table
+     * @return string
+     */
+    public function getTimingsTableName(){
+        return "{{survey_{$this->primaryKey}_timings}}";
     }
 
     /**
@@ -965,6 +975,13 @@ class Survey extends LSActiveRecord
     /**
      * @return bool
      */
+    public function getIsSaveTimings()
+    {
+        return ($this->savetimings === 'Y');
+    }
+    /**
+     * @return bool
+     */
     public function getIsDateStamp()
     {
         return ($this->datestamp === 'Y');
@@ -987,7 +1004,7 @@ class Survey extends LSActiveRecord
     /**
      * @return bool
      */
-    public function getIsAallowSave()
+    public function getIsAllowSave()
     {
         return ($this->allowsave === 'Y');
     }
