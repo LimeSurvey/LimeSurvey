@@ -88,9 +88,9 @@ use \ls\pluginmanager\PluginEvent;
  *
  * @property array $fullAnswers
  * @property array $partialAnswers
- * @property integer $countFullAnswers
- * @property integer $countPartialAnswers
- * @property integer $countTotalAnswers
+ * @property integer $countFullAnswers Full-answers count
+ * @property integer $countPartialAnswers Full-answers count
+ * @property integer $countTotalAnswers Total-answers count
  * @property integer $groupsCount Number of groups in a survey (in base language)
  * @property array $surveyinfo
  * @property SurveyLanguageSetting $currentLanguageSettings Survey languagesettings in currently active language
@@ -142,19 +142,8 @@ class Survey extends LSActiveRecord
 
 
 
-    // TODO unused??
-    /** @var null $full_answers_account */
-    public $full_answers_account=null;
-
-    // TODO unused??
-    public $partial_answers_account=null;
-    /** @var string $searched_value */
     public $searched_value;
 
-    /** @var integer $fac Full-answers count*/
-    private $fac;
-    /** @var integer $pac Partial-answers count*/
-    private $pac;
 
     private $sSurveyUrl;
 
@@ -338,11 +327,10 @@ class Survey extends LSActiveRecord
 
 
     /**
-     * fixSurveyAttribute to fix and/or add some survey attribute
-     * - Fix template name to be sure template exist
-     * //FIXME $event input parameter is overridden always remove from implementations
-     */
-    public function fixSurveyAttribute($event)
+    * fixSurveyAttribute to fix and/or add some survey attribute
+    * - Fix template name to be sure template exist
+    */
+    public function fixSurveyAttribute()
     {
         $event = new PluginEvent('afterFindSurvey');
         $event->set('surveyid',$this->sid);
@@ -1151,20 +1139,17 @@ class Survey extends LSActiveRecord
      */
     public function getCountFullAnswers()
     {
-        if($this->fac!==null) {
-            return $this->fac;
+        $sResponseTable = $this->responsesTableName;
+        Yii::app()->cache->flush();
+        if ($this->active!='Y') {
+            return 0;
         } else {
-            $sResponseTable = $this->responsesTableName;
-            Yii::app()->cache->flush();
-            if ($this->active!='Y') {
-                $this->fac = 0;
-                // TODO Why string?
-                return '0';
-            } else {
-                $answers = Yii::app()->db->createCommand('select count(*) from '.$sResponseTable.' where submitdate IS NOT NULL')->queryScalar();
-                $this->fac = $answers;
-                return $answers;
-            }
+            $answers = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from($sResponseTable)
+                ->where('submitdate IS NOT NULL')
+                ->queryScalar();
+            return $answers;
         }
     }
 
@@ -1173,19 +1158,17 @@ class Survey extends LSActiveRecord
      */
     public function getCountPartialAnswers()
     {
-        if($this->pac!==null) {
-            return $this->pac;
+        $table = $this->responsesTableName;
+        Yii::app()->cache->flush();
+        if ($this->active!='Y') {
+            return 0;
         } else {
-            $table = $this->responsesTableName;
-            Yii::app()->cache->flush();
-            if ($this->active!='Y') {
-                $this->pac = 0;
-                return 0;
-            } else {
-                $answers = Yii::app()->db->createCommand('select count(*) from '.$table.' where submitdate IS NULL')->queryScalar();
-                $this->pac = $answers;
-                return $answers;
-            }
+            $answers = Yii::app()->db->createCommand()
+                ->select('count(*)')
+                ->from($table)
+                ->where('submitdate IS NULL')
+                ->queryScalar();
+            return $answers;
         }
     }
 
@@ -1194,12 +1177,7 @@ class Survey extends LSActiveRecord
      */
     public function getCountTotalAnswers()
     {
-        // TODO why we have pac & fac & then countFullAnswers etc? same thing!
-        if ($this->pac!==null && $this->fac!==null) {
-            return ($this->pac + $this->fac);
-        } else {
-            return ($this->countFullAnswers + $this->countPartialAnswers);
-        }
+        return ($this->countFullAnswers + $this->countPartialAnswers);
     }
 
     /**
