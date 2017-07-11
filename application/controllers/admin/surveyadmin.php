@@ -152,7 +152,7 @@ class SurveyAdmin extends Survey_Common_Action
         
         //Prepare the edition panes
 
-        $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData(0,$esrow));
+        $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
         $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey(0,$esrow));
         $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
         $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
@@ -215,7 +215,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData          = array_merge($aData, $this->_tabPublicationAccess($survey));
         $aData          = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData          = array_merge($aData, $this->_tabTokens($esrow));
-        $aData          = array_merge($aData, $this->_tabPanelIntegration($esrow));
+        $aData          = array_merge($aData, $this->_tabPanelIntegration($survey));
         $aData          = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
 
         $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
@@ -1601,30 +1601,28 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
-    private function _getTextEditData($iSurveyID, $esrow){
+    /**
+     * @param Survey $survey
+     * @return array
+     */
+    private function _getTextEditData($survey){
         Yii::app()->loadHelper("admin/htmleditor");
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aData = $aTabTitles = $aTabContents = array();
         
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
         
-        if($iSurveyID !== 0){
-            $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($iSurveyID)->language;
-            array_unshift($grplangs, $baselang);
-
-            foreach ($grplangs as $i => $sLang)
-            {
-                $aLanguageData = $this->_getGeneralTemplateData($iSurveyID);
+        if($survey->sid){
+            foreach ($survey->allLanguages as $i => $sLang) {
+                $aLanguageData = $this->_getGeneralTemplateData($survey->sid);
                 // this one is created to get the right default texts fo each language
                 Yii::app()->loadHelper('database');
                 Yii::app()->loadHelper('surveytranslator');
                 
-                $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
+                $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $survey->sid, 'surveyls_language' => $sLang))->getAttributes();
 
                 $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
 
-                if ($aSurveyLanguageSettings['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
+                if ($aSurveyLanguageSettings['surveyls_language'] == $survey->language)
                 {
                     $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
                 }
@@ -1633,7 +1631,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aLanguageData['action'] = "surveygeneralsettings";
                 $aLanguageData['i'] = $i;
                 $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-                $aLanguageData['oSurvey'] = $oSurvey;
+                $aLanguageData['oSurvey'] = $survey;
                 $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aLanguageData, true);
             }
         } else {
@@ -1662,18 +1660,17 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * survey::_generalTabEditSurvey()
-    * Load "General" tab of edit survey screen.
-    * @param mixed $iSurveyID
-    * @param mixed $esrow
-    * @return
-    */
-    private function _generalTabEditSurvey($iSurveyID, $esrow)
+     * survey::_generalTabEditSurvey()
+     * Load "General" tab of edit survey screen.
+     * @param Survey $survey
+     * @return mixed
+     */
+    private function _generalTabEditSurvey($survey)
     {
-        $aData['esrow'] = $esrow;
+        $aData['survey'] = $survey;
 
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
-        $beforeSurveySettings->set('survey', $iSurveyID);
+        $beforeSurveySettings->set('survey', $survey->sid);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
         $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
         return $aData;
@@ -1754,10 +1751,14 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
-    private function _tabPanelIntegration($iSurveyID, $esrow)
+    /**
+     * @param Survey $survey
+     * @return array
+     */
+    private function _tabPanelIntegration($survey)
     {
         $aData = array();
-        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
+        $oResult = Question::model()->getQuestionsWithSubQuestions($survey->sid, $survey->language, "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
         $aData['questions'] = $oResult;
         return $aData;
     }
@@ -1765,10 +1766,10 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * survey::_tabResourceManagement()
      * Load "Resources" tab.
-     * @param mixed $iSurveyID
-     * @return
+     * @param Survey $survey
+     * @return mixed
      */
-    private function _tabResourceManagement($iSurveyID, $esrow)
+    private function _tabResourceManagement($survey)
     {
         global $sCKEditorURL;
 
@@ -1780,7 +1781,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $disabledIfNoResources = '';
-        if (hasResources($iSurveyID, 'survey') === false)
+        if (hasResources($survey->sid, 'survey') === false)
         {
             $disabledIfNoResources = " disabled='disabled'";
         }
