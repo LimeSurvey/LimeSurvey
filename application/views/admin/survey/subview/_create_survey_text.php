@@ -1,6 +1,8 @@
 <?php
 /**
 * General container for create survey action
+ * @var AdminController $this
+ * @var Survey $oSurvey
 */
 ?>
 
