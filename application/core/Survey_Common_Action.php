@@ -764,7 +764,7 @@ class Survey_Common_Action extends CAction
             /** @var Survey $oSurvey */
             $oSurvey = $aData['oSurvey'];
             $gid = isset($aData['gid'])?$aData['gid']:null;
-
+            $aData['baselang'] = $oSurvey->language;
             App()->getClientScript()->registerPackage('js-cookie');
 
             //Parse data to send to view
