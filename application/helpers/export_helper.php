@@ -509,14 +509,13 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
 */
 function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
 
-    $bDataAnonymized=(Survey::model()->findByPk($iSurveyID)->anonymized=='Y');
-    $tokensexist=tableExists('tokens_'.$iSurveyID);
+    $survey = Survey::model()->findByPk($iSurveyID);
 
     #See if tokens are being used
     $query = App()->db->createCommand();
-    $query->from('{{survey_' . $iSurveyID . '}} s');
+    $query->from($survey->responsesTableName . ' s');
     $columns = array('s.*');
-    if (isset($tokensexist) && $tokensexist == true && !$bDataAnonymized && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
+    if ($survey->hasTokensTable && !$survey->isAnonymized && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) {
         $tokenattributes=array_keys(getTokenFieldsAndNames($iSurveyID,false));
         foreach ($tokenattributes as $attributefield) {
             //Drop the token field, since it is in the survey too
@@ -525,7 +524,7 @@ function SPSSGetQuery($iSurveyID, $limit = null, $offset = null) {
             }
         }
 
-        $query->leftJoin('{{tokens_' . $iSurveyID . '}} t',  App()->db->quoteColumnName('s.token') . ' = ' .  App()->db->quoteColumnName('t.token'));
+        $query->leftJoin($survey->tokensTableName .' t',  App()->db->quoteColumnName('s.token') . ' = ' .  App()->db->quoteColumnName('t.token'));
         //LEFT JOIN {{tokens_$iSurveyID}} t ON ";
     }
     $query->select($columns);

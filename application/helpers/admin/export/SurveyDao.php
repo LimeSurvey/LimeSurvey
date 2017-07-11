@@ -101,15 +101,15 @@ class SurveyDao
     {
 
         // Get info about the survey
-        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
+        $aSelectFields=Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
         // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField)
-           $sField ="{{survey_{$survey->id}}}.".$sField;
-        $oRecordSet = Yii::app()->db->createCommand()->from('{{survey_' . $survey->id . '}}');
+           $sField =$survey->responsesTableName.".".$sField;
+        $oRecordSet = Yii::app()->db->createCommand()->from($survey->responsesTableName);
         if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id,'tokens','read'))
         {
-            $oRecordSet->leftJoin('{{tokens_' . $survey->id . '}} tokentable','tokentable.token={{survey_' . $survey->id . '}}.token');
-            $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . $survey->id . '}}')->getColumnNames();
+            $oRecordSet->leftJoin($survey->tokensTableName.' tokentable','tokentable.token=' . $survey->tokensTableName . '.token');
+            $aTokenFields=Yii::app()->db->schema->getTable($survey->tokensTableName)->getColumnNames();
             foreach ($aTokenFields as &$sField)
                $sField ="tokentable.".$sField;
             $aSelectFields=array_merge($aSelectFields,array_diff($aTokenFields, array('tokentable.token')));
@@ -118,7 +118,7 @@ class SurveyDao
         }
         if ($survey->info['savetimings']=="Y") {
             $oRecordSet->leftJoin($survey->timi." survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
-            $aTimingFields=Yii::app()->db->schema->getTable($oSurvey->hasTimingsTable)->getColumnNames();
+            $aTimingFields=Yii::app()->db->schema->getTable($survey->hasTimingsTable)->getColumnNames();
             foreach ($aTimingFields as &$sField)
                $sField ="survey_timings.".$sField;
             $aSelectFields=array_merge($aSelectFields,array_diff($aTimingFields, array('survey_timings.id')));
@@ -130,7 +130,7 @@ class SurveyDao
             'min'=>$iMinimum,
             'max'=>$iMaximum
         );
-        $selection = '{{survey_' . $survey->id . '}}.id >= :min AND {{survey_' . $survey->id . '}}.id <= :max';
+        $selection = $survey->responsesTableName.'.id >= :min AND ' . $survey->responsesTableName . '.id <= :max';
         $oRecordSet->where($selection, $aParams);
 
         if(is_string($sFilter) && $sFilter)
@@ -154,7 +154,7 @@ class SurveyDao
                 // Do nothing, all responses
                 break;
         }
-        $oRecordSet->order='{{survey_' . $survey->id . '}}.id ASC';
+        $oRecordSet->order=$survey->responsesTableName . '.id ASC';
         $survey->responses=$oRecordSet->select($aSelectFields)->query();
     }
 }

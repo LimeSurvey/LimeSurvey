@@ -177,7 +177,7 @@ class SurveyDynamic extends LSActiveRecord
     {
         $newCriteria = new CDbCriteria();
         $criteria = $this->getCommandBuilder()->createCriteria($condition);
-        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . self::$sid  . '}}')->getColumnNames();
+        $aSelectFields=Yii::app()->db->schema->getTable(self::$survey->responsesTableName)->getColumnNames();
         $aSelectFields=array_diff($aSelectFields, array('token'));
         $aSelect=array();
         $alias = $this->getTableAlias();
