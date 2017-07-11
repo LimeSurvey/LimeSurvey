@@ -9,12 +9,17 @@
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <?php
 
-    if ($adding) {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Add a new question")));
-    } elseif($copying) {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Copy question")));
-    } else {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
+    if ($adding)
+    {
+       // $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Add a new question")));
+    }
+    elseif($copying)
+    {
+       // $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Copy question")));
+    }
+    else
+    {
+       // $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
     }
     ?>
     <!-- Page Title-->

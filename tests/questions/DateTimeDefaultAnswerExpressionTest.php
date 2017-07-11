@@ -124,6 +124,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     {
         global $thissurvey;
         $thissurvey = self::$surveyId;
+        $survey = \Survey::model()->findByPk(self::$surveyId);
 
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
 

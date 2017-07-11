@@ -591,7 +591,7 @@ function transferlabels()
                                 tablerows=tablerows+
                                 '<tr class="row_'+k+'" >'+
                                 '   <td>'+
-                                '       <span class="fa fa-move"></span>'+
+                                '       <span class="fa fa-bars bigIcons"></span>'+
                                 '   </td>'+
                                 '   <td>'+
                                 '       <input class="code second-in-answerjs form-control input-lg" onkeypress="return goodchars(event,\'1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWZYZ_\')" type="text" maxlength="5" size="20" value="'+htmlspecialchars(lsrows[k].code)+'" />'+

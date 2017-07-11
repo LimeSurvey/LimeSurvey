@@ -37,7 +37,7 @@
             <div class='form-group'>
                 <div class='col-sm-12 text-center'>
                     <button class='btn btn-success' id='btnSaveParams'>
-                        <span class="fa fa-ok"></span>
+                        <span class="fa fa-floppy-o"></span>
                         <?php eT('Save'); ?>
                     </button>
                     <button class='btn btn-danger' id='btnCancelParams'><?php eT('Cancel'); ?></button>

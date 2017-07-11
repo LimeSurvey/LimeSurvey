@@ -216,7 +216,7 @@
             <?php if(isset($token_bar['savebutton']['form'])):?>
 
                 <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
-                    <span class="fa fa-ok" ></span>
+                    <span class="fa fa-floppy-o" ></span>
                     <?php eT("Save");?>
                 </a>
             <?php endif;?>

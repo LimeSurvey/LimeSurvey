@@ -117,8 +117,8 @@ class SurveyDao
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.token';
         }
         if ($survey->info['savetimings']=="Y") {
-            $oRecordSet->leftJoin("{{survey_" . $survey->id . "_timings}} survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
-            $aTimingFields=Yii::app()->db->schema->getTable("{{survey_" . $survey->id . "_timings}}")->getColumnNames();
+            $oRecordSet->leftJoin($survey->timi." survey_timings", "{{survey_" . $survey->id . "}}.id = survey_timings.id");
+            $aTimingFields=Yii::app()->db->schema->getTable($oSurvey->hasTimingsTable)->getColumnNames();
             foreach ($aTimingFields as &$sField)
                $sField ="survey_timings.".$sField;
             $aSelectFields=array_merge($aSelectFields,array_diff($aTimingFields, array('survey_timings.id')));

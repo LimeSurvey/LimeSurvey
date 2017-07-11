@@ -1,7 +1,8 @@
 <?php
 /**
  * Survey default view
- *
+ * @var AdminController $this
+ * @var Survey $oSurvey
  */
  $count= 0;
 
@@ -9,7 +10,7 @@
 $templates = Template::getTemplateListWithPreviews();
 //print_r($templates);
 $count = 0;
-$surveyid = $surveyinfo['sid'];
+$surveyid = $oSurvey->sid;
 
      $surveylocale = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
      // EDIT SURVEY SETTINGS BUTTON
@@ -21,7 +22,7 @@ $surveyid = $surveyinfo['sid'];
 
 
 ?>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
+    <?php //$this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
     <div id="survey-action-title" class="h3 pagetitle">
     <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">
@@ -75,18 +76,18 @@ $surveyid = $surveyinfo['sid'];
                     <div class="col-sm-6">
 
                         <!-- Switch : Show questions group by group -->
-                        <?php $switchvalue = ($surveyinfo['format']=='G') ? 1 : 0 ; ?>
+                        <?php $switchvalue = ($oSurvey->format=='G') ? 1 : 0 ; ?>
                         <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                             <div class="row">
                                 <div class="col-sm-12">
 
                                     <label for="switch"><?php eT('Format:');?></label>
                                     <div id='switchchangeformat' class="btn-group" role="group">
-                                      <button id='switch' type="button" data-value='S' class="btn btn-default <?php if($surveyinfo['format']=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>
-                                      <button type="button" data-value='G' class="btn btn-default <?php if($surveyinfo['format']=='G'){echo 'active';}?>"><?php eT('Group by group');?></button>
-                                      <button type="button" data-value='A' class="btn btn-default <?php if($surveyinfo['format']=='A'){echo 'active';}?>"><?php eT('All in one');?></button>
+                                      <button id='switch' type="button" data-value='S' class="btn btn-default <?php if($oSurvey->format=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>
+                                      <button type="button" data-value='G' class="btn btn-default <?php if($oSurvey->format=='G'){echo 'active';}?>"><?php eT('Group by group');?></button>
+                                      <button type="button" data-value='A' class="btn btn-default <?php if($oSurvey->format=='A'){echo 'active';}?>"><?php eT('All in one');?></button>
                                     </div>
-                                    <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$surveyinfo['sid']);?>" />
+                                    <input type="hidden" id="switch-url" data-url="<?php echo $this->createUrl("admin/survey/sa/changeFormat/surveyid/".$oSurvey->sid);?>" />
                                     <br/><br/>
 
                                 </div>
@@ -109,7 +110,7 @@ $surveyid = $surveyinfo['sid'];
                                                 <div class="panel-body-ico">
                                                     <a  href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-							<span class="sr-only"><?php eT('Add new group');?></span>
+							                            <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
@@ -129,7 +130,7 @@ $surveyid = $surveyinfo['sid'];
                                                 <div class="panel-body-ico">
                                                     <a href="#" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip">
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-							<span class="sr-only"><?php eT('Add new question');?></span>
+							                            <span class="sr-only"><?php eT('Add new question');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
@@ -144,23 +145,23 @@ $surveyid = $surveyinfo['sid'];
                                     </div>
 
                                     <!-- survey is not active, and user has permissions, so buttons are shown and active -->
-                                <?php elseif(Permission::model()->hasSurveyPermission($surveyinfo['sid'],'surveycontent','create')): ?>
+                                <?php elseif(Permission::model()->hasSurveyPermission($oSurvey->sid,'surveycontent','create')): ?>
 
                                     <!-- Add group -->
                                     <div class="col-sm-6">
-                                        <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>">
+                                        <div class="panel panel-primary panel-clickable" id="panel-1" data-url="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>">
                                             <div class="panel-heading">
                                                 <div class="panel-title h4"><?php eT('Add group');?></div>
                                             </div>
                                             <div class="panel-body">
                                                 <div class="panel-body-ico">
-                                                    <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>" >
+                                                    <a  href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>" >
                                                         <span class="icon-add text-success"  style="font-size: 3em;"></span>
-							<span class="sr-only"><?php eT('Add new group');?></span>
+							                            <span class="sr-only"><?php eT('Add new group');?></span>
                                                     </a>
                                                 </div>
                                                 <div  class="panel-body-link">
-                                                    <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Add new group');?></a></p>
+                                                    <p><a href="<?php echo $this->createUrl("admin/questiongroups/sa/add/surveyid/".$oSurvey->sid); ?>"><?php eT('Add new group');?></a></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -195,19 +196,19 @@ $surveyid = $surveyinfo['sid'];
                                         <!-- Survey has a group, so can add a question -->
                                     <?php else:?>
                                         <div class="col-sm-6">
-                                            <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>">
+                                            <div class="panel panel-primary panel-clickable" id="panel-2" data-url="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$oSurvey->sid); ?>">
                                                 <div class="panel-heading">
                                                     <div class="panel-title h4"><?php eT('Add question');?></div>
                                                 </div>
                                                 <div class="panel-body">
                                                     <div class="panel-body-ico">
-                                                        <a  href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>" >
+                                                        <a  href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$oSurvey->sid); ?>" >
                                                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
 							    <span class="sr-only"><?php eT('Add question');?></span>
                                                         </a>
                                                     </div>
                                                     <div  class="panel-body-link">
-                                                        <p><a href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyinfo['sid']); ?>"><?php eT("Add new question"); ?></a></p>
+                                                        <p><a href="<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$oSurvey->sid); ?>"><?php eT("Add new question"); ?></a></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -222,19 +223,19 @@ $surveyid = $surveyinfo['sid'];
 
                                 <!-- Edit text elements and general settings -->
                                 <?php if($surveylocale && $surveysettings): ?>
-                                    <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>">
+                                    <div class="panel panel-primary panel-clickable" id="panel-3" data-url="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$oSurvey->sid); ?>">
                                         <div class="panel-heading">
                                             <div class="panel-title h4"><?php eT('Edit text elements and general settings');?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
-                                                <a  href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>" >
+                                                <a  href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$oSurvey->sid); ?>" >
                                                     <span class="icon-edit text-success"  style="font-size: 3em;"></span>
 						    <span class="sr-only"><?php eT('Edit text elements and general settings');?></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
-                                                <p><a href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$surveyinfo['sid']); ?>"><?php eT('Edit text elements and general settings');?></a></p>
+                                                <p><a href="<?php echo $this->createUrl("admin/survey/sa/editlocalsettings/surveyid/".$oSurvey->sid); ?>"><?php eT('Edit text elements and general settings');?></a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -262,20 +263,20 @@ $surveyid = $surveyinfo['sid'];
                             <!-- Stats -->
                             <?php if($respstatsread && $activated=="Y"):?>
                                 <div class="col-sm-6">
-                                    <div class="panel panel-primary panel-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>">
+                                    <div class="panel panel-primary panel-clickable" id="panel-4" data-url="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
                                         <div class="panel-heading">
                                             <div class="panel-title h4"><?php eT("Statistics");?></div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
-                                                <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>" >
+                                                <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>" >
                                                     <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
 						    <span class="sr-only"><?php eT("Statistics");?></span>
                                                 </a>
                                             </div>
                                             <div  class="panel-body-link">
                                                 <p>
-                                                    <a href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$surveyinfo['sid']); ?>">
+                                                    <a href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>">
                                                         <?php eT("Responses & statistics");?>
                                                     </a>
                                                 </p>
@@ -315,7 +316,7 @@ $surveyid = $surveyinfo['sid'];
                             <!-- Template carroussel -->
                             <?php $this->renderPartial( "/admin/survey/subview/_template_carousel", array(
                                 'templates'=>$templates,
-                                'surveyinfo'=>$surveyinfo,
+                                'oSurvey'=>$oSurvey,
                                 'iSurveyId'=>$surveyid,
                             )); ?>
                         <?php endif; ?>
@@ -342,7 +343,7 @@ $surveyid = $surveyinfo['sid'];
         <!-- Survey summary -->
         <div class="col-sm-12 h3 pagetitle"><?php eT('Survey summary'); ?></div>
 
-        <div class="col-sm-12 h4"><?php echo flattenText($surveyinfo['surveyls_title'])." (".gT("ID")." ".$surveyinfo['sid'].")";?></div>
+        <div class="col-sm-12 h4"><?php echo flattenText($oSurvey->currentLanguageSettings->surveyls_title)." (".gT("ID")." ".$oSurvey->sid.")";?></div>
         <div class="col-md-12 col-lg-6">
             <div class="panel panel-default">
                 <!-- Default panel contents -->
@@ -355,10 +356,10 @@ $surveyid = $surveyinfo['sid'];
                     <li class="list-group-item">
                         <div class="ls-flex-row col-12">
                             <div class="col-4">
-                                <?php echo getLanguageNameFromCode($surveyinfo['language'],false); ?>  <?php eT('(Base language)');?>:
+                                <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>  <?php eT('(Base language)');?>:
                             </div>
                             <div class="col-8">
-                                <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$surveyinfo['language'])); ?>
+                                <?php $tmp_url = $this->createAbsoluteUrl("survey/index",array("sid"=>$oSurvey->sid,"lang"=>$oSurvey->language)); ?>
                                 <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
                             </div>
                         </div>
@@ -371,7 +372,7 @@ $surveyid = $surveyinfo['sid'];
                                 <?php echo getLanguageNameFromCode($langname,false).":";?>
                             </div>
                             <div class="col-8">
-                                <?php $tmp_url = $this->createAbsoluteUrl("/survey/index",array("sid"=>$surveyinfo['sid'],"lang"=>$langname)); ?>
+                                <?php $tmp_url = $this->createAbsoluteUrl("/survey/index",array("sid"=>$oSurvey->sid,"lang"=>$langname)); ?>
                                 <a href='<?php echo $tmp_url?>' target='_blank'><?php echo $tmp_url; ?></a>
                             </div>
                         </div>
@@ -408,9 +409,9 @@ $surveyid = $surveyinfo['sid'];
                             </div>
                             <div class="col-8">
                                 <?php
-                                    if (trim($surveyinfo['surveyls_description']) != '')
+                                    if (trim($oSurvey->currentLanguageSettings->surveyls_description) != '')
                                     {
-                                        templatereplace(flattenText($surveyinfo['surveyls_description']));
+                                        templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_description));
                                         echo LimeExpressionManager::GetLastPrettyPrintExpression();
                                     }
                                 ?>
@@ -425,7 +426,7 @@ $surveyid = $surveyinfo['sid'];
                             </div>
                             <div class="col-8">
                                 <?php
-                                    templatereplace(flattenText($surveyinfo['surveyls_welcometext']));
+                                    templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_welcometext));
                                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
                                 ?>
                             </div>
@@ -440,7 +441,7 @@ $surveyid = $surveyinfo['sid'];
                             </div>
                             <div class="col-8">
                                     <?php
-                                    templatereplace(flattenText($surveyinfo['surveyls_endtext']));
+                                    templatereplace(flattenText($oSurvey->currentLanguageSettings->surveyls_endtext));
                                     echo LimeExpressionManager::GetLastPrettyPrintExpression();
                                 ?>
                             </div>
@@ -460,7 +461,7 @@ $surveyid = $surveyinfo['sid'];
                             <strong><?php eT("Administrator:");?></strong>
                         </div>
                         <div class="col-8">
-                                <?php echo flattenText("{$surveyinfo['admin']} ({$surveyinfo['adminemail']})");?>
+                                <?php echo flattenText("{$oSurvey->admin} ({$oSurvey->adminemail})");?>
                         </div>
                     </div>
                 </li>
@@ -471,7 +472,7 @@ $surveyid = $surveyinfo['sid'];
                             <strong><?php eT("Fax to:");?></strong>
                         </div>
                         <div class="col-8">
-                            <?php echo flattenText($surveyinfo['faxto']);?>
+                            <?php echo flattenText($oSurvey->faxto);?>
                         </div>
                     </div>
                 </li>
@@ -522,7 +523,7 @@ $surveyid = $surveyinfo['sid'];
                             <strong><?php eT("Template:");?></strong>
                         </div>
                         <div class="col-8">
-                            <?php $templatename = $surveyinfo['template'];
+                            <?php $templatename = $oSurvey->template;
                             if (Permission::model()->hasGlobalPermission('templates','read'))
                             {
                                 $templateurl_url = $this->createAbsoluteUrl("admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome",array('templatename'=>$templatename)); ?>

@@ -474,18 +474,16 @@ function activateSurvey($iSurveyID, $simulate = false)
         }
     }
 
-    if ($oSurvey->savetimings == "Y")
-    {
+    if ($oSurvey->savetimings == "Y") {
         $timingsfieldmap = createTimingsFieldMap($iSurveyID,"full",false,false,$oSurvey->language);
 
         $aTimingTableDefinition = array();
         $aTimingTableDefinition['id'] = $aTableDefinition['id'];
-        foreach ($timingsfieldmap as $field=>$fielddata)
-        {
+        foreach ($timingsfieldmap as $field=>$fielddata) {
             $aTimingTableDefinition[$field] = 'FLOAT';
         }
 
-        $sTableName = "{{survey_{$iSurveyID}_timings}}";
+        $sTableName = $oSurvey->hasTimingsTable;
         try
         {
             Yii::app()->db->createCommand()->createTable($sTableName,$aTimingTableDefinition);
