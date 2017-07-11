@@ -53,11 +53,11 @@ class Template extends LSActiveRecord
             array('owner_id, extends_templates_id', 'numerical', 'integerOnly'=>true),
             array('name, author', 'length', 'max'=>150),
             array('author_email, author_url', 'length', 'max'=>255),
-            array('version, path', 'length', 'max'=>45),
+            array('version, folder', 'length', 'max'=>45),
             array('creation_date, copyright, license, description, last_update', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, name, creation_date, author, author_email, author_url, copyright, license, version, description, last_update, path, owner_id, extends_templates_id', 'safe', 'on'=>'search'),
+            array('id, name, creation_date, author, author_email, author_url, copyright, license, version, description, last_update, folder, owner_id, extends_templates_id', 'safe', 'on'=>'search'),
         );
     }
 
@@ -89,7 +89,7 @@ class Template extends LSActiveRecord
             'version' => 'Version',
             'description' => 'Description',
             'last_update' => 'Last Update',
-            'path' => 'Path',
+            'folder' => 'folder',
             'owner_id' => 'Owner',
             'extends_templates_id' => 'Extends Templates',
         );
@@ -125,7 +125,7 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate  = self::model()->find('name=:name', array(':name'=>$sTemplateName));
 
-        if(is_object($oTemplate) && is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->path.DIRECTORY_SEPARATOR.'config.xml')) {
+        if(is_object($oTemplate) && is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
             return $sTemplateName;
         }
 
@@ -168,10 +168,10 @@ class Template extends LSActiveRecord
         $oTemplate  = self::model()->find('name=:name', array(':name'=>$sTemplateName));
 
         if (self::isStandardTemplate($sTemplateName)) {
-            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->path;
+            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
         }
         else {
-            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->path;
+            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
         }
     }
 
@@ -232,10 +232,10 @@ class Template extends LSActiveRecord
 
         if (is_object($oTemplate)){
             if (self::isStandardTemplate($sTemplateName)) {
-                return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$oTemplate->path.'/';
+                return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$oTemplate->folder.'/';
             }
             else {
-                return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$oTemplate->path.'/';
+                return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$oTemplate->folder.'/';
             }
         }else{
             return '';
@@ -263,7 +263,7 @@ class Template extends LSActiveRecord
             $oTemplate  = self::model()->find('name=:name', array(':name'=>$sTemplateName));
 
             if (is_object($oTemplate)){
-                $aTemplateList[$sTemplateName] = $standardTemplateRootDir.DIRECTORY_SEPARATOR.$oTemplate->path;
+                $aTemplateList[$sTemplateName] = $standardTemplateRootDir.DIRECTORY_SEPARATOR.$oTemplate->folder;
             }
         }
 
@@ -275,7 +275,8 @@ class Template extends LSActiveRecord
                     && $sTemplatePath != ".." && $sTemplatePath!=".svn"
                     && (file_exists("{$sUserTemplateRootDir}/{$sTemplatePath}/config.xml"))) {
 
-                    $oTemplate  = self::model()->find('path=:path', array(':path'=>$sTemplatePath));
+                    // TODO: explode $sTemplatePath
+                    $oTemplate  = self::model()->find('folder=:folder', array(':folder'=>$sTemplatePath));
 
                     if (is_object($oTemplate)){
                         $aTemplateList[$oTemplate->name] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
@@ -307,8 +308,8 @@ class Template extends LSActiveRecord
             $oTemplate  = self::model()->find('name=:name', array(':name'=>$sTemplateName));
 
             if (is_object($oTemplate)) {
-                $aTemplateList[$sTemplateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$oTemplate->path;
-                $aTemplateList[$sTemplateName]['preview']   = $standardtemplaterooturl.'/'.$oTemplate->path.'/preview.png';
+                $aTemplateList[$sTemplateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$oTemplate->folder;
+                $aTemplateList[$sTemplateName]['preview']   = $standardtemplaterooturl.'/'.$oTemplate->folder.'/preview.png';
             }
         }
 
@@ -318,7 +319,7 @@ class Template extends LSActiveRecord
                 if (!is_file("$usertemplaterootdir/$sTemplatePath") && $sTemplatePath != "." && $sTemplatePath != ".." && $sTemplatePath!=".svn") {
 
 
-                    $oTemplate  = self::model()->find('path=:path', array(':path'=>$sTemplatePath));
+                    $oTemplate  = self::model()->find('folder=:folder', array(':folder'=>$sTemplatePath));
 
                     if (is_object($oTemplate)){
                         $aTemplateList[$oTemplate->name]['directory'] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
@@ -444,7 +445,7 @@ class Template extends LSActiveRecord
         $criteria->compare('version',$this->version,true);
         $criteria->compare('description',$this->description,true);
         $criteria->compare('last_update',$this->last_update,true);
-        $criteria->compare('path',$this->path,true);
+        $criteria->compare('folder',$this->folder,true);
         $criteria->compare('owner_id',$this->owner_id);
         $criteria->compare('extends_templates_id',$this->extends_templates_id);
 
