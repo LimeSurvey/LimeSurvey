@@ -1,9 +1,14 @@
 <?php
-    $surveyinfo = getSurveyInfo($surveyid);
-    App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'emailtemplates.js');
-    App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'popup-dialog.css');
-    $count=0;
+/**
+ * General options
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
+App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'emailtemplates.js');
+App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'popup-dialog.css');
+$count=0;
 ?>
+
 <script type='text/javascript'>
     var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
     var sKCFinderLanguage='<?php echo sTranslateLangCode2CK(App()->language); ?>';
@@ -36,10 +41,10 @@
 <?php echo CHtml::form(array('admin/emailtemplates/sa/update/surveyid/'.$surveyid), 'post', array('name'=>'emailtemplates', 'class'=>'form-horizontal', 'id'=>'emailtemplates'));?>
 
         <ul class="nav nav-tabs">
-            <?php foreach ($grplangs as $grouplang): ?>
+            <?php foreach ($oSurvey->allLanguages as $grouplang): ?>
                 <li role="presentation" class="<?php if($count==0){ echo 'active'; $count++; }?>" >
                     <a data-toggle="tab" href='#tab-<?php echo $grouplang; ?>'><?php echo getLanguageNameFromCode($grouplang,false); ?>
-                        <?php if ($grouplang == Survey::model()->findByPk($surveyid)->language): ?>
+                        <?php if ($grouplang == $oSurvey->language): ?>
                             <?php echo ' ('.gT("Base language").')'; ?>
                             <?php endif; ?>
                     </a>
@@ -50,20 +55,17 @@
             <?php
                 $count = 0;
                 $active = 'active';
-                foreach ($grplangs as $key => $grouplang)
-                {
+                foreach ($oSurvey->allLanguages as $key => $grouplang) {
                     $bplang = $bplangs[$key];
                     $esrow = $attrib[$key];
                     $aDefaultTexts = $defaulttexts[$key];
-                    if ($ishtml == true)
-                    {
+                    if ($ishtml == true) {
                         $aDefaultTexts['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].conditionalNewlineToBreak($aDefaultTexts['admin_detailed_notification'],$ishtml);
                     }
 
                     $this->renderPartial('/admin/emailtemplates/email_language_tab', compact( 'ishtml', 'surveyid', 'grouplang', 'bplang', 'esrow', 'aDefaultTexts', 'active'));
 
-                    if($count == 0)
-                    {
+                    if($count == 0) {
                         $count++;
                         $active = '';
                     }
