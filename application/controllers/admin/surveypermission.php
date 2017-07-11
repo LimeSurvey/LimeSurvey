@@ -238,6 +238,7 @@ class surveypermission extends Survey_Common_Action {
 
 
         $aData['sidemenu']['state'] = false;
+
         $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['subaction'] = gT("Survey permissions");
 
