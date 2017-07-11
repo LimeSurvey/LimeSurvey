@@ -1,6 +1,8 @@
 <?php
 /**
  * Notificatin panel
+ * @var AdminController $this
+ * @var Survey $oSurvey
  */
 ?>
 <script type="text/javascript">
@@ -21,19 +23,19 @@
         <div class="form-group">
             <label class="col-sm-5 control-label" for='datestamp'><?php  eT("Date stamp:"); ?></label>
             <div class="col-sm-7">
-                <?php if ($esrow['active'] == "Y") { ?>
-                    <?php if ($esrow['datestamp'] != "Y") {
+                <?php if ($oSurvey->isActive) { ?>
+                    <?php if ($oSurvey->datestamp != "Y") {
                             eT("Responses will not be date stamped.");
                         } else {
                             eT("Responses will be date stamped.");
                     } ?>
                     <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                    <?php echo CHtml::hiddenField('datestamp',$esrow['datestamp']); // Maybe use a readonly dropdown? ?>
+                    <?php echo CHtml::hiddenField('datestamp',$oSurvey->datestamp); // Maybe use a readonly dropdown? ?>
                     <?php }
                     else {
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'datestamp',
-                        'value'=> $esrow['datestamp'] == "Y",
+                        'value'=> $oSurvey->datestamp == "Y",
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off'),
                         'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
@@ -56,18 +58,18 @@
         <div class="form-group">
             <label class="col-sm-5 control-label" for='ipaddr'><?php  eT("Save IP address:"); ?></label>
             <div class="col-sm-7">
-                <?php if ($esrow['active'] == "Y") {
-                    if ($esrow['ipaddr'] != "Y") {
+                <?php if ($oSurvey->isActive) {
+                    if ($oSurvey->ipaddr!= "Y") {
                         eT("Responses will not have the IP address logged.");
                     } else {
                         eT("Responses will have the IP address logged");
                     } ?>
                     <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                    <?php echo CHtml::hiddenField('ipaddr',$esrow['ipaddr']);
+                    <?php echo CHtml::hiddenField('ipaddr',$oSurvey->ipaddr);
                 } else {
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'ipaddr',
-                        'value'=> $esrow['ipaddr'] == "Y",
+                        'value'=> $oSurvey->ipaddr == "Y",
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                     ));
@@ -79,18 +81,18 @@
         <div class="form-group">
             <label class="col-sm-5 control-label" for='refurl'><?php  eT("Save referrer URL:"); ?></label>
             <div class="col-sm-7">
-                <?php if ($esrow['active'] == "Y") { ?>
-                    <?php  if ($esrow['refurl'] != "Y") {
+                <?php if ($oSurvey->isActive) { ?>
+                    <?php  if ($oSurvey->refurl != "Y") {
                             eT("Responses will not have their referring URL logged.");
                         } else {
                             eT("Responses will have their referring URL logged.");
                     } ?>
                     <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                    <?php echo CHtml::hiddenField('refurl',$esrow['refurl']);?>
+                    <?php echo CHtml::hiddenField('refurl',$oSurvey->refurl);?>
                     <?php } else {
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'refurl',
-                        'value'=> $esrow['refurl'] == "Y",
+                        'value'=> $oSurvey->refurl == "Y",
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                         ));
@@ -102,19 +104,19 @@
         <div class="form-group">
             <label class="col-sm-5 control-label" for='savetimings'><?php  eT("Save timings:"); ?></label>
             <div class="col-sm-7">
-                <?php if ($esrow['active']=="Y"): ?>
-                    <?php if ($esrow['savetimings'] != "Y"): ?>
+                <?php if ($oSurvey->isActive): ?>
+                    <?php if ($oSurvey->savetimings != "Y"): ?>
                         <?php  eT("Timings will not be saved."); ?>
                     <?php else: ?>
                         <?php  eT("Timings will be saved."); ?>
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                        <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']);  // Maybe use a readonly dropdown? ?>
+                        <?php echo CHtml::hiddenField('savetimings',$oSurvey->savetimings);  // Maybe use a readonly dropdown? ?>
                     <?php endif; ?>
                 <?php else: ?>
                     <?php
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'savetimings',
-                            'value'=> $esrow['savetimings'] == "Y",
+                            'value'=> $oSurvey->savetimings == "Y",
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
                         ));
@@ -129,7 +131,7 @@
             <div class="col-sm-7"><?php
                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'assessments',
-                    'value'=> $esrow['assessments'] == "Y",
+                    'value'=> $oSurvey->assessments == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                 ));
@@ -143,7 +145,7 @@
             <?php
                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'allowsave',
-                    'value'=> $esrow['allowsave'] == "Y",
+                    'value'=> $oSurvey->allowsave == "Y",
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                 ));
@@ -156,7 +158,7 @@
         <div class="form-group">
             <label class="col-sm-5 control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
             <div class="col-sm-7">
-                <?php echo CHtml::textField('emailnotificationto',$esrow['emailnotificationto'],array('size'=>70, 'class'=>"form-control")); ?>
+                <?php echo CHtml::textField('emailnotificationto',$oSurvey->emailnotificationto,array('size'=>70, 'class'=>"form-control")); ?>
             </div>
         </div>
 
@@ -164,7 +166,7 @@
         <div class="form-group">
             <label class="col-sm-5 control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
             <div class="col-sm-7">
-                <?php echo CHtml::textField('emailresponseto',$esrow['emailresponseto'],array('size'=>70, 'class'=>"form-control")) ?>
+                <?php echo CHtml::textField('emailresponseto',$oSurvey->emailresponseto,array('size'=>70, 'class'=>"form-control")) ?>
             </div>
         </div>
 
@@ -176,7 +178,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'googleanalyticsapikeysetting',
-                    'value'=>  $esrow['googleanalyticsapikeysetting'],
+                    'value'=>  $oSurvey->googleanalyticsapikeysetting,
                     'selectOptions'=>array(
                         "N"=>gT("None",'unescaped'),
                         "Y"=>gT("Use settings below",'unescaped'),
@@ -189,7 +191,7 @@
         <div class="form-group">
             <label class="col-sm-5 control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
             <div class="col-sm-7">
-                <?php echo CHtml::textField('googleanalyticsapikey',$esrow['googleanalyticsapikey'],array('size'=>20), array('class'=>"form-control")); ?>
+                <?php echo CHtml::textField('googleanalyticsapikey',$oSurvey->googleanalyticsapikey,array('size'=>20), array('class'=>"form-control")); ?>
             </div>
         </div>
         <!-- Google Analytics style -->
@@ -198,7 +200,7 @@
             <div class="col-sm-7">
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'googleanalyticsstyle',
-                    'value'=> $esrow['googleanalyticsstyle'] ,
+                    'value'=> $oSurvey->googleanalyticsstyle ,
                     'selectOptions'=>array(
                     "0"=>gT("Off",'unescaped'),
                     "1"=>gT("Default",'unescaped'),

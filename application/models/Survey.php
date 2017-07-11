@@ -103,6 +103,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $expiryDateFormatted Expiry date formatted according to user format
  * @property string $tokensTableName Name of survey tokens table
  * @property string $hasTokensTable Whether survey has a tokens table or not
+ * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  */
 class Survey extends LSActiveRecord
 {
