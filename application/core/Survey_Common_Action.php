@@ -914,6 +914,7 @@ class Survey_Common_Action extends CAction
     {
 
         $iSurveyID = $aData['surveyid'];
+        $survey=Survey::model()->findByPk($iSurveyID);
         // TODO : create subfunctions
         $sumresult1 = Survey::model()->with(array(
             'languagesettings' => array('condition'=>'surveyls_language=language'))
@@ -938,7 +939,7 @@ class Survey_Common_Action extends CAction
             $aData['activated'] = ($surveyinfo['active'] == 'Y');
 
             // Tokens
-            $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
+            $bTokenExists = $survey->hasTokensTable;
             if (!$bTokenExists) {
                 $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');

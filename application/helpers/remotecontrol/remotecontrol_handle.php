@@ -570,8 +570,9 @@ class remotecontrol_handle
     */
     public function get_summary($sSessionKey,$iSurveyID, $sStatName='all')
     {
-        if ($this->_checkSessionKey($sSessionKey))
-        {
+
+        if ($this->_checkSessionKey($sSessionKey)) {
+
             $aPermittedTokenStats = array(
                 'token_count',
                 'token_invalid',
@@ -598,13 +599,10 @@ class remotecontrol_handle
             {
                 $aSummary=array();
 
-                if (in_array($sStatName, $aPermittedTokenStats) || $sStatName=='all')
-                {
-                    if (tableExists('{{tokens_' . $iSurveyID . '}}'))
-                    {
+                if (in_array($sStatName, $aPermittedTokenStats) || $sStatName=='all') {
+                    if ($oSurvey->hasTokensTable) {
                         $aTokenSummary = Token::model($iSurveyID)->summary();
-                        if ($aTokenSummary)
-                        {
+                        if ($aTokenSummary) {
                             $aSummary['token_count']=$aTokenSummary['count'];
                             $aSummary['token_invalid']=$aTokenSummary['invalid'];
                             $aSummary['token_sent']=$aTokenSummary['sent'];
@@ -1671,30 +1669,23 @@ class remotecontrol_handle
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         $oSurvey=Survey::model()->findByPk($iSurveyID);
-        if (is_null($oSurvey))
-        {
+        if (is_null($oSurvey)) {
             return array('status' => 'Error: Invalid survey ID');
         }
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create'))
-        {
-            if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')) {
+            if (!Yii::app()->db->schema->getTable($oSurvey->tokensTableName))
                 return array('status' => 'No token table');
             $aDestinationFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-            foreach ($aParticipantData as &$aParticipant)
-            {
+            foreach ($aParticipantData as &$aParticipant) {
                 $token = Token::create($iSurveyID);
                 $token->setAttributes(array_intersect_key($aParticipant,$aDestinationFields));
-                if  ($bCreateToken)
-                {
+                if  ($bCreateToken) {
                     $token->generateToken();
                 }
-                if ($token->save())
-                {
+                if ($token->save()) {
                     $aParticipant = $token->getAttributes();
-                }
-                else
-                {
+                } else {
                     $aParticipant["errors"] = $token->errors;
                 }
             }

@@ -288,17 +288,15 @@ class participantsaction extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
             $surveys->permission(Yii::app()->user->getId());
 
+        /** @var Survey[] $aSurveyNames */
         $aSurveyNames = $surveys->model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
 
         /* Build a list of surveys that have tokens tables */
         $tSurveyNames=array();
-        foreach($aSurveyNames as $row)
-        {
-            $row = array_merge($row->attributes, $row->defaultlanguage->attributes);
-            $bTokenExists = tableExists('{{tokens_' . $row['sid'] . '}}');
-            if ($bTokenExists) //If tokens table exists
-            {
-                $tSurveyNames[]=$row;
+        foreach($aSurveyNames as $row) {
+            $trow = array_merge($row->attributes, $row->defaultlanguage->attributes);
+            if ($row->hasTokensTable) {
+                $tSurveyNames[]=$trow;
             }
         }
 

@@ -1576,11 +1576,12 @@ function GetNewSurveyID($iDesiredSurveyId)
 
 /**
  * @param string $sFullFilePath
+ * @return mixed
  */
 function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeFields=true)
 {
     Yii::app()->loadHelper('database');
-
+    $survey=Survey::model()->findByPk($iSurveyID);
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     $results['warnings']=array();
@@ -1603,21 +1604,18 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
     {
         // Get a list with all fieldnames in the XML
         $aXLMFieldNames=array();
-        foreach ($xml->tokens->fields->fieldname as $sFieldName )
-        {
+        foreach ($xml->tokens->fields->fieldname as $sFieldName ) {
             $aXLMFieldNames[]=(string)$sFieldName;
         }
         // Get a list of all fieldnames in the token table
-        $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyID}}",true);
+        $aTokenFieldNames=Yii::app()->db->getSchema()->getTable($survey->tokensTableName,true);
         $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate=array_diff($aXLMFieldNames, $aTokenFieldNames);
         Yii::app()->loadHelper('update/updatedb');
 
-        foreach ($aFieldsToCreate as $sField)
-        {
-            if (strpos($sField,'attribute')!==false)
-            {
-                addColumn('{{tokens_'.$iSurveyID.'}}',$sField, 'string');
+        foreach ($aFieldsToCreate as $sField) {
+            if (strpos($sField,'attribute')!==false) {
+                addColumn($survey->tokensTableName,$sField, 'string');
             }
         }
     }

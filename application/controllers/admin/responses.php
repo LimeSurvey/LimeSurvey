@@ -334,6 +334,7 @@ class responses extends Survey_Common_Action
 
     public function index($iSurveyID)
     {
+        $survey = Survey::model()->findByPk($surveyid);
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
@@ -350,9 +351,9 @@ class responses extends Survey_Common_Action
 
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
-        if (tableExists('{{tokens_' . $iSurveyID . '}}') && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+        if ($survey->hasTokensTable && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
         {
-            $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
+            $aData['with_token']= Yii::app()->db->schema->getTable($survey->tokensTableName);
             $aData['tokeninfo'] = Token::model($iSurveyID)->summary();
         }
 

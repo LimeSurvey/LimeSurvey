@@ -921,10 +921,15 @@ class Participant extends LSActiveRecord
         $aParticipantsIDChunks = array_chunk(explode(",", $sParticipantsIDs),100);
         foreach ($aParticipantsIDChunks as $aParticipantsIDs) {
             $aParticipantsIDs=$this->filterParticipantIDs($aParticipantsIDs);
-            $aSurveyIDs = Yii::app()->db->createCommand()->selectDistinct('survey_id')->from('{{survey_links}}')->where(array('in', 'participant_id', $aParticipantsIDs))->queryColumn();
+            $aSurveyIDs = Yii::app()->db->createCommand()
+                ->selectDistinct('survey_id')
+                ->from(SurveyLink::model()->tableName())
+                ->where(array('in', 'participant_id', $aParticipantsIDs))
+                ->queryColumn();
             foreach ($aSurveyIDs as $iSurveyID) {
+                $survey=Survey::model()->findByPk($iSurveyID);
                 if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'delete')) {
-                    $sTokenTable='{{tokens_'.intval($iSurveyID).'}}';
+                    $sTokenTable=$survey->tokensTableName;
                     if (Yii::app()->db->schema->getTable($sTokenTable)) {
                         Yii::app()->db->createCommand()->delete($sTokenTable, array('in', 'participant_id', $aParticipantsIDs));
                     }
@@ -1570,6 +1575,7 @@ class Participant extends LSActiveRecord
         array $addedAttributeIds,
         array $options)
     {
+        $survey=Survey::model()->findByPk($surveyId);
         $duplicate = 0;
         $successful = 0;
         $blacklistSkipped = 0;
@@ -1591,7 +1597,7 @@ class Participant extends LSActiveRecord
             }
 
             // Search for matching participant name/email in the survey token table
-            $matchingParticipant = Yii::app()->db->createCommand()->select('tid')->from('{{tokens_' . $surveyId . '}}')
+            $matchingParticipant = Yii::app()->db->createCommand()->select('tid')->from($survey->tokensTableName)
                 ->where('(firstname = :firstname AND lastname = :lastname AND email = :email) OR participant_id = :participant_id')
                 ->bindParam(":firstname", $participant['firstname'], PDO::PARAM_STR)
                 ->bindParam(":lastname", $participant['lastname'], PDO::PARAM_STR)
@@ -1647,9 +1653,9 @@ class Participant extends LSActiveRecord
 
                 Yii::app()->db
                     ->createCommand()
-                    ->insert('{{tokens_' . $surveyId . '}}', $writearray);
+                    ->insert($survey->tokensTableName, $writearray);
 
-                $insertedtokenid = getLastInsertID('{{tokens_' . $surveyId . '}}');
+                $insertedtokenid = getLastInsertID($survey->tokensTableName);
 
                 //Create a survey link for the new token entry
                 $data = array(
@@ -1657,7 +1663,7 @@ class Participant extends LSActiveRecord
                     'token_id' => $insertedtokenid,
                     'survey_id' => $surveyId,
                     'date_created' => date('Y-m-d H:i:s', time()));
-                Yii::app()->db->createCommand()->insert('{{survey_links}}', $data);
+                Yii::app()->db->createCommand()->insert(SurveyLink::model()->tableName(), $data);
 
                 //If there are new attributes created, add those values to the token entry for this participant
                 if (!empty($newAttributes)) {
@@ -1799,11 +1805,12 @@ class Participant extends LSActiveRecord
      * @return boolean|null true/false
      */
      public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
-        $val = Yii::app()->db
+         $survey=Survey::model()->findByPk($surveyId);
+         $val = Yii::app()->db
             ->createCommand()
             ->select($tokenFieldname)
             ->where('participant_id = :participant_id')
-            ->from('{{tokens_' . intval($surveyId) . '}}')
+            ->from($survey->tokensTableName)
             ->bindParam("participant_id", $participantId, PDO::PARAM_STR);
         $value2 = $val->queryRow();
 
@@ -1851,6 +1858,7 @@ class Participant extends LSActiveRecord
      */
     public function copyToCentral($surveyid, $aAttributesToBeCreated, $aMapped, $overwriteauto=false, $overwriteman=false, $createautomap=true)
     {
+        $survey=Survey::model()->findByPk($surveyid);
         $tokenid_string = Yii::app()->session['participantid']; //List of token_id's to add to participants table
         $tokenid = json_decode($tokenid_string);
         $duplicate = 0;
@@ -1894,7 +1902,7 @@ class Participant extends LSActiveRecord
                     ->createCommand()
                     ->select('participant_id,firstname,lastname,email,language')
                     ->where('tid = :tid')
-                    ->from('{{tokens_' . intval($surveyid) . '}}')
+                    ->from($survey->tokensTableName)
                     ->bindParam(":tid", $tid, PDO::PARAM_INT)
                     ->queryRow();
                 /* See if there are any existing CPDB entries that match on firstname,lastname and email */
@@ -1937,7 +1945,7 @@ class Participant extends LSActiveRecord
                     $data=array("participant_id"=>$pid);
                     Yii::app()->db
                               ->createCommand()
-                              ->update('{{tokens_'.intval($surveyid).'}}', $data, "tid = $tid");
+                              ->update($survey->tokensTableName, $data, "tid = $tid");
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {

@@ -193,7 +193,7 @@ class SurveyDynamic extends LSActiveRecord
 
         $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON $alias.token = tokens.token";
 
-        $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . self::$sid . '}}')->getColumnNames();
+        $aTokenFields=Yii::app()->db->schema->getTable(self::$survey->tokensTableName)->getColumnNames();
         $aTokenFields=array_diff($aTokenFields, array('token'));
 
         $newCriteria->select = $aTokenFields;  // Otherwise we don't get records from the token table

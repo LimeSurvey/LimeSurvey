@@ -1608,7 +1608,7 @@ class dataentry extends Survey_Common_Action
                 }
             }
 
-            $tokenTableExists = tableExists('{{tokens_'.$thissurvey['sid'].'}}');
+            $tokenTableExists = $survey->hasTokensTable;
 
             // First Check if the survey uses tokens and if a token has been provided
             if ($tokenTableExists && (!$_POST['token']))

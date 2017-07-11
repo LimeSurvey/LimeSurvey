@@ -1430,7 +1430,7 @@ class Survey extends LSActiveRecord
     public static function getSurveysWithTokenTable()
     {
         $surveys = self::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
-        $surveys = array_filter($surveys, function($s) { return tableExists('{{tokens_' . $s->sid); });
+        $surveys = array_filter($surveys, function($s) { return $s->hasTokensTable; });
         return $surveys;
     }
 
