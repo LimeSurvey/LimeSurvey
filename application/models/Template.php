@@ -67,9 +67,8 @@ class Template extends LSActiveRecord
      */
     public function relations()
     {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
+            'globalConfig' => array(self::HAS_ONE, 'TemplateConfiguration', array('templates_name' => 'name') , 'condition'=>("sid IS NULL AND gsid IS NULL") ),
         );
     }
 
