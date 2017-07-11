@@ -498,17 +498,6 @@ CREATE TABLE `prefix_surveys_languagesettings` (
   PRIMARY KEY (`surveyls_survey_id`, `surveyls_language`)
 ) ENGINE = MYISAM CHARACTER SET utf8mb4 ;
 
-
---
--- Table structure for table templates
---
-CREATE TABLE `prefix_templates` (
-  `folder` varchar(50) NOT NULL,
-  `creator` int(11) NOT NULL,
-  PRIMARY KEY (`folder`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
-
-
 --
 -- Table structure for table user_groups
 --
@@ -707,7 +696,7 @@ INSERT INTO `prefix_surveymenu_entries` VALUES
 -- -----------------------------------------------------
 -- Table `lime_templates`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lime_templates` (
+CREATE TABLE IF NOT EXISTS `prefix_templates` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(150) NOT NULL,
   `creation_date` DATE NULL,
@@ -733,7 +722,7 @@ ENGINE = MyISAM;
 -- -----------------------------------------------------
 -- Table `lime_template_configuration`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `lime_template_configuration` (
+CREATE TABLE IF NOT EXISTS `prefix_template_configuration` (
   `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `templates_id` INT(11) UNSIGNED NOT NULL,
   `gsid` INT(11) UNSIGNED NULL COMMENT 'linked survey group - optional',
@@ -754,12 +743,12 @@ CREATE TABLE IF NOT EXISTS `lime_template_configuration` (
   INDEX `fk_lime_template_configuration_lime_templates_idx` (`templates_id` ASC))
 ENGINE = MyISAM;
 
-INSERT INTO `lime_templates` (`id`, `name`, `creation_date`, `author`, `author_email`, `author_url`, `copyright`, `license`, `version`, `description`, `last_update`, `path`, `owner_id`, `extends_templates_id`) VALUES (NULL, 'Advanced template', '2017-07-11', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team
+INSERT INTO `prefix_templates` (`id`, `name`, `creation_date`, `author`, `author_email`, `author_url`, `copyright`, `license`, `version`, `description`, `last_update`, `path`, `owner_id`, `extends_templates_id`) VALUES (NULL, 'Advanced template', '2017-07-11', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team
 All rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php <br>LimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '2.0', 'LimeSurvey Advanced Template:
 Many options for user customizations.
 ', NULL, 'advanced', '0', NULL);
 
-INSERT INTO `lime_template_configuration` (`id`, `templates_id`, `gsid`, `sid`, `files_css`, `files_js`, `files_print_css`, `options`, `engine_cssframework_name`, `engine_cssframework_css`, `viewdirectory`, `filesdirectory`, `packages`, `packages-ltr`, `packages-rtl`) VALUES (NULL, '1', NULL, NULL, '{ "add":"css/template.css", "add":"css/animate.css", }', '{ "add":"scripts/template.js",}', '{"add":"css/print_template.css",}', '{ "ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake",}', 'bootstrap', '{"replace":"css/bootstrap.css","replace":"css/yiistrap.css",}', 'views', 'files', 'template-default,', 'template-default-ltr,', 'template-default-rtl,');
+INSERT INTO `prefix_template_configuration` (`id`, `templates_id`, `gsid`, `sid`, `files_css`, `files_js`, `files_print_css`, `options`, `engine_cssframework_name`, `engine_cssframework_css`, `viewdirectory`, `filesdirectory`, `packages`, `packages-ltr`, `packages-rtl`) VALUES (NULL, '1', NULL, NULL, '{ "add":"css/template.css", "add":"css/animate.css", }', '{ "add":"scripts/template.js",}', '{"add":"css/print_template.css",}', '{ "ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake",}', 'bootstrap', '{"replace":"css/bootstrap.css","replace":"css/yiistrap.css",}', 'views', 'files', 'template-default,', 'template-default-ltr,', 'template-default-rtl,');
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
