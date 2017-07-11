@@ -20,8 +20,14 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-class TemplateConfiguration extends CFormModel
+class TemplateConfiguration extends CActiveRecord
 {
+    /** @var boolean $bFromDb is the template set in db? */
+    public $bFromDb=false;
+
+    /** @var Template $oTemplate the template AR for this configuration */
+    public $oTemplate='';
+
     /** @var string $sTemplateName The template name */
     public $sTemplateName='';
 
@@ -75,6 +81,118 @@ class TemplateConfiguration extends CFormModel
 
     /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
     private $apiVersion;
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{template_configuration}}';
+    }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('templates_id', 'required'),
+            array('templates_id, gsid, sid', 'length', 'max'=>11),
+            array('engine_cssframework_name', 'length', 'max'=>45),
+            array('viewdirectory, filesdirectory', 'length', 'max'=>255),
+            array('files_css, files_js, files_print_css, options, engine_cssframework_css, packages, packages_ltr, packages_rtl', 'safe'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, templates_id, gsid, sid, files_css, files_js, files_print_css, options, engine_cssframework_name, engine_cssframework_css, viewdirectory, filesdirectory, packages, packages_ltr, packages_rtl', 'safe', 'on'=>'search'),
+        );
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'templates_id' => 'Templates',
+            'gsid' => 'Gsid',
+            'sid' => 'Sid',
+            'files_css' => 'Files Css',
+            'files_js' => 'Files Js',
+            'files_print_css' => 'Files Print Css',
+            'options' => 'Options',
+            'engine_cssframework_name' => 'Engine Cssframework Name',
+            'engine_cssframework_css' => 'Engine Cssframework Css',
+            'viewdirectory' => 'Viewdirectory',
+            'filesdirectory' => 'Filesdirectory',
+            'packages' => 'Packages',
+            'packages_ltr' => 'Packages Ltr',
+            'packages_rtl' => 'Packages Rtl',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria=new CDbCriteria;
+
+        $criteria->compare('id',$this->id,true);
+        $criteria->compare('templates_id',$this->templates_id,true);
+        $criteria->compare('gsid',$this->gsid,true);
+        $criteria->compare('sid',$this->sid,true);
+        $criteria->compare('files_css',$this->files_css,true);
+        $criteria->compare('files_js',$this->files_js,true);
+        $criteria->compare('files_print_css',$this->files_print_css,true);
+        $criteria->compare('options',$this->options,true);
+        $criteria->compare('engine_cssframework_name',$this->engine_cssframework_name,true);
+        $criteria->compare('engine_cssframework_css',$this->engine_cssframework_css,true);
+        $criteria->compare('viewdirectory',$this->viewdirectory,true);
+        $criteria->compare('filesdirectory',$this->filesdirectory,true);
+        $criteria->compare('packages',$this->packages,true);
+        $criteria->compare('packages_ltr',$this->packages_ltr,true);
+        $criteria->compare('packages_rtl',$this->packages_rtl,true);
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
+
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return TemplateConfigurationDB the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
+
 
 
     /**
@@ -85,8 +203,9 @@ class TemplateConfiguration extends CFormModel
      * @param  string $iSurveyId the id of the survey. If
      * @return $this
      */
-    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
+    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='', $iTemplateId='')
     {
+        $this->setDb($sTemplateName, $iSurveyId, $iTemplateId);             // Check if this template is set inside DB
         $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
         $this->setIsStandard();                                                 // Check if  it is a CORE template
         $this->setPath();                                                       // Check and set path
@@ -95,6 +214,28 @@ class TemplateConfiguration extends CFormModel
         $this->setThisTemplate();                                               // Set the main config values of this template
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
+    }
+
+    public function setDb($sTemplateName, $iSurveyId, $iTemplateId)
+    {
+        if (!empty($iTemplateId)){
+            $oTemplate  = Template::model()->findByPk($iTemplateId);
+        }elseif(!empty($sTemplateName)){
+            $oTemplate  = Template::model()->find('name=:name', array(':name'=>$sTemplateName));
+        }elseif(!empty($iSurveyId)){
+            // TODO: link survey to templateid, not template name
+            $oSurvey       = Survey::model()->findByPk($iSurveyId);
+            if($oSurvey) {
+                $oTemplate  = Template::model()->find('name=:name', array(':name'=>$oSurvey->template));
+            }
+        }
+
+        if (is_a($oTemplate, 'Template')){
+            $this->bFromDb = true;
+            $this->oTemplate = $oTemplate;
+        }else{
+            $this->bFromDb = false;
+        }
     }
 
     /**
