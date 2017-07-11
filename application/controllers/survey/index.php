@@ -26,6 +26,7 @@ class index extends CAction {
         global $surveyid;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
+        $survey=Survey::model()->findByPk($surveyid);
 
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
@@ -261,7 +262,7 @@ class index extends CAction {
         }
 
         //SEE IF SURVEY USES TOKENS
-        if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}')){
+        if ($surveyExists == 1 && $survey->hasTokensTable){
             $tokensexist = 1;
         }else{
             $tokensexist = 0;

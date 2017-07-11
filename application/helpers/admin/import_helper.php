@@ -1576,11 +1576,12 @@ function GetNewSurveyID($iDesiredSurveyId)
 
 /**
  * @param string $sFullFilePath
+ * @return mixed
  */
 function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeFields=true)
 {
     Yii::app()->loadHelper('database');
-
+    $survey=Survey::model()->findByPk($iSurveyID);
     $sXMLdata = file_get_contents($sFullFilePath);
     $xml = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
     $results['warnings']=array();
@@ -1603,21 +1604,18 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
     {
         // Get a list with all fieldnames in the XML
         $aXLMFieldNames=array();
-        foreach ($xml->tokens->fields->fieldname as $sFieldName )
-        {
+        foreach ($xml->tokens->fields->fieldname as $sFieldName ) {
             $aXLMFieldNames[]=(string)$sFieldName;
         }
         // Get a list of all fieldnames in the token table
-        $aTokenFieldNames=Yii::app()->db->getSchema()->getTable("{{tokens_$iSurveyID}}",true);
+        $aTokenFieldNames=Yii::app()->db->getSchema()->getTable($survey->tokensTableName,true);
         $aTokenFieldNames=array_keys($aTokenFieldNames->columns);
         $aFieldsToCreate=array_diff($aXLMFieldNames, $aTokenFieldNames);
         Yii::app()->loadHelper('update/updatedb');
 
-        foreach ($aFieldsToCreate as $sField)
-        {
-            if (strpos($sField,'attribute')!==false)
-            {
-                addColumn('{{tokens_'.$iSurveyID.'}}',$sField, 'string');
+        foreach ($aFieldsToCreate as $sField) {
+            if (strpos($sField,'attribute')!==false) {
+                addColumn($survey->tokensTableName,$sField, 'string');
             }
         }
     }
@@ -1651,17 +1649,18 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
 
 /**
  * @param string $sFullFilePath
+ * @return mixed
  */
 function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
 {
     Yii::app()->loadHelper('database');
-
+    $survey = Survey::model()->findByPk($iSurveyID);
 
     switchMSSQLIdentityInsert('survey_'.$iSurveyID, true);
     $results['responses']=0;
     $oXMLReader = new XMLReader();
     $oXMLReader->open($sFullFilePath);
-    $DestinationFields = Yii::app()->db->schema->getTable('{{survey_'.$iSurveyID.'}}')->getColumnNames();
+    $DestinationFields = Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
     while ($oXMLReader->read()) {
         if ($oXMLReader->name === 'LimeSurveyDocType' && $oXMLReader->nodeType == XMLReader::ELEMENT)
         {
@@ -1710,7 +1709,7 @@ function XMLImportResponses($sFullFilePath,$iSurveyID,$aFieldReMap=array())
     switchMSSQLIdentityInsert('survey_'.$iSurveyID,false);
     if (Yii::app()->db->getDriverName() == 'pgsql')
     {
-        try {Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('{{survey_".$iSurveyID."}}', 'id'), (SELECT MAX(id) FROM {{survey_".$iSurveyID."}}))")->execute();} catch(Exception $oException){};
+        try {Yii::app()->db->createCommand("SELECT pg_catalog.setval(pg_get_serial_sequence('".$survey->responsesTableName."', 'id'), (SELECT MAX(id) FROM ".$survey->responsesTableName."))")->execute();} catch(Exception $oException){};
     }
     return $results;
 }
