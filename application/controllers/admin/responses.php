@@ -281,7 +281,7 @@ class responses extends Survey_Common_Action
                                         case "name":
                                             $answervalue = CHtml::link(
                                                 htmlspecialchars($oPurifier->purify(rawurldecode($phparray[$index][$metadata]))),
-                                                $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$iId,"iQID"=>$fnames[$i]['qid'],"iIndex"=>$index))
+                                                $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$iSurveyID,"iResponseId"=>$iId,"iQID"=>$fnames[$i]['qid'],"iIndex"=>$index))
                                             );
                                             break;
                                         default:
@@ -316,7 +316,7 @@ class responses extends Survey_Common_Action
             $aData['menu']['view'] = true;
             $aData['menu']['close'] =  true;
             // This resets the url on the close button to go to the upper view
-            $aData['menu']['closeurl'] = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/".$iSurveyId);
+            $aData['menu']['closeurl'] = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/".$iSurveyID);
 
             $this->_renderWrappedTemplate('',$aViewUrls, $aData);
         }
@@ -334,7 +334,7 @@ class responses extends Survey_Common_Action
 
     public function index($iSurveyID)
     {
-        $survey = Survey::model()->findByPk($surveyid);
+        $survey = Survey::model()->findByPk($iSurveyID);
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
