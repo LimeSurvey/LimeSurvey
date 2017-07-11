@@ -175,12 +175,6 @@ class Survey extends LSActiveRecord
         $validator= new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
         $this->attachEventHandler("onAfterFind", array($this,'fixSurveyAttribute'));
-        if($this->isNewRecord){
-            $languageSettingsConfig = array(
-                'surveyls_language' => $this->language,
-            );
-            $languageSettings = new SurveyLanguageSetting(array());
-        }
     }
 
     /** @inheritdoc */
