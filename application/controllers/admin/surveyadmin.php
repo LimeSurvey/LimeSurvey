@@ -153,7 +153,7 @@ class SurveyAdmin extends Survey_Common_Action
         //Prepare the edition panes
 
         $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
-        $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey(0,$esrow));
+        $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey($survey));
         $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
         $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
         $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
@@ -210,13 +210,13 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData          = array();
         $aData['esrow'] = $esrow;
-        $aData          = array_merge($aData, $this->_generalTabEditSurvey($iSurveyID, $esrow));
+        $aData          = array_merge($aData, $this->_generalTabEditSurvey($survey));
         $aData          = array_merge($aData, $this->_tabPresentationNavigation($esrow));
         $aData          = array_merge($aData, $this->_tabPublicationAccess($survey));
         $aData          = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData          = array_merge($aData, $this->_tabTokens($esrow));
         $aData          = array_merge($aData, $this->_tabPanelIntegration($survey));
-        $aData          = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
+        $aData          = array_merge($aData, $this->_tabResourceManagement($survey));
 
         $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
@@ -1025,7 +1025,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyls_language'] = $esrow["surveyls_language"];
         
 
-        $generalEditArray = $this->_generalTabEditSurvey($iSurveyID, $esrow);
+        $generalEditArray = $this->_generalTabEditSurvey($survey);
 
 
         $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
@@ -1122,13 +1122,13 @@ class SurveyAdmin extends Survey_Common_Action
             $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
             $aData['esrow'] = $esrow;
 
-            $aData = array_merge($aData, $this->_generalTabEditSurvey($iSurveyID, $esrow));
+            $aData = array_merge($aData, $this->_generalTabEditSurvey($survey));
             $aData = array_merge($aData, $this->_tabPresentationNavigation($esrow));
             $aData = array_merge($aData, $this->_tabPublicationAccess($survey));
             $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
             $aData = array_merge($aData, $this->_tabTokens($esrow));
-            $aData = array_merge($aData, $this->_tabPanelIntegration($iSurveyID, $esrow));
-            $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID,$esrow));
+            $aData = array_merge($aData, $this->_tabPanelIntegration($survey));
+            $aData = array_merge($aData, $this->_tabResourceManagement($survey));
 
             $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
@@ -1766,7 +1766,7 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * survey::_tabResourceManagement()
      * Load "Resources" tab.
-     * @param Survey $survey
+     * @param Survey $survey survey
      * @return mixed
      */
     private function _tabResourceManagement($survey)
