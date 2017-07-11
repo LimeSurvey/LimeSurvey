@@ -61,17 +61,7 @@
             <css replace="css/bootstrap.css">css/bootstrap.css</css>
             <css replace="css/yiistrap.css"></css>
         </cssframework>
-        <!-- Path of the pstpl files -->
-        <pstpldirectory>views</pstpldirectory>
 
-        <!--
-            Set to yes to overwrite the question views,
-            then, just copy application/views/survey/* to template/{your_view_directory}/survey/
-            You also must allow the template to overwrite the views from your site configuration
-            In application/config/config.php, find :     'config'=>array
-            and add this line in it : 'allow_templates_to_overwrite_views'=>1
-        -->
-        <overwrite_question_views>false</overwrite_question_views>
         <!-- Path of the views files (can be different than pstpl -->
         <viewdirectory>views</viewdirectory>
 
