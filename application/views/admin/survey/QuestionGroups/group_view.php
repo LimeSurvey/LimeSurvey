@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
+?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <?php //$this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup)); ?>
     <div class="pagetitle h3"><?php eT('Group summary'); ?></div>
@@ -70,7 +76,7 @@
 
                 <!-- create question in this group -->
                 <div class="col-lg-3">
-                    <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
+                    <div class="panel panel-primary <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                         <div class="panel-heading">
                             <div class="panel-title h4"><?php eT("Add new question to group");?></div>
                         </div>

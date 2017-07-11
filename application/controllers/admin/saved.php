@@ -71,10 +71,9 @@ class saved extends Survey_Common_Action
     {
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['surveyid'] = $iSurveyId = $aData['iSurveyId'];
+        $oSurvey = Survey::model()->findByPk($aData['iSurveyId']);
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         $aData['menu']['close'] =  true;
         $aData['menu']['edition'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
@@ -83,6 +82,7 @@ class saved extends Survey_Common_Action
     /**
      * Load saved list.
      * @param mixed $iSurveyId Survey id
+     * @return array
      */
     private function _showSavedList($iSurveyId)
     {

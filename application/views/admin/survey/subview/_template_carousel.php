@@ -3,7 +3,7 @@
  * Display the template carousel
  *
  * @var $templates
- * @var $surveyinfo
+ * @var Survey $oSurvey
  * @var $iSurveyId
  */
  $count = 0;
@@ -16,10 +16,10 @@
                 <div class="h4"><?php eT('Select your template:'); ?></div>
 
                 <?php foreach($templates as $key=>$template):?>
-                    <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $surveyinfo['template']==htmlspecialchars($key) ): ?>
-                    <div class="item text-center <?php if($key==$surveyinfo['template']){echo ' active ';}else{echo ' inactive ';}?>" id="template-big-<?php echo $key;?>">
+                    <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $oSurvey->template==htmlspecialchars($key) ): ?>
+                    <div class="item text-center <?php if($key==$oSurvey->template){echo ' active ';}else{echo ' inactive ';}?>" id="template-big-<?php echo $key;?>">
                         <img class="img-responsive imgSelectTemplate" src="<?php echo $template['preview']; ?>" alt="<?php echo $key;?>">
-                            <?php if($key==$surveyinfo['template']):?>
+                            <?php if($key==$oSurvey->template):?>
                                 <button
                                     class="selectTemplate btn btn-default btn-success btn-xs disabled"
                                     data-selectedtext="<?php eT("Selected!");?>"
@@ -47,8 +47,8 @@
                     <div class="jcarousel">
                         <ul >
                             <?php foreach($templates as $key=>$template):?>
-                                <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $surveyinfo['template']==htmlspecialchars($key) ): ?>
-                                <li class="template-miniature <?php if($key==$surveyinfo['template']){echo ' active';}?>" data-big="#template-big-<?php echo $key;?>">
+                                <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $oSurvey->template==htmlspecialchars($key) ): ?>
+                                <li class="template-miniature <?php if($key==$oSurvey->template){echo ' active';}?>" data-big="#template-big-<?php echo $key;?>">
                                     <img src="<?php echo $template['preview']; ?>" alt="<?php echo $key;?>"  >
                                 </li>
                             <?php endif; ?>

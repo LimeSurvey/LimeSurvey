@@ -36,6 +36,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $additional_languages Survey additional languages delimited by space ' '
  * @property string $datestamp Whether respondents' datestamps will be saved (Y/N)
  * @property string $usecookie Are cookies used to prevent repeated participation (Y/N)
+ * @property string $allowregister Allow public registration (Y/N)
  * @property string $allowsave Is participant allowed save and resume later (Y/N)
  * @property integer $autonumber_start
  * @property integer $tokenlength Token length: MIN:5 MAX:36
@@ -102,6 +103,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $expiryDateFormatted Expiry date formatted according to user format
  * @property string $tokensTableName Name of survey tokens table
  * @property string $hasTokensTable Whether survey has a tokens table or not
+ * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  */
 class Survey extends LSActiveRecord
 {
@@ -751,35 +753,6 @@ class Survey extends LSActiveRecord
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getSurveyinfo()
-    {
-        $iSurveyID = $this->sid;
-
-        //// TODO : replace this with a HAS MANY relation !
-        $sumresult1 = Survey::model()->with(
-            array(
-                'languagesettings' => array(
-                    'condition' => 'surveyls_language = language'
-                )
-            ))->find(
-            'sid = :surveyid',
-            array(':surveyid' => $iSurveyID)
-        ); //$sumquery1, 1) ; //Checked
-        if (is_null($sumresult1))
-        {
-            Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            Yii::app()->getController()->redirect(array("admin/index"));
-        } //  if surveyid is invalid then die to prevent errors at a later time
-
-        $surveyinfo = $sumresult1->attributes;
-        $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-        $surveyinfo = array_map('flattenText', $surveyinfo);
-        //$surveyinfo["groups"] = $this->groups;
-        return $surveyinfo;
-    }
 
 
     /**

@@ -1,8 +1,9 @@
 <?php
-    /**
-    * Statistic main view
-    *
-    */
+/**
+ * Statistic main view
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
 ?>
 
 <!-- Javascript variables  -->
@@ -28,7 +29,7 @@
 
                             <div class="col-sm-6">
                                 <!-- Data Selection -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyinfo'=>$surveyinfo)) ; ?>
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage)) ; ?>
                                 <!-- Response ID -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_responseid', array()) ; ?>
                                 <!-- Output format -->

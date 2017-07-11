@@ -77,8 +77,6 @@ class responses extends Survey_Common_Action
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 
-        $aData['surveyinfo'] = $thissurvey;
-
         if (Yii::app()->request->getParam('browselang'))
         {
             $aData['language'] = Yii::app()->request->getParam('browselang');
@@ -144,7 +142,7 @@ class responses extends Survey_Common_Action
             $aViewUrls = array();
 
             $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
-            $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID);// Boolean : show (or not) the token
+            $bHaveToken=$survey->anonymized == "N" && tableExists('tokens_' . $iSurveyID);// Boolean : show (or not) the token
             if(!Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) // If not allowed to read: remove it
             {
                 unset($fieldmap['token']);
@@ -413,7 +411,7 @@ class responses extends Survey_Common_Action
             // Setting the grid
 
             // Basic variables
-            $bHaveToken                 = $aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
+            $bHaveToken                 = $survey->anonymized == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
             $aViewUrls                  = array('listResponses_view');
             $model                      =  SurveyDynamic::model($iSurveyId);
 
@@ -641,12 +639,13 @@ class responses extends Survey_Common_Action
     public function time($iSurveyID)
     {
         $aData = $this->_getData(array('iSurveyId' => $iSurveyID));
+        $survey = Survey::model()->findByPk($iSurveyID);
 
         /*
         extract($aData);
         $aViewUrls = array();
 
-        if ($aData['surveyinfo']['savetimings'] != "Y")
+        if ($survey->savetimings != "Y")
             die();
 
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked'
@@ -936,11 +935,10 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'browse.css');
 
         $iSurveyId = $aData['iSurveyId'];
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);
     }
 
