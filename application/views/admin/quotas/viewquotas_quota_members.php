@@ -49,7 +49,9 @@ if ($oQuota->action == Quota::ACTION_TERMINATE){
         <tbody>
             <?php if (!empty($aQuotaItems) && isset($aQuotaItems[$oQuota->id]) && !empty($aQuotaItems[$oQuota->id])){ ?>
                 <?php foreach($aQuotaItems[$oQuota->id] as $aQuotaItem){
-                    $this->renderPartial('/admin/quotas/viewquotas_quota_members_item',array('oSurvey'=>$oSurvey,'oQuota'=>$oQuota,'data'=>$aQuotaItem));
+                    $this->renderPartial('/admin/quotas/viewquotas_quota_members_item',array(
+                        'oQuotaMember'=>$aQuotaItem['oQuotaMember'],
+                        'data'=>$aQuotaItem));
                 }?>
             <?php } else {?>
                 <tr><td class="text-danger" colspan="3"><?php eT("No answers have been set for this quota.");?></td></tr>
