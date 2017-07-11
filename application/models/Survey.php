@@ -518,7 +518,7 @@ class Survey extends LSActiveRecord
      * @return string
      */
     public function getResponsesTableName(){
-        return '{{survey_' . $this->primaryKey . '}}';;
+        return '{{survey_' . $this->primaryKey . '}}';
     }
 
 
