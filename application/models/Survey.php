@@ -97,13 +97,32 @@ use \ls\pluginmanager\PluginEvent;
  * @property string[] $allLanguages
  * @property string[] $additionalLanguages Additional survey languages
  * @property array $tokenAttributes Additional token attribute names
- * @property bool $isActive Whether Survey is active
  * @property string $creationDate Creation date formatted according to user format
  * @property string $startDateFormatted Start date formatted according to user format
  * @property string $expiryDateFormatted Expiry date formatted according to user format
  * @property string $tokensTableName Name of survey tokens table
  * @property string $hasTokensTable Whether survey has a tokens table or not
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
+ *
+ * All Y/N columns in the model can be accessed as boolean values:
+ * @property bool $isActive Whether Survey is active
+ * @property bool $isAnonymized Whether survey is anonymized or not
+ * @property bool $isDateStamp Whether respondents' datestamps will be saved
+ * @property bool $isUseCookie Are cookies used to prevent repeated participation
+ * @property bool $isAllowRegister Allow public registration
+ * @property bool $isAallowSave Is participant allowed save and resume later
+ * @property bool $isAutoRedirect Automatically load URL when survey complete
+ * @property bool $isAllowPrev Allow backwards navigation
+ * @property bool $isPrintAnswers Participants may print answers
+ * @property bool $isIpAddr Whether Participants IP address will be saved
+ * @property bool $isRefUrl Save referrer URL
+ * @property bool $isPublicStatistics Public statistics
+ * @property bool $isPublicGraphs Show graphs in public statistics
+ * @property bool $isListPublic List survey publicly
+ * @property bool $isHtmlEmail Use HTML format for token emails
+ * @property bool $isSendConfirmation Send confirmation emails
+ * @property bool $isTokenAnswersPersistence Enable token-based response persistence
+ * @property bool $isAssessments Enable assessment mode
  */
 class Survey extends LSActiveRecord
 {
@@ -936,6 +955,127 @@ class Survey extends LSActiveRecord
     {
         return ($this->active === 'Y');
     }
+    /**
+     * @return bool
+     */
+    public function getIsAnonymized()
+    {
+        return ($this->anonymized === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsDateStamp()
+    {
+        return ($this->datestamp === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsUseCookie()
+    {
+        return ($this->usecookie === 'Y');
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsAllowRegister()
+    {
+        return ($this->allowregister === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsAallowSave()
+    {
+        return ($this->allowsave === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsAutoRedirect()
+    {
+        return ($this->autoredirect === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsAllowPrev()
+    {
+        return ($this->allowprev === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsPrintAnswers()
+    {
+        return ($this->printanswers === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsIpAddr()
+    {
+        return ($this->ipaddr === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsRrefUrl()
+    {
+        return ($this->refurl === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsPublicStatistics()
+    {
+        return ($this->publicstatistics === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsPublicGraphs()
+    {
+        return ($this->publicgraphs === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsListPublic()
+    {
+        return ($this->listpublic === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsHtmlEmail()
+    {
+        return ($this->htmlemail === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsSendConfirmation()
+    {
+        return ($this->sendconfirmation === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsTokenAnswersPersistence()
+    {
+        return ($this->tokenanswerspersistence === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsAssessments()
+    {
+        return ($this->assessments === 'Y');
+    }
+
 
     /**
      * @return array|null
