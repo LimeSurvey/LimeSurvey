@@ -36,6 +36,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $additional_languages Survey additional languages delimited by space ' '
  * @property string $datestamp Whether respondents' datestamps will be saved (Y/N)
  * @property string $usecookie Are cookies used to prevent repeated participation (Y/N)
+ * @property string $allowregister Allow public registration (Y/N)
  * @property string $allowsave Is participant allowed save and resume later (Y/N)
  * @property integer $autonumber_start
  * @property integer $tokenlength Token length: MIN:5 MAX:36
