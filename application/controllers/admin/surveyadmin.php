@@ -131,6 +131,7 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
+        $survey = new Survey();
 
         $this->_registerScriptFiles();
         Yii::app()->loadHelper('surveytranslator');
@@ -138,8 +139,8 @@ class SurveyAdmin extends Survey_Common_Action
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = getGlobalSetting('googleanalyticsapikey');
         if($globalKey != ""){
-            $esrow['googleanalyticsapikey'] = "9999useGlobal9999";
-            $esrow['googleanalyticsapikeysetting'] = "G";
+            $survey->googleanalyticsapikey = "9999useGlobal9999";
+            $survey->googleanalyticsapikeysetting = "G";
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
@@ -153,10 +154,10 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData(0,$esrow));
         $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey(0,$esrow));
-        $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation(0,$esrow));
-        $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess(0,$esrow));
-        $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement(0,$esrow));
-        $aData['tokensettingsdata']         = array_merge($aData, $this->_tabTokens(0,$esrow));
+        $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
+        $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
+        $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
+        $aData['tokensettingsdata']         = array_merge($aData, $this->_tabTokens($esrow));
 
         $aViewUrls[]          = 'newSurvey_view';
 
@@ -211,7 +212,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['esrow'] = $esrow;
         $aData          = array_merge($aData, $this->_generalTabEditSurvey($iSurveyID, $esrow));
         $aData          = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-        $aData          = array_merge($aData, $this->_tabPublicationAccess($esrow));
+        $aData          = array_merge($aData, $this->_tabPublicationAccess($survey));
         $aData          = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData          = array_merge($aData, $this->_tabTokens($esrow));
         $aData          = array_merge($aData, $this->_tabPanelIntegration($esrow));
@@ -929,9 +930,8 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->end();
         }
 
-        if( empty($menuEntry->data))
-        {
-            $templateData = call_user_func_array(array($this,$menuEntry->getdatamethod), array('surveyid'=> $iSurveyID, 'esrow' => $esrow));
+        if( empty($menuEntry->data)) {
+            $templateData = call_user_func_array(array($this,$menuEntry->getdatamethod), array('survey'=>$survey));
         } 
         else 
         {
@@ -1124,7 +1124,7 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aData = array_merge($aData, $this->_generalTabEditSurvey($iSurveyID, $esrow));
             $aData = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-            $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
+            $aData = array_merge($aData, $this->_tabPublicationAccess($survey));
             $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
             $aData = array_merge($aData, $this->_tabTokens($esrow));
             $aData = array_merge($aData, $this->_tabPanelIntegration($iSurveyID, $esrow));
@@ -1517,6 +1517,7 @@ class SurveyAdmin extends Survey_Common_Action
     * Load survey information based on $action.
     * @param string $action
     * @param mixed $iSurveyID
+     * @deprecated use Survey objects instead
     * @return
     */
     private function _fetchSurveyInfo($action, $iSurveyID=null)
@@ -1704,31 +1705,27 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * survey::_tabPublicationAccess()
     * Load "Publication * access control" tab.
-    * @param mixed $esrow
+    * @param Survey $survey
     * @return
     */
-    private function _tabPublicationAccess($esrow)
+    private function _tabPublicationAccess($survey)
     {
         $aDateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
         $startdate = '';
-        if ($esrow['startdate'])
-        {
+        if ($survey->startdate) {
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($esrow["startdate"],"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
+            $datetimeobj = new Date_Time_Converter($survey->startdate,"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
             $startdate = $datetimeobj->convert($aDateFormatDetails['phpdate'].' H:i');
         }
 
         $expires = '';
-        if ($esrow['expires'])
-        {
+        if ($survey->expires) {
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($esrow['expires'], "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
+            $datetimeobj = new Date_Time_Converter($survey->expires, "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
             $expires = $datetimeobj->convert($aDateFormatDetails['phpdate'].' H:i');
         }
         $aData['dateformatdetails']= $aDateFormatDetails;
-        $aData['esrow'] = $esrow;
-        $aData['startdate'] = $startdate;
-        $aData['expires'] = $expires;
+        $aData['survey'] = $survey;
         return $aData;
     }
 
