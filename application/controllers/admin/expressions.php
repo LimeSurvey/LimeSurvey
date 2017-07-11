@@ -44,9 +44,10 @@ class Expressions extends Survey_Common_Action {
 
             if(isset($iSurveyID))
             {
+                $survey = Survey::model()->findByPk($iSurveyID);
+
                 $aData['sidemenu']['state'] = false;
-                $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-                $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+                $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
                 if(Yii::app()->request->getQuery('gid')!='')
                 {
                     $aData['questiongroupbar']['closebutton']['url'] = $this->getController()->createUrl('admin/questiongroups/sa/view/',['surveyid'=> $surveyid, 'gid'=> sanitize_int(Yii::app()->request->getQuery('gid'))]);

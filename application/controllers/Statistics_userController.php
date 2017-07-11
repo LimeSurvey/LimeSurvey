@@ -50,14 +50,17 @@ class Statistics_userController extends SurveyController {
     /**
      * @param int $surveyid
      * @param string $language
+     * @throws CHttpException
      */
     public function actionAction($surveyid,$language=null)
     {
         $sLanguage = $language;
+        $survey = Survey::model()->findByPk($surveyid);
+
         $this->sLanguage = $language;
 
-        $iSurveyID = (int) $surveyid;
-        $this->iSurveyID = (int) $surveyid;
+        $iSurveyID = (int) $survey->sid;
+        $this->iSurveyID = $survey->sid;
 
         //$postlang = returnglobal('lang');
         //~ Yii::import('application.libraries.admin.progressbar',true);
@@ -199,13 +202,12 @@ class Statistics_userController extends SurveyController {
         $totalrecords = 0;
 
         //count number of answers
-        $query = "SELECT count(*) FROM {{survey_".intval($iSurveyID)."}}";
+        $query = "SELECT count(*) FROM ".$survey->responsesTableName;
 
         //if incompleted answers should be filtert submitdate has to be not null
         //this setting is taken from config-defaults.php
-        if (Yii::app()->getConfig("filterout_incomplete_answers") == true)
-        {
-            $query .= " WHERE {{survey_".intval($iSurveyID)."}}.submitdate is not null";
+        if (Yii::app()->getConfig("filterout_incomplete_answers") == true) {
+            $query .= " WHERE ".$survey->responsesTableName.".submitdate is not null";
         }
         $result = Yii::app()->db->createCommand($query)->queryAll();
 

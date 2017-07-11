@@ -28,6 +28,7 @@ class SurveyRuntimeHelper {
     // Preview datas
     private $previewquestion     = false;
     private $previewgrp          = false;
+    private $preview             = false;
 
     // Template datas
     private $oTemplate;                                                         // Template configuration object (set in model TemplateConfiguration)
@@ -155,7 +156,7 @@ class SurveyRuntimeHelper {
                         continue;
                     }
 
-                    $qidattributes = getQuestionAttributeValues($ia[0]);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
 
                     if ($ia[4] != '*' && ($qidattributes === false || !isset($qidattributes['hidden']) || $qidattributes['hidden'] == 1)){
                         continue;
@@ -334,13 +335,11 @@ class SurveyRuntimeHelper {
                 $lastgrouparray  = explode("X", $qa[7]);
                 $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
                 $lastanswer      = $qa[7];
-                $n_q_display     = '';
 
                 if ($qinfo['hidden'] && $qinfo['info']['type'] != '*'){
                     continue; // skip this one
                 }
 
-                $aReplacement = array();
                 $question     = $qa[0];
 
                 //===================================================================
@@ -1171,7 +1170,6 @@ class SurveyRuntimeHelper {
             $aLSJavascriptVar['showpopup']     = (int)Yii::app()->getConfig('showpopups');
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
-            $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
             App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD, array("class"=>"toRemoveOnAjax"));
             App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN,  array("class"=>"toRemoveOnAjax"));                 // Ensure all js var is set before rendering the page (User can click before $.ready)
         }
@@ -1217,7 +1215,7 @@ class SurveyRuntimeHelper {
         /* Need actual EM status */
         $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($iQid);
         /* Allow Question Attribute to update some part */
-        $aQuestionAttributes = getQuestionAttributeValues($iQid);
+        $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($iQid);
 
         $iSurveyId=Yii::app()->getConfig('surveyID');// Or : by SGQA of question ? by Question::model($iQid)->sid;
         //~ $oSurveyId=Survey::model()->findByPk($iSurveyId); // Not used since 2.50
@@ -1431,7 +1429,7 @@ class SurveyRuntimeHelper {
 
             global $token;
             if($token){
-                $restartparam['token'] = sanitize_token($token);
+                $restartparam['token'] = Token::sanitizeToken($token);
             }
 
             if (Yii::app()->request->getQuery('lang')){
@@ -1462,7 +1460,6 @@ class SurveyRuntimeHelper {
 
         // Template settings
         $oTemplate         = $this->oTemplate;
-        $sTemplatePath     = $oTemplate->path;
         $this->sTemplateViewPath = $oTemplate->viewPath;
 
 
@@ -1514,7 +1511,6 @@ class SurveyRuntimeHelper {
             $subscenarios['captchaCorrect'] = $captcha->validate(App()->getRequest()->getPost('loadsecurity'), false);
         }else{
             $subscenarios['captchaCorrect'] = true;
-            $loadsecurity                   = false;
         }
 
 
@@ -1647,7 +1643,7 @@ class SurveyRuntimeHelper {
 
         $this->previewgrp      = ($this->sSurveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $this->previewquestion = ($this->sSurveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
-        $preview               = $this->preview         = ($this->previewquestion || $this->previewgrp);
+        $this->preview         = ($this->previewquestion || $this->previewgrp);
         $this->sLangCode       = App()->language;
     }
 
@@ -1681,9 +1677,6 @@ class SurveyRuntimeHelper {
             $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1;  // step is index base 1?
 
             $this->aStepInfo         = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
-            $gid              = $this->gid              = $this->aStepInfo['gid'];
-            $groupname        = $this->groupname        = $this->aStepInfo['gname'];
-            $groupdescription = $this->groupdescription = $this->aStepInfo['gtext'];
 
         }elseif($this->sSurveyMode == 'question' && $this->previewquestion){
             /**

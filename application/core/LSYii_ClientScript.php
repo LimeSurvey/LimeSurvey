@@ -175,21 +175,35 @@ class LSYii_ClientScript extends CClientScript {
 
     /**
      * Convert one package to baseUrl
+     * Overwrite the package definition using a base url instead of a base path
+     * The package must have a devBaseUrl, else it will remain unchanged (for core/external package); so third party package are not concerned
      * @param string $package
      */
     private function convertDevBaseUrl($package)
     {
+        // We retreive the old package
         $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
 
-        // This will overwrite the package definition using a base url instead of a base path
-        // The package must have a devBaseUrl, else it will remain unchanged (for core/external package)
+        // If it has an entry 'devBaseUrl', we use it to replace basePath (it will turn off asset manager for this package)
         if( array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
-            Yii::app()->clientScript->addPackage( $package, array(
-                'baseUrl'   => $aOldPackageDefinition['devBaseUrl'],                                 // Don't use asset manager
-                'css'       => array_key_exists('css', $aOldPackageDefinition)?$aOldPackageDefinition['css']:array(),
-                'js'        => array_key_exists('js', $aOldPackageDefinition)?$aOldPackageDefinition['js']:array(),
-                'depends'   => array_key_exists('depends', $aOldPackageDefinition)?$aOldPackageDefinition['depends']:array(),
-            ) );
+
+            $aNewPackageDefinition = array();
+
+            // Take all the values of the oldPackage to add it to the new one
+            foreach ($aOldPackageDefinition as $key => $value){
+
+                // Remove basePath
+                if ( $key!= 'basePath'){
+
+                    // Convert devBaseUrl
+                    if ( $key == 'devBaseUrl' ){
+                        $aNewPackageDefinition['baseUrl'] = $value;
+                    }else{
+                        $aNewPackageDefinition[$key] = $value;
+                    }
+                }
+            }
+            Yii::app()->clientScript->addPackage( $package, $aNewPackageDefinition);
         }
     }
 

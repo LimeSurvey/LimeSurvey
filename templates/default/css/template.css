@@ -216,8 +216,13 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
     width: 100%;
     text-align: center;
     margin-bottom: 0;
-    padding-bottom: 0;
+    padding-bottom: 80px;
+    padding-top: 10px;
     margin-top: 10px;
+
+    bottom: 0px;
+    height: 60px;
+    background-color: rgba(236, 240, 241, 0.2);
 }
 
 /**
@@ -313,6 +318,33 @@ html body .navbar.navbar-default.navbar-fixed-top {
     height: auto;
     min-height:60px;
 }
+
+
+/**********************************
+Responsive navbar-brand image CSS
+- Remove navbar-brand padding for firefox bug workaround
+- add 100% height and width auto ... similar to how bootstrap img-responsive class works
+***********************************/
+
+.logo-container {
+  padding: 0px;
+  float: left;
+
+  font-size: 18px;
+  line-height: 20px;
+}
+.logo-container>img {
+  height: 100%;
+  padding: 15px;
+  width: auto;
+}
+
+
+.example2 .logo-container>img {
+  padding: 7px 15px;
+}
+
+
 
 /* Wrap text in e.g. gender button "No answer */
 .wrap-normal {

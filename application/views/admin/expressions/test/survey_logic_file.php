@@ -1,5 +1,11 @@
 <?php
-    $fullPage = (isset($_GET["sid"]))?false:true;
+/**
+ * General options
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
+
+$fullPage = (isset($_GET["sid"]))?false:true;
 ?>
 
 <?php if(!$fullPage):?>
@@ -57,16 +63,14 @@ EOD;
     echo $form;
 }
 else {
-    $surveyInfo = (array) explode('|', $_REQUEST['sid']);
-    $surveyid = sanitize_int($surveyInfo[0]);
-    $thissurvey=getSurveyInfo($surveyid);
-    if (isset($_REQUEST['assessments']))
-    {
+    //TODO This stuff must be in controller!
+
+    $temp = (array) explode('|', $_REQUEST['sid']);
+    $surveyid = sanitize_int($temp[0]);
+    if (isset($_REQUEST['assessments'])) {
         $assessments = ($_REQUEST['assessments'] == 'Y');
-    }
-    else
-    {
-        $assessments = ($thissurvey['assessments'] == 'Y');
+    } else {
+        $assessments = ($oSurvey->assessments == 'Y');
     }
     $LEMdebugLevel = (
             ((isset($_REQUEST['LEM_DEBUG_TIMING']) && $_REQUEST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +

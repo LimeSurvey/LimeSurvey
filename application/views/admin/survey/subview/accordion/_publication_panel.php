@@ -1,6 +1,9 @@
 <?php
 /**
  * Publication Panel
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ * @var array $dateformatdetails
  */
 ?>
 <script type="text/javascript">
@@ -25,7 +28,7 @@
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => $startdate,
+                            'value' => $oSurvey->startdate,
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
@@ -58,7 +61,7 @@
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "expires",
                             'id' => 'expires',
-                            'value' => $expires,
+                            'value' => $oSurvey->expires,
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
@@ -91,7 +94,7 @@
                 <div class="col-sm-6">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'listpublic',
-                        'value'=> $esrow['listpublic'] == "Y",
+                        'value'=> $oSurvey->listpublic == "Y",
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                         ));
@@ -104,7 +107,7 @@
                 <div class="col-sm-6">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'usecookie',
-                        'value'=> $esrow['usecookie'] == "Y",
+                        'value'=> $oSurvey->usecookie == "Y",
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                         ));
@@ -113,7 +116,7 @@
             </div>
 
             <!-- Use CAPTCHA for survey access -->
-            <?php $usecap = $esrow['usecaptcha']; // Just a short-hand ?>
+            <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand ?>
             <div class="form-group">
                 <label class="col-sm-6 control-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
                 <div class="col-sm-6">

@@ -5,7 +5,7 @@
 <div id='edit-group' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-sm-12 content-right">
-            <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Edit Group"))); ?>
+            <?php // $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Edit Group")));  ?>
             <div class="pagetitle h3"><?php eT("Edit Group"); ?></div>
             <ul class="nav nav-tabs" id="edit-group-language-selection">
                 <?php foreach ($tabtitles as $i=>$eachtitle):?>

@@ -26,6 +26,7 @@ class index extends CAction {
         global $surveyid;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
+        $survey=Survey::model()->findByPk($surveyid);
 
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
@@ -99,7 +100,7 @@ class index extends CAction {
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'restart-survey',
-                $aMessage,
+                $asMessage,
                 $aUrl,
                 $aErrors
             );
@@ -232,7 +233,7 @@ class index extends CAction {
             // Update the Session var only if needed
             if (App()->language != $sOldLang){
                 UpdateGroupList($surveyid, App()->language);   // to refresh the language strings in the group list session variable
-                UpdateFieldArray();                             // to refresh question titles and question text
+                updateFieldArray();                             // to refresh question titles and question text
             }
         }else{
 
@@ -261,7 +262,7 @@ class index extends CAction {
         }
 
         //SEE IF SURVEY USES TOKENS
-        if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}')){
+        if ($surveyExists == 1 && $survey->hasTokensTable){
             $tokensexist = 1;
         }else{
             $tokensexist = 0;
@@ -485,7 +486,7 @@ class index extends CAction {
 
         //Check to see if a refering URL has been captured.
         if (!isset($_SESSION['survey_'.$surveyid]['refurl'])){
-            $_SESSION['survey_'.$surveyid]['refurl']=GetReferringUrl(); // do not overwrite refurl
+            $_SESSION['survey_'.$surveyid]['refurl']=getReferringUrl(); // do not overwrite refurl
         }
 
         // Let's do this only if
@@ -655,13 +656,6 @@ class index extends CAction {
     }
 
 
-    /**
-     * @deprecated
-     */
-    function _printTemplateContent($sTemplateFile, &$redata, $iDebugLine = -1)
-    {
-        echo templatereplace(file_get_contents($sTemplateFile),array(),$redata,'survey['.$iDebugLine.']');
-    }
 }
 
 /* End of file survey.php */

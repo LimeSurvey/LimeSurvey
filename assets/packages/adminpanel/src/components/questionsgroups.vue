@@ -58,10 +58,10 @@ export default {
 <template>
     <div id="questionexplorer" class="ls-flex-column ls-ba " :style="{height: calculatedHeight+'px'}">
         <ul class="list-group">
-            <li v-for="(questiongroup,index) in questiongroups" class="list-group-item ls-flex-column" v-bind:class="isActive(index) ? 'selected' : ''" >
-                <div class="col-sm-12 ls-flex-row nowrap margin-bottom">
+            <li v-for="(questiongroup,index) in questiongroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="isActive(index) ? 'selected' : ''" >
+                <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
                     <i class="fa fa-bars bigIcons" draggable="true">&nbsp;</i>
-                    <a :href="questiongroup.link" @click="openQuestionGroup(questiongroup,index)" class="col-sm-12"> 
+                    <a :href="questiongroup.link" @click="openQuestionGroup(questiongroup,index)" class="col-12"> 
                         {{questiongroup.group_name}} 
                         <span class="pull-right">({{questiongroup.questions.length}})</span>
                     </a>
@@ -86,31 +86,6 @@ export default {
     }
     .margin-bottom{
         padding-bottom: 5px;
-    }
-    .ls-ba{
-        .list-group{
-            >.list-group-item {
-                padding: 10px 0;
-                border: 0;
-                border-radius: 0;
-                border-bottom: 1px solid #323232;
-                margin-bottom: 1px;
-                .list-group{
-                    background: #DEF0DF;
-                    margin-bottom:0;
-                    .list-group-item{
-                        background: transparent;
-                        padding-left:15px;
-                        &:last-of-type {
-                            border-bottom: 0;
-                        }
-                    }
-                    &:first-of-type {
-                        border-top: 1px solid #323232;
-                    }
-                }
-            }
-        }
     }
     #questionexplorer{
         overflow: auto;

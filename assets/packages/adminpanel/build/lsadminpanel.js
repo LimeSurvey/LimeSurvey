@@ -27450,11 +27450,7 @@ const pjaxed = new __WEBPACK_IMPORTED_MODULE_6_pjax___default.a({
 //       'topbar' : Topbar,
 //     } 
 // });
-// For now this is only correcting the php rendered top-bar
-$(document).ready(()=>{
-  let width = ($('body').width() - 310)+'px';
-  $('#surveybarid').width(width);
-})
+
 
 /***/ }),
 /* 12 */
@@ -28749,7 +28745,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 200, 200, 0.8);\n  box-shadow: 1px2px 4px rgba(200, 200, 200, 0.8) inset;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.margin.b15 {\n  margin-bottom: 15px;\n}\n.margin.b10 {\n  margin-bottom: 10px;\n}\n.margin.b5 {\n  margin-bottom: 5px;\n}\n.margin.t15 {\n  margin-top: 15px;\n}\n.margin.t10 {\n  margin-top: 10px;\n}\n.margin.t5 {\n  margin-top: 5px;\n}\n.margin .overflow-y-enabled {\n  overflow-y: auto;\n}\n", ""]);
+exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 255, 200, 0.4);\n  box-shadow: 1px2px 4px rgba(200, 255, 200, 0.4) inset;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n", ""]);
 
 // exports
 
@@ -28813,7 +28809,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: {
         'translate': { type: Object },
         'getQuestionsUrl': { type: String },
-        'getMenuUrl': { type: String }
+        'getMenuUrl': { type: String },
+        'createQuestionGroupLink': { type: String },
+        'createQuestionLink': ''
     },
     data: () => {
         return {
@@ -28842,12 +28840,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         checkIsActive(link) {
             let locationUrl = document.createElement('a');locationUrl.href = location.href;
             let checkUrl = document.createElement('a');checkUrl.href = link;
-            return locationUrl.pathname == checkUrl.pathname;
+            if (locationUrl.pathname == '/index.php' || locationUrl.pathname == '/') {
+                return locationUrl.search == checkUrl.search;
+            } else {
+                return locationUrl.pathname == checkUrl.pathname;
+            }
         },
         sortedMenu(entries) {
             let retVal = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(entries, a => {
-                return parseInt(a.priority);
-            }, ['desc']);
+                return parseInt(a.order || 999999);
+            }, ['asc']);
             return retVal;
         }
     },
@@ -28868,7 +28870,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.get(this.getMenuUrl).then(result => {
             console.log(result);
             self.menues = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(result.data.menues, a => {
-                return parseInt(a.priority);
+                return parseInt(a.order || 999999);
             }, ['desc']);
             self.$localStorage.set('menues', JSON.stringify(self.menues));
             self.$forceUpdate();
@@ -28955,7 +28957,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.selected {\n  background-color: #EEF6EF;\n  box-shadow: 1px2px 4px #EEF6EF inset;\n}\n.bigIcons {\n  font-size: 24px;\n}\n.border-bottom {\n  border-bottom: 1px solid #323232;\n}\n.margin-bottom {\n  padding-bottom: 5px;\n}\n.ls-ba .list-group > .list-group-item {\n  padding: 10px 0;\n  border: 0;\n  border-radius: 0;\n  border-bottom: 1px solid #323232;\n  margin-bottom: 1px;\n}\n.ls-ba .list-group > .list-group-item .list-group {\n    background: #DEF0DF;\n    margin-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item {\n      background: transparent;\n      padding-left: 15px;\n}\n.ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {\n        border-bottom: 0;\n}\n.ls-ba .list-group > .list-group-item .list-group:first-of-type {\n      border-top: 1px solid #323232;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", ""]);
+exports.push([module.i, "\n.selected {\n  background-color: #EEF6EF;\n  box-shadow: 1px2px 4px #EEF6EF inset;\n}\n.bigIcons {\n  font-size: 24px;\n}\n.border-bottom {\n  border-bottom: 1px solid #323232;\n}\n.margin-bottom {\n  padding-bottom: 5px;\n}\n#questionexplorer {\n  overflow: auto;\n}\n", ""]);
 
 // exports
 
@@ -29205,17 +29207,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "list-group"
   }, _vm._l((_vm.questiongroups), function(questiongroup, index) {
     return _c('li', {
+      key: questiongroup.gid,
       staticClass: "list-group-item ls-flex-column",
       class: _vm.isActive(index) ? 'selected' : ''
     }, [_c('div', {
-      staticClass: "col-sm-12 ls-flex-row nowrap margin-bottom"
+      staticClass: "col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5"
     }, [_c('i', {
       staticClass: "fa fa-bars bigIcons",
       attrs: {
         "draggable": "true"
       }
     }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
-      staticClass: "col-sm-12",
+      staticClass: "col-12",
       attrs: {
         "href": questiongroup.link
       },
@@ -29256,7 +29259,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "overflow-y-enabled",
+    staticClass: "col-12",
     style: ({
       'height': _vm.maxSideBarHeight
     }),
@@ -29266,14 +29269,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "mainMenu container-fluid col-sm-12 fill-height"
   }, [_c('div', {
-    staticClass: "btn-group btn-group-justified margin b15 a15 "
+    staticClass: "btn-group btn-group-justified ls-space margin bottom-15 top-5 "
   }, [_c('div', {
     staticClass: "btn-group",
     attrs: {
       "role": "group"
     }
   }, [_c('button', {
-    staticClass: "btn ",
+    staticClass: "btn force color white onhover",
     class: _vm.activeTab('settings') ? 'btn-primary' : 'btn-default',
     on: {
       "click": function($event) {
@@ -29286,7 +29289,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "role": "group"
     }
   }, [_c('button', {
-    staticClass: "btn ",
+    staticClass: "btn force color white onhover",
     class: _vm.activeTab('questiontree') ? 'btn-primary' : 'btn-default',
     on: {
       "click": function($event) {
@@ -29316,7 +29319,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       }, [_c('a', {
         staticClass: "ls-flex-row nowrap align-item-center align-content-center pjax",
         attrs: {
-          "href": menuItem.link + '?menu=' + menu.menu_title,
+          "href": menuItem.link,
           "title": menuItem.menu_description,
           "data-toggle": "tooltip"
         }
@@ -29351,7 +29354,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "activeTab('questiontree')"
     }],
     staticClass: "row fill-height ls-ba"
-  }, [_c('questionexplorer', {
+  }, [_c('div', {
+    staticClass: "ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15"
+  }, [((_vm.createQuestionGroupLink != undefined && _vm.createQuestionGroupLink.length > 1)) ? _c('a', {
+    staticClass: "btn btn-small btn-primary",
+    attrs: {
+      "href": _vm.createQuestionGroupLink
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-plus"
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestionGroup))]) : _vm._e(), _vm._v(" "), ((_vm.createQuestionLink != undefined && _vm.createQuestionLink.length > 1)) ? _c('a', {
+    staticClass: "btn btn-small btn-default",
+    attrs: {
+      "href": _vm.createQuestionLink
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-plus-circle"
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('questionexplorer', {
     attrs: {
       "questiongroups": _vm.questiongroups
     },

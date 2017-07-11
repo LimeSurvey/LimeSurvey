@@ -530,7 +530,7 @@
             case ":":  //ARRAY (Multi Flex) (Numbers)
                 //Get qidattributes for this question
                 echo '<h4 class="question-selector-title">'.$oStatisticsHelper::_showSpeaker($niceqtext).'</h4><br/>';
-                $qidattributes=getQuestionAttributeValues($flt[0]);
+                $qidattributes=QuestionAttribute::model()->getQuestionAttributes($flt[0]);
                 if (trim($qidattributes['multiflexible_max'])!='' && trim($qidattributes['multiflexible_min']) ==''){
                     $maxvalue=$qidattributes['multiflexible_max'];
                     $minvalue=1;

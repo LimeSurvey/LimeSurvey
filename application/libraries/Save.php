@@ -175,6 +175,8 @@ class Save
         global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
 
         $timeadjust = getGlobalSetting('timeadjust');
+        $survey = Survey::model()->findByPk($surveyid);
+
 
         //Check that the required fields have been completed.
         $errormsg = '';
@@ -194,9 +196,7 @@ class Save
         {
             if (!Yii::app()->request->getPost('loadsecurity')
              || !isset($_SESSION['survey_'.$surveyid]['secanswer'])
-             || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']
-            )
-            {
+             || Yii::app()->request->getPost('loadsecurity') != $_SESSION['survey_'.$surveyid]['secanswer']) {
                 $this->aSaveErrors[]=gT("The answer to the security question is incorrect.");
             }
         }
@@ -232,7 +232,7 @@ class Save
                 );
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
                 {
-                    $srid = getLastInsertID('{{survey_' . $surveyid . '}}');
+                    $srid = getLastInsertID($survey->responsesTableName);
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }
                 else
@@ -327,6 +327,7 @@ class Save
         //We start by generating the first 5 values which are consistent for all rows.
 
         global $surveyid, $thissurvey, $errormsg, $publicurl, $sitename, $clienttoken, $thisstep;
+        $survey = Survey::model()->findByPk($surveyid);
 
         $aSaveForm  = array();
         $timeadjust = getGlobalSetting('timeadjust');
@@ -379,7 +380,7 @@ class Save
                 );
 
                 if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)){
-                    $srid                                  = getLastInsertID('{{survey_' . $surveyid . '}}');
+                    $srid                                  = getLastInsertID($survey->responsesTableName);
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }else{
                     // TODO: $this->aSaveErrors
@@ -465,13 +466,13 @@ class Save
     function set_answer_time()
     {
         global $thissurvey;
-        if (!isset($_POST['start_time']))
-        {
+        $survey = Survey::model()->findByPk($thissurvey['sid']);
+
+        if (!isset($_POST['start_time'])) {
             return; // means haven't passed welcome page yet.
         }
 
-        if (isset($_POST['lastanswer']))
-        {
+        if (isset($_POST['lastanswer'])) {
             $setField = $_POST['lastanswer'];
         }
         elseif (isset($_POST['lastgroup']))
@@ -480,7 +481,7 @@ class Save
         }
         $passedTime = str_replace(',','.',round(microtime(true) - $_POST['start_time'],2));
         if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
-            $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
+            $query = "UPDATE ".$survey->timingsTableName." SET "
             ."interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " .$passedTime
             ." WHERE id = " .$_SESSION['survey_'.$thissurvey['sid']]['srid'];
 
@@ -491,7 +492,7 @@ class Save
             $setField .= "time";
             if (!in_array($setField,$aColumnNames)) die('Invalid last group timing fieldname');
             $setField = Yii::app()->db->quoteColumnName($setField);
-            $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
+            $query = "UPDATE ".$survey->timingsTableName." SET "
             ."interviewtime =  (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " .$passedTime .","
             .$setField." =  (CASE WHEN $setField IS NULL THEN 0 ELSE $setField END) + ".$passedTime
             ." WHERE id = " .$_SESSION['survey_'.$thissurvey['sid']]['srid'];

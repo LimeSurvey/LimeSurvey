@@ -888,7 +888,6 @@
                     $relAndList = array();
                     $relOrList = array();
                     $scenarios = array();
-                    $releqn = '';
                 }
                 if ($row['scenario'] != $_scenario)
                 {
@@ -1088,14 +1087,7 @@
                 $type = $qinfo['type'];
                 $hasSubqs = (isset($qinfo['subqs']) && count($qinfo['subqs'] > 0));
                 $qattr = isset($this->qattr[$questionNum]) ? $this->qattr[$questionNum] : array();
-                if (isset($qattr['input_boxes']) && $qattr['input_boxes'] == '1')
-                {
-                    $input_boxes='1';
-                }
-                else
-                {
-                    $input_boxes='';
-                }
+
 
                 if (isset($qattr['value_range_allows_missing']) && $qattr['value_range_allows_missing'] == '1')
                 {
@@ -1130,8 +1122,6 @@
                 if (!is_null($array_filter) || !is_null($array_filter_exclude))
                 {
                     if ($hasSubqs) {
-                        $cascadedAF = array();
-                        $cascadedAFE = array();
 
                         list($cascadedAF, $cascadedAFE) = $this->_recursivelyFindAntecdentArrayFilters($qinfo['rootVarName'],array(),array());
 
@@ -1831,7 +1821,6 @@
                                 continue;
                             }
                             $subqs = $qinfo['subqs'];
-                            $sq_names = array();
                             foreach ($subqs as $sq) {
                                 $sq_name = NULL;
                                 if ($sq['csuffix'] == $exclusive_option)
@@ -1875,10 +1864,6 @@
                             }
                         }
                     }
-                }
-                else
-                {
-                    $exclusive_option = '';
                 }
 
                 // exclude_all_others_auto
@@ -3610,9 +3595,10 @@
             }
             $now = microtime(true);
             $this->em->SetSurveyMode($this->surveyMode);
+            $survey = Survey::model()->findByPk($surveyid);
 
             // TODO - do I need to force refresh, or trust that createFieldMap will cache langauges properly?
-            $fieldmap=createFieldMap($surveyid,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
+            $fieldmap=createFieldMap($survey,$style='full',$forceRefresh,false,$_SESSION['LEMlang']);
             $this->sid= $surveyid;
             $this->sessid = 'survey_' . $this->sid;
             $this->runtimeTimings[] = array(__METHOD__ . '.createFieldMap',(microtime(true) - $now));
@@ -3706,7 +3692,6 @@
                 if($this->sPreviewMode=='question') $fielddata['relevance']=1;
                 if($this->sPreviewMode=='group') $fielddata['grelevance']=1;
 
-                $questionId = $fieldNameParts[2];
                 $questionNum = $fielddata['qid'];
                 $relevance = (isset($fielddata['relevance'])) ? $fielddata['relevance'] : 1;
                 $SQrelevance = (isset($fielddata['SQrelevance'])) ? $fielddata['SQrelevance'] : 1;
@@ -3823,7 +3808,6 @@
                 }
 
                 // set $subqtext text - for display of primary sub-question
-                $subqtext = '';
                 switch ($type)
                 {
                     default:
@@ -4228,8 +4212,7 @@
             }
             $this->q2subqInfo = $q2subqInfo;
             // Now set tokens
-            if (Survey::model()->hasTokens($surveyid) && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '')
-            {
+            if ($survey->hasTokensTable && isset($_SESSION[$this->sessid]['token']) && $_SESSION[$this->sessid]['token'] != '') {
                 //Gather survey data for tokenised surveys, for use in presenting questions
                 $this->knownVars['TOKEN:TOKEN'] = array(
                     'code'=>$_SESSION[$this->sessid]['token'],
@@ -4867,38 +4850,41 @@
         }
 
         /**
-        * Initialize a survey so can use EM to manage navigation
-        * @param int $surveyid
-        * @param string $surveyMode
-        * @param array $aSurveyOptions
-        * @param bool $forceRefresh
-        * @param int $debugLevel
-        */
+         * Initialize a survey so can use EM to manage navigation
+         * @param int $surveyid
+         * @param string $surveyMode
+         * @param array $aSurveyOptions
+         * @param bool $forceRefresh
+         * @param int $debugLevel
+         * @return array
+         */
         static function StartSurvey($surveyid,$surveyMode='group',$aSurveyOptions=NULL,$forceRefresh=false,$debugLevel=0)
         {
+            $survey = Survey::model()->findByPk($surveyid);
             $LEM =& LimeExpressionManager::singleton();
-            $LEM->sid=sanitize_int($surveyid);
-            $LEM->sessid = 'survey_' . $LEM->sid;
-            $LEM->em->StartProcessingGroup($surveyid);
+            $LEM->sid=$survey->sid;
+
+            $LEM->sessid = 'survey_' . $survey->sid;
+            $LEM->em->StartProcessingGroup($survey->sid);
             if (is_null($aSurveyOptions)) {
                 $aSurveyOptions = array();
             }
-            $LEM->surveyOptions['active'] = (isset($aSurveyOptions['active']) ? $aSurveyOptions['active'] : false);
-            $LEM->surveyOptions['allowsave'] = (isset($aSurveyOptions['allowsave']) ? $aSurveyOptions['allowsave'] : false);
-            $LEM->surveyOptions['anonymized'] = (isset($aSurveyOptions['anonymized']) ? $aSurveyOptions['anonymized'] : false);
-            $LEM->surveyOptions['assessments'] = (isset($aSurveyOptions['assessments']) ? $aSurveyOptions['assessments'] : false);
-            $LEM->surveyOptions['datestamp'] = (isset($aSurveyOptions['datestamp']) ? $aSurveyOptions['datestamp'] : false);
+            $LEM->surveyOptions['active'] = $survey->isActive;
+            $LEM->surveyOptions['allowsave'] = $survey->isAllowSave;
+            $LEM->surveyOptions['anonymized'] = $survey->isAnonymized;
+            $LEM->surveyOptions['assessments'] = $survey->isAssessments;
+            $LEM->surveyOptions['datestamp'] = $survey->isDateStamp;
             $LEM->surveyOptions['deletenonvalues'] = (isset($aSurveyOptions['deletenonvalues']) ? ($aSurveyOptions['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($aSurveyOptions['hyperlinkSyntaxHighlighting']) ? $aSurveyOptions['hyperlinkSyntaxHighlighting'] : false);
-            $LEM->surveyOptions['ipaddr'] = (isset($aSurveyOptions['ipaddr']) ? $aSurveyOptions['ipaddr'] : false);
+            $LEM->surveyOptions['ipaddr'] = $survey->isIpAddr;
             $LEM->surveyOptions['radix'] = (isset($aSurveyOptions['radix']) ? $aSurveyOptions['radix'] : '.');
             $LEM->surveyOptions['refurl'] = (isset($aSurveyOptions['refurl']) ? $aSurveyOptions['refurl'] : NULL);
-            $LEM->surveyOptions['savetimings'] = (isset($aSurveyOptions['savetimings']) ? $aSurveyOptions['savetimings'] : '');
+            $LEM->surveyOptions['savetimings'] = $survey->isSaveTimings;
             $LEM->sgqaNaming = (isset($aSurveyOptions['sgqaNaming']) ? ($aSurveyOptions['sgqaNaming']=="Y") : true); // TODO default should eventually be false
             $LEM->surveyOptions['startlanguage'] = (isset($aSurveyOptions['startlanguage']) ? $aSurveyOptions['startlanguage'] : 'en');
             $LEM->surveyOptions['surveyls_dateformat'] = (isset($aSurveyOptions['surveyls_dateformat']) ? $aSurveyOptions['surveyls_dateformat'] : 1);
-            $LEM->surveyOptions['tablename'] = (isset($aSurveyOptions['tablename']) ? $aSurveyOptions['tablename'] : '{{survey_' . $LEM->sid . '}}');
-            $LEM->surveyOptions['tablename_timings'] = ((isset($aSurveyOptions['savetimings']) && $aSurveyOptions['savetimings'] == 'Y') ? '{{survey_' . $LEM->sid . '_timings}}' : '');
+            $LEM->surveyOptions['tablename'] = (isset($aSurveyOptions['tablename']) ? $aSurveyOptions['tablename'] : $survey->responsesTableName);
+            $LEM->surveyOptions['tablename_timings'] = ($survey->isSaveTimings ? $survey->timingsTableName : '');
             $LEM->surveyOptions['target'] = (isset($aSurveyOptions['target']) ? $aSurveyOptions['target'] : '/temp/files/');
             $LEM->surveyOptions['timeadjust'] = (isset($aSurveyOptions['timeadjust']) ? $aSurveyOptions['timeadjust'] : 0);
             $LEM->surveyOptions['tempdir'] = (isset($aSurveyOptions['tempdir']) ? $aSurveyOptions['tempdir'] : '/temp/');
@@ -6176,36 +6162,27 @@
             $irrelevantSQs=array();
             $prettyPrintSQRelEqns=array();
             $prettyPrintSQRelEqn='';
-            $prettyPrintValidTip='';
             $anyUnanswered = false;
             $sgqas = array();
 
-            if (!$qrel)
-            {
+            if (!$qrel) {
                 // All sub-questions are irrelevant
                 $irrelevantSQs = explode('|', $LEM->qid2code[$qid]);
-            }
-            else
-            {
+            } else {
                 // Check filter status to determine which subquestions are relevant
                 if ($qInfo['type'] == 'X') {
                     $sgqas = array();   // Boilerplate questions can be ignored
-                }
-                else
-                {
+                } else {
                     $sgqas = explode('|',$LEM->qid2code[$qid]);
                 }
-                foreach ($sgqas as $sgqa)
-                {
+                foreach ($sgqas as $sgqa) {
                     // for each subq, see if it is part of an array_filter or array_filter_exclude
-                    if (!isset($LEM->subQrelInfo[$qid]))
-                    {
+                    if (!isset($LEM->subQrelInfo[$qid])) {
                         $relevantSQs[] = $sgqa;
                         continue;
                     }
                     $foundSQrelevance=false;
-                    if($qInfo['type']=='R')
-                    {
+                    if($qInfo['type']=='R') {
                         // Relevance of subquestion for ranking question depend of the count of relevance of answers.
                         $iCountRank=(isset($iCountRank) ? $iCountRank+1 : 1);
                         // Relevant count is : Total answers less Unrelevant answers. subQrelInfo give only array with relevance equation, not this without any relevance.
@@ -6629,7 +6606,6 @@
             $prettyPrintValidEqn='';    //  assume no validation eqn by default
             $validationEqn='';
             $validationJS='';       // assume can't generate JavaScript to validate equation
-            $validTip='';           // default is none
             $stringToParse = '';    // Final string to send to Expression manager
             if (isset($LEM->qid2validationEqn[$qid]))
             {
@@ -7317,19 +7293,14 @@
                      * $afHide - if true, then use jQuery.relevanceOn().  If false, then disable/enable the row
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
-                    $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
-                    foreach ($subqParts as $sq)
-                    {
+                    foreach ($subqParts as $sq) {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
 
                         //this change is optional....changes to array should prevent "if( )"
                         $relParts[] = "  if ( " . (empty($sq['relevancejs'])?'1':$sq['relevancejs']) . " ) {\n";
-                        if ($afHide)
-                        {
+                        if ($afHide) {
                             $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:on');\n";
-                        }
-                        else
-                        {
+                        } else {
                             $relParts[] = "    $('#javatbd" . $sq['rowdivid'] . "').trigger('relevance:on',{ style : 'disabled' });\n";
                         }
                         if ($sq['isExclusiveJS'] != '')
@@ -8221,7 +8192,7 @@ EOD;
             print LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
 
             // Print Table of questions
-            print "<h3>This is a test of dynamic relevance.</h3>";
+            print "<div class='h3'>This is a test of dynamic relevance.</div>";
             print "Enter your name and age, and try all the permutations of answers to whether you have or want children.<br />\n";
             print "Note how the text and sum of ages changes dynamically; that prior answers are remembered; and that irrelevant values are not included in the sum of ages.<br />";
             print "<table class='table' border='1'><tr><td>";
@@ -8272,8 +8243,7 @@ EOD;
 
         public static function ShowStackTrace($msg=NULL,&$args=NULL)
         {
-            $LEM =& LimeExpressionManager::singleton();
-
+            LimeExpressionManager::singleton();
             $msg = array("**Stack Trace**" . (is_null($msg) ? '' : ' - ' . $msg));
 
             $count = 0;
@@ -10218,12 +10188,12 @@ EOD;
          */
         public function loadTokenInformation($iSurveyId, $sToken = null, $bAnonymize = false)
         {
-            if (!Survey::model()->hasTokens($iSurveyId))
-            {
+            $survey = Survey::model()->findByPk($iSurveyId);
+
+            if (!$survey->hasTokensTable) {
                 return;
             }
-            if ($sToken === null && isset($_SESSION[$this->sessid]['token']))
-            {
+            if ($sToken === null && isset($_SESSION[$this->sessid]['token'])) {
                 $sToken = $_SESSION[$this->sessid]['token'];
             }
 
@@ -10231,12 +10201,9 @@ EOD;
                 'token' => $sToken
             ));
 
-            if ($oToken)
-            {
-                foreach ($oToken->attributes as $attribute => $value)
-                {
-                    if ($bAnonymize)
-                    {
+            if ($oToken) {
+                foreach ($oToken->attributes as $attribute => $value) {
+                    if ($bAnonymize) {
                         $value = "";
                     }
                     $this->knownVars["TOKEN:" . strtoupper($attribute)] = array(
@@ -10246,9 +10213,7 @@ EOD;
                         'readWrite'=>'N',
                     );
                 }
-            }
-            else
-            {
+            } else {
                 // Read list of available tokens from the tokens table so that preview and error checking works correctly
                 $blankVal = array(
                     'code'=>'',
@@ -10256,8 +10221,7 @@ EOD;
                     'jsName'=>'',
                     'readWrite'=>'N',
                 );
-                foreach (Token::model($iSurveyId)->tableSchema->columnNames as $attribute)
-                {
+                foreach (Token::model($iSurveyId)->tableSchema->columnNames as $attribute) {
                     $this->knownVars['TOKEN:' . strtoupper($attribute)] = $blankVal;
                 }
             }

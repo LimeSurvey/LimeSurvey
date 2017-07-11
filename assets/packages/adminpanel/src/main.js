@@ -58,8 +58,3 @@ const pjaxed = new Pjax({
 //       'topbar' : Topbar,
 //     } 
 // });
-// For now this is only correcting the php rendered top-bar
-$(document).ready(()=>{
-  let width = ($('body').width() - 310)+'px';
-  $('#surveybarid').width(width);
-})
