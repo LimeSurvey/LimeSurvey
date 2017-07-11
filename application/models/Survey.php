@@ -101,8 +101,11 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $startDateFormatted Start date formatted according to user format
  * @property string $expiryDateFormatted Expiry date formatted according to user format
  * @property string $tokensTableName Name of survey tokens table
+ * @property string $responsesTableName Name of survey resonses table
  * @property string $timingsTableName Name of survey timings table
  * @property string $hasTokensTable Whether survey has a tokens table or not
+ * @property string $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
+ * @property string $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  *
  * All Y/N columns in the model can be accessed as boolean values:
@@ -499,16 +502,25 @@ class Survey extends LSActiveRecord
      * @return string
      */
     public function getTokensTableName(){
-        return "{{tokens_{$this->primaryKey}}}";
+        return "{{tokens_".$this->primaryKey."}}";
     }
 
     /**
-     * Return the name of survey timings table
+     * Return the name of survey timigs table
      * @return string
      */
     public function getTimingsTableName(){
-        return "{{survey_{$this->primaryKey}_timings}}";
+        return "{{survey_".$this->primaryKey."_timings}}";
     }
+
+    /**
+     * Return the name of survey responses (the data) table name
+     * @return string
+     */
+    public function getResponsesTableName(){
+        return '{{survey_' . $this->primaryKey . '}}';
+    }
+
 
     /**
      * Returns true in a token table exists for survey
@@ -518,6 +530,26 @@ class Survey extends LSActiveRecord
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->tokensTableName);
+    }
+
+    /**
+     * Wheteher the survey reponses (data) table exists in DB
+     * @return boolean
+     */
+    public function getHasResponsesTable() {
+        // Make sure common_helper is loaded
+        Yii::import('application.helpers.common_helper', true);
+        return tableExists($this->responsesTableName);
+    }
+
+    /**
+     * Wheteher the survey reponses timings exists in DB
+     * @return boolean
+     */
+    public function getHasTimigsTable() {
+        // Make sure common_helper is loaded
+        Yii::import('application.helpers.common_helper', true);
+        return tableExists($this->timingsTableName);
     }
 
     /**
@@ -669,16 +701,16 @@ class Survey extends LSActiveRecord
             if ( Survey::model()->deleteByPk($iSurveyID) ) {
                 if ($recursive == true) {
                     //delete the survey_$iSurveyID table
-                    if (tableExists("{{survey_".intval($iSurveyID)."}}")) {
-                        Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."}}");
+                    if ($this->hasResponsesTable) {
+                        Yii::app()->db->createCommand()->dropTable($this->responsesTableName);
                     }
                     //delete the survey_$iSurveyID_timings table
-                    if (tableExists("{{survey_".intval($iSurveyID)."_timings}}")) {
-                        Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."_timings}}");
+                    if ($this->hasTimingsTable) {
+                        Yii::app()->db->createCommand()->dropTable($this->timingsTableName);
                     }
                     //delete the tokens_$iSurveyID table
-                    if (tableExists("{{tokens_".intval($iSurveyID)."}}")) {
-                        Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
+                    if ($this->hasTokensTable) {
+                        Yii::app()->db->createCommand()->dropTable($this->tokensTableName);
                     }
 
                     /* Remove User/global settings part : need Question and QuestionGroup*/
