@@ -551,7 +551,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
 
     public function newDirectRequest()
     {
-        if ($event->get('target') != "QuickMenu") {
+        if ($this->event->get('target') != "QuickMenu") {
             return; // Allow other plugin action
         }
         $user = $this->api->getCurrentUser();
