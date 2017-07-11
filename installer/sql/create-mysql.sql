@@ -630,7 +630,7 @@ CREATE TABLE IF NOT EXISTS `prefix_settings_user` (
 
 --
 -- Surveymenu
--- 
+--
 
 CREATE TABLE `prefix_surveymenu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -686,7 +686,7 @@ CREATE TABLE `prefix_surveymenu_entries` (
   KEY `menu_title` (`menu_title`(191))
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `prefix_surveymenu_entries` VALUES 
+INSERT INTO `prefix_surveymenu_entries` VALUES
 (1,1,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','',NULL,'','en-GB',NOW(),0,NOW(),0),
 (2,1,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',NOW(),0,NOW(),0),
 (3,1,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',NOW(),0,NOW(),0),
@@ -701,6 +701,70 @@ INSERT INTO `prefix_surveymenu_entries` VALUES
 (12,1,11,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read',NULL,'','en-GB',NOW(),0,NOW(),0),
 (13,1,12,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',NOW(),0,NOW(),0),
 (14,1,13,'ressources','Add/Edit ressources to the survey','Ressources','Add/Edit ressources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',NOW(),0,NOW(),0);
+
+
+
+-- -----------------------------------------------------
+-- Table `lime_templates`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lime_templates` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(150) NOT NULL,
+  `creation_date` DATE NULL,
+  `author` VARCHAR(150) NULL,
+  `author_email` VARCHAR(255) NULL,
+  `author_url` VARCHAR(255) NULL,
+  `copyright` MEDIUMTEXT NULL,
+  `license` MEDIUMTEXT NULL,
+  `version` VARCHAR(45) NULL,
+  `description` TEXT NULL,
+  `last_update` DATETIME NULL,
+  `path` VARCHAR(45) NULL,
+  `owner_id` INT(11) NULL,
+  `extends_templates_id` INT(11) NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC),
+  INDEX `fk_lime_templates_lime_templates1_idx` (`extends_templates_id` ASC))
+ENGINE = MyISAM;
+
+
+
+-- -----------------------------------------------------
+-- Table `lime_template_configuration`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `lime_template_configuration` (
+  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `templates_id` INT(11) UNSIGNED NOT NULL,
+  `gsid` INT(11) UNSIGNED NULL COMMENT 'linked survey group - optional',
+  `sid` INT(11) UNSIGNED NULL COMMENT 'linked survey - optional',
+  `files_css` MEDIUMTEXT NULL COMMENT 'CSS files to load at each page ',
+  `files_js` MEDIUMTEXT NULL COMMENT 'JS files to load at each page',
+  `files_print_css` MEDIUMTEXT NULL,
+  `options` MEDIUMTEXT NULL COMMENT 'options as json array',
+  `engine_cssframework_name` VARCHAR(45) NULL,
+  `engine_cssframework_css` MEDIUMTEXT NULL,
+  `viewdirectory` VARCHAR(255) NULL,
+  `filesdirectory` VARCHAR(255) NULL,
+  `packages` MEDIUMTEXT NULL COMMENT 'json array of packages to load',
+  `packages-ltr` MEDIUMTEXT NULL,
+  `packages-rtl` MEDIUMTEXT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  INDEX `fk_lime_template_configuration_lime_templates_idx` (`templates_id` ASC))
+ENGINE = MyISAM;
+
+INSERT INTO `lime_templates` (`id`, `name`, `creation_date`, `author`, `author_email`, `author_url`, `copyright`, `license`, `version`, `description`, `last_update`, `path`, `owner_id`, `extends_templates_id`) VALUES (NULL, 'Advanced template', '2017-07-11', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team
+All rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php <br>LimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '2.0', 'LimeSurvey Advanced Template:
+Many options for user customizations.
+', NULL, 'advanced', '0', NULL);
+
+INSERT INTO `lime_template_configuration` (`id`, `templates_id`, `gsid`, `sid`, `files_css`, `files_js`, `files_print_css`, `options`, `engine_cssframework_name`, `engine_cssframework_css`, `viewdirectory`, `filesdirectory`, `packages`, `packages-ltr`, `packages-rtl`) VALUES (NULL, '1', NULL, NULL, '{ "add":"css/template.css", "add":"css/animate.css", }', '{ "add":"scripts/template.js",}', '{"add":"css/print_template.css",}', '{ "ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake",}', 'bootstrap', '{"replace":"css/bootstrap.css","replace":"css/yiistrap.css",}', 'views', 'files', 'template-default,', 'template-default-ltr,', 'template-default-rtl,');
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 --
 -- Version Info
