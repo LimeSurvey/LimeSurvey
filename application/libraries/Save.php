@@ -465,13 +465,13 @@ class Save
     function set_answer_time()
     {
         global $thissurvey;
-        if (!isset($_POST['start_time']))
-        {
+        $survey = Survey::model()->findByPk($thissurvey['sid']);
+
+        if (!isset($_POST['start_time'])) {
             return; // means haven't passed welcome page yet.
         }
 
-        if (isset($_POST['lastanswer']))
-        {
+        if (isset($_POST['lastanswer'])) {
             $setField = $_POST['lastanswer'];
         }
         elseif (isset($_POST['lastgroup']))
@@ -480,7 +480,7 @@ class Save
         }
         $passedTime = str_replace(',','.',round(microtime(true) - $_POST['start_time'],2));
         if(!isset($setField)){ //we show the whole survey on one page - we don't have to save time for group/question
-            $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
+            $query = "UPDATE ".$survey->timingsTableName." SET "
             ."interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " .$passedTime
             ." WHERE id = " .$_SESSION['survey_'.$thissurvey['sid']]['srid'];
 
@@ -491,7 +491,7 @@ class Save
             $setField .= "time";
             if (!in_array($setField,$aColumnNames)) die('Invalid last group timing fieldname');
             $setField = Yii::app()->db->quoteColumnName($setField);
-            $query = "UPDATE {{survey_{$thissurvey['sid']}_timings}} SET "
+            $query = "UPDATE ".$survey->timingsTableName." SET "
             ."interviewtime =  (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + " .$passedTime .","
             .$setField." =  (CASE WHEN $setField IS NULL THEN 0 ELSE $setField END) + ".$passedTime
             ." WHERE id = " .$_SESSION['survey_'.$thissurvey['sid']]['srid'];

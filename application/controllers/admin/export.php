@@ -1049,6 +1049,8 @@ class export extends Survey_Common_Action {
     */
     private function _exportarchive($iSurveyID, $bSendToBrowser=TRUE)
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         $aSurveyInfo = getSurveyInfo($iSurveyID);
 
         $sTempDir = Yii::app()->getConfig("tempdir");
@@ -1068,22 +1070,19 @@ class export extends Survey_Common_Action {
 
         unlink($sLSSFileName);
 
-        if ( $aSurveyInfo['active'] == 'Y' )
-        {
+        if ( $survey->isActive) {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, FALSE);
             $this->_addToZip($zip, $sLSRFileName, 'survey_' . $iSurveyID . '_responses.lsr');
             unlink($sLSRFileName);
         }
 
-        if ( tableExists('{{tokens_' . $iSurveyID . '}}') )
-        {
+        if ( $survey->hasTokensTable ) {
             getXMLDataSingleTable($iSurveyID, 'tokens_' . $iSurveyID, 'Tokens', 'tokens', $sLSTFileName);
             $this->_addToZip($zip, $sLSTFileName, 'survey_' . $iSurveyID . '_tokens.lst');
             unlink($sLSTFileName);
         }
 
-        if ( tableExists('{{survey_' . $iSurveyID . '_timings}}') )
-        {
+        if ( $survey->hasTimingsTable ) {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
             $this->_addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
             unlink($sLSIFileName);
