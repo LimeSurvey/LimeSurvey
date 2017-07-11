@@ -975,7 +975,7 @@ class Survey extends LSActiveRecord
      */
     public function getPartialAnswers()
     {
-        $table = '{{survey_' . $this->sid . '}}';
+        $table = $this->responsesTableName;
         Yii::app()->cache->flush();
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
@@ -1131,7 +1131,7 @@ class Survey extends LSActiveRecord
      */
     public function getFullAnswers()
     {
-        $table = '{{survey_' . $this->sid . '}}';
+        $table = $this->responsesTableName;
         Yii::app()->cache->flush();
         if (!Yii::app()->db->schema->getTable($table)) {
             return null;
@@ -1154,7 +1154,7 @@ class Survey extends LSActiveRecord
         if($this->fac!==null) {
             return $this->fac;
         } else {
-            $sResponseTable = '{{survey_' . $this->sid . '}}';
+            $sResponseTable = $this->responsesTableName;
             Yii::app()->cache->flush();
             if ($this->active!='Y') {
                 $this->fac = 0;
@@ -1176,7 +1176,7 @@ class Survey extends LSActiveRecord
         if($this->pac!==null) {
             return $this->pac;
         } else {
-            $table = '{{survey_' . $this->sid . '}}';
+            $table = $this->responsesTableName;
             Yii::app()->cache->flush();
             if ($this->active!='Y') {
                 $this->pac = 0;

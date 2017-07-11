@@ -53,7 +53,7 @@ class printablesurvey extends Survey_Common_Action
             $surveyname = $aSurveyInfo['surveyls_title'];
             $surveydesc = $aSurveyInfo['surveyls_description'];
             $surveyactive = $aSurveyInfo['active'];
-            $surveytable = "{{survey_".$aSurveyInfo['sid']."}}";
+            $surveytable = $survey->responsesTableName;
             $surveyexpirydate = $aSurveyInfo['expires'];
             $surveyfaxto = $aSurveyInfo['faxto'];
             $dateformattype = $aSurveyInfo['surveyls_dateformat'];

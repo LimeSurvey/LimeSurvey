@@ -492,7 +492,7 @@ class dataentry extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
         {
-            $surveytable = "{{survey_".$surveyid.'}}';
+            $surveytable = $survey->responsesTableName;
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
 
             Yii::app()->loadHelper('database');
@@ -1386,6 +1386,7 @@ class dataentry extends Survey_Common_Action
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
 
         $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
         $id = $_REQUEST['id'];
 
         $aData = array(
@@ -1393,9 +1394,9 @@ class dataentry extends Survey_Common_Action
         'id' => $id
         );
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','read') && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
-        {
-            $surveytable = "{{survey_".$surveyid.'}}';
+        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','read')
+            && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')) {
+            $surveytable = $survey->responsesTableName;
             $aData['thissurvey'] = getSurveyInfo($surveyid);
 
             $delquery = "DELETE FROM $surveytable WHERE id=$id";
@@ -1437,7 +1438,7 @@ class dataentry extends Survey_Common_Action
         {
 
             Yii::app()->loadHelper("database");
-            $surveytable = "{{survey_".$surveyid.'}}';
+            $surveytable = $survey->responsesTableName;
             $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
             // restet token if user is not allowed to update
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) // If not allowed to read: remove it
