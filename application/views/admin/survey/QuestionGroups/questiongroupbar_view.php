@@ -11,7 +11,7 @@
     <div class='row container-fluid'>
 
         <?php if(isset($questiongroupbar['buttonspreview']) || isset($questiongroupbar['buttons']['view']) ):?>
-            <div class="col-md-3">
+            <div class="col-md-4">
             <!-- test/execute survey -->
             <?php if (count($languagelist) > 1): ?>
                 <div class="btn-group">
@@ -78,7 +78,7 @@
         <?php endif;?>
 
         <!-- Left Buttons -->
-        <div class="col-md-8 text-right  pull-right ">
+        <div class="col-md-8 text-right no-padding  pull-right ">
 
 
             <?php if(isset($questiongroupbar['buttons']['view'])):?>
@@ -244,11 +244,13 @@
             <?php if(isset($questiongroupbar['savebutton']['form'])):?>
                 <?php if(!isset($copying) || !$copying): ?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
-                    <span class="fa fa-ok"></span>
+                    <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </a>
+                <?php endif; ?>
             <?php endif; ?>
-
+            
+            <?php /*
             <!-- Save and close -->
             <?php if(isset($questiongroupbar['saveandclosebutton'])):?>
                 <a id="save-and-close-button" class="btn btn-default" role="button">
@@ -256,8 +258,10 @@
                     <?php eT("Save and close");?>
                 </a>
             <?php endif; ?>
-            <?php endif;?>
-
+            */ ?>
+            
+ 
+            <?php /*
             <!-- Close -->
             <?php if(isset($questiongroupbar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $questiongroupbar['closebutton']['url']; ?>" role="button">
@@ -265,6 +269,7 @@
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
+            */ ?>
 
             <!-- return -->
             <?php if(isset($questiongroupbar['returnbutton']['url'])):?>

@@ -27,6 +27,10 @@ class SurveyDynamic extends LSActiveRecord
 
     /** @var int $sid */
     protected static $sid = 0;
+
+    /** @var Survey $survey */
+    protected static $survey;
+
     /** @var  boolean $bHaveToken */
     protected $bHaveToken;
 
@@ -37,8 +41,10 @@ class SurveyDynamic extends LSActiveRecord
     public static function model($sid = NULL)
     {
         $refresh = false;
-        if (!is_null($sid)) {
-            self::sid($sid);
+        $survey = Survey::model()->findByPk($sid);
+        if ($survey) {
+            self::sid($survey->sid);
+            self::$survey = $survey;
             $refresh = true;
         }
 
@@ -66,7 +72,7 @@ class SurveyDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . self::$sid . '}}';
+        return self::$survey->responsesTableName;
     }
 
     /** @inheritdoc */
@@ -154,7 +160,7 @@ class SurveyDynamic extends LSActiveRecord
         }
         $alias = $this->getTableAlias();
 
-        $newCriteria->join = "LEFT JOIN {{survey_" . self::$sid . "_timings}} survey_timings ON $alias.id = survey_timings.id";
+        $newCriteria->join = "LEFT JOIN ".self::$survey->tokensTableName." survey_timings ON $alias.id = survey_timings.id";
         $newCriteria->select = 'survey_timings.*';  // Otherwise we don't get records from the token table
         $newCriteria->mergeWith($criteria);
 
@@ -171,7 +177,7 @@ class SurveyDynamic extends LSActiveRecord
     {
         $newCriteria = new CDbCriteria();
         $criteria = $this->getCommandBuilder()->createCriteria($condition);
-        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . self::$sid  . '}}')->getColumnNames();
+        $aSelectFields=Yii::app()->db->schema->getTable(self::$survey->responsesTableName)->getColumnNames();
         $aSelectFields=array_diff($aSelectFields, array('token'));
         $aSelect=array();
         $alias = $this->getTableAlias();
@@ -187,7 +193,7 @@ class SurveyDynamic extends LSActiveRecord
 
         $newCriteria->join = "LEFT JOIN {{tokens_" . self::$sid . "}} tokens ON $alias.token = tokens.token";
 
-        $aTokenFields=Yii::app()->db->schema->getTable('{{tokens_' . self::$sid . '}}')->getColumnNames();
+        $aTokenFields=Yii::app()->db->schema->getTable(self::$survey->tokensTableName)->getColumnNames();
         $aTokenFields=array_diff($aTokenFields, array('token'));
 
         $newCriteria->select = $aTokenFields;  // Otherwise we don't get records from the token table
@@ -314,7 +320,7 @@ class SurveyDynamic extends LSActiveRecord
         if($oFieldMap->type =='|' && strpos($oFieldMap->fieldname,'filecount')===false) {
 
             $sSurveyEntry="<table class='table table-condensed upload-question'><tr>";
-            $aQuestionAttributes = getQuestionAttributeValues($oFieldMap->qid);
+            $aQuestionAttributes = QuestionAttribute::model()->getQuestionAttributes($oFieldMap->qid);
             $aFilesInfo = json_decode_ls($this->$colName);
             for ($iFileIndex = 0; $iFileIndex < $aQuestionAttributes['max_num_of_files']; $iFileIndex++) {
                 $sSurveyEntry .='<tr>';

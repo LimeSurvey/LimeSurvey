@@ -77,8 +77,6 @@ class responses extends Survey_Common_Action
 
         //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
 
-        $aData['surveyinfo'] = $thissurvey;
-
         if (Yii::app()->request->getParam('browselang'))
         {
             $aData['language'] = Yii::app()->request->getParam('browselang');
@@ -132,6 +130,8 @@ class responses extends Survey_Common_Action
     */
     public function view($iSurveyID, $iId, $sBrowseLang = '')
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
         {
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
@@ -141,8 +141,8 @@ class responses extends Survey_Common_Action
 
             $aViewUrls = array();
 
-            $fieldmap = createFieldMap($iSurveyID, 'full', false, false, $aData['language']);
-            $bHaveToken=$aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyID);// Boolean : show (or not) the token
+            $fieldmap = createFieldMap($survey, 'full', false, false, $aData['language']);
+            $bHaveToken=$survey->anonymized == "N" && tableExists('tokens_' . $iSurveyID);// Boolean : show (or not) the token
             if(!Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read')) // If not allowed to read: remove it
             {
                 unset($fieldmap['token']);
@@ -179,7 +179,7 @@ class responses extends Survey_Common_Action
                 }
                 elseif ($field['aid'] !== 'filecount')
                 {
-                    $qidattributes = getQuestionAttributeValues($field['qid']);
+                    $qidattributes = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
 
                     for ($i = 0; $i < $qidattributes['max_num_of_files']; $i++)
                     {
@@ -281,7 +281,7 @@ class responses extends Survey_Common_Action
                                         case "name":
                                             $answervalue = CHtml::link(
                                                 htmlspecialchars($oPurifier->purify(rawurldecode($phparray[$index][$metadata]))),
-                                                $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$surveyid,"iResponseId"=>$iId,"iQID"=>$fnames[$i]['qid'],"iIndex"=>$index))
+                                                $this->getController()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>$iSurveyID,"iResponseId"=>$iId,"iQID"=>$fnames[$i]['qid'],"iIndex"=>$index))
                                             );
                                             break;
                                         default:
@@ -316,7 +316,7 @@ class responses extends Survey_Common_Action
             $aData['menu']['view'] = true;
             $aData['menu']['close'] =  true;
             // This resets the url on the close button to go to the upper view
-            $aData['menu']['closeurl'] = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/".$iSurveyId);
+            $aData['menu']['closeurl'] = $this->getController()->createUrl("admin/responses/sa/browse/surveyid/".$iSurveyID);
 
             $this->_renderWrappedTemplate('',$aViewUrls, $aData);
         }
@@ -334,6 +334,7 @@ class responses extends Survey_Common_Action
 
     public function index($iSurveyID)
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
         $aData = $this->_getData($iSurveyID);
         extract($aData);
         $aViewUrls = array();
@@ -350,9 +351,9 @@ class responses extends Survey_Common_Action
 
         $aData['num_total_answers'] = SurveyDynamic::model($iSurveyID)->count();
         $aData['num_completed_answers'] = SurveyDynamic::model($iSurveyID)->count('submitdate IS NOT NULL');
-        if (tableExists('{{tokens_' . $iSurveyID . '}}') && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
+        if ($survey->hasTokensTable && Permission::model()->hasSurveyPermission($iSurveyID,'tokens','read'))
         {
-            $aData['with_token']= Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}');
+            $aData['with_token']= Yii::app()->db->schema->getTable($survey->tokensTableName);
             $aData['tokeninfo'] = Token::model($iSurveyID)->summary();
         }
 
@@ -391,6 +392,7 @@ class responses extends Survey_Common_Action
      */
     public function browse($iSurveyId)
     {
+        $survey = Survey::model()->findByPk($iSurveyId);
         if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
             App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'listresponse.js');
@@ -403,14 +405,14 @@ class responses extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
             $aData['issuperadmin']      = Permission::model()->hasGlobalPermission('superadmin');
             $aData['hasUpload']         = hasFileUploadQuestion($iSurveyId);
-            $aData['fieldmap']          = createFieldMap($iSurveyId, 'full', true, false, $aData['language']);
+            $aData['fieldmap']          = createFieldMap($survey, 'full', true, false, $aData['language']);
             $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
 
             ////////////////////
             // Setting the grid
 
             // Basic variables
-            $bHaveToken                 = $aData['surveyinfo']['anonymized'] == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
+            $bHaveToken                 = $survey->anonymized == "N" && tableExists('tokens_' . $iSurveyId) && Permission::model()->hasSurveyPermission($iSurveyId,'tokens','read');// Boolean : show (or not) the token
             $aViewUrls                  = array('listResponses_view');
             $model                      =  SurveyDynamic::model($iSurveyId);
 
@@ -638,12 +640,13 @@ class responses extends Survey_Common_Action
     public function time($iSurveyID)
     {
         $aData = $this->_getData(array('iSurveyId' => $iSurveyID));
+        $survey = Survey::model()->findByPk($iSurveyID);
 
         /*
         extract($aData);
         $aViewUrls = array();
 
-        if ($aData['surveyinfo']['savetimings'] != "Y")
+        if ($survey->savetimings != "Y")
             die();
 
         if (Yii::app()->request->getPost('deleteanswer') && Yii::app()->request->getPost('deleteanswer') != '' && Yii::app()->request->getPost('deleteanswer') != 'marked'
@@ -933,11 +936,10 @@ class responses extends Survey_Common_Action
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'browse.css');
 
         $iSurveyId = $aData['iSurveyId'];
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         $aData['display']['menu_bars'] = false;
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);
     }
 

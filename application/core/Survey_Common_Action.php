@@ -33,11 +33,12 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Override runWithParams() implementation in CAction to help us parse
-    * requests with subactions.
-    *
-    * @param array $params URL Parameters
-    */
+     * Override runWithParams() implementation in CAction to help us parse
+     * requests with subactions.
+     *
+     * @param array $params URL Parameters
+     * @return bool
+     */
     public function runWithParams($params)
     {
         // Default method that would be called if the subaction and run() do not exist
@@ -87,16 +88,17 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Some functions have different parameters, which are just an alias of the
-    * usual parameters we're getting in the url. This function just populates
-    * those variables so that we don't end up in an error.
-    *
-    * This is also used while rendering wrapped template
-    * {@link Survey_Common_Action::_renderWrappedTemplate()}
-    *
-    * @param array $params Parameters to parse and populate
-    * @return array Populated parameters
-    */
+     * Some functions have different parameters, which are just an alias of the
+     * usual parameters we're getting in the url. This function just populates
+     * those variables so that we don't end up in an error.
+     *
+     * This is also used while rendering wrapped template
+     * {@link Survey_Common_Action::_renderWrappedTemplate()}
+     *
+     * @param array $params Parameters to parse and populate
+     * @return array Populated parameters
+     * @throws CHttpException
+     */
     private function _addPseudoParams($params)
     {
         // Return if params isn't an array
@@ -202,13 +204,13 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Routes the action into correct subaction
-    *
-    * @access protected
-    * @param string $sa
-    * @param string[] $get_vars
-    * @return void
-    */
+     * Routes the action into correct subaction
+     *
+     * @access protected
+     * @param string $sa
+     * @param string[] $get_vars
+     * @return mixed
+     */
     protected function route($sa, array $get_vars)
     {
         $func_args = array();
@@ -265,11 +267,14 @@ class Survey_Common_Action extends CAction
             // Needed to evaluate EM expressions in question summary
             // See bug #11845
             LimeExpressionManager::StartProcessingPage(false,true);
-
+            $aData['debug'] = $aData;
             $this->_titlebar($aData);
-
+            //// TODO : Move this div inside each correct view ASAP !
+            echo '<div class="ls-flex-row align-items-flex-center align-content-center">';
             //// Each view will call the correct bar as a subview.
             $this->_surveysidemenu($aData);
+            //// TODO : Move this div inside each correct view ASAP !
+            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-12">';
             $this->_surveybar($aData);
             $this->_nquestiongroupbar($aData);
             $this->_questionbar($aData);
@@ -278,7 +283,7 @@ class Survey_Common_Action extends CAction
             $this->_organizequestionbar($aData);
 
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="container-fluid" id="in_survey_common"><div class="row">';
+            echo '<div class="container-fluid ls-flex-column fill col-12" id="in_survey_common">';
 
             $this->_updatenotification();
             $this->_notifications();
@@ -355,7 +360,9 @@ class Survey_Common_Action extends CAction
             }
         }
 
-        //// TODO : Move this div inside each correct view ASAP !
+        //// TODO : Move this divs inside each correct view ASAP !
+        echo '</div>' ;
+        echo '</div>' ;
         echo '</div>' ;
 
         if (!empty($aData['surveyid']))
@@ -455,6 +462,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * Survey summary
+     * @param array $aData
      */
     function _nsurveysummary($aData)
     {
@@ -470,6 +478,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * Header
+     * @param array $aData
      */
     function _showHeaders($aData)
     {
@@ -483,17 +492,18 @@ class Survey_Common_Action extends CAction
 
 
     /**
-    * _showadminmenu() function returns html text for the administration button bar
-    *
-    * @access public
-    * @global string $homedir
-    * @global string $scriptname
-    * @global string $surveyid
-    * @global string $setfont
-    * @global string $imageurl
-    * @global int $surveyid
-    * @return string $adminmenu
-    */
+     * _showadminmenu() function returns html text for the administration button bar
+     *
+     * @access public
+     * @param $aData
+     * @return string
+     * @global string $homedir
+     * @global string $scriptname
+     * @global string $surveyid
+     * @global string $setfont
+     * @global string $imageurl
+     * @global int $surveyid
+     */
     public function _showadminmenu($aData)
     {
         // We don't wont the admin menu to be shown in login page
@@ -547,6 +557,7 @@ class Survey_Common_Action extends CAction
 
             $this->getController()->renderPartial("/admin/super/adminmenu", $aData);
         }
+        return null;
     }
 
     function _titlebar($aData)
@@ -622,7 +633,7 @@ class Survey_Common_Action extends CAction
 
                 $qrrow = Question::model()->findByAttributes(array('qid' => $qid, 'gid' => $gid, 'sid' => $iSurveyID, 'language' => $baselang));
                 if (is_null($qrrow)) return;
-                $questionsummary = "<div class='menubar'>\n";
+                $questionsummary = "";
 
                 // Check if other questions in the Survey are dependent upon this question
                 $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");
@@ -750,46 +761,35 @@ class Survey_Common_Action extends CAction
         if((isset($aData['surveybar'])))
         {
             $iSurveyID = $aData['surveyid'];
+            /** @var Survey $oSurvey */
             $oSurvey = $aData['oSurvey'];
             $gid = isset($aData['gid'])?$aData['gid']:null;
-            $surveyinfo = ( isset($aData['surveyinfo']) )?$aData['surveyinfo']:$oSurvey->surveyinfo;
-            $baselang = $surveyinfo['language'];
 
-            $activated = ($surveyinfo['active'] == 'Y');
             App()->getClientScript()->registerPackage('js-cookie');
 
             //Parse data to send to view
-            $aData['surveyinfo'] = $surveyinfo;
 
             // ACTIVATE SURVEY BUTTON
-            $aData['activated'] = $activated;
 
-            $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $baselang);
+            $condition = array('sid' => $iSurveyID, 'parent_qid' => 0, 'language' => $oSurvey->language);
 
             $sumcount3 = Question::model()->countByAttributes($condition); //Checked
 
             $aData['canactivate'] = $sumcount3 > 0 && Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
             $aData['candeactivate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update');
-            $aData['expired'] = $surveyinfo['expires'] != '' && ($surveyinfo['expires'] < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
-            $aData['notstarted'] = ($surveyinfo['startdate'] != '') && ($surveyinfo['startdate'] > dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+            $aData['expired'] = $oSurvey->expires != '' && ($oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
+            $aData['notstarted'] = ($oSurvey->startdate != '') && ($oSurvey->startdate > dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')));
 
             // Start of suckerfish menu
             // TEST BUTTON
-            if (!$activated)
-            {
+            if (!$oSurvey->isActive) {
                 $aData['icontext'] = gT("Preview survey");
-            }
-            else
-            {
+            } else {
                 $aData['icontext'] = gT("Execute survey");
             }
 
-            $aData['baselang'] = $oSurvey->language;
-            $aData['additionallanguages'] = $oSurvey->getAdditionalLanguages();
-            $aData['languagelist'] =  $oSurvey->getAllLanguages();
-            $aData['onelanguage']=(count($aData['languagelist'])==1);
-
-            $aData['hasadditionallanguages'] = (count($aData['additionallanguages']) > 0);
+            $aData['onelanguage']=(count($oSurvey->allLanguages)==1);
+            $aData['hasadditionallanguages'] = (count($oSurvey->additionalLanguages) > 0);
 
             // EDIT SURVEY TEXT ELEMENTS BUTTON
             $aData['surveylocale'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read');
@@ -799,7 +799,7 @@ class Survey_Common_Action extends CAction
             $aData['surveysecurity'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysecurity', 'read');
             // CHANGE QUESTION GROUP ORDER BUTTON
             $aData['surveycontentread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read');
-            $aData['groupsum'] = (getGroupSum($iSurveyID, $surveyinfo['language']) > 1);
+            $aData['groupsum'] = ($oSurvey->groupsCount > 1);
             // SET SURVEY QUOTAS BUTTON
             $aData['quotas'] = Permission::model()->hasSurveyPermission($iSurveyID, 'quotas', 'read');
             // Assessment menu item
@@ -862,8 +862,7 @@ class Survey_Common_Action extends CAction
             $aData['responsescreate'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create');
             $aData['responsesread'] = Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read');
             // TOKEN MANAGEMENT BUTTON
-            $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
-            if(!$bTokenExists) {
+            if (!$oSurvey->hasTokensTable) {
                 $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
             }
@@ -877,23 +876,17 @@ class Survey_Common_Action extends CAction
 
             $aData['gid'] = $gid; // = $this->input->post('gid');
 
-            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
-            {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read')) {
                 $aData['permission'] = true;
-            }
-            else
-            {
+            } else {
                 $aData['gid'] = $gid = null;
                 $qid = null;
                 $aData['permission'] = false;
             }
 
-            if (getGroupListLang($gid, $baselang, $iSurveyID))
-            {
-                $aData['groups'] = getGroupListLang($gid, $baselang, $iSurveyID);
-            }
-            else
-            {
+            if (getGroupListLang($gid, $oSurvey->language, $iSurveyID)) {
+                $aData['groups'] = getGroupListLang($gid, $oSurvey->language, $iSurveyID);
+            } else {
                 $aData['groups'] = "<option>" . gT("None") . "</option>";
             }
 
@@ -902,8 +895,7 @@ class Survey_Common_Action extends CAction
             $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
 
-            if(isset($aData['surveybar']['closebutton']['url']))
-            {
+            if(isset($aData['surveybar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
                 $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl));
             }
@@ -922,6 +914,7 @@ class Survey_Common_Action extends CAction
     {
 
         $iSurveyID = $aData['surveyid'];
+        $survey=Survey::model()->findByPk($iSurveyID);
         // TODO : create subfunctions
         $sumresult1 = Survey::model()->with(array(
             'languagesettings' => array('condition'=>'surveyls_language=language'))
@@ -946,7 +939,7 @@ class Survey_Common_Action extends CAction
             $aData['activated'] = ($surveyinfo['active'] == 'Y');
 
             // Tokens
-            $bTokenExists = tableExists('{{tokens_' . $iSurveyID . '}}');
+            $bTokenExists = $survey->hasTokensTable;
             if (!$bTokenExists) {
                 $aData['tokenmanagement'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update')
                     || Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create');
@@ -1031,6 +1024,7 @@ class Survey_Common_Action extends CAction
 
     /**
      * Returns content from event beforeSideMenuRender
+     * @param array $aData
      * @return string
      */
     protected function beforeSideMenuRender(array $aData)
@@ -1043,8 +1037,9 @@ class Survey_Common_Action extends CAction
 
     /**
      * listquestion groups
+     * @param array $aData
      */
-    private function _listquestiongroups($aData)
+    private function _listquestiongroups(array $aData)
     {
         if ( isset($aData['display']['menu_bars']['listquestiongroups']) )
         {
@@ -1200,14 +1195,7 @@ class Survey_Common_Action extends CAction
             $aData['expdate'] = "-";
         }
 
-        if (!$aSurveyInfo['language'])
-        {
-            $aData['language'] = getLanguageNameFromCode($currentadminlang, false);
-        }
-        else
-        {
-            $aData['language'] = getLanguageNameFromCode($aSurveyInfo['language'], false);
-        }
+        $aData['language'] = getLanguageNameFromCode($aSurveyInfo['language'], false);
 
         if ($aSurveyInfo['surveyls_urldescription'] == "") {
             $aSurveyInfo['surveyls_urldescription'] = htmlspecialchars($aSurveyInfo['surveyls_url']);
@@ -1253,7 +1241,6 @@ class Survey_Common_Action extends CAction
 
         $aData['tableusage'] = false;
         $aData['aAdditionalLanguages'] = $aAdditionalLanguages;
-        $aData['surveyinfo'] = $aSurveyInfo;
         $aData['groups_count'] = $sumcount2;
 
         // We get the state of the quickaction
@@ -1269,9 +1256,10 @@ class Survey_Common_Action extends CAction
     }
 
     /**
-    * Browse Menu Bar
-    */
-    public function _browsemenubar($aData)
+     * Browse Menu Bar
+     * @param array $aData
+     */
+    public function _browsemenubar(array $aData)
     {
         if (!empty($aData['display']['menu_bars']['browse']) && !empty($aData['surveyid']))
         {
@@ -1296,11 +1284,13 @@ class Survey_Common_Action extends CAction
             $this->getController()->renderPartial("/admin/responses/browsemenubar_view", $aData);
         }
     }
+
     /**
-    * Load menu bar of user group controller.
-    * @return void
-    */
-    public function _userGroupBar($aData)
+     * Load menu bar of user group controller.
+     * @param array $aData
+     * @return void
+     */
+    public function _userGroupBar(array $aData)
     {
         $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0 ;
         if (!empty($aData['display']['menu_bars']['user_group']))
@@ -1348,6 +1338,7 @@ class Survey_Common_Action extends CAction
     /**
      * @param string $extractdir
      * @param string $destdir
+     * @return array
      */
     protected function _filterImportedResources($extractdir, $destdir)
     {

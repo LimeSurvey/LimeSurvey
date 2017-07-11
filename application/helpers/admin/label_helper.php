@@ -23,7 +23,6 @@ function updateset($lid)
     $newlanidarray=Yii::app()->getRequest()->getPost('languageids');
     $postlabel_name=Yii::app()->getRequest()->getPost('label_name');
 
-    $oldlangidsarray = array();
     $labelset = LabelSet::model()->findByAttributes(array('lid' => $lid));
     $oldlangidsarray = explode(' ', $labelset->languages);
 
@@ -60,7 +59,7 @@ function updateset($lid)
     $criteria->mergeWith($langcriteria);
 
     if (!empty($dellangidsarray))
-        $result = Label::model()->deleteAll($criteria);
+        Label::model()->deleteAll($criteria);
 
     // Update the label set itself
     $labelset->label_name = $postlabel_name;
@@ -77,9 +76,9 @@ function updateset($lid)
 function deletelabelset($lid)
 {
     $query = "DELETE FROM {{labels}} WHERE lid=$lid";
-    $result = Yii::app()->db->createCommand($query)->execute();
+    Yii::app()->db->createCommand($query)->execute();
     $query = "DELETE FROM {{labelsets}} WHERE lid=$lid";
-    $result = Yii::app()->db->createCommand($query)->execute();
+    Yii::app()->db->createCommand($query)->execute();
     return true;
 }
 
@@ -139,7 +138,7 @@ function modlabelsetanswers($lid)
 
         $query = "DELETE FROM {{labels}} WHERE lid = '$lid'";
 
-        $result = Yii::app()->db->createCommand($query)->execute();
+        Yii::app()->db->createCommand($query)->execute();
 
         foreach($data->{'codelist'} as $index=>$codeid){
 
@@ -163,12 +162,9 @@ function modlabelsetanswers($lid)
                 $oLabel->sortorder=$sortorder;
                 $oLabel->assessment_value=$assessmentvalue;
                 $oLabel->language=$lang;
-                if($oLabel->validate())
-                {
-                    $result=$oLabel->save();
-                }
-                else
-                {
+                if($oLabel->validate()) {
+                    $oLabel->save();
+                } else {
                     $aErrors[]=$oLabel->getErrors();
                 }
             }
@@ -212,7 +208,7 @@ function fixorder($lid) {
         {
             $position=sprintf("%05d", $position);
             $query2="UPDATE {{labels}} SET sortorder='$position' WHERE lid=".$row['lid']." AND code=".$row['code']." AND title=".$row['title']." AND language='$lslanguage' ";
-            $result2=Yii::app()->db->createCommand($query2)->execute();
+            Yii::app()->db->createCommand($query2)->execute();
             $position++;
         }
     }

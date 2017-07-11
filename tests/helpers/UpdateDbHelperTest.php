@@ -53,6 +53,9 @@ class UpdateDbHelperTest extends TestBaseClass
 
         // Run SQL install file.
         $result = $inst->_executeSQLFile($file, 'lime_');
+        if ($result) {
+            print_r($result);
+        }
         $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
 
         // Dump database to file.
@@ -100,11 +103,14 @@ class UpdateDbHelperTest extends TestBaseClass
 
         // Run upgrade.
         $result = \db_upgrade_all(153);
-        $this->assertTrue($result, 'Upgrade successful');
 
         // Check error messages.
         $flashes = \Yii::app()->user->getFlashes();
+        if ($flashes) {
+            print_r($flashes);
+        }
         $this->assertEmpty($flashes, 'No flash error messages');
+        $this->assertTrue($result, 'Upgrade successful');
 
         // Dump database to file.
         $output = array();

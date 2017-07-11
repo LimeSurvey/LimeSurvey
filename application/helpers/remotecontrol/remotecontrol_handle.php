@@ -438,7 +438,6 @@ class remotecontrol_handle
     {
         Yii::app()->loadHelper('admin/statistics');
 
-        $tempdir = Yii::app()->getConfig("tempdir");
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
 
         $oSurvey = Survey::model()->findByPk($iSurveyID);
@@ -528,12 +527,13 @@ class remotecontrol_handle
     * */
     public function export_timeline($sSessionKey, $iSurveyID, $sType, $dStart, $dEnd)
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
-        $oSurvey=Survey::model()->findByPk($iSurveyID);
-        if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
-        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No available data');
+        if (is_null($survey)) return array('status' => 'Error: Invalid survey ID');
+        if (!tableExists($survey->responsesTableName)) return array('status' => 'No available data');
 
         $oResponses = SurveyDynamic::model($iSurveyID)->timeline($sType, $dStart, $dEnd);
         if (empty($oResponses))  return array('status' => 'No valid Data');
@@ -570,9 +570,9 @@ class remotecontrol_handle
     */
     public function get_summary($sSessionKey,$iSurveyID, $sStatName='all')
     {
-        $aPermittedStats = array();
-        if ($this->_checkSessionKey($sSessionKey))
-        {
+
+        if ($this->_checkSessionKey($sSessionKey)) {
+
             $aPermittedTokenStats = array(
                 'token_count',
                 'token_invalid',
@@ -599,13 +599,10 @@ class remotecontrol_handle
             {
                 $aSummary=array();
 
-                if (in_array($sStatName, $aPermittedTokenStats) || $sStatName=='all')
-                {
-                    if (tableExists('{{tokens_' . $iSurveyID . '}}'))
-                    {
+                if (in_array($sStatName, $aPermittedTokenStats) || $sStatName=='all') {
+                    if ($oSurvey->hasTokensTable) {
                         $aTokenSummary = Token::model($iSurveyID)->summary();
-                        if ($aTokenSummary)
-                        {
+                        if ($aTokenSummary) {
                             $aSummary['token_count']=$aTokenSummary['count'];
                             $aSummary['token_invalid']=$aTokenSummary['invalid'];
                             $aSummary['token_sent']=$aTokenSummary['sent'];
@@ -619,22 +616,17 @@ class remotecontrol_handle
                     }
                 }
 
-                if (in_array($sStatName, $aPermittedSurveyStats) || $sStatName=='all')
-                {
-                    if (tableExists('{{survey_' . $iSurveyID . '}}'))
-                    {
+                if (in_array($sStatName, $aPermittedSurveyStats) || $sStatName=='all') {
+                    if (tableExists($oSurvey->responsesTableName)) {
                         $aSummary['completed_responses']=SurveyDynamic::model($iSurveyID)->count('submitdate is NOT NULL');
                         $aSummary['incomplete_responses']=SurveyDynamic::model($iSurveyID)->countByAttributes(array('submitdate' => null));
                         $aSummary['full_responses']=SurveyDynamic::model($iSurveyID)->count();
-                    }
-                    elseif ($sStatName!='all')
-                    {
+                    } elseif ($sStatName!='all') {
                         return array('status' => 'No available data');
                     }
                 }
 
-                if ($sStatName=='all')
-                {
+                if ($sStatName=='all') {
                     return $aSummary;
                 }
                 else
@@ -1062,7 +1054,6 @@ class remotecontrol_handle
                     $iNewgid = $aImportResults['newgid'];
 
                     $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iNewgid));
-                    $slang=$oGroup['language'];
                     if($sNewGroupName!='')
                         $oGroup->setAttribute('group_name',$sNewGroupName);
                     if($sNewGroupDescription!='')
@@ -1678,30 +1669,23 @@ class remotecontrol_handle
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         $oSurvey=Survey::model()->findByPk($iSurveyID);
-        if (is_null($oSurvey))
-        {
+        if (is_null($oSurvey)) {
             return array('status' => 'Error: Invalid survey ID');
         }
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create'))
-        {
-            if (!Yii::app()->db->schema->getTable('{{tokens_' . $iSurveyID . '}}'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'create')) {
+            if (!Yii::app()->db->schema->getTable($oSurvey->tokensTableName))
                 return array('status' => 'No token table');
             $aDestinationFields = array_flip(Token::model($iSurveyID)->getMetaData()->tableSchema->columnNames);
-            foreach ($aParticipantData as &$aParticipant)
-            {
+            foreach ($aParticipantData as &$aParticipant) {
                 $token = Token::create($iSurveyID);
                 $token->setAttributes(array_intersect_key($aParticipant,$aDestinationFields));
-                if  ($bCreateToken)
-                {
+                if  ($bCreateToken) {
                     $token->generateToken();
                 }
-                if ($token->save())
-                {
+                if ($token->save()) {
                     $aParticipant = $token->getAttributes();
-                }
-                else
-                {
+                } else {
                     $aParticipant["errors"] = $token->errors;
                 }
             }
@@ -1857,7 +1841,6 @@ class remotecontrol_handle
                 if (!isset($oToken))
                     return array('status' => 'Error: Invalid tokenid');
 
-                $aResult = array();
                 // Remove fields that may not be modified
                 unset($aTokenData['tid']);
 
@@ -2395,11 +2378,6 @@ class remotecontrol_handle
             if(!tableExists("{{tokens_$iSurveyID}}"))
                 return array('status' => 'Error: No token table');
 
-            if (getEmailFormat($iSurveyID) == 'html')
-                $bHtml = true;
-            else
-                $bHtml = false;
-
             $SQLemailstatuscondition = "emailstatus = 'OK'";
             $SQLremindercountcondition = '';
             $SQLreminderdelaycondition = '';
@@ -2459,9 +2437,8 @@ class remotecontrol_handle
             return array('status' => 'Error: Invalid survey ID');
         }
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create'))
-        {
-            if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create')) {
+            if (!Yii::app()->db->schema->getTable($oSurvey->responsesTableName))
                 return array('status' => 'No survey response table');
 
             //set required values if not set
@@ -2472,10 +2449,9 @@ class remotecontrol_handle
             else if (!isset($aResponseData['submitdate']))
                 $aResponseData['submitdate'] = date("Y-m-d H:i:s");
                 if (!isset($aResponseData['startlanguage']))
-                $aResponseData['startlanguage'] = getBaseLanguageFromSurveyID($iSurveyID);
+                $aResponseData['startlanguage'] = $oSurvey->language;
 
-            if ($oSurvey->datestamp=='Y')
-            {
+            if ($oSurvey->datestamp=='Y') {
                 if (array_key_exists('datestamp', $aResponseData) && empty($aResponseData['datestamp']))
                     unset($aResponseData['datestamp']);
                 else if (!isset($aResponseData['datestamp']))
@@ -2530,15 +2506,12 @@ class remotecontrol_handle
             return 'Error: Survey does not allow edit after completion.';
         }
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'update'))
-        {
-            if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'update')) {
+            if (!Yii::app()->db->schema->getTable($oSurvey->responsesTableName))
                 return 'Error: No survey response table';
 
-            if (
-            !isset($aResponseData['id'])
-            && ! isset($aResponseData['token'])
-            ) {
+            if (!isset($aResponseData['id'])
+                && ! isset($aResponseData['token'])) {
                 return 'Error: Missing response identifier (id|token).';
             }
 
@@ -2597,15 +2570,17 @@ class remotecontrol_handle
     * */
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         Yii::app()->loadHelper('admin/exportresults');
-        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
+        if (!tableExists($survey->responsesTableName)) return array('status' => 'No Data, survey table does not exist.');
         if(!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
-        if(!empty($sLanguageCode) && !in_array($sLanguageCode,Survey::model()->findByPk($iSurveyID)->getAllLanguages()) ) return array('status' => 'Language code not found for this survey.');
+        if(!empty($sLanguageCode) && !in_array($sLanguageCode,$survey->getAllLanguages()) ) return array('status' => 'Language code not found for this survey.');
 
-        if (empty($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
-        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if (empty($sLanguageCode)) $sLanguageCode=$survey->language;
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($survey,'full',true,false,$sLanguageCode));
         if($sDocumentType=='xls'){
             // Cut down to the first 255 fields
             $aFields=array_slice($aFields,0,255);
@@ -2652,16 +2627,18 @@ class remotecontrol_handle
     */
     public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $aFields=null)
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
-        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
+        if (!tableExists($survey->responsesTableName)) return array('status' => 'No Data, survey table does not exist.');
         if(!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
-        if(!empty($sLanguageCode) && !in_array($sLanguageCode,Survey::model()->findByPk($iSurveyID)->getAllLanguages()) ) return array('status' => 'Language code not found for this survey.');
+        if(!empty($sLanguageCode) && !in_array($sLanguageCode,$survey->getAllLanguages()) ) return array('status' => 'Language code not found for this survey.');
 
         if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
-        if (empty($sLanguageCode)) $sLanguageCode=getBaseLanguageFromSurveyID($iSurveyID);
-        if (is_null($aFields)) $aFields=array_keys(createFieldMap($iSurveyID,'full',true,false,$sLanguageCode));
+        if (empty($sLanguageCode)) $sLanguageCode=$survey->language;
+        if (is_null($aFields)) $aFields=array_keys(createFieldMap($survey,'full',true,false,$sLanguageCode));
         if($sDocumentType=='xls'){
             // Cut down to the first 255 fields
             $aFields=array_slice($aFields,0,255);
@@ -2700,9 +2677,10 @@ class remotecontrol_handle
     */
     public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken)
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
 
-        if (!tableExists('{{survey_' . $iSurveyID . '}}')) return array('status' => 'No Data, survey table does not exist.');
+        if (!$survey->hasResponsesTable) return array('status' => 'No Data, survey table does not exist.');
 
         if(!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
 
@@ -2817,12 +2795,9 @@ class remotecontrol_handle
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
 
-        $aResponse = array();
         $aAttributeData = array();
-        $aAttributes = array();
         $aDefaultFields = array('participant_id', 'firstname', 'lastname', 'email', 'language', 'blacklisted');
         $bIsValidEmail = true;
-        $bDoImport = true;
         $sMandatory = 0;
         $sAttribCount = 0;
         $aResponse = array();
@@ -2890,7 +2865,6 @@ class remotecontrol_handle
                 {
                     //The mandatory fields of email, firstname and lastname
                     $sMandatory++;
-                    $bDoImport = false;
                 }
 
                 // Write to database if record not exists

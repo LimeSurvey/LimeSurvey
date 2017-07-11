@@ -169,7 +169,6 @@ class questionIndexHelper {
     {
         $sessionLem=Yii::app()->session["survey_{$this->iSurveyId}"];
         /* get field map : have more info*/
-        $questionList=$sessionLem['fieldmap'];
         /* get group list : for information about group ...*/
         $groupList=$sessionLem['grouplist'];
         /* get the step infor from LEM : for alreay seen questin : give if error/show and answered ...*/

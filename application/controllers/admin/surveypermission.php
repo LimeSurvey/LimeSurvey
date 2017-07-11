@@ -31,6 +31,7 @@ class surveypermission extends Survey_Common_Action {
     {
         $aData = array();
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $aViewUrls = array();
 
         $imageurl = Yii::app()->getConfig('adminimageurl');
@@ -42,9 +43,7 @@ class surveypermission extends Survey_Common_Action {
         }
 
         $aData['sidemenu']['state'] = false;
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $surveyinfo = $oSurvey->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
         $aBaseSurveyPermissions=Permission::model()->getSurveyBasePermissions();
@@ -53,7 +52,7 @@ class surveypermission extends Survey_Common_Action {
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'surveypermissions.js');
 
         $surveysecurity = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
-        $surveysecurity .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Survey permissions")), true, false);
+       // $surveysecurity .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Survey permissions")), true, false);
         $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
         $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
         $result2 = Permission::model()->getUserDetails($iSurveyID);
@@ -239,8 +238,9 @@ class surveypermission extends Survey_Common_Action {
 
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['subaction'] = gT("Survey permissions");
 
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
@@ -259,6 +259,7 @@ class surveypermission extends Survey_Common_Action {
     function addusergroup($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $aViewUrls = array();
 
         $action = $_POST['action'];
@@ -352,8 +353,7 @@ class surveypermission extends Survey_Common_Action {
         }
 
             $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$surveyid.")";
+            $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
 
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
@@ -368,6 +368,7 @@ class surveypermission extends Survey_Common_Action {
     function adduser($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $aViewUrls = array();
 
         $action = $_POST['action'];
@@ -436,8 +437,7 @@ class surveypermission extends Survey_Common_Action {
         }
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$surveyid.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
     }
@@ -451,6 +451,7 @@ class surveypermission extends Survey_Common_Action {
     function set($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $aViewUrls = array();
 
         $action = App()->getRequest()->getParam('action');
@@ -571,8 +572,7 @@ class surveypermission extends Survey_Common_Action {
         }
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$surveyid.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;  // Close button
@@ -590,6 +590,7 @@ class surveypermission extends Survey_Common_Action {
     {
 
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $aViewUrls = array();
 
         $action = App()->getRequest()->getParam('action');
@@ -643,8 +644,7 @@ class surveypermission extends Survey_Common_Action {
         }
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$surveyid.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
         //$aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         //$aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$surveyid;
 
@@ -660,6 +660,7 @@ class surveypermission extends Survey_Common_Action {
     function surveyright($surveyid)
     {
         $aData['surveyid'] = $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $aViewUrls = array();
 
         $action = $_POST['action'];
@@ -757,9 +758,9 @@ class surveypermission extends Survey_Common_Action {
         {
             $this->getController()->error('Access denied');
         }
-            $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($surveyid)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$surveyid.")";
+
+        $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$surveyid.")";
 
 
         $this->_renderWrappedTemplate('authentication', $aViewUrls, $aData);
