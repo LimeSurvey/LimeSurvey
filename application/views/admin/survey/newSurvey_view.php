@@ -1,6 +1,8 @@
 <?php
 /**
  * Create survey
+ * @var AdminController $this
+ * @var Survey $oSurvey
  */
 ?>
 <!-- new survey view -->

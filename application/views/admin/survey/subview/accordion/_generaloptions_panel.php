@@ -126,7 +126,7 @@
             <!-- Administrator -->
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
-                <?php $admin = empty($oSurvey->admin) ? $oSurvey->owner->full_name : $oSurvey->admin; ?>
+                <?php $admin = ($oSurvey->owner ? $oSurvey->owner->full_name : $oSurvey->admin); ?>
                 <label class="col-sm-3 control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
                 <div class="col-sm-9">
                     <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" />
@@ -136,7 +136,7 @@
             <!-- Admin email -->
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
-                <?php $admin_email = empty($oSurvey->adminemail) ? $oSurvey->owner->email : $oSurvey->adminemail; ?>
+                <?php $admin_email = $oSurvey->adminemail ? $oSurvey->owner->email : $oSurvey->adminemail; ?>
                 <label class="col-sm-3 control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
                 <div class="col-sm-9">
                     <input class="form-control" type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($admin_email); ?>" />
@@ -146,7 +146,7 @@
             <!-- Bounce email -->
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
-                <?php $bounce_email = empty($oSurvey->bounce_email) ? $oSurvey->owner->email : $oSurvey->bounce_email; ?>
+                <?php $bounce_email = ($oSurvey->bounce_email ? $oSurvey->bounce_email : $oSurvey->adminemail); ?>
                 <label class="col-sm-3 control-label"  for='bounce_email'><?php  eT("Bounce email:"); ?></label>
                 <div class="col-sm-9">
                     <input class="form-control" type='email' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" />

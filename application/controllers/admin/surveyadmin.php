@@ -149,7 +149,8 @@ class SurveyAdmin extends Survey_Common_Action
         $aData                = $this->_generalTabNewSurvey();
         $aData                = array_merge($aData, $this->_getGeneralTemplateData(0));
         $aData['esrow']       = $esrow;
-        
+        $aData['oSurvey']       = $survey;
+
         //Prepare the edition panes
 
         $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
@@ -162,6 +163,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aViewUrls[]          = 'newSurvey_view';
 
         $arrayed_data                                              = array();
+        $arrayed_data['oSurvey']                                   = $survey;
         $arrayed_data['data']                                      = $aData;
         $arrayed_data['title_bar']['title']                        = gT('New survey');
         $arrayed_data['fullpagebar']['savebutton']['form']         = 'addnewsurvey';
