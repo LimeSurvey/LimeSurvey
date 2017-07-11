@@ -178,7 +178,7 @@
     <div class="form-group">
         <label class="col-sm-5 control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
         <div class="col-sm-7">
-            <?php echo CHtml::textField('googleanalyticsapikey',$esrow['googleanalyticsapikey'],array('size'=>20), array('class'=>"form-control")); ?>
+            <?php echo CHtml::textField('googleanalyticsapikey',$esrow['googleanalyticsapikey'],array('size'=>20,'class'=>"form-control")); ?>
         </div>
     </div>
     <!-- Google Analytics style -->
