@@ -202,6 +202,31 @@ class TemplateConfiguration extends CActiveRecord
     }
 
     /**
+     * Create a new entry in {{templates}} table using a xml file
+     */
+    public static function importXML($sTemplateName)
+    {
+        $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, '', true);
+        $oNewTemplate                         = new Template;
+        $oNewTemplate->name                   = $oEditedTemplate->sTemplateName;
+        $oNewTemplate->folder                 = $oEditedTemplate->sTemplateName;
+        $oNewTemplate->title                  = $oEditedTemplate->sTemplateName;  // For now, when created via template editor => name == folder == title
+        $oNewTemplate->creation_date          = date("Y-m-d H:i:s");
+        $oNewTemplate->author                 = Yii::app()->user->name;
+        $oNewTemplate->author_email           = ''; // privacy
+        $oNewTemplate->author_url             = ''; // privacy
+        //$oNewTemplate->description           TODO: a more complex modal whith email, author, url, licence, desc, etc
+        $oNewTemplate->owner_id               = Yii::app()->user->id;
+        $oNewTemplate->extends_templates_name = $oEditedTemplate->oMotherTemplate->sTemplateName;
+
+        if ($oNewTemplate->save()){
+            return true;
+        }else{
+            return $oNewTemplate->getErrors();
+        }
+    }
+
+    /**
      * Constructs a template configuration object
      * If any problem (like template doesn't exist), it will load the default template configuration
      *
