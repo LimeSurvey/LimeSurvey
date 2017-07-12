@@ -129,12 +129,12 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate  = self::model()->findByPk($sTemplateName);
 
-        if(is_object($oTemplate) && is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
+        if( is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
             return $sTemplateName;
         }
 
         /* Then try with the global default template */
-        if($sTemplateName!=$sDefaultTemplate) {
+        if($sTemplateName != $sDefaultTemplate) {
             return self::templateNameFilter($sDefaultTemplate);
         }
 

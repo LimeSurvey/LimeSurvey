@@ -103,11 +103,12 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function actualizeLastUpdate()
     {
-        $date   = date("Y-m-d H:i:s");
+        libxml_disable_entity_loader(false);
         $config = simplexml_load_file(realpath ($this->xmlFile));
-        $config->metadatas->last_update = $date;
+        $config->metadatas->last_update = date("Y-m-d H:i:s");
         $config->asXML( realpath ($this->xmlFile) );                // Belt
         touch ( $this->path );                                      // & Suspenders ;-)
+        libxml_disable_entity_loader(true);
     }
 
 
