@@ -320,7 +320,7 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateListWithPreviews()
     {
-        $usertemplaterootdir     = Yii::app()->getConfig("usertemplaterootdir");
+        $sUserTemplateRootDir     = Yii::app()->getConfig("usertemplaterootdir");
         $standardtemplaterootdir = Yii::app()->getConfig("standardtemplaterootdir");
         $usertemplaterooturl     = Yii::app()->getConfig("usertemplaterooturl");
         $standardtemplaterooturl = Yii::app()->getConfig("standardtemplaterooturl");
@@ -337,10 +337,10 @@ class Template extends LSActiveRecord
             }
         }
 
-        if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir)) {
+        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)) {
             while (false !== ($sTemplatePath = readdir($handle))) {
                 // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$usertemplaterootdir/$sTemplatePath") && $sTemplatePath != "." && $sTemplatePath != ".." && $sTemplatePath!=".svn") {
+                if (!is_file("$sUserTemplateRootDir/$sTemplatePath") && $sTemplatePath != "." && $sTemplatePath != ".." && $sTemplatePath!=".svn") {
 
 
                     $oTemplate  = self::model()->find('folder=:folder', array(':folder'=>$sTemplatePath));
