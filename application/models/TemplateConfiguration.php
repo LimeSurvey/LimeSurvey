@@ -106,7 +106,7 @@ class TemplateConfiguration extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('id, templates_name', 'required'),
+            array('templates_name', 'required'),
             array('id, sid, gsid', 'numerical', 'integerOnly'=>true),
             array('templates_name', 'length', 'max'=>150),
             array('cssframework_name', 'length', 'max'=>45),
