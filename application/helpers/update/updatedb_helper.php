@@ -21,7 +21,6 @@
  * @param boolean $bSilent Run update silently with no output - this checks if the update can be run silently at all. If not it will not run any updates at all.
  */
 function db_upgrade_all($iOldDBVersion, $bSilent=false) {
-
     /**
     * If you add a new database version add any critical database version numbers to this array. See link
     * @link https://manual.limesurvey.org/Database_versioning for explanations
@@ -234,7 +233,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * @since 2017-07-12
          */
         if ($iOldDBVersion < 295) {
-            upgradeTemplateTables295();
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTemplateTables295($oDB);
         }
 
     }
@@ -361,9 +361,7 @@ function createSurveyMenuTable293($oDB) {
     }
 }
 
-function upgradeTemplateTables295(){
-
-    $oTransaction = $oDB->beginTransaction();
+function upgradeTemplateTables295($oDB){
 
     // drop the old survey rights table
     $oDB->createCommand()->dropTable('{{templates}}');
@@ -373,7 +371,7 @@ function upgradeTemplateTables295(){
         'name'                   => 'string(150) NOT NULL',
         'folder'                 => 'string(45) DEFAULT NULL',
         'title'                  => 'string(100) NOT NULL',
-        'creation_date'          => 'DATE DEFAULT NULL',
+        'creation_date'          => 'DATETIME DEFAULT CURRENT_TIMESTAMP',
         'author'                 => 'string(150) DEFAULT NULL',
         'author_email'           => 'string DEFAULT NULL',
         'author_url'             => 'string DEFAULT NULL',
@@ -384,7 +382,7 @@ function upgradeTemplateTables295(){
         'view_folder'            => 'string(45) DEFAULT NULL',
         'files_folder'           => 'string(45) DEFAULT NULL',
         'description'            => 'TEXT',
-        'last_update'            => 'DATE DEFAULT NULL',
+        'last_update'            => 'DATETIME DEFAULT CURRENT_TIMESTAMP',
         'owner_id'               => 'INT(11) DEFAULT NULL',
         'extends_templates_name' => 'string(150) DEFAULT NULL',
         'PRIMARY KEY (name)'
@@ -395,7 +393,7 @@ function upgradeTemplateTables295(){
         'name'                   => 'default',
         'folder'                 => 'default',
         'title'                  => 'Advanced Template',
-        'creation_date'          => '2017-07-11',
+        'creation_date'          => '2017-07-12 12:00:00',
         'author'                 => 'Louis Gac',
         'author_email'           => 'louis.gac@limesurvey.org',
         'author_url'             => 'https://www.limesurvey.org/',
@@ -406,7 +404,7 @@ function upgradeTemplateTables295(){
         'view_folder'            => 'views',
         'files_folder'           => 'files',
         'description'            => 'LimeSurvey Advanced Template:\r\nMany options for user customizations. \r\n',
-        'last_update'            => '',
+//        'last_update'            => '',
         'owner_id'               => '1',
         'extends_templates_name' => '',
     ));
@@ -432,6 +430,7 @@ function upgradeTemplateTables295(){
 
     // Add global configuration for Advanced Template
     $oDB->createCommand()->insert('{{template_configuration}}', array(
+        'id'                => '1',
         'templates_name'    => 'default',
         'files_css'         => '{\r\n"add": ["css/template.css", "css/animate.css"]\r\n}',
         'files_js'          => '{\r\n"add": ["scripts/template.js"]\r\n}',
