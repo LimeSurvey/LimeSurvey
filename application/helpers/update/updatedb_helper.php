@@ -228,6 +228,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>294),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        /**
+         * Template tables
+         * @since 2017-07-12
+         */
+        if ($iOldDBVersion < 295) {
+            upgradeTemplateTables295();
+        }
+
     }
     catch(Exception $e)
     {
@@ -351,6 +360,95 @@ function createSurveyMenuTable293($oDB) {
         $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd,$row));
     }
 }
+
+function upgradeTemplateTables295(){
+
+    $oTransaction = $oDB->beginTransaction();
+
+    // drop the old survey rights table
+    $oDB->createCommand()->dropTable('{{templates}}');
+
+    // Create templates table
+    $oDB->createCommand()->createTable('{{templates}}', array(
+        'name'                   => 'string(150) NOT NULL',
+        'folder'                 => 'string(45) DEFAULT NULL',
+        'title'                  => 'string(100) NOT NULL',
+        'creation_date'          => 'DATE DEFAULT NULL',
+        'author'                 => 'string(150) DEFAULT NULL',
+        'author_email'           => 'string DEFAULT NULL',
+        'author_url'             => 'string DEFAULT NULL',
+        'copyright'              => 'MEDIUMTEXT',
+        'license'                => 'MEDIUMTEXT',
+        'version'                => 'string(45) DEFAULT NULL',
+        'api_version'            => 'string(45) DEFAULT NULL',
+        'view_folder'            => 'string(45) DEFAULT NULL',
+        'files_folder'           => 'string(45) DEFAULT NULL',
+        'description'            => 'TEXT',
+        'last_update'            => 'DATE DEFAULT NULL',
+        'owner_id'               => 'INT(11) DEFAULT NULL',
+        'extends_templates_name' => 'string(150) DEFAULT NULL',
+        'PRIMARY KEY (name)'
+    ));
+
+    // Add default template
+    $oDB->createCommand()->insert('{{templates}}', array(
+        'name'                   => 'default',
+        'folder'                 => 'default',
+        'title'                  => 'Advanced Template',
+        'creation_date'          => '2017-07-11',
+        'author'                 => 'Louis Gac',
+        'author_email'           => 'louis.gac@limesurvey.org',
+        'author_url'             => 'https://www.limesurvey.org/',
+        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+        'version'                => '1.0',
+        'api_version'            => '3.0',
+        'view_folder'            => 'views',
+        'files_folder'           => 'files',
+        'description'            => 'LimeSurvey Advanced Template:\r\nMany options for user customizations. \r\n',
+        'last_update'            => '',
+        'owner_id'               => '1',
+        'extends_templates_name' => '',
+    ));
+
+    // Add template configuration table
+    $oDB->createCommand()->createTable('{{template_configuration}}', array(
+        'id'                => 'int(11) NOT NULL',
+        'templates_name'    => 'string(150) NOT NULL',
+        'sid'               => 'int(11) DEFAULT NULL',
+        'gsid'              => 'int(11) DEFAULT NULL',
+        'files_css'         => 'MEDIUMTEXT',
+        'files_js'          => 'MEDIUMTEXT',
+        'files_print_css'   => 'MEDIUMTEXT',
+        'options'           => 'MEDIUMTEXT',
+        'cssframework_name' => 'string(45) DEFAULT NULL',
+        'cssframework_css'  => 'MEDIUMTEXT',
+        'cssframework_js'   => 'MEDIUMTEXT',
+        'packages_to_load'  => 'MEDIUMTEXT',
+        'packages_ltr'      => 'MEDIUMTEXT',
+        'packages_rtl'      => 'MEDIUMTEXT',
+        'PRIMARY KEY (id)'
+    ));
+
+    // Add global configuration for Advanced Template
+    $oDB->createCommand()->insert('{{template_configuration}}', array(
+        'templates_name'    => 'default',
+        'files_css'         => '{\r\n"add": ["css/template.css", "css/animate.css"]\r\n}',
+        'files_js'          => '{\r\n"add": ["scripts/template.js"]\r\n}',
+        'files_print_css'   => '{\r\n"add":"css/print_template.css",\r\n}',
+        'options'           => '{\r\n"ajaxmode":"on",\r\n"brandlogo":"on",\r\n"backgroundimage":"on",\r\n"animatebody":"on",\r\n"bodyanimation":"lightSpeedIn",\r\n"animatequestion":"on",\r\n"questionanimation":"flipInX",\r\n"animatealert":"on",\r\n"alertanimation":"shake"\r\n}',
+        'cssframework_name' => 'bootstrap',
+        'cssframework_css'  => '{\r\n"replace": ["css/bootstrap.css", "css/yiistrap.css"]\r\n}',
+        'cssframework_js'   => '',
+        'packages_to_load'  => 'template-default,',
+        'packages_ltr'      => 'template-default-ltr,',
+        'packages_rtl'      => 'template-default-rtl,',
+    ));
+
+    $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>295),"stg_name='DBVersion'");
+    $oTransaction->commit();
+}
+
 
 
 
