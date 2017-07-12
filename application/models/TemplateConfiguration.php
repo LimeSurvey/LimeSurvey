@@ -206,7 +206,8 @@ class TemplateConfiguration extends CActiveRecord
      */
     public static function importXML($sTemplateName)
     {
-        $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, '', true);
+        $oEditedTemplate                      = Template::model()->getTemplateConfiguration($sTemplateName, '', false);
+        $oEditTemplateDb                      = Template::model()->findByPk($oEditedTemplate->oMotherTemplate->sTemplateName);
         $oNewTemplate                         = new Template;
         $oNewTemplate->name                   = $oEditedTemplate->sTemplateName;
         $oNewTemplate->folder                 = $oEditedTemplate->sTemplateName;
@@ -215,6 +216,8 @@ class TemplateConfiguration extends CActiveRecord
         $oNewTemplate->author                 = Yii::app()->user->name;
         $oNewTemplate->author_email           = ''; // privacy
         $oNewTemplate->author_url             = ''; // privacy
+        $oNewTemplate->view_folder            = $oEditTemplateDb->view_folder;
+        $oNewTemplate->files_folder           = $oEditTemplateDb->files_folder;
         //$oNewTemplate->description           TODO: a more complex modal whith email, author, url, licence, desc, etc
         $oNewTemplate->owner_id               = Yii::app()->user->id;
         $oNewTemplate->extends_templates_name = $oEditedTemplate->oMotherTemplate->sTemplateName;
@@ -225,7 +228,7 @@ class TemplateConfiguration extends CActiveRecord
             if ($oNewTemplateConfiguration->save()){
                 return true;
             }else{
-                return $oNewTemplateConfiguration->getErrors();
+                throw new Exception($oNewTemplateConfiguration->getErrors());                
             }
         }else{
             return $oNewTemplate->getErrors();
@@ -412,7 +415,7 @@ class TemplateConfiguration extends CActiveRecord
     {
         if(!empty($this->template->extends_templates_name)){
             $sMotherTemplateName   = $this->template->extends_templates_name;
-            $this->oMotherTemplate = new TemplateConfiguration;
+            $this->oMotherTemplate = Template::getTemplateConfiguration($sMotherTemplateName);
 
             if ($this->oMotherTemplate->checkTemplate()){
                 $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
@@ -424,7 +427,7 @@ class TemplateConfiguration extends CActiveRecord
 
     public function checkTemplate()
     {
-        if (!is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder) && !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
+        if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)&& !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
             return false;
         }
         return true;
@@ -528,7 +531,8 @@ class TemplateConfiguration extends CActiveRecord
     private function getFrameworkPackages($oTemplate, $dir="")
     {
         // If current template doesn't have a name for the framework package, we use the mother's one
-        $framework = isset($oTemplate->cssFramework->name) ? (string) $oTemplate->cssFramework->name : (string) $oTemplate->oMotherTemplate->cssFramework;
+
+        $framework =isset($oTemplate->cssFramework->name) ? (string) $oTemplate->cssFramework->name : (string) $oTemplate->oMotherTemplate->cssFramework->name;
         $framework = $dir ? $framework."-".$dir : $framework;
 
         if  ( isset(Yii::app()->clientScript->packages[$framework]) ) {
