@@ -107,7 +107,7 @@ class Template extends LSActiveRecord
      */
     public function primaryKey()
     {
-        return 'id';
+        return 'name';
     }
 
     /**
@@ -127,7 +127,7 @@ class Template extends LSActiveRecord
         }
 
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
-        $oTemplate  = self::model()->find('name=:name', array(':name'=>$sTemplateName));
+        $oTemplate  = self::model()->findByPk($sTemplateName);
 
         if(is_object($oTemplate) && is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
             return $sTemplateName;
@@ -169,7 +169,7 @@ class Template extends LSActiveRecord
             return $aTemplatePath[$sTemplateName];
         }
 
-        $oTemplate  = self::model()->find('name=:name', array(':name'=>$sTemplateName));
+        $oTemplate  = self::model()->findByPk($sTemplateName);
 
         if (self::isStandardTemplate($sTemplateName)) {
             return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
@@ -196,7 +196,7 @@ class Template extends LSActiveRecord
 
         // First we try to get a confifuration row from DB
         if (!empty($sTemplateName)){
-            $oTemplate = self::model()->find('name=:name', array(':name'=>$sTemplateName));
+            $oTemplate = self::model()->findByPk($sTemplateName);
             $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
         }else{
             $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid=:sid', array(':templates_name'=>$sTemplateName, ':sid' => $iSurveyId ));
@@ -251,7 +251,7 @@ class Template extends LSActiveRecord
             return $aTemplateUrl[$sTemplateName];
         }
 
-        $oTemplate  = self::model()->find('name=:name', array(':name'=>$sTemplateName));
+        $oTemplate  = self::model()->findByPk($sTemplateName);
 
         if (is_object($oTemplate)){
             if (self::isStandardTemplate($sTemplateName)) {
@@ -283,7 +283,7 @@ class Template extends LSActiveRecord
         $aStandardTemplates = self::getStandardTemplateList();
 
         foreach ($aStandardTemplates as $sTemplateName){
-            $oTemplate  = self::model()->find('name=:name', array(':name'=>$sTemplateName));
+            $oTemplate  = self::model()->findByPk($sTemplateName);
 
             if (is_object($oTemplate)){
                 $aTemplateList[$sTemplateName] = $standardTemplateRootDir.DIRECTORY_SEPARATOR.$oTemplate->folder;
@@ -328,7 +328,7 @@ class Template extends LSActiveRecord
         $aStandardTemplates = self::getStandardTemplateList();
 
         foreach ($aStandardTemplates as $sTemplateName){
-            $oTemplate  = self::model()->find('name=:name', array(':name'=>$sTemplateName));
+            $oTemplate  = self::model()->findByPk($sTemplateName);
 
             if (is_object($oTemplate)) {
                 $aTemplateList[$sTemplateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$oTemplate->folder;
