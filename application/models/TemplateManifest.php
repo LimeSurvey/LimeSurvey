@@ -37,6 +37,9 @@ class TemplateManifest extends TemplateConfiguration
     /** @var  string $viewPath Path of the views files (twig template) */
     public $viewPath;
 
+    /** @var  string $sFilesDirectory name of the file directory */
+    public $sFilesDirectory;
+
     /** @var  string $filesPath Path of the tmeplate's files */
     public $filesPath;
 
@@ -219,7 +222,7 @@ class TemplateManifest extends TemplateConfiguration
         while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                return false;
+                throw new Exception("no template found for  $sFile!");
                 break;
             }
             $oRTemplate = $oMotherTemplate;
@@ -242,7 +245,7 @@ class TemplateManifest extends TemplateConfiguration
             {
                 if (!array_search($file, array("DUMMYENTRY", ".", "..", "preview.png"))) {
                     if (!is_dir($this->viewPath . DIRECTORY_SEPARATOR . $file)) {
-                        $otherfiles[] = $file;
+                        $otherfiles[] = $this->sFilesDirectory . DIRECTORY_SEPARATOR . $file;
                     }
                 }
             }
@@ -495,6 +498,7 @@ class TemplateManifest extends TemplateConfiguration
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
         $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR    : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
         $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
+        $this->sFilesDirectory          = (!empty($this->config->xpath("//filesdirectory")))  ? $this->config->engine->filesdirectory   :  $this->oMotherTemplate->sFilesDirectory;
         $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ? $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
 
         // Options are optional
