@@ -300,8 +300,7 @@ class Template extends LSActiveRecord
                     && $sTemplatePath != ".." && $sTemplatePath!=".svn"
                     && (file_exists("{$sUserTemplateRootDir}/{$sTemplatePath}/config.xml"))) {
 
-                    $oTemplate = self::model()->getInstance($sTemplatePath, '', true);
-
+                    $oTemplate = self::getTemplateConfiguration($sTemplatePath, '', true);
                     if (is_object($oTemplate)){
                         $aTemplateList[$oTemplate->sTemplateName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
                     }
