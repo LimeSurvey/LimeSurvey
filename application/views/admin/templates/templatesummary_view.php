@@ -24,7 +24,6 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <div >
                 <?php eT("Screen part files:"); ?>
                 <div class="col-sm-12 well" style="padding-left: 0;">
-
                     <?php foreach ($files as $file):?>
                         <div class="row">
                             <div class="col-sm-9">
@@ -159,7 +158,33 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <br/>
                 <?php
                 echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post');
-                echo CHtml::listBox('otherfile','',array_combine($otherfiles,$otherfiles),array('size'=>11,'class'=>"form-control")); ?>
+            //    echo CHtml::listBox('otherfile','',array_combine($otherfiles,$otherfiles),array('size'=>11,'class'=>"form-control")); ?>
+
+
+
+            <div class="col-sm-12 well">
+
+                <?php foreach ($otherfiles as $file):?>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
+                        </div>
+                        <div class="col-sm-3">
+                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName):?>
+                                <span class="label label-success">
+                                    <?php eT("delete"); ?>
+                                </span>
+                            <?php else: ?>
+                                <span class="label label-danger">
+                                    <?php eT("inherited"); ?>
+                                </span>
+                            <?php endif;?>
+                        </div>
+                    </div>
+                <?php endforeach;?>
+            </div>
+
+
                 <br>
                 <?php
                 if (Permission::model()->hasGlobalPermission('templates','delete'))
