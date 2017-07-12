@@ -146,6 +146,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderTemplateFromFile($sView, $aDatas, $bReturn)
     {
         $oRTemplate = Template::model()->getInstance();
+        Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
         $oTemplate = $this->getTemplateForView($sView, $oRTemplate);
         $line      = file_get_contents($oTemplate->viewPath.$sView);
         $result = $this->renderTemplateFromString( $line, $aDatas, $oTemplate, $bReturn);
