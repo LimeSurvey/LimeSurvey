@@ -231,6 +231,11 @@ class TemplateManifest extends TemplateConfiguration
     public function getOtherFiles()
     {
         $otherfiles = array();
+
+        if (!empty($this->oMotherTemplate)){
+            $otherfiles = $this->oMotherTemplate->getOtherFiles();
+        }
+
         if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath))
         {
             while (false !== ($file = readdir($handle)))
