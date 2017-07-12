@@ -233,14 +233,8 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                         <div class="modal-title h4" id="myModalLabel"><?php eT('Tip: How to display a picture in your template?'); ?></div>
                     </div>
                     <div class="modal-body">
-                        <?php eT('To use a picture in a .pstpl file:');?><br/>
-                        <code>&lt;img src="{TEMPLATEURL}files/yourpicture.png" /&gt;</code><br/><br/>
-                        <?php eT("To use a picture in a .css file: ");?><br/>
-                        <code>background-image: url('../files/yourpicture.png');</code><br/><br/>
-                        <?php eT("To place the logo anywhere in a .pstpl file: ");?><br/>
-                        <code>{SITELOGO}</code><br/>
-                        <?php eT("This will generate a responsive image containing the logo file.");?><br/><br>
-
+                        <?php eT('To use a picture in a .twig file:');?><br/>
+                        <code> {{ image('./files/myfile.png', 'alt-text for my file', {"class": "myclass"}) }}</code><br/><br/>
                     </div>
 
                     <div class="modal-footer">
