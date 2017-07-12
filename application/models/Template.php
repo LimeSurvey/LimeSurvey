@@ -191,25 +191,27 @@ class Template extends LSActiveRecord
      * @param integer $iSurveyId        the id of the survey. If
      * @return StdClass
      */
-    public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='')
+    public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='', $bForceXML=false)
     {
 
         // First we try to get a confifuration row from DB
-        if (!empty($sTemplateName)){
-            $oTemplate = self::model()->findByPk($sTemplateName);
-            $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
-        }else{
-            $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid=:sid', array(':templates_name'=>$sTemplateName, ':sid' => $iSurveyId ));
-
-            // No specific template configuration for this survey
-            if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
-                $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
+        if (!$bForceXML){
+            if (!empty($sTemplateName)){
+                $oTemplate = self::model()->findByPk($sTemplateName);
                 $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
+            }else{
+                $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid=:sid', array(':templates_name'=>$sTemplateName, ':sid' => $iSurveyId ));
+
+                // No specific template configuration for this survey
+                if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
+                    $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
+                    $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
+                }
             }
         }
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
-        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || ! $oTemplateConfigurationModel->checkTemplate()){
+        if ( $bForceXML || !is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || ! $oTemplateConfigurationModel->checkTemplate()){
             $oTemplateConfigurationModel = new TemplateManifest;
         }
 
@@ -379,10 +381,10 @@ class Template extends LSActiveRecord
      * @param int|string $iSurveyId
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName='', $iSurveyId='')
+    public static function getInstance($sTemplateName='', $iSurveyId='', $bForceXML=false)
     {
         if (empty(self::$instance)) {
-            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId);
+            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $bForceXML);
         }
         return self::$instance;
     }
