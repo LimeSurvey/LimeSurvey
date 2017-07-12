@@ -220,7 +220,13 @@ class TemplateConfiguration extends CActiveRecord
         $oNewTemplate->extends_templates_name = $oEditedTemplate->oMotherTemplate->sTemplateName;
 
         if ($oNewTemplate->save()){
-            return true;
+            $oNewTemplateConfiguration                    = new TemplateConfiguration;
+            $oNewTemplateConfiguration->templates_name    = $oEditedTemplate->sTemplateName;
+            if ($oNewTemplateConfiguration->save()){
+                return true;
+            }else{
+                return $oNewTemplateConfiguration->getErrors();
+            }
         }else{
             return $oNewTemplate->getErrors();
         }
