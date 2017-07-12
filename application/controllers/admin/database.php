@@ -1285,9 +1285,6 @@ class database extends Survey_Common_Action
 
             $this->iQuestionID=0;
 
-            /** @var Question $oOldQuestion */
-            $oOldQuestion = Question::model()->findByPk(returnGlobal('oldqid'));
-
             $oQuestion= new Question;
             $oQuestion->sid = $iSurveyID;
             $oQuestion->gid = $this->iQuestionGroupID;
@@ -1362,6 +1359,11 @@ class database extends Survey_Common_Action
 
             } else {
                 if (Yii::app()->request->getPost('action') == 'copyquestion') {
+                    /** @var Question $oOldQuestion */
+                    $oldQID = returnGlobal('oldqid');
+                    if($oldQID){
+                        $oOldQuestion = Question::model()->findByPk($oldQID);
+                    }
                     if (returnGlobal('copysubquestions') == 1) {
                         $aSQIDMappings = array();
                         $r1 = $oOldQuestion->subquestions;

@@ -41,12 +41,12 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $emailstatus Participant's e-mail address status: OK/bounced/OptOut
  * @property string $token Participant's unique token
  * @property string $language Participant's language eg: en
- * @property string  Whether participant is blacklisted: (Y/N)
+ * @property string $blacklisted Whether participant is blacklisted: (Y/N)
  * @property string $sent
  * @property string $remindersent
  * @property integer $remindercount
- * @property string $completed
- * @property integer $usesleft
+ * @property string $completed Participant completed status (N:Not completed; Q:Locked with quota; 'YYYY-MM-DD hh:mm': date of completion)
+ * @property integer $usesleft How many uses left to fill questionnaire for this participant
  * @property string $validfrom
  * @property string $validuntil
  * @property integer $mpid //TODO Describe me!

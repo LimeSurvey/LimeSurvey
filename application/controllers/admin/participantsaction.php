@@ -288,17 +288,15 @@ class participantsaction extends Survey_Common_Action
         if (!Permission::model()->hasGlobalPermission('superadmin','read'))
             $surveys->permission(Yii::app()->user->getId());
 
+        /** @var Survey[] $aSurveyNames */
         $aSurveyNames = $surveys->model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language'), 'owner'))->findAll();
 
         /* Build a list of surveys that have tokens tables */
         $tSurveyNames=array();
-        foreach($aSurveyNames as $row)
-        {
-            $row = array_merge($row->attributes, $row->defaultlanguage->attributes);
-            $bTokenExists = tableExists('{{tokens_' . $row['sid'] . '}}');
-            if ($bTokenExists) //If tokens table exists
-            {
-                $tSurveyNames[]=$row;
+        foreach($aSurveyNames as $row) {
+            $trow = array_merge($row->attributes, $row->defaultlanguage->attributes);
+            if ($row->hasTokensTable) {
+                $tSurveyNames[]=$trow;
             }
         }
 
@@ -1839,45 +1837,44 @@ class participantsaction extends Survey_Common_Action
         $aData->page = 1;
 
         // If super administrator all the share info in the links table will be shown
-        if (Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
+        if (Permission::model()->hasGlobalPermission('superadmin','read')) {
             $records = Participant::model()->getParticipantSharedAll();
             $aData->records = count($records);
             $aData->total = ceil($aData->records / 10);
             $i = 0;
 
-            foreach ($records as $row)
-            {
+            foreach ($records as $row) {
                 //for conversion of uid to human readable names
                 $iShareUserId = $row['share_uid'];
                 if ($iShareUserId != 0) {
-                    $oShared = User::model()->getName($iShareUserId);
-                    $sSharename = $oShared['full_name'];
+                    /** @var User $oUser */
+                    $oUser = User::model()->findByPk($iShareUserId);
+                    $sSharename = $oUser->full_name;
                 } else {
                     $sSharename = 'All users';
                 }
-                $owner = User::model()->getName($row['owner_uid']);
+                /** @var User $owner */
+                $owner = User::model()->findByPk($row['owner_uid']);
                 $aData->rows[$i]['id'] = $row['participant_id']."--".$row['share_uid']; //This is the unique combination per record
-                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $owner['full_name'], $row['date_added'], $row['can_edit']);
+                $aData->rows[$i]['cell'] = array($row['firstname'], $row['lastname'], $row['email'], $sSharename, $row['share_uid'], $owner->full_name, $row['date_added'], $row['can_edit']);
                 $i++;
             }
 
             echo ls_json_encode($aData);
         }
         // otherwise only the shared participants by that user
-        else
-        {
+        else {
             $records = Participant::model()->getParticipantShared(Yii::app()->session['loginID']);
             $aData->records = count($records);
             $aData->total = ceil($aData->records / 10);
             $i = 0;
 
-            foreach ($records as $row)
-            {
+            foreach ($records as $row) {
                 $iShareUserId = $row['share_uid'];//for conversion of uid to human readable names
                 if ($iShareUserId != 0) {
-                    $oShared = User::model()->getName($iShareUserId);
-                    $sSharename = $oShared['full_name'];
+                    /** @var User $oUser */
+                    $oUser = User::model()->findByPk($iShareUserId);
+                    $sSharename = $oUser->full_name;
                 } else {
                     $sSharename = 'All users';
                 }

@@ -39,7 +39,7 @@ $codeids = '';
                                 <td><?php echo $row['code'] ?></td><td><?php echo $row['assessment_value'] ?></td>
                                 <?php else:?>
                                 <td>
-                                    <span class="fa fa-move text-success"></span>
+                                    <span class="fa fa-bars bigIcons text-success"></span>
                                 </td>
 
                                 <td>

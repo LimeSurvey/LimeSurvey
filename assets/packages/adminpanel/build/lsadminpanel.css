@@ -247,7 +247,7 @@
     background: #cdcdcd; }
 
 .ls-ba .list-group > .list-group-item {
-  padding: 10px 0;
+  padding: 10px 0px;
   border: 0;
   border-radius: 0;
   border-bottom: 1px solid #323232;
@@ -261,6 +261,12 @@
     .ls-ba .list-group > .list-group-item .list-group:first-of-type {
       border-top: 1px solid #323232; }
 
+.ls-ba .breadcrumb > li + li:before {
+  padding: 0 5px;
+  color: #ccc;
+  content: "\f061";
+  font: normal normal normal 18px/1 FontAwesome; }
+
 div[class^="col-"].nofloat, div[class*=" col-"].nofloat {
   float: none; }
 
@@ -269,10 +275,48 @@ div[class^="col-"].nofloat, div[class*=" col-"].nofloat {
 
 .menubar.surveybar {
   width: 100%;
-  margin: 8px auto; }
+  margin: 8px auto;
+  z-index: 100; }
 
 #side-menu-container {
   width: 20%; }
 
+.nooverflow {
+  overflow: hidden; }
+
 .btn-primary.force.color.white.onhover:hover, .btn-primary.force.color.white.onhover:active, .btn-primary.force.color.white.onhover:focus {
   color: white; }
+
+#in_survey_common {
+  padding-bottom: 65px; }
+
+ol.breadcrumb.title-bar-breadcrumb {
+  background: transparent;
+  color: white; }
+  ol.breadcrumb.title-bar-breadcrumb a {
+    color: white;
+    text-decoration: none;
+    line-height: 32px;
+    font-size: 24px; }
+    ol.breadcrumb.title-bar-breadcrumb a.animate::after {
+      content: '';
+      text-align: right;
+      margin-left: 28px;
+      display: block;
+      width: 0;
+      height: 2px;
+      background: #fff;
+      transition: width .3s; }
+    ol.breadcrumb.title-bar-breadcrumb a.animate:hover::after {
+      width: 90%; }
+    ol.breadcrumb.title-bar-breadcrumb a.animate.home-icon:hover::after {
+      margin-left: 0;
+      width: 100% !important; }
+  ol.breadcrumb.title-bar-breadcrumb li {
+    background: transparent;
+    color: white;
+    line-height: 32px;
+    font-size: 24px; }
+    ol.breadcrumb.title-bar-breadcrumb li.active {
+      color: #dfdfdf;
+      font-style: italic; }

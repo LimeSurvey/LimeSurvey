@@ -199,7 +199,7 @@
                 <label for='templatedir'><?php eT("Template:"); ?></label>
                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
-                    echo $this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$editfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
+                    echo $this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
                     <?php echo templateoptions($templates, $templatename); ?>
                 </select>
             </div>
@@ -209,13 +209,13 @@
                 <?php echo CHtml::dropDownList('screenname',$screenname,$screens,array(
                     'id'=>'listboxtemplates',
                     'class'=>"listboxtemplates form-control",
-                    'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$editfile,'templatename'=>$templatename))."'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
+                    'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$relativePathEditfile,'templatename'=>$templatename))."'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
                 )); ?>
             </div>
 
             <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
-                    <span class="fa fa-ok" ></span>
+                    <span class="fa fa-floppy-o" ></span>
                     <?php eT("Save");?>
                 </a>
                 <?php endif;?>
@@ -245,7 +245,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title"><?php eT("Upload template file") ?></h4>
+                    <div class="modal-title h4"><?php eT("Upload template file") ?></div>
                 </div>
                 <?php echo CHtml::form(array('admin/templates/sa/upload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
                 <div class="modal-body">
@@ -272,7 +272,7 @@
     <?php endif;?>
 
 <div class="col-lg-12 templateeditor">
-    <h3><?php eT("Template editor:"); ?> <i><?php echo $templatename; ?></i></h3>
+    <div class="h3"><?php eT("Template editor:"); ?> <i><?php echo $templatename; ?></i></div>
 
 
     <?php if(!is_template_editable($templatename)):?>

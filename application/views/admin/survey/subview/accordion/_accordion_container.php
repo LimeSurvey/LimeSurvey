@@ -4,7 +4,6 @@
  *
  * @var $data
  */
-var_dump($data);
 ?>
 <!-- Enable aufo-focus on element via url hash -->
 <script>
@@ -38,7 +37,6 @@ var_dump($data);
         </div>
     </div>
 
-<?/*
     <!-- Presentation & navigation  -->
     <div class="panel panel-default">
         <div class="panel-heading" role="tab" id="heading-presentationoptions">

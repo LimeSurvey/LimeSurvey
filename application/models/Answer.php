@@ -17,7 +17,7 @@
  * @property integer $qid Question id
  * @property string $code Answer code
  * @property string $answer Answer text
- * @property integer $sortorder
+ * @property integer $sortorder Answer sort order
  * @property integer $assessment_value
  * @property string $language Language code
  * @property integer $scale_id

@@ -14,6 +14,8 @@ class Timing extends LSActiveRecord
     /** @var int|null $surveyId */
     protected $surveyId;
 
+    /** @var Survey $survey */
+    protected $survey;
     /**
      * @param string $scenario
      * @param int $iSurveyId
@@ -25,9 +27,13 @@ class Timing extends LSActiveRecord
             // FIXME this method does not exist
             $iSurveyId = Response::getLastSurveyId();
         }
+        $survey = Survey::model()->findByPk($iSurveyId);
+        if($survey){
+            $this->surveyId = $iSurveyId;
+            $this->survey = $survey;
+            parent::__construct($scenario);
+        }
 
-        $this->surveyId = $iSurveyId;
-        parent::__construct($scenario);
     }
 
     /** @inheritdoc */
@@ -68,7 +74,7 @@ class Timing extends LSActiveRecord
 
     /** @inheritdoc */
     public function tableName() {
-        return "{{survey_{$this->surveyId}_timings}}";
+        return $this->survey->timingsTableName;
     }
 
     /**

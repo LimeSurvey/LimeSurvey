@@ -1,7 +1,12 @@
 <?php
 /**
-* General container for edit survey action
-*/
+ * General container for edit survey action
+ *
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
+
+$templateData['oSurvey'] = $oSurvey;
 ?>
 
 <script type="text/javascript">
@@ -16,10 +21,9 @@ if(isset($scripts))
     echo $scripts;
 ?>
 
-
 <div class="row col-12">
     <?php
-    $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>$entryData['title'])); ?>
+    // $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>$entryData['title'])); ?>
     <h3 class="pagetitle"><?php echo $entryData['title']; ?></h3>
 
     <!-- Edition container -->

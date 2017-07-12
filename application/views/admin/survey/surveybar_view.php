@@ -2,6 +2,8 @@
 /**
  * Display the survey bar.
  * Used for all survey editing action, and group / questions lists.
+ * @var AdminController $this
+ * @var Survey $oSurvey
  */
 ?>
 
@@ -18,7 +20,7 @@
 
             <!-- Add a new group -->
             <?php if(isset($surveybar['buttons']['newgroup'])):?>
-                <?php if ($activated == "Y"): ?>
+                <?php if ($oSurvey->isActive): ?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-add"></span>
@@ -40,7 +42,7 @@
 
             <!-- Add a new question -->
             <?php if(isset($surveybar['buttons']['newquestion'])):?>
-                <?php if ($activated == "Y"): ?>
+                <?php if ($oSurvey->isActive): ?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("This survey is currently active."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php eT('Survey cannot be activated. Either you have no permission or there are no questions.'); ?>">
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-add"></span>
@@ -72,7 +74,7 @@
             <?php if(isset($surveybar['buttons']['view'])):?>
 
                 <!-- survey activation -->
-                <?php if(!$activated): ?>
+                <?php if(!$oSurvey->isActive): ?>
 
                     <!-- activate -->
                     <?php if($canactivate): ?>
@@ -117,10 +119,10 @@
 
 
                 <!-- Preview/Execute survey -->
-                <?php if($activated || $surveycontent) : ?>
+                <?php if($oSurvey->isActive || $surveycontent) : ?>
 
                     <!-- Multinlinguage -->
-                    <?php if(count($languagelist)>1): ?>
+                    <?php if(count($oSurvey->allLanguages)>1): ?>
                         <div class="btn-group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
@@ -128,7 +130,7 @@
                             <?php echo $icontext;?> <span class="caret"></span>
                           </button>
                           <ul class="dropdown-menu" style="min-width : 252px;">
-                            <?php foreach ($languagelist as $tmp_lang): ?>
+                            <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
                                 <li>
                                     <a target='_blank' href='<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$tmp_lang));?>'>
                                         <?php echo getLanguageNameFromCode($tmp_lang,false); ?>
@@ -327,7 +329,7 @@
 
                                     <!-- Survey logic file -->
                                     <li class="dropdown-header"><?php eT("Survey logic file");?></li>
-                                    <?php foreach ($languagelist as $tmp_lang): ?>
+                                    <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
                                         <!-- Languages -->
 
                                         <li>
@@ -339,7 +341,7 @@
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             <?php endif; ?>
-                            <?php if(!$activated): ?>
+                            <?php if(!$oSurvey->isActive): ?>
                                 <li role="separator" class="divider"></li>
 
                                 <!-- Regenerate question codes -->
@@ -399,7 +401,7 @@
                                   <?php endif; ?>
 
                                   <?php if($respstatsread && $surveyexport): ?>
-                                      <?php if ($activated):?>
+                                      <?php if ($oSurvey->isActive):?>
 
                                           <!-- Survey archive -->
                                           <li>
@@ -473,7 +475,7 @@
 
                                   <!-- Printable version multilangue -->
                                   <li class="dropdown-header"><?php eT("Printable version");?></li>
-                                      <?php foreach ($languagelist as $tmp_lang): ?>
+                                      <?php foreach ($oSurvey->allLanguages as $tmp_lang): ?>
                                           <li>
                                               <a accesskey='d' target='_blank' href='<?php echo $this->createUrl("admin/printablesurvey/sa/index/surveyid/$surveyid/lang/$tmp_lang");?>'>
                                                   <span class="fa fa-print"></span>
@@ -499,7 +501,7 @@
 
                     <div class="btn-group">
                         <!-- main  dropdown header -->
-                        <?php if($activated):?>
+                        <?php if($oSurvey->isActive):?>
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="icon-responses"></span>
                             <?php eT("Responses");?><span class="caret"></span>
@@ -513,7 +515,7 @@
 
                         <!-- dropdown -->
                         <ul class="dropdown-menu">
-                            <?php if($respstatsread && $activated):?>
+                            <?php if($respstatsread && $oSurvey->isActive):?>
                                 <!-- Responses & statistics -->
                                 <li>
                                     <a href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid/");?>' >
@@ -523,7 +525,7 @@
                                 </li>
                             <?php endif; ?>
 
-                            <?php if($responsescreate && $activated): ?>
+                            <?php if($responsescreate && $oSurvey->isActive): ?>
                                 <!-- Data entry screen -->
                                 <li>
                                     <a href='<?php echo $this->createUrl("admin/dataentry/sa/view/surveyid/$surveyid");?>' >
@@ -532,7 +534,7 @@
                                     </a>
                                 </li>
                             <?php endif; ?>
-                            <?php if($responsesread && $activated): ?>
+                            <?php if($responsesread && $oSurvey->isActive): ?>
                                 <!-- Partial (saved) responses -->
                                 <li>
                                     <a href='<?php echo $this->createUrl("admin/saved/sa/view/surveyid/$surveyid");?>' >
@@ -625,7 +627,7 @@
 
                 <!-- Save -->
                 <a class="btn btn-success" href="#" role="button" id="save-button" >
-                    <span class="fa fa-ok"></span>
+                    <span class="fa fa-floppy-o"></span>
                     <?php if(isset($surveybar['savebutton']['text']))
                     {
                         echo $surveybar['savebutton']['text'];
@@ -634,7 +636,9 @@
                         eT("Save");
                     }?>
                 </a>
-
+            
+            <?php endif;?>
+                <?php /*
                 <!-- Save and close -->
                 <?php if(isset($surveybar['saveandclosebutton'])):?>
                     <a class="btn btn-default" href="#" role="button" id='save-and-close-button'>
@@ -642,8 +646,9 @@
                         <?php eT("Save and close");?>
                     </a>
                 <?php endif; ?>
-            <?php endif;?>
+            */ ?>
 
+            <?php /*
             <!-- Close -->
             <?php if(isset($surveybar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $surveybar['closebutton']['url']; ?>" role="button">
@@ -651,6 +656,7 @@
                     <?php eT("Close");?>
                 </a>
             <?php endif;?>
+            */ ?>
         </div>
     </div>
 </div>

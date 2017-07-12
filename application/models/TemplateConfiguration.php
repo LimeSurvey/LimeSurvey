@@ -12,15 +12,32 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 * See COPYRIGHT.php for copyright notices and details.
 */
 
-/**
- * Template Configuration Model
+/*
+ * This is the model class for table "{{template_configuration}}".
  *
- * This model retrieves all the data of template configuration from the configuration file
+ * The followings are the available columns in table '{{template_configuration}}':
+ * @property string $id
+ * @property string $templates_name
+ * @property string $gsid
+ * @property string $sid
+ * @property string $files_css
+ * @property string $files_js
+ * @property string $files_print_css
+ * @property string $options
+ * @property string $cssframework_name
+ * @property string $cssframework_css
+ * @property string $cssframework_js
+ * @property string $viewdirectory
+ * @property string $filesdirectory
+ * @property string $packages_to_load
+ * @property string $packages_ltr
+ * @property string $packages_rtl
+ *
  *
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-class TemplateConfiguration extends CFormModel
+class TemplateConfiguration extends CActiveRecord
 {
     /** @var string $sTemplateName The template name */
     public $sTemplateName='';
@@ -52,8 +69,6 @@ class TemplateConfiguration extends CFormModel
     /** @var TemplateConfiguration $oMotherTemplate The template name */
     public $oMotherTemplate;
 
-    public $templateEditor;
-
     /** @var SimpleXMLElement $oOptions The template options */
     public $oOptions;
 
@@ -75,7 +90,116 @@ class TemplateConfiguration extends CFormModel
 
     /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
     private $apiVersion;
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{template_configuration}}';
+    }
 
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('id, templates_name', 'required'),
+            array('id, sid, gsid', 'numerical', 'integerOnly'=>true),
+            array('templates_name', 'length', 'max'=>150),
+            array('cssframework_name', 'length', 'max'=>45),
+            array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load, packages_ltr, packages_rtl', 'safe'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, templates_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load, packages_ltr, packages_rtl', 'safe', 'on'=>'search'),
+        );
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        return array(
+            'template' => array(self::HAS_ONE, 'Template', array('name' => 'templates_name')),
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'id' => 'ID',
+            'templates_name' => 'Templates Name',
+            'sid' => 'Sid',
+            'gsid' => 'Gsid',
+            'files_css' => 'Files Css',
+            'files_js' => 'Files Js',
+            'files_print_css' => 'Files Print Css',
+            'options' => 'Options',
+            'cssframework_name' => 'Cssframework Name',
+            'cssframework_css' => 'Cssframework Css',
+            'cssframework_js' => 'Cssframework Js',
+            'packages_to_load' => 'Packages To Load',
+            'packages_ltr' => 'Packages Ltr',
+            'packages_rtl' => 'Packages Rtl',
+        );
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria=new CDbCriteria;
+
+        $criteria->compare('id',$this->id);
+        $criteria->compare('templates_name',$this->templates_name,true);
+        $criteria->compare('sid',$this->sid);
+        $criteria->compare('gsid',$this->gsid);
+        $criteria->compare('files_css',$this->files_css,true);
+        $criteria->compare('files_js',$this->files_js,true);
+        $criteria->compare('files_print_css',$this->files_print_css,true);
+        $criteria->compare('options',$this->options,true);
+        $criteria->compare('cssframework_name',$this->cssframework_name,true);
+        $criteria->compare('cssframework_css',$this->cssframework_css,true);
+        $criteria->compare('cssframework_js',$this->cssframework_js,true);
+        $criteria->compare('packages_to_load',$this->packages_to_load,true);
+        $criteria->compare('packages_ltr',$this->packages_ltr,true);
+        $criteria->compare('packages_rtl',$this->packages_rtl,true);
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
+
+
+
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return TemplateConfigurationDB the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
 
     /**
      * Constructs a template configuration object
@@ -87,29 +211,14 @@ class TemplateConfiguration extends CFormModel
      */
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
-        $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
+        $this->sTemplateName = $this->template->name;
         $this->setIsStandard();                                                 // Check if  it is a CORE template
-        $this->setPath();                                                       // Check and set path
-        $this->readManifest();                                                  // Check and read the manifest to set local params
+        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
         $this->setMotherTemplates();                                            // Recursive mother templates configuration
         $this->setThisTemplate();                                               // Set the main config values of this template
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
     }
-
-    /**
-     * Update the configuration file "last update" node.
-     * For now, it is called only from template editor
-     */
-    public function actualizeLastUpdate()
-    {
-        $date   = date("Y-m-d H:i:s");
-        $config = simplexml_load_file(realpath ($this->xmlFile));
-        $config->metadatas->last_update = $date;
-        $config->asXML( realpath ($this->xmlFile) );                // Belt
-        touch ( $this->path );                                      // & Suspenders ;-)
-    }
-
 
     /**
      * get the template API version
@@ -134,74 +243,8 @@ class TemplateConfiguration extends CFormModel
         return $this->sTemplateurl;
     }
 
-    /**
-     * Used from the template editor.
-     * It returns an array of editable files by screen for a given file type
-     *
-     * @param   string  $sType      the type of files (view/css/js)
-     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
-     * @return  array   array       ( [screen name] => array([files]) )
-     */
-    public function getValidScreenFiles($sType = "view", $sScreen=null)
-    {
-        $aScreenFiles = array();
-
-        $filesFromXML = (is_null($sScreen)) ? (array) $this->templateEditor->screens->xpath('//file') : $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
-
-        foreach( $filesFromXML as $file){
-
-            if ( $file->attributes()->type == $sType ){
-                $aScreenFiles[] = (string) $file;
-            }
-        }
-
-        $aScreenFiles = array_unique($aScreenFiles);
-        return $aScreenFiles;
-    }
-
-    /**
-     * Returns the layout file name for a given screen
-     *
-     * @param   string  $sScreen    the screen you want to retreive the files from. If null: all screens
-     * @return  string  the file name
-     */
-    public function getLayoutForScreen($sScreen)
-    {
-        $filesFromXML = $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
-
-        foreach( $filesFromXML as $file){
-
-            if ( $file->attributes()->role == "layout" ){
-                return (string) $file;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Retreives the absolute path for a file to edit (current template, mother template, etc)
-     * Also perform few checks (permission to edit? etc)
-     *
-     * @param string $sfile relative path to the file to edit
-     */
-    public function getFilePathForEdition($sFile, $aAllowedFiles=null)
-    {
-
-        // Check if the file is allowed for edition ($aAllowedFiles is produced via getValidScreenFiles() )
-        if (is_array($aAllowedFiles)){
-            if (!in_array($sFile, $aAllowedFiles)){
-                return false;
-            }
-        }
-
-        return $this->getFilePath($sFile, $this);
-    }
-
-
     public function extendsFile($sFile)
     {
-
         if( !file_exists($this->path.'/'.$sFile) && !file_exists($this->viewPath.$sFile) ){
 
             // Copy file from mother template to local directory
@@ -229,87 +272,6 @@ class TemplateConfiguration extends CFormModel
 
 
     /**
-     * Update the config file of a given template so that it extends another one
-     *
-     * It will:
-     * 1. Delete files and engine nodes
-     * 2. Update the name of the template
-     * 3. Change the creation/modification date to the current date
-     * 4. Change the autor name to the current logged in user
-     * 5. Change the author email to the admin email
-     *
-     * Used in template editor
-     * Both templates and configuration files must exist before using this function
-     *
-     * It's used when extending a template from template editor
-     * @param   string  $sToExtends     the name of the template to extend
-     * @param   string  $sNewName       the name of the new template
-     */
-    static public function extendsConfig($sToExtends, $sNewName)
-    {
-        $sConfigPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
-
-        // First we get the XML file
-        libxml_disable_entity_loader(false);
-        $oNewManifest = new DOMDocument();
-        $oNewManifest->load($sConfigPath."/config.xml");
-        $oConfig            = $oNewManifest->getElementsByTagName('config')->item(0);
-
-        // Then we delete the nodes that should be inherit
-        $aNodesToDelete     = array();
-        $aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
-        $aNodesToDelete[]   = $oConfig->getElementsByTagName('engine')->item(0);
-
-        foreach($aNodesToDelete as $node){
-            $oConfig->removeChild($node);
-        }
-
-        // We replace the name by the new name
-        $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
-
-        $oOldNameNode   = $oMetadatas->getElementsByTagName('name')->item(0);
-        $oNvNameNode    = $oNewManifest->createElement('name', $sNewName);
-        $oMetadatas->replaceChild($oNvNameNode, $oOldNameNode);
-
-        // We change the date
-        $today          = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"));
-        $oOldDateNode   = $oMetadatas->getElementsByTagName('creationDate')->item(0);
-        $oNvDateNode    = $oNewManifest->createElement('creationDate', $today);
-        $oMetadatas->replaceChild($oNvDateNode, $oOldDateNode);
-
-        $oOldUpdateNode = $oMetadatas->getElementsByTagName('last_update')->item(0);
-        $oNvDateNode    = $oNewManifest->createElement('last_update', $today);
-        $oMetadatas->replaceChild($oNvDateNode, $oOldUpdateNode);
-
-        // We change the author name
-        $oOldAuthorNode   = $oMetadatas->getElementsByTagName('author')->item(0);
-        $oNvAuthorNode    = $oNewManifest->createElement('author', Yii::app()->user->name);
-        $oMetadatas->replaceChild($oNvAuthorNode, $oOldAuthorNode);
-
-        // We change the author email
-        $oOldMailNode   = $oMetadatas->getElementsByTagName('authorEmail')->item(0);
-        $oNvMailNode    = $oNewManifest->createElement('authorEmail', htmlspecialchars(getGlobalSetting('siteadminemail')));
-        $oMetadatas->replaceChild($oNvMailNode, $oOldMailNode);
-
-        // TODO: provide more datas in the post variable such as description, url, copyright, etc
-
-        // We add the extend parameter
-        $oExtendsNode    = $oNewManifest->createElement('extends', $sToExtends);
-
-        // We test if mother template already extends another template
-        if(!empty($oMetadatas->getElementsByTagName('extends')->item(0))){
-            $oMetadatas->replaceChild($oExtendsNode, $oMetadatas->getElementsByTagName('extends')->item(0));
-        }else{
-            $oMetadatas->appendChild($oExtendsNode);
-        }
-
-        $oNewManifest->save($sConfigPath."/config.xml");
-
-        libxml_disable_entity_loader(true);
-    }
-
-
-    /**
      * Create a package for the asset manager.
      * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
      * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
@@ -325,24 +287,19 @@ class TemplateConfiguration extends CFormModel
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-        $aCssFiles   = isset($oTemplate->config->files->css->filename)?(array) $oTemplate->config->files->css->filename:array();        // The CSS files of this template
-        $aJsFiles    = isset($oTemplate->config->files->js->filename)? (array) $oTemplate->config->files->js->filename:array();         // The JS files of this template
-        $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+        $dir       = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+
+        // Get array of files definition from DB
+        $aCssFiles = $this->getFilesFromJson($this->files_css);
+        $aJsFiles  = $this->getFilesFromJson($this->files_js);
 
         // Remove/Replace mother files
-        $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
-        $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
+        $this->changeMotherConfiguration('css', $aCssFiles);
+        $this->changeMotherConfiguration('js',  $aJsFiles);
 
-        if (isset($oTemplate->config->files->$dir)) {
-            $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array) $oTemplate->config->files->$dir->css->filename : array();
-            $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename)  ? (array) $oTemplate->config->files->$dir->js->filename : array();
-            $aCssFiles    = array_merge($aCssFiles,$aCssFilesDir);
-            $aJsFiles     = array_merge($aJsFiles,$aJsFilesDir);
-        }
-
-        if (Yii::app()->getConfig('debug') == 0) {
-            Yii::app()->clientScript->registerScriptFile( Yii::app()->getConfig("generalscripts"). 'deactivatedebug.js', CClientScript::POS_END);
-        }
+        // Get the list of files to add to package
+        $aCssFiles = $this->getFilesToAdd($aCssFiles);
+        $aJsFiles  = $this->getFilesToAdd($aJsFiles);
 
         $this->sPackageName = 'survey-template-'.$this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
@@ -360,6 +317,25 @@ class TemplateConfiguration extends CFormModel
     }
 
     /**
+     * From a list of json files in db it will generate a PHP array ready to use by editPackage()
+     *
+     * @var $jFiles string json
+     * @return array
+     */
+    private function getFilesFromJson($jFiles)
+    {
+       $aFiles = array();
+       if(!empty($jFiles)){
+           $oFiles = json_decode($jFiles);
+           foreach($oFiles as $action => $aFileList){
+               $aFiles[$action] = $aFileList;
+           }
+       }
+
+       return $aFiles;
+    }
+
+    /**
      * Change the mother template configuration depending on template settings
      * @var $sType     string   the type of settings to change (css or js)
      * @var $aSettings array    array of local setting
@@ -367,27 +343,34 @@ class TemplateConfiguration extends CFormModel
      */
     private function changeMotherConfiguration( $sType, $aSettings )
     {
-        foreach( $aSettings as $key => $aSetting){
-            if (!empty($aSetting['replace']) || !empty($aSetting['remove'])){
-                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSetting['replace'] );
-                unset($aSettings[$key]);
+        if (is_a($this->oMotherTemplate, 'TemplateConfiguration')){
+            $this->editPackage($this->oMotherTemplate->sPackageName, $sType, $aSettings);
+        }
+    }
+
+    private function editPackage( $sPackageName, $sType, $aSettings )
+    {
+        foreach( $aSettings as $key => $aFiles){
+
+            if ($key == "replace" || $key = "remove"){
+                foreach($aFiles as $sFile)
+                    Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFile );
+            }
+        }
+    }
+
+    private function getFilesToAdd($aSettings)
+    {
+        $aSettingsToAdd = array();
+
+        foreach( $aSettings as $key => $aFiles){
+            if ($key == "add" || $key == "replace"){
+                foreach($aFiles as $sFile)
+                    $aSettingsToAdd[] = $sFile;
             }
         }
 
-        return $aSettings;
-    }
-
-    /**
-     * Read the config.xml file of the template and push its contents to $this->config
-     */
-    private function readManifest()
-    {
-        $this->xmlFile         = $this->path.DIRECTORY_SEPARATOR.'config.xml';
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true);            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-        $this->config          = simplexml_load_string($sXMLConfigFile);        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-
-        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        return $aSettingsToAdd;
     }
 
     /**
@@ -396,70 +379,24 @@ class TemplateConfiguration extends CFormModel
      */
     private function setMotherTemplates()
     {
-        if (isset($this->config->metadatas->extends)){
-            $sMotherTemplateName   = (string) $this->config->metadatas->extends;
+        if(!empty($this->template->extends_templates_name)){
+            $sMotherTemplateName   = $this->template->extends_templates_name;
             $this->oMotherTemplate = new TemplateConfiguration;
-            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
+
+            if ($this->oMotherTemplate->checkTemplate()){
+                $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
+            }else{
+                // Throw exception? Set to default template?
+            }
         }
     }
 
-    /**
-     * Set the path of the current template
-     * It checks if it's a core or a user template, if it exists, and if it has a config file
-     */
-    private function setPath()
+    public function checkTemplate()
     {
-        // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on usertemplaterootdir
-        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-
-        // If the template directory doesn't exist, we just set Default as the template to use
-        // TODO: create a method "setToDefault"
-        if (!is_dir($this->path)) {
-            $this->sTemplateName = 'default';
-            $this->isStandard    = true;
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-            if(!$this->iSurveyId){
-                setGlobalSetting('defaulttemplate', 'default');
-            }
+        if (!is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder) && !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
+            return false;
         }
-
-        // If the template doesn't have a config file (maybe it has been deleted, or whatever),
-        // then, we load the default template
-        $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
-        if (!$this->hasConfigFile) {
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
-
-        }
-    }
-
-    /**
-     * Set the template name.
-     * If no templateName provided, then a survey id should be given (it will then load the template related to the survey)
-     *
-     * @var     $sTemplateName  string the name of the template
-     * @var     $iSurveyId      int    the id of the survey
-      */
-    private function setTemplateName($sTemplateName='', $iSurveyId='')
-    {
-        // If it is called from the template editor, a template name will be provided.
-        // If it is called for survey taking, a survey id will be provided
-        if ($sTemplateName == '' && $iSurveyId == '') {
-            /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
-            $sTemplateName = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate','default'));
-        }
-
-        $this->sTemplateName = $sTemplateName;
-        $this->iSurveyId     = (int) $iSurveyId;
-
-        if ($sTemplateName == '') {
-            $oSurvey       = Survey::model()->findByPk($iSurveyId);
-
-            if($oSurvey) {
-                $this->sTemplateName = $oSurvey->template;
-            } else {
-                $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
-            }
-        }
+        return true;
     }
 
     /**
@@ -468,23 +405,34 @@ class TemplateConfiguration extends CFormModel
     private function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
-        $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR    : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
-        $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
-        $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ? $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
+        $this->apiVersion               = (!empty($this->template->api_version))? $this->template->api_version : $this->oMotherTemplate->apiVersion;
+        $this->viewPath                 = (!empty($this->template->view_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->view_folder.DIRECTORY_SEPARATOR : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->view_folder.DIRECTORY_SEPARATOR;
+        $this->filesPath                = (!empty($this->template->files_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->files_folder.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->file_folder.DIRECTORY_SEPARATOR;
+
 
         // Options are optional
-        if (!empty($this->config->xpath("//options"))){
-            $this->oOptions = $this->config->xpath("//options");
+        // TODO: twig getOption should return mother template option when option = inherit
+        $this->oOptions = array();
+        if (!empty($this->options)){
+            $this->oOptions[] = (array) json_decode($this->options);
         }elseif(!empty($this->oMotherTemplate->oOptions)){
-            $this->oOptions = $this->oMotherTemplate->oOptions;
-        }else{
-            $this->oOptions = "";
+            $this->oOptions[] = $this->oMotherTemplate->oOptions;
         }
 
         // Not mandatory (use package dependances)
-        $this->cssFramework             = (!empty($this->config->xpath("//cssframework")))    ? $this->config->engine->cssframework                                                                                  : '';
-        $this->packages                 = (!empty($this->config->xpath("//packages")))        ? $this->config->engine->packages                                                                                      : array();
+        if (!empty($this->cssframework_name)){
+            $this->cssFramework = new \stdClass();
+            $this->cssFramework->name = $this->cssframework_name;
+            $this->cssFramework->css  = json_decode($this->cssframework_css);
+            $this->cssFramework->js   = json_decode($this->cssframework_js);
+
+        }else{
+            $this->cssFramework = '';
+        }
+
+        if (!empty($this->packages_to_load)){
+            $this->packages = json_decode($this->packages_to_load);
+        }
 
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
@@ -532,8 +480,8 @@ class TemplateConfiguration extends CFormModel
             $packages = array_merge ($packages, (array)$this->packages->$dir->package);
         }
 
-        if (isset($this->config->metadatas->extends)){
-            $sMotherTemplateName = (string) $this->config->metadatas->extends;
+        if (!empty($this->template->extends_templates_name)){
+            $sMotherTemplateName = (string) $this->template->extends_templates_name;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
         }
 
@@ -561,8 +509,9 @@ class TemplateConfiguration extends CFormModel
                 $cssFrameworkCsss = isset ( $oTemplate->cssFramework->$dir->css ) ? $oTemplate->cssFramework->$dir->css : array();
                 $cssFrameworkJss  = isset ( $oTemplate->cssFramework->$dir->js  ) ? $oTemplate->cssFramework->$dir->js  : array();
             } else {
-                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->css       ) ? $oTemplate->cssFramework->css       : array();
-                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->js        ) ? $oTemplate->cssFramework->js        : array();
+
+                $cssFrameworkCsss =  ! empty ( $oTemplate->cssframework_css       ) ? json_decode($oTemplate->cssframework_css)       : array();
+                $cssFrameworkJss  =  ! empty ( $oTemplate->cssframework_js        ) ? json_decode($oTemplate->cssframework_js)        : array();
             }
 
             if (empty($cssFrameworkCsss) && empty($cssFrameworkJss)) {
@@ -574,12 +523,12 @@ class TemplateConfiguration extends CFormModel
                 $packageJs           = array();                                            // css file to replace from default package */
                 $cssDelete           = array();
 
-                foreach($cssFrameworkCsss as $cssFrameworkCss) {
-                    if(isset($cssFrameworkCss['replace'])) {
-                        $cssDelete[] = $cssFrameworkCss['replace'];
-                    }
-                    if((string)$cssFrameworkCss) {
-                        $packageCss[] = (string) $cssFrameworkCss;
+                // foreach($cssFrameworkCsss as $cssFrameworkCss) {
+                foreach($cssFrameworkCsss as $action => $aFiles) {
+                    // if(isset($cssFrameworkCss['replace'])) {
+                    if($action == 'replace') {
+                        foreach($aFiles as $aFile)
+                            $cssDelete[] = $aFile;
                     }
                 }
 
@@ -606,6 +555,24 @@ class TemplateConfiguration extends CFormModel
                     $framework,
                 );
 
+                // Remove CSS
+                foreach($cssFrameworkCsss as $action => $aFiles) {
+                    if($action == 'replace' || $key = "remove") {
+                        foreach($aFiles as $sFile)
+                            unset($packageCss[$sFile]);
+                    }
+                }
+
+                // Add CSS
+                foreach($cssFrameworkCsss as $action => $aFiles) {
+                    if($action == 'add' || $key = "replace") {
+                        foreach($aFiles as $sFile)
+                            $packageCss[] = $sFile;
+                    }
+                }
+
+                // TODO: refactorize remove/add CSS (see changeMotherConfiguration) + add JS
+
                 $sTemplateurl = $oTemplate->getTemplateURL();
                 $sPathName    = 'survey.template-'.$oTemplate->sTemplateName.'.path';
 
@@ -619,6 +586,7 @@ class TemplateConfiguration extends CFormModel
                     )
                 );
                 $frameworkPackages[]=$framework.'-template';
+
             }
             return $frameworkPackages;
         }/*elseif($framework){

@@ -315,7 +315,7 @@ function createNewLabelTR(alternate,first){
         x = x + "<td>###codeval###</td><td>###assessmentval###</td>";
     else
         x = x + "<td>"
-        + "<span class='fa fa-move text-success'></span>"
+        + "<span class='fa fa-bars bigIcons text-success'></span>"
         + "</td><td>"
         + "<input type='hidden' class='hiddencode' value='###codeval###' />"
         + "<input type='text' class='codeval form-control  ' value='###codeval###' name='code_###next###' id='code_###next###' size='6' maxlength='5' >"

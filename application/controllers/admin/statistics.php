@@ -568,7 +568,9 @@ class statistics extends Survey_Common_Action {
                 $sQCode=substr($sQCode,1);
             }
             list($qsid, $qgid, $qqid) = explode("X", substr($sQCode, 0), 3);
-            $aFieldmap=createFieldMap($qsid,'full',false,false,$sStatisticsLanguage);
+            $survey = Survey::model()->findByPk($qsid);
+
+            $aFieldmap=createFieldMap($survey,'full',false,false,$sStatisticsLanguage);
             $qtype=$aFieldmap[$sQCode]['type'];
             $qqid=$aFieldmap[$sQCode]['qid'];
             $aattr = QuestionAttribute::model()->getQuestionAttributes($qqid);
@@ -828,6 +830,7 @@ class statistics extends Survey_Common_Action {
     {
         yii::app()->clientScript->registerPackage('bootstrap-switch');
         yii::app()->clientScript->registerPackage('jspdf');
+        $oSurvey = Survey::model()->findByPk($aData['surveyid']);
 
         $aData['menu']['closeurl'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("/admin/survey/sa/view/surveyid/".$aData['surveyid']) );
 
@@ -839,9 +842,7 @@ class statistics extends Survey_Common_Action {
         $aData['menu']['close'] =  true;
         $aData['sidemenu']['state'] = false;
         $iSurveyId = $aData['surveyid'];
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData["surveyinfo"] = $surveyinfo;
-        $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+        $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

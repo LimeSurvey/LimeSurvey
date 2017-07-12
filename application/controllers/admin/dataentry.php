@@ -270,31 +270,24 @@ class dataentry extends Survey_Common_Action
     {
         $iSurveyId = sanitize_int($surveyid);
 
-        if(!Permission::model()->hasSurveyPermission($iSurveyId,'responses','create'))
-        {
+        if(!Permission::model()->hasSurveyPermission($iSurveyId,'responses','create')) {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             return;
         }
 
-        if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none')
-        {
+        if (!App()->getRequest()->isPostRequest || App()->getRequest()->getPost('table') == 'none') {
 
             // Schema that serves as the base for compatibility checks.
             $baseSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
             $tables = App()->getApi()->getOldResponseTables($iSurveyId);
             $compatible = array();
             $coercible = array();
-            foreach ($tables as $table)
-            {
+            foreach ($tables as $table) {
                 $schema = PluginDynamic::model($table)->getTableSchema();
-                if (PluginDynamic::model($table)->count() > 0)
-                {
-                    if ($this->isCompatible($baseSchema, $schema))
-                    {
+                if (PluginDynamic::model($table)->count() > 0) {
+                    if ($this->isCompatible($baseSchema, $schema)) {
                         $compatible[] = $table;
-                    }
-                    elseif ($this->isCompatible($baseSchema, $schema, false))
-                    {
+                    } elseif ($this->isCompatible($baseSchema, $schema, false)) {
                         $coercible[] = $table;
                     }
                 }
@@ -319,20 +312,16 @@ class dataentry extends Survey_Common_Action
 
             //Get the menubar
             $aData['display']['menu_bars']['browse'] = gT("Quick statistics");
+            $survey = Survey::model()->findByPk($iSurveyId);
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-            $aData["surveyinfo"] = $surveyinfo;
-            $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
-
+            $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
             $aData['menu']['import'] =  true;
             $aData['menu']['close'] =  true;
 
             $this->_renderWrappedTemplate('dataentry', 'import', $aData);
-        }
-        else
-        {
+        } else {
             $aSRIDConversions=array();
             $targetSchema = SurveyDynamic::model($iSurveyId)->getTableSchema();
             $sourceTable = PluginDynamic::model($_POST['table']);
@@ -340,40 +329,33 @@ class dataentry extends Survey_Common_Action
 
             $fieldMap = array();
             $pattern = '/([\d]+)X([\d]+)X([\d]+.*)/';
-            foreach ($sourceSchema->getColumnNames() as $name)
-            {
+            foreach ($sourceSchema->getColumnNames() as $name) {
                 // Skip id field.
-                if ($name == 'id')
-                {
+                if ($name == 'id') {
                     continue;
                 }
 
                 $matches = array();
                 // Exact match.
-                if ($targetSchema->getColumn($name))
-                {
+                if ($targetSchema->getColumn($name)) {
                     $fieldMap[$name] = $name;
-                }
-                elseif(preg_match($pattern, $name, $matches)) // Column name is SIDXGIDXQID
-                {
+                } elseif(preg_match($pattern, $name, $matches)) {
+                    // Column name is SIDXGIDXQID
                     $qid = $matches[3];
                     $targetColumn = $this->getQidColumn($targetSchema, $qid);
-                    if (isset($targetColumn))
-                    {
+                    if (isset($targetColumn)) {
                         $fieldMap[$name] = $targetColumn->name;
                     }
                 }
             }
             $imported = 0;
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
-            foreach ($sourceResponses as $sourceResponse)
-            {
+            foreach ($sourceResponses as $sourceResponse) {
                $iOldID=$sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
                $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
 
-               foreach($fieldMap as $sourceField => $targetField)
-               {
+               foreach($fieldMap as $sourceField => $targetField) {
                    $targetResponse[$targetField] = $sourceResponse[$sourceField];
                }
 
@@ -394,8 +376,7 @@ class dataentry extends Survey_Common_Action
             $sOldTimingsTable=substr(substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_')),strlen(Yii::app()->db->tablePrefix));
             $sNewTimingsTable = "survey_{$surveyid}_timings";
 
-            if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable))
-            {
+            if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
                 // Import timings
                 $aFieldsOldTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
                 $aFieldsNewTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
@@ -405,10 +386,8 @@ class dataentry extends Survey_Common_Action
                 $sQueryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {{{$sOldTimingsTable}}} ";
                 $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll();   //Checked
                 $iRecordCountT=0;
-                foreach ($aQueryOldValues as $sRecord)
-                {
-                    if (isset($aSRIDConversions[$sRecord['id']]))
-                    {
+                foreach ($aQueryOldValues as $sRecord) {
+                    if (isset($aSRIDConversions[$sRecord['id']])) {
                         $sRecord['id']=$aSRIDConversions[$sRecord['id']];
                     }
                     else continue;
@@ -508,11 +487,12 @@ class dataentry extends Survey_Common_Action
         $survey = Survey::model()->findByPk($surveyid);
         $id = sanitize_int($id);
         $aViewUrls = array();
-        $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
+        $survey = Survey::model()->findByPk($surveyid);
+        $sDataEntryLanguage = $survey->language;
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses','update'))
         {
-            $surveytable = "{{survey_".$surveyid.'}}';
+            $surveytable = $survey->responsesTableName;
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
 
             Yii::app()->loadHelper('database');
@@ -538,7 +518,7 @@ class dataentry extends Survey_Common_Action
 
             $fnames['completed'] = array('fieldname'=>"completed", 'question'=>gT("Completed"), 'type'=>'completed');
 
-            $fnames=array_merge($fnames,createFieldMap($surveyid,'full',false,false,$sDataEntryLanguage));
+            $fnames=array_merge($fnames,createFieldMap($survey,'full',false,false,$sDataEntryLanguage));
             // Fix private if disallowed to view token
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','read'))
                 unset($fnames['token']);
@@ -587,7 +567,7 @@ class dataentry extends Survey_Common_Action
                     $responses[$svrow['fieldname']] = $svrow['value'];
                 } // while
 
-                $fieldmap = createFieldMap($surveyid,'full',false,false,$survey->language);
+                $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
                 $results1 = array();
                 foreach($fieldmap as $fm)
                 {
@@ -1406,6 +1386,7 @@ class dataentry extends Survey_Common_Action
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
 
         $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
         $id = $_REQUEST['id'];
 
         $aData = array(
@@ -1413,9 +1394,9 @@ class dataentry extends Survey_Common_Action
         'id' => $id
         );
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','read') && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
-        {
-            $surveytable = "{{survey_".$surveyid.'}}';
+        if (Permission::model()->hasSurveyPermission($surveyid, 'responses','read')
+            && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete')) {
+            $surveytable = $survey->responsesTableName;
             $aData['thissurvey'] = getSurveyInfo($surveyid);
 
             $delquery = "DELETE FROM $surveytable WHERE id=$id";
@@ -1440,7 +1421,6 @@ class dataentry extends Survey_Common_Action
     /**
     * dataentry::update()
     * update dataentry
-    * @return
     */
     public function update()
     {
@@ -1449,17 +1429,17 @@ class dataentry extends Survey_Common_Action
         if (isset($_REQUEST['surveyid'])) $surveyid = $_REQUEST['surveyid'];
         if (!empty($_REQUEST['sid'])) $surveyid = (int)$_REQUEST['sid'];
         $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
+
         $id = Yii::app()->request->getPost('id');
         $lang = Yii::app()->request->getPost('lang');
 
         if ($subaction == "update"  && Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
         {
 
-            $baselang = Survey::model()->findByPk($surveyid)->language;
             Yii::app()->loadHelper("database");
-            $surveytable = "{{survey_".$surveyid.'}}';
-
-            $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+            $surveytable = $survey->responsesTableName;
+            $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
             // restet token if user is not allowed to update
             if(!Permission::model()->hasSurveyPermission($surveyid,'tokens','update')) // If not allowed to read: remove it
             {
@@ -1563,13 +1543,14 @@ class dataentry extends Survey_Common_Action
     /**
     * dataentry::insert()
     * insert new dataentry
-    * @return
     */
     public function insert()
     {
         $subaction = Yii::app()->request->getPost('subaction');
         $surveyid = Yii::app()->request->getPost('sid');
+
         $lang = isset($_POST['lang']) ? Yii::app()->request->getPost('lang') : NULL;
+        $survey = Survey::model()->findByPk($surveyid);
 
         $aData = array(
             'surveyid' => $surveyid,
@@ -1627,7 +1608,7 @@ class dataentry extends Survey_Common_Action
                 }
             }
 
-            $tokenTableExists = tableExists('{{tokens_'.$thissurvey['sid'].'}}');
+            $tokenTableExists = $survey->hasTokensTable;
 
             // First Check if the survey uses tokens and if a token has been provided
             if ($tokenTableExists && (!$_POST['token']))
@@ -1700,20 +1681,16 @@ class dataentry extends Survey_Common_Action
                 }
 
                 //BUILD THE SQL TO INSERT RESPONSES
-                $baselang = Survey::model()->findByPk($surveyid)->language;
-                $fieldmap = createFieldMap($surveyid,'full',false,false,getBaseLanguageFromSurveyID($surveyid));
+                $baselang = $survey->language;
+                $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
                 $insert_data = array();
 
-                $_POST['startlanguage'] = $baselang;
+                $_POST['startlanguage'] = $survey->language;
                 if ($thissurvey['datestamp'] == "Y") { $_POST['startdate'] = $_POST['datestamp']; }
-                if (isset($_POST['closerecord']))
-                {
-                    if ($thissurvey['datestamp'] == "Y")
-                    {
+                if (isset($_POST['closerecord'])) {
+                    if ($thissurvey['datestamp'] == "Y") {
                         $_POST['submitdate'] = dateShift(date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
-                    }
-                    else
-                    {
+                    } else {
                         $_POST['submitdate'] = date("Y-m-d H:i",mktime(0,0,0,1,1,1980));
                     }
                 }
@@ -1952,26 +1929,20 @@ class dataentry extends Survey_Common_Action
     * view a dataentry
     * @param mixed $surveyid
     * @param mixed $lang
-    * @return
     */
     public function view($surveyid, $lang=NULL)
     {
         $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
         $lang = isset($_GET['lang']) ? $_GET['lang'] : NULL;
         if(isset($lang)) $lang=sanitize_languagecode($lang);
         $aViewUrls = array();
 
-        if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create'))
-        {
-            $sDataEntryLanguage = Survey::model()->findByPk($surveyid)->language;
-            $surveyinfo=getSurveyInfo($surveyid);
-
-            $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
+        if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')) {
             $baselang = Survey::model()->findByPk($surveyid)->language;
-            array_unshift($slangs,$baselang);
+            $slangs = $survey->allLanguages;
 
-            if(is_null($lang) || !in_array($lang,$slangs))
-            {
+            if(is_null($lang) || !in_array($lang,$slangs)) {
                 $sDataEntryLanguage = $baselang;
             } else {
                 $sDataEntryLanguage = $lang;
@@ -1984,6 +1955,7 @@ class dataentry extends Survey_Common_Action
             LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);
             $moveResult = LimeExpressionManager::NavigateForwards();
 
+            $aData['survey'] = $survey;
             $aData['thissurvey'] = $thissurvey;
             $aData['langlistbox'] = $langlistbox;
             $aData['surveyid'] = $surveyid;
@@ -2503,10 +2475,9 @@ class dataentry extends Survey_Common_Action
             if(isset($_POST['sid']))
                 $iSurveyId = $_POST['sid'];
 
-
             $aData['display']['menu_bars']['browse'] = gT("Data entry");
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-            $aData["surveyinfo"] = $surveyinfo;
+            $survey = Survey::model()->findByPk($iSurveyId);
+            $aData["survey"] = $survey;
             $aData['title_bar']['title'] = gT("Data entry");
         }
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

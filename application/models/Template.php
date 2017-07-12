@@ -34,28 +34,70 @@ class Template extends LSActiveRecord
     private static $standardTemplates = array();
 
     /**
-     * Returns the static model of Settings table
-     *
-     * @static
-     * @access public
-     * @param string $class
-     * @return CActiveRecord
-     */
-    public static function model($class = __CLASS__)
-    {
-        return parent::model($class);
-    }
-
-    /**
-     * Returns the setting's table name to be used by the model
-     *
-     * @access public
-     * @return string
+     * @return string the associated database table name
      */
     public function tableName()
     {
         return '{{templates}}';
     }
+
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('name, title', 'required'),
+            array('owner_id', 'numerical', 'integerOnly'=>true),
+            array('name, author, extends_templates_name', 'length', 'max'=>150),
+            array('folder, version, api_version, view_folder, files_folder', 'length', 'max'=>45),
+            array('title', 'length', 'max'=>100),
+            array('author_email, author_url', 'length', 'max'=>255),
+            array('creation_date, copyright, license, description, last_update', 'safe'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('name, folder, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, view_folder, files_folder, description, last_update, owner_id, extends_templates_name', 'safe', 'on'=>'search'),
+        );
+    }
+
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        return array(
+
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'name' => 'Name',
+            'folder' => 'Folder',
+            'title' => 'Title',
+            'creation_date' => 'Creation Date',
+            'author' => 'Author',
+            'author_email' => 'Author Email',
+            'author_url' => 'Author Url',
+            'copyright' => 'Copyright',
+            'license' => 'License',
+            'version' => 'Version',
+            'api_version' => 'Api Version',
+            'view_folder' => 'View Folder',
+            'files_folder' => 'Files Folder',
+            'description' => 'Description',
+            'last_update' => 'Last Update',
+            'owner_id' => 'Owner',
+            'extends_templates_name' => 'Extends Templates Name',
+        );
+    }
+
 
     /**
      * Returns this table's primary key
@@ -65,7 +107,7 @@ class Template extends LSActiveRecord
      */
     public function primaryKey()
     {
-        return 'folder';
+        return 'name';
     }
 
     /**
@@ -76,15 +118,18 @@ class Template extends LSActiveRecord
     */
     public static function templateNameFilter($sTemplateName)
     {
-        $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate','default');
+        $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate','Default template');
         $sTemplateName    = empty($sTemplateName) ? $sDefaultTemplate : $sTemplateName;
 
         /* Standard Template return it without testing */
         if(self::isStandardTemplate($sTemplateName)) {
             return $sTemplateName;
         }
+
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
-        if(is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sTemplateName.DIRECTORY_SEPARATOR.'config.xml')) {
+        $oTemplate  = self::model()->findByPk($sTemplateName);
+
+        if(is_object($oTemplate) && is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
             return $sTemplateName;
         }
 
@@ -92,6 +137,7 @@ class Template extends LSActiveRecord
         if($sTemplateName!=$sDefaultTemplate) {
             return self::templateNameFilter($sDefaultTemplate);
         }
+
         /* Last solution : default */
         return 'default';
     }
@@ -118,17 +164,18 @@ class Template extends LSActiveRecord
     */
     public static function getTemplatePath($sTemplateName = "")
     {
-        static $aTemplatePath=array();
+        static $aTemplatePath = array();
         if(isset($aTemplatePath[$sTemplateName])) {
             return $aTemplatePath[$sTemplateName];
         }
 
-        $sFilteredTemplateName=self::templateNameFilter($sTemplateName);
-        if (self::isStandardTemplate($sFilteredTemplateName)) {
-            return $aTemplatePath[$sTemplateName]=Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$sFilteredTemplateName;
+        $oTemplate  = self::model()->findByPk($sTemplateName);
+
+        if (self::isStandardTemplate($sTemplateName)) {
+            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
         }
         else {
-            return $aTemplatePath[$sTemplateName]=Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$sFilteredTemplateName;
+            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
         }
     }
 
@@ -144,11 +191,32 @@ class Template extends LSActiveRecord
      * @param integer $iSurveyId        the id of the survey. If
      * @return StdClass
      */
-    public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='')
+    public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='', $bForceXML=false)
     {
-        $oTemplate = new TemplateConfiguration;
-        $oTemplate->setTemplateConfiguration($sTemplateName, $iSurveyId);
-        return $oTemplate;
+
+        // First we try to get a confifuration row from DB
+        if (!$bForceXML){
+            if (!empty($sTemplateName)){
+                $oTemplate = self::model()->findByPk($sTemplateName);
+                $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
+            }else{
+                $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid=:sid', array(':templates_name'=>$sTemplateName, ':sid' => $iSurveyId ));
+
+                // No specific template configuration for this survey
+                if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
+                    $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
+                    $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
+                }
+            }
+        }
+
+        // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
+        if ( $bForceXML || !is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || ! $oTemplateConfigurationModel->checkTemplate()){
+            $oTemplateConfigurationModel = new TemplateManifest;
+        }
+
+        $oTemplateConfigurationModel->setTemplateConfiguration($sTemplateName, $iSurveyId);
+        return $oTemplateConfigurationModel;
     }
 
 
@@ -172,7 +240,6 @@ class Template extends LSActiveRecord
         return $otherFiles;
     }
 
-
     /**
      * This function returns the complete URL path to a given template name
      *
@@ -186,40 +253,58 @@ class Template extends LSActiveRecord
             return $aTemplateUrl[$sTemplateName];
         }
 
-        $sFiteredTemplateName=self::templateNameFilter($sTemplateName);
-        if (self::isStandardTemplate($sFiteredTemplateName)) {
-            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$sFiteredTemplateName.'/';
+        $oTemplate  = self::model()->findByPk($sTemplateName);
+
+        if (is_object($oTemplate)){
+            if (self::isStandardTemplate($sTemplateName)) {
+                return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$oTemplate->folder.'/';
+            }
+            else {
+                return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$oTemplate->folder.'/';
+            }
+        }else{
+            return '';
         }
-        else {
-            return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$sFiteredTemplateName.'/';
-        }
+
     }
 
 
     /**
      * Returns an array of all available template names - does a basic check if the template might be valid
+     *
+     * TODO: replace the calls to that function by a data provider based on search
+     *
      * @return array
      */
     public static function getTemplateList()
     {
-        $sUserTemplateRootDir=Yii::app()->getConfig("usertemplaterootdir");
-        $standardTemplateRootDir=Yii::app()->getConfig("standardtemplaterootdir");
+        $sUserTemplateRootDir    = Yii::app()->getConfig("usertemplaterootdir");
+        $standardTemplateRootDir = Yii::app()->getConfig("standardtemplaterootdir");
 
         $aTemplateList=array();
+        $aStandardTemplates = self::getStandardTemplateList();
 
-        $aStandardTemplates=self::getStandardTemplateList();
-        foreach($aStandardTemplates as $templateName){
-            $aTemplateList[$templateName] = $standardTemplateRootDir.DIRECTORY_SEPARATOR.$templateName;
+        foreach ($aStandardTemplates as $sTemplateName){
+            $oTemplate  = self::model()->findByPk($sTemplateName);
+
+            if (is_object($oTemplate)){
+                $aTemplateList[$sTemplateName] = $standardTemplateRootDir.DIRECTORY_SEPARATOR.$oTemplate->folder;
+            }
         }
-        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)) {
-            while (false !== ($sFileName = readdir($handle))) {
-                // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sUserTemplateRootDir/$sFileName")
-                    && $sFileName != "."
-                    && $sFileName != ".." && $sFileName!=".svn"
-                    && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml"))) {
 
-                    $aTemplateList[$sFileName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sFileName;
+        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)) {
+            while (false !== ($sTemplatePath = readdir($handle))) {
+                // Maybe $file[0] != "." to hide Linux hidden directory
+                if (!is_file("$sUserTemplateRootDir/$sTemplatePath")
+                    && $sTemplatePath != "."
+                    && $sTemplatePath != ".." && $sTemplatePath!=".svn"
+                    && (file_exists("{$sUserTemplateRootDir}/{$sTemplatePath}/config.xml"))) {
+
+                    $oTemplate = self::model()->getInstance($sTemplatePath, '', true);
+
+                    if (is_object($oTemplate)){
+                        $aTemplateList[$oTemplate->sTemplateName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
+                    }
                 }
             }
             closedir($handle);
@@ -231,26 +316,39 @@ class Template extends LSActiveRecord
 
     /**
      * @return array
+     * TODO: replace the calls to that function by a data provider based on search
      */
     public static function getTemplateListWithPreviews()
     {
-        $usertemplaterootdir=Yii::app()->getConfig("usertemplaterootdir");
-        $standardtemplaterootdir=Yii::app()->getConfig("standardtemplaterootdir");
-        $usertemplaterooturl = Yii::app()->getConfig("usertemplaterooturl");
-        $standardtemplaterooturl=Yii::app()->getConfig("standardtemplaterooturl");
+        $usertemplaterootdir     = Yii::app()->getConfig("usertemplaterootdir");
+        $standardtemplaterootdir = Yii::app()->getConfig("standardtemplaterootdir");
+        $usertemplaterooturl     = Yii::app()->getConfig("usertemplaterooturl");
+        $standardtemplaterooturl = Yii::app()->getConfig("standardtemplaterooturl");
 
-        $aTemplateList=array();
-        $aStandardTemplates=self::getStandardTemplateList();
-        foreach($aStandardTemplates as $templateName){
-            $aTemplateList[$templateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$templateName;
-            $aTemplateList[$templateName]['preview'] = $standardtemplaterooturl.'/'.$templateName.'/preview.png';
+        $aTemplateList = array();
+        $aStandardTemplates = self::getStandardTemplateList();
+
+        foreach ($aStandardTemplates as $sTemplateName){
+            $oTemplate  = self::model()->findByPk($sTemplateName);
+
+            if (is_object($oTemplate)) {
+                $aTemplateList[$sTemplateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$oTemplate->folder;
+                $aTemplateList[$sTemplateName]['preview']   = $standardtemplaterooturl.'/'.$oTemplate->folder.'/preview.png';
+            }
         }
+
         if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir)) {
-            while (false !== ($file = readdir($handle))) {
+            while (false !== ($sTemplatePath = readdir($handle))) {
                 // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$usertemplaterootdir/$file") && $file != "." && $file != ".." && $file!=".svn") {
-                    $aTemplateList[$file]['directory']  = $usertemplaterootdir.DIRECTORY_SEPARATOR.$file;
-                    $aTemplateList[$file]['preview'] = $usertemplaterooturl.'/'.$file.'/'.'preview.png';
+                if (!is_file("$usertemplaterootdir/$sTemplatePath") && $sTemplatePath != "." && $sTemplatePath != ".." && $sTemplatePath!=".svn") {
+
+
+                    $oTemplate  = self::model()->find('folder=:folder', array(':folder'=>$sTemplatePath));
+
+                    if (is_object($oTemplate)){
+                        $aTemplateList[$oTemplate->name]['directory'] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
+                        $aTemplateList[$oTemplate->name]['preview'] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath.'/'.'preview.png';
+                    }
                 }
             }
             closedir($handle);
@@ -282,10 +380,10 @@ class Template extends LSActiveRecord
      * @param int|string $iSurveyId
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName='', $iSurveyId='')
+    public static function getInstance($sTemplateName='', $iSurveyId='', $bForceXML=false)
     {
         if (empty(self::$instance)) {
-            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId);
+            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $bForceXML);
         }
         return self::$instance;
     }
@@ -299,7 +397,7 @@ class Template extends LSActiveRecord
         if (App()->getAssetManager()->linkAssets) return;
 
         $standardTemplatesPath = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR;
-        $Resource = opendir($standardTemplatesPath);
+        $Resource    = opendir($standardTemplatesPath);
         while ($Item = readdir($Resource)) {
             if (is_dir($standardTemplatesPath . $Item) && $Item != "." && $Item != "..") {
                 touch($standardTemplatesPath . $Item);
@@ -314,6 +412,11 @@ class Template extends LSActiveRecord
      */
     public static function getStandardTemplateList()
     {
+
+        $standardTemplates = array('default');
+        return $standardTemplates;
+
+        /*
         $standardTemplates=self::$standardTemplates;
         if(empty($standardTemplates)){
             $standardTemplates = array();
@@ -333,7 +436,59 @@ class Template extends LSActiveRecord
             }
             self::$standardTemplates = $standardTemplates;
         }
-
+*/
         return self::$standardTemplates;
+    }
+
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
+
+        $criteria=new CDbCriteria;
+
+        $criteria->compare('name',$this->name,true);
+        $criteria->compare('folder',$this->folder,true);
+        $criteria->compare('title',$this->title,true);
+        $criteria->compare('creation_date',$this->creation_date,true);
+        $criteria->compare('author',$this->author,true);
+        $criteria->compare('author_email',$this->author_email,true);
+        $criteria->compare('author_url',$this->author_url,true);
+        $criteria->compare('copyright',$this->copyright,true);
+        $criteria->compare('license',$this->license,true);
+        $criteria->compare('version',$this->version,true);
+        $criteria->compare('api_version',$this->api_version,true);
+        $criteria->compare('view_folder',$this->view_folder,true);
+        $criteria->compare('files_folder',$this->files_folder,true);
+        $criteria->compare('description',$this->description,true);
+        $criteria->compare('last_update',$this->last_update,true);
+        $criteria->compare('owner_id',$this->owner_id);
+        $criteria->compare('extends_templates_name',$this->extends_templates_name,true);
+
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
+
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Templates the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
     }
 }

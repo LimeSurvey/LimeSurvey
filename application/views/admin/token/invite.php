@@ -1,6 +1,9 @@
 <?php
 /**
  * Send email invitations
+
+ * @var AdminController $this
+ * @var Survey $oSurvey
  */
 ?>
 
@@ -12,7 +15,7 @@
         <div class="col-lg-12 content-right">
             <?php echo PrepareEditorScript(true, $this); ?>
             <div>
-                <?php if ($thissurvey[$baselang]['active'] != 'Y'): ?>
+                <?php if ($oSurvey->active != 'Y'): ?>
                     <div class="jumbotron message-box message-box-error">
                         <h2 class='text-warning'><?php eT('Warning!'); ?></h2>
                         <p class="lead text-warning">
@@ -22,23 +25,20 @@
                 <?php endif; ?>
 
                 <div>
-                    <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$surveyid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'form-horizontal')); ?>
+                    <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$oSurvey->sid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'form-horizontal')); ?>
                     <ul class="nav nav-tabs">
                         <?php
                         $c = true;
-                            foreach ($surveylangs as $language)
-                            {
+                            foreach ($oSurvey->allLanguages as $language) {
                                 echo '<li role="presentation"';
 
-                                if ($c)
-                                {
+                                if ($c) {
                                     $c=false;
                                     echo ' class="active"';
                                 }
 
                                 echo '><a  data-toggle="tab" href="#'.$language.'">' . getLanguageNameFromCode($language, false);
-                                if ($language == $baselang)
-                                {
+                                if ($language == $oSurvey->language) {
                                     echo " (" . gT("Base language") . ")";
                                 }
                                 echo "</a></li>";
@@ -50,18 +50,16 @@
 
                         <?php
                         $c = true;
-                        foreach ($surveylangs as $language)
-                        {
-                                $fieldsarray["{ADMINNAME}"] = $thissurvey[$baselang]['adminname'];
-                                $fieldsarray["{ADMINEMAIL}"] = $thissurvey[$baselang]['adminemail'];
-                                $fieldsarray["{SURVEYNAME}"] = $thissurvey[$language]['name'];
-                                $fieldsarray["{SURVEYDESCRIPTION}"] = $thissurvey[$language]['description'];
-                                $fieldsarray["{EXPIRY}"] = $thissurvey[$baselang]["expiry"];
+                        foreach ($oSurvey->allLanguages as $language) {
+                                $fieldsarray["{ADMINNAME}"] = $oSurvey->admin;
+                                $fieldsarray["{ADMINEMAIL}"] = $oSurvey->adminemail;
+                                $fieldsarray["{SURVEYNAME}"] = $oSurvey->languagesettings[$language]->surveyls_title;
+                                $fieldsarray["{SURVEYDESCRIPTION}"] = $oSurvey->languagesettings[$language]->surveyls_description;
+                                $fieldsarray["{EXPIRY}"] = $oSurvey->expires;
 
-                                $subject = Replacefields($thissurvey[$language]['email_invite_subj'], $fieldsarray, false);
-                                $textarea = Replacefields($thissurvey[$language]['email_invite'], $fieldsarray, false);
-                                if ($ishtml !== true)
-                                {
+                                $subject = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite_subj, $fieldsarray, false);
+                                $textarea = Replacefields($oSurvey->languagesettings[$language]->surveyls_email_invite, $fieldsarray, false);
+                                if ($ishtml !== true) {
                                     $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);
                                 }
                             ?>
@@ -70,7 +68,7 @@
                                 <div class='form-group'>
                                     <label class='control-label col-sm-2' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
                                     <div class='col-sm-4'>
-                                        <?php echo CHtml::textField("from_{$language}",$thissurvey[$baselang]['adminname']." <".$thissurvey[$baselang]['adminemail'].">",array('class' => 'form-control')); ?>
+                                        <?php echo CHtml::textField("from_{$language}",$oSurvey->admin." <".$oSurvey->adminemail.">",array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
 
@@ -147,9 +145,9 @@
                             }
                         ?>
                     </div>
-                </form>
+                <?php echo CHtml::endForm() ?>
             </div>
-        </form>
+        <?php echo CHtml::endForm() ?>
     </div>
 </div>
 

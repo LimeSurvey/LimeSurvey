@@ -131,6 +131,7 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
+        $survey = new Survey();
 
         $this->_registerScriptFiles();
         Yii::app()->loadHelper('surveytranslator');
@@ -138,8 +139,8 @@ class SurveyAdmin extends Survey_Common_Action
         // Default setting is to use the global Google Analytics key If one exists
         $globalKey = getGlobalSetting('googleanalyticsapikey');
         if($globalKey != ""){
-            $esrow['googleanalyticsapikey'] = "9999useGlobal9999";
-            $esrow['googleanalyticsapikeysetting'] = "G";
+            $survey->googleanalyticsapikey = "9999useGlobal9999";
+            $survey->googleanalyticsapikeysetting = "G";
         }
 
         Yii::app()->loadHelper('admin/htmleditor');
@@ -148,19 +149,21 @@ class SurveyAdmin extends Survey_Common_Action
         $aData                = $this->_generalTabNewSurvey();
         $aData                = array_merge($aData, $this->_getGeneralTemplateData(0));
         $aData['esrow']       = $esrow;
-        
+        $aData['oSurvey']       = $survey;
+
         //Prepare the edition panes
 
-        $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData(0,$esrow));
-        $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey(0,$esrow));
-        $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation(0,$esrow));
-        $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess(0,$esrow));
-        $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement(0,$esrow));
-        $aData['tokensettingsdata']         = array_merge($aData, $this->_tabTokens(0,$esrow));
+        $aData['edittextdata']              = array_merge($aData, $this->_getTextEditData($survey));
+        $aData['generalsettingsdata']       = array_merge($aData, $this->_generalTabEditSurvey($survey));
+        $aData['presentationsettingsdata']  = array_merge($aData, $this->_tabPresentationNavigation($esrow));
+        $aData['publicationsettingsdata']   = array_merge($aData, $this->_tabPublicationAccess($survey));
+        $aData['notificationsettingsdata']  = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
+        $aData['tokensettingsdata']         = array_merge($aData, $this->_tabTokens($esrow));
 
         $aViewUrls[]          = 'newSurvey_view';
 
         $arrayed_data                                              = array();
+        $arrayed_data['oSurvey']                                   = $survey;
         $arrayed_data['data']                                      = $aData;
         $arrayed_data['title_bar']['title']                        = gT('New survey');
         $arrayed_data['fullpagebar']['savebutton']['form']         = 'addnewsurvey';
@@ -182,6 +185,8 @@ class SurveyAdmin extends Survey_Common_Action
     public function editsurveysettings($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         if (is_null($iSurveyID) || !$iSurveyID)
             $this->getController()->error('Invalid survey ID');
 
@@ -207,13 +212,13 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData          = array();
         $aData['esrow'] = $esrow;
-        $aData          = array_merge($aData, $this->_generalTabEditSurvey($iSurveyID, $esrow));
+        $aData          = array_merge($aData, $this->_generalTabEditSurvey($survey));
         $aData          = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-        $aData          = array_merge($aData, $this->_tabPublicationAccess($esrow));
+        $aData          = array_merge($aData, $this->_tabPublicationAccess($survey));
         $aData          = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
         $aData          = array_merge($aData, $this->_tabTokens($esrow));
-        $aData          = array_merge($aData, $this->_tabPanelIntegration($esrow));
-        $aData          = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
+        $aData          = array_merge($aData, $this->_tabPanelIntegration($survey));
+        $aData          = array_merge($aData, $this->_tabResourceManagement($survey));
 
         $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
@@ -223,8 +228,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['data']                                  = $tempData;
 
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['sidemenu']['state'] = false;
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
@@ -378,9 +382,7 @@ class SurveyAdmin extends Survey_Common_Action
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false,true);
 
-        $surveyinfo = $survey->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
-        $aData["surveyinfo"] = $surveyinfo;
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveyid'] = $iSurveyID;
         $aData['display']['surveysummary'] = true;
 
@@ -447,7 +449,7 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 $curGroup = $group->attributes;
                 $curGroup['link'] = $this->getController()->createUrl("admin/questiongroups/sa/view", ['surveyid' => $surveyid, 'gid' => $group->gid]);
-                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$baselang), array('order'=>'question_order ASC'));
+                $group->aQuestions = Question::model()->findAllByAttributes(array("sid"=>$iSurveyID, "gid"=>$group['gid'],"language"=>$baselang, 'parent_qid'=>0), array('order'=>'question_order ASC'));
                 $curGroup['questions'] = array();
                 foreach($group->aQuestions as $question)
                 {
@@ -527,13 +529,14 @@ class SurveyAdmin extends Survey_Common_Action
     public function listquestiongroups($surveyid)
     {
         $iSurveyID = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         // Reinit LEMlang and LEMsid: ensure LEMlang are set to default lang, surveyid are set to this survey id
         // Ensure Last GetLastPrettyPrintExpression get info from this sid and default lang
         LimeExpressionManager::SetEMLanguage(Survey::model()->findByPk($iSurveyID)->language);
         LimeExpressionManager::SetSurveyId($iSurveyID);
         LimeExpressionManager::StartProcessingPage(false,true);
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
         $aData      = array();
 
         $aData['surveyid']                                   = $iSurveyID;
@@ -541,10 +544,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['sidemenu']['questiongroups']                 = true;
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['surveybar']['buttons']['newgroup']           = true;
-        $aData["surveyinfo"]                                 = $surveyinfo;
-        $aData['title_bar']['title']                         = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title']                         = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        $baselang = $survey->language;
         $model    = new QuestionGroup('search');
 
         if (isset($_GET['QuestionGroup']))
@@ -570,7 +572,7 @@ class SurveyAdmin extends Survey_Common_Action
     *
     * @access public
     * @param mixed $surveyid
-    * @return html
+    * @return string
     */
     public function listquestions($surveyid)
     {
@@ -592,10 +594,8 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['returnbutton']['text']     = gT('Return to survey list');
         $aData['surveybar']['buttons']['newquestion']   = true;
 
-        $surveyinfo = $oSurvey->surveyinfo;
-        $aData["surveyinfo"]         = $surveyinfo;
         $aData["surveyHasGroup"]     = $oSurvey->groups;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }
@@ -614,13 +614,13 @@ class SurveyAdmin extends Survey_Common_Action
 
         $iSurveyID  = Yii::app()->request->getPost('sid', $iSurveyID);
         $iSurveyID  = sanitize_int($iSurveyID);
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $survey = Survey::model()->findByPk($iSurveyID);
         $date       = date('YmdHis'); //'His' adds 24hours+minutes to name to allow multiple deactiviations in a day
         $aData      = array();
 
         $aData['aSurveysettings']                 = getSurveyInfo($iSurveyID);
         $aData['surveyid']                        = $iSurveyID;
-        $aData['title_bar']['title']              = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title']              = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
         // Fire event beforeSurveyDeactivate
@@ -742,14 +742,14 @@ class SurveyAdmin extends Survey_Common_Action
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update')) die();
 
         $iSurveyID = (int) $iSurveyID;
+        $survey = Survey::model()->findByPk($iSurveyID);
 
         Yii::app()->user->setState('sql_'.$iSurveyID,''); // If user has set some filters for responses from statistics on a previous activation, it must be wiped out
         $aData = array();
         $aData['sidemenu']['state'] = false;
         $aData['aSurveysettings'] = getSurveyInfo($iSurveyID);
         $aData['surveyid'] = $iSurveyID;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         // Redirect if this is not possible
         if (!isset($aData['aSurveysettings']['active']) || $aData['aSurveysettings']['active'] == 'Y')
         {
@@ -850,36 +850,30 @@ class SurveyAdmin extends Survey_Common_Action
     *
     * @access public
     * @param int $iSurveyID
-    * @return html
+    * @return string
     */
     public function delete($iSurveyID)
     {
         $aData = $aViewUrls = array();
         $aData['surveyid'] = $iSurveyID = (int) $iSurveyID;
-        $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
-        $aData['sidemenu']['state'] = false;
         $survey = Survey::model()->findByPk($iSurveyID);
+
+        $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['sidemenu']['state'] = false;
         $aData['survey'] =$survey;
 
 
-        if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
-        {
-            if (Yii::app()->request->getPost("delete") == 'yes')
-            {
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
+            if (Yii::app()->request->getPost("delete") == 'yes') {
                 $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin','read');
                 $this->_deleteSurvey($iSurveyID);
                 Yii::app()->session['flashmessage'] = gT("Survey deleted.");
                 $this->getController()->redirect(array("admin/index"));
-            }
-            else
-            {
+            } else {
                 $aViewUrls[] = 'deleteSurvey_view';
             }
-        }
-        else
-        {
+        } else {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
@@ -916,20 +910,18 @@ class SurveyAdmin extends Survey_Common_Action
      * @return void
      */
      public function rendersidemenulink($iSurveyID, $subaction){
-        $aViewUrls = $aData = $activePanels = [];
-        $menuaction = (String) $subaction;
-        $iSurveyID = sanitize_int($iSurveyID);
+         $aViewUrls = $aData = $activePanels = [];
+         $menuaction = (String) $subaction;
+         $iSurveyID = sanitize_int($iSurveyID);
+         $survey = Survey::model()->findByPk($iSurveyID);
 
         //Get all languages 
-        $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
+        $grplangs = $survey->additionalLanguages;
+        $baselang = $survey->language;
         array_unshift($grplangs, $baselang);
 
-        //Get surveyinfo
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-
         //@TODO add language checks here
-        $menuEntry = SurveymenuEntries::model()->find(['condition' => 'name="'.$menuaction.'"']);
+        $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name'=>$menuaction));
 
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         
@@ -940,9 +932,8 @@ class SurveyAdmin extends Survey_Common_Action
             Yii::app()->end();
         }
 
-        if( empty($menuEntry->data))
-        {
-            $templateData = call_user_func_array(array($this,$menuEntry->getdatamethod), array('surveyid'=> $iSurveyID, 'esrow' => $esrow));
+        if( empty($menuEntry->data)) {
+            $templateData = call_user_func_array(array($this,$menuEntry->getdatamethod), array('survey'=>$survey));
         } 
         else 
         {
@@ -962,8 +953,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['action'] = $menuEntry->action;
         $aData['entryData'] = $menuEntry->attributes;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+        $aData['subaction'] = $menuEntry->title;  
         $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;  
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = 'globalsetting';
         $aData['surveybar']['savebutton']['useformid'] = 'true';
         $aData['surveybar']['saveandclosebutton']['form'] = true;
@@ -979,9 +971,11 @@ class SurveyAdmin extends Survey_Common_Action
      */
 
      public function surveygeneralsettings($iSurveyID){
-        $aViewUrls = $aData = $activePanels = array();
-        $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
-        
+         $aViewUrls = $aData = $activePanels = array();
+         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
+         $survey = Survey::model()->findByPk($iSurveyID);
+         $aData['oSurvey'] = $survey;
+
 
 
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read')))
@@ -1006,10 +1000,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
 
         $aTabTitles = $aTabContents=  array();
-        $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        array_unshift($grplangs, $baselang);
-        foreach ($grplangs as $i => $sLang)
+        foreach ($survey->allLanguages as $i => $sLang)
         {
             // this one is created to get the right default texts fo each language
             Yii::app()->loadHelper('database');
@@ -1018,8 +1009,7 @@ class SurveyAdmin extends Survey_Common_Action
             $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
             $aTabTitles[$sLang] = getLanguageNameFromCode($esrow['surveyls_language'], false);
 
-            if ($esrow['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
-            {
+            if ($esrow['surveyls_language'] == $survey->language) {
                 $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
             }
 
@@ -1038,7 +1028,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyls_language'] = $esrow["surveyls_language"];
         
 
-        $generalEditArray = $this->_generalTabEditSurvey($iSurveyID, $esrow);
+        $generalEditArray = $this->_generalTabEditSurvey($survey);
 
 
         $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
@@ -1053,8 +1043,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['sidemenu']['state'] = false;
 
 
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = 'globalsetting';
         $aData['surveybar']['savebutton']['useformid'] = 'true';
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update'))
@@ -1085,6 +1074,8 @@ class SurveyAdmin extends Survey_Common_Action
         $aViewUrls = $aData = array();
 
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData['oSurvey'] = $survey;
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
         {
@@ -1134,13 +1125,13 @@ class SurveyAdmin extends Survey_Common_Action
             $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
             $aData['esrow'] = $esrow;
 
-            $aData = array_merge($aData, $this->_generalTabEditSurvey($iSurveyID, $esrow));
+            $aData = array_merge($aData, $this->_generalTabEditSurvey($survey));
             $aData = array_merge($aData, $this->_tabPresentationNavigation($esrow));
-            $aData = array_merge($aData, $this->_tabPublicationAccess($esrow));
+            $aData = array_merge($aData, $this->_tabPublicationAccess($survey));
             $aData = array_merge($aData, $this->_tabNotificationDataManagement($esrow));
             $aData = array_merge($aData, $this->_tabTokens($esrow));
-            $aData = array_merge($aData, $this->_tabPanelIntegration($esrow));
-            $aData = array_merge($aData, $this->_tabResourceManagement($iSurveyID));
+            $aData = array_merge($aData, $this->_tabPanelIntegration($survey));
+            $aData = array_merge($aData, $this->_tabResourceManagement($survey));
 
             $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
 
@@ -1150,8 +1141,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['settings_data'] = $tempData;
 
             $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
             $aData['surveybar']['savebutton']['form'] = 'globalsetting';
             $aData['surveybar']['savebutton']['useformid'] = 'true';
@@ -1165,6 +1155,7 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
+
 
             $aViewUrls[] = 'editLocalSettings_main_view';
         }
@@ -1416,8 +1407,8 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _showReorderForm($iSurveyID)
     {
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $survey = Survey::model()->findByPk($iSurveyID);
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
         // Prepare data for the view
         $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
@@ -1529,6 +1520,7 @@ class SurveyAdmin extends Survey_Common_Action
     * Load survey information based on $action.
     * @param string $action
     * @param mixed $iSurveyID
+     * @deprecated use Survey objects instead
     * @return
     */
     private function _fetchSurveyInfo($action, $iSurveyID=null)
@@ -1612,29 +1604,28 @@ class SurveyAdmin extends Survey_Common_Action
         return $aData;
     }
 
-    private function _getTextEditData($iSurveyID, $esrow){
+    /**
+     * @param Survey $survey
+     * @return array
+     */
+    private function _getTextEditData($survey){
         Yii::app()->loadHelper("admin/htmleditor");
         $aData = $aTabTitles = $aTabContents = array();
         
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
         
-        if($iSurveyID !== 0){
-            $grplangs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($iSurveyID)->language;
-            array_unshift($grplangs, $baselang);
-
-            foreach ($grplangs as $i => $sLang)
-            {
-                $aLanguageData = $this->_getGeneralTemplateData($iSurveyID);
+        if($survey->sid){
+            foreach ($survey->allLanguages as $i => $sLang) {
+                $aLanguageData = $this->_getGeneralTemplateData($survey->sid);
                 // this one is created to get the right default texts fo each language
                 Yii::app()->loadHelper('database');
                 Yii::app()->loadHelper('surveytranslator');
                 
-                $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
+                $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $survey->sid, 'surveyls_language' => $sLang))->getAttributes();
 
                 $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
 
-                if ($aSurveyLanguageSettings['surveyls_language'] == Survey::model()->findByPk($iSurveyID)->language)
+                if ($aSurveyLanguageSettings['surveyls_language'] == $survey->language)
                 {
                     $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
                 }
@@ -1643,6 +1634,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $aLanguageData['action'] = "surveygeneralsettings";
                 $aLanguageData['i'] = $i;
                 $aLanguageData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
+                $aLanguageData['oSurvey'] = $survey;
                 $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aLanguageData, true);
             }
         } else {
@@ -1671,18 +1663,17 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * survey::_generalTabEditSurvey()
-    * Load "General" tab of edit survey screen.
-    * @param mixed $iSurveyID
-    * @param mixed $esrow
-    * @return
-    */
-    private function _generalTabEditSurvey($iSurveyID, $esrow)
+     * survey::_generalTabEditSurvey()
+     * Load "General" tab of edit survey screen.
+     * @param Survey $survey
+     * @return mixed
+     */
+    private function _generalTabEditSurvey($survey)
     {
-        $aData['esrow'] = $esrow;
+        $aData['survey'] = $survey;
 
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
-        $beforeSurveySettings->set('survey', $iSurveyID);
+        $beforeSurveySettings->set('survey', $survey->sid);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
         $aData['pluginSettings'] = $beforeSurveySettings->get('surveysettings');
         return $aData;
@@ -1692,9 +1683,9 @@ class SurveyAdmin extends Survey_Common_Action
     * survey::_tabPresentationNavigation()
     * Load "Presentation & navigation" tab.
     * @param mixed $esrow
-    * @return
+    * @return array
     */
-    private function _tabPresentationNavigation($iSurveyID, $esrow)
+    private function _tabPresentationNavigation($esrow)
     {
         global $showxquestions, $showgroupinfo, $showqnumcode;
 
@@ -1714,31 +1705,27 @@ class SurveyAdmin extends Survey_Common_Action
     /**
     * survey::_tabPublicationAccess()
     * Load "Publication * access control" tab.
-    * @param mixed $esrow
+    * @param Survey $survey
     * @return
     */
-    private function _tabPublicationAccess($iSurveyID, $esrow)
+    private function _tabPublicationAccess($survey)
     {
         $aDateFormatDetails = getDateFormatData(Yii::app()->session['dateformat']);
         $startdate = '';
-        if ($esrow['startdate'])
-        {
+        if ($survey->startdate) {
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($esrow["startdate"],"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
+            $datetimeobj = new Date_Time_Converter($survey->startdate,"Y-m-d H:i:s"); //new Date_Time_Converter($esrow['startdate'] , "Y-m-d H:i:s");
             $startdate = $datetimeobj->convert($aDateFormatDetails['phpdate'].' H:i');
         }
 
         $expires = '';
-        if ($esrow['expires'])
-        {
+        if ($survey->expires) {
             Yii::app()->loadLibrary('Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($esrow['expires'], "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
+            $datetimeobj = new Date_Time_Converter($survey->expires, "Y-m-d H:i:s"); //new Date_Time_Converter($esrow['expires'] , "Y-m-d H:i:s");
             $expires = $datetimeobj->convert($aDateFormatDetails['phpdate'].' H:i');
         }
         $aData['dateformatdetails']= $aDateFormatDetails;
-        $aData['esrow'] = $esrow;
-        $aData['startdate'] = $startdate;
-        $aData['expires'] = $expires;
+        $aData['survey'] = $survey;
         return $aData;
     }
 
@@ -1746,9 +1733,9 @@ class SurveyAdmin extends Survey_Common_Action
     * survey::_tabNotificationDataManagement()
     * Load "Notification & data management" tab.
     * @param mixed $esrow
-    * @return
+    * @return array
     */
-    private function _tabNotificationDataManagement($iSurveyID, $esrow)
+    private function _tabNotificationDataManagement( $esrow)
     {
         $aData['esrow'] = $esrow;
         return $aData;
@@ -1758,19 +1745,23 @@ class SurveyAdmin extends Survey_Common_Action
     * survey::_tabTokens()
     * Load "Tokens" tab.
     * @param mixed $esrow
-    * @return
+    * @return array
     */
-    private function _tabTokens($iSurveyID, $esrow)
+    private function _tabTokens($esrow)
     {
         $aData = array();
         $aData['esrow'] = $esrow;
         return $aData;
     }
 
-    private function _tabPanelIntegration($iSurveyID, $esrow)
+    /**
+     * @param Survey $survey
+     * @return array
+     */
+    private function _tabPanelIntegration($survey)
     {
         $aData = array();
-        $oResult = Question::model()->getQuestionsWithSubQuestions($iSurveyID, $esrow['language'], "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
+        $oResult = Question::model()->getQuestionsWithSubQuestions($survey->sid, $survey->language, "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
         $aData['questions'] = $oResult;
         return $aData;
     }
@@ -1778,10 +1769,10 @@ class SurveyAdmin extends Survey_Common_Action
     /**
      * survey::_tabResourceManagement()
      * Load "Resources" tab.
-     * @param mixed $iSurveyID
-     * @return
+     * @param Survey $survey survey
+     * @return mixed
      */
-    private function _tabResourceManagement($iSurveyID, $esrow)
+    private function _tabResourceManagement($survey)
     {
         global $sCKEditorURL;
 
@@ -1793,7 +1784,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
 
         $disabledIfNoResources = '';
-        if (hasResources($iSurveyID, 'survey') === false)
+        if (hasResources($survey->sid, 'survey') === false)
         {
             $disabledIfNoResources = " disabled='disabled'";
         }

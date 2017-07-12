@@ -80,9 +80,9 @@ class Assessments extends Survey_Common_Action
     {
         $aData['sidemenu']['state'] = false;
         $iSurveyID=$aData['surveyid'];
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
+        $survey = Survey::model()->findByPk($iSurveyID);
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = true;
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['gid']=null;
@@ -92,6 +92,7 @@ class Assessments extends Survey_Common_Action
 
     private function _showAssessments($iSurveyID, $action)
     {
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         $oCriteria = new CDbCriteria(array('order' => 'id ASC'));
         $oAssessments = Assessment::model()->findAllByAttributes(array('sid' => $iSurveyID), $oCriteria);
         $aData = $this->_collectGroupData($iSurveyID);
@@ -103,25 +104,23 @@ class Assessments extends Survey_Common_Action
         if ($action == "assessmentedit" && Permission::model()->hasSurveyPermission($iSurveyID, 'assessments', 'update')) {
             $aData = $this->_collectEditData($aData);
         }
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $surveyinfo = getSurveyInfo($iSurveyID);
-        $aData['surveyinfo'] = $surveyinfo;
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
         $aData['surveyid'] = $iSurveyID;
         $aData['headings'] = $aHeadings;
         $aData['assessments'] = $oAssessments;
         $aData['assessmentlangs'] = Yii::app()->getConfig("assessmentlangs");
-        $aData['baselang'] = $surveyinfo['language'];
+        $aData['baselang'] = $oSurvey->language;
         $aData['action'] = $action;
+        $aData['subaction'] = gT("Assessments");
         $aData['gid'] = empty($_POST['gid']) ? '' : sanitize_int($_POST['gid']);
 
         Yii::app()->loadHelper('admin/htmleditor');
 
         $urls['output'] = '<div class="side-body ' . getSideBodyClass(false) . '">';
-        $urls['output'] .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Assessments")), true, false);
+        //$urls['output'] .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Assessments")), true, false);
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
         $aData['asessementNotActivated'] = false;
-        if ($surveyinfo['assessments']!='Y')
+        if ($oSurvey->assessments!='Y')
         {
             $aData['asessementNotActivated'] = array(
                 'title' => gT("Assessments mode not activated"), 

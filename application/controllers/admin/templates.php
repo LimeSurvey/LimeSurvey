@@ -527,7 +527,7 @@ class templates extends Survey_Common_Action
                 $oFileHelper->copyDirectory($copydirname,$newdirname, array('fileTypes' => array('xml')));
                 $templatename = $newname;
                 //TemplateConfiguration::removeAllNodes($newdirname);
-                TemplateConfiguration::extendsConfig($copydir, $newname );
+                TemplateManifest::extendsConfig($copydir, $newname );
                 $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
             }
 
@@ -743,7 +743,7 @@ class templates extends Survey_Common_Action
         @$fnew = fopen("$tempdir/template_temp_$time.html", "w+");
         $aData['time'] = $time;
         /* Load this template config, else 'survey-template' package can be outdated */
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, '', true);
         if (!$fnew) {
             $aData['filenotwritten'] = true;
         }
@@ -825,7 +825,8 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        //$oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, '', true);
+        $oEditedTemplate = Template::model()->getInstance($templatename, '', true);
 
         // In survey mode, bootstrap is loaded via the app init.
         // From template editor, we just add the bootstrap files to the js/css to load for template_helper::templatereplace()
@@ -847,6 +848,10 @@ class templates extends Survey_Common_Action
         $files    = $oEditedTemplate->getValidScreenFiles("view");
         $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
 
+
+        if ($editfile==''){
+            $editfile == $files[0];
+        }
 
         // Standard Support Files
         // These files may be edited or saved
@@ -885,7 +890,7 @@ class templates extends Survey_Common_Action
         /* @todo must control if is updatable : in updatable file OR is a view */
         /* Actually allow to update any file exemple css/template-core.css */
 
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+//        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename,  '', true);
 
         // @TODO: Proper language code conversion
         $sLanguageCode = 'en';
@@ -1114,6 +1119,7 @@ class templates extends Survey_Common_Action
                 break;
         }
 
+
         $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
 
         $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
@@ -1163,6 +1169,7 @@ class templates extends Survey_Common_Action
         $aData['screenname'] = $screenname;
         $aData['tempdir'] = Yii::app()->getConfig('tempdir');
         $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
+        $aData['relativePathEditfile'] = $editfile;
         $aViewUrls['templateeditorbar_view'][] = $aData;
 
         if ($showsummary)

@@ -26,6 +26,7 @@ class index extends CAction {
         global $surveyid;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
+        $survey=Survey::model()->findByPk($surveyid);
 
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
@@ -59,6 +60,10 @@ class index extends CAction {
 
         $surveyExists   = ($surveyid && Survey::model()->findByPk($surveyid));
         $isSurveyActive = ($surveyExists && Survey::model()->findByPk($surveyid)->active=="Y");
+
+        if($surveyExists){
+            $oSurvey = Survey::model()->findByPk($surveyid);
+        }
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
@@ -232,7 +237,7 @@ class index extends CAction {
             // Update the Session var only if needed
             if (App()->language != $sOldLang){
                 UpdateGroupList($surveyid, App()->language);   // to refresh the language strings in the group list session variable
-                UpdateFieldArray();                             // to refresh question titles and question text
+                updateFieldArray();                             // to refresh question titles and question text
             }
         }else{
 
@@ -261,7 +266,7 @@ class index extends CAction {
         }
 
         //SEE IF SURVEY USES TOKENS
-        if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}')){
+        if ($surveyExists == 1 && $oSurvey->hasTokensTable){
             $tokensexist = 1;
         }else{
             $tokensexist = 0;
@@ -485,7 +490,7 @@ class index extends CAction {
 
         //Check to see if a refering URL has been captured.
         if (!isset($_SESSION['survey_'.$surveyid]['refurl'])){
-            $_SESSION['survey_'.$surveyid]['refurl']=GetReferringUrl(); // do not overwrite refurl
+            $_SESSION['survey_'.$surveyid]['refurl']=getReferringUrl(); // do not overwrite refurl
         }
 
         // Let's do this only if

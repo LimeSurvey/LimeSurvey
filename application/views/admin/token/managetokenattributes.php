@@ -1,9 +1,11 @@
 <?php
 /**
-* Manage token attribute fields/ Add or delete token attributes
-*/
+ *
+ * Manage token attribute fields/ Add or delete token attributes
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
 ?>
-
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <?php if( count($tokenfieldlist)) : ?>
         <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Manage attribute fields"))); ?>
@@ -15,10 +17,9 @@
                 <div>
                     <ul class="nav nav-tabs">
                         <?php $c=true; ?>
-                        <?php foreach ($languages as $sLanguage) {
+                        <?php foreach ($oSurvey->allLanguages as $sLanguage) {
                             $sTabTitle = getLanguageNameFromCode($sLanguage, false);
-                            if ($sLanguage == Survey::model()->findByPk($iSurveyID)->language)
-                            {
+                            if ($sLanguage == $oSurvey->language) {
                                 $sTabTitle .= ' (' . gT("Base language") . ')';
                             }
                             ?>
@@ -30,7 +31,7 @@
 
                     <div class="tab-content">
                         <?php $c=true;?>
-                        <?php foreach ($languages as $sLanguage) { ?>
+                        <?php foreach ($oSurvey->allLanguages as $sLanguage) { ?>
                             <div id="language_<?php echo $sLanguage ?>"  class="tab-pane fade in <?php if ($c){$c=false; echo 'active'; }?>">
                                 <table class='listtokenattributes table'>
                                     <thead> <tr>
@@ -53,7 +54,7 @@
                                         echo "
                                         <tr>
                                         <td>{$sTokenField}</td>";
-                                        if ($sLanguage == $thissurvey['language'])
+                                        if ($sLanguage == $oSurvey->language)
                                         { ?>
                                             <td><input type='text' name='description_<?php echo $sTokenField; ?>' value='<?php echo htmlspecialchars($tokenvalues['description'], ENT_QUOTES, 'UTF-8'); ?>' /></td>
                                             <td>
@@ -87,7 +88,7 @@
                                         }; ?>
                                         <td><input type='text' name='caption_<?php echo $sTokenField; ?>_<?php echo $sLanguage; ?>' value='<?php echo htmlspecialchars(!empty($tokencaptions[$sLanguage][$sTokenField]) ? $tokencaptions[$sLanguage][$sTokenField] : '', ENT_QUOTES, 'UTF-8'); ?>' /></td>
                                         <td><?php
-                                            if ($sLanguage == $thissurvey['language'])
+                                            if ($sLanguage == $oSurvey->language)
                                             {
                                                 echo CHtml::dropDownList('cpdbmap_'.$sTokenField,$tokenvalues['cpdbmap'],$aCPDBAttributes, array('class' => 'form-control'));
                                             }
@@ -119,7 +120,7 @@
                     <input type='hidden' name='action' value='tokens' />
                     <input type='hidden' name='subaction' value='updatetokenattributedescriptions' />
                 </p>
-                </form>
+                <?php echo CHtml::endForm() ?>
 
             </div>
         </div>

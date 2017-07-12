@@ -1,6 +1,7 @@
 <?php
 /* @var $this AdminController */
 /* @var QuestionGroup $oQuestionGroup */
+/* @var Survey $oSurvey */
 ?>
 <?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
@@ -10,30 +11,25 @@
 
     if ($adding)
     {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Add a new question")));
+       // $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Add a new question")));
     }
     elseif($copying)
     {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Copy question")));
+       // $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Copy question")));
     }
     else
     {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
+       // $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
     }
     ?>
     <!-- Page Title-->
     <div class="pagetitle h3">
         <?php
-        if ($adding)
-        {
+        if ($adding) {
             eT("Add a new question");
-        }
-        elseif ($copying)
-        {
+        } elseif ($copying) {
             eT("Copy question");
-        }
-        else
-        {
+        } else {
             eT("Edit question");
             echo ': <em>'.$eqrow['title'].'</em> (ID:'.$qid.')';
         }
@@ -53,8 +49,8 @@
                 $this->renderPartial(
                     './survey/Question/question_subviews/_tabs',
                     array(
+                        'oSurvey'=>$oSurvey,
                         'eqrow'=>$eqrow,
-                        'addlanguages'=>$addlanguages,
                         'surveyid'=>$surveyid,
                         'gid'=>$groupid, 'qid'=>NULL,
                         'adding'=>$adding,
@@ -67,8 +63,8 @@
                 $this->renderPartial(
                     './survey/Question/question_subviews/_tabs',
                     array(
+                        'oSurvey'=>$oSurvey,
                         'eqrow'=>$eqrow,
-                        'addlanguages'=>$addlanguages,
                         'surveyid'=>$surveyid,
                         'gid'=>$gid, 'qid'=>$qid,
                         'adding'=>$adding,

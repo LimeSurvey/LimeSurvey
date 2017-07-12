@@ -127,6 +127,8 @@ class export extends Survey_Common_Action {
     public function exportresults()
     {
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $survey = Survey::model()->findByPk($iSurveyID);
+
 
         if ( ! isset($imageurl) ) { $imageurl = "./images"; }
         if ( ! isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
@@ -157,7 +159,7 @@ class export extends Survey_Common_Action {
         $sYValue = Yii::app()->request->getPost('convertyto');
         $sNValue = Yii::app()->request->getPost('convertnto');
 
-        $surveybaselang = Survey::model()->findByPk($iSurveyID)->language;
+        $surveybaselang = $survey->language;
         $exportoutput = "";
 
         // Get info about the survey
@@ -170,10 +172,9 @@ class export extends Survey_Common_Action {
         if ( ! $sExportType )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            $aFieldMap = createFieldMap($iSurveyID,'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
             if ($thissurvey['savetimings'] === "Y") {
                 //Append survey timings to the fieldmap array
-                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,getBaseLanguageFromSurveyID($iSurveyID));
+                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,$oSurvey->language);
             }
             $iFieldCount = count($aFieldMap);
 
@@ -249,7 +250,6 @@ class export extends Survey_Common_Action {
                 $aLanguages[$sLanguage]=getLanguageNameFromCode($sLanguage,false);
             }
             $data['aLanguages'] = $aLanguages;    // Pass available exports
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
 
             $data['sidemenu']['state'] = false;
             $data['menu']['edition'] = true;
@@ -257,8 +257,7 @@ class export extends Survey_Common_Action {
             $data['menu']['close'] =  true;
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-            $data["surveyinfo"] = $surveyinfo;
-            $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+            $data['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
 
@@ -351,6 +350,7 @@ class export extends Survey_Common_Action {
     {
         global $length_vallabel;
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         //for scale 1=nominal, 2=ordinal, 3=scale
 
         //        $typeMap = $this->_getTypeMap();
@@ -417,11 +417,8 @@ class export extends Survey_Common_Action {
             $data['surveyid'] = $iSurveyID;
             $data['display']['menu_bars']['browse'] = gT('Export results');
 
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
-            $surveyinfo = $oSurvey->surveyinfo;
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-            $data["surveyinfo"] = $surveyinfo;
-            $data['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+            $data['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
             $data['sBaseLanguage'] = $oSurvey->language;
 
             $aLanguages=array();
@@ -660,7 +657,11 @@ class export extends Survey_Common_Action {
     public function vvexport()
     {
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
+        $survey = Survey::model()->findByPk($iSurveyId);
         $subaction = Yii::app()->request->getParam('subaction');
+
+        /** @var Survey $oSurvey */
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
 
         //Exports all responses to a survey in special "Verified Voting" format.
         if ( ! Permission::model()->hasSurveyPermission($iSurveyId, 'responses','export') )
@@ -674,24 +675,20 @@ class export extends Survey_Common_Action {
             $aData['selectincansstate']=incompleteAnsFilterState();
             $aData['surveyid'] = $iSurveyId;
             $aData['display']['menu_bars']['browse'] = gT("Export VV file");
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
 
-            Survey::model()->findByPk($iSurveyId)->language;
             $surveytable = "{{survey_$iSurveyId}}";
             // Control if fieldcode are unique
             $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
-            foreach ( $fieldnames as $field )
-            {
+            foreach ( $fieldnames as $field ) {
                 $fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
                 $fieldcode[]=viewHelper::getFieldCode($fielddata,array("LEMcompat"=>true));
             }
             $aData['uniquefieldcode']=(count(array_unique ($fieldcode))==count($fieldcode)); // Did we need more control ?
             $aData['vvversionseleted']=($aData['uniquefieldcode'])?2:1;
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
-            $aData["surveyinfo"] = $surveyinfo;
-            $aData['title_bar']['title'] = gT('Browse responses').': '.$surveyinfo['surveyls_title'];
+            $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
 
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
@@ -699,9 +696,7 @@ class export extends Survey_Common_Action {
             $aData['menu']['close'] =  true;
 
             $this->_renderWrappedTemplate('export', 'vv_view', $aData);
-        }
-        elseif ( isset($iSurveyId) && $iSurveyId )
-        {
+        } elseif ( isset($iSurveyId) && $iSurveyId ) {
             //Export is happening
             $extension = sanitize_paranoid_string(returnGlobal('extension'));
             $vvVersion = (int) Yii::app()->request->getPost('vvversion');
@@ -712,33 +707,28 @@ class export extends Survey_Common_Action {
 
             $s="\t";
 
-            $fieldmap = createFieldMap($iSurveyId,'full',false,false,getBaseLanguageFromSurveyID($iSurveyId));
+            $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
             $surveytable = "{{survey_$iSurveyId}}";
 
-            Survey::model()->findByPk($iSurveyId)->language;
 
             $fieldnames = Yii::app()->db->schema->getTable($surveytable)->getColumnNames();
 
             //Create the human friendly first line
             $firstline = "";
             $secondline = "";
-            foreach ( $fieldnames as $field )
-            {
+            foreach ( $fieldnames as $field ) {
                 $fielddata=arraySearchByKey($field, $fieldmap, "fieldname", 1);
 
-                if ( count($fielddata) < 1 )
-                {
+                if ( count($fielddata) < 1 ) {
                     $firstline .= $field;
-                }
-                else
-                {
+                } else {
                     $firstline.=preg_replace('/\s+/', ' ', strip_tags($fielddata['question']));
                 }
                 $firstline .= $s;
-                if($vvVersion==2){
+                if($vvVersion==2) {
                     $fieldcode=viewHelper::getFieldCode($fielddata,array("LEMcompat"=>true));
                     $fieldcode=($fieldcode)?$fieldcode:$field;// $fieldcode is empty for token if there are no token table
-                }else{
+                } else {
                     $fieldcode=$field;
                 }
                 $secondline .= $fieldcode.$s;
@@ -748,12 +738,9 @@ class export extends Survey_Common_Action {
             $vvoutput .= $secondline . "\n";
             $query = "SELECT * FROM ".Yii::app()->db->quoteTableName($surveytable);
 
-            if (incompleteAnsFilterState() == "incomplete")
-            {
+            if (incompleteAnsFilterState() == "incomplete") {
                 $query .= " WHERE submitdate IS NULL ";
-            }
-            elseif (incompleteAnsFilterState() == "complete")
-            {
+            } elseif (incompleteAnsFilterState() == "complete") {
                 $query .= " WHERE submitdate >= '01/01/1980' ";
             }
             $result = Yii::app()->db->createCommand($query)->query();
@@ -1062,6 +1049,8 @@ class export extends Survey_Common_Action {
     */
     private function _exportarchive($iSurveyID, $bSendToBrowser=TRUE)
     {
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         $aSurveyInfo = getSurveyInfo($iSurveyID);
 
         $sTempDir = Yii::app()->getConfig("tempdir");
@@ -1081,22 +1070,19 @@ class export extends Survey_Common_Action {
 
         unlink($sLSSFileName);
 
-        if ( $aSurveyInfo['active'] == 'Y' )
-        {
+        if ( $survey->isActive) {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID, 'Responses', 'responses', $sLSRFileName, FALSE);
             $this->_addToZip($zip, $sLSRFileName, 'survey_' . $iSurveyID . '_responses.lsr');
             unlink($sLSRFileName);
         }
 
-        if ( tableExists('{{tokens_' . $iSurveyID . '}}') )
-        {
+        if ( $survey->hasTokensTable ) {
             getXMLDataSingleTable($iSurveyID, 'tokens_' . $iSurveyID, 'Tokens', 'tokens', $sLSTFileName);
             $this->_addToZip($zip, $sLSTFileName, 'survey_' . $iSurveyID . '_tokens.lst');
             unlink($sLSTFileName);
         }
 
-        if ( tableExists('{{survey_' . $iSurveyID . '_timings}}') )
-        {
+        if ( $survey->hasTimingsTable ) {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
             $this->_addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
             unlink($sLSIFileName);
@@ -1253,6 +1239,7 @@ class export extends Survey_Common_Action {
     public function quexml($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
+        $survey = Survey::model()->findByPk($iSurveyID);
 
         $queXMLSettings = $this->_quexmlsettings();
         $aData = array();
@@ -1261,8 +1248,7 @@ class export extends Survey_Common_Action {
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
         array_unshift($aData['slangs'],$aData['baselang']);
 
@@ -1374,12 +1360,10 @@ class export extends Survey_Common_Action {
         $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
         $aLanguages = $oSurvey->getAllLanguages();
 
-        $aSurveyInfo = $oSurvey->getSurveyinfo();
-
         $tempdir = Yii::app()->getConfig("tempdir");
         $zipdir = $this->_tempdir($tempdir);
 
-        $fn = "printable_survey_".CHtml::encode($aSurveyInfo['surveyls_title'])."_{$oSurvey->primaryKey}.zip";
+        $fn = "printable_survey_".CHtml::encode($oSurvey->currentLanguageSettings->surveyls_title)."_{$oSurvey->primaryKey}.zip";
         $zipfile = "$tempdir/".$fn;
 
         Yii::app()->loadLibrary('admin.pclzip');
@@ -1424,7 +1408,6 @@ class export extends Survey_Common_Action {
         $printableSurvey->index($oSurvey->primaryKey,$language);
         $response = ob_get_contents(); //Grab output
         ob_end_clean(); //Discard output buffer
-        $aSurveyInfo = $oSurvey->getSurveyinfo();
 
         $file = "$tempdir/questionnaire_{$oSurvey->getPrimaryKey()}_{$language}.html";
 
