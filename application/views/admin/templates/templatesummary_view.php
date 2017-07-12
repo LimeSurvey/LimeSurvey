@@ -207,7 +207,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                             disabled='disabled'
                             <?php endif; ?>
                         />
-                    <input type='hidden' name='editfile' value='<?php echo $editfile; ?>' />
+                    <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>' />
                     <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                     <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                     <input type='hidden' name='action' value='templateuploadfile' />
