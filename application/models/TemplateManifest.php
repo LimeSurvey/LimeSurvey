@@ -228,6 +228,24 @@ class TemplateManifest extends TemplateConfiguration
         return $oRTemplate;
     }
 
+    public function getOtherFiles()
+    {
+        $otherfiles = array();
+        if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath))
+        {
+            while (false !== ($file = readdir($handle)))
+            {
+                if (!array_search($file, array("DUMMYENTRY", ".", "..", "preview.png"))) {
+                    if (!is_dir($this->viewPath . DIRECTORY_SEPARATOR . $file)) {
+                        $otherfiles[] = $file;
+                    }
+                }
+            }
+
+            closedir($handle);
+        }
+        return $otherfiles;
+    }
 
     /**
      * Update the config file of a given template so that it extends another one
