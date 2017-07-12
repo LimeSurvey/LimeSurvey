@@ -235,6 +235,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 295) {
             $oTransaction = $oDB->beginTransaction();
             upgradeTemplateTables295($oDB);
+            $oTransaction->commit();
         }
 
     }
@@ -367,8 +368,6 @@ function createSurveyMenuTable293($oDB) {
  */
 function upgradeTemplateTables295($oDB)
 {
-    $oTransaction = $oDB->beginTransaction();
-
     // Drop the old survey rights table.
     if (tableExists('{templates}')) {
         $oDB->createCommand()->dropTable('{{templates}}');
@@ -453,7 +452,6 @@ function upgradeTemplateTables295($oDB)
     ));
 
     $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>295),"stg_name='DBVersion'");
-    $oTransaction->commit();
 }
 
 
