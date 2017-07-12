@@ -373,6 +373,10 @@ function upgradeTemplateTables295($oDB)
         $oDB->createCommand()->dropTable('{{templates}}');
     }
 
+    if (tableExists('{template_configuration}')) {
+        $oDB->createCommand()->dropTable('{{template_configuration}}');
+    }
+
     // Create templates table
     $oDB->createCommand()->createTable('{{templates}}', array(
         'name'                   => 'string(150) NOT NULL',
@@ -418,7 +422,7 @@ function upgradeTemplateTables295($oDB)
 
     // Add template configuration table
     $oDB->createCommand()->createTable('{{template_configuration}}', array(
-        'id'                => 'int(11) NOT NULL',
+        'id'                => 'pk',
         'templates_name'    => 'string(150) NOT NULL',
         'sid'               => 'int(11) DEFAULT NULL',
         'gsid'              => 'int(11) DEFAULT NULL',
@@ -432,7 +436,6 @@ function upgradeTemplateTables295($oDB)
         'packages_to_load'  => 'MEDIUMTEXT',
         'packages_ltr'      => 'MEDIUMTEXT',
         'packages_rtl'      => 'MEDIUMTEXT',
-        'PRIMARY KEY (id)'
     ));
 
     // Add global configuration for Advanced Template
