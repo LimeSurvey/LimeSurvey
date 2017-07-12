@@ -361,10 +361,18 @@ function createSurveyMenuTable293($oDB) {
     }
 }
 
-function upgradeTemplateTables295($oDB){
+/**
+ * @param $oDB
+ * @return void
+ */
+function upgradeTemplateTables295($oDB)
+{
+    $oTransaction = $oDB->beginTransaction();
 
-    // drop the old survey rights table
-    $oDB->createCommand()->dropTable('{{templates}}');
+    // Drop the old survey rights table.
+    if (tableExists('{templates}')) {
+        $oDB->createCommand()->dropTable('{{templates}}');
+    }
 
     // Create templates table
     $oDB->createCommand()->createTable('{{templates}}', array(
