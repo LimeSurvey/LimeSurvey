@@ -50,15 +50,15 @@ class Template extends LSActiveRecord
         // will receive user inputs.
         return array(
             array('name, title', 'required'),
-            array('owner_id, extends_templates_id', 'numerical', 'integerOnly'=>true),
-            array('name, author', 'length', 'max'=>150),
+            array('owner_id', 'numerical', 'integerOnly'=>true),
+            array('name, author, extends_templates_name', 'length', 'max'=>150),
+            array('folder, version, api_version, view_folder, files_folder', 'length', 'max'=>45),
             array('title', 'length', 'max'=>100),
             array('author_email, author_url', 'length', 'max'=>255),
-            array('version, folder', 'length', 'max'=>45),
             array('creation_date, copyright, license, description, last_update', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, name, title, creation_date, author, author_email, author_url, copyright, license, version, description, last_update, folder, owner_id, extends_templates_id', 'safe', 'on'=>'search'),
+            array('name, folder, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, view_folder, files_folder, description, last_update, owner_id, extends_templates_name', 'safe', 'on'=>'search'),
         );
     }
 
@@ -78,8 +78,8 @@ class Template extends LSActiveRecord
     public function attributeLabels()
     {
         return array(
-            'id' => 'ID',
             'name' => 'Name',
+            'folder' => 'Folder',
             'title' => 'Title',
             'creation_date' => 'Creation Date',
             'author' => 'Author',
@@ -88,13 +88,16 @@ class Template extends LSActiveRecord
             'copyright' => 'Copyright',
             'license' => 'License',
             'version' => 'Version',
+            'api_version' => 'Api Version',
+            'view_folder' => 'View Folder',
+            'files_folder' => 'Files Folder',
             'description' => 'Description',
             'last_update' => 'Last Update',
-            'folder' => 'Folder',
             'owner_id' => 'Owner',
-            'extends_templates_id' => 'Extends Templates',
+            'extends_templates_name' => 'Extends Templates Name',
         );
     }
+
 
     /**
      * Returns this table's primary key
@@ -454,8 +457,8 @@ class Template extends LSActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('id',$this->id,true);
         $criteria->compare('name',$this->name,true);
+        $criteria->compare('folder',$this->folder,true);
         $criteria->compare('title',$this->title,true);
         $criteria->compare('creation_date',$this->creation_date,true);
         $criteria->compare('author',$this->author,true);
@@ -464,11 +467,13 @@ class Template extends LSActiveRecord
         $criteria->compare('copyright',$this->copyright,true);
         $criteria->compare('license',$this->license,true);
         $criteria->compare('version',$this->version,true);
+        $criteria->compare('api_version',$this->api_version,true);
+        $criteria->compare('view_folder',$this->view_folder,true);
+        $criteria->compare('files_folder',$this->files_folder,true);
         $criteria->compare('description',$this->description,true);
         $criteria->compare('last_update',$this->last_update,true);
-        $criteria->compare('folder',$this->folder,true);
         $criteria->compare('owner_id',$this->owner_id);
-        $criteria->compare('extends_templates_id',$this->extends_templates_id);
+        $criteria->compare('extends_templates_name',$this->extends_templates_name,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
