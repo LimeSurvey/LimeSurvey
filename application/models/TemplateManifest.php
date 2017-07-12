@@ -247,7 +247,7 @@ class TemplateManifest extends TemplateConfiguration
                     $oNewManifest->createElement('filename');
 
                     //$oConfig->appendChild($oNvFilesNode);
-                    $oAssetElem       = $oNewManifest->createElement('files', $sFile);
+                    $oAssetElem       = $oNewManifest->createElement('filename', $sFile);
                     $replaceAttribute = $oNewManifest->createAttribute('replace');
                     $replaceAttribute->value = $sFile;
                     $oAssetElem->appendChild($replaceAttribute);
