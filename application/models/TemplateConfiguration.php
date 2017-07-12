@@ -106,17 +106,15 @@ class TemplateConfiguration extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('templates_name, cssframework_js', 'required'),
+            array('id, templates_name', 'required'),
+            array('id, sid, gsid', 'numerical', 'integerOnly'=>true),
             array('templates_name', 'length', 'max'=>150),
-            array('gsid, sid', 'length', 'max'=>11),
             array('cssframework_name', 'length', 'max'=>45),
-            array('viewdirectory, filesdirectory', 'length', 'max'=>255),
-            array('files_css, files_js, files_print_css, options, cssframework_css, packages_to_load, packages_ltr, packages_rtl', 'safe'),
+            array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load, packages_ltr, packages_rtl', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, templates_name, gsid, sid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, viewdirectory, filesdirectory, packages_to_load, packages_ltr, packages_rtl', 'safe', 'on'=>'search'),
+            array('id, templates_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load, packages_ltr, packages_rtl', 'safe', 'on'=>'search'),
         );
-
     }
 
     /**
@@ -137,8 +135,8 @@ class TemplateConfiguration extends CActiveRecord
         return array(
             'id' => 'ID',
             'templates_name' => 'Templates Name',
-            'gsid' => 'Gsid',
             'sid' => 'Sid',
+            'gsid' => 'Gsid',
             'files_css' => 'Files Css',
             'files_js' => 'Files Js',
             'files_print_css' => 'Files Print Css',
@@ -146,8 +144,6 @@ class TemplateConfiguration extends CActiveRecord
             'cssframework_name' => 'Cssframework Name',
             'cssframework_css' => 'Cssframework Css',
             'cssframework_js' => 'Cssframework Js',
-            'viewdirectory' => 'Viewdirectory',
-            'filesdirectory' => 'Filesdirectory',
             'packages_to_load' => 'Packages To Load',
             'packages_ltr' => 'Packages Ltr',
             'packages_rtl' => 'Packages Rtl',
@@ -172,10 +168,10 @@ class TemplateConfiguration extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
-        $criteria->compare('id',$this->id,true);
+        $criteria->compare('id',$this->id);
         $criteria->compare('templates_name',$this->templates_name,true);
-        $criteria->compare('gsid',$this->gsid,true);
-        $criteria->compare('sid',$this->sid,true);
+        $criteria->compare('sid',$this->sid);
+        $criteria->compare('gsid',$this->gsid);
         $criteria->compare('files_css',$this->files_css,true);
         $criteria->compare('files_js',$this->files_js,true);
         $criteria->compare('files_print_css',$this->files_print_css,true);
@@ -183,8 +179,6 @@ class TemplateConfiguration extends CActiveRecord
         $criteria->compare('cssframework_name',$this->cssframework_name,true);
         $criteria->compare('cssframework_css',$this->cssframework_css,true);
         $criteria->compare('cssframework_js',$this->cssframework_js,true);
-        $criteria->compare('viewdirectory',$this->viewdirectory,true);
-        $criteria->compare('filesdirectory',$this->filesdirectory,true);
         $criteria->compare('packages_to_load',$this->packages_to_load,true);
         $criteria->compare('packages_ltr',$this->packages_ltr,true);
         $criteria->compare('packages_rtl',$this->packages_rtl,true);
@@ -193,6 +187,8 @@ class TemplateConfiguration extends CActiveRecord
             'criteria'=>$criteria,
         ));
     }
+
+
 
     /**
      * Returns the static model of the specified AR class.
