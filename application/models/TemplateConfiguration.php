@@ -201,8 +201,6 @@ class TemplateConfiguration extends CActiveRecord
         return parent::model($className);
     }
 
-
-
     /**
      * Constructs a template configuration object
      * If any problem (like template doesn't exist), it will load the default template configuration
@@ -289,27 +287,19 @@ class TemplateConfiguration extends CActiveRecord
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-        $aCssFiles = array();
-        if(!empty($this->files_css)){
-            $oCssFiles = json_decode($this->files_css);
-            foreach($oCssFiles as $action => $aFiles){
-                $aCssFiles[$action] = $aFiles;
-            }
-        }
+        $dir       = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
-        $aJsFiles = array();
-        if(!empty($this->files_js)){
-            $oJsFiles = json_decode($this->files_js);
-            foreach($oJsFiles as $action => $aFiles){
-                $aJsFiles[$action] = $aFiles;
-            }
-        }
-
-        $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+        // Get array of files definition from DB
+        $aCssFiles = $this->getFilesFromJson($this->files_css);
+        $aJsFiles  = $this->getFilesFromJson($this->files_js);
 
         // Remove/Replace mother files
-        $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
-        $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
+        $this->changeMotherConfiguration('css', $aCssFiles);
+        $this->changeMotherConfiguration('js',  $aJsFiles);
+
+        // Get the list of files to add to package
+        $aCssFiles = $this->getFilesToAdd($aCssFiles);
+        $aJsFiles  = $this->getFilesToAdd($aJsFiles);
 
         $this->sPackageName = 'survey-template-'.$this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
@@ -327,6 +317,25 @@ class TemplateConfiguration extends CActiveRecord
     }
 
     /**
+     * From a list of json files in db it will generate a PHP array ready to use by editPackage()
+     *
+     * @var $jFiles string json
+     * @return array
+     */
+    private function getFilesFromJson($jFiles)
+    {
+       $aFiles = array();
+       if(!empty($jFiles)){
+           $oFiles = json_decode($jFiles);
+           foreach($oFiles as $action => $aFileList){
+               $aFiles[$action] = $aFileList;
+           }
+       }
+
+       return $aFiles;
+    }
+
+    /**
      * Change the mother template configuration depending on template settings
      * @var $sType     string   the type of settings to change (css or js)
      * @var $aSettings array    array of local setting
@@ -334,24 +343,31 @@ class TemplateConfiguration extends CActiveRecord
      */
     private function changeMotherConfiguration( $sType, $aSettings )
     {
-        $aSettingsToAdd = array();
-
         if (is_a($this->oMotherTemplate, 'TemplateConfiguration')){
-            foreach( $aSettings as $key => $aFiles){
+            $this->editPackage($this->oMotherTemplate->sPackageName, $sType, $aSettings);
+        }
+    }
 
-                if ($key == "replace" || $key = "remove"){
-                    foreach($aFiles as $sFile)
-                        Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFile );
-                }
+    private function editPackage( $sPackageName, $sType, $aSettings )
+    {
+        foreach( $aSettings as $key => $aFiles){
+
+            if ($key == "replace" || $key = "remove"){
+                foreach($aFiles as $sFile)
+                    Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFile );
             }
         }
+    }
+
+    private function getFilesToAdd($aSettings)
+    {
+        $aSettingsToAdd = array();
 
         foreach( $aSettings as $key => $aFiles){
             if ($key == "add" || $key == "replace"){
                 foreach($aFiles as $sFile)
                     $aSettingsToAdd[] = $sFile;
             }
-
         }
 
         return $aSettingsToAdd;
