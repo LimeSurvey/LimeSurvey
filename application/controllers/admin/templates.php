@@ -1131,26 +1131,7 @@ class templates extends Survey_Common_Action
             $files   = array(0=>$files);
         }
 
-
-        // Get list of 'otherfiles'
-        // We can't use $oTemplate->otherFiles, because of retrocompatibility with 2.06 template and the big mess of it mixing files
-        $filesdir = ($oEditedTemplate->filesPath!='')?$oEditedTemplate->filesPath:$templatedir . '../files';
-
-        $otherfiles = array();
-        if ( file_exists($filesdir) && $handle = opendir($filesdir))
-        {
-            while (false !== ($file = readdir($handle)))
-            {
-                if (!array_search($file, $normalfiles)) {
-                    if (!is_dir($templatedir . DIRECTORY_SEPARATOR . $file)) {
-                        $otherfiles[] = $file;
-                    }
-                }
-            }
-
-            closedir($handle);
-        }
-
+        $otherfiles = $oEditedTemplate->getOtherFiles();
         $editfile = (empty($editfile))?$sLayoutFile:$editfile;
         $sEditfile = $oEditedTemplate->getFilePathForEdition($editfile, array_merge($files, $aCssAndJsfiles));
 
