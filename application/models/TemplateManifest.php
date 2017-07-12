@@ -212,9 +212,65 @@ class TemplateManifest extends TemplateConfiguration
             $sRfilePath = $this->getFilePath($sFile, $this);
             $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.'/'.$sFile;
             copy ( $sRfilePath,  $sLfilePath );
-        }
 
+            // If it's a css or js file from config... must update DB and XML too....
+            $sExt = pathinfo($sLfilePath, PATHINFO_EXTENSION);
+            if ($sExt == "css" || $sExt == "js"){
+
+                // Check if that CSS/JS file is in DB/XML
+                $aFiles = $this->getFilesForPackages($sExt, $this);
+                $sFile  = str_replace('./', '', $sFile);
+
+                // The CSS/JS file is a configuration one....
+                if(in_array($sFile, $aFiles)){
+
+                    // First we get the XML file
+                    libxml_disable_entity_loader(false);
+                    $oNewManifest = new DOMDocument();
+                    $oNewManifest->load($this->path."/config.xml");
+
+                    $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
+                    $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
+                    $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);
+
+                    if (is_null($oFiles)){
+                        $oFiles    = $oNewManifest->createElement('files');
+                    }
+
+                    $oAssetType = $oFiles->getElementsByTagName($sExt)->item(0);
+                    if (is_null($oAssetType)){
+                        $oAssetType   = $oNewManifest->createElement($sExt);
+                        $oFiles->appendChild($oAssetType);
+                    }
+
+                    // <filename replace="css/template.css">css/template.css</filename>
+                    $oNewManifest->createElement('filename');
+
+                    //$oConfig->appendChild($oNvFilesNode);
+                    $oAssetElem       = $oNewManifest->createElement('files', $sFile);
+                    $replaceAttribute = $oNewManifest->createAttribute('replace');
+                    $replaceAttribute->value = $sFile;
+                    $oAssetElem->appendChild($replaceAttribute);
+                    $oAssetType->appendChild($oAssetElem);
+                    $oConfig->insertBefore($oFiles,$oOptions);
+                    $oNewManifest->save($this->path."/config.xml");
+                    libxml_disable_entity_loader(true);
+                }
+            }
+        }
+// IKI
         return $this->getFilePath($sFile, $this);
+    }
+
+    public function getFilesForPackages($type, $oRTemplate)
+    {
+        $aFiles = array();
+        while(is_a($oRTemplate, 'TemplateManifest')){
+            $aTFiles = isset($oRTemplate->config->files->$type->filename)?(array) $oRTemplate->config->files->css->filename:array();
+            $aFiles  = array_merge($aTFiles, $aFiles);
+            $oRTemplate = $oRTemplate->oMotherTemplate;
+        }
+        return $aFiles;
     }
 
     public function getTemplateForFile($sFile, $oRTemplate)
