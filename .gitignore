@@ -77,3 +77,18 @@ launch.json
 !/plugins/Demo/
 !/plugins/AuditLog/
 enabletests
+
+## Ignore any hidden folder/files (except explicitly defined)
+## such as various IDE folders .idea .netbeans .vscode
+## or development environment things like .vagrant etc
+.*
+!.htaccess
+!.scrutinizer.yml
+!.bowerrc
+!.gitignore
+!.gitattributes
+
+## ignore Vagrantfile
+Vagrantfile
+
+
