@@ -527,7 +527,7 @@ class templates extends Survey_Common_Action
                 $oFileHelper->copyDirectory($copydirname,$newdirname, array('fileTypes' => array('xml')));
                 $templatename = $newname;
                 //TemplateConfiguration::removeAllNodes($newdirname);
-                TemplateConfiguration::extendsConfig($copydir, $newname );
+                TemplateManifest::extendsConfig($copydir, $newname );
                 $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
             }
 
