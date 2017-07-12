@@ -156,9 +156,6 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             <div>
                 <?php eT("Other files:"); ?>
                 <br/>
-                <?php
-                echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post');
-            //    echo CHtml::listBox('otherfile','',array_combine($otherfiles,$otherfiles),array('size'=>11,'class'=>"form-control")); ?>
 
 
 
@@ -170,10 +167,18 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                             <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
                         </div>
                         <div class="col-sm-3">
+                            <?php //TODO: make it ajax and less messy ?>
                             <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName):?>
-                                <span class="label label-success">
-                                    <?php eT("delete"); ?>
-                                </span>
+                                <?php if (Permission::model()->hasGlobalPermission('templates','delete')): ?>
+                                    <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
+                                    <input type='hidden' name="otherfile" id="otherfile" value="<?php echo $file; ?>" />
+                                    <input type='submit' class='btn btn-default btn-xs' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT("Are you sure you want to delete this file?","js"); ?>')"/>
+                                    <input type='hidden' name='screenname' value='<?php echo htmlspecialchars($screenname); ?>' />
+                                    <input type='hidden' name='templatename' value='<?php echo htmlspecialchars($templatename); ?>' />
+                                    <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($relativePathEditfile); ?>' />
+                                    <input type='hidden' name='action' value='templatefiledelete' />
+                                    </form>
+                                <?php endif; ?>
                             <?php else: ?>
                                 <span class="label label-danger">
                                     <?php eT("inherited"); ?>
@@ -186,19 +191,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
 
                 <br>
-                <?php
-                if (Permission::model()->hasGlobalPermission('templates','delete'))
-                { ?>
 
-                    <input type='submit' class='btn btn-default' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT("Are you sure you want to delete this file?","js"); ?>')"/>
-                    <?php
-                }
-                ?>
-                <input type='hidden' name='screenname' value='<?php echo htmlspecialchars($screenname); ?>' />
-                <input type='hidden' name='templatename' value='<?php echo htmlspecialchars($templatename); ?>' />
-                <input type='hidden' name='editfile' value='<?php echo htmlspecialchars($editfile); ?>' />
-                <input type='hidden' name='action' value='templatefiledelete' />
-                </form>
             </div>
             <div style='margin-top:1em;'>
                 <?php

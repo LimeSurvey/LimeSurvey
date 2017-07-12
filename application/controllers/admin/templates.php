@@ -382,23 +382,22 @@ class templates extends Survey_Common_Action
     */
     public function templatefiledelete()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','update'))
-        {
+        if (!Permission::model()->hasGlobalPermission('templates','update')){
             die('No permission');
         }
-        // This is where the temp file is
-        $sFileToDelete=sanitize_filename(App()->request->getPost('otherfile'),false,false);
-        $sTemplateName=Template::templateNameFilter(App()->request->getPost('templatename'));
+
+        $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
         $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
-        $templatedir = $oEditedTemplate->viewPath;
-        $filesdir = $oEditedTemplate->filesPath;
+        $templatedir     = $oEditedTemplate->viewPath;
+        $filesdir        = $oEditedTemplate->filesPath;
+        $sPostedFile     = App()->request->getPost('otherfile');
+        $sFileToDelete   = str_replace($oEditedTemplate->sFilesDirectory, '', $sPostedFile);
+        $sFileToDelete   = sanitize_filename( $sFileToDelete ,false,false);
         $the_full_file_path = $filesdir . $sFileToDelete;
-        if (@unlink($the_full_file_path))
-        {
+
+        if (@unlink($the_full_file_path)){
             Yii::app()->user->setFlash('error', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
-        }
-        else
-        {
+        }else{
             Yii::app()->user->setFlash('error',sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete)));
         }
         $this->getController()->redirect(array('admin/templates','sa'=>'view', 'editfile'=> App()->request->getPost('editfile'),'screenname'=>App()->request->getPost('screenname'),'templatename'=>$sTemplateName));
