@@ -629,7 +629,7 @@ class templates extends Survey_Common_Action
         $relativePathEditfile = returnGlobal('relativePathEditfile');
         $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
         $screenname           = returnGlobal('screenname');
-        $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName);
+        $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, '', true);
         $aScreenFiles         = $oEditedTemplate->getValidScreenFiles("view");
         $cssfiles             = $oEditedTemplate->getValidScreenFiles("css");
         $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
