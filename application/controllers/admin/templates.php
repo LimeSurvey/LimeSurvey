@@ -528,6 +528,7 @@ class templates extends Survey_Common_Action
                 $templatename = $newname;
                 //TemplateConfiguration::removeAllNodes($newdirname);
                 TemplateManifest::extendsConfig($copydir, $newname );
+                TemplateConfiguration::importXML($newname);
                 $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
             }
 
