@@ -371,7 +371,7 @@ function upgradeTemplateTables295($oDB){
         'name'                   => 'string(150) NOT NULL',
         'folder'                 => 'string(45) DEFAULT NULL',
         'title'                  => 'string(100) NOT NULL',
-        'creation_date'          => 'DATETIME DEFAULT CURRENT_TIMESTAMP',
+        'creation_date'          => 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP',
         'author'                 => 'string(150) DEFAULT NULL',
         'author_email'           => 'string DEFAULT NULL',
         'author_url'             => 'string DEFAULT NULL',
@@ -382,7 +382,7 @@ function upgradeTemplateTables295($oDB){
         'view_folder'            => 'string(45) DEFAULT NULL',
         'files_folder'           => 'string(45) DEFAULT NULL',
         'description'            => 'TEXT',
-        'last_update'            => 'DATETIME DEFAULT CURRENT_TIMESTAMP',
+        'last_update'            => 'DATETIME DEFAULT NULL',
         'owner_id'               => 'INT(11) DEFAULT NULL',
         'extends_templates_name' => 'string(150) DEFAULT NULL',
         'PRIMARY KEY (name)'
