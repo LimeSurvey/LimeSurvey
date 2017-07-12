@@ -743,7 +743,7 @@ class templates extends Survey_Common_Action
         @$fnew = fopen("$tempdir/template_temp_$time.html", "w+");
         $aData['time'] = $time;
         /* Load this template config, else 'survey-template' package can be outdated */
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, '', true);
         if (!$fnew) {
             $aData['filenotwritten'] = true;
         }
@@ -825,7 +825,8 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        //$oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, '', true);
+        $oEditedTemplate = Template::model()->getInstance($templatename, '', true);
 
         // In survey mode, bootstrap is loaded via the app init.
         // From template editor, we just add the bootstrap files to the js/css to load for template_helper::templatereplace()
@@ -889,7 +890,7 @@ class templates extends Survey_Common_Action
         /* @todo must control if is updatable : in updatable file OR is a view */
         /* Actually allow to update any file exemple css/template-core.css */
 
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+//        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename,  '', true);
 
         // @TODO: Proper language code conversion
         $sLanguageCode = 'en';
@@ -1117,6 +1118,7 @@ class templates extends Survey_Common_Action
                 $thissurvey['aError']['message'] = gT("This is an error message example");
                 break;
         }
+
 
         $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
 
