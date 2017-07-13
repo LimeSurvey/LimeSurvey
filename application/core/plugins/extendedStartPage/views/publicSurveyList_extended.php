@@ -12,8 +12,7 @@
     {
         $outputSurveys++;
         $divider = ($divideToggle ? " vertical-divider right " : "");
-        if ($survey->publicstatistics == "Y")
-        {
+        if ($survey->isPublicStatistics) {
             $statistics = "<div class='col-md-1 col-sm-2 col-xs-2 no-divide ls-custom-padding five ".$divider."'>";
             $statistics .= CHtml::link('<span class="fa fa-bar-chart" aria-hidden="true"></span><span class="sr-only">'. gT('View statistics') .'</span>',
                         array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language),
@@ -33,24 +32,20 @@
         }
 
         $tooltips = "";
-        if($survey->allowregister == "Y")
-        {
+        if($survey->isAllowRegister) {
             $tooltips .= "<i class=\"fa fa-sign-in\" aria-hidden=\"true\">&nbsp;</i>";
         } else {
             if($survey->hasTokensTable) {
                 $tooltips .= "<i class=\"fa fa-key\" aria-hidden=\"true\">&nbsp;</i>";
             }
         }
-        if($survey->anonymized == "Y")
-        {
+        if($survey->isAnonymized) {
             $tooltips .= "<i class=\"fa fa-shield\" aria-hidden=\"true\">&nbsp;</i>";
         }
-        if($survey->allowsave == "Y")
-        {
+        if($survey->isAllowSave) {
             $tooltips .= "<i class=\"fa fa-save\" aria-hidden=\"true\">&nbsp;</i>";
         }
-        if($survey->allowprev == "Y")
-        {
+        if($survey->isAllowPrev) {
             $tooltips .= "<i class=\"fa fa-undo\" aria-hidden=\"true\">&nbsp;</i>";
         }
         $tooltips .= "<i  class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;</i>&nbsp;".sprintf(gt("%s minutes"),$survey->calculateEstimatedTime());

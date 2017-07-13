@@ -6,6 +6,7 @@
  * @var AdminController $this
  * @var Survey $oSurvey
  */
+$i=0;
 ?>
 <script type="text/javascript">
     var jsonUrl = '';

@@ -21,7 +21,7 @@
                         ?><br /><br />
 
                         <?php
-                            if ($oSurvey->anonymized == 'Y') {
+                            if ($oSurvey->isAnonymized) {
                                 eT("Note: If you turn on the -Anonymized responses- option for this survey then LimeSurvey will mark participants who complete the survey only with a 'Y' instead of date/time to ensure the anonymity of your participants.");
                             ?><br /><br />
                             <?php

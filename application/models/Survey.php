@@ -128,6 +128,14 @@ use \ls\pluginmanager\PluginEvent;
  * @property bool $isSendConfirmation Send confirmation emails
  * @property bool $isTokenAnswersPersistence Enable token-based response persistence
  * @property bool $isAssessments Enable assessment mode
+ * @property bool $isShowXQuestions Show "There are X questions in this survey"
+ * @property bool $isShowGroupInfo Show group name and/or group description
+ * @property bool $isShowNoAnswer Show "No answer"
+ * @property bool $isShowQnumCode Show question number and/or code
+ * @property bool $isShowWelcome Show welcome screen
+ * @property bool $isShowProgress how progress bar
+ * @property bool $isNoKeyboard Show on-screen keyboard
+ * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  */
 class Survey extends LSActiveRecord
 {
@@ -1112,6 +1120,63 @@ class Survey extends LSActiveRecord
     {
         return ($this->assessments === 'Y');
     }
+    /**
+     * @return bool
+     */
+    public function getIsShowXQuestions()
+    {
+        return ($this->showxquestions === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowGroupInfo()
+    {
+        return ($this->showgroupinfo === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowNoAnswer()
+    {
+        return ($this->shownoanswer === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowQnumCode()
+    {
+        return ($this->showqnumcode === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowWelcome()
+    {
+        return ($this->showwelcome === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowProgress()
+    {
+        return ($this->showprogress === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsNoKeyboard()
+    {
+        return ($this->nokeyboard === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsAllowEditAfterCompletion()
+    {
+        return ($this->alloweditaftercompletion === 'Y');
+    }
+
 
 
     /**

@@ -931,12 +931,11 @@ class Survey_Common_Action extends CAction
             $aData['permission'] = false;
         }
 
-        if (!is_null($sumresult1))
-        {
+        if (!is_null($sumresult1)) {
             $surveyinfo = $sumresult1->attributes;
             $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
             $surveyinfo = array_map('flattenText', $surveyinfo);
-            $aData['activated'] = ($surveyinfo['active'] == 'Y');
+            $aData['activated'] = $survey->isActive;
 
             // Tokens
             $bTokenExists = $survey->hasTokensTable;
@@ -1089,6 +1088,7 @@ class Survey_Common_Action extends CAction
         $iSurveyID = $aData['surveyid'];
 
         $aSurveyInfo=getSurveyInfo($iSurveyID);
+        /** @var Survey $oSurvey */
         $oSurvey = $aData['oSurvey'];
         $baselang = $aSurveyInfo['language'];
         $activated = $aSurveyInfo['active'];
@@ -1137,44 +1137,35 @@ class Survey_Common_Action extends CAction
                 $surveysummary2 .= gT("A full question index will be shown; participants will be able to jump between relevant questions.") . "<br />";
             }
         }
-        if ($aSurveyInfo['datestamp'] == "Y")
-        {
+        if ($oSurvey->isDateStamp) {
             $surveysummary2 .= gT("Responses will be date stamped.") . "<br />";
         }
-        if ($aSurveyInfo['ipaddr'] == "Y")
-        {
+        if ($oSurvey->isIpAddr) {
             $surveysummary2 .= gT("IP Addresses will be logged") . "<br />";
         }
-        if ($aSurveyInfo['refurl'] == "Y")
-        {
+        if ($oSurvey->isRefUrl) {
             $surveysummary2 .= gT("Referrer URL will be saved.") . "<br />";
         }
-        if ($aSurveyInfo['usecookie'] == "Y")
-        {
+        if ($oSurvey->isUseCookie) {
             $surveysummary2 .= gT("It uses cookies for access control.") . "<br />";
         }
-        if ($aSurveyInfo['allowregister'] == "Y")
-        {
+        if ($oSurvey->isAllowRegister) {
             $surveysummary2 .= gT("If tokens are used, the public may register for this survey") . "<br />";
         }
-        if ($aSurveyInfo['allowsave'] == "Y" && $aSurveyInfo['tokenanswerspersistence'] == 'N')
-        {
+        if ($oSurvey->isAllowSave && !$oSurvey->isTokenAnswersPersistence) {
             $surveysummary2 .= gT("Participants can save partially finished surveys") . "<br />\n";
         }
-        if ($aSurveyInfo['emailnotificationto'] != '')
-        {
+        if ($oSurvey->emailnotificationto != '') {
             $surveysummary2 .= gT("Basic email notification is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailnotificationto'])."<br />\n";
         }
-        if ($aSurveyInfo['emailresponseto'] != '')
-        {
+        if ($oSurvey->emailresponseto != '') {
             $surveysummary2 .= gT("Detailed email notification with response data is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
-        if (trim($aSurveyInfo['startdate']) != '')
-        {
+        if (trim($oSurvey->startdate) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($aSurveyInfo['startdate'], 'Y-m-d H:i:s');
+            $datetimeobj = new Date_Time_Converter($oSurvey->startdate, 'Y-m-d H:i:s');
             $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         }
         else
@@ -1182,11 +1173,10 @@ class Survey_Common_Action extends CAction
             $aData['startdate'] = "-";
         }
 
-        if (trim($aSurveyInfo['expires']) != '')
-        {
+        if (trim($oSurvey->expires) != '') {
             //$constructoritems = array($surveyinfo['expires'] , "Y-m-d H:i:s");
             Yii::import('application.libraries.Date_Time_Converter');
-            $datetimeobj = new Date_Time_Converter($aSurveyInfo['expires'], 'Y-m-d H:i:s');
+            $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
             //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
             $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
         }
@@ -1195,14 +1185,14 @@ class Survey_Common_Action extends CAction
             $aData['expdate'] = "-";
         }
 
-        $aData['language'] = getLanguageNameFromCode($aSurveyInfo['language'], false);
+        $aData['language'] = getLanguageNameFromCode($oSurvey->language, false);
 
-        if ($aSurveyInfo['surveyls_urldescription'] == "") {
+        if ($oSurvey->currentLanguageSettings->surveyls_urldescription == "") {
             $aSurveyInfo['surveyls_urldescription'] = htmlspecialchars($aSurveyInfo['surveyls_url']);
         }
 
-        if ($aSurveyInfo['surveyls_url'] != "") {
-            $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\">".flattenText($aSurveyInfo['surveyls_urldescription'])."</a>";
+        if ($oSurvey->currentLanguageSettings->surveyls_url != "") {
+            $aData['endurl'] = " <a target='_blank' href=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\" title=\"" . htmlspecialchars($aSurveyInfo['surveyls_url']) . "\">".flattenText($oSurvey->currentLanguageSettings->surveyls_url)."</a>";
         } else {
             $aData['endurl'] = "-";
         }
@@ -1217,7 +1207,7 @@ class Survey_Common_Action extends CAction
         }
 
         $aData['activated'] = $activated;
-        if ($activated == "Y") {
+        if ($oSurvey->isActive) {
             $aData['surveydb'] = Yii::app()->db->tablePrefix . "survey_" . $iSurveyID;
         }
 
