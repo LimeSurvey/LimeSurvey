@@ -407,18 +407,26 @@ class TemplateManifest extends TemplateConfiguration
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-        $aCssFiles   = isset($oTemplate->config->files->css->filename)?(array) $oTemplate->config->files->css->filename:array();        // The CSS files of this template
-        $aJsFiles    = isset($oTemplate->config->files->js->filename)? (array) $oTemplate->config->files->js->filename:array();         // The JS files of this template
+        $aCssFiles = $aJsFiles = array();
+
+        // First we add the framework replacement (bootstrap.css must be loaded before template.css)
+        $aCssFiles = $this->getFrameworkAssetsToReplace('css');
+        $aJsFiles  = $this->getFrameworkAssetsToReplace('js');
+
+        // Then we add the template config files
+        $aTCssFiles   = isset($oTemplate->config->files->css->filename)?(array) $oTemplate->config->files->css->filename:array();        // The CSS files of this template
+        $aTJsFiles    = isset($oTemplate->config->files->js->filename)? (array) $oTemplate->config->files->js->filename:array();         // The JS files of this template
+
+        $aCssFiles    = array_merge($aCssFiles, $aTCssFiles);
+        $aTJsFiles    = array_merge($aCssFiles, $aTJsFiles);
+
         $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
-        // Remove/Replace mother files
+        // Remove/Replace mother template files
         $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
         $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
 
-        // Add framework replacement
-        $aCssFiles = array_merge($aCssFiles, $this->getFrameworkAssetsToReplace('css'));
-        $aJsFiles  = array_merge($aJsFiles, $this->getFrameworkAssetsToReplace('js'));
-
+        // Then we add the direction files if they exist
         if (isset($oTemplate->config->files->$dir)) {
             $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array) $oTemplate->config->files->$dir->css->filename : array();
             $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename)  ? (array) $oTemplate->config->files->$dir->js->filename : array();
