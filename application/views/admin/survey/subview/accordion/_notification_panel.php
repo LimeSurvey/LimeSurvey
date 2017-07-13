@@ -35,7 +35,7 @@
                     else {
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'datestamp',
-                        'value'=> $oSurvey->datestamp == "Y",
+                        'value'=> $oSurvey->isDateStamp,
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off'),
                         'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
@@ -69,7 +69,7 @@
                 } else {
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'ipaddr',
-                        'value'=> $oSurvey->ipaddr == "Y",
+                        'value'=> $oSurvey->isIpAddr,
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                     ));
@@ -92,7 +92,7 @@
                     <?php } else {
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'refurl',
-                        'value'=> $oSurvey->refurl == "Y",
+                        'value'=> $oSurvey->isRefUrl,
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                         ));
@@ -116,7 +116,7 @@
                     <?php
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'savetimings',
-                            'value'=> $oSurvey->savetimings == "Y",
+                            'value'=> $oSurvey->isSaveTimings,
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
                         ));
@@ -131,7 +131,7 @@
             <div class="col-sm-7"><?php
                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'assessments',
-                    'value'=> $oSurvey->assessments == "Y",
+                    'value'=> $oSurvey->isAssessments,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                 ));
@@ -145,7 +145,7 @@
             <?php
                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'allowsave',
-                    'value'=> $oSurvey->allowsave == "Y",
+                    'value'=> $oSurvey->isAllowSave,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                 ));

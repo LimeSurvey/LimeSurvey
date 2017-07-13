@@ -89,8 +89,7 @@ class SurveyAdmin extends Survey_Common_Action
             $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }
         $oSurvey=Survey::model()->findByPk($iSurveyID);
-        if ($oSurvey->active=='Y')
-        {
+        if ($oSurvey->isActive) {
             Yii::app()->setFlashMessage(gT("You can't update question code for an active survey."),'error');
             $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }
@@ -825,7 +824,7 @@ class SurveyAdmin extends Survey_Common_Action
             else
             {
                 $warning = (isset($aResult['warning']))?true:false;
-                $allowregister = ($survey->allowregister=='Y')?true:false;
+                $allowregister = $survey->isAllowRegister;
                 $onclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID));
                 $closedOnclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID));
                 $noOnclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID));
@@ -1025,8 +1024,7 @@ class SurveyAdmin extends Survey_Common_Action
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
         $aData['esrow'] = $esrow;
         $aData['has_permissions'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update');
-        $aData['surveyls_language'] = $esrow["surveyls_language"];
-        
+
 
         $generalEditArray = $this->_generalTabEditSurvey($survey);
 
@@ -1110,12 +1108,10 @@ class SurveyAdmin extends Survey_Common_Action
 
                 $aData['esrow'] = $esrow;
                 $aData['action'] = "editsurveylocalesettings";
-                $aData['i'] = $i;
                 $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
                 $aTabContents[$sLang] = $this->getController()->renderPartial('/admin/survey/editLocalSettings_view', $aData, true);
             }
 
-            unset($aData['i']);
 
             $aData['has_permissions'] = Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update');
             $aData['surveyls_language'] = $esrow["surveyls_language"];
@@ -1156,11 +1152,8 @@ class SurveyAdmin extends Survey_Common_Action
 
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
 
-
             $aViewUrls[] = 'editLocalSettings_main_view';
-        }
-        else
-        {
+        } else {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }

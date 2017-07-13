@@ -74,7 +74,7 @@
                     <div class="col-sm-7">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'showxquestions',
-                            'value'=> $oSurvey->questionindex == "Y",
+                            'value'=> $oSurvey->isShowXQuestions,
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
                             ));
@@ -260,7 +260,7 @@
                     <div class="col-sm-7">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'shownoanswer',
-                            'value'=> $oSurvey->shownoanswer == "Y",
+                            'value'=> $oSurvey->isShowNoAnswer,
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
                             ));
@@ -291,7 +291,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'showwelcome',
-                    'value'=> $oSurvey->showwelcome == "Y",
+                    'value'=> $oSurvey->isShowWelcome,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -305,7 +305,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'allowprev',
-                    'value'=> $oSurvey->allowprev == "Y",
+                    'value'=> $oSurvey->isAllowPrev,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -320,7 +320,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'nokeyboard',
-                    'value'=> $oSurvey->nokeyboard == "Y",
+                    'value'=> $oSurvey->isNoKeyboard,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -334,7 +334,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'showprogress',
-                    'value'=> $oSurvey->showprogress == "Y",
+                    'value'=> $oSurvey->isShowProgress,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -347,7 +347,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'printanswers',
-                    'value'=> $oSurvey->printanswers == "Y",
+                    'value'=> $oSurvey->isPrintAnswers,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -361,7 +361,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'publicstatistics',
-                    'value'=> $oSurvey->publicstatistics == "Y",
+                    'value'=> $oSurvey->isPublicStatistics,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -375,7 +375,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'publicgraphs',
-                    'value'=> $oSurvey->publicgraphs == "Y",
+                    'value'=> $oSurvey->isPublicGraphs,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));
@@ -389,7 +389,7 @@
             <div class="col-sm-7">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'autoredirect',
-                    'value'=> $oSurvey->autoredirect == "Y",
+                    'value'=> $oSurvey->isAutoRedirect,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off')
                     ));

@@ -58,12 +58,9 @@ class index extends CAction {
             killSurveySession($surveyid);
         }
 
-        $surveyExists   = ($surveyid && Survey::model()->findByPk($surveyid));
-        $isSurveyActive = ($surveyExists && Survey::model()->findByPk($surveyid)->active=="Y");
+        $surveyExists   = ($survey!=null);
+        $isSurveyActive = ($surveyExists && $survey->isActive);
 
-        if($surveyExists){
-            $oSurvey = Survey::model()->findByPk($surveyid);
-        }
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
@@ -266,7 +263,7 @@ class index extends CAction {
         }
 
         //SEE IF SURVEY USES TOKENS
-        if ($surveyExists == 1 && $oSurvey->hasTokensTable){
+        if ($survey->hasTokensTable){
             $tokensexist = 1;
         }else{
             $tokensexist = 0;
