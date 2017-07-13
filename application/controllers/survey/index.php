@@ -26,7 +26,6 @@ class index extends CAction {
         global $surveyid;
         global $thissurvey, $thisstep;
         global $clienttoken, $tokensexist, $token;
-        $survey=Survey::model()->findByPk($surveyid);
 
         // only attempt to change session lifetime if using a DB backend
         // with file based sessions, it's up to the admin to configure maxlifetime
@@ -41,6 +40,8 @@ class index extends CAction {
         $thisstep    = $param['thisstep'];
         $move        = getMove();
         $clienttoken = trim($param['token']);
+
+        $oSurvey = Survey::model()->findByPk($surveyid);
 
         Yii::app()->setConfig('surveyID',$surveyid);
         Yii::app()->setConfig('move',$move);
@@ -58,8 +59,8 @@ class index extends CAction {
             killSurveySession($surveyid);
         }
 
-        $surveyExists   = ($survey!=null);
-        $isSurveyActive = ($surveyExists && $survey->isActive);
+        $surveyExists   = ($oSurvey != null);
+        $isSurveyActive = ($surveyExists && $oSurvey->isActive);
 
 
         // collect all data in this method to pass on later
@@ -263,7 +264,7 @@ class index extends CAction {
         }
 
         //SEE IF SURVEY USES TOKENS
-        if ($survey->hasTokensTable){
+        if ($oSurvey->hasTokensTable){
             $tokensexist = 1;
         }else{
             $tokensexist = 0;
