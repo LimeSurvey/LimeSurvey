@@ -1067,7 +1067,7 @@ class Survey extends LSActiveRecord
     /**
      * @return bool
      */
-    public function getIsRrefUrl()
+    public function getIsRefUrl()
     {
         return ($this->refurl === 'Y');
     }
