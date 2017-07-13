@@ -172,7 +172,7 @@ class export extends Survey_Common_Action {
         if ( ! $sExportType )
         {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
-            if ($thissurvey['savetimings'] === "Y") {
+            if ($survey->isSaveTimings) {
                 //Append survey timings to the fieldmap array
                 $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,$oSurvey->language);
             }
@@ -954,12 +954,10 @@ class export extends Survey_Common_Action {
                 {
                     // Export archives for active surveys
                     case 'archive':
-                        if($oSurvey->active == "Y")
-                        {
+                        if($oSurvey->isActive) {
                             $archiveName = $this->_exportarchive($iSurveyID, false);
 
-                            if (is_file($archiveName))
-                            {
+                            if (is_file($archiveName)) {
                                 $aResults[$iSurveyID]['result'] = true;
                                 $aResults[$iSurveyID]['file']   = $archiveName;
                                 $bArchiveIsEmpty                = false;

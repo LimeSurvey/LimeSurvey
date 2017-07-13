@@ -94,7 +94,7 @@
                 <div class="col-sm-6">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'listpublic',
-                        'value'=> $oSurvey->listpublic == "Y",
+                        'value'=> $oSurvey->isListPublic,
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                         ));
@@ -107,7 +107,7 @@
                 <div class="col-sm-6">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'usecookie',
-                        'value'=> $oSurvey->usecookie == "Y",
+                        'value'=> $oSurvey->isUseCookie,
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                         ));

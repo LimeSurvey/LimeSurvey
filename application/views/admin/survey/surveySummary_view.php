@@ -38,7 +38,7 @@ $surveyid = $oSurvey->sid;
                     <div class="col-sm-12">
 
                         <!-- While survey is activated, you can't add or remove group or question -->
-                        <?php if ($activated == "Y"): ?>
+                        <?php if ($oSurvey->isActive): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
                                 <strong><?php eT('Warning!');?></strong> <?php eT("While the survey is activated, you can't add or remove a group or question.");?>
@@ -98,7 +98,7 @@ $surveyid = $oSurvey->sid;
                         <!-- Add Question / group -->
                         <div class="row row-eq-height">
                             <!-- Survey active, so it's impossible to add new group/question -->
-                            <?php if ($activated == "Y"): ?>
+                            <?php if ($oSurvey->isActive): ?>
 
                                     <!-- Can't add new group to survey  -->
                                     <div class="col-sm-6">
