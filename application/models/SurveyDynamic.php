@@ -72,7 +72,7 @@ class SurveyDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return self::$survey->responsesTableName;
+        return '{{survey_' . self::$sid . '}}';
     }
 
     /** @inheritdoc */
