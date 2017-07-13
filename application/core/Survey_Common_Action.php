@@ -705,12 +705,13 @@ class Survey_Common_Action extends CAction
                    $aData['gid'] = $_GET['gid'];
                 }
             }
+            /** @var Survey $oSurvey */
+            $oSurvey = $aData['oSurvey'];
 
-            $aData['surveyIsActive'] = $aData['oSurvey']->active !== 'N';
+            $aData['surveyIsActive'] = $oSurvey->isActive;
 
             $surveyid = $aData['surveyid'];
             $gid = $aData['gid'];
-            $oSurvey = $aData['oSurvey'];
             $baselang =$oSurvey->language;
 
             $aData['sumcount4'] = Question::model()->countByAttributes(array('sid' => $surveyid, 'gid' => $gid, 'language' => $baselang));
