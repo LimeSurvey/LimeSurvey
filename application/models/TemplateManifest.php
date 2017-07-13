@@ -227,10 +227,27 @@ class TemplateManifest extends TemplateConfiguration
                 // The CSS/JS file is a configuration one....
                 if(in_array($sFile, $aFiles)){
                     $this->addFileReplacementInManifest($sFile, $sExt);
+                    $this->addFileReplacementInDB($sFile, $sExt);
                 }
             }
         }
         return $this->getFilePath($sFile, $this);
+    }
+
+    /**
+     * Add a file replacement entry in DB
+     * It first tries to get the oTemplateConfigurations for this template (can be void if edited from template, can be numerous if survey local config)
+     * If it exists, it call $oTemplateConfiguration->oTemplateConfiguration($sFile, $sType) for each one of them
+     *
+     * @param string $sFile the file to replace
+     * @param string $sType css|js
+     */
+    public function addFileReplacementInDB($sFile, $sType)
+    {
+        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'), array(':templates_name' => $this->sTemplateName));
+        foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
+            $oTemplateConfigurationModel->addFileReplacementInDB($sFile, $sType);
+        }
     }
 
     /**
@@ -240,7 +257,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param string $sFile the file to replace
      * @param string $sType css|js
      */
-    public function addFileReplacementInManifest($sFile, $sType)
+    private function addFileReplacementInManifest($sFile, $sType)
     {
         // First we get the XML file
         libxml_disable_entity_loader(false);
