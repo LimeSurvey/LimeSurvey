@@ -58,7 +58,7 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $bounce_email Bounce email address
  * @property string $attributedescriptions
  * @property string $emailresponseto e-mail address to send detailed admin notification email to
- * @property integer $emailnotificationto Email address to send basic admin notification email to
+ * @property string $emailnotificationto Email address to send basic admin notification email to
  * @property string $showxquestions Show "There are X questions in this survey": (Y/N)
  * @property string $showgroupinfo Show group name and/or group description: (Y/N)
  * @property string $shownoanswer Show "No answer": (Y/N)
