@@ -385,7 +385,7 @@ class Template extends LSActiveRecord
         // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
         if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
             $bForceXML=true;
-        }elseif(App()->getConfig('force_xmlsettings_for_survey_rendering' && YII_DEBUG)){
+        }elseif( App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
             $bForceXML=false;
         }
 
