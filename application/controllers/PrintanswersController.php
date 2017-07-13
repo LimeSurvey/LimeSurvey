@@ -41,7 +41,8 @@
         {
             Yii::app()->loadHelper("frontend");
             Yii::import('application.libraries.admin.pdf');
-            $iSurveyID = (int)$surveyid;
+            $survey = Survey::model()->findByPk($surveyid);
+            $iSurveyID = $survey->sid;
             $sExportType = $printableexport;
 
             Yii::app()->loadHelper('database');
@@ -131,7 +132,7 @@
                 $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
                 $aFullResponseTable = getFullResponseTable($iSurveyID,$sSRID,$sLanguage,$printanswershonorsconditions);
                 //Get the fieldmap @TODO: do we need to filter out some fields?
-                if($aSurveyInfo['datestamp']!="Y" || $sAnonymized == 'Y'){
+                if(!$survey->isDateStamp || $survey->isAnonymized){
                     unset ($aFullResponseTable['submitdate']);
                 }else{
                     unset ($aFullResponseTable['id']);
@@ -187,7 +188,7 @@
                 $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
                 $aFullResponseTable = getFullResponseTable($iSurveyID,$sSRID,$sLanguage,$printanswershonorsconditions);
                 //Get the fieldmap @TODO: do we need to filter out some fields?
-                if($aSurveyInfo['datestamp']!="Y" || $sAnonymized == 'Y'){
+                if(!$survey->isDateStamp || $survey->isAnonymized){
                     unset ($aFullResponseTable['submitdate']);
                 }else{
                     unset ($aFullResponseTable['id']);

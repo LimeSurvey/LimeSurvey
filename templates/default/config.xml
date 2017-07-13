@@ -58,8 +58,7 @@
         <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
         <cssframework>
             <name>bootstrap</name>
-            <css replace="css/bootstrap.css">css/bootstrap.css</css>
-            <css replace="css/yiistrap.css"></css>
+            <css replace="css/bootstrap.css">css/bootstrap.css</css>            
         </cssframework>
 
         <!-- Path of the views files (can be different than pstpl -->
@@ -71,13 +70,6 @@
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
-            <package>template-default</package>
-            <ltr>
-                <package>template-default-ltr</package>
-            </ltr>
-            <rtl>
-                <package>template-default-rtl</package>
-            </rtl>
         </packages>
 
         <!--
@@ -97,6 +89,7 @@
                     <file type="view" role="subview">./subviews/progess_bar.twig</file>
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/language_changer.twig</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>
                 </question>
@@ -105,6 +98,7 @@
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_survey_list.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </surveylist>
 
@@ -115,6 +109,7 @@
                     <file type="view" role="subview">./subviews/warnings.twig</file>
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>
                 </welcome>
@@ -123,6 +118,7 @@
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_submit.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </completed>
 
@@ -131,6 +127,7 @@
                     <file type="view" role="layout">layout_submit.twig</file>
                     <file type="view" role="subview">./subviews/assessments.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </assessments>
 
@@ -142,6 +139,7 @@
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_clearall.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </clearall>
 
@@ -149,6 +147,7 @@
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_load.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </load>
 
@@ -156,6 +155,7 @@
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_save.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </save>
             </screens>

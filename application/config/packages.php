@@ -30,9 +30,9 @@ return array(
         )
     ),
     /* For public template extended functionnality (based on default template) */
-    'template-default'=>array(
-        'devBaseUrl'  => 'assets/packages/template-default/',
-        'basePath' => 'core.template-default',
+    'template-core'=>array(
+        'devBaseUrl'  => 'assets/packages/template-core/',
+        'basePath' => 'core.template-core',
         'css'=> array(
             'template-core.css',
         ),
@@ -43,24 +43,24 @@ return array(
             'limesurvey-public',
         )
     ),
-    'template-default-ltr'=>array( /* complement for ltr */
-        'devBaseUrl'  => 'assets/packages/template-default/',
-        'basePath' => 'core.template-default',
+    'template-core-ltr'=>array( /* complement for ltr */
+        'devBaseUrl'  => 'assets/packages/template-core/',
+        'basePath' => 'core.template-core',
         'css'=> array(
             'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
         ),
         'depends' => array(
-            'template-default',
+            'template-core',
         )
     ),
-    'template-default-rtl'=>array( /* Same but for rtl */
-        'devBaseUrl'  => 'assets/packages/template-default/',
-        'basePath' => 'core.template-default',
+    'template-core-rtl'=>array( /* Same but for rtl */
+        'devBaseUrl'  => 'assets/packages/template-core/',
+        'basePath' => 'core.template-core',
         'css'=> array(
             'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css',
         ),
         'depends' => array(
-            'template-default',
+            'template-core',
         )
     ),
 

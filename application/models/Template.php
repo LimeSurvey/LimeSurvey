@@ -129,12 +129,12 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate  = self::model()->findByPk($sTemplateName);
 
-        if(is_object($oTemplate) && is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
+        if( is_object($oTemplate) && is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
             return $sTemplateName;
         }
 
         /* Then try with the global default template */
-        if($sTemplateName!=$sDefaultTemplate) {
+        if($sTemplateName != $sDefaultTemplate) {
             return self::templateNameFilter($sDefaultTemplate);
         }
 
@@ -300,8 +300,7 @@ class Template extends LSActiveRecord
                     && $sTemplatePath != ".." && $sTemplatePath!=".svn"
                     && (file_exists("{$sUserTemplateRootDir}/{$sTemplatePath}/config.xml"))) {
 
-                    $oTemplate = self::model()->getInstance($sTemplatePath, '', true);
-
+                    $oTemplate = self::getTemplateConfiguration($sTemplatePath, '', true);
                     if (is_object($oTemplate)){
                         $aTemplateList[$oTemplate->sTemplateName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
                     }
@@ -320,7 +319,7 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateListWithPreviews()
     {
-        $usertemplaterootdir     = Yii::app()->getConfig("usertemplaterootdir");
+        $sUserTemplateRootDir     = Yii::app()->getConfig("usertemplaterootdir");
         $standardtemplaterootdir = Yii::app()->getConfig("standardtemplaterootdir");
         $usertemplaterooturl     = Yii::app()->getConfig("usertemplaterooturl");
         $standardtemplaterooturl = Yii::app()->getConfig("standardtemplaterooturl");
@@ -337,10 +336,10 @@ class Template extends LSActiveRecord
             }
         }
 
-        if ($usertemplaterootdir && $handle = opendir($usertemplaterootdir)) {
+        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)) {
             while (false !== ($sTemplatePath = readdir($handle))) {
                 // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$usertemplaterootdir/$sTemplatePath") && $sTemplatePath != "." && $sTemplatePath != ".." && $sTemplatePath!=".svn") {
+                if (!is_file("$sUserTemplateRootDir/$sTemplatePath") && $sTemplatePath != "." && $sTemplatePath != ".." && $sTemplatePath!=".svn") {
 
 
                     $oTemplate  = self::model()->find('folder=:folder', array(':folder'=>$sTemplatePath));
@@ -382,6 +381,14 @@ class Template extends LSActiveRecord
      */
     public static function getInstance($sTemplateName='', $iSurveyId='', $bForceXML=false)
     {
+
+        // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
+        if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
+            $bForceXML=true;
+        }elseif(App()->getConfig('force_xmlsettings_for_survey_rendering' && YII_DEBUG)){
+            $bForceXML=false;
+        }
+
         if (empty(self::$instance)) {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $bForceXML);
         }

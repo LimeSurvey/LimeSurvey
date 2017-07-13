@@ -333,15 +333,15 @@ Responsive navbar-brand image CSS
   font-size: 18px;
   line-height: 20px;
 }
+
 .logo-container>img {
   height: 100%;
   padding: 15px;
   width: auto;
 }
 
-
-.example2 .logo-container>img {
-  padding: 7px 15px;
+.brand-logo  .top-container .top-content{
+    padding-top: 2em;
 }
 
 

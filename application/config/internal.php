@@ -249,12 +249,13 @@ $internalConfig = array(
                 'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
-                    'Survey'                            =>  array("getAllLanguages"),
+                    'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
                     'LSHttpRequest'                     =>  array("getParam"),
                 ),
                 'properties' => array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
+                    'TemplateConfiguration'             =>  array("sTemplateurl"),
                 ),
                 'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'unregisterPackage', 'unregisterScriptFile', 'unregisterScriptForAjax','listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
             ),

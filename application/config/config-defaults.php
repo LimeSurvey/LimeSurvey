@@ -688,5 +688,8 @@ $config['sideMenuBehaviour']='adaptive';
 // Hide update key
 $config['hide_update_key']=false;
 
+$config['force_xmlsettings_for_survey_rendering']=false;
+$config['force_dbsettings_for_survey_rendering']=false;
+
 return $config;
 //settings deleted

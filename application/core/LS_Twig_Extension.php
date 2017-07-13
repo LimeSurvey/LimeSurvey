@@ -285,7 +285,7 @@ class LS_Twig_Extension extends Twig_Extension
         $oTemplate            = Template::model()->getInstance();
         $sTemplatePackageName = 'limesurvey-'.$oTemplate->sTemplateName;
         self::unregisterPackage($sTemplatePackageName);
-        self::unregisterPackage('template-default');
+        self::unregisterPackage('template-core');
         self::unregisterPackage('bootstrap');
         self::unregisterPackage('jquery');
         self::unregisterPackage('bootstrap-template');

@@ -1585,14 +1585,11 @@ class dataentry extends Survey_Common_Action
                     $tokencompleted = $tcrow['completed'];
                 }
 
-                if ($tccount < 1)
-                { // token doesn't exist in token table
+                if ($tccount < 1) { // token doesn't exist in token table
                     $lastanswfortoken = 'UnknownToken';
-                }
-                elseif ($thissurvey['anonymized'] == "Y")
-                { // token exist but survey is anonymous, check completed state
-                    if ($tokencompleted != "" && $tokencompleted != "N")
-                    { // token is completed
+                } elseif ($survey->isAnonymized) { // token exist but survey is anonymous, check completed state
+                    // token is completed
+                    if ($tokencompleted != "" && $tokencompleted != "N") {
                         $lastanswfortoken='PrivacyProtected';
                     }
                 }
@@ -1686,9 +1683,9 @@ class dataentry extends Survey_Common_Action
                 $insert_data = array();
 
                 $_POST['startlanguage'] = $survey->language;
-                if ($thissurvey['datestamp'] == "Y") { $_POST['startdate'] = $_POST['datestamp']; }
+                if ($survey->isDateStamp) { $_POST['startdate'] = $_POST['datestamp']; }
                 if (isset($_POST['closerecord'])) {
-                    if ($thissurvey['datestamp'] == "Y") {
+                    if ($survey->isDateStamp) {
                         $_POST['submitdate'] = dateShift(date("Y-m-d H:i"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'));
                     } else {
                         $_POST['submitdate'] = date("Y-m-d H:i",mktime(0,0,0,1,1,1980));
@@ -2358,13 +2355,9 @@ class dataentry extends Survey_Common_Action
             $aData['surveyid'] = $surveyid;
             $aData['sDataEntryLanguage'] = $sDataEntryLanguage;
 
-            if ($thissurvey['active'] == "Y" && $thissurvey['allowsave'] == "Y")
-            {
-                $slangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-                $sbaselang = Survey::model()->findByPk($surveyid)->language;
-                array_unshift($slangs,$sbaselang);
-                $aData['slangs'] = $slangs;
-                $aData['baselang'] = $baselang;
+            if ($survey->isActive && $survey->isAllowSave) {
+                $aData['slangs'] = $survey->allLanguages;
+                $aData['baselang'] = $survey->language;
             }
 
             $aViewUrls[] = 'active_html_view';

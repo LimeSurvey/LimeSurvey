@@ -23,15 +23,15 @@
 
     </html>
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}" >
+    <body class="default lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" >
 
     {% if (aSurveyInfo.options.backgroundimage == "on") %}
         {{ registerTemplateCssFile("css/background-image.css") }}
     {% endif %}
 
-{% else %}
-    {{ unregisterScriptForAjax()}}
-{% endif %}
+    {% else %}
+        {{ unregisterScriptForAjax()}}
+    {% endif %}
 
 
 

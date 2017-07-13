@@ -1612,8 +1612,7 @@ class tokens extends Survey_Common_Action
             $oSurvey=Survey::model()->findByPk($iSurveyId);
 
             $aOptionsStatus=array('0'=>gT('All tokens'),'1'=>gT('Completed'),'2'=>gT('Not completed'));
-            if($oSurvey->anonymized=='N' && $oSurvey->active=='Y')
-            {
+            if(!$oSurvey->isAnonymized && $oSurvey->isActive) {
                 $aOptionsStatus['3']=gT('Not started');
                 $aOptionsStatus['4']=gT('Started but not yet completed');
             }

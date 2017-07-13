@@ -102,12 +102,9 @@ class Statistics_userController extends SurveyController {
             }
 
             //check if graphs should be shown for this survey
-            if ($surveyinfo['publicgraphs']=='Y')
-            {
+            if ($survey->isPublicGraphs) {
                 $publicgraphs = 1;
-            }
-            else
-            {
+            } else {
                 $publicgraphs = 0;
             }
         }

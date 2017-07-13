@@ -60,7 +60,7 @@
 
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'anonymized',
-                            'value'=> $oSurvey->anonymized == "Y",
+                            'value'=> $oSurvey->isAnonymized,
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off'),
                             'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
@@ -80,7 +80,7 @@
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'tokenanswerspersistence',
-                    'value'=> $oSurvey->tokenanswerspersistence == "Y",
+                    'value'=> $oSurvey->isTokenAnswersPersistence,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off'),
                     'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
@@ -108,7 +108,7 @@
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'alloweditaftercompletion',
-                        'value'=> $oSurvey->alloweditaftercompletion == "Y",
+                        'value'=> $oSurvey->isAllowEditAfterCompletion,
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                     ));
@@ -123,7 +123,7 @@
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'allowregister',
-                        'value'=> $oSurvey->allowregister == "Y",
+                        'value'=> $oSurvey->isAllowRegister,
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                     ));
@@ -138,7 +138,7 @@
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'htmlemail',
-                    'value'=> $oSurvey->htmlemail == "Y",
+                    'value'=> $oSurvey->isHtmlEmail,
                     'onLabel'=>gT('On'),
                     'offLabel'=>gT('Off'),
                     'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
@@ -162,7 +162,7 @@
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'sendconfirmation',
-                        'value'=> $oSurvey->sendconfirmation == "Y",
+                        'value'=> $oSurvey->isSendConfirmation,
                         'onLabel'=>gT('On'),
                         'offLabel'=>gT('Off')
                     ));

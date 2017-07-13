@@ -37,6 +37,9 @@ class TemplateManifest extends TemplateConfiguration
     /** @var  string $viewPath Path of the views files (twig template) */
     public $viewPath;
 
+    /** @var  string $sFilesDirectory name of the file directory */
+    public $sFilesDirectory;
+
     /** @var  string $filesPath Path of the tmeplate's files */
     public $filesPath;
 
@@ -56,7 +59,6 @@ class TemplateManifest extends TemplateConfiguration
 
     /** @var SimpleXMLElement $oOptions The template options */
     public $oOptions;
-
 
     /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
     private $iSurveyId='';
@@ -103,11 +105,12 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function actualizeLastUpdate()
     {
-        $date   = date("Y-m-d H:i:s");
+        libxml_disable_entity_loader(false);
         $config = simplexml_load_file(realpath ($this->xmlFile));
-        $config->metadatas->last_update = $date;
+        $config->metadatas->last_update = date("Y-m-d H:i:s");
         $config->asXML( realpath ($this->xmlFile) );                // Belt
         touch ( $this->path );                                      // & Suspenders ;-)
+        libxml_disable_entity_loader(true);
     }
 
 
@@ -198,7 +201,12 @@ class TemplateManifest extends TemplateConfiguration
         return $this->getFilePath($sFile, $this);
     }
 
-
+    /**
+    * Copy a file from mother template to local directory and edit manifest if needed
+    *
+    * @param string $sTemplateName
+    * @return string template url
+    */
     public function extendsFile($sFile)
     {
 
@@ -208,17 +216,88 @@ class TemplateManifest extends TemplateConfiguration
             $sRfilePath = $this->getFilePath($sFile, $this);
             $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.'/'.$sFile;
             copy ( $sRfilePath,  $sLfilePath );
+
+            // If it's a css or js file from config... must update DB and XML too....
+            $sExt = pathinfo($sLfilePath, PATHINFO_EXTENSION);
+            if ($sExt == "css" || $sExt == "js"){
+
+                // Check if that CSS/JS file is in DB/XML
+                $aFiles = $this->getFilesForPackages($sExt, $this);
+                $sFile  = str_replace('./', '', $sFile);
+
+                // The CSS/JS file is a configuration one....
+                if(in_array($sFile, $aFiles)){
+
+                    // First we get the XML file
+                    libxml_disable_entity_loader(false);
+                    $oNewManifest = new DOMDocument();
+                    $oNewManifest->load($this->path."/config.xml");
+
+                    $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
+                    $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
+                    $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);
+
+                    if (is_null($oFiles)){
+                        $oFiles    = $oNewManifest->createElement('files');
+                    }
+
+                    $oAssetType = $oFiles->getElementsByTagName($sExt)->item(0);
+                    if (is_null($oAssetType)){
+                        $oAssetType   = $oNewManifest->createElement($sExt);
+                        $oFiles->appendChild($oAssetType);
+                    }
+
+                    // <filename replace="css/template.css">css/template.css</filename>
+                    $oNewManifest->createElement('filename');
+
+                    //$oConfig->appendChild($oNvFilesNode);
+                    $oAssetElem       = $oNewManifest->createElement('filename', $sFile);
+                    $replaceAttribute = $oNewManifest->createAttribute('replace');
+                    $replaceAttribute->value = $sFile;
+                    $oAssetElem->appendChild($replaceAttribute);
+                    $oAssetType->appendChild($oAssetElem);
+                    $oConfig->insertBefore($oFiles,$oOptions);
+                    $oNewManifest->save($this->path."/config.xml");
+                    libxml_disable_entity_loader(true);
+                }
+            }
         }
 
         return $this->getFilePath($sFile, $this);
     }
 
+    /**
+    * Get the files (css or js) defined in the manifest of a template and its mother templates
+    *
+    * @param  string $type       css|js
+    * @param string $oRTemplate template from which the recurrence should start
+    * @return array
+    */
+    public function getFilesForPackages($type, $oRTemplate)
+    {
+        $aFiles = array();
+        while(is_a($oRTemplate, 'TemplateManifest')){
+            $aTFiles = isset($oRTemplate->config->files->$type->filename)?(array) $oRTemplate->config->files->$type->filename:array();
+            $aFiles  = array_merge($aTFiles, $aFiles);
+            $oRTemplate = $oRTemplate->oMotherTemplate;
+        }
+        return $aFiles;
+    }
+
+
+    /**
+    * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
+    *
+    * @param  string $sFile      the  file to look for (must contain relative path, unless it's a view file)
+    * @param string $oRTemplate template from which the recurrence should start
+    * @return TemplateManifest
+    */
     public function getTemplateForFile($sFile, $oRTemplate)
     {
         while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                return false;
+                throw new Exception("no template found for  $sFile!");
                 break;
             }
             $oRTemplate = $oMotherTemplate;
@@ -227,6 +306,32 @@ class TemplateManifest extends TemplateConfiguration
         return $oRTemplate;
     }
 
+    /**
+     * Get the list of all the files for a template and its mother templates
+     * @return array
+     */
+    public function getOtherFiles()
+    {
+        $otherfiles = array();
+
+        if (!empty($this->oMotherTemplate)){
+            $otherfiles = $this->oMotherTemplate->getOtherFiles();
+        }
+
+        if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath)){
+
+            while (false !== ($file = readdir($handle))){
+                if (!array_search($file, array("DUMMYENTRY", ".", "..", "preview.png"))) {
+                    if (!is_dir($this->viewPath . DIRECTORY_SEPARATOR . $file)) {
+                        $otherfiles[] = $this->sFilesDirectory . DIRECTORY_SEPARATOR . $file;
+                    }
+                }
+            }
+
+            closedir($handle);
+        }
+        return $otherfiles;
+    }
 
     /**
      * Update the config file of a given template so that it extends another one
@@ -315,6 +420,7 @@ class TemplateManifest extends TemplateConfiguration
      * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
      * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
      *
+     * @param $oTemplate TemplateManifest
      */
     private function createTemplatePackage($oTemplate)
     {
@@ -325,14 +431,26 @@ class TemplateManifest extends TemplateConfiguration
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-        $aCssFiles   = isset($oTemplate->config->files->css->filename)?(array) $oTemplate->config->files->css->filename:array();        // The CSS files of this template
-        $aJsFiles    = isset($oTemplate->config->files->js->filename)? (array) $oTemplate->config->files->js->filename:array();         // The JS files of this template
+        $aCssFiles = $aJsFiles = array();
+
+        // First we add the framework replacement (bootstrap.css must be loaded before template.css)
+        $aCssFiles = $this->getFrameworkAssetsToReplace('css');
+        $aJsFiles  = $this->getFrameworkAssetsToReplace('js');
+
+        // Then we add the template config files
+        $aTCssFiles   = isset($oTemplate->config->files->css->filename)?(array) $oTemplate->config->files->css->filename:array();        // The CSS files of this template
+        $aTJsFiles    = isset($oTemplate->config->files->js->filename)? (array) $oTemplate->config->files->js->filename:array();         // The JS files of this template
+
+        $aCssFiles    = array_merge($aCssFiles, $aTCssFiles);
+        $aTJsFiles    = array_merge($aCssFiles, $aTJsFiles);
+
         $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
-        // Remove/Replace mother files
+        // Remove/Replace mother template files
         $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
         $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
 
+        // Then we add the direction files if they exist
         if (isset($oTemplate->config->files->$dir)) {
             $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array) $oTemplate->config->files->$dir->css->filename : array();
             $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename)  ? (array) $oTemplate->config->files->$dir->js->filename : array();
@@ -361,8 +479,8 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Change the mother template configuration depending on template settings
-     * @var $sType     string   the type of settings to change (css or js)
-     * @var $aSettings array    array of local setting
+     * @param $sType     string   the type of settings to change (css or js)
+     * @param $aSettings array    array of local setting
      * @return array
      */
     private function changeMotherConfiguration( $sType, $aSettings )
@@ -471,6 +589,7 @@ class TemplateManifest extends TemplateConfiguration
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
         $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR    : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
         $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
+        $this->sFilesDirectory          = (!empty($this->config->xpath("//filesdirectory")))  ? $this->config->engine->filesdirectory   :  $this->oMotherTemplate->sFilesDirectory;
         $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ? $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
 
         // Options are optional
@@ -488,6 +607,7 @@ class TemplateManifest extends TemplateConfiguration
 
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
+        //var_dump($this->depends); die();
     }
 
 
@@ -507,31 +627,37 @@ class TemplateManifest extends TemplateConfiguration
      */
     private function getDependsPackages($oTemplate)
     {
-
-        /* Start by adding cssFramework package */
-        $packages = $this->getFrameworkPackages($oTemplate);
-
-        if (!getLanguageRTL(App()->getLanguage())) {
-            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'ltr'));
-        } else {
-            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'rtl'));
-        }
+        $dir = (getLanguageRTL(App()->getLanguage()))?'rtl':'ltr';
 
         /* Core package */
-        $packages[]='limesurvey-public';
+        $packages[] = 'limesurvey-public';
+        $packages[] = 'template-core';
+        $packages[] = ( $dir == "ltr")? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
 
-        /* template packages */
-        if (!empty($this->packages->package)) {
-            $packages = array_merge ($packages, (array)$this->packages->package);
+        /* bootstrap */
+        if(!empty($this->cssFramework)){
+
+            // Basic bootstrap package
+            if((string)$this->cssFramework->name == "bootstrap"){
+                $packages[] = 'bootstrap';
+            }
+
+            // Rtl version of bootstrap
+            if ($dir == "rtl"){
+                $packages[] = 'bootstrap-rtl';
+            }
+
+            // Remove unwanted bootstrap stuff
+            foreach( $this->getFrameworkAssetsToReplace('css', true) as $toReplace){
+                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace );
+            }
+
+            foreach( $this->getFrameworkAssetsToReplace('js', true) as $toReplace){
+                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'js', $toReplace );
+            }
         }
 
-        /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
-        $dir = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-
-        if (!empty($this->packages->$dir->package)) {
-            $packages = array_merge ($packages, (array)$this->packages->$dir->package);
-        }
-
+        /* Moter Template */
         if (isset($this->config->metadatas->extends)){
             $sMotherTemplateName = (string) $this->config->metadatas->extends;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
@@ -541,90 +667,21 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Set the framework package
-     * @param string $dir (rtl|ltr|)
-     * @use self::@cssFramework
-     * @return string[] depends for framework
+     * Get the list of file replacement from Engine Framework
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return array
      */
-    private function getFrameworkPackages($oTemplate, $dir="")
+    private function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
-        // If current template doesn't have a name for the framework package, we use the mother's one
-        $framework = isset($oTemplate->cssFramework->name) ? (string) $oTemplate->cssFramework->name : (string) $oTemplate->oMotherTemplate->cssFramework;
-        $framework = $dir ? $framework."-".$dir : $framework;
-
-        if  ( isset(Yii::app()->clientScript->packages[$framework]) ) {
-
-            $frameworkPackages = array();
-
-            /* Theming */
-            if ($dir) {
-                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->$dir->css ) ? $oTemplate->cssFramework->$dir->css : array();
-                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->$dir->js  ) ? $oTemplate->cssFramework->$dir->js  : array();
-            } else {
-                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->css       ) ? $oTemplate->cssFramework->css       : array();
-                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->js        ) ? $oTemplate->cssFramework->js        : array();
+        $aAssetsToRemove = array();
+        if (!empty($this->cssFramework->$sType)){
+            $aAssetsToRemove = array_merge( (array) $this->cssFramework->$sType->attributes()->replace );
+            if($bInlcudeRemove){
+                $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $this->cssFramework->$sType->attributes()->remove );
             }
-
-            if (empty($cssFrameworkCsss) && empty($cssFrameworkJss)) {
-                $frameworkPackages[] = $framework;
-            } else {
-
-                $cssFrameworkPackage = Yii::app()->clientScript->packages[$framework];     // Need to create an adapted core framework
-                $packageCss          = array();                                            // Need to create an adapted template/theme framework */
-                $packageJs           = array();                                            // css file to replace from default package */
-                $cssDelete           = array();
-
-                foreach($cssFrameworkCsss as $cssFrameworkCss) {
-                    if(isset($cssFrameworkCss['replace'])) {
-                        $cssDelete[] = $cssFrameworkCss['replace'];
-                    }
-                    if((string)$cssFrameworkCss) {
-                        $packageCss[] = (string) $cssFrameworkCss;
-                    }
-                }
-
-                if(isset($cssFrameworkPackage['css'])) {
-                    $cssFrameworkPackage['css']=array_diff($cssFrameworkPackage['css'],$cssDelete);
-                }
-
-                $jsDelete=array();
-                foreach($cssFrameworkJss as $cssFrameworkJs) {
-                    if(isset($cssFrameworkJs['replace'])) {
-                        $jsDelete[] = $cssFrameworkJs['replace'];
-                    }
-                    if((string)$cssFrameworkJs) {
-                        $packageJs[] = (string)$cssFrameworkJs;
-                    }
-                }
-                if(isset($cssFrameworkPackage['js'])) {
-                    $cssFrameworkPackage['js'] = array_diff($cssFrameworkPackage['js'],$cssDelete);
-                }
-
-                /* And now : we add : core package fixed + template/theme package */
-                Yii::app()->clientScript->packages[$framework] = $cssFrameworkPackage; /* @todo : test if empty css and js : just add depends if yes */
-                $aDepends=array(
-                    $framework,
-                );
-
-                $sTemplateurl = $oTemplate->getTemplateURL();
-                $sPathName    = 'survey.template-'.$oTemplate->sTemplateName.'.path';
-
-                Yii::app()->clientScript->addPackage(
-                    $framework.'-template', array(
-                        'devBaseUrl'  => $sTemplateurl,                        // Don't use asset manager
-                        'basePath'    => $sPathName,                            // basePath: the asset manager will be used
-                        'css'         => $packageCss,
-                        'js'          => $packageJs,
-                        'depends'     => $aDepends,
-                    )
-                );
-                $frameworkPackages[]=$framework.'-template';
-            }
-            return $frameworkPackages;
-        }/*elseif($framework){
-            throw error ? Only for admin template editor ? disable and reset to default ?
-        }*/
-        return array();
+        }
+        return $aAssetsToRemove;
     }
 
     /**

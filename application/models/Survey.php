@@ -128,6 +128,14 @@ use \ls\pluginmanager\PluginEvent;
  * @property bool $isSendConfirmation Send confirmation emails
  * @property bool $isTokenAnswersPersistence Enable token-based response persistence
  * @property bool $isAssessments Enable assessment mode
+ * @property bool $isShowXQuestions Show "There are X questions in this survey"
+ * @property bool $isShowGroupInfo Show group name and/or group description
+ * @property bool $isShowNoAnswer Show "No answer"
+ * @property bool $isShowQnumCode Show question number and/or code
+ * @property bool $isShowWelcome Show welcome screen
+ * @property bool $isShowProgress how progress bar
+ * @property bool $isNoKeyboard Show on-screen keyboard
+ * @property bool $isAllowEditAfterCompletion Allow multiple responses or update responses with one token
  */
 class Survey extends LSActiveRecord
 {
@@ -582,7 +590,7 @@ class Survey extends LSActiveRecord
         $oDefaultMenu = Surveymenu::model()->findByPk(1);
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
-        
+
         $entries = [];
         $defaultMenuEntries = $oDefaultMenu->surveymenuEntries;
         foreach($defaultMenuEntries as $menuEntry){
@@ -590,12 +598,12 @@ class Survey extends LSActiveRecord
             if((!empty($entry['permission']) && !empty($entry['permission_grade']) && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade'])))
                 continue;
 
-            
-            $aEntry['link'] = $aEntry['menu_link'] 
+
+            $aEntry['link'] = $aEntry['menu_link']
                         ?  App()->getController()->createUrl($aEntry['menu_link'],['surveyid' => $this->sid])
                         : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
             $entries[] = $aEntry;
-        }  
+        }
 
         $aResult = [
             "title" => $oDefaultMenu->title,
@@ -604,7 +612,7 @@ class Survey extends LSActiveRecord
         ];
 
         return $aResult;
-    }   
+    }
 
 
     /**
@@ -612,7 +620,7 @@ class Survey extends LSActiveRecord
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
      */
     public function getSurveyMenus(){
-        
+
         $aSurveyMenus = [];
 
         //Get the default menu
@@ -625,7 +633,7 @@ class Survey extends LSActiveRecord
                 "description" => $menu->description,
                 "entries" => []
             ];
-            
+
             foreach($menu->surveymenuEntries as $menuEntry){
                 $aEntry = $menuEntry->attributes;
                 $aEntry['link'] = App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
@@ -1059,7 +1067,7 @@ class Survey extends LSActiveRecord
     /**
      * @return bool
      */
-    public function getIsRrefUrl()
+    public function getIsRefUrl()
     {
         return ($this->refurl === 'Y');
     }
@@ -1112,7 +1120,78 @@ class Survey extends LSActiveRecord
     {
         return ($this->assessments === 'Y');
     }
+    /**
+     * @return bool
+     */
+    public function getIsShowXQuestions()
+    {
+        return ($this->showxquestions === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowGroupInfo()
+    {
+        return ($this->showgroupinfo === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowNoAnswer()
+    {
+        return ($this->shownoanswer === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowQnumCode()
+    {
+        return ($this->showqnumcode === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowWelcome()
+    {
+        return ($this->showwelcome === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsShowProgress()
+    {
+        return ($this->showprogress === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsNoKeyboard()
+    {
+        return ($this->nokeyboard === 'Y');
+    }
+    /**
+     * @return bool
+     */
+    public function getIsAllowEditAfterCompletion()
+    {
+        return ($this->alloweditaftercompletion === 'Y');
+    }
 
+    /**
+     * Returns the title of the survey. Uses the current language and
+     * falls back to the surveys' default language if the current language is not available.
+     */
+    public function getLocalizedTitle()
+    {
+        if (isset($this->languagesettings[App()->language]))
+        {
+            return $this->languagesettings[App()->language]->surveyls_title;
+        }
+        else
+        {
+            return $this->languagesettings[$this->language]->surveyls_title;
+        }
+    }
 
     /**
      * @return array|null
