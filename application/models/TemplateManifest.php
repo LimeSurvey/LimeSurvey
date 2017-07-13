@@ -266,7 +266,7 @@ class TemplateManifest extends TemplateConfiguration
 
         $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
         $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
-        $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);
+        $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);   // Only for the insert before statement
 
         if (is_null($oFiles)){
             $oFiles    = $oNewManifest->createElement('files');
