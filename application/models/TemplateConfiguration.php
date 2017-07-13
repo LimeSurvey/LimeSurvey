@@ -177,8 +177,6 @@ class TemplateConfiguration extends CActiveRecord
         $criteria->compare('cssframework_css',$this->cssframework_css,true);
         $criteria->compare('cssframework_js',$this->cssframework_js,true);
         $criteria->compare('packages_to_load',$this->packages_to_load,true);
-        $criteria->compare('packages_ltr',$this->packages_ltr,true);
-        $criteria->compare('packages_rtl',$this->packages_rtl,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -213,6 +211,7 @@ class TemplateConfiguration extends CActiveRecord
         $oNewTemplate->author                 = Yii::app()->user->name;
         $oNewTemplate->author_email           = ''; // privacy
         $oNewTemplate->author_url             = ''; // privacy
+        $oNewTemplate->api_version            = $oEditTemplateDb->api_version;
         $oNewTemplate->view_folder            = $oEditTemplateDb->view_folder;
         $oNewTemplate->files_folder           = $oEditTemplateDb->files_folder;
         //$oNewTemplate->description           TODO: a more complex modal whith email, author, url, licence, desc, etc
@@ -228,7 +227,7 @@ class TemplateConfiguration extends CActiveRecord
                 throw new Exception($oNewTemplateConfiguration->getErrors());
             }
         }else{
-            return $oNewTemplate->getErrors();
+            throw new Exception($oNewTemplate->getErrors());
         }
     }
 
@@ -274,17 +273,17 @@ class TemplateConfiguration extends CActiveRecord
         return $this->sTemplateurl;
     }
 
-    public function extendsFile($sFile)
+    public function addFileReplacementInDB($sFile, $sType)
     {
-        if( !file_exists($this->path.'/'.$sFile) && !file_exists($this->viewPath.$sFile) ){
+        $sField = 'file_'.$sType;
+        $oFiles = json_decode($this->$sField);
 
-            // Copy file from mother template to local directory
-            $sRfilePath = $this->getFilePath($sFile, $this);
-            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.'/'.$sFile;
-            copy ( $sRfilePath,  $sLfilePath );
+        if (is_null($oFiles)){
+            $oFiles    = new \stdClass();
+
+
         }
 
-        return $this->getFilePath($sFile, $this);
     }
 
     public function getTemplateForFile($sFile, $oRTemplate)
