@@ -1177,7 +1177,21 @@ class Survey extends LSActiveRecord
         return ($this->alloweditaftercompletion === 'Y');
     }
 
-
+    /**
+     * Returns the title of the survey. Uses the current language and
+     * falls back to the surveys' default language if the current language is not available.
+     */
+    public function getLocalizedTitle()
+    {
+        if (isset($this->languagesettings[App()->language]))
+        {
+            return $this->languagesettings[App()->language]->surveyls_title;
+        }
+        else
+        {
+            return $this->languagesettings[$this->language]->surveyls_title;
+        }
+    }
 
     /**
      * @return array|null
