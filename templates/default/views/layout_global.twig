@@ -29,9 +29,9 @@
         {{ registerTemplateCssFile("css/background-image.css") }}
     {% endif %}
 
-{% else %}
-    {{ unregisterScriptForAjax()}}
-{% endif %}
+    {% else %}
+        {{ unregisterScriptForAjax()}}
+    {% endif %}
 
 
 
