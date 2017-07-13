@@ -49,7 +49,7 @@ class Template extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, title', 'required'),
+            array('name, title', 'api_version', 'view_folder', 'files_folder', 'required'),
             array('owner_id', 'numerical', 'integerOnly'=>true),
             array('name, author, extends_templates_name', 'length', 'max'=>150),
             array('folder, version, api_version, view_folder, files_folder', 'length', 'max'=>45),

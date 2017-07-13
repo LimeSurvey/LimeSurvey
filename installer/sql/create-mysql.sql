@@ -696,11 +696,11 @@ INSERT INTO `prefix_surveymenu_entries` VALUES
 -- -----------------------------------------------------
 -- Table `prefix_templates`
 -- -----------------------------------------------------
-CREATE TABLE `prefix_templates` (
-  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'identifier, no special chars',
+CREATE TABLE `lime_templates` (
+  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `folder` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'the title that will be show for this template that can have special chars',
-  `creation_date` date DEFAULT NULL,
+  `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `author` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `author_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `author_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -713,49 +713,45 @@ CREATE TABLE `prefix_templates` (
   `description` text COLLATE utf8mb4_unicode_ci,
   `last_update` datetime DEFAULT NULL,
   `owner_id` int(11) DEFAULT NULL,
-  `extends_templates_name` int(11) DEFAULT NULL
+  `extends_templates_name` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 ALTER TABLE `prefix_templates`
   ADD PRIMARY KEY (`name`);
 
 
-    INSERT INTO `prefix_templates` (`name`, `title`, `creation_date`, `author`, `author_email`, `author_url`, `copyright`, `license`, `version`, `api_version`, `view_folder`, `files_folder`, `description`, `last_update`, `folder`, `owner_id`, `extends_templates_name`) VALUES
-    ('default', 'Advanced Template', '2017-07-11', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', 'LimeSurvey Advanced Template:\r\nMany options for user customizations. \r\n', NULL, 'default', 0, NULL);
+INSERT INTO `lime_templates` (`name`, `folder`, `title`, `creation_date`, `author`, `author_email`, `author_url`, `copyright`, `license`, `version`, `api_version`, `view_folder`, `files_folder`, `description`, `last_update`, `owner_id`, `extends_templates_name`) VALUES
+  ('default', 'default', 'Advanced Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', 'LimeSurvey Advanced Template:\\r\\nMany options for user customizations. \\r\\n', NULL, 1, '');
 
 
 -- -----------------------------------------------------
 -- Table `prefix_template_configuration`
 -- -----------------------------------------------------
-CREATE TABLE `prefix_template_configuration` (
-  `id` int(11) UNSIGNED NOT NULL,
+CREATE TABLE `lime_template_configuration` (
+  `id` int(11) NOT NULL,
   `templates_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gsid` int(11) UNSIGNED DEFAULT NULL COMMENT 'linked survey group - optional',
-  `sid` int(11) UNSIGNED DEFAULT NULL COMMENT 'linked survey - optional',
-  `files_css` mediumtext COLLATE utf8mb4_unicode_ci COMMENT 'CSS files to load at each page ',
-  `files_js` mediumtext COLLATE utf8mb4_unicode_ci COMMENT 'JS files to load at each page',
+  `sid` int(11) DEFAULT NULL,
+  `gsid` int(11) DEFAULT NULL,
+  `files_css` mediumtext COLLATE utf8mb4_unicode_ci,
+  `files_js` mediumtext COLLATE utf8mb4_unicode_ci,
   `files_print_css` mediumtext COLLATE utf8mb4_unicode_ci,
-  `options` mediumtext COLLATE utf8mb4_unicode_ci COMMENT 'options as json array',
+  `options` mediumtext COLLATE utf8mb4_unicode_ci,
   `cssframework_name` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `cssframework_css` mediumtext COLLATE utf8mb4_unicode_ci,
-  `cssframework_js` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `packages_to_load` mediumtext COLLATE utf8mb4_unicode_ci COMMENT 'json object of packages to load',
+  `cssframework_js` mediumtext COLLATE utf8mb4_unicode_ci,
+  `packages_to_load` mediumtext COLLATE utf8mb4_unicode_ci,
   `packages_ltr` mediumtext COLLATE utf8mb4_unicode_ci,
   `packages_rtl` mediumtext COLLATE utf8mb4_unicode_ci
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+ALTER TABLE `lime_template_configuration`
+  ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `lime_template_configuration`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
-ALTER TABLE `prefix_template_configuration`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_UNIQUE` (`id`);
-
-ALTER TABLE `prefix_template_configuration`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
-INSERT INTO `prefix_template_configuration` (`id`, `templates_name`, `gsid`, `sid`, `files_css`, `files_js`, `files_print_css`, `options`, `cssframework_name`, `cssframework_css`, `cssframework_js`, `packages_to_load`, `packages_ltr`, `packages_rtl`) VALUES
-  (1, 'default', NULL, NULL, '{\r\n	"add": ["css/template.css", "css/animate.css"]\r\n}', '{\r\n	"add": ["scripts/template.js"]\r\n}', '{\r\n"add":"css/print_template.css",\r\n}', '{\r\n"ajaxmode":"on",\r\n"brandlogo":"on",\r\n"backgroundimage":"on",\r\n"animatebody":"on",\r\n"bodyanimation":"lightSpeedIn",\r\n"animatequestion":"on",\r\n"questionanimation":"flipInX",\r\n"animatealert":"on",\r\n"alertanimation":"shake"\r\n}', 'bootstrap', '{\r\n	"replace": ["css/bootstrap.css", "css/yiistrap.css"]\r\n}', '', 'template-default,', 'template-default-ltr,', 'template-default-rtl,');
-
+INSERT INTO `lime_template_configuration` (`id`, `templates_name`, `sid`, `gsid`, `files_css`, `files_js`, `files_print_css`, `options`, `cssframework_name`, `cssframework_css`, `cssframework_js`, `packages_to_load`, `packages_ltr`, `packages_rtl`) VALUES
+  (1, 'default', NULL, NULL, '{"add": ["css/template.css", "css/animate.css"]}', '{"add": ["scripts/template.js"]}', '{"add":"css/print_template.css",}', '{"ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}', 'bootstrap', '{"replace": ["css/bootstrap.css"]}', '', '', '', '');
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
