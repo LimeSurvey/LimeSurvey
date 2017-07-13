@@ -209,7 +209,6 @@ class TemplateManifest extends TemplateConfiguration
     */
     public function extendsFile($sFile)
     {
-
         if( !file_exists($this->path.'/'.$sFile) && !file_exists($this->viewPath.$sFile) ){
 
             // Copy file from mother template to local directory
@@ -227,43 +226,68 @@ class TemplateManifest extends TemplateConfiguration
 
                 // The CSS/JS file is a configuration one....
                 if(in_array($sFile, $aFiles)){
-
-                    // First we get the XML file
-                    libxml_disable_entity_loader(false);
-                    $oNewManifest = new DOMDocument();
-                    $oNewManifest->load($this->path."/config.xml");
-
-                    $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
-                    $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
-                    $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);
-
-                    if (is_null($oFiles)){
-                        $oFiles    = $oNewManifest->createElement('files');
-                    }
-
-                    $oAssetType = $oFiles->getElementsByTagName($sExt)->item(0);
-                    if (is_null($oAssetType)){
-                        $oAssetType   = $oNewManifest->createElement($sExt);
-                        $oFiles->appendChild($oAssetType);
-                    }
-
-                    // <filename replace="css/template.css">css/template.css</filename>
-                    $oNewManifest->createElement('filename');
-
-                    //$oConfig->appendChild($oNvFilesNode);
-                    $oAssetElem       = $oNewManifest->createElement('filename', $sFile);
-                    $replaceAttribute = $oNewManifest->createAttribute('replace');
-                    $replaceAttribute->value = $sFile;
-                    $oAssetElem->appendChild($replaceAttribute);
-                    $oAssetType->appendChild($oAssetElem);
-                    $oConfig->insertBefore($oFiles,$oOptions);
-                    $oNewManifest->save($this->path."/config.xml");
-                    libxml_disable_entity_loader(true);
+                    $this->addFileReplacementInManifest($sFile, $sExt);
+                    $this->addFileReplacementInDB($sFile, $sExt);
                 }
             }
         }
-
         return $this->getFilePath($sFile, $this);
+    }
+
+    /**
+     * Add a file replacement entry in DB
+     * It first tries to get the oTemplateConfigurations for this template (can be void if edited from template, can be numerous if survey local config)
+     * If it exists, it call $oTemplateConfiguration->oTemplateConfiguration($sFile, $sType) for each one of them
+     *
+     * @param string $sFile the file to replace
+     * @param string $sType css|js
+     */
+    public function addFileReplacementInDB($sFile, $sType)
+    {
+        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'), array(':templates_name' => $this->sTemplateName));
+        foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
+            $oTemplateConfigurationModel->addFileReplacementInDB($sFile, $sType);
+        }
+    }
+
+    /**
+     * Add a file replacement entry
+     * eg: <filename replace="css/template.css">css/template.css</filename>
+     *
+     * @param string $sFile the file to replace
+     * @param string $sType css|js
+     */
+    private function addFileReplacementInManifest($sFile, $sType)
+    {
+        // First we get the XML file
+        libxml_disable_entity_loader(false);
+        $oNewManifest = new DOMDocument();
+        $oNewManifest->load($this->path."/config.xml");
+
+        $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
+        $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
+        $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);   // Only for the insert before statement
+
+        if (is_null($oFiles)){
+            $oFiles    = $oNewManifest->createElement('files');
+        }
+
+        $oAssetType = $oFiles->getElementsByTagName($sType)->item(0);
+        if (is_null($oAssetType)){
+            $oAssetType   = $oNewManifest->createElement($sType);
+            $oFiles->appendChild($oAssetType);
+        }
+
+        $oNewManifest->createElement('filename');
+
+        $oAssetElem       = $oNewManifest->createElement('filename', $sFile);
+        $replaceAttribute = $oNewManifest->createAttribute('replace');
+        $replaceAttribute->value = $sFile;
+        $oAssetElem->appendChild($replaceAttribute);
+        $oAssetType->appendChild($oAssetElem);
+        $oConfig->insertBefore($oFiles,$oOptions);
+        $oNewManifest->save($this->path."/config.xml");
+        libxml_disable_entity_loader(true);
     }
 
     /**

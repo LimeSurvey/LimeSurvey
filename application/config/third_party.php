@@ -26,6 +26,7 @@ return array(
             'jquery-migrate-3.0.0'.$minVersion.'.js',
         )
     ),
+
     // Bootstrap
     // This package replace the Yiistrap register() function
     // Then instead of using the composer dependency system for templates
@@ -44,6 +45,23 @@ return array(
             'jquery',
         )
     ),
+
+    // Bootstrap admin
+    // must be different for template editor not to colide with template files replacement
+    'bootstrap-admin' => array(
+        'devBaseUrl' => 'assets/packages/bootstrap/',
+        'basePath' => 'core.bootstrap',
+        'css'=> array(
+            'bootstrap'.$minVersion.'.css',/* Admin need it, not public */
+            'yiistrap'.$minVersion.'.css',
+        ),
+        'js'=>array(
+            'bootstrap'.$minVersion.'.js'
+        ),
+        'depends' => array(
+            'jquery',
+        )
+    ),    
 
     // bootstrap-slider : for multinumeric with slider
     'bootstrap-slider' => array(

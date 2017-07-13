@@ -30,7 +30,6 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * @property string $viewdirectory
  * @property string $filesdirectory
  * @property string $packages_to_load
- * @property string $packages_ltr
  * @property string $packages_rtl
  *
  *
@@ -110,10 +109,10 @@ class TemplateConfiguration extends CActiveRecord
             array('id, sid, gsid', 'numerical', 'integerOnly'=>true),
             array('templates_name', 'length', 'max'=>150),
             array('cssframework_name', 'length', 'max'=>45),
-            array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load, packages_ltr, packages_rtl', 'safe'),
+            array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, templates_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load, packages_ltr, packages_rtl', 'safe', 'on'=>'search'),
+            array('id, templates_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on'=>'search'),
         );
     }
 
@@ -145,8 +144,6 @@ class TemplateConfiguration extends CActiveRecord
             'cssframework_css' => 'Cssframework Css',
             'cssframework_js' => 'Cssframework Js',
             'packages_to_load' => 'Packages To Load',
-            'packages_ltr' => 'Packages Ltr',
-            'packages_rtl' => 'Packages Rtl',
         );
     }
 
@@ -180,8 +177,6 @@ class TemplateConfiguration extends CActiveRecord
         $criteria->compare('cssframework_css',$this->cssframework_css,true);
         $criteria->compare('cssframework_js',$this->cssframework_js,true);
         $criteria->compare('packages_to_load',$this->packages_to_load,true);
-        $criteria->compare('packages_ltr',$this->packages_ltr,true);
-        $criteria->compare('packages_rtl',$this->packages_rtl,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -216,6 +211,7 @@ class TemplateConfiguration extends CActiveRecord
         $oNewTemplate->author                 = Yii::app()->user->name;
         $oNewTemplate->author_email           = ''; // privacy
         $oNewTemplate->author_url             = ''; // privacy
+        $oNewTemplate->api_version            = $oEditTemplateDb->api_version;
         $oNewTemplate->view_folder            = $oEditTemplateDb->view_folder;
         $oNewTemplate->files_folder           = $oEditTemplateDb->files_folder;
         //$oNewTemplate->description           TODO: a more complex modal whith email, author, url, licence, desc, etc
@@ -228,10 +224,10 @@ class TemplateConfiguration extends CActiveRecord
             if ($oNewTemplateConfiguration->save()){
                 return true;
             }else{
-                throw new Exception($oNewTemplateConfiguration->getErrors());                
+                throw new Exception($oNewTemplateConfiguration->getErrors());
             }
         }else{
-            return $oNewTemplate->getErrors();
+            throw new Exception($oNewTemplate->getErrors());
         }
     }
 
@@ -277,17 +273,17 @@ class TemplateConfiguration extends CActiveRecord
         return $this->sTemplateurl;
     }
 
-    public function extendsFile($sFile)
+    public function addFileReplacementInDB($sFile, $sType)
     {
-        if( !file_exists($this->path.'/'.$sFile) && !file_exists($this->viewPath.$sFile) ){
+        $sField = 'file_'.$sType;
+        $oFiles = json_decode($this->$sField);
 
-            // Copy file from mother template to local directory
-            $sRfilePath = $this->getFilePath($sFile, $this);
-            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.'/'.$sFile;
-            copy ( $sRfilePath,  $sLfilePath );
+        if (is_null($oFiles)){
+            $oFiles    = new \stdClass();
+
+
         }
 
-        return $this->getFilePath($sFile, $this);
     }
 
     public function getTemplateForFile($sFile, $oRTemplate)
