@@ -590,7 +590,7 @@ class Survey extends LSActiveRecord
         $oDefaultMenu = Surveymenu::model()->findByPk(1);
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
-        
+
         $entries = [];
         $defaultMenuEntries = $oDefaultMenu->surveymenuEntries;
         foreach($defaultMenuEntries as $menuEntry){
@@ -598,12 +598,12 @@ class Survey extends LSActiveRecord
             if((!empty($entry['permission']) && !empty($entry['permission_grade']) && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade'])))
                 continue;
 
-            
-            $aEntry['link'] = $aEntry['menu_link'] 
+
+            $aEntry['link'] = $aEntry['menu_link']
                         ?  App()->getController()->createUrl($aEntry['menu_link'],['surveyid' => $this->sid])
                         : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
             $entries[] = $aEntry;
-        }  
+        }
 
         $aResult = [
             "title" => $oDefaultMenu->title,
@@ -612,7 +612,7 @@ class Survey extends LSActiveRecord
         ];
 
         return $aResult;
-    }   
+    }
 
 
     /**
@@ -620,7 +620,7 @@ class Survey extends LSActiveRecord
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
      */
     public function getSurveyMenus(){
-        
+
         $aSurveyMenus = [];
 
         //Get the default menu
@@ -633,7 +633,7 @@ class Survey extends LSActiveRecord
                 "description" => $menu->description,
                 "entries" => []
             ];
-            
+
             foreach($menu->surveymenuEntries as $menuEntry){
                 $aEntry = $menuEntry->attributes;
                 $aEntry['link'] = App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
@@ -1067,7 +1067,7 @@ class Survey extends LSActiveRecord
     /**
      * @return bool
      */
-    public function getIsRrefUrl()
+    public function getIsRefUrl()
     {
         return ($this->refurl === 'Y');
     }
