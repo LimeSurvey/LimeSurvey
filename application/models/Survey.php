@@ -883,7 +883,7 @@ class Survey extends LSActiveRecord
      */
     public function getState()
     {
-        if($this->active == 'N') {
+        if(!$this->isActive) {
             return 'inactive';
         } elseif ($this->expires != '' || $this->startdate != '') {
             // Time adjust
@@ -922,7 +922,7 @@ class Survey extends LSActiveRecord
     {
 
         // If the survey is not active, no date test is needed
-        if($this->active == 'N') {
+        if(!$this->isActive) {
             $running = '<a href="'.App()->createUrl('/admin/survey/sa/view/surveyid/'.$this->sid).'" class="survey-state" data-toggle="tooltip" title="'.gT('Inactive').'"><span class="fa fa-stop text-warning"></span><span class="sr-only">'.gT('Inactive').'"</span></a>';
         }
         // If it's active, then we check if not expired
