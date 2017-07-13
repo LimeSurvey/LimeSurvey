@@ -389,9 +389,9 @@ function upgradeTemplateTables295($oDB)
         'copyright'              => 'MEDIUMTEXT',
         'license'                => 'MEDIUMTEXT',
         'version'                => 'string(45) DEFAULT NULL',
-        'api_version'            => 'string(45) DEFAULT NULL',
-        'view_folder'            => 'string(45) DEFAULT NULL',
-        'files_folder'           => 'string(45) DEFAULT NULL',
+        'api_version'            => 'string(45) NOT NULL',
+        'view_folder'            => 'string(45) NOT NULL',
+        'files_folder'           => 'string(45) NOT NULL',
         'description'            => 'TEXT',
         'last_update'            => 'DATETIME DEFAULT NULL',
         'owner_id'               => 'INT(11) DEFAULT NULL',
@@ -434,8 +434,6 @@ function upgradeTemplateTables295($oDB)
         'cssframework_css'  => 'MEDIUMTEXT',
         'cssframework_js'   => 'MEDIUMTEXT',
         'packages_to_load'  => 'MEDIUMTEXT',
-        'packages_ltr'      => 'MEDIUMTEXT',
-        'packages_rtl'      => 'MEDIUMTEXT',
     ));
 
     // Add global configuration for Advanced Template
@@ -449,9 +447,7 @@ function upgradeTemplateTables295($oDB)
         'cssframework_name' => 'bootstrap',
         'cssframework_css'  => '{"replace": ["css/bootstrap.css", "css/yiistrap.css"]}',
         'cssframework_js'   => '',
-        'packages_to_load'  => 'template-default,',
-        'packages_ltr'      => 'template-default-ltr,',
-        'packages_rtl'      => 'template-default-rtl,',
+        'packages_to_load'  => 'template-core,',
     ));
 
     $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>295),"stg_name='DBVersion'");
