@@ -501,7 +501,7 @@ class SurveyAdmin extends Survey_Common_Action
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
         $menus = $survey->getSurveyMenus(); 
-
+        $userSettings = [];
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(

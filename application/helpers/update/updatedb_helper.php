@@ -238,6 +238,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
+        /**
+         * Survey menue table update
+         * @since 2017-07-12
+         */
+        if ($iOldDBVersion < 295) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            $oDB->createCommand()->addColumn('{{surveymenu}}', 'user_id', "int DEFAULT NULL");
+            $oDB->createCommand()->addForeignKey('user_id', '{{surveymenu}}', 'user_id', '{{users}}', 'uid' );
+            $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'user_id', "int DEFAULT NULL");
+            $oDB->createCommand()->addForeignKey('user_id', '{{surveymenu_entries}}', 'user_id', '{{users}}', 'uid' );
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>295),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     }
     catch(Exception $e)
     {

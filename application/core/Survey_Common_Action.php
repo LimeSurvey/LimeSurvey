@@ -270,11 +270,11 @@ class Survey_Common_Action extends CAction
             $aData['debug'] = $aData;
             $this->_titlebar($aData);
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="ls-flex-row align-items-flex-center align-content-center">';
+            echo '<div id="vue-app-main-container" class="ls-flex-row align-items-flex-center align-content-center">';
             //// Each view will call the correct bar as a subview.
             $this->_surveysidemenu($aData);
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-12">';
+            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-12 ls-flex-item">';
             $this->_surveybar($aData);
             $this->_nquestiongroupbar($aData);
             $this->_questionbar($aData);
@@ -283,7 +283,7 @@ class Survey_Common_Action extends CAction
             $this->_organizequestionbar($aData);
 
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="container-fluid ls-flex-column fill col-12" id="in_survey_common">';
+            echo '<div class="container-fluid ls-flex-column fill col-12 overflow-enabled" id="in_survey_common">';
 
             $this->_updatenotification();
             $this->_notifications();

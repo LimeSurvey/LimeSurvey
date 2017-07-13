@@ -1,10 +1,33 @@
 <?php
 
-class SurveymenuController extends Controller
+class SurveymenuController extends Survey_Common_Action
 {
-	public function actionIndex()
+	public function index()
+    {
+        $this->getController()->redirect(array('admin/menus/sa/view'));
+    }
+
+	public function view()
 	{
-		$this->render('index');
+		//$this->checkPermission();
+
+        $data = array();
+        $data['model'] = Surveymenu::model();
+
+        $this->_renderWrappedTemplate(null, array('surveymenu/index'), $data);
+	}
+
+	public function getsurveymenuform($menuid=null){
+		$menuid = Yii::app()->request->getParam('menuid', null);
+		if($menuid != null)
+		{
+        	$model = Surveymenu::model()->findByPk(((int) $menuid));
+		} else 
+		{
+        	$model = Surveymenu::model();
+		}
+		$user = Yii::app()->session['loginID'];
+		return Yii::app()->getController()->renderPartial('/admin/surveymenu/_form', array('model'=>$model, 'user'=>$user));
 	}
 
 	// Uncomment the following methods and override them if needed

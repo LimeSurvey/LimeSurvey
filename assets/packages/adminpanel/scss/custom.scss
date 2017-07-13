@@ -15,16 +15,23 @@
 .nooverflow{
     overflow: hidden;
 }
-
+.overflow-enabled{
+    overflow: auto;
+}
 .btn-primary.force.color.white.onhover{
     &:hover, &:active,&:focus{
         color:white;
     }
 }
 
-#in_survey_common{
-    padding-bottom: 65px;
+.side-body{
+    min-height: 400px;
 }
+
+footer.footer {
+    position: static;
+}
+
 
 ol.breadcrumb.title-bar-breadcrumb{
     background: transparent;

@@ -131,6 +131,22 @@
                     <span class="icon-tools" ></span>
                     <?php eT('Advanced');?>
                 </li>
+                <!-- Surveymenu Editor -->
+                <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
+                            <?php eT("Surveymenus");?>
+                        </a>
+                    </li>
+                <?php endif;?>
+                <!-- Surveymenu entry Editor -->
+                <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/menuentries/sa/view"); ?>">
+                            <?php eT("Surveymenu entries");?>
+                        </a>
+                    </li>
+                <?php endif;?>
                 <?php if(Permission::model()->hasGlobalPermission('templates','read')): ?>
                     <!-- Template Editor -->
                     <li class="dropdown-item">

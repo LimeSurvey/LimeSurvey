@@ -28,13 +28,15 @@ const AppState = new Vuex.Store({
   }
 });
 
-if(document.getElementById('vue-side-menu-app')){
+if(document.getElementById('vue-app-main-container')){
   const sidemenu = new Vue(
   {  
-    el: '#vue-side-menu-app',
+    el: '#vue-app-main-container',
     store: AppState,
     components: {
       'sidebar' : Sidebar,
+    },
+    methods: {
     },
     mounted(){
        this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
@@ -50,6 +52,33 @@ const pjaxed = new Pjax({
             ]
         });
 
+$(document).ready(()=>{
+  if($('#vue-app-main-container').length >0 ){
+
+    const
+        menuOffset = $('nav.navbar').outerHeight()+45,
+        menuHeight = + $('.menubar.surveymanagerbar').outerHeight(),
+        footerHeight =  $('footer').outerHeight()+65,
+        documentHeight = screen.availableHeight || screen.height,
+        innerMenuHeight = $('#surveybarid').outerHeight();
+    
+    let vueAppContainerHeight = documentHeight-( menuOffset + menuHeight + footerHeight );
+    let inSurveyCommonHeight = vueAppContainerHeight - (innerMenuHeight + 45);
+
+    console.log({
+      menuOffset : menuOffset,
+      menuHeight : menuHeight,
+      footerHeight : footerHeight,
+      documentHeight : documentHeight,
+      innerMenuHeight : innerMenuHeight,
+      vueAppContainerHeight : vueAppContainerHeight,
+      inSurveyCommonHeight : inSurveyCommonHeight
+    });
+
+    $('#vue-app-main-container').css('height', vueAppContainerHeight+'px');
+    $('#in_survey_common').css('height',inSurveyCommonHeight+'px');
+  }
+});
 
 // const topmenu = new Vue(
 //   {  
