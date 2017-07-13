@@ -258,7 +258,7 @@ class TemplateManifest extends TemplateConfiguration
                 }
             }
         }
-// IKI
+
         return $this->getFilePath($sFile, $this);
     }
 
@@ -266,7 +266,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         $aFiles = array();
         while(is_a($oRTemplate, 'TemplateManifest')){
-            $aTFiles = isset($oRTemplate->config->files->$type->filename)?(array) $oRTemplate->config->files->css->filename:array();
+            $aTFiles = isset($oRTemplate->config->files->$type->filename)?(array) $oRTemplate->config->files->$type->filename:array();
             $aFiles  = array_merge($aTFiles, $aFiles);
             $oRTemplate = $oRTemplate->oMotherTemplate;
         }
@@ -295,10 +295,9 @@ class TemplateManifest extends TemplateConfiguration
             $otherfiles = $this->oMotherTemplate->getOtherFiles();
         }
 
-        if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath))
-        {
-            while (false !== ($file = readdir($handle)))
-            {
+        if ( file_exists($this->filesPath) && $handle = opendir($this->filesPath)){
+
+            while (false !== ($file = readdir($handle))){
                 if (!array_search($file, array("DUMMYENTRY", ".", "..", "preview.png"))) {
                     if (!is_dir($this->viewPath . DIRECTORY_SEPARATOR . $file)) {
                         $otherfiles[] = $this->sFilesDirectory . DIRECTORY_SEPARATOR . $file;
@@ -415,6 +414,10 @@ class TemplateManifest extends TemplateConfiguration
         // Remove/Replace mother files
         $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
         $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
+
+        // Add framework replacement
+        $aCssFiles = array_merge($aCssFiles, $this->getFrameworkAssetsToReplace('css'));
+        $aJsFiles  = array_merge($aJsFiles, $this->getFrameworkAssetsToReplace('js'));
 
         if (isset($oTemplate->config->files->$dir)) {
             $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array) $oTemplate->config->files->$dir->css->filename : array();
@@ -572,6 +575,7 @@ class TemplateManifest extends TemplateConfiguration
 
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
+        //var_dump($this->depends); die();
     }
 
 
@@ -591,31 +595,37 @@ class TemplateManifest extends TemplateConfiguration
      */
     private function getDependsPackages($oTemplate)
     {
-
-        /* Start by adding cssFramework package */
-        $packages = $this->getFrameworkPackages($oTemplate);
-
-        if (!getLanguageRTL(App()->getLanguage())) {
-            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'ltr'));
-        } else {
-            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'rtl'));
-        }
+        $dir = (getLanguageRTL(App()->getLanguage()))?'rtl':'ltr';
 
         /* Core package */
-        $packages[]='limesurvey-public';
+        $packages[] = 'limesurvey-public';
+        $packages[] = 'template-core';
+        $packages[] = ( $dir == "ltr")? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
 
-        /* template packages */
-        if (!empty($this->packages->package)) {
-            $packages = array_merge ($packages, (array)$this->packages->package);
+        /* bootstrap */
+        if(!empty($this->cssFramework)){
+
+            // Basic bootstrap package
+            if((string)$this->cssFramework->name == "bootstrap"){
+                $packages[] = 'bootstrap';
+            }
+
+            // Rtl version of bootstrap
+            if ($dir == "rtl"){
+                $packages[] = 'bootstrap-rtl';
+            }
+
+            // Remove unwanted bootstrap stuff
+            foreach( $this->getFrameworkAssetsToReplace('css', true) as $toReplace){
+                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace );
+            }
+
+            foreach( $this->getFrameworkAssetsToReplace('js', true) as $toReplace){
+                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'js', $toReplace );
+            }
         }
 
-        /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
-        $dir = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-
-        if (!empty($this->packages->$dir->package)) {
-            $packages = array_merge ($packages, (array)$this->packages->$dir->package);
-        }
-
+        /* Moter Template */
         if (isset($this->config->metadatas->extends)){
             $sMotherTemplateName = (string) $this->config->metadatas->extends;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
@@ -624,91 +634,16 @@ class TemplateManifest extends TemplateConfiguration
         return $packages;
     }
 
-    /**
-     * Set the framework package
-     * @param string $dir (rtl|ltr|)
-     * @use self::@cssFramework
-     * @return string[] depends for framework
-     */
-    private function getFrameworkPackages($oTemplate, $dir="")
+    private function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
-        // If current template doesn't have a name for the framework package, we use the mother's one
-        $framework = isset($oTemplate->cssFramework->name) ? (string) $oTemplate->cssFramework->name : (string) $oTemplate->oMotherTemplate->cssFramework;
-        $framework = $dir ? $framework."-".$dir : $framework;
-
-        if  ( isset(Yii::app()->clientScript->packages[$framework]) ) {
-
-            $frameworkPackages = array();
-
-            /* Theming */
-            if ($dir) {
-                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->$dir->css ) ? $oTemplate->cssFramework->$dir->css : array();
-                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->$dir->js  ) ? $oTemplate->cssFramework->$dir->js  : array();
-            } else {
-                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->css       ) ? $oTemplate->cssFramework->css       : array();
-                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->js        ) ? $oTemplate->cssFramework->js        : array();
+        $aAssetsToRemove = array();
+        if (!empty($this->cssFramework->$sType)){
+            $aAssetsToRemove = array_merge( (array) $this->cssFramework->$sType->attributes()->replace );
+            if($bInlcudeRemove){
+                $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $this->cssFramework->$sType->attributes()->remove );
             }
-
-            if (empty($cssFrameworkCsss) && empty($cssFrameworkJss)) {
-                $frameworkPackages[] = $framework;
-            } else {
-
-                $cssFrameworkPackage = Yii::app()->clientScript->packages[$framework];     // Need to create an adapted core framework
-                $packageCss          = array();                                            // Need to create an adapted template/theme framework */
-                $packageJs           = array();                                            // css file to replace from default package */
-                $cssDelete           = array();
-
-                foreach($cssFrameworkCsss as $cssFrameworkCss) {
-                    if(isset($cssFrameworkCss['replace'])) {
-                        $cssDelete[] = $cssFrameworkCss['replace'];
-                    }
-                    if((string)$cssFrameworkCss) {
-                        $packageCss[] = (string) $cssFrameworkCss;
-                    }
-                }
-
-                if(isset($cssFrameworkPackage['css'])) {
-                    $cssFrameworkPackage['css']=array_diff($cssFrameworkPackage['css'],$cssDelete);
-                }
-
-                $jsDelete=array();
-                foreach($cssFrameworkJss as $cssFrameworkJs) {
-                    if(isset($cssFrameworkJs['replace'])) {
-                        $jsDelete[] = $cssFrameworkJs['replace'];
-                    }
-                    if((string)$cssFrameworkJs) {
-                        $packageJs[] = (string)$cssFrameworkJs;
-                    }
-                }
-                if(isset($cssFrameworkPackage['js'])) {
-                    $cssFrameworkPackage['js'] = array_diff($cssFrameworkPackage['js'],$cssDelete);
-                }
-
-                /* And now : we add : core package fixed + template/theme package */
-                Yii::app()->clientScript->packages[$framework] = $cssFrameworkPackage; /* @todo : test if empty css and js : just add depends if yes */
-                $aDepends=array(
-                    $framework,
-                );
-
-                $sTemplateurl = $oTemplate->getTemplateURL();
-                $sPathName    = 'survey.template-'.$oTemplate->sTemplateName.'.path';
-
-                Yii::app()->clientScript->addPackage(
-                    $framework.'-template', array(
-                        'devBaseUrl'  => $sTemplateurl,                        // Don't use asset manager
-                        'basePath'    => $sPathName,                            // basePath: the asset manager will be used
-                        'css'         => $packageCss,
-                        'js'          => $packageJs,
-                        'depends'     => $aDepends,
-                    )
-                );
-                $frameworkPackages[]=$framework.'-template';
-            }
-            return $frameworkPackages;
-        }/*elseif($framework){
-            throw error ? Only for admin template editor ? disable and reset to default ?
-        }*/
-        return array();
+        }
+        return $aAssetsToRemove;
     }
 
     /**
