@@ -27,7 +27,7 @@ function triggerEmRelevanceQuestion(){
     });
     $("[id^='question']").on('relevance:off',function(event,data) {
         if(event.target != this) return;
-        $(this).addClass("ls-irrelevant ls-hidden");
+        $(this).addClass("ls-irrelevant ls-hidden ls-conditional");
     });
     /* In all in one mode : need updating group too */
     $(".allinone [id^='group-']:not(.ls-irrelevant) [id^='question']").on('relevance:on',function(event,data) {
@@ -49,7 +49,7 @@ function triggerEmRelevanceGroup(){
     });
     $("[id^='group-']").on('relevance:off',function(event,data) {
         if(event.target != this) return;
-        $(this).addClass("ls-irrelevant ls-hidden");
+        $(this).addClass("ls-irrelevant ls-hidden ls-conditional");
     });
 }
 /* On sub-question and answers-list */
