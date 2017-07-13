@@ -60,7 +60,6 @@ class TemplateManifest extends TemplateConfiguration
     /** @var SimpleXMLElement $oOptions The template options */
     public $oOptions;
 
-
     /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
     private $iSurveyId='';
 
@@ -202,7 +201,12 @@ class TemplateManifest extends TemplateConfiguration
         return $this->getFilePath($sFile, $this);
     }
 
-
+    /**
+    * Copy a file from mother template to local directory and edit manifest if needed
+    *
+    * @param string $sTemplateName
+    * @return string template url
+    */
     public function extendsFile($sFile)
     {
 
@@ -262,6 +266,13 @@ class TemplateManifest extends TemplateConfiguration
         return $this->getFilePath($sFile, $this);
     }
 
+    /**
+    * Get the files (css or js) defined in the manifest of a template and its mother templates
+    *
+    * @param  string $type       css|js
+    * @param string $oRTemplate template from which the recurrence should start
+    * @return array
+    */
     public function getFilesForPackages($type, $oRTemplate)
     {
         $aFiles = array();
@@ -273,6 +284,14 @@ class TemplateManifest extends TemplateConfiguration
         return $aFiles;
     }
 
+
+    /**
+    * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
+    *
+    * @param  string $sFile      the  file to look for (must contain relative path, unless it's a view file)
+    * @param string $oRTemplate template from which the recurrence should start
+    * @return TemplateManifest
+    */
     public function getTemplateForFile($sFile, $oRTemplate)
     {
         while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
@@ -287,6 +306,10 @@ class TemplateManifest extends TemplateConfiguration
         return $oRTemplate;
     }
 
+    /**
+     * Get the list of all the files for a template and its mother templates
+     * @return array
+     */
     public function getOtherFiles()
     {
         $otherfiles = array();
@@ -397,6 +420,7 @@ class TemplateManifest extends TemplateConfiguration
      * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
      * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
      *
+     * @param $oTemplate TemplateManifest
      */
     private function createTemplatePackage($oTemplate)
     {
@@ -455,8 +479,8 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Change the mother template configuration depending on template settings
-     * @var $sType     string   the type of settings to change (css or js)
-     * @var $aSettings array    array of local setting
+     * @param $sType     string   the type of settings to change (css or js)
+     * @param $aSettings array    array of local setting
      * @return array
      */
     private function changeMotherConfiguration( $sType, $aSettings )
@@ -642,6 +666,12 @@ class TemplateManifest extends TemplateConfiguration
         return $packages;
     }
 
+    /**
+     * Get the list of file replacement from Engine Framework
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return array
+     */
     private function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
         $aAssetsToRemove = array();
