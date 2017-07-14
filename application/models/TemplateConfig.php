@@ -18,6 +18,43 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
  class TemplateConfig extends CActiveRecord
  {
+    /** @var string $sTemplateName The template name */
+    public $sTemplateName='';
+
+    /** @var string $sPackageName Name of the asset package of this template*/
+    public $sPackageName;
+
+    /** @var  string $path Path of this template */
+    public $path;
+
+    /** @var string[] $sTemplateurl Url to reach the framework */
+    public $sTemplateurl;
+
+    /** @var  string $viewPath Path of the views files (twig template) */
+    public $viewPath;
+
+    /** @var  string $sFilesDirectory name of the file directory */
+    public $sFilesDirectory;
+
+    /** @var  string $filesPath Path of the tmeplate's files */
+    public $filesPath;
+
+    /** @var string[] $cssFramework What framework css is used */
+    public $cssFramework;
+
+    /** @var boolean $isStandard Is this template a core one? */
+    public $isStandard;
+
+    /** @var SimpleXMLElement $config Will contain the config.xml */
+    public $config;
+
+    /** @var TemplateConfiguration $oMotherTemplate The template name */
+    public $oMotherTemplate;
+
+    /** @var SimpleXMLElement $oOptions The template options */
+    public $oOptions;
+
+
     /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
     protected $depends = array();
 
