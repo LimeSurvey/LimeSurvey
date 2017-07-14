@@ -671,7 +671,6 @@ CREATE TABLE `prefix_surveymenu_entries` (
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`menu_id`) REFERENCES  `prefix_surveymenu` (`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`user_id`) REFERENCES  `prefix_users` (`uid`) ON DELETE CASCADE,
   KEY `menu_id` (`menu_id`),
   KEY `order` (`order`),
   KEY `title` (`title`(191)),
