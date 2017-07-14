@@ -476,12 +476,7 @@ class TemplateManifest extends TemplateConfiguration
         $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
 
         // Then we add the direction files if they exist
-        if (isset($oTemplate->config->files->$dir)) {
-            $aCssFilesDir = isset($oTemplate->config->files->$dir->css->filename) ? (array) $oTemplate->config->files->$dir->css->filename : array();
-            $aJsFilesDir  = isset($oTemplate->config->files->$dir->js->filename)  ? (array) $oTemplate->config->files->$dir->js->filename : array();
-            $aCssFiles    = array_merge($aCssFiles,$aCssFilesDir);
-            $aJsFiles     = array_merge($aJsFiles,$aJsFilesDir);
-        }
+        // TODO: attribute system rather than specific fields for RTL
 
         $this->sPackageName = 'survey-template-'.$this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
@@ -713,7 +708,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         $aAssetsToRemove = array();
         if (!empty($this->cssFramework->$sType)){
-            $aAssetsToRemove = array_merge( (array) $this->cssFramework->$sType->attributes()->replace );
+            $aAssetsToRemove =  (array) $this->cssFramework->$sType->attributes()->replace ;
             if($bInlcudeRemove){
                 $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $this->cssFramework->$sType->attributes()->remove );
             }
