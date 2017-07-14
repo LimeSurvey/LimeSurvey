@@ -36,7 +36,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-class TemplateConfiguration extends CActiveRecord
+class TemplateConfiguration extends TemplateConfig
 {
     /** @var string $sTemplateName The template name */
     public $sTemplateName='';
