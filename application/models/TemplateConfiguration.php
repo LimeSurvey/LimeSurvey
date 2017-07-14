@@ -284,16 +284,18 @@ class TemplateConfiguration extends CActiveRecord
      */
     public function addFileReplacement($sFile, $sType)
     {
-        $sField = 'file_'.$sType;
-        $oFiles = json_decode($this->$sField);
+        $sField = 'files_'.$sType;
+        $oFiles = (array) json_decode($this->$sField);
 
-        if (is_null($oFiles)){
-            $oFiles    = new \stdClass();
+        $oFiles['replace'][] = $sFile;
 
-            // TODO
+        $this->$sField = json_encode($oFiles);
 
+        if ($this->save()){
+            return true;
+        }else{
+            throw new Exception("could not add $sFile to  $sField replacements! ".$this->getErrors());
         }
-
     }
 
     /**

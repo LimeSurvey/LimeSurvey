@@ -245,7 +245,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function addFileReplacementInDB($sFile, $sType)
     {
-        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'), array(':templates_name' => $this->sTemplateName));
+        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'=>$this->sTemplateName));
         foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
             $oTemplateConfigurationModel->addFileReplacement($sFile, $sType);
         }
@@ -258,7 +258,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param string $sFile the file to replace
      * @param string $sType css|js
      */
-    private function addFileReplacement($sFile, $sType)
+    public function addFileReplacement($sFile, $sType)
     {
         // First we get the XML file
         libxml_disable_entity_loader(false);
@@ -527,9 +527,9 @@ class TemplateManifest extends TemplateConfiguration
      * @param $aSettings        array    array of local setting
      * @return array
      */
-    private function removeFileFromPackage( $sPackageName, $sType, $aSettings )
+    private function removeFileFromPackage( $sPackageName, $sType, $aSetting )
     {
-        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting['replace'] );
+        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting );
     }
 
     /**
