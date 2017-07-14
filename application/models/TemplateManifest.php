@@ -99,6 +99,8 @@ class TemplateManifest extends TemplateConfiguration
         return $this;
     }
 
+    // Public interface specific to TemplateManifest
+
     /**
      * Update the configuration file "last update" node.
      * For now, it is called only from template editor
@@ -111,30 +113,6 @@ class TemplateManifest extends TemplateConfiguration
         $config->asXML( realpath ($this->xmlFile) );                // Belt
         touch ( $this->path );                                      // & Suspenders ;-)
         libxml_disable_entity_loader(true);
-    }
-
-
-    /**
-     * get the template API version
-     * @return integer
-     */
-    public function getApiVersion()
-    {
-        return $this->apiVersion;
-    }
-
-    /**
-    * Returns the complete URL path to a given template name
-    *
-    * @param string $sTemplateName
-    * @return string template url
-    */
-    public function getTemplateURL()
-    {
-        if(!isset($this->sTemplateurl)){
-            $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
-        }
-        return $this->sTemplateurl;
     }
 
     /**
@@ -235,63 +213,6 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Add a file replacement entry in DB
-     * In the first place it tries to get the all the configuration entries for this template
-     * (it can be void if edited from template editor, or they can be numerous if the template has local config at survey/survey group/user level)
-     * Then, it call $oTemplateConfiguration->addFileReplacement($sFile, $sType) for each one of them.
-     *
-     * @param string $sFile the file to replace
-     * @param string $sType css|js
-     */
-    public function addFileReplacementInDB($sFile, $sType)
-    {
-        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'=>$this->sTemplateName));
-        foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
-            $oTemplateConfigurationModel->addFileReplacement($sFile, $sType);
-        }
-    }
-
-    /**
-     * Add a file replacement entry
-     * eg: <filename replace="css/template.css">css/template.css</filename>
-     *
-     * @param string $sFile the file to replace
-     * @param string $sType css|js
-     */
-    public function addFileReplacement($sFile, $sType)
-    {
-        // First we get the XML file
-        libxml_disable_entity_loader(false);
-        $oNewManifest = new DOMDocument();
-        $oNewManifest->load($this->path."/config.xml");
-
-        $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
-        $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
-        $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);   // Only for the insert before statement
-
-        if (is_null($oFiles)){
-            $oFiles    = $oNewManifest->createElement('files');
-        }
-
-        $oAssetType = $oFiles->getElementsByTagName($sType)->item(0);
-        if (is_null($oAssetType)){
-            $oAssetType   = $oNewManifest->createElement($sType);
-            $oFiles->appendChild($oAssetType);
-        }
-
-        $oNewManifest->createElement('filename');
-
-        $oAssetElem       = $oNewManifest->createElement('filename', $sFile);
-        $replaceAttribute = $oNewManifest->createAttribute('replace');
-        $replaceAttribute->value = $sFile;
-        $oAssetElem->appendChild($replaceAttribute);
-        $oAssetType->appendChild($oAssetElem);
-        $oConfig->insertBefore($oFiles,$oOptions);
-        $oNewManifest->save($this->path."/config.xml");
-        libxml_disable_entity_loader(true);
-    }
-
-    /**
     * Get the files (css or js) defined in the manifest of a template and its mother templates
     *
     * @param  string $type       css|js
@@ -309,26 +230,21 @@ class TemplateManifest extends TemplateConfiguration
         return $aFiles;
     }
 
-
     /**
-    * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
-    *
-    * @param  string $sFile      the  file to look for (must contain relative path, unless it's a view file)
-    * @param string $oRTemplate template from which the recurrence should start
-    * @return TemplateManifest
-    */
-    public function getTemplateForFile($sFile, $oRTemplate)
+     * Add a file replacement entry in DB
+     * In the first place it tries to get the all the configuration entries for this template
+     * (it can be void if edited from template editor, or they can be numerous if the template has local config at survey/survey group/user level)
+     * Then, it call $oTemplateConfiguration->addFileReplacement($sFile, $sType) for each one of them.
+     *
+     * @param string $sFile the file to replace
+     * @param string $sType css|js
+     */
+    public function addFileReplacementInDB($sFile, $sType)
     {
-        while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
-            $oMotherTemplate = $oRTemplate->oMotherTemplate;
-            if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                throw new Exception("no template found for  $sFile!");
-                break;
-            }
-            $oRTemplate = $oMotherTemplate;
+        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'=>$this->sTemplateName));
+        foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
+            $oTemplateConfigurationModel->addFileReplacement($sFile, $sType);
         }
-
-        return $oRTemplate;
     }
 
     /**
@@ -438,6 +354,109 @@ class TemplateManifest extends TemplateConfiguration
         libxml_disable_entity_loader(true);
     }
 
+    /**
+     * Read the config.xml file of the template and push its contents to $this->config
+     */
+    private function readManifest()
+    {
+        $this->xmlFile         = $this->path.DIRECTORY_SEPARATOR.'config.xml';
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true);            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $this->config          = simplexml_load_string($sXMLConfigFile);        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
+
+        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+    }
+
+
+
+
+    // Shared interface with TemplateConfiguration
+
+    /**
+     * get the template API version
+     * @return integer
+     */
+    public function getApiVersion()
+    {
+        return $this->apiVersion;
+    }
+
+    /**
+    * Returns the complete URL path to a given template name
+    *
+    * @param string $sTemplateName
+    * @return string template url
+    */
+    public function getTemplateURL()
+    {
+        if(!isset($this->sTemplateurl)){
+            $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
+        }
+        return $this->sTemplateurl;
+    }
+
+    /**
+     * Add a file replacement entry
+     * eg: <filename replace="css/template.css">css/template.css</filename>
+     *
+     * @param string $sFile the file to replace
+     * @param string $sType css|js
+     */
+    public function addFileReplacement($sFile, $sType)
+    {
+        // First we get the XML file
+        libxml_disable_entity_loader(false);
+        $oNewManifest = new DOMDocument();
+        $oNewManifest->load($this->path."/config.xml");
+
+        $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
+        $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
+        $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);   // Only for the insert before statement
+
+        if (is_null($oFiles)){
+            $oFiles    = $oNewManifest->createElement('files');
+        }
+
+        $oAssetType = $oFiles->getElementsByTagName($sType)->item(0);
+        if (is_null($oAssetType)){
+            $oAssetType   = $oNewManifest->createElement($sType);
+            $oFiles->appendChild($oAssetType);
+        }
+
+        $oNewManifest->createElement('filename');
+
+        $oAssetElem       = $oNewManifest->createElement('filename', $sFile);
+        $replaceAttribute = $oNewManifest->createAttribute('replace');
+        $replaceAttribute->value = $sFile;
+        $oAssetElem->appendChild($replaceAttribute);
+        $oAssetType->appendChild($oAssetElem);
+        $oConfig->insertBefore($oFiles,$oOptions);
+        $oNewManifest->save($this->path."/config.xml");
+        libxml_disable_entity_loader(true);
+    }
+
+
+    /**
+    * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
+    *
+    * @param  string $sFile      the  file to look for (must contain relative path, unless it's a view file)
+    * @param string $oRTemplate template from which the recurrence should start
+    * @return TemplateManifest
+    */
+    public function getTemplateForFile($sFile, $oRTemplate)
+    {
+        while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                throw new Exception("no template found for  $sFile!");
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        return $oRTemplate;
+    }
+
 
     /**
      * Create a package for the asset manager.
@@ -456,20 +475,20 @@ class TemplateManifest extends TemplateConfiguration
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-        $aCssFiles = $aJsFiles = array();
+        $aCssFiles  = $aJsFiles = array();
 
         // First we add the framework replacement (bootstrap.css must be loaded before template.css)
-        $aCssFiles = $this->getFrameworkAssetsToReplace('css');
-        $aJsFiles  = $this->getFrameworkAssetsToReplace('js');
+        $aCssFiles  = $this->getFrameworkAssetsToReplace('css');
+        $aJsFiles   = $this->getFrameworkAssetsToReplace('js');
 
         // Then we add the template config files
-        $aTCssFiles   = isset($oTemplate->config->files->css->filename)?(array) $oTemplate->config->files->css->filename:array();        // The CSS files of this template
-        $aTJsFiles    = isset($oTemplate->config->files->js->filename)? (array) $oTemplate->config->files->js->filename:array();         // The JS files of this template
+        $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
+        $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
 
-        $aCssFiles    = array_merge($aCssFiles, $aTCssFiles);
-        $aTJsFiles    = array_merge($aCssFiles, $aTJsFiles);
+        $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
+        $aTJsFiles  = array_merge($aCssFiles, $aTJsFiles);
 
-        $dir         = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+        $dir        = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
         // Remove/Replace mother template files
         $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
@@ -491,6 +510,25 @@ class TemplateManifest extends TemplateConfiguration
             'js'          => $aJsFiles,
             'depends'     => $oTemplate->depends,
         ) );
+    }
+
+
+    // Different in both
+
+    /**
+     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
+     *
+     * @var $jFiles string json
+     * @return array
+     */
+    private function getFilesToLoad($oTemplate, $sType)
+    {
+        $aFiles = array();
+        //if(!empty($jFiles)){
+        if(isset($oTemplate->config->files->$sType->filename)){
+            $aFiles = (array) $oTemplate->config->files->$sType->filename;
+        }
+        return $aFiles;
     }
 
     /**
@@ -525,19 +563,6 @@ class TemplateManifest extends TemplateConfiguration
     private function removeFileFromPackage( $sPackageName, $sType, $aSetting )
     {
         Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting );
-    }
-
-    /**
-     * Read the config.xml file of the template and push its contents to $this->config
-     */
-    private function readManifest()
-    {
-        $this->xmlFile         = $this->path.DIRECTORY_SEPARATOR.'config.xml';
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true);            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-        $this->config          = simplexml_load_string($sXMLConfigFile);        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-
-        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
     }
 
     /**
@@ -643,6 +668,11 @@ class TemplateManifest extends TemplateConfiguration
     }
 
 
+
+    /**
+     * Common privates methods
+     */
+
     /**
      * @return bool
      */
@@ -651,6 +681,34 @@ class TemplateManifest extends TemplateConfiguration
         $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
     }
 
+
+
+    /**
+     * Get the file path for a given template.
+     * It will check if css/js (relative to path), or view (view path)
+     * It will search for current template and mother templates
+     *
+     * @param   string  $sFile          relative path to the file
+     * @param   string  $oTemplate      the template where to look for (and its mother templates)
+     */
+    private function getFilePath($sFile, $oTemplate)
+    {
+        // Remove relative path
+        $sFile = trim($sFile, '.');
+        $sFile = trim($sFile, '/');
+
+        // Retreive the correct template for this file (can be a mother template)
+        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
+
+        if($oTemplate instanceof TemplateConfiguration){
+            if(file_exists($oTemplate->path.'/'.$sFile)){
+                return $oTemplate->path.'/'.$sFile;
+            }elseif(file_exists($oTemplate->viewPath.$sFile)){
+                return $oTemplate->viewPath.$sFile;
+            }
+        }
+        return false;
+    }
 
     /**
      * Get the depends package
@@ -699,6 +757,10 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
+     * Different implemation of  privates methods
+     */
+
+    /**
      * Get the list of file replacement from Engine Framework
      * @param string  $sType            css|js the type of file
      * @param boolean $bInlcudeRemove   also get the files to remove
@@ -714,33 +776,6 @@ class TemplateManifest extends TemplateConfiguration
             }
         }
         return $aAssetsToRemove;
-    }
-
-    /**
-     * Get the file path for a given template.
-     * It will check if css/js (relative to path), or view (view path)
-     * It will search for current template and mother templates
-     *
-     * @param   string  $sFile          relative path to the file
-     * @param   string  $oTemplate      the template where to look for (and its mother templates)
-     */
-    private function getFilePath($sFile, $oTemplate)
-    {
-        // Remove relative path
-        $sFile = trim($sFile, '.');
-        $sFile = trim($sFile, '/');
-
-        // Retreive the correct template for this file (can be a mother template)
-        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
-
-        if($oTemplate instanceof TemplateConfiguration){
-            if(file_exists($oTemplate->path.'/'.$sFile)){
-                return $oTemplate->path.'/'.$sFile;
-            }elseif(file_exists($oTemplate->viewPath.$sFile)){
-                return $oTemplate->viewPath.$sFile;
-            }
-        }
-        return false;
     }
 
 }

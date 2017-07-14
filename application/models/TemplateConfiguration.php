@@ -310,7 +310,7 @@ class TemplateConfiguration extends CActiveRecord
         while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                return false;
+                throw new Exception("no template found for  $sFile!");
                 break;
             }
             $oRTemplate = $oMotherTemplate;
@@ -336,27 +336,27 @@ class TemplateConfiguration extends CActiveRecord
         Yii::setPathOfAlias($sPathName, $oTemplate->path);
         Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-        $aCssFiles = $aJsFiles = array();
+        $aCssFiles  = $aJsFiles = array();
 
         // First we add the framework replacement (bootstrap.css must be loaded before template.css)
-        $aCssFiles = $this->getFrameworkAssetsToReplace('css');
-        $aJsFiles  = $this->getFrameworkAssetsToReplace('js');
+        $aCssFiles  = $this->getFrameworkAssetsToReplace('css');
+        $aJsFiles   = $this->getFrameworkAssetsToReplace('js');
 
         // Then we add the template config files
-        $aTCssFiles = $this->getFilesToLoad($this->files_css);
-        $aTJsFiles  = $this->getFilesToLoad($this->files_js);
+        $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
+        $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
 
-        $aCssFiles    = array_merge($aCssFiles, $aTCssFiles);
-        $aTJsFiles    = array_merge($aCssFiles, $aTJsFiles);
+        $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
+        $aTJsFiles  = array_merge($aCssFiles, $aTJsFiles);
 
-        $dir       = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
+        $dir        = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
-        // Remove/Replace mother files
-        $this->changeMotherConfiguration('css', $aCssFiles);
-        $this->changeMotherConfiguration('js',  $aJsFiles);
+        // Remove/Replace mother template files
+        $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
+        $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
 
         // Then we add the direction files if they exist
-        // TODO: add rtl fields in db, or an attribute system (dir="rtl", etc)
+        // TODO: attribute system rather than specific fields for RTL
 
         $this->sPackageName = 'survey-template-'.$this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
@@ -373,22 +373,29 @@ class TemplateConfiguration extends CActiveRecord
         ) );
     }
 
+
+
+    // Different in both
+
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *
      * @var $jFiles string json
      * @return array
      */
-    private function getFilesToLoad($jFiles)
+    private function getFilesToLoad($oTemplate, $sType)
     {
-       $aFiles = array();
-       if(!empty($jFiles)){
-           $oFiles = json_decode($jFiles);
-           foreach($oFiles as $action => $aFileList){
-               $aFiles = array_merge($aFiles, $aFileList);
-           }
-       }
-       return $aFiles;
+        $sField = 'files_'.$sType;
+        $jFiles = $oTemplate->$sField;
+
+        $aFiles = array();
+        if(!empty($jFiles)){
+            $oFiles = json_decode($jFiles);
+            foreach($oFiles as $action => $aFileList){
+                $aFiles = array_merge($aFiles, $aFileList);
+            }
+        }
+        return $aFiles;
     }
 
     /**
@@ -402,6 +409,8 @@ class TemplateConfiguration extends CActiveRecord
         if (is_a($this->oMotherTemplate, 'TemplateConfiguration')){
             $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSettings);
         }
+
+        return $aSettings;
     }
 
     /**
@@ -484,6 +493,9 @@ class TemplateConfiguration extends CActiveRecord
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
     }
 
+    /**
+     * Common privates methods
+     */
 
     /**
      * @return bool
@@ -493,6 +505,36 @@ class TemplateConfiguration extends CActiveRecord
         $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
     }
 
+    /**
+     * Get the file path for a given template.
+     * It will check if css/js (relative to path), or view (view path)
+     * It will search for current template and mother templates
+     *
+     * @param   string  $sFile          relative path to the file
+     * @param   string  $oTemplate      the template where to look for (and its mother templates)
+     */
+    private function getFilePath($sFile, $oTemplate)
+    {
+        // Remove relative path
+        $sFile = trim($sFile, '.');
+        $sFile = trim($sFile, '/');
+
+        // Retreive the correct template for this file (can be a mother template)
+        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
+
+        if($oTemplate instanceof TemplateConfiguration){
+            if(file_exists($oTemplate->path.'/'.$sFile)){
+                return $oTemplate->path.'/'.$sFile;
+            }elseif(file_exists($oTemplate->viewPath.$sFile)){
+                return $oTemplate->viewPath.$sFile;
+            }
+        }
+        return false;
+    }
+
+
+
+
 
     /**
      * Get the depends package
@@ -501,7 +543,6 @@ class TemplateConfiguration extends CActiveRecord
      */
     private function getDependsPackages($oTemplate)
     {
-
         $dir = (getLanguageRTL(App()->getLanguage()))?'rtl':'ltr';
 
         /* Core package */
@@ -542,6 +583,10 @@ class TemplateConfiguration extends CActiveRecord
     }
 
     /**
+     * Different implemation of  privates methods
+     */
+
+    /**
      * Get the list of file replacement from Engine Framework
      * @param string  $sType            css|js the type of file
      * @param boolean $bInlcudeRemove   also get the files to remove
@@ -563,32 +608,4 @@ class TemplateConfiguration extends CActiveRecord
         }
         return $aAssetsToRemove;
     }
-
-    /**
-     * Get the file path for a given template.
-     * It will check if css/js (relative to path), or view (view path)
-     * It will search for current template and mother templates
-     *
-     * @param   string  $sFile          relative path to the file
-     * @param   string  $oTemplate      the template where to look for (and its mother templates)
-     */
-    private function getFilePath($sFile, $oTemplate)
-    {
-        // Remove relative path
-        $sFile = trim($sFile, '.');
-        $sFile = trim($sFile, '/');
-
-        // Retreive the correct template for this file (can be a mother template)
-        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
-
-        if($oTemplate instanceof TemplateConfiguration){
-            if(file_exists($oTemplate->path.'/'.$sFile)){
-                return $oTemplate->path.'/'.$sFile;
-            }elseif(file_exists($oTemplate->viewPath.$sFile)){
-                return $oTemplate->viewPath.$sFile;
-            }
-        }
-        return false;
-    }
-
 }
