@@ -383,12 +383,18 @@ class TemplateConfiguration extends TemplateConfig
             }
         }
 
-        /* Moter Template */
+        // Moter Template Package
+        $packages = $this->addMotherTemplatePackage($packages);
+
+        return $packages;
+    }
+
+    protected function addMotherTemplatePackage($packages)
+    {
         if (!empty($this->template->extends_templates_name)){
             $sMotherTemplateName = (string) $this->template->extends_templates_name;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
         }
-
         return $packages;
     }
 

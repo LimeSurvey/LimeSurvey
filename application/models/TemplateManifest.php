@@ -552,12 +552,19 @@ class TemplateManifest extends TemplateConfiguration
             }
         }
 
-        /* Moter Template */
+        // Moter Template Package
+        $packages = $this->addMotherTemplatePackage($packages);
+
+        return $packages;
+    }
+
+
+    protected function addMotherTemplatePackage($packages)
+    {
         if (isset($this->config->metadatas->extends)){
             $sMotherTemplateName = (string) $this->config->metadatas->extends;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
         }
-
         return $packages;
     }
 
