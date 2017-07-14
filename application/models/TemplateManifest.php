@@ -69,14 +69,8 @@ class TemplateManifest extends TemplateConfig
     /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
     private $packages;
 
-    /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
-    private $depends = array();
-
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
     private $xmlFile;
-
-    /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
-    private $apiVersion;
 
 
     /**

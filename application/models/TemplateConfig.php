@@ -18,6 +18,26 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
  class TemplateConfig extends CActiveRecord
  {
+    /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
+    protected $depends = array();
+
+    /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
+    protected $apiVersion;
+
+    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
+    protected $iSurveyId='';
+
+    /** @var string $hasConfigFile Does it has a config.xml file? */
+    protected $hasConfigFile='';//
+
+    /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
+    protected $packages;
+
+    /** @var string $xmlFile What xml config file does it use? (config/minimal) */
+    protected $xmlFile;
+
+
+
      /**
       * get the template API version
       * @return integer
