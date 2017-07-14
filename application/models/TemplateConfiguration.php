@@ -341,54 +341,6 @@ class TemplateConfiguration extends TemplateConfig
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
     }
 
-
-
-
-
-
-    /**
-     * Get the depends package
-     * @uses self::@package
-     * @return string[]
-     */
-    protected function getDependsPackages($oTemplate)
-    {
-        $dir = (getLanguageRTL(App()->getLanguage()))?'rtl':'ltr';
-
-        /* Core package */
-        $packages[] = 'limesurvey-public';
-        $packages[] = 'template-core';
-        $packages[] = ( $dir == "ltr")? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
-
-        /* bootstrap */
-        if(!empty($this->cssFramework)){
-
-            // Basic bootstrap package
-            if((string)$this->cssFramework->name == "bootstrap"){
-                $packages[] = 'bootstrap';
-            }
-
-            // Rtl version of bootstrap
-            if ($dir == "rtl"){
-                $packages[] = 'bootstrap-rtl';
-            }
-
-            // Remove unwanted bootstrap stuff
-            foreach( $this->getFrameworkAssetsToReplace('css', true) as $toReplace){
-                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace );
-            }
-
-            foreach( $this->getFrameworkAssetsToReplace('js', true) as $toReplace){
-                Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'js', $toReplace );
-            }
-        }
-
-        // Moter Template Package
-        $packages = $this->addMotherTemplatePackage($packages);
-
-        return $packages;
-    }
-
     protected function addMotherTemplatePackage($packages)
     {
         if (!empty($this->template->extends_templates_name)){
