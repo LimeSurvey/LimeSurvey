@@ -20,42 +20,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-class TemplateManifest extends TemplateConfig
-{    
+class TemplateManifest extends TemplateConfiguration
+{
     public $templateEditor;
 
-    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
-    private $iSurveyId='';
-
-    /** @var string $hasConfigFile Does it has a config.xml file? */
-    private $hasConfigFile='';//
-
-    /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
-    private $packages;
-
-    /** @var string $xmlFile What xml config file does it use? (config/minimal) */
-    private $xmlFile;
-
-
-    /**
-     * Constructs a template configuration object
-     * If any problem (like template doesn't exist), it will load the default template configuration
-     *
-     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
-     * @param  string $iSurveyId the id of the survey. If
-     * @return $this
-     */
-    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
-    {
-        $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
-        $this->setIsStandard();                                                 // Check if  it is a CORE template
-        $this->setPath();                                                       // Check and set path
-        $this->readManifest();                                                  // Check and read the manifest to set local params
-        $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        @$this->setThisTemplate();                                               // Set the main config values of this template
-        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
-        return $this;
-    }
 
     // Public interface specific to TemplateManifest
 
@@ -313,27 +281,24 @@ class TemplateManifest extends TemplateConfig
     }
 
     /**
-     * Read the config.xml file of the template and push its contents to $this->config
+     * Constructs a template configuration object
+     * If any problem (like template doesn't exist), it will load the default template configuration
+     *
+     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
+     * @param  string $iSurveyId the id of the survey. If
+     * @return $this
      */
-    private function readManifest()
+    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
     {
-        $this->xmlFile         = $this->path.DIRECTORY_SEPARATOR.'config.xml';
-        $bOldEntityLoaderState = libxml_disable_entity_loader(true);            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
-        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
-        $this->config          = simplexml_load_string($sXMLConfigFile);        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
-
-        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+        $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
+        $this->setIsStandard();                                                 // Check if  it is a CORE template
+        $this->setPath();                                                       // Check and set path
+        $this->readManifest();                                                  // Check and read the manifest to set local params
+        $this->setMotherTemplates();                                            // Recursive mother templates configuration
+        $this->setThisTemplate();                                               // Set the main config values of this template
+        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
+        return $this;
     }
-
-
-
-
-    // Shared interface with TemplateConfiguration
-
-
-
-
-    // Different in both
 
     /**
      * Add a file replacement entry
@@ -375,69 +340,17 @@ class TemplateManifest extends TemplateConfig
         libxml_disable_entity_loader(true);
     }
 
-
-
     /**
-     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
-     *
-     * @var $jFiles string json
-     * @return array
+     * Read the config.xml file of the template and push its contents to $this->config
      */
-    private function getFilesToLoad($oTemplate, $sType)
+    private function readManifest()
     {
-        $aFiles = array();
-        //if(!empty($jFiles)){
-        if(isset($oTemplate->config->files->$sType->filename)){
-            $aFiles = (array) $oTemplate->config->files->$sType->filename;
-        }
-        return $aFiles;
-    }
+        $this->xmlFile         = $this->path.DIRECTORY_SEPARATOR.'config.xml';
+        $bOldEntityLoaderState = libxml_disable_entity_loader(true);            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+        $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
+        $this->config          = simplexml_load_string($sXMLConfigFile);        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
 
-    /**
-     * Change the mother template configuration depending on template settings
-     * @param $sType     string   the type of settings to change (css or js)
-     * @param $aSettings array    array of local setting
-     * @return array
-     */
-    private function changeMotherConfiguration( $sType, $aSettings )
-    {
-        foreach( $aSettings as $key => $aSetting){
-            if (!empty($aSetting['replace']) || !empty($aSetting['remove'])){
-                $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSetting['replace']);
-                unset($aSettings[$key]);
-            }
-        }
-
-        return $aSettings;
-    }
-
-    /**
-     * Proxy for Yii::app()->clientScript->removeFileFromPackage()
-     * It's not realy needed here, but it is needed for TemplateConfiguration model.
-     * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
-     * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
-     *
-     * @param $sPackageName     string   name of the package to edit
-     * @param $sType            string   the type of settings to change (css or js)
-     * @param $aSettings        array    array of local setting
-     * @return array
-     */
-    private function removeFileFromPackage( $sPackageName, $sType, $aSetting )
-    {
-        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting );
-    }
-
-    /**
-     * Configure the mother template (and its mother templates)
-     * This is an object recursive call to TemplateManifest::setTemplateConfiguration()
-     */
-    private function setMotherTemplates()
-    {
-        if (isset($this->config->metadatas->extends)){
-            $sMotherTemplateName   = (string) $this->config->metadatas->extends;
-            $this->oMotherTemplate = new TemplateManifest;
-            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
-        }
+        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
     }
 
     /**
@@ -499,6 +412,70 @@ class TemplateManifest extends TemplateConfig
         }
     }
 
+
+    /**
+     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
+     *
+     * @var $jFiles string json
+     * @return array
+     */
+    protected function getFilesToLoad($oTemplate, $sType)
+    {
+        $aFiles = array();
+        //if(!empty($jFiles)){
+        if(isset($oTemplate->config->files->$sType->filename)){
+            $aFiles = (array) $oTemplate->config->files->$sType->filename;
+        }
+        return $aFiles;
+    }
+
+    /**
+     * Change the mother template configuration depending on template settings
+     * @param $sType     string   the type of settings to change (css or js)
+     * @param $aSettings array    array of local setting
+     * @return array
+     */
+    protected function changeMotherConfiguration( $sType, $aSettings )
+    {
+        foreach( $aSettings as $key => $aSetting){
+            if (!empty($aSetting['replace']) || !empty($aSetting['remove'])){
+                $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSetting['replace']);
+                unset($aSettings[$key]);
+            }
+        }
+
+        return $aSettings;
+    }
+
+    /**
+     * Proxy for Yii::app()->clientScript->removeFileFromPackage()
+     * It's not realy needed here, but it is needed for TemplateConfiguration model.
+     * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
+     * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
+     *
+     * @param $sPackageName     string   name of the package to edit
+     * @param $sType            string   the type of settings to change (css or js)
+     * @param $aSettings        array    array of local setting
+     * @return array
+     */
+    protected function removeFileFromPackage( $sPackageName, $sType, $aSetting )
+    {
+        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting );
+    }
+
+    /**
+     * Configure the mother template (and its mother templates)
+     * This is an object recursive call to TemplateManifest::setTemplateConfiguration()
+     */
+    protected function setMotherTemplates()
+    {
+        if (isset($this->config->metadatas->extends)){
+            $sMotherTemplateName   = (string) $this->config->metadatas->extends;
+            $this->oMotherTemplate = new TemplateManifest;
+            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
+        }
+    }
+
     /**
      * Set the default configuration values for the template, and use the motherTemplate value if needed
      */
@@ -535,49 +512,15 @@ class TemplateManifest extends TemplateConfig
      * Common privates methods
      */
 
-    /**
-     * @return bool
-     */
-    private function setIsStandard()
-    {
-        $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
-    }
 
 
-
-    /**
-     * Get the file path for a given template.
-     * It will check if css/js (relative to path), or view (view path)
-     * It will search for current template and mother templates
-     *
-     * @param   string  $sFile          relative path to the file
-     * @param   string  $oTemplate      the template where to look for (and its mother templates)
-     */
-    private function getFilePath($sFile, $oTemplate)
-    {
-        // Remove relative path
-        $sFile = trim($sFile, '.');
-        $sFile = trim($sFile, '/');
-
-        // Retreive the correct template for this file (can be a mother template)
-        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
-
-        if($oTemplate instanceof TemplateConfiguration){
-            if(file_exists($oTemplate->path.'/'.$sFile)){
-                return $oTemplate->path.'/'.$sFile;
-            }elseif(file_exists($oTemplate->viewPath.$sFile)){
-                return $oTemplate->viewPath.$sFile;
-            }
-        }
-        return false;
-    }
 
     /**
      * Get the depends package
      * @uses self::@package
      * @return string[]
      */
-    private function getDependsPackages($oTemplate)
+    protected function getDependsPackages($oTemplate)
     {
         $dir = (getLanguageRTL(App()->getLanguage()))?'rtl':'ltr';
 
@@ -628,7 +571,7 @@ class TemplateManifest extends TemplateConfig
      * @param boolean $bInlcudeRemove   also get the files to remove
      * @return array
      */
-    private function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
+    protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
         $aAssetsToRemove = array();
         if (!empty($this->cssFramework->$sType)){

@@ -182,6 +182,14 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
+    public function checkTemplate()
+    {
+        if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)&& !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Constructs a template configuration object
      * If any problem (like template doesn't exist), it will load the default template configuration
@@ -200,10 +208,6 @@ class TemplateConfiguration extends TemplateConfig
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
     }
-
-
-
-    // Different in both
 
     /**
      * Add a file replacement in the field `file_{css|js|print_css}` in table {{template_configuration}},
@@ -235,7 +239,7 @@ class TemplateConfiguration extends TemplateConfig
      * @var $jFiles string json
      * @return array
      */
-    private function getFilesToLoad($oTemplate, $sType)
+    protected function getFilesToLoad($oTemplate, $sType)
     {
         $sField = 'files_'.$sType;
         $jFiles = $oTemplate->$sField;
@@ -256,7 +260,7 @@ class TemplateConfiguration extends TemplateConfig
      * @var $aSettings array    array of local setting
      * @return array
      */
-    private function changeMotherConfiguration( $sType, $aSettings )
+    protected function changeMotherConfiguration( $sType, $aSettings )
     {
         if (is_a($this->oMotherTemplate, 'TemplateConfiguration')){
             $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSettings);
@@ -273,7 +277,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param $aSettings        array    array of local setting
      * @return array
      */
-    private function removeFileFromPackage( $sPackageName, $sType, $aSettings )
+    protected function removeFileFromPackage( $sPackageName, $sType, $aSettings )
     {
         foreach( $aSettings as $sFile){
             Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFile );
@@ -284,7 +288,7 @@ class TemplateConfiguration extends TemplateConfig
      * Configure the mother template (and its mother templates)
      * This is an object recursive call to TemplateConfiguration::setTemplateConfiguration()
      */
-    private function setMotherTemplates()
+    protected function setMotherTemplates()
     {
         if(!empty($this->template->extends_templates_name)){
             $sMotherTemplateName   = $this->template->extends_templates_name;
@@ -296,14 +300,6 @@ class TemplateConfiguration extends TemplateConfig
                 // Throw exception? Set to default template?
             }
         }
-    }
-
-    public function checkTemplate()
-    {
-        if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)&& !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
-            return false;
-        }
-        return true;
     }
 
     /**
@@ -345,44 +341,6 @@ class TemplateConfiguration extends TemplateConfig
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
     }
 
-    /**
-     * Common privates methods
-     */
-
-    /**
-     * @return bool
-     */
-    private function setIsStandard()
-    {
-        $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
-    }
-
-    /**
-     * Get the file path for a given template.
-     * It will check if css/js (relative to path), or view (view path)
-     * It will search for current template and mother templates
-     *
-     * @param   string  $sFile          relative path to the file
-     * @param   string  $oTemplate      the template where to look for (and its mother templates)
-     */
-    private function getFilePath($sFile, $oTemplate)
-    {
-        // Remove relative path
-        $sFile = trim($sFile, '.');
-        $sFile = trim($sFile, '/');
-
-        // Retreive the correct template for this file (can be a mother template)
-        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
-
-        if($oTemplate instanceof TemplateConfiguration){
-            if(file_exists($oTemplate->path.'/'.$sFile)){
-                return $oTemplate->path.'/'.$sFile;
-            }elseif(file_exists($oTemplate->viewPath.$sFile)){
-                return $oTemplate->viewPath.$sFile;
-            }
-        }
-        return false;
-    }
 
 
 
@@ -393,12 +351,12 @@ class TemplateConfiguration extends TemplateConfig
      * @uses self::@package
      * @return string[]
      */
-    private function getDependsPackages($oTemplate)
+    protected function getDependsPackages($oTemplate)
     {
         $dir = (getLanguageRTL(App()->getLanguage()))?'rtl':'ltr';
 
         /* Core package */
-        $packages[]='limesurvey-public';
+        $packages[] = 'limesurvey-public';
         $packages[] = 'template-core';
         $packages[] = ( $dir == "ltr")? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
 
@@ -444,7 +402,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param boolean $bInlcudeRemove   also get the files to remove
      * @return array
      */
-    private function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
+    protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
         //  foreach( $this->getFrameworkAssetsToReplace('css', true) as $toReplace){
 

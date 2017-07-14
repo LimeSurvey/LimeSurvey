@@ -179,4 +179,58 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
              'depends'     => $aDepends,
          ) );
      }
+
+     /**
+      * Get the file path for a given template.
+      * It will check if css/js (relative to path), or view (view path)
+      * It will search for current template and mother templates
+      *
+      * @param   string  $sFile          relative path to the file
+      * @param   string  $oTemplate      the template where to look for (and its mother templates)
+      */
+     protected function getFilePath($sFile, $oTemplate)
+     {
+         // Remove relative path
+         $sFile = trim($sFile, '.');
+         $sFile = trim($sFile, '/');
+
+         // Retreive the correct template for this file (can be a mother template)
+         $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
+
+         if($oTemplate instanceof TemplateConfiguration){
+             if(file_exists($oTemplate->path.'/'.$sFile)){
+                 return $oTemplate->path.'/'.$sFile;
+             }elseif(file_exists($oTemplate->viewPath.$sFile)){
+                 return $oTemplate->viewPath.$sFile;
+             }
+         }
+         return false;
+     }
+
+
+
+     /**
+     * @return bool
+     */
+     protected function setIsStandard()
+     {
+        $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
+     }
+
+    // TODO: try to refactore most of those methods in TemplateConfiguration and TemplateManifest so we can define their body here.
+    // It will consist in adding private methods to get the values of variables... See what has been done for createTemplatePackage
+    // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data
+    // Note: signature are already the same
+
+    public function setTemplateConfiguration($sTemplateName='', $iSurveyId=''){}
+    public function addFileReplacement($sFile, $sType){}
+
+    protected function getDependsPackages($oTemplate){}
+    protected function getFilesToLoad($oTemplate, $sType){}
+    protected function changeMotherConfiguration( $sType, $aSettings ){}
+    protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false){}
+    protected function removeFileFromPackage( $sPackageName, $sType, $aSettings ){}
+    protected function setMotherTemplates(){}
+
+
  }
