@@ -343,8 +343,8 @@ class TemplateConfiguration extends CActiveRecord
         $aJsFiles  = $this->getFrameworkAssetsToReplace('js');
 
         // Then we add the template config files
-        $aTCssFiles = $this->getFilesFromJson($this->files_css);
-        $aTJsFiles  = $this->getFilesFromJson($this->files_js);
+        $aTCssFiles = $this->getFilesToLoad($this->files_css);
+        $aTJsFiles  = $this->getFilesToLoad($this->files_js);
 
         $aCssFiles    = array_merge($aCssFiles, $aTCssFiles);
         $aTJsFiles    = array_merge($aCssFiles, $aTJsFiles);
@@ -379,16 +379,15 @@ class TemplateConfiguration extends CActiveRecord
      * @var $jFiles string json
      * @return array
      */
-    private function getFilesFromJson($jFiles)
+    private function getFilesToLoad($jFiles)
     {
        $aFiles = array();
        if(!empty($jFiles)){
            $oFiles = json_decode($jFiles);
            foreach($oFiles as $action => $aFileList){
-               $aFiles[$action] = $aFileList;
+               $aFiles = array_merge($aFiles, $aFileList);
            }
        }
-
        return $aFiles;
     }
 
@@ -405,14 +404,18 @@ class TemplateConfiguration extends CActiveRecord
         }
     }
 
+    /**
+     * Proxy for Yii::app()->clientScript->removeFileFromPackage()
+     *
+     * @param $sPackageName     string   name of the package to edit
+     * @param $sType            string   the type of settings to change (css or js)
+     * @param $aSettings        array    array of local setting
+     * @return array
+     */
     private function removeFileFromPackage( $sPackageName, $sType, $aSettings )
     {
-        foreach( $aSettings as $key => $aFiles){
-
-            if ($key == "replace" || $key = "remove"){
-                foreach($aFiles as $sFile)
-                    Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFile );
-            }
+        foreach( $aSettings as $sFile){
+            Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFile );
         }
     }
 
@@ -546,8 +549,10 @@ class TemplateConfiguration extends CActiveRecord
      */
     private function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
-        $sFieldName  = 'files_'.$sType;
-        $aFieldValue = (array) json_decode($sFieldName);
+        //  foreach( $this->getFrameworkAssetsToReplace('css', true) as $toReplace){
+
+        $sFieldName  = 'cssframework_'.$sType;
+        $aFieldValue = (array) json_decode($this->$sFieldName);
 
         $aAssetsToRemove = array();
         if (!empty( $aFieldValue )){
@@ -555,7 +560,7 @@ class TemplateConfiguration extends CActiveRecord
             if($bInlcudeRemove){
                 $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $aFieldValue['remove'] );
             }
-                }
+        }
         return $aAssetsToRemove;
     }
 
