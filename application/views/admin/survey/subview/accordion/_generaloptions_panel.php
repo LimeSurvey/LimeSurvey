@@ -58,7 +58,6 @@
     return true;
     };";
     Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
-    // var_dump($owner);
     ?>
 
 <!-- Container -->
@@ -125,31 +124,26 @@
 
             <!-- Administrator -->
             <div class="form-group">
-                <?php //Switch for creation/editing ?>
-                <?php $admin = ($oSurvey->owner ? $oSurvey->owner->full_name : $oSurvey->admin); ?>
                 <label class="col-sm-3 control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
                 <div class="col-sm-9">
-                    <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" />
+                    <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($oSurvey->admin); ?>" />
                 </div>
             </div>
 
             <!-- Admin email -->
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
-                <?php $admin_email = $oSurvey->adminemail ? $oSurvey->adminemail : $oSurvey->owner->email; ?>
                 <label class="col-sm-3 control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
                 <div class="col-sm-9">
-                    <input class="form-control" type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($admin_email); ?>" />
+                    <input class="form-control" type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($oSurvey->adminemail); ?>" />
                 </div>
             </div>
 
             <!-- Bounce email -->
             <div class="form-group">
-                <?php //Switch for creation/editing ?>
-                <?php $bounce_email = ($oSurvey->bounce_email ? $oSurvey->bounce_email : $oSurvey->adminemail); ?>
                 <label class="col-sm-3 control-label"  for='bounce_email'><?php  eT("Bounce email:"); ?></label>
                 <div class="col-sm-9">
-                    <input class="form-control" type='email' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" />
+                    <input class="form-control" type='email' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($oSurvey->bounce_email ); ?>" />
                 </div>
             </div>
 

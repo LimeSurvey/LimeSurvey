@@ -161,11 +161,18 @@ class Survey extends LSActiveRecord
      */
     public function init()
     {
+
         /** @inheritdoc */
 
-        // Set the default values
-        $this->htmlemail = 'Y';
-        $this->format = 'G';
+        // Set the default values for new surveys
+        if($this->isNewRecord){
+            $user = User::model()->findByPk(Yii::app()->session['loginID']);
+            $this->htmlemail = 'Y';
+            $this->format = 'G';
+            $this->adminemail = $user->email;
+            $this->bounce_email = $user->email;
+            $this->admin = $user->full_name;
+        }
 
 
         $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
