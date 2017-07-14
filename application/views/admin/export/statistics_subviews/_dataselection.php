@@ -1,3 +1,11 @@
+<?php
+/**
+ * General options
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
+
+?>
 <div class="panel panel-primary" id="panel-1">
     <div class="panel-heading">
         <div class="panel-title h4"><?php eT("Data selection"); ?></div>
@@ -35,9 +43,9 @@
 
         <?php
             $language_options="";
-            foreach ($survlangs as $survlang){
+            foreach ($oSurvey->allLanguages as $survlang){
                 $language_options .= "\t<option value=\"{$survlang}\"";
-                if ( $survlang == $surveyinfo['language']){
+                if ( $survlang == $oSurvey->language){
                     $language_options .= " selected=\"selected\" " ;
                   }
                   $temp = getLanguageNameFromCode($survlang,true);
