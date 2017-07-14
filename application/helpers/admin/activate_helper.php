@@ -398,7 +398,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             default:
                 $aTableDefinition[$aRow['fieldname']] = "string(5)";
         }
-        if ($oSurvey->anonymized == 'N' && !array_key_exists('token',$aTableDefinition)){
+        if (!$oSurvey->isAnonymized && !array_key_exists('token',$aTableDefinition)){
             $aTableDefinition['token'] = 'string(35)'.$sCollation;
         }
         if ($simulate){

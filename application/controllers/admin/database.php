@@ -586,12 +586,9 @@ class database extends Survey_Common_Action
 
         $survey = Survey::model()->findByPk($iSurveyID);
         // If the survey is activate the question type may not be changed
-        if ($survey->active !== 'N')
-        {
+        if ($survey->isActive) {
             $sQuestionType=$oldtype;
-        }
-        else
-        {
+        } else {
             $sQuestionType=Yii::app()->request->getPost('type');
         }
 
@@ -1250,7 +1247,7 @@ class database extends Survey_Common_Action
         $sBaseLanguage = $survey->language;
 
         // Abort if survey is active
-        if ($survey->active !== 'N') {
+        if ($survey->isActive) {
             Yii::app()->setFlashMessage(gT("You can't insert a new question when the survey is active."),'error');
             $this->getController()->redirect(array("/admin/survey/sa/view/surveyid/".$survey->sid), "refresh");
         }

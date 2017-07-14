@@ -168,7 +168,7 @@ class questions extends Survey_Common_Action
     {
         $action = returnGlobal('action');
         $surveyid = $iSurveyID = returnGlobal('sid');
-        $surveyi = Survey::model()->findByPk($iSurveyID);
+        $survey = Survey::model()->findByPk($iSurveyID);
 
         $gid = returnGlobal('gid');
         $aViewUrls = array();
@@ -242,7 +242,7 @@ class questions extends Survey_Common_Action
         /////
         $aData['sidemenu']['state'] = false;
         $aData['surveyid'] = $iSurveyID;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
         $this->_renderWrappedTemplate('survey/Question', $aViewUrls, $aData);
     }
@@ -1541,10 +1541,10 @@ class questions extends Survey_Common_Action
 
         if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveycontent','update'))  // Permissions check
         {
-            if ($oSurvey->active == 'N')                                                        // If survey is active it should not be possible to update
-            {
-                if ($iQuestionOrder=="")                                                        // If asked "at the endd"
-                {
+            // If survey is active it should not be possible to update
+            if (!$oSurvey->isActive) {
+                // If asked "at the endd"
+                if ($iQuestionOrder=="") {
                     $iQuestionOrder=(getMaxQuestionOrder($oQuestionGroup->gid,$oSurvey->sid));
 
                     // We get the last question order, so we want the number just after it
@@ -1711,25 +1711,20 @@ class questions extends Survey_Common_Action
     {
 
         $surveyid           = (int) Yii::app()->request->getParam('sid',0);
+        $survey = Survey::model()->findByPk($surveyid);
         $qid                = (int) Yii::app()->request->getParam('qid',0);
         $type               = Yii::app()->request->getParam('question_type');
-        $thissurvey         = getSurveyInfo($surveyid);
 
-        if(!$thissurvey) die();
+        if(!$survey) die();
 
-        $aLanguages = array_merge(
-            array(Survey::model()->findByPk($surveyid)->language),
-            Survey::model()->findByPk($surveyid)->additionalLanguages
-            );
+        $aLanguages = $survey->allLanguages;
         $aAttributesWithValues = Question::model()->getAdvancedSettingsWithValues($qid, $type, $surveyid);
 
         uasort($aAttributesWithValues, 'categorySort');
 
         $aAttributesPrepared = array();
-        foreach ($aAttributesWithValues as $aAttribute)
-        {
-            if ($aAttribute['i18n'] == false)
-            {
+        foreach ($aAttributesWithValues as $aAttribute) {
+            if ($aAttribute['i18n'] == false) {
                 $aAttributesPrepared[] = $aAttribute;
             }
             else
@@ -1739,7 +1734,7 @@ class questions extends Survey_Common_Action
                     $aAttributeModified = $aAttribute;
                     $aAttributeModified['name'] = $aAttributeModified['name'] . '_' . $sLanguage;
                     $aAttributeModified['language'] = $sLanguage;
-                    if ($aAttributeModified['readonly'] == true && $thissurvey['active'] == 'N')
+                    if ($aAttributeModified['readonly'] == true && !$survey->isActive)
                         $aAttributeModified['readonly'] == false;
 
                     if (isset($aAttributeModified[$sLanguage]['value']))
@@ -1751,7 +1746,7 @@ class questions extends Survey_Common_Action
                 }
             }
         }
-        $aData['bIsActive'] = ($thissurvey['active']=='Y');
+        $aData['bIsActive'] = ($survey->isActive);
         $aData['attributedata'] = $aAttributesPrepared;
         $aData['aQuestionTemplates'] = \QuestionTemplate::getQuestionTemplateList($type);
 
@@ -2076,7 +2071,7 @@ class questions extends Survey_Common_Action
      */
     protected function abortIfSurveyIsActive($survey)
     {
-        if ($survey->active !== 'N') {
+        if ($survey->isActive) {
             Yii::app()->user->setFlash('error', gT("You can't add questions while the survey is active."));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
