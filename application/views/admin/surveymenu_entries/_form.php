@@ -155,8 +155,8 @@
 		<input type="hidden" name='created_by' value="<?=$user?>" />
 	</div>
 	<div class="modal-footer">
-		<?php echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
-		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<?php echo TbHtml::submitButton(($model->isNewRecord ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
+		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 	</div>
 
 <?php $this->endWidget(); ?>

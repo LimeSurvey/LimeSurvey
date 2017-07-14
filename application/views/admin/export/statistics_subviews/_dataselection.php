@@ -37,7 +37,7 @@
             $language_options="";
             foreach ($survlangs as $survlang){
                 $language_options .= "\t<option value=\"{$survlang}\"";
-                if ( $survlang == $surveyinfo['language']){
+                if ( $survlang == Survey::model()->findByPk($surveyid)->language){
                     $language_options .= " selected=\"selected\" " ;
                   }
                   $temp = getLanguageNameFromCode($survlang,true);

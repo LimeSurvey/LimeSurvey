@@ -372,6 +372,9 @@ div[class^="col-"].nofloat, div[class*=" col-"].nofloat {
 #sidebar {
   padding-top: 15px; }
 
+#pjax-content .surveybar {
+  box-shadow: 3px 3px 3px rgba(99, 49, 48, 0.1); }
+
 .menubar.surveybar {
   width: 100%;
   margin: 8px auto;

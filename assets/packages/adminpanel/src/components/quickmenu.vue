@@ -49,19 +49,23 @@ export default {
 <template>
     <div class='ls-column fill'>
         <div class="btn-group-vertical"  v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" >
-            <a v-for="(menuItem, index) in sortedMenuentries" 
+            <a v-for="(menuItem, index) in sortedMenuEntries(menu.entries)" 
             @click="setActiveMenuIndex(index)"
              v-bind:key="menuItem.id" 
             :href="menuItem.link" :title="menuItem.menu_description" 
+            :target="menuItem.linkExternal ? '_blank' : '_self'"
             data-toggle="tooltip" 
             class="btn btn-default btn-icon pjax"
             v-bind:class="('quickmenu_'+index)==activeMenuIndex ? 'selected' : ''"
             >
                 <template v-if="menuItem.menu_icon_type == 'fontawesome'">
-                    <i class="quickmenuIcon fa" :class="'fa-'+menuItem.menu_icon" data-toggle="tooltip" :title="menuItem.menu_title">&nbsp;</i>
+                    <i class="quickmenuIcon fa" :class="'fa-'+menuItem.menu_icon"></i>
                 </template>
                 <template v-else-if="menuItem.menu_icon_type == 'image'">
-                    <img width="32px" :src="menuItem.menu_icon" data-toggle="tooltip" :title="menuItem.menu_title" ></img>
+                    <img width="32px" :src="menuItem.menu_icon" ></img>
+                </template>
+                <template v-else-if="menuItem.menu_icon_type == 'iconclass'">
+                    <i class="quickmenuIcon"  :class="menuItem.menu_icon" ></i>
                 </template>
             </a>
         </div>

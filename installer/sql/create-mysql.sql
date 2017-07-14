@@ -643,7 +643,7 @@ CREATE TABLE `prefix_surveymenu` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `prefix_surveymenu` VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',NOW(),0,NOW(),0);
-INSERT INTO `prefix_surveymenu` VALUES (1,NULL,NULL,NULL,0,0,'quickmenue','quick','quickmenu',NOW(),0,NOW(),0);
+INSERT INTO `prefix_surveymenu` VALUES (2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',NOW(),0,NOW(),0);
 
 CREATE TABLE `prefix_surveymenu_entries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -694,8 +694,23 @@ INSERT INTO `prefix_surveymenu_entries` VALUES
 (11,1,NULL,10,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',NOW(),0,NOW(),0),
 (12,1,NULL,11,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read',NULL,'','en-GB',NOW(),0,NOW(),0),
 (13,1,NULL,12,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',NOW(),0,NOW(),0),
-(14,1,NULL,13,'ressources','Add/Edit ressources to the survey','Ressources','Add/Edit ressources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',NOW(),0,NOW(),0);
-
+(14,1,NULL,13,'ressources','Add/Edit ressources to the survey','Ressources','Add/Edit ressources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',NOW(),0,NOW(),0),
+(15,2,NULL,1,'activateSurvey','Activate survey','Activate survey','Activate survey','play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{\"render\": {\"isActive\": false}}','','en-GB',NOW(),0,NOW(),0),
+(16,2,NULL,2,'deactivateSurvey','Stop this survey','Stop this survey','Stop this survey','stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{\"render\": {\"isActive\": true}}','','en-GB',NOW(),0,NOW(),0),
+(17,2,NULL,3,'testSurvey','Go to survey','Go to survey','Go to survey','cog','fontawesome','','survey/index/','','','','','','','{\"render\": {\"link\": {\"external\": true, \"data\": {\"sid\": [\"this\",\"getSurveyId\"], newtest: \"Y\", lang: [\"this\",\"getLanguage\"]}}}','','en-GB',NOW(),0,NOW(),0),
+(18,2,NULL,4,'listQuestions','List questions','List questions','List questions','list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(19,2,NULL,5,'listQuestionGroups','List question groups','List question groups','List question groups','th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(20,2,NULL,6,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',NOW(),0,NOW(),0),
+(21,2,NULL,7,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(22,2,NULL,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(23,2,NULL,9,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(24,2,NULL,10,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(25,2,NULL,11,'surveyLogicFile','Survey logic file','Survey logic file','Survey logic file','sitemap','fontawesome','','admin/expressions/sa/survey_logic_file/','','','','','surveycontent','read',NULL,'','en-GB',NOW(),0,NOW(),0),
+(26,2,NULL,12,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','user','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',NOW(),0,NOW(),0),
+(27,2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{render: {\"link\": {}}','','en-GB',NOW(),0,NOW(),0),
+(28,2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{\"render\": {\"isActive\": true}}','','en-GB',NOW(),0,NOW(),0),
+(29,2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{\"render\": {\"isActive\": true}}','','en-GB',NOW(),0,NOW(),0),
+(30,2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\": {\"isActive\": false}}','','en-GB',NOW(),0,NOW(),0):
 
 
 -- -----------------------------------------------------

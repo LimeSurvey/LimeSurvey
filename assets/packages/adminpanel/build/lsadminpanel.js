@@ -28781,7 +28781,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 255, 200, 0.4);\n  box-shadow: 1px2px 4px rgba(200, 255, 200, 0.4) inset;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.resize-handle {\n  position: absolute;\n  right: -4px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 8px;\n  box-shadow: 5px 5px 7px #0f3e12;\n  cursor: w-resize;\n}\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease;\n}\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease;\n}\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0;\n}\n.slide-fade-enter-active {\n  -moz-transition: all 0.2s ease;\n  -webkit-transition: all 0.2s ease;\n  -ms-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.slide-fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.selected {\n  background-color: rgba(200, 255, 200, 0.4);\n  box-shadow: 1px 2px 4px rgba(200, 255, 200, 0.4) inset;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.resize-handle {\n  position: absolute;\n  right: -4px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 8px;\n  box-shadow: 0px 5px 9px #0f3e12;\n  cursor: col-resize;\n}\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease;\n}\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease;\n}\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0;\n}\n.slide-fade-enter-active {\n  -moz-transition: all 0.2s ease;\n  -webkit-transition: all 0.2s ease;\n  -ms-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.slide-fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -29774,7 +29774,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "title": menu.title
       }
-    }, _vm._l((_vm.sortedMenuentries), function(menuItem, index) {
+    }, _vm._l((_vm.sortedMenuEntries(menu.entries)), function(menuItem, index) {
       return _c('a', {
         key: menuItem.id,
         staticClass: "btn btn-default btn-icon pjax",
@@ -29782,6 +29782,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         attrs: {
           "href": menuItem.link,
           "title": menuItem.menu_description,
+          "target": menuItem.linkExternal ? '_blank' : '_self',
           "data-toggle": "tooltip"
         },
         on: {
@@ -29791,18 +29792,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }, [(menuItem.menu_icon_type == 'fontawesome') ? [_c('i', {
         staticClass: "quickmenuIcon fa",
-        class: 'fa-' + menuItem.menu_icon,
-        attrs: {
-          "data-toggle": "tooltip",
-          "title": menuItem.menu_title
-        }
-      }, [_vm._v(" ")])] : (menuItem.menu_icon_type == 'image') ? [_c('img', {
+        class: 'fa-' + menuItem.menu_icon
+      })] : (menuItem.menu_icon_type == 'image') ? [_c('img', {
         attrs: {
           "width": "32px",
-          "src": menuItem.menu_icon,
-          "data-toggle": "tooltip",
-          "title": menuItem.menu_title
+          "src": menuItem.menu_icon
         }
+      })] : (menuItem.menu_icon_type == 'iconclass') ? [_c('i', {
+        staticClass: "quickmenuIcon",
+        class: menuItem.menu_icon
       })] : _vm._e()], 2)
     }))
   }))
@@ -29953,17 +29951,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "slide-fade"
     }
-  }, [
-    [_c('quickmenu', {
-      attrs: {
-        "active-menu-index": _vm.activeMenuIndex,
-        "get-menu-url": _vm.getMenuUrl
-      },
-      on: {
-        "selectedmenu": _vm.setActiveMenuIndex
-      }
-    })]
-  ], 2)], 1)]), _vm._v(" "), _c('div', {
+  }, [_c('quickmenu', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.isCollapsed),
+      expression: "isCollapsed"
+    }],
+    attrs: {
+      "active-menu-index": _vm.activeMenuIndex,
+      "get-menu-url": _vm.getMenuUrl
+    },
+    on: {
+      "selectedmenu": _vm.setActiveMenuIndex
+    }
+  })], 1)], 1)]), _vm._v(" "), _c('div', {
     staticClass: "resize-handle",
     attrs: {
       "draggable": "true"

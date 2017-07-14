@@ -64,12 +64,11 @@
 				<?php echo $form->error($model,'position'); ?>
 			</div>
 
-			<input type="hidden" name='changed_by' value="<?=$user?>" />
-			<input type="hidden" name='created_by' value="<?=$user?>" />
-
-			<div class="form-group buttons">
-				<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
-			</div>
-		</div>
+		<input type="hidden" name='changed_by' value="<?=$user?>" />
+		<input type="hidden" name='created_by' value="<?=$user?>" />
+	</div>
+	<div class="modal-footer">
+		<?php echo TbHtml::submitButton(($model->isNewRecord ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
+		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 	</div>
 <?php $this->endWidget(); ?>

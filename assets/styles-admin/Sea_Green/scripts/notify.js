@@ -4,7 +4,7 @@ $(document).ready(function(){
         if($('#vue-app-main-container').length>0)
         {
             //$('#notif-container .alert').prependTo('.side-body');
-            $('#notif-container .alert').before('#vue-app-main-container');
+            //$('#notif-container .alert').before('#vue-app-main-container');
         }
         else
         {

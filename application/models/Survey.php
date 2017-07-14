@@ -585,39 +585,93 @@ class Survey extends LSActiveRecord
         }
     }
 
+    private function _getValueFromEntryArray($valueArray)
+    {
+        if($valueArray[0] == "this"){
+            return $this[$valueArray[1]];
+        } else {
+            return @call_user_func_array([$this, array_shift($valueArray)], $valueArray);
+        }
+    }
 
-    private function _getDefaultSurveyMenus($position=''){
+    private function _parseSurveyMenuData($dataAttribute)
+    {
+        $aData = json_decode(stripcslashes($dataAttribute),true);
+        
+        $aData['aLinkCreator'] = ['surveyid'=> $this->sid];
+        $aData['noRender'] = false;
+        $aData['linkExternal'] = false;
+        if(isset($aData['render']))
+        {
+            if(isset($aData['render']['link']))
+            {
+                $aData['aLinkCreator'] = [];
+                foreach($aData['render']['link']['data'] as $key => $value){
+                    if(is_array($value)){
+                        $value= $this->_getValueFromEntryArray($value);
+                    }
+                    $aData['aLinkCreator'][$key] = $value;
+                } 
+                $aData['linkExternal'] = isset($aData['render']['link']['external']) ? $aData['render']['link']['external'] : false;
+            }
+            if(isset($aData['render']['isActive']))
+            {
+                $aData['noRender'] = ($this->active && $aData['render']['isActive']);
+            }
+           
+        }
+        
+        return (object) ($aData);
+    }
+
+    private function _createSurveymenuArray($aSurveyMenuObjects)
+    {
+        //Posibility to add more languages to the database is given, so it is possible to add a call by language
+        //Also for peripheral menues we may add submenus someday.
+        $aResultCollected = [];
+        foreach($aSurveyMenuObjects as $aSurveyMenuObject){
+            $entries = [];
+            $defaultMenuEntries = $aSurveyMenuObject->surveymenuEntries;
+            foreach($defaultMenuEntries as $menuEntry){
+                $aEntry = $menuEntry->attributes;
+                //Skip menu if no permission
+                if(
+                    (!empty($entry['permission']) && !empty($entry['permission_grade']) 
+                    && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade']))
+                ) {continue;}
+                //parse the render part of the data attribute
+                $oDataAttribute = $this->_parseSurveyMenuData($menuEntry->data);
+                
+                if($oDataAttribute->noRender){continue;}
+
+                $aEntry['link'] = $aEntry['menu_link']
+                            ?  App()->getController()->createUrl($aEntry['menu_link'],$oDataAttribute->aLinkCreator)
+                            : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
+                $aEntry['link_external'] = $oDataAttribute->linkExternal;
+                $aEntry['debugData'] = $oDataAttribute;
+                $entries[] = $aEntry;
+            }
+            $aResultCollected[] = [
+                "title" => $aSurveyMenuObject->title,
+                "description" => $aSurveyMenuObject->description,
+                "entries" => $entries,
+            ];
+        }
+        return $aResultCollected;
+    }
+
+
+    private function _getDefaultSurveyMenus($position='')
+    {
         $criteria=new CDbCriteria;
         $criteria->condition='survey_id=NULL';
         if($position != ''){
             $criteria->condition='position=:position';
             $criteria->params=array(':position'=>$position);
         }
-
         $oDefaultMenus = Surveymenu::model()->findAll($criteria);
-        //Posibility to add more languages to the database is given, so it is possible to add a call by language
-        //Also for peripheral menues we may add submenus someday.
-        $aResultCollected = [];
-        foreach($oDefaultMenus as $oDefaultMenu){
-            $entries = [];
-            $defaultMenuEntries = $oDefaultMenu->surveymenuEntries;
-            foreach($defaultMenuEntries as $menuEntry){
-                $aEntry = $menuEntry->attributes;
-                if((!empty($entry['permission']) && !empty($entry['permission_grade']) && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade'])))
-                    continue;
 
-
-                $aEntry['link'] = $aEntry['menu_link']
-                            ?  App()->getController()->createUrl($aEntry['menu_link'],['surveyid' => $this->sid])
-                            : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
-                $entries[] = $aEntry;
-            }
-            $aResultCollected[] = [
-                "title" => $oDefaultMenu->title,
-                "description" => $oDefaultMenu->description,
-                "entries" => $entries
-            ];
-        }
+        $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus);
 
         return $aResultCollected;
     }
@@ -630,23 +684,11 @@ class Survey extends LSActiveRecord
     public function getSurveyMenus($position=''){
 
         //Get the default menus
-        $aSurveyMenus = $this->_getDefaultSurveyMenus($position);
-
+        $aDefaultSurveyMenus = $this->_getDefaultSurveyMenus($position);
         //get all survey specific menus
-        foreach($this->surveymenus as $menu){
-            $aMenuResult = [
-                "title" => $menu->title,
-                "description" => $menu->description,
-                "entries" => []
-            ];
-
-            foreach($menu->surveymenuEntries as $menuEntry){
-                $aEntry = $menuEntry->attributes;
-                $aEntry['link'] = App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
-                $aMenuResult["entries"][] = $aEntry;
-            }
-            $aSurveyMenus[] = $aMenuResult;
-        }
+        $aThisSurveyMenues = $this->_createSurveymenuArray($this->surveymenus);
+        //merge them
+        $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
 
         //soon to come => Event to add menus for plugins
 

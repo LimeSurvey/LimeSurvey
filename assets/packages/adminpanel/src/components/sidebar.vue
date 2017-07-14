@@ -185,9 +185,7 @@ export default {
                     </template>
                 </transition>
                 <transition name="slide-fade">
-                    <template v-show="isCollapsed">
-                        <quickmenu :active-menu-index="activeMenuIndex" v-on:selectedmenu="setActiveMenuIndex" :get-menu-url='getMenuUrl'></quickmenu>
-                    </template>
+                    <quickmenu v-show="isCollapsed" :active-menu-index="activeMenuIndex" v-on:selectedmenu="setActiveMenuIndex" :get-menu-url='getMenuUrl'></quickmenu>
                 </transition>
             </div>
         </div>
@@ -197,7 +195,7 @@ export default {
 <style lang="scss">
     .selected{
         background-color: rgba(200,255,200,0.4);
-        box-shadow: 1px2px 4px rgba(200,255,200,0.4) inset;
+        box-shadow: 1px 2px 4px rgba(200,255,200,0.4) inset;
     }
 
     .background.white{
@@ -212,8 +210,8 @@ export default {
         bottom: 0;
         height:100%;
         width: 8px;
-        box-shadow: 5px 5px 7px #0f3e12;
-        cursor: w-resize;
+        box-shadow: 0px 5px 9px #0f3e12;
+        cursor: col-resize;
     }
 
     .transition-animate-width {

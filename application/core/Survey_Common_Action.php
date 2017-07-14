@@ -637,10 +637,9 @@ class Survey_Common_Action extends CAction
                 // Check if other questions in the Survey are dependent upon this question
                 $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");
 
-                $surveyinfo = $oSurvey->attributes;
-
-                $surveyinfo = array_map('flattenText', $surveyinfo);
-                $aData['activated'] = $surveyinfo['active'];
+                // $surveyinfo = $oSurvey->attributes;
+                // $surveyinfo = array_map('flattenText', $surveyinfo);
+                $aData['activated'] =  $oSurvey->active;
 
                 $qrrow = $qrrow->attributes;
                 $aData['languagelist'] = $oSurvey->getAllLanguages();
@@ -717,11 +716,11 @@ class Survey_Common_Action extends CAction
             $sumresult1 = Survey::model()->with(array(
                 'languagesettings' => array('condition' => 'surveyls_language=language'))
                 )->findByPk($surveyid); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
-            $surveyinfo = $sumresult1->attributes;
-            $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-            $surveyinfo = array_map('flattenText', $surveyinfo);
+            // $surveyinfo = $sumresult1->attributes;
+            // $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
+            // $surveyinfo = array_map('flattenText', $surveyinfo);
             //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
-            $aData['activated'] = $activated = $surveyinfo['active'];
+            $aData['activated'] = $activated = $sumresult1->active;
 
             $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
             $aData['condarray'] = $condarray;
@@ -931,9 +930,9 @@ class Survey_Common_Action extends CAction
         }
 
         if (!is_null($sumresult1)) {
-            $surveyinfo = $sumresult1->attributes;
-            $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-            $surveyinfo = array_map('flattenText', $surveyinfo);
+            // $surveyinfo = $sumresult1->attributes;
+            // $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
+            // $surveyinfo = array_map('flattenText', $surveyinfo);
             $aData['activated'] = $survey->isActive;
 
             // Tokens

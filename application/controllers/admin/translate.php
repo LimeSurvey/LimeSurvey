@@ -24,7 +24,7 @@ class translate extends Survey_Common_Action {
     public function index()
     {
         $iSurveyID = sanitize_int($_REQUEST['surveyid']);
-        $survey=Survey::model()->findByPk($iSurveyID);
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
         $tolang = Yii::app()->getRequest()->getParam('lang');
         $action = Yii::app()->getRequest()->getParam('action');
         $actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
@@ -36,8 +36,8 @@ class translate extends Survey_Common_Action {
         }
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'translation.js');
 
-        $baselang = $survey->language;
-        $langs = $survey->additionalLanguages;
+        $baselang = $oSurvey->language;
+        $langs = $oSurvey->additionalLanguages;
 
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("admin/htmleditor");
@@ -48,8 +48,7 @@ class translate extends Survey_Common_Action {
         }
 
         // TODO need to do some validation here on surveyid
-        $surveyinfo = getSurveyInfo($iSurveyID);
-        $survey_title = $surveyinfo['name'];
+        $survey_title = $oSurvey->defaultlanguage->name;
 
         Yii::app()->loadHelper("surveytranslator");
         $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
@@ -271,16 +270,12 @@ class translate extends Survey_Common_Action {
         $survey_button = "";
 
         $imageurl = Yii::app()->getConfig("adminimageurl");
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
+        $baselang = $oSurvey->language;
+        $langs = $oSurvey->additionalLanguages;
 
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-
-        $surveyinfo = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyID);
-        $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->defaultlanguage->attributes);
-
-        $surveyinfo = array_map('flattenText', $surveyinfo);
-        $menutext = ( $surveyinfo['active'] == "N" ) ? gT("Preview survey") : gT("Execute survey");
+        $menutext = ( $oSurvey->active == "N" ) ? gT("Preview survey") : gT("Execute survey");
 
         if ( count($langs) == 0 )
         {
