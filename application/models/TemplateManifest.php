@@ -236,8 +236,9 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Add a file replacement entry in DB
-     * It first tries to get the oTemplateConfigurations for this template (can be void if edited from template, can be numerous if survey local config)
-     * If it exists, it call $oTemplateConfiguration->oTemplateConfiguration($sFile, $sType) for each one of them
+     * In the first place it tries to get the all the configuration entries for this template
+     * (it can be void if edited from template editor, or they can be numerous if the template has local config at survey/survey group/user level)
+     * Then, it call $oTemplateConfiguration->addFileReplacementInDB($sFile, $sType) for each one of them.
      *
      * @param string $sFile the file to replace
      * @param string $sType css|js
