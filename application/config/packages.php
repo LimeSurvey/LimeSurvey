@@ -103,6 +103,27 @@ return array(
             'bootstrap-slider',
         )
     ),
+    'ckeditor' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditor/',
+        'basePath' => 'core.ckeditor',
+        'js' => array(
+            'ckeditor.js',
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
+        ),
+    ),
+    'ckeditoradditions' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditoradditions/',
+        'basePath' => 'core.ckeditoradditions',
+        'js' => array(
+            'ckeditoradditions.js',
+        ),
+        'depends' => array(
+            'ckeditor'
+        )
+    ),
     'adminpanel' => array(
         'devBaseUrl' => 'assets/packages/adminpanel/build/',
         'basePath' => 'core.adminpanel.build',

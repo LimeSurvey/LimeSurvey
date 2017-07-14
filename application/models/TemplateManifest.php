@@ -94,7 +94,7 @@ class TemplateManifest extends TemplateConfiguration
         $this->setPath();                                                       // Check and set path
         $this->readManifest();                                                  // Check and read the manifest to set local params
         $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        $this->setThisTemplate();                                               // Set the main config values of this template
+        @$this->setThisTemplate();                                               // Set the main config values of this template
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
     }

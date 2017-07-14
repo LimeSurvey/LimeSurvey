@@ -496,11 +496,11 @@ class SurveyAdmin extends Survey_Common_Action
      * 
      *
      */
-    public function getAjaxMenuArray($surveyid){
+    public function getAjaxMenuArray($surveyid,$position=''){
         $iSurveyID = sanitize_int($surveyid);
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
-        $menus = $survey->getSurveyMenus(); 
+        $menus = $survey->getSurveyMenus($position); 
         $userSettings = [];
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
@@ -1784,7 +1784,7 @@ class SurveyAdmin extends Survey_Common_Action
         //$aData['esrow'] = $esrow;
         $aData['ZIPimportAction'] = $ZIPimportAction;
         $aData['disabledIfNoResources'] = $disabledIfNoResources;
-        $dqata['sCKEditorURL'] = $sCKEditorURL;
+        $aData['sCKEditorURL'] = $sCKEditorURL;
 
         return $aData;
     }
@@ -1912,6 +1912,8 @@ class SurveyAdmin extends Survey_Common_Action
         App()->clientScript->registerPackage('bootstrap-switch');
         App()->getClientScript()->registerPackage('jquery-datatable');
         App()->clientScript->registerPackage('adminpanel');
+        App()->clientScript->registerPackage('ckeditor');
+        App()->clientScript->registerPackage('ckeditoradditions');
 
     }
 

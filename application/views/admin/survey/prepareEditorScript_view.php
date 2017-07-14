@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL'); ?>/ckeditor.js"></script>
+<!--<script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL'); ?>/ckeditor.js"></script>-->
 <script type='text/javascript'>
     <!--
     CKEDITOR.on('dialogDefinition', function (ev) {

@@ -586,32 +586,40 @@ class Survey extends LSActiveRecord
     }
 
 
-    private function _getDefaultSurveyMenu(){
-        $oDefaultMenu = Surveymenu::model()->findByPk(1);
-        //Posibility to add more languages to the database is given, so it is possible to add a call by language
-        //Also for peripheral menues we may add submenus someday.
-
-        $entries = [];
-        $defaultMenuEntries = $oDefaultMenu->surveymenuEntries;
-        foreach($defaultMenuEntries as $menuEntry){
-            $aEntry = $menuEntry->attributes;
-            if((!empty($entry['permission']) && !empty($entry['permission_grade']) && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade'])))
-                continue;
-
-
-            $aEntry['link'] = $aEntry['menu_link']
-                        ?  App()->getController()->createUrl($aEntry['menu_link'],['surveyid' => $this->sid])
-                        : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
-            $entries[] = $aEntry;
+    private function _getDefaultSurveyMenus($position=''){
+        $criteria=new CDbCriteria;
+        $criteria->condition='survey_id=NULL';
+        if($position != ''){
+            $criteria->condition='position=:position';
+            $criteria->params=array(':position'=>$position);
         }
 
-        $aResult = [
-            "title" => $oDefaultMenu->title,
-            "description" => $oDefaultMenu->description,
-            "entries" => $entries
-        ];
+        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
+        //Posibility to add more languages to the database is given, so it is possible to add a call by language
+        //Also for peripheral menues we may add submenus someday.
+        $aResultCollected = [];
+        foreach($oDefaultMenus as $oDefaultMenu){
+            $entries = [];
+            $defaultMenuEntries = $oDefaultMenu->surveymenuEntries;
+            foreach($defaultMenuEntries as $menuEntry){
+                $aEntry = $menuEntry->attributes;
+                if((!empty($entry['permission']) && !empty($entry['permission_grade']) && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade'])))
+                    continue;
 
-        return $aResult;
+
+                $aEntry['link'] = $aEntry['menu_link']
+                            ?  App()->getController()->createUrl($aEntry['menu_link'],['surveyid' => $this->sid])
+                            : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
+                $entries[] = $aEntry;
+            }
+            $aResultCollected[] = [
+                "title" => $oDefaultMenu->title,
+                "description" => $oDefaultMenu->description,
+                "entries" => $entries
+            ];
+        }
+
+        return $aResultCollected;
     }
 
 
@@ -619,12 +627,10 @@ class Survey extends LSActiveRecord
      * Get surveymenu configuration
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
      */
-    public function getSurveyMenus(){
+    public function getSurveyMenus($position=''){
 
-        $aSurveyMenus = [];
-
-        //Get the default menu
-        $aSurveyMenus[] = $this->_getDefaultSurveyMenu();
+        //Get the default menus
+        $aSurveyMenus = $this->_getDefaultSurveyMenus($position);
 
         //get all survey specific menus
         foreach($this->surveymenus as $menu){

@@ -247,7 +247,7 @@ class TemplateConfiguration extends CActiveRecord
         $this->setIsStandard();                                                 // Check if  it is a CORE template
         $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
         $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        $this->setThisTemplate();                                               // Set the main config values of this template
+        @$this->setThisTemplate();                                               // Set the main config values of this template
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
     }

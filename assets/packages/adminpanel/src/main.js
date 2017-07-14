@@ -13,7 +13,8 @@ const AppState = new Vuex.Store({
   state: {
     surveyid: 0,
     language: '',
-    maxHeight: 0
+    maxHeight: 0,
+    currentUser: 0,
   },
   mutations: {
     updateSurveyId (state, newSurveyId) {
@@ -24,6 +25,9 @@ const AppState = new Vuex.Store({
     },
     changeMaxHeight(state, newHeight){
       state.maxHeight = newHeight;
+    },    
+    changeCurrentUser(state, newUser){
+      state.currentUser = newUser;
     }    
   }
 });
@@ -38,19 +42,22 @@ if(document.getElementById('vue-app-main-container')){
     },
     methods: {
     },
+    
     mounted(){
        this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
        this.$store.commit('changeMaxHeight', ($('#in_survey_common').height()-35));
+       this.$store.commit('changeCurrentUser', $('#currentUserId').val());
     }
-});
+  });
 }
 
 const pjaxed = new Pjax({
-          elements: "a.pjax", // default is "a[href], form[action]"
-          selectors: [
-            "#in_survey_common"
-            ]
-        });
+  elements: "a.pjax", // default is "a[href], form[action]"
+  selectors: [
+    "#pjax-content",
+    '#breadcrumb-container'
+    ]
+});
 
 $(document).ready(()=>{
   if($('#vue-app-main-container').length >0 ){

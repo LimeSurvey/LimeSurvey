@@ -198,6 +198,7 @@
 
     function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
     {
+
         $htmlcode = '';
         $toolbaroption="";
         $sFileBrowserAvailable='';
@@ -261,14 +262,8 @@
         . $toolbaroption
         ."});
 
-CKEDITOR.editorConfig = function( config )
-{
-    config.uiColor = '#FFF';
-};
-
         \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
         });";
-
 
         $htmlcode.= '</script>';
 

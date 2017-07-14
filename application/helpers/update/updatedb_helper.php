@@ -242,7 +242,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * Survey menue table update
          * @since 2017-07-12
          */
-        if ($iOldDBVersion < 295) {
+        if ($iOldDBVersion < 296) {
             $oTransaction = $oDB->beginTransaction();
             
             $oDB->createCommand()->addColumn('{{surveymenu}}', 'user_id', "int DEFAULT NULL");
