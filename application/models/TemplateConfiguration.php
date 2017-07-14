@@ -273,7 +273,7 @@ class TemplateConfiguration extends CActiveRecord
         return $this->sTemplateurl;
     }
 
-    public function addFileReplacementInDB($sFile, $sType)
+    public function addFileReplacement($sFile, $sType)
     {
         $sField = 'file_'.$sType;
         $oFiles = json_decode($this->$sField);
@@ -281,6 +281,7 @@ class TemplateConfiguration extends CActiveRecord
         if (is_null($oFiles)){
             $oFiles    = new \stdClass();
 
+            // TODO
 
         }
 

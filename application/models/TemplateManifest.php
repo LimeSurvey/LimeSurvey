@@ -226,7 +226,7 @@ class TemplateManifest extends TemplateConfiguration
 
                 // The CSS/JS file is a configuration one....
                 if(in_array($sFile, $aFiles)){
-                    $this->addFileReplacementInManifest($sFile, $sExt);
+                    $this->addFileReplacement($sFile, $sExt);
                     $this->addFileReplacementInDB($sFile, $sExt);
                 }
             }
@@ -238,7 +238,7 @@ class TemplateManifest extends TemplateConfiguration
      * Add a file replacement entry in DB
      * In the first place it tries to get the all the configuration entries for this template
      * (it can be void if edited from template editor, or they can be numerous if the template has local config at survey/survey group/user level)
-     * Then, it call $oTemplateConfiguration->addFileReplacementInDB($sFile, $sType) for each one of them.
+     * Then, it call $oTemplateConfiguration->addFileReplacement($sFile, $sType) for each one of them.
      *
      * @param string $sFile the file to replace
      * @param string $sType css|js
@@ -247,7 +247,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'), array(':templates_name' => $this->sTemplateName));
         foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
-            $oTemplateConfigurationModel->addFileReplacementInDB($sFile, $sType);
+            $oTemplateConfigurationModel->addFileReplacement($sFile, $sType);
         }
     }
 
@@ -258,7 +258,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param string $sFile the file to replace
      * @param string $sType css|js
      */
-    private function addFileReplacementInManifest($sFile, $sType)
+    private function addFileReplacement($sFile, $sType)
     {
         // First we get the XML file
         libxml_disable_entity_loader(false);
