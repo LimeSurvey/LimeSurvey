@@ -275,6 +275,13 @@ class TemplateConfiguration extends CActiveRecord
         return $this->sTemplateurl;
     }
 
+    /**
+     * Add a file replacement in the field `file_{css|js|print_css}` in table {{template_configuration}},
+     * eg: {"replace": [ {original files to replace here...}, "css/template.css",]}
+     *
+     * @param string $sFile the file to replace
+     * @param string $sType css|js
+     */
     public function addFileReplacement($sFile, $sType)
     {
         $sField = 'file_'.$sType;
@@ -288,7 +295,14 @@ class TemplateConfiguration extends CActiveRecord
         }
 
     }
-
+    
+    /**
+    * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
+    *
+    * @param  string $sFile      the  file to look for (must contain relative path, unless it's a view file)
+    * @param string $oRTemplate template from which the recurrence should start
+    * @return TemplateManifest
+    */
     public function getTemplateForFile($sFile, $oRTemplate)
     {
         while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){

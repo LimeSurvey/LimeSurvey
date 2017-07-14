@@ -332,7 +332,7 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Get the list of all the files for a template and its mother templates
+     * Get the list of all the files inside the file folder for a template and its mother templates
      * @return array
      */
     public function getOtherFiles()
