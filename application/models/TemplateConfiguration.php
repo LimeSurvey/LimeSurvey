@@ -197,9 +197,11 @@ class TemplateConfiguration extends CActiveRecord
     }
 
     /**
-     * Create a new entry in {{templates}} table using a xml file
+     * Create a new entry in {{templates}} table using the template manifest
+     * @param string $sTemplateName the name of the template to import
+     * @return mixed true on success | exception
      */
-    public static function importXML($sTemplateName)
+    public static function importManifest($sTemplateName)
     {
         $oEditedTemplate                      = Template::model()->getTemplateConfiguration($sTemplateName, '', false);
         $oEditTemplateDb                      = Template::model()->findByPk($oEditedTemplate->oMotherTemplate->sTemplateName);
