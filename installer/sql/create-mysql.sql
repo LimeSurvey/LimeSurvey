@@ -636,8 +636,6 @@ CREATE TABLE `prefix_surveymenu` (
   `created_at` datetime DEFAULT NULL,
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`user_id`) REFERENCES  `prefix_users` (`uid`) ON DELETE CASCADE,
-  FOREIGN KEY (`parent_id`) REFERENCES  `prefix_surveymenu` (`id`) ON DELETE CASCADE,
   KEY `order` (`order`),
   KEY `title` (`title`(250))
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
