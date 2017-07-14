@@ -132,7 +132,6 @@
 
             <!-- Admin email -->
             <div class="form-group">
-                <?php //Switch for creation/editing ?>
                 <label class="col-sm-3 control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
                 <div class="col-sm-9">
                     <input class="form-control" type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($oSurvey->adminemail); ?>" />
