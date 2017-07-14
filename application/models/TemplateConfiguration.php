@@ -295,7 +295,7 @@ class TemplateConfiguration extends CActiveRecord
         }
 
     }
-    
+
     /**
     * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
     *
@@ -364,7 +364,7 @@ class TemplateConfiguration extends CActiveRecord
     }
 
     /**
-     * From a list of json files in db it will generate a PHP array ready to use by editPackage()
+     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *
      * @var $jFiles string json
      * @return array
@@ -391,11 +391,11 @@ class TemplateConfiguration extends CActiveRecord
     private function changeMotherConfiguration( $sType, $aSettings )
     {
         if (is_a($this->oMotherTemplate, 'TemplateConfiguration')){
-            $this->editPackage($this->oMotherTemplate->sPackageName, $sType, $aSettings);
+            $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSettings);
         }
     }
 
-    private function editPackage( $sPackageName, $sType, $aSettings )
+    private function removeFileFromPackage( $sPackageName, $sType, $aSettings )
     {
         foreach( $aSettings as $key => $aFiles){
 

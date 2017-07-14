@@ -508,12 +508,28 @@ class TemplateManifest extends TemplateConfiguration
     {
         foreach( $aSettings as $key => $aSetting){
             if (!empty($aSetting['replace']) || !empty($aSetting['remove'])){
-                Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSetting['replace'] );
+                $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSetting['replace']);
                 unset($aSettings[$key]);
             }
         }
 
         return $aSettings;
+    }
+
+    /**
+     * Proxy for Yii::app()->clientScript->removeFileFromPackage()
+     * It's not realy needed here, but it is needed for TemplateConfiguration model.
+     * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
+     * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
+     *
+     * @param $sPackageName     string   name of the package to edit
+     * @param $sType            string   the type of settings to change (css or js)
+     * @param $aSettings        array    array of local setting
+     * @return array
+     */
+    private function removeFileFromPackage( $sPackageName, $sType, $aSettings )
+    {
+        Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $aSetting['replace'] );
     }
 
     /**
