@@ -483,10 +483,6 @@ class TemplateManifest extends TemplateConfiguration
             $aJsFiles     = array_merge($aJsFiles,$aJsFilesDir);
         }
 
-        if (Yii::app()->getConfig('debug') == 0) {
-            Yii::app()->clientScript->registerScriptFile( Yii::app()->getConfig("generalscripts"). 'deactivatedebug.js', CClientScript::POS_END);
-        }
-
         $this->sPackageName = 'survey-template-'.$this->sTemplateName;
         $sTemplateurl       = $oTemplate->getTemplateURL();
 
