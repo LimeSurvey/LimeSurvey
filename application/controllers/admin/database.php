@@ -945,16 +945,11 @@ class database extends Survey_Common_Action
 
                     if(!empty($short_title))
                         $data['surveyls_title'] = $short_title;
-                    if(!empty($description))
-                        $data['surveyls_description'] = $description;
-                    if(!empty($welcome))
-                        $data['surveyls_welcometext'] = $welcome;
-                    if(!empty($endtext))
-                        $data['surveyls_endtext'] = $endtext;
-                    if(!empty($sURL))
-                        $data['surveyls_url'] = $sURL;
-                    if(!empty($sURLDescription))
-                        $data['surveyls_urldescription'] = $sURLDescription;
+                    $data['surveyls_description'] = $description;
+                    $data['surveyls_welcometext'] = $welcome;
+                    $data['surveyls_endtext'] = $endtext;
+                    $data['surveyls_url'] = $sURL;
+                    $data['surveyls_urldescription'] = $sURLDescription;
                     if(!empty($dateformat))
                         $data['surveyls_dateformat'] = $dateformat;
                     if(!empty($numberformat))
