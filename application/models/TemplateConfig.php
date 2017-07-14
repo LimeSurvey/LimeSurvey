@@ -267,11 +267,13 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId=''){}
     public function addFileReplacement($sFile, $sType){}
+        
     protected function getFilesToLoad($oTemplate, $sType){}
     protected function changeMotherConfiguration( $sType, $aSettings ){}
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false){}
     protected function removeFileFromPackage( $sPackageName, $sType, $aSettings ){}
     protected function setMotherTemplates(){}
+    protected function setThisTemplate(){}
 
 
  }

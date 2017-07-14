@@ -24,8 +24,10 @@ class TemplateManifest extends TemplateConfiguration
 {
     public $templateEditor;
 
-
-    // Public interface specific to TemplateManifest
+    /**
+     * Public interface specific to TemplateManifest
+     * They are used in TemplateEditor
+     */
 
     /**
      * Update the configuration file "last update" node.
@@ -281,66 +283,6 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * Constructs a template configuration object
-     * If any problem (like template doesn't exist), it will load the default template configuration
-     *
-     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
-     * @param  string $iSurveyId the id of the survey. If
-     * @return $this
-     */
-    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
-    {
-        $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
-        $this->setIsStandard();                                                 // Check if  it is a CORE template
-        $this->setPath();                                                       // Check and set path
-        $this->readManifest();                                                  // Check and read the manifest to set local params
-        $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        $this->setThisTemplate();                                               // Set the main config values of this template
-        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
-        return $this;
-    }
-
-    /**
-     * Add a file replacement entry
-     * eg: <filename replace="css/template.css">css/template.css</filename>
-     *
-     * @param string $sFile the file to replace
-     * @param string $sType css|js
-     */
-    public function addFileReplacement($sFile, $sType)
-    {
-        // First we get the XML file
-        libxml_disable_entity_loader(false);
-        $oNewManifest = new DOMDocument();
-        $oNewManifest->load($this->path."/config.xml");
-
-        $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
-        $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
-        $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);   // Only for the insert before statement
-
-        if (is_null($oFiles)){
-            $oFiles    = $oNewManifest->createElement('files');
-        }
-
-        $oAssetType = $oFiles->getElementsByTagName($sType)->item(0);
-        if (is_null($oAssetType)){
-            $oAssetType   = $oNewManifest->createElement($sType);
-            $oFiles->appendChild($oAssetType);
-        }
-
-        $oNewManifest->createElement('filename');
-
-        $oAssetElem       = $oNewManifest->createElement('filename', $sFile);
-        $replaceAttribute = $oNewManifest->createAttribute('replace');
-        $replaceAttribute->value = $sFile;
-        $oAssetElem->appendChild($replaceAttribute);
-        $oAssetType->appendChild($oAssetElem);
-        $oConfig->insertBefore($oFiles,$oOptions);
-        $oNewManifest->save($this->path."/config.xml");
-        libxml_disable_entity_loader(true);
-    }
-
-    /**
      * Read the config.xml file of the template and push its contents to $this->config
      */
     private function readManifest()
@@ -414,6 +356,71 @@ class TemplateManifest extends TemplateConfiguration
 
 
     /**
+     * Specific Integration of TemplateConfig.
+     */
+
+
+    /**
+     * Constructs a template configuration object
+     * If any problem (like template doesn't exist), it will load the default template configuration
+     *
+     * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
+     * @param  string $iSurveyId the id of the survey. If
+     * @return $this
+     */
+    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
+    {
+        $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
+        $this->setIsStandard();                                                 // Check if  it is a CORE template
+        $this->setPath();                                                       // Check and set path
+        $this->readManifest();                                                  // Check and read the manifest to set local params
+        $this->setMotherTemplates();                                            // Recursive mother templates configuration
+        $this->setThisTemplate();                                               // Set the main config values of this template
+        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
+        return $this;
+    }
+
+    /**
+     * Add a file replacement entry
+     * eg: <filename replace="css/template.css">css/template.css</filename>
+     *
+     * @param string $sFile the file to replace
+     * @param string $sType css|js
+     */
+    public function addFileReplacement($sFile, $sType)
+    {
+        // First we get the XML file
+        libxml_disable_entity_loader(false);
+        $oNewManifest = new DOMDocument();
+        $oNewManifest->load($this->path."/config.xml");
+
+        $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
+        $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
+        $oOptions  = $oNewManifest->getElementsByTagName('options')->item(0);   // Only for the insert before statement
+
+        if (is_null($oFiles)){
+            $oFiles    = $oNewManifest->createElement('files');
+        }
+
+        $oAssetType = $oFiles->getElementsByTagName($sType)->item(0);
+        if (is_null($oAssetType)){
+            $oAssetType   = $oNewManifest->createElement($sType);
+            $oFiles->appendChild($oAssetType);
+        }
+
+        $oNewManifest->createElement('filename');
+
+        $oAssetElem       = $oNewManifest->createElement('filename', $sFile);
+        $replaceAttribute = $oNewManifest->createAttribute('replace');
+        $replaceAttribute->value = $sFile;
+        $oAssetElem->appendChild($replaceAttribute);
+        $oAssetType->appendChild($oAssetElem);
+        $oConfig->insertBefore($oFiles,$oOptions);
+        $oNewManifest->save($this->path."/config.xml");
+        libxml_disable_entity_loader(true);
+    }
+
+    /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *
      * @var $jFiles string json
@@ -479,7 +486,7 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Set the default configuration values for the template, and use the motherTemplate value if needed
      */
-    private function setThisTemplate()
+    protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
         $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
@@ -503,15 +510,7 @@ class TemplateManifest extends TemplateConfiguration
 
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
-        //var_dump($this->depends); die();
     }
-
-
-
-    /**
-     * Common privates methods
-     */
-
 
 
     protected function addMotherTemplatePackage($packages)
@@ -522,10 +521,6 @@ class TemplateManifest extends TemplateConfiguration
         }
         return $packages;
     }
-
-    /**
-     * Different implemation of  privates methods
-     */
 
     /**
      * Get the list of file replacement from Engine Framework

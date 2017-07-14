@@ -132,8 +132,6 @@ class TemplateConfiguration extends TemplateConfig
         ));
     }
 
-
-
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -305,7 +303,7 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Set the default configuration values for the template, and use the motherTemplate value if needed
      */
-    private function setThisTemplate()
+    protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
         $this->apiVersion               = (!empty($this->template->api_version))? $this->template->api_version : $this->oMotherTemplate->apiVersion;
@@ -351,10 +349,6 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Different implemation of  privates methods
-     */
-
-    /**
      * Get the list of file replacement from Engine Framework
      * @param string  $sType            css|js the type of file
      * @param boolean $bInlcudeRemove   also get the files to remove
@@ -362,8 +356,6 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
-        //  foreach( $this->getFrameworkAssetsToReplace('css', true) as $toReplace){
-
         $sFieldName  = 'cssframework_'.$sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
