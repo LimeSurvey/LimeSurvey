@@ -74,7 +74,7 @@ export default {
             <li v-for="(questiongroup,index) in questiongroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="isActive(index) ? 'selected' : ''" >
                 <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
                     <i class="fa fa-bars bigIcons" draggable="true">&nbsp;</i>
-                    <a :href="questiongroup.link" @click="openQuestionGroup(questiongroup,index)" class="col-12 pjax"> 
+                    <a :href="questiongroup.link" @click.stop="openQuestionGroup(questiongroup,index)" class="col-12 pjax"> 
                         {{questiongroup.group_name}} 
                         <span class="pull-right">({{questiongroup.questions.length}})</span>
                     </a>
@@ -83,7 +83,7 @@ export default {
                 <ul class="list-group background-muted padding-left" v-if="isActive(index)">
                     <li v-for="(question,index) in questiongroup.questions" v-bind:key="question.qid" class="list-group-item ls-flex-row align-itmes-flex-between">
                         <i class="fa fa-bars margin-right bigIcons" draggable="true">&nbsp;</i>
-                        <a @click="openQuestion(question,index)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{question.name_short}} </a>
+                        <a @click.stop="openQuestion(question,index)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{question.name_short}} </a>
                     </li>
                 </ul>
             </li>

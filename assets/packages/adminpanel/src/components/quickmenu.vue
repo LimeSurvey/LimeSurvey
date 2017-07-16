@@ -6,7 +6,7 @@ import ajaxMethods from '../mixins/runAjax.js';
 export default {
     mixins: [ajaxMethods],
     props: {
-        'getMenuUrl' : {type: String},
+        'menuEntries' : {type: Object},
         'activeMenuIndex': {type: String},
     },
     data(){
@@ -16,7 +16,7 @@ export default {
     },
     computed: {
         sortedMenues(){
-            return _.orderBy(this.menues,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
+            return _.orderBy(this.menuEntries,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
         }
     },
     methods:{
@@ -37,12 +37,12 @@ export default {
     },
     mounted(){
         const self = this;
-        this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
-            console.log('quickmenu',result);
-            self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$localStorage.set('collapsedmenues', JSON.stringify(self.menues));
-            self.$forceUpdate();
-        });
+        // this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
+        //     console.log('quickmenu',result);
+        //     self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+        //     self.$localStorage.set('collapsedmenues', JSON.stringify(self.menues));
+        //     self.$forceUpdate();
+        // });
     }
 }
 </script>

@@ -4,16 +4,18 @@
 /* @var $form CActiveForm */
 ?>
 
-<?php $form=$this->beginWidget('TbActiveForm', array(
+<?php 
+	$form=$this->beginWidget('TbActiveForm', array(
 	'id'=>'surveymenu-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
-	'htmlOptions' => ['class' =>'form form-horizontal']
+	'htmlOptions' => ['class' =>'form form-horizontal'],
+	'action' => Yii::app()->getController()->createUrl('admin/menus/sa/update', ['id' => $model->id])
 )); ?>
-
+	<p><pre><?=$model->isNewRecord?></pre></p>
 	<div class="modal-header">
 		<?php $model->isNewRecord ? eT('Create new surveymenu') : eT('Edit surveymenu') ?>
 	</div>
@@ -29,7 +31,7 @@
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'parent_id'); ?>
-				<?php echo $form->dropDownList($model,'parent_id', $model->getMenuIdOptions()); ?>
+				<?php echo $form->dropDownList($model,'parent_id', $model->getMenuIdOptions(), []); ?>
 				<?php echo $form->error($model,'parent_id'); ?>
 			</div>
 
@@ -60,15 +62,17 @@
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'position'); ?>
-				<?php echo $form->textField($model,'position',array('size'=>60,'maxlength'=>255)); ?>
+				<?php echo $form->dropDownList($model,'position',$model->getPositionOptions()); ?>
 				<?php echo $form->error($model,'position'); ?>
 			</div>
 
-		<input type="hidden" name='changed_by' value="<?=$user?>" />
-		<input type="hidden" name='created_by' value="<?=$user?>" />
+		<?php echo $form->hiddenField($model, 'changed_by', ['value' => $user]);?>
+		<?php echo $form->hiddenField($model, 'changed_at', ['value' => date('Y-m-d H:i:s')]);?>
+		<?php echo $form->hiddenField($model, 'created_by', ['value' => (empty($model->created_by) ? $user : $model->created_by)]);?>
+		<?php echo $form->hiddenField($model, 'id');?>
 	</div>
 	<div class="modal-footer">
-		<?php echo TbHtml::submitButton(($model->isNewRecord ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
+		<?php echo TbHtml::submitButton((empty($model->id) ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
 		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 	</div>
 <?php $this->endWidget(); ?>

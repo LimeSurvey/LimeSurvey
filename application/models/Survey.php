@@ -624,14 +624,15 @@ class Survey extends LSActiveRecord
         return (object) ($aData);
     }
 
-    private function _createSurveymenuArray($aSurveyMenuObjects)
+    private function _createSurveymenuArray($oSurveyMenuObjects)
     {
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
         $aResultCollected = [];
-        foreach($aSurveyMenuObjects as $aSurveyMenuObject){
+        foreach($oSurveyMenuObjects as $oSurveyMenuObject){
             $entries = [];
-            $defaultMenuEntries = $aSurveyMenuObject->surveymenuEntries;
+            $defaultMenuEntries = $oSurveyMenuObject->surveymenuEntries;
+            $submenus = $this->_getSurveymenuSubmenus($oSurveyMenuObject);
             foreach($defaultMenuEntries as $menuEntry){
                 $aEntry = $menuEntry->attributes;
                 //Skip menu if no permission
@@ -641,7 +642,6 @@ class Survey extends LSActiveRecord
                 ) {continue;}
                 //parse the render part of the data attribute
                 $oDataAttribute = $this->_parseSurveyMenuData($menuEntry->data);
-                
                 if($oDataAttribute->noRender){continue;}
 
                 $aEntry['link'] = $aEntry['menu_link']
@@ -649,28 +649,47 @@ class Survey extends LSActiveRecord
                             : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
                 $aEntry['link_external'] = $oDataAttribute->linkExternal;
                 $aEntry['debugData'] = $oDataAttribute;
-                $entries[] = $aEntry;
+                $entries[$aEntry['id']] = $aEntry;
             }
-            $aResultCollected[] = [
-                "title" => $aSurveyMenuObject->title,
-                "description" => $aSurveyMenuObject->description,
+            $aResultCollected[$oSurveyMenuObject->id] = [
+                "title" => $oSurveyMenuObject->title,
+                "description" => $oSurveyMenuObject->description,
                 "entries" => $entries,
+                "submenus" => $submenus
             ];
         }
         return $aResultCollected;
     }
 
+    private function _getSurveymenuSubmenus($oParentSurveymenu){
+        $criteria=new CDbCriteria;
+        $criteria->condition='survey_id=:surveyid';
+        $criteria->condition.=' AND parent_id=:parentid';
+        $criteria->condition.=' AND level=:level';
+        $criteria->params = [
+            ':surveyid' => $oParentSurveymenu->survey_id,
+            ':parentid' =>  $oParentSurveymenu->id,
+            ':level'=> ($oParentSurveymenu->level+1)
+        ];
+
+        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
+
+        $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus);
+        return $aResultCollected;
+    }
 
     private function _getDefaultSurveyMenus($position='')
     {
         $criteria=new CDbCriteria;
-        $criteria->condition='survey_id=NULL';
-        if($position != ''){
-            $criteria->condition='position=:position';
+        $criteria->condition='survey_id IS NULL AND parent_id IS NULL';
+
+        if($position != '')
+        {
+            $criteria->condition.=' AND position=:position';
             $criteria->params=array(':position'=>$position);
         }
-        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
 
+        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
         $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus);
 
         return $aResultCollected;
@@ -689,7 +708,8 @@ class Survey extends LSActiveRecord
         $aThisSurveyMenues = $this->_createSurveymenuArray($this->surveymenus);
         //merge them
         $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
-
+        // var_dump($aDefaultSurveyMenus);
+        // var_dump($aThisSurveyMenues);
         //soon to come => Event to add menus for plugins
 
         return $aSurveyMenus;
@@ -749,7 +769,7 @@ class Survey extends LSActiveRecord
                         Yii::app()->db->createCommand()->dropTable($this->responsesTableName);
                     }
                     //delete the survey_$iSurveyID_timings table
-                    if ($this->hasTimingsTable) {
+                    if (isset($this->hasTimingsTable)) {
                         Yii::app()->db->createCommand()->dropTable($this->timingsTableName);
                     }
                     //delete the tokens_$iSurveyID table

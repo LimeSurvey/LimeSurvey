@@ -42,12 +42,12 @@ footer.footer {
 ol.breadcrumb.title-bar-breadcrumb{
     background: transparent;
     color: white;
-
+    margin-bottom: 0px;
     a {
         color: white;
         text-decoration: none;
-        line-height: 32px;
-        font-size: 24px;
+        line-height: 24px;
+        font-size: 18px;
 
         &.animate::after {
             content: '';
@@ -73,12 +73,18 @@ ol.breadcrumb.title-bar-breadcrumb{
     li{
         background: transparent;
         color: white;
-        line-height: 32px;
-        font-size: 24px;
+        line-height: 24px;
+        font-size: 18px;
         &.active{
             color: #dfdfdf;
             font-style: italic
         }
         
     }
+}
+
+.breadcrumb-title{
+    line-height: 24px;
+    font-size: 18px;
+    padding: 8px 15px;
 }

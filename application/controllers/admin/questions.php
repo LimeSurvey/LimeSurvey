@@ -31,7 +31,7 @@ class questions extends Survey_Common_Action
         $aData = array();
 
         // Init general variables
-        $aData['surveyid'] = $iSurveyID = $surveyid;
+        $aData['surveyid'] = $iSurveyID = (int) $surveyid;
         $aData['gid'] = $gid;
         $aData['qid'] = $qid;
         $survey = Survey::model()->findByPk($iSurveyID);

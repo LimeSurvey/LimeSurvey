@@ -6,7 +6,7 @@ if ($('#save-form-button').length>0){
     $("#save-form-button").on('click', function(ev){
         ev.preventDefault();
         var formid = '#'+$(this).attr('data-form-id');
-        $form = $(formid);
+        var $form = $(formid);
         //alert($form.find('[type="submit"]').attr('id'));
         $form.find('[type="submit"]').trigger('click');
         return false;

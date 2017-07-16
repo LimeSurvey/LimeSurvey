@@ -71,7 +71,7 @@ class SurveymenuController extends Controller
 		{
 			$model->attributes=$_POST['Surveymenu'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('index'));
 		}
 
 		$this->render('create',array(
@@ -95,7 +95,7 @@ class SurveymenuController extends Controller
 		{
 			$model->attributes=$_POST['Surveymenu'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('index'));
 		}
 
 		$this->render('update',array(

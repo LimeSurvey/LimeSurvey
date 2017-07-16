@@ -101,5 +101,5 @@ CKEDITOR.editorConfig = function (config) {
 };
 
 (function () {
-    CKEDITOR.plugins.addExternal('limereplacementfields', CKEDITOR.basePath + '../ckeditoradditions/limereplacementfields/', 'plugin.js');
+    CKEDITOR.plugins.addExternal('limereplacementfields', CKEDITOR.basePath + 'plugins/limereplacementfields/', 'plugin.js');
 })();

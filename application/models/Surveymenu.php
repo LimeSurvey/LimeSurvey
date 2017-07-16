@@ -64,11 +64,13 @@ class Surveymenu extends LSActiveRecord
 	}
 
 	public function getMenuIdOptions (){
-		$oSurveymenus = Surveymenu::model()->findAll('id != 1',[]);
-		$options = [];
+		$oSurveymenus = Surveymenu::model()->findAll();
+		$options = [
+			'' => gT('No parent menu')
+		];
 		foreach($oSurveymenus as $oSurveymenu){
 			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
-			$options[$oSurveymenu->id] = $oSurveymenu->title;
+			$options[((int)$oSurveymenu->id)] = '('.$oSurveymenu->id.') '.$oSurveymenu->title;
 		}
 		//return join('\n',$options);
 		return $options;
@@ -77,7 +79,7 @@ class Surveymenu extends LSActiveRecord
 	public function getSurveyIdOptions (){
 		$oSurveys = Survey::model()->findAll('expires < :expire',['expire' => date('Y-m-d H:i:s', strtotime('+1 hour'))]);
 		$options = [
-			'' => gT('All surveys')
+			NULL => gT('All surveys')
 		];
 		foreach($oSurveys as $oSurvey){
 			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
@@ -98,6 +100,16 @@ class Surveymenu extends LSActiveRecord
 		for($i=0; $i<=count($oSurveymenus); $i++){
 			$options[$i] = $i;
 		}
+		//return join('\n',$options);
+		return $options;
+	}
+	public function getPositionOptions (){
+		$options = [
+			'side' => gT('Sidemenu'),
+			'collapsed' => gT('Collapsed menu'),
+			'top' => gT('Top bar'),
+			'bottom' => gT('Bottom bar')
+		];
 		//return join('\n',$options);
 		return $options;
 	}
@@ -179,6 +191,23 @@ class Surveymenu extends LSActiveRecord
 		);
 
 		return $cols;
+	}
+
+	private function _getMaxLevel(){
+		$aMaxLevel = Surveymenu::model()->findBySql('SELECT MAX(level) as maxLevel FROM {{surveymenu}}');
+		return $aMaxLevel['maxLevel'];
+	}
+
+	private function _recalculateOrder(){
+		$models = Surveymenu::model()->findAll();
+		$maxLevel = $this->_getMaxLevel();
+
+	}
+
+
+	public function onAfterSave($event){
+		//$this->_recalculateOrder();
+		return parent::onAfterSave();
 	}
 
 	/**

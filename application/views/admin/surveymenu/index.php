@@ -57,7 +57,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 </div>
 
 
-<input type="hidden" id="surveymenu_open_url_selected_entry" value="" />
+<input type="hidden" id="surveymenu_open_url_selected_entry" value="0" />
 <!-- modal! -->
 
 <div class="modal fade" id="editcreatemenu" tabindex="-1" role="dialog">
@@ -85,7 +85,29 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 			console.log($('.action_selectthismenu:checked'));
 			loadSurveyEntryFormData.menuid = $('.action_selectthismenu:checked').val();
 		}
-		$(this).find('.modal-content').load(loadSurveyEntryFormUrl, loadSurveyEntryFormData);
+		$(this).find('.modal-content').load(loadSurveyEntryFormUrl, loadSurveyEntryFormData,
+				function(){
+					console.log($('#surveymenu-form'));
+				$('#surveymenu-form').on('submit', function(evt){
+					evt.preventDefault();
+					var data = $('#surveymenu-form').serializeArray();
+					var url = $('#surveymenu-form').attr('action');
+					$.ajax({
+						url : url,
+						data: data,
+						method: 'POST',
+						dataType: 'json',
+						success: function(data){
+							console.log(data);
+							//window.location.reload();
+						},
+						error: function(error){
+							console.log(error);
+						}
+					})
+				}
+			);
+		});
 	});
 	$('#editcreatemenu').on('hidden.bs.modal', function(){
 		$(this).find('.modal-content').html('');

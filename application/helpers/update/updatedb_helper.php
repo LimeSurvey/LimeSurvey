@@ -323,7 +323,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
 function createSurveyMenuTable293($oDB) {
     $oDB->createCommand()->createTable('{{surveymenu}}', array(
-        "id" => "int NOT NULL ",
+        "id" => "int NOT NULL AUTO_INCREMENT",
         "parent_id" => "int DEFAULT NULL",
         "survey_id" => "int DEFAULT NULL",
         "order" => "int DEFAULT '0'",
@@ -355,7 +355,7 @@ function createSurveyMenuTable293($oDB) {
     );
 
     $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
-        "id" => "int NOT NULL ",
+        "id" => "int NOT NULL AUTO_INCREMENT",
         "menu_id" => "int DEFAULT NULL",
         "order" => "int DEFAULT '0'",
         "name" => "character varying(255)  NOT NULL DEFAULT ''",

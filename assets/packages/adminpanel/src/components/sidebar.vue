@@ -25,6 +25,7 @@ export default {
         return {
             'currentTab': 'settings',
             'activeMenuIndex' : 0,
+            'openSubpanelId' : 0,
             'questiongroups': [],
             'menues' : [],
             'isCollapsed' : false,
@@ -32,6 +33,8 @@ export default {
             'initialPos' : {x: 0, y: 0},
             'isMouseDown' : false,
             'isMouseDownTimeOut' : null,
+            'sidemenus': {},
+            'collapsedmenus': {}
         };
     },
     computed: {
@@ -48,6 +51,9 @@ export default {
         },
         showSideMenu(){
             return (!this.isCollapsed && this.activeTab('settings'));
+        },
+        showQuestionTree(){
+            return (!this.isCollapsed && this.activeTab('questiontree'))
         }
     },
     methods: {
@@ -67,6 +73,10 @@ export default {
         setActiveMenuIndex(index){
             this.$localStorage.set('activeMenuIndex',index);
             this.activeMenuIndex = index;
+        },
+        setOpenSubpanel(sId){
+            this.openSubpanelId = sId;
+            this.$emit('menuselected', sId);
         },
         toggleCollapse() {
             this.isCollapsed = !this.isCollapsed;
@@ -119,6 +129,8 @@ export default {
         this.currentTab = self.$localStorage.get('currentTab','settings');
         this.isCollapsed = self.$localStorage.get('iscollapsed', 'false') == 'true';
         this.activeMenuIndex = this.$localStorage.get('activeMenuIndex', null); 
+        this.sidemenus = JSON.parse(self.$localStorage.get('sidemenus', JSON.stringify([])));
+        this.collapsedmenus = JSON.parse(self.$localStorage.get('collapsedmenus', JSON.stringify([])));
         this.setActiveMenuIndex(this.activeMenuIndex);
         if(this.isCollapsed){ 
             this.sideBarWidth = '98px'; 
@@ -135,14 +147,25 @@ export default {
             self.$localStorage.set('questiongroups', JSON.stringify(self.questiongroups));
             self.$forceUpdate();
         });
+        this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
+            console.log('sidemenues',result);
+            self.sidemenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+            self.$localStorage.set('sidemenus', JSON.stringify(self.menues));
+            self.$forceUpdate();
+        });
+        this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
+            console.log('quickmenu',result);
+            self.collapsedmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+            self.$localStorage.set('collapsedmenus', JSON.stringify(self.menues));
+            self.$forceUpdate();
+        });
         self.$forceUpdate();
         $('body').on('mousemove', (event) => {self.mousemove(event,self)});
     }
 }
 </script>
 <template>
-   
-    <div id="sidebar" class="ls-flex col-md-4 hidden-xs nofloat nooverflow transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
+    <div id="sidebar" class="ls-flex col-md-4 hidden-xs nofloat overflow-auto transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
         <div class="col-12" v-bind:style="{'height': maxSideBarHeight}">
             <div class="mainMenu container-fluid col-sm-12 fill-height">
                 <div class="ls-flex-row align-content-space-between align-items-space-between ls-space margin bottom-5 top-5 ">
@@ -174,18 +197,15 @@ export default {
                     </transition>
                 </div>
                 <transition name="slide-fade">
-                    <sidemenu :active-menu-index="activeMenuIndex" v-on:selectedmenu="setActiveMenuIndex" v-show="showSideMenu" :get-menu-url='getMenuUrl'></sidemenu>
-                </transition>
-    
-                <transition name="slide-fade">
-                    <template v-show="!isCollapsed">
-                        <div class="row fill-height ls-ba" v-show="activeTab('questiontree')">
-                            <questionexplorer :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" :questiongroups="questiongroups"></questionexplorer>
-                        </div>
-                    </template>
+                    <sidemenu :active-menu-index="activeMenuIndex" :open-subpanel-id="openSubpanelId" v-on:menuselected="setOpenSubpanel" v-on:selectedmenu="setActiveMenuIndex" v-show="showSideMenu" :menu-entries='sidemenus'></sidemenu>
                 </transition>
                 <transition name="slide-fade">
-                    <quickmenu v-show="isCollapsed" :active-menu-index="activeMenuIndex" v-on:selectedmenu="setActiveMenuIndex" :get-menu-url='getMenuUrl'></quickmenu>
+                    <div class="row fill-height ls-ba" v-show="showQuestionTree">
+                        <questionexplorer :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" :questiongroups="questiongroups"></questionexplorer>
+                    </div>
+                </transition>
+                <transition name="slide-fade">
+                    <quickmenu v-show="isCollapsed" :active-menu-index="activeMenuIndex" v-on:selectedmenu="setActiveMenuIndex" :menu-entries='collapsedmenus'></quickmenu>
                 </transition>
             </div>
         </div>
@@ -201,6 +221,11 @@ export default {
     .background.white{
         background-color: rgba(255,255,255,1);
         box-shadow: none;
+    }
+
+    .overflow-auto{
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 
     .resize-handle{
