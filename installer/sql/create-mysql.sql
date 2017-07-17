@@ -677,7 +677,7 @@ CREATE TABLE `prefix_surveymenu_entries` (
   KEY `menu_title` (`menu_title`(191))
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `prefix_surveymenu_entries` VALUES 
+INSERT INTO `prefix_surveymenu_entries` VALUES
 (1,1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','',NULL,'','en-GB',NOW(),0,NOW(),0),
 (2,1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',NOW(),0,NOW(),0),
 (3,1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',NOW(),0,NOW(),0),
@@ -749,6 +749,7 @@ CREATE TABLE `lime_template_configuration` (
   `templates_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sid` int(11) DEFAULT NULL,
   `gsid` int(11) DEFAULT NULL,
+  `uid` int(11) DEFAULT NULL,
   `files_css` mediumtext COLLATE utf8mb4_unicode_ci,
   `files_js` mediumtext COLLATE utf8mb4_unicode_ci,
   `files_print_css` mediumtext COLLATE utf8mb4_unicode_ci,

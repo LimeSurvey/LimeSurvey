@@ -229,22 +229,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         }
 
         /**
-         * Template tables
-         * @since 2017-07-12
-         */
-        if ($iOldDBVersion < 295) {
-            $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables295($oDB);
-            $oTransaction->commit();
-        }
-
-        /**
          * Survey menue table update
          * @since 2017-07-12
          */
         if ($iOldDBVersion < 296) {
             $oTransaction = $oDB->beginTransaction();
-            
+
             $oDB->createCommand()->addColumn('{{surveymenu}}', 'user_id', "int DEFAULT NULL");
             $oDB->createCommand()->addForeignKey('user_id', '{{surveymenu}}', 'user_id', '{{users}}', 'uid' );
             $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'user_id', "int DEFAULT NULL");
@@ -276,9 +266,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                     $oDB->createCommand()->insert('{{surveymenu_entries}}', $combined);
             }
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>296),"stg_name='DBVersion'");
+
+
             $oTransaction->commit();
         }
+
+                    /**
+                     * Template tables
+                     * @since 2017-07-12
+                     */
+                    if ($iOldDBVersion < 297) {
+                        $oTransaction = $oDB->beginTransaction();
+                        upgradeTemplateTables297($oDB);
+                        $oTransaction->commit();
+                        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>297),"stg_name='DBVersion'");
+                    }
 
     }
     catch(Exception $e)
@@ -408,7 +410,7 @@ function createSurveyMenuTable293($oDB) {
  * @param $oDB
  * @return void
  */
-function upgradeTemplateTables295($oDB)
+function upgradeTemplateTables297($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{templates}')) {
@@ -457,7 +459,6 @@ function upgradeTemplateTables295($oDB)
         'view_folder'            => 'views',
         'files_folder'           => 'files',
         'description'            => 'LimeSurvey Advanced Template:\r\nMany options for user customizations. \r\n',
-//        'last_update'            => '',
         'owner_id'               => '1',
         'extends_templates_name' => '',
     ));
@@ -468,6 +469,7 @@ function upgradeTemplateTables295($oDB)
         'templates_name'    => 'string(150) NOT NULL',
         'sid'               => 'int(11) DEFAULT NULL',
         'gsid'              => 'int(11) DEFAULT NULL',
+        'uid'               => 'int(11) DEFAULT NULL',
         'files_css'         => 'MEDIUMTEXT',
         'files_js'          => 'MEDIUMTEXT',
         'files_print_css'   => 'MEDIUMTEXT',
@@ -492,11 +494,7 @@ function upgradeTemplateTables295($oDB)
         'packages_to_load'  => 'template-core,',
     ));
 
-    $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>295),"stg_name='DBVersion'");
 }
-
-
-
 
 function fixLanguageConsistencyAllSurveys()
 {
