@@ -180,8 +180,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param boolean $bReturn Should the function echo the result, or just returns it?
      * @return string
      */
-    public function renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn=false)
+    public function renderTemplateFromString( $line, $aDatas, $oTemplate, $bReturn=false)
     {
+        $oRTemplate   = $oTemplate;
         $this->_twig  = $twig = parent::getTwig();
         $loader       = $this->_twig->getLoader();
         $loader->addPath($oRTemplate->viewPath);
@@ -238,7 +239,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oTwigTemplate = $twig->createTemplate($line);
         $nvLine        = $oTwigTemplate->render($aDatas, false);
 
-        Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
+        Yii::app()->clientScript->registerPackage( $oTemplate->sPackageName );
         if (!$bReturn){
             ob_start(function($buffer, $phase)
             {
