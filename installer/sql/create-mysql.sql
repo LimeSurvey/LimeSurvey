@@ -713,7 +713,7 @@ INSERT INTO `prefix_surveymenu_entries` VALUES
 -- -----------------------------------------------------
 -- Table `prefix_templates`
 -- -----------------------------------------------------
-CREATE TABLE `lime_templates` (
+CREATE TABLE `prefix_templates` (
   `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `folder` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -736,14 +736,14 @@ CREATE TABLE `lime_templates` (
 
 
 
-INSERT INTO `lime_templates` (`name`, `folder`, `title`, `creation_date`, `author`, `author_email`, `author_url`, `copyright`, `license`, `version`, `api_version`, `view_folder`, `files_folder`, `description`, `last_update`, `owner_id`, `extends_templates_name`) VALUES
+INSERT INTO `prefix_templates` VALUES
   ('default', 'default', 'Advanced Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', 'LimeSurvey Advanced Template:\\r\\nMany options for user customizations. \\r\\n', NULL, 1, '');
 
 
 -- -----------------------------------------------------
 -- Table `prefix_template_configuration`
 -- -----------------------------------------------------
-CREATE TABLE `lime_template_configuration` (
+CREATE TABLE `prefix_template_configuration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `templates_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sid` int(11) DEFAULT NULL,
@@ -763,11 +763,11 @@ CREATE TABLE `lime_template_configuration` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
-INSERT INTO `lime_template_configuration` (`id`, `templates_name`, `sid`, `gsid`, `files_css`, `files_js`, `files_print_css`, `options`, `cssframework_name`, `cssframework_css`, `cssframework_js`, `packages_to_load`, `packages_ltr`, `packages_rtl`) VALUES
-  (1, 'default', NULL, NULL, '{"add": ["css/template.css", "css/animate.css"]}', '{"add": ["scripts/template.js"]}', '{"add":"css/print_template.css",}', '{"ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}', 'bootstrap', '{"replace": ["css/bootstrap.css"]}', '', '', '', '');
+INSERT INTO `prefix_template_configuration`  VALUES
+    (1,'default',NULL,NULL,NULL,'{"add": ["css/template.css", "css/animate.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}','bootstrap','{"replace": ["css/bootstrap.css"]}','','','','');
 
 
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '296');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '297');
