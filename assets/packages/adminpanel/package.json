@@ -33,6 +33,7 @@
     "pjax": "^0.2.4",
     "vue": "^2.3.4",
     "vue-localstorage": "^0.3.0",
-    "vuex": "^2.3.1"
+    "vuex": "^2.3.1",
+    "vuex-localstorage": "^1.0.0"
   }
 }

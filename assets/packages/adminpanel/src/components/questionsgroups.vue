@@ -10,7 +10,6 @@ export default {
     },
     mixins: [ajaxMethods],
     props: {
-        questiongroups: {type: Array},
         createQuestionGroupLink : {type: String},
         createQuestionLink : {type: String},
         translate : {type: Object},
@@ -23,15 +22,13 @@ export default {
     computed: {
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
-            console.log(this.$store);
-            console.log('containerHeight',containerHeight);
             return (containerHeight - 100);
         }
     },
     methods: {
         onDragover(index){
             index = 'index_'+index;
-            this.toggleActivation(index);
+            //this.toggleActivation(index);
         },
         isActive(index){
             index = 'index_'+index;
@@ -47,23 +44,37 @@ export default {
             }
             this.$forceUpdate();
             this.$localStorage.set('active',JSON.stringify(this.active));
+            this.updatePjaxLinks();
+        },
+        addActive(index){
+            let sIndex = 'index_'+index;
+            if(!this.isActive(index)){
+               this.active.push(sIndex);
+            }  
+            this.$localStorage.set('active',JSON.stringify(this.active));
         },
         openQuestionGroup(questionGroup,index){
-            this.toggleActivation(index)
+            this.addActive(index)
             this.$emit('openentity', questionGroup);
+            this.$forceUpdate();
+            this.updatePjaxLinks();
         },
         openQuestion(question,index){
-            this.toggleActivation(index)
+            //this.addActive(index);
             this.$emit('openentity', question);
+            this.$store.commit('lastQuestionOpen', question);
+            this.$forceUpdate();
+            this.updatePjaxLinks();
         }
     },
     mounted(){
         this.active = JSON.parse(this.$localStorage.get('active','[]'));
+        this.updatePjaxLinks();
     }
 }
 </script>
 <template>
-    <div id="questionexplorer" class="ls-flex-column ls-ba " :style="{height: calculatedHeight+'px'}">
+    <div id="questionexplorer" class="ls-flex-column fill ls-ba">
         <div class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15">
             <a v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" :href="createQuestionGroupLink" class="btn btn-small btn-primary">
                 <i class="fa fa-plus"></i>&nbsp;{{translate.createQuestionGroup}}</a>
@@ -71,7 +82,7 @@ export default {
                 <i class="fa fa-plus-circle"></i>&nbsp;{{translate.createQuestion}}</a>
         </div>
         <ul class="list-group">
-            <li v-for="(questiongroup,index) in questiongroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="isActive(index) ? 'selected' : ''" >
+            <li v-for="(questiongroup,index) in $store.state.questiongroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="isActive(index) ? 'selected' : ''" >
                 <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
                     <i class="fa fa-bars bigIcons" draggable="true">&nbsp;</i>
                     <a :href="questiongroup.link" @click.stop="openQuestionGroup(questiongroup,index)" class="col-12 pjax"> 

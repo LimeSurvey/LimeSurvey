@@ -111,7 +111,7 @@ class Participant extends LSActiveRecord
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<span class='fa fa-%s' ></span>" //icon class
+            . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
         if ($this->userHasPermissionToEdit()) {

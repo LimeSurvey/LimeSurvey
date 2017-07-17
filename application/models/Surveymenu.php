@@ -70,7 +70,7 @@ class Surveymenu extends LSActiveRecord
 		];
 		foreach($oSurveymenus as $oSurveymenu){
 			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
-			$options[((int)$oSurveymenu->id)] = '('.$oSurveymenu->id.') '.$oSurveymenu->title;
+			$options[''.($oSurveymenu->id).''] = '('.$oSurveymenu->id.') '.$oSurveymenu->title;
 		}
 		//return join('\n',$options);
 		return $options;
@@ -135,7 +135,38 @@ class Surveymenu extends LSActiveRecord
 			'created_by'	=> gT('Created By'),
 		);
 	}
+	public function getButtons(){
+		$buttons = "<div style='white-space: nowrap'>";
+        $raw_button_template = ""
+            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<i class='fa fa-%s' ></i>" //icon class
+            . "</button>";
+		
+		if(Permission::model()->hasGlobalPermission('settings', 'update')){
 
+			$deleteData = array(
+				'action_surveymenu_deleteModal',
+				'text-danger',
+				gT("Delete this surveymenu"),
+				'trash text-danger'
+			);
+
+			$buttons .= vsprintf($raw_button_template, $deleteData);
+
+			$editData = array(
+				'action_surveymenu_editModal',
+				'text-danger',
+				gT("Delete this surveymenu"),
+				'edit'
+			);
+
+			$buttons .= vsprintf($raw_button_template, $editData);
+		}
+
+		$buttons .= '</div>';
+		
+		return $buttons;
+	}
 	/**
      * @return array
      */
@@ -146,6 +177,12 @@ class Surveymenu extends LSActiveRecord
 			'value' => '\'<input type="checkbox" name="selectMenuToEdit" class="action_selectthismenu" value="\'.$data->id.\'" />\'',
 			'type' => 'raw'
 			),
+			array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
 			array(
 				'name' => 'title',
 			),
@@ -205,9 +242,9 @@ class Surveymenu extends LSActiveRecord
 	}
 
 
-	public function onAfterSave($event){
+	public function onAfterSave($event=null){
 		//$this->_recalculateOrder();
-		return parent::onAfterSave();
+		return parent::onAfterSave($event);
 	}
 
 	/**

@@ -324,6 +324,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 }
 
 function createSurveyMenuTable293($oDB) {
+        // Drop the old survey rights table.
+    if (tableExists('{surveymenu}')) {
+        $oDB->createCommand()->dropTable('{{surveymenu}}');
+    }
+
+    if (tableExists('{surveymenu_entries}')) {
+        $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
+    }
+
+
     $oDB->createCommand()->createTable('{{surveymenu}}', array(
         "id" => "int NOT NULL AUTO_INCREMENT",
         "parent_id" => "int DEFAULT NULL",

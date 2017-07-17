@@ -6,6 +6,13 @@
     .surveybar{
         box-shadow: 3px 3px 3px rgba(99, 49, 48, 0.1);
     }
+    .side-body {
+        min-height: 0;
+    }
+}
+
+.menubar{
+    position:relative;
 }
 
 .menubar.surveybar{
@@ -37,6 +44,7 @@
 footer.footer {
     position: static;
 }
+
 
 
 ol.breadcrumb.title-bar-breadcrumb{

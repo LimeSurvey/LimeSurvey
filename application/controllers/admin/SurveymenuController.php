@@ -73,7 +73,6 @@ class SurveymenuController extends Survey_Common_Action
 			}
 		}
 
-
 		return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
@@ -99,13 +98,33 @@ class SurveymenuController extends Survey_Common_Action
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function delete($id)
+	public function delete()
 	{
-		$this->loadModel($id)->delete();
+		if( Yii::app()->request->isPostRequest )
+		{
+			$menuid = Yii::app()->request->getPost('menuid', 0);
+			$success = false;
+			$model = $this->loadModel($menuid);
+			$success = $model->delete();
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			return Yii::app()->getController()->renderPartial(
+				'/admin/super/_renderJson',
+				array(
+					'data' => [
+						'success'=> $success,
+						'redirect' => $this->getController()->createUrl('admin/menus/sa/view'),
+						'debug' => [$model, $_POST],
+						'debugErrors' => $model->getErrors(),
+						'settings' => array(
+							'extrasettings' => false,
+							'parseHTML' => false,
+						)
+					]
+				),
+				false,
+				false
+			);
+		}
 	}
 
 
@@ -165,31 +184,4 @@ class SurveymenuController extends Survey_Common_Action
 		$user = Yii::app()->session['loginID'];
 		return Yii::app()->getController()->renderPartial('/admin/surveymenu/_form', array('model'=>$model, 'user'=>$user));
 	}
-
-	// Uncomment the following methods and override them if needed
-	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
-	public function actions()
-	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-	*/
 }

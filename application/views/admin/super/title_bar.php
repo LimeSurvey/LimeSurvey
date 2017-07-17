@@ -16,7 +16,7 @@ $breadCrumbArray = array(
     'oQuestion' => $oQuestion,
     'oQuestionGroup' => $oQuestionGroup,
     'sSubaction' => $subaction,
-    'title' => $title_bar['title']
+    'title' => (isset($title_bar['title']) ? $title_bar['title'] : ' ')
     //'active' => ($oQuestion != null ? $oQuestion->title : ( $oQuestionGroup != null ? $oQuestionGroup->group_name : $oSurvey->defaultlanguage->surveyls_title ) )
 );
 
@@ -25,12 +25,4 @@ $breadCrumbArray['extraClass'] = "title-bar-breadcrumb";
 <div class='menubar surveymanagerbar'>
     <?php  $this->renderPartial('/admin/survey/breadcrumb', $breadCrumbArray); ?>    
 </div>
-<!-- 
-    <div id="survey_title" class="h3"><a href="<?php echo Yii::app()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid);?>"><?php echo $title_bar['title']; ?></a></div>
-    <div class='menubar surveymanagerbar'  id="vue-top-menu-app">
-        <topbar main-href="<?php echo Yii::app()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid);?>" main-title="<?php echo $title_bar['title']; ?>"></topbar>
-    </div> 
--->
-<script>
-    console.log(<?=json_encode($debug)?>);
-</script>
+

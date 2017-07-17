@@ -375,6 +375,12 @@ div[class^="col-"].nofloat, div[class*=" col-"].nofloat {
 #pjax-content .surveybar {
   box-shadow: 3px 3px 3px rgba(99, 49, 48, 0.1); }
 
+#pjax-content .side-body {
+  min-height: 0; }
+
+.menubar {
+  position: relative; }
+
 .menubar.surveybar {
   width: 100%;
   margin: 8px auto;

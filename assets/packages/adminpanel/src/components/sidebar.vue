@@ -28,13 +28,15 @@ export default {
             'openSubpanelId' : 0,
             'questiongroups': [],
             'menues' : [],
-            'isCollapsed' : false,
+            '$store.state.isCollapsed' : false,
             'sideBarWidth': '315px',
             'initialPos' : {x: 0, y: 0},
             'isMouseDown' : false,
             'isMouseDownTimeOut' : null,
             'sidemenus': {},
-            'collapsedmenus': {}
+            'collapsedmenus': {},
+            'topmenus': {},
+            'bottommenus': {},
         };
     },
     computed: {
@@ -44,16 +46,16 @@ export default {
             return (positionBottom.top - (positionTop.top+($('#surveybarid').height()))-15)+'px';
         },
         getSideBarWidth(){
-            return this.isCollapsed ? '98px' : this.sideBarWidth;
+            return this.$store.state.isCollapsed ? '98px' : this.sideBarWidth;
         },
         sortedMenus() {
             return _.orderBy(this.menues,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);            
         },
         showSideMenu(){
-            return (!this.isCollapsed && this.activeTab('settings'));
+            return (!this.$store.state.isCollapsed && this.$store.state.currentTab == 'settings');
         },
         showQuestionTree(){
-            return (!this.isCollapsed && this.activeTab('questiontree'))
+            return (!this.$store.state.isCollapsed && this.$store.state.currentTab == 'questiontree');
         }
     },
     methods: {
@@ -64,41 +66,42 @@ export default {
             this.setActiveMenuIndex(null,'question');
         },
         changeTab(currentTab){
-            this.$localStorage.set('currentTab',currentTab);
+            this.$store.commit('changeCurrentTab', currentTab);
             this.currentTab = currentTab;
         },
         activeTab(currentTab){
-            return this.currentTab === currentTab;
+            return this.$store.state.currentTab === currentTab;
         },
         setActiveMenuIndex(index){
-            this.$localStorage.set('activeMenuIndex',index);
+            this.$store.commit('lastMenuItemOpen',index);
             this.activeMenuIndex = index;
         },
         setOpenSubpanel(sId){
             this.openSubpanelId = sId;
+            this.$store.commit('lastMenuOpen',sId);
             this.$emit('menuselected', sId);
         },
         toggleCollapse() {
-            this.isCollapsed = !this.isCollapsed;
-            this.$localStorage.set('iscollapsed', this.isCollapsed);
-            if(this.isCollapsed){
+            this.$store.state.isCollapsed = !this.$store.state.isCollapsed;
+            this.$store.commit('changeIsCollapsed',this.$store.state.isCollapsed);
+            if(this.$store.state.isCollapsed){
                 this.sideBarWidth = '98px';
             } else {
-                this.sideBarWidth = this.$localStorage.get('sidebarwidth', '380px');
+                this.sideBarWidth = this.$store.state.sidebarwidth;
             }
         },
         mousedown(e) {
-            this.isMouseDown = this.isCollapsed ? false : true;
+            this.isMouseDown = this.$store.state.isCollapsed ? false : true;
             $('#sidebar').removeClass('transition-animate-width');
         },
         mouseup(e) {
             if(this.isMouseDown){
                 this.isMouseDown = false;
-                this.isCollapsed = false;
-                if(this.sideBarWidth < 315 && !this.isCollapsed) {
-                    this.isCollapsed = true;
+                this.$store.state.isCollapsed = false;
+                if(this.sideBarWidth < 315 && !this.$store.state.isCollapsed) {
+                    this.$store.state.isCollapsed = true;
                 }
-                this.$localStorage.set('sidebarwidth', this.sideBarWidth);
+                this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 $('#sidebar').addClass('transition-animate-width');
             }
         },
@@ -124,60 +127,84 @@ export default {
     },
     created(){
         const self = this;
-        //first load old settings from localStorage
-        this.questiongroups = JSON.parse(self.$localStorage.get('questiongroups', JSON.stringify([])));
-        this.currentTab = self.$localStorage.get('currentTab','settings');
-        this.isCollapsed = self.$localStorage.get('iscollapsed', 'false') == 'true';
-        this.activeMenuIndex = this.$localStorage.get('activeMenuIndex', null); 
-        this.sidemenus = JSON.parse(self.$localStorage.get('sidemenus', JSON.stringify([])));
-        this.collapsedmenus = JSON.parse(self.$localStorage.get('collapsedmenus', JSON.stringify([])));
-        this.setActiveMenuIndex(this.activeMenuIndex);
-        if(this.isCollapsed){ 
+        console.log(this.$store.state);
+        this.currentTab = self.$store.state.currentTab;
+        this.activeMenuIndex = this.$store.state.lastMenuOpen; 
+        if(this.$store.state.isCollapsed){ 
             this.sideBarWidth = '98px'; 
         } else {
-            this.sideBarWidth = self.$localStorage.get('sidebarwidth', '380px');
+            this.sideBarWidth = self.$store.state.sidebarwidth;
         }
     },
     mounted(){
         const self = this;
-        //then retrieve the current menues via ajax
+
+        //retrieve the current menues via ajax
+        //questions
         this.get(this.getQuestionsUrl).then( (result) =>{
             console.log(result);
             self.questiongroups = result.data.groups;
-            self.$localStorage.set('questiongroups', JSON.stringify(self.questiongroups));
+            self.$store.commit('updateQuestiongroups', self.questiongroups);
             self.$forceUpdate();
+            this.updatePjaxLinks();
         });
+
+        //sidemenus
         this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
             console.log('sidemenues',result);
             self.sidemenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$localStorage.set('sidemenus', JSON.stringify(self.menues));
+            self.$store.commit('updateSidemenus', self.sidemenus);
             self.$forceUpdate();
+            this.updatePjaxLinks();
         });
+
+        //collapsedmenus
         this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
             console.log('quickmenu',result);
             self.collapsedmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$localStorage.set('collapsedmenus', JSON.stringify(self.menues));
+            self.$store.commit( 'updateCollapsedmenus', self.collapsedmenus);
             self.$forceUpdate();
+            this.updatePjaxLinks();
         });
+
+        //topmenus
+        this.get(this.getMenuUrl, {position: 'top'}).then( (result) =>{
+            console.log('topmenus',result);
+            self.topmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+            self.$store.commit('updateTopmenus', self.topmenus);
+            self.$forceUpdate();
+            this.updatePjaxLinks();
+        });
+
+        //bottommenus
+        this.get(this.getMenuUrl, {position: 'bottom'}).then( (result) =>{
+            console.log('bottommenus',result);
+            self.bottommenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+            self.$store.commit('updateBottommenus', self.bottommenus);
+            self.$forceUpdate();
+            this.updatePjaxLinks();
+        });
+
         self.$forceUpdate();
+        this.updatePjaxLinks();
         $('body').on('mousemove', (event) => {self.mousemove(event,self)});
     }
 }
 </script>
 <template>
-    <div id="sidebar" class="ls-flex col-md-4 hidden-xs nofloat overflow-auto transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
+    <div id="sidebar" class="ls-flex col-md-4 hidden-xs nofloat nooverflow transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
         <div class="col-12" v-bind:style="{'height': maxSideBarHeight}">
             <div class="mainMenu container-fluid col-sm-12 fill-height">
                 <div class="ls-flex-row align-content-space-between align-items-space-between ls-space margin bottom-5 top-5 ">
                     <transition name="fade">
-                        <div class="btn-group ls-space padding right-5" v-if="!isCollapsed" role="group">
+                        <div class="btn-group ls-space padding right-5" v-if="!$store.state.isCollapsed" role="group">
                             <button class="btn btn-default" @click="toggleCollapse">
                                 <i class="fa fa-chevron-left"></i>
                             </button>
                         </div>
                     </transition>
                     <transition name="fade">
-                        <div class="ls-flex-item col-12" v-if="!isCollapsed">
+                        <div class="ls-flex-item col-12" v-if="!$store.state.isCollapsed">
                             <div class="btn-group btn-group-justified">
                                 <div class="btn-group" role="group">
                                     <button class="btn force color white onhover" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
@@ -189,7 +216,7 @@ export default {
                         </div>
                     </transition>
                     <transition name="fade">
-                        <div class="btn-group ls-space padding right-5" v-if="isCollapsed" role="group">
+                        <div class="btn-group ls-space padding right-5" v-if="$store.state.isCollapsed" role="group">
                             <button class="btn btn-default" @click="toggleCollapse">
                                 <i class="fa fa-chevron-right"></i>
                             </button>
@@ -197,19 +224,21 @@ export default {
                     </transition>
                 </div>
                 <transition name="slide-fade">
-                    <sidemenu :active-menu-index="activeMenuIndex" :open-subpanel-id="openSubpanelId" v-on:menuselected="setOpenSubpanel" v-on:selectedmenu="setActiveMenuIndex" v-show="showSideMenu" :menu-entries='sidemenus'></sidemenu>
+                    <sidemenu  v-show="showSideMenu"></sidemenu>
                 </transition>
                 <transition name="slide-fade">
                     <div class="row fill-height ls-ba" v-show="showQuestionTree">
-                        <questionexplorer :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" :questiongroups="questiongroups"></questionexplorer>
+                        <questionexplorer :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" ></questionexplorer>
                     </div>
                 </transition>
                 <transition name="slide-fade">
-                    <quickmenu v-show="isCollapsed" :active-menu-index="activeMenuIndex" v-on:selectedmenu="setActiveMenuIndex" :menu-entries='collapsedmenus'></quickmenu>
+                    <quickmenu v-show="$store.state.isCollapsed"></quickmenu>
                 </transition>
             </div>
         </div>
-        <div draggable="true" @mousedown="mousedown" class="resize-handle"></div>
+        <div class="resize-handle">
+            <button v-show="!$store.state.isCollapsed" class="btn btn-default" @mousedown="mousedown" @click.prevent="()=>{return false;}"><i class="fa fa-ellipsis-v"></i></button>
+        </div>
     </div>
 </template>
 <style lang="scss">
@@ -230,13 +259,27 @@ export default {
 
     .resize-handle{
         position: absolute;
-        right: -4px;
+        right: 14px;
         top: 0;
         bottom: 0;
         height:100%;
-        width: 8px;
-        box-shadow: 0px 5px 9px #0f3e12;
+        width: 4px;
+        //box-shadow: 0px 5px 9px #0f3e12;
         cursor: col-resize;
+        button{
+            outline:0;
+            &:focus,&:active,&:hover {outline:0 !important; background-color: transparent !important;}
+            cursor: col-resize;
+            width:100%;
+            height:100%;
+            text-align: left;
+            border-radius: 0;
+            padding: 0px 7px 0px 4px;
+            i{
+                font-size: 12px;
+                width:5px;
+            }
+        }
     }
 
     .transition-animate-width {

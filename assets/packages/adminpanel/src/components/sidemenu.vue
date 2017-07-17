@@ -11,8 +11,6 @@ export default {
     },
     mixins: [ajaxMethods],
     props: {
-        'menuEntries' : {type: Array},
-        'activeMenuIndex': {type: String},
         'openSubpanelId' : {type: Number},
     },
     data(){
@@ -22,7 +20,7 @@ export default {
     },
     computed: {
         sortedMenues(){
-            return _.orderBy(this.menuEntries,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
+            return _.orderBy(this.$store.state.sidemenus,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
         }
     },
     methods:{
@@ -31,9 +29,10 @@ export default {
             let orderedArray = _.orderBy(entries,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);            
             return orderedArray;
         },
-        setActiveMenuIndex(idx){
-            let activeMenuIndex = 'sidemenu_'+idx;
-            this.$emit('selectedmenu', activeMenuIndex);
+        setActiveMenuIndex(menuItem){
+            let activeMenuIndex = menuItem.id;
+            this.$store.commit('lastMenuItemOpen', menuItem)
+            
         },
         setOpenSubpanel(sId){
             this.openSubpanelId = sId;
@@ -50,6 +49,7 @@ export default {
     },
     mounted(){
         const self = this;
+        this.updatePjaxLinks();
         // this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
         //     console.log('sidemenues',result);
         //     self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
@@ -60,7 +60,7 @@ export default {
 }
 </script>
 <template>
-    <div class="ls-flex-column fill menu-pane" >
+    <div class="ls-flex-column fill menu-pane overflow-auto" >
         <ul class="list-group" v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" :id="menu.id">
             <li v-if="(menu.submenus.length>0)" class="list-group-item">
                 <ul class="list-group">
@@ -75,18 +75,18 @@ export default {
                             </div>
                         </a>
                         <div class="subpanel" :class="'level-'+(submenu.level+1)" v-if="openSubpanelId == submenu.id">
-                            <sidemenu v-on:menuselected="setOpenSubpanel" :open-subpanel-id="openSubpanelId" :active-menu-index="activeMenuIndex" :menu-entries="submenu"></sidemenu>
+                            <sidemenu v-show="$store.state.lastMenuOpen == submenu.id":open-subpanel-id="openSubpanelId" :menu-entries="submenu"></sidemenu>
                         </div>
                     </li>
                 </ul>
             </li>
-            <li v-for="(menuItem, index) in sortedMenuEntries(menu.entries)" class="list-group-item" style="padding:0;" @click="setActiveMenuIndex(index)"  v-bind:key="menuItem.id">
+            <li v-for="(menuItem, index) in sortedMenuEntries(menu.entries)" class="list-group-item" style="padding:0;" @click="setActiveMenuIndex(menuItem)"  v-bind:key="menuItem.id">
                 <a :href="menuItem.link" :title="menuItem.menu_description"  data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center pjax">
-                    <div class="ls-space padding top-10 bottom-10" v-bind:class="'sidemenu_'+index==activeMenuIndex ? 'col-sm-10 selected' : 'col-sm-12' ">
+                    <div class="ls-space padding top-10 bottom-10" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10 selected' : 'col-sm-12' ">
                         <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
                         <span v-html="menuItem.menu_title"></span>
                     </div>
-                    <div class="col-sm-2 text-center ls-space padding top-10 bottom-10 background white" v-show="'sidemenu_'+index==activeMenuIndex">
+                    <div class="col-sm-2 text-center ls-space padding top-10 bottom-10 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
                         <i class="fa fa-chevron-right">&nbsp;</i>
                     </div>
                 </a>

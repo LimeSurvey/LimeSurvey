@@ -545,6 +545,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['sidemenu']['listquestiongroups']             = true;
         $aData['surveybar']['buttons']['newgroup']           = true;
         $aData['title_bar']['title']                         = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['subaction']                                  = gT("Question groups in this survey");
 
         $baselang = $survey->language;
         $model    = new QuestionGroup('search');
@@ -594,8 +595,9 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['returnbutton']['text']     = gT('Return to survey list');
         $aData['surveybar']['buttons']['newquestion']   = true;
 
-        $aData["surveyHasGroup"]     = $oSurvey->groups;
-        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData["surveyHasGroup"]        = $oSurvey->groups;
+        $aData['subaction']             = gT("Questions in this survey");
+        $aData['title_bar']['title']    = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
         $this->_renderWrappedTemplate('survey', array(), $aData);
     }

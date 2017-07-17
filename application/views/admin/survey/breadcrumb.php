@@ -1,4 +1,7 @@
-<?php $extraClass = isset($extraClass) ? $extraClass : '';?>
+<?php 
+    $extraClass = isset($extraClass) ? $extraClass : '';
+    $title  = isset($title) ? $title : '';
+?>
 <div class='row container-fluid'>
     <div class="col-xs-12 col-md-6">
         <div id="breadcrumb-container" class="ls-ba">
@@ -108,3 +111,4 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="gettheuserid" value="<?php echo Yii::app()->user->id;?>" />

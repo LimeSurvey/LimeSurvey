@@ -6,7 +6,7 @@ import ajaxMethods from '../mixins/runAjax.js';
 export default {
     mixins: [ajaxMethods],
     props: {
-        'menuEntries' : {type: Object},
+        'menuEntries' : {type: [Array,Object]},
         'activeMenuIndex': {type: String},
     },
     data(){
@@ -16,7 +16,7 @@ export default {
     },
     computed: {
         sortedMenues(){
-            return _.orderBy(this.menuEntries,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
+            return _.orderBy(this.$store.state.collapsedmenus,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
         }
     },
     methods:{
@@ -25,9 +25,21 @@ export default {
             let orderedArray = _.orderBy(entries,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);            
             return orderedArray;
         },
-        setActiveMenuIndex(idx){
-            let activeMenuIndex = 'quichmenu_'+idx;
-            this.$emit('selectedmenu', activeMenuIndex);
+        setActiveMenuIndex(menuItem){
+            let activeMenuIndex = menuItem.id;
+            this.$store.commit('lastMenuItemOpen', menuItem)
+        },
+        compileEntryClasses(menuItem){
+            let classes = "";
+            if(this.$store.state.lastMenuItemOpen == menuItem.id){
+                classes+=' btn-primary ';
+            } else {
+                classes+=' btn-default ';
+            }
+            if(!menuItem.link_external){
+                classes+=' pjax ';
+            }
+            return classes;
         }
     },
     created(){
@@ -50,13 +62,13 @@ export default {
     <div class='ls-column fill'>
         <div class="btn-group-vertical"  v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" >
             <a v-for="(menuItem, index) in sortedMenuEntries(menu.entries)" 
-            @click="setActiveMenuIndex(index)"
+            @click="setActiveMenuIndex(menuItem)"
              v-bind:key="menuItem.id" 
             :href="menuItem.link" :title="menuItem.menu_description" 
-            :target="menuItem.linkExternal ? '_blank' : '_self'"
+            :target="menuItem.link_external ? '_blank' : '_self'"
             data-toggle="tooltip" 
-            class="btn btn-default btn-icon pjax"
-            v-bind:class="('quickmenu_'+index)==activeMenuIndex ? 'selected' : ''"
+            class="btn btn-icon"
+            :class="compileEntryClasses(menuItem)"
             >
                 <template v-if="menuItem.menu_icon_type == 'fontawesome'">
                     <i class="quickmenuIcon fa" :class="'fa-'+menuItem.menu_icon"></i>
