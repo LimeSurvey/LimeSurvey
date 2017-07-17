@@ -4,7 +4,7 @@ import VueLocalStorage from 'vue-localstorage';
 import _ from 'lodash';
 import Sidebar from './components/sidebar.vue';
 import Topbar from './components/topbar.vue';
-import AppState from './store/vuex-store.js';
+import getAppState from './store/vuex-store.js';
 import Pjax from 'pjax';
 
 Vue.use(Vuex);
@@ -15,6 +15,8 @@ Vue.mixin({
     updatePjaxLinks(){this.$store.commit('updatePjax');}
   }
 });
+console.log('LS.globalUserId',LS.globalUserId);
+const AppState = getAppState(LS.globalUserId);
 
 if(document.getElementById('vue-app-main-container')){
   const sidemenu = new Vue(
@@ -31,7 +33,6 @@ if(document.getElementById('vue-app-main-container')){
     mounted(){
        this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
        this.$store.commit('changeMaxHeight', ($('#in_survey_common').height()-35));
-       this.$store.commit('changeCurrentUser', $('#currentUserId').val());
        this.updatePjaxLinks();
     }
   });

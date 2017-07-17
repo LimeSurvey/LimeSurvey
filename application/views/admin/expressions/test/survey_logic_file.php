@@ -5,7 +5,7 @@
  * @var Survey $oSurvey
  */
 
-$fullPage = (isset($_GET["sid"]))?false:true;
+$fullPage = (isset($_GET["surveyid"]))?false:true;
 ?>
 
 <?php if(!$fullPage):?>
@@ -22,7 +22,7 @@ $fullPage = (isset($_GET["sid"]))?false:true;
 <?php
 if (count($_GET) > 0) {
     foreach ($_GET as $key=>$val) {
-        if ($key == 'sid') {
+        if ($key == 'surveyid') {
             $val = $val . '|N'; // hack to pretend this is not an assessment
         }
         $_REQUEST[$key] = $val;
@@ -33,7 +33,7 @@ if (count($_GET) > 0) {
 
 Yii::app()->loadHelper('frontend');
 
-if (empty($_REQUEST['sid']))   //  || count($_REQUEST) == 0) {
+if (empty($_REQUEST['surveyid']))   //  || count($_REQUEST) == 0) {
 {
     $surveyList=getSurveyList();
     $sFormTag= CHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post');
@@ -43,7 +43,7 @@ $sFormTag
 <table border='1'>
 <tr><th>Parameter</th><th>Value</th></tr>
 <tr><td>Survey ID (SID)</td>
-<td><select name='sid' id='sid'>
+<td><select name='surveyid' id='surveyid'>
 $surveyList
 </select></td></tr>
 <tr><td>Debug Log Level</td>
@@ -65,7 +65,7 @@ EOD;
 else {
     //TODO This stuff must be in controller!
 
-    $temp = (array) explode('|', $_REQUEST['sid']);
+    $temp = (array) explode('|', $_REQUEST['surveyid']);
     $surveyid = sanitize_int($temp[0]);
     if (isset($_REQUEST['assessments'])) {
         $assessments = ($_REQUEST['assessments'] == 'Y');

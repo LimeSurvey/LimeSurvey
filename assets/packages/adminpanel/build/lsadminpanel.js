@@ -28469,12 +28469,14 @@ __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].mixin({
     updatePjaxLinks(){this.$store.commit('updatePjax');}
   }
 });
+console.log('LS.globalUserId',LS.globalUserId);
+const AppState = __WEBPACK_IMPORTED_MODULE_6__store_vuex_store_js__["a" /* default */](LS.globalUserId);
 
 if(document.getElementById('vue-app-main-container')){
   const sidemenu = new __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */](
   {  
     el: '#vue-app-main-container',
-    store: __WEBPACK_IMPORTED_MODULE_6__store_vuex_store_js__["a" /* default */],
+    store: AppState,
     components: {
       'sidebar' : __WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue___default.a,
     },
@@ -28485,7 +28487,6 @@ if(document.getElementById('vue-app-main-container')){
     mounted(){
        this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
        this.$store.commit('changeMaxHeight', ($('#in_survey_common').height()-35));
-       this.$store.commit('changeCurrentUser', $('#currentUserId').val());
        this.updatePjaxLinks();
     }
   });
@@ -30582,118 +30583,121 @@ if (false) {
 
 
 
+
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_2_vue_localstorage___default.a);
 
-const AppState = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
-    plugins: [
-      __WEBPACK_IMPORTED_MODULE_3_vuex_localstorage___default.a({
-        initialState: {
-          surveyid: 0,
-          language: '',
-          maxHeight: 0,
-          currentUser: $('#gettheuserid').val(),
-          currentTab: 'settings',
-          sidebarwidth: '380px',
-          isCollapsed: true,
-          pjax: null,
-          lastMenuOpen: null,
-          lastMenuItemOpen: null,
-          lastQuestionOpen: null,
-          lastQuestionGroupOpen: null,
-          collapsedmenus: null,
-          sidemenus: null,
-          topmenus: null,
-          bottommenus: null,
+const getAppState = function(userid){
+  return new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
+      plugins: [
+        __WEBPACK_IMPORTED_MODULE_3_vuex_localstorage___default.a({
+          initialState: {
+            surveyid: 0,
+            language: '',
+            maxHeight: 0,
+            currentUser: userid,
+            currentTab: 'settings',
+            sidebarwidth: '380px',
+            isCollapsed: true,
+            pjax: null,
+            lastMenuOpen: null,
+            lastMenuItemOpen: null,
+            lastQuestionOpen: null,
+            lastQuestionGroupOpen: null,
+            collapsedmenus: null,
+            sidemenus: null,
+            topmenus: null,
+            bottommenus: null,
+          },
+          namespace: userid+'_adminpanel_settings',
+          expires: 52 * 7 * 24 * 60 * 60 * 1e3 //one year
+        })
+      ],
+      state: {
+        surveyid: 0,
+        language: '',
+        maxHeight: 0,
+        currentUser: userid,
+        currentTab: 'settings',
+        sidebarwidth: '380px',
+        isCollapsed: true,
+        pjax: null,
+        lastMenuOpen: null,
+        lastMenuItemOpen: null,
+        lastQuestionOpen: null,
+        lastQuestionGroupOpen: null,
+        collapsedmenus: null,
+        sidemenus: null,
+        topmenus: null,
+        bottommenus: null,
+      },
+      mutations: {
+        updateSurveyId (state, newSurveyId) {
+          state.surveyid = newSurveyId
         },
-        namespace: $('#gettheuserid').val()+'_adminpanel_settings',
-        expires: 52 * 7 * 24 * 60 * 60 * 1e3 //one year
-      })
-    ],
-    state: {
-      surveyid: 0,
-      language: '',
-      maxHeight: 0,
-      currentUser: $('#gettheuserid').val(),
-      currentTab: 'settings',
-      sidebarwidth: '380px',
-      isCollapsed: true,
-      pjax: null,
-      lastMenuOpen: null,
-      lastMenuItemOpen: null,
-      lastQuestionOpen: null,
-      lastQuestionGroupOpen: null,
-      collapsedmenus: null,
-      sidemenus: null,
-      topmenus: null,
-      bottommenus: null,
-    },
-    mutations: {
-      updateSurveyId (state, newSurveyId) {
-        state.surveyid = newSurveyId
-      },
-      changeLanguage (state, language) {
-        state.language = language;
-      },
-      changeCurrentTab (state, value){
-        state.currentTab = value;
-      },
-      changeSidebarwidth (state, value){
-        state.sidebarwidth = value;
-      },
-      changeIsCollapsed (state, value){
-        state.isCollapsed = value;
-      },
-      changeMaxHeight(state, newHeight){
-        state.maxHeight = newHeight;
-      },    
-      changeCurrentUser(state, newUser){
-        state.currentUser = newUser;
-      },
-      lastMenuItemOpen(state, menuItem){
-          state.lastMenuOpen = menuItem.menu_id;
-          state.lastMenuItemOpen = menuItem.id;
-      },
-      lastMenuOpend(state,menuObject){
-          state.lastMenuOpen = menuObject.id;
-      },
-      lastQuestionOpen(state, questionObject){
-          state.lastQuestionGroupOpen = questionObject.gid
-          state.lastQuestionOpen = questionObject.qid;
-      },
-      lastQuestionGroupOpen(state, questionGroupObject){
-          state.lastQuestionGroupOpen = questionGroupObject.gid;
-      },
-      updateQuestiongroups(state, questiongroups){
-          state.questiongroups = questiongroups;
-      },
-      updateCollapsedmenus(state, collapsedmenus){
-          state.collapsedmenus = collapsedmenus;
-      },
-      updateSidemenus(state, sidemenus){
-          state.sidemenus = sidemenus;
-      },
-      updateTopmenus(state, topmenus){
-          state.topmenus = topmenus;
-      },
-      updateBottommenus(state, bottommenus){
-          state.bottommenus = bottommenus;
-      },
-      updatePjax(state){
-        console.log('PJAX updated');
-        state.pjax = null;
-        state.pjax = new __WEBPACK_IMPORTED_MODULE_4_pjax___default.a({
-          elements: "a.pjax", // default is "a[href], form[action]"
-          selectors: [
-            "#pjax-content",
-            '#breadcrumb-container'
-            ]
-        });
-      }    
-    }
-});
+        changeLanguage (state, language) {
+          state.language = language;
+        },
+        changeCurrentTab (state, value){
+          state.currentTab = value;
+        },
+        changeSidebarwidth (state, value){
+          state.sidebarwidth = value;
+        },
+        changeIsCollapsed (state, value){
+          state.isCollapsed = value;
+        },
+        changeMaxHeight(state, newHeight){
+          state.maxHeight = newHeight;
+        },    
+        changeCurrentUser(state, newUser){
+          state.currentUser = newUser;
+        },
+        lastMenuItemOpen(state, menuItem){
+            state.lastMenuOpen = menuItem.menu_id;
+            state.lastMenuItemOpen = menuItem.id;
+        },
+        lastMenuOpend(state,menuObject){
+            state.lastMenuOpen = menuObject.id;
+        },
+        lastQuestionOpen(state, questionObject){
+            state.lastQuestionGroupOpen = questionObject.gid
+            state.lastQuestionOpen = questionObject.qid;
+        },
+        lastQuestionGroupOpen(state, questionGroupObject){
+            state.lastQuestionGroupOpen = questionGroupObject.gid;
+        },
+        updateQuestiongroups(state, questiongroups){
+            state.questiongroups = questiongroups;
+        },
+        updateCollapsedmenus(state, collapsedmenus){
+            state.collapsedmenus = collapsedmenus;
+        },
+        updateSidemenus(state, sidemenus){
+            state.sidemenus = sidemenus;
+        },
+        updateTopmenus(state, topmenus){
+            state.topmenus = topmenus;
+        },
+        updateBottommenus(state, bottommenus){
+            state.bottommenus = bottommenus;
+        },
+        updatePjax(state){
+          console.log('PJAX updated');
+          state.pjax = null;
+          state.pjax = new __WEBPACK_IMPORTED_MODULE_4_pjax___default.a({
+            elements: "a.pjax", // default is "a[href], form[action]"
+            selectors: [
+              "#pjax-content",
+              '#breadcrumb-container'
+              ]
+          });
+        }    
+      }
+  });
+};
 
-/* harmony default export */ __webpack_exports__["a"] = (AppState);
+/* harmony default export */ __webpack_exports__["a"] = (getAppState);
 
 
 /***/ }),

@@ -248,7 +248,6 @@ class Survey_Common_Action extends CAction
         if (!empty($sAction))
             $sViewPath .= $sAction . '/';
 
-
         ob_start(); //// That was used before the MVC pattern, in procedural code. Will not be used anymore.
 
         $this->_showHeaders($aData); //// THe headers will be called from the layout

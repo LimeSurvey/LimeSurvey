@@ -16,7 +16,7 @@ class Expressions extends Survey_Common_Action {
     {
         $aData=array();
         $needpermission=false;
-        $aData['surveyid']=$surveyid=$iSurveyID=sanitize_int(Yii::app()->request->getQuery('sid'));
+        $aData['surveyid']=$surveyid=$iSurveyID=sanitize_int(Yii::app()->request->getQuery('surveyid'));
         $aData['sa']=$sa=sanitize_paranoid_string(Yii::app()->request->getQuery('sa','index'));
 
         $aData['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
@@ -25,6 +25,7 @@ class Expressions extends Survey_Common_Action {
         {
             $needpermission=true;
         }
+
         if($needpermission && !Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
         {
             $message['title']= gT('Access denied!');
@@ -41,11 +42,13 @@ class Expressions extends Survey_Common_Action {
             App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . '/expressions/em_javascript.js');
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
+            $aData['subaction']=$this->_printTitle($aData['sa']);
 
             if(isset($iSurveyID))
             {
                 $survey = Survey::model()->findByPk($iSurveyID);
 
+                $aData['surveyid'] = $iSurveyID;
                 $aData['sidemenu']['state'] = false;
                 $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
                 if(Yii::app()->request->getQuery('gid')!='')
@@ -165,9 +168,9 @@ class Expressions extends Survey_Common_Action {
     protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array())
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
-        //$aData['display']['header']=false;
-        $aData['display']['menu_bars'] = false;
-        //$aData['display']['footer']= false;
+        // $aData['display']['header']=true;
+        // $aData['display']['menu_bars'] = true;
+        // $aData['display']['footer']= true;
         header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
