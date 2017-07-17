@@ -215,7 +215,7 @@ class Template extends LSActiveRecord
             $oTemplateConfigurationModel = new TemplateManifest;
         }
 
-        $oTemplateConfigurationModel->setTemplateConfiguration($sTemplateName, $iSurveyId);
+        //$oTemplateConfigurationModel->setTemplateConfiguration($sTemplateName, $iSurveyId);
         return $oTemplateConfigurationModel;
     }
 
@@ -301,8 +301,9 @@ class Template extends LSActiveRecord
                     && (file_exists("{$sUserTemplateRootDir}/{$sTemplatePath}/config.xml"))) {
 
                     $oTemplate = self::getTemplateConfiguration($sTemplatePath, '', true);
+
                     if (is_object($oTemplate)){
-                        $aTemplateList[$oTemplate->sTemplateName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
+                        $aTemplateList[$sTemplatePath] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
                     }
                 }
             }
@@ -391,6 +392,7 @@ class Template extends LSActiveRecord
 
         if (empty(self::$instance)) {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $bForceXML);
+            self::$instance->setTemplateConfiguration($sTemplateName, $iSurveyId);
         }
         return self::$instance;
     }

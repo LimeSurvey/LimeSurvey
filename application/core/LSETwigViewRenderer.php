@@ -149,10 +149,12 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oTemplate = $this->getTemplateForView($sView, $oRTemplate);
         $line      = file_get_contents($oTemplate->viewPath.$sView);
         $result = $this->renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn);
+
         if ($bReturn){
             Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
             return $result;
         }
+
         return null;
     }
 
@@ -239,8 +241,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oTwigTemplate = $twig->createTemplate($line);
         $nvLine        = $oTwigTemplate->render($aDatas, false);
 
-        Yii::app()->clientScript->registerPackage( $oTemplate->sPackageName );
-        if (!$bReturn){
+
+        if (!$bReturn){    
+            Yii::app()->clientScript->registerPackage( $oTemplate->sPackageName );
             ob_start(function($buffer, $phase)
             {
                 App()->getClientScript()->render($buffer);

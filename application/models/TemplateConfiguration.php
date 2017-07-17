@@ -151,6 +151,7 @@ class TemplateConfiguration extends TemplateConfig
     public static function importManifest($sTemplateName)
     {
         $oEditedTemplate                      = Template::model()->getTemplateConfiguration($sTemplateName, '', false);
+        $oEditedTemplate->setTemplateConfiguration($sTemplateName);
         $oEditTemplateDb                      = Template::model()->findByPk($oEditedTemplate->oMotherTemplate->sTemplateName);
         $oNewTemplate                         = new Template;
         $oNewTemplate->name                   = $oEditedTemplate->sTemplateName;
@@ -294,7 +295,7 @@ class TemplateConfiguration extends TemplateConfig
         if(!empty($this->template->extends_templates_name)){
             $sMotherTemplateName   = $this->template->extends_templates_name;
             $this->oMotherTemplate = Template::getTemplateConfiguration($sMotherTemplateName);
-
+            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName);
             if ($this->oMotherTemplate->checkTemplate()){
                 $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
             }else{
