@@ -2,6 +2,6 @@ body {
     background-image: url("../files/pattern.png");
 }
 
-.top-container {
+body .top-container {
     background-color: rgba(236, 240, 241, 0.2);
 }
