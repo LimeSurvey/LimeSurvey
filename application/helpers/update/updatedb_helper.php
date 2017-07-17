@@ -236,9 +236,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction = $oDB->beginTransaction();
 
             $oDB->createCommand()->addColumn('{{surveymenu}}', 'user_id', "int DEFAULT NULL");
-            $oDB->createCommand()->addForeignKey('user_id', '{{surveymenu}}', 'user_id', '{{users}}', 'uid' );
             $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'user_id', "int DEFAULT NULL");
-            $oDB->createCommand()->addForeignKey('user_id', '{{surveymenu_entries}}', 'user_id', '{{users}}', 'uid' );
 
             $oDB->createCommand()->insert('{{surveymenu}}', array('id' => 2,'parent_id' => NULL,'survey_id' => NULL,'order' => 1,'level' => 0,'title' => 'quickmenu','description' => 'Quickmenu', 'position'=>'collapsed', 'changed_at' => date('Y-m-d H:i:s'),'changed_by' => 0,'created_at' => date('Y-m-d H:i:s'),'created_by' => 0));
 

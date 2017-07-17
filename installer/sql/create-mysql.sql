@@ -730,11 +730,10 @@ CREATE TABLE `lime_templates` (
   `description` text COLLATE utf8mb4_unicode_ci,
   `last_update` datetime DEFAULT NULL,
   `owner_id` int(11) DEFAULT NULL,
-  `extends_templates_name` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+  `extends_templates_name` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `prefix_templates`
-  ADD PRIMARY KEY (`name`);
 
 
 INSERT INTO `lime_templates` (`name`, `folder`, `title`, `creation_date`, `author`, `author_email`, `author_url`, `copyright`, `license`, `version`, `api_version`, `view_folder`, `files_folder`, `description`, `last_update`, `owner_id`, `extends_templates_name`) VALUES
@@ -745,7 +744,7 @@ INSERT INTO `lime_templates` (`name`, `folder`, `title`, `creation_date`, `autho
 -- Table `prefix_template_configuration`
 -- -----------------------------------------------------
 CREATE TABLE `lime_template_configuration` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `templates_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sid` int(11) DEFAULT NULL,
   `gsid` int(11) DEFAULT NULL,
@@ -759,23 +758,16 @@ CREATE TABLE `lime_template_configuration` (
   `cssframework_js` mediumtext COLLATE utf8mb4_unicode_ci,
   `packages_to_load` mediumtext COLLATE utf8mb4_unicode_ci,
   `packages_ltr` mediumtext COLLATE utf8mb4_unicode_ci,
-  `packages_rtl` mediumtext COLLATE utf8mb4_unicode_ci
+  `packages_rtl` mediumtext COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY(`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-ALTER TABLE `lime_template_configuration`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `lime_template_configuration`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 INSERT INTO `lime_template_configuration` (`id`, `templates_name`, `sid`, `gsid`, `files_css`, `files_js`, `files_print_css`, `options`, `cssframework_name`, `cssframework_css`, `cssframework_js`, `packages_to_load`, `packages_ltr`, `packages_rtl`) VALUES
   (1, 'default', NULL, NULL, '{"add": ["css/template.css", "css/animate.css"]}', '{"add": ["scripts/template.js"]}', '{"add":"css/print_template.css",}', '{"ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}', 'bootstrap', '{"replace": ["css/bootstrap.css"]}', '', '', '', '');
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '293');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '296');
