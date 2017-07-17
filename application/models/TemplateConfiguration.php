@@ -143,6 +143,13 @@ class TemplateConfiguration extends TemplateConfig
         return parent::model($className);
     }
 
+    // For list, so no "setConfiguration" before
+    public function getPreview()
+    {
+        $previewUrl =  Template::getTemplateURL($this->template->name);
+        return '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
+    }
+
     /**
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
@@ -237,6 +244,42 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
+    public function getTypeIcon()
+    {
+        if(Template::isStandardTemplate($this->template->name)){
+            $sIcon = gT("Core Template");
+        }else{
+            $sIcon = gT("User Template");
+        }
+        return $sIcon;
+    }
+
+
+    public function getButtons()
+    {
+        $sEditorUrl = Yii::app()->getController()->createUrl('admin/templates/sa/view', array("templatename"=>$this->template->name));
+        $sOptionUrl = Yii::app()->getController()->createUrl('admin/templateoptions/sa/update', array("id"=>$this->id));
+
+        $sEditorLink = "<a
+            id='template_editor_link'
+            href='".$sEditorUrl."'
+            class='btn btn-default'>
+                <span class='icon-templates'></span>
+                ".gT('Template editor')."
+            </a>";
+
+            //
+
+        $OptionLink =  "<a
+            id='template_options_link'
+            href='".$sOptionUrl."'
+            class='btn btn-default'>
+                <span class='fa fa-tachometer'></span>
+                ".gT('Template options')."
+            </a>";
+
+        return $sEditorLink.'<br><br>'.$OptionLink;
+    }
 
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
@@ -321,7 +364,6 @@ class TemplateConfiguration extends TemplateConfig
 
 
         // Options are optional
-        // TODO: twig getOption should return mother template option when option = inherit
         $this->oOptions = array();
         if (!empty($this->options)){
             $this->oOptions = json_decode($this->options);
