@@ -210,6 +210,7 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Add a file replacement in the field `file_{css|js|print_css}` in table {{template_configuration}},
      * eg: {"replace": [ {original files to replace here...}, "css/template.css",]}
+     * In general, should be called from TemplateManifest, after adding a file replacement inside the manifest.
      *
      * @param string $sFile the file to replace
      * @param string $sType css|js
@@ -246,7 +247,9 @@ class TemplateConfiguration extends TemplateConfig
         if(!empty($jFiles)){
             $oFiles = json_decode($jFiles);
             foreach($oFiles as $action => $aFileList){
-                $aFiles = array_merge($aFiles, $aFileList);
+                if ($action == "add" || $action == "replace"){
+                    $aFiles = array_merge($aFiles, $aFileList);
+                }
             }
         }
         return $aFiles;

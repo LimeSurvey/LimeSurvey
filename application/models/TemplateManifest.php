@@ -429,8 +429,11 @@ class TemplateManifest extends TemplateConfiguration
     protected function getFilesToLoad($oTemplate, $sType)
     {
         $aFiles = array();
-        //if(!empty($jFiles)){
         if(isset($oTemplate->config->files->$sType->filename)){
+            // TODO: check/get attributes "add" or "replace"
+            // For now: it's working. If a file is set to "remove", it will be removed from mother template,
+            // but then the daughter template will try to register it (and it will not be register, because the file doesn't exist in local template)
+            // But... would be cleaner, and closer to TemplateConfiguration logic
             $aFiles = (array) $oTemplate->config->files->$sType->filename;
         }
         return $aFiles;
