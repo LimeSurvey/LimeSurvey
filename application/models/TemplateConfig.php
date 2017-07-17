@@ -164,9 +164,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
          $sTemplateurl       = $oTemplate->getTemplateURL();
 
          $aDepends          = empty($oTemplate->depends)?array():$oTemplate->depends;
-         if(empty($oTemplate->depends)){
-             var_dump($oTemplate);              die();
-         }
+
 
          // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
          // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );

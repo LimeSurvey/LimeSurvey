@@ -146,11 +146,11 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderTemplateFromFile($sView, $aDatas, $bReturn)
     {
         $oRTemplate = Template::model()->getInstance();
-        Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
         $oTemplate = $this->getTemplateForView($sView, $oRTemplate);
         $line      = file_get_contents($oTemplate->viewPath.$sView);
         $result = $this->renderTemplateFromString( $line, $aDatas, $oTemplate, $bReturn);
         if ($bReturn){
+            Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
             return $result;
         }
         return null;
@@ -185,7 +185,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $this->_twig  = $twig = parent::getTwig();
         $loader       = $this->_twig->getLoader();
         $loader->addPath($oRTemplate->viewPath);
-        Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
 
         // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
         if (!empty($aDatas['aSurveyInfo']['sid'])){
@@ -239,6 +238,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oTwigTemplate = $twig->createTemplate($line);
         $nvLine        = $oTwigTemplate->render($aDatas, false);
 
+        Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
         if (!$bReturn){
             ob_start(function($buffer, $phase)
             {
