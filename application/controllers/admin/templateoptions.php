@@ -85,9 +85,8 @@ class templateoptions  extends Survey_Common_Action
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if(isset($_POST['TemplateOptions']))
-        {
-            $model->attributes=$_POST['TemplateOptions'];
+        if(isset($_POST['TemplateConfiguration'])){
+            $model->attributes=$_POST['TemplateConfiguration'];
             if($model->save())
                 $this->getController()->redirect(array('admin/templateoptions/sa/update/id/'.$model->id));
         }
