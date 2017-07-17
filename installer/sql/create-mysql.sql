@@ -707,7 +707,7 @@ INSERT INTO `prefix_surveymenu_entries` VALUES
 (27,2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{render\: {\"link\"\: {}}','','en-GB',NOW(),0,NOW(),0),
 (28,2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',NOW(),0,NOW(),0),
 (29,2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',NOW(),0,NOW(),0),
-(30,2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\"\: {\"isActive\"\: false}}','','en-GB',NOW(),0,NOW(),0)\:
+(30,2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\"\: {\"isActive\"\: false}}','','en-GB',NOW(),0,NOW(),0);
 
 
 -- -----------------------------------------------------
