@@ -1091,7 +1091,6 @@ class templates extends Survey_Common_Action
 
         if ($showsummary)
         {
-            //var_dump(Yii::app()->getClientScript()->packages[$oEditedTemplate->sPackageName]); die();
             Yii::app()->clientScript->registerPackage( $oEditedTemplate->sPackageName );
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
@@ -1110,8 +1109,6 @@ class templates extends Survey_Common_Action
     */
     protected function _renderWrappedTemplate($sAction = 'templates', $aViewUrls = array(), $aData = array())
     {
-        //var_dump($aViewUrls);
-        //$aData['display']['menu_bars'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 }

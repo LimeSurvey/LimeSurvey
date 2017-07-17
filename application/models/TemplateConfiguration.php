@@ -144,7 +144,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Create a new entry in {{templates}} table using the template manifest
+     * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
      * @return mixed true on success | exception
      */
@@ -152,6 +152,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         $oEditedTemplate                      = Template::model()->getTemplateConfiguration($sTemplateName, '', false);
         $oEditedTemplate->setTemplateConfiguration($sTemplateName);
+
         $oEditTemplateDb                      = Template::model()->findByPk($oEditedTemplate->oMotherTemplate->sTemplateName);
         $oNewTemplate                         = new Template;
         $oNewTemplate->name                   = $oEditedTemplate->sTemplateName;
@@ -203,7 +204,7 @@ class TemplateConfiguration extends TemplateConfig
         $this->setIsStandard();                                                 // Check if  it is a CORE template
         $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
         $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        @$this->setThisTemplate();                                               // Set the main config values of this template
+        $this->setThisTemplate();                                               // Set the main config values of this template
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
     }
