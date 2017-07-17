@@ -172,6 +172,10 @@ class TemplateConfiguration extends TemplateConfig
         if ($oNewTemplate->save()){
             $oNewTemplateConfiguration                    = new TemplateConfiguration;
             $oNewTemplateConfiguration->templates_name    = $oEditedTemplate->sTemplateName;
+            $oNewTemplateConfiguration->templates_name    = $oEditedTemplate->sTemplateName;
+            $oNewTemplateConfiguration->options           = json_encode($oEditedTemplate->oOptions);
+
+
             if ($oNewTemplateConfiguration->save()){
                 return true;
             }else{
@@ -320,9 +324,12 @@ class TemplateConfiguration extends TemplateConfig
         // TODO: twig getOption should return mother template option when option = inherit
         $this->oOptions = array();
         if (!empty($this->options)){
-            $this->oOptions[] = (array) json_decode($this->options);
+            $this->oOptions = json_decode($this->options);
         }elseif(!empty($this->oMotherTemplate->oOptions)){
-            $this->oOptions[] = $this->oMotherTemplate->oOptions;
+            // NB: This case should never happen with core template edited via template editor
+            // Options are inherited from global settings to survey settings, not from mother template.
+            // But: a 3rd template provider could use that logic
+            $this->oOptions = $this->oMotherTemplate->oOptions;
         }
 
         // Not mandatory (use package dependances)
@@ -367,7 +374,7 @@ class TemplateConfiguration extends TemplateConfig
         $aAssetsToRemove = array();
         if (!empty( $aFieldValue )){
             $aAssetsToRemove = (array) $aFieldValue['replace'] ;
-            if($bInlcudeRemove){
+            if($bInlcudeRemove && isset($aFieldValue['remove'])){
                 $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $aFieldValue['remove'] );
             }
         }

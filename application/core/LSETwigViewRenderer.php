@@ -210,10 +210,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
 
         // Add the template options
-        foreach($oRTemplate->oOptions as $oOption){
-            foreach($oOption as $key => $value){
-                $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
-            }
+        foreach($oTemplate->oOptions as $key => $value){
+            $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
         }
 
 
@@ -242,7 +240,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $nvLine        = $oTwigTemplate->render($aDatas, false);
 
 
-        if (!$bReturn){    
+        if (!$bReturn){
             Yii::app()->clientScript->registerPackage( $oTemplate->sPackageName );
             ob_start(function($buffer, $phase)
             {

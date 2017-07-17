@@ -51,7 +51,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
     /** @var TemplateConfiguration $oMotherTemplate The template name */
     public $oMotherTemplate;
 
-    /** @var SimpleXMLElement $oOptions The template options */
+    /** @var array $oOptions The template options */
     public $oOptions;
 
 

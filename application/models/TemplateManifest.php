@@ -500,7 +500,8 @@ class TemplateManifest extends TemplateConfiguration
 
         // Options are optional
         if (!empty($this->config->xpath("//options"))){
-            $this->oOptions = $this->config->xpath("//options");
+            $aOptions = $this->config->xpath("//options");
+            $this->oOptions = $aOptions[0];
         }elseif(!empty($this->oMotherTemplate->oOptions)){
             $this->oOptions = $this->oMotherTemplate->oOptions;
         }else{
