@@ -78,6 +78,10 @@ launch.json
 !/plugins/AuditLog/
 enabletests
 
+## Ignore test tmp files
+/tests/data/tmp/**
+
+
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
 ## or development environment things like .vagrant etc
