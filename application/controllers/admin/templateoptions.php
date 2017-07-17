@@ -92,9 +92,10 @@ class templateoptions  extends Survey_Common_Action
                 $this->getController()->redirect(array('admin/templateoptions/sa/update/id/'.$model->id));
         }
 
-        $this->render('update',array(
-            'model'=>$model,
-        ));
+        // TODO: twig file from template folder
+        $this->_renderWrappedTemplate('templateoptions', 'update', array(
+            'model'=>$model));
+
     }
 
     /**
@@ -139,7 +140,7 @@ class templateoptions  extends Survey_Common_Action
      */
     public function loadModel($id)
     {
-        $model=TemplateOptions::model()->findByPk($id);
+        $model=TemplateConfiguration::model()->findByPk($id);
         if($model===null)
             throw new CHttpException(404,'The requested page does not exist.');
         return $model;
