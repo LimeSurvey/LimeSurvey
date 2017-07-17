@@ -43,6 +43,7 @@ class templates extends Survey_Common_Action
     public function templatezip($templatename)
     {
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        $oEditedTemplate->setTemplateConfiguration($sTemplateName);
         if (!Permission::model()->hasGlobalPermission('templates','export'))
         {
             die('No permission');
@@ -229,6 +230,7 @@ class templates extends Survey_Common_Action
         $editfile = App()->request->getPost('editfile');
         $templatename = returnGlobal('templatename');
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
+        $oEditedTemplate->setTemplateConfiguration($sTemplateName);
         $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
         $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
@@ -387,7 +389,7 @@ class templates extends Survey_Common_Action
         }
 
         $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName); $oEditedTemplate->setTemplateConfiguration($sTemplateName);
         $templatedir     = $oEditedTemplate->viewPath;
         $filesdir        = $oEditedTemplate->filesPath;
         $sPostedFile     = App()->request->getPost('otherfile');
@@ -584,6 +586,7 @@ class templates extends Survey_Common_Action
         $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
         $screenname           = returnGlobal('screenname');
         $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, '', true);
+        $oEditedTemplate->setTemplateConfiguration($sTemplateName);
         $aScreenFiles         = $oEditedTemplate->getValidScreenFiles("view");
         $cssfiles             = $oEditedTemplate->getValidScreenFiles("css");
         $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
@@ -777,7 +780,6 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
-        //$oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, '', true);
         $oEditedTemplate = Template::model()->getInstance($templatename, '', true);
 
             //App()->getClientScript()->reset();
@@ -826,9 +828,6 @@ class templates extends Survey_Common_Action
         /* See if we found the file to be edited inside template */
         /* @todo must control if is updatable : in updatable file OR is a view */
         /* Actually allow to update any file exemple css/template-core.css */
-
-//        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename,  '', true);
-
         // @TODO: Proper language code conversion
         $sLanguageCode = 'en';
         $availableeditorlanguages = array('bg', 'cs', 'de', 'dk', 'en', 'eo', 'es', 'fi', 'fr', 'hr', 'it', 'ja', 'mk', 'nl', 'pl', 'pt', 'ru', 'sk', 'zh');
