@@ -149,7 +149,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
          $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
 
          $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
-         $aTJsFiles  = array_merge($aCssFiles, $aTJsFiles);
+         $aJsFiles  = array_merge($aJsFiles, $aTJsFiles);
 
          $dir        = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
@@ -267,13 +267,11 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId=''){}
     public function addFileReplacement($sFile, $sType){}
-        
+
     protected function getFilesToLoad($oTemplate, $sType){}
     protected function changeMotherConfiguration( $sType, $aSettings ){}
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false){}
     protected function removeFileFromPackage( $sPackageName, $sType, $aSettings ){}
     protected function setMotherTemplates(){}
     protected function setThisTemplate(){}
-
-
  }
