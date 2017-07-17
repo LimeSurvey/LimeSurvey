@@ -186,6 +186,7 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
 
+
         if (is_null($iSurveyID) || !$iSurveyID)
             $this->getController()->error('Invalid survey ID');
 
@@ -496,12 +497,12 @@ class SurveyAdmin extends Survey_Common_Action
      * 
      *
      */
-    public function getAjaxMenuArray($surveyid){
+    public function getAjaxMenuArray($surveyid,$position=''){
         $iSurveyID = sanitize_int($surveyid);
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
-        $menus = $survey->getSurveyMenus(); 
-
+        $menus = $survey->getSurveyMenus($position); 
+        $userSettings = [];
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
@@ -1074,6 +1075,10 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
         $survey = Survey::model()->findByPk($iSurveyID);
         $aData['oSurvey'] = $survey;
+        $this->getController()->redirect(
+                    Yii::app()->createUrl('admin/survey/sa/rendersidemenulink', ['surveyid' => $iSurveyID, 'subaction' => 'generalsettings'])
+                );
+        return;
 
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'read') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'read'))
         {
@@ -1784,7 +1789,7 @@ class SurveyAdmin extends Survey_Common_Action
         //$aData['esrow'] = $esrow;
         $aData['ZIPimportAction'] = $ZIPimportAction;
         $aData['disabledIfNoResources'] = $disabledIfNoResources;
-        $dqata['sCKEditorURL'] = $sCKEditorURL;
+        $aData['sCKEditorURL'] = $sCKEditorURL;
 
         return $aData;
     }
@@ -1912,6 +1917,8 @@ class SurveyAdmin extends Survey_Common_Action
         App()->clientScript->registerPackage('bootstrap-switch');
         App()->getClientScript()->registerPackage('jquery-datatable');
         App()->clientScript->registerPackage('adminpanel');
+        App()->clientScript->registerPackage('ckeditor');
+        App()->clientScript->registerPackage('ckeditoradditions');
 
     }
 
@@ -2084,19 +2091,31 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             // Figure out destination
-            if (App()->request->getPost('saveandclose'))
+           
+            if($createSample) 
             {
-                if($createSample) {
-                    $this->getController()->redirect(array("admin/questions/sa/view/surveyid/{$iNewSurveyid}/gid/{$iNewGroupID}/qid/{$iNewQuestionID}"));
-                }
-                else {
-                    $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $iNewSurveyid));
-                }
+                $redirecturl = $this->getController()->createUrl(
+                    "admin/questions/sa/view/", 
+                    ['surveyid' => $iNewSurveyid, 'gid'=>$iNewGroupID, 'qid' =>$iNewQuestionID]
+                    );                
             }
-            else
+            else 
             {
-                $this->getController()->redirect(array('admin/survey/sa/editlocalsettings/surveyid/' . $iNewSurveyid));
+                $redirecturl = $this->getController()->createUrl(
+                    'admin/survey/sa/view/', 
+                    ['surveyid'=>$iNewSurveyid]
+                    );
             }
+            return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => array(
+                    'redirecturl' => $redirecturl,
+                )
+            ),
+            false,
+            false
+        );
 
         }
     }

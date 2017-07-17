@@ -2,6 +2,12 @@
     padding-top: 15px;
 }
 
+#pjax-content{
+    .surveybar{
+        box-shadow: 3px 3px 3px rgba(99, 49, 48, 0.1);
+    }
+}
+
 .menubar.surveybar{
     width:100%;
     margin: 8px auto;
@@ -15,26 +21,33 @@
 .nooverflow{
     overflow: hidden;
 }
-
+.overflow-enabled{
+    overflow: auto;
+}
 .btn-primary.force.color.white.onhover{
     &:hover, &:active,&:focus{
         color:white;
     }
 }
 
-#in_survey_common{
-    padding-bottom: 65px;
+.side-body{
+    min-height: 400px;
 }
+
+footer.footer {
+    position: static;
+}
+
 
 ol.breadcrumb.title-bar-breadcrumb{
     background: transparent;
     color: white;
-
+    margin-bottom: 0px;
     a {
         color: white;
         text-decoration: none;
-        line-height: 32px;
-        font-size: 24px;
+        line-height: 24px;
+        font-size: 18px;
 
         &.animate::after {
             content: '';
@@ -60,12 +73,18 @@ ol.breadcrumb.title-bar-breadcrumb{
     li{
         background: transparent;
         color: white;
-        line-height: 32px;
-        font-size: 24px;
+        line-height: 24px;
+        font-size: 18px;
         &.active{
             color: #dfdfdf;
             font-style: italic
         }
         
     }
+}
+
+.breadcrumb-title{
+    line-height: 24px;
+    font-size: 18px;
+    padding: 8px 15px;
 }

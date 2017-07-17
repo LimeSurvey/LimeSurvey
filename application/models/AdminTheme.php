@@ -143,6 +143,8 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('js-cookie');     // js-cookie
             App()->getClientScript()->registerPackage('fontawesome');   // fontawesome      ??? TODO: check if neede
             App()->getClientScript()->registerPackage('adminpanel');    // Combined scripts and style for the new admin panel
+            App()->clientScript->registerPackage('ckeditor');           //
+            App()->clientScript->registerPackage('ckeditoradditions');   // CKEDITOR in a global sope
         }
 
         $aCssFiles = array();

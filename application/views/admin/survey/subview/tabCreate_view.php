@@ -73,6 +73,7 @@ PrepareEditorScript(false, $this);
         </div>
     </div>
     <div class="row">
+            <input type="hidden" name="saveandclose" value="1" />
             <!-- Submit button -->
             <button class="btn btn-primary btn-success hide" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
     </div>
@@ -102,15 +103,22 @@ PrepareEditorScript(false, $this);
                 $('#save-and-close-form-button').removeClass('disabled');
             }
         });
-        $('#addnewsurvey').on('submit', function(ev){
-            ev.preventDefault();
-            ev.stopPropagation();
+        $('#addnewsurvey').find('#create_survey_save_and_send').on('click', function(ev){
+             ev.preventDefault();
+             ev.stopPropagation();
             $.ajax({
                 url: $('#addnewsurvey').attr('action'),
                 data: $('#addnewsurvey').serializeArray(),
                 method: 'POST',
-                success: function(){console.log(arguments);},
-                error: function(){console.log(arguments)},
+                dataType: 'json',
+                success: function(data){
+                    console.log('form-return', data);
+                    if(data.redirecturl)
+                        window.location.href=data.redirecturl;
+                },
+                error: function(){
+                    // console.log(arguments)
+                },
             });
         })
     });

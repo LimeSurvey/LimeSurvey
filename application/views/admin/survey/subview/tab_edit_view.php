@@ -12,6 +12,8 @@ if(isset($data)){
  $count=0;
  if(isset($scripts))
     echo $scripts;
+
+PrepareEditorScript(false, $this);
 ?>
 <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
     <?php foreach ($aTabTitles as $i=>$eachtitle):?>

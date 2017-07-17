@@ -29,7 +29,7 @@
 
                             <div class="col-sm-6">
                                 <!-- Data Selection -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage,'oSurvey'=>$oSurvey)) ; ?>
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('surveyid'=>$surveyid, 'selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage,'oSurvey'=>$oSurvey)) ; ?>
                                 <!-- Response ID -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_responseid', array()) ; ?>
                                 <!-- Output format -->

@@ -51,6 +51,9 @@ $x-directions: center flex-start flex-end space-between space-around;
 
 }
 
+.ls-flex-item{
+    flex: 1;
+}
 
 .ls-flex-row {
     @extend .ls-flex;

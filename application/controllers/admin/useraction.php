@@ -722,6 +722,13 @@ class UserAction extends Survey_Common_Action
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
         $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
+        //Get data for personal menues
+        $oSurveymenu = Surveymenu::model();
+        $oSurveymenu->user_id = $user->uid;
+        $oSurveymenuEntries = SurveymenuEntries::model();
+        $oSurveymenuEntries->user_id = $user->uid;
+        $aData['surveymenu_data']['model'] = $oSurveymenu;
+        $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
         // Render personal settings view
         if (isset($_POST['saveandclose']))
         {

@@ -1425,6 +1425,8 @@ class database extends Survey_Common_Action
                         if (is_object($oAttributeValues && $oAttributeValues->value)){
                             $aAttributeValues['question_template'] = $oAttributeValues->value;
                         }
+                    } else {
+                        $cqr = null;
                     }
 
                     $validAttributes    = Question::getQuestionTemplateAttributes($validAttributes, $aAttributeValues, $cqr );

@@ -18,7 +18,7 @@ export default {
     },
     methods: {
         isLast(index){ return (index==this.questions.length);},
-        openQuestion(question){ this.$emit('openEntity', {type: 'question', model: question}); location.href=question.link;}
+        openQuestion(question){ this.$emit('openEntity', {type: 'question', model: question});}
     }
 }
 </script>
@@ -26,7 +26,7 @@ export default {
     <ul class="list-group background-muted padding-left">
         <li v-for="(question,index) in questions" class="list-group-item ls-flex-row align-itmes-flex-between">
             <i class="fa fa-bars margin-right bigIcons" draggable="true">&nbsp;</i>
-            <a :href="question.link" @click="openQuestion(question)" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{question.name_short}} </a>
+            <a :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{question.name_short}} </a>
         </li>
     </ul>
 </template>
