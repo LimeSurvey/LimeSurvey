@@ -489,7 +489,7 @@ function upgradeTemplateTables297($oDB)
         'files_print_css'   => '{"add":"css/print_template.css",}',
         'options'           => '{"ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
-        'cssframework_css'  => '{"replace": ["css/bootstrap.css", "css/yiistrap.css"]}',
+        'cssframework_css'  => '{"replace": ["css/bootstrap.css"]}',
         'cssframework_js'   => '',
         'packages_to_load'  => 'template-core,',
     ));
