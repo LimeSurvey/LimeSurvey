@@ -565,7 +565,7 @@ INSERT INTO "prefix_boxes" ("id", "position", "url", "title", "ico", "desc", "pa
 (3, 3, 'admin/globalsettings', 'Global settings', 'settings', 'Edit global settings', 'welcome', '-2'),
 (4, 4, 'admin/update', 'ComfortUpdate', 'shield', 'Stay safe and up to date', 'welcome', '-2'),
 (5, 5, 'admin/labels/sa/view', 'Label sets', 'label', 'Edit label sets', 'welcome', '-2'),
-(6, 6, 'admin/templates/sa/view', 'Template editor', 'templates', 'Edit LimeSurvey templates', 'welcome', '-2');
+(6, 6, 'admin/templateoptions', 'Templates', 'templates', 'View templates list', 'welcome', '-2');
 
 --
 -- Secondary indexes
@@ -622,7 +622,7 @@ CREATE TABLE prefix_settings_user (
 
 --
 -- Surveymenu
--- 
+--
 
 CREATE TABLE prefix_surveymenu (
   "id" integer NOT NULL,
@@ -685,7 +685,7 @@ create index entry_user_index on prefix_surveymenu_entries ("user_id");
 create index entry_title_index on prefix_surveymenu_entries (title);
 create index entry_menu_title_index on prefix_surveymenu_entries (menu_title);
 
-INSERT INTO prefix_surveymenu_entries VALUES 
+INSERT INTO prefix_surveymenu_entries VALUES
 (1,1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','',NULL,'','en-GB',NOW(),0,NOW(),0),
 (2,1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',NOW(),0,NOW(),0),
 (3,1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',NOW(),0,NOW(),0),
@@ -718,7 +718,7 @@ INSERT INTO prefix_surveymenu_entries VALUES
 (30,2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\"\: {\"isActive\"\: false}}','','en-GB',NOW(),0,NOW(),0);
 
 
--- CREATE OR REPLACE FUNCTION upd_timestamp() RETURNS TRIGGER 
+-- CREATE OR REPLACE FUNCTION upd_timestamp() RETURNS TRIGGER
 -- LANGUAGE plpgsql
 -- AS
 -- $$

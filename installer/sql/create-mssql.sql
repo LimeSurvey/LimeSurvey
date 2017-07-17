@@ -568,8 +568,7 @@ INSERT INTO prefix_boxes ([position], [url], [title], [ico], [desc], [page], [us
 (3, 'admin/globalsettings', 'Global settings', 'settings', 'Edit global settings', 'welcome', '-2'),
 (4, 'admin/update', 'ComfortUpdate', 'shield', 'Stay safe and up to date', 'welcome', '-2'),
 (5, 'admin/labels/sa/view', 'Label sets', 'label','Edit label sets', 'welcome', '-2'),
-(6, 'admin/templates/sa/view', 'Template editor', 'templates', 'Edit LimeSurvey templates', 'welcome', '-2');
-
+(6, 'admin/templateoptions', 'Templates', 'templates', 'View templates list', 'welcome', '-2');
 
 
 --
@@ -624,7 +623,7 @@ CREATE TABLE prefix_settings_user (
 
 --
 -- Surveymenu
--- 
+--
 
 CREATE TABLE prefix_surveymenu (
   [id] int(11) NOT NULL ,
@@ -687,7 +686,7 @@ create index [user_index] on [prefix_surveymenu] ([user]);
 create index [title_index] on [prefix_surveymenu] ([title]);
 create index [menu_title_index] on [prefix_surveymenu] ([menu_title]);
 
-INSERT INTO prefix_surveymenu_entries VALUES 
+INSERT INTO prefix_surveymenu_entries VALUES
 (1,1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','',NULL,'','en-GB',NOW(),0,NOW(),0),
 (2,1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',NOW(),0,NOW(),0),
 (3,1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',NOW(),0,NOW(),0),

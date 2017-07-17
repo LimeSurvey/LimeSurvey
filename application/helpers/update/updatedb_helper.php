@@ -269,16 +269,27 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
-                    /**
-                     * Template tables
-                     * @since 2017-07-12
-                     */
-                    if ($iOldDBVersion < 297) {
-                        $oTransaction = $oDB->beginTransaction();
-                        upgradeTemplateTables297($oDB);
-                        $oTransaction->commit();
-                        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>297),"stg_name='DBVersion'");
-                    }
+        /**
+         * Template tables
+         * @since 2017-07-12
+         */
+        if ($iOldDBVersion < 297) {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTemplateTables297($oDB);
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>297),"stg_name='DBVersion'");
+        }
+
+        /**
+         * Template tables
+         * @since 2017-07-12
+         */
+        if ($iOldDBVersion < 298) {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTemplateTables298($oDB);
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>298),"stg_name='DBVersion'");
+        }
 
     }
     catch(Exception $e)
@@ -502,6 +513,21 @@ function upgradeTemplateTables297($oDB)
         'packages_to_load'  => 'template-core,',
     ));
 
+}
+
+
+/**
+ * @param $oDB
+ * @return void
+ */
+function upgradeTemplateTables298($oDB)
+{
+    // Add global configuration for Advanced Template
+    $oDB->createCommand()->update('{{boxes}}',array(
+        'url'=>'admin/templateoptions',
+        'title'=>'Templates',
+        'desc'=>'View templates list',
+    ) ,"id=6");
 }
 
 function fixLanguageConsistencyAllSurveys()
