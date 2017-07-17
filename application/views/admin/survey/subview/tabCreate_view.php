@@ -83,7 +83,6 @@ PrepareEditorScript(false, $this);
     $(document).ready(function(){
         sessionStorage.setItem('maxtabs', 1);
 
-        $('#save-form-button').addClass('disabled');
         $('#save-and-close-form-button').addClass('disabled');
 
         $('#navigation_back').on('click', function(e){
