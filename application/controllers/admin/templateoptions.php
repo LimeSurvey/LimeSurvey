@@ -34,7 +34,6 @@ class templateoptions  extends Survey_Common_Action
             Yii::app()->session['flashmessage'] =gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
-
         $this->_renderWrappedTemplate('templateoptions', 'read', array(
             'model'=>$this->loadModel($id),
         ));
@@ -92,6 +91,7 @@ class templateoptions  extends Survey_Common_Action
                 $this->getController()->redirect(array('admin/templateoptions/sa/update/id/'.$model->id));
         }
 
+        yii::app()->clientScript->registerPackage('bootstrap-switch');
         // TODO: twig file from template folder
         $this->_renderWrappedTemplate('templateoptions', 'update', array(
             'model'=>$model, 'templateOptionPage' => $templateOptionPage));
