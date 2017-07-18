@@ -121,8 +121,25 @@ $animationOptions = '
           <option value="rollOut">rollOut</option>
         </optgroup>
       ';
-      $backgroundImageOptions ='
-        <option value="">None</option>
+      $bootswatchOption ='
+        <option value="">Basic Bootstrap</option>
+        <option value="css/cerulean.css">Cerulean</option>
+        <option value="css/cosmo.css">Cosmo</option>
+        <option value="css/cyborg.css">Cyborg</option>
+        <option value="css/darkly.css">Darkly</option>
+        <option value="css/flatly.css">Flatly</option>
+        <option value="css/journal.css">Journal</option>
+        <option value="css/lumen.css">Lumen</option>
+        <option value="css/paper.css">Paper</option>
+        <option value="css/readable.css">Readable</option>
+        <option value="css/sandstone.css">Sandstone</option>
+        <option value="css/simplex.css">Simplex</option>
+        <option value="css/slate.css">Slate</option>
+        <option value="css/solar.css">Solar</option>
+        <option value="css/spacelab.css">Spacelab</option>
+        <option value="css/superhero.css">Superhero</option>
+        <option value="css/united.css">United</option>
+        <option value="css/yeti.css">Yeti</option>
       ';
 ?>
 
@@ -172,7 +189,7 @@ $animationOptions = '
                         $optionForm = "
                         <form class='form form-horizontal action_update_options_string_form' action=''>
                             <div class='row'>
-                                <div class='col-sm-12 col-md-6'>
+                                <div class='col-sm-12 col-md-4'>
                                     <div class='form-group'>
                                         <label for='simple_edit_options_ajaxmode' class='col-sm-6 control-label'>Ajaxmode</label>
                                         <div class='col-sm-6'>
@@ -181,11 +198,20 @@ $animationOptions = '
                                     </div>
                                 </div>
 
-                                <div class='col-sm-12 col-md-6'>
+                                <div class='col-sm-12 col-md-4'>
                                     <div class='form-group'>
                                         <label for='simple_edit_options_brandlogo' class='col-sm-6 control-label'>Brandlogo</label>
                                         <div class='col-sm-6'>
                                         <input type='checkbox' name='brandlogo' class='form-control selector_option_value_field action_activate_bootstrapswitch' id='simple_edit_options_brandlogo' />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class='col-sm-12 col-md-4'>
+                                    <div class='form-group'>
+                                        <label for='simple_edit_options_backgroundimage' class='col-sm-6 control-label'>Background image</label>
+                                        <div class='col-sm-6'>
+                                        <input type='checkbox' name='backgroundimage' class='form-control simple_edit_options_backgroundimage action_activate_bootstrapswitch' id='backgroundimage' />
                                         </div>
                                     </div>
                                 </div>
@@ -255,18 +281,23 @@ $animationOptions = '
                                     </div>
                                 </div>
                             </div>
-                            <div class='row'>
+                            <div class='row ls-space margin top-15 bottom-15'>
                                 <hr/>
                             </div>
                             <div class='row'>
                                 <div class='col-sm-12'>
-                                    <div class='form-group'>
-                                        <label for='simple_edit_options_backgroundimage' class='col-sm-2 control-label'>Background image</label>
-                                        <div class='col-sm-10'>
-                                            <select class='form-control selector_option_value_field' id='simple_edit_options_backgroundimage' name='backgroundimage'>
-                                                ".$backgroundImageOptions."
-                                            </select>
+                                <div class='panel panel-default'>
+                                    <div class='panel-heading'>Bootstrap theme</div>
+                                    <div class='panel-body'>
+                                        <div class='form-group'>
+                                            <label for='simple_edit_cssframework' class='col-sm-2 control-label'>Bootswatch theme</label>
+                                            <div class='col-sm-10'>
+                                                <select class='form-control selector_cssframework_value_field' id='simple_edit_cssframework' name='cssframework'>
+                                                    ".$bootswatchOption."
+                                                </select>
+                                            </div>
                                         </div>
+                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -284,7 +315,7 @@ $animationOptions = '
                 ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="advanced">
-                <?php $form=$this->beginWidget('CActiveForm', array(
+                <?php $form=$this->beginWidget('TbActiveForm', array(
                     'id'=>'template-options-form',
                     'enableAjaxValidation'=>false,
                     'htmlOptions' => ['class' => 'form form-horizontal']
@@ -398,7 +429,8 @@ $(document).on('ready pjax:complete',function(){
         });
 
         //if the save button is clicked write everything into the template option field and send the form
-        $('.action_update_options_string_button').on('click', function(){
+        $('.action_update_options_string_button').on('click', function(evt){
+            evt.preventDefault();
             var newOptionObject = {};
             //get all values
             $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
@@ -414,13 +446,33 @@ $(document).on('ready pjax:complete',function(){
             $('#template-options-form').find('button[type=submit]').trigger('click');
         });
 
-        $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
+        //hotswapping the fields
+        $('.action_update_options_string_form').find('.selector_option_value_field').on('change switchChange.bootstrapSwitch', function(evt){
             optionObject[$(this).attr('name')] = $(this).val(); 
             if($(this).attr('type') == 'checkbox'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
             }
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
+
+        //Bootstrap theming?
+        if($('#simple_edit_cssframework').length>0){
+            var currentThemeObject = {};
+            try{
+                currentThemeObject = JSON.parse($('#TemplateConfiguration_cssframework_css').val());
+            } catch(e){ console.error('No valid css framework theme field!'); }
+            currentThemeObject.replace = currentThemeObject.replace || [['css/bootstrap.css','']];
+
+            $('#simple_edit_cssframework').val(currentThemeObject.replace[0][1]);
+
+            $('#simple_edit_cssframework').on('change', function(evt){
+                //{"replace": [["css/bootstrap.css","css/flatly.css"]]}
+                currentThemeObject.replace = currentThemeObject.replace || [[]];
+                currentThemeObject.replace[0][1] = $('#simple_edit_cssframework').val();
+
+                $('#TemplateConfiguration_cssframework_css').val(JSON.stringify(currentThemeObject));
+            })
+        }   
     }
 });
 </script>
