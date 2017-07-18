@@ -3,8 +3,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:completed', LS.onDocumentReady.SurveyEditSettings);
-$(document).on('pjax:completed',LS.onDocumentReady.SurveyEditSettings);
+$(document).on('ready  pjax:complete', LS.onDocumentReady.SurveyEditSettings);
+$(document).on(' pjax:complete',LS.onDocumentReady.SurveyEditSettings);
 
     $("#copysurveyform").submit(copysurvey);
 

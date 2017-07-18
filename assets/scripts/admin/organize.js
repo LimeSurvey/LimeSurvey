@@ -6,8 +6,8 @@ var LS = LS || {
 var formSubmitting = false;
 var changed = false;
 
-$(document).on('ready pjax:completed', LS.onDocumentReady.Organize);
-$(document).on('pjax:completed',LS.onDocumentReady.Organize);
+$(document).on('ready  pjax:complete', LS.onDocumentReady.Organize);
+$(document).on(' pjax:complete',LS.onDocumentReady.Organize);
 
 LS.onDocumentReady.Organize = function(){
     var sourceItem;

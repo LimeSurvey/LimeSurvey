@@ -4,7 +4,7 @@
  * This JavaScript will reload the grid on page size change
  */
 
-$(document)(document).on('ready pjax:completed', ', function() {
+$(document)(document).on('ready  pjax:complete', ', function() {
     jQuery(function($)
     {
         jQuery(document).on("change", '#pageSize', function()

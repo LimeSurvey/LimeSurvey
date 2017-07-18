@@ -165,5 +165,5 @@ var onDocumentReadyAttributeMapToken = function(){
 
 };
 
-$(document).on('ready pjax:completed', onDocumentReadyAttributeMapToken);
-$(document).on('pjax:completed',onDocumentReadyAttributeMapToken);
+$(document).on('ready  pjax:complete', onDocumentReadyAttributeMapToken);
+$(document).on(' pjax:complete',onDocumentReadyAttributeMapToken);

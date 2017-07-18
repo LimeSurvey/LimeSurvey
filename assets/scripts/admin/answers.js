@@ -44,8 +44,8 @@ Ls.onDocumentReady.Answers = function(){
     $(document).on("click", '.btnlsbrowser', lsbrowser );
 };
 
-$(document).on('ready pjax:completed', Ls.onDocumentReady.Answers);
-$(document).on('pjax:completed',Ls.onDocumentReady.Answers);
+$(document).on('ready  pjax:complete', Ls.onDocumentReady.Answers);
+$(document).on(' pjax:complete',Ls.onDocumentReady.Answers);
 
 function deleteinput()
 {

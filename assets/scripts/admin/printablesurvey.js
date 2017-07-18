@@ -5,7 +5,7 @@ var LS = LS || {
 };
 
 $(document).ready(LS.onDocumentReady.PrintableSurvey);
-$(document).on('pjax:completed',LS.onDocumentReady.PrintableSurvey);
+$(document).on(' pjax:complete',LS.onDocumentReady.PrintableSurvey);
 
 LS.onDocumentReady.PrintableSurvey = function(){
     $('[class^=max]').each(function(){

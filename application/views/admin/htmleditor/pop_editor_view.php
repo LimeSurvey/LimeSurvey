@@ -39,6 +39,7 @@
             /*
                 try{ console.log('iGroupId: '+iGroupId); } catch (e){ console.log(e); }
                 */
+                if($('textarea').length > 0){
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
                     var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
                         width	: '98%',
@@ -54,6 +55,7 @@
                         LimeReplacementFieldsPath : "<?php echo $this->createUrl("/admin/limereplacementfields/sa/index"); ?>",
                         language : "<?php echo $ckLanguage ?>"
                         <?php echo $htmlformatoption; ?> });
+                }
                 });
 
                 function CKeditor_OnComplete( evt )

@@ -82,8 +82,8 @@ LS.resp = (function() {
     };
 })();
 
-$(document).on('ready pjax:completed', LS.onDocumentReady.Listresponse);
-$(document).on('pjax:completed',LS.onDocumentReady.Listresponse);
+$(document).on('ready  pjax:complete', LS.onDocumentReady.Listresponse);
+$(document).on(' pjax:complete',LS.onDocumentReady.Listresponse);
 
 var onDocumentReadyListresponse = function(){
 

@@ -3,8 +3,8 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).on('ready pjax:completed', LS.onDocumentReady.GlobalSettings);
-$(document).on('pjax:completed',LS.onDocumentReady.GlobalSettings);
+$(document).on('ready  pjax:complete', LS.onDocumentReady.GlobalSettings);
+$(document).on(' pjax:complete',LS.onDocumentReady.GlobalSettings);
 
 LS.onDocumentReady.GlobalSettings = function(){
     $("input:radio[id^='emailmethod']").on('change',Emailchange);

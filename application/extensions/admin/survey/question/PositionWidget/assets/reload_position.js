@@ -36,7 +36,7 @@ function loadPositionWidget()
     });
 }
 
-$(document)(document).on('ready pjax:completed', ', function() {
+$(document)(document).on('ready  pjax:complete', ', function() {
     // First, we load the position widget
     loadPositionWidget();
 

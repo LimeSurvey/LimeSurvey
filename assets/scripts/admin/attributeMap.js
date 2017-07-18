@@ -2,7 +2,7 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-LS.onDocumentReady.AttributeMap = function(){
+$(document).on('ready  pjax:complete', function(){
 
     var height = $(document).height();
     var width = $(document).width();
@@ -170,7 +170,4 @@ LS.onDocumentReady.AttributeMap = function(){
     });
 
     $('.tokenatt .panel-default .tokenAttributeId').disableSelection();
-};
-
-$(document).on('ready pjax:completed', LS.onDocumentReady.AttributeMap);
-$(document).on('pjax:completed',LS.onDocumentReady.AttributeMap);
+});
