@@ -270,6 +270,11 @@ $animationOptions = '
                                     </div>
                                 </div>
                             </div>
+                            <div class='row'>
+                                <div class='col-sm-12'>
+                                    <button class='btn btn-success col-md-2 col-sm-4 col-xs-6 action_update_options_string_button'>".gT('Save')."</button>
+                                </div>
+                            </div>
                         </form>
                         ";
                         echo $optionForm;
@@ -373,15 +378,41 @@ $animationOptions = '
 
 <script type="text/javascript">
 $(document).on('ready pjax:complete',function(){
+    //activate the bootstrap switch for checkboxes
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
-    console.log($('form'));
+    //get option Object from Template configuration options
+    var optionObject = {}
+    try{
+        optionObject = JSON.parse($('#TemplateConfiguration_options').val());
+    } catch(e){ console.error('No valid option field!'); }
+
+    //check if a form exists to parse the simple option
     if($('.action_update_options_string_form').length > 0){
-        var optionObject = JSON.parse($('#TemplateConfiguration_options').val());
+        //Update values in the form to the template options
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
+            
             var itemValue = optionObject[$(item).attr('name')];
             $(item).val(itemValue);
+            //if it is a checkbox, check it and propagate the change to bootstrapSwitch
             if($(item).attr('type') == 'checkbox' && itemValue !='off') $(item).prop('checked', true).trigger('change');
-        })
+        });
+
+        //if the save button is clicked write everything into the template option field and send the form
+        $('.action_update_options_string_button').on('click', function(){
+            var newOptionObject = {};
+            //get all values
+            $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
+                newOptionObject[$(item).attr('name')] = $(item).val();
+                //again extra check for checkboxes
+                if($(item).attr('type') == 'checkbox'){
+                    newOptionObject[$(item).attr('name')] = $(item).prop('checked') ? 'on' : 'off';
+                }
+            });
+            //now write the newly created object to the correspondent field as a json string
+            $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
+            //and submit the form
+            $('#template-options-form').find('button[type=submit]').trigger('click');
+        });
     }
 });
 </script>
