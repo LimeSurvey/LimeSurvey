@@ -28,7 +28,6 @@
     <files>
         <css>
             <filename>css/template.css</filename>
-            <filename>css/animate.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
