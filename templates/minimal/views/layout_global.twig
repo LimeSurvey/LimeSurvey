@@ -22,7 +22,7 @@
 
 </html>
 
-<body class="default lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" >
+<body class="default lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}}" >
 {% block body %}
 
     {# Bootstrap Navigation Bar: the top menu #}
@@ -36,7 +36,7 @@
     {% endblock %}
 
     <!-- Outer Frame Container -->
-    <div class="outerframe container {% if (aSurveyInfo.options.animatebody == "on") %} animated {{ aSurveyInfo.options.bodyanimation }} {%endif%}" id="outerframeContainer">
+    <div class="outerframe container" id="outerframeContainer">
 
         <!-- Main Row -->
         <div id="main-row">
