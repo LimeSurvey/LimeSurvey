@@ -428,4 +428,26 @@ class TemplateConfiguration extends TemplateConfig
         }
         return $aAssetsToRemove;
     }
+
+    /**
+     * Get the list of file replacement from Engine Framework
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return array
+     */
+    protected function getFrameworkAssetsReplacement( $sType )
+    {
+        $sFieldName  = 'cssframework_'.$sType;
+        $aFieldValue = (array) json_decode($this->$sFieldName);
+
+        $aReplacements = array();
+        if (!empty( $aFieldValue )){
+            $aAssetsToReplace = (array) $aFieldValue['replace'];
+            foreach($aAssetsToReplace as $key => $aAsset ){
+                $aReplacements[] = $aAsset[1];
+            }
+        }
+
+        return $aReplacements;
+    }
 }

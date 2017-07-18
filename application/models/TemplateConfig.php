@@ -141,8 +141,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
          $aCssFiles  = $aJsFiles = array();
 
          // First we add the framework replacement (bootstrap.css must be loaded before template.css)
-         $aCssFiles  = $this->getFrameworkAssetsToReplace('css');
-         $aJsFiles   = $this->getFrameworkAssetsToReplace('js');
+         $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
+         $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
 
          // Then we add the template config files
          $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
@@ -269,6 +269,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
     protected function getFilesToLoad($oTemplate, $sType){}
     protected function changeMotherConfiguration( $sType, $aSettings ){}
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false){}
+    protected function getFrameworkAssetsReplacement($sType){}
     protected function removeFileFromPackage( $sPackageName, $sType, $aSettings ){}
     protected function setMotherTemplates(){}
     protected function setThisTemplate(){}

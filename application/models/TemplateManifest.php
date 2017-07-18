@@ -544,4 +544,25 @@ class TemplateManifest extends TemplateConfiguration
         return $aAssetsToRemove;
     }
 
+    /**
+     * Get the list of file replacement from Engine Framework
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return array
+     */
+    protected function getFrameworkAssetsReplacement( $sType )
+    {
+        $aAssetsToRemove = array();
+        if (!empty($this->cssFramework->$sType)){
+            $nodes = (array) $this->config->xpath('//cssframework/'.$sType.'[@replace]');
+            if (!empty($nodes)){
+                foreach ($nodes as $key => $node){
+                    $nodes[$key] =  (string) $node[0];
+                }
+
+                $aAssetsToRemove =  $nodes ;
+            }
+        }
+        return $aAssetsToRemove;
+    }
 }
