@@ -32,11 +32,9 @@ $surveyid = $oSurvey->sid;
     </div>
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-sm-12 content-right">
-
                 <!-- Alerts, infos... -->
                 <div class="row">
                     <div class="col-sm-12">
-
                         <!-- While survey is activated, you can't add or remove group or question -->
                         <?php if ($oSurvey->isActive): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
@@ -80,7 +78,6 @@ $surveyid = $oSurvey->sid;
                         <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                             <div class="row">
                                 <div class="col-sm-12">
-
                                     <label for="switch"><?php eT('Format:');?></label>
                                     <div id='switchchangeformat' class="btn-group" role="group">
                                       <button id='switch' type="button" data-value='S' class="btn btn-default <?php if($oSurvey->format=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>

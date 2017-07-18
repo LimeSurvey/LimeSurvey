@@ -97,8 +97,8 @@ LS.onDocumentReady.AdminCore = function(){
             // html contains the buttons
             success : function(html, statut){
                 $('#survey-action-container').animate({
-            "height": "toggle", "opacity": "toggle"
-        });
+                    "height": "toggle", "opacity": "toggle"
+                });
                 $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
             },
             error :  function(html, statut){
@@ -245,10 +245,12 @@ LS.onDocumentReady.AdminCore = function(){
         $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
     });
 
+    $('[data-is-bootstrap-switch]').bootstrapSwitch();
+
 };
 
 $(document).ready(LS.onDocumentReady.AdminCore);
-$(document).on('pjax:end',LS.onDocumentReady.AdminCore);
+$(document).on('pjax:complete',LS.onDocumentReady.AdminCore);
 
 
 function qTypeDropdownInit()
@@ -285,7 +287,7 @@ function qTypeDropdownInit()
     };
 
     $(document).ready(onDocumentReadyAdminCoreq);
-    $(document).on('pjax:end',onDocumentReadyAdminCoreq);
+    $(document).on('pjax:complete',onDocumentReadyAdminCoreq);
 }
 
 

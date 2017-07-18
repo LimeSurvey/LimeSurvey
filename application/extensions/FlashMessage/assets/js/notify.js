@@ -1,4 +1,4 @@
-$(document).ready(function(){	
+$(document)(document).on('ready pjax:completed', ', function(){	
 		if($('.side-body').length){
 			//$('#update-container').removeClass();
 			
