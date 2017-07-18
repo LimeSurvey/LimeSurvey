@@ -281,6 +281,12 @@ class TemplateConfiguration extends TemplateConfig
         return $sEditorLink.'<br><br>'.$OptionLink;
     }
 
+    public function getOptionPage()
+    {
+        $this->setTemplateConfiguration();
+        return Yii::app()->twigRenderer->renderOptionPage($this);
+    }
+
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *

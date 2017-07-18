@@ -74,13 +74,14 @@ class templateoptions  extends Survey_Common_Action
      */
     public function update($id)
     {
-        if (! Permission::model()->hasGlobalPermission('templates', 'update'))
-        {
+        if (! Permission::model()->hasGlobalPermission('templates', 'update')){
             Yii::app()->setFlashMessage(gT('Access denied!'),'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/templateoptions"));
         }
 
-        $model=$this->loadModel($id);
+        $model = $this->loadModel($id);
+
+        $templateOptionPage = $model->optionPage;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -93,7 +94,7 @@ class templateoptions  extends Survey_Common_Action
 
         // TODO: twig file from template folder
         $this->_renderWrappedTemplate('templateoptions', 'update', array(
-            'model'=>$model));
+            'model'=>$model, 'templateOptionPage' => $templateOptionPage));
 
     }
 

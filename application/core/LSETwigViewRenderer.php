@@ -146,9 +146,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderTemplateFromFile($sView, $aDatas, $bReturn)
     {
         $oRTemplate = Template::model()->getInstance();
-        $oTemplate = $this->getTemplateForView($sView, $oRTemplate);
-        $line      = file_get_contents($oTemplate->viewPath.$sView);
-        $result = $this->renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn);
+        $oTemplate  = $this->getTemplateForView($sView, $oRTemplate);
+        $line       = file_get_contents($oTemplate->viewPath.$sView);
+        $result     = $this->renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn);
 
         if ($bReturn){
             Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
@@ -156,6 +156,50 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
 
         return null;
+    }
+
+    public function renderOptionPage($oTemplate)
+    {
+        $oRTemplate = $oTemplate;
+
+        $sOptionFile = '/options/options.twig';
+        $sOptionJS   = '/options/options.js';
+
+        // We get the options twig file from the right template (local or mother template)
+        while (!file_exists($oRTemplate->path.$sOptionFile)){
+
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return $oRTemplate->path.$sOptionFile.gT(' not found!');
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        if (file_exists($oRTemplate->path.$sOptionJS)){
+            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS);            
+        }
+
+        $line      = file_get_contents($oRTemplate->path.$sOptionFile);
+
+        $this->_twig  = $twig = parent::getTwig();
+        $loader       = $this->_twig->getLoader();
+        $loader->addPath($oRTemplate->viewPath);
+
+        // Add all mother templates path
+        while($oRTemplate->oMotherTemplate instanceof TemplateConfiguration){
+            $oRTemplate = $oRTemplate->oMotherTemplate;
+            $loader->addPath($oRTemplate->viewPath);
+        }
+
+
+        $result    = $this->renderTemplateFromString( $line, array(), $oRTemplate, true);
+
+        // Twig rendering
+        $oTwigTemplate = $twig->createTemplate($line);
+        $nvLine        = $oTwigTemplate->render(array(), false);
+
+        return $nvLine;
     }
 
     private function getTemplateForView($sView, $oRTemplate)

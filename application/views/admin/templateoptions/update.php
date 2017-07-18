@@ -9,6 +9,8 @@
 <div class="row">
     <div class="col-sm-12 content-right">
 
+<?php var_dump($templateOptionPage); ?>
+
         <?php $form=$this->beginWidget('CActiveForm', array(
             'id'=>'template-options-form',
             // Please note: When you enable ajax validation, make sure the corresponding
