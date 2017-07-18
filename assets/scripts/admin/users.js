@@ -1,10 +1,18 @@
-$(document).ready(function(){
+
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).ready(LS.onDocumentReady.Users);
+$(document).on('pjax:end',LS.onDocumentReady.Users);
+
+LS.onDocumentReady.Users = function(){
 
     bindButtons();
 
     $("#user_type").change(UsertypeChange);
     UsertypeChange();
-});
+};
 
 
 function triggerRunAction(el){

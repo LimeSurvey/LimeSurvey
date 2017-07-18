@@ -9,9 +9,15 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).ready(LS.onDocumentReady.Questions);
+$(document).on('pjax:end',LS.onDocumentReady.Questions);
 
 // Collapse in editarticle
-$(document).ready(function(){
+LS.onDocumentReady.Questions = function(){
     $('#questionTypeContainer').css("overflow","visible");
     $('#collapseOne').on('shown.bs.collapse', function () {
         $('#questionTypeContainer').css("overflow","visible");

@@ -1,7 +1,14 @@
 /**
  * JavaScript functions for HomePage Settings
  */
-$(document).ready(function(){
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+$(document).ready(LS.onDocumentReady.HomePageSettings);
+$(document).on('pjax:end',LS.onDocumentReady.HomePageSettings);
+
+LS.onDocumentReady.HomePageSettings = function(){
 
     /**
      * Toggle show logo value
@@ -137,4 +144,4 @@ $(document).ready(function(){
             $('#chosen-icon').attr('class', fullCurrentIconName + ' text-success');
         }
     }
-});
+};

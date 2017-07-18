@@ -1,4 +1,10 @@
 // $Id: surveysettings.js 9757 2011-02-09 20:52:33Z c_schmitz $
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).ready(LS.onDocumentReady.SurveyEditSettings);
+$(document).on('pjax:end',LS.onDocumentReady.SurveyEditSettings);
 
     $("#copysurveyform").submit(copysurvey);
 
@@ -31,7 +37,7 @@ $(document).on('click',"[data-copy] :submit",function(){
 // $(document).on('submit',"#addnewsurvey",function(){
 //     $('#addnewsurvey').attr('action',$('#addnewsurvey').attr('action')+location.hash);// Maybe validate before ?
 // });
-$(document).ready(function(){
+LS.onDocumentReady.SurveyEditSettings = function(){
 
     $('#template').on('change keyup', function(event){
         templatechange($(this).val());
@@ -149,7 +155,7 @@ $(document).ready(function(){
             }
         });
     });
-});
+};
 /**
  * Bind to submit event
  */

@@ -1,3 +1,12 @@
+
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).ready(LS.onDocumentReady.Tokens);
+$(document).on('pjax:end',LS.onDocumentReady.Tokens);
+
+
 /**
  * jQuery Plugin to manage the date in token modal edit.
  * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
@@ -6,7 +15,7 @@
 $.fn.YesNoDate = function(options)
 {
     var that            = $(this);                                              // calling element
-    $(document).ready(function(){
+    that.onReadyMethod = function(){
         var $elSwitch        = that.find('.YesNoDateSwitch').first();           // switch element (generated with YiiWheels widgets)
         var $elDateContainer = that.find('.date-container').first();            // date time picker container (to show/hide)
         var $elDate          = that.find('.YesNoDatePicker').first();           // date time picker element (generated with YiiWheels widgets)
@@ -37,7 +46,9 @@ $.fn.YesNoDate = function(options)
         $(document).on('dp.change', '#'+$elDate.attr('id')+'_datetimepicker', function(e){
             $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
         })
-    });
+    };
+    $(document).ready(that.onReadyMethod);
+    $(document).on('pjax:end',that.onReadyMethod);
 }
 
 $.fn.YesNo = function(options)
@@ -45,7 +56,7 @@ $.fn.YesNo = function(options)
     var that              = $(this);                                            // calling element
     var $elHiddenInput   = that.find('.YesNoDateHidden').first();           // input form, containing the value to submit to the database
 
-    $(document).ready(function(){
+    that.onReadyMethod = function(){
         var $elSwitch        = that.find('.YesNoSwitch').first();               // switch element (generated with YiiWheels widgets)
         $elSwitch.bootstrapSwitch();                                            // Generate the switch
 
@@ -64,7 +75,9 @@ $.fn.YesNo = function(options)
 
         })
 
-    });
+    };
+    $(document).ready(that.onReadyMethod);
+    $(document).on('pjax:end',that.onReadyMethod);
 }
 
 /**
@@ -152,7 +165,7 @@ function submitEditToken(){
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-$(document).ready(function(){
+LS.onDocumentReady.Tokens = function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {
@@ -347,41 +360,7 @@ $(document).ready(function(){
 
         });
     });
-});
 
-var conditionid=1;
-function checkbounces() {
-    $("#dialog-modal").dialog('open');
-    $('#dialog-modal').html('<p><img style="margin-top:42px" src="'+imageurl+'ajax-loader.gif" /></p>');
-    $('#dialog-modal').load(sBounceProcessingURL);
-}
-
-function addcondition()
-{
-    // Seems unused
-    conditionid++;
-    html = "<tr name='joincondition_"+conditionid+"' id='joincondition_"+conditionid+"'><td><select name='join_"+conditionid+"' id='join_"+conditionid+"'>\n\
-    <option value='and'>"+andTxt+"</option><option value='or'>"+orTxt+"</option></td></tr>";
-    html2 = "<tr><td><select name='field_"+conditionid+"' \n\ id='field_"+conditionid+"'>";
-    for(col in colInformation){
-        if(colInformation[col]['search'])
-            html2 += "<option value='"+col+"'>"+colInformation[col]['description']+"</option>";
-    }
-    html2 += "</select></td><td>\n\
-    <select name='condition_"+conditionid+"' id='condition_"+conditionid+"'><option value='equal'>"+searchtypes[0]+"</option><option value='contains'>"+searchtypes[1]+"</option>\n\
-    <option value='notequal'>"+searchtypes[2]+"</option><option value='notcontains'>"+searchtypes[3]+"</option><option value='greaterthan'>"+searchtypes[4]+"</option>\n\
-    <option value='lessthan'>"+searchtypes[5]+"</option></select></td>\n\<td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
-    <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+">\n\
-    <img src="+addbutton+" class='addcondition-button' style='margin-bottom:4px'></td></tr>";
-    //$('#searchtable > tbody > tr').eq(id).after(html);
-    $('#searchtable > tbody > tr').eq(conditionid).after(html);
-    conditionid++;
-    $('#searchtable > tbody > tr').eq(conditionid).after(html2);
-    //idexternal++;
-}
-
-
-$(document).ready(function() {
 
     // Code for AJAX download
     jQuery.download = function(url, data, method){
@@ -430,8 +409,39 @@ $(document).ready(function() {
 
     });
 
+};
 
-});
+var conditionid=1;
+function checkbounces() {
+    $("#dialog-modal").dialog('open');
+    $('#dialog-modal').html('<p><img style="margin-top:42px" src="'+imageurl+'ajax-loader.gif" /></p>');
+    $('#dialog-modal').load(sBounceProcessingURL);
+}
+
+function addcondition()
+{
+    // Seems unused
+    conditionid++;
+    html = "<tr name='joincondition_"+conditionid+"' id='joincondition_"+conditionid+"'><td><select name='join_"+conditionid+"' id='join_"+conditionid+"'>\n\
+    <option value='and'>"+andTxt+"</option><option value='or'>"+orTxt+"</option></td></tr>";
+    html2 = "<tr><td><select name='field_"+conditionid+"' \n\ id='field_"+conditionid+"'>";
+    for(col in colInformation){
+        if(colInformation[col]['search'])
+            html2 += "<option value='"+col+"'>"+colInformation[col]['description']+"</option>";
+    }
+    html2 += "</select></td><td>\n\
+    <select name='condition_"+conditionid+"' id='condition_"+conditionid+"'><option value='equal'>"+searchtypes[0]+"</option><option value='contains'>"+searchtypes[1]+"</option>\n\
+    <option value='notequal'>"+searchtypes[2]+"</option><option value='notcontains'>"+searchtypes[3]+"</option><option value='greaterthan'>"+searchtypes[4]+"</option>\n\
+    <option value='lessthan'>"+searchtypes[5]+"</option></select></td>\n\<td><input type='text' id='conditiontext_"+conditionid+"' style='margin-left:10px;' /></td>\n\
+    <td><img src="+minusbutton+" onClick= $(this).parent().parent().remove();$('#joincondition_"+conditionid+"').remove() id='removebutton'"+conditionid+">\n\
+    <img src="+addbutton+" class='addcondition-button' style='margin-bottom:4px'></td></tr>";
+    //$('#searchtable > tbody > tr').eq(id).after(html);
+    $('#searchtable > tbody > tr').eq(conditionid).after(html);
+    conditionid++;
+    $('#searchtable > tbody > tr').eq(conditionid).after(html2);
+    //idexternal++;
+}
+
 
 function centerInfoDialog() {
     var infoDialog = $("#info_dialog");

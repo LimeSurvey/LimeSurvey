@@ -6,9 +6,14 @@
  */
 
 // Namespace
-var LS = LS || {};
+var LS = LS || {
+    onDocumentReady: {}
+};
 
-$(document).ready(function() {
+$(document).ready(LS.onDocumentReady.Notifications);
+$(document).on('pjax:end',LS.onDocumentReady.Notifications);
+
+LS.onDocumentReady.Notifications = function() {
 
     /**
      * Log stuff
@@ -174,4 +179,4 @@ $(document).ready(function() {
 
     initNotification();
 
-});
+};

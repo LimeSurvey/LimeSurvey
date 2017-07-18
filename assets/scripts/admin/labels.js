@@ -10,6 +10,9 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
 /**
 * delete button
 */
@@ -20,7 +23,11 @@ $(document).on('click','[data-action="deletelabelset"]',function(event){
     }
 });
 
-$(document).ready(function(){
+
+$(document).ready(LS.onDocumentReady.LabelSettings);
+$(document).on('pjax:end',LS.onDocumentReady.LabelSettings);
+
+LS.onDocumentReady.LabelSettings = function(){
     $('#btnDumpLabelSets').click(function(){
         if ($('#labelsets > option:selected').size()==0)
         {
@@ -89,7 +96,7 @@ $(document).ready(function(){
     });
 
     fix_highlighting();
-});
+};
 
 function quickaddfunction(){
     var lsreplace = false;

@@ -2,6 +2,13 @@
  * This javascript show or hide the googleanalytics parameters in function of the Notification settings to be used
  * (None, use setting below, use global settings )
  */
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).ready(LS.onDocumentReady.SurveyEditNotification);
+$(document).on('pjax:end',LS.onDocumentReady.SurveyEditNotification);
+
 function updateParameters()
 {
 if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
@@ -33,9 +40,9 @@ if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
     }
 }
 
-$(document).ready(function(){
+LS.onDocumentReady.SurveyEditNotification = function(){
     updateParameters();
     $("input:radio[id^='googleanalyticsapikeysetting']").on('change',function(){
         updateParameters();
     });
-});
+};

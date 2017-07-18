@@ -1,3 +1,8 @@
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+
 function jquery_goodchars(e, goods)
 {
    var key, keychar;
@@ -22,7 +27,7 @@ function jquery_goodchars(e, goods)
 }
 
 
-$(document).ready(function(){
+LS.onDocumentReady.Asessements = function(){
     //$('#languagetabs').tabs();
     if ($(".assessmentlist tbody tr").size()>0)
     {
@@ -54,7 +59,7 @@ $(document).ready(function(){
             return jquery_goodchars(e,'1234567890-');
         }
     )
+};
 
-   
-  }
-);
+$(document).ready(LS.onDocumentReady.Asessements);
+$(document).on('pjax:end',LS.onDocumentReady.Asessements);

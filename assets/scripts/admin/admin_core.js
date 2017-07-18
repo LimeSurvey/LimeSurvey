@@ -15,7 +15,7 @@
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
 // Namespace
-var LS = LS || {};
+var LS = LS || {  onDocumentReady: {} };
 
 /* Set a variable to test if browser have HTML5 form ability
  * Need to be replaced by some polyfills see #8009
@@ -25,7 +25,7 @@ hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'fu
 /* See function */
 fixAccordionPosition();
 
-$(document).ready(function(){
+LS.onDocumentReady.AdminCore = function(){
 
     initializeAjaxProgress();
     tableCellAdapters();
@@ -245,11 +245,15 @@ $(document).ready(function(){
         $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
     });
 
-});
+};
+
+$(document).ready(LS.onDocumentReady.AdminCore);
+$(document).on('pjax:end',LS.onDocumentReady.AdminCore);
+
 
 function qTypeDropdownInit()
 {
-    $(document).ready(function () {
+    var onDocumentReadyAdminCoreq = function () {
         $("#question_type_button .questionType").each(function(index,element){
             $(element).qtip({
                 style: {
@@ -269,9 +273,6 @@ function qTypeDropdownInit()
             });
 
         });
-    });
-    $(document).ready(function() {
-
         $('.questionType').on('mouseenter', function(e){
             //alert($(this).attr('class'));
             $('.questionType').qtip('hide');
@@ -281,7 +282,10 @@ function qTypeDropdownInit()
         $('.questionType').on('mouseleave', function(e){
             $(this).qtip('hide');
         });
-    });
+    };
+
+    $(document).ready(onDocumentReadyAdminCoreq);
+    $(document).on('pjax:end',onDocumentReadyAdminCoreq);
 }
 
 

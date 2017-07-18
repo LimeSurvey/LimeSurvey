@@ -1,6 +1,12 @@
 // $Id: globalsettings.js 8964 2010-07-20 20:46:47Z anishseth $
 
-$(document).ready(function(){
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+$(document).ready(LS.onDocumentReady.GlobalSettings);
+$(document).on('pjax:end',LS.onDocumentReady.GlobalSettings);
+
+LS.onDocumentReady.GlobalSettings = function(){
     $("input:radio[id^='emailmethod']").on('change',Emailchange);
     Emailchange();
     $("input:radio[id^='bounceaccounttype']").on('change',BounceChange);
@@ -9,7 +15,7 @@ $(document).ready(function(){
     $('#btnRemove').click(removeLanguages);
     $('#btnAdd').click(addLanguages);
     $("#frmglobalsettings").submit(UpdateRestrictedLanguages);
-});
+};
 
 
 // Add a language to available languages if it was selected as default language

@@ -13,6 +13,12 @@
  */
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).ready(LS.onDocumentReady.Subquestions);
+$(document).on('pjax:end',LS.onDocumentReady.Subquestions);
 
 var labelcache=[];
 
@@ -24,7 +30,7 @@ $(document).on("click","#editsubquestionsform :submit", function() {
     return code_duplicates_check();
 });
 
-$(document).ready(function(){
+LS.onDocumentReady.Subquestions = function(){
 
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',
@@ -67,7 +73,7 @@ $(document).ready(function(){
 
     bindExpandRelevanceEquation();
 
-});
+};
 
 /**
  * Bind relevance equation to expand on click (only once)

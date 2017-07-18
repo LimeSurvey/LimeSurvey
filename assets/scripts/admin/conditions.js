@@ -1,3 +1,7 @@
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
 // Louis : We need to overwrite jQuery tabs to make it compatible with bootstrap
 (function($)
 {
@@ -64,7 +68,10 @@ function jquery_goodchars(e, goods)
 }
 
 
-$(document).ready(function(){
+$(document).ready(LS.onDocumentReady.Conditions);
+$(document).on('pjax:end',LS.onDocumentReady.Conditions);
+
+LS.onDocumentReady.Conditions = function(){
 
     // TODO: Localization
     $('#copyconditions').submit(function() {
@@ -98,8 +105,130 @@ $(document).ready(function(){
     $('.numbersonly').keypress(function(e) {
         return jquery_goodchars(e,'1234567890-');
     });
+	$('#resetForm').click( function() {
+		$('#canswers option').remove();
+		selectTabFromOper();
+		$('#method').find('option').each( function() {
+			$(this).attr('disabled','');
+		});
+		
+	});
 
-});
+	// Select the condition target Tab depending on operator
+	$('#method').change(selectTabFromOper);
+	$('#quick-add-method').change(quickAddSelectTabFromOper);
+
+    var p = new populateCanswersSelectObject();
+    populateCanswersSelect = p.fun;
+
+	$('#cquestions').change(populateCanswersSelect);
+
+    // Populate stuff for quick-add modal
+    var p2 = new populateCanswersSelectObject();
+    p2.cquestionsId      = '#quick-add-cquestions';
+    p2.canswersId        = '#quick-add-canswers';
+    p2.canswersIdNoHash  = 'quick-add-canswers';
+    p2.cqid              = '#quick-add-cqid';
+    p2.conditiontargetId = '#quick-add-conditiontarget';
+    p2.methodId          = '#quick-add-method';
+    p2.canswersToSelectId= '#quick-add-canswersToSelectId';
+	$('#quick-add-cquestions').change(p2.fun);
+
+	$('#csrctoken').change(function() {
+		$('#cqid').val(0);
+	});
+	
+	// At editing, if cquestions is set, populate answers
+	if ($('#cquestions').val() != '') {
+		populateCanswersSelect(null);
+	}
+	
+    $('.nav-tabs').click(function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+    })
+
+    // Tab management for add/edit condition
+    var editTargetTab = $('input[name="editTargetTab"]').val();
+    var editSourceTab = $('input[name="editSourceTab"]').val();
+    $('a[href="' + editTargetTab + '"]').trigger('click');
+    $('a[href="' + editSourceTab + '"]').trigger('click');
+
+    // When user clicks tab, update hidden input
+    $('#editconditions .src-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="editSourceTab"]').val(href);
+    });
+
+    // When user clicks tab, update hidden input
+    $('#editconditions .target-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="editTargetTab"]').val(href);
+    });
+
+    // Tab management for quick-add modal
+    var editTargetTab = $('input[name="quick-add-editTargetTab"]').val();
+    var editSourceTab = $('input[name="quick-add-editSourceTab"]').val();
+    $('a[href="' + editTargetTab + '"]').trigger('click');
+    $('a[href="' + editSourceTab + '"]').trigger('click');
+
+    // When user clicks tab, update hidden input
+    $('#quick-add-conditions-form .src-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="quick-add-editSourceTab"]').val(href);
+    });
+
+    // When user clicks tab, update hidden input
+    $('#quick-add-conditions-form .target-tab').on('click', function(e) {
+        var href = $(e.currentTarget).find('a').attr('href');
+        $('input[name="quick-add-editTargetTab"]').val(href);
+    });
+
+    // Disable clicks on disabled tabs (regexp)
+    $(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
+        if ($(this).parent().hasClass("disabled")) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Bind save-buttons in quick-add modal
+    $('#quick-add-condition-save-button').on('click', function(ev) {
+        var formData = $('#quick-add-conditions-form').serializeArray();
+        var url = $('#quick-add-url').html();
+        console.log('formData', formData);
+        LS.ajax({
+            url: url,
+            data: formData,
+            method: 'POST',
+            error: function () {
+                console.log(arguments);
+            }
+        });
+    });
+
+    // Save-and-close for quick-add modal
+    $('#quick-add-condition-save-and-close-button').on('click', function(ev) {
+        var formData = $('#quick-add-conditions-form').serializeArray();
+        var url = $('#quick-add-url').html();
+        LS.ajax({
+            url: url,
+            data: formData,
+            method: 'POST',
+            success: function () {
+                location.reload();
+            },
+            error: function () {
+                console.log(arguments);
+            }
+        });
+    });
+
+    // Close for quick-add modal
+    $('#quick-add-condition-close-button').on('click', function(ev) {
+        location.reload();
+    });
+};
 
 /**
  * Object with one public variable: fun, which is
@@ -241,132 +370,6 @@ function quickAddSelectTabFromOper() {
 	}
 }
 
-$(document).ready(function() {
-
-	$('#resetForm').click( function() {
-		$('#canswers option').remove();
-		selectTabFromOper();
-		$('#method').find('option').each( function() {
-			$(this).attr('disabled','');
-		});
-		
-	});
-
-	// Select the condition target Tab depending on operator
-	$('#method').change(selectTabFromOper);
-	$('#quick-add-method').change(quickAddSelectTabFromOper);
-
-    var p = new populateCanswersSelectObject();
-    populateCanswersSelect = p.fun;
-
-	$('#cquestions').change(populateCanswersSelect);
-
-    // Populate stuff for quick-add modal
-    var p2 = new populateCanswersSelectObject();
-    p2.cquestionsId      = '#quick-add-cquestions';
-    p2.canswersId        = '#quick-add-canswers';
-    p2.canswersIdNoHash  = 'quick-add-canswers';
-    p2.cqid              = '#quick-add-cqid';
-    p2.conditiontargetId = '#quick-add-conditiontarget';
-    p2.methodId          = '#quick-add-method';
-    p2.canswersToSelectId= '#quick-add-canswersToSelectId';
-	$('#quick-add-cquestions').change(p2.fun);
-
-	$('#csrctoken').change(function() {
-		$('#cqid').val(0);
-	});
-	
-	// At editing, if cquestions is set, populate answers
-	if ($('#cquestions').val() != '') {
-		populateCanswersSelect(null);
-	}
-	
-    $('.nav-tabs').click(function(e) {
-        e.preventDefault();
-        $(this).tab('show');
-    })
-
-    // Tab management for add/edit condition
-    var editTargetTab = $('input[name="editTargetTab"]').val();
-    var editSourceTab = $('input[name="editSourceTab"]').val();
-    $('a[href="' + editTargetTab + '"]').trigger('click');
-    $('a[href="' + editSourceTab + '"]').trigger('click');
-
-    // When user clicks tab, update hidden input
-    $('#editconditions .src-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
-        $('input[name="editSourceTab"]').val(href);
-    });
-
-    // When user clicks tab, update hidden input
-    $('#editconditions .target-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
-        $('input[name="editTargetTab"]').val(href);
-    });
-
-    // Tab management for quick-add modal
-    var editTargetTab = $('input[name="quick-add-editTargetTab"]').val();
-    var editSourceTab = $('input[name="quick-add-editSourceTab"]').val();
-    $('a[href="' + editTargetTab + '"]').trigger('click');
-    $('a[href="' + editSourceTab + '"]').trigger('click');
-
-    // When user clicks tab, update hidden input
-    $('#quick-add-conditions-form .src-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
-        $('input[name="quick-add-editSourceTab"]').val(href);
-    });
-
-    // When user clicks tab, update hidden input
-    $('#quick-add-conditions-form .target-tab').on('click', function(e) {
-        var href = $(e.currentTarget).find('a').attr('href');
-        $('input[name="quick-add-editTargetTab"]').val(href);
-    });
-
-    // Disable clicks on disabled tabs (regexp)
-    $(".nav-tabs a[data-toggle=tab]").on("click", function(e) {
-        if ($(this).parent().hasClass("disabled")) {
-            e.preventDefault();
-            return false;
-        }
-    });
-
-    // Bind save-buttons in quick-add modal
-    $('#quick-add-condition-save-button').on('click', function(ev) {
-        var formData = $('#quick-add-conditions-form').serializeArray();
-        var url = $('#quick-add-url').html();
-        console.log('formData', formData);
-        LS.ajax({
-            url: url,
-            data: formData,
-            method: 'POST',
-            error: function () {
-                console.log(arguments);
-            }
-        });
-    });
-
-    // Save-and-close for quick-add modal
-    $('#quick-add-condition-save-and-close-button').on('click', function(ev) {
-        var formData = $('#quick-add-conditions-form').serializeArray();
-        var url = $('#quick-add-url').html();
-        LS.ajax({
-            url: url,
-            data: formData,
-            method: 'POST',
-            success: function () {
-                location.reload();
-            },
-            error: function () {
-                console.log(arguments);
-            }
-        });
-    });
-
-    // Close for quick-add modal
-    $('#quick-add-condition-close-button').on('click', function(ev) {
-        location.reload();
-    });
-});
 
 /**
  * Used when user clicks 'Add scenario' to replace default with number input

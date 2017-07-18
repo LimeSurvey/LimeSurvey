@@ -1,4 +1,11 @@
-$(document).ready(function(){
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).ready(LS.onDocumentReady.SurveyEditPermissions);
+$(document).on('pjax:end',LS.onDocumentReady.SurveyEditPermissions);
+
+LS.onDocumentReady.SurveyEditPermissions = function(){
     $(':checkbox:not(:checked)[data-indeterminate=1]').prop('indeterminate', true)
 
     $(".surveysecurity").tablesorter({
@@ -79,7 +86,7 @@ $(document).ready(function(){
         Cookies.set('surveysecurityas',!extendoptionsvisible);
     })
     updateExtendedButton(true);
-});
+};
 
 function updateExtendedButton(bVisible)
 {

@@ -3,7 +3,10 @@
 */
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
 
+LS.onDocumentReady.
 // Module
 LS.resp = (function() {
 
@@ -79,7 +82,10 @@ LS.resp = (function() {
     };
 })();
 
-$(document).ready(function(){
+$(document).ready(LS.onDocumentReady.Listresponse);
+$(document).on('pjax:end',LS.onDocumentReady.Listresponse);
+
+var onDocumentReadyListresponse = function(){
 
     $('#fake-content').width($('#bottom-scroller')[0].scrollWidth);
     $('#top-scroller').height('18px');
@@ -113,7 +119,7 @@ $(document).ready(function(){
 
     });
 
-});
+};
 
 /**
  * When date-picker is used in responses gridview

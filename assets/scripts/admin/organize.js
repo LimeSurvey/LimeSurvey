@@ -1,6 +1,15 @@
+
+// Namespace
+var LS = LS || {
+    onDocumentReady: {}
+};
 var formSubmitting = false;
 var changed = false;
-$(document).ready(function(){
+
+$(document).ready(LS.onDocumentReady.Organize);
+$(document).on('pjax:end',LS.onDocumentReady.Organize);
+
+LS.onDocumentReady.Organize = function(){
     var sourceItem;
     $('ol.organizer').nestedSortable({
         doNotClear: true,
@@ -62,7 +71,7 @@ $(document).ready(function(){
     $('#organizer-expand-all').on('click', function() {
         $('.organizer').find('.mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
     });
-});
+};
 
 /**
  * Show confirmation message when user leaves without saving

@@ -5,6 +5,12 @@ $(document).ready(function(){
     // Tooltip inside em-var
     $(".em-expression").tooltip();
 });
+
+$(document).on('pjax:end',function(){
+    // Tooltip inside em-var
+    $(".em-expression").tooltip();
+});
+
 $(document).on('click','.em-expression a',function(e){
     e.preventDefault();
     window.open($(this).attr('href'));

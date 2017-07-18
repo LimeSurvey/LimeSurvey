@@ -1,7 +1,15 @@
 
+
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).ready(LS.onDocumentReady.Translation);
+$(document).on('pjax:end',LS.onDocumentReady.Translation);
+
 var iRunningThreads=0;
 
-$(document).ready(function(){
+LS.onDocumentReady.Translation = function(){
 
     intThrottlingRate = 550; // 1 request per 550 ms
     $('#translationtabs').show();
@@ -75,7 +83,9 @@ $(document).ready(function(){
 
         return false;
     });
-});
+};
+
+
 function fHideAjaxLoader(){
     iRunningThreads--;
     if (iRunningThreads<=0)

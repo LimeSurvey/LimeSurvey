@@ -1,6 +1,12 @@
 // based on TTabs from http://interface.eyecon.ro/
+var LS = LS || {
+    onDocumentReady: {}
+};
 
-$(document).ready(function(){
+$(document).ready(LS.onDocumentReady.Templates);
+$(document).on('pjax:end',LS.onDocumentReady.Templates);
+
+LS.onDocumentReady.Templates = function(){
 
     $('.ace:not(.none)').ace({
         'mode' : editorfiletype,
@@ -26,7 +32,7 @@ $(document).ready(function(){
       $('#previewiframe').css("width", "95%");
       $('#previewiframe').css("height", "768px");
     });
-});
+};
 
 // Creates a toolbar.
 function createToolbar(element, editor)

@@ -1,4 +1,8 @@
-$(document).ready(function(){
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+LS.onDocumentReady.AttributeMap = function(){
 
     var height = $(document).height();
     var width = $(document).width();
@@ -166,4 +170,7 @@ $(document).ready(function(){
     });
 
     $('.tokenatt .panel-default .tokenAttributeId').disableSelection();
-});
+};
+
+$(document).ready(LS.onDocumentReady.AttributeMap);
+$(document).on('pjax:end',LS.onDocumentReady.AttributeMap);

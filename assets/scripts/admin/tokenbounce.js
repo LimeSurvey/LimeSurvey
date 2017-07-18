@@ -2,6 +2,10 @@
  * This javascript show or hide the token bounce parameters in function of the Bounce settings to be used
  * (None, use setting below, use global settings )
  */
+var LS = LS || {
+    onDocumentReady: {}
+};
+
 function updateParameters()
 {
 if ($('#bounceprocessing input:radio:checked').val()!='L'){
@@ -20,9 +24,12 @@ if ($('#bounceprocessing input:radio:checked').val()!='L'){
     }
 }
 
-$(document).ready(function(){
+$(document).ready(LS.onDocumentReady.Tokenbounce);
+$(document).on('pjax:end',LS.onDocumentReady.Tokenbounce);
+
+LS.onDocumentReady.Tokenbounce = function(){
     updateParameters();
     $("input:radio[id^='bounceprocessing']").on('change',function(){
         updateParameters();
     });
-});
+};
