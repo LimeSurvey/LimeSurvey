@@ -284,11 +284,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * Template tables
          * @since 2017-07-12
          */
-        if ($iOldDBVersion < 300) {
+        if ($iOldDBVersion < 301) {
             $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables300($oDB);
+            upgradeTemplateTables301($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>300),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>301),"stg_name='DBVersion'");
         }
 
     }
@@ -429,7 +429,7 @@ function createSurveyMenuTable293($oDB) {
  * @param $oDB
  * @return void
  */
-function upgradeTemplateTables300($oDB)
+function upgradeTemplateTables301($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{templates}')) {
@@ -482,6 +482,27 @@ function upgradeTemplateTables300($oDB)
         'extends_templates_name' => '',
     ));
 
+    // Add minimal template
+    $oDB->createCommand()->insert('{{templates}}', array(
+        'name'                   => 'minimal',
+        'folder'                 => 'minimal',
+        'title'                  => 'Minimal Template',
+        'creation_date'          => '2017-07-12 12:00:00',
+        'author'                 => 'Louis Gac',
+        'author_email'           => 'louis.gac@limesurvey.org',
+        'author_url'             => 'https://www.limesurvey.org/',
+        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+        'version'                => '1.0',
+        'api_version'            => '3.0',
+        'view_folder'            => 'views',
+        'files_folder'           => 'files',
+        'description'            => 'LimeSurvey Simple Template:\r\nA clean base for developpments.\r\n',
+        'owner_id'               => '1',
+        'extends_templates_name' => '',
+    ));
+
+
     // Add template configuration table
     $oDB->createCommand()->createTable('{{template_configuration}}', array(
         'id'                => 'pk',
@@ -509,6 +530,21 @@ function upgradeTemplateTables300($oDB)
         'options'           => '{"ajaxmode":"on","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
         'cssframework_css'  => '{"replace": [["css/bootstrap.css","css/flatly.css"]]}',
+        'cssframework_js'   => '',
+        'packages_to_load'  => 'template-core,',
+    ));
+
+
+    // Add global configuration for Advanced Template
+    $oDB->createCommand()->insert('{{template_configuration}}', array(
+        'id'                => '2',
+        'templates_name'    => 'minimal',
+        'files_css'         => '{"add": ["css/template.css"]}',
+        'files_js'          => '{"add": ["scripts/template.js"]}',
+        'files_print_css'   => '{"add":"css/print_template.css",}',
+        'options'           => '{}',
+        'cssframework_name' => 'bootstrap',
+        'cssframework_css'  => '{}',
         'cssframework_js'   => '',
         'packages_to_load'  => 'template-core,',
     ));

@@ -422,7 +422,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array('default');
+        $standardTemplates = array('default', 'minimal');
         return $standardTemplates;
 
         /*
@@ -446,7 +446,7 @@ class Template extends LSActiveRecord
             self::$standardTemplates = $standardTemplates;
         }
 */
-        return self::$standardTemplates;
+    //    return self::$standardTemplates;
     }
 
     /**
