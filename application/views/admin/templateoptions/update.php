@@ -284,7 +284,7 @@ $animationOptions = '
                 ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="advanced">
-                <?php $form=$this->beginWidget('TbActiveForm', array(
+                <?php $form=$this->beginWidget('CActiveForm', array(
                     'id'=>'template-options-form',
                     'enableAjaxValidation'=>false,
                     'htmlOptions' => ['class' => 'form form-horizontal']
@@ -412,6 +412,14 @@ $(document).on('ready pjax:complete',function(){
             $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
             //and submit the form
             $('#template-options-form').find('button[type=submit]').trigger('click');
+        });
+
+        $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
+            optionObject[$(this).attr('name')] = $(this).val(); 
+            if($(this).attr('type') == 'checkbox'){
+                optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
+            }
+            $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
     }
 });
