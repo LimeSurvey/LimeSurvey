@@ -270,15 +270,39 @@ class TemplateConfiguration extends TemplateConfig
 
             //
 
-        $OptionLink =  "<a
-            id='template_options_link'
-            href='".$sOptionUrl."'
-            class='btn btn-default'>
-                <span class='fa fa-tachometer'></span>
-                ".gT('Template options')."
-            </a>";
+        $OptionLink = '';
+
+        if ($this->hasOptionPage){
+            $OptionLink .=  "<a
+                id='template_options_link'
+                href='".$sOptionUrl."'
+                class='btn btn-default'>
+                    <span class='fa fa-tachometer'></span>
+                    ".gT('Template options')."
+                </a>";
+        }
+
+
 
         return $sEditorLink.'<br><br>'.$OptionLink;
+    }
+
+    public function getHasOptionPage()
+    {
+        $this->setTemplateConfiguration();
+        $oRTemplate = $this;
+        $sOptionFile = '/options/options.twig';
+        while (!file_exists($oRTemplate->path.$sOptionFile)){
+
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return false;
+                break;
+            }
+            $oMotherTemplate->setTemplateConfiguration();
+            $oRTemplate = $oMotherTemplate;
+        }
+        return true;
     }
 
     public function getOptionPage()
