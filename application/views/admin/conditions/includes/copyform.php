@@ -3,7 +3,7 @@
 
     <?php if (count($conditionsList)): ?>
         <script type='text/javascript'>
-            $(document).on('ready pjax:complete',function () {
+            $(document).ready(function () {
                 // TODO
                 // $('#copytomultiselect').multiselect({ autoOpen: true, noneSelectedText: '".gT("No questions selected")."', checkAllText: '".gT("Check all")."', uncheckAllText: '".gT("Uncheck all")."', selectedText: '# ".gT("selected")."', beforeclose: function(){ return false;},height: 200 } ); });
         });

@@ -28493,7 +28493,7 @@ if(document.getElementById('vue-app-main-container')){
 }
 
 
-$(document).on('ready pjax:complete',()=>{
+$(document).ready(()=>{
   if($('#vue-app-main-container').length >0 ){
 
     const

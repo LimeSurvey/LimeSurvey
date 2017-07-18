@@ -174,7 +174,7 @@ $surveyid = $aTabContents['surveyid'];
 </div>
 
 <script>
-    $(document).on('ready pjax:complete',function(){
+    $(document).ready(function(){
         $('#surveyls_title').focus();
     })
 </script>

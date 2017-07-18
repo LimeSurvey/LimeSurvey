@@ -1,6 +1,6 @@
-$(document).on('ready pjax:complete',function() {
+$(document).ready(function() {
 $( "#tabs" ).tabs();
 });
-$(document).on('pjax:complete',function() {
+$(document).on('pjax:end',function() {
 $( "#tabs" ).tabs();
 });

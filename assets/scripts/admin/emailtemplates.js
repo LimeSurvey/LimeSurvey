@@ -4,7 +4,8 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.updateCKEditorFields);
+$(document).ready(LS.onDocumentReady.updateCKEditorFields);
+$(document).on('pjax:end', LS.onDocumentReady.updateCKEditorFields);
 
 LS.onDocumentReady.updateCKEditorFields = function(){
     /* handle=$('.tabsinner').tabs(

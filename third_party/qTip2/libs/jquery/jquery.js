@@ -448,7 +448,7 @@ jQuery.extend({
 
 		readyList = jQuery.Callbacks( "once memory" );
 
-		// Catch cases where $(document).on('ready pjax:complete',) is called after the
+		// Catch cases where $(document).ready() is called after the
 		// browser event has already occurred.
 		if ( document.readyState === "complete" ) {
 			// Handle it asynchronously to allow scripts the opportunity to delay ready

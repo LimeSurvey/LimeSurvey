@@ -172,4 +172,5 @@ LS.onDocumentReady.AttributeMap = function(){
     $('.tokenatt .panel-default .tokenAttributeId').disableSelection();
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.AttributeMap);
+$(document).ready(LS.onDocumentReady.AttributeMap);
+$(document).on('pjax:end',LS.onDocumentReady.AttributeMap);

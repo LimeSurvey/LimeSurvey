@@ -145,7 +145,7 @@
 </div></div></div>
 
 <script>
-$(document).on('ready pjax:complete',function() {
+$(document).ready(function() {
     $('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
         if (!state){
             $('#insertmethod').removeAttr('disabled');

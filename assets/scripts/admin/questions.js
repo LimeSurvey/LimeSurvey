@@ -13,8 +13,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.Questions);
-
+$(document).ready(LS.onDocumentReady.Questions);
+$(document).on('pjax:end',LS.onDocumentReady.Questions);
 
 // Collapse in editarticle
 LS.onDocumentReady.Questions = function(){

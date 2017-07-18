@@ -1,4 +1,4 @@
-$(document).on('ready pjax:complete',function(){
+$(document).ready(function(){
     if($('.side-body').length){
 
         $('#notif-container .alert').attr('style', 'margin-top: 20px');
@@ -75,7 +75,7 @@ $(document).on('ready pjax:complete',function(){
 /*
 
 
-$(document).on('ready pjax:complete',function(){
+$(document).ready(function(){
         if($('.side-body').length){
             //$('#update-container').removeClass();
 

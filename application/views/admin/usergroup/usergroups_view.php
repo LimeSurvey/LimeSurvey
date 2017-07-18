@@ -181,7 +181,7 @@ jQuery(function($) {
         $.fn.yiiGridView.update('usergroups-grid-belong-to',{ data:{ pageSize: $(this).val() }});
     });
     //Delete button
-    $(document).on('ready pjax:complete',function() {
+    $(document).ready(function() {
         $('a[data-confirm]').click(function() {
             return confirm($(this).attr('data-confirm'));
         });

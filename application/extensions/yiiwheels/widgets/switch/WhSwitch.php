@@ -96,7 +96,6 @@ class WhSwitch extends CInputWidget
         $this->htmlOptions['data-on-color'] = $this->onColor;
         $this->htmlOptions['data-off-color'] = $this->offColor;
         $this->htmlOptions['data-size'] = $this->size;
-        $this->htmlOptions['data-is-bootstrap-switch'] = true;
     }
 
     /**

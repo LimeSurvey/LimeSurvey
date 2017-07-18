@@ -3,8 +3,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.ViewAttribute);
-
+$(document).ready(LS.onDocumentReady.ViewAttribute);
+$(document).on('pjax:end',LS.onDocumentReady.ViewAttribute);
 
 LS.onDocumentReady.ViewAttribute = function() {
     $.each(removeitem, function(index, value) {

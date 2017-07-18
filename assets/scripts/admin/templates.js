@@ -3,8 +3,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.Templates);
-
+$(document).ready(LS.onDocumentReady.Templates);
+$(document).on('pjax:end',LS.onDocumentReady.Templates);
 
 LS.onDocumentReady.Templates = function(){
 

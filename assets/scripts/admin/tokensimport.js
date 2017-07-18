@@ -3,8 +3,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.Tokenimport);
-
+$(document).ready(LS.onDocumentReady.Tokenimport);
+$(document).on('pjax:end',LS.onDocumentReady.Tokenimport);
 
 LS.onDocumentReady.Tokenimport = function() {
 

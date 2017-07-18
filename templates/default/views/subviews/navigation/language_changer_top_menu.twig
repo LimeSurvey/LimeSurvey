@@ -75,7 +75,7 @@
 {# TODO: add a javascript file, and register it here #}
 <script>
 // Method for link
-$(document).on('ready pjax:complete',function(){
+$(document).ready(function(){
     $('#langs-container').height($('#main-row').height());
     $('.ls-language-link').on('click', function(){
         var lang = $(this).data('limesurvey-lang');

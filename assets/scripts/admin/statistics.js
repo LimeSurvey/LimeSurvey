@@ -2,8 +2,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.Statistics);
-
+$(document).ready(LS.onDocumentReady.Statistics);
+$(document).on('pjax:end',LS.onDocumentReady.Statistics);
 
 function toggleSection(chevron, section) {
     section.toggle();

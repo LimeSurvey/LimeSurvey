@@ -2,8 +2,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.SurveyEditPermissions);
-
+$(document).ready(LS.onDocumentReady.SurveyEditPermissions);
+$(document).on('pjax:end',LS.onDocumentReady.SurveyEditPermissions);
 
 LS.onDocumentReady.SurveyEditPermissions = function(){
     $(':checkbox:not(:checked)[data-indeterminate=1]').prop('indeterminate', true)

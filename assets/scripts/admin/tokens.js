@@ -3,8 +3,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.Tokens);
-
+$(document).ready(LS.onDocumentReady.Tokens);
+$(document).on('pjax:end',LS.onDocumentReady.Tokens);
 
 
 /**
@@ -47,8 +47,8 @@ $.fn.YesNoDate = function(options)
             $elHiddenInput.attr('value', e.date.format('YYYY-MM-DD HH:mm'));
         })
     };
-    $(document).on('ready pjax:complete',that.onReadyMethod);
-    $(document).on('pjax:complete',that.onReadyMethod);
+    $(document).ready(that.onReadyMethod);
+    $(document).on('pjax:end',that.onReadyMethod);
 }
 
 $.fn.YesNo = function(options)
@@ -76,8 +76,8 @@ $.fn.YesNo = function(options)
         })
 
     };
-    $(document).on('ready pjax:complete',that.onReadyMethod);
-    $(document).on('pjax:complete',that.onReadyMethod);
+    $(document).ready(that.onReadyMethod);
+    $(document).on('pjax:end',that.onReadyMethod);
 }
 
 /**

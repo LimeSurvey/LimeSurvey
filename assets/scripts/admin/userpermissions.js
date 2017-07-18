@@ -3,8 +3,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.Userpermissions);
-
+$(document).ready(LS.onDocumentReady.Userpermissions);
+$(document).on('pjax:end',LS.onDocumentReady.Userpermissions);
 
 LS.onDocumentReady.Userpermissions = function(){
     $('#perm_superadmin_read').insertAfter($('#all_superadmin'));

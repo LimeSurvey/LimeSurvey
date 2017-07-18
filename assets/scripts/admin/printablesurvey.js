@@ -4,8 +4,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready pjax:complete',LS.onDocumentReady.PrintableSurvey);
-
+$(document).ready(LS.onDocumentReady.PrintableSurvey);
+$(document).on('pjax:end',LS.onDocumentReady.PrintableSurvey);
 
 LS.onDocumentReady.PrintableSurvey = function(){
     $('[class^=max]').each(function(){

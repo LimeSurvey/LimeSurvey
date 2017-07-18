@@ -84,7 +84,7 @@
 
 &lt;!-- Initialize the plugin: --&gt;
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect();
   });
 &lt;/script&gt;
@@ -95,7 +95,7 @@
 			</div>
 			
 			<script type="text/javascript">
-			    $(document).on('ready pjax:complete',function() {
+			    $(document).ready(function() {
 			        window.prettyPrint() && prettyPrint();
 					
 			        $('#example1').multiselect();
@@ -543,7 +543,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       buttonText: function(options, select) {
         if (options.length == 0) {
@@ -576,7 +576,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       numberDisplayed: 4
     });
@@ -591,7 +591,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&apos;.multiselect&apos;).multiselect({
       buttonTitle: function(options, select) {
         var selected = &apos;&apos;;
@@ -612,7 +612,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       buttonClass: &apos;btn-primary btn-lg&apos;
     });
@@ -636,7 +636,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       buttonWidth: &apos;300px&apos;
     });
@@ -653,7 +653,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       buttonContainer: &apos;&lt;span class="dropdown" /&gt;&apos;
     });
@@ -668,7 +668,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       label: function(element) {
       	return $(element).html()+&#39; (&#39;+$(element).val()+&#39;)&#39;;
@@ -685,7 +685,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       selectedClass: null
     });
@@ -702,7 +702,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       onChange: function(element, checked) {
       	alert(&apos;Change event invoked!&apos;);
@@ -721,7 +721,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       onDropdownShow: function(event) {
       	alert(&apos;Show event invoked!&apos;);
@@ -740,7 +740,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       onDropdownHide: function(event) {
       	alert(&apos;Hide event invoked!&apos;);
@@ -759,7 +759,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       maxHeight: 400
     });
@@ -776,7 +776,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       includeSelectAllOption: true
     });
@@ -793,7 +793,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       selectAllText: true
     });
@@ -810,7 +810,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       selectAllValue: 'multiselect-all',
     });
@@ -827,7 +827,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       enableFiltering: true
     });
@@ -844,7 +844,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       enableCaseInsensitiveFiltering: true
     });
@@ -861,7 +861,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       filterPlaceholder: &apos;Search&apos;
     });
@@ -878,7 +878,7 @@
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $(&#39;.multiselect&#39;).multiselect({
       dropRight: true
     });
@@ -895,7 +895,7 @@
 			</div>
             
 			<script type="text/javascript">
-			    $(document).on('ready pjax:complete',function() {
+			    $(document).ready(function() {
 			        $('#example8').multiselect();
 			        $('#example8-destroy').on('click', function() {
 			            $('#example8').multiselect('destroy');
@@ -1202,7 +1202,7 @@ $(&quot;#multiselect&quot;).multiselect('dataprovider', data);
 			        }
 			    }
 				 
-			    $(document).on('ready pjax:complete',function() {
+			    $(document).ready(function() {
                     
 			        $('#example21').multiselect();
 			        $("#example21-toggle").click(function(e) {
@@ -1500,7 +1500,7 @@ $(&quot;#multiselect&quot;).multiselect('dataprovider', data);
     }
   }
    
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $('#example21').multiselect();
     $(&quot;#example21-toggle&quot;).click(function(e) {
       e.preventDefault();
@@ -1528,7 +1528,7 @@ $(&quot;#multiselect&quot;).multiselect('dataprovider', data);
 						<td>
 							<pre class="prettyprint linenums">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $('#example22').multiselect({
       buttonClass: 'btn',
       buttonWidth: 'auto',
@@ -1587,7 +1587,7 @@ $(&quot;#multiselect&quot;).multiselect('dataprovider', data);
                         <td>
                             <pre class="linenums prettyprint">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
 
     var firstConfigurationSet = {
       includeSelectAllOption: false,
@@ -1647,7 +1647,7 @@ $(&quot;#multiselect&quot;).multiselect('dataprovider', data);
                         <td>
                             <pre class="linenums prettyprint">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     $('#example37').multiselect({
       onChange: function(option, checked) {
         // Get selected options.
@@ -1702,7 +1702,7 @@ $(&quot;#multiselect&quot;).multiselect('dataprovider', data);
                         <td>
                             <pre class="linenums prettyprint">
 &lt;script type=&quot;text/javascript&quot;&gt;
-  $(document).on('ready pjax:complete',function() {
+  $(document).ready(function() {
     var orderCount = 0;
     $('#example38').multiselect({
       buttonText: function(options) {
@@ -1793,7 +1793,7 @@ $(&quot;#multiselect&quot;).multiselect('dataprovider', data);
 			    }
 			</style>
 			<script type="text/javascript">
-			    $(document).on('ready pjax:complete',function() {
+			    $(document).ready(function() {
 			        $('#example15').multiselect({
 			            buttonWidth: '400px'
 			        });

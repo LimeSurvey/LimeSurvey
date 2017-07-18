@@ -251,7 +251,7 @@
 	
 	
 	<pre class="javascript">
-$(document).on('ready pjax:complete',function()
+$(document).ready(function()
 	{
 		$("#myTable").tablesorter();
 	}
@@ -267,7 +267,7 @@ $(document).on('ready pjax:complete',function()
 
 
 	<pre class="javascript">
-$(document).on('ready pjax:complete',function()
+$(document).ready(function()
 	{
 		$("#myTable").tablesorter( {sortList: [[0,0], [1,0]]} );
 	}
@@ -386,7 +386,7 @@ var myTextExtraction = function(node)
 	// extract data from markup and return it 
 	return node.childNodes[0].childNodes[0].innerHTML;
 }
-$(document).on('ready pjax:complete',function()
+$(document).ready(function()
 	{
 		$("#myTable").tableSorter( {textExtraction: myTextExtraction} );
 	}

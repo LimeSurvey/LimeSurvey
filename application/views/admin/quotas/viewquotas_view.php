@@ -16,7 +16,7 @@
 ?>
 <!-- To update grid when pageSize is changed -->
 <script type="text/javascript">
-    $(document).on('ready pjax:complete',function() {
+    $(document).ready(function() {
         jQuery(function($)
         {
             jQuery(document).on("change", '#pageSize', function()

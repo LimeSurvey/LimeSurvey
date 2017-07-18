@@ -506,5 +506,5 @@ function insertSearchCondition(id, options){
     options.data.searchcondition=$('#searchcondition').val();
     return options;
 }
-$(document).on('ready pjax:complete',(LS.CPDB.bindButtons);
-$(document).on('pjax:complete',(LS.CPDB.bindButtons);
+$(document).ready((LS.CPDB.bindButtons);
+$(document).on('pjax:end',(LS.CPDB.bindButtons);

@@ -4,7 +4,7 @@
  *
  */
 
-$(document).on('ready pjax:complete',function()
+$(document).ready(function()
 {
     $(".ls-answers .location").each(function(index,element){
         var question = $(element).attr('name');

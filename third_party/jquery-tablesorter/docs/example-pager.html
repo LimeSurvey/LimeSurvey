@@ -29,7 +29,7 @@
 
 <h1>Javascript</h1>
 <pre class="javascript">
-$(document).on('ready pjax:complete',function() {
+$(document).ready(function() {
 	$("table")
 	.tablesorter({widthFixed: true, widgets: ['zebra']})
 	.tablesorterPager({container: $("#pager")});

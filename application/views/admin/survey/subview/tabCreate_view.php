@@ -80,7 +80,7 @@ PrepareEditorScript(false, $this);
 </form>
 
 <script>
-    $(document).on('ready pjax:complete',function(){
+    $(document).ready(function(){
         sessionStorage.setItem('maxtabs', 1);
 
         $('#save-and-close-form-button').addClass('disabled');

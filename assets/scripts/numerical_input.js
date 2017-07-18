@@ -1,4 +1,4 @@
-$(document).on('ready pjax:complete',function () {
+$(document).ready(function () {
     if (typeof LEMradix === 'undefined') { return; }
 
     if (LEMradix == ',')
