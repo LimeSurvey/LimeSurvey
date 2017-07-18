@@ -39,7 +39,7 @@
 <div id="question{{ aQuestion.qid }}" class=" {{ sClasses }} {{ aQuestion.input_error_class }} question-container row {% if (aSurveyInfo.options.animatequestion == "on") %} animated {{ aSurveyInfo.options.questionanimation }} {%endif%}">
 
     <!-- Question text -->
-    <div class="question-title-container bg-primary col-xs-12">
+    <div class="question-title-container  col-xs-12">
 
         {# If the question is mandatory, the asterisk will be shown  #}
         {% if aQuestion.mandatory != '' %}
@@ -73,7 +73,7 @@
     </div>
 
     <!-- LimeSurvey valid message and help -->
-    <div class="question-valid-container bg-primary text-info col-xs-12">
+    <div class="question-valid-container  text-info col-xs-12">
         {{ aQuestion.valid_message      | raw }} {# The validation message, eg: "Only numbers may be entered in this field.". This text is inside EM Helper, and can be changed by creating a translation file #}
         {{ aQuestion.man_message        | raw }} {# The question mandatory error message: "This question is mandatory!". This text is inside EM Helper, and can be changed by creating a translation file #}
         {{ aQuestion.file_valid_message | raw }} {# Used only for file upload question type... TODO: check if we can remove it and use valid_message for file upload question type too #}

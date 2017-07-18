@@ -1,7 +1,6 @@
 body
 {
      padding-bottom: 10px;
-     background-color: #f6f6f6;
 }
 /* The header */
 body
@@ -28,7 +27,6 @@ body
     width: 100%;
     padding: 0;
     border-bottom: none;
-    background-color: #ecf0f1;
     color: inherit;
 
 }
@@ -74,8 +72,7 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 
 .question-container {
   margin-bottom: 2em;
-  background:white;
-  border-bottom: 1px solid #dbdbdb;
+
 }
 
 .question-title-container {
@@ -104,13 +101,9 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
   font-weight: bold;
 }
 .answer-container, .question-help-container {
-    border-color: #dbdbdb;
+
 }
 .answer-container {
-  border-width: 0px 1px 0px 1px;
-  border-style: solid;
-  padding-top: 0.5em;
-  padding-bottom:0.5em;
 }
 
 .ls-answers{
@@ -239,7 +232,7 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 }
 /* slider : take bg-primary color */
 .bg-primary {
-  background-color: #2c3e50;
+
 }
 .slider.slider-horizontal .slider-tick.triangle,
 .slider.slider-horizontal .slider-handle.triangle {
@@ -440,7 +433,7 @@ only screen and (max-width: 760px),
     table.ls-answers  tr th {
         font-size: 1.1em;
         text-align: center;
-        color: #317eac;
+
     }
     /*
         No more table transformation applies when screen is under 801px (for a few exotic tablet screens, see #11016),
@@ -474,7 +467,7 @@ only screen and (max-width: 760px),
     table.ls-answers tr th {
         font-size: 1.1em;
         text-align: left;
-        color: #317eac;
+
     }
 
     .array-by-columns .answertext {
