@@ -5,7 +5,7 @@ $(document).ready(function(){
        
    }); 
 });
-$(document).on('pjax:end',(function(){
+$(document).on('pjax:completed',(function(){
    $('#pppanel').click(function() {
        $(location).attr('href',redUrl);
        

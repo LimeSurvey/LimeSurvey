@@ -3,8 +3,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).ready(LS.onDocumentReady.Saved);
-$(document).on('pjax:end',LS.onDocumentReady.Saved);
+$(document).on('ready pjax:completed', LS.onDocumentReady.Saved);
+$(document).on('pjax:completed',LS.onDocumentReady.Saved);
 
 LS.onDocumentReady.Saved = function(){
     $(".browsetable").tablesorter({

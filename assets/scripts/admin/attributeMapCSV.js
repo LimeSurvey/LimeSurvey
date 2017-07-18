@@ -242,5 +242,5 @@ LS.onDocumentReady.AttributeMapCSV = function() {
     });
 };
 
-$(document).ready(LS.onDocumentReady.AttributeMapCSV);
-$(document).on('pjax:end',LS.onDocumentReady.AttributeMapCSV);
+$(document).on('ready pjax:completed', LS.onDocumentReady.AttributeMapCSV);
+$(document).on('pjax:completed',LS.onDocumentReady.AttributeMapCSV);

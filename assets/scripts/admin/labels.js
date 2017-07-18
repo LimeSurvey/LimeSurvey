@@ -24,8 +24,8 @@ $(document).on('click','[data-action="deletelabelset"]',function(event){
 });
 
 
-$(document).ready(LS.onDocumentReady.LabelSettings);
-$(document).on('pjax:end',LS.onDocumentReady.LabelSettings);
+$(document).on('ready pjax:completed', LS.onDocumentReady.LabelSettings);
+$(document).on('pjax:completed',LS.onDocumentReady.LabelSettings);
 
 LS.onDocumentReady.LabelSettings = function(){
     $('#btnDumpLabelSets').click(function(){

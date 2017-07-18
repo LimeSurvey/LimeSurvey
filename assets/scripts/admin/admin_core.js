@@ -249,8 +249,7 @@ LS.onDocumentReady.AdminCore = function(){
 
 };
 
-$(document).ready(LS.onDocumentReady.AdminCore);
-$(document).on('pjax:complete',LS.onDocumentReady.AdminCore);
+$(document).on('ready pjax:completed', function(){ LS.onDocumentReady.AdminCore();});
 
 
 function qTypeDropdownInit()
@@ -286,8 +285,7 @@ function qTypeDropdownInit()
         });
     };
 
-    $(document).ready(onDocumentReadyAdminCoreq);
-    $(document).on('pjax:complete',onDocumentReadyAdminCoreq);
+    $(document).on('ready pjax:completed', onDocumentReadyAdminCoreq);
 }
 
 

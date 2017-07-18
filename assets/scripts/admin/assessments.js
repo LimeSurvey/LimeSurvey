@@ -61,5 +61,5 @@ LS.onDocumentReady.Asessements = function(){
     )
 };
 
-$(document).ready(LS.onDocumentReady.Asessements);
-$(document).on('pjax:end',LS.onDocumentReady.Asessements);
+$(document).on('ready pjax:completed', LS.onDocumentReady.Asessements);
+$(document).on('pjax:completed',LS.onDocumentReady.Asessements);

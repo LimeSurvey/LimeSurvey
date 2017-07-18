@@ -17,8 +17,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).ready(LS.onDocumentReady.Subquestions);
-$(document).on('pjax:end',LS.onDocumentReady.Subquestions);
+$(document).on('ready pjax:completed', LS.onDocumentReady.Subquestions);
+$(document).on('pjax:completed',LS.onDocumentReady.Subquestions);
 
 var labelcache=[];
 

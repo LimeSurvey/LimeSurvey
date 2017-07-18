@@ -4,7 +4,7 @@ var LS = LS || {
 };
 
 $(document).ready(LS.onDocumentReady.ViewAttribute);
-$(document).on('pjax:end',LS.onDocumentReady.ViewAttribute);
+$(document).on('pjax:completed',LS.onDocumentReady.ViewAttribute);
 
 LS.onDocumentReady.ViewAttribute = function() {
     $.each(removeitem, function(index, value) {

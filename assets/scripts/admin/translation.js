@@ -4,8 +4,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).ready(LS.onDocumentReady.Translation);
-$(document).on('pjax:end',LS.onDocumentReady.Translation);
+$(document).on('ready pjax:completed', LS.onDocumentReady.Translation);
+$(document).on('pjax:completed',LS.onDocumentReady.Translation);
 
 var iRunningThreads=0;
 

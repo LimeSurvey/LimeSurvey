@@ -14,5 +14,5 @@ LS.onDocumentReady.loadCKEditorFields = function(){
     }
 
 }
-$(document).ready(LS.onDocumentReady.loadCKEditorFields);
-$(document).on('pjax:end', LS.onDocumentReady.loadCKEditorFields);
+$(document).on('ready pjax:completed', LS.onDocumentReady.loadCKEditorFields);
+$(document).on('pjax:completed', LS.onDocumentReady.loadCKEditorFields);

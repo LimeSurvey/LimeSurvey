@@ -10,8 +10,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).ready(LS.onDocumentReady.Notifications);
-$(document).on('pjax:end',LS.onDocumentReady.Notifications);
+$(document).on('ready pjax:completed', LS.onDocumentReady.Notifications);
+$(document).on('pjax:completed',LS.onDocumentReady.Notifications);
 
 LS.onDocumentReady.Notifications = function() {
 

@@ -6,8 +6,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).ready(LS.onDocumentReady.SurveyEditNotification);
-$(document).on('pjax:end',LS.onDocumentReady.SurveyEditNotification);
+$(document).on('ready pjax:completed', LS.onDocumentReady.SurveyEditNotification);
+$(document).on('pjax:completed',LS.onDocumentReady.SurveyEditNotification);
 
 function updateParameters()
 {
