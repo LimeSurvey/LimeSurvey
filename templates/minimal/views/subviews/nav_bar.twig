@@ -11,7 +11,7 @@
 
     (¯`·._.·(¯`·._.· Bootstrap Navigation Bar ·._.·´¯)·._.·´¯)
 
-    This file renders a typical bootstrap navigation bar. 
+    This file renders a typical bootstrap navigation bar.
     See: https://getbootstrap.com/components/#navbar
 
     For the survey navigator ("Next", "Back", etc.), see: navigation/navigator.twig
@@ -28,15 +28,9 @@
         </button>
 
         {# Logo option #}
-        {% if( aSurveyInfo.options.brandlogo == "on") %}
-            <div class="navbar-brand logo-container" >
-                {{ image('./files/logo_w_s.png', aSurveyInfo.name, {"class": "logo"}) }}
-            </div>
-        {% else %}
-            <div class="navbar-brand" >
-                {{ aSurveyInfo.name }}
-            </div>
-        {% endif %}
+        <div class="navbar-brand" >
+            {{ aSurveyInfo.name }}
+        </div>
     </div>
     <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right navbar-action-link">
