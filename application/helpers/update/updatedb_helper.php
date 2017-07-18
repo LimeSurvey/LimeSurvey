@@ -284,11 +284,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * Template tables
          * @since 2017-07-12
          */
-        if ($iOldDBVersion < 299) {
+        if ($iOldDBVersion < 300) {
             $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables299($oDB);
+            upgradeTemplateTables300($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>299),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>300),"stg_name='DBVersion'");
         }
 
     }
@@ -323,7 +323,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     Notification::broadcast(array(
         'title' => gT('Database update'),
-        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '299')
+        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '300')
     ), $superadmins);
 
     fixLanguageConsistencyAllSurveys();
@@ -429,7 +429,7 @@ function createSurveyMenuTable293($oDB) {
  * @param $oDB
  * @return void
  */
-function upgradeTemplateTables299($oDB)
+function upgradeTemplateTables300($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{templates}')) {
@@ -506,7 +506,7 @@ function upgradeTemplateTables299($oDB)
         'files_css'         => '{"add": ["css/template.css", "css/animate.css"]}',
         'files_js'          => '{"add": ["scripts/template.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',
-        'options'           => '{"ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}',
+        'options'           => '{"ajaxmode":"on","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
         'cssframework_css'  => '{"replace": [["css/bootstrap.css","css/flatly.css"]]}',
         'cssframework_js'   => '',

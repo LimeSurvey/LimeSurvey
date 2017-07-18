@@ -44,6 +44,7 @@
     <options>
         <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
+        <boxcontainer>on</boxcontainer>
         <backgroundimage>on</backgroundimage>
         <animatebody>on</animatebody>
         <bodyanimation>lightSpeedIn</bodyanimation>

@@ -795,7 +795,7 @@ CREATE TABLE prefix_template_configuration (
 
 
 INSERT INTO prefix_template_configuration VALUES
-  (1, 'default', NULL, NULL, NULL, '{"add": ["css/template.css", "css/animate.css"]}', '{"add": ["scripts/template.js"]}', '{"add":"css/print_template.css",}', '{"ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/flatly.css"]]}', '', '', '', '');
+  (1, 'default', NULL, NULL, NULL, '{"add": ["css/template.css", "css/animate.css"]}', '{"add": ["scripts/template.js"]}', '{"add":"css/print_template.css",}', '{"ajaxmode":"on","brandlogo":"on", "boxcontainer":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/flatly.css"]]}', '', '', '', '');
 
 --
 -- Version Info
