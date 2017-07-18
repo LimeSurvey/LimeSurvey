@@ -1,9 +1,1 @@
-$muted: #cdcdcd;
-
-.background-muted {
-    background: $muted;
-    
-    >li{
-        background: $muted;
-    }
-}
+$muted: rgba(210,210,210,0.1);

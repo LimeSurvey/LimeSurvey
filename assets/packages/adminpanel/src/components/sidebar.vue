@@ -242,10 +242,6 @@ export default {
     </div>
 </template>
 <style lang="scss">
-    .selected{
-        background-color: rgba(200,255,200,0.4);
-        box-shadow: 1px 2px 4px rgba(200,255,200,0.4) inset;
-    }
 
     .background.white{
         background-color: rgba(255,255,255,1);

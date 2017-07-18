@@ -26,49 +26,41 @@ export default {
         }
     },
     methods: {
-        onDragover(index){
-            index = 'index_'+index;
-            //this.toggleActivation(index);
-        },
         isActive(index){
-            index = 'index_'+index;
             const result =  (_.indexOf(this.active,index)!=-1);
             return result;
         },
         toggleActivation(index){
-            let sIndex = 'index_'+index;
             if(this.isActive(index)){
-               let removed =  _.remove(this.active,(idx)=>{return idx===sIndex;});
+               let removed =  _.remove(this.active,(idx)=>{return idx===index;});
             } else {
-                this.active.push(sIndex);
+                this.active.push(index);
             }
             this.$forceUpdate();
-            this.$localStorage.set('active',JSON.stringify(this.active));
+            this.$store.commit('questionGroupOpenArray',this.active);
             this.updatePjaxLinks();
         },
-        addActive(index){
-            let sIndex = 'index_'+index;
-            if(!this.isActive(index)){
-               this.active.push(sIndex);
+        addActive(questionGroupId){
+            if(!this.isActive(questionGroupId)){
+               this.active.push(questionGroupId);
             }  
-            this.$localStorage.set('active',JSON.stringify(this.active));
+            this.$store.commit('questionGroupOpenArray',this.active);
         },
-        openQuestionGroup(questionGroup,index){
-            this.addActive(index)
-            this.$emit('openentity', questionGroup);
+        openQuestionGroup(questionGroup){
+            this.addActive(questionGroup.gid)
+            this.$store.commit('lastQuestionGroupOpen', questionGroup);
             this.$forceUpdate();
             this.updatePjaxLinks();
         },
-        openQuestion(question,index){
-            //this.addActive(index);
-            this.$emit('openentity', question);
+        openQuestion(question){
+            this.addActive(question.gid);
             this.$store.commit('lastQuestionOpen', question);
             this.$forceUpdate();
             this.updatePjaxLinks();
         }
     },
     mounted(){
-        this.active = JSON.parse(this.$localStorage.get('active','[]'));
+        this.active = this.$store.state.questionGroupOpenArray;
         this.updatePjaxLinks();
     }
 }
@@ -82,19 +74,19 @@ export default {
                 <i class="fa fa-plus-circle"></i>&nbsp;{{translate.createQuestion}}</a>
         </div>
         <ul class="list-group">
-            <li v-for="(questiongroup,index) in $store.state.questiongroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="isActive(index) ? 'selected' : ''" >
+            <li v-for="questiongroup in $store.state.questiongroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="isActive(questiongroup.gid) ? 'selected' : ''" >
                 <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
                     <i class="fa fa-bars bigIcons" draggable="true">&nbsp;</i>
-                    <a :href="questiongroup.link" @click.stop="openQuestionGroup(questiongroup,index)" class="col-12 pjax"> 
+                    <a :href="questiongroup.link" @click.stop="openQuestionGroup(questiongroup)" class="col-12 pjax"> 
                         {{questiongroup.group_name}} 
                         <span class="pull-right">({{questiongroup.questions.length}})</span>
                     </a>
-                    <i class="fa bigIcons" v-bind:class="isActive(index) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(index)">&nbsp;</i>
+                    <i class="fa bigIcons" v-bind:class="isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                 </div>
-                <ul class="list-group background-muted padding-left" v-if="isActive(index)">
-                    <li v-for="(question,index) in questiongroup.questions" v-bind:key="question.qid" class="list-group-item ls-flex-row align-itmes-flex-between">
+                <ul class="list-group background-muted padding-left" v-if="isActive(questiongroup.gid)">
+                    <li v-for="question in questiongroup.questions" v-bind:key="question.qid" v-bind:class="($store.state.lastQuestionOpen == question.qid ? 'selected' : '')" class="list-group-item ls-flex-row align-itmes-flex-between">
                         <i class="fa fa-bars margin-right bigIcons" draggable="true">&nbsp;</i>
-                        <a @click.stop="openQuestion(question,index)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{question.name_short}} </a>
+                        <a @click.stop="openQuestion(question)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{question.name_short}} </a>
                     </li>
                 </ul>
             </li>
@@ -104,14 +96,15 @@ export default {
 
 <style lang="scss">
     .selected{
-        background-color: #EEF6EF;
-        box-shadow: 1px2px 4px #EEF6EF inset;
+        padding-left: 20px;
+        background: linear-gradient(to right, rgb(50, 134, 55) 0px, rgb(50, 134, 55) 13px, white 13px, white 100%);
     }
     .bigIcons {
-        font-size: 24px;
+        font-size: 18px;
+        line-height: 21px;
     }
     .border-bottom{
-        border-bottom: 1px solid #323232;
+        border-bottom: 1px solid transparent;
     }
     .margin-bottom{
         padding-bottom: 5px;

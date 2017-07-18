@@ -340,25 +340,10 @@
 .ls-space.padding.bottom-50 {
   padding-bottom: 50px; }
 
-.background-muted {
-  background: #cdcdcd; }
-  .background-muted > li {
-    background: #cdcdcd; }
-
-.ls-ba .list-group > .list-group-item {
-  padding: 6px 0px;
-  border: 0;
-  border-radius: 0;
-  border-bottom: 1px solid #323232;
-  margin-bottom: 1px; }
-  .ls-ba .list-group > .list-group-item .list-group {
-    margin-bottom: 0; }
-    .ls-ba .list-group > .list-group-item .list-group .list-group-item {
-      padding-left: 15px; }
-      .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {
-        border-bottom: 0; }
-    .ls-ba .list-group > .list-group-item .list-group:first-of-type {
-      border-top: 1px solid #323232; }
+.ls-ba .list-group > .list-group-item .list-group {
+  margin-bottom: 0; }
+  .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {
+    border-bottom: 0; }
 
 .ls-ba .breadcrumb > li + li:before {
   padding: 0 5px;
