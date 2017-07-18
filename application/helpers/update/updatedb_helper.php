@@ -284,11 +284,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * Template tables
          * @since 2017-07-12
          */
-        if ($iOldDBVersion < 301) {
+        if ($iOldDBVersion < 302) {
             $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables301($oDB);
+            upgradeTemplateTables302($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>301),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>302),"stg_name='DBVersion'");
         }
 
     }
@@ -429,7 +429,7 @@ function createSurveyMenuTable293($oDB) {
  * @param $oDB
  * @return void
  */
-function upgradeTemplateTables301($oDB)
+function upgradeTemplateTables302($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{templates}')) {
@@ -503,6 +503,28 @@ function upgradeTemplateTables301($oDB)
     ));
 
 
+
+    // Add material template
+    $oDB->createCommand()->insert('{{templates}}', array(
+        'name'                   => 'material',
+        'folder'                 => 'material',
+        'title'                  => 'Material Template',
+        'creation_date'          => '2017-07-12 12:00:00',
+        'author'                 => 'Louis Gac',
+        'author_email'           => 'louis.gac@limesurvey.org',
+        'author_url'             => 'https://www.limesurvey.org/',
+        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+        'version'                => '1.0',
+        'api_version'            => '3.0',
+        'view_folder'            => 'views',
+        'files_folder'           => 'files',
+        'description'            => 'fezvrasta bootstrap-material-design',
+        'owner_id'               => '1',
+        'extends_templates_name' => '',
+    ));
+
+
     // Add template configuration table
     $oDB->createCommand()->createTable('{{template_configuration}}', array(
         'id'                => 'pk',
@@ -535,12 +557,26 @@ function upgradeTemplateTables301($oDB)
     ));
 
 
-    // Add global configuration for Advanced Template
+    // Add global configuration for Minimal Template
     $oDB->createCommand()->insert('{{template_configuration}}', array(
         'id'                => '2',
         'templates_name'    => 'minimal',
         'files_css'         => '{"add": ["css/template.css"]}',
         'files_js'          => '{"add": ["scripts/template.js"]}',
+        'files_print_css'   => '{"add":"css/print_template.css",}',
+        'options'           => '{}',
+        'cssframework_name' => 'bootstrap',
+        'cssframework_css'  => '{}',
+        'cssframework_js'   => '',
+        'packages_to_load'  => 'template-core,',
+    ));
+
+    // Add global configuration for Material Template
+    $oDB->createCommand()->insert('{{template_configuration}}', array(
+        'id'                => '2',
+        'templates_name'    => 'material',
+        'files_css'         => '{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}',
+        'files_js'          => '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',
         'options'           => '{}',
         'cssframework_name' => 'bootstrap',
