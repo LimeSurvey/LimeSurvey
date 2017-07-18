@@ -372,7 +372,7 @@ $animationOptions = '
 </div>
 
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).on('ready pjax:complete',function(){
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
     console.log($('form'));
     if($('.action_update_options_string_form').length > 0){

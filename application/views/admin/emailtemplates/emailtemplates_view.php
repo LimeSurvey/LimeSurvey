@@ -13,12 +13,12 @@ $count=0;
     var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
     var sKCFinderLanguage='<?php echo sTranslateLangCode2CK(App()->language); ?>';
 
-    var LS = LS || {};  // namespace
+    var LS = LS || {  onDocumentReady: {} };  // namespace
     LS.lang = LS.lang || {};  // object holding translations
     LS.lang['Remove attachment'] = '<?php echo eT("Remove attachment"); ?>';
     LS.lang['Edit relevance equation'] = '<?php echo eT("Edit relevance equation"); ?>';
 
-    $(document).ready(function () {
+    $(document).on('ready pjax:complete',function () {
         $('button.add-attachment').click(function(e)
         {
             e.preventDefault();

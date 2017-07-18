@@ -2,8 +2,8 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).ready(LS.onDocumentReady.ExportResults);
-$(document).on('pjax:end',LS.onDocumentReady.ExportResults);
+$(document).on('ready pjax:complete',LS.onDocumentReady.ExportResults);
+$(document).,LS.onDocumentReady.ExportResults);
 
 LS.onDocumentReady.ExportResults = function(){
     updateColumnCountDisplay();

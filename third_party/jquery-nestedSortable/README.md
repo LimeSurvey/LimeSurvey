@@ -29,7 +29,7 @@
 ```
 
 ```
-	$(document).ready(function(){
+	$(document).on('ready pjax:complete',function(){
 
 		$('.sortable').nestedSortable({
 			handle: 'div',

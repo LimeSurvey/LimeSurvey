@@ -62,7 +62,7 @@
                         $script[] = sprintf("addAttachment($('#attachments-%s-%s'), %s, %s, %s );", $grouplang, $tab, json_encode($attachment['url']), json_encode($attachment['relevance']), json_encode($attachment['size']));
                     }
                     echo '<script type="text/javascript">';
-                    echo '$(document).ready(function() {';
+                    echo '$(document).on("ready pjax:complete",function() {';
                     echo implode("\n", $script);
                     echo '});';
                     echo '</script>';

@@ -13,7 +13,7 @@
 	<script type="text/javascript" src="js/chili/chili-1.8b.js"></script>
 	<script type="text/javascript" src="js/docs.js"></script>
 	<script type="text/javascript" src="js/examples.js"></script>
-<script type="text/javascript" id="js">$(document).ready(function() {
+<script type="text/javascript" id="js">$(document).on('ready pjax:complete',function() {
 	// call the tablesorter plugin, the magic happens in the markup
 	$("table").tablesorter();
 }); </script>

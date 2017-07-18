@@ -3,8 +3,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).ready(LS.onDocumentReady.Users);
-$(document).on('pjax:end',LS.onDocumentReady.Users);
+$(document).on('ready pjax:complete',LS.onDocumentReady.Users);
+
 
 LS.onDocumentReady.Users = function(){
 

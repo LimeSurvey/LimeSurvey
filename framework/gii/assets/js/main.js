@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).on('ready pjax:complete',function() {
 	if($('div.form.login').length) {  // in login page
 		$('input#LoginForm_password').focus();
 	}

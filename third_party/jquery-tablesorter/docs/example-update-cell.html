@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="js/docs.js"></script>
 	<script type="text/javascript" src="js/examples.js"></script>
 	<script type="text/javascript" id="js">
-	$(document).ready(function() {
+	$(document).on('ready pjax:complete',function() {
 	$("table").tablesorter();
 	$("table tbody td.discount").click(function() {
 		 	// randomize a number

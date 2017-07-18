@@ -1,7 +1,7 @@
 <?php if ($subaction == "copyconditionsform" || $subaction == "copyconditions"): ?>
     <input type='checkbox' id='scenarioCbx<?php echo $scenarionr['scenario']; ?>' checked='checked'/>
     <script type='text/javascript'>
-        $(document).ready(function () {
+        $(document).on('ready pjax:complete',function () {
             $('#scenarioCbx<?php echo $scenarionr['scenario']; ?>').checkgroup({
                 groupName: 'aConditionFromScenario<?php echo $scenarionr['scenario']; ?>'
             }); 

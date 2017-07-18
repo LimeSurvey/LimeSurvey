@@ -74,7 +74,7 @@
 {# TODO: add a javascript file, and register it here #}
 <script>
 // Method for link
-$(document).ready(function(){
+$(document).on('ready pjax:complete',function(){
     $('.form-change-lang').on('change','select',function() {
         var lang = $(this).val();
         /* we are not in a forum, can not submit directly */

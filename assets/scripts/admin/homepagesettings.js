@@ -5,8 +5,7 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).ready(LS.onDocumentReady.HomePageSettings);
-$(document).on('pjax:end',LS.onDocumentReady.HomePageSettings);
+$(document).on('ready pjax:complete',LS.onDocumentReady.HomePageSettings);
 
 LS.onDocumentReady.HomePageSettings = function(){
 

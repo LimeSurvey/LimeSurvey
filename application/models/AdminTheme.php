@@ -141,6 +141,7 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerScript('coreuser', '
            LS.globalUserId = "'.Yii::app()->user->id.'";
             ', CClientScript::POS_HEAD);
+            App()->clientScript->registerPackage('bootstrap-switch');
             App()->getClientScript()->registerPackage('jqueryui');      // jqueryui
             App()->getClientScript()->registerPackage('js-cookie');     // js-cookie
             App()->getClientScript()->registerPackage('fontawesome');   // fontawesome      ??? TODO: check if neede

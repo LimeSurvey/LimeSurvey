@@ -77,7 +77,7 @@ jQuery(function($) {
         $.fn.yiiGridView.update('labelsets-grid',{ data:{ pageSize: $(this).val() }});
     });
     //Delete button
-    $(document).ready(function() {
+    $(document).on('ready pjax:complete',function() {
         $('a[data-confirm]').click(function() {
             return confirm($(this).attr('data-confirm'));
         });

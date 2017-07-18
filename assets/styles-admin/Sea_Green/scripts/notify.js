@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).on('ready pjax:complete',function(){
     if($('.side-body').length){
         $('#notif-container .alert').attr('style', 'margin-top: 20px');
         if($('#vue-app-main-container').length>0)
@@ -74,7 +74,7 @@ $(document).ready(function(){
 /*
 
 
-$(document).ready(function(){
+$(document).on('ready pjax:complete',function(){
         if($('.side-body').length){
             //$('#update-container').removeClass();
 

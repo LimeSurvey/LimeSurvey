@@ -68,8 +68,7 @@ function jquery_goodchars(e, goods)
 }
 
 
-$(document).ready(LS.onDocumentReady.Conditions);
-$(document).on('pjax:end',LS.onDocumentReady.Conditions);
+$(document).on('ready pjax:complete',LS.onDocumentReady.Conditions);
 
 LS.onDocumentReady.Conditions = function(){
 

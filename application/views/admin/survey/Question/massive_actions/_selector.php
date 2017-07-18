@@ -198,7 +198,7 @@
     Some widgets in the modals need to be reloaded after grid update
 -->
 <script>
-$(document).ready(function() {
+$(document).on('ready pjax:complete',function() {
 
     $('#question-grid').on('actions-updated', function(){
         loadPositionWidget();

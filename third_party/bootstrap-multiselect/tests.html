@@ -142,7 +142,7 @@
             </table>
         </div>
         <script type="text/javascript">
-            $(document).ready(function() {
+            $(document).on('ready pjax:complete',function() {
                 
                 // Test build of multiselect.
                 var build = function(select, tr) {

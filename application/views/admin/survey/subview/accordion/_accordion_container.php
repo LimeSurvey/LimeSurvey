@@ -7,7 +7,7 @@
 ?>
 <!-- Enable aufo-focus on element via url hash -->
 <script>
-    $(document).ready(function () {
+    $(document).on('ready pjax:complete',function () {
         if(location.hash != null && location.hash != ""){
             $('.collapse').removeClass('in');
             $(location.hash + '.collapse').collapse('show');

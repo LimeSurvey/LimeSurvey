@@ -12,7 +12,7 @@
         }
     }
 
-    $(document).ready(function(){
+    $(document).on('ready pjax:complete',function(){
         $("#importtemplatefile").submit(function(){
 
             filename = $("#upload_file").val();
