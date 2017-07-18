@@ -273,22 +273,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * Template tables
          * @since 2017-07-12
          */
-        if ($iOldDBVersion < 297) {
+        if ($iOldDBVersion < 298) {
             $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables297($oDB);
+            upgradeTemplateTables298($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>297),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>298),"stg_name='DBVersion'");
         }
 
         /**
          * Template tables
          * @since 2017-07-12
          */
-        if ($iOldDBVersion < 298) {
+        if ($iOldDBVersion < 299) {
             $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables298($oDB);
+            upgradeTemplateTables299($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>298),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>299),"stg_name='DBVersion'");
         }
 
     }
@@ -323,7 +323,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     Notification::broadcast(array(
         'title' => gT('Database update'),
-        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '298')
+        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '299')
     ), $superadmins);
 
     fixLanguageConsistencyAllSurveys();
@@ -429,7 +429,7 @@ function createSurveyMenuTable293($oDB) {
  * @param $oDB
  * @return void
  */
-function upgradeTemplateTables297($oDB)
+function upgradeTemplateTables299($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{templates}')) {
@@ -508,7 +508,7 @@ function upgradeTemplateTables297($oDB)
         'files_print_css'   => '{"add":"css/print_template.css",}',
         'options'           => '{"ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
-        'cssframework_css'  => '{"replace": ["css/bootstrap.css"]}',
+        'cssframework_css'  => '{"replace": [["css/bootstrap.css","css/flatly.css"]]}',
         'cssframework_js'   => '',
         'packages_to_load'  => 'template-core,',
     ));

@@ -58,7 +58,7 @@
         <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
         <cssframework>
             <name>bootstrap</name>
-            <css replace="css/bootstrap.css">css/bootstrap.css</css>
+            <css replace="css/bootstrap.css">css/flatly.css</css>
         </cssframework>
 
         <!-- Path of the views files (can be different than pstpl -->
