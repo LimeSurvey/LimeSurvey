@@ -8,7 +8,7 @@
 <config>
     <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadatas>
-        <name>Default</name>
+        <name>default</name>
         <creationDate>08/01/2016</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>

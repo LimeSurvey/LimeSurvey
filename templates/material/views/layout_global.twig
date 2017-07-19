@@ -14,17 +14,23 @@
     This is the global layout that will be used to displayed most pages (less the error page)
     Other layout extend it, and will replace/extends the block "content".
 #}
-<!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }}">
+{% if( not ( aSurveyInfo.options.ajaxmode == "on" and getPost('ajax')=="on"  )) %}
+    <!DOCTYPE html>
+    <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }}">
 
-    {# Headers, metadata, etc #}
-    {{ include('./subviews/head.twig') }}
+        {# Headers, metadata, etc #}
+        {{ include('./subviews/head.twig') }}
 
-</html>
+    </html>
 
-<body class="default lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" id="page-top" >
+    <body class="default lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" >
+{% else %}
+        {{ unregisterScriptForAjax()}}
+{% endif %}
+
+
+
 {% block body %}
-
 
     {# Bootstrap Navigation Bar: the top menu #}
     {% block nav_bar %}
@@ -37,8 +43,7 @@
     {% endblock %}
 
     <!-- Outer Frame Container -->
-
-    <div class="outerframe container" id="outerframeContainer">
+    <div class="outerframe container {% if (aSurveyInfo.options.animatebody == "on") %} animated {{ aSurveyInfo.options.bodyanimation }} {%endif%}" id="outerframeContainer">
 
         <!-- Main Row -->
         <div id="main-row">
@@ -53,6 +58,7 @@
             </div> <!-- main col -->
         </div> <!-- main row -->
     </div> <!-- outer frame container -->
+
     {# Bootstrap alert modal #}
     {{ include('./subviews/bootstrap_alert_modal.twig') }}
 
@@ -70,6 +76,9 @@
         hideEmptyPart();
     /*]]>*/
     </script>
-    {% endblock %}
+{% endblock %}
+
+{% if( not ( aSurveyInfo.options.ajaxmode == "on" and getPost('ajax')=="on"  )) %}
     </body>
-</html>
+    </html>
+{% endif %}

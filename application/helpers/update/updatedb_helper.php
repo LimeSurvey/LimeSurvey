@@ -284,11 +284,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * Template tables
          * @since 2017-07-12
          */
-        if ($iOldDBVersion < 303) {
+        if ($iOldDBVersion < 304) {
             $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables303($oDB);
+            upgradeTemplateTables304($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>303),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>304),"stg_name='DBVersion'");
         }
 
     }
@@ -429,7 +429,7 @@ function createSurveyMenuTable293($oDB) {
  * @param $oDB
  * @return void
  */
-function upgradeTemplateTables303($oDB)
+function upgradeTemplateTables304($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{templates}')) {
