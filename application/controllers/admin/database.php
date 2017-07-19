@@ -944,11 +944,6 @@ class database extends Survey_Common_Action
                     $dateformat = Yii::app()->request->getPost('dateformat_'.$langname);
                     $numberformat = Yii::app()->request->getPost('numberformat_'.$langname);
                     
-
-                    var_dump([
-                        $short_title,$description,$welcome,$endtext
-                    ]);
-
                     if(!empty($short_title))
                         $data['surveyls_title'] = $short_title;
                     if(!empty($description))
@@ -969,7 +964,7 @@ class database extends Survey_Common_Action
                     $oSurveyLanguageSetting= SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
                     $oSurveyLanguageSetting->setAttributes($data);
                     $save = false;
-                    $save = $SurveyLanguageSetting->save(); // save the change to database
+                    $save = $oSurveyLanguageSetting->save(); // save the change to database
                     if((!empty($short_title)) || (!empty($description)) || (!empty($welcome)) || (!empty($endtext)) || (!empty($sURL)) || (!empty($sURLDescription)) || (!empty($dateformat)) || (!empty($numberformat)))
                     {
 
@@ -1093,7 +1088,6 @@ class database extends Survey_Common_Action
 
             $oSurvey->adminemail = $this->_filterEmptyFields($oSurvey,'adminemail');
             $oSurvey->bounce_email = $this->_filterEmptyFields($oSurvey,'bounce_email');
-
             $event = new PluginEvent('beforeSurveySettingsSave');
             $event->set('modifiedSurvey', $oSurvey);
             App()->getPluginManager()->dispatchEvent($event);
@@ -1238,7 +1232,7 @@ class database extends Survey_Common_Action
         switch($options['type']){
             case 'yesno':
                 if($newValue != 'Y' || $newValue != 'N')
-                    $newValue = $newValue=='1' ? 'Y' : 'N';
+                    $newValue = ($newValue=='1' || $newValue==true ) ? 'Y' : 'N';
             break;
             case 'Int' : 
                 $newValue = (int) $newValue;
