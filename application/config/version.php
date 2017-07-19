@@ -11,7 +11,7 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
 
-$config['versionnumber'] = '3.0.0-beta'; //The current version of this branch
+$config['versionnumber'] = '3.0.0-beta.1'; //The current version of this branch
 $config['masterversion'] = '2.62.2'; //The current masters version merged into this branch
 $config['dbversionnumber'] = 304;
 $config['buildnumber'] = '';
