@@ -58,7 +58,9 @@ const getAppState = function(userid){
       },
       getters:{
         substractContainer: state => {
-          return ($('#vue-app-main-container').width()-parseInt(state.sidebarwidth))+'px'
+          let bodyWidth =  ($('#vue-app-main-container').width()-parseInt(state.sidebarwidth));
+          let collapsedBodyWidth = ($('#vue-app-main-container').width()-parseInt('98px'));
+          return (state.isCollapsed ? collapsedBodyWidth : bodyWidth)+'px';
         }
       },
       mutations: {

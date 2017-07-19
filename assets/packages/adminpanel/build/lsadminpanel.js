@@ -29166,6 +29166,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         mousedown(e) {
             this.isMouseDown = this.$store.state.isCollapsed ? false : true;
             $('#sidebar').removeClass('transition-animate-width');
+            $('#pjax-content').removeClass('transition-animate-width');
         },
         mouseup(e) {
             if (this.isMouseDown) {
@@ -29176,6 +29177,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
                 this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 $('#sidebar').addClass('transition-animate-width');
+                $('#pjax-content').removeClass('transition-animate-width');
             }
         },
         mouseleave(e) {
@@ -29644,8 +29646,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_vm._v(" \n                    " + _vm._s(questiongroup.group_name) + " \n                    "), _c('span', {
-      staticClass: "pull-right"
-    }, [_vm._v("(" + _vm._s(questiongroup.questions.length) + ")")])]), _vm._v(" "), _c('i', {
+      staticClass: "badge pull-right ls-space margin right-5"
+    }, [_vm._v(_vm._s(questiongroup.questions.length))])]), _vm._v(" "), _c('i', {
       staticClass: "fa bigIcons",
       class: _vm.isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down',
       on: {
@@ -30658,7 +30660,9 @@ const getAppState = function(userid){
       },
       getters:{
         substractContainer: state => {
-          return ($('#vue-app-main-container').width()-parseInt(state.sidebarwidth))+'px'
+          let bodyWidth =  ($('#vue-app-main-container').width()-parseInt(state.sidebarwidth));
+          let collapsedBodyWidth = ($('#vue-app-main-container').width()-parseInt('98px'));
+          return (state.isCollapsed ? collapsedBodyWidth : bodyWidth)+'px';
         }
       },
       mutations: {

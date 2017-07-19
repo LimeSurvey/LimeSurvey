@@ -79,7 +79,7 @@ export default {
                     <i class="fa fa-bars bigIcons" draggable="true">&nbsp;</i>
                     <a :href="questiongroup.link" @click.stop="openQuestionGroup(questiongroup)" class="col-12 pjax"> 
                         {{questiongroup.group_name}} 
-                        <span class="pull-right">({{questiongroup.questions.length}})</span>
+                        <span class="badge pull-right ls-space margin right-5">{{questiongroup.questions.length}}</span>
                     </a>
                     <i class="fa bigIcons" v-bind:class="isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                 </div>

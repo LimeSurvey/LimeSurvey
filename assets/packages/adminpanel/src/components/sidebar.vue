@@ -93,6 +93,7 @@ export default {
         mousedown(e) {
             this.isMouseDown = this.$store.state.isCollapsed ? false : true;
             $('#sidebar').removeClass('transition-animate-width');
+            $('#pjax-content').removeClass('transition-animate-width');
         },
         mouseup(e) {
             if(this.isMouseDown){
@@ -103,6 +104,7 @@ export default {
                 }
                 this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 $('#sidebar').addClass('transition-animate-width');
+                $('#pjax-content').removeClass('transition-animate-width');
             }
         },
         mouseleave(e) {
