@@ -5,7 +5,7 @@
  * @var Survey $oSurvey
  */
 
-$fullPage = (isset($_GET["surveyid"]))?false:true;
+$fullPage = (isset($surveyid))?false:true;
 ?>
 
 <?php if(!$fullPage):?>
@@ -20,20 +20,20 @@ $fullPage = (isset($_GET["surveyid"]))?false:true;
 
 
 <?php
-if (count($_GET) > 0) {
-    foreach ($_GET as $key=>$val) {
-        if ($key == 'surveyid') {
-            $val = $val . '|N'; // hack to pretend this is not an assessment
-        }
-        $_REQUEST[$key] = $val;
-    }
-    $_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
-}
+// if (count($_GET) > 0) {
+//     foreach ($_GET as $key=>$val) {
+//         if ($key == 'surveyid') {
+//             $val = $val . '|N'; // hack to pretend this is not an assessment
+//         }
+//         $_REQUEST[$key] = $val;
+//     }
+//     $_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX'] = 'Y';
+// }
 
 
 Yii::app()->loadHelper('frontend');
 
-if (empty($_REQUEST['surveyid']))   //  || count($_REQUEST) == 0) {
+if (!$surveyid)   //  || count($_REQUEST) == 0) {
 {
     $surveyList=getSurveyList();
     $sFormTag= CHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post');
@@ -65,32 +65,12 @@ EOD;
 else {
     //TODO This stuff must be in controller!
 
-    $temp = (array) explode('|', $_REQUEST['surveyid']);
-    $surveyid = sanitize_int($temp[0]);
-    if (isset($_REQUEST['assessments'])) {
-        $assessments = ($_REQUEST['assessments'] == 'Y');
-    } else {
-        $assessments = ($oSurvey->assessments == 'Y');
-    }
-    $LEMdebugLevel = (
-            ((isset($_REQUEST['LEM_DEBUG_TIMING']) && $_REQUEST['LEM_DEBUG_TIMING'] == 'Y') ? LEM_DEBUG_TIMING : 0) +
-            ((isset($_REQUEST['LEM_DEBUG_VALIDATION_SUMMARY']) && $_REQUEST['LEM_DEBUG_VALIDATION_SUMMARY'] == 'Y') ? LEM_DEBUG_VALIDATION_SUMMARY : 0) +
-            ((isset($_REQUEST['LEM_DEBUG_VALIDATION_DETAIL']) && $_REQUEST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
-            ((isset($_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_REQUEST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
-            );
-
-    $language = (isset($_REQUEST['lang']) ? sanitize_languagecode($_REQUEST['lang']) : NULL);
-    $gid = (isset($_REQUEST['gid']) ? sanitize_int($_REQUEST['gid']) : NULL);
-    $qid = (isset($_REQUEST['qid']) ? sanitize_int($_REQUEST['qid']) : NULL);
-
     App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'expressionlogicfile.css');
-
     SetSurveyLanguage($surveyid, $language);
     LimeExpressionManager::SetDirtyFlag();
     Yii::app()->setLanguage(Yii::app()->session['adminlang']);
     $result = LimeExpressionManager::ShowSurveyLogicFile($surveyid, $gid, $qid,$LEMdebugLevel,$assessments);
     print $result['html'];
-
 }
 ?>
         </div>

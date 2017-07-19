@@ -10,10 +10,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Notifications);
-$(document).on(' pjax:complete',LS.onDocumentReady.Notifications);
-
-LS.onDocumentReady.Notifications = function() {
+$(document).on('ready  pjax:complete', function() {
 
     /**
      * Log stuff
@@ -179,4 +176,4 @@ LS.onDocumentReady.Notifications = function() {
 
     initNotification();
 
-};
+});
