@@ -913,8 +913,9 @@ class database extends Survey_Common_Action
      */
     private function actionUpdateSurveyLocaleSettings($iSurveyID)
     {
-        $languagelist = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $languagelist[]=Survey::model()->findByPk($iSurveyID)->language;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $languagelist = $oSurvey->additionalLanguages;
+        $languagelist[] = $oSurvey->language;
 
         Yii::app()->loadHelper('database');
 
@@ -942,6 +943,11 @@ class database extends Survey_Common_Action
                     $endtext=$this->oFixCKeditor->fixCKeditor($endtext);
                     $dateformat = Yii::app()->request->getPost('dateformat_'.$langname);
                     $numberformat = Yii::app()->request->getPost('numberformat_'.$langname);
+                    
+
+                    var_dump([
+                        $short_title,$description,$welcome,$endtext
+                    ]);
 
                     if(!empty($short_title))
                         $data['surveyls_title'] = $short_title;
@@ -960,16 +966,17 @@ class database extends Survey_Common_Action
                     if(!empty($numberformat))
                         $data['surveyls_numberformat'] = $numberformat;
 
-                    $SurveyLanguageSetting=SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
-                    $SurveyLanguageSetting->setAttributes($data);
+                    $oSurveyLanguageSetting= SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
+                    $oSurveyLanguageSetting->setAttributes($data);
                     $save = false;
                     $save = $SurveyLanguageSetting->save(); // save the change to database
                     if((!empty($short_title)) || (!empty($description)) || (!empty($welcome)) || (!empty($endtext)) || (!empty($sURL)) || (!empty($sURLDescription)) || (!empty($dateformat)) || (!empty($numberformat)))
-                        $surveyTextSave = $save;
+                    {
+
+                    }
                 }
             }
-            if($surveyTextSave)
-                Yii::app()->setFlashMessage(gT("Survey text elements successfully saved."));
+
         }
         ////////////////////////////////////////////////////////////////////////////////////
         // General settings (copy / paste from surveyadmin::update)
@@ -1208,6 +1215,7 @@ class database extends Survey_Common_Action
     }
 
     private function _filterEmptyFields(&$oSurvey, $fieldArrayName, $newValue=null){
+        $aSurvey = $oSurvey->attributes;
         if($newValue === null)
         {
             $newValue = App()->request->getPost($fieldArrayName, '');
@@ -1217,7 +1225,8 @@ class database extends Survey_Common_Action
 
         if(empty($newValue))
         {
-            $newValue = $oSurvey->{$fieldArrayName};
+
+            $newValue = isset($aSurvey[$fieldArrayName]) ? $aSurvey[$fieldArrayName] : $oSurvey->{$fieldArrayName};
 
         } 
         else 

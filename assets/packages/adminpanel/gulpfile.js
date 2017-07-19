@@ -13,7 +13,11 @@ gulp.task('sass', function () {
     .pipe(concat('lsadminpanel.css'))
     .pipe(gulp.dest('./build'));
 });
- 
+gulp.task('sass:watch', function () { 
+  gulp.watch('./scss/*.scss', ['sass']);
+});
+
+
 gulp.task('compress', function (cb) {
   pump([
         gulp.src('build/lsadminpanel.js'),

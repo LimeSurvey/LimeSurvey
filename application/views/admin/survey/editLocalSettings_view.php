@@ -68,7 +68,7 @@ $i=0;
                 <div class="form-group">
                     <label class="control-label col-sm-2"><?php eT("Date format:"); ?></label>
 
-                    <div class="col-sm-3">
+                    <div class="col-sm-9">
                         <select size='1' id='dateformat_<?php echo $oSurvey->currentLanguageSettings->surveyls_language; ?>' name='dateformat_<?php echo $oSurvey->currentLanguageSettings->surveyls_language; ?>' class="form-control">
                             <?php foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata): ?>
                                 <option value='<?php echo $index; ?>'

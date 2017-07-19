@@ -6,10 +6,10 @@
     <div class="col-xs-12 col-md-6">
         <div id="breadcrumb-container" class="ls-ba">
             <div class="">
-                <ol class="breadcrumb <?=$extraClass?>">
+                <ol class="breadcrumb ls-flex-row align-items-center align-content-flex-start <?=$extraClass?>">
                     <li>
                         <a class="pjax animate home-icon" href="<?php echo App()->createUrl('admin/survey/sa/listsurveys');?>">
-                            <i class="fa fa-list-alt bigIcon" title="<?php et('Survey List')?>" >&nbsp;</i>
+                            <img src="<?=LOGO_ICON_URL ?>" height="26" style="display:block;" title="<?php et('Survey List')?>" ></img>
                         </a>
                     </li>
                     <?php if(isset($oQuestion)): ?>

@@ -51,6 +51,13 @@ ol.breadcrumb.title-bar-breadcrumb{
     background: transparent;
     color: white;
     margin-bottom: 0px;
+     > :first-child{
+        a{
+            &.animate::after {
+                margin-left:0px;
+            }
+        }
+    }
     a {
         color: white;
         text-decoration: none;
@@ -58,9 +65,9 @@ ol.breadcrumb.title-bar-breadcrumb{
         font-size: 18px;
 
         &.animate::after {
-            content: '';
-            text-align:right;
             margin-left:28px;
+            text-align:right;
+            content: '';
             display: block;
             width: 0;
             height: 2px;
@@ -70,7 +77,6 @@ ol.breadcrumb.title-bar-breadcrumb{
 
         &.animate:hover::after {
             width: 90%;
-            //transition: width .3s;
         }
         &.animate.home-icon:hover::after {
             margin-left:0;
@@ -87,7 +93,6 @@ ol.breadcrumb.title-bar-breadcrumb{
             color: #dfdfdf;
             font-style: italic
         }
-        
     }
 }
 
