@@ -17,7 +17,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>2.0</version>
         <apiVersion>3</apiVersion>
-        <description>Default LimeSurvey Template.</description>
+        <description><![CDATA[<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)]]></description>
         <last_update>2016-11-14 17:21:00</last_update>
     </metadatas>
 
@@ -47,10 +47,10 @@
         <boxcontainer>on</boxcontainer>
         <backgroundimage>on</backgroundimage>
         <animatebody>on</animatebody>
-        <bodyanimation>lightSpeedIn</bodyanimation>
-        <animatequestion>on</animatequestion>
+        <bodyanimation>fadeInRight</bodyanimation>
+        <animatequestion>off</animatequestion>
         <questionanimation>flipInX</questionanimation>
-        <animatealert>on</animatealert>
+        <animatealert>off</animatealert>
         <alertanimation>shake</alertanimation>
     </options>
 

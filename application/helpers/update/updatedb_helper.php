@@ -284,11 +284,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          * Template tables
          * @since 2017-07-12
          */
-        if ($iOldDBVersion < 302) {
+        if ($iOldDBVersion < 303) {
             $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables302($oDB);
+            upgradeTemplateTables303($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>302),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>303),"stg_name='DBVersion'");
         }
 
     }
@@ -429,7 +429,7 @@ function createSurveyMenuTable293($oDB) {
  * @param $oDB
  * @return void
  */
-function upgradeTemplateTables302($oDB)
+function upgradeTemplateTables303($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{templates}')) {
@@ -477,7 +477,7 @@ function upgradeTemplateTables302($oDB)
         'api_version'            => '3.0',
         'view_folder'            => 'views',
         'files_folder'           => 'files',
-        'description'            => 'LimeSurvey Advanced Template:\r\nMany options for user customizations. \r\n',
+        'description'            => "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)",
         'owner_id'               => '1',
         'extends_templates_name' => '',
     ));
@@ -549,7 +549,7 @@ function upgradeTemplateTables302($oDB)
         'files_css'         => '{"add": ["css/template.css", "css/animate.css"]}',
         'files_js'          => '{"add": ["scripts/template.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',
-        'options'           => '{"ajaxmode":"on","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}',
+        'options'           => '{"ajaxmode":"on","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
         'cssframework_css'  => '{"replace": [["css/bootstrap.css","css/flatly.css"]]}',
         'cssframework_js'   => '',
