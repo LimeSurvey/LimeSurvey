@@ -519,7 +519,7 @@ function upgradeTemplateTables304($oDB)
         'api_version'            => '3.0',
         'view_folder'            => 'views',
         'files_folder'           => 'files',
-        'description'            => 'fezvrasta bootstrap-material-design',
+        'description'            => "<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>",
         'owner_id'               => '1',
         'extends_templates_name' => '',
     ));
@@ -578,7 +578,7 @@ function upgradeTemplateTables304($oDB)
         'files_css'         => '{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}',
         'files_js'          => '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',
-        'options'           => '{}',
+        'options'           => '{"ajaxmode":"on","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
         'cssframework_css'  => '{}',
         'cssframework_js'   => '',

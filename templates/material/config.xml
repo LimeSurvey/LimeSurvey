@@ -17,7 +17,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>3</apiVersion>
-        <description>fezvrasta bootstrap-material-design</description>
+        <description><![CDATA[<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>]]></description>
         <last_update></last_update>
         <extends>default</extends>
     </metadatas>
