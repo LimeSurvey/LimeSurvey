@@ -2,7 +2,7 @@
 /* @var $this TemplateOptionsController */
 /* @var $dataProvider CActiveDataProvider */
 
-
+// TODO: rename to template_list.php
 
 ?>
 <div class="col-lg-12 list-surveys">
@@ -43,6 +43,7 @@
                         'name' => 'templates_name',
                         'value'=>'$data->template->description',
                         'htmlOptions' => array('class' => 'col-md-3'),
+                        'type'=>'raw',
                     ),
 
                     array(

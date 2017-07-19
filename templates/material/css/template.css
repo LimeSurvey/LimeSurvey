@@ -762,3 +762,7 @@ div.yes-no .btn-group label {
 p.return-to-survey{
     clear:left;
 }
+
+.navbar .navbar-brand{
+    padding: 10px 15px;
+}
