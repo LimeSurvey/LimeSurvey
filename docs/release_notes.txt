@@ -55,13 +55,22 @@ Changes from 2.67.0 (build 170622) to 3.0.0beta1 (build 170720) July 19, 2017
 -New feature: Added 'Minimal Template', a simple template to start with for developers
 -New feature: Added 'Material Template', a template to show the inheritance concept
 -New feature: Store random seed with each response, making it possible to render the exact same order of questions and groups when respondent loads survey.
+-New feature: sidebar rendering via vuejs2 based on vuex state management (Markus Flür)
+-New feature: menus and entries collected via ajax (Markus Flür)
+-New feature: questiongroups and questions collected by ajax (Markus Flür)
+-New feature: sidebar is now resizeable by dragging (maximum size: 50% of screen) (Markus Flür) 
+-New feature: new system for editing and creating menuentries in the sidebar and the quickmenu (Markus Flür)
+-New feature: menus and entries are now items in the database and can be user and/or surveyspecific (Markus Flür)
+-New feature:integrated menu positions are side, collapsed, top and bottom (Markus Flür)
+-New feature: survey wizard for creating a new survey (Markus Flür)
+-New feature: editing surveys is mostly pjaxed (Markus Flür)
 -Dev: Enhancements of frontend rendering workflow for better performances (surveyRuntimeHelper, frontend_helper, frontend controller, etc). (Louis-Sébastien Gac-Artigas)
 -Dev: Clean, reorder, and added packages for system. All the LS assets are in a folder root called assets/. Added new packages such as core packages (Denis Chenu, Louis-Sébastien Gac-Artigas)
 -Dev: Replaced old surveyinfo logic by MVC complient approach (Tonis Ormisson)
 -Dev: Rewrote most code documentation for phpDocumentor (Tonis Ormisson)
 -Dev: added some 508 fixes to admin interface (Chad Day)
-
-
+-Dev: admin general settings removed and uncluttered into separate setting views (Markus Flür)
+-Dev: adminpanel webpack and gulp configuration added (Markus Flür)
 
 
 Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) June 22, 2017
