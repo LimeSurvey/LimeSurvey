@@ -54,7 +54,7 @@ Changes from 2.67.0 (build 170622) to 3.0.0beta1 (build 170720) July 19, 2017
 -New feature: Ajax mode for 'Advanced Template' (need to be deeply tested) (Louis-Sébastien Gac-Artigas)
 -New feature: Added 'Minimal Template', a simple template to start with for developers
 -New feature: Added 'Material Template', a template to show the inheritance concept
--New feature: Store random seed with each response, making it possible to render the exact order of questions and groups when respondent loads survey.
+-New feature: Store random seed with each response, making it possible to render the exact same order of questions and groups when respondent loads survey.
 -Dev: Enhancements of frontend rendering workflow for better performances (surveyRuntimeHelper, frontend_helper, frontend controller, etc). (Louis-Sébastien Gac-Artigas)
 -Dev: Clean, reorder, and added packages for system. All the LS assets are in a folder root called assets/. Added new packages such as core packages (Denis Chenu, Louis-Sébastien Gac-Artigas)
 -Dev: Replaced old surveyinfo logic by MVC complient approach (Tonis Ormisson)
