@@ -135,7 +135,7 @@
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
-                            <?php eT("Surveymenus");?>
+                            <?php eT("Menu configuration");?>
                         </a>
                     </li>
                 <?php endif;?>
@@ -143,7 +143,7 @@
                 <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
                     <li class="dropdown-item">
                         <a href="<?php echo $this->createUrl("admin/menuentries/sa/view"); ?>">
-                            <?php eT("Surveymenu entries");?>
+                            <?php eT("Menu entries configuration");?>
                         </a>
                     </li>
                 <?php endif;?>
