@@ -786,7 +786,7 @@ function LEMval(alias)
                 // If it's not a decimal number, just return value
                 try {
                     var decimal_safe = new Decimal(value);
-                    return pad(decimal_safe,value.length);
+                    return Numeric(decimal_safe.valueOf());
                 }
                 catch (ex) {
                     return value;
