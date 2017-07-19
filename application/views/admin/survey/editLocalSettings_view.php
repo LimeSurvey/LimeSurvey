@@ -84,7 +84,7 @@ $i=0;
                 <!-- Decimal mark -->
                 <div class="form-group">
                     <label class="control-label col-sm-2"><?php eT("Decimal mark:"); ?></label>
-                    <div class="col-sm-3">
+                    <div class="col-sm-9">
                         <?php
                             $aRadixPoint=array();
                             foreach (getRadixPointData() as $index=>$radixptdata)
