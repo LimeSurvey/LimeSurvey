@@ -29,10 +29,16 @@ class Dumpdb extends Survey_Common_Action {
             die();
         }
 
-        if (!in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demoMode') == true)
+        if (!in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')))
         {
             die(sprintf(gT('This feature is only available for MySQL databases. Your database type is %s.'),Yii::app()->db->getDriverName()));
         }
+        if (Yii::app()->getConfig('demoMode'))
+        {
+            Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+        }
+            
     }
 
     /**
