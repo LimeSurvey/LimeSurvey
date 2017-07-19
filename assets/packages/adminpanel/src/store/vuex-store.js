@@ -56,6 +56,11 @@ const getAppState = function(userid){
         topmenus: null,
         bottommenus: null,
       },
+      getters:{
+        substractContainer: state => {
+          return ($('#vue-app-main-container').width()-parseInt(state.sidebarwidth))+'px'
+        }
+      },
       mutations: {
         updateSurveyId (state, newSurveyId) {
           state.surveyid = newSurveyId
@@ -74,7 +79,7 @@ const getAppState = function(userid){
         },
         changeMaxHeight(state, newHeight){
           state.maxHeight = newHeight;
-        },    
+        },     
         changeCurrentUser(state, newUser){
           state.currentUser = newUser;
         },

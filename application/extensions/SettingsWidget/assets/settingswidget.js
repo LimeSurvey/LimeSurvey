@@ -1,4 +1,4 @@
-$(document)(document).on('ready  pjax:complete', ', function() {
+$(document).on('ready  pjax:complete',function() {
     var removeRow = function ()
     {
         // Don't remove last row.

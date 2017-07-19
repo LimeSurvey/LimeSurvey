@@ -29192,6 +29192,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (e.screenX === 0 && e.screenY === 0) return;
                 if (e.clientX > screen.width / 2) return;
                 self.sideBarWidth = e.pageX + 8 + 'px';
+                this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }
@@ -30655,6 +30656,11 @@ const getAppState = function(userid){
         topmenus: null,
         bottommenus: null,
       },
+      getters:{
+        substractContainer: state => {
+          return ($('#vue-app-main-container').width()-parseInt(state.sidebarwidth))+'px'
+        }
+      },
       mutations: {
         updateSurveyId (state, newSurveyId) {
           state.surveyid = newSurveyId
@@ -30673,7 +30679,7 @@ const getAppState = function(userid){
         },
         changeMaxHeight(state, newHeight){
           state.maxHeight = newHeight;
-        },    
+        },     
         changeCurrentUser(state, newUser){
           state.currentUser = newUser;
         },

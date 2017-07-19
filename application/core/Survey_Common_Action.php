@@ -273,7 +273,7 @@ class Survey_Common_Action extends CAction
             //// Each view will call the correct bar as a subview.
             $this->_surveysidemenu($aData);
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-12 ls-flex-item" id="pjax-content">';
+            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item" v-bind:style="\'max-width:\'+$store.getters.substractContainer" id="pjax-content">';
             $this->_surveybar($aData);
             $this->_nquestiongroupbar($aData);
             $this->_questionbar($aData);

@@ -120,6 +120,7 @@ export default {
                 if (e.screenX === 0 && e.screenY === 0) return;
                 if(e.clientX > (screen.width/2)) return;
                 self.sideBarWidth = (e.pageX+8)+'px';
+                this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }

@@ -6,9 +6,8 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-LS.onDocumentReady.
 // Module
-LS.resp = (function() {
+$(document).on('ready pjax:complete', function() {
 
     /**
      * Needed to calculate correct pager position at RTL language
@@ -80,10 +79,8 @@ LS.resp = (function() {
             useRtl = val;
         }
     };
-})();
+});
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Listresponse);
-$(document).on(' pjax:complete',LS.onDocumentReady.Listresponse);
 
 var onDocumentReadyListresponse = function(){
 
