@@ -57,8 +57,11 @@
     <!-- Here datas about how LimeSurvey should load the template -->
     <engine>
         <!-- If empty, bootstrap css/js files will not be loaded. In the future, we may have more engines, like foundation -->
+        <!-- NOTE: Material extends Advanced, advanced replaced bootstrap core by flatly, so wu must put back a bootsrap.css here-->
+        <!-- TODO: add a new keyword for those situations, like "restore"-->
         <cssframework>
             <name>bootstrap</name>
+            <css replace="css/bootstrap.css">css/bootstrap.css</css>
         </cssframework>
 
         <!-- Path of the views files (can be different than pstpl -->

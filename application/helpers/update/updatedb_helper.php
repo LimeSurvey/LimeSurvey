@@ -580,7 +580,7 @@ function upgradeTemplateTables304($oDB)
         'files_print_css'   => '{"add":"css/print_template.css",}',
         'options'           => '{"ajaxmode":"on","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
-        'cssframework_css'  => '{}',
+        'cssframework_css'  => '{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}',
         'cssframework_js'   => '',
         'packages_to_load'  => 'template-core,',
     ));
