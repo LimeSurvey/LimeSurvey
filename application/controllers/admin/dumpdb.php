@@ -36,7 +36,7 @@ class Dumpdb extends Survey_Common_Action {
         if (Yii::app()->getConfig('demoMode'))
         {
             Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'),'error');
-            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
         }
             
     }
