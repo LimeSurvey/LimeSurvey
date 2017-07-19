@@ -31,7 +31,7 @@ class Dumpdb extends Survey_Common_Action {
 
         if (!in_array(Yii::app()->db->getDriverName(), array('mysql', 'mysqli')) || Yii::app()->getConfig('demoMode') == true)
         {
-            die(gT('This feature is only available for MySQL databases.'));
+            die(sprinft(gT('This feature is only available for MySQL databases. Your database type is %s.'),Yii::app()->db->getDriverName());
         }
     }
 
