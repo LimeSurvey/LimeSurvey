@@ -2,10 +2,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.SurveyEditPermissions);
-$(document).on(' pjax:complete',LS.onDocumentReady.SurveyEditPermissions);
-
-LS.onDocumentReady.SurveyEditPermissions = function(){
+$(document).on('ready  pjax:complete', function(){
     $(':checkbox:not(:checked)[data-indeterminate=1]').prop('indeterminate', true)
 
     $(".surveysecurity").tablesorter({
@@ -86,7 +83,7 @@ LS.onDocumentReady.SurveyEditPermissions = function(){
         Cookies.set('surveysecurityas',!extendoptionsvisible);
     })
     updateExtendedButton(true);
-};
+});
 
 function updateExtendedButton(bVisible)
 {

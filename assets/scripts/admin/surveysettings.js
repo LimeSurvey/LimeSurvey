@@ -3,9 +3,6 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.SurveyEditSettings);
-$(document).on(' pjax:complete',LS.onDocumentReady.SurveyEditSettings);
-
     $("#copysurveyform").submit(copysurvey);
 
 var defineActions = function(dataArray){
@@ -37,7 +34,7 @@ $(document).on('click',"[data-copy] :submit",function(){
 // $(document).on('submit',"#addnewsurvey",function(){
 //     $('#addnewsurvey').attr('action',$('#addnewsurvey').attr('action')+location.hash);// Maybe validate before ?
 // });
-LS.onDocumentReady.SurveyEditSettings = function(){
+$(document).on('ready  pjax:complete', function(){
 
     $('#template').on('change keyup', function(event){
         templatechange($(this).val());
@@ -155,7 +152,7 @@ LS.onDocumentReady.SurveyEditSettings = function(){
             }
         });
     });
-};
+});
 /**
  * Bind to submit event
  */

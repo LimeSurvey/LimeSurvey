@@ -4,10 +4,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).ready(LS.onDocumentReady.PrintableSurvey);
-$(document).on(' pjax:complete',LS.onDocumentReady.PrintableSurvey);
-
-LS.onDocumentReady.PrintableSurvey = function(){
+$(document).on(' pjax:complete', function(){
     $('[class^=max]').each(function(){
        var arrayOfClasses = $(this).attr('class').split(' '); 
        charcount=arrayOfClasses[0].substr(10);

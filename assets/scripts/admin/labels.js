@@ -24,10 +24,7 @@ $(document).on('click','[data-action="deletelabelset"]',function(event){
 });
 
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.LabelSettings);
-$(document).on(' pjax:complete',LS.onDocumentReady.LabelSettings);
-
-LS.onDocumentReady.LabelSettings = function(){
+$(document).on('ready  pjax:complete', function(){
     $('#btnDumpLabelSets').click(function(){
         if ($('#labelsets > option:selected').size()==0)
         {
@@ -96,7 +93,7 @@ LS.onDocumentReady.LabelSettings = function(){
     });
 
     fix_highlighting();
-};
+});
 
 function quickaddfunction(){
     var lsreplace = false;

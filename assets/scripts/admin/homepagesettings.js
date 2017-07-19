@@ -5,10 +5,7 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.HomePageSettings);
-$(document).on(' pjax:complete',LS.onDocumentReady.HomePageSettings);
-
-LS.onDocumentReady.HomePageSettings = function(){
+$(document).on('ready  pjax:complete', function(){
 
     /**
      * Toggle show logo value
@@ -144,4 +141,4 @@ LS.onDocumentReady.HomePageSettings = function(){
             $('#chosen-icon').attr('class', fullCurrentIconName + ' text-success');
         }
     }
-};
+});

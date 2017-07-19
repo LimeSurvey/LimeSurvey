@@ -3,10 +3,7 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.GlobalSettings);
-$(document).on(' pjax:complete',LS.onDocumentReady.GlobalSettings);
-
-LS.onDocumentReady.GlobalSettings = function(){
+$(document).on('ready  pjax:complete', function(){
     $("input:radio[id^='emailmethod']").on('change',Emailchange);
     Emailchange();
     $("input:radio[id^='bounceaccounttype']").on('change',BounceChange);
@@ -15,7 +12,7 @@ LS.onDocumentReady.GlobalSettings = function(){
     $('#btnRemove').click(removeLanguages);
     $('#btnAdd').click(addLanguages);
     $("#frmglobalsettings").submit(UpdateRestrictedLanguages);
-};
+});
 
 
 // Add a language to available languages if it was selected as default language

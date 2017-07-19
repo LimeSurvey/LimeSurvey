@@ -6,10 +6,7 @@ var LS = LS || {
 var formSubmitting = false;
 var changed = false;
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Organize);
-$(document).on(' pjax:complete',LS.onDocumentReady.Organize);
-
-LS.onDocumentReady.Organize = function(){
+$(document).on('ready  pjax:complete', function(){
     var sourceItem;
     $('ol.organizer').nestedSortable({
         doNotClear: true,
@@ -71,7 +68,7 @@ LS.onDocumentReady.Organize = function(){
     $('#organizer-expand-all').on('click', function() {
         $('.organizer').find('.mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-collapsed').toggleClass('mjs-nestedSortable-expanded');
     });
-};
+});
 
 /**
  * Show confirmation message when user leaves without saving

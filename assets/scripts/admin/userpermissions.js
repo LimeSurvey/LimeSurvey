@@ -3,10 +3,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Userpermissions);
-$(document).on(' pjax:complete',LS.onDocumentReady.Userpermissions);
-
-LS.onDocumentReady.Userpermissions = function(){
+$(document).on('ready  pjax:complete', function(){
     $('#perm_superadmin_read').insertAfter($('#all_superadmin'));
     $('#all_superadmin').remove();
     $(".userpermissions").tablesorter({
@@ -91,7 +88,7 @@ LS.onDocumentReady.Userpermissions = function(){
         Cookies.set('userpermissions',!extendoptionsvisible);
     })
     updateExtendedButton(false);
-};
+});
 
 function updateExtendedButton(bVisible)
 {

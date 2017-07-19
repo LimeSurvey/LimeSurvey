@@ -3,10 +3,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Tokenimport);
-$(document).on(' pjax:complete',LS.onDocumentReady.Tokenimport);
-
-LS.onDocumentReady.Tokenimport = function() {
+$(document).on('ready  pjax:complete', function() {
 
     $("#filterduplicatetoken").change(function(){
         if ($("#filterduplicatetoken").prop('checked')) {
@@ -15,4 +12,4 @@ LS.onDocumentReady.Tokenimport = function() {
             $("#lifilterduplicatefields").slideUp();
         }
     });
-};
+});

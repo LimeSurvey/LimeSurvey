@@ -3,10 +3,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Saved);
-$(document).on(' pjax:complete',LS.onDocumentReady.Saved);
-
-LS.onDocumentReady.Saved = function(){
+$(document).on('ready  pjax:complete', function(){
     $(".browsetable").tablesorter({
                             widgets: ['zebra'],            
                             sortList: [[0,0]] });

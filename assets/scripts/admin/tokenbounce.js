@@ -24,12 +24,9 @@ if ($('#bounceprocessing input:radio:checked').val()!='L'){
     }
 }
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Tokenbounce);
-$(document).on(' pjax:complete',LS.onDocumentReady.Tokenbounce);
-
-LS.onDocumentReady.Tokenbounce = function(){
+$(document).on('ready  pjax:complete', function(){
     updateParameters();
     $("input:radio[id^='bounceprocessing']").on('change',function(){
         updateParameters();
     });
-};
+});

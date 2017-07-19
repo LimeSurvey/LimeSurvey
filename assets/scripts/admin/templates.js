@@ -3,10 +3,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Templates);
-$(document).on(' pjax:complete',LS.onDocumentReady.Templates);
-
-LS.onDocumentReady.Templates = function(){
+$(document).on('ready  pjax:complete', function(){
 
     $('.ace:not(.none)').ace({
         'mode' : editorfiletype,
@@ -32,7 +29,7 @@ LS.onDocumentReady.Templates = function(){
       $('#previewiframe').css("width", "95%");
       $('#previewiframe').css("height", "768px");
     });
-};
+});
 
 // Creates a toolbar.
 function createToolbar(element, editor)

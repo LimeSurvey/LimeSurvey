@@ -507,4 +507,3 @@ function insertSearchCondition(id, options){
     return options;
 }
 $(document).on('ready  pjax:complete', (LS.CPDB.bindButtons);
-$(document).on(' pjax:complete',(LS.CPDB.bindButtons);

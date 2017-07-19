@@ -13,7 +13,7 @@ Vue.use(VueLocalStorage);
 
 Vue.mixin({
   methods: {
-    updatePjaxLinks(){this.$store.commit('updatePjax');}
+    updatePjaxLinks: function(){this.$store.commit('updatePjax');}
   }
 });
 console.log('LS.globalUserId',LS.globalUserId);
@@ -42,7 +42,7 @@ if(document.getElementById('vue-app-main-container')){
 }
 
 
-$(document).ready(()=>{
+$(document).on('ready pjax:complete', ()=>{
   if($('#vue-app-main-container').length >0 ){
 
     const
@@ -66,10 +66,15 @@ $(document).ready(()=>{
     });
 
      $('#vue-app-main-container').css('min-height', vueAppContainerHeight+'px');
-    // $('#in_survey_common').css('height',inSurveyCommonHeight+'px');
   }
 });
-$(document).on('pjax:send', (evt)=>{console.log('PJAX:',evt)});
+$(document).on('pjax:send', (evt)=>{
+    $('#pjax-file-load-container').find('div').css({'width':'20%', 'display': 'block'});
+});
+$(document).on('pjax:complete', (evt)=>{
+    $('#pjax-file-load-container').find('div').css('width','100%');
+    setTimeout(function(){$('#pjax-file-load-container').find('div').css({'width':'0%', 'display': 'none'})},2200);
+})
 // const topmenu = new Vue(
 //   {  
 //     el: '#vue-top-menu-app',

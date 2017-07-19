@@ -6,10 +6,6 @@ $(document).on('ready  pjax:complete', function(){
     $(".em-expression").tooltip();
 });
 
-$(document).on(' pjax:complete',function(){
-    // Tooltip inside em-var
-    $(".em-expression").tooltip();
-});
 
 $(document).on('click','.em-expression a',function(e){
     e.preventDefault();

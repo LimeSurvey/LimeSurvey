@@ -27,7 +27,7 @@ function jquery_goodchars(e, goods)
 }
 
 
-LS.onDocumentReady.Asessements = function(){
+$(document).on('ready  pjax:complete', function(){
     //$('#languagetabs').tabs();
     if ($(".assessmentlist tbody tr").size()>0)
     {
@@ -59,7 +59,4 @@ LS.onDocumentReady.Asessements = function(){
             return jquery_goodchars(e,'1234567890-');
         }
     )
-};
-
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Asessements);
-$(document).on(' pjax:complete',LS.onDocumentReady.Asessements);
+});

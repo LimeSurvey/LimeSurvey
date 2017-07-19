@@ -4,12 +4,8 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Translation);
-$(document).on(' pjax:complete',LS.onDocumentReady.Translation);
-
 var iRunningThreads=0;
-
-LS.onDocumentReady.Translation = function(){
+$(document).on('ready  pjax:complete',  function(){
 
     intThrottlingRate = 550; // 1 request per 550 ms
     $('#translationtabs').show();
@@ -83,7 +79,7 @@ LS.onDocumentReady.Translation = function(){
 
         return false;
     });
-};
+});
 
 
 function fHideAjaxLoader(){

@@ -3,10 +3,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).ready(LS.onDocumentReady.ViewAttribute);
-$(document).on(' pjax:complete',LS.onDocumentReady.ViewAttribute);
-
-LS.onDocumentReady.ViewAttribute = function() {
+$(document).on(' pjax:complete', function() {
     $.each(removeitem, function(index, value) {
         $("select#langdata option[value='"+value+"']").remove();
     });
@@ -124,6 +121,6 @@ LS.onDocumentReady.ViewAttribute = function() {
 
     // Hide all cancel-buttons
     $('.cancel').hide();
-};
+});
 
 

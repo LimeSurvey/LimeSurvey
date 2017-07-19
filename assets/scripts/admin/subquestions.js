@@ -17,9 +17,6 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Subquestions);
-$(document).on(' pjax:complete',LS.onDocumentReady.Subquestions);
-
 var labelcache=[];
 
 /* Event added on document for all button (new one added in js too)
@@ -30,7 +27,7 @@ $(document).on("click","#editsubquestionsform :submit", function() {
     return code_duplicates_check();
 });
 
-LS.onDocumentReady.Subquestions = function(){
+$(document).on('ready  pjax:complete', function(){
 
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',
@@ -73,7 +70,7 @@ LS.onDocumentReady.Subquestions = function(){
 
     bindExpandRelevanceEquation();
 
-};
+});
 
 /**
  * Bind relevance equation to expand on click (only once)

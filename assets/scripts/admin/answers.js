@@ -3,7 +3,7 @@
 var LS = LS || {  onDocumentReady: {} };
 
 var labelcache=[];
-Ls.onDocumentReady.Answers = function(){
+$(document).on('ready  pjax:complete', function(){
 
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,
@@ -42,10 +42,7 @@ Ls.onDocumentReady.Answers = function(){
     $(document).on("click", '.btnaddanswer', addinput);
     $(document).on("click", '.btndelanswer', deleteinput);
     $(document).on("click", '.btnlsbrowser', lsbrowser );
-};
-
-$(document).on('ready  pjax:complete', Ls.onDocumentReady.Answers);
-$(document).on(' pjax:complete',Ls.onDocumentReady.Answers);
+});
 
 function deleteinput()
 {

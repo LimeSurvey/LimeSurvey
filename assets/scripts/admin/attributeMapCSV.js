@@ -2,7 +2,7 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-LS.onDocumentReady.AttributeMapCSV = function() {
+$(document).on('ready  pjax:complete', function() {
     if(!$('#csvattribute').length ) {
         //alert("All the attributes are automatically mapped");
     }
@@ -240,7 +240,4 @@ LS.onDocumentReady.AttributeMapCSV = function() {
             });
         });
     });
-};
-
-$(document).on('ready  pjax:complete', LS.onDocumentReady.AttributeMapCSV);
-$(document).on(' pjax:complete',LS.onDocumentReady.AttributeMapCSV);
+});

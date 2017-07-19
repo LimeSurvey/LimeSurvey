@@ -29,8 +29,10 @@
     "webpack": "^3.0.0"
   },
   "dependencies": {
+    "gulp-uglify": "^3.0.0",
     "lodash": "^4.17.4",
     "pjax": "^0.2.4",
+    "pump": "^1.0.2",
     "vue": "^2.3.4",
     "vue-localstorage": "^0.3.0",
     "vuex": "^2.3.1",

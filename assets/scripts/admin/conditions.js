@@ -68,10 +68,7 @@ function jquery_goodchars(e, goods)
 }
 
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Conditions);
-$(document).on(' pjax:complete',LS.onDocumentReady.Conditions);
-
-LS.onDocumentReady.Conditions = function(){
+$(document).on('ready  pjax:complete', function(){
 
     // TODO: Localization
     $('#copyconditions').submit(function() {
@@ -228,7 +225,7 @@ LS.onDocumentReady.Conditions = function(){
     $('#quick-add-condition-close-button').on('click', function(ev) {
         location.reload();
     });
-};
+});
 
 /**
  * Object with one public variable: fun, which is

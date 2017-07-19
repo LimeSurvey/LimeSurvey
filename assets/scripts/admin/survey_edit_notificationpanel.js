@@ -6,8 +6,6 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.SurveyEditNotification);
-$(document).on(' pjax:complete',LS.onDocumentReady.SurveyEditNotification);
 
 function updateParameters()
 {
@@ -40,9 +38,9 @@ if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
     }
 }
 
-LS.onDocumentReady.SurveyEditNotification = function(){
+$(document).on('ready  pjax:complete', function(){
     updateParameters();
     $("input:radio[id^='googleanalyticsapikeysetting']").on('change',function(){
         updateParameters();
     });
-};
+});

@@ -2,9 +2,6 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Statistics);
-$(document).on(' pjax:complete',LS.onDocumentReady.Statistics);
-
 function toggleSection(chevron, section) {
     section.toggle();
     chevron.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
@@ -751,7 +748,7 @@ var exportImages = function () {
         });
 };
 
-LS.onDocumentReady.Statistics = function () {
+$(document).on('ready  pjax:complete', function () {
     LS.onDocumentReady.Statistics2();
     $('body').addClass('onStatistics');
     var exportImagesButton = $('<button class="btn btn-info" style="margin: auto;">Export images</button>');

@@ -3,10 +3,6 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Tokens);
-$(document).on(' pjax:complete',LS.onDocumentReady.Tokens);
-
-
 /**
  * jQuery Plugin to manage the date in token modal edit.
  * Some fields, like "Completed", can have string value (eg: 'N') or a date value.
@@ -165,7 +161,7 @@ function submitEditToken(){
 /**
  * Scroll the pager and the footer when scrolling horizontally
  */
-LS.onDocumentReady.Tokens = function(){
+$(document).on('ready  pjax:complete', function(){
 
     if($('#sent-yes-no-date-container').length > 0)
     {
@@ -409,7 +405,7 @@ LS.onDocumentReady.Tokens = function(){
 
     });
 
-};
+});
 
 var conditionid=1;
 function checkbounces() {

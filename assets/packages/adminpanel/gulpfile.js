@@ -1,5 +1,7 @@
 const
     gulp = require("gulp"),
+    uglify = require('gulp-uglify'),
+    pump = require('pump'),
     concat = require("gulp-concat"),
     sass = require("gulp-sass");
 
@@ -10,6 +12,13 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./build'));
 });
  
-gulp.task('sass:watch', function () {
-  gulp.watch('./scss/*.scss', ['sass']);
+gulp.task('compress', function (cb) {
+  pump([
+        gulp.src('build/*.js'),
+        uglify(),
+        concat('lsadminpanel.min.js'),
+        gulp.dest('build')
+    ],
+    cb
+  );
 });

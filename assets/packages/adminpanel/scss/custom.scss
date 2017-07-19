@@ -96,3 +96,24 @@ ol.breadcrumb.title-bar-breadcrumb{
     font-size: 18px;
     padding: 8px 15px;
 }
+
+#pjax-file-load-container {
+    height:6px;
+    position: fixed;
+    top:1px;
+    left:0;
+    width: 100%;
+    width: 100vw;
+
+    >div{
+        display: none;
+        height: 8px;
+        border-radius: 1px;
+        background: #0f3e12;
+        background: linear-gradient(to right, #0f3e12 0%, #1F5523 50%, #042806 100% );
+        -webkit-transition-timing-function: ease-in-out;
+        transition-timing-function: ease-in-out;
+        -webkit-transition: width 1.6s; /* Safari */
+        transition: width 1.6s;
+    }
+}

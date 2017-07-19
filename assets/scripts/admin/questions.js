@@ -13,11 +13,7 @@ var LS = LS || {
     onDocumentReady: {}
 };
 
-$(document).on('ready  pjax:complete', LS.onDocumentReady.Questions);
-$(document).on(' pjax:complete',LS.onDocumentReady.Questions);
-
-// Collapse in editarticle
-LS.onDocumentReady.Questions = function(){
+$(document).on('ready  pjax:complete', function(){
     $('#questionTypeContainer').css("overflow","visible");
     $('#collapseOne').on('shown.bs.collapse', function () {
         $('#questionTypeContainer').css("overflow","visible");
