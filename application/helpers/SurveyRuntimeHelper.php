@@ -754,7 +754,22 @@ class SurveyRuntimeHelper {
      */
     private function setPrevStep()
     {
-        $_SESSION[$this->LEMsessid]['prevstep'] = (in_array($this->move,array("clearall","changelang","saveall","reload", null)) && !empty($this->move))?$this->move:$_SESSION[$this->LEMsessid]['step'];
+        if (isset($this->move))
+        {
+            if(!in_array($this->move,array("clearall","changelang","saveall","reload")))
+                $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
+            else // Accepted $move without error
+                $_SESSION[$this->LEMsessid]['prevstep']= $this->move;
+        }
+        else
+        {
+            $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
+        }
+        if (!isset($_SESSION[$this->LEMsessid]['prevstep']))
+        {
+            $_SESSION[$this->LEMsessid]['prevstep']=$_SESSION[$this->LEMsessid]['prevstep']-1;   // this only happens on re-load
+        }
+
     }
 
     /**
@@ -1135,9 +1150,11 @@ class SurveyRuntimeHelper {
     private function setVarFromArgs($args)
     {
         extract($args);
+
         $this->param = $param;
 
         // Todo: check which ones are really needed
+        $this->move                   = isset( $move )                  ?$move                   :null ;
         $this->LEMskipReprocessing    = isset( $LEMskipReprocessing    )?$LEMskipReprocessing    :null ;
         $this->thissurvey             = isset( $thissurvey             )?$thissurvey             :null ;
         $this->iSurveyid              = isset( $surveyid               )?$surveyid               :null ;
