@@ -497,7 +497,7 @@ function upgradeTemplateTables303($oDB)
         'api_version'            => '3.0',
         'view_folder'            => 'views',
         'files_folder'           => 'files',
-        'description'            => 'LimeSurvey Simple Template:\r\nA clean base for developpments.\r\n',
+        'description'            => '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developpers to create their own solution.',
         'owner_id'               => '1',
         'extends_templates_name' => '',
     ));
