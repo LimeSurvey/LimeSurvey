@@ -36,11 +36,10 @@
                      {
                          //return
                         echo "<div class='ls-flex-column fill'><h4>".gT('There are no simple options in this template')."</h4></div>";
-                     } 
+                     }
                      //if however there is no error in the parsing of the json string go forth and render the form
-                     else 
+                     else
                      {
-                        //@TODO create a twiggable view of this!
                         /**
                          * The form element needs to hold teh class "action_update_options_string_form" to be correctly bound
                          * To be able to change the value in the "real" form, the input needs to now what to change.
@@ -62,29 +61,11 @@
                 <p class="note">Fields with <span class="required">*</span> are required.</p>
                 <?php echo $form->errorSummary($model); ?>
 
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'templates_name'); ?>
-                    <?php echo $form->textField($model,'templates_name',array('size'=>60,'maxlength'=>150)); ?>
-                    <?php echo $form->error($model,'templates_name'); ?>
-                </div>
 
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'sid'); ?>
-                    <?php echo $form->textField($model,'sid'); ?>
-                    <?php echo $form->error($model,'sid'); ?>
-                </div>
-
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'gsid'); ?>
-                    <?php echo $form->textField($model,'gsid'); ?>
-                    <?php echo $form->error($model,'gsid'); ?>
-                </div>
-
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'uid'); ?>
-                    <?php echo $form->textField($model,'uid'); ?>
-                    <?php echo $form->error($model,'uid'); ?>
-                </div>
+                <?php echo $form->hiddenField($model,'templates_name'); ?>
+                <?php echo $form->hiddenField($model,'sid'); ?>
+                <?php echo $form->hiddenField($model,'gsid'); ?>
+                <?php echo $form->hiddenField($model,'uid'); ?>
 
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'files_css'); ?>
