@@ -1,4 +1,4 @@
-Welcome to LimeSurvey v2.x!
+Welcome to LimeSurvey v3.x!
 
 Warranty: This program is provided "as is" without warranties of any kind, either expressed or implied,
 including, but not limited to, the implied warranties of merchantability and fitness for a particular
@@ -36,6 +36,32 @@ CHANGE LOG
 ------------------------------------------------------
 
 Changes from 2.67.0 (build 170622) to 3.0.0beta1 (build 170720) July 19, 2017
+
+-New feature: Enhancements of 2.60 HTML so it's more complient with WAI (Web Accessibility Initiative). (Denis Chenu)
+-New feature: Twig is the new LimeSurvey template engine. It replaces the system of replacement keywords. Now, all the HTML is editable from templates. (Louis-Sébastien Gac-Artigas)
+-New feature: added sandbox for twig (security), and LS Twig Extension for common operations from template (adding CSS/JS, images, etc)
+-New feature: extended Yii's CClientScript, so it's possible to modify asset packages before rendering (add/remove/replace package definitions)
+-New feature: Enable/disable asset manager depending on debug mode for all scripts (via CClientScript extension)
+-New feature: Infinite template inheritance system. A template can inherit from another template so it contains only the modified files. It makes it easy to have a fleet of templates with slighty changes.(Louis-Sébastien Gac-Artigas)
+-New feature: Template manifest can now add/replace/remove CSS/JS files from core packages (Denis Chenu, Louis-Sébastien Gac-Artigas)
+-New feature: Template layouts. Template can now have distinct layouts for different pages (survey taking, survey list, error, etc)
+-New feature: Database tables for Templates and Templates Configuration. Improves performances and flexibility. (Louis-Sébastien Gac-Artigas)
+-New feature: Choose DB or Manifest mode. Template providers can choose to load template configuration from XML rather than DB for easy development.
+-New feature: Templates list on homepage. The user can now access to a template list, with few informations about each template and buttons to edit them.(Louis-Sébastien Gac-Artigas)
+-New feature: Template editor inheritance mode. Now, template editor extends templates rather than copying them. (Louis-Sébastien Gac-Artigas)
+-New feature: Template options page. Template providers can create their own custom option pages to allow users to set some template parameters. (Louis-Sébastien Gac-Artigas)
+-New feature: Added 'Advanced Template', a template to show what can be done with the new engine. (Louis-Sébastien Gac-Artigas)
+-New feature: Ajax mode for 'Advanced Template' (need to be deeply tested) (Louis-Sébastien Gac-Artigas)
+-New feature: Added 'Minimal Template', a simple template to start with for developers
+-New feature: Added 'Material Template', a template to show the inheritance concept
+-Dev: Enhancements of frontend rendering workflow for better performances (surveyRuntimeHelper, frontend_helper, frontend controller, etc). (Louis-Sébastien Gac-Artigas)
+-Dev: Clean, reorder, and added packages for system. All the LS assets are in a folder root called assets/. Added new packages such as core packages (Denis Chenu, Louis-Sébastien Gac-Artigas)
+-Dev: Replaced old surveyinfo logic by MVC complient approach (Tonis Ormisson)
+-Dev: Rewrote most code documentation for phpDocumentor (Tonis Ormisson)
+-Dev: added some 508 fixes to admin interface (Chad Day)
+
+
+
 
 Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) June 22, 2017
 -New feature: Opting out of a survey requires a one-click confirmation (Carsten Schmitz)
@@ -2320,12 +2346,12 @@ New features:
 
 Added croatian language file (submitted by Ivana Pavic)!
 Change survey sent/taken from "Y" to the date:
-	When reviewing the tokens display, the fields telling if the survey request was sent,
-	and the survey taken, display a N or Y. This was changed to be the actual date this event took place.
-	This is giving some siginificant additional information to the survey author. (Patch by Thomas Ringate / tringate!)
+    When reviewing the tokens display, the fields telling if the survey request was sent,
+    and the survey taken, display a N or Y. This was changed to be the actual date this event took place.
+    This is giving some siginificant additional information to the survey author. (Patch by Thomas Ringate / tringate!)
 New global option that allows the administrator to specify what is the minimum number of remaining answers
-	in an 'array - flexible' question that must be remaining before repeating the question headings. This
-	avoids that the headings of the question are repeated if only a few answers are remaining. (Patch by Kris Ven !)
+    in an 'array - flexible' question that must be remaining before repeating the question headings. This
+    avoids that the headings of the question are repeated if only a few answers are remaining. (Patch by Kris Ven !)
 
 Changes:
 Moved admin CSS styles to separate CSS file
