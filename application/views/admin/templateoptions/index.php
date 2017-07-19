@@ -35,7 +35,14 @@
                         'header' => gT('name'),
                         'name' => 'templates_name',
                         'value'=>'$data->templates_name',
-                        'htmlOptions' => array('class' => 'col-md-5'),
+                        'htmlOptions' => array('class' => 'col-md-2'),
+                    ),
+
+                    array(
+                        'header' => gT('Description'),
+                        'name' => 'templates_name',
+                        'value'=>'$data->template->description',
+                        'htmlOptions' => array('class' => 'col-md-3'),
                     ),
 
                     array(
@@ -43,14 +50,14 @@
                         'name' => 'templates_type',
                         'value'=>'$data->typeIcon',
                         'type' => 'raw',
-                        'htmlOptions' => array('class' => 'col-md-5'),
+                        'htmlOptions' => array('class' => 'col-md-2'),
                     ),
 
                     array(
                         'header' => gT('extends'),
                         'name' => 'templates_extends',
                         'value'=>'$data->template->extends_templates_name',
-                        'htmlOptions' => array('class' => 'col-md-5'),
+                        'htmlOptions' => array('class' => 'col-md-2'),
                     ),
 
                     array(
