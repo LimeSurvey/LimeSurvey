@@ -763,7 +763,7 @@ class SurveyRuntimeHelper {
         }
         else
         {
-            $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
+        //    $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$LEMsessid]['step']-1; // Is this needed ?
         }
         if (!isset($_SESSION[$this->LEMsessid]['prevstep']))
         {
