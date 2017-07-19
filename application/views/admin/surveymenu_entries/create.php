@@ -3,13 +3,13 @@
 /* @var $model SurveymenuEntries */
 
 $this->breadcrumbs=array(
-	'Surveymenu Entries'=>array('index'),
+	'Menu entries'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List SurveymenuEntries', 'url'=>array('index')),
-	array('label'=>'Manage SurveymenuEntries', 'url'=>array('admin')),
+	array('label'=>'List meny entries', 'url'=>array('index')),
+	array('label'=>'Manage menu entries', 'url'=>array('admin')),
 );
 ?>
 

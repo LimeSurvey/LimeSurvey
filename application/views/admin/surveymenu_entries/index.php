@@ -16,7 +16,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 <div class="container-fluid ls-space padding left-50 right-50">
 	<div class="ls-flex-column ls-space padding left-35 right-35">
 		<div class="col-12 h1">
-			<?php eT('Surveymenu entries')?> 
+			<?php eT('Menu entries')?> 
 			<a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" href="#editcreatemenuentry" data-toggle="modal">
 				<span id="createnewmenuentry">
 					<i class="fa fa-plus"></i>&nbsp;<?php eT('New menu entry') ?>

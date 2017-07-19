@@ -3,7 +3,7 @@
 /* @var $model SurveymenuEntries */
 
 $this->breadcrumbs=array(
-	'Surveymenu Entries'=>array('index'),
+	'Menu entries'=>array('index'),
 	$model->name=>array('view','id'=>$model->id),
 	'Update',
 );
