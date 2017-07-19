@@ -3,6 +3,8 @@ const
     uglify = require('gulp-uglify'),
     pump = require('pump'),
     concat = require("gulp-concat"),
+    sourcemaps = require("gulp-sourcemaps"),
+    babel = require("gulp-babel"),
     sass = require("gulp-sass");
 
 gulp.task('sass', function () {
@@ -14,7 +16,9 @@ gulp.task('sass', function () {
  
 gulp.task('compress', function (cb) {
   pump([
-        gulp.src('build/*.js'),
+        gulp.src('build/lsadminpanel.js'),
+        sourcemaps.init(),
+        babel({presets: ['es2015']}),
         uglify(),
         concat('lsadminpanel.min.js'),
         gulp.dest('build')

@@ -8,8 +8,15 @@ var entryPoint = ['./src/main.js'];
 var exportPath = path.resolve(__dirname, './build');
 
 // Enviroment flag
-var plugins = [];
 var env = process.env.WEBPACK_ENV;
+var plugins = [
+  // ...
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: '"'+env+'"'
+    }
+  })
+];
 
   appName = appName + '.js';
 
@@ -44,7 +51,9 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: [
-          'vue-loader'
+          'vue-loader',
+          "eslint-loader",
+          'babel'
           ],
       },
       {
