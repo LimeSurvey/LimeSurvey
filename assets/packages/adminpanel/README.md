@@ -1,4 +1,4 @@
-# new admin panel
+# Admin panel
 
 ## whats new?
 
@@ -46,17 +46,27 @@ All necessary packages will be installed.
 
 ### compiling assets
 
-#### webpack
+Compilation of assets is completely controllable by gulp.
 
-Webpack compiles the javascript assets and the inline styles of the vue-components.
+Here is a list of possible gulp commands:
 
-It is run with the command `webpack` or `webpack --watch` for watching changes and automatically recompiling on change.
+|Command                   | Description                                                |
+|--------------------------|------------------------------------------------------------|
+|`gulp`                    | Just compile all assets into the build folder              |
+|`gulp compile`            | Long version for `gulp`                                    |
+|`gulp compile:production` | Compile all assets into production ready minified versions |
+|`gulp watch`              | Compile all assets and then watch for changes              |
 
-#### gulp
 
-Gulp is used for compiling the SCSS and compiling the production version of the javascript
+Here are subcommands that are not neccessary normally
 
-To compile the SCSS gun `gulp sass` or `gulp sass:watch` for watching changes and recompiling on change.
 
-To create a production ready version of the javascript files run `gulp compress`.
-
+|Command                   | Description                                                |
+|--------------------------|------------------------------------------------------------|
+|`gulp sass`               | Only compile sass                                          |
+|`gulp sass:production`    | Only compile sass for production                           |
+|`gulp webpack:production` | Only compile js through webpack                            |
+|`gulp webpack`            | Only compile js through webpack for production             |
+|`gulp sass:watch`         | Watch sass assets for change and compile on change         |
+|`gulp webpack:watch`      | Watch js assets for change and compile on change           |
+|`gulp compress`           | Compress assets to a minified version                      |

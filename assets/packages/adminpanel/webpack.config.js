@@ -24,6 +24,7 @@ var plugins = [
 // Main Settings config
 module.exports = {
   entry: entryPoint,
+  devtool: 'source-map',
   output: {
     path: exportPath,
     filename: appName

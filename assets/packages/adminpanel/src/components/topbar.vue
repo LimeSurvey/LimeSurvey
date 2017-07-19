@@ -10,7 +10,7 @@ export default {
 }
 </script>
 <template>
-    <div class='row container-fluid'>
+    <div class='ls-flex-row container-fluid'>
         <div class="col-xs-12 col-md-12">
             <h3 id="survey_title"><a :href="mainHref">{{mainTitle}}</a></h3>
         </div>
