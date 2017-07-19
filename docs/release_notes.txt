@@ -15,7 +15,7 @@ HOW TO INSTALL
 This release does have the following requirements:
 
 *MySQL 5.5.3 or later OR Microsoft SQL Server 2005 or later OR Postgres 8.1 or later
-*PHP 5.3.3 or later with the following modules/libraries enabled:
+*PHP 5.5.9 or later with the following modules/libraries enabled:
     *mbstring (Multibyte String Functions) extension library
     *PDO database driver for MySQL (pdo_mysql or pdo_mysqli) or Postgres (pdo_pgsql) or MSSQL (pdo_sqlsrv for Windows and pdo_dblib for Linux)
 
@@ -54,6 +54,7 @@ Changes from 2.67.0 (build 170622) to 3.0.0beta1 (build 170720) July 19, 2017
 -New feature: Ajax mode for 'Advanced Template' (need to be deeply tested) (Louis-Sébastien Gac-Artigas)
 -New feature: Added 'Minimal Template', a simple template to start with for developers
 -New feature: Added 'Material Template', a template to show the inheritance concept
+-New feature: Store random seed with each response, making it possible to render the exact order of questions and groups when respondent loads survey.
 -Dev: Enhancements of frontend rendering workflow for better performances (surveyRuntimeHelper, frontend_helper, frontend controller, etc). (Louis-Sébastien Gac-Artigas)
 -Dev: Clean, reorder, and added packages for system. All the LS assets are in a folder root called assets/. Added new packages such as core packages (Denis Chenu, Louis-Sébastien Gac-Artigas)
 -Dev: Replaced old surveyinfo logic by MVC complient approach (Tonis Ormisson)
