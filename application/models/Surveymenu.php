@@ -300,8 +300,11 @@ class Surveymenu extends LSActiveRecord
 		$criteria=new CDbCriteria;
 
 		//Don't show main menu when not superadmin
-		if(!Permission::model()->hasGlobalPermission('superadmin','read'))
+		if(Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin','read'))
+		{
 			$criteria->compare('id','<> 1');
+			$criteria->compare('id','<> 2');
+		}
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('parent_id',$this->parent_id);
