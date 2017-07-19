@@ -573,7 +573,7 @@ function upgradeTemplateTables302($oDB)
 
     // Add global configuration for Material Template
     $oDB->createCommand()->insert('{{template_configuration}}', array(
-        'id'                => '2',
+        'id'                => '3',
         'templates_name'    => 'material',
         'files_css'         => '{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}',
         'files_js'          => '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}',
