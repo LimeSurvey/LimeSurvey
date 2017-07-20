@@ -35,6 +35,22 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.67.1 (build 170626) to 2.67.2 (build 170726) July 26, 2017
+-Fixed issue #12491: Permission to delete participants not obeyed in export dialog (Carsten Schmitz)
+-Fixed issue: Default template with questions of white font color (markusfluer)
+-Fixed issue: Importing a Tab-separated survey CSV file with multiline text in the question field does not properly work (Carsten Schmitz)
+-Fixed issue: QuickMenu break usage of newDirectRequest for other plugin (Denis Chenu)
+-Fixed issue: unable to save Google Analytics key by survey (Denis Chenu)
+
+Changes from 2.67.0 (build 170622) to 2.67.1 (build 170626) June 26, 2017
+-Fixed issue #12414: exporting printable - template assets not visible in some extractors (eg windows default) (#701) (Tõnis Ormisson)
+-Fixed issue: Error in database update syntax (Olle Harstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by kkd
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Turkish by kayazeren
 Changes from 2.67.0 (build 170622) to 3.0.0beta1 (build 170720) July 19, 2017
 
 -New feature: Enhancements of 2.60 HTML so it's more complient with WAI (Web Accessibility Initiative). (Denis Chenu)
