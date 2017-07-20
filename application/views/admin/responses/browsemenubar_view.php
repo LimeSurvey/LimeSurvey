@@ -16,14 +16,14 @@
                 <!-- Display Responses -->
                 <?php if (count($tmp_survlangs) < 2): ?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/browse/surveyid/$surveyid"); ?>' role="button">
-                        <span class="glyphicon glyphicon-list text-success"></span>
+                        <span class="fa fa-list text-success"></span>
                         <?php eT("Display responses"); ?>
                     </a>
                 <?php else:?>
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="icon-add text-success"></span>
-                        <?php eT("Responses"); ?> <span class="caret"></span>
+                        <span class="fa fa-list text-success"></span> 
+                        <?php eT("Responses"); ?> <span class="fa fa-caret-down"></span>
                     </button>
                     <ul class="dropdown-menu">
                         <?php foreach ($tmp_survlangs as $tmp_lang): ?>
@@ -212,7 +212,7 @@
                     <?php if ($bHasFile): ?>
                     <a class="btn btn-default" href='<?php echo Yii::app()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>$surveyid,"sResponseId"=>$id)); ?>' role="button" >
                         <span class="glyphicon  glyphicon-download-alt text-success"></span>
-                        <?php eT("Delete this entry"); ?>
+                        <?php eT("Download files"); ?>
                     </a>
                     <?php endif;?>
 

@@ -754,7 +754,7 @@ function LEMval(alias)
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
                 }
-                return value;
+                return Number(value);
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)

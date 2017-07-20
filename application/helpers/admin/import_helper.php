@@ -1764,6 +1764,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     $aRealFieldNames = Yii::app()->db->getSchema()->getTable(SurveyDynamic::model($iSurveyId)->tableName())->getColumnNames();
     //$aCsvHeader=array_map("trim",explode($aOptions['sSeparator'], trim(array_shift($aFileResponses))));
     $aCsvHeader=str_getcsv(array_shift($aFileResponses),$aOptions['sSeparator'],$aOptions['sQuoted']);
+    LimeExpressionManager::SetDirtyFlag($iSurveyId); // Be sure survey EM code are up to date
     $aLemFieldNames=LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
     $aKeyForFieldNames=array();// An array assicated each fieldname with corresponding responses key
     if(!$aCsvHeader){
@@ -2121,19 +2122,15 @@ function TSVImportSurvey($sFullFilePath)
 
     $file = stream_get_contents($handle);
     fclose($handle);
-
     // fix Excel non-breaking space
     $file = str_replace("0xC20xA0",' ',$file);
     // Replace all different newlines styles with \n
     $file = preg_replace('~\R~u', "\n", $file);
-    $filelines = explode("\n",$file);
-    $row = array_shift($filelines);
-    $headers = explode("\t",$row);
-    $rowheaders = array();
-    foreach ($headers as $header)
-    {
-        $rowheaders[] = trim($header);
-    }
+    $tmp = fopen('php://temp', 'r+');
+    fwrite($tmp,$file);
+    rewind($tmp);
+    $rowheaders = fgetcsv($tmp,0,"\t",'"');
+    $rowheaders = array_map('trim',$rowheaders);
     // remove BOM from the first header cell, if needed
     $rowheaders[0] = preg_replace("/^\W+/","",$rowheaders[0]);
     if (preg_match('/class$/',$rowheaders[0]))
@@ -2142,12 +2139,9 @@ function TSVImportSurvey($sFullFilePath)
     }
 
     $adata = array();
-    foreach ($filelines as $rowline)
-    {
+    while (($row = fgetcsv($tmp,0,"\t",'"')) !== FALSE) {
         $rowarray = array();
-        $row = explode("\t",$rowline);
-        for ($i = 0; $i < count($rowheaders); ++$i)
-        {
+        for ($i = 0; $i < count($rowheaders); ++$i) {
             $val = (isset($row[$i]) ? $row[$i] : '');
             // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
             if (preg_match('/^".*"$/',$val))
@@ -2158,7 +2152,7 @@ function TSVImportSurvey($sFullFilePath)
         }
         $adata[] = $rowarray;
     }
-
+    fclose($tmp);
     $results['defaultvalues']=0;
     $results['answers']=0;
     $results['surveys']=0;

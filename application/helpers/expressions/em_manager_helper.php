@@ -3635,7 +3635,13 @@
             $this->qid2validationEqn = array();
             $this->groupSeqInfo = array();
             $this->gseq2relevanceStatus = array();
-
+            /* Fill some static know vars , the used is always $this->knownVars (even if set in templatereplace function) */
+            $this->knownVars['SID'] = array(
+                'code'=>$this->sid,
+                'jsName_on'=>'',
+                'jsName'=>'',
+                'readWrite'=>'N',
+            );
             /* Add the core replacement before question code : needed if use it in equation , use SID to never send error */
             templatereplace("{SID}");
 
@@ -4228,6 +4234,12 @@
                     'jsName'=>'',
                     'readWrite'=>'N',
                 );
+                $this->knownVars['TOKEN'] = array(
+                    'code'=>$_SESSION[$this->sessid]['token'],
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
+                );
 
                 $token = Token::model($surveyid)->findByToken($_SESSION[$this->sessid]['token']);
                 if($token) {
@@ -4248,13 +4260,13 @@
                 $attrs = array_keys(getTokenFieldsAndNames($surveyid));
 
                 $blankVal = array(
-                'code'=>'',
-                'type'=>'',
-                'jsName_on'=>'',
-                'jsName'=>'',
-                'readWrite'=>'N',
+                    'code'=>'',
+                    'type'=>'',
+                    'jsName_on'=>'',
+                    'jsName'=>'',
+                    'readWrite'=>'N',
                 );
-
+                // DON'T set $this->knownVars['TOKEN'] = $blankVal; becuase optout/optin can need it, then don't replace this from templatereplace
                 foreach ($attrs as $key)
                 {
                     if (preg_match('/^(firstname|lastname|email|usesleft|token|attribute_\d+)$/',$key))
@@ -8690,25 +8702,33 @@ EOD;
                                 $lang = $_SESSION['LEMlang'];
                                 $value = self::convertNonLatinNumerics($value, $lang);
 
-                                $value=trim($value);
-                                if ($value!="" && $value!="INVALID")
-                                {
-                                    $aAttributes=$LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
+                                $value = trim($value);
+                                if ($value != "" && $value != "INVALID") {
+                                    $aAttributes = $LEM->getQuestionAttributesForEM($LEM->sid, $qid,$_SESSION['LEMlang']);
                                     if (!isset($aAttributes[$qid])) {
                                         $aAttributes[$qid]=array();
                                     }
-                                    $aDateFormatData=getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
+                                    $aDateFormatData = getDateFormatDataForQID($aAttributes[$qid],$LEM->surveyOptions);
                                     // We don't really validate date here : if date is invalid : return 1999-12-01 00:00
-                                    $oDateTimeConverter = new Date_Time_Converter(trim($value), $aDateFormatData['phpdate']);
-                                    $newValue=$oDateTimeConverter->convert("Y-m-d H:i");
-                                    $oDateTimeConverter = new Date_Time_Converter($newValue, "Y-m-d H:i");
-                                    if($value==$oDateTimeConverter->convert($aDateFormatData['phpdate'])) // control if inverse function original value
-                                    {
-                                        $value=$newValue;
-                                    }
-                                    else
-                                    {
-                                        $value="";// Or $value="INVALID" ? : dropdown is OK with this not default.
+                                    // For an explanation of the exclamation mark, see this thread:
+                                    // http://stackoverflow.com/questions/43740037/datetime-converts-wrong-when-system-time-is-30-march
+                                    $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
+
+                                    if ($dateTime === false) {
+                                        $message = sprintf(
+                                            'Could not convert date %s to format %s. Please check your date format settings.',
+                                            trim($value),
+                                            $aDateFormatData['phpdate']
+                                        );
+                                        LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
+                                    } else {
+                                        $newValue = $dateTime->format("Y-m-d H:i");
+                                        $newDateTime = DateTime::createFromFormat("!Y-m-d H:i", $newValue);
+                                        if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
+                                            $value = $newValue;
+                                        } else {
+                                            $value = "";// Or $value="INVALID" ? : dropdown is OK with this not default.
+                                        }
                                     }
                                 }
                                 break;
@@ -10254,6 +10274,16 @@ EOD;
             }
 
             return $result;
+        }
+
+        /**
+         * Set currentQset. Used by unit-tests.
+         * @param array $val
+         * @return void
+         */
+        public function setCurrentQset(array $val)
+        {
+            $this->currentQset = $val;
         }
 
     }

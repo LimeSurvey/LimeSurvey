@@ -225,8 +225,9 @@ class Notification extends LSActiveRecord
     public function getAjaxUrl()
     {
         return Yii::app()->createUrl(
-            'admin/notification/sa/getNotificationAsJSON',
+            'admin/notification',
             array(
+                'sa' => 'getNotificationAsJSON',
                 'notId' => $this->id
             )
         );
@@ -239,8 +240,9 @@ class Notification extends LSActiveRecord
     public function getReadUrl()
     {
         return Yii::app()->createUrl(
-            'admin/notification/sa/notificationRead',
+            'admin/notification',
             array(
+                'sa' => 'notificationRead',
                 'notId' => $this->id
             )
         );
@@ -264,11 +266,15 @@ class Notification extends LSActiveRecord
      * @return string
      */
     public static function getUpdateUrl($surveyId = null) {
+        $params=array(
+            'sa' => 'actionGetMenuWidget',
+        );
+        if($surveyId) {
+            $params['surveyId'] = $surveyId;
+        }
         return Yii::app()->createUrl(
-            'admin/notification/sa/actionGetMenuWidget',
-            array(
-                'surveyId' => $surveyId
-            )
+            'admin/notification',
+            $params
         );
     }
 
@@ -362,30 +368,28 @@ class Notification extends LSActiveRecord
     protected static function getCriteria($surveyId = null)
     {
         $criteria = new CDbCriteria();
-
+        $params = array();
         // Only fetch survey specific notifications if user is viewing a survey
         if (!empty($surveyId))
         {
-            $criteria->addCondition('entity = \'survey\'');
-            $criteria->addCondition('entity_id = ' . $surveyId);  // TODO: Escape survey id
+            $criteria->addCondition('entity =:sentity AND entity_id=:sentity_id');
+            $params[':sentity'] = 'survey';
+            $params[':sentity_id'] = $surveyId;
         }
-
         // User notifications
-        $criteria2 = new CDbCriteria();
-        $criteria2->addCondition('entity = \'user\'');
-        $criteria2->addCondition('entity_id = ' . Yii::app()->user->id);  // TODO: Escape
+        $criteria->addCondition('entity =:uentity AND entity_id=:uentity_id','OR');
+        $params[':uentity'] = 'user';
+        $params[':uentity_id'] = Yii::app()->user->id;
 
         // Only get new notifications
         //$criteria3 = new CDbCriteria();
         //$criteria3->addCondition('status = \'new\'');  // TODO: read = null?
-
-        $criteria->mergeWith($criteria2, 'OR');
         //$criteria->mergeWith($criteria3, 'AND');
-        $criteria->mergeWith(array(
-            'order' => 'id DESC',
-            'limit' => 50
-        ));
 
+        $criteria->params=$params;
+        $criteria->order = 'id DESC';
+        $criteria->limit = 50;
+        
         return $criteria;
     }
 

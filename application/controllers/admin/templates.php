@@ -770,7 +770,7 @@ class templates extends Survey_Common_Action
         if (Yii::app()->session['templateeditormode'] !== 'default') {
             $sTemplateEditorMode = Yii::app()->session['templateeditormode'];
         } else {
-            $sTemplateEditorMode = getGlobalSetting('templateeditormode', 'full');
+            $sTemplateEditorMode = getGlobalSetting('templateeditormode');
         }
         $sExtension=substr(strrchr($editfile, '.'), 1);
         switch ($sExtension)
@@ -1065,7 +1065,7 @@ class templates extends Survey_Common_Action
         $thissurvey['tokenanswerspersistence'] = "Y";
         $thissurvey['templatedir'] = $templatename;
         $thissurvey['format'] = "G";
-        $thissurvey['surveyls_url'] = "http://www.limesurvey.org/";
+        $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
         $thissurvey['usecaptcha'] = "A";
         $percentcomplete = makegraph(6, 10);

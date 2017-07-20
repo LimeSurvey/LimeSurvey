@@ -1153,7 +1153,6 @@ class database extends Survey_Common_Action
                 /* Date management */
                 Yii::app()->loadHelper('surveytranslator');
                 $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
-                Yii::app()->loadLibrary('Date_Time_Converter');
                 $startdate = App()->request->getPost('startdate');
                 if (trim($startdate)=="")
                 {
@@ -1161,9 +1160,8 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new date_time_converter($startdate,$formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
-                    $startdate=$datetimeobj->convert("Y-m-d H:i:s");
+                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $startdate );
+                    $startdate=$datetimeobj->format("Y-m-d H:i:s");
                 }
                 $expires = App()->request->getPost('expires');
                 if (trim($expires)=="")
@@ -1172,8 +1170,8 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
-                    $expires=$datetimeobj->convert("Y-m-d H:i:s");
+                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $expires);
+                    $expires=$datetimeobj->format("Y-m-d H:i:s");
                 }
 
                 // Only owner and superadmins may change the survey owner
@@ -1222,20 +1220,17 @@ class database extends Survey_Common_Action
                 $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
                 $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
                 $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
-                $oSurvey->googleanalyticsapikeysetting = App()->request->getPost('googleanalyticsapikeysetting');
-                if( $oSurvey->googleanalyticsapikeysetting == "Y")
-                {
-                    $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+                switch(App()->request->getPost('googleanalyticsapikeysetting')) {
+                    case "Y":
+                        $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+                        break;
+                    case "G":
+                        $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
+                        break;
+                    case "N":
+                    default:
+                        $oSurvey->googleanalyticsapikey = "";
                 }
-                else if( $oSurvey->googleanalyticsapikeysetting == "G")
-                {
-                    $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
-                }
-                else if( $oSurvey->googleanalyticsapikeysetting == "N")
-                {
-                    $oSurvey->googleanalyticsapikey = "";
-                }
-
                 $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
                 $oSurvey->tokenlength = (App()->request->getPost('tokenlength')<5  || App()->request->getPost('tokenlength')>36)?15:App()->request->getPost('tokenlength');
                 $oSurvey->adminemail = App()->request->getPost('adminemail');
@@ -1244,7 +1239,6 @@ class database extends Survey_Common_Action
                 $event = new PluginEvent('beforeSurveySettingsSave');
                 $event->set('modifiedSurvey', $oSurvey);
                 App()->getPluginManager()->dispatchEvent($event);
-
                 if ($oSurvey->save())
                 {
                     Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));

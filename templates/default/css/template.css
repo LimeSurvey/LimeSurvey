@@ -62,12 +62,12 @@ div[id^="group-"]>div {
  */
 
  #navigator-container {
-     margin-top: 4em;
-     padding-top: 1em;
      padding-bottom: 1em;
  }
- #navigator-container>div
+ #navigator-container > hr
  {
+    margin-top: 0px;
+    margin-bottom: 0px;
  }
 
  #main-col {
@@ -277,6 +277,12 @@ li.responsive-content
 
 #surveys-list-jumbotron {
     text-align: center;
+}
+
+#surveys-list-jumbotron img.site-surveylist-logo {
+    max-width: 35%;
+    display: block;
+    margin: 15px auto;
 }
 
 /*#outerframeContainer {

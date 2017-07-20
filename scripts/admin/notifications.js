@@ -36,13 +36,12 @@ $(document).ready(function() {
             method: 'GET',
             success: function (response) {
                 $('#notification-li').replaceWith(response);
-
                 // Re-bind onclick
                 initNotification();
-
                 // Adapt style to window size
                 styleNotificationMenu();
-            }
+            },
+            error: showError
         });
     }
     // Called from outside (update notifications when click
@@ -66,9 +65,11 @@ $(document).ready(function() {
         $.ajax({
             url: $(that).data('read-url'),
             method: 'GET',
-        }).done(function(response) {
-            // Fetch new HTML for menu widget
-            updateNotificationWidget($(that).data('update-url'));
+            success : function(response) {
+                // Fetch new HTML for menu widget
+                updateNotificationWidget($(that).data('update-url'));
+            },
+            error: showError
         });
 
     }
@@ -84,23 +85,23 @@ $(document).ready(function() {
         $.ajax({
             url: url,
             method: 'GET',
-        }).done(function(response) {
-
-            var response = JSON.parse(response);
-            var not = response.result;
-
-            $('#admin-notification-modal .modal-title').html(not.title);
-            $('#admin-notification-modal .modal-body-text').html(not.message);
-            $('#admin-notification-modal .modal-content').addClass('panel-' + not.display_class);
-            $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
-            $('#admin-notification-modal').modal();
-            
-            // TODO: Will this work in message includes a link that is clicked?
-            $('#admin-notification-modal').unbind('hidden.bs.modal');
-            $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
-                notificationIsRead(that);
-                $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
-            });
+            dataType: 'json',
+            success : function(response) {
+                var not = response.result;
+                $('#admin-notification-modal .modal-title').html(not.title);
+                $('#admin-notification-modal .modal-body-text').html(not.message);
+                $('#admin-notification-modal .modal-content').removeClass('panel-danger').addClass('panel-' + not.display_class);
+                $('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
+                $('#admin-notification-modal').modal();
+                
+                // TODO: Will this work in message includes a link that is clicked?
+                $('#admin-notification-modal').unbind('hidden.bs.modal');
+                $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
+                    notificationIsRead(that);
+                    $('#admin-notification-modal .modal-content').removeClass('panel-' + not.display_class);
+                });
+            },
+            error: showError
         });
     }
 
@@ -159,7 +160,8 @@ $(document).ready(function() {
             method: 'GET',
             success: function (response) {
                 log('response', response);
-            }
+            },
+            error: showError
         }).then(function() {
             updateNotificationWidget(updateUrl);
         });
@@ -168,4 +170,17 @@ $(document).ready(function() {
 
     initNotification();
 
+    function showError(response) {
+        var status= response.status || LS.lang.errorUnknow;
+        var responseText= response.responseText || LS.lang.unknowText;
+        $('#admin-notification-modal .modal-title').html(LS.lang.errorTitle.replace("%s",status));
+        $('#admin-notification-modal .modal-body-text').html(responseText);
+        $('#admin-notification-modal .modal-content').addClass('panel-danger');
+        //$('#admin-notification-modal .notification-date').html(not.created.substr(0, 16));
+        $('#admin-notification-modal').modal();
+        $('#admin-notification-modal').unbind('hidden.bs.modal');
+        $('#admin-notification-modal').on('hidden.bs.modal', function(e) {
+            $('#admin-notification-modal .modal-content').removeClass('panel-danger');
+        });
+    }
 });

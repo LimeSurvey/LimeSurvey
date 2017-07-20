@@ -17,19 +17,19 @@
         type="radio"
         value="<?php echo $code; ?>"
         name="<?php echo $name; ?>"
-        id="answer<?php echo $name.$code; ?>"
+        id="answer<?php echo $name.'s'.$code; ?>"
         <?php echo $checkedState;?>
         onclick="if (document.getElementById('answer<?php echo $name; ?>othertext') != null) document.getElementById('answer<?php echo $name; ?>othertext').value='';checkconditions(this.value, this.name, this.type)"
-        aria-labelledby="label-answer<?php echo $name.$code; ?>"
+        aria-labelledby="label-answer<?php echo $name.'s'.$code; ?>"
      />
-    <label for="answer<?php echo $name.$code; ?>" class="control-label radio-label"></label>
+    <label for="answer<?php echo $name.'s'.$code; ?>" class="control-label radio-label"></label>
 
     <!--
          The label text is provided inside a div,
          so final user can add paragraph, div, or whatever he wants in the subquestion text
          This field is related to the input thanks to attribute aria-labelledby
     -->
-    <div class="label-text label-clickable" id="label-answer<?php echo $name.$code; ?>">
+    <div class="label-text label-clickable" id="label-answer<?php echo $name.'s'.$code; ?>">
         <?php echo $answer; ?>
     </div>
 </div>

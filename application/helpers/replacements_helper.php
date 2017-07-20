@@ -379,7 +379,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_datestamp = '-';
     }
-    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
+    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y" && !$iscompleted)
     {
         $_saveall = doHtmlSaveAll(isset($move)?$move:NULL);
         $_savelinks = doHtmlSaveLinks(isset($move)?$move:NULL);
@@ -526,7 +526,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_loadform .='<div class="col-sm-12 form-group">
                 <label class="col-md-4 col-sm-12 control-label">
-                    <p class="col-sm-6 col-md-12 remove-padding">'.gT("Please enter the letters you see below:").'</p>
+                    <p class="col-sm-6 col-md-12 remove-padding">'.gT("Please solve the following equation:").'</p>
                     <span class="col-sm-6 col-md-12">';
         $_loadform .=Yii::app()->getController()->widget('CCaptcha',array(
                     'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
@@ -661,7 +661,7 @@ EOD;
     {
         if (file_exists ($oTemplate->path.'/'.$oTemplate->siteLogo ))
         {
-            $sitelogo= '<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'" alt=""/>';
+            $sitelogo= '<img class="img-responsive site-surveylist-logo custom custom-margin top-15 bottom-15" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'" alt=""/>';
         }
     }
 
@@ -715,7 +715,7 @@ EOD;
     $coreReplacements['SAVEFORM'] = $_saveform;
     $coreReplacements['SAVEHEADING'] = gT("Save your unfinished survey");
     $coreReplacements['SAVEMESSAGE'] = gT("Enter a name and password for this survey and click save below.")."<br />\n".gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n<span class='emailoptional'>".gT("If you give an email address, an email containing the details will be sent to you.")."</span><br /><br />\n".gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
-    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
+    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config, leave it to be sure to have something (EM setVariableAndTokenMappingsForExpressionManager replace it)
     $coreReplacements['SITENAME'] = Yii::app()->getConfig('sitename');
     $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SUBMITBUTTON'] = $_submitbutton;

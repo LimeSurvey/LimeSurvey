@@ -76,7 +76,7 @@
         <?php if (isset($bCaptchaEnabled)): ?>
             <div class="col-sm-12 form-group">
                 <label class="col-md-4 col-sm-12 control-label">
-                    <p class='col-sm-6 col-md-12 remove-padding'><?php eT("Please enter the letters you see below:"); ?></p>
+                    <p class='col-sm-6 col-md-12 remove-padding'><?php eT("Please solve the following equation:"); ?></p>
                     <span class="col-sm-6 col-md-12">
                         <?php $this->widget('CCaptcha',array(
                             'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),

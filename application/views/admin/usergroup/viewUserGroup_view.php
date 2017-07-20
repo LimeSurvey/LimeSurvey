@@ -68,8 +68,8 @@
                             }
                             ?>
                             </td>
-                            <td align='center'><?php echo $currentuser["username"];?></td>
-                            <td align='center'><?php echo $currentuser["email"];?></td>
+                            <td align='center'><?php echo \CHtml::encode($currentuser["username"]);?></td>
+                            <td align='center'><?php echo \CHtml::encode($currentuser["email"]);?></td>
                         </tr>
                         <?php
                     }
