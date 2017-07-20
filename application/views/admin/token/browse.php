@@ -174,8 +174,8 @@
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                         'itemsCssClass' =>'table-striped',
                         'columns' => $model->attributesForGrid,
-
                         'ajaxUpdate'=>true,
+                        'ajaxType'=>'POST',
                         'afterAjaxUpdate' => 'reinstallParticipantsFilterDatePicker'
                     ));
                 ?>

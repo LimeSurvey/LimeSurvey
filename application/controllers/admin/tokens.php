@@ -386,8 +386,9 @@ class tokens extends Survey_Common_Action
 
         /// FOR GRID View
         $model =  TokenDynamic::model($iSurveyId);
-        if(isset($_GET['TokenDynamic'])) {
-            $model->setAttributes($_GET['TokenDynamic'],false);
+        $filterForm = Yii::app()->request->getPost('TokenDynamic', false);
+        if($filterForm ){
+            $model->setAttributes($filterForm ,false);
         }
 
         $aData['model'] = $model;
