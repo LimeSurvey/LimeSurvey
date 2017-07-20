@@ -249,6 +249,7 @@ class Survey extends LSActiveRecord
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
+            'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid'), 'together' => true),
         );
     }
 
@@ -1370,6 +1371,11 @@ class Survey extends LSActiveRecord
                 'desc'=>'t.active desc, t.expires desc',
             ),
 
+            'group'=>array(
+                'asc'  => 'surveygroup.title asc',
+                'desc' => 'surveygroup.title desc',
+            ),
+
         );
         $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
 
@@ -1379,12 +1385,12 @@ class Survey extends LSActiveRecord
         // Search filter
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
         $aWithRelations[] = 'owner';
+        $aWithRelations[] = 'surveygroup';
         $criteria->compare($sid_reference, $this->searched_value, true);
         $criteria->compare('t.admin', $this->searched_value, true, 'OR');
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
-
-
+        $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
 
         // Active filter
         if(isset($this->active)) {
