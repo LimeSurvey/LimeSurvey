@@ -1,6 +1,6 @@
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <?php if($tableExists):?>
-    <h3><?php eT("Import a VV survey file"); ?></h3>
+    <h3><?php eT("Import a VV response data file"); ?></h3>
     <?php endif;?>
 
         <div class="row">
@@ -21,7 +21,7 @@
         <div class="panel-body">
             <div class="form-group">
                 <label for="csv_vv_file" class="col-sm-2 control-label">
-                    <?php eT("File:");?>
+                    <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
                 <div class="col-sm-6">
                     <input type="file" value="" name="csv_vv_file" id="csv_vv_file" class="form-control"  accept='.csv,.vv,.txt' required>
