@@ -216,6 +216,7 @@ class AdminController extends LSYii_Controller
         'htmleditor_pop'   => 'htmleditor_pop',
         'homepagesettings' => 'homepagesettings',
         'templateoptions'  => 'templateoptions',
+        'surveysgroups'    => 'SurveysGroupsController',
         'limereplacementfields' => 'limereplacementfields',
         'index'            => 'index',
         'labels'           => 'labels',
