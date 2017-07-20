@@ -463,9 +463,9 @@ CREATE TABLE `prefix_surveys` (
   `alloweditaftercompletion` varchar(1) default 'N',
   `googleanalyticsstyle` varchar(1) DEFAULT NULL,
   `googleanalyticsapikey` VARCHAR(25) DEFAULT NULL,
+  `gsid` int(11) DEFAULT '1'
   PRIMARY KEY (`sid`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
-
 
 --
 -- Table structure for table surveys_languagesettings
@@ -775,7 +775,33 @@ INSERT INTO `prefix_template_configuration`  VALUES
     (3,'material',NULL,NULL,NULL,'{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"on","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','','','');
 
 
+-- -----------------------------------------------------
+-- Table `prefix_surveys_groups`
+-- -----------------------------------------------------
+CREATE TABLE `prefix_surveys_groups` (
+  `gsid` int(11) NOT NULL,
+  `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `order` int(11) NOT NULL,
+  `owner_uid` int(11) DEFAULT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  `created` datetime DEFAULT NULL,
+  `modified` datetime DEFAULT NULL,
+  `created_by` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE `prefix_surveys_groups`
+  ADD PRIMARY KEY (`gsid`);
+
+ALTER TABLE `prefix_surveys_groups`
+  MODIFY `gsid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `order`, `owner_uid`, `parent_id`, `created`, `modified`, `created_by`) VALUES
+  (1, 'default', 'Default Survey Group', 'LimeSurvey core default survey group', 0, 1, NULL, '2017-07-20 17:09:30', '2017-07-20 17:09:30', 1);
+
+
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '301');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '305');

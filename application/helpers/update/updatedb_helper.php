@@ -316,6 +316,17 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>305),"stg_name='DBVersion'");
         }
 
+        /**
+         * Template tables
+         * @since 2017-07-12
+         */
+        if ($iOldDBVersion < 305) {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTemplateTables305($oDB);
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>305),"stg_name='DBVersion'");
+        }
+
     }
     catch(Exception $e)
     {
@@ -448,6 +459,48 @@ function createSurveyMenuTable293($oDB) {
     foreach($rowsToAdd as $row){
         $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd,$row));
     }
+}
+
+/**
+ * @param $oDB
+ * @return void
+ */
+function upgradeTemplateTables305($oDB)
+{
+    // Drop the old survey rights table.
+    if (tableExists('{surveys_groups}')) {
+        $oDB->createCommand()->dropTable('{{surveys_groups}}');
+    }
+
+
+    // Create templates table
+    $oDB->createCommand()->createTable('{{surveys_groups}}', array(
+        'gsid'        => 'pk',
+        'name'        => 'string(45) NOT NULL',
+        'title'       => 'string(100) DEFAULT NULL',
+        'description' => 'text DEFAULT NULL',
+        'order'       => 'int(11) NOT NULL',
+        'owner_uid'   => 'int(11) DEFAULT NULL',
+        'parent_id'   => 'int(11) DEFAULT NULL',
+        'created'     => 'DATETIME',
+        'modified'    => 'DATETIME',
+        'created_by'  => 'int(11) NOT NULL'
+    ));
+
+    // Add default template
+    $date = date("Y-m-d H:i:s");
+    $oDB->createCommand()->insert('{{surveys_groups}}', array(
+        'name'        => 'default',
+        'title'       => 'Default Survey Group',
+        'description' => 'LimeSurvey core default survey group',
+        'order'       => '0',
+        'owner_uid'   => '1',
+        'created'     => $date,
+        'modified'    => $date,
+        'created_by'  => '1'
+    ));
+
+     $oDB->createCommand()->addColumn('{{surveys}}','gsid',"int(11) DEFAULT 1");
 }
 
 /**
