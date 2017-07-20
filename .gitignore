@@ -1,34 +1,74 @@
+
+# Never include config.php
+/application/config/config.php
+# ignore CAssetManager for debugging
+/framework/web/CAssetManager.php
+
+# upload directory : whole except the index.html and readme.txt
+/upload/*
+!/upload/index.html
+!/upload/admintheme/index.html
+!/upload/labels/index.html
+!/upload/labels/readme.txt
+!/upload/surveys/index.html
+!/upload/surveys/readme.txt
+!/upload/templates/index.html
+!/upload/templates/readme.txt
+
+# tmp directory : whole except the index.html for directory create
+/tmp/*
+!/tmp/index.html
+!/tmp/assets/index.html
+!/tmp/runtime/index.html
+!/tmp/upload/index.html
+
+# ignore plugins directory by default except LS plugin
+# if you want to add a new distributed plugin : add the directory here
+/plugins/*
+!/plugins/index.html
+!/plugins/Demo/
+!/plugins/AuditLog/
+
+#ignore most of the js-build stuff
+.eslintrc
+.eslintignore
+node_modules/
+third_party/**/src/
+third_party/**/docs/
+third_party/**/scripts/
+third_party/**/tests/
+third_party/**/scss/
+third_party/**/less/
+third_party/**/*.sh
+third_party/**/*.md
+third_party/**/gulpfile.js
+
+# RFC and commons directory and files
+/.well-known/
+/sitemap.xml
+/robots.txt
+
+# Some global "temporary files" (see
+*~
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE specific
 .settings
 .project
-/upload/surveys/*
-/upload/templates/*
-/upload/labels/*
-/tmp/runtime/HTML
-/tmp/runtime/*.log*
+
+# miscellaneous
 /application/controllers/admin/updater.php
-/tmp/*.html
-/tmp/*.lss
-/tmp/*.png
-/tmp/*.xls
-/tmp/*.lsa
-/tmp/upload/fu*
-/upload/.htaccess
 /nbproject
-/tmp/assets/*
-!/tmp/assets/.gitignore
-/tmp/runtime/cache/*
 .svn
-/third_party/jqgrid/src
 .settings/org.eclipse.php.core.prefs
 .buildpath
-/application/config/config.php
-application/config/_config.php
 *.un~
-!index.html
-!readme.txt
-/tmp/runtime/URI/*.ser
-/tmp/runtime/CSS/*.ser
-/tmp/runtime/twig_cache/*
 launch.json
 # ignore plugins directory by default except LS plugin
 # if you want to add a new distributed plugin : add the directory here
@@ -37,3 +77,22 @@ launch.json
 !/plugins/Demo/
 !/plugins/AuditLog/
 enabletests
+
+## Ignore test tmp files
+/tests/data/tmp/**
+
+
+## Ignore any hidden folder/files (except explicitly defined)
+## such as various IDE folders .idea .netbeans .vscode
+## or development environment things like .vagrant etc
+.*
+!.htaccess
+!.scrutinizer.yml
+!.bowerrc
+!.gitignore
+!.gitattributes
+
+## ignore Vagrantfile
+Vagrantfile
+
+
