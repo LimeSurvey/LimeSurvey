@@ -979,7 +979,7 @@ class database extends Survey_Common_Action
         {
             // Preload survey
             $oSurvey=Survey::model()->findByPk($iSurveyID);
-
+            $aOldAttributes = $oSurvey->attributes; 
             // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
             $pluginSettings = App()->request->getPost('plugin', array());
             foreach($pluginSettings as $plugin => $settings)
@@ -1091,7 +1091,7 @@ class database extends Survey_Common_Action
             $event = new PluginEvent('beforeSurveySettingsSave');
             $event->set('modifiedSurvey', $oSurvey);
             App()->getPluginManager()->dispatchEvent($event);
-
+            $aAfterApplyAttributes = $oSurvey->attributes;
             if ($oSurvey->save())
             {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
@@ -1181,7 +1181,7 @@ class database extends Survey_Common_Action
                     'data' => [
                         'success' => true,
                         'updated'=> $updatedFields,
-                        'DEBUG' => [$_POST,$oSurvey->attributes]
+                        'DEBUG' => ['POST'=>$_POST,'reloaded'=>$oSurvey->attributes, 'initial'=>$aOldAttributes, 'afterApply'=>$aAfterApplyAttributes]
                     ],
                 ),
                 false,
@@ -1231,8 +1231,8 @@ class database extends Survey_Common_Action
         $options = $this->updateableFields[$fieldArrayName];
         switch($options['type']){
             case 'yesno':
-                if($newValue != 'Y' || $newValue != 'N')
-                    $newValue = ($newValue=='1' || $newValue==true ) ? 'Y' : 'N';
+                if($newValue != 'Y' && $newValue != 'N')
+                    $newValue = ($newValue=='1') ? 'Y' : 'N';
             break;
             case 'Int' : 
                 $newValue = (int) $newValue;

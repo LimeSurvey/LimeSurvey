@@ -1,13 +1,9 @@
 <script>
 import Vue from 'vue';
 import _ from 'lodash';
-import ajaxMethods from '../mixins/runAjax.js'
-import Questions from './questions.vue'
+import ajaxMethods from '../../mixins/runAjax.js'
 
 export default {
-    components:{
-        questions: Questions
-    },
     mixins: [ajaxMethods],
     props: {
         createQuestionGroupLink : {type: String},

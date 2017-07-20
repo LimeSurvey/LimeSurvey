@@ -1,10 +1,10 @@
 <script>
 import Vue from 'vue';
 import _ from 'lodash';
-import ajaxMixin from '../mixins/runAjax.js'
-import Questionexplorer from './questionsgroups.vue'
-import Sidemenu from './sidemenu.vue'
-import Quickmenu from './quickmenu.vue'
+import ajaxMixin from '../mixins/runAjax.js';
+import Questionexplorer from './subcomponents/_questionsgroups.vue';
+import Sidemenu from './subcomponents/_sidemenu.vue';
+import Quickmenu from './subcomponents/_quickmenu.vue';
 
 export default {
     components: {

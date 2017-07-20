@@ -1,8 +1,8 @@
 <script>
 import Vue from 'vue';
 import _ from 'lodash';
-import ajaxMethods from '../mixins/runAjax.js';
-import Menuicon from './menuicon.vue';
+import ajaxMethods from '../../mixins/runAjax.js';
+import Menuicon from './_menuicon.vue';
 
 export default {
     name: 'sidemenu',

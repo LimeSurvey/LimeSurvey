@@ -47,12 +47,15 @@ var getForm = function (that) {
     if($(that).attr('data-use-form-id')==1)
     {
         formId = '#'+$(that).attr('data-form-to-save');
-        $form = $(formId);
+        $form = [$(formId)];
     }
     else
     {
-      $form = $('#in_survey_common').find('form');
+        $form = $('.action_settings_submit_form');  
     }
+    if($form.lengh <1)
+      $form = $('#in_survey_common').find('form');
+    
     return $form;
 };
 
@@ -61,13 +64,8 @@ if ($('#save-button').length > 0){
     {
         ev.preventDefault();
         var $form = getForm(this);
-        closeAfterSaveInput.val("false");
-        $form.append(closeAfterSaveInput);
-        console.log(this);
-        console.log(ev);
-        console.log($form);
         formSubmitting = true;
-        $form.find('[type="submit"]').first().trigger('click');
+        $form.each().find('[type="submit"]').first().trigger('click');
     });
 }
 

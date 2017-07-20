@@ -585,44 +585,6 @@ class Survey extends LSActiveRecord
         }
     }
 
-    private function _getValueFromEntryArray($valueArray)
-    {
-        if($valueArray[0] == "this"){
-            return $this[$valueArray[1]];
-        } else {
-            return @call_user_func_array([$this, array_shift($valueArray)], $valueArray);
-        }
-    }
-
-    private function _parseSurveyMenuData($dataAttribute)
-    {
-        $aData = json_decode(stripcslashes($dataAttribute),true);
-        
-        $aData['aLinkCreator'] = ['surveyid'=> $this->sid];
-        $aData['noRender'] = false;
-        $aData['linkExternal'] = false;
-        if(isset($aData['render']))
-        {
-            if(isset($aData['render']['link']))
-            {
-                $aData['aLinkCreator'] = [];
-                foreach($aData['render']['link']['data'] as $key => $value){
-                    if(is_array($value)){
-                        $value= $this->_getValueFromEntryArray($value);
-                    }
-                    $aData['aLinkCreator'][$key] = $value;
-                } 
-                $aData['linkExternal'] = isset($aData['render']['link']['external']) ? $aData['render']['link']['external'] : false;
-            }
-            if(isset($aData['render']['isActive']))
-            {
-                $aData['noRender'] = ($this->active && $aData['render']['isActive']);
-            }
-           
-        }
-        
-        return (object) ($aData);
-    }
 
     private function _createSurveymenuArray($oSurveyMenuObjects)
     {
@@ -631,9 +593,9 @@ class Survey extends LSActiveRecord
         $aResultCollected = [];
         foreach($oSurveyMenuObjects as $oSurveyMenuObject){
             $entries = [];
-            $defaultMenuEntries = $oSurveyMenuObject->surveymenuEntries;
+            $aMenuEntries = $oSurveyMenuObject->surveymenuEntries;
             $submenus = $this->_getSurveymenuSubmenus($oSurveyMenuObject);
-            foreach($defaultMenuEntries as $menuEntry){
+            foreach($aMenuEntries as $menuEntry){
                 $aEntry = $menuEntry->attributes;
                 //Skip menu if no permission
                 if(
@@ -641,14 +603,19 @@ class Survey extends LSActiveRecord
                     && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade']))
                 ) {continue;}
                 //parse the render part of the data attribute
-                $oDataAttribute = $this->_parseSurveyMenuData($menuEntry->data);
-                if($oDataAttribute->noRender){continue;}
+                $oDataAttribute = new SurveymenuEntryData();
+                $oDataAttribute->apply($menuEntry, $this->sid);
+               
+                if($oDataAttribute->isActive !== null){
+                    if(($oDataAttribute->isActive==true && $this->active == 'N') || ($oDataAttribute->isActive==false && $this->active == 'Y')){
+                        continue;
+                    }
+                }
 
-                $aEntry['link'] = $aEntry['menu_link']
-                            ?  App()->getController()->createUrl($aEntry['menu_link'],$oDataAttribute->aLinkCreator)
-                            : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
+                $aEntry['link'] = $oDataAttribute->linkCreator();
                 $aEntry['link_external'] = $oDataAttribute->linkExternal;
-                $aEntry['debugData'] = $oDataAttribute;
+                $aEntry['debugData'] = $oDataAttribute->attributes;
+                
                 $entries[$aEntry['id']] = $aEntry;
             }
             $aResultCollected[$oSurveyMenuObject->id] = [

@@ -6,8 +6,11 @@
  * @var Survey $oSurvey
  */
 ?>
-
-
+<?php
+/*
+<topbar></topbar>
+*/ 
+?>
 <div class='menubar surveybar' id="surveybarid">
     <div class='row container-fluid row-button-margin-bottom'>
 
@@ -657,6 +660,7 @@
                 </a>
             <?php endif;?>
             */ ?>
+
         </div>
     </div>
 </div>

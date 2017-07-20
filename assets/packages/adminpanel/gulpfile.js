@@ -24,7 +24,7 @@ gulp.task('sass:watch', function () {
   gulp.watch('./scss/*.scss', ['sass']);
 });
 gulp.task('webpack:watch', function () { 
-  gulp.watch(['./src/**/*.js','./src/**/*.vue'], ['webpack']);
+  gulp.watch(['./src/**/**.js','./src/**/**.vue'], ['webpack']);
 });
 
 

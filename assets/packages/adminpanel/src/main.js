@@ -4,7 +4,6 @@ import VueLocalStorage from 'vue-localstorage';
 import _ from 'lodash';
 import Sidebar from './components/sidebar.vue';
 import Topbar from './components/topbar.vue';
-import LoadingBar from './components/loadingbar.vue';
 import getAppState from './store/vuex-store.js';
 import Pjax from 'pjax';
 
@@ -26,6 +25,7 @@ if(document.getElementById('vue-app-main-container')){
     store: AppState,
     components: {
       'sidebar' : Sidebar,
+      'topbar' : Topbar,
     },
     methods: {
       setIsLoading(){

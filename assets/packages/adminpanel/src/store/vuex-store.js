@@ -8,11 +8,9 @@ import Pjax from 'pjax';
 Vue.use(Vuex);
 Vue.use(VueLocalStorage);
 
+
 const getAppState = function(userid){
-  return new Vuex.Store({
-      plugins: [
-        createPersist({
-          initialState: {
+  const statePreset = {
             surveyid: 0,
             language: '',
             maxHeight: 0,
@@ -31,31 +29,17 @@ const getAppState = function(userid){
             sidemenus: null,
             topmenus: null,
             bottommenus: null,
-          },
+          };
+
+  return new Vuex.Store({
+      plugins: [
+        createPersist({
+          initialState: statePreset,
           namespace: userid+'_adminpanel_settings',
           expires: 365 * 24 * 60 * 60 * 1e3 //one year
         })
       ],
-      state: {
-        surveyid: 0,
-        language: '',
-        maxHeight: 0,
-        currentUser: userid,
-        currentTab: 'settings',
-        sidebarwidth: '380px',
-        isCollapsed: false,
-        pjax: null,
-        pjaxLoading: false,
-        lastMenuOpen: null,
-        lastMenuItemOpen: null,
-        lastQuestionOpen: null,
-        lastQuestionGroupOpen: null,
-        questionGroupOpenArray: [],
-        collapsedmenus: null,
-        sidemenus: null,
-        topmenus: null,
-        bottommenus: null,
-      },
+      state: statePreset,
       getters:{
         substractContainer: state => {
           let bodyWidth =  ($('#vue-app-main-container').width()-parseInt(state.sidebarwidth));
@@ -129,7 +113,7 @@ const getAppState = function(userid){
           state.pjax = new Pjax({
             elements: "a.pjax", // default is "a[href], form[action]"
             selectors: [
-              "#pjax-content",
+              '#pjax-content',
               '#breadcrumb-container'
               ]
           });
