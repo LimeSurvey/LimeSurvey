@@ -758,6 +758,8 @@ function getPHPDateFromDateFormat($sDateformat)
         "HH"   => "H",
         "MM"   => "i",
         "hh"   => "h",
+        "ss"   => "s",
+        "SS"   => "s",
         // Without leading zero
         "d"    => "j",
         "m"    => "n",
@@ -765,6 +767,8 @@ function getPHPDateFromDateFormat($sDateformat)
         "H"    => "G",
         "M"    => "i",
         "h"    => "g",
+        "s"    => "s",
+        "S"    => "s",
         // AP/PM
         "A"    => "A",
         "a"    => "a",
