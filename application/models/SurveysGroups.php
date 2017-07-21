@@ -110,6 +110,16 @@ class SurveysGroups extends CActiveRecord
         ));
     }
 
+    public function getParentTitle()
+    {
+        // "(gsid: ".$data->parent_id.")"." ".$data->parentgroup->title,
+        if (empty($this->parent_id)){
+            return "";
+        }else{
+            return $this->parentgroup->title;
+        }
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
