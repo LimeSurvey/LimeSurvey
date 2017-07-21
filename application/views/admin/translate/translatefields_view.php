@@ -1,6 +1,6 @@
 <?php if (strlen(trim((string)$textfrom)) > 0) : ?>
     <?php if (extension_loaded('tidy')) : ?>
-        <?=tidy_repair_string($translateFields,null,'utf8')?>
+        <?=tidy_repair_string($translateFields,array(),'utf8')?>
     <?php else:?>
         <?=$translateFields;?>
     <?php endif;?>

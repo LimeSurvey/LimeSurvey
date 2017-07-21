@@ -405,7 +405,7 @@ class translate extends Survey_Common_Action {
         if(extension_loaded('tidy')){
             $oTidy = new tidy;
 
-            $cleansedString = $oTidy->repairString($string,null,'utf8');
+            $cleansedString = $oTidy->repairString($string,array(),'utf8');
         } else {
             //We should check for tidy on Installation!
             $cleansedString = $string;
