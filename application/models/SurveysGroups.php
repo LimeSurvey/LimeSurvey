@@ -53,6 +53,7 @@ class SurveysGroups extends CActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'parentgroup' => array(self::BELONGS_TO, 'SurveysGroups', array('parent_id' => 'gsid'), 'together' => true),
+            'owner'       => array(self::BELONGS_TO, 'User', 'owner_uid', 'together' => true),
         );
     }
 
