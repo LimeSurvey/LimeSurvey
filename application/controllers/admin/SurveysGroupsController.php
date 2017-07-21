@@ -70,12 +70,10 @@ class SurveysGroupsController extends Survey_Common_Action
         {
             $model->attributes=$_POST['SurveysGroups'];
             if($model->save())
-                $this->redirect(array('view','id'=>$model->gsid));
+                $this->redirect(array('admin/surveysgroups/'));
         }
-
-        $this->render('update',array(
-            'model'=>$model,
-        ));
+        $aData['model'] = $model;
+        $this->_renderWrappedTemplate('surveysgroups', 'update', $aData);
     }
 
     /**
@@ -100,13 +98,6 @@ class SurveysGroupsController extends Survey_Common_Action
         $model = new SurveysGroups('search');
         $aData['model'] = $model;
         $this->_renderWrappedTemplate('surveysgroups', 'index', $aData);
-/*
-$model = new TemplateConfiguration('search');
-$model->sid = $model->gsid = $model->uid = null;
-$aData['model'] = $model;
-$this->_renderWrappedTemplate('templateoptions', 'index', $aData);
-*/
-
     }
 
     /**
