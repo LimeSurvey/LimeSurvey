@@ -76,6 +76,7 @@ class SurveyAdmin extends Survey_Common_Action
             $aData['issuperadmin'] = true;
         }
         $aData['model'] = new Survey('search');
+        $aData['groupModel'] = new SurveysGroups('search');
         $aData['fullpagebar']['button']['newsurvey'] = true;
         $this->_renderWrappedTemplate('survey', 'listSurveys_view', $aData);
     }

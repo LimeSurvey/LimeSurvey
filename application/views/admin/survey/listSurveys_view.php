@@ -17,4 +17,17 @@
         ));
     ?>
 
+
+    <h3><?php eT('Surveys Groups:'); ?></h3>
+
+    <div class="row">
+        <div class="col-sm-12 content-right">
+            <?php
+            $this->widget('bootstrap.widgets.TbGridView', array(
+                'dataProvider' => $groupModel->search(),
+            ));
+            ?>
+        </div>
+    </div>
+
 </div>
