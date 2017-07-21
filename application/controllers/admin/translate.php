@@ -203,23 +203,24 @@ class translate extends Survey_Common_Action {
 
                 $all_fields_empty = !( $textform_length > 0 );
 
-                $aData = $aData + array(
-                  'textfrom' => $this->_cleanup($textfrom, array()),
-                  'textfrom2' => $this->_cleanup($textfrom2, array()),
-                  'textto' => $this->_cleanup($textto, array()),
-                  'textto2' => $this->_cleanup($textto2, array()),
-                  'rowfrom' => $rowfrom,
-                  'rowfrom2' => $resultbase2,
-                  'evenRow' => $evenRow,
-                  'gid' => $gid,
-                  'qid' => $qid,
-                  'amTypeOptions' => $amTypeOptions,
-                  'amTypeOptions2' => $amTypeOptions2,
-                  'i' => $j,
-                  'type' => $type,
-                  'type2' => $type2,
-                  'associated' => $associated,
-                );
+              $aData = array_merge($aData,  array(
+                                'textfrom' => $this->_cleanup($textfrom, array()),
+                                'textfrom2' => $this->_cleanup($textfrom2, array()),
+                                'textto' => $this->_cleanup($textto, array()),
+                                'textto2' => $this->_cleanup($textto2, array()),
+                                'rowfrom' => $rowfrom,
+                                'rowfrom2' => $resultbase2,
+                                'evenRow' => $evenRow,
+                                'gid' => $gid,
+                                'qid' => $qid,
+                                'amTypeOptions' => $amTypeOptions,
+                                'amTypeOptions2' => $amTypeOptions2,
+                                'i' => $j,
+                                'type' => $type,
+                                'type2' => $type2,
+                                'associated' => $associated,
+                            ));
+
                 $aData['translateFields'] = $this->displayTranslateFields($iSurveyID, $gid, $qid, $type,
                                             $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $j, $rowfrom, $evenRow);
                 if ($associated && strlen(trim((string)$textfrom2)) > 0)
