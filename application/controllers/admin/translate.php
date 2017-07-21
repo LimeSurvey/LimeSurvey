@@ -402,8 +402,14 @@ class translate extends Survey_Common_Action {
     }
 
     private function _cleanup($string, $options=array()){
-        $oTidy = new tidy;
-        $cleansedString = $oTidy->repairString($string);
+        if(extension_loaded('tidy')){
+            $oTidy = new tidy;
+            $cleansedString = $oTidy->repairString($string);
+        } else {
+            //We should check for tidy on Installation!
+            $cleansedString = $string;
+        }
+
         return $cleansedString;
     }
 
