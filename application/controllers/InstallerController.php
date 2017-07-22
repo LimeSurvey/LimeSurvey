@@ -1392,7 +1392,8 @@ class InstallerController extends CController {
             'filter',
             'ctype',
             'session',
-            'hash'
+            'hash',
+            'tidy'
         );
 
         foreach ($extensions as $extension) {
