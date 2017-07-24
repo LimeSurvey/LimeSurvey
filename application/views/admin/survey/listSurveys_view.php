@@ -86,6 +86,16 @@
                         'htmlOptions' => array('class' => 'hidden-xs has-link'),
                     ),
 
+
+                    array(
+                        'header' => gT('Order'),
+                        'name' => 'order',
+                        'type' => 'raw',
+                        'value'=> '$data->buttons',
+                        'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                        'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    ),
+
                 ),
 
             ));

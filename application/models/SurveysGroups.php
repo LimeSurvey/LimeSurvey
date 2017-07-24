@@ -40,7 +40,7 @@ class SurveysGroups extends CActiveRecord
             array('description, created, modified', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('gsid, name, title, description, order, owner_uid, parent_id, created, modified, created_by', 'safe', 'on'=>'search'),
+            array('gsid, name, title, description, owner_uid, parent_id, created, modified, created_by', 'safe', 'on'=>'search'),
         );
     }
 
@@ -118,6 +118,27 @@ class SurveysGroups extends CActiveRecord
         }else{
             return $this->parentgroup->title;
         }
+    }
+
+    public function getHasSurveys()
+    {
+        $nbSurvey =  Survey::model()->countByAttributes(array("gsid"=>$this->gsid));
+        return $nbSurvey > 0;
+    }
+
+    /**
+     * @return string
+     */
+    public function getButtons()
+    {
+        $sDeleteUrl     = App()->createUrl("admin/surveysgroups/sa/delete", array("id"=>$this->gsid));
+        $button         = '';
+
+        if (! $this->hasSurveys){
+            $button .= '<a class="btn btn-default" href="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete survey group').'"><span class="fa fa-trash text-danger " ></span><span class="sr-only">'.gT('Delete survey group').'</span></a>';
+        }
+
+        return $button;
     }
 
     /**
