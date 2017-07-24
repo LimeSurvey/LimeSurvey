@@ -14,7 +14,7 @@
         )
     )); ?>
 
-    <h3><?php eT('Update SurveysGroups:').$model->title; ?></h3>
+    <h3><?php eT('Update survey group: '); echo '<strong><em>'.$model->title.'</strong></em>'; ?></h3>
 
     <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model)); ?>
 

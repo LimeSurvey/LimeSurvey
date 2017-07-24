@@ -75,6 +75,7 @@ class database extends Survey_Common_Action
                 'tokenlength' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'bounce_email' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'gsid' => ['type'=> '', 'default' => 1, 'dbname'=>false, 'active'=>true, 'required'=>[]],
             ];
         private $updatedFields = [];
 
@@ -1028,6 +1029,7 @@ class database extends Survey_Common_Action
             $oSurvey->expires =  $expires;
             $oSurvey->startdate =  $startdate;
             $oSurvey->faxto = $this->_filterEmptyFields($oSurvey,'faxto');
+            $oSurvey->gsid = $this->_filterEmptyFields($oSurvey,'gsid');
             $oSurvey->format = $this->_filterEmptyFields($oSurvey,'format');
             $oSurvey->template = $this->_filterEmptyFields($oSurvey,'template');
             $oSurvey->assessments = $this->_filterEmptyFields($oSurvey,'assessments');

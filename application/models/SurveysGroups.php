@@ -141,6 +141,18 @@ class SurveysGroups extends CActiveRecord
         return $button;
     }
 
+    public static function getSurveyGroupsList()
+    {
+        $aSurveyList = [];
+        $oSurveyGroups = self::model()->findAll();
+
+        foreach( $oSurveyGroups as $oSurveyGroup){
+            $aSurveyList[$oSurveyGroup->gsid] = $oSurveyGroup->title;
+        }
+
+        return $aSurveyList;
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!

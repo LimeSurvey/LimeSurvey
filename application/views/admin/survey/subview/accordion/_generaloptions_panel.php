@@ -229,6 +229,23 @@
             <?php endif;?>
     </div>
     <div class="col-md-6 col-sm-12">
+
+        <!-- Survey Group -->
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for='format'><?php  eT("Group:"); ?></label>
+            <div class="col-sm-9">
+                <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                    'asDropDownList' => true,
+                    'htmlOptions'=>array('style'=>"width: 80%"),
+                    'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
+                    'value' => $oSurvey->gsid,
+                    'name' => 'gsid',
+                    'pluginOptions' => array()
+                ));?>
+            </div>
+        </div>
+
+
         <!-- Format -->
         <div class="form-group">
             <label class="col-sm-3 control-label" for='format'><?php  eT("Format:"); ?></label>

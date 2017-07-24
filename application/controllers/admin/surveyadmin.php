@@ -1602,6 +1602,7 @@ class SurveyAdmin extends Survey_Common_Action
         }
         // Sort users by name
         asort($aData['users']);
+        $aData['aSurveyGroupList'] = SurveysGroups::getSurveyGroupsList();
         return $aData;
     }
 
