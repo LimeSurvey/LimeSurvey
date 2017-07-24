@@ -296,20 +296,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          */
         if ($iOldDBVersion < 305) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{surveymenu_entries}}', 
-                array('data'=> "{\"render\": {\"link\": {\"external\": true, \"data\": {\"sid\": [\"survey\",\"sid\"], \"newtest\": \"Y\", \"lang\": [\"survey\",\"language\"]}}}}"), 
+            $oDB->createCommand()->update('{{surveymenu_entries}}',
+                array('data'=> "{\"render\": {\"link\": {\"external\": true, \"data\": {\"sid\": [\"survey\",\"sid\"], \"newtest\": \"Y\", \"lang\": [\"survey\",\"language\"]}}}}"),
                     "id=17"
             );
-            $oDB->createCommand()->update('{{surveymenu_entries}}', 
-                array('data'=> "{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}} } }"), 
+            $oDB->createCommand()->update('{{surveymenu_entries}}',
+                array('data'=> "{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}} } }"),
                     "id IN (1,4,7,9,10,12,18,19,21,22,23,24,25)"
             );
-            $oDB->createCommand()->update('{{surveymenu_entries}}', 
-                array('data'=> "{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}"), 
+            $oDB->createCommand()->update('{{surveymenu_entries}}',
+                array('data'=> "{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}"),
                     "id IN (15,30)"
             );
-            $oDB->createCommand()->update('{{surveymenu_entries}}', 
-                array('data'=> "{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}"), 
+            $oDB->createCommand()->update('{{surveymenu_entries}}',
+                array('data'=> "{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}"),
                     "id=16"
             );
             $oTransaction->commit();
@@ -322,7 +322,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          */
         if ($iOldDBVersion < 306) {
             $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables306($oDB);
+            createSurveyGroupTables306($oDB);
             $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>306),"stg_name='DBVersion'");
         }
@@ -500,7 +500,11 @@ function createSurveyGroupTables306($oDB)
         'created_by'  => '1'
     ));
 
-     $oDB->createCommand()->addColumn('{{surveys}}','gsid',"int(11) DEFAULT 1");
+    $table = Yii::app()->db->schema->getTable('{{surveys}}');
+    if(!isset($table->columns['gsid'])) {
+        $oDB->createCommand()->addColumn('{{surveys}}','gsid',"int(11) DEFAULT 1");
+    }
+
 }
 
 /**
