@@ -18,4 +18,14 @@
 
     <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model)); ?>
 
-</div>    
+    <div class="col-sm-12 list-surveys">
+        <h2><?php eT('Surveys in this group:'); ?></h2>
+        <?php
+            $this->widget('ext.admin.survey.ListSurveysWidget.ListSurveysWidget', array(
+                        'model'            => $oSurveySearch,
+                        'bRenderSearchBox' => false,
+                    ));
+        ?>
+    </div>
+
+</div>

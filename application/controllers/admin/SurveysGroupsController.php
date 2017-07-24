@@ -71,9 +71,13 @@ class SurveysGroupsController extends Survey_Common_Action
         {
             $model->attributes=$_POST['SurveysGroups'];
             if($model->save())
-                $this->redirect(array('admin/surveysgroups/'));
+                $this->getController()->redirect(array('admin/survey/sa/listsurveys '));
         }
         $aData['model'] = $model;
+        $oSurveySearch = new Survey('search');
+        $oSurveySearch->gsid = $model->gsid; 
+
+        $aData['oSurveySearch'] = $oSurveySearch;
         $this->_renderWrappedTemplate('surveysgroups', 'update', $aData);
     }
 
