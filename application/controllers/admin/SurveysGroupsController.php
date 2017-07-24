@@ -45,13 +45,14 @@ class SurveysGroupsController extends Survey_Common_Action
         if(isset($_POST['SurveysGroups']))
         {
             $model->attributes=$_POST['SurveysGroups'];
+            $model->name = sanitize_paranoid_string($_POST['SurveysGroups']['title']);
+            $model->created_by = $model->owner_uid = Yii::app()->user->id;
             if($model->save())
-                $this->redirect(array('view','id'=>$model->gsid));
+                $this->getController()->redirect(array('admin/survey/sa/listsurveys '));
         }
 
-        $this->render('create',array(
-            'model'=>$model,
-        ));
+        $aData['model'] = $model;
+        $this->_renderWrappedTemplate('surveysgroups', 'create', $aData);
     }
 
     /**
