@@ -2017,6 +2017,7 @@ class SurveyAdmin extends Survey_Common_Action
             'assessments' => App()->request->getPost('assessments')=='1'?'Y':'N',
             'emailresponseto' => App()->request->getPost('emailresponseto'),
             'tokenlength' => $iTokenLength,
+            'gsid'  => App()->request->getPost('gsid', '1'),
             );
             //var_dump($aInsertData);
 
