@@ -3986,7 +3986,7 @@ function do_array_5point($ia)
         {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
             $answer_tds .= doRender('/survey/questions/arrays/5point/rows/cells/answer_td_input', array(
-                'i'=>"NA",
+                'i'=> gT('No answer'),
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,
@@ -4142,7 +4142,7 @@ function do_array_10point($ia)
         {
             $CHECKED = (!isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]) || $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname] == '')?'CHECKED':'';
             $answer_tds .= doRender('/survey/questions/arrays/10point/rows/cells/answer_td_input', array(
-                'i'=>'NA',
+                'i'=> gT('No answer'),
                 'myfname'=>$myfname,
                 'CHECKED'=>$CHECKED,
                 'checkconditionFunction'=>$checkconditionFunction,
