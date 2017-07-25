@@ -298,16 +298,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>305),"stg_name='DBVersion'");
         }
-        /**
-         * Change dbfieldnames to be more functional
-         */
-        if ($iOldDBVersion < 306) {
-            $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->renameColumn('{{surveymenu_entries}}','order','ordering');
-            $oDB->createCommand()->renameColumn('{{surveymenu}}','order','ordering');
-            $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>306),"stg_name='DBVersion'");
-        }
 
         /**
          * Template tables
@@ -315,10 +305,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          */
         if ($iOldDBVersion < 306) {
             $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->renameColumn('{{surveymenu_entries}}','order','ordering');
+            $oDB->createCommand()->renameColumn('{{surveymenu}}','order','ordering');
             createSurveyGroupTables306($oDB);
             $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>306),"stg_name='DBVersion'");
-        }
+        }      
 
         /**
          * User settings table
@@ -342,6 +334,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
+        /*
+         * Change dbfieldnames to be more functional
+         */
+        if ($iOldDBVersion < 308) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->renameColumn('{{surveymenu_entries}}','order','ordering');
+            $oDB->createCommand()->renameColumn('{{surveymenu}}','order','ordering');
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>308),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
 
     }
     catch(Exception $e)

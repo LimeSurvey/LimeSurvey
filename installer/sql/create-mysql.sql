@@ -647,7 +647,7 @@ CREATE TABLE `prefix_surveymenu_entries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `menu_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `order` int(11) DEFAULT '0',
+  `ordering` int(11) DEFAULT '0',
   `name` varchar(255)  NOT NULL DEFAULT '',
   `title` varchar(255)  NOT NULL DEFAULT '',
   `menu_title` varchar(255)  NOT NULL DEFAULT '',
@@ -671,7 +671,7 @@ CREATE TABLE `prefix_surveymenu_entries` (
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `menu_id` (`menu_id`),
-  KEY `order` (`order`),
+  KEY `ordering` (`ordering`),
   KEY `title` (`title`(191)),
   KEY `menu_title` (`menu_title`(191))
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -629,7 +629,7 @@ CREATE TABLE prefix_surveymenu (
   "parent_id" integer DEFAULT NULL,
   "survey_id" integer DEFAULT NULL,
   "user_id" integer DEFAULT NULL,
-  "order" integer DEFAULT '0',
+  "ordering" integer DEFAULT '0',
   "level" integer DEFAULT '0',
   "title" character varying(255)  NOT NULL DEFAULT '',
   "position" character varying(255) NOT NULL DEFAULT 'side',
@@ -643,7 +643,7 @@ CREATE TABLE prefix_surveymenu (
 
 create index menu_parent_id_index on prefix_surveymenu (parent_id);
 create index menu_user_id_index on prefix_surveymenu (user_id);
-create index menu_order_index on prefix_surveymenu ("order");
+create index menu_order_index on prefix_surveymenu ("ordering");
 create index menu_title_index on prefix_surveymenu (title);
 
 
@@ -654,7 +654,7 @@ CREATE TABLE prefix_surveymenu_entries (
   "id" integer NOT NULL ,
   "menu_id" integer DEFAULT NULL,
   "user_id" integer DEFAULT NULL,
-  "order" integer DEFAULT '0',
+  "ordering" integer DEFAULT '0',
   "name" character varying(255)  NOT NULL DEFAULT '',
   "title" character varying(255)  NOT NULL DEFAULT '',
   "menu_title" character varying(255)  NOT NULL DEFAULT '',
@@ -680,7 +680,7 @@ CREATE TABLE prefix_surveymenu_entries (
   FOREIGN KEY (menu_id) REFERENCES  prefix_surveymenu (id) ON DELETE CASCADE
 );
 
-create index entry_order_index on prefix_surveymenu_entries ("order");
+create index entry_order_index on prefix_surveymenu_entries ("ordering");
 create index entry_user_index on prefix_surveymenu_entries ("user_id");
 create index entry_title_index on prefix_surveymenu_entries (title);
 create index entry_menu_title_index on prefix_surveymenu_entries (menu_title);
