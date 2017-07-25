@@ -400,13 +400,13 @@ CREATE TABLE `prefix_survey_url_parameters` (
   PRIMARY KEY (`id`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
 
-
 --
 -- Table structure for table surveys
 --
 CREATE TABLE `prefix_surveys` (
   `sid` int(11) NOT NULL,
   `owner_id` int(11) NOT NULL,
+  `gsid` int(11) default '1',
   `admin` varchar(50) default NULL,
   `active` varchar(1) NOT NULL default 'N',
   `expires` datetime default NULL,
@@ -463,9 +463,8 @@ CREATE TABLE `prefix_surveys` (
   `alloweditaftercompletion` varchar(1) default 'N',
   `googleanalyticsstyle` varchar(1) DEFAULT NULL,
   `googleanalyticsapikey` VARCHAR(25) DEFAULT NULL,
-  `gsid` int(11) DEFAULT '1'
   PRIMARY KEY (`sid`)
-) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
+) ENGINE = MYISAM CHARACTER SET utf8mb4 ;
 
 --
 -- Table structure for table surveys_languagesettings
@@ -609,12 +608,13 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
 -- User settings table
 --
 CREATE TABLE IF NOT EXISTS `prefix_settings_user` (
+    `id` int(11) NOT NULL auto_increment,
     `uid` int(11) NOT NULL,
     `entity` VARCHAR(15) DEFAULT NULL,
     `entity_id` VARCHAR(31) DEFAULT NULL,
     `stg_name` VARCHAR(63) NOT NULL,
     `stg_value` TEXT DEFAULT NULL,
-    PRIMARY KEY (`uid`, `entity`, `entity_id`, `stg_name`)
+    PRIMARY KEY (`id`)
 ) ENGINE = MYISAM CHARACTER SET utf8mb4 ;
 
 --
@@ -804,4 +804,4 @@ INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `or
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '306');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '307');

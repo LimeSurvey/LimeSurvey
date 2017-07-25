@@ -164,23 +164,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
-        /**
-         * User settings table
-         * @since 2016-08-29
-         */
-        if ($iOldDBVersion < 292) {
-            $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->createTable('{{settings_user}}', array(
-                'uid' => 'integer NOT NULL',
-                'entity' => 'string(15)',
-                'entity_id' => 'string(31)',
-                'stg_name' => 'string(63) not null',
-                'stg_value' => 'text',
-                'PRIMARY KEY (uid, entity, entity_id, stg_name)'
-            ));
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>292),"stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
 
         /**
          * Survey menue table
@@ -326,6 +309,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>306),"stg_name='DBVersion'");
         }
+
+        /**
+         * User settings table
+         * @since 2016-08-29
+         */
+        if ($iOldDBVersion < 307) {
+            $oTransaction = $oDB->beginTransaction();
+            if (tableExists('{settings_user}')) {
+                $oDB->createCommand()->dropTable('{{settings_user}}');
+            }
+            $oDB->createCommand()->createTable('{{settings_user}}', array(
+                'id' => 'int NOT NULL AUTO_INCREMENT',
+                'uid' => 'integer NOT NULL',
+                'entity' => 'string(15)',
+                'entity_id' => 'string(31)',
+                'stg_name' => 'string(63) not null',
+                'stg_value' => 'text',
+                'PRIMARY KEY (id)'
+            ));
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>307),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
 
     }
     catch(Exception $e)
