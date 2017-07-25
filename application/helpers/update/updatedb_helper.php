@@ -305,8 +305,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          */
         if ($iOldDBVersion < 306) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->renameColumn('{{surveymenu_entries}}','order','ordering');
-            $oDB->createCommand()->renameColumn('{{surveymenu}}','order','ordering');
             createSurveyGroupTables306($oDB);
             $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>306),"stg_name='DBVersion'");

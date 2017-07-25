@@ -28947,22 +28947,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         controlActiveLink() {
             let currentUrl = window.location.href;
-            let lastMenuItemObject = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.$store.state.sidemenus, (itm, i) => {
-                return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(itm.entries, (itmm, j) => {
-                    console.log('sidemenus?', itmm.id == this.$store.state.lastMenuItemOpen);
-                    return itmm.id == this.$store.lastMenuItemOpen;
+            let lastMenuItemObject = false;
+            __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.each(this.$store.state.sidemenus, (itm, i) => {
+                let activeObject = false;
+                __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.each(itm.entries, (itmm, j) => {
+                    activeObject = itmm.id == this.$store.lastMenuItemOpen ? itmm : false;
                 });
+                lastMenuItemObject = activeObject || false;
             });
-            let lastQuestionObject = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.$store.state.questiongroups, (itm, i) => {
-                return itm.gid == this.$store.state.lastQuestionOpen;
+            let lastQuestionGroupObject = false;
+            __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.$store.state.questiongroups, (itm, i) => {
+                lastQuestionGroupObject = itm.gid == this.$store.state.lastQuestionOpen ? itm : false;
             });
-            let lastQuestionGroupObject = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.$store.state.questiongroups, (itm, i) => {
-                return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(itm.questions, (itmm, j) => {
-                    return itmm.qid == this.$store.state.lastQuestionGroupOpen;
+            let lastQuestionObject = false;
+            __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.each(this.$store.state.questiongroups, (itm, i) => {
+                let activeObject = false;
+                __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.each(itm.questions, (itmm, j) => {
+                    activeObject = itmm.qid == this.$store.state.lastQuestionGroupOpen ? itmm : false;
                 });
+                lastQuestionObject = activeObject || false;
             });
-            console.log('rendersidemenusLinkCorrector', [lastMenuItemObject, lastQuestionObject, lastQuestionGroupObject]);
-            return;
+
             if (RegExp(lastMenuItemObject.link).test(currentUrl)) this.$store.commit('lastMenuItemOpen', lastMenuItemObject);
             if (RegExp(lastQuestionObject.link).test(currentUrl)) this.$store.commit('lastQuestionOpen', lastQuestionObject);
             if (RegExp(lastQuestionGroupObject.link).test(currentUrl)) this.$store.commit('lastQuestionGroupOpen', lastQuestionGroupObject);
@@ -30655,6 +30660,12 @@ const getAppState = function(userid){
         },     
         changeCurrentUser(state, newUser){
           state.currentUser = newUser;
+        },
+        closeAllMenus(state){
+            state.lastMenuOpen = null;
+            state.lastMenuItemOpen = null;
+            state.lastQuestionGroupOpen = null;
+            state.lastQuestionOpen = null;
         },
         lastMenuItemOpen(state, menuItem){
             state.lastMenuOpen = menuItem.menu_id;

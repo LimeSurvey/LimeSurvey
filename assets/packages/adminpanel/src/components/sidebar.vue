@@ -61,22 +61,28 @@ export default {
     methods: {
         controlActiveLink(){
             let currentUrl = window.location.href;
-            let lastMenuItemObject = _.find(this.$store.state.sidemenus, (itm,i)=>{
-                return _.find(itm.entries, (itmm,j)=>{
-                    console.log('sidemenus?',(itmm.id == this.$store.state.lastMenuItemOpen));
-                    return itmm.id == this.$store.lastMenuItemOpen;
+            let lastMenuItemObject = false;
+            _.each(this.$store.state.sidemenus, (itm,i)=>{
+                let activeObject = false;
+                _.each(itm.entries, (itmm,j)=>{
+                    activeObject =  itmm.id == this.$store.lastMenuItemOpen ? itmm : false;
                 });
+                lastMenuItemObject = activeObject || false;
             });
-            let lastQuestionObject = _.find(this.$store.state.questiongroups, (itm,i)=>{
-                    return itm.gid == this.$store.state.lastQuestionOpen;
+            let lastQuestionGroupObject = false;
+            _.find(this.$store.state.questiongroups, (itm,i)=>{
+                    lastQuestionGroupObject =  itm.gid == this.$store.state.lastQuestionOpen ? itm : false;
             });
-            let lastQuestionGroupObject = _.find(this.$store.state.questiongroups, (itm,i)=>{
-                return _.find(itm.questions, (itmm,j)=>{
-                    return itmm.qid == this.$store.state.lastQuestionGroupOpen;
+            let lastQuestionObject = false;
+             _.each(this.$store.state.questiongroups, (itm,i)=>{
+                let activeObject = false;
+                _.each(itm.questions, (itmm,j)=>{
+                    activeObject =  itmm.qid == this.$store.state.lastQuestionGroupOpen ? itmm : false;
                 });
+                lastQuestionObject = activeObject  || false;
             });
-            console.log('rendersidemenusLinkCorrector',[lastMenuItemObject,lastQuestionObject,lastQuestionGroupObject]);
-            return;
+                       
+
             if(RegExp(lastMenuItemObject.link).test(currentUrl))
                 this.$store.commit('lastMenuItemOpen',lastMenuItemObject);
             if(RegExp(lastQuestionObject.link).test(currentUrl))
