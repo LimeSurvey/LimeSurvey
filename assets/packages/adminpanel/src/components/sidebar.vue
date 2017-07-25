@@ -59,6 +59,39 @@ export default {
         }
     },
     methods: {
+        controlActiveLink(){
+            let currentUrl = window.location.href;
+            let lastMenuItemObject = _.find(this.$store.state.sidemenus, (itm,i)=>{
+                return _.find(itm.entries, (itmm,j)=>{
+                    console.log('sidemenus?',(itmm.id == this.$store.state.lastMenuItemOpen));
+                    return itmm.id == this.$store.lastMenuItemOpen;
+                });
+            });
+            let lastQuestionObject = _.find(this.$store.state.questiongroups, (itm,i)=>{
+                    return itm.gid == this.$store.state.lastQuestionOpen;
+            });
+            let lastQuestionGroupObject = _.find(this.$store.state.questiongroups, (itm,i)=>{
+                return _.find(itm.questions, (itmm,j)=>{
+                    return itmm.qid == this.$store.state.lastQuestionGroupOpen;
+                });
+            });
+            console.log('rendersidemenusLinkCorrector',[lastMenuItemObject,lastQuestionObject,lastQuestionGroupObject]);
+            return;
+            if(RegExp(lastMenuItemObject.link).test(currentUrl))
+                this.$store.commit('lastMenuItemOpen',lastMenuItemObject);
+            if(RegExp(lastQuestionObject.link).test(currentUrl))
+                this.$store.commit('lastQuestionOpen',lastQuestionObject);
+            if(RegExp(lastQuestionGroupObject.link).test(currentUrl))
+                this.$store.commit('lastQuestionGroupOpen',lastQuestionGroupObject);
+
+            if(!(
+                RegExp(lastMenuObject.link).test(currentUrl)
+                || RegExp(lastQuestionObject.link).test(currentUrl)
+                || RegExp(lastQuestionGroupObject.link).test(currentUrl)
+            )){
+                this.$store.commit('closeAllMenus');
+            }
+        },
         editEntity(){
             this.setActiveMenuIndex(null,'question');
         },
@@ -142,6 +175,7 @@ export default {
     mounted(){
         const self = this;
 
+
         //retrieve the current menues via ajax
         //questions
         this.get(this.getQuestionsUrl).then( (result) =>{
@@ -188,6 +222,9 @@ export default {
             this.updatePjaxLinks();
         });
 
+        //control the active link
+        this.controlActiveLink();
+
         self.$forceUpdate();
         this.updatePjaxLinks();
         $('body').on('mousemove', (event) => {self.mousemove(event,self)});
@@ -195,7 +232,7 @@ export default {
 }
 </script>
 <template>
-    <div id="sidebar" class="ls-flex col-md-4 hidden-xs nofloat nooverflow transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
+    <div id="sidebar" class="ls-flex ls-space padding left-0 col-md-4 hidden-xs nofloat nooverflow transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
         <div class="col-12" v-bind:style="{'height': maxSideBarHeight}">
             <div class="mainMenu container-fluid col-sm-12 fill-height">
                 <div class="ls-flex-row align-content-space-between align-items-space-between ls-space margin bottom-5 top-5 ">

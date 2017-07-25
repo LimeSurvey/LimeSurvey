@@ -79,7 +79,7 @@ class SurveymenuController extends Survey_Common_Action
                 'data' => [
                     'success'=> $success,
 					'redirect' => $this->getController()->createUrl('admin/menus/sa/view'),
-					'debug' => [$model, $_POST],
+					'debug' => [$model,$aSurveymenu, $_POST],
 					'debugErrors' => $model->getErrors(),
                     'settings' => array(
                         'extrasettings' => false,

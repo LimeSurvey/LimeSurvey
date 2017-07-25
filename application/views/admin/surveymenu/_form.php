@@ -37,15 +37,15 @@
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'survey_id'); ?>
-				<?php echo $form->dropDownList($model,'parent_id', $model->getSurveyIdOptions()); ?>
+				<?php echo $form->dropDownList($model,'survey_id', $model->getSurveyIdOptions()); ?>
 				<?php echo $form->error($model,'survey_id'); ?>
 			</div>
 
 			<div class="form-group">
-				<?php echo $form->labelEx($model,'order'); ?>
+				<?php echo $form->labelEx($model,'ordering'); ?>
 				<?php $model->order = $model->getNexOrderPosition(); ?>
-				<?php echo $form->dropDownList($model,'order', $model->getOrderOptions()); ?>
-				<?php echo $form->error($model,'order'); ?>
+				<?php echo $form->dropDownList($model,'ordering', $model->getOrderOptions()); ?>
+				<?php echo $form->error($model,'ordering'); ?>
 			</div>
 
 			<div class="form-group">

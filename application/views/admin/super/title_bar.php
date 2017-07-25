@@ -22,7 +22,7 @@ $breadCrumbArray = array(
 
 $breadCrumbArray['extraClass'] = "title-bar-breadcrumb";
 ?>
-<div class='menubar surveymanagerbar'>
+<div class='menubar surveymanagerbar ls-space padding left-0'>
     <?php  $this->renderPartial('/admin/survey/breadcrumb', $breadCrumbArray); ?>    
 </div>
 

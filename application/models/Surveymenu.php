@@ -8,7 +8,7 @@
  * @property integer $parent_id
  * @property integer $survey_id
  * @property integer $user_id
- * @property integer $order
+ * @property integer $ordering
  * @property integer $level
  * @property string $title
  * @property string $description
@@ -39,12 +39,12 @@ class Surveymenu extends LSActiveRecord
 		// will receive user inputs.
 		return array(
 			array('changed_at', 'required'),
-			array('parent_id, survey_id, user_id, order, level, changed_by, created_by', 'numerical', 'integerOnly'=>true),
+			array('parent_id, survey_id, user_id, ordering, level, changed_by, created_by', 'numerical', 'integerOnly'=>true),
 			array('title, position', 'length', 'max'=>255),
 			array('description, created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, parent_id, survey_id, user_id, order, level, position, title, description, changed_at, changed_by, created_at, created_by', 'safe', 'on'=>'search'),
+			array('id, parent_id, survey_id, user_id, ordering, level, position, title, description, changed_at, changed_by, created_at, created_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -59,7 +59,7 @@ class Surveymenu extends LSActiveRecord
 			'surveymenuEntries' => array(self::HAS_MANY, 'SurveymenuEntries', 'menu_id'),
 			'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
 			'user' => array(self::BELONGS_TO, 'User', 'uid'),
-			'parent' => array(self::BELONGS_TO, 'Surveymenu', 'id'),
+			'parent' => array(self::BELONGS_TO, 'Surveymenu', 'parent_id'),
 		);
 	}
 
@@ -89,12 +89,12 @@ class Surveymenu extends LSActiveRecord
 		return $options;
 	}
 
-	public function getNexOrderPosition(){
+	public function getNexorderingPosition(){
 		$oSurveymenus = Surveymenu::model()->findAll();
 		return count($oSurveymenus);
 	}
 
-	public function getOrderOptions (){
+	public function getorderingOptions (){
 		$oSurveymenus = Surveymenu::model()->findAll();
 		$options = [];
 		for($i=0; $i<=count($oSurveymenus); $i++){
@@ -124,7 +124,7 @@ class Surveymenu extends LSActiveRecord
 			'parent_id'		=> gT('Parent'),
 			'survey_id'		=> gT('Survey'),
 			'user_id' 		=> gT('User'),
-			'order' 		=> gT('Order'),
+			'ordering' 		=> gT('ordering'),
 			'level' 		=> gT('Level'),
 			'title' 		=> gT('Title'),
 			'position' 		=> gT('Position'),
@@ -190,7 +190,7 @@ class Surveymenu extends LSActiveRecord
 				'name' => 'description',
 			),
 			array(
-				'name' => 'order',
+				'name' => 'ordering',
 			),
 			array(
 				'name' => 'level',
@@ -200,7 +200,7 @@ class Surveymenu extends LSActiveRecord
 			),
 			array(
 				'name' => 'parent_id',
-				'value' => '$data->parent_id ? $data->parent->title : "<i class=\'fa fa-minus\'></i>"',
+				'value' => '$data->parent_id ? $data->parent->title." (".$data->parent_id.")" : "<i class=\'fa fa-minus\'></i>"',
 				'type' => 'raw'
 			),
 			array(
@@ -230,22 +230,23 @@ class Surveymenu extends LSActiveRecord
 		return $cols;
 	}
 
-	private function _getMaxLevel(){
-		$aMaxLevel = Surveymenu::model()->findBySql('SELECT MAX(level) as maxLevel FROM {{surveymenu}}');
-		return $aMaxLevel['maxLevel'];
-	}
-
-	private function _recalculateOrder(){
-		$models = Surveymenu::model()->findAll();
-		$maxLevel = $this->_getMaxLevel();
-
-	}
-
-
-	public function onAfterSave($event=null){
-		//$this->_recalculateOrder();
+	public function onAfterSave($event){
+		$criteria = new CDbCriteria();
+		
+		$criteria->addCondition(['position=:position']);
+		$criteria->addCondition(['ordering'=>':ordering']);
+		$criteria->addCondition(['id<>:id']);
+		
+		$criteria->params = ['position' => $this->position, 'ordering' => (int) $this->ordering, 'id'=> (int) $this->id];
+		$collidingMenu = Surveymenu::model()->find($criteria)->one();
+		if($collidingMenu){
+			$collidingMenu->ordering = (((int) $collidingMenu->ordering)+1);
+			$collidingMenu->save();
+		}
 		return parent::onAfterSave($event);
+
 	}
+
 
 	/**
      * @return array
@@ -262,7 +263,7 @@ class Surveymenu extends LSActiveRecord
 				'name' => 'description',
 			),
 			array(
-				'name' => 'order',
+				'name' => 'ordering',
 			),
 			array(
 				'name' => 'position',
@@ -310,7 +311,7 @@ class Surveymenu extends LSActiveRecord
 		$criteria->compare('parent_id',$this->parent_id);
 		$criteria->compare('survey_id',$this->survey_id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('order',$this->order);
+		$criteria->compare('ordering',$this->ordering);
 		$criteria->compare('level',$this->level);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('position',$this->position,true);

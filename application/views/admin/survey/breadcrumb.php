@@ -2,8 +2,8 @@
     $extraClass = isset($extraClass) ? $extraClass : '';
     $title  = isset($title) ? $title : '';
 ?>
-<div class='row container-fluid'>
-    <div class="col-xs-12 col-md-6">
+<div class='row container-fluid  ls-space padding left-0'>
+    <div class="col-sm-12 ls-space padding left-0">
         <div id="breadcrumb-container" class="ls-ba">
             <div class="">
                 <ol class="breadcrumb ls-flex-row align-items-center align-content-flex-start <?=$extraClass?>">
@@ -16,6 +16,7 @@
                         <li>
                             <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/',['surveyid' => $oQuestion->sid] );?>">
                                 <?php echo flattenText($oQuestion->survey->defaultlanguage->surveyls_title);?>
+                                    (<?php echo flattenText($oSurvey->sid);?>)
                             </a>
                         </li>
 
@@ -77,6 +78,7 @@
                             <li>
                                 <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid] );?>">
                                     <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title);?>
+                                    (<?php echo flattenText($oSurvey->sid);?>)
                                 </a>
                             </li>
                             <li>
@@ -89,6 +91,7 @@
                             <li>
                                 <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/',['surveyid' => $oSurvey->sid] );?>">
                                     <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title);?>
+                                    (<?php echo flattenText($oSurvey->sid);?>)
                                 </a>
                             </li>
                         <?php else: ?>
@@ -105,9 +108,6 @@
                     </ol>
                 </div>
             </div>
-        </div>
-        <div class="col-xs-12 col-md-6 text-right">
-            <p class="breadcrumb-title"><?= $title ?></p>
         </div>
     </div>
 </div>

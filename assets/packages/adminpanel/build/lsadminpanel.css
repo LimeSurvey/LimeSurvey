@@ -124,6 +124,18 @@
   .ls-flex-column.fill {
     height: 100%; }
 
+.ls-space.margin.left-0 {
+  margin-left: 0px; }
+
+.ls-space.margin.right-0 {
+  margin-right: 0px; }
+
+.ls-space.margin.top-0 {
+  margin-top: 0px; }
+
+.ls-space.margin.bottom-0 {
+  margin-bottom: 0px; }
+
 .ls-space.margin.left-5 {
   margin-left: 5px; }
 
@@ -231,6 +243,18 @@
 
 .ls-space.margin.bottom-50 {
   margin-bottom: 50px; }
+
+.ls-space.padding.left-0 {
+  padding-left: 0px; }
+
+.ls-space.padding.right-0 {
+  padding-right: 0px; }
+
+.ls-space.padding.top-0 {
+  padding-top: 0px; }
+
+.ls-space.padding.bottom-0 {
+  padding-bottom: 0px; }
 
 .ls-space.padding.left-5 {
   padding-left: 5px; }

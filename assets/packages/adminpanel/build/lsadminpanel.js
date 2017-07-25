@@ -28945,6 +28945,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
+        controlActiveLink() {
+            let currentUrl = window.location.href;
+            let lastMenuItemObject = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.$store.state.sidemenus, (itm, i) => {
+                return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(itm.entries, (itmm, j) => {
+                    console.log('sidemenus?', itmm.id == this.$store.state.lastMenuItemOpen);
+                    return itmm.id == this.$store.lastMenuItemOpen;
+                });
+            });
+            let lastQuestionObject = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.$store.state.questiongroups, (itm, i) => {
+                return itm.gid == this.$store.state.lastQuestionOpen;
+            });
+            let lastQuestionGroupObject = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(this.$store.state.questiongroups, (itm, i) => {
+                return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.find(itm.questions, (itmm, j) => {
+                    return itmm.qid == this.$store.state.lastQuestionGroupOpen;
+                });
+            });
+            console.log('rendersidemenusLinkCorrector', [lastMenuItemObject, lastQuestionObject, lastQuestionGroupObject]);
+            return;
+            if (RegExp(lastMenuItemObject.link).test(currentUrl)) this.$store.commit('lastMenuItemOpen', lastMenuItemObject);
+            if (RegExp(lastQuestionObject.link).test(currentUrl)) this.$store.commit('lastQuestionOpen', lastQuestionObject);
+            if (RegExp(lastQuestionGroupObject.link).test(currentUrl)) this.$store.commit('lastQuestionGroupOpen', lastQuestionGroupObject);
+
+            if (!(RegExp(lastMenuObject.link).test(currentUrl) || RegExp(lastQuestionObject.link).test(currentUrl) || RegExp(lastQuestionGroupObject.link).test(currentUrl))) {
+                this.$store.commit('closeAllMenus');
+            }
+        },
         editEntity() {
             this.setActiveMenuIndex(null, 'question');
         },
@@ -29080,6 +29106,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             self.$forceUpdate();
             this.updatePjaxLinks();
         });
+
+        //control the active link
+        this.controlActiveLink();
 
         self.$forceUpdate();
         this.updatePjaxLinks();
@@ -29928,7 +29957,7 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ls-flex col-md-4 hidden-xs nofloat nooverflow transition-animate-width",
+    staticClass: "ls-flex ls-space padding left-0 col-md-4 hidden-xs nofloat nooverflow transition-animate-width",
     style: ({
       width: _vm.sideBarWidth
     }),

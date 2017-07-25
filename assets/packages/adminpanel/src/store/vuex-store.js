@@ -69,6 +69,12 @@ const getAppState = function(userid){
         changeCurrentUser(state, newUser){
           state.currentUser = newUser;
         },
+        closeAllMenus(state){
+            state.lastMenuOpen = null;
+            state.lastMenuItemOpen = null;
+            state.lastQuestionGroupOpen = null;
+            state.lastQuestionOpen = null;
+        },
         lastMenuItemOpen(state, menuItem){
             state.lastMenuOpen = menuItem.menu_id;
             state.lastMenuItemOpen = menuItem.id;

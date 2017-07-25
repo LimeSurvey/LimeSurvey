@@ -298,6 +298,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>305),"stg_name='DBVersion'");
         }
+        /**
+         * Change dbfieldnames to be more functional
+         */
+        if ($iOldDBVersion < 306) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->renameColumn('{{surveymenu_entries}}','order','ordering');
+            $oDB->createCommand()->renameColumn('{{surveymenu}}','order','ordering');
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>306),"stg_name='DBVersion'");
+        }
 
         /**
          * Template tables

@@ -7,7 +7,7 @@
  * @property integer $id
  * @property integer $menu_id
  * @property integer $user_id
- * @property integer $order
+ * @property integer $ordering
  * @property string $title
  * @property string $name
  * @property string $menu_title
@@ -51,12 +51,12 @@ class SurveymenuEntries extends LSActiveRecord
 		// will receive user inputs.
 		return array(
 			array('changed_at', 'required'),
-			array('menu_id, user_id, order, changed_by, created_by', 'numerical', 'integerOnly'=>true),
+			array('menu_id, user_id, ordering, changed_by, created_by', 'numerical', 'integerOnly'=>true),
 			array('title, menu_title, menu_icon, menu_icon_type, menu_class, menu_link, action, template, partial, permission, permission_grade, classes, getdatamethod', 'length', 'max'=>255),
 			array('name, menu_description, language, data, created_at', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, menu_id, user_id, order, title, name, menu_title, menu_description, menu_icon, menu_icon_type, menu_class, menu_link, action, template, partial, language, permission, permission_grade, classes, data, getdatamethod, changed_at, changed_by, created_at, created_by', 'safe', 'on'=>'search'),
+			array('id, menu_id, user_id, ordering, title, name, menu_title, menu_description, menu_icon, menu_icon_type, menu_class, menu_link, action, template, partial, language, permission, permission_grade, classes, data, getdatamethod, changed_at, changed_by, created_at, created_by', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,8 +69,49 @@ class SurveymenuEntries extends LSActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'menu' => array(self::BELONGS_TO, 'Surveymenu', 'menu_id'),
-			'user' => array(self::BELONGS_TO, 'Users', 'uid'),
+			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 		);
+	}
+
+	public function reorderMenu($menuId){
+		$criteriaItems = new CDbCriteria();
+		$criteriaItems->addCondition(['menu_id = :menu_id']);
+		$criteriaItems->order='ordering ASC';
+		$criteriaItems->params = ['menu_id' => (int) $menuId];
+		$menuEntriesInMenu = SurveymenuEntries::model()->find(criteriaItems);
+		
+		$statistics =
+		Yii::app()->db->createCommand()->select('MIN(ordering) as lowOrder, MAX(ordering) as highOrder, COUNT(id) as count')
+				->from('{{surveymenu_entries}}')
+				->where(['menu_id = :menu_id'],['menu_id' => (int) $menuId])
+				->queryAll();
+
+		if( ($statistics['lowOrder'] != 1) || ($statistics['highOrder'] != $statistics['count']) ){
+			$current = 1;
+			foreach($menuEntriesInMenu as $menuEntry){
+				$menuEntry->ordering = $current;
+				$menuEntry->save();
+				$current++;
+			}
+		}
+	}
+
+	public function onAfterSave($event){
+		$criteria = new CDbCriteria();
+		
+		$criteria->addCondition(['menu_id = :menu_id']);
+		$criteria->addCondition(['ordering = :ordering']);
+		$criteria->addCondition(['id!=:id']);
+		$criteria->params = ['menu_id' => (int) $this->menu_id, 'ordering' => (int) $this->ordering, 'id'=>(int) $this->id];
+		$criteria->limit = 1;
+		
+		$collidingMenuEntry = SurveymenuEntries::model()->find($criteria);
+		if($collidingMenuEntry != null){
+			$collidingMenuEntry->ordering = (((int) $collidingMenuEntry->ordering)+1);
+			$collidingMenuEntry->save();
+			
+		}
+		return parent::onAfterSave($event);
 	}
 
 	/**
@@ -82,7 +123,7 @@ class SurveymenuEntries extends LSActiveRecord
 			'id' => 'ID',
 			'menu_id' => 'Menu',
 			'user_id' => 'User',
-			'order' => 'Order',
+			'ordering' => 'ordering',
 			'title' => 'Title',
 			'name' => 'name',
 			'menu_title' => 'Menu title',
@@ -128,13 +169,27 @@ class SurveymenuEntries extends LSActiveRecord
 	}
 
 	public function getMenuIdOptions (){
-		$oSurveymenus = Surveymenu::model()->findAll('id != 1',[]);
+		$criteria=new CDbCriteria;
+		if(Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin','read'))
+		{
+			$criteria->compare('menu_id','<> 1');
+			$criteria->compare('menu_id','<> 2');
+		}
+		$oSurveymenus = Surveymenu::model()->findAll($criteria);
 		$options = [];
 		foreach($oSurveymenus as $oSurveymenu){
-			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
 			$options[$oSurveymenu->id] = $oSurveymenu->title;
 		}
-		//return join('\n',$options);
+		return $options;
+	}
+
+	public function getUserOptions (){
+		
+		$oUsers = User::model()->findAll();
+		$options = [];
+		foreach($oUsers as $oUser){
+			$options[$oUser->uid] = $oUser->full_name;
+		}
 		return $options;
 	}
 
@@ -146,7 +201,39 @@ class SurveymenuEntries extends LSActiveRecord
 		// return "<option value='fontawesome'>".gT("FontAwesome icon")."</option>"
 		// 		."<option value='image'>".gT('Image')."</option>";
 	}
-	
+
+	public function getButtons(){
+		$buttons = "<div style='white-space: nowrap'>";
+        $raw_button_template = ""
+            . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
+            . "<i class='fa fa-%s' ></i>" //icon class
+            . "</button>";
+		
+		if(Permission::model()->hasGlobalPermission('settings', 'update')){
+
+			$deleteData = array(
+				'action_surveymenuEntries_deleteModal',
+				'text-danger',
+				gT("Delete this surveymenu"),
+				'trash text-danger'
+			);
+
+			$buttons .= vsprintf($raw_button_template, $deleteData);
+
+			$editData = array(
+				'action_surveymenuEntries_editModal',
+				'text-danger',
+				gT("Delete this surveymenu"),
+				'edit'
+			);
+
+			$buttons .= vsprintf($raw_button_template, $editData);
+		}
+
+		$buttons .= '</div>';
+		
+		return $buttons;
+	}
 	/**
      * @return array
      */
@@ -155,8 +242,15 @@ class SurveymenuEntries extends LSActiveRecord
 			array(
 			'name' => 'id',
 			'value' => '\'<input type="checkbox" name="selectMenuToEdit" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
-			'type' => 'raw'
+			'type' => 'raw',
+			'filter' => false
 			),
+			array(
+                "name" => 'buttons',
+                "type" => 'raw',
+                "header" => gT("Action"),
+                "filter" => false
+            ),
 			array(
 				'name' => 'title',
 				'type' => 'raw'
@@ -165,10 +259,7 @@ class SurveymenuEntries extends LSActiveRecord
 				'name' => 'name',
 			),
 			array(
-				'name' => 'order',
-			),
-			array(
-				'name' => 'level',
+				'name' => 'ordering',
 			),
 			array(
 				'name' => 'menu_title',
@@ -179,7 +270,8 @@ class SurveymenuEntries extends LSActiveRecord
 			array(
 				'name' => 'menu_icon',
 				'value' => 'SurveymenuEntries::returnMenuIcon($data)',
-				'type' => 'raw'
+				'type' => 'raw',
+				'filter' => false,
 			),
 			array(
 				'name' => 'menu_class',
@@ -204,18 +296,21 @@ class SurveymenuEntries extends LSActiveRecord
 			),
 			array(
 				'name' => 'data',
-				'value' => '$data->data ? "<i class=\'fa fa-information bigIcons\' title=\'".$data->data."\'></i>" 
+				'value' => '$data->data ? "<i class=\'fa fa-info-circle bigIcons\' title=\'".$data->data."\'></i>" 
 				: ( $data->getdatamethod ? gT("Get data method:")."<br/>".$data->getdatamethod : "")',
-				'type' => 'raw'
+				'type' => 'raw',
+				'filter' => false,
 			),
 			array(
 				'name' => 'menu_id',
-				'value' => '$data->menu->title',
+				'value' => '$data->menu->title." (".$data->menu_id.")"',
+				'filter' => $this->getMenuIdOptions()
 			),
 			array(
 				'name' => 'user_id',
 				'value' => '$data->user_id ? $data->user->full_name : "<i class=\'fa fa-minus\'></i>"',
-				'type' => 'raw'
+				'type' => 'raw',
+				'filter' => $this->getUserOptions()
 			)
 		);
 
@@ -238,7 +333,7 @@ class SurveymenuEntries extends LSActiveRecord
 				'name' => 'name',
 			),
 			array(
-				'name' => 'order',
+				'name' => 'ordering',
 			),
 			array(
 				'header' => gT('Menu'),
@@ -296,7 +391,7 @@ class SurveymenuEntries extends LSActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('menu_id',$this->menu_id);
 		$criteria->compare('user_id',$this->user_id);
-		$criteria->compare('order',$this->order);
+		$criteria->compare('ordering',$this->ordering);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('menu_title',$this->menu_title,true);
@@ -320,6 +415,9 @@ class SurveymenuEntries extends LSActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'menu_id ASC, `ordering` ASC',
+			)
 		));
 	}
 

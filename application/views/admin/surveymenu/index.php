@@ -36,6 +36,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 					// Number of row per page selection
 					'id' => 'surveymenu-grid',
 					'columns' => $model->getColumns(),
+					'filter' => $model,
 					'emptyText'=>gT('No customizable entries found.'),
 					'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
 						CHtml::dropDownList(
@@ -49,7 +50,9 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 					'htmlOptions' => array('class'=> 'table-responsive'),
 					'itemsCssClass' => 'table table-responsive table-striped',
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
-					'ajaxUpdate' => true
+					'ajaxType' => 'POST',
+					'ajaxUpdate' => true,
+    				'afterAjaxUpdate'=>'bindActions',
 				));
 				?>
 			</div>
@@ -85,6 +88,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 </div>
 
 <script>
+var bindAction = function(){
 	$('.action_selectthismenu').on('click', function(){
 		var checked = $(this).prop('checked') ? true : false;
 		$('.action_selectthismenu').prop('checked', false);
@@ -116,7 +120,8 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 						dataType: 'json',
 						success: function(data){
 							console.log(data);
-							window.location.reload();
+							$('#editcreatemenu').modal('hide');
+							$.fn.yiiGridView.update('surveymenu-grid');
 						},
 						error: function(error){
 							console.log(error);
@@ -144,7 +149,8 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 					data: {menuid: menuid, ajax: true},
 					method: 'post',
 					success: function(data){
-							window.location.reload();
+						console.log(data);
+						window.location.reload();
 					},
 					error: function(err){
 						console.log(err);
@@ -158,5 +164,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 	$('.action_surveymenu_editModal').on('click',function(){
 
 	});
+};
+$(document).ready(bindAction);
 
 </script>
