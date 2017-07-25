@@ -52,7 +52,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
 					'ajaxType' => 'POST',
 					'ajaxUpdate' => true,
-    				'afterAjaxUpdate'=>'bindActions',
+    				'afterAjaxUpdate'=>'bindAction',
 				));
 				?>
 			</div>
@@ -88,7 +88,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 </div>
 
 <script>
-var bindAction = function(){
+function bindAction(){
 	$('.action_selectthismenu').on('click', function(){
 		var checked = $(this).prop('checked') ? true : false;
 		$('.action_selectthismenu').prop('checked', false);

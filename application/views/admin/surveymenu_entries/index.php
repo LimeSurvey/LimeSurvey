@@ -48,7 +48,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
 					'ajaxType' => 'POST',
 					'ajaxUpdate' => true,
-    				'afterAjaxUpdate'=>'bindActions',
+    				'afterAjaxUpdate'=>'bindAction',
 				));
 			?>
 			</div>
@@ -84,7 +84,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 </div>
 
 <script>
-	var bindActions = function(){
+function bindAction(){
 	$('.action_selectthisentry').on('click', function(){
 		var checked = $(this).prop('checked') ? true : false;
 		$('.action_selectthisentry').prop('checked', false);
@@ -95,14 +95,15 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 			$('#createnewmenuentry').removeClass('hide'); $('#editmenuentry').addClass('hide'); 
 		}
 	})
-	$('#editcreatemenuentry').on('show.bs.modal', function(){
+	$('#editcreatemenuentry').on('show.bs.modal', function(evt){
+		console.log(evt);
 		var loadSurveyEntryFormUrl = "<?php echo Yii::app()->urlManager->createUrl('/admin/menuentries/sa/getsurveymenuentryform' ) ?>";
 		var loadSurveyEntryFormData ={};
 		if($('.action_selectthisentry:checked').length > 0){
 			console.log($('.action_selectthisentry:checked'));
 			loadSurveyEntryFormData.menuentryid = $('.action_selectthisentry:checked').val();
 		}
-		$(this).find('.modal-content').load(loadSurveyEntryFormUrl, loadSurveyEntryFormData, function(){
+		$('#editcreatemenuentry').find('.modal-content').load(loadSurveyEntryFormUrl, loadSurveyEntryFormData, function(){
 			$('#surveymenu-entries-form').on('submit', function(evt){
 					evt.preventDefault();
 					var data = $('#surveymenu-entries-form').serializeArray();
@@ -154,6 +155,6 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 		});
 	});
 	};
-	$(document).ready(bindActions);
+	$(document).ready(bindAction);
 
 </script>

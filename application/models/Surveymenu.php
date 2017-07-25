@@ -89,12 +89,12 @@ class Surveymenu extends LSActiveRecord
 		return $options;
 	}
 
-	public function getNexorderingPosition(){
+	public function getNextOrderPosition(){
 		$oSurveymenus = Surveymenu::model()->findAll();
 		return count($oSurveymenus);
 	}
 
-	public function getorderingOptions (){
+	public function getOrderOptions (){
 		$oSurveymenus = Surveymenu::model()->findAll();
 		$options = [];
 		for($i=0; $i<=count($oSurveymenus); $i++){
@@ -230,23 +230,32 @@ class Surveymenu extends LSActiveRecord
 		return $cols;
 	}
 
+	public function onBeforeSave($event){
+		if($this->parent_id){
+			$parentMenu = Surveymenu::model()->findByPk($this->parent_id);
+			$this->level = (( (int) $parentMenu->level)+1);
+		}
+		return parent::onBeforeSave($event);
+	}
+
 	public function onAfterSave($event){
 		$criteria = new CDbCriteria();
 		
 		$criteria->addCondition(['position=:position']);
-		$criteria->addCondition(['ordering'=>':ordering']);
-		$criteria->addCondition(['id<>:id']);
-		
+		$criteria->addCondition(['ordering=:ordering']);
+		$criteria->addCondition(['id!=:id']);
 		$criteria->params = ['position' => $this->position, 'ordering' => (int) $this->ordering, 'id'=> (int) $this->id];
-		$collidingMenu = Surveymenu::model()->find($criteria)->one();
-		if($collidingMenu){
+		$criteria->limit = 1;
+		
+		$collidingMenu = Surveymenu::model()->find($criteria);
+
+		if($collidingMenu != null){
 			$collidingMenu->ordering = (((int) $collidingMenu->ordering)+1);
 			$collidingMenu->save();
 		}
 		return parent::onAfterSave($event);
 
 	}
-
 
 	/**
      * @return array

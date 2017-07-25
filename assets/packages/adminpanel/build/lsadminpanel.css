@@ -256,6 +256,9 @@
 .ls-space.padding.bottom-0 {
   padding-bottom: 0px; }
 
+.ls-space.padding.all-0 {
+  padding: 0px; }
+
 .ls-space.padding.left-5 {
   padding-left: 5px; }
 
@@ -267,6 +270,9 @@
 
 .ls-space.padding.bottom-5 {
   padding-bottom: 5px; }
+
+.ls-space.padding.all-5 {
+  padding: 5px; }
 
 .ls-space.padding.left-10 {
   padding-left: 10px; }
@@ -280,6 +286,9 @@
 .ls-space.padding.bottom-10 {
   padding-bottom: 10px; }
 
+.ls-space.padding.all-10 {
+  padding: 10px; }
+
 .ls-space.padding.left-15 {
   padding-left: 15px; }
 
@@ -291,6 +300,9 @@
 
 .ls-space.padding.bottom-15 {
   padding-bottom: 15px; }
+
+.ls-space.padding.all-15 {
+  padding: 15px; }
 
 .ls-space.padding.left-25 {
   padding-left: 25px; }
@@ -304,6 +316,9 @@
 .ls-space.padding.bottom-25 {
   padding-bottom: 25px; }
 
+.ls-space.padding.all-25 {
+  padding: 25px; }
+
 .ls-space.padding.left-30 {
   padding-left: 30px; }
 
@@ -315,6 +330,9 @@
 
 .ls-space.padding.bottom-30 {
   padding-bottom: 30px; }
+
+.ls-space.padding.all-30 {
+  padding: 30px; }
 
 .ls-space.padding.left-35 {
   padding-left: 35px; }
@@ -328,6 +346,9 @@
 .ls-space.padding.bottom-35 {
   padding-bottom: 35px; }
 
+.ls-space.padding.all-35 {
+  padding: 35px; }
+
 .ls-space.padding.left-40 {
   padding-left: 40px; }
 
@@ -339,6 +360,9 @@
 
 .ls-space.padding.bottom-40 {
   padding-bottom: 40px; }
+
+.ls-space.padding.all-40 {
+  padding: 40px; }
 
 .ls-space.padding.left-45 {
   padding-left: 45px; }
@@ -352,6 +376,9 @@
 .ls-space.padding.bottom-45 {
   padding-bottom: 45px; }
 
+.ls-space.padding.all-45 {
+  padding: 45px; }
+
 .ls-space.padding.left-50 {
   padding-left: 50px; }
 
@@ -363,6 +390,9 @@
 
 .ls-space.padding.bottom-50 {
   padding-bottom: 50px; }
+
+.ls-space.padding.all-50 {
+  padding: 50px; }
 
 .ls-ba .list-group > .list-group-item .list-group {
   margin-bottom: 0; }

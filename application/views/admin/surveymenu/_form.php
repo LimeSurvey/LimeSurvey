@@ -43,7 +43,7 @@
 
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'ordering'); ?>
-				<?php $model->order = $model->getNexOrderPosition(); ?>
+				<?php $model->ordering = $model->getNextOrderPosition(); ?>
 				<?php echo $form->dropDownList($model,'ordering', $model->getOrderOptions()); ?>
 				<?php echo $form->error($model,'ordering'); ?>
 			</div>

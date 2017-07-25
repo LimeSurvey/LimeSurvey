@@ -91,10 +91,6 @@ export default {
 </template>
 
 <style lang="scss">
-    .selected{
-        padding-left: 20px;
-        background: linear-gradient(to right, rgb(50, 134, 55) 0px, rgb(50, 134, 55) 13px, white 13px, white 100%);
-    }
     .bigIcons {
         font-size: 18px;
         line-height: 21px;

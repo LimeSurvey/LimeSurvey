@@ -60,42 +60,55 @@ export default {
     },
     methods: {
         controlActiveLink(){
+            //get current location
             let currentUrl = window.location.href;
+            //Check for corresponding menuItem
             let lastMenuItemObject = false;
             _.each(this.$store.state.sidemenus, (itm,i)=>{
-                let activeObject = false;
                 _.each(itm.entries, (itmm,j)=>{
-                    activeObject =  itmm.id == this.$store.lastMenuItemOpen ? itmm : false;
+                    lastMenuItemObject =  _.endsWith(currentUrl,itmm.link) ? itmm : lastMenuItemObject;
                 });
-                lastMenuItemObject = activeObject || false;
             });
+            //check for quickmenu menuLinks
+            let lastQuickMenuItemObject = false;
+            _.each(this.$store.state.collapsedmenus, (itm,i)=>{
+                _.each(itm.entries, (itmm,j)=>{
+                    lastQuickMenuItemObject =  _.endsWith(currentUrl,itmm.link) ? itmm : lastQuickMenuItemObject;
+                });
+            });
+            //check for corresponding question group object
             let lastQuestionGroupObject = false;
-            _.find(this.$store.state.questiongroups, (itm,i)=>{
-                    lastQuestionGroupObject =  itm.gid == this.$store.state.lastQuestionOpen ? itm : false;
+            _.each(this.$store.state.questiongroups, (itm,i)=>{
+                let regTest = new RegExp('questiongroups/sa/edit/surveyid/'+itm.sid+'/gid/'+itm.gid);
+                lastQuestionGroupObject =  (regTest.test(currentUrl) || _.endsWith(currentUrl,itm.link)) ? itm : lastQuestionGroupObject;
             });
+            //check for corresponding question group
             let lastQuestionObject = false;
              _.each(this.$store.state.questiongroups, (itm,i)=>{
-                let activeObject = false;
                 _.each(itm.questions, (itmm,j)=>{
-                    activeObject =  itmm.qid == this.$store.state.lastQuestionGroupOpen ? itmm : false;
+                    let regTest = new RegExp('editquestion/surveyid/'+itmm.sid+'/gid/'+itmm.gid+'/qid/'+itmm.qid);
+                    lastQuestionObject =  (_.endsWith(currentUrl,itmm.link) || regTest.test(currentUrl)) ? itmm : lastQuestionObject;
                 });
-                lastQuestionObject = activeObject  || false;
             });
-                       
-
-            if(RegExp(lastMenuItemObject.link).test(currentUrl))
+            
+            //unload every selection
+            this.$store.commit('closeAllMenus');
+            // console.log('setMenuActive', {
+            //     lastMenuItemObject : lastMenuItemObject,
+            //     lastQuickMenuItemObject : lastQuickMenuItemObject,
+            //     lastQuestionObject : lastQuestionObject,
+            //     lastQuestionGroupObject : lastQuestionGroupObject
+            // });
+            //apply selection based on the url
+            if(lastMenuItemObject != false && this.$store.state.isCollapsed !=true)
                 this.$store.commit('lastMenuItemOpen',lastMenuItemObject);
-            if(RegExp(lastQuestionObject.link).test(currentUrl))
+            if(lastQuickMenuItemObject != false && this.$store.state.isCollapsed ==true)
+                this.$store.commit('lastMenuItemOpen',lastQuickMenuItemObject);
+            if(lastQuestionObject != false )
                 this.$store.commit('lastQuestionOpen',lastQuestionObject);
-            if(RegExp(lastQuestionGroupObject.link).test(currentUrl))
+            if(lastQuestionGroupObject != false){
                 this.$store.commit('lastQuestionGroupOpen',lastQuestionGroupObject);
-
-            if(!(
-                RegExp(lastMenuObject.link).test(currentUrl)
-                || RegExp(lastQuestionObject.link).test(currentUrl)
-                || RegExp(lastQuestionGroupObject.link).test(currentUrl)
-            )){
-                this.$store.commit('closeAllMenus');
+                this.$store.commit('addToQuestionGroupOpenArray',lastQuestionGroupObject);
             }
         },
         editEntity(){
@@ -238,7 +251,7 @@ export default {
 }
 </script>
 <template>
-    <div id="sidebar" class="ls-flex ls-space padding left-0 col-md-4 hidden-xs nofloat nooverflow transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
+    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat nooverflow transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
         <div class="col-12" v-bind:style="{'height': maxSideBarHeight}">
             <div class="mainMenu container-fluid col-sm-12 fill-height">
                 <div class="ls-flex-row align-content-space-between align-items-space-between ls-space margin bottom-5 top-5 ">
@@ -288,7 +301,10 @@ export default {
     </div>
 </template>
 <style lang="scss">
-
+    .selected{
+        padding-left: 20px;
+        background: linear-gradient(to right, rgb(50, 134, 55) 0px, rgb(50, 134, 55) 13px, white 13px, white 100%);
+    }
     .background.white{
         background-color: rgba(255,255,255,1);
         box-shadow: none;

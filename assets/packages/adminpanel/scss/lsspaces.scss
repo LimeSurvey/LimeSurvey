@@ -31,6 +31,9 @@ $spaces: 0 5 10 15 25 30 35 40 45 50;
         &.bottom-#{$space}{
             padding-bottom: $space*1px;
         }
+        &.all-#{$space}{
+            padding: $space*1px;
+        }
     }
 }
 

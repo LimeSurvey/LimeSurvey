@@ -20,10 +20,10 @@ const getAppState = function(userid){
             isCollapsed: false,
             pjax: null,
             pjaxLoading: false,
-            lastMenuOpen: null,
-            lastMenuItemOpen: null,
-            lastQuestionOpen: null,
-            lastQuestionGroupOpen: null,
+            lastMenuOpen: false,
+            lastMenuItemOpen: false,
+            lastQuestionOpen: false,
+            lastQuestionGroupOpen: false,
             questionGroupOpenArray: [],
             collapsedmenus: null,
             sidemenus: null,
@@ -70,36 +70,39 @@ const getAppState = function(userid){
           state.currentUser = newUser;
         },
         closeAllMenus(state){
-            state.lastMenuOpen = null;
-            state.lastMenuItemOpen = null;
-            state.lastQuestionGroupOpen = null;
-            state.lastQuestionOpen = null;
+            state.lastMenuOpen = false;
+            state.lastMenuItemOpen = false;
+            state.lastQuestionGroupOpen = false;
+            state.lastQuestionOpen = false;
         },
         lastMenuItemOpen(state, menuItem){
             state.lastMenuOpen = menuItem.menu_id;
             state.lastMenuItemOpen = menuItem.id;
-            state.lastQuestionGroupOpen = null;
-            state.lastQuestionOpen = null;
+            state.lastQuestionGroupOpen = false;
+            state.lastQuestionOpen = false;
         },
-        lastMenuOpend(state,menuObject){
+        lastMenuOpen(state,menuObject){
             state.lastMenuOpen = menuObject.id;
-            state.lastQuestionOpen = null;
-            state.lastMenuItemOpen = null;
+            state.lastQuestionOpen = false;
+            state.lastMenuItemOpen = false;
         },
         lastQuestionOpen(state, questionObject){
             state.lastQuestionGroupOpen = questionObject.gid
             state.lastQuestionOpen = questionObject.qid;
-            state.lastMenuItemOpen = null;
+            state.lastMenuItemOpen = false;
         },
         lastQuestionGroupOpen(state, questionGroupObject){
             state.lastQuestionGroupOpen = questionGroupObject.gid;
-            state.lastQuestionOpen = null;
+            state.lastQuestionOpen = false;
         },
         questionGroupOpenArray(state, questionGroupOpenArray){
             state.questionGroupOpenArray = questionGroupOpenArray;
         },
         updateQuestiongroups(state, questiongroups){
             state.questiongroups = questiongroups;
+        },
+        addToQuestionGroupOpenArray(state, questiongroupToAdd){
+          state.questionGroupOpenArray.push(questiongroupToAdd.gid);
         },
         updateCollapsedmenus(state, collapsedmenus){
             state.collapsedmenus = collapsedmenus;

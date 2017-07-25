@@ -621,6 +621,7 @@ class Survey extends LSActiveRecord
             }
             $aResultCollected[$oSurveyMenuObject->id] = [
                 "title" => $oSurveyMenuObject->title,
+                "level" => $oSurveyMenuObject->level,
                 "description" => $oSurveyMenuObject->description,
                 "entries" => $entries,
                 "submenus" => $submenus
@@ -631,18 +632,18 @@ class Survey extends LSActiveRecord
 
     private function _getSurveymenuSubmenus($oParentSurveymenu){
         $criteria=new CDbCriteria;
-        $criteria->condition='survey_id=:surveyid';
-        $criteria->condition.=' AND parent_id=:parentid';
-        $criteria->condition.=' AND level=:level';
+        $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
+        $criteria->addCondition('parent_id=:parentid');
+        $criteria->addCondition('level=:level');
         $criteria->params = [
             ':surveyid' => $oParentSurveymenu->survey_id,
             ':parentid' =>  $oParentSurveymenu->id,
             ':level'=> ($oParentSurveymenu->level+1)
         ];
 
-        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
+        $oMenus = Surveymenu::model()->findAll($criteria);
 
-        $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus);
+        $aResultCollected = $this->_createSurveymenuArray($oMenus);
         return $aResultCollected;
     }
 
