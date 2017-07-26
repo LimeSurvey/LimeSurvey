@@ -29,6 +29,9 @@
 !/plugins/Demo/
 !/plugins/AuditLog/
 
+#ignore old styles
+/styles/
+
 #ignore most of the js-build stuff
 .eslintrc
 .eslintignore
