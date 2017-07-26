@@ -325,11 +325,6 @@ class SurveyRuntimeHelper {
             // one entry per QID
             foreach ($qanda as $qa) {
 
-                // Test if finalgroup is in this qid (for all in one survey, else we do only qanda for needed question (in one by one or group by goup)
-                if ($gid != $qa['finalgroup']) {
-                    continue;
-                }
-
                 $qid             = $qa[4];
                 $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                 $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
