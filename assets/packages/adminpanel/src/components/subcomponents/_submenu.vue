@@ -48,6 +48,12 @@ export default {
         },
         debugOut(obj){
             return JSON.stringify(obj);
+        },
+        getLinkClass(menuItem){
+            let classes = "ls-flex-row nowrap align-item-center align-content-center ";
+            classes += (menuItem.pjax ? 'pjax' : '');
+            classes += menuItem.menu_class;
+            return classes;
         }
     },
     created(){
@@ -82,7 +88,7 @@ export default {
             <submenu v-if="checkIsOpen(submenu)" :menu="submenu"></submenu>
         </li>
         <li v-for="(menuItem, index) in sortedMenuEntries" class="list-group-item" @click="setActiveMenuItemIndex(menuItem)"  v-bind:key="menuItem.id" v-bind:class="$store.state.lastMenuItemOpen==menuItem.id ? 'selected' : '' ">
-            <a :href="menuItem.link" :title="menuItem.menu_description"  data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center pjax">
+            <a :href="menuItem.link" :title="menuItem.menu_description"  data-toggle="tooltip" :class="getLinkClass(menuItem)">
                 <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
                     <span v-html="menuItem.menu_title"></span>

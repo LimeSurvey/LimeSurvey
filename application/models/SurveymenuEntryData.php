@@ -9,6 +9,7 @@ class SurveymenuEntryData extends CFormModel {
     public $linkExternal  = false;
     public $surveyid  = 0;
     public $menuEntry  = null;
+    public $pjaxed  = true;
     public $isActive  = null;
 
     public function apply($menuEntry, $surveyid){
@@ -35,6 +36,7 @@ class SurveymenuEntryData extends CFormModel {
 
         $this->isActive = $this->_recursiveIssetWithDefault($this->rawData , array('render','isActive'), 0, $this->isActive);
         $this->linkExternal = $this->_recursiveIssetWithDefault($this->rawData , array('render', 'link','external'), 0, $this->linkExternal);
+        $this->pjaxed = $this->_recursiveIssetWithDefault($this->rawData , array('render', 'link','pjaxed'), 0, $this->pjaxed);
         $alinkData = $this->_recursiveIssetWithDefault($this->rawData , array('render', 'link','data'), 0, $this->linkData);
 
         foreach($alinkData as $key => $value){

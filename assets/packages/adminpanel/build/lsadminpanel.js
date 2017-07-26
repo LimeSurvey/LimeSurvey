@@ -29794,6 +29794,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         debugOut(obj) {
             return JSON.stringify(obj);
+        },
+        getLinkClass(menuItem) {
+            let classes = "ls-flex-row nowrap align-item-center align-content-center ";
+            classes += menuItem.pjax ? 'pjax' : '';
+            classes += menuItem.menu_class;
+            return classes;
         }
     },
     created() {
@@ -29870,7 +29876,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_c('a', {
-      staticClass: "ls-flex-row nowrap align-item-center align-content-center pjax",
+      class: _vm.getLinkClass(menuItem),
       attrs: {
         "href": menuItem.link,
         "title": menuItem.menu_description,
@@ -30908,7 +30914,6 @@ const getAppState = function(userid){
           state.pjax = new __WEBPACK_IMPORTED_MODULE_4_pjax___default.a({
             elements: "a.pjax", // default is "a[href], form[action]"
             selectors: [
-              '#YII_RENDER_BODY_SCRIPTS',
               '#pjax-content',
               '#breadcrumb-container'
               ]

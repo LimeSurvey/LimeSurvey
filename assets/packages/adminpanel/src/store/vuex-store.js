@@ -122,7 +122,6 @@ const getAppState = function(userid){
           state.pjax = new Pjax({
             elements: "a.pjax", // default is "a[href], form[action]"
             selectors: [
-              '#YII_RENDER_BODY_SCRIPTS',
               '#pjax-content',
               '#breadcrumb-container'
               ]

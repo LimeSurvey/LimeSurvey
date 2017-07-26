@@ -66,6 +66,29 @@ class templateoptions  extends Survey_Common_Action
         ));
     }
 
+
+    private function _updateCommon($model,$sid=null){
+
+        $templateOptionPage = $model->optionPage;
+
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+
+        yii::app()->clientScript->registerPackage('bootstrap-switch');
+        $aData = array(
+            'model'=>$model, 
+            'templateOptionPage' => $templateOptionPage
+        );
+        if($sid !== null){
+            $aData['surveyid'] = $sid;
+            $aData['title_bar']['title'] = gT("Survey template options");
+            $aData['subaction'] = gT("Survey template options");
+        }
+
+        // TODO: twig file from template folder
+        $this->_renderWrappedTemplate('templateoptions', 'update', $aData);
+    }
+
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
@@ -77,13 +100,7 @@ class templateoptions  extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT('Access denied!'),'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/templateoptions"));
         }
-
         $model = $this->loadModel($id);
-
-        $templateOptionPage = $model->optionPage;
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
 
         if(isset($_POST['TemplateConfiguration'])){
             $model->attributes=$_POST['TemplateConfiguration'];
@@ -91,11 +108,31 @@ class templateoptions  extends Survey_Common_Action
                 $this->getController()->redirect(array('admin/templateoptions/sa/update/id/'.$model->id));
         }
 
-        yii::app()->clientScript->registerPackage('bootstrap-switch');
-        // TODO: twig file from template folder
-        $this->_renderWrappedTemplate('templateoptions', 'update', array(
-            'model'=>$model, 'templateOptionPage' => $templateOptionPage));
+        $this->_updateCommon($model);
 
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function updatesurvey($sid)
+    {
+        if (! Permission::model()->hasGlobalPermission('templates', 'update')){
+            Yii::app()->setFlashMessage(gT('Access denied!'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/templateoptions/sa/updatesurvey",['surveyid'=>$sid,'sid'=>$sid]));
+        }
+
+        $model = Template::getTemplateConfiguration(null, $sid);
+
+        if(isset($_POST['TemplateConfiguration'])){
+            $model->attributes=$_POST['TemplateConfiguration'];
+            if($model->save())
+                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/templateoptions/sa/updatesurvey",['surveyid'=>$sid,'sid'=>$sid]));
+        }
+
+        $this->_updateCommon($model, $sid);
     }
 
     /**

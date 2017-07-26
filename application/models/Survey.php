@@ -621,7 +621,7 @@ class Survey extends LSActiveRecord
                 $aEntry['link'] = $oDataAttribute->linkCreator();
                 $aEntry['link_external'] = $oDataAttribute->linkExternal;
                 $aEntry['debugData'] = $oDataAttribute->attributes;
-                
+                $aEntry['pjax'] = $oDataAttribute->pjaxed;
                 $entries[$aEntry['id']] = $aEntry;
             }
             $aResultCollected[$oSurveyMenuObject->id] = [

@@ -343,6 +343,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
+
     }
     catch(Exception $e)
     {
