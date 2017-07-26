@@ -21,13 +21,21 @@ export default {
     computed: {
         sortedMenuEntries() {
             return _.orderBy(this.menu.entries,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
-        }
+        },
     },
     methods:{
         setActiveMenuItemIndex(menuItem){
             let activeMenuIndex = menuItem.id;
             this.$store.commit('lastMenuItemOpen', menuItem)
             
+        },
+        checkIsOpen(toCheckMenu){
+            let directSelect = this.$store.state.lastMenuOpen == toCheckMenu.id;
+            let childSelected = false;
+            _.each(toCheckMenu.submenus, (submenu,i)=>{
+                childSelected = (this.$store.state.lastMenuOpen == submenu.id) || childSelected;
+            });
+            return (directSelect || childSelected || false);
         },
         setActiveMenuIndex(menu){
             let activeMenuIndex = menu.id;
@@ -60,18 +68,18 @@ export default {
 }
 </script>
 <template>
-    <ul class="list-group subpanel" :class="'level-'+(menu.level)">
-        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="$store.state.lastMenuOpen==submenu.id ? 'selected' : '' ">
+    <ul class="list-group subpanel col-12" :class="'level-'+(menu.level)">
+        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' ">
             <a href="#" :title="submenu.description" @click.stop="setActiveMenuIndex(submenu)"  data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center">
-                <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuOpen==submenu.id ? 'col-sm-10' : 'col-sm-10' ">
+                <div class="ls-space col-sm-10 padding all-0">
                     <menuicon :icon-type="submenu.menu_icon_type" :icon="submenu.menu_icon"></menuicon>
                     <span v-html="submenu.title"></span>
                 </div>
-                <div class="col-sm-2 text-center ls-space padding all-0" v-bind:class="($store.state.lastMenuOpen==submenu.id  ? 'background white' : '')">
-                    <i class="fa fa-level-down">&nbsp;</i>
+                <div class="col-sm-2 text-center ls-space padding all-0">
+                    <i class="fa" v-bind:class="(!checkIsOpen(submenu) ? 'fa-chevron-up' : 'fa-chevron-down')">&nbsp;</i>
                 </div>
             </a>
-            <submenu v-if="$store.state.lastMenuOpen == submenu.id" :menu="submenu"></submenu>
+            <submenu v-if="checkIsOpen(submenu)" :menu="submenu"></submenu>
         </li>
         <li v-for="(menuItem, index) in sortedMenuEntries" class="list-group-item" @click="setActiveMenuItemIndex(menuItem)"  v-bind:key="menuItem.id" v-bind:class="$store.state.lastMenuItemOpen==menuItem.id ? 'selected' : '' ">
             <a :href="menuItem.link" :title="menuItem.menu_description"  data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center pjax">

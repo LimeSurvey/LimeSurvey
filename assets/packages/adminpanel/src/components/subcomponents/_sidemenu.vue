@@ -67,32 +67,10 @@ export default {
 }
 </script>
 <template>
-    <div class="ls-flex-column fill menu-pane overflow-auto" >
-        <ul class="list-group" v-for="menu in sortedMenues" :title="menu.title" v-bind:key="menu.title" :id="menu.id">
-            <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="$store.state.lastMenuItemOpen==submenu.id ? 'selected' : '' ">
-                <a href="#" :title="submenu.description" @click.stop="setActiveMenuIndex(submenu)"  data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center">
-                    <div class="ls-space padding all-0 " v-bind:class="$store.state.lastMenuItemOpen==submenu.id ? 'col-sm-10' : 'col-sm-10' ">
-                        <menuicon :icon-type="submenu.menu_icon_type" :icon="submenu.menu_icon"></menuicon>
-                        <span v-html="submenu.title"></span>
-                    </div>
-                    <div class="col-sm-2 text-center ls-space padding all-0 " v-bind:class="($store.state.lastMenuItemOpen==submenu.id  ? 'background white' : '')">
-                        <i class="fa fa-level-down">&nbsp;</i>
-                    </div>
-                </a>
-                <submenu v-if="$store.state.lastMenuOpen == submenu.id" :menu="submenu"></submenu>
-            </li>
-            <li v-for="(menuItem, index) in sortedMenuEntries(menu.entries)" class="list-group-item" @click="setActiveMenuItemIndex(menuItem)"  v-bind:key="menuItem.id" v-bind:class="$store.state.lastMenuItemOpen==menuItem.id ? 'selected' : '' ">
-                <a :href="menuItem.link" :title="menuItem.menu_description"  data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center pjax">
-                    <div class="ls-space padding all-0 " v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
-                        <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
-                        <span v-html="menuItem.menu_title"></span>
-                    </div>
-                    <div class="col-sm-2 text-center ls-space padding all-0 background white" v-show="$store.state.lastMenuItemOpen == menuItem.id">
-                        <i class="fa fa-chevron-right">&nbsp;</i>
-                    </div>
-                </a>
-            </li>
-        </ul>
+    <div class="ls-flex-column fill menu-pane overflow-enabled ls-space padding all-0" >
+        <div  v-for="menu in sortedMenues" :title="menu.title" :id="menu.id" class="ls-flex-row ls-space padding all-0" v-bind:key="menu.id">
+            <submenu :menu="menu"></submenu>
+        </div>
     </div>
 </template>
 <style lang="scss">

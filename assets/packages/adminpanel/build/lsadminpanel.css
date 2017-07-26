@@ -500,3 +500,29 @@ ol.breadcrumb.title-bar-breadcrumb {
     -webkit-transition: width 1.6s;
     /* Safari */
     transition: width 1.6s; }
+
+#sidebar .selected {
+  padding-left: 20px;
+  background: linear-gradient(to right, #328637 0px, #328637 13px, white 13px, white 100%); }
+
+#sidebar .menu-selected {
+  padding-left: 10px;
+  background: linear-gradient(to right, #328637 0px, #328637 6px, white 6px, white 100%); }
+
+#sidebar .subpanel.level-0 .menu-selected {
+  background: linear-gradient(to right, #57a45c 0px, #57a45c 6px, white 6px, white 100%); }
+
+#sidebar .subpanel.level-0 .selected {
+  background: linear-gradient(to right, #57a45c 0px, #57a45c 13px, white 13px, white 100%); }
+
+#sidebar .subpanel.level-1 .menu-selected {
+  background: linear-gradient(to right, #89c68d 0px, #89c68d 6px, white 6px, white 100%); }
+
+#sidebar .subpanel.level-1 .selected {
+  background: linear-gradient(to right, #89c68d 0px, #89c68d 13px, white 13px, white 100%); }
+
+#sidebar .subpanel.level-2 .menu-selected {
+  background: linear-gradient(to right, #b5ddb8 0px, #b5ddb8 6px, white 6px, white 100%); }
+
+#sidebar .subpanel.level-2 .selected {
+  background: linear-gradient(to right, #b5ddb8 0px, #b5ddb8 13px, white 13px, white 100%); }

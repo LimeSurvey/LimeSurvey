@@ -122,3 +122,41 @@ ol.breadcrumb.title-bar-breadcrumb{
         transition: width 1.6s;
     }
 }
+#sidebar{
+    .selected{
+        padding-left: 20px;
+        background: linear-gradient(to right, rgb(50, 134, 55) 0px, rgb(50, 134, 55) 13px, white 13px, white 100%);
+    }
+    .menu-selected{
+        padding-left: 10px;
+        background: linear-gradient(to right, rgb(50, 134, 55) 0px, rgb(50, 134, 55) 6px, white 6px, white 100%);
+    }
+
+    .subpanel{
+        &.level-0{
+            .menu-selected{
+                background: linear-gradient(to right, rgb(87, 164, 92) 0px, rgb(87, 164, 92) 6px, white 6px, white 100%);
+            }
+            .selected{
+                background: linear-gradient(to right, rgb(87, 164, 92) 0px, rgb(87, 164, 92) 13px, white 13px, white 100%);
+            }
+        }
+        &.level-1{
+            .menu-selected{
+                background: linear-gradient(to right, rgb(137, 198, 141) 0px, rgb(137, 198, 141) 6px, white 6px, white 100%);
+            }
+            .selected{
+                background: linear-gradient(to right, rgb(137, 198, 141) 0px, rgb(137, 198, 141) 13px, white 13px, white 100%);
+            }
+        }
+        &.level-2{
+            .menu-selected{
+                background: linear-gradient(to right, rgb(181, 221, 184) 0px, rgb(181, 221, 184) 6px, white 6px, white 100%);
+            }
+            .selected{
+                background: linear-gradient(to right, rgb(181, 221, 184) 0px, rgb(181, 221, 184) 13px, white 13px, white 100%);
+            }
+        }
+
+    }
+}

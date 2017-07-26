@@ -28868,7 +28868,7 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.selected {\n  padding-left: 20px;\n  background: linear-gradient(to right, #328637 0px, #328637 13px, white 13px, white 100%);\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.overflow-auto {\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.resize-handle {\n  position: absolute;\n  right: 14px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 4px;\n  cursor: col-resize;\n}\n.resize-handle button {\n    outline: 0;\n    cursor: col-resize;\n    width: 100%;\n    height: 100%;\n    text-align: left;\n    border-radius: 0;\n    padding: 0px 7px 0px 4px;\n}\n.resize-handle button:focus, .resize-handle button:active, .resize-handle button:hover {\n      outline: 0 !important;\n      background-color: transparent !important;\n}\n.resize-handle button i {\n      font-size: 12px;\n      width: 5px;\n}\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease;\n}\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease;\n}\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0;\n}\n.slide-fade-enter-active {\n  -moz-transition: all 0.2s ease;\n  -webkit-transition: all 0.2s ease;\n  -ms-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.slide-fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/sidebar.vue"],"names":[],"mappings":";AAAA;EACE,mBAAmB;EACnB,yFAAyF;CAAE;AAE7F;EACE,wBAAwB;EACxB,iBAAiB;CAAE;AAErB;EACE,mBAAmB;EACnB,iBAAiB;CAAE;AAErB;EACE,mBAAmB;EACnB,YAAY;EACZ,OAAO;EACP,UAAU;EACV,aAAa;EACb,WAAW;EACX,mBAAmB;CAAE;AACrB;IACE,WAAW;IACX,mBAAmB;IACnB,YAAY;IACZ,aAAa;IACb,iBAAiB;IACjB,iBAAiB;IACjB,yBAAyB;CAAE;AAC3B;MACE,sBAAsB;MACtB,yCAAyC;CAAE;AAC7C;MACE,gBAAgB;MAChB,WAAW;CAAE;AAEnB;EACE,iCAAiC;EACjC,oCAAoC;EACpC,gCAAgC;EAChC,4BAA4B;CAAE;AAEhC;EACE,+BAA+B;EAC/B,kCAAkC;EAClC,8BAA8B;EAC9B,0BAA0B;CAAE;AAE9B;EACE,uDAAuD;EACvD,0DAA0D;EAC1D,sDAAsD;EACtD,kDAAkD;CAAE;AAEtD;EACE,iCAAiC;EACjC,oCAAoC;EACpC,gCAAgC;EAChC,4BAA4B;EAC5B,WAAW;CAAE;AAEf;EACE,+BAA+B;EAC/B,kCAAkC;EAClC,8BAA8B;EAC9B,0BAA0B;CAAE;AAE9B;EACE,uDAAuD;EACvD,0DAA0D;EAC1D,sDAAsD;EACtD,kDAAkD;CAAE;AAEtD;EACE,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,WAAW;CAAE","file":"sidebar.vue","sourcesContent":[".selected {\n  padding-left: 20px;\n  background: linear-gradient(to right, #328637 0px, #328637 13px, white 13px, white 100%); }\n\n.background.white {\n  background-color: white;\n  box-shadow: none; }\n\n.overflow-auto {\n  overflow-x: hidden;\n  overflow-y: auto; }\n\n.resize-handle {\n  position: absolute;\n  right: 14px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 4px;\n  cursor: col-resize; }\n  .resize-handle button {\n    outline: 0;\n    cursor: col-resize;\n    width: 100%;\n    height: 100%;\n    text-align: left;\n    border-radius: 0;\n    padding: 0px 7px 0px 4px; }\n    .resize-handle button:focus, .resize-handle button:active, .resize-handle button:hover {\n      outline: 0 !important;\n      background-color: transparent !important; }\n    .resize-handle button i {\n      font-size: 12px;\n      width: 5px; }\n\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease; }\n\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease; }\n\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1); }\n\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0; }\n\n.slide-fade-enter-active {\n  -moz-transition: all 0.2s ease;\n  -webkit-transition: all 0.2s ease;\n  -ms-transition: all 0.2s ease;\n  transition: all 0.2s ease; }\n\n.slide-fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1); }\n\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.overflow-auto {\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.resize-handle {\n  position: absolute;\n  right: 14px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 4px;\n  cursor: col-resize;\n}\n.resize-handle button {\n    outline: 0;\n    cursor: col-resize;\n    width: 100%;\n    height: 100%;\n    text-align: left;\n    border-radius: 0;\n    padding: 0px 7px 0px 4px;\n}\n.resize-handle button:focus, .resize-handle button:active, .resize-handle button:hover {\n      outline: 0 !important;\n      background-color: transparent !important;\n}\n.resize-handle button i {\n      font-size: 12px;\n      width: 5px;\n}\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease;\n}\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease;\n}\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0;\n}\n.slide-fade-enter-active {\n  -moz-transition: all 0.2s ease;\n  -webkit-transition: all 0.2s ease;\n  -ms-transition: all 0.2s ease;\n  transition: all 0.2s ease;\n}\n.slide-fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/sidebar.vue"],"names":[],"mappings":";AAAA;EACE,wBAAwB;EACxB,iBAAiB;CAAE;AAErB;EACE,mBAAmB;EACnB,iBAAiB;CAAE;AAErB;EACE,mBAAmB;EACnB,YAAY;EACZ,OAAO;EACP,UAAU;EACV,aAAa;EACb,WAAW;EACX,mBAAmB;CAAE;AACrB;IACE,WAAW;IACX,mBAAmB;IACnB,YAAY;IACZ,aAAa;IACb,iBAAiB;IACjB,iBAAiB;IACjB,yBAAyB;CAAE;AAC3B;MACE,sBAAsB;MACtB,yCAAyC;CAAE;AAC7C;MACE,gBAAgB;MAChB,WAAW;CAAE;AAEnB;EACE,iCAAiC;EACjC,oCAAoC;EACpC,gCAAgC;EAChC,4BAA4B;CAAE;AAEhC;EACE,+BAA+B;EAC/B,kCAAkC;EAClC,8BAA8B;EAC9B,0BAA0B;CAAE;AAE9B;EACE,uDAAuD;EACvD,0DAA0D;EAC1D,sDAAsD;EACtD,kDAAkD;CAAE;AAEtD;EACE,iCAAiC;EACjC,oCAAoC;EACpC,gCAAgC;EAChC,4BAA4B;EAC5B,WAAW;CAAE;AAEf;EACE,+BAA+B;EAC/B,kCAAkC;EAClC,8BAA8B;EAC9B,0BAA0B;CAAE;AAE9B;EACE,uDAAuD;EACvD,0DAA0D;EAC1D,sDAAsD;EACtD,kDAAkD;CAAE;AAEtD;EACE,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,WAAW;CAAE","file":"sidebar.vue","sourcesContent":[".background.white {\n  background-color: white;\n  box-shadow: none; }\n\n.overflow-auto {\n  overflow-x: hidden;\n  overflow-y: auto; }\n\n.resize-handle {\n  position: absolute;\n  right: 14px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 4px;\n  cursor: col-resize; }\n  .resize-handle button {\n    outline: 0;\n    cursor: col-resize;\n    width: 100%;\n    height: 100%;\n    text-align: left;\n    border-radius: 0;\n    padding: 0px 7px 0px 4px; }\n    .resize-handle button:focus, .resize-handle button:active, .resize-handle button:hover {\n      outline: 0 !important;\n      background-color: transparent !important; }\n    .resize-handle button i {\n      font-size: 12px;\n      width: 5px; }\n\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease; }\n\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease; }\n\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1); }\n\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0; }\n\n.slide-fade-enter-active {\n  -moz-transition: all 0.2s ease;\n  -webkit-transition: all 0.2s ease;\n  -ms-transition: all 0.2s ease;\n  transition: all 0.2s ease; }\n\n.slide-fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1); }\n\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -29776,6 +29776,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             let activeMenuIndex = menuItem.id;
             this.$store.commit('lastMenuItemOpen', menuItem);
         },
+        checkIsOpen(toCheckMenu) {
+            let directSelect = this.$store.state.lastMenuOpen == toCheckMenu.id;
+            let childSelected = false;
+            __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.each(toCheckMenu.submenus, (submenu, i) => {
+                childSelected = this.$store.state.lastMenuOpen == submenu.id || childSelected;
+            });
+            return directSelect || childSelected || false;
+        },
         setActiveMenuIndex(menu) {
             let activeMenuIndex = menu.id;
             this.$store.commit('lastMenuOpen', menu);
@@ -29810,13 +29818,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('ul', {
-    staticClass: "list-group subpanel",
+    staticClass: "list-group subpanel col-12",
     class: 'level-' + (_vm.menu.level)
   }, [_vm._l((_vm.menu.submenus), function(submenu, index) {
     return _c('li', {
       key: submenu.id,
       staticClass: "list-group-item",
-      class: _vm.$store.state.lastMenuOpen == submenu.id ? 'selected' : ''
+      class: _vm.checkIsOpen(submenu) ? 'menu-selected' : ''
     }, [_c('a', {
       staticClass: "ls-flex-row nowrap align-item-center align-content-center",
       attrs: {
@@ -29831,8 +29839,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     }, [_c('div', {
-      staticClass: "ls-space padding all-0",
-      class: _vm.$store.state.lastMenuOpen == submenu.id ? 'col-sm-10' : 'col-sm-10'
+      staticClass: "ls-space col-sm-10 padding all-0"
     }, [_c('menuicon', {
       attrs: {
         "icon-type": submenu.menu_icon_type,
@@ -29843,11 +29850,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "innerHTML": _vm._s(submenu.title)
       }
     })], 1), _vm._v(" "), _c('div', {
-      staticClass: "col-sm-2 text-center ls-space padding all-0",
-      class: (_vm.$store.state.lastMenuOpen == submenu.id ? 'background white' : '')
+      staticClass: "col-sm-2 text-center ls-space padding all-0"
     }, [_c('i', {
-      staticClass: "fa fa-level-down"
-    }, [_vm._v(" ")])])]), _vm._v(" "), (_vm.$store.state.lastMenuOpen == submenu.id) ? _c('submenu', {
+      staticClass: "fa",
+      class: (!_vm.checkIsOpen(submenu) ? 'fa-chevron-up' : 'fa-chevron-down')
+    }, [_vm._v(" ")])])]), _vm._v(" "), (_vm.checkIsOpen(submenu)) ? _c('submenu', {
       attrs: {
         "menu": submenu
       }
@@ -29908,96 +29915,20 @@ if (false) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "ls-flex-column fill menu-pane overflow-auto"
+    staticClass: "ls-flex-column fill menu-pane overflow-enabled ls-space padding all-0"
   }, _vm._l((_vm.sortedMenues), function(menu) {
-    return _c('ul', {
-      key: menu.title,
-      staticClass: "list-group",
+    return _c('div', {
+      key: menu.id,
+      staticClass: "ls-flex-row ls-space padding all-0",
       attrs: {
         "title": menu.title,
         "id": menu.id
       }
-    }, [_vm._l((menu.submenus), function(submenu, index) {
-      return _c('li', {
-        key: submenu.id,
-        staticClass: "list-group-item",
-        class: _vm.$store.state.lastMenuItemOpen == submenu.id ? 'selected' : ''
-      }, [_c('a', {
-        staticClass: "ls-flex-row nowrap align-item-center align-content-center",
-        attrs: {
-          "href": "#",
-          "title": submenu.description,
-          "data-toggle": "tooltip"
-        },
-        on: {
-          "click": function($event) {
-            $event.stopPropagation();
-            _vm.setActiveMenuIndex(submenu)
-          }
-        }
-      }, [_c('div', {
-        staticClass: "ls-space padding all-0 ",
-        class: _vm.$store.state.lastMenuItemOpen == submenu.id ? 'col-sm-10' : 'col-sm-10'
-      }, [_c('menuicon', {
-        attrs: {
-          "icon-type": submenu.menu_icon_type,
-          "icon": submenu.menu_icon
-        }
-      }), _vm._v(" "), _c('span', {
-        domProps: {
-          "innerHTML": _vm._s(submenu.title)
-        }
-      })], 1), _vm._v(" "), _c('div', {
-        staticClass: "col-sm-2 text-center ls-space padding all-0 ",
-        class: (_vm.$store.state.lastMenuItemOpen == submenu.id ? 'background white' : '')
-      }, [_c('i', {
-        staticClass: "fa fa-level-down"
-      }, [_vm._v(" ")])])]), _vm._v(" "), (_vm.$store.state.lastMenuOpen == submenu.id) ? _c('submenu', {
-        attrs: {
-          "menu": submenu
-        }
-      }) : _vm._e()], 1)
-    }), _vm._v(" "), _vm._l((_vm.sortedMenuEntries(menu.entries)), function(menuItem, index) {
-      return _c('li', {
-        key: menuItem.id,
-        staticClass: "list-group-item",
-        class: _vm.$store.state.lastMenuItemOpen == menuItem.id ? 'selected' : '',
-        on: {
-          "click": function($event) {
-            _vm.setActiveMenuItemIndex(menuItem)
-          }
-        }
-      }, [_c('a', {
-        staticClass: "ls-flex-row nowrap align-item-center align-content-center pjax",
-        attrs: {
-          "href": menuItem.link,
-          "title": menuItem.menu_description,
-          "data-toggle": "tooltip"
-        }
-      }, [_c('div', {
-        staticClass: "ls-space padding all-0 ",
-        class: _vm.$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12'
-      }, [_c('menuicon', {
-        attrs: {
-          "icon-type": menuItem.menu_icon_type,
-          "icon": menuItem.menu_icon
-        }
-      }), _vm._v(" "), _c('span', {
-        domProps: {
-          "innerHTML": _vm._s(menuItem.menu_title)
-        }
-      })], 1), _vm._v(" "), _c('div', {
-        directives: [{
-          name: "show",
-          rawName: "v-show",
-          value: (_vm.$store.state.lastMenuItemOpen == menuItem.id),
-          expression: "$store.state.lastMenuItemOpen == menuItem.id"
-        }],
-        staticClass: "col-sm-2 text-center ls-space padding all-0 background white"
-      }, [_c('i', {
-        staticClass: "fa fa-chevron-right"
-      }, [_vm._v(" ")])])])])
-    })], 2)
+    }, [_c('submenu', {
+      attrs: {
+        "menu": menu
+      }
+    })], 1)
   }))
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -30977,6 +30908,7 @@ const getAppState = function(userid){
           state.pjax = new __WEBPACK_IMPORTED_MODULE_4_pjax___default.a({
             elements: "a.pjax", // default is "a[href], form[action]"
             selectors: [
+              '#YII_RENDER_BODY_SCRIPTS',
               '#pjax-content',
               '#breadcrumb-container'
               ]

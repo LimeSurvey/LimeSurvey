@@ -301,10 +301,6 @@ export default {
     </div>
 </template>
 <style lang="scss">
-    .selected{
-        padding-left: 20px;
-        background: linear-gradient(to right, rgb(50, 134, 55) 0px, rgb(50, 134, 55) 13px, white 13px, white 100%);
-    }
     .background.white{
         background-color: rgba(255,255,255,1);
         box-shadow: none;

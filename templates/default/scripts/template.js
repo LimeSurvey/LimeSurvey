@@ -29,7 +29,7 @@ function focusFirst(Event)
  * Code included inside this will only run once the page Document Object Model (DOM) is ready for JavaScript code to execute
  * @see https://learn.jquery.com/using-jquery-core/document-ready/
  */
-$(document).ready(function()
+$(document).on('ready pjax:complete',function()
 {
     /* Uncomment below if you want to use the focusFirst function */
     //focusFirst();
