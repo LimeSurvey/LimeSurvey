@@ -1234,7 +1234,8 @@ class database extends Survey_Common_Action
         switch($options['type']){
             case 'yesno':
                 if($newValue != 'Y' && $newValue != 'N')
-                    $newValue = ($newValue=='1') ? 'Y' : 'N';
+                    $newValue = (int) $newValue;
+                    $newValue = ($newValue===1) ? 'Y' : 'N';
             break;
             case 'Int' : 
                 $newValue = (int) $newValue;

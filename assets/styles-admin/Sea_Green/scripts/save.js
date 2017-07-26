@@ -66,6 +66,11 @@ if ($('#save-button').length > 0){
         ev.preventDefault();
         var $form = getForm(this);
         formSubmitting = true;
+        
+        for(var instanceName in CKEDITOR.instances) {
+            CKEDITOR.instances[instanceName].updateElement();
+        }
+
         $form.find('[type="submit"]').first().trigger('click');
     });
 }

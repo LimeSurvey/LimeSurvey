@@ -627,6 +627,7 @@ class Survey extends LSActiveRecord
             $aResultCollected[$oSurveyMenuObject->id] = [
                 "id" => $oSurveyMenuObject->id,
                 "title" => $oSurveyMenuObject->title,
+                "ordering" => $oSurveyMenuObject->ordering,
                 "level" => $oSurveyMenuObject->level,
                 "description" => $oSurveyMenuObject->description,
                 "entries" => $entries,

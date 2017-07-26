@@ -73,19 +73,18 @@ class SurveymenuEntries extends LSActiveRecord
 		);
 	}
 
-	public function reorderMenu($menuId){
+	public static function reorderMenu($menuId){
 		$criteriaItems = new CDbCriteria();
 		$criteriaItems->addCondition(['menu_id = :menu_id']);
 		$criteriaItems->order='ordering ASC';
 		$criteriaItems->params = ['menu_id' => (int) $menuId];
-		$menuEntriesInMenu = SurveymenuEntries::model()->find(criteriaItems);
+		$menuEntriesInMenu = SurveymenuEntries::model()->findAll($criteriaItems);
 		
 		$statistics =
 		Yii::app()->db->createCommand()->select('MIN(ordering) as lowOrder, MAX(ordering) as highOrder, COUNT(id) as count')
 				->from('{{surveymenu_entries}}')
 				->where(['menu_id = :menu_id'],['menu_id' => (int) $menuId])
-				->queryAll();
-
+				->queryRow();
 		if( ($statistics['lowOrder'] != 1) || ($statistics['highOrder'] != $statistics['count']) ){
 			$current = 1;
 			foreach($menuEntriesInMenu as $menuEntry){

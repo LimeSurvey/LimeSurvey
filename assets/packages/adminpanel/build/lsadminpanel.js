@@ -29562,7 +29562,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         sortedMenues() {
             return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(this.$store.state.sidemenus, a => {
-                return parseInt(a.order || 999999);
+                return parseInt(a.ordering || 999999);
             }, ['asc']);
         }
     },
@@ -29570,7 +29570,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         sortedMenuEntries(entries) {
             const self = this;
             let orderedArray = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(entries, a => {
-                return parseInt(a.order || 999999);
+                return parseInt(a.ordering || 999999);
             }, ['asc']);
             return orderedArray;
         },
@@ -29767,7 +29767,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         sortedMenuEntries() {
             return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(this.menu.entries, a => {
-                return parseInt(a.order || 999999);
+                return parseInt(a.ordering || 999999);
             }, ['asc']);
         }
     },
@@ -30058,7 +30058,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     computed: {
         sortedMenues() {
             return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(this.$store.state.collapsedmenus, a => {
-                return parseInt(a.order || 999999);
+                return parseInt(a.ordering || 999999);
             }, ['asc']);
         }
     },
@@ -30066,7 +30066,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         sortedMenuEntries(entries) {
             const self = this;
             let orderedArray = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(entries, a => {
-                return parseInt(a.order || 999999);
+                return parseInt(a.ordering || 999999);
             }, ['asc']);
             return orderedArray;
         },

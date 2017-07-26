@@ -342,6 +342,29 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>308),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
+        /*
+         * Add survey template editing to menu
+         */
+        if ($iOldDBVersion < 309) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->insert('{{surveymenu_entries}}',array_combine(
+                array(
+                    "menu_id","ordering","name","title","menu_title","menu_description","menu_icon","menu_icon_type",
+                    "menu_link","permission","permission_grade",
+                    "data",
+                    "language","changed_at","changed_by","created_at","created_by"),
+                array(
+                    1,3,"template_options","Template options","Template options","Edit Template options for this survey","paint-brush","fontawesome",
+                    "admin/templateoptions/sa/updatesurvey","surveysettings","read",
+                    '{"render": {"link": { "pjaxed": false, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}',
+                    "en-GB",date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0
+                    )
+                )
+            );
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>309),"stg_name='DBVersion'");
+            $oTransaction->commit();
+            SurveymenuEntries::reorderMenu(1);
+        }
 
 
     }

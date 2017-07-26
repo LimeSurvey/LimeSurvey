@@ -98,6 +98,7 @@ class SurveymenuEntryController extends Survey_Common_Action
 			if($model->save()){
 				$model->id = $model->getPrimaryKey();
 				$success = true;
+				SurveymenuEntries::reorderMenu($model->menu_id);
 			}
 		}
 

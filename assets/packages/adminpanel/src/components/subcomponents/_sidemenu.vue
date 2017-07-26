@@ -22,13 +22,13 @@ export default {
     },
     computed: {
         sortedMenues(){
-            return _.orderBy(this.$store.state.sidemenus,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
+            return _.orderBy(this.$store.state.sidemenus,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);
         }
     },
     methods:{
         sortedMenuEntries(entries) {
             const self = this;
-            let orderedArray = _.orderBy(entries,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);            
+            let orderedArray = _.orderBy(entries,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);            
             return orderedArray;
         },
         setActiveMenuIndex(menuItem){

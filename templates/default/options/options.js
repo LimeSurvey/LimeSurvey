@@ -5,10 +5,11 @@ var prepare = function(){
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
     //get option Object from Template configuration options
     var optionObject = {}
-    try{
-        optionObject = JSON.parse($('#TemplateConfiguration_options').val());
-    } catch(e){ console.error('No valid option field!'); }
-
+    if($('#TemplateConfiguration_options').length>0){
+        try{
+            optionObject = JSON.parse($('#TemplateConfiguration_options').val());
+        } catch(e){ console.error('No valid option field!'); }
+    }
     //check if a form exists to parse the simple option
     if($('.action_update_options_string_form').length > 0){
         //Update values in the form to the template options

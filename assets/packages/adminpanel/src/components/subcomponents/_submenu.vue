@@ -20,7 +20,7 @@ export default {
     },
     computed: {
         sortedMenuEntries() {
-            return _.orderBy(this.menu.entries,(a)=>{return parseInt((a.order || 999999)) }, ['asc']);
+            return _.orderBy(this.menu.entries,(a)=>{return parseInt((a.ordering || 999999)) }, ['asc']);
         },
     },
     methods:{
