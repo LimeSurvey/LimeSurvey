@@ -191,23 +191,39 @@ class Template extends LSActiveRecord
      * @param integer $iSurveyId        the id of the survey. If
      * @return StdClass
      */
-    public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='', $bForceXML=false)
+    public static function getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $bForceXML=false)
     {
 
         // First we try to get a confifuration row from DB
         if (!$bForceXML){
-            if (!empty($sTemplateName)){
-                $oTemplate = self::model()->findByPk($sTemplateName);
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
-            }else{
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid=:sid', array(':templates_name'=>$sTemplateName, ':sid' => $iSurveyId ));
+            if ($sTemplateName!=null){
+                $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
+                    'templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', 
+                    array(':templates_name'=>$sTemplateName)
+                );
+            } else if($iSurveyId!=null) {
+                $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
+                    'sid=:sid', 
+                    array(':sid' => $iSurveyId )
+                    );
 
                 // No specific template configuration for this survey
                 if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
                     $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
                     $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
+
                 }
             }
+        }
+
+        //If a survey id is set, but there is no survey specific template configuration create one!
+        if(($iSurveyId != '') && !($iSurveyId == $oTemplateConfigurationModel->sid)){
+            $oTemplateConfigurationModel->id = null;
+            $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->sid = $iSurveyId;
+            $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
+            $result = $oTemplateConfigurationModel->save();
+            return $oTemplateConfigurationModel;
         }
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)

@@ -128,9 +128,8 @@
 </div>
 
 <script type="text/javascript">
-$(document).on('ready pjax:complete', function(){
+$(document).on('ready pjax:complete', function(e){
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
-    console.log($('form'));
     if($('.action_update_options_string_form').length > 0){
         var optionObject = JSON.parse($('#TemplateConfiguration_options').val());
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){

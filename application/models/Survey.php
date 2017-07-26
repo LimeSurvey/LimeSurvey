@@ -250,6 +250,7 @@ class Survey extends LSActiveRecord
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid'), 'together' => true),
+            'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template') )
         );
     }
 
@@ -376,6 +377,7 @@ class Survey extends LSActiveRecord
         }
         return Template::templateNameFilter($sTemplateName);
     }
+
 
     /**
      * permission scope for this model
@@ -586,6 +588,9 @@ class Survey extends LSActiveRecord
         }
     }
 
+    public function getSurveyTemplateConfiguration(){
+        return Template::getTemplateConfiguration(null, $this->sid);
+    }
 
     private function _createSurveymenuArray($oSurveyMenuObjects)
     {
@@ -620,6 +625,7 @@ class Survey extends LSActiveRecord
                 $entries[$aEntry['id']] = $aEntry;
             }
             $aResultCollected[$oSurveyMenuObject->id] = [
+                "id" => $oSurveyMenuObject->id,
                 "title" => $oSurveyMenuObject->title,
                 "level" => $oSurveyMenuObject->level,
                 "description" => $oSurveyMenuObject->description,
