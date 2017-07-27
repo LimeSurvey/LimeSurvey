@@ -87,6 +87,7 @@
                                     $languageData['default'] = gT('Default');
                                 }else{
                                     $languageData[$reqLang] = html_entity_decode($aLangList[$reqLang]['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLangList[$reqLang]['description'];
+                                    $languageData['default'] = gT('Default');
                                     unset($aLangList[$reqLang]);
                                 }
 
