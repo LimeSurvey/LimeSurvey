@@ -216,7 +216,7 @@ class LSYii_Application extends CWebApplication
         // This method is also called from AdminController and LSUser
         // But if a param is defined, it should always have the priority
         // eg: index.php/admin/authentication/sa/login/&lang=de
-        if ($this->request->getParam('lang') !== null){
+        if ( $this->request->getParam('lang') !== null && in_array('authentication', explode( '/', Yii::app()->request->url)) ){
             $sLanguage = $this->request->getParam('lang');
         }
 
