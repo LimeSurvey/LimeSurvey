@@ -60,7 +60,6 @@ class TemplateConfiguration extends TemplateConfig
             array('cssframework_name', 'length', 'max'=>45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load', 'safe'),
             // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
             array('id, templates_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on'=>'search'),
         );
     }
@@ -218,6 +217,8 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Constructs a template configuration object
      * If any problem (like template doesn't exist), it will load the default template configuration
+     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
+     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template. 
      *
      * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
      * @param  string $iSurveyId the id of the survey. If

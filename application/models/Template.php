@@ -421,7 +421,10 @@ class Template extends LSActiveRecord
     /**
      * Get instance of template object.
      * Will instantiate the template object first time it is called.
-     * Please use this instead of global variable.
+     *
+     * NOTE 1: This function will call setTemplateConfiguration that create/update all the packages needed to render the template, which imply to do the same for all mother templates
+     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to use this one. Call it only before rendering anything related to the template.
+     * NOTE 3: If you need to get the related configuration to this template, rather use: getTemplateConfiguration()
      *
      * @param string $sTemplateName
      * @param int|string $iSurveyId
