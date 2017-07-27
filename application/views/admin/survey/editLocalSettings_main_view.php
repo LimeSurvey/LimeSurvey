@@ -51,5 +51,23 @@ if(isset($scripts))
         <input type="hidden" name="responsejson" value="1" />
         <input type='submit' class="hide" id="globalsetting_submit" />
         </form>
+        <script>
+            $('#<?=$entryData['name']?>').on('submit', function(){
+                var data = $(this).serializeArray();
+                var url = $(this).attr('action');
+                $.ajax({
+                    url = url,
+                    data = data,
+                    method: "POST", 
+                    dataType: 'json',
+                    success: function(result,xhr){
+                        window.location.reload();
+                    },
+                    error: function(error){
+                        try{console.trace(error);}catch(e){console.log(error);}
+                    }
+                });
+            });
+        </script>
     </div>
 </div>
