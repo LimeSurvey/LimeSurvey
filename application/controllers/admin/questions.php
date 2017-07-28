@@ -905,6 +905,7 @@ class questions extends Survey_Common_Action
     /**
      * This function should be called via ajax request
      * It returns a EMPTY subquestion row HTML for a given ....
+     * @param string $qid
      */
 
     public function getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible='' )

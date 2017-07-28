@@ -39,7 +39,7 @@
         /**
         * Get all files related to this response and (optionally) question ID.
         * 
-        * @param string $sQID The question ID - optional - Default 0
+        * @param integer $sQID The question ID - optional - Default 0
         */
         public function getFiles($sQID=0)
         {

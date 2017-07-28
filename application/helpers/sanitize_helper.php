@@ -134,6 +134,9 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
         $filename;
 }
 
+/**
+ * @param string $filename
+ */
 function beautify_filename($filename) {
     // reduce consecutive characters
     $filename = preg_replace(array(
