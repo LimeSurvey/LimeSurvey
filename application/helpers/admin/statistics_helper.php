@@ -1848,7 +1848,13 @@ class statistics_helper {
                     {
                         $flatLabel = $al[0];
                     }
-                    $lbl[$flatLabel] = $row;
+                    // Duplicate labels can exist.
+                    // TODO: Support three or more duplicates.
+                    if (isset($lbl[$flatLabel])) {
+                        $lbl[$flatLabel . ' (2)'] = $row;
+                    } else {
+                        $lbl[$flatLabel] = $row;
+                    }
                 }
 
 
