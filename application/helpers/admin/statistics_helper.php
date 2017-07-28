@@ -1586,7 +1586,6 @@ class statistics_helper {
             //moved because it's better to have "no answer" at the end of the list instead of the beginning
             //put data into array
             $alist[]=array("", gT("No answer"), false, 'is_no_answer');
-
         }
 
         return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>$qqid);
@@ -3578,13 +3577,7 @@ class statistics_helper {
             }
         }
 
-
-        if ($outputType=='html') {
-
-        }
-
         // _statisticsoutput_graphs.php
-
 
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
