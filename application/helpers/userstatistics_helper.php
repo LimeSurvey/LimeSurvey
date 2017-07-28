@@ -2044,7 +2044,15 @@ class userstatistics_helper {
             }
             else
             {
-                $lbl[wordwrap(FlattenText("$al[1]"), 25, "\n")] = $row;
+                // Duplicate labels can exist.
+                // TODO: Support three or more duplicates.
+                $flatLabel = wordwrap(FlattenText("$al[1]"), 25, "\n");
+                if (isset($lbl[$flatLabel])) {
+                    $lbl[$flatLabel . ' (2)'] = $row;
+                } else {
+                    $lbl[$flatLabel] = $row;
+                }
+
             }
 
 
