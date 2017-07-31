@@ -125,7 +125,7 @@ class templateoptions  extends Survey_Common_Action
         }
 
         $model = Template::getTemplateConfiguration(null, $sid);
-
+        
         if(isset($_POST['TemplateConfiguration'])){
             $model->attributes=$_POST['TemplateConfiguration'];
             if($model->save())

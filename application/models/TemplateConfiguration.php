@@ -337,10 +337,11 @@ class TemplateConfiguration extends TemplateConfig
     {
         $sField = 'files_'.$sType;
         $jFiles = $oTemplate->$sField;
-        if($jFiles == 'inherit'){
-            $jFiles = $oTemplate->parent->$sField;
-        }
+        if($jFiles === 'inherit')
+            $jFiles = $oTemplate->getParentConfiguration()->$sField;
+
         $aFiles = array();
+
         if(!empty($jFiles)){
             $oFiles = json_decode($jFiles);
             foreach($oFiles as $action => $aFileList){
@@ -413,8 +414,11 @@ class TemplateConfiguration extends TemplateConfig
 
         // Options are optional
         $this->oOptions = array();
-        if (!empty($this->options)){
+        if (!empty($this->options) && $this->options !== 'inherit'){
             $this->oOptions = json_decode($this->options);
+        }elseif($this->options === 'inherit'){
+            $parentOptions = $this->getParentConfiguration()->options;
+            $this->oOptions = json_decode($parentOptions);
         }elseif(!empty($this->oMotherTemplate->oOptions)){
             // NB: This case should never happen with core template edited via template editor
             // Options are inherited from global settings to survey settings, not from mother template.
@@ -491,5 +495,13 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         return $aReplacements;
+    }
+
+
+    public function getParentConfiguration(){
+        if($this->sid != null && $this->gsid != null)
+            return Template::getTemplateConfiguration(null,null,$this->gsid);
+        
+        return Template::getTemplateConfiguration($this->templates_name);
     }
 }

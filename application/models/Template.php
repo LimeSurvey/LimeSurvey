@@ -229,30 +229,34 @@ class Template extends LSActiveRecord
                 // No specific template configuration for this survey
                 if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
                     $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
-                    $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
-                    $oTemplateConfigurationModel->setToInherit();
+                    $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
+                        'templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', 
+                        array(':templates_name'=>$sTemplateName)
+                    );
                 }
             }
-        }
 
-        //If a survey group id is set, but there is no survey specific template configuration create one!
-        if(($iSurveyGroupId != null) && !($iSurveyGroupId == $oTemplateConfigurationModel->gsid)){
-            $oTemplateConfigurationModel->id = null;
-            $oTemplateConfigurationModel->isNewRecord = true;
-            $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
-            $sTemplateName = SurveyGroups::model()->findByPk($iSurveyGroupId)->template;
-            $result = $oTemplateConfigurationModel->save();
-            return $oTemplateConfigurationModel;
-        }
+            //If a survey group id is set, but there is no survey specific template configuration create one!
+            if(($iSurveyGroupId != null) && !($iSurveyGroupId == $oTemplateConfigurationModel->gsid)){
+                $oTemplateConfigurationModel->id = null;
+                $oTemplateConfigurationModel->isNewRecord = true;
+                $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
+                $oTemplateConfigurationModel->setToInherit();
+                $oTemplateConfigurationModel->save();
+                $oTemplateConfigurationModel->setTemplateConfiguration();
+                return $oTemplateConfigurationModel;
+            }
 
-        //If a survey id is set, but there is no survey specific template configuration create one!
-        if(($iSurveyId != null) && !($iSurveyId == $oTemplateConfigurationModel->sid)){
-            $oTemplateConfigurationModel->id = null;
-            $oTemplateConfigurationModel->isNewRecord = true;
-            $oTemplateConfigurationModel->sid = $iSurveyId;
-            $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
-            $result = $oTemplateConfigurationModel->save();
-            return $oTemplateConfigurationModel;
+            //If a survey id is set, but there is no survey specific template configuration create one!
+            if(($iSurveyId != null) && !($iSurveyId == $oTemplateConfigurationModel->sid)){
+                $oTemplateConfigurationModel->id = null;
+                $oTemplateConfigurationModel->isNewRecord = true;
+                $oTemplateConfigurationModel->sid = $iSurveyId;
+                $oTemplateConfigurationModel->setToInherit();
+                $oTemplateConfigurationModel->save();
+                $oTemplateConfigurationModel->setTemplateConfiguration();
+                return $oTemplateConfigurationModel;
+            }
         }
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
