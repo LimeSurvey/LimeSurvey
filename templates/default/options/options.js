@@ -17,8 +17,18 @@ var prepare = function(){
             
             var itemValue = optionObject[$(item).attr('name')];
             $(item).val(itemValue);
-            //if it is a checkbox, check it and propagate the change to bootstrapSwitch
-            if($(item).attr('type') == 'checkbox' && itemValue !='off') $(item).prop('checked', true).trigger('change');
+                
+        });
+        $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
+            var itemValue = optionObject[$(item).attr('name')];
+            //if it is a radio selector, check it and propagate the change to bootstrapSwitch
+            console.log($(item).val());
+            console.log(itemValue);
+
+            if($(item).val() == itemValue){
+                $(item).prop('checked', true).trigger('change');
+                $(item).closest('label').addClass('active');
+            }
         });
 
         //if the save button is clicked write everything into the template option field and send the form
@@ -27,11 +37,11 @@ var prepare = function(){
             var newOptionObject = {};
             //get all values
             $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
-                newOptionObject[$(item).attr('name')] = $(item).val();
-                //again extra check for checkboxes
-                if($(item).attr('type') == 'checkbox'){
-                    newOptionObject[$(item).attr('name')] = $(item).prop('checked') ? 'on' : 'off';
-                }
+                newOptionObject[$(item).attr('name')] = $(item).val();              
+            });
+            $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
+                if($(item).prop('checked'))
+                    newOptionObject[$(item).attr('name')] = $(item).val();              
             });
             //now write the newly created object to the correspondent field as a json string
             $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
@@ -40,11 +50,17 @@ var prepare = function(){
         });
 
         //hotswapping the fields
-        $('.action_update_options_string_form').find('.selector_option_value_field').on('change switchChange.bootstrapSwitch', function(evt){
+        $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
             optionObject[$(this).attr('name')] = $(this).val(); 
-            if($(this).attr('type') == 'checkbox'){
+            if($(this).attr('type') == 'radio'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
             }
+            $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
+        });
+        //hotswapping the radio fields
+        $('.action_update_options_string_form').find('.selector_option_radio_field').on('change', function(evt){
+            $(this).prop('checked',true);
+            optionObject[$(this).attr('name')] = $(this).val(); 
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
 

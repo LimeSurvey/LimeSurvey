@@ -160,7 +160,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     public static function importManifest($sTemplateName)
     {
-        $oEditedTemplate                      = Template::model()->getTemplateConfiguration($sTemplateName, '', false);
+        $oEditedTemplate                      = Template::model()->getTemplateConfiguration($sTemplateName, null,null, false);
         $oEditedTemplate->setTemplateConfiguration($sTemplateName);
 
         $oEditTemplateDb                      = Template::model()->findByPk($oEditedTemplate->oMotherTemplate->sTemplateName);
@@ -196,6 +196,17 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
+    public function setToInherit(){
+        $this->files_css = 'inherit';
+        $this->files_js = 'inherit';
+        $this->files_print_css = 'inherit';
+        $this->options = 'inherit';
+        $this->cssframework_name = 'inherit';
+        $this->cssframework_css = 'inherit';
+        $this->cssframework_js = 'inherit';
+        $this->packages_to_load = 'inherit';
+    }
+
     public function checkTemplate()
     {
         if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)&& !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
@@ -216,7 +227,9 @@ class TemplateConfiguration extends TemplateConfig
     {
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard();                                                 // Check if  it is a CORE template
-        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
+        $this->path = ($this->isStandard) 
+            ? Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder
+            : Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
         $this->setMotherTemplates();                                            // Recursive mother templates configuration
         $this->setThisTemplate();                                               // Set the main config values of this template
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
@@ -324,7 +337,9 @@ class TemplateConfiguration extends TemplateConfig
     {
         $sField = 'files_'.$sType;
         $jFiles = $oTemplate->$sField;
-
+        if($jFiles == 'inherit'){
+            $jFiles = $oTemplate->parent->$sField;
+        }
         $aFiles = array();
         if(!empty($jFiles)){
             $oFiles = json_decode($jFiles);

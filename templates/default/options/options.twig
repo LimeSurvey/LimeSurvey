@@ -1,4 +1,5 @@
 {% set animationOptions = '
+        <option value="inherit">Inherit</option>
         <optgroup label="Attention Seekers">
           <option value="bounce">bounce</option>
           <option value="flash">flash</option>
@@ -120,6 +121,7 @@
       '
 %}
 {% set bootswatchOption ='
+        <option value="inherit">Inherit</option>
         <option value="">Basic Bootstrap</option>
         <option value="css/cerulean.css">Cerulean</option>
         <option value="css/cosmo.css">Cosmo</option>
@@ -140,43 +142,96 @@
         <option value="css/yeti.css">Yeti</option>
       '
 %}
+
 <div class="simple-template-edit-loading" style="display:none;height:100%;height:100vh;width:100%;width:100vw;position:fixed;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;" class="">
     <div style="position:absolute; left:49%;top:35%;" class="text-center"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
 </div> 
 <form class='form form-horizontal action_update_options_string_form' action=''>
     <div class='row'>
-        <div class='col-sm-12 col-md-3'>
+        <div class='col-sm-12 col-md-6'>
             <div class='form-group'>
                 <label for='simple_edit_options_ajaxmode' class='col-sm-6 control-label'>Ajaxmode</label>
                 <div class='col-sm-6'>
-                <input name='ajaxmode' type='checkbox' class='form-control selector_option_value_field action_activate_bootstrapswitch' id='simple_edit_options_ajaxmode'/>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">                        
+                            <input name='ajaxmode' type='radio' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
+                            Yes
+                        </label>
+                        <label class="btn btn-primary">
+                            <input name='ajaxmode' type='radio' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
+                            No
+                        </label>
+                        <label class="btn btn-primary">
+                            <input name='ajaxmode' type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
+                            Inherit
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class='col-sm-12 col-md-3'>
+        <div class='col-sm-12 col-md-6'>
             <div class='form-group'>
                 <label for='simple_edit_options_brandlogo' class='col-sm-6 control-label'>Brandlogo</label>
                 <div class='col-sm-6'>
-                <input type='checkbox' name='brandlogo' class='form-control selector_option_value_field action_activate_bootstrapswitch' id='simple_edit_options_brandlogo' />
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type='radio' name='brandlogo' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
+                            Yes
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' name='brandlogo' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
+                            No
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' name='brandlogo' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
+                            Inherit
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class='col-sm-12 col-md-3'>
+        <div class='col-sm-12 col-md-6'>
             <div class='form-group'>
                 <label for='simple_edit_options_backgroundimage' class='col-sm-6 control-label'>Background image</label>
                 <div class='col-sm-6'>
-                <input type='checkbox' name='backgroundimage' class='form-control selector_option_value_field simple_edit_options_backgroundimage action_activate_bootstrapswitch' id='backgroundimage' />
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type='radio' name='backgroundimage' value='on' class='form-control selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage' />
+                            Yes
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' name='backgroundimage' value='off' class='form-control selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage' />
+                            No
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' name='backgroundimage' value='inherit' class='form-control selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage' />
+                            Inherit
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class='col-sm-12 col-md-3'>
+        <div class='col-sm-12 col-md-6'>
             <div class='form-group'>
                 <label for='simple_edit_options_backgroundimage' class='col-sm-6 control-label'>Box container</label>
                 <div class='col-sm-6'>
-                <input type='checkbox' name='boxcontainer' class='form-control selector_option_value_field simple_edit_options_boxcontainer action_activate_bootstrapswitch' id='boxcontainer' />
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type='radio' name='boxcontainer' value='on' class='form-control selector_option_radio_field simple_edit_options_boxcontainer ' data-id='boxcontainer' />
+                            Yes
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' name='boxcontainer' value='off' class='form-control selector_option_radio_field simple_edit_options_boxcontainer ' data-id='boxcontainer' />
+                            No
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' name='boxcontainer' value='inherit' class='form-control selector_option_radio_field simple_edit_options_boxcontainer ' data-id='boxcontainer' />
+                            Inherit
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -189,7 +244,20 @@
             <div class='form-group'>
                 <label for='simple_edit_options_animatebody' class='col-sm-6 control-label'>Animate body</label>
                 <div class='col-sm-6'>
-                <input type='checkbox' class='form-control selector_option_value_field  action_activate_bootstrapswitch' id='simple_edit_options_animatebody' name='animatebody' />
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type='radio' value='on' class='form-control selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody' />
+                            Yes
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' value='off' class='form-control selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody' />
+                            No
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' value='inherit' class='form-control selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody' />
+                            Inherit
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -211,7 +279,20 @@
             <div class='form-group'>
                 <label for='simple_edit_options_animatequestion' class='col-sm-6 control-label'>Animate question</label>
                 <div class='col-sm-6'>
-                <input type='checkbox' class='form-control selector_option_value_field action_activate_bootstrapswitch' id='simple_edit_options_animatequestion' name='animatequestion' />
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type='radio' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion' />
+                            Yes
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion' />
+                            No
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion' />
+                            Inherit
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,7 +312,20 @@
             <div class='form-group'>
                 <label for='simple_edit_options_animatealert' class='col-sm-6 control-label'>Animate alert</label>
                 <div class='col-sm-6'>
-                <input type='checkbox' class='form-control selector_option_value_field action_activate_bootstrapswitch' id='simple_edit_options_animatealert' name='animatealert' />
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type='radio' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert' />
+                            Yes
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert' />
+                            No
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert' />
+                            Inherit
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
