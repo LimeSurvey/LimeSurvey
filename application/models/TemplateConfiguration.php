@@ -196,14 +196,14 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     public function setToInherit(){
-        $this->files_css = 'inherit';
-        $this->files_js = 'inherit';
-        $this->files_print_css = 'inherit';
-        $this->options = 'inherit';
+        $this->files_css         = 'inherit';
+        $this->files_js          = 'inherit';
+        $this->files_print_css   = 'inherit';
+        $this->options           = 'inherit';
         $this->cssframework_name = 'inherit';
-        $this->cssframework_css = 'inherit';
-        $this->cssframework_js = 'inherit';
-        $this->packages_to_load = 'inherit';
+        $this->cssframework_css  = 'inherit';
+        $this->cssframework_js   = 'inherit';
+        $this->packages_to_load  = 'inherit';
     }
 
     public function checkTemplate()
@@ -218,7 +218,7 @@ class TemplateConfiguration extends TemplateConfig
      * Constructs a template configuration object
      * If any problem (like template doesn't exist), it will load the default template configuration
      * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
-     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template. 
+     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
      *
      * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
      * @param  string $iSurveyId the id of the survey. If
@@ -228,7 +228,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard();                                                 // Check if  it is a CORE template
-        $this->path = ($this->isStandard) 
+        $this->path = ($this->isStandard)
             ? Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder
             : Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
         $this->setMotherTemplates();                                            // Recursive mother templates configuration
@@ -338,8 +338,10 @@ class TemplateConfiguration extends TemplateConfig
     {
         $sField = 'files_'.$sType;
         $jFiles = $oTemplate->$sField;
-        if($jFiles === 'inherit')
+        if($jFiles === 'inherit'){
             $jFiles = $oTemplate->getParentConfiguration()->$sField;
+        }
+
 
         $aFiles = array();
 
@@ -466,6 +468,11 @@ class TemplateConfiguration extends TemplateConfig
         $sFieldName  = 'cssframework_'.$sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
+        if ($this->$sFieldName == "inherit"){
+            $parentFieldValue = $this->getParentConfiguration()->$sFieldName;
+            $aFieldValue = (array) json_decode($parentFieldValue);
+        }
+
         $aAssetsToRemove = array();
         if (!empty( $aFieldValue )){
             $aAssetsToRemove = (array) $aFieldValue['replace'] ;
@@ -487,6 +494,11 @@ class TemplateConfiguration extends TemplateConfig
         $sFieldName  = 'cssframework_'.$sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
+        if ($this->$sFieldName == "inherit"){
+            $parentFieldValue = $this->getParentConfiguration()->$sFieldName;
+            $aFieldValue = (array) json_decode($parentFieldValue);
+        }
+
         $aReplacements = array();
         if (!empty( $aFieldValue )){
             $aAssetsToReplace = (array) $aFieldValue['replace'];
@@ -502,7 +514,7 @@ class TemplateConfiguration extends TemplateConfig
     public function getParentConfiguration(){
         if($this->sid != null && $this->gsid != null)
             return Template::getTemplateConfiguration(null,null,$this->gsid);
-        
+
         return Template::getTemplateConfiguration($this->templates_name);
     }
 }
