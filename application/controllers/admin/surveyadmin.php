@@ -331,6 +331,11 @@ class SurveyAdmin extends Survey_Common_Action
         $survey           = Survey::model()->findByPk($iSurveyID);
         $survey->template = $sTemplate;
         $survey->save();
+
+        $oTemplateConfiguration = $survey->surveyTemplateConfiguration;
+        $oTemplateConfiguration->templates_name = $sTemplate;
+        $oTemplateConfiguration->save();
+
     }
 
     public function togglequickaction()
@@ -431,7 +436,7 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Ajaxified get questiongroup with containing questions
-     * 
+     *
      *
      */
     public function getAjaxQuestionGroupArray($surveyid){
@@ -461,12 +466,12 @@ class SurveyAdmin extends Survey_Common_Action
                         $curQuestion['name_short'] = viewHelper::flatEllipsizeText($question->question,true,20,'[...]',1);
                         $curGroup['questions'][] =  $curQuestion;
                     }
-                
+
                 }
                 $aGroupViewable[] = $curGroup;
             }
         }
- 
+
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
@@ -492,17 +497,17 @@ class SurveyAdmin extends Survey_Common_Action
         );
     }
 
-    
+
     /**
      * Ajaxified get MenuItems with containing questions
-     * 
+     *
      *
      */
     public function getAjaxMenuArray($surveyid,$position=''){
         $iSurveyID = sanitize_int($surveyid);
         $survey    = Survey::model()->findByPk($iSurveyID);
         $baselang  = $survey->language;
-        $menus = $survey->getSurveyMenus($position); 
+        $menus = $survey->getSurveyMenus($position);
         $userSettings = [];
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
@@ -918,7 +923,7 @@ class SurveyAdmin extends Survey_Common_Action
          $iSurveyID = sanitize_int($iSurveyID);
          $survey = Survey::model()->findByPk($iSurveyID);
 
-        //Get all languages 
+        //Get all languages
         $grplangs = $survey->additionalLanguages;
         $baselang = $survey->language;
         array_unshift($grplangs, $baselang);
@@ -927,7 +932,7 @@ class SurveyAdmin extends Survey_Common_Action
         $menuEntry = SurveymenuEntries::model()->find('name=:name', array(':name'=>$menuaction));
 
         $esrow = self::_fetchSurveyInfo('editsurvey', $iSurveyID);
-        
+
         if (!(Permission::model()->hasSurveyPermission($iSurveyID, $menuEntry->permission, $menuEntry->permission_grade)))
         {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
@@ -937,12 +942,12 @@ class SurveyAdmin extends Survey_Common_Action
 
         if( empty($menuEntry->data)) {
             $templateData = call_user_func_array(array($this,$menuEntry->getdatamethod), array('survey'=>$survey));
-        } 
-        else 
+        }
+        else
         {
             $templateData = $menuEntry->data;
         }
-        
+
         $templateData = array_merge($this->_getGeneralTemplateData($iSurveyID), $templateData);
         $this->_registerScriptFiles();
         Yii::app()->loadHelper("admin/htmleditor");
@@ -956,8 +961,8 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['action'] = $menuEntry->action;
         $aData['entryData'] = $menuEntry->attributes;
         $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
-        $aData['subaction'] = $menuEntry->title;  
-        $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;  
+        $aData['subaction'] = $menuEntry->title;
+        $aData['display']['menu_bars']['surveysummary'] = $menuEntry->title;
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = 'globalsetting';
         $aData['surveybar']['savebutton']['useformid'] = 'true';
@@ -968,7 +973,7 @@ class SurveyAdmin extends Survey_Common_Action
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
      }
-        
+
     /**
      * Edit surveytexts and general settings
      */
@@ -1105,7 +1110,7 @@ class SurveyAdmin extends Survey_Common_Action
                 // this one is created to get the right default texts fo each language
                 Yii::app()->loadHelper('database');
                 Yii::app()->loadHelper('surveytranslator');
-                
+
                 $esrow = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $iSurveyID, 'surveyls_language' => $sLang))->getAttributes();
                 $aTabTitles[$sLang] = getLanguageNameFromCode($esrow['surveyls_language'], false);
 
@@ -1312,7 +1317,7 @@ class SurveyAdmin extends Survey_Common_Action
                     Permission::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
                 }
 
-                
+
             }
             else
             {
@@ -1613,16 +1618,16 @@ class SurveyAdmin extends Survey_Common_Action
     private function _getTextEditData($survey){
         Yii::app()->loadHelper("admin/htmleditor");
         $aData = $aTabTitles = $aTabContents = array();
-        
+
         $aData['scripts'] = PrepareEditorScript(false, $this->getController());
-        
+
         if($survey->sid){
             foreach ($survey->allLanguages as $i => $sLang) {
                 $aLanguageData = $this->_getGeneralTemplateData($survey->sid);
                 // this one is created to get the right default texts fo each language
                 Yii::app()->loadHelper('database');
                 Yii::app()->loadHelper('surveytranslator');
-                
+
                 $aSurveyLanguageSettings = SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id' => $survey->sid, 'surveyls_language' => $sLang))->getAttributes();
 
                 $aTabTitles[$sLang] = getLanguageNameFromCode($aSurveyLanguageSettings['surveyls_language'], false);
@@ -2096,18 +2101,18 @@ class SurveyAdmin extends Survey_Common_Action
             }
 
             // Figure out destination
-           
-            if($createSample) 
+
+            if($createSample)
             {
                 $redirecturl = $this->getController()->createUrl(
-                    "admin/questions/sa/view/", 
+                    "admin/questions/sa/view/",
                     ['surveyid' => $iNewSurveyid, 'gid'=>$iNewGroupID, 'qid' =>$iNewQuestionID]
-                    );                
+                    );
             }
-            else 
+            else
             {
                 $redirecturl = $this->getController()->createUrl(
-                    'admin/survey/sa/view/', 
+                    'admin/survey/sa/view/',
                     ['surveyid'=>$iNewSurveyid]
                     );
             }
