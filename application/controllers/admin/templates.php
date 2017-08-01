@@ -1057,7 +1057,7 @@ class templates extends Survey_Common_Action
         }
 
 
-        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array('aSurveyInfo'=>$thissurvey), $oEditedTemplate);
+        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array( 'aSurveyInfo'=>$thissurvey), $oEditedTemplate);
 
         $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;

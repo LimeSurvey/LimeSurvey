@@ -192,7 +192,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $loader->addPath($oRTemplate->viewPath);
         }
 
-
         $result    = $this->renderTemplateFromString( $line, array(), $oRTemplate, true);
 
         // Twig rendering
