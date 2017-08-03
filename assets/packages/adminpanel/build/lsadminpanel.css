@@ -405,7 +405,8 @@
   content: "\f061";
   font: normal normal normal 18px/1 FontAwesome; }
 
-div[class^="col-"].nofloat, div[class*=" col-"].nofloat {
+div[class^="col-"].nofloat,
+div[class*=" col-"].nofloat {
   float: none; }
 
 #sidebar {
@@ -500,6 +501,10 @@ ol.breadcrumb.title-bar-breadcrumb {
     -webkit-transition: width 1.6s;
     /* Safari */
     transition: width 1.6s; }
+
+#sidebar.fill-height,
+#sidebar .fill-height {
+  height: 100%; }
 
 #sidebar .selected {
   padding-left: 20px;

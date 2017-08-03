@@ -67,7 +67,7 @@ export default {
 }
 </script>
 <template>
-    <div class="ls-flex-column fill menu-pane overflow-enabled ls-space padding all-0" >
+    <div class="ls-flex-column fill menu-pane overflow-enabled ls-space padding all-0 margin top-5" >
         <div  v-for="menu in sortedMenues" :title="menu.title" :id="menu.id" class="ls-flex-row ls-space padding all-0" v-bind:key="menu.id">
             <submenu :menu="menu"></submenu>
         </div>

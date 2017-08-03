@@ -13,12 +13,12 @@ var plugins = [
   // ...
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: '"'+env+'"'
+      NODE_ENV: '"' + env + '"'
     }
   })
 ];
 
-  appName = appName + '.js';
+appName = appName + '.js';
 
 
 // Main Settings config
@@ -30,49 +30,45 @@ module.exports = {
     filename: appName
   },
   module: {
-    rules: [
-      {
-        test: /\.scss$/,
-        use: [
-          {
-            loader: "style-loader" // creates style nodes from JS strings
-          }, {
-            loader: "css-loader" // translates CSS into CommonJS
-          }, {
-            loader: "sass-loader" // compiles Sass to CSS
-          }
-        ]
-      },
-      {
-        test: /\.vue$/,
-        use: 'vue-loader'
-      }
+    rules: [{
+      test: /\.scss$/,
+      use: [{
+        loader: 'style-loader' // creates style nodes from JS strings
+      }, {
+        loader: 'css-loader' // translates CSS into CommonJS
+      }, {
+        loader: 'sass-loader' // compiles Sass to CSS
+      }]
+    },
+    {
+      test: /\.vue$/,
+      use: 'vue-loader'
+    }
     ],
-    loaders: [
-      {
-        test: /\.vue$/,
-        loader: [
-          'vue-loader',
-          "eslint-loader",
-          'babel'
-          ],
-      },
-      {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: [
-          "eslint-loader",
-          'babel'
-          ],
-        query: {
-          presets: ['es2015']
-        }
-      },
-      {
-        loader: "sass-loader",
-        options: {
-            data: "$env: " + process.env.NODE_ENV + ";"
-        }
+    loaders: [{
+      test: /\.vue$/,
+      loader: [
+        'vue-loader',
+        'eslint-loader',
+        'babel'
+      ],
+    },
+    {
+      test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
+      loader: [
+        'eslint-loader',
+        'babel'
+      ],
+      query: {
+        presets: ['es2015']
+      }
+    },
+    {
+      loader: 'sass-loader',
+      options: {
+        data: '$env: ' + process.env.NODE_ENV + ';'
+      }
     }
     ]
   },

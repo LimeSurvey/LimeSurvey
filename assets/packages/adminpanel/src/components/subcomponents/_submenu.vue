@@ -78,7 +78,7 @@ export default {
         <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' ">
             <a href="#" :title="submenu.description" @click.stop="setActiveMenuIndex(submenu)"  data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center">
                 <div class="ls-space col-sm-10 padding all-0">
-                    <menuicon :icon-type="submenu.menu_icon_type" :icon="submenu.menu_icon"></menuicon>
+                    <menuicon icon-type="fontawesome" icon="level-down"></menuicon>
                     <span v-html="submenu.title"></span>
                 </div>
                 <div class="col-sm-2 text-center ls-space padding all-0">

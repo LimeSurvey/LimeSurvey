@@ -40,11 +40,6 @@ export default {
         };
     },
     computed: {
-        maxSideBarHeight(){
-            let positionTop = $('#surveybarid').offset();
-            let positionBottom = $('footer').offset();
-            return (positionBottom.top - (positionTop.top+($('#surveybarid').height()))-15)+'px';
-        },
         getSideBarWidth(){
             return this.$store.state.isCollapsed ? '98px' : this.sideBarWidth;
         },
@@ -56,6 +51,9 @@ export default {
         },
         showQuestionTree(){
             return (!this.$store.state.isCollapsed && this.$store.state.currentTab == 'questiontree');
+        },
+        calculateSideBarMenuHeight(){
+            return (this.$store.state.generalContainerHeight-70)+'px';
         }
     },
     methods: {
@@ -251,56 +249,68 @@ export default {
 }
 </script>
 <template>
-    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat nooverflow transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
-        <div class="col-12" v-bind:style="{'height': maxSideBarHeight}">
+    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width fill-height" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
+        <div class="col-12 fill-height" v-bind:style="{'height': $store.state.inSurveyViewHeight}">
             <div class="mainMenu container-fluid col-sm-12 fill-height">
-                <div class="ls-flex-row align-content-space-between align-items-space-between ls-space margin bottom-5 top-5 ">
+                <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space margin bottom-0 top-5" style="height: 40px;">
                     <transition name="fade">
-                        <div class="btn-group ls-space padding right-5" v-if="!$store.state.isCollapsed" role="group">
-                            <button class="btn btn-default" @click="toggleCollapse">
-                                <i class="fa fa-chevron-left"></i>
-                            </button>
-                        </div>
+                        <button class="btn btn-default ls-space padding right-5" v-if="!$store.state.isCollapsed" @click="toggleCollapse">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
                     </transition>
                     <transition name="fade">
                         <div class="ls-flex-item col-12" v-if="!$store.state.isCollapsed">
-                            <div class="btn-group btn-group-justified">
-                                <div class="btn-group" role="group">
-                                    <button class="btn force color white onhover" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
-                                </div>
-                                <div class="btn-group" role="group">
-                                    <button class="btn force color white onhover" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
-                                </div>
+                            <div class="btn-group btn-group col-12">
+                                <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
+                                <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
                             </div>
                         </div>
                     </transition>
                     <transition name="fade">
                         <div class="btn-group ls-space padding right-5" v-if="$store.state.isCollapsed" role="group">
-                            <button class="btn btn-default" @click="toggleCollapse">
+                            <button class="btn btn-defaultls-space padding right-5" v-if="$store.state.isCollapsed" @click="toggleCollapse">
                                 <i class="fa fa-chevron-right"></i>
                             </button>
                         </div>
                     </transition>
                 </div>
                 <transition name="slide-fade">
-                    <sidemenu  v-show="showSideMenu"></sidemenu>
+                    <sidemenu :style="{height: calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>
                 </transition>
                 <transition name="slide-fade">
-                    <div class="row fill-height ls-ba" v-show="showQuestionTree">
-                        <questionexplorer :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" ></questionexplorer>
-                    </div>
+                    <questionexplorer :style="{height: calculateSideBarMenuHeight}" v-show="showQuestionTree" :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" ></questionexplorer>
                 </transition>
                 <transition name="slide-fade">
-                    <quickmenu v-show="$store.state.isCollapsed"></quickmenu>
+                    <quickmenu :style="{height: calculateSideBarMenuHeight}" v-show="$store.state.isCollapsed"></quickmenu>
                 </transition>
             </div>
         </div>
-        <div class="resize-handle">
+        <div class="resize-handle" v-bind:style="{'height': $store.state.inSurveyViewHeight}">
             <button v-show="!$store.state.isCollapsed" class="btn btn-default" @mousedown="mousedown" @click.prevent="()=>{return false;}"><i class="fa fa-ellipsis-v"></i></button>
         </div>
     </div>
 </template>
 <style lang="scss">
+    .tabbutton.btn-primary{
+        outline: none;
+        &:hover, &:focus, &:active{
+            &:after{
+                color: #246128;
+            }
+        }
+        &:after{
+            position: absolute;
+            left: 45%;
+            bottom: -12px;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: 28px;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            content: "\F078";
+            color: #328637;
+        }
+    }
+
     .background.white{
         background-color: rgba(255,255,255,1);
         box-shadow: none;
@@ -337,52 +347,53 @@ export default {
     }
 
     .transition-animate-width {
-    -moz-transition: width 0.5s ease;
-    -webkit-transition: width 0.5s ease;
-    -ms-transition: width 0.5s ease;
-    transition: width 0.5s ease;
+        -moz-transition: width 0.5s ease;
+        -webkit-transition: width 0.5s ease;
+        -ms-transition: width 0.5s ease;
+        transition: width 0.5s ease;
     }
 
     .fade-enter-active {
-    -moz-transition: all 0.8s ease;
-    -webkit-transition: all 0.8s ease;
-    -ms-transition: all 0.8s ease;
-    transition: all 0.8s ease;
+        -moz-transition: all 0.8s ease;
+        -webkit-transition: all 0.8s ease;
+        -ms-transition: all 0.8s ease;
+        transition: all 0.8s ease;
     }
     .fade-leave-active {
-    -moz-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    -webkit-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    -ms-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        -moz-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        -webkit-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        -ms-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
     .fade-enter, .fade-leave-to{
-    -moz-transform: translateY(10px);
-    -webkit-transform: translateY(10px);
-    -ms-transform: translateY(10px);
-    transform: translateY(10px);
-    opacity: 0;
+        -moz-transform: translateY(10px);
+        -webkit-transform: translateY(10px);
+        -ms-transform: translateY(10px);
+        transform: translateY(10px);
+        opacity: 0;
     }
     .slide-fade-enter-active {
-    -moz-transition: all 0.2s ease;
-    -webkit-transition: all 0.2s ease;
-    -ms-transition: all 0.2s ease;
-    transition: all 0.2s ease;
+        -moz-transition: all 0.3s ease;
+        -webkit-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        transition: all 0.3s ease;
     }
     .slide-fade-leave-active {
-    -moz-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    -webkit-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    -ms-transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-    transition: all 0.1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        -moz-transition: all 0.2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        -webkit-transition: all 0.2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        -ms-transition: all 0.2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        transition: all 0.2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
     }
     .slide-fade-enter, .slide-fade-leave-to {
-    -moz-transform: rotateY(90);
-    -webkit-transform: rotateY(90);
-    -ms-transform: rotateY(90);
-    transform: rotateY(90);
-    -moz-transform-origin: left;
-    -webkit-transform-origin: left;
-    -ms-transform-origin: left;
-    transform-origin: left;
-    opacity: 0;
+        -moz-transform: rotateY(90);
+        -webkit-transform: rotateY(90);
+        -ms-transform: rotateY(90);
+        transform: rotateY(90);
+        -moz-transform-origin: left;
+        -webkit-transform-origin: left;
+        -ms-transform-origin: left;
+        transform-origin: left;
+        opacity: 0;
     }
+
 </style>

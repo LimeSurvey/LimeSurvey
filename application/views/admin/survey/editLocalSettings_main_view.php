@@ -56,8 +56,8 @@ if(isset($scripts))
                 var data = $(this).serializeArray();
                 var url = $(this).attr('action');
                 $.ajax({
-                    url = url,
-                    data = data,
+                    url : url,
+                    data : data,
                     method: "POST", 
                     dataType: 'json',
                     success: function(result,xhr){
