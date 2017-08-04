@@ -789,4 +789,4 @@ INSERT INTO prefix_template_configuration VALUES
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '301');
+INSERT INTO prefix_settings_global VALUES ('DBVersion', '309');
