@@ -38,7 +38,7 @@
 
     <div class="row">
         <!-- Form for the whole page-->
-        <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30 form-horizontal','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
+        <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
 
         <?php // if(!$adding):?>
 
@@ -99,8 +99,8 @@
                             <div id="collapse-copy" class="panel-collapse collapse  in" role="tabpanel" aria-labelledby="heading-copy">
                                 <div class="panel-body">
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
+                                        <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                 'name' => 'copysubquestions',
                                                 'id'=>'copysubquestions',
@@ -111,8 +111,8 @@
                                         </div>
                                     </div>
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
+                                        <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                 'name' => 'copyanswers',
                                                 'id'=>'copyanswers',
@@ -123,8 +123,8 @@
                                         </div>
                                     </div>
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for='copyattributes'><?php eT("Copy advanced settings?"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='copyattributes'><?php eT("Copy advanced settings?"); ?></label>
+                                        <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                 'name' => 'copyattributes',
                                                 'id' => 'copyattributes',
@@ -159,11 +159,12 @@
                             <div class="panel-body">
                                 <div>
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for="question_type_button" title="<?php eT("Question type");?>">
+                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
                                             ?>
                                         </label>
+                                        <div>
                                         <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
                                             <?php
                                             $aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
@@ -177,7 +178,7 @@
                                             }
                                             ?>
                                             <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                            <div class="col-sm-8 btn-group" id="question_type_button">
+                                            <div class=" btn-group" id="question_type_button">
                                                 <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                                                     <?php foreach($groups as $name => $group):?>
                                                         <?php foreach($group as $type => $option):?>
@@ -218,7 +219,7 @@
                                                 </ul>
                                             </div>
                                             <?php elseif($activated == "Y" || (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
-                                            <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
+                                            <div class=" btn-group" id="question_type_button" style="z-index: 1000">
                                                 <?php
                                                 $aQtypeData=array();
                                                 foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
@@ -237,12 +238,13 @@
                                                 );
                                                 ?>
                                             </div>
-                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        </div>
                                     </div>
 
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
+                                        <div class="">
                                             <select name='gid' id='gid' class="form-control" <?php if ($activated == "Y"){echo " disabled ";} ?> >
                                                 <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                                             </select>
@@ -253,9 +255,9 @@
                                     </div>
 
                                     <div  class="form-group" id="OtherSelection">
-                                        <label class="col-sm-4 control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
+                                        <label class=" control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
                                         <?php if ($activated != "Y"): ?>
-                                            <div class="col-sm-8">
+                                            <div class="">
                                                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $eqrow['other'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                             </div>
                                             <?php else:?>
@@ -265,16 +267,16 @@
                                     </div>
 
                                     <div id='MandatorySelection' class="form-group">
-                                        <label class="col-sm-4 control-label" title="<?php eT("Set \"Mandatory\" state");?>"><?php eT("Mandatory:"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" title="<?php eT("Set \"Mandatory\" state");?>"><?php eT("Mandatory:"); ?></label>
+                                        <div class="">
                                             <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label" for='relevance' title="<?php eT("Relevance equation");?>"><?php eT("Relevance equation:"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='relevance' title="<?php eT("Relevance equation");?>"><?php eT("Relevance equation:"); ?></label>
+                                        <div class="">
                                             <div class="input-group">
                                                 <div class="input-group-addon">{</div>
                                                 <textarea class="form-control" rows='1' id='relevance' name='relevance' <?php if ($eqrow['conditions_number']) {?> readonly='readonly'<?php } ?> ><?php echo $eqrow['relevance']; ?></textarea>
@@ -287,8 +289,8 @@
                                     </div>
 
                                     <div id='Validation'  class="form-group">
-                                        <label class="col-sm-4 control-label" for='preg'  title="<?php eT("Validation:");?>"><?php eT("Validation:"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='preg'  title="<?php eT("Validation:");?>"><?php eT("Validation:"); ?></label>
+                                        <div class="">
                                             <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
                                         </div>
                                     </div>

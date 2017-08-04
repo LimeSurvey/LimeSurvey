@@ -30,7 +30,7 @@ if(isset($scripts))
 
     <!-- Form -->
     <div class="col-xs-12">
-        <?php echo CHtml::form(array("admin/database/index/".$entryData['action']), 'post', array('id'=>$entryData['name'],'name'=>$entryData['name'],'class'=>'form-horizontal form30')); ?>
+        <?php echo CHtml::form(array("admin/database/index/".$entryData['action']), 'post', array('id'=>$entryData['name'],'name'=>$entryData['name'],'class'=>' form30')); ?>
 
         <div class="row">
             <div class="<?=$entryData['classes']?>">

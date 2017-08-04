@@ -12,7 +12,7 @@
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
-	'htmlOptions' => ['class' =>'form form-horizontal'],
+	'htmlOptions' => ['class' =>'form '],
 	'action' => Yii::app()->getController()->createUrl('admin/menus/sa/update', ['id' => $model->id])
 )); ?>
 	<p><pre><?=$model->isNewRecord?></pre></p>

@@ -22,8 +22,8 @@
         <div class="col-sm-12 col-md-6">
             <!--  Set token length to -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='tokenlength'><?php  eT("Set token length to:"); ?></label>
-                <div class="col-sm-6">
+                <label class=" control-label" for='tokenlength'><?php  eT("Set token length to:"); ?></label>
+                <div class="">
                     <input type='text' value="<?php echo $oSurvey->tokenlength ?>" name='tokenlength' id='tokenlength' size='4' maxlength='2' onkeypress="return goodchars(event,'0123456789')"  class="form-control" />
                 </div>
             </div>
@@ -31,7 +31,7 @@
         <div class="col-sm-12 col-md-6">
             <!-- Anonymized responses -->
             <div class="form-group">
-                <label  class="col-sm-6 control-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."); ?>'>
+                <label  class=" control-label"  for='anonymized' title='<?php eT("If you set 'Yes' then no link will exist between token table and survey responses table. You won't be able to identify responses by their token."); ?>'>
                     <?php  eT("Anonymized responses:");
                     ?>
                     <script type="text/javascript"><!--
@@ -47,7 +47,7 @@
                         }
                         //--></script>
                 </label>
-                <div class="col-sm-6">
+                <div class="">
                     <?php if ($oSurvey->isActive) {
                         if ($oSurvey->anonymized == "N") { ?>
                         <?php  eT("Responses to this survey are NOT anonymized."); ?>
@@ -73,10 +73,10 @@
 
             <!-- Enable token-based response persistence -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the token table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."); ?>'>
+                <label class=" control-label" for='tokenanswerspersistence' title='<?php  eT("With non-anonymized responses (and the token table field 'Uses left' set to 1) if the participant closes the survey and opens it again (by using the survey link) his previous answers will be reloaded."); ?>'>
                     <?php  eT("Enable token-based response persistence:"); ?>
                 </label>
-                <div class="col-sm-6">
+                <div class="">
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'tokenanswerspersistence',
@@ -101,10 +101,10 @@
 
             <!-- Allow multiple responses or update responses with one token -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='alloweditaftercompletion' title='<?php  eT("If token-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'>
+                <label class=" control-label" for='alloweditaftercompletion' title='<?php  eT("If token-based response persistence is enabled a participant can update his response after completion, else a participant can add new responses without restriction."); ?>'>
                     <?php  eT("Allow multiple responses or update responses with one token:"); ?>
                 </label>
-                <div class="col-sm-6">
+                <div class="">
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'alloweditaftercompletion',
@@ -118,8 +118,8 @@
 
             <!-- Allow public registration -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='allowregister'><?php  eT("Allow public registration:"); ?></label>
-                <div class="col-sm-6">
+                <label class=" control-label" for='allowregister'><?php  eT("Allow public registration:"); ?></label>
+                <div class="">
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'allowregister',
@@ -133,8 +133,8 @@
 
             <!-- Use HTML format for token emails -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='htmlemail'><?php  eT("Use HTML format for token emails:"); ?></label>
-                <div class="col-sm-6">
+                <label class=" control-label" for='htmlemail'><?php  eT("Use HTML format for token emails:"); ?></label>
+                <div class="">
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'htmlemail',
@@ -157,8 +157,8 @@
 
             <!-- Send confirmation emails -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='sendconfirmation'><?php  eT("Send confirmation emails:"); ?></label>
-                <div class="col-sm-6">
+                <label class=" control-label" for='sendconfirmation'><?php  eT("Send confirmation emails:"); ?></label>
+                <div class="">
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'sendconfirmation',

@@ -46,7 +46,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                 <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>'form-horizontal'));?>
+                 <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>''));?>
                     <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
                         echo "<div class=\"form-group\">";
                           echo "<label  class='col-md-4 control-label'>";
@@ -71,20 +71,20 @@
                     ?>
 
                     <div class="form-group">
-                        <label for="new_user" class="control-label col-md-4"><?php eT("Username:");?></label>
-                        <div class="col-md-8">
+                        <label for="new_user" class="control-label"><?php eT("Username:");?></label>
+                        <div class="">
                             <input type='text' class="text input-sm form-control" id='new_user' name='new_user' required />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="new_email" class="control-label col-md-4" ><?php eT("Email:");?></label>
-                        <div class="col-md-8">
+                        <label for="new_email" class="control-label" ><?php eT("Email:");?></label>
+                        <div class="">
                             <input type='email' class="text input-sm form-control" id='new_email' name='new_email' required />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="new_full_name" class="control-label col-md-4"><?php eT("Full name:");?></label>
-                        <div class="col-md-8">
+                        <label for="new_full_name" class="control-label "><?php eT("Full name:");?></label>
+                        <div class="">
                             <input type='text' class="text input-sm form-control" id='new_full_name' name='new_full_name' required />
                         </div>
                     </div>

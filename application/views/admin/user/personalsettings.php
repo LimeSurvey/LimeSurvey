@@ -5,9 +5,9 @@
 ?>
 
 <div class="container">
-<?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44 form-horizontal', 'id'=>'personalsettings','autocomplete'=>"off")); ?>
+<?php echo CHtml::form($this->createUrl("/admin/user/sa/personalsettings"), 'post', array('class' => 'form44 ', 'id'=>'personalsettings','autocomplete'=>"off")); ?>
     <div class="row">
-        <div class="col-sm-10 col-xs-12">
+        <div class="col-xs-12">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#your-profile" role="tab" data-toggle="tab"><?php eT("Your profile"); ?></a></li>
                 <li role="presentation"><a href="#your-personal-settings" role="tab" data-toggle="tab"><?php eT("Your personal settings"); ?></a></li>
@@ -18,35 +18,35 @@
                 <div role="tabpanel" class="tab-pane fade in active" id="your-profile">
                     <div class="pagetitle h3"><?php eT("Your profile"); ?></div>
                     <div class="form-group">
-                        <?php echo CHtml::label(gT("User name:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label(gT("User name:"), 'lang', array('class'=>" control-label")); ?>
+                        <div class="">
                             <?php echo CHtml::textField('username', $sUsername,array('class'=>'form-control','readonly'=>'readonly')); ?>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="">
                             <span class='text-info'><?php eT("The user name cannot be changed."); ?></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <?php echo CHtml::label(gT("Email:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label(gT("Email:"), 'lang', array('class'=>" control-label")); ?>
+                        <div class="">
                             <?php echo CHtml::emailField('email', $sEmailAdress,array('class'=>'form-control','maxlength'=>254)); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <?php echo CHtml::label(gT("Full name:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label(gT("Full name:"), 'lang', array('class'=>" control-label")); ?>
+                        <div class="">
                             <?php echo CHtml::textField('fullname', $sFullname ,array('class'=>'form-control','maxlength'=>50)); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <?php echo CHtml::label(gT("Password:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label(gT("Password:"), 'lang', array('class'=>" control-label")); ?>
+                        <div class="">
                             <?php echo CHtml::passwordField('password', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
                         </div>
                     </div>
                     <div class="form-group">
-                        <?php echo CHtml::label(gT("Repeat password:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label(gT("Repeat password:"), 'lang', array('class'=>" control-label")); ?>
+                        <div class="">
                             <?php echo CHtml::passwordField('repeatpassword', '',array('class'=>'form-control','autocomplete'=>"off",'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
                         </div>
                     </div>
@@ -55,8 +55,8 @@
                     <div class="pagetitle h3"><?php eT("Your personal settings"); ?></div>
                     <!-- Interface language -->
                     <div class="form-group">
-                        <?php echo CHtml::label(gT("Interface language:"), 'lang', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label(gT("Interface language:"), 'lang', array('class'=>" control-label")); ?>
+                        <div class="">
                             <?php
                             $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                 'asDropDownList' => true,
@@ -77,8 +77,8 @@
 
                     <!-- HTML editor mode -->
                     <div class="form-group">
-                        <?php echo CHtml::label(gT("HTML editor mode:"), 'htmleditormode', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label(gT("HTML editor mode:"), 'htmleditormode', array('class'=>" control-label")); ?>
+                        <div class="">
                             <?php
                                 echo CHtml::dropDownList('htmleditormode', Yii::app()->session['htmleditormode'], array(
                                     'default' => gT("Default",'unescaped'),
@@ -92,8 +92,8 @@
 
                     <!-- Question type selector -->
                     <div class="form-group">
-                        <?php echo CHtml::label(gT("Question type selector:"), 'questionselectormode', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label(gT("Question type selector:"), 'questionselectormode', array('class'=>" control-label")); ?>
+                        <div class="">
                             <?php
                             echo CHtml::dropDownList('questionselectormode', Yii::app()->session['questionselectormode'], array(
                                 'default' => gT("Default",'unescaped'),
@@ -106,8 +106,8 @@
 
                     <!-- Template editor mode -->
                     <div class="form-group">
-                        <?php echo CHtml::label(gT("Template editor mode:"), 'templateeditormode', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label(gT("Template editor mode:"), 'templateeditormode', array('class'=>" control-label")); ?>
+                        <div class="">
                             <?php
                             echo CHtml::dropDownList('templateeditormode', Yii::app()->session['templateeditormode'], array(
                                 'default' => gT("Default"),
@@ -120,8 +120,8 @@
 
                     <!-- Date format -->
                     <div class="form-group">
-                        <?php echo CHtml::label( gT("Date format:"), 'dateformat', array('class'=>"col-sm-2 control-label")); ?>
-                        <div class="col-sm-3">
+                        <?php echo CHtml::label( gT("Date format:"), 'dateformat', array('class'=>" control-label")); ?>
+                        <div class="">
                             <select name='dateformat' id='dateformat' class="form-control">
                                 <?php
                                 foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index => $dateformatdata)

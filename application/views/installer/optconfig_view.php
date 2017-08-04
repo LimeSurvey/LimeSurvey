@@ -10,7 +10,7 @@
         <?php echo CHtml::errorSummary($model, null, null, array('class' => 'alert alert-danger')); ?>
     </div>
     <?php  ?>
-    <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => 'form-horizontal')); ?>
+    <?php echo CHtml::beginForm($this->createUrl('installer/optional'), 'post', array('class' => '')); ?>
     <div class='form-group'>
         <div class='col-sm-12'>
             <i class='fa fa-info-circle'></i><?php eT("You can leave these settings blank and change them later"); ?>

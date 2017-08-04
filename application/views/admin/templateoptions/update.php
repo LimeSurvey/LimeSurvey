@@ -56,7 +56,7 @@
                 <?php $form=$this->beginWidget('TbActiveForm', array(
                     'id'=>'template-options-form',
                     'enableAjaxValidation'=>false,
-                    'htmlOptions' => ['class' => 'form form-horizontal']
+                    'htmlOptions' => ['class' => 'form ']
                 )); ?>
                 <p class="note">Fields with <span class="required">*</span> are required.</p>
                 <?php echo $form->errorSummary($model); ?>

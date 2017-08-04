@@ -22,15 +22,15 @@
                             'action' => Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid),
                             'method' => 'get',
                             'htmlOptions'=>array(
-                                'class'=>'form-horizontal',
+                                'class'=>'',
                             ),
                         )); ?>
                         <div class="form-group">
-                            <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class'=>'col-sm-2 control-label text-right col-sm-offset-6')); ?>
-                            <div class="col-sm-2 text-right">
+                            <?php echo CHtml::label(gT('Search by group name:'), 'group_name', array('class'=>' control-label text-right col-sm-offset-6')); ?>
+                            <div class=" text-right">
                                 <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="">
                                 <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
                                 <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('Reset');?></a>
                             </div>

@@ -4,9 +4,9 @@
 /* @var $form CActiveForm */
 ?>
 
-<div class="form">
+<div class="form col-sm-8 col-sm-offset-2">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php $form=$this->beginWidget('TbActiveForm', array(
     'id'=>'surveys-groups-form',
     // Please note: When you enable ajax validation, make sure the corresponding
     // controller action is handling ajax validation correctly.

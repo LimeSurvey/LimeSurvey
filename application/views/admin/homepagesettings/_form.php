@@ -14,7 +14,7 @@
                 // See class documentation of CActiveForm for details on this.
                 'enableAjaxValidation'=>false,
                 'htmlOptions'=>array(
-                    'class'=>"form-horizontal",
+                    'class'=>"",
                 )
             )); ?>
                 <p class="note"><?php printf(gT('Fields with %s*%s are required.'),'<span class="required">','</span>'); ?></p>

@@ -3,7 +3,7 @@
         <?php $this->renderPartial('/installer/sidebar_view', compact('progressValue', 'classesForStep')); ?>
     </div>
     <div class="col-md-9">
-        <?php echo CHtml::beginForm($this->createUrl('installer/database'), 'post', array('class' => 'form-horizontal')); ?>
+        <?php echo CHtml::beginForm($this->createUrl('installer/database'), 'post', array('class' => '')); ?>
         <h2><?php echo $title; ?></h2>
         <p><?php echo $descp; ?></p>
         <?php if (CHtml::errorSummary($model, null, null, array('class' => 'errors'))): ?>

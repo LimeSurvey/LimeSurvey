@@ -27,7 +27,7 @@ PrepareEditorScript(false, $this);
 
 </script>
 <!-- Form submited by save button menu bar -->
-<?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'form-horizontal')); ?>
+<?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-1 ls-flex-column fill align-items-center align content-center">
             <!-- Previous pane button -->

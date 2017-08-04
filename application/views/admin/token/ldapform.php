@@ -35,14 +35,14 @@
             <?php else: ?>
 
             <!-- Form -->
-                <?php echo CHtml::form(array("admin/tokens/sa/importldap/surveyid/{$iSurveyId}"), 'post', array('class'=>'form-horizontal')); ?>
+                <?php echo CHtml::form(array("admin/tokens/sa/importldap/surveyid/{$iSurveyId}"), 'post', array('class'=>'')); ?>
 
                     <!-- LDAP query  -->
                     <div class="form-group">
-                        <label for="ldapQueries" class="col-sm-3 control-label">
+                        <label for="ldapQueries" class=" control-label">
                             <?php eT("Select the LDAP query you want to run:"); ?>
                         </label>
-                        <div class="col-sm-2">
+                        <div class="">
                             <select name='ldapQueries' class="form-control">
                                 <?php foreach ($ldap_queries as $q_number => $q): ?>
                                     <option value="<?php echo $q_number; ?>"><?php echo $q['name']; ?></option>
@@ -53,16 +53,16 @@
 
                     <!-- Filter blank email -->
                     <div class="form-group">
-                        <label for='filterblankemail' class="col-sm-3 control-label"><?php echo eT("Filter blank email addresses:"); ?></label>
-                        <div class="col-sm-9">
+                        <label for='filterblankemail' class=" control-label"><?php echo eT("Filter blank email addresses:"); ?></label>
+                        <div class="">
                             <input type='checkbox' id='filterblankemail' name='filterblankemail' checked='checked' />
                         </div>
                     </div>
 
                     <!-- Filter duplicate -->
                     <div class="form-group">
-                        <label for='filterduplicatetoken'  class="col-sm-3 control-label"><?php echo eT("Filter duplicate records:"); ?></label>
-                        <div class="col-sm-9">
+                        <label for='filterduplicatetoken'  class=" control-label"><?php echo eT("Filter duplicate records:"); ?></label>
+                        <div class="">
                             <input type='checkbox' id='filterduplicatetoken' name='filterduplicatetoken' checked='checked' />
                         </div>
                     </div>

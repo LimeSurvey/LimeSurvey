@@ -4,7 +4,7 @@
 
     <div class="row">
         <div class="col-lg-12 content-right">
-            <form name='translatemenu' id='translatemenu' action='<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/lang/{$tolang}");?>' method='get'  class="form-horizontal">
+            <form name='translatemenu' id='translatemenu' action='<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/lang/{$tolang}");?>' method='get'  class="">
                 <?php echo $adminmenu; ?>
             </form>
         </div>

@@ -134,7 +134,7 @@
             <?php echo CHtml::form(array("admin/tokens/sa/updatetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'addattribute')); ?>
             <p>
                 <label for="addnumber"><?php eT('Number of attribute fields to add:'); ?></label>
-                <div class='col-sm-1'>
+                <div class=''>
                     <input class='form-control' type="text" id="addnumber" name="addnumber" size="3" maxlength="3" value="1" />
                 </div>
             </p>
@@ -149,7 +149,7 @@
                 <?php echo CHtml::form(array("admin/tokens/sa/deletetokenattributes/surveyid/{$surveyid}"), 'post',array('id'=>'attributenumber')); ?>
                 <p>
                     <label for="deleteattribute"><?php eT('Delete this attribute:'); ?></label>
-                    <div class='col-sm-2'>
+                    <div class=''>
                         <?php  echo CHtml::dropDownList('deleteattribute',"",CHtml::listData($tokenfieldlist,'id','descrition'),array('empty' => gT('(None)','unescaped'), 'class'=>'form-control')); ?>
                     </div>
                 </p>
