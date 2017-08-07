@@ -187,8 +187,11 @@ class RegisterController extends LSYii_Controller {
         App()->getPluginManager()->dispatchEvent($event);
         // Allow adding error or replace error with plugin ?
         $this->aRegisterErrors=$event->get('aRegistersErrors');
+        $registerFormEvent = array();
         if(!is_null($event->get('registerForm'))){
-            return $event->get('registerForm');
+            $registerFormEvent = $event->get('registerForm');
+            if(!isset($registerFormEvent['append']) ||  $registerFormEvent['append'] == false ) 
+                return $event->get('registerForm');
         }
         $aFieldValue=$this->getFieldValue($iSurveyId);
         $aRegisterAttributes=$this->getExtraAttributeInfo($iSurveyId);
@@ -203,6 +206,10 @@ class RegisterController extends LSYii_Controller {
         $aReplacement['REGISTERFORM'] = CHtml::form(App()->createUrl('register/index',array('sid'=>$iSurveyId)),'post',array('id'=>'limesurvey', 'role' => 'form', 'class' => 'ls-form'));
         $aReplacement['REGISTERFORM'].= $this->renderPartial('/survey/frontpage/registerForm/form',$aData,true);
         $aReplacement['REGISTERFORM'].= CHtml::endForm();
+        if(!empty($registerFormEvent)){
+            $aReplacement['REGISTERFORM'].= $registerFormEvent['formAppend'];
+        }
+
         if(is_array($this->aRegisterErrors))
         {
             $aReplacement['REGISTERERROR']=$this->renderPartial("/survey/frontpage/registerForm/error",array('aErrors'=>$this->aRegisterErrors),true);
@@ -215,7 +222,7 @@ class RegisterController extends LSYii_Controller {
         $aReplacement['REGISTERMESSAGE2']=$this->renderPartial("/survey/frontpage/registerForm/message",array('sStartDate'=>$this->getStartDate($iSurveyId)),true);
         $aData['thissurvey'] = $aSurveyInfo;
         Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
-        $aData['languagechanger'] = makeLanguageChangerSurvey(App()->language);
+        // $aData['languagechanger'] = frontend_helper::makeLanguageChangerSurvey(App()->language);
         $oTemplate = Template::model()->getInstance(null, $iSurveyId);
         return templatereplace(file_get_contents($oTemplate->pstplPath . "/register.pstpl"),$aReplacement,$aData);
     }
@@ -473,7 +480,7 @@ class RegisterController extends LSYii_Controller {
 
         $this->sTemplate=$oTemplate->sTemplateName;
         if(!$this->sMessage){
-            $this->aGlobalData['languagechanger']=makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
+            // $this->aGlobalData['languagechanger']=frontend_helper::makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
             $this->aReplacementData['content']=self::getRegisterForm($iSurveyId);
         }else{
             // Must use message.pstpl
