@@ -63,6 +63,25 @@ class Surveymenu extends LSActiveRecord
 		);
 	}
 
+    
+    public static function staticAddMenu($menuArray)
+    {
+        $oSurveymenu = new Surveymenu();
+        $oSurveymenu->parent_id = $menuArray['parent_id'];
+        $oSurveymenu->title = $menuArray['title'];
+        $oSurveymenu->position = $menuArray['position'];
+        $oSurveymenu->description = $menuArray['description'];
+
+        $oSurveymenu->changed_at = date('Y-m-d H:i:s');
+        $oSurveymenu->changed_by = Yii::app()->user->getId();
+        $oSurveymenu->created_at = date('Y-m-d H:i:s');
+        $oSurveymenu->created_by = Yii::app()->user->getId();
+
+        $oSurveymenu->save();
+        return $oSurveymenu->getPrimaryKey();
+    }
+
+
 	public function getMenuIdOptions (){
 		$oSurveymenus = Surveymenu::model()->findAll();
 		$options = [

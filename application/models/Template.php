@@ -216,7 +216,6 @@ class Template extends LSActiveRecord
                 if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
                     $sTemplateName = SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
                     $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
-                    $oTemplateConfigurationModel->setToInherit();
                 }
             } 
             
@@ -242,6 +241,7 @@ class Template extends LSActiveRecord
                 $oTemplateConfigurationModel->isNewRecord = true;
                 $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
                 $oTemplateConfigurationModel->setToInherit();
+                $oTemplateConfigurationModel->setThisTemplate();
                 $oTemplateConfigurationModel->save();
                 return $oTemplateConfigurationModel;
             }
@@ -252,6 +252,7 @@ class Template extends LSActiveRecord
                 $oTemplateConfigurationModel->isNewRecord = true;
                 $oTemplateConfigurationModel->sid = $iSurveyId;
                 $oTemplateConfigurationModel->setToInherit();
+                $oTemplateConfigurationModel->setThisTemplate();
                 $oTemplateConfigurationModel->save();
                 return $oTemplateConfigurationModel;
             }

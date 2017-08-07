@@ -1,0 +1,65 @@
+
+{{ C.Html.form(aSurveyInfo.sRegisterFormUrl,'post',({'id' : 'limesurvey', 'role' : 'form', 'class' : 'form'})) }}
+
+<input type="hidden" name="lang" value="{{aSurveyInfo.sLanguage}}" id="register_lang" />
+<div class='col-md-8 col-md-offset-2'>
+    <div class='form-group row'>
+        <label for='register_firstname' class='control-label '>{{ gT("First name:") }}</label>
+        <div class="">
+            {{ C.Html.textField('register_firstname', aSurveyInfo.sFirstName, ({'id' : 'register_firstname','class' : 'form-control'})) }}
+        </div>
+    </div>
+
+    <div class='form-group row'>
+        <label for='register_lastname' class='control-label '>{{ gT("Last name:") }}</label>
+        <div class="">
+            {{ C.Html.textField('register_lastname', aSurveyInfo.sLastName, ({'id' : 'register_lastname', 'class' : 'form-control'})) }}
+        </div>
+    </div>
+    <div class='form-group row'>
+        <label for='register_email' class='control-label'> {{ gT("Email address:") }} {{ include('./subviews/required.twig') }}</label>
+        <div class="">
+            {{ C.Html.textField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control input-sm','required' : true})) }}
+        </div>
+    </div>
+    {% for key, aExtraAttribute in aSurveyInfo.aExtraAttributes  %}
+        <div class='form-group row'>
+            {% set registerKey = "register_" ~ key %}
+            <label for="{{ registerKey }}" class='control-label '> {{ aExtraAttribute.caption }} {% if aExtraAttribute.mandatory == 'Y' %}{{ include('./subviews/required.twig') }}{% endif %}</label>
+            <div class="">
+                {{ C.Html.textField(registerKey, aAttribute[key],({'id' : "register_{$key}",'class' : 'form-control input-sm'})) }}
+            </div>
+        </div>
+    {% endfor %}
+    {% if aSurveyInfo.bCaptcha %}
+        <div class='form-group row captcha-item'>
+            <label class='control-label ' for='loadsecurity'>{{ gT("Please enter the letters you see:") }} {{ include('./subviews/required.twig') }}</label>
+            <div class=''>
+                <div class='input-group'>
+                    <div class='control-label captcha-widget' >
+                        {{ renderCaptcha }}
+                    </div>
+                    <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class='row' aria-hidden='true'>
+            {{ gT('Fields marked with an asterisk are mandatory.')}}
+    </div>
+
+    <div class='form-group row'>
+        <div class=' col-md-offset-7'>
+            {% set continue = gT("Continue",'unescaped') %}
+            <button type='submit' id='savebutton' name="savesubmit" class='btn btn-default' value='save'>
+                {{ continue }}
+            </button>
+        </div>
+    </div>  
+    <div class="row">
+        {{ aSurveyInfo.formAdditions | raw  }}
+    </div>
+</div>
+
+{{ C.Html.endForm }}

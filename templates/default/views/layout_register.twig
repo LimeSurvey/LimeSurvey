@@ -1,0 +1,29 @@
+{# Call the global layout #}
+{% extends "./layout_global.twig" %}
+
+{# Replace the content block #}
+{% block content %}
+
+    {# render the layout_global content block #}
+    {{ parent() }}
+
+    <div class="container">
+        {# This will display the script and the hidden inputs needed for Expression Manager #}
+        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+
+        <div class="row">
+            <div class='jumbotron'>
+            {{ include('./subviews/registration/register_head.twig') }}
+                <div class="container clearfix">
+                    {{ include('./subviews/registration/register_message.twig') }}
+                </div>
+            </div>
+        </div>
+        {{ include('./subviews/registration/register_error.twig') }}
+        <div class="register-form row">
+            {{ include('./subviews/registration/register_form.twig') }}
+        </div> 
+    </div>
+    <input type='hidden' class='hidemenubutton'/>
+
+{% endblock %}

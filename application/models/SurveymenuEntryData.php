@@ -26,6 +26,33 @@ class SurveymenuEntryData extends CFormModel {
         }
         $this->_parseLink();
     }
+
+    public function createOptionJson($addSurveyID=false, $addQuestionGroupId=false, $addQuestionId=false){
+        
+        $dataArray = array();
+        if($addSurveyID)
+            $dataArray['surveyid'] = ['survey', 'sid'];
+        if($addQuestionGroupId)
+            $dataArray['gid'] = ['questiongroup', 'gid'];
+        if($addQuestionId)
+            $dataArray['qid'] = ['question', 'qid'];
+
+
+        $baseArray = array(
+            'link' => array(
+                'external' => $this->linkExternal,
+                'pjaxed' => $this->pjaxed,
+                'data' => $dataArray
+            )
+        );
+
+        if($this->isActive === true || $this->isActive === false)
+            $baseArray['isActive'] = $this->isActive;
+
+        $baseArray = array_merge($baseArray, $this->linkData);
+
+        return json_encode(array('render' => $baseArray));
+    }
     
     public function linkCreator(){
         $returnLink = Yii::app()->getController()->createUrl($this->link, $this->linkData);
@@ -47,6 +74,7 @@ class SurveymenuEntryData extends CFormModel {
         }
     }
     
+
     private function _parseLink(){
 
         if(empty($this->menuEntry->menu_link)){

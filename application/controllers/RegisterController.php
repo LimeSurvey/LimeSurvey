@@ -73,7 +73,7 @@ class RegisterController extends LSYii_Controller {
         $data['startdate'] = $oSurvey->startdate;
         $data['enddate'] = $oSurvey->expires;
         $data['thissurvey'] = getSurveyInfo($iSurveyId , $oSurvey->language);
-        echo self::getRegisterForm($iSurveyId);
+        echo self::ajaxGetRegisterForm($iSurveyId);
         Yii::app()->end();
     }
 
@@ -177,7 +177,7 @@ class RegisterController extends LSYii_Controller {
 
     public function getRegisterForm($iSurveyId)
     {
-        $aSurveyInfo=getSurveyInfo($iSurveyId,App()->language);
+        $oSurvey=Survey::model()->findByPk($iSurveyId);
 
         // Event to replace register form
         $event = new PluginEvent('beforeRegisterForm');
@@ -195,6 +195,7 @@ class RegisterController extends LSYii_Controller {
         }
         $aFieldValue=$this->getFieldValue($iSurveyId);
         $aRegisterAttributes=$this->getExtraAttributeInfo($iSurveyId);
+
         $aData['iSurveyId'] = $iSurveyId;
         $aData['sLanguage'] = App()->language;
         $aData['sFirstName'] = $aFieldValue['sFirstName'];
@@ -202,29 +203,28 @@ class RegisterController extends LSYii_Controller {
         $aData['sEmail'] = $aFieldValue['sEmail'];
         $aData['aAttribute'] = $aFieldValue['aAttribute'];
         $aData['aExtraAttributes']=$aRegisterAttributes;
-        $aData['bCaptcha'] = function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $aSurveyInfo['usecaptcha']);
-        $aReplacement['REGISTERFORM'] = CHtml::form(App()->createUrl('register/index',array('sid'=>$iSurveyId)),'post',array('id'=>'limesurvey', 'role' => 'form', 'class' => 'ls-form'));
-        $aReplacement['REGISTERFORM'].= $this->renderPartial('/survey/frontpage/registerForm/form',$aData,true);
-        $aReplacement['REGISTERFORM'].= CHtml::endForm();
+        $aData['bCaptcha'] = function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $oSurvey->usecaptcha);
+        $aData['sRegisterFormUrl'] = App()->createUrl('register/index',array('sid'=>$iSurveyId));
+        
+        $aData['formAdditions'] = 'Blablablabla';
         if(!empty($registerFormEvent)){
-            $aReplacement['REGISTERFORM'].= $registerFormEvent['formAppend'];
+            $aData['formAdditions'] = $registerFormEvent['formAppend'];
         }
 
         if(is_array($this->aRegisterErrors))
         {
-            $aReplacement['REGISTERERROR']=$this->renderPartial("/survey/frontpage/registerForm/error",array('aErrors'=>$this->aRegisterErrors),true);
+            $aData['aErrors'] = $this->aRegisterErrors;
         }
         else
         {
-            $aReplacement['REGISTERERROR']='';
+            $aData['aErrors'] = array();
         }
-        $aReplacement['REGISTERMESSAGE1']=$this->renderPartial("/survey/frontpage/registerForm/heading",array(),true);
-        $aReplacement['REGISTERMESSAGE2']=$this->renderPartial("/survey/frontpage/registerForm/message",array('sStartDate'=>$this->getStartDate($iSurveyId)),true);
-        $aData['thissurvey'] = $aSurveyInfo;
-        Yii::app()->setConfig('surveyID',$iSurveyId);//Needed for languagechanger
-        // $aData['languagechanger'] = frontend_helper::makeLanguageChangerSurvey(App()->language);
-        $oTemplate = Template::model()->getInstance(null, $iSurveyId);
-        return templatereplace(file_get_contents($oTemplate->pstplPath . "/register.pstpl"),$aReplacement,$aData);
+        
+        $aData['sStartDate'] = $this->getStartDate($iSurveyId ,true);
+
+        $aData['thissurvey'] = $oSurvey->attributes;
+
+        return $aData;
     }
 
     /**
@@ -476,38 +476,39 @@ class RegisterController extends LSYii_Controller {
         $this->aReplacementData['sMessage']=$this->sMessage;
 
         $oTemplate = Template::model()->getInstance('', $iSurveyId);
-        Yii::app()->clientScript->registerPackage( 'survey-template' );
+        //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
-        $this->sTemplate=$oTemplate->sTemplateName;
-        if(!$this->sMessage){
-            // $this->aGlobalData['languagechanger']=frontend_helper::makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
-            $this->aReplacementData['content']=self::getRegisterForm($iSurveyId);
-        }else{
-            // Must use message.pstpl
-            $this->aReplacementData['content']=templatereplace(file_get_contents($oTemplate->pstplPath . "/message.pstpl"),
-                array(
-                    'MESSAGEID'=>'register-message',
-                    'ERROR'=>'',
-                    'MESSAGE'=>$this->sMessage,
-                )
-                ,$this->aGlobalData
-            );
+        // $this->sTemplate=$oTemplate->sTemplateName;
+        // if(!$this->sMessage){
+        //     // $this->aGlobalData['languagechanger']=frontend_helper::makeLanguageChangerSurvey($sLanguage); // Only show language changer shown the form is shown, not after submission
+        // }else{
+        //     // Must use message.pstpl
+        //     $this->aReplacementData['content']=templatereplace(file_get_contents($oTemplate->pstplPath . "/message.pstpl"),
+        //         array(
+        //             'MESSAGEID'=>'register-message',
+        //             'ERROR'=>'',
+        //             'MESSAGE'=>$this->sMessage,
+        //         )
+        //         ,$this->aGlobalData
+        //     );
 
-        }
-        // Test if we come from index or from register
-        if(empty(App()->clientScript->scripts)){
-            /* This surely can be moved to layout , but remove iot from surveyController before */
-            $oTemplate = Template::model()->getInstance('', $iSurveyId);
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
-            App()->getClientScript()->registerPackage('jqueryui');
-            App()->getClientScript()->registerPackage('jquery-touch-punch');
-            App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-            useFirebug();
-            $this->layout='survey';
-            $this->render('/survey/system/display',$this->aReplacementData);
-        }else{
-            // Survey/index need renderPartial
-            echo $this->render('/survey/system/display',$this->aReplacementData, true, true);
-        }
+        // }
+
+        $aData['aSurveyInfo'] = self::getRegisterForm($iSurveyId);
+        Yii::app()->twigRenderer->renderTemplateFromFile('layout_register.twig',$aData, false);
+
+        // // Test if we come from index or from register
+        // if(empty(App()->clientScript->scripts)){
+        //     /* This surely can be moved to layout , but remove iot from surveyController before */
+        //     $oTemplate = Template::model()->getInstance('', $iSurveyId);
+        //     Yii::app()->clientScript->registerPackage( 'survey-template' );
+        //     App()->getClientScript()->registerPackage('jqueryui');
+        //     App()->getClientScript()->registerPackage('jquery-touch-punch');
+        //     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
+            
+        // }else{
+        //     // Survey/index need renderPartial
+        //     Yii::app()->twigRenderer->renderTemplateFromFile('layout_register.twig',$aData, false);
+        // }
     }
 }

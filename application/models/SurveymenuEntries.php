@@ -73,6 +73,39 @@ class SurveymenuEntries extends LSActiveRecord
 		);
 	}
 
+    public static function staticAddMenuEntry($menuEntryArray)
+    {
+        $oSurveymenuEntries = new SurveymenuEntries();
+
+        
+        $oSurveymenuEntries->name = $menuEntryArray['name'];
+        $oSurveymenuEntries->title = $menuEntryArray['title'];
+        $oSurveymenuEntries->menu_title = $menuEntryArray['menu_title'];
+        $oSurveymenuEntries->menu_description = $menuEntryArray['menu_description'];
+        $oSurveymenuEntries->menu_icon = $menuEntryArray['menu_icon'];
+        $oSurveymenuEntries->menu_icon_type = $menuEntryArray['menu_icon_type'];
+        $oSurveymenuEntries->menu_link = $menuEntryArray['menu_link'];
+        
+        //set data
+        $oMenuEntryData = new SurveymenuEntryData();
+        $oMenuEntryData->linkExternal = $menuEntryArray['linkExternal'];
+        $oMenuEntryData->isActive = $menuEntryArray['hideOnSurveyState'] == 'active' ? true : ($menuEntryArray['hideOnSurveyState'] == 'inactive' ? false : null);
+        
+        if($menuEntryArray['manualParams'] != '')
+            $oMenuEntryData->linkData = json_parse($menuEntryArray['manualParams']);
+
+        $oSurveymenuEntries->data = $oMenuEntryData->createOptionJson($menuEntryArray['addSurveyId'], $menuEntryArray['addQuestionGroupId'], $menuEntryArray['addQuestionId']);
+
+        $oSurveymenuEntries->changed_at = date('Y-m-d H:i:s');
+        $oSurveymenuEntries->changed_by = Yii::app()->user->getId();
+        $oSurveymenuEntries->created_at = date('Y-m-d H:i:s');
+        $oSurveymenuEntries->created_by = Yii::app()->user->getId();
+
+        $oSurveymenuEntries->save();
+        return $oSurveymenuEntries->getPrimaryKey();
+    }
+
+
 	public static function reorderMenu($menuId){
 		$criteriaItems = new CDbCriteria();
 		$criteriaItems->addCondition(['menu_id = :menu_id']);
