@@ -626,7 +626,7 @@ CREATE TABLE `prefix_surveymenu` (
   `parent_id` int(11) DEFAULT NULL,
   `survey_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `order` int(11) DEFAULT '0',
+  `ordering` int(11) DEFAULT '0',
   `level` int(11) DEFAULT '0',
   `title` varchar(255)  NOT NULL DEFAULT '',
   `position` varchar(255)  NOT NULL DEFAULT 'side',
