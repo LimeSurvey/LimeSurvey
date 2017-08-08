@@ -241,8 +241,8 @@ class Template extends LSActiveRecord
                 $oTemplateConfigurationModel->isNewRecord = true;
                 $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
                 $oTemplateConfigurationModel->setToInherit();
-                $oTemplateConfigurationModel->setThisTemplate();
                 $oTemplateConfigurationModel->save();
+                $oTemplateConfigurationModel->setThisTemplate();
                 return $oTemplateConfigurationModel;
             }
 
@@ -252,8 +252,8 @@ class Template extends LSActiveRecord
                 $oTemplateConfigurationModel->isNewRecord = true;
                 $oTemplateConfigurationModel->sid = $iSurveyId;
                 $oTemplateConfigurationModel->setToInherit();
-                $oTemplateConfigurationModel->setThisTemplate();
                 $oTemplateConfigurationModel->save();
+                $oTemplateConfigurationModel->setThisTemplate();
                 return $oTemplateConfigurationModel;
             }
         }

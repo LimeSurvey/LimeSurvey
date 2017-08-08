@@ -2,6 +2,7 @@
 {{ C.Html.form(aSurveyInfo.sRegisterFormUrl,'post',({'id' : 'limesurvey', 'role' : 'form', 'class' : 'form'})) }}
 
 <input type="hidden" name="lang" value="{{aSurveyInfo.sLanguage}}" id="register_lang" />
+<input type="hidden" name="register" value="true" id="register_register" />
 <div class='col-md-8 col-md-offset-2'>
     <div class='form-group row'>
         <label for='register_firstname' class='control-label '>{{ gT("First name:") }}</label>

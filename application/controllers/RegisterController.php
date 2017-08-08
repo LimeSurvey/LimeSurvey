@@ -127,8 +127,17 @@ class RegisterController extends LSYii_Controller {
                 $iTokenId=self::getTokenId($iSurveyId);
             }
         }
-        if(empty($this->aRegisterErrors) && $iTokenId && $this->sMessage===null){
+        if(empty($this->aRegisterErrors) && $iTokenId && $this->sMessage===null ){
+            $directLogin = $event->get('directLogin', false);
+            if($directLogin == true ){
+                $oToken = Token::model($iSurveyId)->findByPk($iTokenId);
+                $redirectUrl = Yii::app()->getController()->createUrl('/'.$iSurveyId.'/', array('token' => $oToken->token, 'lang'=>$sLanguage));
+                Yii::app()->getController()->redirect($redirectUrl);
+                Yii::app()->end();
+            } 
+
             self::sendRegistrationEmail($iSurveyId,$iTokenId);
+            
         }
 
         // Display the page
@@ -206,7 +215,7 @@ class RegisterController extends LSYii_Controller {
         $aData['bCaptcha'] = function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $oSurvey->usecaptcha);
         $aData['sRegisterFormUrl'] = App()->createUrl('register/index',array('sid'=>$iSurveyId));
         
-        $aData['formAdditions'] = 'Blablablabla';
+        $aData['formAdditions'] = '';
         if(!empty($registerFormEvent)){
             $aData['formAdditions'] = $registerFormEvent['formAppend'];
         }
