@@ -66,7 +66,29 @@ if ($('#save-button').length > 0){
         ev.preventDefault();
         var $form = getForm(this);
         formSubmitting = true;
+        
+        for(var instanceName in CKEDITOR.instances) {
+            CKEDITOR.instances[instanceName].updateElement();
+        }
+
         $form.find('[type="submit"]').first().trigger('click');
+    });
+}
+
+if ($('#save-and-new-button').length > 0){
+    $('#save-and-new-button').on('click', function(ev)
+    {
+        ev.preventDefault();
+        var $form = getForm(this);
+        formSubmitting = true;
+        $form.append('<input name="saveandnew" value="'+$('#save-and-new-button').attr('href')+'" />');
+        
+        for(var instanceName in CKEDITOR.instances) {
+            CKEDITOR.instances[instanceName].updateElement();
+        }
+
+        $form.find('[type="submit"]').first().trigger('click');
+
     });
 }
 

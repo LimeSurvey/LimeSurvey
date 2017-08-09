@@ -1803,8 +1803,9 @@ iframe#dialog {
 .question-filter-container {
     border : 1px solid #efefef;
     padding: 2em;
-    margin: 0.2em;
-    width: 33%;
+    margin: 0;
+    min-width:33%;
+    max-width:100%;
 }
 
 /* Subquestion */
