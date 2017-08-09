@@ -1,5 +1,4 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php// $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT("Conditions designer") )); ?>
     <h3>
         <?php eT("Conditions designer"); ?>
 

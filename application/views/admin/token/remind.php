@@ -5,7 +5,6 @@
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'token'=>true, 'active'=>gT("Send email reminder"))); ?>
     <h3><?php eT("Send email reminder"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -23,6 +22,69 @@
             <?php endif; ?>
 
             <?php echo CHtml::form(array("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"), 'post', array('id'=>'sendreminder', 'class'=>'')); ?>
+            <div class="row">
+                <div class="col-sm-6">
+                <?php if (count($tokenids)>0): ?>
+                        <div class='form-group'>
+                            <label class='control-label '><?php eT("Send reminder to token ID(s):"); ?></label>
+                            <div class=''>
+                                <?php echo short_implode(", ", "-", (array) $tokenids); ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class='form-group'>
+                        <label class='control-label ' for='bypassbademails'><?php eT("Bypass token with failing email addresses:"); ?></label>
+                        <div class=''>
+                            <?php
+                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => "bypassbademails",
+                                'id'=>"bypassbademails",
+                                'value' => '1',
+                                'onLabel'=>gT('On'),
+                                'offLabel' => gT('Off')));
+                            ?>
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+                        <label class='control-label ' for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
+                        <div class=''>
+                            <?php echo CHtml::textField('minreminderdelay'); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class='form-group'>
+
+                        <label class='control-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
+                        <div class=''>
+                            <?php echo CHtml::textField('maxremindercount'); ?>
+                        </div>
+                    </div>
+
+                    <div class='form-group'>
+                          <?php echo CHtml::label(gT("Bypass date control before sending email:"),'bypassdatecontrol', 
+                          array(
+                              'title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
+                              'unescaped'=>'unescaped', 
+                              'class' => 'control-label '
+                              )
+                            ); ?>
+                          <div class=''>
+                          <?php
+                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                                'name' => "bypassdatecontrol",
+                                'id'=>"bypassdatecontrol",
+                                'value' => '0',
+                                'onLabel'=>gT('On'),
+                                'offLabel' => gT('Off')));
+                            ?>
+                          </div>
+                          <div class=''></div>
+                    </div>
+                </div>
+            </div>
             <div>
                 <ul class="nav nav-tabs">
                     <?php
@@ -48,9 +110,7 @@
                     ?>
                 </ul>
 
-
-                    <div class="tab-content">
-
+                <div class="tab-content">
                     <?php
                     $c = true;
                     foreach ($surveylangs as $language)
@@ -95,59 +155,7 @@
                         </div>
                     <?php } ?>
                 </div>
-                    <?php if (count($tokenids)>0): ?>
-                        <div class='form-group'>
-                            <label class='control-label '><?php eT("Send reminder to token ID(s):"); ?></label>
-                            <div class=''>
-                                <?php echo short_implode(", ", "-", (array) $tokenids); ?>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-
-                    <div class='form-group'>
-                        <label class='control-label ' for='bypassbademails'><?php eT("Bypass token with failing email addresses:"); ?></label>
-                        <div class=''>
-                            <?php
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => "bypassbademails",
-                                'id'=>"bypassbademails",
-                                'value' => '1',
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
-                        </div>
-                    </div>
-
-                    <div class='form-group'>
-                        <label class='control-label ' for='minreminderdelay'><?php eT("Min days between reminders:"); ?></label>
-                        <div class=''>
-                            <?php echo CHtml::textField('minreminderdelay'); ?>
-                        </div>
-                    </div>
-
-                    <div class='form-group'>
-
-                        <label class='control-label ' for='maxremindercount'><?php eT("Max reminders:"); ?></label>
-                        <div class=''>
-                            <?php echo CHtml::textField('maxremindercount'); ?>
-                        </div>
-                    </div>
-
-                    <div class='form-group'>
-                          <?php echo CHtml::label(gT("Bypass date control before sending email:"),'bypassdatecontrol', array('title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),'unescaped', 'class' => 'control-label ')); ?>
-                          <div class=''>
-                          <?php
-                            $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                                'name' => "bypassdatecontrol",
-                                'id'=>"bypassdatecontrol",
-                                'value' => '0',
-                                'onLabel'=>gT('On'),
-                                'offLabel' => gT('Off')));
-                            ?>
-                          </div>
-                          <div class=''></div>
-                    </div>
-
+                <div class="row">
                     <div class='form-group'>
                         <div class=''></div>
                         <div class=''>
@@ -162,6 +170,7 @@
                                 }
                             ?>
                     </div>
+                </div>
             </div>
         </form>
     </form>

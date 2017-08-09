@@ -28473,15 +28473,22 @@ if (document.getElementById('vue-app-main-container')) {
         menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
         footerHeight = $('footer').outerHeight() + 35,
         documentHeight = screen.availHeight || screen.height,
-        innerMenuHeight = $('#breadcrumb-container').outerHeight();
-
-      this.$store.commit('changeInSurveyViewHeight', (documentHeight - (menuOffset + menuHeight + footerHeight)));
-      this.$store.commit('changeGeneralContainerHeight', (this.$store.state.inSurveyViewHeight - (innerMenuHeight + 45)));
+        innerMenuHeight = $('#breadcrumb-container').outerHeight(),
+        inSurveyViewHeight = (documentHeight - (menuOffset + menuHeight + footerHeight)),
+        generalContainerHeright = inSurveyViewHeight-(innerMenuHeight + 45);
+        
+        
+      this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
+      this.$store.commit('changeGeneralContainerHeight', generalContainerHeright);
 
     },
     mounted() {
-      this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
-      this.$store.commit('changeMaxHeight', ($('#in_survey_common').height() - 35));
+      const surveyid = $(this.$el).data('surveyid');
+      if(surveyid != 0){
+        this.$store.commit('updateSurveyId', surveyid);
+      }
+      const maxHeight = ($('#in_survey_common').height() - 35) || 400;
+      this.$store.commit('changeMaxHeight', maxHeight);
       this.updatePjaxLinks();
     }
   });
@@ -28536,6 +28543,7 @@ $(document).on('pjax:complete', () => {
 //       'topbar' : Topbar,
 //     } 
 // });
+
 
 /***/ }),
 /* 15 */
@@ -29955,7 +29963,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "mainMenu container-fluid col-sm-12 fill-height"
   }, [_c('div', {
-    staticClass: "ls-flex-row align-content-space-between align-items-flex-end ls-space margin bottom-0 top-5",
+    staticClass: "ls-flex-row align-content-space-between align-items-flex-end ls-space margin bottom-15 top-5",
     staticStyle: {
       "height": "40px"
     }

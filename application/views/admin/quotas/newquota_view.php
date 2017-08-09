@@ -8,9 +8,6 @@
     <div class='col-lg-8'>
     <div class="row">
         <div class="col-lg-12 content-right">
-            <?php 
-                // $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oQuota->survey, 'active'=> gT("New quota"))); 
-            ?>
             <h3>
                 <?php eT("New quota");?>
             </h3>

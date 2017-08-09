@@ -33,7 +33,7 @@ $fullPage = (isset($surveyid))?false:true;
 
 Yii::app()->loadHelper('frontend');
 
-if (!$surveyid)   //  || count($_REQUEST) == 0) {
+if (!isset($surveyid))   //  || count($_REQUEST) == 0) {
 {
     $surveyList=getSurveyList();
     $sFormTag= CHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post');

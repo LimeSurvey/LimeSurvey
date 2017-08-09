@@ -984,3 +984,12 @@ function fixAccordionPosition(){
         }
     });
 }
+
+
+LS.appendAlert = function(alertText){
+    var rawAlert = $('<div class="alert alert-success alert-dismissible" role="alert"></div>');
+    var closeButton = $('<button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close" name="yt0"><span>×</span></button>');
+    rawAlert.text(alertText);
+    rawAlert.prepend(closeButton);
+    $('#notif-container').append(rawAlert);
+}

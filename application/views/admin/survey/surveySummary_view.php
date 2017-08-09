@@ -22,7 +22,6 @@ $surveyid = $oSurvey->sid;
 
 
 ?>
-    <?php //$this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
     <div id="survey-action-title" class="h3 pagetitle">
     <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">

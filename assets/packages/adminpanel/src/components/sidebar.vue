@@ -252,7 +252,7 @@ export default {
     <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width fill-height" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
         <div class="col-12 fill-height" v-bind:style="{'height': $store.state.inSurveyViewHeight}">
             <div class="mainMenu container-fluid col-sm-12 fill-height">
-                <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space margin bottom-0 top-5" style="height: 40px;">
+                <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space margin bottom-15 top-5" style="height: 40px;">
                     <transition name="fade">
                         <button class="btn btn-default ls-space padding right-5" v-if="!$store.state.isCollapsed" @click="toggleCollapse">
                             <i class="fa fa-chevron-left"></i>

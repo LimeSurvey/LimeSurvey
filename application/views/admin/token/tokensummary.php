@@ -6,7 +6,6 @@
  */
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Survey participants"))); ?>
     <h3><?php eT("Survey participant summary"); ?></h3>
 
     <div class="row">

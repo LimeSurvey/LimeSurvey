@@ -1534,9 +1534,12 @@ class database extends Survey_Common_Action
         }
 
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+        $redirectLink = $this->getController()->createUrl('admin/questions/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
+        if(Yii::app()->request->getPost('saveandnew', '') != ''){
+            $redirectLink = $this->getController()->createUrl('admin/questions/sa/newquestion/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID));
+        }
 
-        //admin/survey/sa/view/surveyid/
-        $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+        $this->getController()->redirect($redirectLink);
     }
 
 }

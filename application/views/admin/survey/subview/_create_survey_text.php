@@ -71,7 +71,7 @@ $surveyid = $aTabContents['surveyid'];
                 </label>
                 <div class="">
                     <div class="htmleditor input-group">
-                        <?php echo CHtml::textArea("description",$aSurveyLanguageSettings['surveyls_description'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"description")); ?>
+                        <?php echo CHtml::textArea("description",$aSurveyLanguageSettings['surveyls_description'],array('class'=>'form-control ckeditor','cols'=>'80','rows'=>'15','id'=>"description")); ?>
                         <?php echo getEditor("survey-desc","description", "[".gT("Description:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                 </div>
@@ -172,7 +172,7 @@ $surveyid = $aTabContents['surveyid'];
                 </label>
                 <div class="">
                     <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("welcome",$aSurveyLanguageSettings['surveyls_welcometext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"welcome")); ?>
+                    <?php echo CHtml::textArea("welcome",$aSurveyLanguageSettings['surveyls_welcometext'],array('class'=>'form-control ckeditor','cols'=>'80','rows'=>'15','id'=>"welcome")); ?>
                         <?php echo getEditor("survey-welc","welcome", "[".gT("Welcome:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                 </div>
@@ -186,7 +186,7 @@ $surveyid = $aTabContents['surveyid'];
                 </label>
                 <div class="">
                     <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("endtext",$aSurveyLanguageSettings['surveyls_endtext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"endtext")); ?>
+                    <?php echo CHtml::textArea("endtext",$aSurveyLanguageSettings['surveyls_endtext'],array('class'=>'form-control ckeditor','cols'=>'80','rows'=>'15','id'=>"endtext")); ?>
                         <?php echo getEditor("survey-endtext","endtext", "[".gT("End message:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                 </div>

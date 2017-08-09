@@ -22,8 +22,6 @@ if(isset($scripts))
 ?>
 
 <div class="row col-12">
-    <?php
-    // $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>$entryData['title'])); ?>
     <h3 class="pagetitle"><?php echo $entryData['title']; ?></h3>
 
     <!-- Edition container -->

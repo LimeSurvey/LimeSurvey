@@ -1022,6 +1022,7 @@ class questions extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyID);
 
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['subaction'] = gT('Add a new question');
         $aData['surveybar']['importquestion'] = true;
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['saveandclosebutton']['form'] = 'frmeditgroup';
@@ -1177,6 +1178,8 @@ class questions extends Survey_Common_Action
 
             $aData['adding'] = $adding = $action == 'addquestion';
             $aData['copying'] = $copying = $action == 'copyquestion';
+            $aData['subaction'] = $copying ? gT('Copy question') : gT('Add a new question');
+
             $questlangs = $oSurvey->additionalLanguages;
             $baselang = $oSurvey->language;
             $questlangs[] = $baselang;

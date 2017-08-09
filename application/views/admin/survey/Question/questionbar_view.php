@@ -269,6 +269,7 @@ $aReplacementData=array();
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
+
                 </a>
                 <?php/*
                 <a class="btn btn-default" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
