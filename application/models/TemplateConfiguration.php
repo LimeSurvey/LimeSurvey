@@ -336,12 +336,14 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
+
         $sField = 'files_'.$sType;
         $jFiles = $oTemplate->$sField;
+
+        // Full inheritance of the whole field
         if($jFiles === 'inherit'){
             $jFiles = $oTemplate->getParentConfiguration()->$sField;
         }
-
 
         $aFiles = array();
 
@@ -349,6 +351,13 @@ class TemplateConfiguration extends TemplateConfig
             $oFiles = json_decode($jFiles);
             foreach($oFiles as $action => $aFileList){
                 if ($action == "add" || $action == "replace"){
+
+                    // Specific inheritance of one of the value of the json array
+                    if ($aFileList[0] == 'inherit'){
+                        $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration()->$sField);
+                        $aFileList = $aParentjFiles[$action];
+                    }
+
                     $aFiles = array_merge($aFiles, $aFileList);
                 }
             }
@@ -416,18 +425,8 @@ class TemplateConfiguration extends TemplateConfig
 
 
         // Options are optional
-        $this->oOptions = array();
-        if (!empty($this->options) && $this->options !== 'inherit'){
-            $this->oOptions = json_decode($this->options);
-        }elseif($this->options === 'inherit'){
-            $parentOptions = $this->getParentConfiguration()->options;
-            $this->oOptions = json_decode($parentOptions);
-        }elseif(!empty($this->oMotherTemplate->oOptions)){
-            // NB: This case should never happen with core template edited via template editor
-            // Options are inherited from global settings to survey settings, not from mother template.
-            // But: a 3rd template provider could use that logic
-            $this->oOptions = $this->oMotherTemplate->oOptions;
-        }
+        $this->setOptions();
+
 
         // Not mandatory (use package dependances)
         if (!empty($this->cssframework_name)){
@@ -446,6 +445,36 @@ class TemplateConfiguration extends TemplateConfig
 
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
+    }
+
+    protected function setOptions()
+    {
+        $this->oOptions = array();
+        if (!empty($this->options) && $this->options !== 'inherit'){
+            $this->oOptions = json_decode($this->options);
+        }elseif($this->options === 'inherit'){
+            $parentOptions = $this->getParentConfiguration()->options;
+            $this->oOptions = json_decode($parentOptions);
+        }elseif(!empty($this->oMotherTemplate->oOptions)){
+            // NB: This case should never happen with core template edited via template editor
+            // Options are inherited from global settings to survey settings, not from mother template.
+            // But: a 3rd template provider could use that logic
+            $this->oOptions = $this->oMotherTemplate->oOptions;
+        }
+
+        $this->setOptionInheritance();
+    }
+
+    protected function setOptionInheritance()
+    {
+        $oOptions = $this->oOptions;
+
+        foreach($oOptions as $sKey => $sOption){
+            if ($sOption == 'inherit'){
+                $aParentOptions = (array) json_decode($this->getParentConfiguration()->options);
+                $oOptions->$sKey = $aParentOptions[$sKey];
+            }
+        }
     }
 
     protected function addMotherTemplatePackage($packages)
@@ -468,6 +497,7 @@ class TemplateConfiguration extends TemplateConfig
         $sFieldName  = 'cssframework_'.$sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
+        // Whole field inheritance
         if ($this->$sFieldName == "inherit"){
             $parentFieldValue = $this->getParentConfiguration()->$sFieldName;
             $aFieldValue = (array) json_decode($parentFieldValue);
@@ -476,10 +506,22 @@ class TemplateConfiguration extends TemplateConfig
         $aAssetsToRemove = array();
         if (!empty( $aFieldValue )){
             $aAssetsToRemove = (array) $aFieldValue['replace'] ;
+
+            // Inner field inheritance
+            foreach ($aAssetsToRemove as $key => $aFiles){
+                foreach($aFiles as $sReplacement){
+                    if ( $sReplacement == "inherit"){
+                        $aParentReplacement = $this->getParentConfiguration()->getFrameworkAssetsToReplace($sType);
+                        $aAssetsToRemove[$key][1] = $aParentReplacement[$key][1];
+                    }
+                }
+            }
+
             if($bInlcudeRemove && isset($aFieldValue['remove'])){
                 $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $aFieldValue['remove'] );
             }
         }
+
         return $aAssetsToRemove;
     }
 
@@ -494,6 +536,7 @@ class TemplateConfiguration extends TemplateConfig
         $sFieldName  = 'cssframework_'.$sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
+        // Full inheritance
         if ($this->$sFieldName == "inherit"){
             $parentFieldValue = $this->getParentConfiguration()->$sFieldName;
             $aFieldValue = (array) json_decode($parentFieldValue);
@@ -502,8 +545,18 @@ class TemplateConfiguration extends TemplateConfig
         $aReplacements = array();
         if (!empty( $aFieldValue )){
             $aAssetsToReplace = (array) $aFieldValue['replace'];
+
+            // Inheritance of a specific subfield
             foreach($aAssetsToReplace as $key => $aAsset ){
-                $aReplacements[] = $aAsset[1];
+                if ($aAsset[1] == 'inherit'){
+                    $aParentjFiles = (array) json_decode($this->getParentConfiguration()->$sFieldName);
+                    $aReplace = $aParentjFiles['replace'][$key][1];
+                }else{
+                    $aReplace = $aAsset[1];
+                }
+
+                $aReplacements[] = $aReplace;
+
             }
         }
 
