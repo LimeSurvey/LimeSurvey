@@ -29956,23 +29956,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "mouseup": _vm.mouseup
     }
   }, [_c('div', {
-    staticClass: "col-12 fill-height",
+    staticClass: "col-12 fill-height ls-space padding all-0",
     style: ({
       'height': _vm.$store.state.inSurveyViewHeight
     })
   }, [_c('div', {
-    staticClass: "mainMenu container-fluid col-sm-12 fill-height"
+    staticClass: "mainMenu container-fluid col-12 ls-space padding right-0 fill-height"
   }, [_c('div', {
-    staticClass: "ls-flex-row align-content-space-between align-items-flex-end ls-space margin bottom-15 top-5",
+    staticClass: "ls-space margin bottom-15 top-5 col-12",
     staticStyle: {
       "height": "40px"
     }
+  }, [_c('div', {
+    staticClass: "ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 right-10 bottom-0 top-0"
   }, [_c('transition', {
     attrs: {
       "name": "fade"
     }
   }, [(!_vm.$store.state.isCollapsed) ? _c('button', {
-    staticClass: "btn btn-default ls-space padding right-5",
+    staticClass: "btn btn-default ls-space padding left-15 right-15",
     on: {
       "click": _vm.toggleCollapse
     }
@@ -29983,7 +29985,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "name": "fade"
     }
   }, [(!_vm.$store.state.isCollapsed) ? _c('div', {
-    staticClass: "ls-flex-item col-12"
+    staticClass: "ls-flex-item grow-10 col-12"
   }, [_c('div', {
     staticClass: "btn-group btn-group col-12"
   }, [_c('button', {
@@ -30006,19 +30008,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     attrs: {
       "name": "fade"
     }
-  }, [(_vm.$store.state.isCollapsed) ? _c('div', {
-    staticClass: "btn-group ls-space padding right-5",
-    attrs: {
-      "role": "group"
-    }
   }, [(_vm.$store.state.isCollapsed) ? _c('button', {
-    staticClass: "btn btn-defaultls-space padding right-5",
+    staticClass: "btn btn-default ls-space padding left-15 right-15",
     on: {
       "click": _vm.toggleCollapse
     }
   }, [_c('i', {
     staticClass: "fa fa-chevron-right"
-  })]) : _vm._e()]) : _vm._e()])], 1), _vm._v(" "), _c('transition', {
+  })]) : _vm._e()])], 1)]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "slide-fade"
     }
