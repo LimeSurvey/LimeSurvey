@@ -32,7 +32,7 @@
                      $oOptions = json_decode($model->options);
                      $jsonError = json_last_error();
                      //if it is not valid, render message
-                     if($jsonError !== JSON_ERROR_NONE)
+                     if($jsonError !== JSON_ERROR_NONE && $model->options !== 'inherit')
                      {
                          //return
                         echo "<div class='ls-flex-column fill'><h4>".gT('There are no simple options in this template')."</h4></div>";
@@ -41,7 +41,7 @@
                      else
                      {
                         /**
-                         * The form element needs to hold teh class "action_update_options_string_form" to be correctly bound
+                         * The form element needs to hold the class "action_update_options_string_form" to be correctly bound
                          * To be able to change the value in the "real" form, the input needs to now what to change.
                          * So the name attribute should contain the object key we want to change
                          */
@@ -127,11 +127,13 @@
 
 </div>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 $(document).on('ready pjax:complete', function(e){
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
     if($('.action_update_options_string_form').length > 0){
-        var optionObject = JSON.parse($('#TemplateConfiguration_options').val());
+        var optionObject = {};
+        optionObject = JSON.parse($('#TemplateConfiguration_options').val());
+        
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
             var itemValue = optionObject[$(item).attr('name')];
             $(item).val(itemValue);
@@ -139,4 +141,4 @@ $(document).on('ready pjax:complete', function(e){
         })
     }
 });
-</script>
+</script> -->

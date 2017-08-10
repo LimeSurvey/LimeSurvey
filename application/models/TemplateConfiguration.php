@@ -325,7 +325,7 @@ class TemplateConfiguration extends TemplateConfig
     public function getOptionPage()
     {
         $this->setTemplateConfiguration();
-        return Yii::app()->twigRenderer->renderOptionPage($this);
+        return Yii::app()->twigRenderer->renderOptionPage($this, array('templateConfiguration' =>$this->attributes));
     }
 
     /**
@@ -342,7 +342,7 @@ class TemplateConfiguration extends TemplateConfig
 
         // Full inheritance of the whole field
         if($jFiles === 'inherit'){
-            $jFiles = $oTemplate->getParentConfiguration()->$sField;
+            $jFiles = $oTemplate->getFieldFromParentConfiguration($sField);
         }
 
         $aFiles = array();
@@ -354,7 +354,7 @@ class TemplateConfiguration extends TemplateConfig
 
                     // Specific inheritance of one of the value of the json array
                     if ($aFileList[0] == 'inherit'){
-                        $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration()->$sField);
+                        $aParentjFiles = (array) json_decode($oTemplate->getFieldFromParentConfiguration($sField));
                         $aFileList = $aParentjFiles[$action];
                     }
 
@@ -453,7 +453,7 @@ class TemplateConfiguration extends TemplateConfig
         if (!empty($this->options) && $this->options !== 'inherit'){
             $this->oOptions = json_decode($this->options);
         }elseif($this->options === 'inherit'){
-            $parentOptions = $this->getParentConfiguration()->options;
+            $parentOptions = $this->getFieldFromParentConfiguration('options');
             $this->oOptions = json_decode($parentOptions);
         }elseif(!empty($this->oMotherTemplate->oOptions)){
             // NB: This case should never happen with core template edited via template editor
@@ -471,7 +471,7 @@ class TemplateConfiguration extends TemplateConfig
 
         foreach($oOptions as $sKey => $sOption){
             if ($sOption == 'inherit'){
-                $aParentOptions = (array) json_decode($this->getParentConfiguration()->options);
+                $aParentOptions = (array) json_decode($this->getParentConfiguration('options'));
                 $oOptions->$sKey = $aParentOptions[$sKey];
             }
         }
@@ -499,7 +499,7 @@ class TemplateConfiguration extends TemplateConfig
 
         // Whole field inheritance
         if ($this->$sFieldName == "inherit"){
-            $parentFieldValue = $this->getParentConfiguration()->$sFieldName;
+            $parentFieldValue = $this->getFieldFromParentConfiguration($sFieldName);
             $aFieldValue = (array) json_decode($parentFieldValue);
         }
 
@@ -538,7 +538,7 @@ class TemplateConfiguration extends TemplateConfig
 
         // Full inheritance
         if ($this->$sFieldName == "inherit"){
-            $parentFieldValue = $this->getParentConfiguration()->$sFieldName;
+            $parentFieldValue = $this->getFieldFromParentConfiguration($sFieldName);
             $aFieldValue = (array) json_decode($parentFieldValue);
         }
 
@@ -565,9 +565,23 @@ class TemplateConfiguration extends TemplateConfig
 
 
     public function getParentConfiguration(){
+        //check for surveygroup id
         if($this->sid != null && $this->gsid != null)
             return Template::getTemplateConfiguration(null,null,$this->gsid);
-
+        //check for general global template
         return Template::getTemplateConfiguration($this->templates_name);
+    }
+
+    public function getFieldFromParentConfiguration($sField){
+        $parentConfiguration = $this->getParentConfiguration();
+        $returnValue = $this->{$sField};
+        if($returnValue == 'inherit'){
+            $returnValue = $parentConfiguration->{$sField};
+            if($returnValue == 'inherit'){
+                $rootParentConfiguration = $parentConfiguration->getParentConfiguration();
+                $returnValue = $rootParentConfiguration->{$sField};
+            }
+        }
+        return $returnValue;
     }
 }

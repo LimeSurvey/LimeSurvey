@@ -69,11 +69,12 @@ class templateoptions  extends Survey_Common_Action
 
     private function _updateCommon($model,$sid=null){
 
-        $templateOptionPage = $model->optionPage;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
+        $templateOptionPage = $model->optionPage;
+        
         yii::app()->clientScript->registerPackage('bootstrap-switch');
         $aData = array(
             'model'=>$model, 
@@ -101,7 +102,8 @@ class templateoptions  extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/templateoptions"));
         }
         $model = $this->loadModel($id);
-
+        $model->setTemplateConfiguration();
+        
         if(isset($_POST['TemplateConfiguration'])){
             $model->attributes=$_POST['TemplateConfiguration'];
             if($model->save())
@@ -125,7 +127,8 @@ class templateoptions  extends Survey_Common_Action
         }
 
         $model = Template::getTemplateConfiguration(null, $sid);
-        
+        $model->setTemplateConfiguration();
+
         if(isset($_POST['TemplateConfiguration'])){
             $model->attributes=$_POST['TemplateConfiguration'];
             if($model->save())

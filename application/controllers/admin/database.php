@@ -1024,6 +1024,15 @@ class database extends Survey_Common_Action
                 $oSurvey->owner_id = $this->_filterEmptyFields($oSurvey,'owner_id');
             }
 
+            //for the new template system we have to check that the changed template is also applied
+            $current_template = $oSurvey->template;
+            $new_template =  $this->_filterEmptyFields($oSurvey,'template');
+            if(  $current_template != '' && $current_template !== $new_template ){
+                $currentConfiguration = Template::getTemplateConfiguration($current_template);
+                TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
+            }
+            $oSurvey->template = $new_template;
+            
             //$oSurvey, $fieldArray, $newValue
             $oSurvey->admin =  $this->_filterEmptyFields($oSurvey,'admin');
             $oSurvey->expires =  $expires;
@@ -1031,7 +1040,9 @@ class database extends Survey_Common_Action
             $oSurvey->faxto = $this->_filterEmptyFields($oSurvey,'faxto');
             $oSurvey->gsid = $this->_filterEmptyFields($oSurvey,'gsid');
             $oSurvey->format = $this->_filterEmptyFields($oSurvey,'format');
-            $oSurvey->template = $this->_filterEmptyFields($oSurvey,'template');
+            
+
+
             $oSurvey->assessments = $this->_filterEmptyFields($oSurvey,'assessments');
             $oSurvey->additional_languages =  $this->_filterEmptyFields($oSurvey,'additional_languages', implode(' ',Yii::app()->request->getPost('additional_languages',array())));
 

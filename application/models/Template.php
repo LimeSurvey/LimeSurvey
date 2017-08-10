@@ -207,23 +207,28 @@ class Template extends LSActiveRecord
             }
 
             if($iSurveyGroupId!=null) {
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
-                    'gsid=:gsid',
-                    array(':gsid' => $iSurveyGroupId )
-                    );
+                $criteria = new CDbCriteria();
+                $sTemplateName = $sTemplateName!=null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
+                $criteria->addCondition('gsid=:gsid');
+                $criteria->addCondition('templates_name=:templates_name');
+                $criteria->params = array('gsid' => $iSurveyGroupId, 'templates_name' => $sTemplateName);
+                
+                $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
                 // No specific template configuration for this survey
                 if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
-                    $sTemplateName = SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
                     $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
                 }
             }
 
             if($iSurveyId!=null) {
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
-                    'sid=:sid',
-                    array(':sid' => $iSurveyId )
-                    );
+                $sTemplateName = $sTemplateName!=null ? $sTemplateName : Survey::model()->findByPk($iSurveyId)->template;
+                $criteria = new CDbCriteria();
+                $criteria->addCondition('sid=:sid');
+                $criteria->addCondition('templates_name=:templates_name');
+                $criteria->params = array('sid' => $iSurveyId, 'templates_name' => $sTemplateName);
+
+                $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
                 // No specific template configuration for this survey
                 if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
@@ -243,7 +248,6 @@ class Template extends LSActiveRecord
                 $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
                 $oTemplateConfigurationModel->setToInherit();
                 $oTemplateConfigurationModel->save();
-                //$oTemplateConfigurationModel->setThisTemplate();
                 return $oTemplateConfigurationModel;
             }
 
@@ -255,7 +259,6 @@ class Template extends LSActiveRecord
                 $oTemplateConfigurationModel->sid = $iSurveyId;
                 $oTemplateConfigurationModel->setToInherit();
                 $oTemplateConfigurationModel->save();
-                //$oTemplateConfigurationModel->setThisTemplate();
                 return $oTemplateConfigurationModel;
             }
         }
