@@ -35,19 +35,38 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.67.2 (build 170726) to 2.67.3 (build 170728) July 28, 2017
-#Updated translation: Dutch (Informal) by Han
-#Updated translation: Dutch by Han
+Changes from 3.0.0-beta.1 (build 170720) to 3.0.0-beta.2 (build 170810) Aug 10, 2017
+-Fixed issue #12450: DataEntry not opening with array filter (TYPO) (Tõnis Ormisson)
+-Fixed issue #12492  Use of "text fields" as filter in "Participants" and "Answers" (markusfluer)
+-Fixed issue #12513: "All-in-one" not working (LouisGac)
+-Fixed issue #12530: Quota massive actions modal errors (Tõnis Ormisson)
+-Fixed issue: Fixed mysql fresh installation error in Surveymenu (markusfluer)
+-Fixed issue: Added fallback if tidy is not available (markusfluer)
+-Fixed issue: Another soon to be fixed tidy error (markusfluer)
+-Fixed issue: Empty array instead of null for tidy_repair_string (markusfluer)
+-Fixed issue: Fixed the installation bug on reinstall (markusfluer)
+-Fixed issue: Maximum file size not visible during VV import (Carsten Schmitz)
+-Fixed issue: Pagination of participants list not working (LouisGac)
+-Fixed issue: QuickMenu break usage of newDirectRequest for other plugin (Denis Chenu)
+-Fixed issue: Security issue - Users need to put in their old password to change the current (markusfluer)
+-Fixed issue: Subquestions not saved in quick translation (LouisGac)
+-Fixed issue: Tidy was not configured for utf-8 (markusfluer)
+-Fixed issue: Unable to save Google Analytics key by survey (Denis Chenu)
+-Fixed issue: Wrong colours in statistics graphs when labels are duplicated (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by zfocuz, Han
+#Updated translation: Dutch (Informal) by zfocuz, Han
 #Updated translation: French (France) by arnaud21
-#Updated translation: German (Informal) by actxcellence, c_schmitz
 #Updated translation: German by Thomas218, actxcellence, c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz
 #Updated translation: Hungarian by kkd
-#Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Italian by lfanfoni
-#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmal) by pmonstad
 #Updated translation: Norwegian (Nynorsk) by pmonstad
-#Updated translation: Polish (Informal) by elissa
 #Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
 #Updated translation: Portuguese (Portugal) by samarta
 #Updated translation: Russian by c0der, vipgroup
 #Updated translation: Slovenian by lado, dusan
@@ -55,35 +74,8 @@ Changes from 2.67.2 (build 170726) to 2.67.3 (build 170728) July 28, 2017
 #Updated translation: Swedish by maxzomborszki
 #Updated translation: Thai by adzpire, tomzt
 #Updated translation: Turkish by kayazeren
--Fixed issue #12492  Use of "text fields" as filter in "Participants" and "Answers" (markusfluer)
--Fixed issue: Added fallback if tidy is not available (markusfluer)
--Fixed issue: Another soon to be fixed tidy error (markusfluer)
--Fixed issue: Maximum file size not visible during VV import (Carsten Schmitz)
--Fixed issue: Security issue - Users need to put in their old password to change the current (markusfluer)
--Fixed issue: Tidy was not configured for utf-8 (markusfluer)
--Fixed issue: Wrong colours in statistics graphs when labels are duplicated (Olle Haerstedt)
--Fixed issue: Empty array instead of null for tidy_repair_string (markusfluer)
--Fixed issue: Pagination of participants list not working (LouisGac)
--Fixed issue: Subquestions not saved in quick translation (LouisGac)
 
-Changes from 2.67.1 (build 170626) to 2.67.2 (build 170726) July 26, 2017
--Fixed issue #12491: Permission to delete participants not obeyed in export dialog (Carsten Schmitz)
--Fixed issue: Default template with questions of white font color (markusfluer)
--Fixed issue: Importing a Tab-separated survey CSV file with multiline text in the question field does not properly work (Carsten Schmitz)
--Fixed issue: QuickMenu break usage of newDirectRequest for other plugin (Denis Chenu)
--Fixed issue: unable to save Google Analytics key by survey (Denis Chenu)
-
-Changes from 2.67.0 (build 170622) to 2.67.1 (build 170626) June 26, 2017
--Fixed issue #12414: exporting printable - template assets not visible in some extractors (eg windows default) (#701) (Tõnis Ormisson)
--Fixed issue: Error in database update syntax (Olle Harstedt)
-#Updated translation: Catalan by qualitatuvic
-#Updated translation: French (France) by arnaud21
-#Updated translation: Hungarian by kkd
-#Updated translation: Polish by elissa
-#Updated translation: Polish (Informal) by elissa
-#Updated translation: Turkish by kayazeren
-Changes from 2.67.0 (build 170622) to 3.0.0beta1 (build 170720) July 19, 2017
-
+Changes from 2.67.0 (build 170622) to 3.0.0-beta.1 (build 170720) Jul 19, 2017
 -New feature: Enhancements of 2.60 HTML so it's more complient with WAI (Web Accessibility Initiative). (Denis Chenu)
 -New feature: Twig is the new LimeSurvey template engine. It replaces the system of replacement keywords. Now, all the HTML is editable from templates. (Louis-Sébastien Gac-Artigas)
 -New feature: added sandbox for twig (security), and LS Twig Extension for common operations from template (adding CSS/JS, images, etc)
@@ -120,10 +112,10 @@ Changes from 2.67.0 (build 170622) to 3.0.0beta1 (build 170720) July 19, 2017
 -Dev: adminpanel webpack and gulp configuration added (Markus Flür)
 
 
-Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) June 22, 2017
+Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) Jun 22, 2017
 -New feature: Opting out of a survey requires a one-click confirmation (Carsten Schmitz)
 
-Changes from 2.65.0 (build 170502) to 2.66.0 (build 170619) June 19, 2017
+Changes from 2.65.0 (build 170502) to 2.66.0 (build 170619) Jun 19, 2017
 -New feature #12468: EM placeholder {SID} in email templates (Denis Chenu)
 -New feature: Add some collapse feature to remotecontrol function list (Denis Chenu)
 -New feature: RemoteControl : allow to get all attributes in get function (Denis Chenu)
