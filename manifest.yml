@@ -1,0 +1,6 @@
+---
+applications:
+- name: limesurvey
+  memory: 1G
+  buildpack: php_buildpack
+  
