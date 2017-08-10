@@ -35,27 +35,29 @@ $surveyid = $aTabContents['surveyid'];
 <!-- Edition container -->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-md-6">
             <!-- Survey title -->
             <div class="form-group">
-                <label class="col-sm-2 question-group-title control-label" for="surveyls_title">
+                <label class=" question-group-title control-label" for="surveyls_title">
                     <?php eT("Survey title:"); ?>
                 </label>
-                <div class="col-sm-9">
+                <div class="">
                     <?php echo CHtml::textField("surveyls_title",$aSurveyLanguageSettings['surveyls_title'],array('class'=>'form-control','size'=>"80",'id'=>"surveyls_title")); ?>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-md-6">
              <div class="form-group">
-                <label for="createsample"><?php eT("Create example question and question group?") ?></label>
+                <label for="createsample" class=" control-label"><?php eT("Create example question and question group?") ?></label>
                 <!--<input type="checkbox" name="createsample" id="createsample" />-->
-                <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
-                        'name' => 'createsample',
-                        'value' => 1,
-                        'onLabel'=>gT('On'),
-                        'offLabel'=>gT('Off')
-                    )); ?>
+                <div class="">
+                    <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                            'name' => 'createsample',
+                            'value' => 1,
+                            'onLabel'=>gT('On'),
+                            'offLabel'=>gT('Off')
+                        )); ?>
+                </div>
             </div>
         </div>
         <hr class="col-sm-12"></hr>
@@ -64,10 +66,10 @@ $surveyid = $aTabContents['surveyid'];
         <div class="col-sm-12 col-md-6">
             <!-- Description -->
             <div class="form-group">
-                <label class="col-sm-2 control-label" for="description">
+                <label class=" control-label" for="description">
                     <?php eT("Description:"); ?>
                 </label>
-                <div class="col-sm-9">
+                <div class="">
                     <div class="htmleditor input-group">
                         <?php echo CHtml::textArea("description",$aSurveyLanguageSettings['surveyls_description'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"description")); ?>
                         <?php echo getEditor("survey-desc","description", "[".gT("Description:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
@@ -76,33 +78,53 @@ $surveyid = $aTabContents['surveyid'];
             </div>
         </div>
         <div class="col-sm-12 col-md-6">
+            <!-- Survey Group -->
+            <div class="form-group">
+                <label class="control-label ">
+                    <?php eT("Survey Group:"); ?>
+                </label>
+                <div class="">
+                    <?php
+                    $aSurveyGroups = SurveysGroups::getSurveyGroupsList();
+                    $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                        'asDropDownList' => true,
+                        'htmlOptions'=>array('style'=>"width: 80%"),
+                        'data' => $aSurveyGroups,
+                        'value' => key($aSurveyGroups),
+                        'name' => 'gsid',
+                        'pluginOptions' => array()
+                    ));?>
+                </div>
+            </div>
+
+
             <!-- End URL -->
             <div class="form-group">
-                <label class="control-label col-sm-2">
+                <label class="control-label ">
                     <?php eT("End URL:"); ?>
                 </label>
-                <div class="col-sm-9">
+                <div class="">
                     <?php echo CHtml::textField("url",$aSurveyLanguageSettings['surveyls_url'],array('class'=>'form-control','size'=>"80",'placeholder'=>'http://','id'=>"url")); ?>
                 </div>
             </div>
 
             <!-- URL description -->
             <div class="form-group">
-                <label class="control-label col-sm-2">
+                <label class="control-label ">
                     <?php eT("URL description:"); ?>
                 </label>
-                <div class="col-sm-9">
+                <div class="">
                     <?php echo CHtml::textField("urldescrip",$aSurveyLanguageSettings['surveyls_urldescription'],array('class'=>'form-control','size'=>"80",'id'=>"urldescrip")); ?>
                 </div>
             </div>
 
             <!-- Date format -->
             <div class="form-group">
-                <label class="control-label col-sm-2">
+                <label class="control-label ">
                     <?php eT("Date format:"); ?>
                 </label>
 
-                <div class="col-sm-3">
+                <div class="">
                     <select size='1' id='dateformat' name='dateformat' class="form-control">
                     <?php foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata): ?>
                         <option value='<?php echo $index; ?>' <?php if ($aSurveyLanguageSettings[ 'surveyls_dateformat']==$index): ?>
@@ -118,10 +140,10 @@ $surveyid = $aTabContents['surveyid'];
 
             <!-- Decimal mark -->
             <div class="form-group">
-                <label class="control-label col-sm-2">
+                <label class="control-label ">
                     <?php eT("Decimal mark:"); ?>
                 </label>
-                <div class="col-sm-3">
+                <div class="">
                     <?php
                     $aRadixPoint=array();
                     foreach (getRadixPointData() as $index=>$radixptdata)
@@ -145,10 +167,10 @@ $surveyid = $aTabContents['surveyid'];
         <div class="col-sm-12 col-md-6">
             <!-- Welcome message -->
             <div class="form-group">
-                <label class="col-sm-2 control-label" for='welcome'>
+                <label class=" control-label" for='welcome'>
                     <?php eT("Welcome message:"); ?>
                 </label>
-                <div class="col-sm-9">
+                <div class="">
                     <div class="htmleditor input-group">
                     <?php echo CHtml::textArea("welcome",$aSurveyLanguageSettings['surveyls_welcometext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"welcome")); ?>
                         <?php echo getEditor("survey-welc","welcome", "[".gT("Welcome:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
@@ -159,10 +181,10 @@ $surveyid = $aTabContents['surveyid'];
         <div class="col-sm-12 col-md-6">
             <!-- End message -->
             <div class="form-group">
-                <label class="col-sm-2 control-label" for='endtext'>
+                <label class=" control-label" for='endtext'>
                     <?php eT("End message:"); ?>
                 </label>
-                <div class="col-sm-9">
+                <div class="">
                     <div class="htmleditor input-group">
                     <?php echo CHtml::textArea("endtext",$aSurveyLanguageSettings['surveyls_endtext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"endtext")); ?>
                         <?php echo getEditor("survey-endtext","endtext", "[".gT("End message:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>

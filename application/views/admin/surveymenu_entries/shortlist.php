@@ -3,7 +3,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 ?>
 <div class="container-fluid ls-space padding left-35 right-35">
 	<div class="ls-flex-column">
-		<div class="col-12 h1"><?php eT('Surveymenu entries')?></div>
+		<div class="col-12 h1"><?php eT('Menu entries')?></div>
 		<div class="ls-flex-row">
 			<div class="col-12 ls-flex-item">
 			<?php $this->widget('bootstrap.widgets.TbGridView', array(

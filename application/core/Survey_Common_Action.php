@@ -248,7 +248,6 @@ class Survey_Common_Action extends CAction
         if (!empty($sAction))
             $sViewPath .= $sAction . '/';
 
-
         ob_start(); //// That was used before the MVC pattern, in procedural code. Will not be used anymore.
 
         $this->_showHeaders($aData); //// THe headers will be called from the layout
@@ -270,11 +269,12 @@ class Survey_Common_Action extends CAction
             $aData['debug'] = $aData;
             $this->_titlebar($aData);
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div id="vue-app-main-container" class="ls-flex-row align-items-flex-center align-content-center">';
+            echo '<div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
+            echo '<div id="vue-app-main-container" class="ls-flex-row align-items-flex-center align-content-center" :style="{\'height\': $store.state.generalContainerHeight+\'px\'}">';
             //// Each view will call the correct bar as a subview.
             $this->_surveysidemenu($aData);
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-12 ls-flex-item" id="pjax-content">';
+            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item transition-animate-width" v-bind:style="\'max-width:\'+$store.getters.substractContainer" id="pjax-content">';
             $this->_surveybar($aData);
             $this->_nquestiongroupbar($aData);
             $this->_questionbar($aData);
@@ -361,11 +361,12 @@ class Survey_Common_Action extends CAction
 
         //// TODO : Move this divs inside each correct view ASAP !
         echo '</div>' ;
-        echo '</div>' ;
-        echo '</div>' ;
 
         if (!empty($aData['surveyid']))
         {
+            echo '</div>' ;
+            echo '</div>' ;
+            echo '</div>' ;
             echo '</div>' ;
         }
 

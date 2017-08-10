@@ -19,7 +19,7 @@
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#interfaces'><?php eT("Interfaces"); ?></a></li>
 </ul>
 
-<?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'form-horizontal','id'=>'frmglobalsettings','name'=>'frmglobalsettings'));?>
+<?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'','id'=>'frmglobalsettings','name'=>'frmglobalsettings'));?>
 <div class="tab-content">
     <div id="overview" class="tab-pane  in active col-md-6 col-md-offset-1">
             <?php $this->renderPartial("./global_settings/_overview", array(
@@ -41,23 +41,23 @@
             ); ?>
     </div>
 
-    <div id="email" class="tab-pane col-md-6 col-md-offset-1">
+    <div id="email" class="tab-pane col-md-10 col-md-offset-1">
         <?php $this->renderPartial("./global_settings/_email"); ?>
     </div>
 
-    <div id="bounce" class="tab-pane col-md-6 col-md-offset-1">
+    <div id="bounce" class="tab-pane col-md-10 col-md-offset-1">
         <?php $this->renderPartial("./global_settings/_bounce"); ?>
     </div>
 
-    <div id="security" class="tab-pane col-md-6 col-md-offset-1">
+    <div id="security" class="tab-pane col-md-10 col-md-offset-1">
         <?php $this->renderPartial("./global_settings/_security"); ?>
     </div>
 
-    <div id="presentation" class="tab-pane col-md-6 col-md-offset-1">
+    <div id="presentation" class="tab-pane col-md-10 col-md-offset-1">
         <?php $this->renderPartial("./global_settings/_presentation"); ?>
     </div>
 
-    <div id="language" class="tab-pane col-md-6 col-md-offset-1">
+    <div id="language" class="tab-pane col-md-10 col-md-offset-1">
         <?php $this->renderPartial("./global_settings/_language", array(
             'restrictToLanguages'=>$restrictToLanguages,
             'allLanguages'=>$allLanguages,

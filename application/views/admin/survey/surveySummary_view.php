@@ -22,7 +22,6 @@ $surveyid = $oSurvey->sid;
 
 
 ?>
-    <?php //$this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
     <div id="survey-action-title" class="h3 pagetitle">
     <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">
@@ -32,11 +31,9 @@ $surveyid = $oSurvey->sid;
     </div>
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-sm-12 content-right">
-
                 <!-- Alerts, infos... -->
                 <div class="row">
                     <div class="col-sm-12">
-
                         <!-- While survey is activated, you can't add or remove group or question -->
                         <?php if ($oSurvey->isActive): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
@@ -60,12 +57,13 @@ $surveyid = $oSurvey->sid;
                             </div>
                         <?php endif;?>
 
-                        <?php if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
+                        <?php /* Commented out for the moment because it is not properly working
+                        if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
                                 <strong><?php eT('This template is out of date.');?></strong> <?php eT('We can not guarantee optimum operation. It would be preferable to use a new template.');?>
                             </div>
-                        <?php endif;?>
+                        <?php endif; */ ?>
                     </div>
                 </div>
 
@@ -80,7 +78,6 @@ $surveyid = $oSurvey->sid;
                         <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                             <div class="row">
                                 <div class="col-sm-12">
-
                                     <label for="switch"><?php eT('Format:');?></label>
                                     <div id='switchchangeformat' class="btn-group" role="group">
                                       <button id='switch' type="button" data-value='S' class="btn btn-default <?php if($oSurvey->format=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>

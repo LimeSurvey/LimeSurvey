@@ -7,7 +7,7 @@
         <div class="modal-title h4" id="participant_edit_modal"><?php echo ngT('Add participant to survey|Add participants to survey', $count); ?></div>
     </div>
 
-    <div class="modal-body form-horizontal">
+    <div class="modal-body ">
 
         <div class='col-sm-4'></div>
         <div class='col-sm-8'>

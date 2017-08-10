@@ -375,7 +375,7 @@ class TemplateManifest extends TemplateConfiguration
         $this->setPath();                                                       // Check and set path
         $this->readManifest();                                                  // Check and read the manifest to set local params
         $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        $this->setThisTemplate();                                               // Set the main config values of this template
+        @$this->setThisTemplate();                                               // Set the main config values of this template
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
     }
@@ -429,8 +429,11 @@ class TemplateManifest extends TemplateConfiguration
     protected function getFilesToLoad($oTemplate, $sType)
     {
         $aFiles = array();
-        //if(!empty($jFiles)){
         if(isset($oTemplate->config->files->$sType->filename)){
+            // TODO: check/get attributes "add" or "replace"
+            // For now: it's working. If a file is set to "remove", it will be removed from mother template,
+            // but then the daughter template will try to register it (and it will not be register, because the file doesn't exist in local template)
+            // But... would be cleaner, and closer to TemplateConfiguration logic
             $aFiles = (array) $oTemplate->config->files->$sType->filename;
         }
         return $aFiles;
@@ -489,7 +492,7 @@ class TemplateManifest extends TemplateConfiguration
     protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion               = (isset($this->config->metadatas->apiVersion))            ? $this->config->metadatas->apiVersion                                                       : $this->oMotherTemplate->apiVersion;
+        $this->apiVersion               = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion  :  (isset($this->oMotherTemplate->apiVersion) ? $this->oMotherTemplate->apiVersion : null);
         $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR    : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
         $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
         $this->sFilesDirectory          = (!empty($this->config->xpath("//filesdirectory")))  ? $this->config->engine->filesdirectory   :  $this->oMotherTemplate->sFilesDirectory;
@@ -497,7 +500,8 @@ class TemplateManifest extends TemplateConfiguration
 
         // Options are optional
         if (!empty($this->config->xpath("//options"))){
-            $this->oOptions = $this->config->xpath("//options");
+            $aOptions = $this->config->xpath("//options");
+            $this->oOptions = $aOptions[0];
         }elseif(!empty($this->oMotherTemplate->oOptions)){
             $this->oOptions = $this->oMotherTemplate->oOptions;
         }else{
@@ -540,4 +544,25 @@ class TemplateManifest extends TemplateConfiguration
         return $aAssetsToRemove;
     }
 
+    /**
+     * Get the list of file replacement from Engine Framework
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return array
+     */
+    protected function getFrameworkAssetsReplacement( $sType )
+    {
+        $aAssetsToRemove = array();
+        if (!empty($this->cssFramework->$sType)){
+            $nodes = (array) $this->config->xpath('//cssframework/'.$sType.'[@replace]');
+            if (!empty($nodes)){
+                foreach ($nodes as $key => $node){
+                    $nodes[$key] =  (string) $node[0];
+                }
+
+                $aAssetsToRemove =  $nodes ;
+            }
+        }
+        return $aAssetsToRemove;
+    }
 }

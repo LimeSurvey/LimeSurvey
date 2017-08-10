@@ -164,23 +164,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
-        /**
-         * User settings table
-         * @since 2016-08-29
-         */
-        if ($iOldDBVersion < 292) {
-            $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->createTable('{{settings_user}}', array(
-                'uid' => 'integer NOT NULL',
-                'entity' => 'string(15)',
-                'entity_id' => 'string(31)',
-                'stg_name' => 'string(63) not null',
-                'stg_value' => 'text',
-                'PRIMARY KEY (uid, entity, entity_id, stg_name)'
-            ));
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>292),"stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
 
         /**
          * Survey menue table
@@ -229,26 +212,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         }
 
         /**
-         * Template tables
-         * @since 2017-07-12
-         */
-        if ($iOldDBVersion < 295) {
-            $oTransaction = $oDB->beginTransaction();
-            upgradeTemplateTables295($oDB);
-            $oTransaction->commit();
-        }
-
-        /**
          * Survey menue table update
          * @since 2017-07-12
          */
         if ($iOldDBVersion < 296) {
             $oTransaction = $oDB->beginTransaction();
-            
-            $oDB->createCommand()->addColumn('{{surveymenu}}', 'user_id', "int DEFAULT NULL");
-            $oDB->createCommand()->addForeignKey('user_id', '{{surveymenu}}', 'user_id', '{{users}}', 'uid' );
-            $oDB->createCommand()->addColumn('{{surveymenu_entries}}', 'user_id', "int DEFAULT NULL");
-            $oDB->createCommand()->addForeignKey('user_id', '{{surveymenu_entries}}', 'user_id', '{{users}}', 'uid' );
+
+            addColumn('{{surveymenu}}', 'user_id', "int DEFAULT NULL");
+            addColumn('{{surveymenu_entries}}', 'user_id', "int DEFAULT NULL");
 
             $oDB->createCommand()->insert('{{surveymenu}}', array('id' => 2,'parent_id' => NULL,'survey_id' => NULL,'order' => 1,'level' => 0,'title' => 'quickmenu','description' => 'Quickmenu', 'position'=>'collapsed', 'changed_at' => date('Y-m-d H:i:s'),'changed_by' => 0,'created_at' => date('Y-m-d H:i:s'),'created_by' => 0));
 
@@ -276,9 +247,125 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                     $oDB->createCommand()->insert('{{surveymenu_entries}}', $combined);
             }
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>296),"stg_name='DBVersion'");
+
+
             $oTransaction->commit();
         }
+
+        /**
+         * Template tables
+         * @since 2017-07-12
+         */
+        if ($iOldDBVersion < 298) {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTemplateTables298($oDB);
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>298),"stg_name='DBVersion'");
+        }
+
+        /**
+         * Template tables
+         * @since 2017-07-12
+         */
+        if ($iOldDBVersion < 304) {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTemplateTables304($oDB);
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>304),"stg_name='DBVersion'");
+        }
+
+        /**
+         * Update to sidemenu rendering
+         */
+        if ($iOldDBVersion < 305) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->update('{{surveymenu_entries}}',
+                array('data'=> "{\"render\": {\"link\": {\"external\": true, \"data\": {\"sid\": [\"survey\",\"sid\"], \"newtest\": \"Y\", \"lang\": [\"survey\",\"language\"]}}}}"),
+                    "id=17"
+            );
+            $oDB->createCommand()->update('{{surveymenu_entries}}',
+                array('data'=> "{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}} } }"),
+                    "id IN (1,4,7,9,10,12,18,19,21,22,23,24,25)"
+            );
+            $oDB->createCommand()->update('{{surveymenu_entries}}',
+                array('data'=> "{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}"),
+                    "id IN (15,30)"
+            );
+            $oDB->createCommand()->update('{{surveymenu_entries}}',
+                array('data'=> "{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}"),
+                    "id=16"
+            );
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>305),"stg_name='DBVersion'");
+        }
+
+        /**
+         * Template tables
+         * @since 2017-07-12
+         */
+        if ($iOldDBVersion < 306) {
+            $oTransaction = $oDB->beginTransaction();
+            createSurveyGroupTables306($oDB);
+            $oTransaction->commit();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>306),"stg_name='DBVersion'");
+        }      
+
+        /**
+         * User settings table
+         * @since 2016-08-29
+         */
+        if ($iOldDBVersion < 307) {
+            $oTransaction = $oDB->beginTransaction();
+            if (tableExists('{settings_user}')) {
+                $oDB->createCommand()->dropTable('{{settings_user}}');
+            }
+            $oDB->createCommand()->createTable('{{settings_user}}', array(
+                'id' => 'int NOT NULL AUTO_INCREMENT',
+                'uid' => 'integer NOT NULL',
+                'entity' => 'string(15)',
+                'entity_id' => 'string(31)',
+                'stg_name' => 'string(63) not null',
+                'stg_value' => 'text',
+                'PRIMARY KEY (id)'
+            ));
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>307),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /*
+         * Change dbfieldnames to be more functional
+         */
+        if ($iOldDBVersion < 308) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->renameColumn('{{surveymenu_entries}}','order','ordering');
+            $oDB->createCommand()->renameColumn('{{surveymenu}}','order','ordering');
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>308),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        /*
+         * Add survey template editing to menu
+         */
+        if ($iOldDBVersion < 309) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->insert('{{surveymenu_entries}}',array_combine(
+                array(
+                    "menu_id","ordering","name","title","menu_title","menu_description","menu_icon","menu_icon_type",
+                    "menu_link","permission","permission_grade",
+                    "data",
+                    "language","changed_at","changed_by","created_at","created_by"),
+                array(
+                    1,3,"template_options","Template options","Template options","Edit Template options for this survey","paint-brush","fontawesome",
+                    "admin/templateoptions/sa/updatesurvey","surveysettings","read",
+                    '{"render": {"link": { "pjaxed": false, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}',
+                    "en-GB",date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0
+                    )
+                )
+            );
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>309),"stg_name='DBVersion'");
+            $oTransaction->commit();
+            SurveymenuEntries::reorderMenu(1);
+        }
+
 
     }
     catch(Exception $e)
@@ -312,7 +399,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     Notification::broadcast(array(
         'title' => gT('Database update'),
-        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '295')
+        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '304')
     ), $superadmins);
 
     fixLanguageConsistencyAllSurveys();
@@ -322,6 +409,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 }
 
 function createSurveyMenuTable293($oDB) {
+        // Drop the old survey rights table.
+    if (tableExists('{surveymenu}')) {
+        $oDB->createCommand()->dropTable('{{surveymenu}}');
+    }
+
+    if (tableExists('{surveymenu_entries}')) {
+        $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
+    }
+
+
     $oDB->createCommand()->createTable('{{surveymenu}}', array(
         "id" => "int NOT NULL AUTO_INCREMENT",
         "parent_id" => "int DEFAULT NULL",
@@ -330,7 +427,7 @@ function createSurveyMenuTable293($oDB) {
         "level" => "int DEFAULT '0'",
         "title" => "character varying(255)  NOT NULL DEFAULT ''",
         "description" => "text ",
-        "changed_at" => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
+        "changed_at" => "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
         "changed_by" => "int NOT NULL DEFAULT '0'",
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "int NOT NULL DEFAULT '0'",
@@ -375,7 +472,7 @@ function createSurveyMenuTable293($oDB) {
         "data" => "text ",
         "getdatamethod" => "character varying(255)  NOT NULL DEFAULT ''",
         "language" => "character varying(255)  NOT NULL DEFAULT 'en-GB'",
-        "changed_at" => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
+        "changed_at" => "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
         "changed_by" => "int NOT NULL DEFAULT '0'",
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "int NOT NULL DEFAULT '0'",
@@ -408,7 +505,53 @@ function createSurveyMenuTable293($oDB) {
  * @param $oDB
  * @return void
  */
-function upgradeTemplateTables295($oDB)
+function createSurveyGroupTables306($oDB)
+{
+    // Drop the old survey rights table.
+    if (tableExists('{surveys_groups}')) {
+        $oDB->createCommand()->dropTable('{{surveys_groups}}');
+    }
+
+
+    // Create templates table
+    $oDB->createCommand()->createTable('{{surveys_groups}}', array(
+        'gsid'        => 'pk',
+        'name'        => 'string(45) NOT NULL',
+        'title'       => 'string(100) DEFAULT NULL',
+        'description' => 'text DEFAULT NULL',
+        'order'       => 'int(11) NOT NULL',
+        'owner_uid'   => 'int(11) DEFAULT NULL',
+        'parent_id'   => 'int(11) DEFAULT NULL',
+        'created'     => 'DATETIME',
+        'modified'    => 'DATETIME',
+        'created_by'  => 'int(11) NOT NULL'
+    ));
+
+    // Add default template
+    $date = date("Y-m-d H:i:s");
+    $oDB->createCommand()->insert('{{surveys_groups}}', array(
+        'name'        => 'default',
+        'title'       => 'Default Survey Group',
+        'description' => 'LimeSurvey core default survey group',
+        'order'       => '0',
+        'owner_uid'   => '1',
+        'created'     => $date,
+        'modified'    => $date,
+        'created_by'  => '1'
+    ));
+
+    $table = Yii::app()->db->schema->getTable('{{surveys}}');
+    if(!isset($table->columns['gsid'])) {
+        $oDB->createCommand()->addColumn('{{surveys}}','gsid',"int(11) DEFAULT 1");
+    }
+
+}
+
+/**
+ * @param $oDB
+ * @return void
+ */
+function upgradeTemplateTables304($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{templates}')) {
@@ -456,11 +599,53 @@ function upgradeTemplateTables295($oDB)
         'api_version'            => '3.0',
         'view_folder'            => 'views',
         'files_folder'           => 'files',
-        'description'            => 'LimeSurvey Advanced Template:\r\nMany options for user customizations. \r\n',
-//        'last_update'            => '',
+        'description'            => "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)",
         'owner_id'               => '1',
         'extends_templates_name' => '',
     ));
+
+    // Add minimal template
+    $oDB->createCommand()->insert('{{templates}}', array(
+        'name'                   => 'minimal',
+        'folder'                 => 'minimal',
+        'title'                  => 'Minimal Template',
+        'creation_date'          => '2017-07-12 12:00:00',
+        'author'                 => 'Louis Gac',
+        'author_email'           => 'louis.gac@limesurvey.org',
+        'author_url'             => 'https://www.limesurvey.org/',
+        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+        'version'                => '1.0',
+        'api_version'            => '3.0',
+        'view_folder'            => 'views',
+        'files_folder'           => 'files',
+        'description'            => '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.',
+        'owner_id'               => '1',
+        'extends_templates_name' => '',
+    ));
+
+
+
+    // Add material template
+    $oDB->createCommand()->insert('{{templates}}', array(
+        'name'                   => 'material',
+        'folder'                 => 'material',
+        'title'                  => 'Material Template',
+        'creation_date'          => '2017-07-12 12:00:00',
+        'author'                 => 'Louis Gac',
+        'author_email'           => 'louis.gac@limesurvey.org',
+        'author_url'             => 'https://www.limesurvey.org/',
+        'copyright'              => 'Copyright (C) 2007-2017 The LimeSurvey Project Team\r\nAll rights reserved.',
+        'license'                => 'License: GNU/GPL License v2 or later, see LICENSE.php\r\n\r\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.',
+        'version'                => '1.0',
+        'api_version'            => '3.0',
+        'view_folder'            => 'views',
+        'files_folder'           => 'files',
+        'description'            => "<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>",
+        'owner_id'               => '1',
+        'extends_templates_name' => 'default',
+    ));
+
 
     // Add template configuration table
     $oDB->createCommand()->createTable('{{template_configuration}}', array(
@@ -468,6 +653,7 @@ function upgradeTemplateTables295($oDB)
         'templates_name'    => 'string(150) NOT NULL',
         'sid'               => 'int(11) DEFAULT NULL',
         'gsid'              => 'int(11) DEFAULT NULL',
+        'uid'               => 'int(11) DEFAULT NULL',
         'files_css'         => 'MEDIUMTEXT',
         'files_js'          => 'MEDIUMTEXT',
         'files_print_css'   => 'MEDIUMTEXT',
@@ -485,18 +671,58 @@ function upgradeTemplateTables295($oDB)
         'files_css'         => '{"add": ["css/template.css", "css/animate.css"]}',
         'files_js'          => '{"add": ["scripts/template.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',
-        'options'           => '{"ajaxmode":"on","brandlogo":"on","backgroundimage":"on","animatebody":"on","bodyanimation":"lightSpeedIn","animatequestion":"on","questionanimation":"flipInX","animatealert":"on","alertanimation":"shake"}',
+        'options'           => '{"ajaxmode":"on","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
-        'cssframework_css'  => '{"replace": ["css/bootstrap.css", "css/yiistrap.css"]}',
+        'cssframework_css'  => '{"replace": [["css/bootstrap.css","css/flatly.css"]]}',
         'cssframework_js'   => '',
         'packages_to_load'  => 'template-core,',
     ));
 
-    $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>295),"stg_name='DBVersion'");
+
+    // Add global configuration for Minimal Template
+    $oDB->createCommand()->insert('{{template_configuration}}', array(
+        'id'                => '2',
+        'templates_name'    => 'minimal',
+        'files_css'         => '{"add": ["css/template.css"]}',
+        'files_js'          => '{"add": ["scripts/template.js"]}',
+        'files_print_css'   => '{"add":"css/print_template.css",}',
+        'options'           => '{}',
+        'cssframework_name' => 'bootstrap',
+        'cssframework_css'  => '{}',
+        'cssframework_js'   => '',
+        'packages_to_load'  => 'template-core,',
+    ));
+
+    // Add global configuration for Material Template
+    $oDB->createCommand()->insert('{{template_configuration}}', array(
+        'id'                => '3',
+        'templates_name'    => 'material',
+        'files_css'         => '{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}',
+        'files_js'          => '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}',
+        'files_print_css'   => '{"add":"css/print_template.css",}',
+        'options'           => '{"ajaxmode":"on","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
+        'cssframework_name' => 'bootstrap',
+        'cssframework_css'  => '{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}',
+        'cssframework_js'   => '',
+        'packages_to_load'  => 'template-core,',
+    ));
+
 }
 
 
-
+/**
+ * @param $oDB
+ * @return void
+ */
+function upgradeTemplateTables298($oDB)
+{
+    // Add global configuration for Advanced Template
+    $oDB->createCommand()->update('{{boxes}}',array(
+        'url'=>'admin/templateoptions',
+        'title'=>'Templates',
+        'desc'=>'View templates list',
+    ) ,"id=6");
+}
 
 function fixLanguageConsistencyAllSurveys()
 {

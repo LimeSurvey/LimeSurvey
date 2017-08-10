@@ -51,7 +51,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
     /** @var TemplateConfiguration $oMotherTemplate The template name */
     public $oMotherTemplate;
 
-    /** @var SimpleXMLElement $oOptions The template options */
+    /** @var array $oOptions The template options */
     public $oOptions;
 
 
@@ -141,15 +141,15 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
          $aCssFiles  = $aJsFiles = array();
 
          // First we add the framework replacement (bootstrap.css must be loaded before template.css)
-         $aCssFiles  = $this->getFrameworkAssetsToReplace('css');
-         $aJsFiles   = $this->getFrameworkAssetsToReplace('js');
+         $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
+         $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
 
          // Then we add the template config files
          $aTCssFiles = $this->getFilesToLoad($oTemplate, 'css');
          $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
 
          $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
-         $aTJsFiles  = array_merge($aCssFiles, $aTJsFiles);
+         $aJsFiles  = array_merge($aJsFiles, $aTJsFiles);
 
          $dir        = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
@@ -164,9 +164,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
          $sTemplateurl       = $oTemplate->getTemplateURL();
 
          $aDepends          = empty($oTemplate->depends)?array():$oTemplate->depends;
-         if(empty($oTemplate->depends)){
-             var_dump($oTemplate);              die();
-         }
+
 
          // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
          // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
@@ -267,13 +265,12 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
     public function setTemplateConfiguration($sTemplateName='', $iSurveyId=''){}
     public function addFileReplacement($sFile, $sType){}
-        
+
     protected function getFilesToLoad($oTemplate, $sType){}
     protected function changeMotherConfiguration( $sType, $aSettings ){}
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false){}
+    protected function getFrameworkAssetsReplacement($sType){}
     protected function removeFileFromPackage( $sPackageName, $sType, $aSettings ){}
     protected function setMotherTemplates(){}
     protected function setThisTemplate(){}
-
-
  }

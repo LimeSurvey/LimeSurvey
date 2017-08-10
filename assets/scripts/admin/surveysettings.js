@@ -1,4 +1,7 @@
 // $Id: surveysettings.js 9757 2011-02-09 20:52:33Z c_schmitz $
+var LS = LS || {
+    onDocumentReady: {}
+};
 
     $("#copysurveyform").submit(copysurvey);
 
@@ -31,7 +34,7 @@ $(document).on('click',"[data-copy] :submit",function(){
 // $(document).on('submit',"#addnewsurvey",function(){
 //     $('#addnewsurvey').attr('action',$('#addnewsurvey').attr('action')+location.hash);// Maybe validate before ?
 // });
-$(document).ready(function(){
+$(document).on('ready  pjax:complete', function(){
 
     $('#template').on('change keyup', function(event){
         templatechange($(this).val());
@@ -135,14 +138,16 @@ $(document).ready(function(){
         e.preventDefault();
         var data = $(this).serializeArray();
         var uri = $(this).attr('action');
-        console.log({'Data' : data, 'URI' : uri});
         $.ajax({
             url: uri,
             method:'POST',
             data: data,
             success: function(result){
-                console.log({result: result});
-                location.reload();
+                if(result.redirecturl != '' ){
+                    window.location.href=result.redirecturl;
+                } else {
+                    location.reload();
+                }
             },
             error: function(result){
                 console.log({result: result});

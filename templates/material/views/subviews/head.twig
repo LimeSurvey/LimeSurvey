@@ -1,0 +1,113 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Header  ·._.·´¯)·._.·´¯)
+
+    This file generates the headers.
+    Most of the time, it is not the right place to add your own JS/CSS - instead, use the config.xml file for that.
+#}
+
+{% if(aSurveyInfo.jYesNo) %}
+    {{ registerScript('activateConfirmLanguage',"$.extend(LSvar.lang," ~ aSurveyInfo.jYesNo ~ ")", "POS_BEGIN") }}
+{% endif %}
+{{ registerScript('activateActionLink',"activateActionLink();", "POS_END") }}
+{{ registerScript('activateConfirmButton',"activateConfirmButton();", "POS_END") }}
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        {{ aSurveyInfo.surveyls_title }}
+    </title>
+
+    <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
+    <link rel="shortcut icon" href="{{ aSurveyInfo.oTemplate.sTemplateurl }}favicon.ico" />
+
+    {# Ajax mode #}
+    {% if(aSurveyInfo.options.ajaxmode == "on") %}
+    <script>
+        // Submit the form with Ajax
+        function ajaxSubmit(){
+
+            var numPost = 0;
+
+            // First we get the value of the button clicked  (movenext, submit, prev, etc)
+            var move = "";
+            $(".ls-move-btn").on("click", function(){
+                move = $(this).attr("value");
+            });
+
+            // If the user try to submit the form
+            $(document).on("submit", "#limesurvey", function (e) {
+                e.preventDefault();
+
+                // Prevent multiposting
+                numPost++;
+                if ( numPost > 1){
+                    return;
+                }
+
+                var sUrl  = $(this).attr("action");
+                var aPost = $(this).serialize();
+
+                // We add the value of the button clicked to the post request
+                aPost += "&move="+move;
+
+                $.ajax({
+                   url      : sUrl,
+                   type     : 'POST',
+                   dataType : 'html',
+                   data     : aPost,
+
+                   success : function(body_html, statut){
+
+                       $('.toRemoveOnAjax').each(function(){
+                           $(this).remove();
+                       });
+                       var currentUrl = window.location.href;
+                       var cleanUrl = currentUrl.replace("&newtest=Y", "");
+
+                       if (currentUrl != cleanUrl){
+                           window.history.pushState({"html":body_html,"pageTitle":"pwet"},"", cleanUrl);
+                       }
+
+                       var $dataScripts = $(body_html).filter('script');
+
+                       $("body").empty().append($.parseHTML(body_html));
+
+                       $dataScripts.each(function() {
+                           $(this).attr('type', 'text/javascript').addClass('toRemoveOnAjax').appendTo('head');
+                       });
+
+                       // We reapply the function to the new form
+                       ajaxSubmit();
+
+                   },
+
+                   error : function(result, statut, erreur){
+                       alert("ERROR");
+                       console.log(result);
+                   }
+                });
+            });
+        }
+
+        $( document ).ready( function(){
+            ajaxSubmit();
+        });
+    </script>
+    {% endif %}
+
+    {{ include('./subviews/google_analytics.twig') }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+</head>

@@ -1,18 +1,22 @@
-<?php $extraClass = isset($extraClass) ? $extraClass : '';?>
-<div class='row container-fluid'>
-    <div class="col-xs-12 col-md-6">
+<?php 
+    $extraClass = isset($extraClass) ? $extraClass : '';
+    $title  = isset($title) ? $title : '';
+?>
+<div class='row container-fluid  ls-space padding left-0'>
+    <div class="col-sm-12 ls-space padding left-0">
         <div id="breadcrumb-container" class="ls-ba">
             <div class="">
-                <ol class="breadcrumb <?=$extraClass?>">
+                <ol class="breadcrumb ls-flex-row align-items-center align-content-flex-start <?=$extraClass?>">
                     <li>
                         <a class="pjax animate home-icon" href="<?php echo App()->createUrl('admin/survey/sa/listsurveys');?>">
-                            <i class="fa fa-list-alt bigIcon" title="<?php et('Survey List')?>" >&nbsp;</i>
+                            <img src="<?=LOGO_ICON_URL ?>" height="26" style="display:block;" title="<?php et('Survey List')?>" ></img>
                         </a>
                     </li>
                     <?php if(isset($oQuestion)): ?>
                         <li>
                             <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/',['surveyid' => $oQuestion->sid] );?>">
                                 <?php echo flattenText($oQuestion->survey->defaultlanguage->surveyls_title);?>
+                                    (<?php echo flattenText($oSurvey->sid);?>)
                             </a>
                         </li>
 
@@ -21,6 +25,7 @@
                                 <?php echo flattenText($oQuestion->groups->group_name);?>
                             </a>
                         </li>
+
                         <?php if(!isset($active)): ?>
                             <li class="active">
                                 <?php echo flattenText($oQuestion->title);?>
@@ -35,6 +40,13 @@
                                 <?php echo $active;?>
                             </li>
                         <?php endif; ?>
+
+                        <?php if(isset($sSubaction)): ?>
+                            <li class="active">
+                                <?php echo $sSubaction;?>
+                            </li>
+                        <?php endif; ?>
+
                     <?php elseif(isset($oQuestionGroup)): ?>
                         <li>
                             <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/',['surveyid' => $oQuestionGroup->sid] );?>">
@@ -55,6 +67,11 @@
                             <li class="active">
                                 <?php echo $active;?>
                             </li>
+                            <?php if(isset($sSubaction)): ?>
+                                <li class="active">
+                                    <?php echo $sSubaction;?>
+                                </li>
+                            <?php endif; ?>
                         <?php endif; ?>
                     <?php elseif(isset($token)): ?>
                         <li>
@@ -74,18 +91,27 @@
                             <li>
                                 <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid] );?>">
                                     <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title);?>
+                                    (<?php echo flattenText($oSurvey->sid);?>)
                                 </a>
                             </li>
-                            <li>
-                                <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid , 'subaction' => $sSubaction] );?>">
-                                    <?php echo $sSubaction;?>
-                                </a>
-                            </li>
+                            <?php if(isset($sSimpleSubaction)): ?>
+                                <li class="active">
+                                    <?php echo $sSimpleSubaction;?>
+                                </li>
+                            <?php else: ?>
+                                <li>
+                                    <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid , 'subaction' => $sSubaction] );?>">
+                                        <?php echo $sSubaction;?>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+
                     <?php elseif(isset($oSurvey)): ?>
                         <?php if(!isset($active)): ?>
                             <li>
                                 <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/',['surveyid' => $oSurvey->sid] );?>">
                                     <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title);?>
+                                    (<?php echo flattenText($oSurvey->sid);?>)
                                 </a>
                             </li>
                         <?php else: ?>
@@ -103,8 +129,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-12 col-md-6 text-right">
-            <p class="breadcrumb-title"><?= $title ?></p>
-        </div>
     </div>
 </div>
+<input type="hidden" id="gettheuserid" value="<?php echo Yii::app()->user->id;?>" />

@@ -2,7 +2,7 @@
  * Panel Clickable
  * Like in front page, or quick actions
  */
-$(document).ready(function(){
+$(document).on('ready, pjax:complete',function(){
     $(".panel-clickable").click(function(){
         $that = $(this);
         if($that.data('url')!=''){

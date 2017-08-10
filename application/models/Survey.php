@@ -249,6 +249,8 @@ class Survey extends LSActiveRecord
             'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
+            'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid'), 'together' => true),
+            'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template') )
         );
     }
 
@@ -375,6 +377,7 @@ class Survey extends LSActiveRecord
         }
         return Template::templateNameFilter($sTemplateName);
     }
+
 
     /**
      * permission scope for this model
@@ -585,43 +588,8 @@ class Survey extends LSActiveRecord
         }
     }
 
-    private function _getValueFromEntryArray($valueArray)
-    {
-        if($valueArray[0] == "this"){
-            return $this[$valueArray[1]];
-        } else {
-            return @call_user_func_array([$this, array_shift($valueArray)], $valueArray);
-        }
-    }
-
-    private function _parseSurveyMenuData($dataAttribute)
-    {
-        $aData = json_decode(stripcslashes($dataAttribute),true);
-        
-        $aData['aLinkCreator'] = ['surveyid'=> $this->sid];
-        $aData['noRender'] = false;
-        $aData['linkExternal'] = false;
-        if(isset($aData['render']))
-        {
-            if(isset($aData['render']['link']))
-            {
-                $aData['aLinkCreator'] = [];
-                foreach($aData['render']['link']['data'] as $key => $value){
-                    if(is_array($value)){
-                        $value= $this->_getValueFromEntryArray($value);
-                    }
-                    $aData['aLinkCreator'][$key] = $value;
-                } 
-                $aData['linkExternal'] = isset($aData['render']['link']['external']) ? $aData['render']['link']['external'] : false;
-            }
-            if(isset($aData['render']['isActive']))
-            {
-                $aData['noRender'] = ($this->active && $aData['render']['isActive']);
-            }
-           
-        }
-        
-        return (object) ($aData);
+    public function getSurveyTemplateConfiguration(){
+        return Template::getTemplateConfiguration(null, $this->sid);
     }
 
     private function _createSurveymenuArray($oSurveyMenuObjects)
@@ -631,9 +599,9 @@ class Survey extends LSActiveRecord
         $aResultCollected = [];
         foreach($oSurveyMenuObjects as $oSurveyMenuObject){
             $entries = [];
-            $defaultMenuEntries = $oSurveyMenuObject->surveymenuEntries;
+            $aMenuEntries = $oSurveyMenuObject->surveymenuEntries;
             $submenus = $this->_getSurveymenuSubmenus($oSurveyMenuObject);
-            foreach($defaultMenuEntries as $menuEntry){
+            foreach($aMenuEntries as $menuEntry){
                 $aEntry = $menuEntry->attributes;
                 //Skip menu if no permission
                 if(
@@ -641,18 +609,26 @@ class Survey extends LSActiveRecord
                     && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade']))
                 ) {continue;}
                 //parse the render part of the data attribute
-                $oDataAttribute = $this->_parseSurveyMenuData($menuEntry->data);
-                if($oDataAttribute->noRender){continue;}
+                $oDataAttribute = new SurveymenuEntryData();
+                $oDataAttribute->apply($menuEntry, $this->sid);
+               
+                if($oDataAttribute->isActive !== null){
+                    if(($oDataAttribute->isActive==true && $this->active == 'N') || ($oDataAttribute->isActive==false && $this->active == 'Y')){
+                        continue;
+                    }
+                }
 
-                $aEntry['link'] = $aEntry['menu_link']
-                            ?  App()->getController()->createUrl($aEntry['menu_link'],$oDataAttribute->aLinkCreator)
-                            : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
+                $aEntry['link'] = $oDataAttribute->linkCreator();
                 $aEntry['link_external'] = $oDataAttribute->linkExternal;
-                $aEntry['debugData'] = $oDataAttribute;
+                $aEntry['debugData'] = $oDataAttribute->attributes;
+                $aEntry['pjax'] = $oDataAttribute->pjaxed;
                 $entries[$aEntry['id']] = $aEntry;
             }
             $aResultCollected[$oSurveyMenuObject->id] = [
+                "id" => $oSurveyMenuObject->id,
                 "title" => $oSurveyMenuObject->title,
+                "ordering" => $oSurveyMenuObject->ordering,
+                "level" => $oSurveyMenuObject->level,
                 "description" => $oSurveyMenuObject->description,
                 "entries" => $entries,
                 "submenus" => $submenus
@@ -663,18 +639,18 @@ class Survey extends LSActiveRecord
 
     private function _getSurveymenuSubmenus($oParentSurveymenu){
         $criteria=new CDbCriteria;
-        $criteria->condition='survey_id=:surveyid';
-        $criteria->condition.=' AND parent_id=:parentid';
-        $criteria->condition.=' AND level=:level';
+        $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
+        $criteria->addCondition('parent_id=:parentid');
+        $criteria->addCondition('level=:level');
         $criteria->params = [
             ':surveyid' => $oParentSurveymenu->survey_id,
             ':parentid' =>  $oParentSurveymenu->id,
             ':level'=> ($oParentSurveymenu->level+1)
         ];
 
-        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
+        $oMenus = Surveymenu::model()->findAll($criteria);
 
-        $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus);
+        $aResultCollected = $this->_createSurveymenuArray($oMenus);
         return $aResultCollected;
     }
 
@@ -1403,6 +1379,11 @@ class Survey extends LSActiveRecord
                 'desc'=>'t.active desc, t.expires desc',
             ),
 
+            'group'=>array(
+                'asc'  => 'surveygroup.title asc',
+                'desc' => 'surveygroup.title desc',
+            ),
+
         );
         $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
 
@@ -1412,11 +1393,13 @@ class Survey extends LSActiveRecord
         // Search filter
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
         $aWithRelations[] = 'owner';
+        $aWithRelations[] = 'surveygroup';
         $criteria->compare($sid_reference, $this->searched_value, true);
         $criteria->compare('t.admin', $this->searched_value, true, 'OR');
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
-
+        $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
+        $criteria->compare('t.gsid',$this->gsid, true, 'AND');
 
 
         // Active filter

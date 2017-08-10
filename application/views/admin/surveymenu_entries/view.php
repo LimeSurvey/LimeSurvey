@@ -3,16 +3,16 @@
 /* @var $model SurveymenuEntries */
 
 $this->breadcrumbs=array(
-	'Surveymenu Entries'=>array('index'),
+	'Menu entries'=>array('index'),
 	$model->name,
 );
 
 $this->menu=array(
-	array('label'=>'List SurveymenuEntries', 'url'=>array('index')),
-	array('label'=>'Create SurveymenuEntries', 'url'=>array('create')),
-	array('label'=>'Update SurveymenuEntries', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete SurveymenuEntries', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage SurveymenuEntries', 'url'=>array('admin')),
+	array('label'=>'List menu entries', 'url'=>array('index')),
+	array('label'=>'Create menu entries', 'url'=>array('create')),
+	array('label'=>'Update menu entries', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Delete menu entries', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Manage menu entries', 'url'=>array('admin')),
 );
 ?>
 

@@ -75,6 +75,7 @@ class database extends Survey_Common_Action
                 'tokenlength' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'bounce_email' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'gsid' => ['type'=> '', 'default' => 1, 'dbname'=>false, 'active'=>true, 'required'=>[]],
             ];
         private $updatedFields = [];
 
@@ -913,8 +914,9 @@ class database extends Survey_Common_Action
      */
     private function actionUpdateSurveyLocaleSettings($iSurveyID)
     {
-        $languagelist = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-        $languagelist[]=Survey::model()->findByPk($iSurveyID)->language;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $languagelist = $oSurvey->additionalLanguages;
+        $languagelist[] = $oSurvey->language;
 
         Yii::app()->loadHelper('database');
 
@@ -942,7 +944,7 @@ class database extends Survey_Common_Action
                     $endtext=$this->oFixCKeditor->fixCKeditor($endtext);
                     $dateformat = Yii::app()->request->getPost('dateformat_'.$langname);
                     $numberformat = Yii::app()->request->getPost('numberformat_'.$langname);
-
+                    
                     if(!empty($short_title))
                         $data['surveyls_title'] = $short_title;
                     if(!empty($description))
@@ -960,16 +962,17 @@ class database extends Survey_Common_Action
                     if(!empty($numberformat))
                         $data['surveyls_numberformat'] = $numberformat;
 
-                    $SurveyLanguageSetting=SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
-                    $SurveyLanguageSetting->setAttributes($data);
+                    $oSurveyLanguageSetting= SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
+                    $oSurveyLanguageSetting->setAttributes($data);
                     $save = false;
-                    $save = $SurveyLanguageSetting->save(); // save the change to database
+                    $save = $oSurveyLanguageSetting->save(); // save the change to database
                     if((!empty($short_title)) || (!empty($description)) || (!empty($welcome)) || (!empty($endtext)) || (!empty($sURL)) || (!empty($sURLDescription)) || (!empty($dateformat)) || (!empty($numberformat)))
-                        $surveyTextSave = $save;
+                    {
+
+                    }
                 }
             }
-            if($surveyTextSave)
-                Yii::app()->setFlashMessage(gT("Survey text elements successfully saved."));
+
         }
         ////////////////////////////////////////////////////////////////////////////////////
         // General settings (copy / paste from surveyadmin::update)
@@ -977,7 +980,7 @@ class database extends Survey_Common_Action
         {
             // Preload survey
             $oSurvey=Survey::model()->findByPk($iSurveyID);
-
+            $aOldAttributes = $oSurvey->attributes; 
             // Save plugin settings : actually leave it before saving core : we are sure core settings is saved in LS way.
             $pluginSettings = App()->request->getPost('plugin', array());
             foreach($pluginSettings as $plugin => $settings)
@@ -1021,13 +1024,25 @@ class database extends Survey_Common_Action
                 $oSurvey->owner_id = $this->_filterEmptyFields($oSurvey,'owner_id');
             }
 
+            //for the new template system we have to check that the changed template is also applied
+            $current_template = $oSurvey->template;
+            $new_template =  $this->_filterEmptyFields($oSurvey,'template');
+            if(  $current_template != '' && $current_template !== $new_template ){
+                $currentConfiguration = Template::getTemplateConfiguration($current_template);
+                TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
+            }
+            $oSurvey->template = $new_template;
+            
             //$oSurvey, $fieldArray, $newValue
             $oSurvey->admin =  $this->_filterEmptyFields($oSurvey,'admin');
             $oSurvey->expires =  $expires;
             $oSurvey->startdate =  $startdate;
             $oSurvey->faxto = $this->_filterEmptyFields($oSurvey,'faxto');
+            $oSurvey->gsid = $this->_filterEmptyFields($oSurvey,'gsid');
             $oSurvey->format = $this->_filterEmptyFields($oSurvey,'format');
-            $oSurvey->template = $this->_filterEmptyFields($oSurvey,'template');
+            
+
+
             $oSurvey->assessments = $this->_filterEmptyFields($oSurvey,'assessments');
             $oSurvey->additional_languages =  $this->_filterEmptyFields($oSurvey,'additional_languages', implode(' ',Yii::app()->request->getPost('additional_languages',array())));
 
@@ -1086,11 +1101,10 @@ class database extends Survey_Common_Action
 
             $oSurvey->adminemail = $this->_filterEmptyFields($oSurvey,'adminemail');
             $oSurvey->bounce_email = $this->_filterEmptyFields($oSurvey,'bounce_email');
-
             $event = new PluginEvent('beforeSurveySettingsSave');
             $event->set('modifiedSurvey', $oSurvey);
             App()->getPluginManager()->dispatchEvent($event);
-
+            $aAfterApplyAttributes = $oSurvey->attributes;
             if ($oSurvey->save())
             {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
@@ -1180,7 +1194,7 @@ class database extends Survey_Common_Action
                     'data' => [
                         'success' => true,
                         'updated'=> $updatedFields,
-                        'DEBUG' => [$_POST,$oSurvey->attributes]
+                        'DEBUG' => ['POST'=>$_POST,'reloaded'=>$oSurvey->attributes, 'initial'=>$aOldAttributes, 'afterApply'=>$aAfterApplyAttributes]
                     ],
                 ),
                 false,
@@ -1208,6 +1222,7 @@ class database extends Survey_Common_Action
     }
 
     private function _filterEmptyFields(&$oSurvey, $fieldArrayName, $newValue=null){
+        $aSurvey = $oSurvey->attributes;
         if($newValue === null)
         {
             $newValue = App()->request->getPost($fieldArrayName, '');
@@ -1217,7 +1232,8 @@ class database extends Survey_Common_Action
 
         if(empty($newValue))
         {
-            $newValue = $oSurvey->{$fieldArrayName};
+
+            $newValue = isset($aSurvey[$fieldArrayName]) ? $aSurvey[$fieldArrayName] : $oSurvey->{$fieldArrayName};
 
         } 
         else 
@@ -1228,8 +1244,9 @@ class database extends Survey_Common_Action
         $options = $this->updateableFields[$fieldArrayName];
         switch($options['type']){
             case 'yesno':
-                if($newValue != 'Y' || $newValue != 'N')
-                    $newValue = $newValue=='1' ? 'Y' : 'N';
+                if($newValue != 'Y' && $newValue != 'N')
+                    $newValue = (int) $newValue;
+                    $newValue = ($newValue===1) ? 'Y' : 'N';
             break;
             case 'Int' : 
                 $newValue = (int) $newValue;
@@ -1528,9 +1545,12 @@ class database extends Survey_Common_Action
         }
 
         LimeExpressionManager::SetDirtyFlag(); // so refreshes syntax highlighting
+        $redirectLink = $this->getController()->createUrl('admin/questions/sa/view/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID, 'qid' => $this->iQuestionID));
+        if(Yii::app()->request->getPost('saveandnew', '') != ''){
+            $redirectLink = $this->getController()->createUrl('admin/questions/sa/newquestion/', array('surveyid' => $iSurveyID, 'gid' => $this->iQuestionGroupID));
+        }
 
-        //admin/survey/sa/view/surveyid/
-        $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+        $this->getController()->redirect($redirectLink);
     }
 
 }

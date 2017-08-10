@@ -29,9 +29,13 @@
         {{ registerTemplateCssFile("css/background-image.css") }}
     {% endif %}
 
-    {% else %}
-        {{ unregisterScriptForAjax()}}
+    {% if (aSurveyInfo.options.boxcontainer == "off") %}
+        {{ registerTemplateCssFile("css/no-container.css") }}
     {% endif %}
+
+{% else %}
+        {{ unregisterScriptForAjax()}}
+{% endif %}
 
 
 

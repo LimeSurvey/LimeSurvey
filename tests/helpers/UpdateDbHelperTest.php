@@ -77,7 +77,7 @@ class UpdateDbHelperTest extends TestBaseClass
     }
 
     /**
-     * Run db_upgrade_all() from dbversion 153, to make sure
+     * Run db_upgrade_all() from dbversion 258, to make sure
      * there are no conflicts or syntax errors.
      * @group upgradeall
      */
@@ -94,7 +94,7 @@ class UpdateDbHelperTest extends TestBaseClass
         $inst->connection = \Yii::app()->db;
 
         // Check SQL file.
-        $file = __DIR__ . '/../data/sql/create-mysql.153.sql';
+        $file = __DIR__ . '/../data/sql/create-mysql.258.sql';
         $this->assertFileExists($file);
 
         // Run SQL install file.
@@ -102,7 +102,7 @@ class UpdateDbHelperTest extends TestBaseClass
         $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
 
         // Run upgrade.
-        $result = \db_upgrade_all(153);
+        $result = \db_upgrade_all(258);
 
         // Check error messages.
         $flashes = \Yii::app()->user->getFlashes();

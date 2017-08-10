@@ -1,92 +1,101 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueLocalStorage from 'vue-localstorage';
-import _ from 'lodash';
 import Sidebar from './components/sidebar.vue';
 import Topbar from './components/topbar.vue';
-import Pjax from 'pjax';
+import getAppState from './store/vuex-store.js';
 
 Vue.use(Vuex);
 Vue.use(VueLocalStorage);
 
-const AppState = new Vuex.Store({
-  state: {
-    surveyid: 0,
-    language: '',
-    maxHeight: 0,
-    currentUser: 0,
-  },
-  mutations: {
-    updateSurveyId (state, newSurveyId) {
-      state.surveyid = newSurveyId
-    },
-    changeLanguage (state, language) {
-      state.language = language;
-    },
-    changeMaxHeight(state, newHeight){
-      state.maxHeight = newHeight;
-    },    
-    changeCurrentUser(state, newUser){
-      state.currentUser = newUser;
-    }    
+Vue.mixin({
+  methods: {
+    updatePjaxLinks: function () {
+      this.$store.commit('updatePjax');
+    }
   }
 });
 
-if(document.getElementById('vue-app-main-container')){
-  const sidemenu = new Vue(
-  {  
+const AppState = getAppState(LS.globalUserId);
+
+if (document.getElementById('vue-app-main-container')) {
+  // eslint-disable-next-line
+  const sidemenu = new Vue({
     el: '#vue-app-main-container',
     store: AppState,
     components: {
-      'sidebar' : Sidebar,
+      'sidebar': Sidebar,
+      'topbar': Topbar,
     },
-    methods: {
+    created() {
+      const
+        menuOffset = $('nav.navbar').outerHeight(),
+        menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
+        footerHeight = $('footer').outerHeight() + 35,
+        documentHeight = screen.availHeight || screen.height,
+        innerMenuHeight = $('#breadcrumb-container').outerHeight(),
+        inSurveyViewHeight = (documentHeight - (menuOffset + menuHeight + footerHeight)),
+        generalContainerHeright = inSurveyViewHeight-(innerMenuHeight + 45);
+        
+        
+      this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
+      this.$store.commit('changeGeneralContainerHeight', generalContainerHeright);
+
     },
-    
-    mounted(){
-       this.$store.commit('updateSurveyId', $(this.$el).data('surveyid'));
-       this.$store.commit('changeMaxHeight', ($('#in_survey_common').height()-35));
-       this.$store.commit('changeCurrentUser', $('#currentUserId').val());
+    mounted() {
+      const surveyid = $(this.$el).data('surveyid');
+      if(surveyid != 0){
+        this.$store.commit('updateSurveyId', surveyid);
+      }
+      const maxHeight = ($('#in_survey_common').height() - 35) || 400;
+      this.$store.commit('changeMaxHeight', maxHeight);
+      this.updatePjaxLinks();
     }
   });
 }
 
-const pjaxed = new Pjax({
-  elements: "a.pjax", // default is "a[href], form[action]"
-  selectors: [
-    "#pjax-content",
-    '#breadcrumb-container'
-    ]
+
+// $(document).on('ready pjax:complete', ()=>{
+//   if($('#vue-app-main-container').length >0 ){
+
+//     const
+//         menuOffset = $('nav.navbar').outerHeight()+45,
+//         menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
+//         footerHeight = $('footer').outerHeight()+65,
+//         documentHeight = screen.availHeight || screen.height,
+//         innerMenuHeight = $('#surveybarid').outerHeight();
+
+//     let vueAppContainerHeight = documentHeight-( menuOffset + menuHeight + footerHeight );
+//     let inSurveyCommonHeight = vueAppContainerHeight - (innerMenuHeight + 45);
+
+//     console.log({
+//       menuOffset : menuOffset,
+//       menuHeight : menuHeight,
+//       footerHeight : footerHeight,
+//       documentHeight : documentHeight,
+//       innerMenuHeight : innerMenuHeight,
+//       vueAppContainerHeight : vueAppContainerHeight,
+//       inSurveyCommonHeight : inSurveyCommonHeight
+//     });
+
+//      $('#vue-app-main-container').css('min-height', vueAppContainerHeight+'px');
+//   }
+// });
+$(document).on('pjax:send', () => {
+  $('#pjax-file-load-container').find('div').css({
+    'width': '20%',
+    'display': 'block'
+  });
 });
-
-$(document).ready(()=>{
-  if($('#vue-app-main-container').length >0 ){
-
-    const
-        menuOffset = $('nav.navbar').outerHeight()+45,
-        menuHeight = + $('.menubar.surveymanagerbar').outerHeight(),
-        footerHeight =  $('footer').outerHeight()+65,
-        documentHeight = screen.availableHeight || screen.height,
-        innerMenuHeight = $('#surveybarid').outerHeight();
-    
-    let vueAppContainerHeight = documentHeight-( menuOffset + menuHeight + footerHeight );
-    let inSurveyCommonHeight = vueAppContainerHeight - (innerMenuHeight + 45);
-
-    console.log({
-      menuOffset : menuOffset,
-      menuHeight : menuHeight,
-      footerHeight : footerHeight,
-      documentHeight : documentHeight,
-      innerMenuHeight : innerMenuHeight,
-      vueAppContainerHeight : vueAppContainerHeight,
-      inSurveyCommonHeight : inSurveyCommonHeight
+$(document).on('pjax:complete', () => {
+  $('#pjax-file-load-container').find('div').css('width', '100%');
+  setTimeout(function () {
+    $('#pjax-file-load-container').find('div').css({
+      'width': '0%',
+      'display': 'none'
     });
-
-    $('#vue-app-main-container').css('height', vueAppContainerHeight+'px');
-    $('#in_survey_common').css('height',inSurveyCommonHeight+'px');
-  }
+  }, 2200);
 });
-
 // const topmenu = new Vue(
 //   {  
 //     el: '#vue-top-menu-app',

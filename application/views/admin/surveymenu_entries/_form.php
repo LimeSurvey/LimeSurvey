@@ -11,7 +11,8 @@
 	// There is a call to performAjaxValidation() commented in generated controller code.
 	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
-	'htmlOptions' => ['class' =>'form form-horizontal']
+	'htmlOptions' => ['class' =>'form '],
+	'action' => Yii::app()->getController()->createUrl('admin/menuentries/sa/update', ['id' => $model->id])
 )); ?>
 
 <div class="modal-header">
@@ -48,9 +49,9 @@
 		</div>
 
 		<div class="form-group">
-			<?php echo $form->labelEx($model,'order'); ?>
-			<?php echo $form->numberField($model,'order'); ?>
-			<?php echo $form->error($model,'order'); ?>
+			<?php echo $form->labelEx($model,'ordering'); ?>
+			<?php echo $form->numberField($model,'ordering'); ?>
+			<?php echo $form->error($model,'ordering'); ?>
 		</div>
 
 		<div class="form-group">
@@ -73,7 +74,7 @@
 
 		<div class="form-group">
 			<?php echo $form->labelEx($model,'menu_icon_type'); ?>
-			<?php echo $form->dropDownList($model,'menu_id', $model->getMenuIconTypeOptions()); ?>
+			<?php echo $form->dropDownList($model,'menu_icon_type', $model->getMenuIconTypeOptions()); ?>
 			<?php echo $form->error($model,'menu_icon_type'); ?>
 		</div>
 
@@ -150,9 +151,12 @@
 			</div>
 		
 		</div>
+
+		<?php echo $form->hiddenField($model, 'changed_by', ['value' => $user]);?>
+		<?php echo $form->hiddenField($model, 'changed_at', ['value' => date('Y-m-d H:i:s')]);?>
+		<?php echo $form->hiddenField($model, 'created_by', ['value' => (empty($model->created_by) ? $user : $model->created_by)]);?>
+		<?php echo $form->hiddenField($model, 'id');?>
 		
-		<input type="hidden" name='changed_by' value="<?=$user?>" />
-		<input type="hidden" name='created_by' value="<?=$user?>" />
 	</div>
 	<div class="modal-footer">
 		<?php echo TbHtml::submitButton(($model->isNewRecord ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>

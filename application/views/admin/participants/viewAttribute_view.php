@@ -19,7 +19,7 @@
     <div class="row">
         <div class="col-lg-12 content-right">
 
-            <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post",array('class'=>'form-horizontal col-md-6  col-md-offset-3', 'role' => 'form')); ?>
+            <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post",array('class'=>' col-md-6  col-md-offset-3', 'role' => 'form')); ?>
 
             <div class="form-group">
                 <label for="defaultname" class='control-label col-sm-3'><?php eT('Default attribute name:'); ?></label>

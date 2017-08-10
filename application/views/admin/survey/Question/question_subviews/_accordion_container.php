@@ -14,11 +14,11 @@
             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
                     <div>
-                        <div  class="form-group">
+                        <div class="form-group">
                             <label for='question_type_button'>
                                 <?php eT("Question Type:"); ?>
                             </label>
-                            <br/>
+                            <div class="">
                             <?php if($selectormodeclass!="none"): ?>
                                 <?php
                                     foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
@@ -56,7 +56,7 @@
                                         <?php foreach($groups as $name => $group):?>
                                             <small><?php echo $name;?></small>
 
-                                           <?php foreach($group as $type => $option):?>
+                                        <?php foreach($group as $type => $option):?>
                                                 <li>
                                                     <a href="#" class="questionType" <?php if($type == $eqrow['type']){echo 'active';}?>><?php echo $option;?></a>
                                                 </li>
@@ -75,17 +75,18 @@
                                         $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
                                     }
                                     echo CHtml::dropDownList(
-                                                                'type',
-                                                                'category',
-                                                                CHtml::listData($aQtypeData,'code','description','group'),
-                                                                array(
-                                                                        'class' => 'none',
-                                                                        'id'=>'question_type',
-                                                                        'options' => array($eqrow['type']=>array('selected'=>true))
-                                                                     )
-                                                            );
+                                        'type',
+                                        'category',
+                                        CHtml::listData($aQtypeData,'code','description','group'),
+                                        array(
+                                            'class' => 'none',
+                                            'id'=>'question_type',
+                                            'options' => array($eqrow['type']=>array('selected'=>true))
+                                        )
+                                    );
                                 ?>
                             <?php endif; ?>
+                            </div>
                         </div>
 
                         <div  class="form-group">

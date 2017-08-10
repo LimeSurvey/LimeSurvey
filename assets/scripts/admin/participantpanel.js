@@ -1,5 +1,7 @@
-//Namespacing all Methods of the participant panel in one JS-Prototype
-LS = LS || {};
+// Namespace
+var LS = LS || {
+    onDocumentReady: {}
+};
 LS.CPDB = (function() {
     var
     // Basic modal used by all submethods
@@ -504,5 +506,4 @@ function insertSearchCondition(id, options){
     options.data.searchcondition=$('#searchcondition').val();
     return options;
 }
-
-$(document).ready(LS.CPDB.bindButtons);
+$(document).on('ready  pjax:complete', (LS.CPDB.bindButtons));

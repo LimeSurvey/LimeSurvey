@@ -10,6 +10,9 @@
 * See COPYRIGHT.php for copyright notices and details.
 */
 
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
 /**
 * delete button
 */
@@ -20,7 +23,8 @@ $(document).on('click','[data-action="deletelabelset"]',function(event){
     }
 });
 
-$(document).ready(function(){
+
+$(document).on('ready  pjax:complete', function(){
     $('#btnDumpLabelSets').click(function(){
         if ($('#labelsets > option:selected').size()==0)
         {

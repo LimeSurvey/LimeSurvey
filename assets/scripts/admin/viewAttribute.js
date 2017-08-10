@@ -1,4 +1,9 @@
-$(document).ready(function() {
+
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).on(' pjax:complete', function() {
     $.each(removeitem, function(index, value) {
         $("select#langdata option[value='"+value+"']").remove();
     });

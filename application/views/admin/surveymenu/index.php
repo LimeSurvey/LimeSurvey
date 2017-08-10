@@ -36,19 +36,23 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 					// Number of row per page selection
 					'id' => 'surveymenu-grid',
 					'columns' => $model->getColumns(),
+					'filter' => $model,
 					'emptyText'=>gT('No customizable entries found.'),
 					'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
 						CHtml::dropDownList(
 							'pageSize',
 							$pageSize,
 							Yii::app()->params['pageSizeOptions'],
-							array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
-
-					'itemsCssClass' =>'table table-striped',
-					//'htmlOptions'=>array('style'=>'cursor: pointer;'),
+							array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+						)
+					),
+					'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
+					'htmlOptions' => array('class'=> 'table-responsive'),
+					'itemsCssClass' => 'table table-responsive table-striped',
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
-					//'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/survey/sa/view/surveyid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
-					'ajaxUpdate' => true
+					'ajaxType' => 'POST',
+					'ajaxUpdate' => true,
+    				'afterAjaxUpdate'=>'bindAction',
 				));
 				?>
 			</div>
@@ -66,8 +70,25 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="deletemodal" tabindex="-1" role="dialog">
+  	<div class="modal-dialog modal-lg" role="document">
+    	<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title"><?php eT("Really delete this surveymenu?");?></h4>
+			</div>
+			<div class="modal-body">
+				<?php eT("All menuentries of this menu will also be deleted."); ?>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Cancel'); ?></button>
+				<button type="button" id="deletemodal-confirm" class="btn btn-danger"><?php eT('Delete now'); ?></button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script>
+function bindAction(){
 	$('.action_selectthismenu').on('click', function(){
 		var checked = $(this).prop('checked') ? true : false;
 		$('.action_selectthismenu').prop('checked', false);
@@ -99,7 +120,8 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 						dataType: 'json',
 						success: function(data){
 							console.log(data);
-							//window.location.reload();
+							$('#editcreatemenu').modal('hide');
+							$.fn.yiiGridView.update('surveymenu-grid');
 						},
 						error: function(error){
 							console.log(error);
@@ -114,6 +136,35 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 	});
 	$('#surveymenu-grid').on('click', 'tr', function(){
 		$(this).find('.action_selectthismenu').trigger('click');
-	})
+	});
+
+	$('.action_surveymenu_deleteModal').on('click',function(){
+		var menuid = $(this).closest('tr').data('surveymenu-id');
+		$('#deletemodal').modal('show');
+		$('#deletemodal').on('shown.bs.modal',function(){
+			$('#deletemodal-confirm').on('click', function(){
+				var url = "<?php echo Yii::app()->getController()->createUrl('/admin/menus/sa/delete'); ?>";
+				$.ajax({
+					url: url,
+					data: {menuid: menuid, ajax: true},
+					method: 'post',
+					success: function(data){
+						console.log(data);
+						window.location.reload();
+					},
+					error: function(err){
+						console.log(err);
+						window.location.reload();
+					}
+				})
+			})
+		});
+	});
+	
+	$('.action_surveymenu_editModal').on('click',function(){
+
+	});
+};
+$(document).ready(bindAction);
 
 </script>
