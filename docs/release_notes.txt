@@ -36,6 +36,9 @@ CHANGE LOG
 ------------------------------------------------------
 
 Changes from 3.0.0-beta.1 (build 170720) to 3.0.0-beta.2 (build 170810) Aug 10, 2017
+-New feature: Changed the general design to a mobile first stance (markusfluer)
+-New feature: Added more flexibility to onRegisterForm event and twigged registration (markusfluer)
+-New feature: refined surveymenu design and responsiveness (markusfluer)
 -New feature: Survey groups. Each survey now belongs to a survey group. (Louis Gac)
 -New feature: List survey groups. Views for survey group feature (Louis Gac)
 -New feature: Template Options at survey level. User can now set the template options at the survey level (Louis Gac and Markus Fluer)
