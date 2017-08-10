@@ -36,6 +36,11 @@ CHANGE LOG
 ------------------------------------------------------
 
 Changes from 3.0.0-beta.1 (build 170720) to 3.0.0-beta.2 (build 170810) Aug 10, 2017
+-New feature: Survey groups. Each survey now belongs to a survey group. (Louis Gac)
+-New feature: List survey groups. Views for survey group feature (Louis Gac)
+-New feature: Template Options at survey level. User can now set the template options at the survey level (Louis Gac and Markus Fluer)
+-New feature: Template Options global inheritance. All template options can be inherited from global/survey group settings (Louis Gac and Markus Fluer)
+-New feature: Template Options specific inheritance. A specific option can be inherited from global/survey group settings (Louis Gac and Markus Fluer)
 -Fixed issue #12450: DataEntry not opening with array filter (TYPO) (Tõnis Ormisson)
 -Fixed issue #12492  Use of "text fields" as filter in "Participants" and "Answers" (markusfluer)
 -Fixed issue #12513: "All-in-one" not working (LouisGac)
@@ -97,7 +102,7 @@ Changes from 2.67.0 (build 170622) to 3.0.0-beta.1 (build 170720) Jul 19, 2017
 -New feature: sidebar rendering via vuejs2 based on vuex state management (Markus Flür)
 -New feature: menus and entries collected via ajax (Markus Flür)
 -New feature: questiongroups and questions collected by ajax (Markus Flür)
--New feature: sidebar is now resizeable by dragging (maximum size: 50% of screen) (Markus Flür) 
+-New feature: sidebar is now resizeable by dragging (maximum size: 50% of screen) (Markus Flür)
 -New feature: new system for editing and creating menuentries in the sidebar and the quickmenu (Markus Flür)
 -New feature: menus and entries are now items in the database and can be user and/or surveyspecific (Markus Flür)
 -New feature:integrated menu positions are side, collapsed, top and bottom (Markus Flür)
