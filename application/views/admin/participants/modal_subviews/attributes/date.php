@@ -1,6 +1,6 @@
-    <label class="col-sm-2 control-label" for="datepickerInputField_[<?php echo $name; ?>]"><?php echo $defaultname; ?></label>
+    <label class=" control-label" for="datepickerInputField_[<?php echo $name; ?>]"><?php echo $defaultname; ?></label>
     <div>
-        <div class='col-sm-4'>
+        <div class=''>
         <input class="form-control" name="datepickerInputField_<?php echo $name; ?>" id="datepickerInputField_<?php echo $name; ?>" type="text" value="<?php echo $value; ?>">
         <input name="Attributes[<?php echo $name; ?>]" id="Attributes_<?php echo $name; ?>" type="hidden" value="<?php echo $value; ?>">
             <script type="text/javascript">

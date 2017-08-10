@@ -15,7 +15,7 @@
         <?php eT("Statistics"); ?>
     </h3>
 
-    <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start', 'class'=>'form-horizontal', 'id'=>'generate-statistics'));?>
+    <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder', 'class'=>'', 'id'=>'generate-statistics'));?>
         <!-- General filters -->
         <div class="row">
             <div class="col-sm-12 content-right">
@@ -29,7 +29,7 @@
 
                             <div class="col-sm-6">
                                 <!-- Data Selection -->
-                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage)) ; ?>
+                                <?php $this->renderPartial('/admin/export/statistics_subviews/_dataselection', array('surveyid'=>$surveyid, 'selectshow'=>$selectshow, 'selecthide'=>$selecthide, 'selectinc'=>$selectinc, 'survlangs'=>$survlangs, 'sStatisticsLanguage'=>$sStatisticsLanguage)) ; ?>
                                 <!-- Response ID -->
                                 <?php $this->renderPartial('/admin/export/statistics_subviews/_responseid', array()) ; ?>
                                 <!-- Output format -->

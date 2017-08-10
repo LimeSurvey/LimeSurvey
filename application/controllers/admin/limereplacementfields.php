@@ -31,8 +31,8 @@ class limereplacementfields extends Survey_Common_Action
             //2: Get all other questions that occur before this question that are pre-determined answer types
             $fieldmap = createFieldMap($survey,'full',false,false,$survey->language);
 
-            $surveyInfo = getSurveyInfo($surveyid);
-            $surveyformat = $surveyInfo['format']; // S, G, A
+            $oSurvey = Survey::model()->findByPk($surveyid);
+            $surveyformat = $oSurvey->format; // S, G, A
 
             //Go through each question until we reach the current one
             //error_log(print_r($qrows,true));
@@ -304,8 +304,8 @@ class limereplacementfields extends Survey_Common_Action
 
                 // email-conf can accept insertans fields for non anonymous surveys
                 if (isset($surveyid)) {
-                    $surveyInfo = getSurveyInfo($surveyid);
-                    if ($surveyInfo['anonymized'] == "N") {
+                    $oSurvey = Survey::model()->findByPk($surveyid);
+                    if ($oSurvey->anonymized == "N") {
                         return array($replFields, true);
                     }
                 }

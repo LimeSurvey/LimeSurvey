@@ -1,0 +1,81 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+
+
+    (¯`·._.·(¯`·._.· Navigator  ·._.·´¯)·._.·´¯)
+
+    Render the navigator: Previous, Next, Submit, Load, Save
+    All needed datas are inside aSurveyInfo.aNavigator
+    If you want to see what is availabe in aNavigator, turn debug mode on in application/config.php, and move out of comments the following line:
+    {{ dump(aSurveyInfo.aNavigator) }}
+#}
+
+{# create a shortcut for aSurveyInfo.aNavigator #}
+{% set aNavigator = aSurveyInfo.aNavigator %}
+
+<!-- PRESENT THE NAVIGATOR -->
+<div class="navigator row" id="navigator-container">
+
+    <!-- Previous button container -->
+    <div class="col-xs-6 text-left">
+
+        {# Previous button must be set to ON in survey settings (and it's not shown in first page, in All in One survey mode, etc) #}
+        {% if aNavigator.aMovePrev.show %}
+            <!-- Button previous -->
+            <button type="submit" value="moveprev" name="move" class=" {{ aNavigator.disabled }} ls-move-btn ls-move-previous-btn btn btn-primary btn-raised btn-lg btn-default" accesskey="p">
+                {{ "Previous" | t }}
+            </button>
+        {% endif %}
+    </div>
+    <div class="col-xs-6 text-right">
+
+        {# Next button is not always shown (last page, all in one mode, etc) #}
+        {% if aNavigator.aMoveNext.show %}
+
+            {# On last page, Next button become submit button. #}
+            {% if aNavigator.aMoveNext.value == "movesubmit" %}
+                <!-- Button submit -->
+                <button type="submit" value="movesubmit" name="move" class=" {{ aNavigator.disabled }} ls-move-btn ls-move-submit-btn btn btn-primary btn-raised btn-lg btn-primary" accesskey="l">
+                    {{ "Submit" | t }}
+                </button>
+            {% else %}
+                <!-- Button Next -->
+                <button type="submit" value="movenext" name="move" class=" {{ aNavigator.disabled }} ls-move-btn ls-move-next-btn ls-move-submit-btn btn btn-primary btn-raised btn-lg btn-primary" accesskey="n">
+                    {{ "Next" | t }}
+                </button>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+<!-- Save and load buttons-->
+<div class="navigator row">
+    <div class="col-sm-6 save-clearall-wrapper">
+
+        {# Loading survey must be allowed in survey settings, and it must not be shown once survey is completed #}
+        {% if aNavigator.load.show == "Y" %}
+            <!-- Button load unfinished survey -->
+            <button type="submit" value="loadall" name="loadall" class="ls-saveaction ls-loadall btn btn-primary btn-raised btn-default" accesskey="L">
+                {{ "Load unfinished survey" | t }}
+            </button>
+        {% endif %}
+
+        {# Saving survey must be allowed in survey settings, and it must not be shown on welcome page or once survey is completed #}
+        {% if aNavigator.save.show == "Y" %}
+            <!-- Button resume later -->
+            <button type="submit" value="saveall" name="saveall" class="ls-saveaction ls-loadall btn btn-primary btn-raised btn-default" accesskey="s">
+                {{ "Resume later" | t }}
+            </button>
+        {% endif %}
+
+    </div>
+</div>

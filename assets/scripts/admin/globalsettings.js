@@ -1,6 +1,9 @@
 // $Id: globalsettings.js 8964 2010-07-20 20:46:47Z anishseth $
 
-$(document).ready(function(){
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+$(document).on('ready  pjax:complete', function(){
     $("input:radio[id^='emailmethod']").on('change',Emailchange);
     Emailchange();
     $("input:radio[id^='bounceaccounttype']").on('change',BounceChange);

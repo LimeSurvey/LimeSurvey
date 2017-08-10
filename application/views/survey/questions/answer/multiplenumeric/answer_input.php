@@ -17,7 +17,7 @@
 <!-- Multiple Numerical -->
 
 <!-- answer -->
-<ul class='<?php echo $coreClass?> list-unstyled form-horizontal' role="group" aria-describedby="ls-question-text-<?php echo $basename; ?>">
+<ul class='<?php echo $coreClass?> list-unstyled ' role="group" aria-describedby="ls-question-text-<?php echo $basename; ?>">
 <?php
     // rows/answer_row.php
     echo $sRows;

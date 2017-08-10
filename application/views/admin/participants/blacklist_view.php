@@ -11,7 +11,7 @@
         <?php
         if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
-            $attribute = array('class' => 'col-md-6 col-md-offset-1 form-horizontal');
+            $attribute = array('class' => 'col-md-6 col-md-offset-1 ');
             echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlacklistValues'), 'post', $attribute);
             $options = array('Y' => gT('Yes','unescaped'), 'N' => gT('No','unescaped'));
             ?>

@@ -79,13 +79,24 @@
                                     echo $blockData->getContent();
                                 }
 
-                                $languageData = array(
-                                    'default' => gT('Default')
-                                );
-                                foreach (getLanguageDataRestricted(true) as $sLangKey => $aLanguage)
+                                $aLangList = getLanguageDataRestricted(true);
+                                $languageData = array();
+
+                                $reqLang = App()->request->getParam('lang');
+                                if ($reqLang === null){
+                                    $languageData['default'] = gT('Default');
+                                }else{
+                                    $languageData[$reqLang] = html_entity_decode($aLangList[$reqLang]['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLangList[$reqLang]['description'];
+                                    $languageData['default'] = gT('Default');
+                                    unset($aLangList[$reqLang]);
+                                }
+
+                                foreach ( $aLangList as $sLangKey => $aLanguage)
                                 {
                                     $languageData[$sLangKey] =  html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
                                 }
+
+
                                 echo CHtml::label(gT('Language'), 'loginlang');
 
                                 $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
@@ -93,11 +104,12 @@
                                     'data' => $languageData,
                                     'pluginOptions' => array(
                                     'options' => array(
+                                        'value' => 'default'
                                     ),
                                     'htmlOptions' => array(
                                         'id' => 'loginlang'
                                     ),
-                                    'value' => 'default'
+
                                 )));
                                 ?>
 

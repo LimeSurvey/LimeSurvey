@@ -171,10 +171,11 @@ class export extends Survey_Common_Action {
 
         if ( ! $sExportType )
         {
+            $aFieldMap = array();
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
             if ($survey->isSaveTimings) {
                 //Append survey timings to the fieldmap array
-                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,$oSurvey->language);
+                $aFieldMap = createTimingsFieldMap($iSurveyID, 'full',false,false,$oSurvey->language);
             }
             $iFieldCount = count($aFieldMap);
 
@@ -195,6 +196,7 @@ class export extends Survey_Common_Action {
             }
 
             $aFields=array();
+            $aFieldsOptions=array();
             foreach($aFieldMap as $sFieldName=>$fieldinfo)
             {
                 $sCode=viewHelper::getFieldCode($fieldinfo);
@@ -258,6 +260,8 @@ class export extends Survey_Common_Action {
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
+            $data['title_bar']['subaction'] = gT('Export results');
+            $data['subaction'] = gT('Export results');
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
 
@@ -689,6 +693,8 @@ class export extends Survey_Common_Action {
 
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
+            $aData['title_bar']['subaction'] = gt('Export a VV survey file');
+            $aData['subaction'] = gt('Export a VV survey file');
 
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
@@ -1080,7 +1086,7 @@ class export extends Survey_Common_Action {
             unlink($sLSTFileName);
         }
 
-        if ( $survey->hasTimingsTable ) {
+        if ( isset($survey->hasTimingsTable ) ) {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
             $this->_addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
             unlink($sLSIFileName);
@@ -1246,6 +1252,8 @@ class export extends Survey_Common_Action {
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
         $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['subaction'] = gt('queXML PDF export');
+        $aData['subaction'] = gt('queXML PDF export');
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
         array_unshift($aData['slangs'],$aData['baselang']);

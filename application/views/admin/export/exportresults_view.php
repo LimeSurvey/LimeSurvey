@@ -19,7 +19,7 @@
         ?>
     </h3>
 
-    <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport', 'class'=>'form-horizontal'));?>
+    <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport', 'class'=>''));?>
         <div class="row">
             <div class="col-sm-12 content-right">
                 <div class="row">

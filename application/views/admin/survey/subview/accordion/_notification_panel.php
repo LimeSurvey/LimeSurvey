@@ -21,8 +21,8 @@
     <div class="col-sm-12 col-md-6">
         <!-- Date Stamp -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='datestamp'><?php  eT("Date stamp:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='datestamp'><?php  eT("Date stamp:"); ?></label>
+            <div class="">
                 <?php if ($oSurvey->isActive) { ?>
                     <?php if ($oSurvey->datestamp != "Y") {
                             eT("Responses will not be date stamped.");
@@ -56,8 +56,8 @@
         </div>
         <!-- Save IP Address -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='ipaddr'><?php  eT("Save IP address:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='ipaddr'><?php  eT("Save IP address:"); ?></label>
+            <div class="">
                 <?php if ($oSurvey->isActive) {
                     if ($oSurvey->ipaddr!= "Y") {
                         eT("Responses will not have the IP address logged.");
@@ -79,8 +79,8 @@
 
         <!-- Save referrer URL -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='refurl'><?php  eT("Save referrer URL:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='refurl'><?php  eT("Save referrer URL:"); ?></label>
+            <div class="">
                 <?php if ($oSurvey->isActive) { ?>
                     <?php  if ($oSurvey->refurl != "Y") {
                             eT("Responses will not have their referring URL logged.");
@@ -102,8 +102,8 @@
 
         <!-- Save timings -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='savetimings'><?php  eT("Save timings:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='savetimings'><?php  eT("Save timings:"); ?></label>
+            <div class="">
                 <?php if ($oSurvey->isActive): ?>
                     <?php if ($oSurvey->savetimings != "Y"): ?>
                         <?php  eT("Timings will not be saved."); ?>
@@ -127,8 +127,8 @@
 
         <!-- Enable assessment mode -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='assessments'><?php  eT("Enable assessment mode:"); ?></label>
-            <div class="col-sm-7"><?php
+            <label class=" control-label" for='assessments'><?php  eT("Enable assessment mode:"); ?></label>
+            <div class=""><?php
                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'assessments',
                     'value'=> $oSurvey->isAssessments,
@@ -140,8 +140,8 @@
 
         <!-- Participant may save and resume  -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='allowsave'><?php  eT("Participant may save and resume later:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='allowsave'><?php  eT("Participant may save and resume later:"); ?></label>
+            <div class="">
             <?php
                 $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'allowsave',
@@ -156,26 +156,26 @@
     <div class="col-sm-12 col-md-6">
         <!-- email basic to -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
+            <div class="">
                 <?php echo CHtml::textField('emailnotificationto',$oSurvey->emailnotificationto,array('size'=>70, 'class'=>"form-control")); ?>
             </div>
         </div>
 
         <!-- email detail to  -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
+            <div class="">
                 <?php echo CHtml::textField('emailresponseto',$oSurvey->emailresponseto,array('size'=>70, 'class'=>"form-control")) ?>
             </div>
         </div>
 
         <!-- GoogleAnalytics settings to be used -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for="googleanalyticsapikeysetting">
+            <label class=" control-label" for="googleanalyticsapikeysetting">
                 <?php echo gT('Google Analytics settings:');?>
             </label>
-            <div class="col-sm-7">
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'googleanalyticsapikeysetting',
                     'value'=>  $oSurvey->googleanalyticsapikeysetting,
@@ -189,15 +189,15 @@
         </div>
         <!-- Google Analytics -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
+            <div class="">
                 <?php echo CHtml::textField('googleanalyticsapikey',$oSurvey->googleanalyticsapikey,array('size'=>20), array('class'=>"form-control")); ?>
             </div>
         </div>
         <!-- Google Analytics style -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='googleanalyticsstyle'><?php  eT("Google Analytics style:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='googleanalyticsstyle'><?php  eT("Google Analytics style:"); ?></label>
+            <div class="">
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'googleanalyticsstyle',
                     'value'=> $oSurvey->googleanalyticsstyle ,

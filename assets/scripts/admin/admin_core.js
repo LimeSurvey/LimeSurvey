@@ -15,7 +15,7 @@
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
 
 // Namespace
-var LS = LS || {};
+var LS = LS || {  onDocumentReady: {} };
 
 /* Set a variable to test if browser have HTML5 form ability
  * Need to be replaced by some polyfills see #8009
@@ -25,7 +25,7 @@ hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'fu
 /* See function */
 fixAccordionPosition();
 
-$(document).ready(function(){
+$(document).on('ready pjax:complete', function(){
 
     initializeAjaxProgress();
     tableCellAdapters();
@@ -97,8 +97,8 @@ $(document).ready(function(){
             // html contains the buttons
             success : function(html, statut){
                 $('#survey-action-container').animate({
-            "height": "toggle", "opacity": "toggle"
-        });
+                    "height": "toggle", "opacity": "toggle"
+                });
                 $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
             },
             error :  function(html, statut){
@@ -245,11 +245,15 @@ $(document).ready(function(){
         $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
     });
 
+    $('[data-is-bootstrap-switch]').bootstrapSwitch();
+
 });
+
+
 
 function qTypeDropdownInit()
 {
-    $(document).ready(function () {
+    var onDocumentReadyAdminCoreq = function () {
         $("#question_type_button .questionType").each(function(index,element){
             $(element).qtip({
                 style: {
@@ -269,9 +273,6 @@ function qTypeDropdownInit()
             });
 
         });
-    });
-    $(document).ready(function() {
-
         $('.questionType').on('mouseenter', function(e){
             //alert($(this).attr('class'));
             $('.questionType').qtip('hide');
@@ -281,7 +282,9 @@ function qTypeDropdownInit()
         $('.questionType').on('mouseleave', function(e){
             $(this).qtip('hide');
         });
-    });
+    };
+
+    $(document).on('ready  pjax:complete', onDocumentReadyAdminCoreq);
 }
 
 
@@ -980,4 +983,13 @@ function fixAccordionPosition(){
             }, 500);
         }
     });
+}
+
+
+LS.appendAlert = function(alertText){
+    var rawAlert = $('<div class="alert alert-success alert-dismissible" role="alert"></div>');
+    var closeButton = $('<button type="button" class="close limebutton" data-dismiss="alert" aria-label="Close" name="yt0"><span>×</span></button>');
+    rawAlert.text(alertText);
+    rawAlert.prepend(closeButton);
+    $('#notif-container').append(rawAlert);
 }

@@ -245,7 +245,11 @@ class questiongroups extends Survey_Common_Action
             {
                 $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
             }
-            else
+            else if(Yii::app()->request->getPost('saveandnew','') !== '')
+            {
+                $this->getController()->redirect(array("admin/questiongroups/sa/add/surveyid/$surveyid"));
+            }
+            else 
             {
                 // After save, go to edit
                 $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$newGroupID"));

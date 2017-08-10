@@ -1,11 +1,10 @@
-$(document).ready(function(){
+$(document).on('ready pjax:complete', function(){
     if($('.side-body').length){
-
         $('#notif-container .alert').attr('style', 'margin-top: 20px');
-        if($('#breadcrumb-container').length>0)
+        if($('#vue-app-main-container').length>0)
         {
             //$('#notif-container .alert').prependTo('.side-body');
-            $('#notif-container .alert').insertAfter('#breadcrumb-container');
+            //$('#notif-container .alert').before('#vue-app-main-container');
         }
         else
         {
@@ -75,7 +74,7 @@ $(document).ready(function(){
 /*
 
 
-$(document).ready(function(){
+$(document).on('ready pjax:complete', function(){
         if($('.side-body').length){
             //$('#update-container').removeClass();
 

@@ -29,6 +29,9 @@
 !/plugins/Demo/
 !/plugins/AuditLog/
 
+#ignore old styles
+/styles/
+
 #ignore most of the js-build stuff
 .eslintrc
 .eslintignore
@@ -77,6 +80,10 @@ launch.json
 !/plugins/Demo/
 !/plugins/AuditLog/
 enabletests
+
+## Ignore test tmp files
+/tests/data/tmp/**
+
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
