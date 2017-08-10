@@ -6,9 +6,11 @@
  */
 
 // Namespace
-var LS = LS || {};
+var LS = LS || {
+    onDocumentReady: {}
+};
 
-$(document).ready(function() {
+$(document).on('ready  pjax:complete', function() {
 
     /**
      * Log stuff

@@ -7,8 +7,8 @@
 
 <?php $RPCInterface=getGlobalSetting('RPCInterface'); ?>
 <div class="form-group">
-    <label class="col-sm-4 control-label"  for='RPCInterface'><?php eT("RPC interface enabled:"); ?></label>
-    <div class="col-sm-6">
+    <label class=" control-label"  for='RPCInterface'><?php eT("RPC interface enabled:"); ?></label>
+    <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'RPCInterface',
             'value'=> $RPCInterface ,
@@ -22,15 +22,15 @@
 </div>
 
 <div class="form-group">
-    <label class="col-sm-4 control-label" ><?php eT("URL:"); ?></label>
-    <div class="col-sm-8">
+    <label class=" control-label" ><?php eT("URL:"); ?></label>
+    <div class="">
         <?php echo $this->createAbsoluteUrl("admin/remotecontrol"); ?>
     </div>
 </div>
 
 <div class="form-group">
-    <label class="col-sm-4 control-label"  for='rpc_publish_api'><?php eT("Publish API on /admin/remotecontrol:"); ?></label>
-    <div class="col-sm-6">
+    <label class=" control-label"  for='rpc_publish_api'><?php eT("Publish API on /admin/remotecontrol:"); ?></label>
+    <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'rpc_publish_api',
             'id'=>'rpc_publish_api',

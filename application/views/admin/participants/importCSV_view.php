@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-lg-8">
 
-            <?php echo CHtml::form(array("admin/participants/sa/attributeMapCSV"), 'post', array('id'=>'addsurvey','class'=>'col-md-6 col-md-offset-3 form-horizontal ', 'enctype'=>'multipart/form-data', 'accept-charset'=>'utf-8')); ?>
+            <?php echo CHtml::form(array("admin/participants/sa/attributeMapCSV"), 'post', array('id'=>'addsurvey','class'=>'col-md-6 col-md-offset-3  ', 'enctype'=>'multipart/form-data', 'accept-charset'=>'utf-8')); ?>
 
             <div class="form-group">
                 <label for="the_file" id="fileupload" class='control-label col-sm-5'>

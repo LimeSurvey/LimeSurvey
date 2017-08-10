@@ -4,7 +4,7 @@
  * @todo : set some var to core : input name for starting
  */
 ?>
-<div class='load-survey-form form-horizontal'>
+<div class='load-survey-form '>
     <div class='form-group load-survey-row load-survey-name'>
         <label class='control-label col-sm-3 load-survey-label' for='loadname'><?php echo gT("Saved name:") ?></label>
         <div class='col-sm-7 load-survey-input input-cell'>

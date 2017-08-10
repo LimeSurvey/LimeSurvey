@@ -7,9 +7,11 @@
         <?php
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-superfish');
+            App()->getClientScript()->registerPackage('ckeditor');
+            App()->getClientScript()->registerPackage('ckeditoradditions');
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui.css');
         ?>
-        <script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL') . '/ckeditor.js'; ?>"></script>
+        <!--<script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL') . '/ckeditor.js'; ?>"></script>-->
     </head>
 
     <body>
@@ -31,12 +33,13 @@
                 var saveChanges = false;
                 var sReplacementFieldTitle = '<?php eT('Placeholder fields','js');?>';
                 var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field','js');?>';
-                $(document).ready(function(){
+                $(document).on('ready pjax:complete', function(){
                     //console.log('iGroupId: '+iGroupId);
             // Better use try/catch to not crash JS completely
             /*
                 try{ console.log('iGroupId: '+iGroupId); } catch (e){ console.log(e); }
                 */
+                if($('textarea').length > 0){
                     CKEDITOR.on('instanceReady',CKeditor_OnComplete);
                     var oCKeditor = CKEDITOR.replace( 'MyTextarea' ,  { height	: '350',
                         width	: '98%',
@@ -52,6 +55,7 @@
                         LimeReplacementFieldsPath : "<?php echo $this->createUrl("/admin/limereplacementfields/sa/index"); ?>",
                         language : "<?php echo $ckLanguage ?>"
                         <?php echo $htmlformatoption; ?> });
+                }
                 });
 
                 function CKeditor_OnComplete( evt )

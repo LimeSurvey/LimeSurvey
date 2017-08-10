@@ -22,15 +22,13 @@ if(isset($scripts))
 ?>
 
 <div class="row col-12">
-    <?php
-    // $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>$entryData['title'])); ?>
     <h3 class="pagetitle"><?php echo $entryData['title']; ?></h3>
 
     <!-- Edition container -->
 
     <!-- Form -->
     <div class="col-xs-12">
-        <?php echo CHtml::form(array("admin/database/index/".$entryData['action']), 'post', array('id'=>$entryData['name'],'name'=>$entryData['name'],'class'=>'form-horizontal form30')); ?>
+        <?php echo CHtml::form(array("admin/database/index/".$entryData['action']), 'post', array('id'=>$entryData['name'],'name'=>$entryData['name'],'class'=>' form30')); ?>
 
         <div class="row">
             <div class="<?=$entryData['classes']?>">
@@ -51,5 +49,23 @@ if(isset($scripts))
         <input type="hidden" name="responsejson" value="1" />
         <input type='submit' class="hide" id="globalsetting_submit" />
         </form>
+        <script>
+            $('#<?=$entryData['name']?>').on('submit', function(){
+                var data = $(this).serializeArray();
+                var url = $(this).attr('action');
+                $.ajax({
+                    url : url,
+                    data : data,
+                    method: "POST", 
+                    dataType: 'json',
+                    success: function(result,xhr){
+                        window.location.reload();
+                    },
+                    error: function(error){
+                        try{console.trace(error);}catch(e){console.log(error);}
+                    }
+                });
+            });
+        </script>
     </div>
 </div>

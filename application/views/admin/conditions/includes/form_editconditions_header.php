@@ -16,7 +16,7 @@
 
         <hr/>
         <!-- Form  editconditions -->
-        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"editconditions",'name'=>"editconditions", 'class' => 'form form-horizontal'));?>
+        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"editconditions",'name'=>"editconditions", 'class' => 'form'));?>
             <div class='form-group'>
                 <div class='col-sm-2'></div>
                 <div class='col-sm-10'>

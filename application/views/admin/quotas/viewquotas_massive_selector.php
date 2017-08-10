@@ -16,7 +16,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'activate',
-            'url'         => App()->createUrl('/admin/quotas/massiveAction/action/activate'),
+            'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/activate'),
             'iconClasses' => 'fa fa-play text-success',
             'text'        =>  gT("Activate"),
             'grid-reload' => 'yes',
@@ -32,7 +32,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'deactivate',
-            'url'         => App()->createUrl('/admin/quotas/massiveAction/action/deactivate'),
+            'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/deactivate'),
             'iconClasses' => 'fa fa-pause text-warning',
             'text'        =>  gT("Deactivate"),
             'grid-reload' => 'yes',
@@ -48,7 +48,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'changeLanguageSettings',
-            'url'         => App()->createUrl('/admin/quotas/massiveAction/action/changeLanguageSettings'),
+            'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/changeLanguageSettings'),
             'iconClasses' => 'fa fa-external-link text-success',
             'text'        =>  gT("Change texts"),
             'grid-reload' => 'yes',
@@ -75,7 +75,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'delete',
-            'url'         => App()->createUrl('/admin/quotas/massiveAction/action/delete'),
+            'url'         => App()->createUrl('/admin/quotas/sa/massiveAction/action/delete'),
             'iconClasses' => 'fa fa-trash text-danger',
             'text'        =>  gT("Delete"),
             'grid-reload' => 'yes',

@@ -1,7 +1,11 @@
 /**
  * JavaScript functions for HomePage Settings
  */
-$(document).ready(function(){
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+$(document).on('ready  pjax:complete', function(){
 
     /**
      * Toggle show logo value

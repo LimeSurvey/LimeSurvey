@@ -214,7 +214,9 @@ class AdminController extends LSYii_Controller
         'validate'         => 'ExpressionValidate',
         'globalsettings'   => 'globalsettings',
         'htmleditor_pop'   => 'htmleditor_pop',
-        'homepagesettings'   => 'homepagesettings',
+        'homepagesettings' => 'homepagesettings',
+        'templateoptions'  => 'templateoptions',
+        'surveysgroups'    => 'SurveysGroupsController',
         'limereplacementfields' => 'limereplacementfields',
         'index'            => 'index',
         'labels'           => 'labels',
@@ -237,7 +239,9 @@ class AdminController extends LSYii_Controller
         'translate'        => 'translate',
         'update'           => 'update',
         'pluginhelper'     => 'PluginHelper',
-        'notification'     => 'NotificationController'
+        'notification'     => 'NotificationController',
+        'menus'            => 'SurveymenuController',
+        'menuentries'      => 'SurveymenuEntryController'
         );
     }
 

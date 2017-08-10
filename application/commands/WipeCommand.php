@@ -77,6 +77,22 @@ class WipeCommand extends CConsoleCommand
             Yii::app()->db->createCommand($actquery)->execute();
             $actquery="update {{users}} set lang='en'";
             Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="update {{users}} set lang='auto'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="delete from {{settings_global}} where stg_name LIKE 'last_question%'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="delete from {{settings_global}} where stg_name LIKE 'last_survey%'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="update {{users}} set email = 'test@domain.test', full_name='Administrator'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="update {{settings_global}} set stg_value='' where stg_name='googleanalyticsapikey' or stg_name='googleMapsAPIKey' or stg_name='googletranslateapikey' or stg_name='ipInfoDbAPIKey' or stg_name='pdfheadertitle' or stg_name='pdfheaderstring'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="update {{settings_global}} set stg_value='test@domain.test' where stg_name='siteadminbounce' or stg_name='siteadminemail'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="update {{settings_global}} set stg_value='Administrator' where stg_name='siteadminname'";
+            Yii::app()->db->createCommand($actquery)->execute();
+            $actquery="update {{settings_global}} set stg_value='Sea_Green' where stg_name='admintheme'";
+            Yii::app()->db->createCommand($actquery)->execute();
 
             $surveyidresult = dbGetTablesLike("tokens%");
             foreach ( $surveyidresult as $sv )

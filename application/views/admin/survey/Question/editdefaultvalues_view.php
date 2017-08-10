@@ -7,13 +7,12 @@
  */
 ?>
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT("Edit default answer values") )); ?>
     <h3>
         <?php eT('Edit default answer values') ?>
     </h3>
     <div class="row">
         <div class="col-lg-8 content-right">
-            <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form-horizontal','id'=>'frmdefaultvalues','name'=>'frmdefaultvalues')); ?>
+            <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'','id'=>'frmdefaultvalues','name'=>'frmdefaultvalues')); ?>
 
                     <ul class="nav nav-tabs">
                         <?php
@@ -38,7 +37,7 @@
                                                 $opts = $langopts[$language][$questionrow['type']][$scale_id];
                                             ?>
                                             <div class="form-group">
-                                                <label class="col-sm-2 control-label"for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
+                                                <label class=" control-label"for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                                     <?php
                                                         $qtproperties[$questionrow['type']]['answerscales'] > 1 ? printf(gT('Default answer for scale %s:'), $scale_id) : printf(gT('Default answer value:'), $scale_id) ?>
                                                 </label>
@@ -62,7 +61,7 @@
                                                 if ($questionrow['other'] == 'Y') {
                                                 ?>
                                                 <div class="form-group">
-                                                    <label class="col-sm-2 control-label"for='other_<?php echo "{$scale_id}_{$language}" ?>'>
+                                                    <label class=" control-label"for='other_<?php echo "{$scale_id}_{$language}" ?>'>
                                                         <?php eT("Default value for option 'Other':")?>
                                                     </label>
                                             <div class="col-sm-10">
@@ -107,7 +106,7 @@
                                                         foreach ($opts['sqresult'] as $aSubquestion) {
                                                         ?>
                                                         <div class="form-group">
-                                                            <label class="col-sm-2 control-label"for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
+                                                            <label class=" control-label"for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
                                                                 <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                             </label>
                                             <div class="col-sm-10">
@@ -130,7 +129,7 @@
                                                         foreach ($opts['sqresult'] as $aSubquestion) {
                                                         ?>
                                                         <div class="form-group">
-                                                            <label class="col-sm-2 control-label"for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
+                                                            <label class=" control-label"for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
                                                                 <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                             </label>
                                             <div class="col-sm-10">
@@ -168,7 +167,7 @@
                                             ?>
                                             <?php if ($questionrow['type'] != 'Y'): //temporary solution - until everything is move to widgets?>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
+                                            <label class=" control-label"for='defaultanswerscale_<?php echo "0_{$language}_0" ?>'>
                                                 <?php eT("Default value:")?>
                                             </label>
                                             <div class="col-sm-10">
@@ -184,10 +183,10 @@
                                         if ($language == $oSurvey->language && count($oSurvey->allLanguages) > 1) {
                                         ?>
                                         <div class="form-group">
-                                            <label class="col-sm-4 control-label"for='samedefault'>
+                                            <label class=" control-label"for='samedefault'>
                                                 <?php eT('Use same default value across languages:') ?>
                                             </label>
-                                            <div class="col-sm-8">
+                                            <div class="">
                                             <input type='checkbox' name='samedefault' id='samedefault'<?php $questionrow['same_default'] ? ' checked="checked"' : '' ?> />
                                         </div></div>
                                         <?php

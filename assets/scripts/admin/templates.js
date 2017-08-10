@@ -1,6 +1,9 @@
 // based on TTabs from http://interface.eyecon.ro/
+var LS = LS || {
+    onDocumentReady: {}
+};
 
-$(document).ready(function(){
+$(document).on('ready  pjax:complete', function(){
 
     $('.ace:not(.none)').ace({
         'mode' : editorfiletype,

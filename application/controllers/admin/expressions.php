@@ -16,16 +16,23 @@ class Expressions extends Survey_Common_Action {
     {
         $aData=array();
         $needpermission=false;
-        $aData['surveyid']=$surveyid=$iSurveyID=sanitize_int(Yii::app()->request->getQuery('sid'));
+
+        $iSurveyID = sanitize_int(Yii::app()->request->getQuery('surveyid', false));
+        if(!$iSurveyID)
+        {
+            $iSurveyID = sanitize_int(Yii::app()->request->getQuery('sid'));
+        }
+        
         $aData['sa']=$sa=sanitize_paranoid_string(Yii::app()->request->getQuery('sa','index'));
 
         $aData['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
 
-        if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $surveyid)
+        if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $iSurveyID)
         {
             $needpermission=true;
         }
-        if($needpermission && !Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read'))
+
+        if($needpermission && !Permission::model()->hasSurveyPermission($iSurveyID,'surveycontent','read'))
         {
             $message['title']= gT('Access denied!');
             $message['message']= gT('You do not have permission to access this page.');
@@ -41,36 +48,50 @@ class Expressions extends Survey_Common_Action {
             App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . '/expressions/em_javascript.js');
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
+            $aData['subaction']=$this->_printTitle($aData['sa']);
 
             if(isset($iSurveyID))
             {
                 $survey = Survey::model()->findByPk($iSurveyID);
-
+                //$aData['sid']=$aData['surveyid'] = $surveyid=$iSurveyID;
+                $aData['surveyid'] = $iSurveyID;
                 $aData['sidemenu']['state'] = false;
                 $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-                if(Yii::app()->request->getQuery('gid')!='')
+                $aData['assessments'] =  Yii::app()->request->getQuery('assessments', $survey->assessments == 'Y');
+
+                $LEM_debug_timing               = Yii::app()->request->getQuery('LEM_DEBUG_TIMING', 0) == 'Y';
+                $LEM_debug_validation_summary   = Yii::app()->request->getQuery('LEM_DEBUG_VALIDATION_SUMMARY', 0) == 'Y';
+                $LEM_debug_validation_detail   = Yii::app()->request->getQuery('LEM_DEBUG_VALIDATION_DETAIL', 0) == 'Y';
+                $LEM_pretty_print_all_syntax   = Yii::app()->request->getQuery('LEM_PRETTY_PRINT_ALL_SYNTAX', 0) == 'Y';
+
+                $aData['LEMdebugLevel'] = $LEM_debug_timing+$LEM_debug_validation_summary+$LEM_debug_validation_detail+$LEM_pretty_print_all_syntax;
+
+                $aData['language'] = Yii::app()->request->getQuery('lang', NULL);
+                $aData['gid'] = Yii::app()->request->getQuery('gid', NULL);
+                $aData['qid'] = Yii::app()->request->getQuery('qid', NULL);
+
+                if($aData['gid'] != NULL)
                 {
-                    $aData['questiongroupbar']['closebutton']['url'] = $this->getController()->createUrl('admin/questiongroups/sa/view/',['surveyid'=> $surveyid, 'gid'=> sanitize_int(Yii::app()->request->getQuery('gid'))]);
+                    $aData['questiongroupbar']['closebutton']['url'] = $this->getController()->createUrl('admin/questiongroups/sa/view/',['surveyid'=> $iSurveyID, 'gid'=> $aData['gid']]);
                 }
                 else
                 {
-                    $aData['surveybar']['closebutton']['url'] =  $this->getController()->createUrl('/admin/survey/sa/view/',['surveyid'=> $surveyid]);
+                    $aData['surveybar']['closebutton']['url'] =  $this->getController()->createUrl('/admin/survey/sa/view/',['surveyid'=> $iSurveyID]);
                 }
 
-                if(Yii::app()->request->getQuery('qid')!='')
+                if($aData['qid'] != NULL)
                    {
                     $aData['questiongroupbar']['closebutton']['url'] = $this->getController()->createUrl(
-                        'admin/questiongroups/sa/view/',
-                        ['surveyid'=> $surveyid, 'gid'=> sanitize_int(Yii::app()->request->getQuery('gid')), 'qid'=> sanitize_int(Yii::app()->request->getQuery('qid'))]);
-                    
-                    $aData['gid'] = sanitize_int(Yii::app()->request->getQuery('gid'));
+                        'admin/questiongroups/sa/view/', $aData);
+
                 }
             }
 
 
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
-            if(isset($_GET['sa']))
-                $this->test($aData['sa'],$aData);
+            $sAction = Yii::app()->request->getQuery('sa',false);
+            if($sAction)
+                $this->test($sAction,$aData);
             else
                 $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
         }
@@ -78,7 +99,7 @@ class Expressions extends Survey_Common_Action {
 
     protected function test($which,$aData)
     {
-            $this->_renderWrappedTemplate('expressions', 'test/'.$which, $aData);
+        $this->_renderWrappedTemplate('expressions', 'test/'.$which, $aData);
         //$this->getController()->render('/admin/expressions/test/'.$which);
     }
 
@@ -165,9 +186,9 @@ class Expressions extends Survey_Common_Action {
     protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array())
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');
-        //$aData['display']['header']=false;
-        $aData['display']['menu_bars'] = false;
-        //$aData['display']['footer']= false;
+        // $aData['display']['header']=true;
+        // $aData['display']['menu_bars'] = true;
+        // $aData['display']['footer']= true;
         header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
