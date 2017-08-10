@@ -571,7 +571,7 @@ class quotas extends Survey_Common_Action
 
             foreach ($aAnsResults as $aDbAnsList)
             {
-                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40), 'code' => $aDbAnsList['code']);
+                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => $aDbAnsList['answer'], 'code' => $aDbAnsList['code']);
             }
 
         } elseif ($aQuestionType == 'A')
