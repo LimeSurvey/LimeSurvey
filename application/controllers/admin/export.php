@@ -196,7 +196,7 @@ class export extends Survey_Common_Action {
             }
 
             $aFields=array();
-            $aFieldsOptions=array();
+            $aFieldsOptions = array();
             foreach($aFieldMap as $sFieldName=>$fieldinfo)
             {
                 $sCode=viewHelper::getFieldCode($fieldinfo);
