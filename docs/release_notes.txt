@@ -35,6 +35,37 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.67.2 (build 170726) to 2.67.3 (build 170728) July 28, 2017
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German (Informal) by actxcellence, c_schmitz
+#Updated translation: German by Thomas218, actxcellence, c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Russian by c0der, vipgroup
+#Updated translation: Slovenian by lado, dusan
+#Updated translation: Spanish (Mexican) by fernandoessv
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Turkish by kayazeren
+-Fixed issue #12492  Use of "text fields" as filter in "Participants" and "Answers" (markusfluer)
+-Fixed issue: Added fallback if tidy is not available (markusfluer)
+-Fixed issue: Another soon to be fixed tidy error (markusfluer)
+-Fixed issue: Maximum file size not visible during VV import (Carsten Schmitz)
+-Fixed issue: Security issue - Users need to put in their old password to change the current (markusfluer)
+-Fixed issue: Tidy was not configured for utf-8 (markusfluer)
+-Fixed issue: Wrong colours in statistics graphs when labels are duplicated (Olle Haerstedt)
+-Fixed issue: Empty array instead of null for tidy_repair_string (markusfluer)
+-Fixed issue: Pagination of participants list not working (LouisGac)
+-Fixed issue: Subquestions not saved in quick translation (LouisGac)
+
 Changes from 2.67.1 (build 170626) to 2.67.2 (build 170726) July 26, 2017
 -Fixed issue #12491: Permission to delete participants not obeyed in export dialog (Carsten Schmitz)
 -Fixed issue: Default template with questions of white font color (markusfluer)

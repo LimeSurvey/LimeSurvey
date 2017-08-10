@@ -3192,6 +3192,9 @@ function safeDie($text)
     die(implode( '<br />',$textarray));
 }
 
+/**
+ * @param string $str
+ */
 function fixCKeditorText($str)
 {
     $str = str_replace('<br type="_moz" />','',$str);

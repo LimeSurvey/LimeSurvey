@@ -32,9 +32,11 @@
             return parent::create($surveyId, $scenario);
         }
         /**
-         * Delete all files related to this repsonse.
-         */
-        public function getFiles()
+        * Get all files related to this response and (optionally) question ID.
+        * 
+        * @param integer $sQID The question ID - optional - Default 0
+        */
+        public function getFiles($sQID=0)
         {
             $survey = Survey::model()->findByPk($this->dynamicId);
             $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|','language'=>$survey->language));
