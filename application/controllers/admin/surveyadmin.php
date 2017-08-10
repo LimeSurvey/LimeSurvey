@@ -2123,7 +2123,6 @@ class SurveyAdmin extends Survey_Common_Action
                     ['surveyid'=>$iNewSurveyid]
                     );
             }
-
             return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(

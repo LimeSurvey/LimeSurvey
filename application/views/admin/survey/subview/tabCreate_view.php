@@ -81,7 +81,7 @@ PrepareEditorScript(false, $this);
 
 <script>
     var updateCKfields = function(){
-        $('textarea.ckeditor').each(function () {
+        $('textarea').each(function () {
             var $textarea = $(this);
             $textarea.val(CKEDITOR.instances[$textarea.attr('name')].getData());
         });
@@ -104,35 +104,15 @@ PrepareEditorScript(false, $this);
         $('a.create_survey_wizard_tabs').on('shown.bs.tab', function (e) {
             var count = $(e.target).data('count'); 
             var sessionStorageValue = sessionStorage.getItem('maxtabs') || 1;
-            console.log(count, sessionStorageValue);
+            //console.log(count, sessionStorageValue);
             if(count>3 || sessionStorageValue>3){
                 $('#save-form-button').removeClass('disabled');
                 $('#save-and-close-form-button').removeClass('disabled');
             }
         });
-        $('#addnewsurvey').find('#create_survey_save_and_send').on('click', function(ev){
-             ev.preventDefault();
-             ev.stopPropagation();
-             updateCKfields();
-            $.ajax({
-                url: $('#addnewsurvey').attr('action'),
-                data: $('#addnewsurvey').serializeArray(),
-                method: 'POST',
-                dataType: 'json',
-                success: function(data){
-                    console.log('form-return', data);
-                    if(data.redirecturl){
-                        window.location.href=data.redirecturl;
-                    } else {
-                        LS.appendAlert(data.alertData);
-                        $('#'+data.missingField).focus();
-                        $('#'+data.missingField).closest('.form-group').addClass('has-error');
-                    }
-                },
-                error: function(){
-                    // console.log(arguments)
-                },
-            });
-        })
+    });
+
+    $('#addnewsurvey').on('submit', function(ev){
+            updateCKfields();
     });
 </script>
