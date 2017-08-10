@@ -1,9 +1,29 @@
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Default survey template options ._.·´¯)·._.·´¯)
+
+    This is the form for the option parameters of the basic default template.
+
+#}
+
+{# The animation options are pulled from animate.css #}
 {% set animationOptions = '' %}
+{# For surveyspecific settings add an inherit option #}
 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
 {% set animationOptions = animationOptions ~ '
         <option value="inherit">Inherit</option>
 ' %}
 {% endif %}    
+{# List of possible animation of animate.css #}
 {% set animationOptions = animationOptions ~ '
         <optgroup label="Attention Seekers">
           <option value="bounce">bounce</option>
@@ -125,12 +145,15 @@
         </optgroup>
       '
 %}
+{# The default template offers the variety of the basic bootswatch styles #}
 {% set bootswatchOption = '' %}
+{# For surveyspecific settings add an inherit option #}
 {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
 {% set bootswatchOption = bootswatchOption ~ '
         <option value="inherit">Inherit</option>
 ' %}
 {% endif %}    
+{# List of Bootswatch styles #}
 {% set bootswatchOption = bootswatchOption ~ '
         <option value="">Basic Bootstrap</option>
         <option value="css/cerulean.css">Cerulean</option>
@@ -153,11 +176,14 @@
       '
 %}
 
-
+{# Small loading animation to give the scripts time to parse and render the correct values #}
 <div class="simple-template-edit-loading" style="display:none;height:100%;height:100vh;width:100%;width:100vw;position:fixed;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;" class="">
     <div style="position:absolute; left:49%;top:35%;" class="text-center"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
 </div> 
+{# Begin template option form #}
 <form class='form form-horizontal action_update_options_string_form' action=''>
+    
+    {# If this is a surveyspecific settings page, offer the possibility to do a full inheritance of the parent template #}
     {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
     <div class='row'>
         <div class='form-group'>
@@ -178,8 +204,12 @@
         <hr/>   
     </div>
     {% endif %}    
+
+    {# First settings row #}
     <div class='row action_hide_on_inherit'>
         <div class='col-sm-12 col-md-6'>
+            
+            {# Ajaxmode setting #}
             <div class='form-group'>
                 <label for='simple_edit_options_ajaxmode' class='col-sm-6 control-label'>Ajaxmode</label>
                 <div class='col-sm-6'>
@@ -192,6 +222,7 @@
                             <input name='ajaxmode' type='radio' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
                             No
                         </label>
+                        {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                         <label class="btn btn-primary">
                             <input name='ajaxmode' type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
@@ -204,6 +235,7 @@
         </div>
 
         <div class='col-sm-12 col-md-6'>
+            {# Brandlogo #}
             <div class='form-group'>
                 <label for='simple_edit_options_brandlogo' class='col-sm-6 control-label'>Brandlogo</label>
                 <div class='col-sm-6'>
@@ -216,6 +248,7 @@
                             <input type='radio' name='brandlogo' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
                             No
                         </label>
+                        {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                         <label class="btn btn-primary">
                             <input type='radio' name='brandlogo' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
@@ -228,6 +261,7 @@
         </div>
 
         <div class='col-sm-12 col-md-6'>
+            {# Background image #}
             <div class='form-group'>
                 <label for='simple_edit_options_backgroundimage' class='col-sm-6 control-label'>Background image</label>
                 <div class='col-sm-6'>
@@ -240,6 +274,7 @@
                             <input type='radio' name='backgroundimage' value='off' class='form-control selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage' />
                             No
                         </label>
+                        {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                         <label class="btn btn-primary">
                             <input type='radio' name='backgroundimage' value='inherit' class='form-control selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage' />
@@ -252,6 +287,7 @@
         </div>
 
         <div class='col-sm-12 col-md-6'>
+            {# Box container #}
             <div class='form-group'>
                 <label for='simple_edit_options_backgroundimage' class='col-sm-6 control-label'>Box container</label>
                 <div class='col-sm-6'>
@@ -264,6 +300,7 @@
                             <input type='radio' name='boxcontainer' value='off' class='form-control selector_option_radio_field simple_edit_options_boxcontainer ' data-id='boxcontainer' />
                             No
                         </label>
+                        {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                         <label class="btn btn-primary">
                             <input type='radio' name='boxcontainer' value='inherit' class='form-control selector_option_radio_field simple_edit_options_boxcontainer ' data-id='boxcontainer' />
@@ -281,6 +318,7 @@
     <div class='row action_hide_on_inherit' >
         <div class='col-sm-12 col-md-4'>
             <div class='form-group'>
+                {# Animate body On/Off #}
                 <label for='simple_edit_options_animatebody' class='col-sm-6 control-label'>Animate body</label>
                 <div class='col-sm-6'>
                     <div class="btn-group" data-toggle="buttons">
@@ -292,6 +330,7 @@
                             <input type='radio' value='off' class='form-control selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody' />
                             No
                         </label>
+                        {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                         <label class="btn btn-primary">
                             <input type='radio' value='inherit' class='form-control selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody' />
@@ -305,6 +344,7 @@
         <div class='col-sm-12 col-md-4'>
         </div>
         <div class='col-sm-12 col-md-8'>
+            {# Animate body -> Animation type #}
             <div class='form-group'>
                 <label for='simple_edit_options_bodyanimation' class='col-sm-2 control-label'>Body animation</label>
                 <div class='col-sm-10'>
@@ -317,6 +357,7 @@
     </div>
     <div class='row action_hide_on_inherit'>
         <div class='col-sm-12 col-md-4'>
+            {# Animate question -> On/Off #}
             <div class='form-group'>
                 <label for='simple_edit_options_animatequestion' class='col-sm-6 control-label'>Animate question</label>
                 <div class='col-sm-6'>
@@ -329,6 +370,7 @@
                             <input type='radio' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion' />
                             No
                         </label>
+                        {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                         <label class="btn btn-primary">
                             <input type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion' />
@@ -340,6 +382,7 @@
             </div>
         </div>
         <div class='col-sm-12 col-md-8'>
+            {# Animate question -> Animation type #}
             <div class='form-group'>
                 <label for='simple_edit_options_questionanimation' class='col-sm-2 control-label'>Question animation</label>
                 <div class='col-sm-10'>
@@ -352,6 +395,7 @@
     </div>
     <div class='row action_hide_on_inherit'>
         <div class='col-sm-12 col-md-4'>
+            {# Animate alert -> On/Off #}
             <div class='form-group'>
                 <label for='simple_edit_options_animatealert' class='col-sm-6 control-label'>Animate alert</label>
                 <div class='col-sm-6'>
@@ -364,6 +408,7 @@
                             <input type='radio' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert' />
                             No
                         </label>
+                        {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                         <label class="btn btn-primary">
                             <input type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert' />
@@ -375,6 +420,7 @@
             </div>
         </div>
         <div class='col-sm-12 col-md-8'>
+            {# Animate alert -> Animation options #}
             <div class='form-group'>
                 <label for='simple_edit_options_alertanimation' class='col-sm-2 control-label'>Alert animation</label>
                 <div class='col-sm-10'>
@@ -393,6 +439,7 @@
         <div class='panel panel-default'>
             <div class='panel-heading'>Bootstrap theme</div>
             <div class='panel-body'>
+                {# Bootstrap Bootswatch theme #}
                 <div class='form-group'>
                     <label for='simple_edit_cssframework' class='col-sm-2 control-label'>Bootswatch theme</label>
                     <div class='col-sm-10'>
