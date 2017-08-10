@@ -1,3 +1,11 @@
+<?php
+/**
+ * General options
+ * @var AdminController $this
+ * @var Survey $oSurvey
+ */
+
+?>
 <div class="panel panel-primary" id="panel-1">
     <div class="panel-heading">
         <div class="panel-title h4"><?php eT("Data selection"); ?></div>
