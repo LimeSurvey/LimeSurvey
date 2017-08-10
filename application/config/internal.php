@@ -256,6 +256,9 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
+                    'Survey' => array('sid','admin','active','expires','startdate','anonymized','format','savetimings','template','language','datestamp','usecookie','allowprev','printanswers','showxquestions','showgroupinfo','shownoanswer','showqnumcode','showwelcome','showprogress','questionindex','navigationdelay','nokeyboard','alloweditaftercompletion','hasTokensTable','hasResponsesTable'),
+                    'Question' => array('qid','parent_qid','sid','gid','type','title','question','help','other','mandatory','language','scale_qid'),
+                    'QuestionGroups' => array('gid','sid','group_name','group_order','description','language','randomization_group','grelevance')
                 ),
                 'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'unregisterPackage', 'unregisterScriptFile', 'unregisterScriptForAjax','listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
             ),

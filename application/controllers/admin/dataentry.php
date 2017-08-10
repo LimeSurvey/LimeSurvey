@@ -2431,7 +2431,7 @@ class dataentry extends Survey_Common_Action
         {
 
             /** @var Question $question */
-            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filte'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid));
             if($question) {
                 $output .= "\n<p class='extrahelp'>
                 ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($question->question)))."

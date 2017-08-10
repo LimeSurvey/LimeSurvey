@@ -67,16 +67,16 @@
         <div class="col-md-6 col-sm-12">
             <!-- Base language -->
             <div class="form-group">
-                <label class="col-sm-3 control-label" ><?php  eT("Base language:") ; ?></label>
-                <div class="col-sm-9" style="padding-top: 7px;">
+                <label class=" control-label" ><?php  eT("Base language:") ; ?></label>
+                <div class="" style="padding-top: 7px;">
                     <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>
                 </div>
             </div>
 
             <!-- Additional Languages -->
             <div class="form-group">
-                <label class="col-sm-3 control-label"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
-                <div class="col-sm-9">
+                <label class=" control-label"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
+                <div class="">
                     <?php
                     $aAllLanguages=getLanguageDataRestricted (false,'short');
                     $aAdditionalLanguages = (isset($surveyid) && $surveyid!=0) ?  Survey::model()->findByPk($surveyid)->additionalLanguages : [];
@@ -107,8 +107,8 @@
             <?php
             if (Yii::app()->session['loginID']==$oSurvey->owner_id || Permission::model()->hasGlobalPermission('superadmin','read')):?>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label"  for='owner_id'><?php  eT("Survey owner:"); ?></label>
-                    <div class="col-sm-9"><?php
+                    <label class=" control-label"  for='owner_id'><?php  eT("Survey owner:"); ?></label>
+                    <div class=""><?php
                         Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                             'asDropDownList' => true,
                             'htmlOptions'=>array('style'=>"width: 80%"),
@@ -127,8 +127,8 @@
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
                 <?php $admin = ($oSurvey->owner ? $oSurvey->owner->full_name : $oSurvey->admin); ?>
-                <label class="col-sm-3 control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
+                <div class="">
                     <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" />
                 </div>
             </div>
@@ -137,8 +137,8 @@
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
                 <?php $admin_email = $oSurvey->adminemail ? $oSurvey->owner->email : $oSurvey->adminemail; ?>
-                <label class="col-sm-3 control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
+                <div class="">
                     <input class="form-control" type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($admin_email); ?>" />
                 </div>
             </div>
@@ -147,16 +147,16 @@
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
                 <?php $bounce_email = ($oSurvey->bounce_email ? $oSurvey->bounce_email : $oSurvey->adminemail); ?>
-                <label class="col-sm-3 control-label"  for='bounce_email'><?php  eT("Bounce email:"); ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label"  for='bounce_email'><?php  eT("Bounce email:"); ?></label>
+                <div class="">
                     <input class="form-control" type='email' size='50' id='bounce_email' name='bounce_email' value="<?php echo htmlspecialchars($bounce_email); ?>" />
                 </div>
             </div>
 
             <!-- Fax to -->
             <div class="form-group">
-                <label class="col-sm-3 control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label"  for='faxto'><?php  eT("Fax to:"); ?></label>
+                <div class="">
                     <input class="form-control" type='text' size='50' id='faxto' name='faxto' value="<?php echo htmlspecialchars($oSurvey->faxto); ?>" />
                 </div>
             </div>
@@ -164,64 +164,64 @@
             <?php else: ?>
             <!-- End URL -->
             <div class="form-group">
-                <label class="col-sm-3 control-label" for='url'><?php  eT("End URL:"); ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label" for='url'><?php  eT("End URL:"); ?></label>
+                <div class="">
                     <input type='text' class="form-control"  id='url' name='url' placeholder="http://example.com" />
                 </div>
             </div>
 
             <!-- URL description -->
             <div class="form-group">
-                <label class="col-sm-3 control-label" for='urldescrip'><?php  eT("URL description:") ; ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label" for='urldescrip'><?php  eT("URL description:") ; ?></label>
+                <div class="">
                     <input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value=''  class="form-control"  placeholder="<?php eT('Some description text');?>" />
                 </div>
             </div>
 
             <!-- Date format -->
             <div class="form-group">
-                <label class="col-sm-3 control-label" for='dateformat'><?php  eT("Date format:") ; ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label" for='dateformat'><?php  eT("Date format:") ; ?></label>
+                <div class="">
                     <?php echo CHtml::listBox('dateformat',$sDateFormatDefault, $aDateFormatData, array('id'=>'dateformat','size'=>'1', 'class'=>'form-control')); ?>
                 </div>
             </div>
 
             <!-- Decimal mark -->
             <div class="form-group">
-                <label class="col-sm-3 control-label" for='numberformat'><?php  eT("Decimal mark:"); ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label" for='numberformat'><?php  eT("Decimal mark:"); ?></label>
+                <div class="">
                     <?php echo CHtml::listBox('numberformat',$sRadixDefault, $aRadixPointData, array('id'=>'numberformat','size'=>'1', 'class'=>'form-control')); ?>
                 </div>
             </div>
 
             <!-- Administrator -->
             <div class="form-group">
-                <label class="col-sm-3 control-label" for='admin'><?php  eT("Administrator:") ; ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label" for='admin'><?php  eT("Administrator:") ; ?></label>
+                <div class="">
                     <input type='text' size='50' id='admin' name='admin'   class="form-control"  value='<?php echo $owner['full_name'] ; ?>' />
                 </div>
             </div>
 
             <!-- Admin email -->
             <div class="form-group">
-                <label class="col-sm-3 control-label" for='adminemail'><?php  eT("Admin email:") ; ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label" for='adminemail'><?php  eT("Admin email:") ; ?></label>
+                <div class="">
                     <input type='email' size='30'   class="form-control"   id='adminemail' name='adminemail' value='<?php echo $owner['email'] ; ?>' />
                 </div>
             </div>
 
             <!-- Bounce Email -->
             <div class="form-group">
-                <label class="col-sm-3 control-label" for='bounce_email'><?php  eT("Bounce Email:") ; ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label" for='bounce_email'><?php  eT("Bounce Email:") ; ?></label>
+                <div class="">
                     <input type='email' size='50'  class="form-control"  id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email'] ; ?>' />
                 </div>
             </div>
 
             <!-- Fax to -->
             <div class="form-group">
-                <label class="col-sm-3 control-label" for='faxto'><?php  eT("Fax to:") ; ?></label>
-                <div class="col-sm-9">
+                <label class=" control-label" for='faxto'><?php  eT("Fax to:") ; ?></label>
+                <div class="">
                     <input type='text' size='50' id='faxto' name='faxto'  class="form-control" />
                 </div>
             </div>
@@ -229,10 +229,27 @@
             <?php endif;?>
     </div>
     <div class="col-md-6 col-sm-12">
+
+        <!-- Survey Group -->
+        <div class="form-group">
+            <label class=" control-label" for='format'><?php  eT("Group:"); ?></label>
+            <div class="">
+                <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                    'asDropDownList' => true,
+                    'htmlOptions'=>array('style'=>"width: 80%"),
+                    'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
+                    'value' => $oSurvey->gsid,
+                    'name' => 'gsid',
+                    'pluginOptions' => array()
+                ));?>
+            </div>
+        </div>
+
+
         <!-- Format -->
         <div class="form-group">
-            <label class="col-sm-3 control-label" for='format'><?php  eT("Format:"); ?></label>
-            <div class="col-sm-9">
+            <label class=" control-label" for='format'><?php  eT("Format:"); ?></label>
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'format',
                     'value'=> $oSurvey->format,
@@ -245,8 +262,8 @@
         </div>
         <!-- Template -->
         <div class="form-group">
-            <label class="col-sm-3 control-label" for='template'><?php  eT("Template:"); ?></label>
-            <div class="col-sm-9">
+            <label class=" control-label" for='template'><?php  eT("Template:"); ?></label>
+            <div class="">
                 <select id='template' class="form-control"  name='template'>
                     <?php foreach (array_keys(getTemplateList()) as $tname) {
 

@@ -1,71 +1,164 @@
-#sidebar{
+#sidebar {
     padding-top: 15px;
 }
 
-.menubar.surveybar{
-    width:100%;
-    margin: 8px auto;
-    z-index:100;
-}
-
-#side-menu-container{
-    width: 20%;
-}
-
-.nooverflow{
-    overflow: hidden;
-}
-
-.btn-primary.force.color.white.onhover{
-    &:hover, &:active,&:focus{
-        color:white;
+#pjax-content {
+    .surveybar {
+        box-shadow: 3px 3px 3px rgba(99, 49, 48, 0.1);
+    }
+    .side-body {
+        min-height: 0;
     }
 }
 
-#in_survey_common{
-    padding-bottom: 65px;
+.menubar {
+    position: relative;
 }
 
-ol.breadcrumb.title-bar-breadcrumb{
+.menubar.surveybar {
+    width: 100%;
+    margin: 8px auto;
+    z-index: 100;
+}
+
+#side-menu-container {
+    width: 20%;
+}
+
+.nooverflow {
+    overflow: hidden;
+}
+
+.overflow-enabled {
+    overflow: auto;
+}
+
+.btn-primary.force.color.white.onhover {
+    &:hover,
+    &:active,
+    &:focus {
+        color: white;
+    }
+}
+
+.side-body {
+    min-height: 400px;
+}
+
+footer.footer {
+    position: static;
+}
+
+ol.breadcrumb.title-bar-breadcrumb {
     background: transparent;
     color: white;
-
+    margin-bottom: 0px;
+    > :first-child {
+        a {
+            &.animate::after {
+                margin-left: 0px;
+            }
+        }
+    }
     a {
         color: white;
         text-decoration: none;
-        line-height: 32px;
-        font-size: 24px;
-
+        line-height: 24px;
+        font-size: 18px;
         &.animate::after {
+            margin-left: 28px;
+            text-align: right;
             content: '';
-            text-align:right;
-            margin-left:28px;
             display: block;
             width: 0;
             height: 2px;
             background: #fff;
             transition: width .3s;
         }
-
         &.animate:hover::after {
             width: 90%;
-            //transition: width .3s;
         }
         &.animate.home-icon:hover::after {
-            margin-left:0;
+            margin-left: 0;
             width: 100% !important;
         }
     }
-
-    li{
+    li {
         background: transparent;
         color: white;
-        line-height: 32px;
-        font-size: 24px;
-        &.active{
+        line-height: 24px;
+        font-size: 18px;
+        &.active {
             color: #dfdfdf;
             font-style: italic
         }
-        
+    }
+}
+
+.breadcrumb-title {
+    line-height: 24px;
+    font-size: 18px;
+    padding: 8px 15px;
+}
+
+#pjax-file-load-container {
+    height: 6px;
+    position: fixed;
+    top: 1px;
+    left: 0;
+    width: 100%;
+    width: 100vw;
+    >div {
+        display: none;
+        height: 8px;
+        border-radius: 1px;
+        background: #0f3e12;
+        background: linear-gradient(to right, #0f3e12 0%, #1F5523 50%, #042806 100%);
+        -webkit-transition-timing-function: ease-in-out;
+        transition-timing-function: ease-in-out;
+        -webkit-transition: width 1.6s;
+        /* Safari */
+        transition: width 1.6s;
+    }
+}
+
+#sidebar {
+    &.fill-height,
+    .fill-height {
+        height: 100%
+    }
+    .selected {
+        padding-left: 20px;
+        background: linear-gradient(to right, rgb(50, 134, 55) 0px, rgb(50, 134, 55) 13px, white 13px, white 100%);
+    }
+    .menu-selected {
+        padding-left: 10px;
+        background: linear-gradient(to right, rgb(50, 134, 55) 0px, rgb(50, 134, 55) 6px, white 6px, white 100%);
+    }
+    .subpanel {
+        &.level-0 {
+            .menu-selected {
+                background: linear-gradient(to right, rgb(87, 164, 92) 0px, rgb(87, 164, 92) 6px, white 6px, white 100%);
+            }
+            .selected {
+                background: linear-gradient(to right, rgb(87, 164, 92) 0px, rgb(87, 164, 92) 13px, white 13px, white 100%);
+            }
+        }
+        &.level-1 {
+            .menu-selected {
+                background: linear-gradient(to right, rgb(137, 198, 141) 0px, rgb(137, 198, 141) 6px, white 6px, white 100%);
+            }
+            .selected {
+                background: linear-gradient(to right, rgb(137, 198, 141) 0px, rgb(137, 198, 141) 13px, white 13px, white 100%);
+            }
+        }
+        &.level-2 {
+            .menu-selected {
+                background: linear-gradient(to right, rgb(181, 221, 184) 0px, rgb(181, 221, 184) 6px, white 6px, white 100%);
+            }
+            .selected {
+                background: linear-gradient(to right, rgb(181, 221, 184) 0px, rgb(181, 221, 184) 13px, white 13px, white 100%);
+            }
+        }
     }
 }

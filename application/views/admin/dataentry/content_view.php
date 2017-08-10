@@ -216,6 +216,10 @@
             <?php eT("Comment"); ?>:<br />
             <textarea cols='40' rows='5' name='<?php echo $fieldname; ?>comment'></textarea>
         </div>
+        <?php break;?>
+
+        <?php case "*":?>
+            <input type="text" name="<?php echo $fieldname; ?>" value="">
         <?php break;
 
 

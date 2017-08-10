@@ -1,6 +1,10 @@
 // $Id: printablesurvey.js 8633 2010-04-25 12:57:33Z c_schmitz $
+// Namespace
+var LS = LS || {
+    onDocumentReady: {}
+};
 
-$(document).ready(function(){
+$(document).on(' pjax:complete', function(){
     $('[class^=max]').each(function(){
        var arrayOfClasses = $(this).attr('class').split(' '); 
        charcount=arrayOfClasses[0].substr(10);

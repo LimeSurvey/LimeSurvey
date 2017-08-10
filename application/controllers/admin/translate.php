@@ -24,7 +24,7 @@ class translate extends Survey_Common_Action {
     public function index()
     {
         $iSurveyID = sanitize_int($_REQUEST['surveyid']);
-        $survey=Survey::model()->findByPk($iSurveyID);
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
         $tolang = Yii::app()->getRequest()->getParam('lang');
         $action = Yii::app()->getRequest()->getParam('action');
         $actionvalue = Yii::app()->getRequest()->getPost('actionvalue');
@@ -36,8 +36,8 @@ class translate extends Survey_Common_Action {
         }
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'translation.js');
 
-        $baselang = $survey->language;
-        $langs = $survey->additionalLanguages;
+        $baselang = $oSurvey->language;
+        $langs = $oSurvey->additionalLanguages;
 
         Yii::app()->loadHelper("database");
         Yii::app()->loadHelper("admin/htmleditor");
@@ -48,8 +48,7 @@ class translate extends Survey_Common_Action {
         }
 
         // TODO need to do some validation here on surveyid
-        $surveyinfo = getSurveyInfo($iSurveyID);
-        $survey_title = $surveyinfo['name'];
+        $survey_title = $oSurvey->defaultlanguage->name;
 
         Yii::app()->loadHelper("surveytranslator");
         $supportedLanguages = getLanguageData(FALSE,Yii::app()->session['adminlang']);
@@ -203,23 +202,24 @@ class translate extends Survey_Common_Action {
 
                 $all_fields_empty = !( $textform_length > 0 );
 
-                $aData = $aData + array(
-                  'textfrom' => $this->_cleanup($textfrom, array()),
-                  'textfrom2' => $this->_cleanup($textfrom2, array()),
-                  'textto' => $this->_cleanup($textto, array()),
-                  'textto2' => $this->_cleanup($textto2, array()),
-                  'rowfrom' => $rowfrom,
-                  'rowfrom2' => $resultbase2,
-                  'evenRow' => $evenRow,
-                  'gid' => $gid,
-                  'qid' => $qid,
-                  'amTypeOptions' => $amTypeOptions,
-                  'amTypeOptions2' => $amTypeOptions2,
-                  'i' => $j,
-                  'type' => $type,
-                  'type2' => $type2,
-                  'associated' => $associated,
-                );
+              $aData = array_merge($aData,  array(
+                                'textfrom' => $this->_cleanup($textfrom, array()),
+                                'textfrom2' => $this->_cleanup($textfrom2, array()),
+                                'textto' => $this->_cleanup($textto, array()),
+                                'textto2' => $this->_cleanup($textto2, array()),
+                                'rowfrom' => $rowfrom,
+                                'rowfrom2' => $resultbase2,
+                                'evenRow' => $evenRow,
+                                'gid' => $gid,
+                                'qid' => $qid,
+                                'amTypeOptions' => $amTypeOptions,
+                                'amTypeOptions2' => $amTypeOptions2,
+                                'i' => $j,
+                                'type' => $type,
+                                'type2' => $type2,
+                                'associated' => $associated,
+                            ));
+
                 $aData['translateFields'] = $this->displayTranslateFields($iSurveyID, $gid, $qid, $type,
                                             $amTypeOptions, $baselangdesc, $tolangdesc, $textfrom, $textto, $j, $rowfrom, $evenRow);
                 if ($associated && strlen(trim((string)$textfrom2)) > 0)
@@ -271,16 +271,12 @@ class translate extends Survey_Common_Action {
         $survey_button = "";
 
         $imageurl = Yii::app()->getConfig("adminimageurl");
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
 
+        $baselang = $oSurvey->language;
+        $langs = $oSurvey->additionalLanguages;
 
-        $baselang = Survey::model()->findByPk($iSurveyID)->language;
-        $langs = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
-
-        $surveyinfo = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->findByPk($iSurveyID);
-        $surveyinfo = array_merge($surveyinfo->attributes, $surveyinfo->defaultlanguage->attributes);
-
-        $surveyinfo = array_map('flattenText', $surveyinfo);
-        $menutext = ( $surveyinfo['active'] == "N" ) ? gT("Preview survey") : gT("Execute survey");
+        $menutext = ( $oSurvey->active == "N" ) ? gT("Preview survey") : gT("Execute survey");
 
         if ( count($langs) == 0 )
         {
@@ -402,8 +398,15 @@ class translate extends Survey_Common_Action {
     }
 
     private function _cleanup($string, $options=array()){
-        $oTidy = new tidy;
-        $cleansedString = $oTidy->repairString($string);
+        if(extension_loaded('tidy')){
+            $oTidy = new tidy;
+
+            $cleansedString = $oTidy->repairString($string,array(),'utf8');
+        } else {
+            //We should check for tidy on Installation!
+            $cleansedString = $string;
+        }
+
         return $cleansedString;
     }
 

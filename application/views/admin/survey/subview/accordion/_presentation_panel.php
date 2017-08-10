@@ -20,15 +20,15 @@
     <div class="col-sm-12 col-md-6">
         <!-- Navigation delay -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='navigationdelay'><?php  eT("Navigation delay (seconds):"); ?></label>
+            <div class="">
                 <input type='text' class="form-control" value="<?php echo $oSurvey->navigationdelay; ?>" name='navigationdelay' id='navigationdelay' size='12' maxlength='2' onkeypress="return goodchars(event,'0123456789')" />
             </div>
         </div>
         <!-- Show question index -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='questionindex'><?php  eT("Show question index / allow jumping:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='questionindex'><?php  eT("Show question index / allow jumping:"); ?></label>
+            <div class="">
 
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'questionindex',
@@ -46,8 +46,8 @@
 
                     <!-- Show "There are X questions in this survey -->
                     <div class="form-group">
-                        <label class="col-sm-5 control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
-                        <div class="col-sm-7">
+                        <label class=" control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
+                        <div class="">
                             <input type="hidden" class="form-control"  name="showxquestions" id="" value="1" />
                             <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('Yes (Forced by the system administrator)'); ?>" />
                         </div>
@@ -58,8 +58,8 @@
 
                 <!-- Show "There are X questions in this survey -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="dis_showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
+                    <div class="">
                         <input type="hidden" name="showxquestions" id="" value="0" />
                         <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('No (Forced by the system administrator)'); ?>" />
                     </div>
@@ -70,8 +70,8 @@
 
                 <!-- Show "There are X questions in this survey" -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="showxquestions"><?php  eT('Show "There are X questions in this survey":'); ?></label>
+                    <div class="">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'showxquestions',
                             'value'=> $oSurvey->isShowXQuestions,
@@ -89,8 +89,8 @@
 
                     <!-- Show group name and/or group description -->
                     <div class="form-group">
-                        <label class="col-sm-5 control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                        <div class="col-sm-7">
+                        <label class=" control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
+                        <div class="">
                             <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="B" />
                             <input class="form-control"  type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show both (Forced by the system administrator)'); ?>" />
                         </div>
@@ -100,8 +100,8 @@
 
                 <!-- Show group name and/or group description -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
+                    <div class="">
                         <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="N" />
                         <input type="text" class="form-control" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show group name only (Forced by the system administrator)'); ?>" />
                     </div>
@@ -112,8 +112,8 @@
 
                 <!-- Show group name and/or group description -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
+                    <div class="">
                         <input type="text" class="form-control"  name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show group description only (Forced by the system administrator)'); ?>" />
                         <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="D" />
                     </div>
@@ -124,8 +124,8 @@
 
                 <!-- Show group name and/or group description -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="dis_showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
+                    <div class="">
                         <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="X" />
                         <input type="text"  class="form-control" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Hide both (Forced by the system administrator)'); ?>" />
 
@@ -147,8 +147,8 @@
 
                 <!-- Show group name and/or group description -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="showgroupinfo"><?php  eT('Show group name and/or group description:'); ?></label>
+                    <div class="">
                         <select id="showgroupinfo" name="showgroupinfo"  class="form-control" >
                             <option value="B"<?php echo $sel_showgri['B']; ?>><?php  eT('Show both'); ?></option>
                             <option value="N"<?php echo $sel_showgri['N']; ?>><?php  eT('Show group name only'); ?></option>
@@ -167,8 +167,8 @@
 
                     <!-- Show question number and/or code -->
                     <div class="form-group">
-                        <label class="col-sm-5 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                        <div class="col-sm-7">
+                        <label class=" control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
+                        <div class="">
                             <input type="hidden" name="showqnumcode" id="showqnumcode" value="X" />
                             <input type="text" class="form-control" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Hide both (Forced by the system administrator)'); ?>" />
                         </div>
@@ -179,8 +179,8 @@
 
                 <!-- Show question number and/or code -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
+                    <div class="">
                         <input type="hidden" name="showqnumcode" id="showqnumcode" value="N" />
                         <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show question number only (Forced by the system administrator)') ; ?>" />
 
@@ -192,8 +192,8 @@
 
                 <!-- Show question number and/or code -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
+                    <div class="">
                         <input type="hidden" name="showqnumcode" id="showqnumcode" value="C" />
                         <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show question code only (Forced by the system administrator)'); ?>" />
                     </div>
@@ -204,8 +204,8 @@
 
                 <!-- Show question number and/or code -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
+                    <div class="">
                         <input type="hidden" name="showqnumcode" id="showqnumcode" value="B" />
                         <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show both (Forced by the system administrator)'); ?>"/>
                     </div>
@@ -226,8 +226,8 @@
 
                 <!-- Show question number and/or code -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
+                    <div class="">
                         <select class="form-control" id="showqnumcode" name="showqnumcode">
                             <option value="B"<?php echo $sel_showqnc['B']; ?>><?php  eT('Show both'); ?></option>
                             <option value="N"<?php echo $sel_showqnc['N']; ?>><?php  eT('Show question number only'); ?></option>
@@ -245,8 +245,8 @@
 
                     <!-- Show "No answer" -->
                     <div class="form-group">
-                        <label class="col-sm-5 control-label" for="dis_shownoanswer"><?php  eT('Show "No answer":'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="N" />
-                        <div class="col-sm-7">
+                        <label class=" control-label" for="dis_shownoanswer"><?php  eT('Show "No answer":'); ?></label> <input type="hidden" name="shownoanswer" id="shownoanswer" value="N" />
+                        <div class="">
                             <input class="form-control" type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('Off (Forced by the system administrator)'); ?>" />
                         </div>
                     </div>
@@ -256,8 +256,8 @@
 
                 <!-- Show "No answer" -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="shownoanswer"><?php  eT('Show "No answer":'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="shownoanswer"><?php  eT('Show "No answer":'); ?></label>
+                    <div class="">
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'shownoanswer',
                             'value'=> $oSurvey->isShowNoAnswer,
@@ -273,8 +273,8 @@
 
                 <!-- Show "No answer" -->
                 <div class="form-group">
-                    <label class="col-sm-5 control-label" for="dis_shownoanswer"><?php  eT('Show "No answer":'); ?></label>
-                    <div class="col-sm-7">
+                    <label class=" control-label" for="dis_shownoanswer"><?php  eT('Show "No answer":'); ?></label>
+                    <div class="">
                         <input type="hidden" name="shownoanswer" id="shownoanswer" value="Y" />
                         <input class="form-control" type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('On (Forced by the system administrator)'); ?>" />
                     </div>
@@ -287,8 +287,8 @@
         
         <!-- welcome screen -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='showwelcome'><?php  eT("Show welcome screen:") ; ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='showwelcome'><?php  eT("Show welcome screen:") ; ?></label>
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'showwelcome',
                     'value'=> $oSurvey->isShowWelcome,
@@ -301,8 +301,8 @@
 
         <!-- Show [<< Prev] button -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='allowprev'><?php  eT("Allow backward navigation:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='allowprev'><?php  eT("Allow backward navigation:"); ?></label>
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'allowprev',
                     'value'=> $oSurvey->isAllowPrev,
@@ -316,8 +316,8 @@
 
         <!-- Keyboard-less operation -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='nokeyboard'><?php  eT("Show on-screen keyboard:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='nokeyboard'><?php  eT("Show on-screen keyboard:"); ?></label>
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'nokeyboard',
                     'value'=> $oSurvey->isNoKeyboard,
@@ -330,8 +330,8 @@
 
         <!-- Show progress bar -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='showprogress'><?php  eT("Show progress bar:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='showprogress'><?php  eT("Show progress bar:"); ?></label>
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'showprogress',
                     'value'=> $oSurvey->isShowProgress,
@@ -343,8 +343,8 @@
         </div>
         <!-- Participants may print answers -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='printanswers'><?php  eT("Participants may print answers:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='printanswers'><?php  eT("Participants may print answers:"); ?></label>
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'printanswers',
                     'value'=> $oSurvey->isPrintAnswers,
@@ -357,8 +357,8 @@
 
         <!-- Public statistics -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='publicstatistics'><?php  eT("Public statistics:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='publicstatistics'><?php  eT("Public statistics:"); ?></label>
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'publicstatistics',
                     'value'=> $oSurvey->isPublicStatistics,
@@ -371,8 +371,8 @@
 
         <!-- Show graphs in public statistics -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='publicgraphs'><?php  eT("Show graphs in public statistics:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='publicgraphs'><?php  eT("Show graphs in public statistics:"); ?></label>
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'publicgraphs',
                     'value'=> $oSurvey->isPublicGraphs,
@@ -385,8 +385,8 @@
     
         <!-- Automatically load URL -->
         <div class="form-group">
-            <label class="col-sm-5 control-label" for='autoredirect'><?php  eT("Automatically load URL when survey complete:"); ?></label>
-            <div class="col-sm-7">
+            <label class=" control-label" for='autoredirect'><?php  eT("Automatically load URL when survey complete:"); ?></label>
+            <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'autoredirect',
                     'value'=> $oSurvey->isAutoRedirect,

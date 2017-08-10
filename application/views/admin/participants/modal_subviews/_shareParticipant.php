@@ -2,14 +2,14 @@
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title" id="participant_edit_modal"><?php eT('Share participant(s)'); ?></h4>
 </div>
-<div class="modal-body form-horizontal">
+<div class="modal-body ">
 <?php
     $form = $this->beginWidget(
         'bootstrap.widgets.TbActiveForm',
         array(
             'id' => 'shareParticipantActiveForm',
             'action' => array('admin/participants/sa/shareParticipants'),
-            'htmlOptions' => array('class' => 'form form-horizontal'), // for inset effect
+            'htmlOptions' => array('class' => 'form '), // for inset effect
         )
     );
 ?>
