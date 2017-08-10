@@ -103,9 +103,9 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $tokensTableName Name of survey tokens table
  * @property string $responsesTableName Name of survey resonses table
  * @property string $timingsTableName Name of survey timings table
- * @property string $hasTokensTable Whether survey has a tokens table or not
- * @property string $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
- * @property string $hasTimingsTable Wheteher the survey timings table exists in DB
+ * @property boolean $hasTokensTable Whether survey has a tokens table or not
+ * @property boolean $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
+ * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
  *
  * All Y/N columns in the model can be accessed as boolean values:
@@ -545,7 +545,7 @@ class Survey extends LSActiveRecord
      * Wheteher the survey reponses timings exists in DB
      * @return boolean
      */
-    public function getHasTimigsTable() {
+    public function getHasTimingsTable() {
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->timingsTableName);
