@@ -406,10 +406,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
+    $currentDbVersion = $oDB->createCommand()->select('stg_value')->from('{{settings_global}}')->where("stg_name=:stg_name", array('stg_name'=>'DBVersion'))->queryRow();
 
     Notification::broadcast(array(
         'title' => gT('Database update'),
-        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '304')
+        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, $currentDbVersion['stg_value'])
     ), $superadmins);
 
     fixLanguageConsistencyAllSurveys();
