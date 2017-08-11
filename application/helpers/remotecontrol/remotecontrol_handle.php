@@ -2553,6 +2553,98 @@ class remotecontrol_handle
     }
 
     /**
+    * Uploads one file to be used later.
+    * Returns the metadata on success.
+    *
+    * @access public
+    * @param string $sSessionKey Auth credentials
+    * @param int $iSurveyID ID of the Survey to insert file
+    * @param string $sFieldName the Field to upload file
+    * @param string $sFileName the uploaded file name
+    * @param string $sFileContent the uploaded file content encoded as BASE64
+    * @return array The file metadata with final upload path or error description
+    */
+    public function upload_file($sSessionKey, $iSurveyID, $sFieldName, $sFileName, $sFileContent)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => 'Invalid session key');
+        }
+
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+
+        if (is_null($oSurvey)) {
+            return array('status' => 'Error: Invalid survey ID');
+        }
+
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create')) {
+            if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}')) {
+                return array('status' => 'No survey response table');
+            }
+        }
+        else {
+            return array('status' => 'No permission');
+        }
+
+        $tempdir = Yii::app()->getConfig("tempdir");
+
+        $sTempUploadDir = $tempdir.'/upload/';
+        if (!file_exists($sTempUploadDir)) {
+            if (!mkdir($sTempUploadDir)) {
+                return array('status' => 'Can not make temporary upload directory');
+            }
+        }
+
+        $aFieldMap = createFieldMap($iSurveyID, 'short', false, false, Yii::app()->getConfig('defaultlang'));
+        if (!isset($aFieldMap[$sFieldName])) {
+            return array('status' => 'Can not obtain field map');
+        }
+        $aAttributes = getQuestionAttributeValues($aFieldMap[$sFieldName]['qid']);
+
+        $iFileUploadTotalSpaceMB = Yii::app()->getConfig('iFileUploadTotalSpaceMB');
+
+        $maxfilesize = (int) $aAttributes['max_filesize'];
+        $allowed_filetypes = $aAttributes['allowed_filetypes'];
+        $valid_extensions_array = explode(",", $allowed_filetypes);
+        $valid_extensions_array = array_map('trim', $valid_extensions_array);
+
+        $pathinfo = pathinfo($sFileName);
+        $ext = strtolower($pathinfo['extension']);
+
+        // check to see that this file type is allowed
+        if (!in_array($ext, $valid_extensions_array)) {
+            return array('status' => 'The extension ' . $ext . ' is not valid. Valid extensions are: ' . $allowed_filetypes);
+        }
+
+        // This also accounts for BASE64 overhead
+        $size = (0.001 * 3 * strlen($sFileContent)) / 4;
+
+        $randfilename = 'futmp_'.randomChars(15).'_'.$pathinfo['extension'];
+        $randfileloc = $sTempUploadDir . $randfilename;
+
+        if ($size > $maxfilesize) {
+            return array('status' => sprintf('Sorry, this file is too large. Only files up to %s KB are allowed.', $maxfilesize));
+        }
+
+        if ($iFileUploadTotalSpaceMB>0 && ((calculateTotalFileUploadUsage()+($size/1024/1024))>$iFileUploadTotalSpaceMB)) {
+            return array('status' => 'Not enough free space available');
+        }
+
+        $uploaded = file_put_contents($randfileloc, base64_decode($sFileContent));
+        if ($uploaded === FALSE) {
+            return array('status' => 'Unable to write file');
+        }
+
+        return array(
+            "success"   => true,
+            "size"      => $size,
+            "name"      => rawurlencode(basename($filename)),
+            "ext"       => $ext,
+            "filename"  => $randfilename,
+            "msg"       => gT("The file has been successfully uploaded.")
+        );
+    }
+
+    /**
     * Export responses in base64 encoded string
     *
     * @access public
