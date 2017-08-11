@@ -7,17 +7,14 @@
 ?>
 
   <script type="text/javascript">
-    var standardtemplaterooturl = '<?php echo Yii::app()->getConfig('
-    standardtemplaterooturl ');?>';
-    var templaterooturl = '<?php echo Yii::app()->getConfig('
-    usertemplaterooturl ');?>';
+    var standardtemplaterooturl = '<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
+    var templaterooturl = '<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'
-    js '); ?>'
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address."); ?>'
     var sURLParameters = '';
     var sAddParam = '';
   </script>
