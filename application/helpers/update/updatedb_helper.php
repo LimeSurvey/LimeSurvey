@@ -686,10 +686,8 @@ function createSurveyGroupTables306($oDB)
         'created_by'  => '1'
     ));
 
-    $table = Yii::app()->db->schema->getTable('{{surveys}}');
-    if(!isset($table->columns['gsid'])) {
-        $oDB->createCommand()->addColumn('{{surveys}}','gsid',"int(11) DEFAULT 1");
-    }
+    $oDB->createCommand()->addColumn('{{surveys}}','gsid',"int(11) DEFAULT 1");
+    
 
 }
 
