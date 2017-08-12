@@ -17,5 +17,15 @@
 		"issues" : "https://www.limesurvey.org/de/community-hilfe/bug-tracker",
 		"forum" : "https://www.limesurvey.org/de/community-hilfe/forum"
 	},
-	"minimum-stability" : "dev"
+	"minimum-stability" : "dev",
+	"autoload": {
+		"psr-4": {
+			"ls\\pluginmanager\\": [
+				"application/libraries/PluginManager/",
+				"application/libraries/PluginManager/Storage"
+			],
+			"ls\\menu\\": "application/libraries/MenuObjects/",
+			"ls\\helpers\\": "application/helpers"
+		}
+	}
 }
