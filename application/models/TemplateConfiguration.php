@@ -301,11 +301,7 @@ class TemplateConfiguration extends TemplateConfig
     public function getTypeIcon()
     {
         if (empty($this->sTypeIcon)){
-            if(Template::isStandardTemplate($this->template->name)){
-                $this->sTypeIcon = gT("Core Template");
-            }else{
-                $this->sTypeIcon = gT("User Template");
-            }
+            $this->sTypeIcon = (Template::isStandardTemplate($this->template->name))?gT("Core Template"):gT("User Template");
         }
         return $this->sTypeIcon;
     }
@@ -583,8 +579,6 @@ class TemplateConfiguration extends TemplateConfig
         }
         return $this->oParentTemplate;
     }
-
-
 
     /**
      * Proxy for the AR method to manage the inheritance
