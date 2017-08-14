@@ -182,8 +182,8 @@ $internalConfig = array(
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
         ),
         'pluginManager' => array(
-            'class' => "\\ls\\pluginmanager\\PluginManager",
-            'api' => "\\ls\\pluginmanager\\LimesurveyApi"
+            'class' => "\\LimeSurvey\\PluginManager\\PluginManager",
+            'api' => "\\LimeSurvey\\PluginManager\\LimesurveyApi"
         ),
         'format'=>array(
             'class'=>'application.extensions.CustomFormatter'

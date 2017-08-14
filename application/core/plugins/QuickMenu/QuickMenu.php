@@ -6,7 +6,7 @@
  * @since 2016-04-22
  * @author Olle Härstedt
  */
-class QuickMenu extends \ls\pluginmanager\PluginBase
+class QuickMenu extends \LimeSurvey\PluginManager\PluginBase
 {
     static protected $description = 'Add a quick-menu when the question explorer is collapsed';
     static protected $name = 'QuickMenu';

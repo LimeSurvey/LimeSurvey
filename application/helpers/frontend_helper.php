@@ -14,7 +14,7 @@
 // TODO: Why needed?
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
-use \ls\pluginmanager\PluginEvent;
+use \LimeSurvey\PluginManager\PluginEvent;
 
 function loadanswers()
 {

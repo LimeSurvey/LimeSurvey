@@ -15,7 +15,7 @@ if (!defined('BASEPATH'))
 *
 */
 
-use \ls\pluginmanager\PluginEvent;
+use \LimeSurvey\PluginManager\PluginEvent;
 
 /**
  * Class Survey

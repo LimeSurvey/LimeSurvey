@@ -227,7 +227,7 @@ class SurveyRuntimeHelper {
 
         if ($this->aSurveyInfo['questionindex']){
             if(!$this->previewquestion && !$this->previewgrp){
-                $this->aSurveyInfo['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
+                $this->aSurveyInfo['aQuestionIndex']['items'] = LimeSurvey\Helpers\questionIndexHelper::getInstance()->getIndexItems();
 
                 if($this->aSurveyInfo['questionindex'] > 1){
                     $this->aSurveyInfo['aQuestionIndex']['type'] = 'full';

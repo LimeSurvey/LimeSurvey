@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\pluginmanager;
+namespace LimeSurvey\PluginManager;
 
 /**
  * Base class for plugins.

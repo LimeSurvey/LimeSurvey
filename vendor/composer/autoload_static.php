@@ -7,25 +7,25 @@ namespace Composer\Autoload;
 class ComposerStaticInite022c7189514e0467ecad3e05657c233
 {
     public static $prefixLengthsPsr4 = array (
-        'l' => 
+        'L' => 
         array (
-            'ls\\pluginmanager\\' => 17,
-            'ls\\menu\\' => 8,
-            'ls\\helpers\\' => 11,
+            'LimeSurvey\\PluginManager\\' => 25,
+            'LimeSurvey\\Menu\\' => 16,
+            'LimeSurvey\\Helpers\\' => 19,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'ls\\pluginmanager\\' => 
+        'LimeSurvey\\PluginManager\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/PluginManager',
             1 => __DIR__ . '/../..' . '/application/libraries/PluginManager/Storage',
         ),
-        'ls\\menu\\' => 
+        'LimeSurvey\\Menu\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/libraries/MenuObjects',
         ),
-        'ls\\helpers\\' => 
+        'LimeSurvey\\Helpers\\' => 
         array (
             0 => __DIR__ . '/../..' . '/application/helpers',
         ),
