@@ -358,7 +358,7 @@ class TemplateConfiguration extends TemplateConfig
 
                     // Specific inheritance of one of the value of the json array
                     if ($aFileList[0] == 'inherit'){
-                        $aParentjFiles = (array) json_decode($oTemplate->getFieldFromParentConfiguration($sField));
+                        $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
                         $aFileList = $aParentjFiles[$action];
                     }
 
@@ -563,19 +563,6 @@ class TemplateConfiguration extends TemplateConfig
             }
         }
         return $this->oParentTemplate;
-    }
-
-    public function getFieldFromParentConfiguration($sField){
-        $parentConfiguration = $this->getParentConfiguration();
-        $returnValue = $this->$sField;
-        if($returnValue == 'inherit'){
-            $returnValue = $parentConfiguration->$sField;
-            if($returnValue == 'inherit'){
-                $rootParentConfiguration = $parentConfiguration->getParentConfiguration();
-                $returnValue = $rootParentConfiguration->{$sField};
-            }
-        }
-        return $returnValue;
     }
 
 
