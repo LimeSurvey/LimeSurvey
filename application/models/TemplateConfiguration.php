@@ -578,11 +578,17 @@ class TemplateConfiguration extends TemplateConfig
 
 
     public function getParentConfiguration(){
-        //check for surveygroup id
-        if($this->sid != null && $this->gsid != null)
-            return Template::getTemplateConfiguration(null,null,$this->gsid);
-        //check for general global template
-        return Template::getTemplateConfiguration($this->templates_name);
+        if (empty($this->oParentTemplate)){
+            //check for surveygroup id
+            if($this->sid != null && $this->gsid != null){
+                $this->oParentTemplate = Template::getTemplateConfiguration(null,null,$this->gsid);
+            }else{
+                //check for general global template
+                $this->oParentTemplate = Template::getTemplateConfiguration($this->templates_name);
+            }
+        }
+        return $this->oParentTemplate;
+
     }
 
     public function getFieldFromParentConfiguration($sField){
