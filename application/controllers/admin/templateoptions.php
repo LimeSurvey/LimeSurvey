@@ -74,10 +74,10 @@ class templateoptions  extends Survey_Common_Action
         // $this->performAjaxValidation($model);
 
         $templateOptionPage = $model->optionPage;
-        
+
         yii::app()->clientScript->registerPackage('bootstrap-switch');
         $aData = array(
-            'model'=>$model, 
+            'model'=>$model,
             'templateOptionPage' => $templateOptionPage
         );
         if($sid !== null){
@@ -102,8 +102,8 @@ class templateoptions  extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/templateoptions"));
         }
         $model = $this->loadModel($id);
-        $model->setTemplateConfiguration();
-        
+        $model->prepareTemplateRendering();
+
         if(isset($_POST['TemplateConfiguration'])){
             $model->attributes=$_POST['TemplateConfiguration'];
             if($model->save())
@@ -127,7 +127,7 @@ class templateoptions  extends Survey_Common_Action
         }
 
         $model = Template::getTemplateConfiguration(null, $sid);
-        $model->setTemplateConfiguration();
+        $model->prepareTemplateRendering();
 
         if(isset($_POST['TemplateConfiguration'])){
             $model->attributes=$_POST['TemplateConfiguration'];

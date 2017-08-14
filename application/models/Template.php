@@ -212,7 +212,7 @@ class Template extends LSActiveRecord
                 $criteria->addCondition('gsid=:gsid');
                 $criteria->addCondition('templates_name=:templates_name');
                 $criteria->params = array('gsid' => $iSurveyGroupId, 'templates_name' => $sTemplateName);
-                
+
                 $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
                 // No specific template configuration for this survey
@@ -268,7 +268,7 @@ class Template extends LSActiveRecord
             $oTemplateConfigurationModel = new TemplateManifest;
         }
 
-        //$oTemplateConfigurationModel->setTemplateConfiguration($sTemplateName, $iSurveyId);
+        //$oTemplateConfigurationModel->prepareTemplateRendering($sTemplateName, $iSurveyId);
         return $oTemplateConfigurationModel;
     }
 
@@ -428,7 +428,7 @@ class Template extends LSActiveRecord
      * Get instance of template object.
      * Will instantiate the template object first time it is called.
      *
-     * NOTE 1: This function will call setTemplateConfiguration that create/update all the packages needed to render the template, which imply to do the same for all mother templates
+     * NOTE 1: This function will call prepareTemplateRendering that create/update all the packages needed to render the template, which imply to do the same for all mother templates
      * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to use this one. Call it only before rendering anything related to the template.
      * NOTE 3: If you need to get the related configuration to this template, rather use: getTemplateConfiguration()
      *
@@ -449,7 +449,7 @@ class Template extends LSActiveRecord
 
         if (empty(self::$instance)) {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
-            self::$instance->setTemplateConfiguration($sTemplateName, $iSurveyId);
+            self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
 
         return self::$instance;

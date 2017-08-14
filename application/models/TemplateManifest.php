@@ -368,7 +368,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param  string $iSurveyId the id of the survey. If
      * @return $this
      */
-    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
+    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='')
     {
         $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
         $this->setIsStandard();                                                 // Check if  it is a CORE template
@@ -475,14 +475,14 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Configure the mother template (and its mother templates)
-     * This is an object recursive call to TemplateManifest::setTemplateConfiguration()
+     * This is an object recursive call to TemplateManifest::prepareTemplateRendering()
      */
     protected function setMotherTemplates()
     {
         if (isset($this->config->metadatas->extends)){
             $sMotherTemplateName   = (string) $this->config->metadatas->extends;
             $this->oMotherTemplate = new TemplateManifest;
-            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
+            $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName); // Object Recursion
         }
     }
 

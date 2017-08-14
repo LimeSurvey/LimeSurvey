@@ -15,6 +15,8 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * This is the model class for table "{{template_configuration}}".
  *
+ * NOTE: if you only need to access to the table, you don't need to call
+ *
  * The followings are the available columns in table '{{template_configuration}}':
  * @property string $id
  * @property string $templates_name
@@ -194,7 +196,7 @@ class TemplateConfiguration extends TemplateConfig
     public static function importManifest($sTemplateName)
     {
         $oEditedTemplate                      = Template::model()->getTemplateConfiguration($sTemplateName, null,null, false);
-        $oEditedTemplate->setTemplateConfiguration($sTemplateName);
+        $oEditedTemplate->prepareTemplateRendering($sTemplateName);
 
         $oEditTemplateDb                      = Template::model()->findByPk($oEditedTemplate->oMotherTemplate->sTemplateName);
         $oNewTemplate                         = new Template;
@@ -261,7 +263,7 @@ class TemplateConfiguration extends TemplateConfig
      * @param  string $iSurveyId the id of the survey. If
      * @return $this
      */
-    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
+    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='')
     {
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard();                                                 // Check if  it is a CORE template
@@ -341,7 +343,7 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getHasOptionPage()
     {
-        $this->setTemplateConfiguration();
+        $this->prepareTemplateRendering();
         $oRTemplate = $this;
         $sOptionFile = '/options/options.twig';
         while (!file_exists($oRTemplate->path.$sOptionFile)){
@@ -351,7 +353,7 @@ class TemplateConfiguration extends TemplateConfig
                 return false;
                 break;
             }
-            $oMotherTemplate->setTemplateConfiguration();
+            $oMotherTemplate->prepareTemplateRendering();
             $oRTemplate = $oMotherTemplate;
         }
         return true;
@@ -359,7 +361,7 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getOptionPage()
     {
-        $this->setTemplateConfiguration();
+        $this->prepareTemplateRendering();
         return Yii::app()->twigRenderer->renderOptionPage($this, array('templateConfiguration' =>$this->attributes));
     }
 
@@ -429,16 +431,16 @@ class TemplateConfiguration extends TemplateConfig
 
     /**
      * Configure the mother template (and its mother templates)
-     * This is an object recursive call to TemplateConfiguration::setTemplateConfiguration()
+     * This is an object recursive call to TemplateConfiguration::prepareTemplateRendering()
      */
     protected function setMotherTemplates()
     {
         if(!empty($this->template->extends_templates_name)){
             $sMotherTemplateName   = $this->template->extends_templates_name;
             $this->oMotherTemplate = Template::getTemplateConfiguration($sMotherTemplateName);
-            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName);
+            $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName);
             if ($this->oMotherTemplate->checkTemplate()){
-                $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
+                $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName); // Object Recursion
             }else{
                 // Throw exception? Set to default template?
             }
