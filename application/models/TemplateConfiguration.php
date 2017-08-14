@@ -451,16 +451,26 @@ class TemplateConfiguration extends TemplateConfig
     protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion               = (!empty($this->template->api_version))? $this->template->api_version : $this->oMotherTemplate->apiVersion;
-        $this->viewPath                 = (!empty($this->template->view_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->view_folder.DIRECTORY_SEPARATOR : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->view_folder.DIRECTORY_SEPARATOR;
-        $this->filesPath                = (!empty($this->template->files_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->files_folder.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->file_folder.DIRECTORY_SEPARATOR;
-
+        $this->apiVersion  = (!empty($this->template->api_version))? $this->template->api_version : $this->oMotherTemplate->apiVersion;
+        $this->viewPath    = (!empty($this->template->view_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->view_folder.DIRECTORY_SEPARATOR : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->view_folder.DIRECTORY_SEPARATOR;
+        $this->filesPath   = (!empty($this->template->files_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->files_folder.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->file_folder.DIRECTORY_SEPARATOR;
 
         // Options are optional
         $this->setOptions();
 
-
         // Not mandatory (use package dependances)
+        $this->setCssFramework();
+
+        if (!empty($this->packages_to_load)){
+            $this->packages = json_decode($this->packages_to_load);
+        }
+
+        // Add depend package according to packages
+        $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
+    }
+
+    private function setCssFramework()
+    {
         if (!empty($this->cssframework_name)){
             $this->cssFramework = new \stdClass();
             $this->cssFramework->name = $this->cssframework_name;
@@ -470,13 +480,6 @@ class TemplateConfiguration extends TemplateConfig
         }else{
             $this->cssFramework = '';
         }
-
-        if (!empty($this->packages_to_load)){
-            $this->packages = json_decode($this->packages_to_load);
-        }
-
-        // Add depend package according to packages
-        $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
     }
 
     protected function setOptions()
