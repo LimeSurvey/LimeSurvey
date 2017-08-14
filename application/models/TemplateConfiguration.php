@@ -38,6 +38,15 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  */
 class TemplateConfiguration extends TemplateConfig
 {
+
+    /**
+     * @var TemplateConfiguration $oParentTemplate The parent template name
+     * A template configuration, in the database, can inherit from another one.
+     * This used to manage the different configuration levels for a very same template: global, survey group, survey
+     * This is not related to motherTemplate (inheritance between two different templates)
+     */
+    public $oParentTemplate;
+
     /**
      * @return string the associated database table name
      */
@@ -434,7 +443,7 @@ class TemplateConfiguration extends TemplateConfig
             $this->cssFramework->name = $this->cssframework_name;
             $this->cssFramework->css  = json_decode($this->cssframework_css);
             $this->cssFramework->js   = json_decode($this->cssframework_js);
-            
+
             if ($this->cssFramework->name == 'inherit'){
                 $this->cssFramework->name = $this->getParentConfiguration()->cssframework_name;
             }
