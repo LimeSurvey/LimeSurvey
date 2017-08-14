@@ -439,10 +439,6 @@ class TemplateConfiguration extends TemplateConfig
             $this->cssFramework->css  = json_decode($this->cssframework_css);
             $this->cssFramework->js   = json_decode($this->cssframework_js);
 
-            if ($this->cssFramework->name == 'inherit'){
-                $this->cssFramework->name = $this->getParentConfiguration()->cssframework_name;
-            }
-
         }else{
             $this->cssFramework = '';
         }
@@ -566,11 +562,18 @@ class TemplateConfiguration extends TemplateConfig
     }
 
 
-    // Proxy to manage inheritance in a transparent way from anywhere
 
+    /**
+     * Proxy for the AR method to manage the inheritance
+     * If one of the field that can be inherited is set to "inherit", then it will return the value of its parent
+     * NOTE: this is recursive, if the parent field itself is set to inherit, then it will the value of the parent of the parent, etc
+     *
+     * @param string $name the name of the attribute
+     * @return mixed
+     */
     public function __get($name)
     {
-        $aAttributesThatCanBeInherited = array('files_css', 'files_js', 'options', 'cssframework_css', 'cssframework_js');
+        $aAttributesThatCanBeInherited = array('files_css', 'files_js', 'options', 'cssframework_name', 'cssframework_css', 'cssframework_js');
 
         if (in_array($name, $aAttributesThatCanBeInherited)){
             // Full inheritance of the whole field
