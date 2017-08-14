@@ -434,6 +434,10 @@ class TemplateConfiguration extends TemplateConfig
             $this->cssFramework->name = $this->cssframework_name;
             $this->cssFramework->css  = json_decode($this->cssframework_css);
             $this->cssFramework->js   = json_decode($this->cssframework_js);
+            
+            if ($this->cssFramework->name == 'inherit'){
+                $this->cssFramework->name = $this->getParentConfiguration()->cssframework_name;
+            }
 
         }else{
             $this->cssFramework = '';
