@@ -15,7 +15,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * This is the model class for table "{{template_configuration}}".
  *
- * NOTE: if you only need to access to the table, you don't need to call
+ * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
  *
  * The followings are the available columns in table '{{template_configuration}}':
  * @property string $id
@@ -49,6 +49,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     public $oParentTemplate;
 
+    /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit  */
+    public $bUseMagicInherit = true;
 
     // Caches
 
@@ -254,7 +256,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
-     * Constructs a template configuration object
+     * Prepare all the needed datas to render the temple
      * If any problem (like template doesn't exist), it will load the default template configuration
      * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
      * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
@@ -360,7 +362,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     public function getOptionPage()
-    {
+    {        
         $this->prepareTemplateRendering();
         return Yii::app()->twigRenderer->renderOptionPage($this, array('templateConfiguration' =>$this->attributes));
     }
@@ -597,7 +599,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         $aAttributesThatCanBeInherited = array('files_css', 'files_js', 'options', 'cssframework_name', 'cssframework_css', 'cssframework_js');
 
-        if (in_array($name, $aAttributesThatCanBeInherited)){
+        if (in_array($name, $aAttributesThatCanBeInherited) && $this->bUseMagicInherit){
             // Full inheritance of the whole field
             $sAttribute = parent::__get($name);
             if($sAttribute === 'inherit'){
