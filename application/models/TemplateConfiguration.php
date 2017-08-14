@@ -50,6 +50,9 @@ class TemplateConfiguration extends TemplateConfig
     /** @var string $sPreviewImgTag the template preview image tag for the template list*/
     public $sPreviewImgTag;
 
+    /** @var boolean $bTemplateCheckResult is the template valid?*/
+    public $bTemplateCheckResult;
+
 
     /**
      * @return string the associated database table name
@@ -224,10 +227,13 @@ class TemplateConfiguration extends TemplateConfig
 
     public function checkTemplate()
     {
-        if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)&& !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
-            return false;
+        if (empty($this->bTemplateCheckResult)){
+            $this->bTemplateCheckResult = true;
+            if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)&& !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
+                $this->bTemplateCheckResult = false;
+            }
         }
-        return true;
+        return $this->bTemplateCheckResult;
     }
 
     /**
