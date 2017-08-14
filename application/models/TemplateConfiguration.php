@@ -530,12 +530,6 @@ class TemplateConfiguration extends TemplateConfig
         $sFieldName  = 'cssframework_'.$sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
-        // Full inheritance
-        if ($this->$sFieldName == "inherit"){
-            $parentFieldValue = $this->getFieldFromParentConfiguration($sFieldName);
-            $aFieldValue = (array) json_decode($parentFieldValue);
-        }
-
         $aReplacements = array();
         if (!empty( $aFieldValue )){
             $aAssetsToReplace = (array) $aFieldValue['replace'];
