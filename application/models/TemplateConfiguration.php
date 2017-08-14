@@ -65,6 +65,10 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aFrameworkAssetsToReplace cache for the method getFrameworkAssetsToReplace()*/
     private $aFrameworkAssetsToReplace;
 
+    /** @var array $aReplacements cache for the method getFrameworkAssetsReplacement */
+    private $aReplacements;
+
+
     /**
      * @return string the associated database table name
      */
@@ -553,15 +557,17 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getFrameworkAssetsReplacement( $sType )
     {
-        $aFrameworkAssetsToReplace = $this->getFrameworkAssetsToReplace($sType);
+        if (empty($this->aReplacements)){
+            $aFrameworkAssetsToReplace = $this->getFrameworkAssetsToReplace($sType);
 
-        $aReplacements = array();
-        foreach($aFrameworkAssetsToReplace as $key => $aAsset ){
-            $aReplace = $aAsset[1];
-            $aReplacements[] = $aReplace;
+            $this->aReplacements = array();
+            foreach($aFrameworkAssetsToReplace as $key => $aAsset ){
+                $aReplace = $aAsset[1];
+                $this->aReplacements[] = $aReplace;
+            }
         }
 
-        return $aReplacements;
+        return $this->aReplacements;
     }
 
 
