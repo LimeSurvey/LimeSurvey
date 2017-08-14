@@ -47,6 +47,10 @@ class TemplateConfiguration extends TemplateConfig
      */
     public $oParentTemplate;
 
+    /** @var string $sPreviewImgTag the template preview image tag for the template list*/
+    public $sPreviewImgTag;
+
+
     /**
      * @return string the associated database table name
      */
@@ -157,8 +161,11 @@ class TemplateConfiguration extends TemplateConfig
     // For list, so no "setConfiguration" before
     public function getPreview()
     {
-        $previewUrl =  Template::getTemplateURL($this->template->name);
-        return '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
+        if (empty($this->sPreviewImgTag)){
+            $previewUrl =  Template::getTemplateURL($this->template->name);
+            $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
+        }
+        return $this->sPreviewImgTag;
     }
 
     /**
