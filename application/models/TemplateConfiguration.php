@@ -47,12 +47,17 @@ class TemplateConfiguration extends TemplateConfig
      */
     public $oParentTemplate;
 
+
+    // Caches
+
     /** @var string $sPreviewImgTag the template preview image tag for the template list*/
     public $sPreviewImgTag;
 
     /** @var boolean $bTemplateCheckResult is the template valid?*/
-    public $bTemplateCheckResult;
+    private $bTemplateCheckResult;
 
+    /** @var string $sTypeIcon the type of template for icon (core vs user)*/
+    private $sTypeIcon;
 
     /**
      * @return string the associated database table name
@@ -285,12 +290,14 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getTypeIcon()
     {
-        if(Template::isStandardTemplate($this->template->name)){
-            $sIcon = gT("Core Template");
-        }else{
-            $sIcon = gT("User Template");
+        if (empty($this->sTypeIcon)){
+            if(Template::isStandardTemplate($this->template->name)){
+                $this->sTypeIcon = gT("Core Template");
+            }else{
+                $this->sTypeIcon = gT("User Template");
+            }
         }
-        return $sIcon;
+        return $this->sTypeIcon;
     }
 
 
