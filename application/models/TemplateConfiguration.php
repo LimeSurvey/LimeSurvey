@@ -458,16 +458,8 @@ class TemplateConfiguration extends TemplateConfig
     protected function setOptions()
     {
         $this->oOptions = array();
-        if (!empty($this->options) && $this->options !== 'inherit'){
+        if (!empty($this->options)){
             $this->oOptions = json_decode($this->options);
-        }elseif($this->options === 'inherit'){
-            $parentOptions = $this->getFieldFromParentConfiguration('options');
-            $this->oOptions = json_decode($parentOptions);
-        }elseif(!empty($this->oMotherTemplate->oOptions)){
-            // NB: This case should never happen with core template edited via template editor
-            // Options are inherited from global settings to survey settings, not from mother template.
-            // But: a 3rd template provider could use that logic
-            $this->oOptions = $this->oMotherTemplate->oOptions;
         }
 
         $this->setOptionInheritance();
@@ -603,7 +595,7 @@ class TemplateConfiguration extends TemplateConfig
 
     public function __get($name)
     {
-        $aAttributesThatCanBeInherited = array('files_css', 'files_js');
+        $aAttributesThatCanBeInherited = array('files_css', 'files_js', 'options');
 
         if (in_array($name, $aAttributesThatCanBeInherited)){
             // Full inheritance of the whole field
