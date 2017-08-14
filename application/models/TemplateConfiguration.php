@@ -349,11 +349,6 @@ class TemplateConfiguration extends TemplateConfig
         $sField = 'files_'.$sType;
         $jFiles = $oTemplate->$sField;
 
-        // Full inheritance of the whole field
-        if($jFiles === 'inherit'){
-            $jFiles = $oTemplate->getFieldFromParentConfiguration($sField);
-        }
-
         $aFiles = array();
 
         if(!empty($jFiles)){
@@ -588,14 +583,13 @@ class TemplateConfiguration extends TemplateConfig
             }
         }
         return $this->oParentTemplate;
-
     }
 
     public function getFieldFromParentConfiguration($sField){
         $parentConfiguration = $this->getParentConfiguration();
-        $returnValue = $this->{$sField};
+        $returnValue = $this->$sField;
         if($returnValue == 'inherit'){
-            $returnValue = $parentConfiguration->{$sField};
+            $returnValue = $parentConfiguration->$sField;
             if($returnValue == 'inherit'){
                 $rootParentConfiguration = $parentConfiguration->getParentConfiguration();
                 $returnValue = $rootParentConfiguration->{$sField};
@@ -603,4 +597,26 @@ class TemplateConfiguration extends TemplateConfig
         }
         return $returnValue;
     }
+
+
+    // Proxy to manage inheritance in a transparent way from anywhere
+
+    public function __get($name)
+    {
+        $aAttributesThatCanBeInherited = array('files_css', 'files_js');
+
+        if (in_array($name, $aAttributesThatCanBeInherited)){
+            // Full inheritance of the whole field
+            $sAttribute = parent::__get($name);
+            if($sAttribute === 'inherit'){
+                // NOTE: this is object recursive (if parent configuration field is set to inherit, then it will lead to this method again.)
+                $sAttribute = $this->getParentConfiguration()->$name;
+            }
+        }else{
+            $sAttribute = parent::__get($name);
+        }
+
+        return $sAttribute;
+    }
+
 }
