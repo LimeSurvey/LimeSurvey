@@ -62,6 +62,8 @@ class TemplateConfiguration extends TemplateConfig
     /** @var array $aFilesToLoad cache for the method getFilesToLoad()*/
     private $aFilesToLoad;
 
+    /** @var array $aFrameworkAssetsToReplace cache for the method getFrameworkAssetsToReplace()*/
+    private $aFrameworkAssetsToReplace;
 
     /**
      * @return string the associated database table name
@@ -516,29 +518,31 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
-        $sFieldName  = 'cssframework_'.$sType;
-        $aFieldValue = (array) json_decode($this->$sFieldName);
+        if (empty($this->aFrameworkAssetsToReplace)){
+            $sFieldName  = 'cssframework_'.$sType;
+            $aFieldValue = (array) json_decode($this->$sFieldName);
 
-        $aAssetsToRemove = array();
-        if (!empty( $aFieldValue )){
-            $aAssetsToRemove = (array) $aFieldValue['replace'] ;
+            $this->aFrameworkAssetsToReplace = array();
+            if (!empty( $aFieldValue )){
+                $this->aFrameworkAssetsToReplace = (array) $aFieldValue['replace'] ;
 
-            // Inner field inheritance
-            foreach ($aAssetsToRemove as $key => $aFiles){
-                foreach($aFiles as $sReplacement){
-                    if ( $sReplacement == "inherit"){
-                        $aParentReplacement = $this->getParentConfiguration()->getFrameworkAssetsToReplace($sType);
-                        $aAssetsToRemove[$key][1] = $aParentReplacement[$key][1];
+                // Inner field inheritance
+                foreach ($this->aFrameworkAssetsToReplace as $key => $aFiles){
+                    foreach($aFiles as $sReplacement){
+                        if ( $sReplacement == "inherit"){
+                            $aParentReplacement = $this->getParentConfiguration()->getFrameworkAssetsToReplace($sType);
+                            $this->aFrameworkAssetsToReplace[$key][1] = $aParentReplacement[$key][1];
+                        }
                     }
                 }
-            }
 
-            if($bInlcudeRemove && isset($aFieldValue['remove'])){
-                $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $aFieldValue['remove'] );
+                if($bInlcudeRemove && isset($aFieldValue['remove'])){
+                    $this->aFrameworkAssetsToReplace = array_merge($this->aFrameworkAssetsToReplace, (array) $aFieldValue['remove'] );
+                }
             }
         }
 
-        return $aAssetsToRemove;
+        return $this->aFrameworkAssetsToReplace;
     }
 
     /**
@@ -552,9 +556,9 @@ class TemplateConfiguration extends TemplateConfig
         $aFrameworkAssetsToReplace = $this->getFrameworkAssetsToReplace($sType);
 
         $aReplacements = array();
-                    $aReplace = $aAsset[1];
-                $aReplacements[] = $aReplace;
         foreach($aFrameworkAssetsToReplace as $key => $aAsset ){
+            $aReplace = $aAsset[1];
+            $aReplacements[] = $aReplace;
         }
 
         return $aReplacements;
