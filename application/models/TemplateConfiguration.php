@@ -497,12 +497,6 @@ class TemplateConfiguration extends TemplateConfig
         $sFieldName  = 'cssframework_'.$sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
-        // Whole field inheritance
-        if ($this->$sFieldName == "inherit"){
-            $parentFieldValue = $this->getFieldFromParentConfiguration($sFieldName);
-            $aFieldValue = (array) json_decode($parentFieldValue);
-        }
-
         $aAssetsToRemove = array();
         if (!empty( $aFieldValue )){
             $aAssetsToRemove = (array) $aFieldValue['replace'] ;
@@ -595,7 +589,7 @@ class TemplateConfiguration extends TemplateConfig
 
     public function __get($name)
     {
-        $aAttributesThatCanBeInherited = array('files_css', 'files_js', 'options');
+        $aAttributesThatCanBeInherited = array('files_css', 'files_js', 'options', 'cssframework_css', 'cssframework_js');
 
         if (in_array($name, $aAttributesThatCanBeInherited)){
             // Full inheritance of the whole field
