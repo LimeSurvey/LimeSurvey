@@ -59,6 +59,10 @@ class TemplateConfiguration extends TemplateConfig
     /** @var string $sTypeIcon the type of template for icon (core vs user)*/
     private $sTypeIcon;
 
+    /** @var array $aFilesToLoad cache for the method getFilesToLoad()*/
+    private $aFilesToLoad;
+
+
     /**
      * @return string the associated database table name
      */
@@ -365,28 +369,30 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
+        if (empty($this->aFilesToLoad)){
+            $sField = 'files_'.$sType;
+            $jFiles = $oTemplate->$sField;
 
-        $sField = 'files_'.$sType;
-        $jFiles = $oTemplate->$sField;
+            $this->aFilesToLoad = array();
 
-        $aFiles = array();
+            if(!empty($jFiles)){
+                $oFiles = json_decode($jFiles);
+                foreach($oFiles as $action => $aFileList){
+                    if ($action == "add" || $action == "replace"){
 
-        if(!empty($jFiles)){
-            $oFiles = json_decode($jFiles);
-            foreach($oFiles as $action => $aFileList){
-                if ($action == "add" || $action == "replace"){
+                        // Specific inheritance of one of the value of the json array
+                        if ($aFileList[0] == 'inherit'){
+                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                            $aFileList = $aParentjFiles[$action];
+                        }
 
-                    // Specific inheritance of one of the value of the json array
-                    if ($aFileList[0] == 'inherit'){
-                        $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
-                        $aFileList = $aParentjFiles[$action];
+                        $this->aFilesToLoad = array_merge($this->aFilesToLoad, $aFileList);
                     }
-
-                    $aFiles = array_merge($aFiles, $aFileList);
                 }
             }
         }
-        return $aFiles;
+
+        return $this->aFilesToLoad;
     }
 
     /**
