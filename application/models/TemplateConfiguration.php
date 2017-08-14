@@ -549,25 +549,12 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getFrameworkAssetsReplacement( $sType )
     {
-        $sFieldName  = 'cssframework_'.$sType;
-        $aFieldValue = (array) json_decode($this->$sFieldName);
+        $aFrameworkAssetsToReplace = $this->getFrameworkAssetsToReplace($sType);
 
         $aReplacements = array();
-        if (!empty( $aFieldValue )){
-            $aAssetsToReplace = (array) $aFieldValue['replace'];
-
-            // Inheritance of a specific subfield
-            foreach($aAssetsToReplace as $key => $aAsset ){
-                if ($aAsset[1] == 'inherit'){
-                    $aParentjFiles = (array) json_decode($this->getParentConfiguration()->$sFieldName);
-                    $aReplace = $aParentjFiles['replace'][$key][1];
-                }else{
                     $aReplace = $aAsset[1];
-                }
-
                 $aReplacements[] = $aReplace;
-
-            }
+        foreach($aFrameworkAssetsToReplace as $key => $aAsset ){
         }
 
         return $aReplacements;
