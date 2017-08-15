@@ -107,12 +107,11 @@ var prepare = function(){
 
 
             $('#simple_edit_cssframework').on('change', function(evt){
-                //{"replace": [["css/bootstrap.css","css/flatly.css"]]}
-                currentThemeObject.replace = currentThemeObject.replace || [["css/bootstrap.css",]];
                 if($('#simple_edit_cssframework').val() === 'inherit'){
                     $('#TemplateConfiguration_cssframework_css').val('inherit');
                 } else {
-                    currentThemeObject.replace[0][1] = $('#simple_edit_cssframework').val();
+                    currentThemeObject = {};
+                    currentThemeObject.replace = [["css/bootstrap.css",$('#simple_edit_cssframework').val()]];
                     $('#TemplateConfiguration_cssframework_css').val(JSON.stringify(currentThemeObject));
                 }
 

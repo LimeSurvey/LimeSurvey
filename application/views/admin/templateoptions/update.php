@@ -54,14 +54,18 @@
             </div>
             <div role="tabpanel" class="tab-pane" id="advanced">
             <?php 
-                $actionUrlArray = array();
+                $actionBaseUrl = 'admin/templateoptions/sa/update/';
+                $actionUrlArray = array('id' => $model->id);
+                
                 if($model->sid) {
+                    unset($actionUrlArray['id']); 
                     $actionUrlArray['sid'] = $model->sid; 
                     $actionUrlArray['surveyd'] = $model->sid;
                     $actionUrlArray['gsid'] = $model->gsid;
                     $actionBaseUrl = 'admin/templateoptions/sa/updatesurvey/';
                     }
                 if($model->gsid) {
+                    unset($actionUrlArray['id']); 
                     $actionBaseUrl = 'admin/templateoptions/sa/updatesurveygroup/';
                     $actionUrlArray['gsid'] = $model->gsid;
                 }
