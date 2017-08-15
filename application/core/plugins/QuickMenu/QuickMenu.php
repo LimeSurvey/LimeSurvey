@@ -103,7 +103,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         ),
         'statistics' => array(
             'type' => 'checkbox',
-            'label' => 'Statistics&nbsp;<span class="fa fa-stats"></span>',
+            'label' => 'Statistics&nbsp;<span class="fa fa-bar-chart"></span>',
             'default' => '0',
             'help' => 'Needed permission: Statistics - View'
         ),
@@ -324,7 +324,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'name' => 'statistics',
                 'href' => Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyId"),
                 'tooltip' => gT('Statistics'),
-                'iconClass' => 'fa fa-stats navbar-brand',
+                'iconClass' => 'fa fa-bar-chart navbar-brand',
                 'showOnlyWhenSurveyIsActivated' => true,
                 'neededPermission' => array('statistics', 'read')
             )),

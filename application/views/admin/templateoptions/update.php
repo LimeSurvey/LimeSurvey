@@ -53,10 +53,26 @@
                 ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="advanced">
+            <?php 
+                $actionUrlArray = array();
+                if($model->sid) {
+                    $actionUrlArray['sid'] = $model->sid; 
+                    $actionUrlArray['surveyd'] = $model->sid;
+                    $actionUrlArray['gsid'] = $model->gsid;
+                    $actionBaseUrl = 'admin/templateoptions/sa/updatesurvey/';
+                    }
+                if($model->gsid) {
+                    $actionBaseUrl = 'admin/templateoptions/sa/updatesurveygroup/';
+                    $actionUrlArray['gsid'] = $model->gsid;
+                }
+
+                $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl,$actionUrlArray);
+            ?>
                 <?php $form=$this->beginWidget('TbActiveForm', array(
                     'id'=>'template-options-form',
                     'enableAjaxValidation'=>false,
-                    'htmlOptions' => ['class' => 'form ']
+                    'htmlOptions' => ['class' => 'form '],
+                    'action' => $actionUrl
                 )); ?>
                 <p class="note">Fields with <span class="required">*</span> are required.</p>
                 <?php echo $form->errorSummary($model); ?>

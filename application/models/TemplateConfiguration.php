@@ -502,7 +502,7 @@ class TemplateConfiguration extends TemplateConfig
 
         foreach($oOptions as $sKey => $sOption){
             if ($sOption == 'inherit'){
-                $aParentOptions = (array) json_decode($this->getParentConfiguration('options'));
+                $aParentOptions = (array) json_decode($this->options);
                 $oOptions->$sKey = $aParentOptions[$sKey];
             }
         }

@@ -267,7 +267,7 @@ $surveyid = $oSurvey->sid;
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>" >
-                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-bar-chart text-success"  style="font-size: 3em;"></span>
 						    <span class="sr-only"><?php eT("Statistics");?></span>
                                                 </a>
                                             </div>
@@ -290,7 +290,7 @@ $surveyid = $oSurvey->sid;
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="#" >
-                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-bar-chart text-success"  style="font-size: 3em;"></span>
 						    <span class="sr-only"><?php eT("Responses & statistics");?></span>
                                                 </a>
                                             </div>

@@ -139,6 +139,30 @@ class templateoptions  extends Survey_Common_Action
     }
 
     /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function updatesurveygroup($gsid)
+    {
+        if (! Permission::model()->hasGlobalPermission('templates', 'update')){
+            Yii::app()->setFlashMessage(gT('Access denied!'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/",['id'=>$gsid]));
+        }
+
+        $model = Template::getTemplateConfiguration(null, null, $gsid);
+        $model->bUseMagicInherit = false;
+
+        if(isset($_POST['TemplateConfiguration'])){
+            $model->attributes=$_POST['TemplateConfiguration'];
+            if($model->save())
+                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/",['id'=>$gsid]));
+        }
+
+        $this->_updateCommon($model, $sid);
+    }
+
+    /**
      * Lists all models.
      */
     public function index()

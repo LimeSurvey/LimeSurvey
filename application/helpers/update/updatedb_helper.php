@@ -376,6 +376,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
+        /*
+         * Add template settings to survey groups
+         */
+        if ($iOldDBVersion < 311) {
+            $oTransaction = $oDB->beginTransaction();
+            addColumn('{{surveys_groups}}','template', "string(128) DEFAULT 'default'");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>311),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
 
     }
     catch(Exception $e)

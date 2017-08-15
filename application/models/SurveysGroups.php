@@ -76,6 +76,90 @@ class SurveysGroups extends CActiveRecord
         );
     }
 
+    public function getColumns(){
+        return array(
+
+                array(
+                    'id'=>'gsid',
+                    'class'=>'CCheckBoxColumn',
+                    'selectableRows' => '100',
+                ),
+
+                array(
+                    'header' => gT('Survey Group ID'),
+                    'name' => 'gsid',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+                array(
+                    'header' => gT('Name'),
+                    'name' => 'name',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'has-link'),
+                ),
+
+                array(
+                    'header' => gT('Title'),
+                    'name' => 'title',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->title, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'has-link'),
+                ),
+
+                array(
+                    'header' => gT('Description'),
+                    'name' => 'description',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->description, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+                array(
+                    'header' => gT('Parent Group'),
+                    'name' => 'parent',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link( $data->parentTitle, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+                array(
+                    'header' => gT('Owner'),
+                    'name' => 'owner',
+                    'value'=>'$data->owner->users_name',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+                array(
+                    'header' => gT('Order'),
+                    'name' => 'order',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->order, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+
+                array(
+                    'header' => gT('Actions'),
+                    'name' => 'order',
+                    'type' => 'raw',
+                    'value'=> '$data->buttons',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+            );
+    }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -132,10 +216,14 @@ class SurveysGroups extends CActiveRecord
     public function getButtons()
     {
         $sDeleteUrl     = App()->createUrl("admin/surveysgroups/sa/delete", array("id"=>$this->gsid));
+        $sEditUrl     = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$this->gsid));
         $button         = '';
 
+        if (! $this->gsid !== 1){
+            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" ></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
+        }
         if (! $this->hasSurveys){
-            $button .= '<a class="btn btn-default" href="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete survey group').'"><span class="fa fa-trash text-danger " ></span><span class="sr-only">'.gT('Delete survey group').'</span></a>';
+            $button .= '<a class="btn btn-default" href="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger " ></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
         }
 
         return $button;
@@ -144,7 +232,7 @@ class SurveysGroups extends CActiveRecord
     public static function getSurveyGroupsList()
     {
         $aSurveyList = [];
-        $oSurveyGroups = self::model()->findAll();
+        $oSurveyGroups = self::model()->findAll('parent_id=:parent_id',array('parent_id'=>0));
 
         foreach( $oSurveyGroups as $oSurveyGroup){
             $aSurveyList[$oSurveyGroup->gsid] = $oSurveyGroup->title;
@@ -152,6 +240,24 @@ class SurveysGroups extends CActiveRecord
 
         return $aSurveyList;
     }
+
+	public function getNextOrderPosition(){
+		$oSurveysGroups = SurveysGroups::model()->findAll();
+		return count($oSurveysGroups);
+	}
+
+    public function getParentGroupOptions (){
+		$oSurveysGroups = SurveysGroups::model()->findAll();
+		$options = [
+			'' => gT('No parent menu')
+		];
+		foreach($oSurveysGroups as $oSurveysGroup){
+			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
+			$options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
+		}
+		//return join('\n',$options);
+		return $options;
+	}
 
     /**
      * Returns the static model of the specified AR class.

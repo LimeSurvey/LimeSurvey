@@ -783,6 +783,7 @@ CREATE TABLE `prefix_surveys_groups` (
   `gsid` int(11) NOT NULL,
   `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `template` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT 'default',
   `description` text COLLATE utf8mb4_unicode_ci,
   `order` int(11) NOT NULL,
   `owner_uid` int(11) DEFAULT NULL,

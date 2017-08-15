@@ -109,7 +109,7 @@ class Surveymenu extends LSActiveRecord
 	}
 
 	public function getNextOrderPosition(){
-		$oSurveymenus = Surveymenu::model()->findAll();
+		$oSurveymenus = Surveymenu::model()->findAll('parent_id=:parent_id',array('parent_id'=>0));
 		return count($oSurveymenus);
 	}
 
