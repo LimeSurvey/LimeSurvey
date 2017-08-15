@@ -100,6 +100,18 @@
               margin-bottom: 12px;
               font-weight: normal;
           }
+          p.inherit-sizes
+          {
+              font: inherit;
+          }
+          ul.inherit-sizes
+          {
+              font: inherit;
+          }
+          ul.inherit-sizes>li
+          {
+              font: inherit;
+          }
         </style>
 
         <meta name="generator" content="LimeSurvey http://www.limesurvey.org" />
@@ -107,6 +119,7 @@
     </head>
 
     <body  class="default lang-{{surveylanguage}} {{surveyformat}}" marginwidth="0" marginheight="0">
+    {{dump(aSurveyInfo.aError)}}
         <div id="block_error">
             <div>
                 <h2>{{ aError.title }}</h2>
