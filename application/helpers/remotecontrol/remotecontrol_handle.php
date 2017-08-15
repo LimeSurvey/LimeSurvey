@@ -2468,10 +2468,30 @@ class remotecontrol_handle
             $aResponseData=array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $result_id = $survey_dynamic->insertRecords($aResponseData);
 
-            if ($result_id)
+            if ($result_id) {
+                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $sToken, 'id' => $result_id));
+                foreach ($oResponse->getFiles() as $aFile) {
+                    $sUploadPath = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/";
+                    $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $aFile['filename'];
+                    $sFileTempName = Yii::app()->getConfig('tempdir') . "/upload/" . $aFile['filename'];
+
+                    if (!file_exists($sFileRealName)) {
+                        if (!is_dir($sUploadPath)) {
+                            mkdir($sUploadPath, 0777, true);
+                        }
+
+                        if (!rename($sFileTempName, $sFileRealName)) {
+                            return array('status' => 'Unable to move files ' . $sFileTmpName . ' ' . $sFileRealName);
+                        }
+                    }
+
+                }
+
                 return $result_id;
-            else
+            }
+            else {
                 return array('status' => 'Unable to add response');
+            }
         }
         else
             return array('status' => 'No permission');
