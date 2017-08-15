@@ -15,7 +15,7 @@
  * @property string $modified
  * @property integer $created_by
  */
-class SurveysGroups extends CActiveRecord
+class SurveysGroups extends LSActiveRecord
 {
     /**
      * @return string the associated database table name

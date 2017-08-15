@@ -576,13 +576,27 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getParentConfiguration(){
         if (empty($this->oParentTemplate)){
-            //check for surveygroup id
-            if($this->sid != null && $this->gsid != null){
-                $this->oParentTemplate = Template::getTemplateConfiguration(null,null,$this->gsid);
-            }else{
-                //check for general global template
-                $this->oParentTemplate = Template::getTemplateConfiguration($this->templates_name);
+
+            //check for surveygroup id if a survey is given
+            if($this->sid != null ){
+                $oSurvey = Survey::model()->findByPk($this->sid);
+                $this->oParentTemplate = Template::getTemplateConfiguration(null,null,$oSurvey->gsid);
+                return $this->oParentTemplate;
             }
+            
+            //check for surveygroup id if a surveygroup is given
+            if($this->sid == null && $this->gsid != null ){
+                $oSurveyGroup = SurveysGroups::model()->findByPk($this->gsid);
+                //Switch if the surveygroup inherits from a parent surveygroup
+                if($oSurveyGroup->parent_id != 0) {
+                    $this->oParentTemplate = Template::getTemplateConfiguration(null,null,$oSurveyGroup->parent_id);
+                    return $this->oParentTemplate;
+                }
+            }
+
+            //in the endcheck for general global template
+            $this->oParentTemplate = Template::getTemplateConfiguration($this->templates_name);
+            return $this->oParentTemplate;
         }
         return $this->oParentTemplate;
     }
