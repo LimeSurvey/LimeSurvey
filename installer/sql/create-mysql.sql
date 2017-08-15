@@ -806,4 +806,4 @@ INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `or
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '309');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '311');
