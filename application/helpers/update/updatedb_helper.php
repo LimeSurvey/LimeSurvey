@@ -533,37 +533,47 @@ function createSurveyMenuTable293($oDB) {
         $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd,$row));
     }
 }
-function reCreateSurveyMenuTable310(&$oDB)
+
+/**
+ * @param CDbConnection $oDB
+ * @return void
+ */
+function reCreateSurveyMenuTable310(CDbConnection $oDB)
 {
+    // NB: Need to refresh here, since surveymenu table is
+    // created in earlier version in same script.
+    $oDB->schema->getTables();
+    $oDB->schema->refresh();
 
-// Drop the old surveymenu table.
-if (tableExists('{surveymenu}')) {
-    $oDB->createCommand()->dropTable('{{surveymenu}}');
-}
-// Drop the old surveymenu_entries table.
-if (tableExists('{surveymenu_entries}')) {
-    $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
-}
+    // Drop the old surveymenu table.
+    if (tableExists('{surveymenu}')) {
+        $oDB->createCommand()->dropTable('{{surveymenu}}');
+    }
+    // Drop the old surveymenu_entries table.
+    if (tableExists('{surveymenu_entries}')) {
+        $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
+    }
 
-$oDB->createCommand()->createTable('{{surveymenu}}', array(
-  "id" =>  "int(11) NOT NULL AUTO_INCREMENT",
-  "parent_id" =>  "int(11) DEFAULT NULL",
-  "survey_id" =>  "int(11) DEFAULT NULL",
-  "user_id" =>  "int(11) DEFAULT NULL",
-  "ordering" =>  "int(11) DEFAULT '0'",
-  "level" =>  "int(11) DEFAULT '0'",
-  "title" =>  "varchar(255)  NOT NULL DEFAULT ''",
-  "position" =>  "varchar(255)  NOT NULL DEFAULT 'side'",
-  "description" =>  "text ",
-  "changed_at" =>  "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
-  "changed_by" =>  "int(11) NOT NULL DEFAULT '0'",
-  "created_at" =>  "datetime DEFAULT NULL",
-  "created_by" =>  "int(11) NOT NULL DEFAULT '0'",
-  "PRIMARY KEY (`id`)",
-  "KEY `ordering` (`ordering`)",
-  "KEY `title` (`title`(250))"
-));
-$oDB->createCommand()->insert(
+    $oDB->createCommand()->createTable('{{surveymenu}}', array(
+        "id" =>  "int(11) NOT NULL AUTO_INCREMENT",
+        "parent_id" =>  "int(11) DEFAULT NULL",
+        "survey_id" =>  "int(11) DEFAULT NULL",
+        "user_id" =>  "int(11) DEFAULT NULL",
+        "ordering" =>  "int(11) DEFAULT '0'",
+        "level" =>  "int(11) DEFAULT '0'",
+        "title" =>  "varchar(255)  NOT NULL DEFAULT ''",
+        "position" =>  "varchar(255)  NOT NULL DEFAULT 'side'",
+        "description" =>  "text ",
+        "changed_at" =>  "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+        "changed_by" =>  "int(11) NOT NULL DEFAULT '0'",
+        "created_at" =>  "datetime DEFAULT NULL",
+        "created_by" =>  "int(11) NOT NULL DEFAULT '0'",
+        "PRIMARY KEY (`id`)",
+        "KEY `ordering` (`ordering`)",
+        "KEY `title` (`title`(250))"
+    ));
+
+    $oDB->createCommand()->insert(
         '{{surveymenu}}',
         array(
             "id" =>1,
@@ -580,7 +590,7 @@ $oDB->createCommand()->insert(
             "created_at" =>date('Y-m-d H:i:s'),
             "created_by" =>  0          
         ));
-$oDB->createCommand()->insert(
+    $oDB->createCommand()->insert(
         '{{surveymenu}}',
         array(
             "id" =>2,
