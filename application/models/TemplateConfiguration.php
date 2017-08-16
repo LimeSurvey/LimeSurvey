@@ -49,8 +49,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     public $oParentTemplate;
 
-    /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit  */
-    public $bUseMagicInherit = true;
+    /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to on for template rendering  */
+    public $bUseMagicInherit = false;
 
     // Caches
 
@@ -147,15 +147,15 @@ class TemplateConfiguration extends TemplateConfig
      * Returns a TemplateConfiguration Object based on a surveygroup ID
      * If no instance is existing, it will create one.
      *
-     * @param [Integer] $iSurveyGroupId 
+     * @param [Integer] $iSurveyGroupId
      * @param [String] $sTemplateName
      * @return TemplateConfiguration
      */
     public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName=null){
-        
+
         //if a template name is given also check against that
         $sTemplateName = $sTemplateName != null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
-        
+
         $criteria = new CDbCriteria();
         $criteria->addCondition('gsid=:gsid');
         $criteria->addCondition('templates_name=:templates_name');
@@ -174,14 +174,14 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         return $oTemplateConfigurationModel;
-            
+
     }
 
     /**
      * Returns a TemplateConfiguration Object based on a surveyID
      * If no instance is existing, it will create one.
      *
-     * @param [Integer] $iSurveyId 
+     * @param [Integer] $iSurveyId
      * @param [String] $sTemplateName
      * @return TemplateConfiguration
      */
@@ -197,7 +197,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
-        
+
         // No specific template configuration for this surveygroup => create one
         // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
         if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')  && $sTemplateName != null){
@@ -231,7 +231,7 @@ class TemplateConfiguration extends TemplateConfig
         if($iSurveyGroupId!=null && $iSurveyId==null) {
             $oTemplateConfigurationModel = @TemplateConfiguration::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
         }
-        
+
         if($iSurveyId!=null) {
             $oTemplateConfigurationModel = @TemplateConfiguration::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
         }
@@ -273,7 +273,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('cssframework_css',$this->cssframework_css,true);
         $criteria->compare('cssframework_js',$this->cssframework_js,true);
         $criteria->compare('packages_to_load',$this->packages_to_load,true);
-        
+
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
@@ -377,6 +377,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function prepareTemplateRendering($sTemplateName='', $iSurveyId='')
     {
+        $this->bUseMagicInherit = true;
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard();                                                 // Check if  it is a CORE template
         $this->path = ($this->isStandard)
@@ -472,7 +473,7 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     public function getOptionPage()
-    {        
+    {
         $this->prepareTemplateRendering();
         return Yii::app()->twigRenderer->renderOptionPage($this, array('templateConfiguration' =>$this->attributes));
     }
@@ -707,21 +708,24 @@ class TemplateConfiguration extends TemplateConfig
             if($this->sid != null ){
                 $oSurvey = Survey::model()->findByPk($this->sid);
                 $this->oParentTemplate = Template::getTemplateConfiguration(null,null,$oSurvey->gsid);
+                $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
                 return $this->oParentTemplate;
             }
-            
+
             //check for surveygroup id if a surveygroup is given
             if($this->sid == null && $this->gsid != null ){
                 $oSurveyGroup = SurveysGroups::model()->findByPk($this->gsid);
                 //Switch if the surveygroup inherits from a parent surveygroup
                 if($oSurveyGroup->parent_id != 0) {
                     $this->oParentTemplate = Template::getTemplateConfiguration(null,null,$oSurveyGroup->parent_id);
+                    $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
                     return $this->oParentTemplate;
                 }
             }
 
             //in the endcheck for general global template
             $this->oParentTemplate = Template::getTemplateConfiguration($this->templates_name);
+            $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
             return $this->oParentTemplate;
         }
         return $this->oParentTemplate;
