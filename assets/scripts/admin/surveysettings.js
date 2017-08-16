@@ -143,10 +143,10 @@ $(document).on('ready  pjax:complete', function(){
             method:'POST',
             data: data,
             success: function(result){
-                if(result.redirecturl != '' ){
+                if(result.redirecturl != undefined ){
                     window.location.href=result.redirecturl;
                 } else {
-                    location.reload();
+                    window.location.reload();
                 }
             },
             error: function(result){

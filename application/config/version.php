@@ -14,7 +14,7 @@
 
 $config['versionnumber'] = '3.0.0-beta.2'; //The current version of this branch
 $config['masterversion'] = '2.67.2'; //The current masters version merged into this branch
-$config['dbversionnumber'] = 311;
+$config['dbversionnumber'] = 312;
 $config['buildnumber'] = '';
 $config['updatable'] = true;
 $config['assetsversionnumber'] = '2902';

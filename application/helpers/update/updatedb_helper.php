@@ -387,6 +387,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         }
 
 
+        /*
+         * Add ltr/rtl capability to template configuration
+         */
+        if ($iOldDBVersion < 312) {
+            $oTransaction = $oDB->beginTransaction();
+            addColumn('{{template_configuration}}','packages_ltr', "text");
+            addColumn('{{template_configuration}}','packages_rtl', "text");
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>312),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+
     }
     catch(Exception $e)
     {

@@ -152,7 +152,6 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->addCondition('sid IS NULL');
         $criteria->addCondition('gsid IS NULL');
 
-
         $criteria->compare('id',$this->id);
         $criteria->compare('templates_name',$this->templates_name,true);
         $criteria->compare('files_css',$this->files_css,true);
@@ -163,7 +162,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->compare('cssframework_css',$this->cssframework_css,true);
         $criteria->compare('cssframework_js',$this->cssframework_js,true);
         $criteria->compare('packages_to_load',$this->packages_to_load,true);
-
+        
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));

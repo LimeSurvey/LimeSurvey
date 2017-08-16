@@ -176,7 +176,6 @@ class templateoptions  extends Survey_Common_Action
 
         $model = new TemplateConfiguration('search');
         $model->bUseMagicInherit = false;
-        $model->sid = $model->gsid = $model->uid = null;
         $aData['model'] = $model;
         $this->_renderWrappedTemplate('templateoptions', 'index', $aData);
     }
