@@ -232,12 +232,12 @@ class SurveysGroups extends LSActiveRecord
     public static function getSurveyGroupsList()
     {
         $aSurveyList = [];
-        $oSurveyGroups = self::model()->findAll('parent_id=:parent_id',array('parent_id'=>0));
+        $oSurveyGroups = self::model()->findAll();
 
         foreach( $oSurveyGroups as $oSurveyGroup){
             $aSurveyList[$oSurveyGroup->gsid] = $oSurveyGroup->title;
-        }
-
+        } 
+        
         return $aSurveyList;
     }
 

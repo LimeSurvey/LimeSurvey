@@ -131,6 +131,118 @@ class TemplateConfiguration extends TemplateConfig
     }
 
     /**
+     * Gets an instance of a templateconfiguration by name
+     *
+     * @param [String] $sTemplateName
+     * @return TemplateConfiguration
+     */
+    public static function getInstanceFromTemplateName($sTemplateName){
+        return  self::model()->find(
+            'templates_name=:templates_name AND sid IS NULL AND gsid IS NULL',
+            array(':templates_name'=>$sTemplateName)
+        );
+    }
+
+    /**
+     * Returns a TemplateConfiguration Object based on a surveygroup ID
+     * If no instance is existing, it will create one.
+     *
+     * @param [Integer] $iSurveyGroupId 
+     * @param [String] $sTemplateName
+     * @return TemplateConfiguration
+     */
+    public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName=null){
+        
+        //if a template name is given also check against that
+        $sTemplateName = $sTemplateName != null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
+        
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('gsid=:gsid');
+        $criteria->addCondition('templates_name=:templates_name');
+        $criteria->params = array('gsid' => $iSurveyGroupId, 'templates_name' => $sTemplateName);
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+
+        // No specific template configuration for this surveygroup => create one
+        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
+        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null){
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->id = null;
+            $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
+            $oTemplateConfigurationModel->setToInherit();
+            $oTemplateConfigurationModel->save();
+        }
+
+        return $oTemplateConfigurationModel;
+            
+    }
+
+    /**
+     * Returns a TemplateConfiguration Object based on a surveyID
+     * If no instance is existing, it will create one.
+     *
+     * @param [Integer] $iSurveyId 
+     * @param [String] $sTemplateName
+     * @return TemplateConfiguration
+     */
+    public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName=null){
+
+        //if a template name is given also check against that
+        $sTemplateName = $sTemplateName!=null ? $sTemplateName : Survey::model()->findByPk($iSurveyId)->template;
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('sid=:sid');
+        $criteria->addCondition('templates_name=:templates_name');
+        $criteria->params = array('sid' => $iSurveyId, 'templates_name' => $sTemplateName);
+
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+
+        
+        // No specific template configuration for this surveygroup => create one
+        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
+        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')  && $sTemplateName != null){
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->id = null;
+            $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->sid = $iSurveyId;
+            $oTemplateConfigurationModel->gsid = Survey::model()->findByPk($iSurveyId)->gsid;
+            $oTemplateConfigurationModel->setToInherit();
+            $oTemplateConfigurationModel->save();
+        }
+
+        return $oTemplateConfigurationModel;
+    }
+
+    /**
+     * Get an instance of a fitting TemplateConfiguration
+     *
+     * @param [String] $sTemplateName
+     * @param [Integer] $iSurveyGroupId
+     * @param [Integer] $iSurveyId
+     * @return TemplateConfiguration
+     */
+    public static function getInstance($sTemplateName=null, $iSurveyGroupId=null, $iSurveyId=null){
+
+        $oTemplateConfigurationModel = new TemplateConfiguration();
+
+        if ($sTemplateName!=null){
+            $oTemplateConfigurationModel = @TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+        }
+
+        if($iSurveyGroupId!=null && $iSurveyId==null) {
+            $oTemplateConfigurationModel = @TemplateConfiguration::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
+        }
+        
+        if($iSurveyId!=null) {
+            $oTemplateConfigurationModel = @TemplateConfiguration::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
+        }
+
+        return $oTemplateConfigurationModel;
+
+    }
+
+
+    /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
      * Typical usecase:

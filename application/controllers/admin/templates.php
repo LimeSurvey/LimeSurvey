@@ -781,7 +781,7 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
-        $oEditedTemplate = Template::model()->getInstance($templatename, '', true);
+        $oEditedTemplate = Template::model()->getInstance($templatename, null,null, true);
 
             //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');

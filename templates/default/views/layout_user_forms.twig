@@ -208,9 +208,10 @@ TODO: register
         <!-- some template.js function launched before ready -->
         <script type="text/javascript">
         /*<![CDATA[*/
-            sliderSuffixClone();
-            fixBodyPadding();
-            hideEmptyPart();
+            if(template === undefined){
+                var template = new Template();
+            }
+            template.initUserForms();
             /*]]>*/
         </script>
     </body>

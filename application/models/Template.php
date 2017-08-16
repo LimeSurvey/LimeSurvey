@@ -198,69 +198,7 @@ class Template extends LSActiveRecord
 
         // First we try to get a confifuration row from DB
         if (!$bForceXML){
-
-            if ($sTemplateName!=null){
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
-                    'templates_name=:templates_name AND sid IS NULL AND gsid IS NULL',
-                    array(':templates_name'=>$sTemplateName)
-                );
-            }
-
-            if($iSurveyGroupId!=null) {
-                $criteria = new CDbCriteria();
-                $sTemplateName = $sTemplateName!=null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
-                $criteria->addCondition('gsid=:gsid');
-                $criteria->addCondition('templates_name=:templates_name');
-                $criteria->params = array('gsid' => $iSurveyGroupId, 'templates_name' => $sTemplateName);
-
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
-
-                // No specific template configuration for this survey
-                if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
-                    $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
-                }
-            }
-
-            if($iSurveyId!=null) {
-                $sTemplateName = $sTemplateName!=null ? $sTemplateName : Survey::model()->findByPk($iSurveyId)->template;
-                $criteria = new CDbCriteria();
-                $criteria->addCondition('sid=:sid');
-                $criteria->addCondition('templates_name=:templates_name');
-                $criteria->params = array('sid' => $iSurveyId, 'templates_name' => $sTemplateName);
-
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
-
-                // No specific template configuration for this survey
-                if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
-                    $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
-                    $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
-                        'templates_name=:templates_name AND sid IS NULL AND gsid IS NULL',
-                        array(':templates_name'=>$sTemplateName)
-                    );
-                }
-            }
-
-            //If a survey group id is set, but there is no survey specific template configuration create one!
-            // TODO: move this somewhere else
-            if(($iSurveyGroupId != null) && !($iSurveyGroupId == $oTemplateConfigurationModel->gsid)){
-                $oTemplateConfigurationModel->id = null;
-                $oTemplateConfigurationModel->isNewRecord = true;
-                $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
-                $oTemplateConfigurationModel->setToInherit();
-                $oTemplateConfigurationModel->save();
-                return $oTemplateConfigurationModel;
-            }
-
-            //If a survey id is set, but there is no survey specific template configuration create one!
-            // TODO: move this somewhere else
-            if(($iSurveyId != null) && !($iSurveyId == $oTemplateConfigurationModel->sid)){
-                $oTemplateConfigurationModel->id = null;
-                $oTemplateConfigurationModel->isNewRecord = true;
-                $oTemplateConfigurationModel->sid = $iSurveyId;
-                $oTemplateConfigurationModel->setToInherit();
-                $oTemplateConfigurationModel->save();
-                return $oTemplateConfigurationModel;
-            }
+           $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId);
         }
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)

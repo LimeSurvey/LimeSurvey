@@ -523,8 +523,13 @@ $surveyid = $oSurvey->sid;
                             <?php $templatename = $oSurvey->template;
                             if (Permission::model()->hasGlobalPermission('templates','read'))
                             {
-                                $templateurl_url = $this->createAbsoluteUrl("admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome",array('templatename'=>$templatename)); ?>
-                                <a href='<?php echo $templateurl_url?>' target='_blank'><?php echo $templatename; ?></a>
+                                $sTemplateOptionsUrl = $this->createUrl("admin/templateoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid)); 
+                                $sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('templatename' => $oSurvey->template)); 
+                                //$sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template)); 
+                                ?>
+                                <?php echo $templatename; ?>
+                                <a href='<?=$sTemplateOptionsUrl?>' title="<?php eT("Open template options"); ?>" class="btn btn-default btn-xs"><i class="fa fa-paint-brush"></i></a>
+                                <a href='<?=$sTemplateEditorUrl?>' title="<?php eT("Open template editor in new window"); ?>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-object-group"></i></a>
                                 <?php
                             }
                             else
