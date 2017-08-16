@@ -486,29 +486,32 @@ class TemplateConfiguration extends TemplateConfig
     protected function getFilesToLoad($oTemplate, $sType)
     {
         if (empty($this->aFilesToLoad)){
-            $sField = 'files_'.$sType;
-            $jFiles = $oTemplate->$sField;
-
             $this->aFilesToLoad = array();
+        }
 
-            if(!empty($jFiles)){
-                $oFiles = json_decode($jFiles);
-                foreach($oFiles as $action => $aFileList){
-                    if ($action == "add" || $action == "replace"){
+        $sField = 'files_'.$sType;
+        $jFiles = $oTemplate->$sField;
+        $this->aFilesToLoad[$sType] = array();
 
-                        // Specific inheritance of one of the value of the json array
-                        if ($aFileList[0] == 'inherit'){
-                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
-                            $aFileList = $aParentjFiles[$action];
-                        }
 
-                        $this->aFilesToLoad = array_merge($this->aFilesToLoad, $aFileList);
+        if(!empty($jFiles)){
+            $oFiles = json_decode($jFiles);
+            foreach($oFiles as $action => $aFileList){
+                if ($action == "add" || $action == "replace"){
+
+                    // Specific inheritance of one of the value of the json array
+                    if ($aFileList[0] == 'inherit'){
+                        $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                        $aFileList = $aParentjFiles[$action];
                     }
+
+                    $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                 }
             }
         }
+        
 
-        return $this->aFilesToLoad;
+        return $this->aFilesToLoad[$sType];
     }
 
     /**
@@ -642,30 +645,34 @@ class TemplateConfiguration extends TemplateConfig
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
         if (empty($this->aFrameworkAssetsToReplace)){
-            $sFieldName  = 'cssframework_'.$sType;
-            $aFieldValue = (array) json_decode($this->$sFieldName);
-
             $this->aFrameworkAssetsToReplace = array();
-            if (!empty( $aFieldValue )){
-                $this->aFrameworkAssetsToReplace = (array) $aFieldValue['replace'] ;
-
-                // Inner field inheritance
-                foreach ($this->aFrameworkAssetsToReplace as $key => $aFiles){
-                    foreach($aFiles as $sReplacement){
-                        if ( $sReplacement == "inherit"){
-                            $aParentReplacement = $this->getParentConfiguration()->getFrameworkAssetsToReplace($sType);
-                            $this->aFrameworkAssetsToReplace[$key][1] = $aParentReplacement[$key][1];
-                        }
-                    }
-                }
-
-                if($bInlcudeRemove && isset($aFieldValue['remove'])){
-                    $this->aFrameworkAssetsToReplace = array_merge($this->aFrameworkAssetsToReplace, (array) $aFieldValue['remove'] );
-                }
-            }
         }
 
-        return $this->aFrameworkAssetsToReplace;
+        $this->aFrameworkAssetsToReplace[$sType] = array();
+
+        $sFieldName  = 'cssframework_'.$sType;
+        $aFieldValue = (array) json_decode($this->$sFieldName);
+
+        if (!empty( $aFieldValue )){
+            $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'] ;
+
+            // Inner field inheritance
+            foreach ($this->aFrameworkAssetsToReplace[$sType] as $key => $aFiles){
+                foreach($aFiles as $sReplacement){
+                    if ( $sReplacement == "inherit"){
+                        $aParentReplacement = $this->getParentConfiguration()->getFrameworkAssetsToReplace($sType);
+                        $this->aFrameworkAssetsToReplace[$sType][$key][1] = $aParentReplacement[$key][1];
+                    }
+                }
+            }
+
+            if($bInlcudeRemove && isset($aFieldValue['remove'])){
+                $this->aFrameworkAssetsToReplace[$sType] = array_merge($this->aFrameworkAssetsToReplace, (array) $aFieldValue['remove'] );
+            }
+        }
+        
+
+        return $this->aFrameworkAssetsToReplace[$sType];
     }
 
     /**
@@ -677,16 +684,19 @@ class TemplateConfiguration extends TemplateConfig
     protected function getFrameworkAssetsReplacement( $sType )
     {
         if (empty($this->aReplacements)){
-            $aFrameworkAssetsToReplace = $this->getFrameworkAssetsToReplace($sType);
-
             $this->aReplacements = array();
-            foreach($aFrameworkAssetsToReplace as $key => $aAsset ){
-                $aReplace = $aAsset[1];
-                $this->aReplacements[] = $aReplace;
-            }
         }
+        $this->aReplacements[$sType] = array();
 
-        return $this->aReplacements;
+        $aFrameworkAssetsToReplace = $this->getFrameworkAssetsToReplace($sType);
+
+        foreach($aFrameworkAssetsToReplace as $key => $aAsset ){
+            $aReplace = $aAsset[1];
+            $this->aReplacements[$sType][] = $aReplace;
+        }
+        
+
+        return $this->aReplacements[$sType];
     }
 
 

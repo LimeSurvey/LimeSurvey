@@ -11,7 +11,9 @@
  */
 /* Replace google font by included font (see mantis) */
 /* @see : http://www.latofonts.com/lato-free-fonts/ */
-/* Webfont: Lato-Regular */@font-face {
+
+/* Webfont: Lato-Regular */
+@font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 400;
@@ -23,7 +25,8 @@
          url('../fonts/Lato-Regular.ttf') format('truetype');
 }
 
-/* Webfont: Lato-Italic */@font-face {
+/* Webfont: Lato-Italic */
+@font-face {
   font-family: 'Lato';
   font-style: italic;
   font-weight: 400;
@@ -35,7 +38,8 @@
          url('../fonts/Lato-Italic.ttf') format('truetype');
 }
 
-/* Webfont: Lato-Bold */@font-face {
+/* Webfont: Lato-Bold */
+@font-face {
   font-family: 'Lato';
   font-style: normal;
   font-weight: 700;
@@ -48,7 +52,8 @@
 
 }
 
-/* Webfont: Lato-BoldItalic */@font-face {
+/* Webfont: Lato-BoldItalic */
+@font-face {
   font-family: 'Lato';
   font-style: italic;
   font-weight: 700;
