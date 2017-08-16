@@ -205,7 +205,6 @@ class TemplateConfiguration extends TemplateConfig
             $oTemplateConfigurationModel->id = null;
             $oTemplateConfigurationModel->isNewRecord = true;
             $oTemplateConfigurationModel->sid = $iSurveyId;
-            $oTemplateConfigurationModel->gsid = Survey::model()->findByPk($iSurveyId)->gsid;
             $oTemplateConfigurationModel->setToInherit();
             $oTemplateConfigurationModel->save();
         }
