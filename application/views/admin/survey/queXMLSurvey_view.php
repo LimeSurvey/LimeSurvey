@@ -1,5 +1,4 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("queXML PDF export"))); ?>
     <div class='row'>
         <h3>
             <?php eT("queXML PDF export");?>

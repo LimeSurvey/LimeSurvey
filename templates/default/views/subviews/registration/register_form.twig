@@ -1,9 +1,27 @@
 
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Registration form._.·´¯)·._.·´¯)
+
+    This is the registration form for participant registration on a survey.
+
+#}
 {{ C.Html.form(aSurveyInfo.sRegisterFormUrl,'post',({'id' : 'limesurvey', 'role' : 'form', 'class' : 'form'})) }}
 
 <input type="hidden" name="lang" value="{{aSurveyInfo.sLanguage}}" id="register_lang" />
 <input type="hidden" name="register" value="true" id="register_register" />
+
 <div class='col-md-8 col-md-offset-2'>
+    {# Participants first name #}
     <div class='form-group row'>
         <label for='register_firstname' class='control-label '>{{ gT("First name:") }}</label>
         <div class="">
@@ -11,18 +29,23 @@
         </div>
     </div>
 
+    {# Participants last name #}
     <div class='form-group row'>
         <label for='register_lastname' class='control-label '>{{ gT("Last name:") }}</label>
         <div class="">
             {{ C.Html.textField('register_lastname', aSurveyInfo.sLastName, ({'id' : 'register_lastname', 'class' : 'form-control'})) }}
         </div>
     </div>
+    
+    {# Participants email #}
     <div class='form-group row'>
         <label for='register_email' class='control-label'> {{ gT("Email address:") }} {{ include('./subviews/required.twig') }}</label>
         <div class="">
             {{ C.Html.textField('register_email', aSurveyInfo.sEmail, ({'id' : 'register_email','class' : 'form-control input-sm','required' : true})) }}
         </div>
     </div>
+
+    {# Loop to add extra attributes #}
     {% for key, aExtraAttribute in aSurveyInfo.aExtraAttributes  %}
         <div class='form-group row'>
             {% set registerKey = "register_" ~ key %}
@@ -32,6 +55,8 @@
             </div>
         </div>
     {% endfor %}
+
+    {# Captcha box #}
     {% if aSurveyInfo.bCaptcha %}
         <div class='form-group row captcha-item'>
             <label class='control-label ' for='loadsecurity'>{{ gT("Please enter the letters you see:") }} {{ include('./subviews/required.twig') }}</label>
@@ -46,10 +71,12 @@
         </div>
     {% endif %}
 
+    {# Mandatory information #}
     <div class='row' aria-hidden='true'>
             {{ gT('Fields marked with an asterisk are mandatory.')}}
     </div>
 
+    {# Save button #}
     <div class='form-group row'>
         <div class=' col-md-offset-7'>
             {% set continue = gT("Continue",'unescaped') %}
@@ -58,6 +85,8 @@
             </button>
         </div>
     </div>  
+
+    {# If there is additional form parts, a.e. trhough a plugin render it out here #}
     <div class="row">
         {{ aSurveyInfo.formAdditions | raw  }}
     </div>

@@ -250,29 +250,29 @@ export default {
 </script>
 <template>
     <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width fill-height" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
-        <div class="col-12 fill-height" v-bind:style="{'height': $store.state.inSurveyViewHeight}">
-            <div class="mainMenu container-fluid col-sm-12 fill-height">
-                <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space margin bottom-0 top-5" style="height: 40px;">
-                    <transition name="fade">
-                        <button class="btn btn-default ls-space padding right-5" v-if="!$store.state.isCollapsed" @click="toggleCollapse">
-                            <i class="fa fa-chevron-left"></i>
-                        </button>
-                    </transition>
-                    <transition name="fade">
-                        <div class="ls-flex-item col-12" v-if="!$store.state.isCollapsed">
-                            <div class="btn-group btn-group col-12">
-                                <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
-                                <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
+        <div class="col-12 fill-height ls-space padding all-0" v-bind:style="{'height': $store.state.inSurveyViewHeight}">
+            <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
+                <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;">
+                    <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 right-10 bottom-0 top-0">
+                        <transition name="fade">
+                            <button class="btn btn-default ls-space padding left-15 right-15" v-if="!$store.state.isCollapsed" @click="toggleCollapse">
+                                <i class="fa fa-chevron-left"></i>
+                            </button>
+                        </transition>
+                        <transition name="fade">
+                            <div class="ls-flex-item grow-10 col-12" v-if="!$store.state.isCollapsed">
+                                <div class="btn-group btn-group col-12">
+                                    <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
+                                    <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
+                                </div>
                             </div>
-                        </div>
-                    </transition>
-                    <transition name="fade">
-                        <div class="btn-group ls-space padding right-5" v-if="$store.state.isCollapsed" role="group">
-                            <button class="btn btn-defaultls-space padding right-5" v-if="$store.state.isCollapsed" @click="toggleCollapse">
+                        </transition>
+                        <transition name="fade">
+                            <button class="btn btn-default ls-space padding left-15 right-15" v-if="$store.state.isCollapsed" @click="toggleCollapse">
                                 <i class="fa fa-chevron-right"></i>
                             </button>
-                        </div>
-                    </transition>
+                        </transition>
+                    </div>
                 </div>
                 <transition name="slide-fade">
                     <sidemenu :style="{height: calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>

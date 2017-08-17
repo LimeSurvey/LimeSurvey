@@ -103,8 +103,8 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
     {
-        $oTemplate = self::getTemplateForRessource($sTemplateCssFileName);
-        Yii::app()->getClientScript()->packages[$oTemplate->sPackageName]['js'][]=$sTemplateCssFileName;
+        $oTemplate = self::getTemplateForRessource($sTemplateScriptFileName);
+        Yii::app()->getClientScript()->packages[$oTemplate->sPackageName]['js'][]=$sTemplateScriptFileName;
     }
 
     /**

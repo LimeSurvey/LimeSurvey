@@ -1943,9 +1943,18 @@ class SurveyAdmin extends Survey_Common_Action
             // Check if survey title was set
             if (Yii::app()->request->getPost('surveyls_title')=='')
             {
-                Yii::app()->session['flashmessage'] = gT("Survey could not be created because it did not have a title");
-                $this->getController()->redirect($this->getController()->createUrl('admin'));
-                return;
+                $alertError = gT("Survey could not be created because it did not have a title");
+                //Yii::app()->session['flashmessage'] = $alertError;
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array(
+                        'data' => array(
+                            'alertData' => $alertError,
+                            'missingField' => 'surveyls_title'
+                        )
+                    ),
+                    false,
+                    false);
             }
 
             Yii::app()->loadHelper("surveytranslator");
@@ -2056,12 +2065,10 @@ class SurveyAdmin extends Survey_Common_Action
             $sTitle          = Yii::app()->request->getPost('surveyls_title');
             $sDescription    = Yii::app()->request->getPost('description');
             $sWelcome        = Yii::app()->request->getPost('welcome');
-            $sURLDescription = Yii::app()->request->getPost('urldescrip');
 
             $sTitle          = html_entity_decode($sTitle, ENT_QUOTES, "UTF-8");
             $sDescription    = html_entity_decode($sDescription, ENT_QUOTES, "UTF-8");
             $sWelcome        = html_entity_decode($sWelcome, ENT_QUOTES, "UTF-8");
-            $sURLDescription = html_entity_decode($sURLDescription, ENT_QUOTES, "UTF-8");
 
             // Fix bug with FCKEditor saving strange BR types
             $sTitle       = fixCKeditorText($sTitle);
@@ -2076,9 +2083,9 @@ class SurveyAdmin extends Survey_Common_Action
                 'surveyls_description'    => $sDescription,
                 'surveyls_welcometext'    => $sWelcome,
                 'surveyls_language'       => Yii::app()->request->getPost('language'),
-                'surveyls_urldescription' => Yii::app()->request->getPost('urldescrip'),
-                'surveyls_endtext'        => Yii::app()->request->getPost('endtext'),
-                'surveyls_url'            => Yii::app()->request->getPost('url'),
+                'surveyls_urldescription' => Yii::app()->request->getPost('urldescrip',''),
+                'surveyls_endtext'        => Yii::app()->request->getPost('endtext',''),
+                'surveyls_url'            => Yii::app()->request->getPost('url',''),
                 'surveyls_dateformat'     => (int) Yii::app()->request->getPost('dateformat'),
                 'surveyls_numberformat'   => (int) Yii::app()->request->getPost('numberformat'),
             );
@@ -2088,7 +2095,7 @@ class SurveyAdmin extends Survey_Common_Action
             // Update survey permissions
             Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'], $iNewSurveyid);
 
-            $createSample = (int)App()->request->getPost('createsample', 0) === 1;
+            $createSample = ( (int) App()->request->getPost('createsample', 0) ) === 1;
 
             if($createSample) {
                 $iNewGroupID = $this->_createSampleGroup($iNewSurveyid);

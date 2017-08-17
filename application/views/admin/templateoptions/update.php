@@ -32,7 +32,7 @@
                      $oOptions = json_decode($model->options);
                      $jsonError = json_last_error();
                      //if it is not valid, render message
-                     if($jsonError !== JSON_ERROR_NONE)
+                     if($jsonError !== JSON_ERROR_NONE && $model->options !== 'inherit')
                      {
                          //return
                         echo "<div class='ls-flex-column fill'><h4>".gT('There are no simple options in this template')."</h4></div>";
@@ -41,7 +41,7 @@
                      else
                      {
                         /**
-                         * The form element needs to hold teh class "action_update_options_string_form" to be correctly bound
+                         * The form element needs to hold the class "action_update_options_string_form" to be correctly bound
                          * To be able to change the value in the "real" form, the input needs to now what to change.
                          * So the name attribute should contain the object key we want to change
                          */
@@ -53,10 +53,30 @@
                 ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="advanced">
+            <?php 
+                $actionBaseUrl = 'admin/templateoptions/sa/update/';
+                $actionUrlArray = array('id' => $model->id);
+                
+                if($model->sid) {
+                    unset($actionUrlArray['id']); 
+                    $actionUrlArray['sid'] = $model->sid; 
+                    $actionUrlArray['surveyd'] = $model->sid;
+                    $actionUrlArray['gsid'] = $model->gsid;
+                    $actionBaseUrl = 'admin/templateoptions/sa/updatesurvey/';
+                    }
+                if($model->gsid) {
+                    unset($actionUrlArray['id']); 
+                    $actionBaseUrl = 'admin/templateoptions/sa/updatesurveygroup/';
+                    $actionUrlArray['gsid'] = $model->gsid;
+                }
+
+                $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl,$actionUrlArray);
+            ?>
                 <?php $form=$this->beginWidget('TbActiveForm', array(
                     'id'=>'template-options-form',
                     'enableAjaxValidation'=>false,
-                    'htmlOptions' => ['class' => 'form ']
+                    'htmlOptions' => ['class' => 'form '],
+                    'action' => $actionUrl
                 )); ?>
                 <p class="note">Fields with <span class="required">*</span> are required.</p>
                 <?php echo $form->errorSummary($model); ?>
@@ -127,11 +147,13 @@
 
 </div>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 $(document).on('ready pjax:complete', function(e){
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
     if($('.action_update_options_string_form').length > 0){
-        var optionObject = JSON.parse($('#TemplateConfiguration_options').val());
+        var optionObject = {};
+        optionObject = JSON.parse($('#TemplateConfiguration_options').val());
+        
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
             var itemValue = optionObject[$(item).attr('name')];
             $(item).val(itemValue);
@@ -139,4 +161,4 @@ $(document).on('ready pjax:complete', function(e){
         })
     }
 });
-</script>
+</script> -->

@@ -49,8 +49,8 @@ class templateoptions  extends Survey_Common_Action
             die('No permission');
         }
 
-        $model=new TemplateOptions;
-
+        $model = new TemplateOptions;
+        $model->bUseMagicInherit = false;
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
@@ -69,14 +69,16 @@ class templateoptions  extends Survey_Common_Action
 
     private function _updateCommon($model,$sid=null){
 
-        $templateOptionPage = $model->optionPage;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
+        $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
+        $templateOptionPage           = $oModelWithInheritReplacement->optionPage;
+
         yii::app()->clientScript->registerPackage('bootstrap-switch');
         $aData = array(
-            'model'=>$model, 
+            'model'=>$model,
             'templateOptionPage' => $templateOptionPage
         );
         if($sid !== null){
@@ -84,8 +86,7 @@ class templateoptions  extends Survey_Common_Action
             $aData['title_bar']['title'] = gT("Survey template options");
             $aData['subaction'] = gT("Survey template options");
         }
-
-        // TODO: twig file from template folder
+        
         $this->_renderWrappedTemplate('templateoptions', 'update', $aData);
     }
 
@@ -101,6 +102,7 @@ class templateoptions  extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/templateoptions"));
         }
         $model = $this->loadModel($id);
+        $model->bUseMagicInherit = false;
 
         if(isset($_POST['TemplateConfiguration'])){
             $model->attributes=$_POST['TemplateConfiguration'];
@@ -125,11 +127,36 @@ class templateoptions  extends Survey_Common_Action
         }
 
         $model = Template::getTemplateConfiguration(null, $sid);
-        
+        $model->bUseMagicInherit = false;
+
         if(isset($_POST['TemplateConfiguration'])){
             $model->attributes=$_POST['TemplateConfiguration'];
             if($model->save())
                 $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/templateoptions/sa/updatesurvey",['surveyid'=>$sid,'sid'=>$sid]));
+        }
+
+        $this->_updateCommon($model, $sid);
+    }
+
+    /**
+     * Updates a particular model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id the ID of the model to be updated
+     */
+    public function updatesurveygroup($gsid)
+    {
+        if (! Permission::model()->hasGlobalPermission('templates', 'update')){
+            Yii::app()->setFlashMessage(gT('Access denied!'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/",['id'=>$gsid]));
+        }
+
+        $model = Template::getTemplateConfiguration(null, null, $gsid);
+        $model->bUseMagicInherit = false;
+
+        if(isset($_POST['TemplateConfiguration'])){
+            $model->attributes=$_POST['TemplateConfiguration'];
+            if($model->save())
+                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/",['id'=>$gsid]));
         }
 
         $this->_updateCommon($model, $sid);
@@ -148,7 +175,7 @@ class templateoptions  extends Survey_Common_Action
         $aData = array();
 
         $model = new TemplateConfiguration('search');
-        $model->sid = $model->gsid = $model->uid = null;
+        $model->bUseMagicInherit = false;
         $aData['model'] = $model;
         $this->_renderWrappedTemplate('templateoptions', 'index', $aData);
     }
@@ -159,6 +186,7 @@ class templateoptions  extends Survey_Common_Action
     public function admin()
     {
         $model=new TemplateOptions('search');
+        $model->bUseMagicInherit = false;
         $model->unsetAttributes();  // clear any default values
         if(isset($_GET['TemplateOptions']))
             $model->attributes=$_GET['TemplateOptions'];
@@ -180,6 +208,8 @@ class templateoptions  extends Survey_Common_Action
         $model=TemplateConfiguration::model()->findByPk($id);
         if($model===null)
             throw new CHttpException(404,'The requested page does not exist.');
+
+        $model->bUseMagicInherit = false;
         return $model;
     }
 

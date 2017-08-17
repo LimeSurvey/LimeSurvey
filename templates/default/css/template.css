@@ -1,13 +1,9 @@
-body
-{
+body {
      padding-bottom: 10px;
      background-color: #f6f6f6;
-}
-/* The header */
-body
-{
      padding-top: 60px;/* now is redefine in JS to fit any title length */
 }
+    
 .navbar-action-link{
     padding-right:1em; /* really close to window without */
 }

@@ -74,10 +74,10 @@
     <!-- some template.js function launched before ready -->
     <script type="text/javascript">
     /*<![CDATA[*/
-        sliderSuffixClone();
-        fixBodyPadding();
-        hideQuestionWithRelevanceSubQuestion();
-        hideEmptyPart();
+        if(template === undefined){
+            var template = new Template();
+        }
+        template.initGlobal();
     /*]]>*/
     </script>
 {% endblock %}

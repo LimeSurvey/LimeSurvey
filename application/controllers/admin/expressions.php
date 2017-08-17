@@ -41,7 +41,6 @@ class Expressions extends Survey_Common_Action {
         }
         else
         {
-            $oSurvey = Survey::model()->findByPk($iSurveyID);
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('decimal');
 
@@ -50,7 +49,6 @@ class Expressions extends Survey_Common_Action {
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
             $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
             $aData['subaction']=$this->_printTitle($aData['sa']);
-            $aData['assessments'] =  Yii::app()->request->getQuery('assessments', $oSurvey->assessments == 'Y');
 
             if(isset($iSurveyID))
             {
@@ -59,7 +57,7 @@ class Expressions extends Survey_Common_Action {
                 $aData['surveyid'] = $iSurveyID;
                 $aData['sidemenu']['state'] = false;
                 $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
-                $aData['assessments'] =  Yii::app()->request->getQuery('assessments', $oSurvey->assessments == 'Y');
+                $aData['assessments'] =  Yii::app()->request->getQuery('assessments', $survey->assessments == 'Y');
 
                 $LEM_debug_timing               = Yii::app()->request->getQuery('LEM_DEBUG_TIMING', 0) == 'Y';
                 $LEM_debug_validation_summary   = Yii::app()->request->getQuery('LEM_DEBUG_VALIDATION_SUMMARY', 0) == 'Y';

@@ -10,12 +10,14 @@ $oQuestion = isset($qid) ? @Question::model()->find('qid=:qid',['qid'=> $qid]) :
 $oQuestionGroup = isset($gid) ? @QuestionGroup::model()->find('gid=:gid',['gid'=> $gid]) : null;
 
 $subaction = isset($subaction) ? $subaction : null;
+$simpleSubaction = isset($title_bar['subaction']) ? $title_bar['subaction'] : null;
 
 $breadCrumbArray = array(
     'oSurvey' => $oSurvey,
     'oQuestion' => $oQuestion,
     'oQuestionGroup' => $oQuestionGroup,
     'sSubaction' => $subaction,
+    'sSimpleSubaction' => $simpleSubaction,
     'title' => (isset($title_bar['title']) ? $title_bar['title'] : ' ')
     //'active' => ($oQuestion != null ? $oQuestion->title : ( $oQuestionGroup != null ? $oQuestionGroup->group_name : $oSurvey->defaultlanguage->surveyls_title ) )
 );

@@ -31,7 +31,7 @@ PrepareEditorScript(false, $this);
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-1 ls-flex-column fill align-items-center align content-center">
             <!-- Previous pane button -->
-            <button class="btn" name="navigation_back" id="navigation_back" value="navigation_back"><i class="fa fa-chevron-left" style="font-size:82;"></i></button>
+            <button class="btn btn-default" name="navigation_back" id="navigation_back" value="navigation_back"><i class="fa fa-chevron-left" style="font-size:82;"></i></button>
         </div>
         <div class="grow-10 ls-space padding left-10 right-10">
             <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
@@ -80,6 +80,12 @@ PrepareEditorScript(false, $this);
 </form>
 
 <script>
+    var updateCKfields = function(){
+        $('textarea').each(function () {
+            var $textarea = $(this);
+            $textarea.val(CKEDITOR.instances[$textarea.attr('name')].getData());
+        });
+    }
     $(document).on('ready pjax:complete', function(){
         sessionStorage.setItem('maxtabs', 1);
 
@@ -87,38 +93,26 @@ PrepareEditorScript(false, $this);
 
         $('#navigation_back').on('click', function(e){
             e.preventDefault();
+            updateCKfields();
             $('#create_survey_tablist').find('.active').prev('li').find('a').trigger('click');
         })
         $('#navigation_next').on('click', function(e){
             e.preventDefault();
+            updateCKfields();
             $('#create_survey_tablist').find('.active').next('li').find('a').trigger('click');
         })
         $('a.create_survey_wizard_tabs').on('shown.bs.tab', function (e) {
             var count = $(e.target).data('count'); 
             var sessionStorageValue = sessionStorage.getItem('maxtabs') || 1;
-            console.log(count, sessionStorageValue);
+            //console.log(count, sessionStorageValue);
             if(count>3 || sessionStorageValue>3){
                 $('#save-form-button').removeClass('disabled');
                 $('#save-and-close-form-button').removeClass('disabled');
             }
         });
-        $('#addnewsurvey').find('#create_survey_save_and_send').on('click', function(ev){
-             ev.preventDefault();
-             ev.stopPropagation();
-            $.ajax({
-                url: $('#addnewsurvey').attr('action'),
-                data: $('#addnewsurvey').serializeArray(),
-                method: 'POST',
-                dataType: 'json',
-                success: function(data){
-                    console.log('form-return', data);
-                    if(data.redirecturl)
-                        window.location.href=data.redirecturl;
-                },
-                error: function(){
-                    // console.log(arguments)
-                },
-            });
-        })
+    });
+
+    $('#addnewsurvey').on('submit', function(ev){
+            updateCKfields();
     });
 </script>

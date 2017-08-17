@@ -361,11 +361,12 @@ class Survey_Common_Action extends CAction
 
         //// TODO : Move this divs inside each correct view ASAP !
         echo '</div>' ;
-        echo '</div>' ;
-        echo '</div>' ;
 
         if (!empty($aData['surveyid']))
         {
+            echo '</div>' ;
+            echo '</div>' ;
+            echo '</div>' ;
             echo '</div>' ;
         }
 

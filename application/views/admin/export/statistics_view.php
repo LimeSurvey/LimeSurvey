@@ -11,11 +11,11 @@
 
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
-        <span class="fa fa-stats"></span> &nbsp;&nbsp;&nbsp;
+        <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
         <?php eT("Statistics"); ?>
     </h3>
 
-    <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder','#'=>'start', 'class'=>'', 'id'=>'generate-statistics'));?>
+    <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name'=>'formbuilder', 'class'=>'', 'id'=>'generate-statistics'));?>
         <!-- General filters -->
         <div class="row">
             <div class="col-sm-12 content-right">

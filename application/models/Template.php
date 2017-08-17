@@ -188,9 +188,9 @@ class Template extends LSActiveRecord
      * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if the files refered in css exist, etc.
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
-     * @param integer $iSurveyId        the id of the survey. 
-     * @param integer $iSurveyId        the id of the survey. 
-     * @param integer $bForceXML        the id of the survey. 
+     * @param integer $iSurveyId        the id of the survey.
+     * @param integer $iSurveyId        the id of the survey.
+     * @param integer $bForceXML        the id of the survey.
      * @return StdClass
      */
     public static function getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=false)
@@ -198,64 +198,7 @@ class Template extends LSActiveRecord
 
         // First we try to get a confifuration row from DB
         if (!$bForceXML){
-
-            if ($sTemplateName!=null){
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
-                    'templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', 
-                    array(':templates_name'=>$sTemplateName)
-                );
-            } 
-            
-            if($iSurveyGroupId!=null) {
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
-                    'gsid=:gsid', 
-                    array(':gsid' => $iSurveyGroupId )
-                    );
-
-                // No specific template configuration for this survey
-                if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
-                    $sTemplateName = SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
-                    $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
-                }
-            } 
-            
-            if($iSurveyId!=null) {
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
-                    'sid=:sid', 
-                    array(':sid' => $iSurveyId )
-                    );
-
-                // No specific template configuration for this survey
-                if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
-                    $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
-                    $oTemplateConfigurationModel = TemplateConfiguration::model()->find(
-                        'templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', 
-                        array(':templates_name'=>$sTemplateName)
-                    );
-                }
-            }
-
-            //If a survey group id is set, but there is no survey specific template configuration create one!
-            if(($iSurveyGroupId != null) && !($iSurveyGroupId == $oTemplateConfigurationModel->gsid)){
-                $oTemplateConfigurationModel->id = null;
-                $oTemplateConfigurationModel->isNewRecord = true;
-                $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
-                $oTemplateConfigurationModel->setToInherit();
-                $oTemplateConfigurationModel->save();
-                $oTemplateConfigurationModel->setThisTemplate();
-                return $oTemplateConfigurationModel;
-            }
-
-            //If a survey id is set, but there is no survey specific template configuration create one!
-            if(($iSurveyId != null) && !($iSurveyId == $oTemplateConfigurationModel->sid)){
-                $oTemplateConfigurationModel->id = null;
-                $oTemplateConfigurationModel->isNewRecord = true;
-                $oTemplateConfigurationModel->sid = $iSurveyId;
-                $oTemplateConfigurationModel->setToInherit();
-                $oTemplateConfigurationModel->save();
-                $oTemplateConfigurationModel->setThisTemplate();
-                return $oTemplateConfigurationModel;
-            }
+           $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId);
         }
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
@@ -263,7 +206,7 @@ class Template extends LSActiveRecord
             $oTemplateConfigurationModel = new TemplateManifest;
         }
 
-        //$oTemplateConfigurationModel->setTemplateConfiguration($sTemplateName, $iSurveyId);
+        //$oTemplateConfigurationModel->prepareTemplateRendering($sTemplateName, $iSurveyId);
         return $oTemplateConfigurationModel;
     }
 
@@ -423,7 +366,7 @@ class Template extends LSActiveRecord
      * Get instance of template object.
      * Will instantiate the template object first time it is called.
      *
-     * NOTE 1: This function will call setTemplateConfiguration that create/update all the packages needed to render the template, which imply to do the same for all mother templates
+     * NOTE 1: This function will call prepareTemplateRendering that create/update all the packages needed to render the template, which imply to do the same for all mother templates
      * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to use this one. Call it only before rendering anything related to the template.
      * NOTE 3: If you need to get the related configuration to this template, rather use: getTemplateConfiguration()
      *
@@ -444,8 +387,9 @@ class Template extends LSActiveRecord
 
         if (empty(self::$instance)) {
             self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
-            self::$instance->setTemplateConfiguration($sTemplateName, $iSurveyId);
+            self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
+
         return self::$instance;
     }
 

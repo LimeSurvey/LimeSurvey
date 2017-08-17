@@ -7,7 +7,6 @@
  */
 ?>
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT("Edit default answer values") )); ?>
     <h3>
         <?php eT('Edit default answer values') ?>
     </h3>

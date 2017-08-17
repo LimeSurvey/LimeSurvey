@@ -639,7 +639,36 @@
                         eT("Save");
                     }?>
                 </a>
-            
+                <?php if(isset($surveybar['importquestiongroup'])):?>
+                    <?php
+                        //Save and new button
+                        $paramArray = array();
+                        $paramArray["surveyid"] = $surveyid;
+                        $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", $paramArray);
+                    ?>
+
+                    <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php eT("Save and new");?>
+                    </a>
+                <?php endif;?>
+                <?php if(isset($surveybar['importquestion'])):?>
+                    <?php
+                        //Save and new button
+                        $paramArray = array();
+                        $paramArray["surveyid"] = $surveyid;
+
+                        if(isset($gid) && !empty($gid)) 
+                            $paramArray["gid"] = $gid;
+
+                        $saveAndNewLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
+                    ?>
+
+                    <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php eT("Save and new");?>
+                    </a>
+                <?php endif;?>
             <?php endif;?>
                 <?php /*
                 <!-- Save and close -->

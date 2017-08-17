@@ -466,7 +466,7 @@ class TbHtml extends CHtml // required in order to access the protected methods 
     const ICON_SOUND_STEREO = 'fa-sound-stereo';
     const ICON_STAR = 'fa-star';
     const ICON_STAR_EMPTY = 'fa-star-empty';
-    const ICON_STATS = 'fa-stats';
+    const ICON_STATS = 'fa-bar-chart';
     const ICON_STEP_BACKWARD = 'fa-step-backward';
     const ICON_STEP_FORWARD = 'fa-step-forward';
     const ICON_STOP = 'fa-stop';

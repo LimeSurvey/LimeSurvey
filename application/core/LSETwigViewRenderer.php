@@ -158,7 +158,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         return null;
     }
 
-    public function renderOptionPage($oTemplate)
+    public function renderOptionPage($oTemplate,$renderArray = array())
     {
         $oRTemplate = $oTemplate;
 
@@ -192,11 +192,11 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $loader->addPath($oRTemplate->viewPath);
         }
 
-        $result    = $this->renderTemplateFromString( $line, array(), $oRTemplate, true);
+        //$result    = $this->renderTemplateFromString( $line, $renderArray, $oRTemplate, true);
 
         // Twig rendering
         $oTwigTemplate = $twig->createTemplate($line);
-        $nvLine        = $oTwigTemplate->render(array(), false);
+        $nvLine        = $oTwigTemplate->render($renderArray, false);
 
         return $nvLine;
     }

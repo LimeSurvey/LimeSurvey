@@ -24,7 +24,7 @@ function setSeed($surveyid)
         // Only set seed if corresponding database column exists.
         // This mismatch can happen if survey is activated before update to
         // new version that uses seed.
-        $table = \Yii::app()->db->schema->getTable('survey_' . $surveyid);
+        $table = \Yii::app()->db->schema->getTable('{{survey_' . $surveyid.'}}');
         if (isset($table->columns['seed'])) {
             $_SESSION['survey_' . $surveyid]['startingValues']['seed'] = $seed;
         }

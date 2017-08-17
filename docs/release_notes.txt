@@ -35,28 +35,59 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.67.1 (build 170626) to 2.67.2 (build 170726) July 26, 2017
--Fixed issue #12491: Permission to delete participants not obeyed in export dialog (Carsten Schmitz)
--Fixed issue: Default template with questions of white font color (markusfluer)
--Fixed issue: Importing a Tab-separated survey CSV file with multiline text in the question field does not properly work (Carsten Schmitz)
+Changes from 3.0.0-beta.1 (build 170720) to 3.0.0-beta.2 (build 170810) Aug 10, 2017
+-New feature: Changed the general design to a mobile first stance (markusfluer)
+-New feature: Added more flexibility to onRegisterForm event and twigged registration (markusfluer)
+-New feature: refined surveymenu design and responsiveness (markusfluer)
+-New feature: Survey groups. Each survey now belongs to a survey group. (Louis Gac)
+-New feature: List survey groups. Views for survey group feature (Louis Gac)
+-New feature: Template Options at survey level. User can now set the template options at the survey level (Louis Gac and Markus Fluer)
+-New feature: Template Options global inheritance. All template options can be inherited from global/survey group settings (Louis Gac and Markus Fluer)
+-New feature: Template Options specific inheritance. A specific option can be inherited from global/survey group settings (Louis Gac and Markus Fluer)
+-Fixed issue #12450: Data entry not opening with array filter (Tõnis Ormisson)
+-Fixed issue #12492  Use of "text fields" as filter in "Participants" and "Answers" (markusfluer)
+-Fixed issue #12513: "All-in-one" not working (LouisGac)
+-Fixed issue #12530: Quota massive actions modal errors (Tõnis Ormisson)
+-Fixed issue: Fixed mysql fresh installation error in Surveymenu (markusfluer)
+-Fixed issue: Added fallback if tidy is not available (markusfluer)
+-Fixed issue: Another soon to be fixed tidy error (markusfluer)
+-Fixed issue: Empty array instead of null for tidy_repair_string (markusfluer)
+-Fixed issue: Fixed the installation bug on reinstall (markusfluer)
+-Fixed issue: Maximum file size not visible during VV import (Carsten Schmitz)
+-Fixed issue: Pagination of participants list not working (LouisGac)
 -Fixed issue: QuickMenu break usage of newDirectRequest for other plugin (Denis Chenu)
--Fixed issue: unable to save Google Analytics key by survey (Denis Chenu)
-
-Changes from 2.67.0 (build 170622) to 2.67.1 (build 170626) June 26, 2017
--Fixed issue #12414: exporting printable - template assets not visible in some extractors (eg windows default) (#701) (Tõnis Ormisson)
--Fixed issue: Error in database update syntax (Olle Harstedt)
+-Fixed issue: Security issue - Users need to put in their old password to change the current (markusfluer)
+-Fixed issue: Subquestions not saved in quick translation (LouisGac)
+-Fixed issue: Tidy was not configured for utf-8 (markusfluer)
+-Fixed issue: Unable to save Google Analytics key by survey (Denis Chenu)
+-Fixed issue: Wrong colours in statistics graphs when labels are duplicated (Olle Haerstedt)
 #Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by zfocuz, Han
+#Updated translation: Dutch (Informal) by zfocuz, Han
 #Updated translation: French (France) by arnaud21
+#Updated translation: German by Thomas218, actxcellence, c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz
 #Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmal) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elissa
 #Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Russian by c0der, vipgroup
+#Updated translation: Slovenian by lado, dusan
+#Updated translation: Spanish (Mexican) by fernandoessv
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by adzpire, tomzt
 #Updated translation: Turkish by kayazeren
-Changes from 2.67.0 (build 170622) to 3.0.0beta1 (build 170720) July 19, 2017
 
+Changes from 2.67.0 (build 170622) to 3.0.0-beta.1 (build 170720) Jul 19, 2017
 -New feature: Enhancements of 2.60 HTML so it's more complient with WAI (Web Accessibility Initiative). (Denis Chenu)
 -New feature: Twig is the new LimeSurvey template engine. It replaces the system of replacement keywords. Now, all the HTML is editable from templates. (Louis-Sébastien Gac-Artigas)
--New feature: added sandbox for twig (security), and LS Twig Extension for common operations from template (adding CSS/JS, images, etc)
--New feature: extended Yii's CClientScript, so it's possible to modify asset packages before rendering (add/remove/replace package definitions)
+-New feature: Added sandbox for twig (security), and LS Twig Extension for common operations from template (adding CSS/JS, images, etc)
+-New feature: Extended Yii's CClientScript, so it's possible to modify asset packages before rendering (add/remove/replace package definitions)
 -New feature: Enable/disable asset manager depending on debug mode for all scripts (via CClientScript extension)
 -New feature: Infinite template inheritance system. A template can inherit from another template so it contains only the modified files. It makes it easy to have a fleet of templates with slighty changes.(Louis-Sébastien Gac-Artigas)
 -New feature: Template manifest can now add/replace/remove CSS/JS files from core packages (Denis Chenu, Louis-Sébastien Gac-Artigas)
@@ -71,28 +102,20 @@ Changes from 2.67.0 (build 170622) to 3.0.0beta1 (build 170720) July 19, 2017
 -New feature: Added 'Minimal Template', a simple template to start with for developers
 -New feature: Added 'Material Template', a template to show the inheritance concept
 -New feature: Store random seed with each response, making it possible to render the exact same order of questions and groups when respondent loads survey.
--New feature: sidebar rendering via vuejs2 based on vuex state management (Markus Flür)
--New feature: menus and entries collected via ajax (Markus Flür)
--New feature: questiongroups and questions collected by ajax (Markus Flür)
--New feature: sidebar is now resizeable by dragging (maximum size: 50% of screen) (Markus Flür) 
--New feature: new system for editing and creating menuentries in the sidebar and the quickmenu (Markus Flür)
--New feature: menus and entries are now items in the database and can be user and/or surveyspecific (Markus Flür)
--New feature:integrated menu positions are side, collapsed, top and bottom (Markus Flür)
--New feature: survey wizard for creating a new survey (Markus Flür)
--New feature: editing surveys is mostly pjaxed (Markus Flür)
--Dev: Enhancements of frontend rendering workflow for better performances (surveyRuntimeHelper, frontend_helper, frontend controller, etc). (Louis-Sébastien Gac-Artigas)
--Dev: Clean, reorder, and added packages for system. All the LS assets are in a folder root called assets/. Added new packages such as core packages (Denis Chenu, Louis-Sébastien Gac-Artigas)
--Dev: Replaced old surveyinfo logic by MVC complient approach (Tonis Ormisson)
--Dev: Rewrote most code documentation for phpDocumentor (Tonis Ormisson)
--Dev: added some 508 fixes to admin interface (Chad Day)
--Dev: admin general settings removed and uncluttered into separate setting views (Markus Flür)
--Dev: adminpanel webpack and gulp configuration added (Markus Flür)
+-New feature: Sidebar rendering via vuejs2 based on vuex state management (Markus Flür)
+-New feature: Menus and entries collected via ajax (Markus Flür)
+-New feature: Questiongroups and questions collected by ajax (Markus Flür)
+-New feature: Sidebar is now resizeable by dragging (maximum size: 50% of screen) (Markus Flür) 
+-New feature: New system for editing and creating menuentries in the sidebar and the quickmenu (Markus Flür)
+-New feature: Menus and entries are now items in the database and can be user and/or surveyspecific (Markus Flür)
+-New feature: Integrated menu positions are side, collapsed, top and bottom (Markus Flür)
+-New feature: Survey wizard for creating a new survey (Markus Flür)
+-New feature: Editing surveys is mostly pjaxed (Markus Flür)
 
-
-Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) June 22, 2017
+Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) Jun 22, 2017
 -New feature: Opting out of a survey requires a one-click confirmation (Carsten Schmitz)
 
-Changes from 2.65.0 (build 170502) to 2.66.0 (build 170619) June 19, 2017
+Changes from 2.65.0 (build 170502) to 2.66.0 (build 170619) Jun 19, 2017
 -New feature #12468: EM placeholder {SID} in email templates (Denis Chenu)
 -New feature: Add some collapse feature to remotecontrol function list (Denis Chenu)
 -New feature: RemoteControl : allow to get all attributes in get function (Denis Chenu)

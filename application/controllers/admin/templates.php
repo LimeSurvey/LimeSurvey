@@ -43,7 +43,7 @@ class templates extends Survey_Common_Action
     public function templatezip($templatename)
     {
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
-        $oEditedTemplate->setTemplateConfiguration($sTemplateName);
+        $oEditedTemplate->prepareTemplateRendering($sTemplateName);
         if (!Permission::model()->hasGlobalPermission('templates','export'))
         {
             die('No permission');
@@ -230,7 +230,7 @@ class templates extends Survey_Common_Action
         $editfile = App()->request->getPost('editfile');
         $templatename = returnGlobal('templatename');
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
-        $oEditedTemplate->setTemplateConfiguration($sTemplateName);
+        $oEditedTemplate->prepareTemplateRendering($sTemplateName);
         $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
         $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
@@ -389,7 +389,7 @@ class templates extends Survey_Common_Action
         }
 
         $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName); $oEditedTemplate->setTemplateConfiguration($sTemplateName);
+        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName); $oEditedTemplate->prepareTemplateRendering($sTemplateName);
         $templatedir     = $oEditedTemplate->viewPath;
         $filesdir        = $oEditedTemplate->filesPath;
         $sPostedFile     = App()->request->getPost('otherfile');
@@ -587,7 +587,7 @@ class templates extends Survey_Common_Action
         $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
         $screenname           = returnGlobal('screenname');
         $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null,null, true);
-        $oEditedTemplate->setTemplateConfiguration($sTemplateName);
+        $oEditedTemplate->prepareTemplateRendering($sTemplateName);
         $aScreenFiles         = $oEditedTemplate->getValidScreenFiles("view");
         $cssfiles             = $oEditedTemplate->getValidScreenFiles("css");
         $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
@@ -702,7 +702,7 @@ class templates extends Survey_Common_Action
         $aData['time'] = $time;
         /* Load this template config, else 'survey-template' package can be outdated */
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, null,null, true);
-        $oEditedTemplate->setTemplateConfiguration($templatename);
+        $oEditedTemplate->prepareTemplateRendering($templatename);
         if (!$fnew) {
             $aData['filenotwritten'] = true;
         }else{
@@ -781,7 +781,7 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
-        $oEditedTemplate = Template::model()->getInstance($templatename, '', true);
+        $oEditedTemplate = Template::model()->getInstance($templatename, null,null, true);
 
             //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');

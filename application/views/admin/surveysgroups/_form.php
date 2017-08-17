@@ -3,8 +3,8 @@
 /* @var $model SurveysGroups */
 /* @var $form CActiveForm */
 ?>
-
-<div class="form col-sm-8 col-sm-offset-2">
+<div class="row ls-flex-row align-content-center align-items-center">
+<div class="form col-sm-10">
 
 <?php $form=$this->beginWidget('TbActiveForm', array(
     'id'=>'surveys-groups-form',
@@ -21,10 +21,18 @@
     <?php echo $form->errorSummary($model); ?>
 
 
-    <?php echo $form->hiddenField($model,'name'); ?>
     <?php echo $form->hiddenField($model,'owner_uid'); ?>
     <?php echo $form->hiddenField($model,'gsid'); ?>
 
+    <?php if($model->isNewRecord): ?>
+        <div class="row">
+            <?php echo $form->labelEx($model,'name'); ?>
+            <?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>100)); ?>
+            <?php echo $form->error($model,'name'); ?>
+        </div>
+    <?php else: ?>
+        <?php echo $form->hiddenField($model,'name'); ?>
+    <?php endif; ?>
     <div class="row">
         <?php echo $form->labelEx($model,'title'); ?>
         <?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>100)); ?>
@@ -38,6 +46,7 @@
     </div>
 
     <div class="row">
+        <?php $model->order = $model->order ? $model->order : $model->getNextOrderPosition(); ?>
         <?php echo $form->labelEx($model,'order'); ?>
         <?php echo $form->textField($model,'order'); ?>
         <?php echo $form->error($model,'order'); ?>
@@ -46,15 +55,17 @@
     <!-- should be a selector based on group name -->
     <div class="row">
         <?php echo $form->labelEx($model,'parent_id'); ?>
-        <?php echo $form->textField($model,'parent_id'); ?>
+        <?php echo $form->dropDownList($model,'parent_id',$model->getParentGroupOptions()); ?>
         <?php echo $form->error($model,'parent_id'); ?>
     </div>
 
 
-    <div class="row buttons">
-        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+    <div class="hidden">
+            <?php echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn btn-success col-md-2 col-sm-4', "id"=>"surveys-groups-form-submit")); ?>
     </div>
 
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+</div>
+

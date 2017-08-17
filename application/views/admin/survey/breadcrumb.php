@@ -25,6 +25,7 @@
                                 <?php echo flattenText($oQuestion->groups->group_name);?>
                             </a>
                         </li>
+
                         <?php if(!isset($active)): ?>
                             <li class="active">
                                 <?php echo flattenText($oQuestion->title);?>
@@ -39,6 +40,13 @@
                                 <?php echo $active;?>
                             </li>
                         <?php endif; ?>
+
+                        <?php if(isset($sSubaction)): ?>
+                            <li class="active">
+                                <?php echo $sSubaction;?>
+                            </li>
+                        <?php endif; ?>
+
                     <?php elseif(isset($oQuestionGroup)): ?>
                         <li>
                             <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/',['surveyid' => $oQuestionGroup->sid] );?>">
@@ -59,6 +67,11 @@
                             <li class="active">
                                 <?php echo $active;?>
                             </li>
+                            <?php if(isset($sSubaction)): ?>
+                                <li class="active">
+                                    <?php echo $sSubaction;?>
+                                </li>
+                            <?php endif; ?>
                         <?php endif; ?>
                     <?php elseif(isset($token)): ?>
                         <li>
@@ -81,11 +94,18 @@
                                     (<?php echo flattenText($oSurvey->sid);?>)
                                 </a>
                             </li>
-                            <li>
-                                <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid , 'subaction' => $sSubaction] );?>">
-                                    <?php echo $sSubaction;?>
-                                </a>
-                            </li>
+                            <?php if(isset($sSimpleSubaction)): ?>
+                                <li class="active">
+                                    <?php echo $sSimpleSubaction;?>
+                                </li>
+                            <?php else: ?>
+                                <li>
+                                    <a class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid , 'subaction' => $sSubaction] );?>">
+                                        <?php echo $sSubaction;?>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+
                     <?php elseif(isset($oSurvey)): ?>
                         <?php if(!isset($active)): ?>
                             <li>

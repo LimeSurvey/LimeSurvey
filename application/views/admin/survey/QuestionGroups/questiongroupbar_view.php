@@ -247,6 +247,7 @@
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </a>
+               
                 <?php endif; ?>
             <?php endif; ?>
             

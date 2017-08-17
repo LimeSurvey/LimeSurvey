@@ -22,7 +22,6 @@ $surveyid = $oSurvey->sid;
 
 
 ?>
-    <?php //$this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
     <div id="survey-action-title" class="h3 pagetitle">
     <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">
@@ -268,7 +267,7 @@ $surveyid = $oSurvey->sid;
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>" >
-                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-bar-chart text-success"  style="font-size: 3em;"></span>
 						    <span class="sr-only"><?php eT("Statistics");?></span>
                                                 </a>
                                             </div>
@@ -291,7 +290,7 @@ $surveyid = $oSurvey->sid;
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="#" >
-                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-bar-chart text-success"  style="font-size: 3em;"></span>
 						    <span class="sr-only"><?php eT("Responses & statistics");?></span>
                                                 </a>
                                             </div>
@@ -524,8 +523,13 @@ $surveyid = $oSurvey->sid;
                             <?php $templatename = $oSurvey->template;
                             if (Permission::model()->hasGlobalPermission('templates','read'))
                             {
-                                $templateurl_url = $this->createAbsoluteUrl("admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome",array('templatename'=>$templatename)); ?>
-                                <a href='<?php echo $templateurl_url?>' target='_blank'><?php echo $templatename; ?></a>
+                                $sTemplateOptionsUrl = $this->createUrl("admin/templateoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid)); 
+                                $sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('templatename' => $oSurvey->template)); 
+                                //$sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template)); 
+                                ?>
+                                <?php echo $templatename; ?>
+                                <a href='<?=$sTemplateOptionsUrl?>' title="<?php eT("Open template options"); ?>" class="btn btn-default btn-xs"><i class="fa fa-paint-brush"></i></a>
+                                <a href='<?=$sTemplateEditorUrl?>' title="<?php eT("Open template editor in new window"); ?>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-object-group"></i></a>
                                 <?php
                             }
                             else

@@ -122,14 +122,20 @@ class SurveyController extends LSYii_Controller
         }else{
             $error="";
         }
+
         /* Set the data for templatereplace */
-        $this->aGlobalData['thissurvey']=getSurveyInfo($iSurveyId); /* Did we need it, or did we just use Yii::app()->getConfig('surveyID'); ? */
-        $this->aReplacementData=$aReplacementData['MESSAGEID']=$sType; // Adding this to replacement data : allow to update title (for example)
-        $aReplacementData['MESSAGE']=$message;
+        $aReplacementData['type']=$sType; // Adding this to replacement data : allow to update title (for example)
+        $aReplacementData['message']=$message;
         $aReplacementData['URL']=$url;
-        $this->aReplacementData=$aReplacementData['ERROR']=$error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
-        $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
-        $this->render("/survey/system/display",array('content'=>$content));
+        $aReplacementData['title']=$error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
+        
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
+        $oTemplate = $oSurvey->templateModel;
+
+        $aSurveyInfo = $oSurvey->attributes;
+        $aSurveyInfo['aError'] = $aReplacementData;
+
+        Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aError'=>$aReplacementData, 'aSurveyInfo' => $aSurveyInfo), false);
         App()->end();
     }
 }

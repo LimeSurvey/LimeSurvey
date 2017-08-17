@@ -48,7 +48,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
     /** @var SimpleXMLElement $config Will contain the config.xml */
     public $config;
 
-    /** @var TemplateConfiguration $oMotherTemplate The template name */
+    /**
+     * @var TemplateConfiguration $oMotherTemplate The mother template object
+     * This is used when a template inherit another one.
+     */
     public $oMotherTemplate;
 
     /** @var array $oOptions The template options */
@@ -149,7 +152,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
          $aTJsFiles  = $this->getFilesToLoad($oTemplate, 'js');
 
          $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
-         $aJsFiles  = array_merge($aJsFiles, $aTJsFiles);
+         $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
 
          $dir        = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
@@ -263,7 +266,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
     // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data
     // Note: signature are already the same
 
-    public function setTemplateConfiguration($sTemplateName='', $iSurveyId=''){}
+    public function prepareTemplateRendering($sTemplateName='', $iSurveyId=''){}
     public function addFileReplacement($sFile, $sType){}
 
     protected function getFilesToLoad($oTemplate, $sType){}

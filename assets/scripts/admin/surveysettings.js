@@ -138,14 +138,16 @@ $(document).on('ready  pjax:complete', function(){
         e.preventDefault();
         var data = $(this).serializeArray();
         var uri = $(this).attr('action');
-        console.log({'Data' : data, 'URI' : uri});
         $.ajax({
             url: uri,
             method:'POST',
             data: data,
             success: function(result){
-                console.log({result: result});
-                location.reload();
+                if(result.redirecturl != undefined ){
+                    window.location.href=result.redirecturl;
+                } else {
+                    window.location.reload();
+                }
             },
             error: function(result){
                 console.log({result: result});

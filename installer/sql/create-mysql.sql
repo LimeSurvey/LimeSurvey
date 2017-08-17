@@ -626,7 +626,7 @@ CREATE TABLE `prefix_surveymenu` (
   `parent_id` int(11) DEFAULT NULL,
   `survey_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `order` int(11) DEFAULT '0',
+  `ordering` int(11) DEFAULT '0',
   `level` int(11) DEFAULT '0',
   `title` varchar(255)  NOT NULL DEFAULT '',
   `position` varchar(255)  NOT NULL DEFAULT 'side',
@@ -636,7 +636,7 @@ CREATE TABLE `prefix_surveymenu` (
   `created_at` datetime DEFAULT NULL,
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `order` (`order`),
+  KEY `ordering` (`ordering`),
   KEY `title` (`title`(250))
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -783,6 +783,7 @@ CREATE TABLE `prefix_surveys_groups` (
   `gsid` int(11) NOT NULL,
   `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `template` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT 'default',
   `description` text COLLATE utf8mb4_unicode_ci,
   `order` int(11) NOT NULL,
   `owner_uid` int(11) DEFAULT NULL,
@@ -805,4 +806,4 @@ INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `or
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '309');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '312');

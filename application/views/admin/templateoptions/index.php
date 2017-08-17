@@ -22,7 +22,6 @@
             <?php $this->widget('bootstrap.widgets.TbGridView', array(
                 'dataProvider' => $model->search(),
                 'columns' => array(
-
                     array(
                         'header' => gT('Preview'),
                         'name' => 'preview',
@@ -69,7 +68,7 @@
                         'htmlOptions' => array('class' => 'col-md-1'),
                     ),
 
-                ),));
+                )));
             ?>
 
         </div>
