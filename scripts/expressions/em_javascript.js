@@ -3201,13 +3201,38 @@ function updateHeadings(tab, rep)
     });
 }
 
-// updates the colors in a dynamic table
-function updateColors(tab)
+/**
+ * Updates the colors in a dynamic table.
+ * No use of jQuery in this function due to speed reasons.
+ * Get all "#questionId table.question tr:visible" and reset
+ * class array1/array2.
+ * @param {string} questionId
+ */
+function updateColors(questionId)
 {
-    var trs = tab.find('tr:visible');
-    trs.each(function(i, tr)
-    {
-        // fix line colors
-        $(tr).removeClass('array1').removeClass('array2').addClass('array' + (1 + i % 2));
-    });
+    var questionDiv = document.getElementById(questionId);
+    if (questionDiv) {
+        var tables = questionDiv.getElementsByTagName('table');
+        if (tables) {
+            var tablesLength = tables.length;
+            for (var i = 0; i < tablesLength; i++) {
+                var table = tables[i];
+                if (table.className.indexOf('question') !== -1) {
+                    var trs = table.getElementsByTagName('tr');
+                    var k = 0;
+                    var trsLength = trs.length;
+                    for (var j = 0; j < trsLength; j++) {
+                        var tr = trs[j];
+                        if (tr.style.display != 'none') {
+                            var className = tr.className;
+                            className = className.replace('array1', '').replace('array2', '');
+                            className += ' array' + (1 + k % 2);
+                            k++;
+                            tr.className = className;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
