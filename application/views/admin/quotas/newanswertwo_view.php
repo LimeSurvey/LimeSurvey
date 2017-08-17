@@ -6,6 +6,7 @@
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
+        <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']), 'class' => '')); ?>
         <div class="col-lg-12 content-right">
             <h3>
                 <?php eT("Survey quota");?>: <?php eT("Add answer");?>
@@ -25,7 +26,6 @@
                     <div class='row'>
                         <h2><?php echo sprintf(gT("New answer for quota '%s'"), $oQuota->name);?></h2>
                         <p class="lead"><?php eT("Select answer:");?></p>
-                        <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']), 'class' => '')); ?>
                             <div class='form-group'>
                                 <div class='col-sm-5 col-sm-offset-4'>
                                     <select class='form-control' name="quota_anscode" size="15">
@@ -44,18 +44,18 @@
                                 </div>
                             </div>
                             <div class='form-group'>
-                                <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
-                                <input type="hidden" name="action" value="quotas" />
-                                <input type="hidden" name="subaction" value="insertquotaanswer" />
-                                <input type="hidden" name="quota_qid" value="<?php echo sanitize_int($_POST['quota_qid']);?>" />
-                                <input type="hidden" name="quota_id" value="<?php echo sanitize_int($_POST['quota_id']);?>" />
                                 <?php eT("Save this, then create another:");?>
                                 <input type="checkbox" name="createanother">
                             </div>
-                       </form>
                    </div>
                 </div>
             <?php endif;?>
         </div>
+        <input type="hidden" name="sid" value="<?php echo $iSurveyId;?>" />
+        <input type="hidden" name="action" value="quotas" />
+        <input type="hidden" name="subaction" value="insertquotaanswer" />
+        <input type="hidden" name="quota_qid" value="<?php echo sanitize_int($_POST['quota_qid']);?>" />
+        <input type="hidden" name="quota_id" value="<?php echo sanitize_int($_POST['quota_id']);?>" />
+        <?php CHtml::endForm()?>
     </div>
 </div>
