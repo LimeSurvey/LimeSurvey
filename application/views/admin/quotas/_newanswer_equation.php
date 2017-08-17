@@ -12,14 +12,5 @@
             <input type="text" class='form-control' name="quota_anscode" />
         </div>
     </div>
-    <div class='form-group'>
-        <div class='col-sm-5 col-sm-offset-4'>
-            <input class="btn btn btn-success" name="submit" type="submit" class="submit btn btn-default" value="<?php eT("Next");?>" />
-        </div>
-    </div>
-    <div class='form-group'>
-        <?php eT("Save this, then create another:");?>
-        <input type="checkbox" name="createanother">
-    </div>
 </div>
 
