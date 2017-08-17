@@ -3210,19 +3210,28 @@ function updateHeadings(tab, rep)
  */
 function updateColors(questionId)
 {
+    // Get question div.
     var questionDiv = document.getElementById(questionId);
     if (questionDiv) {
+
+        // Get all tables inside question div.
         var tables = questionDiv.getElementsByTagName('table');
         if (tables) {
             var tablesLength = tables.length;
             for (var i = 0; i < tablesLength; i++) {
                 var table = tables[i];
+
+                // Only check tables with class "question".
                 if (table.className.indexOf('question') !== -1) {
+
+                    // Get all table rows in table.
                     var trs = table.getElementsByTagName('tr');
                     var k = 0;
                     var trsLength = trs.length;
                     for (var j = 0; j < trsLength; j++) {
                         var tr = trs[j];
+
+                        // Only modify rows that are visible.
                         if (tr.style.display != 'none') {
                             var className = tr.className;
                             className = className.replace('array1', '').replace('array2', '');
