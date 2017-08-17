@@ -12,14 +12,16 @@
                 <?php eT("Survey quota");?>: <?php eT("Add answer");?>
             </h3>
             <?php if ($oQuestion->type == '*'): ?>
+            <div class="jumbotron message-box">
                 <?php $this->renderPartial('/admin/quotas/_newanswer_equation',['oQuota'=>$oQuota,'oQuestion'=>$oQuestion]);?>
+            </div>
 
             <?php elseif (count($question_answers) == $x): ?>
                 <div class="jumbotron message-box">
-                        <h2><?php eT("All answers are already selected in this quota.");?></h2>
-                        <p>
-                            <input class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php eT("Continue");?>"/>
-                        </p>
+                    <h2><?php eT("All answers are already selected in this quota.");?></h2>
+                    <p>
+                        <input class="btn btn-lg btn-success" type="submit" onclick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$iSurveyId");?>', '_top')" value="<?php eT("Continue");?>"/>
+                    </p>
                 </div>
             <?php else:?>
                 <div class="jumbotron message-box">
