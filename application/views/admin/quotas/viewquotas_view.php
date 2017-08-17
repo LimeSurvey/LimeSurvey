@@ -80,6 +80,7 @@
                             ),
                             array(
                                 'name'=>'completeCount',
+                                'header'=>gT('Completed'),
                                 'type'=>'raw',
                                 'htmlOptions'=>array('style'=>'vertical-align:top'),
                                 // 'value'=>function($oQuota)use($oSurvey){
@@ -92,6 +93,7 @@
                             ),
                             array(
                                 'name'=>'qlimit',
+                                'header'=>gT('Limit'),
                                 'htmlOptions'=>array('style'=>'vertical-align:top'),
                                 'footer'=>$totalquotas,
                             ),

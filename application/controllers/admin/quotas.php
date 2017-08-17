@@ -217,7 +217,12 @@ class quotas extends Survey_Common_Action
                 foreach ($oQuota->quotaMembers as $oQuotaMember)
                 {
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $iSurveyId, $oQuota['id']);
-                    $answerText=isset($aQuestionAnswers[$oQuotaMember['code']]) ? flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']) : null;
+                    if($oQuotaMember->question->type == '*'){
+                        $answerText=$oQuotaMember->code ;
+                    }else{
+                        $answerText=isset($aQuestionAnswers[$oQuotaMember['code']]) ? flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']) : null;
+                    }
+
                     $aQuotaItems[$oQuota['id']][] = array(
                         'oQuestion' => Question::model()->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
                         'answer_title' => $answerText,
