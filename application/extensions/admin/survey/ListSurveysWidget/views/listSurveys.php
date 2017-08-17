@@ -69,7 +69,8 @@
                     array(
                         'header' => gT('Group'),
                         'name' => 'group',
-                        'value'=>'$data->surveygroup->title',
+                        'type' => 'raw',
+                        'value'=>'CHtml::link($data->surveygroup->title, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'htmlOptions' => array('class' => 'col-md-2 has-link'),
                     ),
 
