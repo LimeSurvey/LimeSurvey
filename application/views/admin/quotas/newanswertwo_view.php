@@ -1,3 +1,8 @@
+<?php
+/* @var $this AdminController */
+/* @var Quota $oQuota */
+?>
+
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -15,7 +20,7 @@
             <?php else:?>
                 <div class="jumbotron message-box">
                     <div class='row'>
-                        <h2><?php echo sprintf(gT("New answer for quota '%s'"), $quota_name);?></h2>
+                        <h2><?php echo sprintf(gT("New answer for quota '%s'"), $oQuota->name);?></h2>
                         <p class="lead"><?php eT("Select answer:");?></p>
                         <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']), 'class' => '')); ?>
                             <div class='form-group'>

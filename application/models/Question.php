@@ -1043,7 +1043,7 @@ class Question extends LSActiveRecord
     }
     /** @return array */
     public static function getQuotableTypes(){
-        return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!');
+        return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!','*');
     }
 
 }
