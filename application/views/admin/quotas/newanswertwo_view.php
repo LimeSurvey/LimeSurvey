@@ -32,8 +32,7 @@
                                 <div class='col-sm-5 col-sm-offset-4'>
                                     <select class='form-control' name="quota_anscode" size="15">
                                         <?php
-                                            while (list($key,$value) = each($question_answers))
-                                            {
+                                            foreach ($question_answers as $key=>$value) {
                                                 if (!isset($value['rowexists'])) echo '<option value="'.$key.'">'.strip_tags(substr($value['Display'],0,40)).'</option>';
                                             }
                                         ?>
