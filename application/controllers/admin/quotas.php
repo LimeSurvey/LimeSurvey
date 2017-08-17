@@ -296,7 +296,6 @@ class quotas extends Survey_Common_Action
                 self::_redirectToIndex($iSurveyId);
             }
         } else {
-            var_dump($oQuotaMembers->errors);
             // Save was not successful, redirect back
             $_POST['action'] = "quotas";
             $_POST['subaction'] = "new_answer";
