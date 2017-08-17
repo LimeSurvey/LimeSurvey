@@ -7298,7 +7298,7 @@
                             }
                             if($repeatheadings > 0)
                             {
-                                $relParts[] = "updateHeadings($('#question".$arg['qid']."').find('table.question'), "
+                                $relParts[] = "updateHeadings('question".$arg['qid']."', "
                                 .$repeatheadings.");\n";
                             }
                         }
