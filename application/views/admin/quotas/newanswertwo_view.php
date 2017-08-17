@@ -1,6 +1,7 @@
 <?php
 /* @var $this AdminController */
 /* @var Quota $oQuota */
+/* @var Question $oQuestion */
 ?>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
@@ -9,8 +10,10 @@
             <h3>
                 <?php eT("Survey quota");?>: <?php eT("Add answer");?>
             </h3>
+            <?php if ($oQuestion->type == '*'): ?>
+                <?php $this->renderPartial('/admin/quotas/_newanswer_equation',['oQuota'=>$oQuota,'oQuestion'=>$oQuestion]);?>
 
-            <?php if (count($question_answers) == $x): ?>
+            <?php elseif (count($question_answers) == $x): ?>
                 <div class="jumbotron message-box">
                         <h2><?php eT("All answers are already selected in this quota.");?></h2>
                         <p>

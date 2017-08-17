@@ -410,6 +410,7 @@ class quotas extends Survey_Common_Action
         }
 
         if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create')) {
+            $oQuestion = Question::model()->findByPk(array('qid' => Yii::app()->request->getPost('quota_qid'), 'language' => $oSurvey->language));
 
             $aQuestionAnswers = self::getQuotaAnswers(Yii::app()->request->getPost('quota_qid'), $iSurveyId, Yii::app()->request->getPost('quota_id'));
             $x = 0;
@@ -420,6 +421,7 @@ class quotas extends Survey_Common_Action
             }
 
             reset($aQuestionAnswers);
+            $aData['oQuestion'] = $oQuestion;
             $aData['question_answers'] = $aQuestionAnswers;
             $aData['x'] = $x;
             $aViewUrls[] = 'newanswertwo_view';
