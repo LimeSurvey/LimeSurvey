@@ -18,13 +18,13 @@
  * and Contributors (http://phpjs.org/authors)
  */
 
-/**
- * Default event to trigger on answer part
- * Launch function according to anser-item type
- * @todo : checkconditions/fixnum_checkconditions in this function
+/* Default event to trigger on answer part
+ * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations
+ * Actually only for list with comment and select in ranking
  **/
-/* text/number item */
-$(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item :text:not([onkeyup])",function(event){
+$(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not([onkeyup])",function(event){
+    // 'keyup' can be replaced by event.type (but not really needed)
+    // 'text' can be replaced by $(this)[0].type ('textarea' here) (but not really needed)
     if($(this).data("number"))// data-type ?
     {
         fixnum_checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup', $(this).data("integer"))
@@ -34,17 +34,10 @@ $(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item
         checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
     }
 });
-/* select/dropdown item */
-$(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
-    checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
-});
-/* radio/button item */
-$(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:not([onclick])",function(event){
-    checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
-});
-/* checkbox item */
-$(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
-    checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
+$(document).on("change",".select-item select:not([onchange])",function(event){
+    //$('#java'+$(this).attr("name")).val($(this).val()); Not needed for ranking, needed for ? select already have val() and are unique by name
+    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
+        ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
 });
 
 /**
@@ -54,9 +47,7 @@ var pad = function(num,places) {
   var zero = places - num.toString().length + 1;
   return Array(+(zero > 0 && zero)).join("0") + num;
 }
-/**
- * All EM function (see em_core_helper.php)
- */
+
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty
@@ -232,8 +223,8 @@ function LEMis_float(a)
 function LEMis_int(mixed_var)
 {
     try {
-        var iCheckValue = new Decimal(mixed_var)  
-    }  
+        var iCheckValue = new Decimal(mixed_var)
+    }
     catch (err) {
         return false;
     }
@@ -402,7 +393,7 @@ function LEMregexMatch(sRegExp,within)
     try {
         var flags = sRegExp.replace(/.*\/([gimy]*)$/, '$1');
         var pattern = sRegExp.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1').trim();
-        var reg = new RegExp(pattern, flags); // Note that the /u flag crashes IE11       
+        var reg = new RegExp(pattern, flags); // Note that the /u flag crashes IE11
         return reg.test(within);
     }
     catch (err) {
@@ -766,7 +757,7 @@ function LEMval(alias)
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
                 }
-                return value;
+                return Number(value);
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
@@ -835,7 +826,9 @@ function LEMfixnum(value)
  */
 function LEMstrip_tags(htmlString)
 {
-   return $("<div/>").html(htmlString).text();
+   var tmp = document.createElement("DIV");
+   tmp.innerHTML = htmlString;
+   return tmp.textContent||tmp.innerText;
 }
 
 /**
@@ -3195,3 +3188,41 @@ function time () {
     return Math.floor(new Date().getTime() / 1000);
 }
 
+/**
+ * Updates the repeated headings in a dynamic table.
+ * @param {string} questionId
+ * @param {number} rep        - Repetition
+ */
+function updateHeadings(questionId, rep)
+{
+    var tab = $('#' + questionId).find('table.question');
+    tab.find('.repeat').remove();
+    var header = tab.find('thead>tr');
+    var trs = tab.find('tr:visible');
+    trs.each(function(i, tr)
+    {
+        // add heading but not for the first and the last rows
+        if(i != 0 && i % rep == 0 && i != trs.length-1)
+        {
+            header.clone().addClass('repeat').addClass('headings').insertAfter(tr);
+        }
+    });
+}
+
+/**
+ * Updates the colors in a dynamic table.
+ * No use of jQuery in this function due to speed reasons.
+ * Get all "#questionId table.question tr:visible" and reset
+ * class array1/array2.
+ * @param {string} questionId
+ */
+function updateColors(questionId)
+{
+    var tab = $('#' + questionId).find('table.question');
+    var trs = tab.find('tr:visible');
+    trs.each(function(i, tr)
+    {
+        // fix line colors
+        $(tr).removeClass('array1').removeClass('array2').addClass('array' + (1 + i % 2));
+    });
+}
