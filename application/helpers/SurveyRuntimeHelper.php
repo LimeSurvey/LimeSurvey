@@ -1779,6 +1779,14 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['attr']['navbartoggle']    = ' data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
         $this->aSurveyInfo['attr']['navbar']  =  $this->aSurveyInfo['attr']['navbarheader']  = $this->aSurveyInfo['attr']['navbarbrand'] = $this->aSurveyInfo['attr']['navbarcollapse']  = $this->aSurveyInfo['attr']['navbarlink'] = '';
 
+        // Language changer
+        $this->aSurveyInfo['class']['languagechanger'] = '  form-inline form-change-lang  ';
+        $this->aSurveyInfo['class']['formgroup']       = '  form-group ';
+        $this->aSurveyInfo['class']['controllabel']    = '  control-label  ';
+        $this->aSurveyInfo['class']['formcontrol']     = '  form-control  ';
+        $this->aSurveyInfo['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden  ';
+        
+
 
         // Maybe add a plugin event here?
 

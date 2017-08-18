@@ -30,15 +30,15 @@
     #}
     {% set htmlOptions = {
             'id'             : false,
-            'class'          : 'form-control',
+            'class'          : aSurveyInfo.class.formcontrol,
             'data-targeturl' : aLCD.targetUrl,
         }
     %}
 
     <!-- Language Changer -->
-    <div class="form-inline form-change-lang {{ aSurveyInfo.alanguageChanger.sClass }} " >
-        <label class="form-group">
-            <span class="control-label">{{ "Language:" | t }}</span>
+    <div class=" {{ aSurveyInfo.class.languagechanger }} " >
+        <label class="{{ aSurveyInfo.class.formgroup }}">
+            <span class="{{ aSurveyInfo.class.controllabel }}">{{ "Language:" | t }}</span>
             {{
                 C.Html.dropDownList(
                     'lang',
@@ -50,22 +50,22 @@
 
         </label>
 
-            {% if aLCD.withForm == true %}
-                <!-- for no js functionality (need form) -->
-                {% set buttonhtmlOptions = {
-                        'type' : 'submit',
-                        'value': 'changelang',
-                        'name' : 'move',
-                        'class': 'btn btn-default ls-js-hidden',
-                        }
-                %}
+        {% if aLCD.withForm == true %}
+            <!-- for no js functionality (need form) -->
+            {% set buttonhtmlOptions = {
+                    'type' : 'submit',
+                    'value': 'changelang',
+                    'name' : 'move',
+                    'class': aSurveyInfo.class.aLCDWithForm,
+                }
+            %}
 
-                {{
-                    C.Html.htmlButton(
+            {{
+                C.Html.htmlButton(
                     ("Change the language" | gT ),
                     htmlOptions
-                    )
-                }}
+                )
+            }}
             {% endif %}
     </div>
 {% endif %}
