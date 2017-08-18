@@ -1829,9 +1829,15 @@ class SurveyRuntimeHelper {
 
         $this->aSurveyInfo['attr']['questionasterixsmall'] = ' aria-hidden="true" ';
 
-
         $this->aSurveyInfo['attr']['questioncontainer'] = $this->aSurveyInfo['attr']['questiontitlecontainer'] = $this->aSurveyInfo['attr']['questionasterix'] = $this->aSurveyInfo['attr']['questionasterixspan'] = $this->aSurveyInfo['attr']['questionnumber'] = $this->aSurveyInfo['attr']['questioncode'] =  '';
         $this->aSurveyInfo['attr']['questiontext'] = $this->aSurveyInfo['attr']['lsquestiontext'] = $this->aSurveyInfo['attr']['questionvalidcontainer'] = $this->aSurveyInfo['attr']['answercontainer'] = $this->aSurveyInfo['attr']['helpcontainer'] = '';
+
+        // Question group
+        $this->aSurveyInfo['class']['groupcontainer'] = ' group-container ';
+        $this->aSurveyInfo['class']['groupcontainer'] = ' group-title text-center h3 ';
+        $this->aSurveyInfo['class']['groupdesc']      = ' group-description row well ';
+
+        $this->aSurveyInfo['attr']['questiongroup']  = $this->aSurveyInfo['attr']['groupcontainer'] = $this->aSurveyInfo['attr']['groupcontainer'] = $this->aSurveyInfo['attr']['groupdesc'] = '';
 
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';

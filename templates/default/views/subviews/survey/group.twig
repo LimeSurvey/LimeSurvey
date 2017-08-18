@@ -15,21 +15,21 @@
     It will display the group and the questions inside the group via the for statement that includes question.twig
 
     Here, you have access to the array aGroup that contains the data of the current group and the array of questions of this group: aQuestions
-    To see what's inside aGroup, turn debug mode on and copy the following line to the end of this file: 
+    To see what's inside aGroup, turn debug mode on and copy the following line to the end of this file:
     {{ dump(aGroup) }}
 
 #}
 
 <!-- START THE GROUP: {{ aGroup.name }} {{ aGroup.gid }}  -->
-<div id='group-{{ aGroup.gseq }}' class="{{ aGroup.class }}">
-    <div class="group-container">
-        <div class="group-title text-center h3">
+<div id='group-{{ aGroup.gseq }}' class="{{ aGroup.class }}" {{ aSurveyInfo.attr.questiongroup }}>
+    <div class="{{ aSurveyInfo.class.groupcontainer }}" {{ aSurveyInfo.attr.groupcontainer }}>
+        <div class="{{ aSurveyInfo.class.grouptitle }}" {{ aSurveyInfo.attr.grouptitle }}>
             {{ aGroup.name }}
         </div>
 
         <!-- Group description -->
         {% if aGroup.description != '' %}
-            <div class="group-description row well">
+            <div class="{{ aSurveyInfo.class.groupdesc }}" {{ aSurveyInfo.attr.groupdesc }}>
                 {{ aGroup.description }}
             </div>
         {% endif %}
