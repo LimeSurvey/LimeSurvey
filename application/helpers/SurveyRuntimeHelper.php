@@ -1798,12 +1798,21 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['modalfooter']       = ' modal-footer ';
         $this->aSurveyInfo['class']['modalfooterlink']   = ' btn btn-default ';
 
-
         $this->aSurveyInfo['attr']['modalheader']       = ' style="min-height:40px;" ';    // Todo: move to CSS
         $this->aSurveyInfo['attr']['modalclosebutton']  = ' type="button" data-dismiss="modal" aria-hidden="true" ';
         $this->aSurveyInfo['attr']['modalfooterlink']   = ' href="#" data-dismiss="modal" ';
 
         $this->aSurveyInfo['attr']['alertmodal'] = $this->aSurveyInfo['attr']['modaldialog'] = $this->aSurveyInfo['attr']['modalcontent'] = $this->aSurveyInfo['attr']['modaltitle'] = $this->aSurveyInfo['attr']['modalbody'] = $this->aSurveyInfo['attr']['modalfooter'] =  '';
+
+        // Assessments
+        $this->aSurveyInfo['class']['assessmenttable']      = ' assessment-table table ';
+        $this->aSurveyInfo['class']['assessmentstable']     = ' assessments table ';
+        $this->aSurveyInfo['class']['assessmentheading']    = ' assessment-heading ';
+        $this->aSurveyInfo['class']['assessmentscontainer'] = ' assessments-container ';
+
+
+        $this->aSurveyInfo['attr']['assessmenttable'] = $this->aSurveyInfo['attr']['assessmentheading'] = $this->aSurveyInfo['attr']['assessmentscontainer'] = $this->aSurveyInfo['attr']['assessmentstable'] = '';
+
 
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';

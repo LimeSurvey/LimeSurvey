@@ -20,26 +20,26 @@
 
 {% set aAssessments = aSurveyInfo.aAssessments.datas %}
 <!-- Assessments -->
-<table class="assessment-table table">
+<table class="{{ aSurveyInfo.class.assessmenttable }}" {{ aSurveyInfo.attr.assessmenttable }}>
 
     <!-- Heading -->
     <tr>
-        <td class="assessment-heading">
+        <td class="{{ aSurveyInfo.class.assessmentheading }}" {{ aSurveyInfo.attr.assessmentheading }}>
             {{ "Your assessment" | t }}
         </td>
     </tr>
 
     <!-- Results -->
     <tr>
-        <td class="assessments-container">
+        <td class="{{ aSurveyInfo.class.assessmentscontainer }}" {{ aSurveyInfo.attr.assessmentscontainer }} >
             {% if aAssessments.subtotal.show %}
                 {% for key,val in aAssessments.subtotal %}
                     {% if aAssessments.group %}
                         {% if key in aAssessments.group | keys %}
                             {% for assessed in aAssessments.group[key] %}
                                 {% if ( val >= assessed.min and val <= assessed.max ) %}
-                                <table class='assessments table'>
-                                    <tr>
+                                <table class='{{ aSurveyInfo.class.assessmentstable }}' {{ aSurveyInfo.attr.assessmentstable }}>
+                                    <tr >
                                         <th>
                                             {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
                                         </th>
@@ -64,7 +64,7 @@
             {% if aAssessments.total.show %}
                 {% for assessed in aAssessments.total %}
                     {% if ( aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
-                        <table class='assessments table' align='center'>
+                        <table class='{{ aSurveyInfo.class.assessmentstable }}' align='center'>
                             <tr>
                                 <th>
                                     {# Beleive it or not, val is defined in previous loop... -_- #}
