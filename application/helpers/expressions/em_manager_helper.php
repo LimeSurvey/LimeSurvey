@@ -7284,13 +7284,15 @@
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
                     $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
+                    $updateColors = false;
+                    $updateHeadings = false;
                     foreach ($subqParts as $sq)
                     {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
                         // make sure to update headings and colors for filtered questions (array filter and individual SQ relevance)
                         if( ! empty($sq['type'])) {
+                            $updateColors = true;
                             // js to fix colors
-                            $relParts[] = "updateColors('question".$arg['qid']."');\n";
                             // js to fix headings
                             $repeatheadings = Yii::app()->getConfig("repeatheadings");
                             if(isset($LEM->qattr[$arg['qid']]['repeat_headings']) && $LEM->qattr[$arg['qid']]['repeat_headings'] !== "") {
@@ -7298,8 +7300,7 @@
                             }
                             if($repeatheadings > 0)
                             {
-                                $relParts[] = "updateHeadings('question".$arg['qid']."', "
-                                .$repeatheadings.");\n";
+                                $updateHeadings = true;
                             }
                         }
                         // end
@@ -7398,6 +7399,14 @@
                             $allJsVarsUsed = array_merge($allJsVarsUsed,$sqvars);
                             $relJsVarsUsed = array_merge($relJsVarsUsed,$sqvars);
                         }
+                    }
+
+                    if ($updateColors) {
+                        $relParts[] = "updateColors('question".$arg['qid']."');\n";
+                    }
+
+                    if ($updateHeadings) {
+                        $relParts[] = "updateHeadings('question".$arg['qid']."', " .$repeatheadings.");\n";
                     }
 
                     // Do all tailoring

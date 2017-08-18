@@ -3192,7 +3192,6 @@ function time () {
  */
 function updateHeadings(questionId, rep)
 {
-    /* Old, slow code.
     var tab = $('#' + questionId).find('table.question');
     tab.find('.repeat').remove();
     var header = tab.find('thead>tr');
@@ -3205,80 +3204,6 @@ function updateHeadings(questionId, rep)
             header.clone().addClass('repeat').addClass('headings').insertAfter(tr);
         }
     });
-    return;
-    */
-
-    /**
-     * Delete all headers in table that has class "repeat".
-     * No jQuery for speed.
-     * @param {Element} table
-     */
-    function deleteRepeatHeaders(table)
-    {
-        //tab.find('.repeat').remove();
-        var trs = table.getElementsByTagName('tr');
-        var trsLength = trs.length;
-        for (var i = 0; i < trsLength; i++) {
-            var tr = trs[i];
-            if (tr) {
-                if (tr.className.indexOf('repeat') !== -1) {
-                    tr.remove();
-                }
-            }
-        }
-    }
-
-    function getVisibleLength(els)
-    {
-        var l = els.length;
-        var result = 0;
-        for (var i = 0; i < l; i++) {
-            var el = els[i];
-            if (el.style.display != 'none') {
-                result++;
-            }
-        }
-        return result;
-    }
-
-    var questionDiv = document.getElementById(questionId);
-    if (questionDiv) {
-        // Get all tables inside question div.
-        var tables = questionDiv.getElementsByTagName('table');
-        if (tables) {
-            var tablesLength = tables.length;
-            for (var i = 0; i < tablesLength; i++) {
-                var table = tables[i];
-
-                // Only check tables with class "question".
-                if (table.className.indexOf('question') !== -1) {
-                    deleteRepeatHeaders(table);
-                    var tableHeaders = table.getElementsByTagName('thead');
-                    if (tableHeaders && tableHeaders.length > 0) {
-                        var tableHeader = tableHeaders[0];
-                        var headerRows = tableHeader.getElementsByTagName('tr');
-                        var trs = table.getElementsByTagName('tr');
-                        var trsLength = trs.length;
-                        var visibleLength = getVisibleLength(trs);
-                        var k = 0;
-                        for (var j = 0; j < trsLength; j++) {
-                            var tr = trs[j];
-
-                            // Only modify rows that are visible.
-                            if (tr.style.display != 'none') {
-                                if (k != 0 && k % rep == 0 && k != trsLength - 1) {
-                                    var clone = headerRows[0].cloneNode(true);
-                                    clone.className += ' repeat headings';
-                                    tr.parentNode.insertBefore(clone, tr.nextSibling);
-                                }
-                                k++;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
 /**
@@ -3290,38 +3215,11 @@ function updateHeadings(questionId, rep)
  */
 function updateColors(questionId)
 {
-    // Get question div.
-    var questionDiv = document.getElementById(questionId);
-    if (questionDiv) {
-
-        // Get all tables inside question div.
-        var tables = questionDiv.getElementsByTagName('table');
-        if (tables) {
-            var tablesLength = tables.length;
-            for (var i = 0; i < tablesLength; i++) {
-                var table = tables[i];
-
-                // Only check tables with class "question".
-                if (table.className.indexOf('question') !== -1) {
-
-                    // Get all table rows in table.
-                    var trs = table.getElementsByTagName('tr');
-                    var k = 0;
-                    var trsLength = trs.length;
-                    for (var j = 0; j < trsLength; j++) {
-                        var tr = trs[j];
-
-                        // Only modify rows that are visible.
-                        if (tr.style.display != 'none') {
-                            var className = tr.className;
-                            className = className.replace('array1', '').replace('array2', '');
-                            className += ' array' + (1 + k % 2);
-                            k++;
-                            tr.className = className;
-                        }
-                    }
-                }
-            }
-        }
-    }
+    var tab = $('#' + questionId).find('table.question');
+    var trs = tab.find('tr:visible');
+    trs.each(function(i, tr)
+    {
+        // fix line colors
+        $(tr).removeClass('array1').removeClass('array2').addClass('array' + (1 + i % 2));
+    });
 }
