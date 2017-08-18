@@ -58,7 +58,7 @@ export default {
         const self = this;
         this.updatePjaxLinks();
         // this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-        //     console.log('sidemenues',result);
+        //     self.$log.debug('sidemenues',result);
         //     self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
         //     self.$localStorage.set('sidemenues', JSON.stringify(self.menues));
         //     self.$forceUpdate();

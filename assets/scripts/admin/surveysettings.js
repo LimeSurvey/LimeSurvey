@@ -133,27 +133,6 @@ $(document).on('ready  pjax:complete', function(){
             $('#btnSave').show();
         }
     });
-
-    $('#'+formId).on('submit', function(e){
-        e.preventDefault();
-        var data = $(this).serializeArray();
-        var uri = $(this).attr('action');
-        $.ajax({
-            url: uri,
-            method:'POST',
-            data: data,
-            success: function(result){
-                if(result.redirecturl != undefined ){
-                    window.location.href=result.redirecturl;
-                } else {
-                    window.location.reload();
-                }
-            },
-            error: function(result){
-                console.log({result: result});
-            }
-        });
-    });
 });
 /**
  * Bind to submit event

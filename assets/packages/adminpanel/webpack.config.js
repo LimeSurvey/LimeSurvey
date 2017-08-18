@@ -8,14 +8,8 @@ var entryPoint = ['./src/main.js'];
 var exportPath = path.resolve(__dirname, './build');
 
 // Enviroment flag
-var env = process.env.WEBPACK_ENV;
 var plugins = [
-  // ...
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: '"' + env + '"'
-    }
-  })
+  new webpack.EnvironmentPlugin(['NODE_ENV'])
 ];
 
 appName = appName + '.js';
@@ -60,6 +54,9 @@ module.exports = {
         'eslint-loader',
         'babel'
       ],
+      options: {
+        data: '$env: ' + process.env.NODE_ENV + ';'
+      },
       query: {
         presets: ['es2015']
       }

@@ -1,12 +1,15 @@
+//globals formId
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueLocalStorage from 'vue-localstorage';
 import Sidebar from './components/sidebar.vue';
 import Topbar from './components/topbar.vue';
 import getAppState from './store/vuex-store.js';
+import LOG from './mixins/logSystem.js';
 
 Vue.use(Vuex);
 Vue.use(VueLocalStorage);
+Vue.use(LOG);
 
 Vue.mixin({
   methods: {
@@ -54,33 +57,30 @@ if (document.getElementById('vue-app-main-container')) {
   });
 }
 
+//Add this here for a general correct submit catching
+try{
+  $('#'+formId).on('submit', function(e){
+    e.preventDefault();
+    var data = $(this).serializeArray();
+    var uri = $(this).attr('action');
+    $.ajax({
+      url: uri,
+      method:'POST',
+      data: data,
+      success: function(result){
+        if(result.redirecturl != undefined ){
+          window.location.href=result.redirecturl;
+        } else {
+          window.location.reload();
+        }
+      },
+      error: function(result){
+        console.log({result: result});
+      }
+    });
+  });
+} catch(e){}
 
-// $(document).on('ready pjax:complete', ()=>{
-//   if($('#vue-app-main-container').length >0 ){
-
-//     const
-//         menuOffset = $('nav.navbar').outerHeight()+45,
-//         menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
-//         footerHeight = $('footer').outerHeight()+65,
-//         documentHeight = screen.availHeight || screen.height,
-//         innerMenuHeight = $('#surveybarid').outerHeight();
-
-//     let vueAppContainerHeight = documentHeight-( menuOffset + menuHeight + footerHeight );
-//     let inSurveyCommonHeight = vueAppContainerHeight - (innerMenuHeight + 45);
-
-//     console.log({
-//       menuOffset : menuOffset,
-//       menuHeight : menuHeight,
-//       footerHeight : footerHeight,
-//       documentHeight : documentHeight,
-//       innerMenuHeight : innerMenuHeight,
-//       vueAppContainerHeight : vueAppContainerHeight,
-//       inSurveyCommonHeight : inSurveyCommonHeight
-//     });
-
-//      $('#vue-app-main-container').css('min-height', vueAppContainerHeight+'px');
-//   }
-// });
 $(document).on('pjax:send', () => {
   $('#pjax-file-load-container').find('div').css({
     'width': '20%',
@@ -96,6 +96,10 @@ $(document).on('pjax:complete', () => {
     });
   }, 2200);
 });
+
+
+
+
 // const topmenu = new Vue(
 //   {  
 //     el: '#vue-top-menu-app',

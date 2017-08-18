@@ -38,7 +38,7 @@ class database extends Survey_Common_Action
                 'format' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'expires' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'additional_languages' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'startdate' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'startdate' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'template' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'assessments' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'anonymized' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -76,6 +76,9 @@ class database extends Survey_Common_Action
                 'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'bounce_email' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'gsid' => ['type'=> '', 'default' => 1, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'usecaptcha_surveyaccess' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'usecaptcha_registration' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'usecaptcha_saveandload' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
             ];
         private $updatedFields = [];
 
@@ -1028,8 +1031,10 @@ class database extends Survey_Common_Action
             $current_template = $oSurvey->template;
             $new_template =  $this->_filterEmptyFields($oSurvey,'template');
             if(  $current_template != '' && $current_template !== $new_template ){
-                $currentConfiguration = Template::getTemplateConfiguration($current_template);
-                TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
+                $currentConfiguration = Template::getTemplateConfiguration($current_template, $oSurvey->sid);
+                
+                if(is_a($currentConfiguration, "TemplateConfiguration"))
+                    TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
             }
             $oSurvey->template = $new_template;
             
@@ -1105,6 +1110,7 @@ class database extends Survey_Common_Action
             $event->set('modifiedSurvey', $oSurvey);
             App()->getPluginManager()->dispatchEvent($event);
             $aAfterApplyAttributes = $oSurvey->attributes;
+
             if ($oSurvey->save())
             {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
@@ -1223,6 +1229,7 @@ class database extends Survey_Common_Action
 
     private function _filterEmptyFields(&$oSurvey, $fieldArrayName, $newValue=null){
         $aSurvey = $oSurvey->attributes;
+        $oldValue = $oSurvey->{$fieldArrayName};
         if($newValue === null)
         {
             $newValue = App()->request->getPost($fieldArrayName, '');
@@ -1245,8 +1252,10 @@ class database extends Survey_Common_Action
         switch($options['type']){
             case 'yesno':
                 if($newValue != 'Y' && $newValue != 'N')
+                {
                     $newValue = (int) $newValue;
                     $newValue = ($newValue===1) ? 'Y' : 'N';
+                }
             break;
             case 'Int' : 
                 $newValue = (int) $newValue;
