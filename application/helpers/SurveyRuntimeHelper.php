@@ -1734,8 +1734,21 @@ class SurveyRuntimeHelper {
 
     private function setClassAndIds()
     {
+
+        // Welcome
+        $thissurvey['id']['welcomecontainer']     =  'welcome-container';
+        $thissurvey['class']['welcomecontainer']  = '';
+        $thissurvey['class']['surveyname']        = "survey-name text-center";
+        $thissurvey['class']['description']       = "text-info text-center survey-description";
+        $thissurvey['class']['welcome']           = "survey-welcome h4 text-primary";
+        $thissurvey['class']['questioncount']     = "number-of-questions text-muted";
+        $thissurvey['class']['questioncounttext'] = "question-count-text";
+
+        // Warnings
         $this->aSurveyInfo['class']['activealert'] = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
         $this->aSurveyInfo['class']['errorHtml']   = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
+
+
     }
 
     private function fixMaxStep()

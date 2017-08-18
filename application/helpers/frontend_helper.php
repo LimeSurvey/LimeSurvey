@@ -2093,18 +2093,6 @@ function display_first_page($thissurvey, $aSurveyInfo)
     LimeExpressionManager::FinishProcessingPage();
 
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
-
-
-    // Id Class and other attributes for views
-    $thissurvey['id']['welcomecontainer'] =  'welcome-container';
-
-    $thissurvey['class']['welcomecontainer']  = '';
-    $thissurvey['class']['surveyname']        = "survey-name text-center";
-    $thissurvey['class']['description']       = "text-info text-center survey-description";
-    $thissurvey['class']['welcome']           = "survey-welcome h4 text-primary";
-    $thissurvey['class']['questioncount']     = "number-of-questions text-muted";
-    $thissurvey['class']['questioncounttext'] = "question-count-text";
-
     $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] =  '';
 
 
