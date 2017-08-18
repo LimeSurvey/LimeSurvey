@@ -19,12 +19,12 @@
 
 {% if aSurveyInfo.format != 'A' and aSurveyInfo.showprogress is defined and aSurveyInfo.showprogress == 'Y' %}
 <!-- Top container -->
-<div class="top-container">
-    <div class="container top-content">
+<div class="{{ aSurveyInfo.class.topcontainer  }}">
+    <div class="{{ aSurveyInfo.class.topcontent  }}">
         {{  registerPublicCssFile('lime-progress.css') }}
         {% set progressValue  = ( aSurveyInfo.progress.total > 0 ) ? intval( (aSurveyInfo.progress.currentstep - 1) / aSurveyInfo.progress.total * 100 ) : 0 %}
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="{{ progressValue }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{ progressValue }}%;">
+        <div class="{{ aSurveyInfo.class.progress  }}">
+            <div class="{{ aSurveyInfo.class.progressbar  }}" {{ aSurveyInfo.attr.progressbar  }} role="progressbar" aria-valuenow="{{ progressValue }}" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: {{ progressValue }}%;">
                 {{ progressValue }}%
             </div>
         </div>

@@ -1732,26 +1732,39 @@ class SurveyRuntimeHelper {
         }
     }
 
+    /**
+     * Most classes and id and attributes from template views are defined here.
+     * So even if users extends/modify the core template, we can still apply some debugs
+     */
     private function setClassAndIds()
     {
 
         // Welcome
-        $thissurvey['id']['welcomecontainer']     =  'welcome-container';
+        $thissurvey['id']['welcomecontainer']     =  ' welcome-container ';
         $thissurvey['class']['welcomecontainer']  = '';
-        $thissurvey['class']['surveyname']        = "survey-name text-center";
-        $thissurvey['class']['description']       = "text-info text-center survey-description";
-        $thissurvey['class']['welcome']           = "survey-welcome h4 text-primary";
-        $thissurvey['class']['questioncount']     = "number-of-questions text-muted";
-        $thissurvey['class']['questioncounttext'] = "question-count-text";
+        $thissurvey['class']['surveyname']        = " survey-name text-center ";
+        $thissurvey['class']['description']       = " text-info text-center survey-description ";
+        $thissurvey['class']['welcome']           = " survey-welcome h4 text-primary ";
+        $thissurvey['class']['questioncount']     = " number-of-questions text-muted ";
+        $thissurvey['class']['questioncounttext'] = " question-count-text ";
 
         // Warnings
         $this->aSurveyInfo['class']['activealert'] = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
         $this->aSurveyInfo['class']['errorHtml']   = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
 
-        // required
-        $this->aSurveyInfo['class']['required']     = 'text-danger asterisk fa fa-asterisk pull-left small';
-        $this->aSurveyInfo['class']['requiredspan'] = 'sr-only text-danger asterisk';
-        $this->aSurveyInfo['attr']['required']      = 'aria-hidden="true"';
+        // Required
+        $this->aSurveyInfo['class']['required']     = ' text-danger asterisk fa fa-asterisk pull-left small ';
+        $this->aSurveyInfo['class']['requiredspan'] = ' sr-only text-danger asterisk ';
+        $this->aSurveyInfo['attr']['required']      = ' aria-hidden="true" ';
+
+        // Progress bar
+        $this->aSurveyInfo['class']['topcontainer'] = ' top-container ';
+        $this->aSurveyInfo['class']['topcontent']   = ' container top-content ';
+        $this->aSurveyInfo['class']['progress']     = ' progress ';
+        $this->aSurveyInfo['class']['progressbar']  = ' progress-bar ';
+        $this->aSurveyInfo['attr']['progressbar']  = ' ';
+
+
 
     }
 
