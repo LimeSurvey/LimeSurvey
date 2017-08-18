@@ -1786,6 +1786,25 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['formcontrol']     = '  form-control  ';
         $this->aSurveyInfo['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden  ';
 
+        // Bootstrap Modal Alert
+        $this->aSurveyInfo['id']['alertmodal']           = 'bootstrap-alert-box-modal';
+        $this->aSurveyInfo['class']['alertmodal']        = ' modal fade ';
+        $this->aSurveyInfo['class']['modaldialog']       = ' modal-dialog ';
+        $this->aSurveyInfo['class']['modalcontent']      = ' modal-content ';
+        $this->aSurveyInfo['class']['modalheader']       = ' modal-header ';
+        $this->aSurveyInfo['class']['modalclosebutton']  = ' close ';
+        $this->aSurveyInfo['class']['modaltitle']        = ' modal-title h4 ';
+        $this->aSurveyInfo['class']['modalbody']         = ' modal-body ';
+        $this->aSurveyInfo['class']['modalfooter']       = ' modal-footer ';
+        $this->aSurveyInfo['class']['modalfooterlink']   = ' btn btn-default ';
+
+
+        $this->aSurveyInfo['attr']['modalheader']       = ' style="min-height:40px;" ';    // Todo: move to CSS
+        $this->aSurveyInfo['attr']['modalclosebutton']  = ' type="button" data-dismiss="modal" aria-hidden="true" ';
+        $this->aSurveyInfo['attr']['modalfooterlink']   = ' href="#" data-dismiss="modal" ';
+
+        $this->aSurveyInfo['attr']['alertmodal'] = $this->aSurveyInfo['attr']['modaldialog'] = $this->aSurveyInfo['attr']['modalcontent'] = $this->aSurveyInfo['attr']['modaltitle'] = $this->aSurveyInfo['attr']['modalbody'] = $this->aSurveyInfo['attr']['modalfooter'] =  '';
+
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';
 
