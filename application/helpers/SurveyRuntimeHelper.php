@@ -1762,9 +1762,13 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['topcontent']   = ' container top-content ';
         $this->aSurveyInfo['class']['progress']     = ' progress ';
         $this->aSurveyInfo['class']['progressbar']  = ' progress-bar ';
-        $this->aSurveyInfo['attr']['progressbar']  = ' ';
+        $this->aSurveyInfo['attr']['progressbar']   = ' ';
+
+        // No JS alert
+        $this->aSurveyInfo['class']['nojs'] = ' alert alert-danger ls-js-hidden warningjs ';
 
 
+        // Maybe add a plugin event here?
 
     }
 
