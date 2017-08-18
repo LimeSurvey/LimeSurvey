@@ -1767,6 +1767,18 @@ class SurveyRuntimeHelper {
         // No JS alert
         $this->aSurveyInfo['class']['nojs'] = ' alert alert-danger ls-js-hidden warningjs ';
 
+        // NavBar
+        $this->aSurveyInfo['id']['navbar']            = 'navbar';
+        $this->aSurveyInfo['class']['navbar']         = ' navbar navbar-default navbar-fixed-top ';
+        $this->aSurveyInfo['class']['navbarheader']   = ' navbar-header ';
+        $this->aSurveyInfo['class']['navbartoggle']   = ' navbar-toggle collapsed ';
+        $this->aSurveyInfo['class']['navbarbrand']    = ' navbar-brand ';
+        $this->aSurveyInfo['class']['navbarcollapse'] = ' collapse navbar-collapse ';
+        $this->aSurveyInfo['class']['navbarlink']     = ' nav navbar-nav navbar-right navbar-action-link ';
+
+        $this->aSurveyInfo['attr']['navbartoggle']    = ' data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
+        $this->aSurveyInfo['attr']['navbar']  =  $this->aSurveyInfo['attr']['navbarheader']  = $this->aSurveyInfo['attr']['navbarbrand'] = $this->aSurveyInfo['attr']['navbarcollapse']  = $this->aSurveyInfo['attr']['navbarlink'] = '';
+
 
         // Maybe add a plugin event here?
 
