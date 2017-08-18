@@ -7293,9 +7293,27 @@
                      * $afHide - if true, then use jQuery.relevanceOn().  If false, then disable/enable the row
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
-                    foreach ($subqParts as $sq) {
+                    $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
+                    $updateColors = false;
+                    $updateHeadings = false;
+                    foreach ($subqParts as $sq)
+                    {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
-
+                        // make sure to update headings and colors for filtered questions (array filter and individual SQ relevance)
+                        if( ! empty($sq['type'])) {
+                            $updateColors = true;
+                            // js to fix colors
+                            // js to fix headings
+                            $repeatheadings = Yii::app()->getConfig("repeatheadings");
+                            if(isset($LEM->qattr[$arg['qid']]['repeat_headings']) && $LEM->qattr[$arg['qid']]['repeat_headings'] !== "") {
+                                $repeatheadings = $LEM->qattr[$arg['qid']]['repeat_headings'];
+                            }
+                            if($repeatheadings > 0)
+                            {
+                                $updateHeadings = true;
+                            }
+                        }
+                        // end
                         //this change is optional....changes to array should prevent "if( )"
                         $relParts[] = "  if ( " . (empty($sq['relevancejs'])?'1':$sq['relevancejs']) . " ) {\n";
                         if ($afHide) {
@@ -7385,6 +7403,14 @@
                             $allJsVarsUsed = array_merge($allJsVarsUsed,$sqvars);
                             $relJsVarsUsed = array_merge($relJsVarsUsed,$sqvars);
                         }
+                    }
+
+                    if ($updateColors) {
+                        $relParts[] = "updateColors('question".$arg['qid']."');\n";
+                    }
+
+                    if ($updateHeadings) {
+                        $relParts[] = "updateHeadings('question".$arg['qid']."', " .$repeatheadings.");\n";
                     }
 
                     // Do all tailoring
