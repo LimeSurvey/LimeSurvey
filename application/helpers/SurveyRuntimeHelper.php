@@ -1748,6 +1748,10 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['activealert'] = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
         $this->aSurveyInfo['class']['errorHtml']   = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
 
+        // required
+        $this->aSurveyInfo['class']['required']     = 'text-danger asterisk fa fa-asterisk pull-left small';
+        $this->aSurveyInfo['class']['requiredspan'] = 'sr-only text-danger asterisk';
+        $this->aSurveyInfo['attr']['required']      = 'aria-hidden="true"';
 
     }
 
