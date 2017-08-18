@@ -1785,8 +1785,9 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['controllabel']    = '  control-label  ';
         $this->aSurveyInfo['class']['formcontrol']     = '  form-control  ';
         $this->aSurveyInfo['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden  ';
-        
 
+        // Here you can add metas from core
+        $this->aSurveyInfo['metas']    = '    ';
 
         // Maybe add a plugin event here?
 
