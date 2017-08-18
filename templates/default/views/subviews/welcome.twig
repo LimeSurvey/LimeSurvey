@@ -16,32 +16,32 @@
     TODO: use it for other modes too
 
     In this file, you have access to the array aSurveyInfo that contains the datas of the current survey
-    To see what's inside aSurveyInfo, turn debug mode on and copy the following line to the end of this file: 
+    To see what's inside aSurveyInfo, turn debug mode on and copy the following line to the end of this file:
     {{ dump(aSurveyInfo) }}
 
 #}
 
 <!-- Welcome Message -->
-<div id="welcome-container">
+<div id="{{ aSurveyInfo.id.welcomecontainer }}" class="{{ aSurveyInfo.class.welcomecontainer }}" {{ aSurveyInfo.attr.welcomecontainer }}>
 
     <!-- Survey Name -->
-    <h1 class="survey-name text-center">
+    <h1 class="{{ aSurveyInfo.class.surveyname }}" {{ aSurveyInfo.attr.surveyname }} >
         {{ aSurveyInfo.name }}
     </h1>
 
     <!-- Survey description -->
-    <div class="text-info text-center survey-description">
+    <div class="{{ aSurveyInfo.class.description }}" {{ aSurveyInfo.attr.description }}>
         {{ aSurveyInfo.description }}
     </div>
 
     <!-- Welcome text -->
-    <div class="survey-welcome h4 text-primary">
+    <div class="{{ aSurveyInfo.class.welcome }}" {{ aSurveyInfo.attr.welcome }}>
         {{ aSurveyInfo.welcome }}
     </div>
 
     <!-- Question count -->
-    <div class="number-of-questions text-muted">
-        <div class='question-count-text'>
+    <div class="{{ aSurveyInfo.class.questioncount }}" {{ aSurveyInfo.attr.questioncount }}>
+        <div class='{{ aSurveyInfo.class.questioncounttext }}'>
 
             {# If survey creator set "show x questions" in survey setting  #}
             {% if aSurveyInfo.bShowxquestions == true %}
