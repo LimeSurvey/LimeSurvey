@@ -1082,7 +1082,7 @@ class database extends Survey_Common_Action
             $oSurvey->sendconfirmation = $this->_filterEmptyFields($oSurvey,'sendconfirmation');
             $oSurvey->tokenanswerspersistence = $this->_filterEmptyFields($oSurvey,'tokenanswerspersistence');
             $oSurvey->alloweditaftercompletion = $this->_filterEmptyFields($oSurvey,'alloweditaftercompletion');
-            $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
+            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions($oSurvey);
             $oSurvey->emailresponseto = $this->_filterEmptyFields($oSurvey,'emailresponseto');
             $oSurvey->emailnotificationto = $this->_filterEmptyFields($oSurvey,'emailnotificationto');
             $oSurvey->googleanalyticsapikeysetting = $this->_filterEmptyFields($oSurvey,'googleanalyticsapikeysetting');

@@ -57,30 +57,6 @@ if (document.getElementById('vue-app-main-container')) {
   });
 }
 
-//Add this here for a general correct submit catching
-try{
-  $('#'+formId).on('submit', function(e){
-    e.preventDefault();
-    var data = $(this).serializeArray();
-    var uri = $(this).attr('action');
-    $.ajax({
-      url: uri,
-      method:'POST',
-      data: data,
-      success: function(result){
-        if(result.redirecturl != undefined ){
-          window.location.href=result.redirecturl;
-        } else {
-          window.location.reload();
-        }
-      },
-      error: function(result){
-        console.log({result: result});
-      }
-    });
-  });
-} catch(e){}
-
 $(document).on('pjax:send', () => {
   $('#pjax-file-load-container').find('div').css({
     'width': '20%',
@@ -96,7 +72,6 @@ $(document).on('pjax:complete', () => {
     });
   }, 2200);
 });
-
 
 
 

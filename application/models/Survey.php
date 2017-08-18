@@ -1504,6 +1504,51 @@ class Survey extends LSActiveRecord
         return 'N';
     }
 
+    /**
+     * Transcribe from 3 checkboxes to 1 char for captcha usages
+     * Uses variables from $_POST and transferred Surveyobject
+     *
+     * 'A' = All three captcha enabled
+     * 'B' = All but save and load
+     * 'C' = All but registration
+     * 'D' = All but survey access
+     * 'X' = Only survey access
+     * 'R' = Only registration
+     * 'S' = Only save and load
+     * 'N' = None
+     *
+     * @return string One character that corresponds to captcha usage
+     * @todo Should really be saved as three fields in the database!
+     */
+    public static function saveTranscribeCaptchaOptions(Survey $oSurvey) {
+
+        $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
+        $registration = App()->request->getPost('usecaptcha_registration', null);
+        $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
+
+        if($surveyaccess === null && $registration === null && $saveandload === null){
+            return $oSurvey->usecaptcha;
+        }
+
+        if ($surveyaccess && $registration && $saveandload) {
+            return 'A';
+        } elseif ($surveyaccess && $registration) {
+            return 'B';
+        } elseif ($surveyaccess && $saveandload) {
+            return 'C';
+        } elseif ($registration && $saveandload) {
+            return 'D';
+        } elseif ($surveyaccess) {
+            return 'X';
+        } elseif ($registration) {
+            return 'R';
+        } elseif ($saveandload) {
+            return 'S';
+        }
+
+        return 'N';
+    }
+
 
     /**
      * Method to make an approximation on how long a survey will last
