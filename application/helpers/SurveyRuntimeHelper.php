@@ -113,6 +113,8 @@ class SurveyRuntimeHelper {
             $this->setPreview();
         }
 
+
+
         $this->moveSubmitIfNeeded();
         $this->setGroup();
 
@@ -907,7 +909,8 @@ class SurveyRuntimeHelper {
         // submit page.
         if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0){
             $_SESSION[$this->LEMsessid]['test']=time();
-            display_first_page($this->thissurvey);
+
+            display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
     }
@@ -1653,6 +1656,7 @@ class SurveyRuntimeHelper {
 
         $this->setSurveyMode();
         $this->setSurveyOptions();
+        $this->setClassAndIds();
 
         $this->previewgrp      = ($this->sSurveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
         $this->previewquestion = ($this->sSurveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
@@ -1726,6 +1730,12 @@ class SurveyRuntimeHelper {
                 $this->groupdescription = $this->aStepInfo['gtext'];
             }
         }
+    }
+
+    private function setClassAndIds()
+    {
+        $this->aSurveyInfo['class']['activealert'] = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
+        $this->aSurveyInfo['class']['errorHtml']   = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
     }
 
     private function fixMaxStep()

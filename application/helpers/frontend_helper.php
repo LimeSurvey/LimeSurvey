@@ -2059,9 +2059,11 @@ function getReferringUrl()
 /**
 * Shows the welcome page, used in group by group and question by question mode
 */
-function display_first_page($thissurvey) {
+function display_first_page($thissurvey, $aSurveyInfo)
+{
     global $token, $surveyid;
 
+    $thissurvey                 = $aSurveyInfo;
     $thissurvey['aNavigator']   = getNavigatorDatas();
 
     LimeExpressionManager::StartProcessingPage();
