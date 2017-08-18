@@ -1810,9 +1810,28 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['assessmentheading']    = ' assessment-heading ';
         $this->aSurveyInfo['class']['assessmentscontainer'] = ' assessments-container ';
 
-
         $this->aSurveyInfo['attr']['assessmenttable'] = $this->aSurveyInfo['attr']['assessmentheading'] = $this->aSurveyInfo['attr']['assessmentscontainer'] = $this->aSurveyInfo['attr']['assessmentstable'] = '';
 
+        // Questions
+        $this->aSurveyInfo['class']['questioncontainer']       = ' question-container row ';
+        $this->aSurveyInfo['class']['questiontitlecontainer']  = ' question-title-container bg-primary col-xs-12 ';
+        $this->aSurveyInfo['class']['questionasterix']         = ' asterisk pull-left ';
+        $this->aSurveyInfo['class']['questionasterixsmall']    = ' text-danger fa fa-asterisk small ';
+        $this->aSurveyInfo['class']['questionasterixspan']     = ' sr-only text-danger ';
+        $this->aSurveyInfo['class']['questionnumber']          = ' text-muted question-number ';
+        $this->aSurveyInfo['class']['questioncode']            = ' text-muted question-code ';
+        $this->aSurveyInfo['class']['questiontext']            = ' question-text ';
+        $this->aSurveyInfo['class']['lsquestiontext']          = ' ls-label-question ';
+        $this->aSurveyInfo['class']['questionvalidcontainer']  = ' question-valid-container bg-primary text-info col-xs-12 ';
+        $this->aSurveyInfo['class']['answercontainer']         = ' answer-container  col-xs-12 ';
+        $this->aSurveyInfo['class']['helpcontainer']           = ' question-help-container text-info col-xs-12 ';
+        $this->aSurveyInfo['class']['lsquestionhelp']          = ' ls-questionhelp ';
+
+        $this->aSurveyInfo['attr']['questionasterixsmall'] = ' aria-hidden="true" ';
+
+
+        $this->aSurveyInfo['attr']['questioncontainer'] = $this->aSurveyInfo['attr']['questiontitlecontainer'] = $this->aSurveyInfo['attr']['questionasterix'] = $this->aSurveyInfo['attr']['questionasterixspan'] = $this->aSurveyInfo['attr']['questionnumber'] = $this->aSurveyInfo['attr']['questioncode'] =  '';
+        $this->aSurveyInfo['attr']['questiontext'] = $this->aSurveyInfo['attr']['lsquestiontext'] = $this->aSurveyInfo['attr']['questionvalidcontainer'] = $this->aSurveyInfo['attr']['answercontainer'] = $this->aSurveyInfo['attr']['helpcontainer'] = '';
 
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';
