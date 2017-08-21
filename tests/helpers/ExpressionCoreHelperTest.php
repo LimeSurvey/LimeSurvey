@@ -11,7 +11,8 @@ use PHPUnit\Framework\TestCase;
 class ExpressionManagerCoreTest extends TestBaseClass
 {
     /**
-     * 
+     * When constructing condition, empty string is represented
+     * as "No answer".
      */
     public function testCompareNumberAndEmptyString()
     {
@@ -37,7 +38,9 @@ class ExpressionManagerCoreTest extends TestBaseClass
             1 => 23,
             2 => 'COMPARE'
         ];
-        $result = $em->RDP_EvaluateBinary($compare);
-        $this->asserTrue($result);
+        $noErrors = $em->RDP_EvaluateBinary($compare);
+        $this->assertTrue($noErrors);
+
+        $result = $em->RDP_StackPop();
     }
 }
