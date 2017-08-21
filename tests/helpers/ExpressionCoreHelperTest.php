@@ -10,13 +10,12 @@ use PHPUnit\Framework\TestCase;
  */
 class ExpressionManagerCoreTest extends TestBaseClass
 {
+
     /**
-     * When constructing condition, empty string is represented
-     * as "No answer".
+     * Some code on how to use tokens manually.
      */
-    public function testCompareNumberAndEmptyString()
+    public function notes()
     {
-        $em = new \ExpressionManager();
         /*
         $number = [
             0 => '3',
@@ -49,24 +48,53 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $em->SetJsVarsUsed([]);
          */
 
+    }
+
+    /**
+     * When constructing condition, empty string is represented
+     * as "No answer".
+     */
+    public function testCompareNumberAndEmptyString()
+    {
+        $sgqa = '563168X136X5376';
+        $_SESSION['survey_563168'][$sgqa] = '3';
+
+        $em = new \ExpressionManager();
         $limeEm = \LimeExpressionManager::singleton();
+        $limeEm->setVariableAndTokenMappingsForExpressionManager('563168');
         $limeEm->setKnownVars(
             [
-                '563168X136X5376' => [
+                $sgqa => [
+                    'sgqa' => $sgqa,
+                    'type' => 'x'  // Does not matter
                 ]
             ]
         );
 
-        $em->RDP_Evaluate('((563168X136X5376.NAOK >= " "))');
+        $expression = '((563168X136X5376.NAOK >= " "))';
+
+        $em->RDP_Evaluate($expression);
+
         $result = $em->GetResult();
-        echo '<pre>'; var_dump($result); echo '</pre>';
+
         $errors = $em->RDP_GetErrors();
-        echo '<pre>'; var_dump($errors); echo '</pre>';
         $js = $em->GetJavaScriptEquivalentOfExpression();
 
-        $js = str_replace('"', "'", $js);
-        echo $js;
+        $nodeOutput = $this->runNode($js);
 
+        $this->assertCount(1, $nodeOutput);
+        $this->assertEquals(json_encode($result), $nodeOutput[0], 'JS and PHP must return same result');
+    }
+
+    /**
+     * Run $js code in Node on command line.
+     * @param string $js
+     * @return array
+     */
+    protected function runNode($js)
+    {
+        // Only use single quotes.
+        $js = str_replace('"', "'", $js);
         $output = [];
         exec(
             sprintf(
@@ -75,8 +103,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
             ),
             $output
         );
-        echo '<pre>'; var_dump($output); echo '</pre>';
-
+        return $output;
     }
 
     /**
@@ -84,6 +111,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
      */
     public function testGeneratedJavascript()
     {
+        /*
         $pageInfo = [
             'qid' => '5377',
             'gseq' => 0,
@@ -97,5 +125,6 @@ class ExpressionManagerCoreTest extends TestBaseClass
             'hidden' => false,
             'hasErrors' => false
         ];
+         */
     }
 }
