@@ -2357,8 +2357,7 @@ class ExpressionManager {
      * Pop a value token off of the stack
      * @return token
      */
-
-    private function RDP_StackPop()
+    public function RDP_StackPop()
     {
         if (count($this->RDP_stack) > 0)
         {
@@ -2375,8 +2374,7 @@ class ExpressionManager {
      * Stack only holds values (number, string), not operators
      * @param array $token
      */
-
-    private function RDP_StackPush(array $token)
+    public function RDP_StackPush(array $token)
     {
         if ($this->RDP_onlyparse)
         {
