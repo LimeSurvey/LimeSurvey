@@ -23,11 +23,12 @@
 ?>
 <?php if($action=='editsurveysettings'):?>
     <?php
-    $sConfirmLanguage="$(document).on('submit','#globalsetting',function(){\n"
-    . "  if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){\n"
-    . "    return false;\n"
-    . "  }\n"
-    . "});
+    $sConfirmLanguageScript="
+    $(document).on('submit','#globalsetting',function(){
+      if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){
+        return false;
+      }
+    });
     function ConfirmLanguageChange(confirmtxt)
     {
     if ($('#oldlanguages').val().trim()=='')
@@ -57,7 +58,7 @@
     }
     return true;
     };";
-    Yii::app()->getClientScript()->registerScript('confirmLanguage',$sConfirmLanguage,CClientScript::POS_BEGIN);
+    echo "<script type='text/javascript'>".$sConfirmLanguageScript."</script>";
     // var_dump($owner);
     ?>
 

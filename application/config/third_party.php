@@ -65,7 +65,8 @@ return array(
 
     // bootstrap-slider : for multinumeric with slider
     'bootstrap-slider' => array(
-        'basePath' => 'third_party.bootstrap-slider',
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/slider',
+        'basePath' => 'core.bootstrap.plugins.slider',
         'css'=> array(
             'css/bootstrap-slider'.$minVersion.'.css'
         ),
@@ -74,6 +75,72 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'bootstrap'
+        )
+    ),
+
+    // Bootstrap Multiselect
+    'bootstrap-multiselect' => array(
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/multiselect',
+        'basePath' => 'core.bootstrap.plugins.multiselect',
+        'js' => array(
+            'js/bootstrap-multiselect.js',
+        ),
+        'css' => array(
+            'css/bootstrap-multiselect.css',
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
+        )
+    ),
+
+    // Bootstrap Multiselect2
+    'bootstrap-select2' => array(
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/select2',
+        'basePath' => 'core.bootstrap.plugins.select2',
+        'js' => array(
+            'js/select2.full'.$minVersion.'.js',
+        ),
+        'css' => array(
+            'css/select2-bootstrap.css',
+            'css/select2.css',
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
+        )
+    ),
+
+    'bootstrap-datetimepicker' => array(
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/datetimepicker/build',
+        'basePath' => 'core.bootstrap.plugins.datetimepicker.build',
+        'css' => array(
+            'css/bootstrap-datetimepicker'.$minVersion.'.css'
+        ),
+        'js' => array(
+            'js/bootstrap-datetimepicker.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
+        )
+    ),
+
+    'bootstrap-switch' => array(
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/switch/',
+        'basePath' => 'core.bootstrap.plugins.switch',
+        'css' => array(
+            'css/bootstrap-switch.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-switch.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
         )
     ),
 
@@ -194,20 +261,6 @@ return array(
         )
     ),
 
-    // Bootstrap Multiselect
-    'bootstrap-multiselect' => array(
-        'basePath' => 'third_party.bootstrap-multiselect',
-        'js' => array(
-            'js/bootstrap-multiselect.js',
-        ),
-        'css' => array(
-            'css/bootstrap-multiselect.css',
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-
     // Ace
     'ace' => array(
         'devBaseUrl' => 'third_party/ace',
@@ -285,36 +338,6 @@ return array(
         ),
     ),
 
-    'bootstrap-datetimepicker' => array(
-        'devBaseUrl' => 'third_party/bootstrap-datetimepicker/build',
-        'basePath' => 'third_party.bootstrap-datetimepicker.build',
-        'css' => array(
-            'css/bootstrap-datetimepicker'.$minVersion.'.css'
-        ),
-        'js' => array(
-            'js/bootstrap-datetimepicker.min.js'
-        ),
-        'depends' => array(
-            'jquery',
-            'bootstrap',
-            'moment'
-        )
-    ),
-
-    'bootstrap-switch' => array(
-        'basePath' => 'third_party.bootstrap-switch',
-        'css' => array(
-            'css/bootstrap-switch.min.css'
-        ),
-        'js' => array(
-            'js/bootstrap-switch.min.js'
-        ),
-        'depends' => array(
-            'jquery',
-            'bootstrap',
-            'moment'
-        )
-    ),
     'emoji' => array(
         'basePath' => 'third_party.emojifont',
         'css' => array(

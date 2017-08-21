@@ -1925,6 +1925,7 @@ class SurveyAdmin extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
         App()->clientScript->registerPackage('bootstrap-switch');
+        App()->clientScript->registerPackage('bootstrap-select2');
         App()->clientScript->registerPackage('bootstrap-datetimepicker');
         App()->getClientScript()->registerPackage('jquery-datatable');
         App()->clientScript->registerPackage('adminpanel');

@@ -141,5 +141,5 @@ return array(
             'lsadminpanel.css'
         )
     )
-
+    
 );
