@@ -12,6 +12,19 @@ class ExpressionManagerCoreTest extends TestBaseClass
 {
 
     /**
+     *
+     */
+    public static function setUpBeforeClass()
+    {
+        // Check that node is installed.
+        $output = [];
+        exec('node -v', $output);
+        if (strpos($output[0], 'command not found') !== false) {
+            die('Node is not installed');
+        }
+    }
+
+    /**
      * Some code on how to use tokens manually.
      */
     public function notes()
