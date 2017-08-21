@@ -270,7 +270,7 @@ class ExpressionManager {
      * @param array $token
      * @return boolean - false if there is any error, else true
      */
-     private function RDP_EvaluateBinary(array $token)
+     public function RDP_EvaluateBinary(array $token)
     {
         if (count($this->RDP_stack) < 2)
         {
