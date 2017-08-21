@@ -257,6 +257,7 @@ return array(
     // Decimal.js calculate in js
     'decimal' => array(
         'devBaseUrl' => 'third_party/decimal',
+        'devBaseUrl' => 'third_party/decimal',
         'basePath' => 'third_party.decimal',
         'js' => array(
             'decimal.js'
@@ -285,6 +286,7 @@ return array(
     ),
 
     'bootstrap-datetimepicker' => array(
+        'devBaseUrl' => 'third_party/bootstrap-datetimepicker/build',
         'basePath' => 'third_party.bootstrap-datetimepicker.build',
         'css' => array(
             'css/bootstrap-datetimepicker'.$minVersion.'.css'

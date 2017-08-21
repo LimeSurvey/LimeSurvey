@@ -34,3 +34,8 @@ PrepareEditorScript(false, $this);
     ?>
 <?php endforeach; ?>
 </div>
+<script type="text/javascript">
+$('#edit-survey-text-element-language-selection').find('a').on('shown.bs.tab', function(e){
+    $(e.relatedTarget).find('textarea').ckeditor();
+})
+</script>

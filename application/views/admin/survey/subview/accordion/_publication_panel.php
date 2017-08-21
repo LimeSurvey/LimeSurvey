@@ -28,7 +28,7 @@
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => $oSurvey->startdate,
+                            'value' => date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->startdate)),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
@@ -61,7 +61,7 @@
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "expires",
                             'id' => 'expires',
-                            'value' => $oSurvey->expires,
+                            'value' => date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->expires)),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,

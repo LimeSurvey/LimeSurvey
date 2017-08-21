@@ -1119,6 +1119,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
                 }
 
+                $aData['i'] = $i;
                 $aData['esrow'] = $esrow;
                 $aData['action'] = "editsurveylocalesettings";
                 $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
@@ -1924,6 +1925,7 @@ class SurveyAdmin extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
         App()->clientScript->registerPackage('bootstrap-switch');
+        App()->clientScript->registerPackage('bootstrap-datetimepicker');
         App()->getClientScript()->registerPackage('jquery-datatable');
         App()->clientScript->registerPackage('adminpanel');
         App()->clientScript->registerPackage('ckeditor');
