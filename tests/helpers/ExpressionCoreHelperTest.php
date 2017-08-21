@@ -57,6 +57,8 @@ class ExpressionManagerCoreTest extends TestBaseClass
     public function testCompareNumberAndEmptyString()
     {
         $sgqa = '563168X136X5376';
+
+        // Input value 3.
         $_SESSION['survey_563168'][$sgqa] = '3';
 
         $em = new \ExpressionManager();
@@ -66,7 +68,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
             [
                 $sgqa => [
                     'sgqa' => $sgqa,
-                    'type' => 'x'  // Does not matter
+                    'type' => 'N'
                 ]
             ]
         );
