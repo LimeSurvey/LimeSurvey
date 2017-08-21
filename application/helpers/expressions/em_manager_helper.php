@@ -104,6 +104,7 @@
         * @var array
         */
         private $knownVars;
+
         /**
         * maps qcode varname to SGQA code
         *
@@ -111,6 +112,7 @@
         * @var array
         */
         private $qcode2sgqa;
+
         /**
         * variables temporarily set for substitution purposes
         *
@@ -125,6 +127,7 @@
         * @var array
         */
         private $tempVars;
+
         /**
         * Array of relevance information for each page (gseq), indexed by gseq.
         * Within a page, it contains a sequential list of the results of each relevance equation processed
@@ -143,6 +146,7 @@
         * @var array
         */
         private $pageRelevanceInfo;
+
         /**
         *
         * @var array
@@ -10293,6 +10297,25 @@ EOD;
         public function setCurrentQset(array $val)
         {
             $this->currentQset = $val;
+        }
+
+        /**
+         * Used for unit tests.
+         * @param mixed $val
+         * @return void
+         */
+        public function setKnownVars($val) {
+            $this->knownVars = $val;
+        }
+
+        /**
+         * Used for unit tests.
+         * @param mixed $info
+         * @return void
+         */
+        public function setPageRelevanceInfo($info)
+        {
+            $this->pageRelevanceInfo = $info;
         }
 
     }

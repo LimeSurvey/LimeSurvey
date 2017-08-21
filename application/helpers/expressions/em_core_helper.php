@@ -264,6 +264,14 @@ class ExpressionManager {
     }
 
     /**
+     * @return array
+     */
+    public function RDP_GetErrors()
+    {
+        return $this->RDP_errs;
+    }
+
+    /**
      * RDP_EvaluateBinary() computes binary expressions, such as (a or b), (c * d), popping  the top two entries off the
      * stack and pushing the result back onto the stack.
      *
@@ -1199,6 +1207,14 @@ class ExpressionManager {
             }
         }
         return array_unique($jsNames);
+    }
+
+    /**
+     * @return void
+     */
+    public function SetJsVarsUsed($vars)
+    {
+        $this->varsUsed = $vars;
     }
 
     /**
