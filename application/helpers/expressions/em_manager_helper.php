@@ -2639,7 +2639,6 @@
                             {
                                 case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
                                     $subqValidSelector = $sq['jsVarName_on'];
-                                    break;
                                 case 'N': //NUMERICAL QUESTION TYPE
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                     $sq_eqn = '( is_int('.$sq_name.') || is_empty('.$sq_name.') )';
@@ -3510,12 +3509,13 @@
                     'subqValidEqn' => implode(' && ', $csq['subqValidEqns']),
                     );
                 }
+
+                $veqns = array();
                 // now combine all classes of validation equations
                 foreach ($parts as $vclass=>$eqns)
                 {
                     $veqns[$vclass] = '(' . implode(' and ', $eqns) . ')';
                 }
-                $veqns = array();
 
 
                 $this->qid2validationEqn[$qid] = array(
@@ -6292,7 +6292,6 @@
                                         $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=false;
                                     }
                                 }
-                                break;
                             case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                             case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                             case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
