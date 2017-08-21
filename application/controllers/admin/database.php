@@ -1229,17 +1229,15 @@ class database extends Survey_Common_Action
 
     private function _filterEmptyFields(&$oSurvey, $fieldArrayName, $newValue=null){
         $aSurvey = $oSurvey->attributes;
-        $oldValue = $oSurvey->{$fieldArrayName};
+
         if($newValue === null)
         {
-            $newValue = App()->request->getPost($fieldArrayName, '');
+            $newValue = App()->request->getPost($fieldArrayName, NULL);
         }
 
-        $newValue = trim($newValue);
 
-        if(empty($newValue))
+        if($newValue === NULL)
         {
-
             $newValue = isset($aSurvey[$fieldArrayName]) ? $aSurvey[$fieldArrayName] : $oSurvey->{$fieldArrayName};
 
         } 
@@ -1247,6 +1245,8 @@ class database extends Survey_Common_Action
         {
             $this->updatedFields[] = $fieldArrayName;
         }
+        
+        $newValue = trim($newValue);
 
         $options = $this->updateableFields[$fieldArrayName];
         switch($options['type']){
