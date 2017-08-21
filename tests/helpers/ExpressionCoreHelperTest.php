@@ -93,6 +93,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $result = $em->GetResult();
 
         $errors = $em->RDP_GetErrors();
+        $this->assertEmpty($errors);
         $js = $em->GetJavaScriptEquivalentOfExpression();
 
         $nodeOutput = $this->runNode($js);
