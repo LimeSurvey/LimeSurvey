@@ -155,7 +155,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
     /**
      * Expression: '3' < 'A'
      */
-    public function testNumberLtLetter()
+    public function testCompareNumberLtLetter()
     {
         $sgqa = '563168X136X5376';
         $expression = '((563168X136X5376.NAOK < "A"))';
@@ -166,7 +166,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
     /**
      * '3' <= ' '
      */
-    public function testNumberLeSpace()
+    public function testCompareNumberLeSpace()
     {
         $sgqa = '563168X136X5376';
         $expression = '((563168X136X5376.NAOK <= " "))';
@@ -177,7 +177,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
     /**
      * '3' <= ''
      */
-    public function testNumberLeEmpty()
+    public function testCompareNumberLeEmpty()
     {
         $sgqa = '563168X136X5376';
         $expression = '((563168X136X5376.NAOK <= ""))';
@@ -188,7 +188,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
     /**
      * '' <= ' '
      */
-    public function testEmptyLeSpace()
+    public function testCompareEmptyLeSpace()
     {
         $sgqa = '563168X136X5376';
         $expression = '((563168X136X5376.NAOK <= " "))';
@@ -268,7 +268,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
     /**
      * Expression: 3 + '2'
      */
-    public function testNumberPlusString()
+    public function testCompareNumberPlusString()
     {
         $sgqa = '563168X136X5376';
         $expression = '((563168X136X5376.NAOK + "2"))';
@@ -281,7 +281,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
      * Expression: 3 + 2
      * @todo Need LEMval() to work.
      */
-    public function testNumberPlusNumber()
+    public function testCompareNumberPlusNumber()
     {
         $sgqa = '563168X136X5376';
         $expression = '((563168X136X5376.NAOK + 2))';
@@ -348,6 +348,57 @@ class ExpressionManagerCoreTest extends TestBaseClass
         );
         exec($command, $output);
         return $output;
+    }
+
+    /**
+     * @group node
+     */
+    public function testNode()
+    {
+        $code = "
+            eval(fs.readFileSync('./test.js', {encoding: 'utf8'}));
+            LEMradix = ',';
+            LEMmode = 'survey';
+            document = {
+                getElementById: function(id) {
+                    //console.log(id);
+                    if (id == 'relevance5376' || id == 'relevance' || id == 'relevanceG0') {
+                        return {value: 1};
+                    }
+                    return {value: 123};
+                }
+            }
+            LEMalias2varName = {
+                'test': 'java563168X136X5376',
+                '563168X136X5376': 'java563168X136X5376'
+            };
+            LEMvarNameAttr = {
+                'java563168X136X5376': {
+                    'jsName':'java563168X136X5376',
+                    'jsName_on':'java563168X136X5376',
+                    'sgqa':'563168X136X5376',
+                    'qid':5376,
+                    'gid':136,
+                    'type':'Y',
+                    'default':'',
+                    'rowdivid':'',
+                    'onlynum':'',
+                    'gseq':0,
+                    'answers': {
+                        'Y':'Ja',
+                        'N':'Nei'
+                    }
+                },
+            };
+            LEMval('563168X136X5376.NAOK');
+        ";
+        $command = sprintf(
+            'node -p "%s"',
+            $code
+        );
+        $output = [];
+        exec($command, $output);
+        var_dump($output);
     }
 
     /**
