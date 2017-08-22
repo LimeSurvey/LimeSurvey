@@ -291,4 +291,96 @@ class LSYii_ClientScript extends CClientScript {
             }
         }
     }
+
+	/**
+	 * Inserts the scripts at the beginning of the body section.
+     * This is overwriting the core method and is exactly the same except the marked parts
+	 * @param string $output the output to be inserted with scripts.
+	 */
+	public function renderBodyBegin(&$output)
+	{
+		$html='';
+		if(isset($this->scriptFiles[self::POS_BEGIN]))
+		{
+			foreach($this->scriptFiles[self::POS_BEGIN] as $scriptFileUrl=>$scriptFileValue)
+			{
+				if(is_array($scriptFileValue))
+					$html.=CHtml::scriptFile($scriptFileUrl,$scriptFileValue)."\n";
+				else
+					$html.=CHtml::scriptFile($scriptFileUrl)."\n";
+			}
+		}
+		if(isset($this->scripts[self::POS_BEGIN]))
+        {   
+            $html.='<section id="beginScripts">';
+			$html.=$this->renderScriptBatch($this->scripts[self::POS_BEGIN]);
+            $html.='</section>';
+        }
+
+		if($html!=='')
+		{
+			$count=0;
+			$output=preg_replace('/(<body\b[^>]*>)/is','$1<###begin###>',$output,1,$count);
+			if($count)
+				$output=str_replace('<###begin###>',$html,$output);
+			else
+				$output=$html.$output;
+		}
+	}
+
+    /**
+	 * Inserts the scripts at the end of the body section.
+     * This is overwriting the core method and is exactly the same except the marked parts
+	 * @param string $output the output to be inserted with scripts.
+	 */
+	public function renderBodyEnd(&$output)
+	{
+		if(!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END])
+			&& !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]))
+			return;
+
+		$fullPage=0;
+		$output=preg_replace('/(<\\/body\s*>)/is','<###end###>$1',$output,1,$fullPage);
+		$html='';
+		if(isset($this->scriptFiles[self::POS_END]))
+		{
+			foreach($this->scriptFiles[self::POS_END] as $scriptFileUrl=>$scriptFileValue)
+			{
+				if(is_array($scriptFileValue))
+					$html.=CHtml::scriptFile($scriptFileUrl,$scriptFileValue)."\n";
+				else
+					$html.=CHtml::scriptFile($scriptFileUrl)."\n";
+			}
+		}
+		$scripts=isset($this->scripts[self::POS_END]) ? $this->scripts[self::POS_END] : array();
+
+		if(isset($this->scripts[self::POS_READY]))
+		{
+			if($fullPage)
+				$scripts[]="jQuery(function($) {\n".implode("\n",$this->scripts[self::POS_READY])."\n});";
+			else
+				$scripts[]=implode("\n",$this->scripts[self::POS_READY]);
+		}
+		if(isset($this->scripts[self::POS_LOAD]))
+		{
+			if($fullPage) //This part is different to reflect the changes needed in the backend by the pjax loading of pages
+				$scripts[]="jQuery(document).on('load pjax:complete',function() {\n".implode("\n",$this->scripts[self::POS_LOAD])."\n});";
+			else
+				$scripts[]=implode("\n",$this->scripts[self::POS_LOAD]);
+		}
+
+        //All scripts are wrapped into a section to be able to reload them accordingly
+		if(!empty($scripts))
+        {   
+            $html.='<section id="bottomScripts">';
+			$html.=$this->renderScriptBatch($scripts);
+            $html.='</section>';
+        }
+
+
+		if($fullPage)
+			$output=str_replace('<###end###>',$html,$output);
+		else
+			$output=$output.$html;
+	}
 }

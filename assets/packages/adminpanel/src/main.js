@@ -7,6 +7,7 @@ import Topbar from './components/topbar.vue';
 import getAppState from './store/vuex-store.js';
 import LOG from './mixins/logSystem.js';
 
+
 Vue.use(Vuex);
 Vue.use(VueLocalStorage);
 Vue.use(LOG);
@@ -72,7 +73,6 @@ $(document).on('pjax:complete', () => {
     });
   }, 2200);
 });
-
 
 
 // const topmenu = new Vue(

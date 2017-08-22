@@ -28449,6 +28449,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_2_vue_localstorage___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_6__mixins_logSystem_js___default.a);
@@ -28514,7 +28515,6 @@ $(document).on('pjax:complete', () => {
     });
   }, 2200);
 });
-
 
 
 // const topmenu = new Vue(
@@ -30680,7 +30680,9 @@ const getAppState = function (userid) {
           elements: 'a.pjax', // default is "a[href], form[action]"
           selectors: [
             '#pjax-content',
-            '#breadcrumb-container'
+            '#breadcrumb-container',
+            '#bottomScripts',
+            '#beginScripts'
           ]
         });
       }
@@ -30689,6 +30691,7 @@ const getAppState = function (userid) {
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (getAppState);
+
 
 /***/ }),
 /* 55 */

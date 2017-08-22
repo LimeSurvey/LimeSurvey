@@ -130,7 +130,9 @@ const getAppState = function (userid) {
           elements: 'a.pjax', // default is "a[href], form[action]"
           selectors: [
             '#pjax-content',
-            '#breadcrumb-container'
+            '#breadcrumb-container',
+            '#bottomScripts',
+            '#beginScripts'
           ]
         });
       }

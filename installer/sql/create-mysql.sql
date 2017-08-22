@@ -631,6 +631,7 @@ CREATE TABLE `prefix_surveymenu` (
   `title` varchar(255)  NOT NULL DEFAULT '',
   `position` varchar(255)  NOT NULL DEFAULT 'side',
   `description` text ,
+  `active` int(1) NOT NULL DEFAULT '0',
   `changed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `changed_by` int(11) NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
@@ -665,6 +666,7 @@ CREATE TABLE `prefix_surveymenu_entries` (
   `data` text ,
   `getdatamethod` varchar(255)  NOT NULL DEFAULT '',
   `language` varchar(255)  NOT NULL DEFAULT 'en-GB',
+  `active` int(1) NOT NULL DEFAULT '0',
   `changed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `changed_by` int(11) NOT NULL DEFAULT '0',
   `created_at` datetime DEFAULT NULL,
@@ -806,4 +808,4 @@ INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `or
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '312');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '313');

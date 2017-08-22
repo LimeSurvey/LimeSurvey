@@ -144,10 +144,12 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('jqueryui');      // jqueryui
             App()->getClientScript()->registerPackage('js-cookie');     // js-cookie
             App()->getClientScript()->registerPackage('fontawesome');   // fontawesome 
-            App()->clientScript->registerPackage('bootstrap-switch'); 
+            App()->getClientScript()->registerPackage('bootstrap-switch'); 
+            App()->getClientScript()->registerPackage('bootstrap-select2');
+            App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
             App()->getClientScript()->registerPackage('adminpanel');    // Combined scripts and style for the new admin panel
-            App()->clientScript->registerPackage('ckeditor');           //
-            App()->clientScript->registerPackage('ckeditoradditions');   // CKEDITOR in a global sope
+            App()->getClientScript()->registerPackage('ckeditor');           //
+            App()->getClientScript()->registerPackage('ckeditoradditions');   // CKEDITOR in a global sope
         }
 
         $aCssFiles = array();

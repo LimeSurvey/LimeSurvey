@@ -398,6 +398,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
+        /*
+         * Add ltr/rtl capability to template configuration
+         */
+        if ($iOldDBVersion < 313) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            addColumn('{{surveymenu_entries}}','active', "int(1) NOT NULL DEFAULT '0'");
+            addColumn('{{surveymenu}}','active', "int(1) NOT NULL DEFAULT '0'");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('active'=>1));
+            $oDB->createCommand()->update('{{surveymenu}}', array('active'=>1));
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>313),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
 
     }
     catch(Exception $e)
