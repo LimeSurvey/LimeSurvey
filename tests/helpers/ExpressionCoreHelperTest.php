@@ -222,11 +222,23 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
+     * Expression: 3 + '2'
+     */
+    public function testNumberPlusString()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK + "2"))';
+        $value = 3;
+        $jsonEncodeResult = false;
+        $this->compareExpression($sgqa, $value, $expression, $jsonEncodeResult);
+    }
+
+    /**
      * @param string $sgqa
      * @param string $expression
      * @return void
      */
-    protected function compareExpression($sgqa, $value, $expression)
+    protected function compareExpression($sgqa, $value, $expression, $jsonEncode = true)
     {
         // Input value 3.
         $_SESSION['survey_563168'][$sgqa] = $value;
@@ -248,6 +260,10 @@ class ExpressionManagerCoreTest extends TestBaseClass
 
         $result = $em->GetResult();
 
+        if ($jsonEncode) {
+            $result = json_encode($result);
+        }
+
         $errors = $em->RDP_GetErrors();
         $this->assertEmpty($errors);
         $js = $em->GetJavaScriptEquivalentOfExpression();
@@ -255,7 +271,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $nodeOutput = $this->runNode($js);
 
         $this->assertCount(1, $nodeOutput);
-        $this->assertEquals(json_encode($result), $nodeOutput[0], 'JS and PHP must return same result');
+        $this->assertEquals($result, $nodeOutput[0], 'JS and PHP must return same result');
     }
 
     /**
