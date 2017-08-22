@@ -279,7 +279,6 @@ class ExpressionManagerCoreTest extends TestBaseClass
 
     /**
      * Expression: 3 + 2
-     * @todo Need LEMval() to work.
      */
     public function testCompareNumberPlusNumber()
     {
@@ -287,7 +286,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $expression = '((563168X136X5376.NAOK + 2))';
         $value = 3;
         $jsonEncodeResult = true;
-        //$this->compareExpression($sgqa, $value, $expression, $jsonEncodeResult);
+        $this->compareExpression($sgqa, $value, $expression, $jsonEncodeResult);
     }
 
     /**
@@ -308,8 +307,8 @@ class ExpressionManagerCoreTest extends TestBaseClass
             [
                 $sgqa => [
                     'sgqa' => $sgqa,
-                    'type' => 'N'
-                    //'jsName' => 'anything'  // This will trigger LEMval()
+                    'type' => 'N',
+                    'jsName' => 'java' . $sgqa // This will trigger LEMval()
                 ]
             ]
         );
@@ -325,6 +324,8 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $errors = $em->RDP_GetErrors();
         $this->assertEmpty($errors);
         $js = $em->GetJavaScriptEquivalentOfExpression();
+
+        $js = $this->getDummyNodeSetup($sgqa, $value, null, 0) . $js;
 
         $nodeOutput = $this->runNode($js);
 
@@ -351,11 +352,20 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
-     * @group node
+     * JS code to setup environment so LEMval() can run.
+     * @param string $sgqa
+     * @param mixed $value
+     * @param string $alias
+     * @param int $onlynum
+     * @return string
      */
-    public function testNode()
+    public function getDummyNodeSetup($sgqa, $value, $alias, $onlynum = 0)
     {
-        $code = "
+        if (is_string($value)) {
+            $value = "'$value'";
+        }
+        list($surveyId, $groupId, $questionid) = explode('X', $sgqa, 3);
+        return <<<EOT
             // Dummy jQuery.
             $ = function() {
                 return {
@@ -366,30 +376,30 @@ class ExpressionManagerCoreTest extends TestBaseClass
             document = {
                 getElementById: function(id) {
                     //console.log(id);
-                    if (id == 'relevance5376' || id == 'relevance' || id == 'relevanceG0') {
+                    if (id == 'relevance$surveyId' || id == 'relevance' || id == 'relevanceG0') {
                         return {value: 1};
                     }
-                    return {value: 123};
+                    return {value: $value};
                 }
             }
             eval(fs.readFileSync('./scripts/expressions/em_javascript.js', {encoding: 'utf8'}));
             LEMradix = ',';
             LEMmode = 'survey';
             LEMalias2varName = {
-                'test': 'java563168X136X5376',
-                '563168X136X5376': 'java563168X136X5376'
+                '$alias': 'java$sgqa',
+                '$sgqa': 'java$sgqa'
             };
             LEMvarNameAttr = {
-                'java563168X136X5376': {
-                    'jsName':'java563168X136X5376',
-                    'jsName_on':'java563168X136X5376',
-                    'sgqa':'563168X136X5376',
-                    'qid':5376,
-                    'gid':136,
+                'java$sgqa': {
+                    'jsName':'java$sgqa',
+                    'jsName_on':'java$sgqa',
+                    'sgqa':'$sgqa',
+                    'qid': '$surveyId',
+                    'gid': '$groupId',
                     'type':'N',
                     'default':'',
                     'rowdivid':'',
-                    'onlynum': 1,
+                    'onlynum': $onlynum,
                     'gseq':0,
                     'answers': {
                         'Y':'Ja',
@@ -397,15 +407,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
                     }
                 },
             };
-            LEMval('563168X136X5376.NAOK') + 1;
-        ";
-        $command = sprintf(
-            'node -p "%s"',
-            $code
-        );
-        $output = [];
-        exec($command, $output);
-        var_dump($output);
+EOT;
     }
 
     /**
