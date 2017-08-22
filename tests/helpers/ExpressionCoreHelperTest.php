@@ -64,6 +64,20 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
+     * 
+     */
+    public function testCompareEmptyNumberAndEmptyString()
+    {
+        $sgqa = '563168X136X5376';
+
+        $expression = '((563168X136X5376.NAOK >= " "))';
+
+        $value = '';
+
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
      * When constructing condition, empty string is represented
      * as "No answer".
      */
@@ -71,8 +85,22 @@ class ExpressionManagerCoreTest extends TestBaseClass
     {
         $sgqa = '563168X136X5376';
 
+        $expression = '((563168X136X5376.NAOK >= " "))';
+
+        $value = '3';
+
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * @param string $sgqa
+     * @param string $expression
+     * @return void
+     */
+    protected function compareExpression($sgqa, $value, $expression)
+    {
         // Input value 3.
-        $_SESSION['survey_563168'][$sgqa] = '3';
+        $_SESSION['survey_563168'][$sgqa] = $value;
 
         $em = new \ExpressionManager();
         $limeEm = \LimeExpressionManager::singleton();
@@ -81,12 +109,11 @@ class ExpressionManagerCoreTest extends TestBaseClass
             [
                 $sgqa => [
                     'sgqa' => $sgqa,
-                    'type' => 'N'
+                    'type' => 'N',
+                    //'jsName' => 'anything'  This will trigger LEMval()
                 ]
             ]
         );
-
-        $expression = '((563168X136X5376.NAOK >= " "))';
 
         $em->RDP_Evaluate($expression);
 
