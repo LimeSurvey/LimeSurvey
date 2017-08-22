@@ -32,6 +32,10 @@ class PluginManager extends Survey_Common_Action
                 $oPlugin->name   = $discoveredPlugin['pluginClass'];
                 $oPlugin->active = 0;
                 $oPlugin->save();
+                //New plugin registration
+                $event = new PluginEvent('onPluginRegistration');
+                $event->set('pluginName', $oPlugin->name);
+                App()->getPluginManager()->dispatchEvent($event);
             }
         }
 
