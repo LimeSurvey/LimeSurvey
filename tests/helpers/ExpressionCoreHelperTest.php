@@ -356,9 +356,13 @@ class ExpressionManagerCoreTest extends TestBaseClass
     public function testNode()
     {
         $code = "
-            eval(fs.readFileSync('./test.js', {encoding: 'utf8'}));
-            LEMradix = ',';
-            LEMmode = 'survey';
+            // Dummy jQuery.
+            $ = function() {
+                return {
+                    on: function() {}
+                }
+            };
+            // Dummy document.
             document = {
                 getElementById: function(id) {
                     //console.log(id);
@@ -368,6 +372,9 @@ class ExpressionManagerCoreTest extends TestBaseClass
                     return {value: 123};
                 }
             }
+            eval(fs.readFileSync('./scripts/expressions/em_javascript.js', {encoding: 'utf8'}));
+            LEMradix = ',';
+            LEMmode = 'survey';
             LEMalias2varName = {
                 'test': 'java563168X136X5376',
                 '563168X136X5376': 'java563168X136X5376'
@@ -379,10 +386,10 @@ class ExpressionManagerCoreTest extends TestBaseClass
                     'sgqa':'563168X136X5376',
                     'qid':5376,
                     'gid':136,
-                    'type':'Y',
+                    'type':'N',
                     'default':'',
                     'rowdivid':'',
-                    'onlynum':'',
+                    'onlynum': 1,
                     'gseq':0,
                     'answers': {
                         'Y':'Ja',
@@ -390,7 +397,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
                     }
                 },
             };
-            LEMval('563168X136X5376.NAOK');
+            LEMval('563168X136X5376.NAOK') + 1;
         ";
         $command = sprintf(
             'node -p "%s"',
