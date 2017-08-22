@@ -64,9 +64,24 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
-     * 
+     * Expression: '' >= ''
      */
     public function testCompareEmptyNumberAndEmptyString()
+    {
+        $sgqa = '563168X136X5376';
+
+        $expression = '((563168X136X5376.NAOK >= ""))';
+
+        $value = '';
+
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+
+    /**
+     * Expression: '' >= ' '
+     */
+    public function testCompareEmptyNumberAndSpace()
     {
         $sgqa = '563168X136X5376';
 
@@ -80,6 +95,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
     /**
      * When constructing condition, empty string is represented
      * as "No answer".
+     * Expression: '3' >= ' '
      */
     public function testCompareNumberAndEmptyString()
     {
