@@ -5,6 +5,7 @@ namespace ls\tests;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * Test expression evaluation in PHP vs JS.
  * @since 2017-06-16
  * @group em
  */
@@ -64,16 +65,134 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
-     * Expression: '' >= ''
+     * Expression: '' == ' '
      */
-    public function testCompareEmptyNumberAndEmptyString()
+    public function testCompareEmptyEqSpace()
     {
         $sgqa = '563168X136X5376';
-
-        $expression = '((563168X136X5376.NAOK >= ""))';
-
+        $expression = '((563168X136X5376.NAOK == " "))';
         $value = '';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
 
+    /**
+     * Expression: '0' == ' '
+     */
+    public function testCompareZeroEqSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK == " "))';
+        $value = '0';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: '' != ' '
+     */
+    public function testCompareEmptyNeSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK != " "))';
+        $value = '';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: '3' != ' '
+     */
+    public function testCompareNumberNeSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK != " "))';
+        $value = '3';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: '3' != ''
+     */
+    public function testCompareNumberNeEmpty()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK != ""))';
+        $value = '3';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: '' != ''
+     */
+    public function testCompareEmptyNeEmpty()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK != ""))';
+        $value = '';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: '' < ' '
+     */
+    public function testCompareEmptyLtSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK < " "))';
+        $value = '';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: '3' < ' '
+     */
+    public function testCompareNumberLtSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK < " "))';
+        $value = '3';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: '' > ' '
+     */
+    public function testCompareEmptyGtSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK > " "))';
+        $value = '';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: '3' > ' '
+     */
+    public function testCompareNumberGtSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK > " "))';
+        $value = '3';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: ' ' > ' '
+     */
+    public function testCompareSpaceGtSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK > " "))';
+        $value = ' ';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * Expression: '' >= ''
+     */
+    public function testCompareEmptyGeEmpty()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK >= ""))';
+        $value = '';
         $this->compareExpression($sgqa, $value, $expression);
     }
 
@@ -81,14 +200,11 @@ class ExpressionManagerCoreTest extends TestBaseClass
     /**
      * Expression: '' >= ' '
      */
-    public function testCompareEmptyNumberAndSpace()
+    public function testCompareEmptyGeSpace()
     {
         $sgqa = '563168X136X5376';
-
         $expression = '((563168X136X5376.NAOK >= " "))';
-
         $value = '';
-
         $this->compareExpression($sgqa, $value, $expression);
     }
 
@@ -97,14 +213,11 @@ class ExpressionManagerCoreTest extends TestBaseClass
      * as "No answer".
      * Expression: '3' >= ' '
      */
-    public function testCompareNumberAndEmptyString()
+    public function testCompareNumberGeSpace()
     {
         $sgqa = '563168X136X5376';
-
         $expression = '((563168X136X5376.NAOK >= " "))';
-
         $value = '3';
-
         $this->compareExpression($sgqa, $value, $expression);
     }
 
