@@ -1863,12 +1863,35 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['lctdropdownli']  = ' index-item ';
         $this->aSurveyInfo['class']['lctdropdownlia'] = ' ls-language-link ';
 
-
-
         $this->aSurveyInfo['attr']['lctla']       = ' data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
         $this->aSurveyInfo['attr']['lctdropdown'] = ' style="overflow: scroll" ';
 
         $this->aSurveyInfo['attr']['lctli'] = $this->aSurveyInfo['attr']['lctspan'] = $this->aSurveyInfo['attr']['lctdropdownli'] = $this->aSurveyInfo['attr']['lctdropdownlia'] = ' ';
+
+
+        // Navigator
+        $this->aSurveyInfo['id']['navigatorcontainer'] = 'navigator-container';
+
+        $this->aSurveyInfo['class']['navigatorcontainer']    = ' navigator row ';
+        $this->aSurveyInfo['class']['navigatorbuttonl']      = ' col-xs-6 text-left ';
+        $this->aSurveyInfo['class']['navigatorbuttonprev']   = ' ls-move-btn ls-move-previous-btn btn btn-lg btn-default ';
+        $this->aSurveyInfo['class']['navigatorbuttonr']      = ' col-xs-6 text-right ';
+        $this->aSurveyInfo['class']['navigatorbuttonsumbit'] = ' ls-move-btn ls-move-submit-btn btn btn-lg btn-primary ';
+        $this->aSurveyInfo['class']['navigatorbuttonnext']   = ' ls-move-btn ls-move-next-btn ls-move-submit-btn btn btn-lg btn-primary ';
+        $this->aSurveyInfo['class']['loadsavecontainer']     = ' navigator row ';
+        $this->aSurveyInfo['class']['loadsavecol']           = ' col-sm-6 save-clearall-wrapper ';
+        $this->aSurveyInfo['class']['loadbutton']            = ' ls-saveaction ls-loadall btn btn-default ';
+        $this->aSurveyInfo['class']['savebutton']            = ' ls-saveaction ls-loadall btn btn-default ';
+
+
+
+        $this->aSurveyInfo['attr']['navigatorbuttonprev']   = ' type="submit" value="moveprev" name="move" accesskey="p" accesskey="n"';
+        $this->aSurveyInfo['attr']['navigatorbuttonsumbit'] = ' type="submit" value="movesubmit" name="move" accesskey="l" ';
+        $this->aSurveyInfo['attr']['navigatorbuttonnext']   = ' type="submit" value="movenext" name="move"  ';
+        $this->aSurveyInfo['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" accesskey="L"';
+        $this->aSurveyInfo['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" accesskey="s" ';
+        $this->aSurveyInfo['attr']['navigatorcontainer'] = $this->aSurveyInfo['attr']['navigatorbuttonl'] = $this->aSurveyInfo['attr']['loadsavecontainer'] = $this->aSurveyInfo['attr']['loadsavecol']  = '';
+
 
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';
