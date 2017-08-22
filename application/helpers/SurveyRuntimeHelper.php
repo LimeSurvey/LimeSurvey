@@ -1839,6 +1839,16 @@ class SurveyRuntimeHelper {
 
         $this->aSurveyInfo['attr']['questiongroup']  = $this->aSurveyInfo['attr']['groupcontainer'] = $this->aSurveyInfo['attr']['groupcontainer'] = $this->aSurveyInfo['attr']['groupdesc'] = '';
 
+        // Privacy
+        $this->aSurveyInfo['class']['privacycontainer'] = ' row privacy ';
+        $this->aSurveyInfo['class']['privacycol']       = ' col-sm-12 col-centered ';
+        $this->aSurveyInfo['class']['privacyhead']      = ' h4 text-primary ';
+        $this->aSurveyInfo['class']['privacybody']      = ' ls-privacy-body ';
+
+
+
+        $this->aSurveyInfo['attr']['privacycontainer'] = $this->aSurveyInfo['attr']['privacycol'] = $this->aSurveyInfo['attr']['privacyhead'] = $this->aSurveyInfo['attr']['privacybody'] = '';
+
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';
 
