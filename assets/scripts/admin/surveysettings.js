@@ -250,7 +250,7 @@ function templatechange(template)
 {
     /* @todo : fix it */
     standardtemplates=[
-        'default'
+        'default','minimal','material'
     ];
     if (in_array(template,standardtemplates))
     {
