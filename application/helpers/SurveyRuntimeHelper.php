@@ -1845,9 +1845,12 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['privacyhead']      = ' h4 text-primary ';
         $this->aSurveyInfo['class']['privacybody']      = ' ls-privacy-body ';
 
-
-
         $this->aSurveyInfo['attr']['privacycontainer'] = $this->aSurveyInfo['attr']['privacycol'] = $this->aSurveyInfo['attr']['privacyhead'] = $this->aSurveyInfo['attr']['privacybody'] = '';
+
+        // Clearall Links
+        $this->aSurveyInfo['class']['clearalllinks'] = ' ls-no-js-hidden ';
+        $this->aSurveyInfo['class']['clearalllink']  = ' ls-link-action ls-link-clearall ';
+        $this->aSurveyInfo['attr']['clearalllinks']  = $this->aSurveyInfo['attr']['clearalllink'] = ' ';
 
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';
