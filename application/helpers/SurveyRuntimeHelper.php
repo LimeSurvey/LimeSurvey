@@ -1850,7 +1850,25 @@ class SurveyRuntimeHelper {
         // Clearall Links
         $this->aSurveyInfo['class']['clearalllinks'] = ' ls-no-js-hidden ';
         $this->aSurveyInfo['class']['clearalllink']  = ' ls-link-action ls-link-clearall ';
+
         $this->aSurveyInfo['attr']['clearalllinks']  = $this->aSurveyInfo['attr']['clearalllink'] = ' ';
+
+        // Language changer
+        $this->aSurveyInfo['id']['lctdropdown']    = 'langs-container';
+
+        $this->aSurveyInfo['class']['lctli']          = ' dropdown ls-no-js-hidden ';
+        $this->aSurveyInfo['class']['lctla']          = ' dropdown-toggle ';
+        $this->aSurveyInfo['class']['lctspan']        = ' caret ';
+        $this->aSurveyInfo['class']['lctdropdown']    = ' dropdown-menu ';
+        $this->aSurveyInfo['class']['lctdropdownli']  = ' index-item ';
+        $this->aSurveyInfo['class']['lctdropdownlia'] = ' ls-language-link ';
+
+
+
+        $this->aSurveyInfo['attr']['lctla']       = ' data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
+        $this->aSurveyInfo['attr']['lctdropdown'] = ' style="overflow: scroll" ';
+
+        $this->aSurveyInfo['attr']['lctli'] = $this->aSurveyInfo['attr']['lctspan'] = $this->aSurveyInfo['attr']['lctdropdownli'] = $this->aSurveyInfo['attr']['lctdropdownlia'] = ' ';
 
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';
