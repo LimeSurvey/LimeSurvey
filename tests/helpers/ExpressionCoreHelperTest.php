@@ -153,6 +153,50 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
+     * Expression: '3' < 'A'
+     */
+    public function testNumberLtLetter()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK < "A"))';
+        $value = '3';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * '3' <= ' '
+     */
+    public function testNumberLeSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK <= " "))';
+        $value = '3';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * '3' <= ''
+     */
+    public function testNumberLeEmpty()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK <= ""))';
+        $value = '3';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
+     * '' <= ' '
+     */
+    public function testEmptyLeSpace()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK <= " "))';
+        $value = '';
+        $this->compareExpression($sgqa, $value, $expression);
+    }
+
+    /**
      * Expression: '' > ' '
      */
     public function testCompareEmptyGtSpace()
@@ -234,8 +278,22 @@ class ExpressionManagerCoreTest extends TestBaseClass
     }
 
     /**
+     * Expression: 3 + 2
+     * @todo Need LEMval() to work.
+     */
+    public function testNumberPlusNumber()
+    {
+        $sgqa = '563168X136X5376';
+        $expression = '((563168X136X5376.NAOK + 2))';
+        $value = 3;
+        $jsonEncodeResult = true;
+        //$this->compareExpression($sgqa, $value, $expression, $jsonEncodeResult);
+    }
+
+    /**
      * @param string $sgqa
      * @param string $expression
+     * @param boolean $jsonEncode If true, run json_encode on PHP eval result. Good for when node returns boolean.
      * @return void
      */
     protected function compareExpression($sgqa, $value, $expression, $jsonEncode = true)
@@ -244,14 +302,14 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $_SESSION['survey_563168'][$sgqa] = $value;
 
         $em = new \ExpressionManager();
-        $limeEm = \LimeExpressionManager::singleton();
-        $limeEm->setVariableAndTokenMappingsForExpressionManager('563168');
-        $limeEm->setKnownVars(
+        $lem = \LimeExpressionManager::singleton();
+        $lem->setVariableAndTokenMappingsForExpressionManager('563168');
+        $lem->setKnownVars(
             [
                 $sgqa => [
                     'sgqa' => $sgqa,
-                    'type' => 'N',
-                    //'jsName' => 'anything'  This will trigger LEMval()
+                    'type' => 'N'
+                    //'jsName' => 'anything'  // This will trigger LEMval()
                 ]
             ]
         );
@@ -284,13 +342,11 @@ class ExpressionManagerCoreTest extends TestBaseClass
         // Only use single quotes.
         $js = str_replace('"', "'", $js);
         $output = [];
-        exec(
-            sprintf(
-                'node -p "%s"',
-                $js
-            ),
-            $output
+        $command = sprintf(
+            'node -p "%s"',
+            $js
         );
+        exec($command, $output);
         return $output;
     }
 
