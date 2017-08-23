@@ -1905,9 +1905,17 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['attr']['indexmenuglia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
         $this->aSurveyInfo['attr']['indexmenuslia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
 
-        $this->aSurveyInfo['attr']['indexmenugli'] = $this->aSurveyInfo['attr']['indexmenugspan'] = $this->aSurveyInfo['attr']['indexmenusgul'] = $this->aSurveyInfo['attr']['indexmenusli'] = $this->aSurveyInfo['attr']['indexmenusspan'] = $this->aSurveyInfo['attr']['indexmenussul'] = '';
-        $this->aSurveyInfo['attr']['indexmenusddh']  = $this->aSurveyInfo['attr']['indexmenusddspan']  = $this->aSurveyInfo['attr']['indexmenusddul'] = $this->aSurveyInfo['attr']['indexmenussli'] = $this->aSurveyInfo['attr']['indexmenusgli'] = '';
+        $this->aSurveyInfo['attr']['indexmenugli']  = $this->aSurveyInfo['attr']['indexmenugspan'] = $this->aSurveyInfo['attr']['indexmenusgul'] = $this->aSurveyInfo['attr']['indexmenusli'] = $this->aSurveyInfo['attr']['indexmenusspan'] = $this->aSurveyInfo['attr']['indexmenussul'] = '';
+        $this->aSurveyInfo['attr']['indexmenusddh'] = $this->aSurveyInfo['attr']['indexmenusddspan']  = $this->aSurveyInfo['attr']['indexmenusddul'] = $this->aSurveyInfo['attr']['indexmenussli'] = $this->aSurveyInfo['attr']['indexmenusgli'] = '';
 
+
+        // Save/Load links
+        $this->aSurveyInfo['class']['loadlinksli']  = ' ls-no-js-hidden ';
+        $this->aSurveyInfo['class']['loadlinkslia'] = ' ls-link-action ls-link-loadall ';
+        $this->aSurveyInfo['class']['savelinksli']  = ' ls-no-js-hidden ';
+        $this->aSurveyInfo['class']['savelinkslia'] = 'ls-link-action ls-link-saveall';
+
+        $this->aSurveyInfo['attr']['loadlinksli']     = $this->aSurveyInfo['attr']['savelinksli'] = $this->aSurveyInfo['class']['savelinkslia'] = '';
 
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';
