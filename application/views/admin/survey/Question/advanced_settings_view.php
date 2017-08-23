@@ -46,7 +46,7 @@ $categoryNum=0;
         <!-- Input -->
         <div class="">
             <?php
-                if ($aAttribute['readonly'] && $bIsActive)
+                if (($aAttribute['readonly'] || isset($aAttribute['readonly_when_active']) && $aAttribute['readonly_when_active']) && $bIsActive)
                 {
                     echo $aAttribute['value'];
                 }
