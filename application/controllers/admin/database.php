@@ -152,17 +152,18 @@ class database extends Survey_Common_Action
             /* @todo : add it to upgrage DB system, and see for the lsa */
             if($sQuestionType=="R" && Survey::model()->findByPk($iSurveyID)->active=="Y")
             {
-                QuestionAttribute::model()->find(
+                $oQuestionAttributeMaxSubQuestions = QuestionAttribute::model()->find(
                     "qid = :qid AND attribute = 'max_subquestions'",
                     array(':qid' => $iQuestionID)
                 );
-
-                $answerCount=Answer::model()->countByAttributes(array('qid' => $iQuestionID,'language'=>Survey::model()->findByPk($iSurveyID)->language));
-                $oQuestionAttribute = new QuestionAttribute();
-                $oQuestionAttribute->qid = $iQuestionID;
-                $oQuestionAttribute->attribute = 'max_subquestions';
-                $oQuestionAttribute->value = $answerCount;
-                $oQuestionAttribute->save();
+                if(!$oQuestionAttributeMaxSubQuestions) {
+                    $answerCount=Answer::model()->countByAttributes(array('qid' => $iQuestionID,'language'=>Survey::model()->findByPk($iSurveyID)->language));
+                    $oQuestionAttributeMaxSubQuestions = new QuestionAttribute();
+                    $oQuestionAttributeMaxSubQuestions->qid = $iQuestionID;
+                    $oQuestionAttributeMaxSubQuestions->attribute = 'max_subquestions';
+                    $oQuestionAttributeMaxSubQuestions->value = $answerCount;
+                    $oQuestionAttributeMaxSubQuestions->save();
+                }
 
             }
 
