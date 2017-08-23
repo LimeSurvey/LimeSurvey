@@ -1867,7 +1867,7 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['attr']['lctdropdown'] = ' style="overflow: scroll" ';
 
         $this->aSurveyInfo['attr']['lctli'] = $this->aSurveyInfo['attr']['lctspan'] = $this->aSurveyInfo['attr']['lctdropdownli'] = $this->aSurveyInfo['attr']['lctdropdownlia'] = ' ';
-
+        $this->aSurveyInfo['attr']['navigatorcontainer'] = $this->aSurveyInfo['attr']['navigatorbuttonl'] = $this->aSurveyInfo['attr']['loadsavecontainer'] = $this->aSurveyInfo['attr']['loadsavecol']  = '';
 
         // Navigator
         $this->aSurveyInfo['id']['navigatorcontainer'] = 'navigator-container';
@@ -1883,14 +1883,30 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['loadbutton']            = ' ls-saveaction ls-loadall btn btn-default ';
         $this->aSurveyInfo['class']['savebutton']            = ' ls-saveaction ls-loadall btn btn-default ';
 
-
-
         $this->aSurveyInfo['attr']['navigatorbuttonprev']   = ' type="submit" value="moveprev" name="move" accesskey="p" accesskey="n"';
         $this->aSurveyInfo['attr']['navigatorbuttonsumbit'] = ' type="submit" value="movesubmit" name="move" accesskey="l" ';
         $this->aSurveyInfo['attr']['navigatorbuttonnext']   = ' type="submit" value="movenext" name="move"  ';
         $this->aSurveyInfo['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" accesskey="L"';
         $this->aSurveyInfo['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" accesskey="s" ';
-        $this->aSurveyInfo['attr']['navigatorcontainer'] = $this->aSurveyInfo['attr']['navigatorbuttonl'] = $this->aSurveyInfo['attr']['loadsavecontainer'] = $this->aSurveyInfo['attr']['loadsavecol']  = '';
+
+        // Index Menu
+        $this->aSurveyInfo['class']['indexmenugli']     = ' dropdown ls-index-menu ls-no-js-hidden  ';
+        $this->aSurveyInfo['class']['indexmenuglia']    = ' dropdown-toggle  ';
+        $this->aSurveyInfo['class']['indexmenugspan']   = ' caret ';
+        $this->aSurveyInfo['class']['indexmenusgul']    = ' dropdown-menu ';
+        $this->aSurveyInfo['class']['indexmenusli']     = ' dropdown ls-index-menu ls-no-js-hidden  ';
+        $this->aSurveyInfo['class']['indexmenuslia']    = ' dropdown-toggle  ';
+        $this->aSurveyInfo['class']['indexmenusspan']   = ' caret ';
+        $this->aSurveyInfo['class']['indexmenussul']    = ' dropdown-menu ';
+        $this->aSurveyInfo['class']['indexmenusddh']    = ' dropdown-menu ';
+        $this->aSurveyInfo['class']['indexmenusddspan'] = ' caret ';
+        $this->aSurveyInfo['class']['indexmenusddul']   = ' dropdown-menu dropdown-sub-menu ';
+
+        $this->aSurveyInfo['attr']['indexmenuglia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+        $this->aSurveyInfo['attr']['indexmenuslia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+
+        $this->aSurveyInfo['attr']['indexmenugli'] = $this->aSurveyInfo['attr']['indexmenugspan'] = $this->aSurveyInfo['attr']['indexmenusgul'] = $this->aSurveyInfo['attr']['indexmenusli'] = $this->aSurveyInfo['attr']['indexmenusspan'] = $this->aSurveyInfo['attr']['indexmenussul'] = '';
+        $this->aSurveyInfo['attr']['indexmenusddh']  = $this->aSurveyInfo['attr']['indexmenusddspan']  = $this->aSurveyInfo['attr']['indexmenusddul'] = $this->aSurveyInfo['attr']['indexmenussli'] = $this->aSurveyInfo['attr']['indexmenusgli'] = '';
 
 
         // Here you can add metas from core
