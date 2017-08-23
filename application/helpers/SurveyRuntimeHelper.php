@@ -1750,11 +1750,18 @@ class SurveyRuntimeHelper {
 
         $thissurvey['attr']['questioncounttext'] = '';
 
+
+        // Clear all
+        $thissurvey['class']['clearall']    = 'return-to-survey';
+        $thissurvey['class']['clearalldiv'] = ' url-wrapper url-wrapper-survey-return ';
+        $thissurvey['class']['clearalla']   = ' ls-return ';
+        $thissurvey['attr']['clearall'] = $thissurvey['attr']['clearalldiv'] = $thissurvey['attr']['clearalla'] = '';
+
         // Warnings
         $this->aSurveyInfo['class']['activealert']       = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
         $this->aSurveyInfo['class']['errorHtml']         = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
         $this->aSurveyInfo['class']['activealertbutton'] = ' close ';
-        $this->aSurveyInfo['class']['errorHtmlbutton'] = ' close ';
+        $this->aSurveyInfo['class']['errorHtmlbutton']   = ' close ';
         $this->aSurveyInfo['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="Close" ';
         $this->aSurveyInfo['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="Close" ';
 
