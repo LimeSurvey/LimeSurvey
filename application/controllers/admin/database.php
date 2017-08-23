@@ -274,26 +274,34 @@ class database extends Survey_Common_Action
                 array(':qid' => $this->iQuestionID)
             );
 
-            $answerCount=Answer::model()->countByAttributes(array('qid' => $this->iQuestionID,'language'=>$survey->language));
-            $oQuestionAttribute = new QuestionAttribute();
-            $oQuestionAttribute->qid = $this->iQuestionID;
-            $oQuestionAttribute->attribute = 'max_subquestions';
-            $oQuestionAttribute->value = $answerCount;
-            $oQuestionAttribute->save();
+        if ($sAction == "updateansweroptions" && Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent','update'))
+        {
+            Yii::app()->loadHelper('database');
+            $aSurveyLanguages = Survey::model()->findByPk($iSurveyID)->additionalLanguages;
+            $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
+            array_unshift($aSurveyLanguages,$sBaseLanguage);
+            $arQuestion = Question::model()->findByAttributes(array('qid'=>$iQuestionID));
+            $sQuestionType = $arQuestion['type'];    // Checked)
+            $aQuestionTypeList=getQuestionTypeList('','array');
+            $iScaleCount=$aQuestionTypeList[$sQuestionType]['answerscales'];
+            /* for already activated survey and rank question type : fix the maxDbAnswer before deleting answers */
+            /* @todo : add it to upgrage DB system, and see for the lsa */
+            if($sQuestionType=="R" && Survey::model()->findByPk($iSurveyID)->active=="Y")
+            {
+                $oQuestionAttributeMaxSubQuestions = QuestionAttribute::model()->find(
+                    "qid = :qid AND attribute = 'max_subquestions'",
+                    array(':qid' => $iQuestionID)
+                );
+                if(!$oQuestionAttributeMaxSubQuestions) {
+                    $answerCount=Answer::model()->countByAttributes(array('qid' => $iQuestionID,'language'=>Survey::model()->findByPk($iSurveyID)->language));
+                    $oQuestionAttributeMaxSubQuestions = new QuestionAttribute();
+                    $oQuestionAttributeMaxSubQuestions->qid = $iQuestionID;
+                    $oQuestionAttributeMaxSubQuestions->attribute = 'max_subquestions';
+                    $oQuestionAttributeMaxSubQuestions->value = $answerCount;
+                    $oQuestionAttributeMaxSubQuestions->save();
+                }
 
-        }
-
-        //First delete all answers
-        Answer::model()->deleteAllByAttributes(array('qid'=>$this->iQuestionID));
-        LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
-        for ($iScaleID=0;$iScaleID<$iScaleCount;$iScaleID++) {
-            $iMaxCount=(int) Yii::app()->request->getPost('answercount_'.$iScaleID);
-            for ($iSortOrderID=1;$iSortOrderID<$iMaxCount;$iSortOrderID++) {
-                $sCode=sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
-                //var_dump($sCode);
-                $iAssessmentValue=(int) Yii::app()->request->getPost('assessment_'.$iSortOrderID.'_'.$iScaleID);
-                foreach ($survey->allLanguages as $sLanguage) {
-                    $sAnswerText=Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
+            }
 
                     // Fix bug with FCKEditor saving strange BR types
                     $sAnswerText=$this->oFixCKeditor->fixCKeditor($sAnswerText);
