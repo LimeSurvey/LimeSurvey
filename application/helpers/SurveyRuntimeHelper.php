@@ -1748,24 +1748,34 @@ class SurveyRuntimeHelper {
         $thissurvey['class']['questioncount']     = " number-of-questions text-muted ";
         $thissurvey['class']['questioncounttext'] = " question-count-text ";
 
+        $thissurvey['attr']['questioncounttext'] = '';
+
         // Warnings
-        $this->aSurveyInfo['class']['activealert'] = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
-        $this->aSurveyInfo['class']['errorHtml']   = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
+        $this->aSurveyInfo['class']['activealert']       = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
+        $this->aSurveyInfo['class']['errorHtml']         = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
+        $this->aSurveyInfo['class']['activealertbutton'] = ' close ';
+        $this->aSurveyInfo['class']['errorHtmlbutton'] = ' close ';
+        $this->aSurveyInfo['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="Close" ';
+        $this->aSurveyInfo['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="Close" ';
+
+        $this->aSurveyInfo['attr']['activealert']  = 'role="alert"';
 
         // Required
         $this->aSurveyInfo['class']['required']     = ' text-danger asterisk fa fa-asterisk pull-left small ';
         $this->aSurveyInfo['class']['requiredspan'] = ' sr-only text-danger asterisk ';
         $this->aSurveyInfo['attr']['required']      = ' aria-hidden="true" ';
+        $this->aSurveyInfo['class']['required']     = '';
 
         // Progress bar
         $this->aSurveyInfo['class']['topcontainer'] = ' top-container ';
         $this->aSurveyInfo['class']['topcontent']   = ' container top-content ';
         $this->aSurveyInfo['class']['progress']     = ' progress ';
         $this->aSurveyInfo['class']['progressbar']  = ' progress-bar ';
-        $this->aSurveyInfo['attr']['progressbar']   = ' ';
+        $this->aSurveyInfo['attr']['progressbar']   = $this->aSurveyInfo['attr']['topcontainer'] = $this->aSurveyInfo['class']['topcontent'] = $this->aSurveyInfo['attr']['progressbar']  =  $this->aSurveyInfo['attr']['progress']  = ' ';
 
         // No JS alert
         $this->aSurveyInfo['class']['nojs'] = ' alert alert-danger ls-js-hidden warningjs ';
+        $this->aSurveyInfo['attr']['nojs']  = ' alert alert-danger ls-js-hidden warningjs ';
 
         // NavBar
         $this->aSurveyInfo['id']['navbar']            = 'navbar';
@@ -1785,6 +1795,8 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['controllabel']    = '  control-label  ';
         $this->aSurveyInfo['class']['formcontrol']     = '  form-control  ';
         $this->aSurveyInfo['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden  ';
+
+        $this->aSurveyInfo['attr']['languagechanger']  =  $this->aSurveyInfo['attr']['formgroup']  = $this->aSurveyInfo['attr']['controllabel'] = '';
 
         // Bootstrap Modal Alert
         $this->aSurveyInfo['id']['alertmodal']           = 'bootstrap-alert-box-modal';
@@ -1807,10 +1819,13 @@ class SurveyRuntimeHelper {
         // Assessments
         $this->aSurveyInfo['class']['assessmenttable']      = ' assessment-table table ';
         $this->aSurveyInfo['class']['assessmentstable']     = ' assessments table ';
+        $this->aSurveyInfo['class']['assessmentstablet']    = ' assessments table ';
         $this->aSurveyInfo['class']['assessmentheading']    = ' assessment-heading ';
         $this->aSurveyInfo['class']['assessmentscontainer'] = ' assessments-container ';
 
-        $this->aSurveyInfo['attr']['assessmenttable'] = $this->aSurveyInfo['attr']['assessmentheading'] = $this->aSurveyInfo['attr']['assessmentscontainer'] = $this->aSurveyInfo['attr']['assessmentstable'] = '';
+        $this->aSurveyInfo['attr']['assessmentstablet'] = 'align="center"';
+
+        $this->aSurveyInfo['attr']['assessmenttable'] = $this->aSurveyInfo['attr']['assessmentstablettr'] = $this->aSurveyInfo['attr']['assessmentstabletth'] = $this->aSurveyInfo['attr']['assessmentstablettd'] = $this->aSurveyInfo['attr']['assessmentstableth'] = $this->aSurveyInfo['attr']['assessmentstabletd'] = $this->aSurveyInfo['attr']['assessmentstabletd'] = $this->aSurveyInfo['attr']['assessmentheading'] = $this->aSurveyInfo['attr']['assessmentscontainer'] = $this->aSurveyInfo['attr']['assessmentstable'] = '';
 
         // Questions
         $this->aSurveyInfo['class']['questioncontainer']       = ' question-container row ';

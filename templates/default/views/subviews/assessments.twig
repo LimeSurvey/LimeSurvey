@@ -39,14 +39,14 @@
                             {% for assessed in aAssessments.group[key] %}
                                 {% if ( val >= assessed.min and val <= assessed.max ) %}
                                 <table class='{{ aSurveyInfo.class.assessmentstable }}' {{ aSurveyInfo.attr.assessmentstable }}>
-                                    <tr >
-                                        <th>
+                                    <tr {{ aSurveyInfo.attr.assessmentstabletr }} >
+                                        <th {{ aSurveyInfo.attr.assessmentstableth }} >
                                             {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
                                         </th>
                                     </tr>
 
-                                    <tr>
-                                        <td>
+                                    <tr  {{ aSurveyInfo.attr.assessmentstabletr }} >
+                                        <td {{ aSurveyInfo.attr.assessmentstabletd }} >
                                             {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.message)  }}
                                         </td>
                                     </tr>
@@ -64,15 +64,15 @@
             {% if aAssessments.total.show %}
                 {% for assessed in aAssessments.total %}
                     {% if ( aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
-                        <table class='{{ aSurveyInfo.class.assessmentstable }}' align='center'>
-                            <tr>
-                                <th>
+                        <table class='{{ aSurveyInfo.class.assessmentstablet }}' {{ aSurveyInfo.attr.assessmentstablet }} >
+                            <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
+                                <th {{ aSurveyInfo.attr.assessmentstabletth }}>
                                     {# Beleive it or not, val is defined in previous loop... -_- #}
                                     {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
                                 </th>
                             </tr>
-                            <tr>
-                                <td>
+                            <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
+                                <td {{ aSurveyInfo.attr.assessmentstablettd }}>
                                     {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.message)  }}
                                 </td>
                             </tr>
