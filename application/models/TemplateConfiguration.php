@@ -375,9 +375,9 @@ class TemplateConfiguration extends TemplateConfig
      * @param  string $iSurveyId the id of the survey. If
      * @return $this
      */
-    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='')
+    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true)
     {
-        $this->bUseMagicInherit = true;
+        $this->bUseMagicInherit = $bUseMagicInherit;
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard();                                                 // Check if  it is a CORE template
         $this->path = ($this->isStandard)
@@ -553,10 +553,10 @@ class TemplateConfiguration extends TemplateConfig
     {
         if(!empty($this->template->extends_templates_name)){
             $sMotherTemplateName   = $this->template->extends_templates_name;
-            $this->oMotherTemplate = Template::getTemplateConfiguration($sMotherTemplateName);
-            $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName);
+            $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
+            $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null);
             if ($this->oMotherTemplate->checkTemplate()){
-                $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName); // Object Recursion
+                $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null); // Object Recursion
             }else{
                 // Throw exception? Set to default template?
             }

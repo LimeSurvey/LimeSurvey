@@ -266,7 +266,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
     // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data
     // Note: signature are already the same
 
-    public function prepareTemplateRendering($sTemplateName='', $iSurveyId=''){}
+    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true){}
     public function addFileReplacement($sFile, $sType){}
 
     protected function getFilesToLoad($oTemplate, $sType){}

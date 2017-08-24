@@ -126,7 +126,7 @@ class templateoptions  extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/templateoptions/sa/updatesurvey",['surveyid'=>$sid,'sid'=>$sid]));
         }
 
-        $model = Template::getTemplateConfiguration(null, $sid);
+        $model = TemplateConfiguration::getInstance(null, null, $sid);
 
 
         if(isset($_POST['TemplateConfiguration'])){
@@ -150,7 +150,7 @@ class templateoptions  extends Survey_Common_Action
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/",['id'=>$gsid]));
         }
 
-        $model = Template::getTemplateConfiguration(null, null, $gsid);
+        $model = TemplateConfiguration::getInstance(null, $gsid);
 
 
         if(isset($_POST['TemplateConfiguration'])){

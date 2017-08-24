@@ -589,7 +589,7 @@ class Survey extends LSActiveRecord
     }
 
     public function getSurveyTemplateConfiguration(){
-        return Template::getTemplateConfiguration(null, $this->sid);
+        return TemplateConfiguration::getInstance(null, null, $this->sid);
     }
 
     private function _createSurveymenuArray($oSurveyMenuObjects)

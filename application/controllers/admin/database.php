@@ -1031,7 +1031,7 @@ class database extends Survey_Common_Action
             $current_template = $oSurvey->template;
             $new_template =  $this->_filterEmptyFields($oSurvey,'template');
             if(  $current_template != '' && $current_template !== $new_template ){
-                $currentConfiguration = Template::getTemplateConfiguration($current_template, $oSurvey->sid);
+                $currentConfiguration = TemplateConfiguration::getInstance($current_template, $oSurvey->gsid, $oSurvey->sid);
                 
                 if(is_a($currentConfiguration, "TemplateConfiguration"))
                     TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);

@@ -368,7 +368,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param  string $iSurveyId the id of the survey. If
      * @return $this
      */
-    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='')
+    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true)
     {
         $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
         $this->setIsStandard();                                                 // Check if  it is a CORE template

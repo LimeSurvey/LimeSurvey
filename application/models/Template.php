@@ -375,18 +375,19 @@ class Template extends LSActiveRecord
      * @param int|string $iSurveyGroupId
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName='', $iSurveyId='', $iSurveyGroupId='', $bForceXML=false)
+    public static function getInstance($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=null)
     {
-
-        // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
-        if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
-            $bForceXML=true;
-        }elseif( App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
-            $bForceXML=false;
+        if($bForceXML === null){
+            // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
+            if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
+                $bForceXML=true;
+            }elseif( App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
+                $bForceXML=false;
+            }
         }
 
         if (empty(self::$instance)) {
-            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
+            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyGroupId, $iSurveyId, $bForceXML);
             self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
 
