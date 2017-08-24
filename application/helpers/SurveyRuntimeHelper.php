@@ -1740,34 +1740,33 @@ class SurveyRuntimeHelper {
     {
 
         // Welcome
-        $thissurvey['id']['welcomecontainer']     =  ' welcome-container ';
-        $thissurvey['class']['welcomecontainer']  = '';
-        $thissurvey['class']['surveyname']        = " survey-name text-center ";
-        $thissurvey['class']['description']       = " text-info text-center survey-description ";
-        $thissurvey['class']['welcome']           = " survey-welcome h4 text-primary ";
-        $thissurvey['class']['questioncount']     = " number-of-questions text-muted ";
-        $thissurvey['class']['questioncounttext'] = " question-count-text ";
+        $this->aSurveyInfo['id']['welcomecontainer']     =  ' welcome-container ';
+        $this->aSurveyInfo['class']['welcomecontainer']  = '';
+        $this->aSurveyInfo['class']['surveyname']        = " survey-name text-center ";
+        $this->aSurveyInfo['class']['description']       = " text-info text-center survey-description ";
+        $this->aSurveyInfo['class']['welcome']           = " survey-welcome h4 text-primary ";
+        $this->aSurveyInfo['class']['questioncount']     = " number-of-questions text-muted ";
+        $this->aSurveyInfo['class']['questioncounttext'] = " question-count-text ";
 
-        $thissurvey['attr']['questioncounttext'] = '';
+        $this->aSurveyInfo['attr']['questioncounttext'] = '';
 
         // Global
-        $thissurvey['id']['outerframe'] = 'outerframeContainer' ;
-        $thissurvey['id']['mainrow'] = 'main-row' ;
-        $thissurvey['id']['maincol'] = 'main-col' ;
+        $this->aSurveyInfo['id']['outerframe'] = 'outerframeContainer' ;
+        $this->aSurveyInfo['id']['mainrow'] = 'main-row' ;
+        $this->aSurveyInfo['id']['maincol'] = 'main-col' ;
 
-        $thissurvey['class']['html']  = 'no-js';
-        $thissurvey['class']['body']  = 'default';
-        $thissurvey['class']['outerframe'] = ' outerframe container ' ;
-        $thissurvey['class']['maincol'] = ' col-centered ' ;
-
-        $thissurvey['attr']['html']   = $thissurvey['attr']['body'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
+        $this->aSurveyInfo['class']['html']  = 'no-js';
+        $this->aSurveyInfo['class']['body']  = 'default';
+        $this->aSurveyInfo['class']['outerframe'] = ' outerframe container ' ;
+        $this->aSurveyInfo['class']['maincol'] = ' col-centered ' ;
+        $this->aSurveyInfo['attr']['html']   = $thissurvey['attr']['body'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
 
 
         // Clear all
-        $thissurvey['class']['clearall']    = 'return-to-survey';
-        $thissurvey['class']['clearalldiv'] = ' url-wrapper url-wrapper-survey-return ';
-        $thissurvey['class']['clearalla']   = ' ls-return ';
-        $thissurvey['attr']['clearall'] = $thissurvey['attr']['clearalldiv'] = $thissurvey['attr']['clearalla'] = '';
+        $this->aSurveyInfo['class']['clearall']    = 'return-to-survey';
+        $this->aSurveyInfo['class']['clearalldiv'] = ' url-wrapper url-wrapper-survey-return ';
+        $this->aSurveyInfo['class']['clearalla']   = ' ls-return ';
+        $this->aSurveyInfo['attr']['clearall'] = $thissurvey['attr']['clearalldiv'] = $thissurvey['attr']['clearalla'] = '';
 
 
         // Warnings
