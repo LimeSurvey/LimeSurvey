@@ -68,7 +68,7 @@ class DateTimeForwardBackTest extends TestBaseClass
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
-        \Yii::app()->setController(new \CController('dummyid'));
+        \Yii::app()->setController(new DummyController('dummyid'));
         buildsurveysession(self::$surveyId);
         $result = \LimeExpressionManager::StartSurvey(
             self::$surveyId,
