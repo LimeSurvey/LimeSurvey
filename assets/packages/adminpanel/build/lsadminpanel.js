@@ -28496,6 +28496,9 @@ if (document.getElementById('vue-app-main-container')) {
       const maxHeight = ($('#in_survey_common').height() - 35) || 400;
       this.$store.commit('changeMaxHeight', maxHeight);
       this.updatePjaxLinks();
+      $(document).on('click', 'ul.pagination>li>a', function(){
+        this.updatePjaxLinks();
+      });
     }
   });
 }
@@ -28515,7 +28518,6 @@ $(document).on('pjax:complete', () => {
     });
   }, 2200);
 });
-
 
 // const topmenu = new Vue(
 //   {  
@@ -30677,7 +30679,7 @@ const getAppState = function (userid) {
       updatePjax(state) {
         state.pjax = null;
         state.pjax = new __WEBPACK_IMPORTED_MODULE_4_pjax___default.a({
-          elements: 'a.pjax', // default is "a[href], form[action]"
+          elements: ['a.pjax'], // default is "a[href], form[action]"
           selectors: [
             '#pjax-content',
             '#breadcrumb-container',
@@ -31660,9 +31662,8 @@ module.exports = function() {
 /* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// globals console
+/* eslint-disable no-alert, no-console */
 
-/* global console */
 /**
  * Check the browsers console capabilities and bundle them into general functions
  * If the build environment was "production" only put out error messages.
@@ -31734,7 +31735,7 @@ class ConsoleShim {
 
   time() {
     if (typeof console.time === 'function') { 
-      console.time(args);
+      console.time(arguments);
       return;
     }
 
@@ -31743,7 +31744,7 @@ class ConsoleShim {
 
   timeEnd() {
     if (typeof console.timeEnd === 'function') { 
-      console.timeEnd(args);
+      console.timeEnd(arguments);
       return;
     }
     const diff = (new Date()) - this.timeHolder;
@@ -31753,7 +31754,7 @@ class ConsoleShim {
 
   error(){
     if (typeof console.error === 'function') { 
-      console.error(args);
+      console.error(arguments);
       return;
     }
 
@@ -31763,7 +31764,7 @@ class ConsoleShim {
 
   warn(){
     if (typeof console.warn === 'function') { 
-      console.warn(args);
+      console.warn(arguments);
       return;
     }
 
@@ -31776,7 +31777,7 @@ class ConsoleShim {
 const env = "developement";
 const debugConsole = new ConsoleShim();
 
-exports.install = function (Vue, options) {
+exports.install = function (Vue) {
   console.log(`The systen is currently in ${"developement"} mode.`);
 
   const debugmode = (env=='developement');
