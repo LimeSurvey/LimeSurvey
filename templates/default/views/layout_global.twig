@@ -21,9 +21,6 @@
         {# Headers, metadata, etc #}
         {{ include('./subviews/head.twig') }}
 
-    </html>
-
-
     <body class="{{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
     {% if (aSurveyInfo.options.ajaxmode == "on" ) %}
         <div class="progress ajax_loading_indicator" id="ajax_loading_indicator">
