@@ -1750,12 +1750,25 @@ class SurveyRuntimeHelper {
 
         $thissurvey['attr']['questioncounttext'] = '';
 
+        // Global
+        $thissurvey['id']['outerframe'] = 'outerframeContainer' ;
+        $thissurvey['id']['mainrow'] = 'main-row' ;
+        $thissurvey['id']['maincol'] = 'main-col' ;
+
+        $thissurvey['class']['html']  = 'no-js';
+        $thissurvey['class']['body']  = 'default';
+        $thissurvey['class']['outerframe'] = ' outerframe container ' ;
+        $thissurvey['class']['maincol'] = ' col-centered ' ;
+
+        $thissurvey['attr']['html']   = $thissurvey['attr']['body'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
+
 
         // Clear all
         $thissurvey['class']['clearall']    = 'return-to-survey';
         $thissurvey['class']['clearalldiv'] = ' url-wrapper url-wrapper-survey-return ';
         $thissurvey['class']['clearalla']   = ' ls-return ';
         $thissurvey['attr']['clearall'] = $thissurvey['attr']['clearalldiv'] = $thissurvey['attr']['clearalla'] = '';
+
 
         // Warnings
         $this->aSurveyInfo['class']['activealert']       = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
