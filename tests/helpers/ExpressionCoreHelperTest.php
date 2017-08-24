@@ -154,6 +154,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
 
     /**
      * Expression: '3' < 'A'
+     * @group me
      */
     public function testCompareNumberLtLetter()
     {
@@ -293,9 +294,10 @@ class ExpressionManagerCoreTest extends TestBaseClass
      * @param string $sgqa
      * @param string $expression
      * @param boolean $jsonEncode If true, run json_encode on PHP eval result. Good for when node returns boolean.
+     * @param boolean $onlynum If 1, makes LEMval() return number.
      * @return void
      */
-    protected function compareExpression($sgqa, $value, $expression, $jsonEncode = true)
+    protected function compareExpression($sgqa, $value, $expression, $jsonEncode = true, $onlynum = 1)
     {
         // Input value 3.
         $_SESSION['survey_563168'][$sgqa] = $value;
@@ -323,14 +325,14 @@ class ExpressionManagerCoreTest extends TestBaseClass
 
         $errors = $em->RDP_GetErrors();
         $this->assertEmpty($errors);
-        $js = $em->GetJavaScriptEquivalentOfExpression();
+        $jsOfExpression = $em->GetJavaScriptEquivalentOfExpression();
 
-        $js = $this->getDummyNodeSetup($sgqa, $value, null, 0) . $js;
+        $js = $this->getDummyNodeSetup($sgqa, $value, null, $onlynum) . $jsOfExpression;
 
         $nodeOutput = $this->runNode($js);
 
         $this->assertCount(1, $nodeOutput);
-        $this->assertEquals($result, $nodeOutput[0], 'JS and PHP must return same result');
+        $this->assertEquals($result, $nodeOutput[0], 'JS and PHP must return same result: ' . $expression);
     }
 
     /**
