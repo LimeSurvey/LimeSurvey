@@ -641,8 +641,8 @@ CREATE TABLE `prefix_surveymenu` (
   KEY `title` (`title`(250))
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `prefix_surveymenu` VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',NOW(),0,NOW(),0);
-INSERT INTO `prefix_surveymenu` VALUES (2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',NOW(),0,NOW(),0);
+INSERT INTO `prefix_surveymenu` VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, NOW(),0,NOW(),0);
+INSERT INTO `prefix_surveymenu` VALUES (2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',1, NOW(),0,NOW(),0);
 
 CREATE TABLE `prefix_surveymenu_entries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
