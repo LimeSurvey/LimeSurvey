@@ -54,6 +54,9 @@ if (document.getElementById('vue-app-main-container')) {
       const maxHeight = ($('#in_survey_common').height() - 35) || 400;
       this.$store.commit('changeMaxHeight', maxHeight);
       this.updatePjaxLinks();
+      $(document).on('click', 'ul.pagination>li>a', function(){
+        this.updatePjaxLinks();
+      });
     }
   });
 }
@@ -73,7 +76,6 @@ $(document).on('pjax:complete', () => {
     });
   }, 2200);
 });
-
 
 // const topmenu = new Vue(
 //   {  

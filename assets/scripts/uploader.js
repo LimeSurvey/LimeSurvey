@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).on('ready pjax:complete',function(){
     doFileUpload();
     fixParentHeigth();
 });

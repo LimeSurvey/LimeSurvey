@@ -18,6 +18,7 @@
 #}
 
 <!-- Bootstrap Navigation Bar -->
+{% if(aSurveyInfo.class.navbar) %}
 <div class="{{ aSurveyInfo.class.navbar }}  {{ aSurveyInfo.attr.navbar }}">
     <div class="{{ aSurveyInfo.class.navbarheader }}  {{ aSurveyInfo.attr.navbarheader }} ">
         <button type="button" class="{{ aSurveyInfo.class.navbartoggle }}" {{ aSurveyInfo.attr.navbartoggle }}  >
@@ -47,3 +48,4 @@
         </ul>
     </div>
 </div>
+{% endif %}

@@ -1,6 +1,5 @@
-// globals console
+/* eslint-disable no-alert, no-console */
 
-/* global console */
 /**
  * Check the browsers console capabilities and bundle them into general functions
  * If the build environment was "production" only put out error messages.
@@ -72,7 +71,7 @@ class ConsoleShim {
 
   time() {
     if (typeof console.time === 'function') { 
-      console.time(args);
+      console.time(arguments);
       return;
     }
 
@@ -81,7 +80,7 @@ class ConsoleShim {
 
   timeEnd() {
     if (typeof console.timeEnd === 'function') { 
-      console.timeEnd(args);
+      console.timeEnd(arguments);
       return;
     }
     const diff = (new Date()) - this.timeHolder;
@@ -91,7 +90,7 @@ class ConsoleShim {
 
   error(){
     if (typeof console.error === 'function') { 
-      console.error(args);
+      console.error(arguments);
       return;
     }
 
@@ -101,7 +100,7 @@ class ConsoleShim {
 
   warn(){
     if (typeof console.warn === 'function') { 
-      console.warn(args);
+      console.warn(arguments);
       return;
     }
 
@@ -114,7 +113,7 @@ class ConsoleShim {
 const env = process.env.NODE_ENV;
 const debugConsole = new ConsoleShim();
 
-exports.install = function (Vue, options) {
+exports.install = function (Vue) {
   console.log(`The systen is currently in ${process.env.NODE_ENV} mode.`);
 
   const debugmode = (env=='developement');

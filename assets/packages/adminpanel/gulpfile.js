@@ -34,6 +34,10 @@ gulp.task('webpack:watch', function () {
   gulp.watch(['./src/**/**.js', './src/**/**.vue'], ['webpack']);
 });
 
+gulp.task('lint:watch', function () {
+  gulp.watch(['./src/**/**.js', './src/**/**.vue'], ['js:lint']);
+});
+
 
 //compile tasks
 gulp.task('sass', function () {

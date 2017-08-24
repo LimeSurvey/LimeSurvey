@@ -14,7 +14,7 @@
 
 // Some function can be launch before document ready (and seems intersting)
 // But put it in ready : allowing update by template.js (before moving at end of HTML : best place */
-$(document).ready(function()
+$(document).on('ready pjax:complete',function()
 {
     tableCellAdapters();
     doToolTipTable();

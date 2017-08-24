@@ -26,6 +26,7 @@
 {% endif %}
 
 <!-- Bootstrap Modal Alert -->
+{% if(aSurveyInfo.id.alertmodal)%}
 <div id="{{ aSurveyInfo.id.alertmodal }}" class="{{ aSurveyInfo.class.alertmodal }}" {{ aSurveyInfo.attr.alertmodal }}>
     <div class="{{ aSurveyInfo.class.modaldialog }}" {{ aSurveyInfo.attr.modaldialog }}>
         <div class="{{ aSurveyInfo.class.modalcontent }}" {{ aSurveyInfo.attr.modalcontent }} >
@@ -42,3 +43,4 @@
         </div>
     </div>
 </div>
+{% endif %}

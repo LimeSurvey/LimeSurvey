@@ -50,7 +50,7 @@ TODO: register
                             {% endif %}
                         </div>
 
-                        <div class="well">
+                        <div class="well container-fluid">
 
                             {# TOKEN #}
                             {% if aSurveyInfo.aForm.sType == 'token'  %}
@@ -81,7 +81,7 @@ TODO: register
                                     set htmlOptions = {
                                        'id'          : 'form-' ~ aSurveyInfo.aForm.sType ,
                                        'name'        : 'limesurvey',
-                                       'class'       : 'ls-form',
+                                       'class'       : 'ls-form form form-horizontal',
                                    }
                                 %}
 
@@ -97,37 +97,36 @@ TODO: register
 
                                 {% if aSurveyInfo.aForm.sType == 'token'  %}
 
-                                    <div class='form-horizontal'>
-                                        <div class='form-group'>
-                                            <label class='control-label col-sm-3' for='loadname'>
-                                                {{ "Token:" | t }}
-                                                <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
-                                                <span class="sr-only text-danger asterisk">
-                                                    ( {{ "Mandatory" | t }} )
-                                                <span>
-                                            </label>
+                                    <div class='form-group'>
+                                        <label class='control-label col-sm-3' for='loadname'>
+                                            <small class="text-danger asterisk fa fa-asterisk small superset" aria-hidden='true'></small>
+                                            {{ "Token:" | t }}
+                                            <span class="sr-only text-danger asterisk">
+                                                ( {{ "Mandatory" | t }} )
+                                            <span>
+                                            
+                                        </label>
 
-                                            <div class='col-sm-7 load-survey-input input-cell'>
-                                                {% if aSurveyInfo.aForm.token == null  %}
-                                                    <input class='form-control' type='password' id='token' name='token' value='' required>
-                                                {% else %}
+                                        <div class='col-sm-7 load-survey-input input-cell'>
+                                            {% if aSurveyInfo.aForm.token == null  %}
+                                                <input class='form-control' type='password' id='token' name='token' value='' required>
+                                            {% else %}
 
-                                                    {% set passwordFieldHtmlOptions = {
-                                                        'id'       : 'token',
-                                                        'required' : true,
-                                                        'readonly' : true,
-                                                        }
-                                                    %}
+                                                {% set passwordFieldHtmlOptions = {
+                                                    'id'       : 'token',
+                                                    'required' : true,
+                                                    'readonly' : true,
+                                                    }
+                                                %}
 
-                                                    {{
-                                                        C.Html.passwordField(
-                                                            'token',
-                                                            (( aSurveyInfo.aForm.token )),
-                                                            (passwordFieldHtmlOptions)
-                                                        )
-                                                    }}
-                                                {% endif %}
-                                            </div>
+                                                {{
+                                                    C.Html.passwordField(
+                                                        'token',
+                                                        (( aSurveyInfo.aForm.token )),
+                                                        (passwordFieldHtmlOptions)
+                                                    )
+                                                }}
+                                            {% endif %}
                                         </div>
                                     </div>
 
@@ -166,30 +165,28 @@ TODO: register
                                 {% endif %}
 
                                 {% if aSurveyInfo.aForm.sType == 'captcha'  %}
-                                    <div class='form-horizontal'>
-                                        <div class='form-group'>
-                                            <div class='form-group captcha-item'>
-                                                <label class='control-label col-sm-3' for='loadsecurity'>
-                                                    {{ "Please enter the letters you see:" | t }}
-                                                </label>
-                                                <div class='col-sm-7'>
-                                                    <div class='ls-input-group'>
-                                                        <div class='ls-input-group-extra captcha-widget' >
-                                                            {{ renderCaptcha() }}
-                                                        </div>
-                                                        <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>
+                                    <div class='form-group'>
+                                        <div class='form-group captcha-item'>
+                                            <label class='control-label col-sm-3' for='loadsecurity'>
+                                                {{ "Please enter the letters you see:" | t }}
+                                            </label>
+                                            <div class='col-sm-7'>
+                                                <div class='ls-input-group'>
+                                                    <div class='ls-input-group-extra captcha-widget' >
+                                                        {{ renderCaptcha() }}
                                                     </div>
+                                                    <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            {{ aSurveyInfo.aForm.hiddenFields }}
+                                        {{ aSurveyInfo.aForm.hiddenFields }}
 
-                                            <div class='form-group load-survey-row load-survey-submit'>
-                                                <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
-                                                    <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'>
-                                                        {{ "Continue" | t }}
-                                                    </button>
-                                                </div>
+                                        <div class='form-group load-survey-row load-survey-submit'>
+                                            <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
+                                                <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'>
+                                                    {{ "Continue" | t }}
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

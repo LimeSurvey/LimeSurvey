@@ -766,3 +766,8 @@ div.yes-no .btn-group label {
 p.return-to-survey{
     clear:left;
 }
+
+.superset {
+    font-size: 50%;
+    vertical-align: top;
+}

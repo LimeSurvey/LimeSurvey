@@ -127,7 +127,7 @@ const getAppState = function (userid) {
       updatePjax(state) {
         state.pjax = null;
         state.pjax = new Pjax({
-          elements: 'a.pjax', // default is "a[href], form[action]"
+          elements: ['a.pjax'], // default is "a[href], form[action]"
           selectors: [
             '#pjax-content',
             '#breadcrumb-container',

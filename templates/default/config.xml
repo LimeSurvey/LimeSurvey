@@ -29,9 +29,11 @@
         <css>
             <filename>css/template.css</filename>
             <filename>css/animate.css</filename>
+            <filename>css/ajaxify.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
+            <filename>scripts/ajaxify.js</filename>
         </js>
         <print_css>
             <filename>css/print_template.css</filename>
