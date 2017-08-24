@@ -88,7 +88,8 @@ class Index extends Survey_Common_Action
         $aData['oSurveySearch'] = new Survey('search');
         $aData['bShowLastSurveyAndQuestion'] = (getGlobalSetting('show_last_survey_and_question')=="show");
         $aData['iBoxesByRow']=(int) getGlobalSetting('boxes_by_row');
-        $aData['sBoxesOffSet']=(string) getGlobalSetting('boxes_offset');
+        $aData['sBoxesOffSet']=(int) getGlobalSetting('boxes_offset');
+        $aData['bBoxesInContainer']= (getGlobalSetting('boxes_in_container') == 'yes');
         $this->_renderWrappedTemplate('super', 'welcome', $aData);
     }
 

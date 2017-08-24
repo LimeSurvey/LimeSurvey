@@ -101,6 +101,7 @@
             'display'=>'allboxesinrows',
             'boxesbyrow'=>$iBoxesByRow,
             'offset'=>$sBoxesOffSet,
+            'boxesincontainer' => $bBoxesInContainer
         ));
     ?>
 

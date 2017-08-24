@@ -86,6 +86,26 @@ $(document).on('ready  pjax:complete', function(){
     });
 
     /**
+     * Toggle wrap boxes in container value
+     */
+    $('#boxes_in_container').on('switchChange.bootstrapSwitch', function(event, state) {
+        $url = $('#boxes_in_container-url').attr('data-url');
+        console.log($url);
+        $.ajax({
+            url : $url,
+            type : 'GET',
+            dataType : 'html',
+
+            // html contains the buttons
+            success : function(html, statut){
+            },
+            error :  function(html, statut){
+                alert('error');
+            }
+        });
+    });
+
+    /**
      * Save box settings
      */
     $('#save_boxes_setting').on('click', function(){
