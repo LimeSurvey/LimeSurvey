@@ -391,7 +391,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
                     return {value: $value};
                 }
             }
-            eval(fs.readFileSync('./scripts/expressions/em_javascript.js', {encoding: 'utf8'}));
+            eval(fs.readFileSync('./assets/scripts/expressions/em_javascript.js', {encoding: 'utf8'}));
             LEMradix = ',';
             LEMmode = 'survey';
             LEMalias2varName = {
