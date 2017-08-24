@@ -154,7 +154,6 @@ class ExpressionManagerCoreTest extends TestBaseClass
 
     /**
      * Expression: '3' < 'A'
-     * @group me
      */
     public function testCompareNumberLtLetter()
     {
@@ -317,10 +316,10 @@ class ExpressionManagerCoreTest extends TestBaseClass
 
         $em->RDP_Evaluate($expression);
 
-        $result = $em->GetResult();
+        $emResult = $em->GetResult();
 
         if ($jsonEncode) {
-            $result = json_encode($result);
+            $emResult = json_encode($emResult);
         }
 
         $errors = $em->RDP_GetErrors();
@@ -332,7 +331,15 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $nodeOutput = $this->runNode($js);
 
         $this->assertCount(1, $nodeOutput);
-        $this->assertEquals($result, $nodeOutput[0], 'JS and PHP must return same result: ' . $expression);
+        $this->assertEquals(
+            $emResult,
+            $nodeOutput[0],
+            sprintf(
+                'JS (%s) and PHP (%s) must return same result. Expression: ' . $expression,
+                $nodeOutput[0],
+                $emResult
+            )
+        );
     }
 
     /**
