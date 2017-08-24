@@ -736,21 +736,20 @@ class Survey extends LSActiveRecord
      */
     public function deleteSurvey($iSurveyID, $recursive=true)
     {
-
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
             if ( Survey::model()->deleteByPk($iSurveyID) ) {
                 if ($recursive == true) {
                     //delete the survey_$iSurveyID table
-                    if ($this->hasResponsesTable) {
-                        Yii::app()->db->createCommand()->dropTable($this->responsesTableName);
+                    if (tableExists("{{survey_".intval($iSurveyID)."}}")) {
+                        Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."}}");
                     }
                     //delete the survey_$iSurveyID_timings table
-                    if (isset($this->hasTimingsTable)) {
-                        Yii::app()->db->createCommand()->dropTable($this->timingsTableName);
+                    if (tableExists("{{survey_".intval($iSurveyID)."_timings}}")) {
+                        Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."_timings}}");
                     }
                     //delete the tokens_$iSurveyID table
-                    if ($this->hasTokensTable) {
-                        Yii::app()->db->createCommand()->dropTable($this->tokensTableName);
+                    if (tableExists("{{tokens_".intval($iSurveyID)."}}")) {
+                        Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
                     }
 
                     /* Remove User/global settings part : need Question and QuestionGroup*/
