@@ -4869,11 +4869,11 @@
             if (is_null($aSurveyOptions)) {
                 $aSurveyOptions = array();
             }
-            $LEM->surveyOptions['active'] = $survey->isActive;
-            $LEM->surveyOptions['allowsave'] = $survey->isAllowSave;
-            $LEM->surveyOptions['anonymized'] = $survey->isAnonymized;
-            $LEM->surveyOptions['assessments'] = $survey->isAssessments;
-            $LEM->surveyOptions['datestamp'] = $survey->isDateStamp;
+            $LEM->surveyOptions['active'] = (isset($aSurveyOptions['active']) ? $aSurveyOptions['active'] : false);
+            $LEM->surveyOptions['allowsave'] = (isset($aSurveyOptions['allowsave']) ? $aSurveyOptions['allowsave'] : false);
+            $LEM->surveyOptions['anonymized'] = (isset($aSurveyOptions['anonymized']) ? $aSurveyOptions['anonymized'] : false);
+            $LEM->surveyOptions['assessments'] = (isset($aSurveyOptions['assessments']) ? $aSurveyOptions['assessments'] : false);
+            $LEM->surveyOptions['datestamp'] = (isset($aSurveyOptions['datestamp']) ? $aSurveyOptions['datestamp'] : false);
             $LEM->surveyOptions['deletenonvalues'] = (isset($aSurveyOptions['deletenonvalues']) ? ($aSurveyOptions['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($aSurveyOptions['hyperlinkSyntaxHighlighting']) ? $aSurveyOptions['hyperlinkSyntaxHighlighting'] : false);
             $LEM->surveyOptions['ipaddr'] = $survey->isIpAddr;
