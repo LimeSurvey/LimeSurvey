@@ -264,13 +264,21 @@ class ExpressionManager {
     }
 
     /**
+     * @return array
+     */
+    public function RDP_GetErrors()
+    {
+        return $this->RDP_errs;
+    }
+
+    /**
      * RDP_EvaluateBinary() computes binary expressions, such as (a or b), (c * d), popping  the top two entries off the
      * stack and pushing the result back onto the stack.
      *
      * @param array $token
      * @return boolean - false if there is any error, else true
      */
-     private function RDP_EvaluateBinary(array $token)
+     public function RDP_EvaluateBinary(array $token)
     {
         if (count($this->RDP_stack) < 2)
         {
@@ -1197,6 +1205,14 @@ class ExpressionManager {
             }
         }
         return array_unique($jsNames);
+    }
+
+    /**
+     * @return void
+     */
+    public function SetJsVarsUsed($vars)
+    {
+        $this->varsUsed = $vars;
     }
 
     /**
@@ -2357,8 +2373,7 @@ class ExpressionManager {
      * Pop a value token off of the stack
      * @return token
      */
-
-    private function RDP_StackPop()
+    public function RDP_StackPop()
     {
         if (count($this->RDP_stack) > 0)
         {
@@ -2375,8 +2390,7 @@ class ExpressionManager {
      * Stack only holds values (number, string), not operators
      * @param array $token
      */
-
-    private function RDP_StackPush(array $token)
+    public function RDP_StackPush(array $token)
     {
         if ($this->RDP_onlyparse)
         {

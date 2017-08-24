@@ -17,8 +17,8 @@
 {# It must not be shown once survey is completed #}
 {% if aSurveyInfo.bShowClearAll == true  %}
     <!-- Exit and clear survey -->
-    <li class="ls-no-js-hidden">
-        <a href="#" data-limesurvey-submit='{ "clearall":"clearall" }'  data-confirmedby='{ "confirm-clearall":"confirm" }' data-confirmlabel='{{"Please confirm you want to clear your response?" | t }}' class='ls-link-action ls-link-clearall'>
+    <li class="{{ aSurveyInfo.class.clearalllinks }}" {{ aSurveyInfo.attr.clearalllinks }}>
+        <a href="#" data-limesurvey-submit='{ "clearall":"clearall" }'  data-confirmedby='{ "confirm-clearall":"confirm" }' data-confirmlabel='{{"Please confirm you want to clear your response?" | t }}' class='{{ aSurveyInfo.class.clearalllink }}' {{ aSurveyInfo.attr.clearalllink }}>
             {{"Exit and clear survey" | t}}
         </a>
     </li>

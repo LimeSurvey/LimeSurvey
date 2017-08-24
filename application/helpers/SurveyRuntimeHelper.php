@@ -1748,24 +1748,54 @@ class SurveyRuntimeHelper {
         $thissurvey['class']['questioncount']     = " number-of-questions text-muted ";
         $thissurvey['class']['questioncounttext'] = " question-count-text ";
 
+        $thissurvey['attr']['questioncounttext'] = '';
+
+        // Global
+        $thissurvey['id']['outerframe'] = 'outerframeContainer' ;
+        $thissurvey['id']['mainrow'] = 'main-row' ;
+        $thissurvey['id']['maincol'] = 'main-col' ;
+
+        $thissurvey['class']['html']  = 'no-js';
+        $thissurvey['class']['body']  = 'default';
+        $thissurvey['class']['outerframe'] = ' outerframe container ' ;
+        $thissurvey['class']['maincol'] = ' col-centered ' ;
+
+        $thissurvey['attr']['html']   = $thissurvey['attr']['body'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
+
+
+        // Clear all
+        $thissurvey['class']['clearall']    = 'return-to-survey';
+        $thissurvey['class']['clearalldiv'] = ' url-wrapper url-wrapper-survey-return ';
+        $thissurvey['class']['clearalla']   = ' ls-return ';
+        $thissurvey['attr']['clearall'] = $thissurvey['attr']['clearalldiv'] = $thissurvey['attr']['clearalla'] = '';
+
+
         // Warnings
-        $this->aSurveyInfo['class']['activealert'] = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
-        $this->aSurveyInfo['class']['errorHtml']   = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
+        $this->aSurveyInfo['class']['activealert']       = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
+        $this->aSurveyInfo['class']['errorHtml']         = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
+        $this->aSurveyInfo['class']['activealertbutton'] = ' close ';
+        $this->aSurveyInfo['class']['errorHtmlbutton']   = ' close ';
+        $this->aSurveyInfo['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="Close" ';
+        $this->aSurveyInfo['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="Close" ';
+
+        $this->aSurveyInfo['attr']['activealert']  = 'role="alert"';
 
         // Required
         $this->aSurveyInfo['class']['required']     = ' text-danger asterisk fa fa-asterisk pull-left small ';
         $this->aSurveyInfo['class']['requiredspan'] = ' sr-only text-danger asterisk ';
         $this->aSurveyInfo['attr']['required']      = ' aria-hidden="true" ';
+        $this->aSurveyInfo['class']['required']     = '';
 
         // Progress bar
         $this->aSurveyInfo['class']['topcontainer'] = ' top-container ';
         $this->aSurveyInfo['class']['topcontent']   = ' container top-content ';
         $this->aSurveyInfo['class']['progress']     = ' progress ';
         $this->aSurveyInfo['class']['progressbar']  = ' progress-bar ';
-        $this->aSurveyInfo['attr']['progressbar']   = ' ';
+        $this->aSurveyInfo['attr']['progressbar']   = $this->aSurveyInfo['attr']['topcontainer'] = $this->aSurveyInfo['class']['topcontent'] = $this->aSurveyInfo['attr']['progressbar']  =  $this->aSurveyInfo['attr']['progress']  = ' ';
 
         // No JS alert
         $this->aSurveyInfo['class']['nojs'] = ' alert alert-danger ls-js-hidden warningjs ';
+        $this->aSurveyInfo['attr']['nojs']  = ' alert alert-danger ls-js-hidden warningjs ';
 
         // NavBar
         $this->aSurveyInfo['id']['navbar']            = 'navbar';
@@ -1785,6 +1815,8 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['controllabel']    = '  control-label  ';
         $this->aSurveyInfo['class']['formcontrol']     = '  form-control  ';
         $this->aSurveyInfo['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden  ';
+
+        $this->aSurveyInfo['attr']['languagechanger']  =  $this->aSurveyInfo['attr']['formgroup']  = $this->aSurveyInfo['attr']['controllabel'] = '';
 
         // Bootstrap Modal Alert
         $this->aSurveyInfo['id']['alertmodal']           = 'bootstrap-alert-box-modal';
@@ -1807,10 +1839,13 @@ class SurveyRuntimeHelper {
         // Assessments
         $this->aSurveyInfo['class']['assessmenttable']      = ' assessment-table table ';
         $this->aSurveyInfo['class']['assessmentstable']     = ' assessments table ';
+        $this->aSurveyInfo['class']['assessmentstablet']    = ' assessments table ';
         $this->aSurveyInfo['class']['assessmentheading']    = ' assessment-heading ';
         $this->aSurveyInfo['class']['assessmentscontainer'] = ' assessments-container ';
 
-        $this->aSurveyInfo['attr']['assessmenttable'] = $this->aSurveyInfo['attr']['assessmentheading'] = $this->aSurveyInfo['attr']['assessmentscontainer'] = $this->aSurveyInfo['attr']['assessmentstable'] = '';
+        $this->aSurveyInfo['attr']['assessmentstablet'] = 'align="center"';
+
+        $this->aSurveyInfo['attr']['assessmenttable'] = $this->aSurveyInfo['attr']['assessmentstablettr'] = $this->aSurveyInfo['attr']['assessmentstabletth'] = $this->aSurveyInfo['attr']['assessmentstablettd'] = $this->aSurveyInfo['attr']['assessmentstableth'] = $this->aSurveyInfo['attr']['assessmentstabletd'] = $this->aSurveyInfo['attr']['assessmentstabletd'] = $this->aSurveyInfo['attr']['assessmentheading'] = $this->aSurveyInfo['attr']['assessmentscontainer'] = $this->aSurveyInfo['attr']['assessmentstable'] = '';
 
         // Questions
         $this->aSurveyInfo['class']['questioncontainer']       = ' question-container row ';
@@ -1838,6 +1873,84 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['groupdesc']      = ' group-description row well ';
 
         $this->aSurveyInfo['attr']['questiongroup']  = $this->aSurveyInfo['attr']['groupcontainer'] = $this->aSurveyInfo['attr']['groupcontainer'] = $this->aSurveyInfo['attr']['groupdesc'] = '';
+
+        // Privacy
+        $this->aSurveyInfo['class']['privacycontainer'] = ' row privacy ';
+        $this->aSurveyInfo['class']['privacycol']       = ' col-sm-12 col-centered ';
+        $this->aSurveyInfo['class']['privacyhead']      = ' h4 text-primary ';
+        $this->aSurveyInfo['class']['privacybody']      = ' ls-privacy-body ';
+
+        $this->aSurveyInfo['attr']['privacycontainer'] = $this->aSurveyInfo['attr']['privacycol'] = $this->aSurveyInfo['attr']['privacyhead'] = $this->aSurveyInfo['attr']['privacybody'] = '';
+
+        // Clearall Links
+        $this->aSurveyInfo['class']['clearalllinks'] = ' ls-no-js-hidden ';
+        $this->aSurveyInfo['class']['clearalllink']  = ' ls-link-action ls-link-clearall ';
+
+        $this->aSurveyInfo['attr']['clearalllinks']  = $this->aSurveyInfo['attr']['clearalllink'] = ' ';
+
+        // Language changer
+        $this->aSurveyInfo['id']['lctdropdown']    = 'langs-container';
+
+        $this->aSurveyInfo['class']['lctli']          = ' dropdown ls-no-js-hidden ';
+        $this->aSurveyInfo['class']['lctla']          = ' dropdown-toggle ';
+        $this->aSurveyInfo['class']['lctspan']        = ' caret ';
+        $this->aSurveyInfo['class']['lctdropdown']    = ' dropdown-menu ';
+        $this->aSurveyInfo['class']['lctdropdownli']  = ' index-item ';
+        $this->aSurveyInfo['class']['lctdropdownlia'] = ' ls-language-link ';
+
+        $this->aSurveyInfo['attr']['lctla']       = ' data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
+        $this->aSurveyInfo['attr']['lctdropdown'] = ' style="overflow: scroll" ';
+
+        $this->aSurveyInfo['attr']['lctli'] = $this->aSurveyInfo['attr']['lctspan'] = $this->aSurveyInfo['attr']['lctdropdownli'] = $this->aSurveyInfo['attr']['lctdropdownlia'] = ' ';
+        $this->aSurveyInfo['attr']['navigatorcontainer'] = $this->aSurveyInfo['attr']['navigatorbuttonl'] = $this->aSurveyInfo['attr']['loadsavecontainer'] = $this->aSurveyInfo['attr']['loadsavecol']  = '';
+
+        // Navigator
+        $this->aSurveyInfo['id']['navigatorcontainer'] = 'navigator-container';
+
+        $this->aSurveyInfo['class']['navigatorcontainer']    = ' navigator row ';
+        $this->aSurveyInfo['class']['navigatorbuttonl']      = ' col-xs-6 text-left ';
+        $this->aSurveyInfo['class']['navigatorbuttonprev']   = ' ls-move-btn ls-move-previous-btn btn btn-lg btn-default ';
+        $this->aSurveyInfo['class']['navigatorbuttonr']      = ' col-xs-6 text-right ';
+        $this->aSurveyInfo['class']['navigatorbuttonsumbit'] = ' ls-move-btn ls-move-submit-btn btn btn-lg btn-primary ';
+        $this->aSurveyInfo['class']['navigatorbuttonnext']   = ' ls-move-btn ls-move-next-btn ls-move-submit-btn btn btn-lg btn-primary ';
+        $this->aSurveyInfo['class']['loadsavecontainer']     = ' navigator row ';
+        $this->aSurveyInfo['class']['loadsavecol']           = ' col-sm-6 save-clearall-wrapper ';
+        $this->aSurveyInfo['class']['loadbutton']            = ' ls-saveaction ls-loadall btn btn-default ';
+        $this->aSurveyInfo['class']['savebutton']            = ' ls-saveaction ls-loadall btn btn-default ';
+
+        $this->aSurveyInfo['attr']['navigatorbuttonprev']   = ' type="submit" value="moveprev" name="move" accesskey="p" accesskey="n"';
+        $this->aSurveyInfo['attr']['navigatorbuttonsumbit'] = ' type="submit" value="movesubmit" name="move" accesskey="l" ';
+        $this->aSurveyInfo['attr']['navigatorbuttonnext']   = ' type="submit" value="movenext" name="move"  ';
+        $this->aSurveyInfo['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" accesskey="L"';
+        $this->aSurveyInfo['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" accesskey="s" ';
+
+        // Index Menu
+        $this->aSurveyInfo['class']['indexmenugli']     = ' dropdown ls-index-menu ls-no-js-hidden  ';
+        $this->aSurveyInfo['class']['indexmenuglia']    = ' dropdown-toggle  ';
+        $this->aSurveyInfo['class']['indexmenugspan']   = ' caret ';
+        $this->aSurveyInfo['class']['indexmenusgul']    = ' dropdown-menu ';
+        $this->aSurveyInfo['class']['indexmenusli']     = ' dropdown ls-index-menu ls-no-js-hidden  ';
+        $this->aSurveyInfo['class']['indexmenuslia']    = ' dropdown-toggle  ';
+        $this->aSurveyInfo['class']['indexmenusspan']   = ' caret ';
+        $this->aSurveyInfo['class']['indexmenussul']    = ' dropdown-menu ';
+        $this->aSurveyInfo['class']['indexmenusddh']    = ' dropdown-menu ';
+        $this->aSurveyInfo['class']['indexmenusddspan'] = ' caret ';
+        $this->aSurveyInfo['class']['indexmenusddul']   = ' dropdown-menu dropdown-sub-menu ';
+
+        $this->aSurveyInfo['attr']['indexmenuglia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+        $this->aSurveyInfo['attr']['indexmenuslia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
+
+        $this->aSurveyInfo['attr']['indexmenugli']  = $this->aSurveyInfo['attr']['indexmenugspan'] = $this->aSurveyInfo['attr']['indexmenusgul'] = $this->aSurveyInfo['attr']['indexmenusli'] = $this->aSurveyInfo['attr']['indexmenusspan'] = $this->aSurveyInfo['attr']['indexmenussul'] = '';
+        $this->aSurveyInfo['attr']['indexmenusddh'] = $this->aSurveyInfo['attr']['indexmenusddspan']  = $this->aSurveyInfo['attr']['indexmenusddul'] = $this->aSurveyInfo['attr']['indexmenussli'] = $this->aSurveyInfo['attr']['indexmenusgli'] = '';
+
+
+        // Save/Load links
+        $this->aSurveyInfo['class']['loadlinksli']  = ' ls-no-js-hidden ';
+        $this->aSurveyInfo['class']['loadlinkslia'] = ' ls-link-action ls-link-loadall ';
+        $this->aSurveyInfo['class']['savelinksli']  = ' ls-no-js-hidden ';
+        $this->aSurveyInfo['class']['savelinkslia'] = 'ls-link-action ls-link-saveall';
+
+        $this->aSurveyInfo['attr']['loadlinksli']     = $this->aSurveyInfo['attr']['savelinksli'] = $this->aSurveyInfo['class']['savelinkslia'] = '';
 
         // Here you can add metas from core
         $this->aSurveyInfo['metas']    = '    ';

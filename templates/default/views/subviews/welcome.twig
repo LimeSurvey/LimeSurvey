@@ -41,7 +41,7 @@
 
     <!-- Question count -->
     <div class="{{ aSurveyInfo.class.questioncount }}" {{ aSurveyInfo.attr.questioncount }}>
-        <div class='{{ aSurveyInfo.class.questioncounttext }}'>
+        <div class='{{ aSurveyInfo.class.questioncounttext }}' {{ aSurveyInfo.attr.questioncounttext }}>
 
             {# If survey creator set "show x questions" in survey setting  #}
             {% if aSurveyInfo.bShowxquestions == true %}
