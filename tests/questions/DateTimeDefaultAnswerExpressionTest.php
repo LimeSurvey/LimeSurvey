@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @since 2017-06-16
+ * @group datetimedefaultanswer
  */
 class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 {
@@ -106,7 +107,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
             strpos(
                 $qanda[0][1],
                 sprintf(
-                    "val('%s')",
+                    "value=\"%s\"",
                     $correctDate
                 )
             ),
@@ -170,7 +171,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
             strpos(
                 $qanda[0][1],
                 sprintf(
-                    "val('%s')",
+                    "value=\"%s\"",
                     $correctDate
                 )
             ),
@@ -227,7 +228,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
         // NB: Empty value, since default answer expression is not parsed by qanda.
         $this->assertNotEquals(
             false,
-            strpos($qanda[0][1], "val('')"),
+            strpos($qanda[0][1], "value=\"\""),
             'Showing empty date due to wrong expression'
         );
 
