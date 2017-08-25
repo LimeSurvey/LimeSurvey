@@ -28811,10 +28811,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.isMouseDown) {
                 this.isMouseDown = false;
                 this.$store.state.isCollapsed = false;
-                if (this.sideBarWidth < 315 && !this.$store.state.isCollapsed) {
-                    this.$store.state.isCollapsed = true;
+                if (parseInt(this.sideBarWidth) < 315 && !this.$store.state.isCollapsed) {
+                    this.toggleCollapse();
+                    this.$store.commit('changeSidebarwidth', '340px');
+                } else {
+                    this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 }
-                this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 $('#sidebar').addClass('transition-animate-width');
                 $('#pjax-content').removeClass('transition-animate-width');
             }

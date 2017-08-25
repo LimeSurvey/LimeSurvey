@@ -118,7 +118,7 @@ gulp.task('js:lint', function (cb) {
 
 gulp.task('compress', function (cb) {
   pump([
-    gulp.src('build/lsadminpanel.prod.js'),
+    gulp.src('build/lsadminpanel.js'),
     sourcemaps.init(),
     babel({
       presets: ['es2015']
