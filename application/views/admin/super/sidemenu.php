@@ -41,7 +41,7 @@
     get-menu-url="<?=$getMenuUrl ?>" 
     create-question-group-link ="<?=$createQuestionGroupLink?>"
     create-question-link ="<?=$createQuestionLink?>"
-    :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>', createQuestionGroup:'<?php eT("Create questiongroup");?>', createQuestion:'<?php eT("Create question");?>' }"
+    :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>', createQuestionGroup:'<?php eT("Add questiongroup");?>', createQuestion:'<?php eT("Add question");?>' }"
 ></sidebar>
 
 
