@@ -18,12 +18,12 @@ TODO: register
 #}
 
 <!DOCTYPE html>
-<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} ">
+<html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.class.html }} {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} " {{ aSurveyInfo.attr.html }}>
 
     {# Headers, metadatas, etc #}
     {{ include('./subviews/head.twig') }}
 
-    <body class="default lang-{{surveylanguage}} {{surveyformat}}">
+    <body class="default {{ aSurveyInfo.class.body }} lang-{{surveylanguage}} {{surveyformat}}" {{ aSurveyInfo.attr.body }}>
 
         {# Bootstrap Navigation Bar: the top menu #}
         {{ include('./subviews/nav_bar.twig') }}
@@ -104,7 +104,7 @@ TODO: register
                                             <span class="sr-only text-danger asterisk">
                                                 ( {{ "Mandatory" | t }} )
                                             <span>
-                                            
+
                                         </label>
 
                                         <div class='col-sm-7 load-survey-input input-cell'>

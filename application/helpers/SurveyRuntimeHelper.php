@@ -1740,7 +1740,7 @@ class SurveyRuntimeHelper {
     {
 
         // Welcome
-        $this->aSurveyInfo['id']['welcomecontainer']     =  ' welcome-container ';
+        $this->aSurveyInfo['id']['welcomecontainer']     =  'welcome-container ';
         $this->aSurveyInfo['class']['welcomecontainer']  = '';
         $this->aSurveyInfo['class']['surveyname']        = " survey-name text-center ";
         $this->aSurveyInfo['class']['description']       = " text-info text-center survey-description ";
@@ -1751,12 +1751,13 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['attr']['questioncounttext'] = '';
 
         // Global
-        $this->aSurveyInfo['id']['outerframe'] = 'outerframeContainer' ;
-        $this->aSurveyInfo['id']['mainrow'] = 'main-row' ;
-        $this->aSurveyInfo['id']['maincol'] = 'main-col' ;
+        $this->aSurveyInfo['id']['outerframe']    = 'outerframeContainer' ;
+        $this->aSurveyInfo['id']['mainrow']       = 'main-row' ;
+        $this->aSurveyInfo['id']['maincol']       = 'main-col' ;
+        $this->aSurveyInfo['id']['dynamicreload'] = 'dynamicReloadContainer' ;
 
         $this->aSurveyInfo['class']['html']  = 'no-js';
-        $this->aSurveyInfo['class']['body']  = 'default';
+        $this->aSurveyInfo['class']['body']  = '';
         $this->aSurveyInfo['class']['outerframe'] = ' outerframe container ' ;
         $this->aSurveyInfo['class']['maincol'] = ' col-centered ' ;
         $this->aSurveyInfo['attr']['html']   = $thissurvey['attr']['body'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';

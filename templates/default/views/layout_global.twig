@@ -21,14 +21,14 @@
         {# Headers, metadata, etc #}
         {{ include('./subviews/head.twig') }}
 
-    <body class="{{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
+    <body class="default {{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
     {% if (aSurveyInfo.options.ajaxmode == "on" ) %}
         <div class="progress ajax_loading_indicator" id="ajax_loading_indicator">
             <div class="progress-bar progress-bar-info ajax_loading_indicator_bar" id="ajax_loading_indicator_bar" role="progressbar">
             </div>
         </div>
     {% endif %}
-    
+
     {% if (aSurveyInfo.options.backgroundimage == "on") %}
         {{ registerTemplateCssFile("css/background-image.css") }}
     {% endif %}
@@ -43,7 +43,7 @@
 
 {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
 <section>
-<div id="dynamicReloadContainer">
+<div id="{{ aSurveyInfo.id.dynamicreload }}">
 {% block body %}
 
     {# Bootstrap Navigation Bar: the top menu #}
