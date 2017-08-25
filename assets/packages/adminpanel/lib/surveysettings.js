@@ -39,72 +39,74 @@ $(document).on('ready  pjax:complete', function(){
   $('[data-copy]').each(function(){
     $(this).html($('#'+$(this).data('copy')).html());
   });
-
-  $.ajax({
-    url : jsonUrl,
-    dataType: 'json',
-    method: 'GET',
-    success: function(results){
-      // console.log(results);
-      var dataSet = [];
-      $.each(results.rows, function(i,row){
-        var rowArray = {
-          'id'                 : row.id,
-          'actionBtn'          : defineActions(row.datas),
-          'parameter'          : row.parameter,
-          'targetQuestionText' : row.question,
-          'sid'                : row.datas.sid,
-          'qid'                : row.datas.targetqid || '',
-          'sqid'               : row.datas.targetsqid || ''
-        };
-        dataSet.push(rowArray);
-      });
-
-      $('#urlparams').DataTable({
-        columns:[
-          {data: 'id', visible: false},
-          {data: 'actionBtn', label: sAction, orderable: false},
-          {data: 'parameter', label: sParameter},
-          {data: 'targetQuestionText', label: sTargetQuestion},
-          {data: 'sid', visible: false},
-          {data: 'qid', visible: false},
-          {data: 'sqid', visible: false}
-        ],
-        'language':{
-          'emptyTable':sNoParametersDefined,
-          'search':sSearchPrompt,
-          'infoEmpty':'',
-          'info':sProgress
-        }    
-        ,
-        data: dataSet,
-        createdRow: function(thisRow,data,dataIndex){
-          $(thisRow).data('rawdata',JSON.stringify(data));
-        },
-        rowId: 'id',
-        paging: false,
-        dom: '<\'#dt-toolbar\'>f<t>i'
-      });
-      var addParamButton = $('<button class="btn btn-success" id="addParameterButton">'+sAddParam+'</button>');
-      $('#dt-toolbar').addClass('pull-left clearfix').append(addParamButton)
-        .on('click', '#addParameterButton', function(e){
-          e.preventDefault();
-          newParameter(e);
-        });
-      $('#urlparams').css('width','100%')
-        .on('click', '.surveysettings_edit_intparameter', function(e){
-          e.preventDefault();
-          // console.log(($(this).closest('tr').data('rawdata')));
-          editParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));
-        })
-        .on('click', '.surveysettings_delete_intparameter', function(e){
-          e.preventDefault();
-          deleteParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));
+  var jsonUrl = jsonUrl || null;
+  if(jsonUrl !== null) {
+    $.ajax({
+      url : jsonUrl,
+      dataType: 'json',
+      method: 'GET',
+      success: function(results){
+        // console.log(results);
+        var dataSet = [];
+        $.each(results.rows, function(i,row){
+          var rowArray = {
+            'id'                 : row.id,
+            'actionBtn'          : defineActions(row.datas),
+            'parameter'          : row.parameter,
+            'targetQuestionText' : row.question,
+            'sid'                : row.datas.sid,
+            'qid'                : row.datas.targetqid || '',
+            'sqid'               : row.datas.targetsqid || ''
+          };
+          dataSet.push(rowArray);
         });
 
-    },
-    error: console.log
-  }   );
+        $('#urlparams').DataTable({
+          columns:[
+            {data: 'id', visible: false},
+            {data: 'actionBtn', label: sAction, orderable: false},
+            {data: 'parameter', label: sParameter},
+            {data: 'targetQuestionText', label: sTargetQuestion},
+            {data: 'sid', visible: false},
+            {data: 'qid', visible: false},
+            {data: 'sqid', visible: false}
+          ],
+          'language':{
+            'emptyTable':sNoParametersDefined,
+            'search':sSearchPrompt,
+            'infoEmpty':'',
+            'info':sProgress
+          },
+          data: dataSet,
+          createdRow: function(thisRow,data,dataIndex){$(thisRow).data('rawdata',JSON.stringify(data));},
+          rowId: 'id',
+          paging: false,
+          dom: '<\'#dt-toolbar\'>f<t>i'
+        });
+
+        var addParamButton = $('<button class="btn btn-success" id="addParameterButton">'+sAddParam+'</button>');
+        $('#dt-toolbar').addClass('pull-left clearfix').append(addParamButton)
+          .on('click', '#addParameterButton', function(e){
+            e.preventDefault();
+            newParameter(e);
+          });
+        $('#urlparams').css('width','100%')
+          .on('click', '.surveysettings_edit_intparameter', function(e){
+            e.preventDefault();
+            // console.log(($(this).closest('tr').data('rawdata')));
+            editParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));
+          })
+          .on('click', '.surveysettings_delete_intparameter', function(e){
+            e.preventDefault();
+            deleteParameter(e,JSON.parse($(this).closest('tr').data('rawdata')));
+          });
+
+      },
+      /* eslint-disable */
+      error: console.log
+      /* eslint-enable */
+    });
+  }
 
   $('#dlgEditParameter').dialog({
     autoOpen: false,

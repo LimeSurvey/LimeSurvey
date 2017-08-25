@@ -9,6 +9,8 @@
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug>0) ? "":".min";
+$minFolder = ($debug>0) ? "/dev":"/min";
+
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
 if(isset($_GET['isAjax'])){
@@ -266,7 +268,7 @@ return array(
         'devBaseUrl' => 'third_party/ace',
         'basePath' => 'third_party.ace',
         'js' => array(
-            'ace.js'
+            $minFolder.'/ace.js'
         ),
         'depends' => array(
             'jquery-ace'
