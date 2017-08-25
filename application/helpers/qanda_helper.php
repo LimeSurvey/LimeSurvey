@@ -2703,7 +2703,7 @@ function do_file_upload($ia)
                         <div class="h4 modal-title">' . ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files']) . '</div>
                     </div>
                     <div class="modal-body file-upload-modal-body">
-                        <iframe id="uploader' . $ia[1] . '" name="uploader' . $ia[1] . '" class="uploader-frame" src="' . $uploadurl . '" title="' . gT("Upload") .'></iframe>
+                        <iframe id="uploader' . $ia[1] . '" name="uploader' . $ia[1] . '" class="uploader-frame" src="' . $uploadurl . '" title="' . gT("Upload") .'"></iframe>
                     </div>
                     <div class="modal-footer file-upload-modal-footer">
                         <button type="button" class="btn btn-success" data-dismiss="modal">' . gT("Save changes") . '</button>

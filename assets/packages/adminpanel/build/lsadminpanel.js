@@ -29116,7 +29116,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "id": "questionexplorer"
     }
   }, [_c('div', {
-    staticClass: "ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15"
+    staticClass: "ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar"
   }, [((_vm.createQuestionGroupLink != undefined && _vm.createQuestionGroupLink.length > 1)) ? _c('a', {
     staticClass: "btn btn-small btn-primary",
     attrs: {
@@ -29125,7 +29125,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-plus"
   }), _vm._v(" " + _vm._s(_vm.translate.createQuestionGroup))]) : _vm._e(), _vm._v(" "), ((_vm.createQuestionLink != undefined && _vm.createQuestionLink.length > 1)) ? _c('a', {
-    staticClass: "btn btn-small btn-default",
+    staticClass: "btn btn-small btn-default ls-space margin right-10",
     attrs: {
       "href": _vm.createQuestionLink
     }
@@ -29598,6 +29598,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.checkIsOpen(submenu) ? 'menu-selected' : ''
     }, [_c('a', {
       staticClass: "ls-flex-row nowrap align-item-center align-content-center",
+      class: _vm.checkIsOpen(submenu) ? 'ls-space margin bottom-5' : '',
       attrs: {
         "href": "#",
         "title": submenu.description,
@@ -29614,18 +29615,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('menuicon', {
       attrs: {
         "icon-type": "fontawesome",
-        "icon": "level-down"
+        "icon": "arrow-right"
       }
     }), _vm._v(" "), _c('span', {
       domProps: {
         "innerHTML": _vm._s(submenu.title)
       }
     })], 1), _vm._v(" "), _c('div', {
-      staticClass: "col-sm-2 text-center ls-space padding all-0"
+      staticClass: "col-sm-2 text-center ls-space padding all-0",
+      class: (_vm.checkIsOpen(submenu) ? 'menu-open' : '')
     }, [_c('i', {
-      staticClass: "fa",
-      class: (!_vm.checkIsOpen(submenu) ? 'fa-chevron-up' : 'fa-chevron-down')
-    }, [_vm._v(" ")])])]), _vm._v(" "), (_vm.checkIsOpen(submenu)) ? _c('submenu', {
+      staticClass: "fa fa-level-down"
+    })])]), _vm._v(" "), (_vm.checkIsOpen(submenu)) ? _c('submenu', {
       attrs: {
         "menu": submenu
       }

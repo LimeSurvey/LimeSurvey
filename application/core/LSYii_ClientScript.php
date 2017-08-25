@@ -185,7 +185,7 @@ class LSYii_ClientScript extends CClientScript {
         $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
 
         // If it has an entry 'devBaseUrl', we use it to replace basePath (it will turn off asset manager for this package)
-        if( array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
+        if( is_array($aOldPackageDefinition) && array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
 
             $aNewPackageDefinition = array();
 

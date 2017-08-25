@@ -123,9 +123,17 @@ ol.breadcrumb.title-bar-breadcrumb {
 }
 
 #sidebar {
+    .button-sub-bar{
+        min-height: 32px;
+    }
     &.fill-height,
     .fill-height {
         height: 100%
+    }
+    .menu-open {
+        animation-name: animate-gradient;
+        animation-duration: 450ms;
+        background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 8px, white 9px, white 100%);
     }
     .selected {
         padding-left: 20px;
@@ -161,4 +169,18 @@ ol.breadcrumb.title-bar-breadcrumb {
             }
         }
     }
+}
+
+@keyframes animate-gradient {
+    0%   { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 1px, white 2px, white 100%); }
+    10%  { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 2px, white 3px, white 100%); }
+    20%  { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 3px, white 4px, white 100%); }
+    30%  { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 4px, white 5px, white 100%); }
+    40%  { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 5px, white 6px, white 100%); }
+    50%  { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 6px, white 7px, white 100%); }
+    60%  { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 7px, white 8px, white 100%); }
+    70%  { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 8px, white 9px, white 100%); }
+    80%  { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 9px, white 10px, white 100%); }
+    90%  { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 10px, white 10px, white 100%); }
+    100% { background: radial-gradient(circle at center, rgba(50, 134, 55, 0.50) 0px, rgba(50, 134, 55, 0.50) 8px, white 9px, white 100%); }
 }

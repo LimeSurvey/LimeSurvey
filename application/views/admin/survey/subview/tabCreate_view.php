@@ -89,8 +89,6 @@ PrepareEditorScript(false, $this);
     $(document).on('ready pjax:complete', function(){
         sessionStorage.setItem('maxtabs', 1);
 
-        $('#save-and-close-form-button').addClass('disabled');
-
         $('#navigation_back').on('click', function(e){
             e.preventDefault();
             updateCKfields();
@@ -101,6 +99,7 @@ PrepareEditorScript(false, $this);
             updateCKfields();
             $('#create_survey_tablist').find('.active').next('li').find('a').trigger('click');
         })
+
         $('a.create_survey_wizard_tabs').on('shown.bs.tab', function (e) {
             var count = $(e.target).data('count'); 
             var sessionStorageValue = sessionStorage.getItem('maxtabs') || 1;
@@ -110,9 +109,29 @@ PrepareEditorScript(false, $this);
                 $('#save-and-close-form-button').removeClass('disabled');
             }
         });
+
+        $('#addnewsurvey').on('submit', function(ev){
+            ev.preventDefault();
+            updateCKfields();
+            var data = $(this).serializeArray();
+            var uri = $(this).attr('action');
+            $.ajax({
+                url: uri,
+                method:'POST',
+                data: data,
+                success: function(result){
+                if(result.redirecturl != undefined ){
+                    window.location.href=result.redirecturl;
+                } else {
+                    window.location.reload();
+                }
+                },
+                error: function(result){
+                console.log({result: result});
+                }
+            });
+            return false;
+        });
     });
 
-    $('#addnewsurvey').on('submit', function(ev){
-            updateCKfields();
-    });
 </script>
