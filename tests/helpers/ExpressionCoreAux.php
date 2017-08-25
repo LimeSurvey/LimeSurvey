@@ -118,7 +118,10 @@ class ExpressionCoreAux extends \PHPUnit_Framework_TestCase
     {
         if (is_string($this->value)) {
             $value = "'{$this->value}'";
+        } else {
+            $value = $this->value;
         }
+
         list($surveyId, $groupId, /* questionId */) = explode('X', $this->sgqa, 3);
         return <<<EOT
             // Dummy jQuery.
