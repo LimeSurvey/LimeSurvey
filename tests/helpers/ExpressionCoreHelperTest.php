@@ -13,6 +13,37 @@ class ExpressionManagerCoreTest extends TestBaseClass
 {
 
     /**
+     * List of expressions to test.
+     * Value and expression.
+     * @var array
+     */
+    public $expressions = [
+        ['', '((563168X136X5376.NAOK == " "))'],
+        ['0', '((563168X136X5376.NAOK == " "))'],
+        ['0', '((563168X136X5376.NAOK == ""))'],
+        //[0, '((563168X136X5376.NAOK == " "))'],
+        //[0, '((563168X136X5376.NAOK == ""))'],
+        ['', '((563168X136X5376.NAOK != " "))'],
+        ['3', '((563168X136X5376.NAOK != " "))'],
+        ['3', '((563168X136X5376.NAOK != ""))'],
+        ['', '((563168X136X5376.NAOK != ""))'],
+        ['', '((563168X136X5376.NAOK < " "))'],
+        ['3', '((563168X136X5376.NAOK < " "))'],
+        ['3', '((563168X136X5376.NAOK < "A"))'],
+        [ '3', '((563168X136X5376.NAOK <= " "))'],
+        [ '3', '((563168X136X5376.NAOK <= ""))'],
+        [ '', '((563168X136X5376.NAOK <= " "))'],
+        [ '', '((563168X136X5376.NAOK > " "))'],
+        [ '3', '((563168X136X5376.NAOK > " "))'],
+        [ ' ', '((563168X136X5376.NAOK > " "))'],
+        [ '', '((563168X136X5376.NAOK >= ""))'],
+        [ '', '((563168X136X5376.NAOK >= " "))'],
+        [ '3', '((563168X136X5376.NAOK >= " "))']
+        //[3, '((563168X136X5376.NAOK + "2"))'],
+        //[3, '((563168X136X5376.NAOK + 2))']
+    ];
+
+    /**
      *
      */
     public static function setUpBeforeClass()
@@ -72,37 +103,24 @@ class ExpressionManagerCoreTest extends TestBaseClass
     public function testNumericalQuestion()
     {
         $sgqa = '563168X136X5376';
-
-        $expressions = [
-            // Value and expression.
-            ['', '((563168X136X5376.NAOK == " "))'],
-            ['0', '((563168X136X5376.NAOK == " "))'],
-            ['0', '((563168X136X5376.NAOK == ""))'],
-            [0, '((563168X136X5376.NAOK == " "))'],
-            [0, '((563168X136X5376.NAOK == ""))'],
-            ['', '((563168X136X5376.NAOK != " "))'],
-            ['3', '((563168X136X5376.NAOK != " "))'],
-            ['3', '((563168X136X5376.NAOK != ""))'],
-            ['', '((563168X136X5376.NAOK != ""))'],
-            ['', '((563168X136X5376.NAOK < " "))'],
-            ['3', '((563168X136X5376.NAOK < " "))'],
-            ['3', '((563168X136X5376.NAOK < "A"))'],
-            [ '3', '((563168X136X5376.NAOK <= " "))'],
-            [ '3', '((563168X136X5376.NAOK <= ""))'],
-            [ '', '((563168X136X5376.NAOK <= " "))'],
-            [ '', '((563168X136X5376.NAOK > " "))'],
-            [ '3', '((563168X136X5376.NAOK > " "))'],
-            [ ' ', '((563168X136X5376.NAOK > " "))'],
-            [ '', '((563168X136X5376.NAOK >= ""))'],
-            [ '', '((563168X136X5376.NAOK >= " "))'],
-            [ '3', '((563168X136X5376.NAOK >= " "))'],
-            [ 3, '((563168X136X5376.NAOK + "2"))'],
-            [ 3, '((563168X136X5376.NAOK + 2))']
-        ];
-
-        foreach ($expressions as $expr) {
-            $test = new ExpressionCoreAux($expr[1], $sgqa, $expr[0]);
+        foreach ($this->expressions as $expr) {
+            $questionType = 'N';
+            $test = new ExpressionCoreAux($expr[1], $sgqa, $questionType, $expr[0]);
             $test->onlynum = 1;
+            $test->jsonEncodeEmResult = true;
+            $test->compareExpression();
+        }
+    }
+
+    /**
+     * @group me2
+     */
+    public function testShortTextQuestion()
+    {
+        $sgqa = '563168X136X5376';
+        foreach ($this->expressions as $expr) {
+            $questionType = 'S';
+            $test = new ExpressionCoreAux($expr[1], $sgqa, $questionType, $expr[0]);
             $test->jsonEncodeEmResult = true;
             $test->compareExpression();
         }

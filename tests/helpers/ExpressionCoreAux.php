@@ -27,10 +27,16 @@ class ExpressionCoreAux extends \PHPUnit_Framework_TestCase
     public $expression;
 
     /**
-     * Survey-group-question-answer code.
-     * @string
+     * Survey-group-question-answer code, like '123X123X123_1'.
+     * @var string
      */
     public $sgqa;
+
+    /**
+     * Question type char. Defaults to 'T' = long free text.
+     * @var string
+     */
+    public $questionType = 'T';
 
     /**
      * Value of question, as in $_SESSION and <input>.
@@ -47,12 +53,14 @@ class ExpressionCoreAux extends \PHPUnit_Framework_TestCase
     /**
      * @param string $expression
      * @param string $sgqa
+     * @param string $questionType
      * @param mixed $value
      */
-    public function __construct($expression, $sgqa, $value)
+    public function __construct($expression, $sgqa, $questionType, $value)
     {
         $this->expression = $expression;
         $this->sgqa = $sgqa;
+        $this->questionType = $questionType;
         $this->value = $value;
     }
 
