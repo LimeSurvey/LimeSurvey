@@ -75,16 +75,30 @@ class ExpressionManagerCoreTest extends TestBaseClass
         $this->compareExpression($sgqa, $value, $expression);
     }
 
-    /**
-     * Expression: '0' == ' '
-     */
-    public function testCompareZeroEqSpace()
-    {
-        $sgqa = '563168X136X5376';
-        $expression = '((563168X136X5376.NAOK == " "))';
-        $value = '0';
-        $this->compareExpression($sgqa, $value, $expression);
-    }
+        $expressions = [
+            // Value and expression.
+            ['', '((563168X136X5376.NAOK == " "))'],
+            ['0', '((563168X136X5376.NAOK == " "))'],
+            [0, '((563168X136X5376.NAOK == " "))'],
+            ['', '((563168X136X5376.NAOK != " "))'],
+            ['3', '((563168X136X5376.NAOK != " "))'],
+            ['3', '((563168X136X5376.NAOK != ""))'],
+            ['', '((563168X136X5376.NAOK != ""))'],
+            ['', '((563168X136X5376.NAOK < " "))'],
+            ['3', '((563168X136X5376.NAOK < " "))'],
+            ['3', '((563168X136X5376.NAOK < "A"))'],
+            [ '3', '((563168X136X5376.NAOK <= " "))'],
+            [ '3', '((563168X136X5376.NAOK <= ""))'],
+            [ '', '((563168X136X5376.NAOK <= " "))'],
+            [ '', '((563168X136X5376.NAOK > " "))'],
+            [ '3', '((563168X136X5376.NAOK > " "))'],
+            [ ' ', '((563168X136X5376.NAOK > " "))'],
+            [ '', '((563168X136X5376.NAOK >= ""))'],
+            [ '', '((563168X136X5376.NAOK >= " "))'],
+            [ '3', '((563168X136X5376.NAOK >= " "))'],
+            [ 3, '((563168X136X5376.NAOK + "2"))'],
+            [ 3, '((563168X136X5376.NAOK + 2))']
+        ];
 
     /**
      * Expression: '' != ' '
