@@ -345,7 +345,12 @@ class ExpressionManager {
                 break;
             case '==':
             case 'eq':
-                $result = array(($arg1[0] == $arg2[0]),$token[1],'NUMBER');
+                // Need this explicit comparison in order to be in agreement with JavaScript
+                if (($arg1[0] == '0' && trim($arg2[0]) == '') || (trim($arg1[0]) == '' && $arg2[0] == '0')) {
+                    $result = array(true,$token[1],'NUMBER');
+                } else {
+                    $result = array(($arg1[0] == $arg2[0]),$token[1],'NUMBER');
+                }
                 break;
             case '!=':
             case 'ne':
@@ -360,7 +365,7 @@ class ExpressionManager {
                     $result = array(($arg1[0] < $arg2[0]),$token[1],'NUMBER');
                 }
                 break;
-            case '<=';
+                case '<=';
             case 'le':
                 if ($bMismatchType) {
                     $result = array(false,$token[1],'NUMBER');
@@ -390,7 +395,7 @@ class ExpressionManager {
                     }
                 }
                 break;
-            case '>=';
+                case '>=';
             case 'ge':
                 if ($bMismatchType) {
                     $result = array(false,$token[1],'NUMBER');

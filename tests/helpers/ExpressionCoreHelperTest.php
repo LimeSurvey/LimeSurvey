@@ -69,7 +69,7 @@ class ExpressionManagerCoreTest extends TestBaseClass
     /**
      * @group me
      */
-    public function testAllExpressions()
+    public function testNumericalQuestion()
     {
         $sgqa = '563168X136X5376';
 
@@ -77,7 +77,9 @@ class ExpressionManagerCoreTest extends TestBaseClass
             // Value and expression.
             ['', '((563168X136X5376.NAOK == " "))'],
             ['0', '((563168X136X5376.NAOK == " "))'],
+            ['0', '((563168X136X5376.NAOK == ""))'],
             [0, '((563168X136X5376.NAOK == " "))'],
+            [0, '((563168X136X5376.NAOK == ""))'],
             ['', '((563168X136X5376.NAOK != " "))'],
             ['3', '((563168X136X5376.NAOK != " "))'],
             ['3', '((563168X136X5376.NAOK != ""))'],
