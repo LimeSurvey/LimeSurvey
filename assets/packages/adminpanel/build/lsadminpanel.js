@@ -29542,6 +29542,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         setActiveMenuItemIndex(menuItem) {
             let activeMenuIndex = menuItem.id;
             this.$store.commit('lastMenuItemOpen', menuItem);
+            $('a#' + this.menu.id + '_' + menuItem.id)[0].click();
         },
         checkIsOpen(toCheckMenu) {
             let directSelect = this.$store.state.lastMenuOpen == toCheckMenu.id;
@@ -29597,7 +29598,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('li', {
       key: submenu.id,
       staticClass: "list-group-item",
-      class: _vm.checkIsOpen(submenu) ? 'menu-selected' : ''
+      class: _vm.checkIsOpen(submenu) ? 'menu-selected' : '',
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          _vm.setActiveMenuIndex(submenu)
+        }
+      }
     }, [_c('a', {
       staticClass: "ls-flex-row nowrap align-item-center align-content-center",
       class: _vm.checkIsOpen(submenu) ? 'ls-space margin bottom-5' : '',
@@ -29605,12 +29612,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "href": "#",
         "title": submenu.description,
         "data-toggle": "tooltip"
-      },
-      on: {
-        "click": function($event) {
-          $event.stopPropagation();
-          _vm.setActiveMenuIndex(submenu)
-        }
       }
     }, [_c('div', {
       staticClass: "ls-space col-sm-10 padding all-0"
@@ -29640,6 +29641,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.$store.state.lastMenuItemOpen == menuItem.id ? 'selected' : '',
       on: {
         "click": function($event) {
+          $event.stopPropagation();
           _vm.setActiveMenuItemIndex(menuItem)
         }
       }
@@ -29647,6 +29649,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       class: _vm.getLinkClass(menuItem),
       attrs: {
         "href": menuItem.link,
+        "id": 'sidemenu_' + _vm.menu.id + '_' + menuItem.id,
         "title": menuItem.menu_description,
         "data-toggle": "tooltip"
       }
