@@ -1658,8 +1658,8 @@ class SurveyRuntimeHelper {
         $this->setSurveyOptions();
         $this->setClassAndIds();
 
-        $this->previewgrp      = ($this->sSurveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
-        $this->previewquestion = ($this->sSurveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $this->previewgrp      = ($this->sSurveyMode == 'group' && isset($this->param['action'])    && ($this->param['action'] == 'previewgroup'))    ? true : false;
+        $this->previewquestion = ($this->sSurveyMode == 'question' && isset($this->param['action']) && ($this->param['action'] == 'previewquestion')) ? true : false;
         $this->preview         = ($this->previewquestion || $this->previewgrp);
         $this->sLangCode       = App()->language;
     }
@@ -1674,8 +1674,7 @@ class SurveyRuntimeHelper {
         }
 
         if ($this->sSurveyMode == 'group' && $this->previewgrp){
-            // FIXME $param not defined
-            $_gid = sanitize_int($param['gid']);
+            $_gid = sanitize_int($this->param['gid']);
 
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], 'group', $this->aSurveyOptions, false, $this->LEMdebugLevel);
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
@@ -1694,12 +1693,9 @@ class SurveyRuntimeHelper {
             $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1;  // step is index base 1?
 
             $this->aStepInfo         = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
- 
+
         }elseif($this->sSurveyMode == 'question' && $this->previewquestion){
-            /**
-             FIXME $param not defined
-             */
-            $_qid       = sanitize_int($param['qid']);
+            $_qid       = sanitize_int($this->param['qid']);
 
             LimeExpressionManager::StartSurvey($this->iSurveyid, 'question', $this->aSurveyOptions, false, $this->LEMdebugLevel);
             $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);
