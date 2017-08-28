@@ -98,9 +98,11 @@ class ExpressionCoreAux extends \PHPUnit_Framework_TestCase
             $emResult,
             $nodeOutput[0],
             sprintf(
-                'JS (%s) and PHP (%s) must return same result. Expression: ' . $this->expression,
+                'JS (%s) and PHP (%s) must return same result. Expression: %s, value: %s',
                 $nodeOutput[0],
-                $emResult
+                $emResult,
+                $this->expression,
+                json_encode($this->value)
             )
         );
     }
