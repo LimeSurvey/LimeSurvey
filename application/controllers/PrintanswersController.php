@@ -77,7 +77,7 @@
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
             $oTemplate = Template::model()->getInstance(null, $iSurveyID);
             /* Need a Template function to replace this line */
-            Yii::app()->clientScript->registerPackage( 'survey-template' );
+            //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
             //Survey is not finished or don't exist
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
@@ -96,14 +96,17 @@
                     ),
                 ),true);
                 /* Set the data for templatereplace */
-                $this->aGlobalData['thissurvey']=getSurveyInfo($iSurveyID);
-                $this->aReplacementData=$aReplacementData['MESSAGEID']='session-timeout';
-                $aReplacementData['MESSAGE']=$message;
-                $aReplacementData['URL']='';
-                $this->aReplacementData=$aReplacementData['ERROR']=$error; // Adding this to replacement data : allow to update title (for example) : @see https://bugs.limesurvey.org/view.php?id=9106 (but need more)
-                $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
-                $this->render("/survey/system/display",array('content'=>$content));
-                App()->end();
+                $aReplacementData['title']='session-timeout';
+                $aReplacementData['message']=$error."<br/>".$message;
+                
+                $aData = array();
+                $aData['aSurveyInfo']=getSurveyInfo($iSurveyID);
+                $aData['aError'] = $aReplacementData;
+                
+                Yii::app()->twigRenderer->renderTemplateFromFile('layout_errors.twig',$aData, false);
+                // $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
+                // $this->render("/survey/system/display",array('content'=>$content));
+                // App()->end();
             }
             //Fin session time out
             $sSRID = $_SESSION['survey_'.$iSurveyID]['srid']; //I want to see the answers with this id
@@ -123,51 +126,62 @@
             //SHOW HEADER
             if ($sExportType != 'pdf')
             {
-                $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
-                ."<div class='text-center'><input class='btn btn-default' type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></div></form>";
-                $sOutput .= "\t<div class='h3 printouttitle'>".gT("Survey name (ID):")." $sSurveyName ($iSurveyID)</div>";
-                LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
-                // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
-                LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);
+
+                // $sOutput = CHtml::form(array(""), 'post')
+                // ."<div class='text-center'><input class='btn btn-default' type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></div></form>";
+                // $sOutput .= "\t<div class='h3 printouttitle'>".gT("Survey name (ID):")." $sSurveyName ($iSurveyID)</div>";
+                // LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
+                // // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
+                // LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);
+                // $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
+                // $aFullResponseTable = getFullResponseTable($iSurveyID,$sSRID,$sLanguage,$printanswershonorsconditions);
+                // //Get the fieldmap @TODO: do we need to filter out some fields?
+                // if(!$survey->isDateStamp || $survey->isAnonymized){
+                //     unset ($aFullResponseTable['submitdate']);
+                // }else{
+                //     unset ($aFullResponseTable['id']);
+                // }
+                // unset ($aFullResponseTable['token']);
+                // unset ($aFullResponseTable['lastpage']);
+                // unset ($aFullResponseTable['startlanguage']);
+                // unset ($aFullResponseTable['datestamp']);
+                // unset ($aFullResponseTable['startdate']);
+                // $sOutput .= "<table class='printouttable table table-bordered table-striped table-condensed' >\n";
+                // $aGroupArray = array();
+                // $aAnswersArray = array();
+                // foreach ($aFullResponseTable as $sFieldname=>$fname)
+                // {
+                //     if (substr($sFieldname,0,4) == 'gid_')
+                //     {
+                //             $sOutput .= "\t<tr class='printanswersgroup info'><th colspan='2'>{$fname[0]}</th></tr>\n";
+                //             $sOutput .= "\t<tr class='printanswersgroupdesc info'><td colspan='2'>{$fname[1]}</td></tr>\n";
+                //     }
+                //     elseif ($sFieldname=='submitdate')
+                //     {
+                //         if($sAnonymized != 'Y')
+                //         {
+                //                 $sOutput .= "\t<tr class='printanswersquestion'><th>{$fname[0]} {$fname[1]}</th><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
+                //         }
+                //     }
+                //     elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it
+                //     {
+                //         $sOutput .= "\t<tr class='printanswersquestion'><th>{$fname[0]} {$fname[1]}</th><td class='printanswersanswertext'>".flattenText($fname[2])."</td></tr>";
+                //     }
+                // }
+                // $sOutput .= "</table>\n";
+                
+                //$sOutput=templatereplace($sOutput, array() , $sData, '', $aSurveyInfo['anonymized']=="Y",NULL, array(), true);// Do a static replacement
+                //$content=templatereplace(file_get_contents($oTemplate->pstplPath.'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$this->aGlobalData);
+                //$this->render("/survey/system/display",array('content'=>$sOutput));
+                //App()->end();
+
+                $oResponseRow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id'=>$sSRID));
                 $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
-                $aFullResponseTable = getFullResponseTable($iSurveyID,$sSRID,$sLanguage,$printanswershonorsconditions);
-                //Get the fieldmap @TODO: do we need to filter out some fields?
-                if(!$survey->isDateStamp || $survey->isAnonymized){
-                    unset ($aFullResponseTable['submitdate']);
-                }else{
-                    unset ($aFullResponseTable['id']);
-                }
-                unset ($aFullResponseTable['token']);
-                unset ($aFullResponseTable['lastpage']);
-                unset ($aFullResponseTable['startlanguage']);
-                unset ($aFullResponseTable['datestamp']);
-                unset ($aFullResponseTable['startdate']);
-                $sOutput .= "<table class='printouttable table table-bordered table-striped table-condensed' >\n";
-                foreach ($aFullResponseTable as $sFieldname=>$fname)
-                {
-                    if (substr($sFieldname,0,4) == 'gid_')
-                    {
-                            $sOutput .= "\t<tr class='printanswersgroup info'><th colspan='2'>{$fname[0]}</th></tr>\n";
-                            $sOutput .= "\t<tr class='printanswersgroupdesc info'><td colspan='2'>{$fname[1]}</td></tr>\n";
-                    }
-                    elseif ($sFieldname=='submitdate')
-                    {
-                        if($sAnonymized != 'Y')
-                        {
-                                $sOutput .= "\t<tr class='printanswersquestion'><th>{$fname[0]} {$fname[1]}</th><td class='printanswersanswertext'>{$fname[2]}</td></tr>";
-                        }
-                    }
-                    elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it
-                    {
-                        $sOutput .= "\t<tr class='printanswersquestion'><th>{$fname[0]} {$fname[1]}</th><td class='printanswersanswertext'>".flattenText($fname[2])."</td></tr>";
-                    }
-                }
-                $sOutput .= "</table>\n";
-                $this->aGlobalData['thissurvey']=$aSurveyInfo;
-                $sOutput=templatereplace($sOutput, array() , $sData, '', $aSurveyInfo['anonymized']=="Y",NULL, array(), true);// Do a static replacement
-                $content=templatereplace(file_get_contents($oTemplate->pstplPath.'/printanswers.pstpl'),array('ANSWERTABLE'=>$sOutput),$this->aGlobalData);
-                $this->render("/survey/system/display",array('content'=>$sOutput));
-                App()->end();
+                $groupArray = $oResponseRow->getPrintAnswersArray($sLanguage,$printanswershonorsconditions);
+                $aData['aSurveyInfo']=$aSurveyInfo;
+                $aData['aSurveyInfo']['groupArray'] = $groupArray;
+                $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = $this->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
+                Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, false);
             }
             if($sExportType == 'pdf')
             {

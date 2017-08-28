@@ -686,4 +686,33 @@ class SurveyDynamic extends LSActiveRecord
             }
         }
     }
+
+    public function getPrintAnswersArray($sLanguageCode, $bHonorConditions=true){
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+    
+        $aGroupArray = array();
+        //
+        //if (LimeExpressionManager::GroupIsRelevant($fname['gid']) || $bHonorConditions==false)
+
+        foreach ($oSurvey->groups as $oSurveyGroup)
+        {
+            if (LimeExpressionManager::GroupIsRelevant($oSurveyGroup->gid) || $bHonorConditions==false){
+                continue; 
+            }
+            $aAnswersArray = array();
+            foreach ($oSurveyGroup->questions as $oQuestion){
+                if (LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) || $bHonorConditions==false){
+                    continue;
+                }
+                $aQuestionAttributes = $oQuestion->attributes;
+                $fieldname="{$aQuestionAttributes['sid']}X{$aQuestionAttributes['gid']}X{$aQuestionAttributes['qid']}";
+                $aQuestionAttributes['answervalue'] = $this->{$fieldname};
+                $aAnswersArray[$oQuestion->qid] = $oQuestion;
+            }
+            $aGroupAttributes = $oSurveyGroup->attributes;
+            $aGroupAttributes['answers'] = $aAnswersArray;
+            $aGroupArray[$oSurveyGroup->gid] = $aGroupAttributes;
+        }
+        return $aGroupArray;
+    }
 }

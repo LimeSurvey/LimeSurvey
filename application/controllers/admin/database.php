@@ -346,7 +346,6 @@ class database extends Survey_Common_Action
                     Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$this->iQuestionID, ':value'=>$sOldCode));
                 }
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
-        }  //  for ($scale_id=0;
 
         LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
         if (!Yii::app()->request->getPost('bFullPOST'))
