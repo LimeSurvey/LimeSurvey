@@ -53,10 +53,11 @@
         {% if aLCD.withForm == true %}
             <!-- for no js functionality (need form) -->
             {% set buttonhtmlOptions = {
-                    'type' : 'submit',
-                    'value': 'changelang',
-                    'name' : 'move',
-                    'class': aSurveyInfo.class.aLCDWithForm,
+                    'type'          : 'submit',
+                    'value'         : 'changelang',
+                    'name'          : 'move',
+                    'class'         : aSurveyInfo.class.aLCDWithForm,
+                    'data-toggle'   : "dropdown"
                 }
             %}
 

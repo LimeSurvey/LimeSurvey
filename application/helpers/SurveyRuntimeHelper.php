@@ -1694,7 +1694,7 @@ class SurveyRuntimeHelper {
             $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1;  // step is index base 1?
 
             $this->aStepInfo         = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
-
+ 
         }elseif($this->sSurveyMode == 'question' && $this->previewquestion){
             /**
              FIXME $param not defined
@@ -1813,7 +1813,7 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['formgroup']       = '  form-group ';
         $this->aSurveyInfo['class']['controllabel']    = '  control-label  ';
         $this->aSurveyInfo['class']['formcontrol']     = '  form-control  ';
-        $this->aSurveyInfo['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden  ';
+        $this->aSurveyInfo['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden ';
 
         $this->aSurveyInfo['attr']['languagechanger']  =  $this->aSurveyInfo['attr']['formgroup']  = $this->aSurveyInfo['attr']['controllabel'] = '';
 
@@ -1890,7 +1890,7 @@ class SurveyRuntimeHelper {
         // Language changer
         $this->aSurveyInfo['id']['lctdropdown']    = 'langs-container';
 
-        $this->aSurveyInfo['class']['lctli']          = ' dropdown ls-no-js-hidden ';
+        $this->aSurveyInfo['class']['lctli']          = ' dropdown ls-no-js-hidden lctli ';
         $this->aSurveyInfo['class']['lctla']          = ' dropdown-toggle ';
         $this->aSurveyInfo['class']['lctspan']        = ' caret ';
         $this->aSurveyInfo['class']['lctdropdown']    = ' dropdown-menu ';
