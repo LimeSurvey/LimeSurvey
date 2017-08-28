@@ -28811,7 +28811,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (this.isMouseDown) {
                 this.isMouseDown = false;
                 this.$store.state.isCollapsed = false;
-                if (parseInt(this.sideBarWidth) < 315 && !this.$store.state.isCollapsed) {
+                if (parseInt(this.sideBarWidth) < 335 && !this.$store.state.isCollapsed) {
                     this.toggleCollapse();
                     this.$store.commit('changeSidebarwidth', '340px');
                 } else {
