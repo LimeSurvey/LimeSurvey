@@ -344,12 +344,7 @@ class ExpressionManager {
                 break;
             case '==':
             case 'eq':
-                // Need this explicit comparison in order to be in agreement with JavaScript
-                if (($arg1[0] == '0' && trim($arg2[0]) == '') || (trim($arg1[0]) == '' && $arg2[0] == '0')) {
-                    $result = array(true,$token[1],'NUMBER');
-                } else {
-                    $result = array(($arg1[0] == $arg2[0]),$token[1],'NUMBER');
-                }
+                $result = array(($arg1[0] == $arg2[0]),$token[1],'NUMBER');
                 break;
             case '!=':
             case 'ne':
