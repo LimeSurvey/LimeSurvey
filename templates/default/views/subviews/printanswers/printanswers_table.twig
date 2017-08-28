@@ -1,33 +1,20 @@
-<div class="row">
-    <div class="col-sm-12">
-        <h2>{% eT("Survey name (ID):") %} {{aSurveyInfo.survey_title}} ({{aSurveyInfo.sid}})</h2>
-    </div>
-</div>
 
 <div class="row">
-    <div class="col-md-4">
-        {% eT("Response ID :") %} {{aSurveyInfo.responseId}}
-    </div>
-    <div class="col-md-8">
-        {% eT("Referrer URL :") %} {{aSurveyInfo.referrerUrl}}
+    <div class="col-sm-12">
+        <h2>{{ gT("Survey name (ID):") }} {{aSurveyInfo.surveyls_title}} ({{aSurveyInfo.sid}})</h2>
     </div>
 </div>
 
 {% for groupid,group in aSurveyInfo.groupArray %}
     <div class="row">
         <div class="col-xs-12">
-            <h3>{{group.name}} ({{group.id}})</h3>
+            <h3>{{group.group_name}} ({{group.gid}})</h3>
         </div>
     </div>
     <div class="row">
         <div class="container-fluid col-xs-11 col-md-10 col-xs-offset-1 col-md-offset-2">
-            {% for question,answer in group.answerArray %}
-                <div class="col-md-4">
-                    <b>{{question}}</b>
-                </div>
-                <div class="col-md-8">
-                    {{answer}}
-                </div>
+            {% for questionId,question in group.answerArray %}
+                {{ include('./subviews/printanswers/printanswers_question.twig') }}
             {% endfor %} 
         </div>
     </div>

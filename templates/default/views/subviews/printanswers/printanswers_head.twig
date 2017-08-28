@@ -18,10 +18,10 @@
 #}
 
 <div class="container">
-    {% C.Html.form(aSurveyInfo.printAnswersHeadFormUrl, 'post') %}
+    {{ C.Html.form(aSurveyInfo.printAnswersHeadFormUrl, 'post') }}
     <div class="row">
         <div class="col-sm-12">
-            {% eT("Export this responses as PDF:") %} <button class="" type="submit">{% eT("PDF export") %}</button>
+            {{ gT("Export this responses as PDF:") }} <button class="" type="submit">{{ gT("PDF export") }}</button>
         </div>
     </div>
     {{ C.Html.endForm }}

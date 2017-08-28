@@ -687,32 +687,32 @@ class SurveyDynamic extends LSActiveRecord
         }
     }
 
-    public function getPrintAnswersArray($sLanguageCode, $bHonorConditions=true){
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
-    
-        $aGroupArray = array();
-        //
-        //if (LimeExpressionManager::GroupIsRelevant($fname['gid']) || $bHonorConditions==false)
+    public function getPrintAnswersArray($sSRID, $sLanguageCode, $bHonorConditions=true){
 
+        $oSurvey = $this->survey;
+        $aGroupArray = array();
+        $oResponses = SurveyDynamic::model($oSurvey->sid)->findByAttributes(array('id'=>$sSRID));
         foreach ($oSurvey->groups as $oSurveyGroup)
         {
-            if (LimeExpressionManager::GroupIsRelevant($oSurveyGroup->gid) || $bHonorConditions==false){
+            if (!(LimeExpressionManager::GroupIsRelevant($oSurveyGroup->gid) || $bHonorConditions==false)){
                 continue; 
             }
             $aAnswersArray = array();
             foreach ($oSurveyGroup->questions as $oQuestion){
-                if (LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) || $bHonorConditions==false){
+                $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
+                if (!(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) || $bHonorConditions==false) && $attributes['hidden'] === 1){
                     continue;
                 }
                 $aQuestionAttributes = $oQuestion->attributes;
                 $fieldname="{$aQuestionAttributes['sid']}X{$aQuestionAttributes['gid']}X{$aQuestionAttributes['qid']}";
-                $aQuestionAttributes['answervalue'] = $this->{$fieldname};
-                $aAnswersArray[$oQuestion->qid] = $oQuestion;
+                $aQuestionAttributes['answervalue'] = (isset($oResponses[$fieldname]) ? $oResponses[$fieldname] : '');
+                $aAnswersArray[$oQuestion->qid] = $aQuestionAttributes;
             }
             $aGroupAttributes = $oSurveyGroup->attributes;
-            $aGroupAttributes['answers'] = $aAnswersArray;
+            $aGroupAttributes['answerArray'] = $aAnswersArray;
             $aGroupArray[$oSurveyGroup->gid] = $aGroupAttributes;
         }
         return $aGroupArray;
     }
 }
+

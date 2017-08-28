@@ -78,6 +78,7 @@ class Question extends LSActiveRecord
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
             'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
             'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
+            'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
             'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language")
         );
     }

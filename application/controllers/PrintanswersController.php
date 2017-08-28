@@ -175,12 +175,12 @@
                 //$this->render("/survey/system/display",array('content'=>$sOutput));
                 //App()->end();
 
-                $oResponseRow = SurveyDynamic::model($iSurveyID)->findByAttributes(array('id'=>$sSRID));
+                $oResponseRow = SurveyDynamic::model($iSurveyID);
                 $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
-                $groupArray = $oResponseRow->getPrintAnswersArray($sLanguage,$printanswershonorsconditions);
+                $groupArray = $oResponseRow->getPrintAnswersArray( $sSRID, $sLanguage,$printanswershonorsconditions);
                 $aData['aSurveyInfo']=$aSurveyInfo;
                 $aData['aSurveyInfo']['groupArray'] = $groupArray;
-                $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = $this->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
+                $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, false);
             }
             if($sExportType == 'pdf')
