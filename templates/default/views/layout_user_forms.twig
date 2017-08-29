@@ -23,7 +23,7 @@ TODO: register
     {# Headers, metadatas, etc #}
     {{ include('./subviews/head.twig') }}
 
-    <body class="default {{ aSurveyInfo.class.body }} lang-{{surveylanguage}} {{surveyformat}}" {{ aSurveyInfo.attr.body }}>
+    <body class=" {{ aSurveyInfo.class.body }} lang-{{surveylanguage}} {{surveyformat}}" {{ aSurveyInfo.attr.body }}>
 
         {# Bootstrap Navigation Bar: the top menu #}
         {{ include('./subviews/nav_bar.twig') }}

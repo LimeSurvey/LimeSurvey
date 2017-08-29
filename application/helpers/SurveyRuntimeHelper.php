@@ -1753,7 +1753,7 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['id']['dynamicreload'] = 'dynamicReloadContainer' ;
 
         $this->aSurveyInfo['class']['html']  = 'no-js';
-        $this->aSurveyInfo['class']['body']  = '';
+        $this->aSurveyInfo['class']['body']  = ''.$this->oTemplate->sTemplateName;
         $this->aSurveyInfo['class']['outerframe'] = ' outerframe container ' ;
         $this->aSurveyInfo['class']['maincol'] = ' col-centered ' ;
         $this->aSurveyInfo['attr']['html']   = $thissurvey['attr']['body'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
@@ -1764,6 +1764,57 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['clearalldiv'] = ' url-wrapper url-wrapper-survey-return ';
         $this->aSurveyInfo['class']['clearalla']   = ' ls-return ';
         $this->aSurveyInfo['attr']['clearall'] = $thissurvey['attr']['clearalldiv'] = $thissurvey['attr']['clearalla'] = '';
+
+        // Load
+        $this->aSurveyInfo['id']['saveformrowcolinput']    = 'loadname';
+        $this->aSurveyInfo['id']['captcharowcoldivinput']  = 'loadsecurity';
+
+        $this->aSurveyInfo['class']['savemessage']           = '  well clearfix save-message ';
+        $this->aSurveyInfo['class']['savemessagetitle']      = '  h2 ';
+        $this->aSurveyInfo['class']['savemessagetext']       = ' text-info ';
+        $this->aSurveyInfo['class']['loadform']              = ' load-form ';
+        $this->aSurveyInfo['class']['loadformul']            = ' alert alert-danger list-unstyled ';
+        $this->aSurveyInfo['class']['loadformform']          = ' ls-form form form-horizontal ';
+        $this->aSurveyInfo['class']['saveform']              = ' save-survey-form ';
+        $this->aSurveyInfo['class']['saveformrow']           = ' row form-group save-survey-row save-survey-name ';
+        $this->aSurveyInfo['class']['saveformrowlabel']      = ' control-label col-sm-3 load-survey-label ';
+        $this->aSurveyInfo['class']['saveformrowlabelsmall'] = ' text-danger asterisk fa fa-asterisk pull-left small ';
+        $this->aSurveyInfo['class']['saveformrowlabelspan']  = ' sr-only text-danger asterisk ';
+        $this->aSurveyInfo['class']['saveformrowcol']        = ' col-sm-7 save-survey-input input-cell ';
+        $this->aSurveyInfo['class']['saveformrowcolinput']   = ' form-control ';
+        $this->aSurveyInfo['class']['passwordrow']           = ' row form-group load-survey-row load-survey-password ';
+        $this->aSurveyInfo['class']['passwordrowcol']        = ' control-label col-sm-3 load-survey-label label-cell ';
+        $this->aSurveyInfo['class']['passwordrowcolsmall']   = ' text-danger asterisk fa fa-asterisk pull-left small ';
+        $this->aSurveyInfo['class']['passwordrowcolspan']    = ' sr-only text-danger asterisk ';
+        $this->aSurveyInfo['class']['captcharow']            = ' row form-group save-survey-row save-survey-captcha ';
+        $this->aSurveyInfo['class']['captcharowlabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
+        $this->aSurveyInfo['class']['captcharowcol']         = ' col-sm-7 save-survey-input input-cell ';
+        $this->aSurveyInfo['class']['captcharowcoldiv']      = '  input-group ';
+        $this->aSurveyInfo['class']['captcharowcoldivdiv']   = ' input-group-addon captcha-image ';
+        $this->aSurveyInfo['class']['captcharowcoldivinput'] = ' form-control ';
+        $this->aSurveyInfo['class']['loadrow']               = ' row form-group save-survey-row save-survey-submit ';
+        $this->aSurveyInfo['class']['loadrowcol']            = ' col-sm-7 col-md-offset-3 save-survey-input input-cell ';
+        $this->aSurveyInfo['class']['loadrowcolbutton']      = ' btn btn-default ';
+        $this->aSurveyInfo['class']['returntosurvey']        = ' return-to-survey ';
+        $this->aSurveyInfo['class']['returntosurveydiv']     = ' url-wrapper url-wrapper-survey-return ';
+        $this->aSurveyInfo['class']['returntosurveydiva']    = ' ls-return ';
+
+        $this->aSurveyInfo['attr']['loadformul']             = ' role="alert"';
+        $this->aSurveyInfo['attr']['saveformrowlabel']       = ' for="savename" ';
+        $this->aSurveyInfo['attr']['saveformrowlabelsmall']  = ' aria-hidden="true" ';
+        $this->aSurveyInfo['attr']['saveformrowcolinput']    = ' type="text"  name="loadname" value="" required ';
+        $this->aSurveyInfo['attr']['passwordrowcol']         = ' for="loadpass" ';
+        $this->aSurveyInfo['attr']['passwordrowcolsmall']    = ' aria-hidden="true"';
+        $this->aSurveyInfo['attr']['captcharowcoldivdivimg'] = ' alt="captcha" ';
+        $this->aSurveyInfo['attr']['captcharowcoldivinput']  = '  type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
+        $this->aSurveyInfo['attr']['loadrowcolbutton']       = '  type="submit" id="loadbutton" name="loadall"  value="reload" ';
+
+
+
+        $this->aSurveyInfo['attr']['savemessage'] = $this->aSurveyInfo['attr']['savemessagetext'] = $this->aSurveyInfo['attr']['savemessagetitle'] = $this->aSurveyInfo['attr']['loadform']  = $this->aSurveyInfo['attr']['savemessagetextp'] = $this->aSurveyInfo['attr']['savemessagetextpb'] = '';
+        $this->aSurveyInfo['attr']['loadformulli'] = $this->aSurveyInfo['attr']['saveform']  = $this->aSurveyInfo['attr']['saveformrow'] = $this->aSurveyInfo['attr']['saveformrowlabelspan'] = $this->aSurveyInfo['attr']['saveformrowcol'] = $this->aSurveyInfo['attr']['passwordrow'] = '';
+        $this->aSurveyInfo['attr']['passwordrowcolspan'] = $this->aSurveyInfo['attr']['captcharow']  = $this->aSurveyInfo['attr']['captcharowlabel']  = $this->aSurveyInfo['attr']['captcharowcol'] = $this->aSurveyInfo['attr']['captcharowcoldiv'] = $this->aSurveyInfo['attr']['loadrow'] = '';
+        $this->aSurveyInfo['attr']['loadrowcol'] = $this->aSurveyInfo['class']['returntosurvey'] = $this->aSurveyInfo['attr']['returntosurveydiv'] = $this->aSurveyInfo['class']['returntosurveydiva']  = '';
 
 
         // Warnings
