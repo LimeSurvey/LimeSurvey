@@ -20,12 +20,12 @@
 	"minimum-stability" : "dev",
 	"autoload": {
 		"psr-4": {
-			"ls\\pluginmanager\\": [
+			"LimeSurvey\\PluginManager\\": [
 				"application/libraries/PluginManager/",
 				"application/libraries/PluginManager/Storage"
 			],
-			"ls\\menu\\": "application/libraries/MenuObjects/",
-			"ls\\helpers\\": "application/helpers"
+			"LimeSurvey\\Menu\\": "application/libraries/MenuObjects/",
+			"LimeSurvey\\Helpers\\": "application/helpers"
 		}
 	}
 }

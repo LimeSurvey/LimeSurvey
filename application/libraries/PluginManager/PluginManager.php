@@ -1,5 +1,5 @@
 <?php
-namespace ls\pluginmanager;
+namespace LimeSurvey\PluginManager;
 use \Yii;
 use Plugin;
 
@@ -101,8 +101,8 @@ class PluginManager extends \CApplicationComponent {
     public function getStore($storageClass)
     {
         if (!class_exists($storageClass)
-                && class_exists('ls\\pluginmanager\\' . $storageClass)) {
-            $storageClass = 'ls\\pluginmanager\\' . $storageClass;
+                && class_exists('LimeSurvey\\PluginManager\\' . $storageClass)) {
+            $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
         }
         if (!isset($this->stores[$storageClass]))
         {

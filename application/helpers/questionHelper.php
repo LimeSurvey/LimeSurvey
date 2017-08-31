@@ -11,7 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-namespace ls\helpers;
+namespace LimeSurvey\Helpers;
 
 /**
  * General helper class for question + question setting system
@@ -1587,7 +1587,7 @@ class questionHelper
          *      'help' : an help
          *  ]
          */
-        $event = new \ls\pluginmanager\PluginEvent('newQuestionAttributes');
+        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
         $result = App()->getPluginManager()->dispatchEvent($event);
         /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
         $questionAttributes =(array) $result->get('questionAttributes');

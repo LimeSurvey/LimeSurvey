@@ -9271,7 +9271,7 @@ EOD;
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode='logic';
             $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
-            $aAttributesDefinitions=\ls\helpers\questionHelper::getAttributesDefinitions();
+            $aAttributesDefinitions=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
             /* All final survey string must be shown in survey language #12208 */
             Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
             $allErrors = array();
@@ -9875,7 +9875,7 @@ EOD;
             );
 
             // Advanced question attributes : @todo get used question attribute by question in survey ?
-            $aQuestionAttributes=array_keys(\ls\helpers\questionHelper::getAttributesDefinitions());
+            $aQuestionAttributes=array_keys(\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions());
             sort($aQuestionAttributes);
             $fields=array_merge($aBaseFields,$aQuestionAttributes);
 

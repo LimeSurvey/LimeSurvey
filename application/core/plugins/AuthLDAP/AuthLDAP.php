@@ -1,5 +1,5 @@
 <?php
-class AuthLDAP extends ls\pluginmanager\AuthPluginBase
+class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 {
     protected $storage = 'DbStorage';
 

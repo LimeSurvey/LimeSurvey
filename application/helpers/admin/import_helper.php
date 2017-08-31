@@ -216,7 +216,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     {
 
 
-        $aAllAttributes=\ls\helpers\questionHelper::getAttributesDefinitions();
+        $aAllAttributes=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
 
         foreach ($xml->question_attributes->rows->row as $row)
         {
@@ -518,7 +518,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
     {
 
 
-        $aAllAttributes=\ls\helpers\questionHelper::getAttributesDefinitions();
+        $aAllAttributes=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -1272,7 +1272,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     // Import questionattributes -------------------------------------------------
     if(isset($xml->question_attributes))
     {
-        $aAllAttributes=\ls\helpers\questionHelper::getAttributesDefinitions();
+        $aAllAttributes=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
         foreach ($xml->question_attributes->rows->row as $row)
         {
             $insertdata=array();
@@ -2365,7 +2365,7 @@ function TSVImportSurvey($sFullFilePath)
                                 $insertdata = array();
                                 $insertdata['qid'] = $qid;
                                 // check if attribute is a i18n attribute. If yes, set language, else set language to null in attribute table
-                                $aAttributeList[$qtype]=\ls\helpers\questionHelper::getQuestionAttributesSettings($qtype);
+                                $aAttributeList[$qtype]=\LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($qtype);
                                 if ($aAttributeList[$qtype][$key]['i18n'])
                                 {
                                     $insertdata['language'] = (isset($row['language']) ? $row['language'] : $baselang);

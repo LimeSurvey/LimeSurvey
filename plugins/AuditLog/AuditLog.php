@@ -1,5 +1,5 @@
 <?php
-    class AuditLog extends \ls\pluginmanager\PluginBase {
+    class AuditLog extends \LimeSurvey\PluginManager\PluginBase {
 
         protected $storage = 'DbStorage';
         static protected $description = 'Core: Create an audit log of changes';

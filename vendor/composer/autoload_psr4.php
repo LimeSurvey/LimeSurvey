@@ -6,7 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'ls\\pluginmanager\\' => array($baseDir . '/application/libraries/PluginManager', $baseDir . '/application/libraries/PluginManager/Storage'),
-    'ls\\menu\\' => array($baseDir . '/application/libraries/MenuObjects'),
-    'ls\\helpers\\' => array($baseDir . '/application/helpers'),
+    'LimeSurvey\\PluginManager\\' => array($baseDir . '/application/libraries/PluginManager', $baseDir . '/application/libraries/PluginManager/Storage'),
+    'LimeSurvey\\Menu\\' => array($baseDir . '/application/libraries/MenuObjects'),
+    'LimeSurvey\\Helpers\\' => array($baseDir . '/application/helpers'),
 );
