@@ -423,9 +423,9 @@
             else
             {
                 $sAction = 'update';
-                $oCurrentUser=$this->api->getCurrentUser();
                 $aOldValues=$this->api->getParticipant($oNewParticipant->participant_id)->getAttributes();
             }
+            $oCurrentUser=$this->api->getCurrentUser();
             $aNewValues=$oNewParticipant->getAttributes();
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {
