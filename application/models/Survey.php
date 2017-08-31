@@ -246,7 +246,7 @@ class Survey extends LSActiveRecord
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
-            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
+            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true, 'order'=>'group_order ASC'),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
             'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid'), 'together' => true),
