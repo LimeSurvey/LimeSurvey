@@ -1103,3 +1103,9 @@ div.yes-no .btn-group label {
 p.return-to-survey{
     clear:left;
 }
+
+/* Make sure question index menu is not too long. */
+#index-menu ul.dropdown-menu {
+    max-height: 90vh;
+    overflow-y: scroll;
+}

@@ -1099,3 +1099,9 @@ div.yes-no .btn-group label {
 .label-danger {
     white-space: normal;
 }
+
+/* Make sure question index menu is not too long. */
+#index-menu ul.dropdown-menu {
+    max-height: 90vh;
+    overflow-y: scroll;
+}
