@@ -93,7 +93,7 @@ class RegisterController extends LSYii_Controller {
         } elseif(!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))) {
             $this->redirect(array('survey/index','sid'=>$iSurveyId,'lang'=>$sLanguage));
         }
-        /* Fix language accoridng to existing language in survey */
+        /* Fix language according to existing language in survey */
         $sLanguage = Yii::app()->request->getParam('lang');
         if (!$sLanguage || !in_array($sLanguage,$oSurvey->getAllLanguages())) {
             $sLanguage = $oSurvey->language;
