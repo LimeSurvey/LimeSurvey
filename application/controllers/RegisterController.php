@@ -93,24 +93,21 @@ class RegisterController extends LSYii_Controller {
             $iSurveyId=Yii::app()->request->getPost('sid');
 
         $oSurvey=Survey::model()->find("sid=:sid",array(':sid'=>$iSurveyId));
-
-        $sLanguage = Yii::app()->request->getParam('lang');
-        if (!$sLanguage)
-        {
-            $sLanguage = Survey::model()->findByPk($iSurveyId)->language;
-        }
-
-        if (!$oSurvey){
+        /* Throw 404 if needed */
+        $sLanguage = Yii::app()->request->getParam('lang',Yii::app()->getConfig('defaultlang'));
+        Yii::app()->setLanguage($sLanguage);
+        if (!$oSurvey) {
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }elseif($oSurvey->allowregister!='Y' || !tableExists("{{tokens_{$iSurveyId}}}")){
+        } elseif($oSurvey->allowregister!='Y' || !tableExists("{{tokens_{$iSurveyId}}}")) {
             throw new CHttpException(404,"The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
-        }
-        elseif(!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))){
+        } elseif(!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))) {
             $this->redirect(array('survey/index','sid'=>$iSurveyId,'lang'=>$sLanguage));
         }
-
-        Yii::app()->setLanguage($sLanguage);
-
+        /* Fix language according to existing language in survey */
+        if (!in_array($sLanguage,$oSurvey->getAllLanguages())) {
+            $sLanguage = $oSurvey->language;
+            Yii::app()->setLanguage($sLanguage);
+        }
 
         $event = new PluginEvent('beforeRegister');
         $event->set('surveyid', $iSurveyId);
@@ -246,6 +243,7 @@ class RegisterController extends LSYii_Controller {
         $sLanguage=App()->language;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
 
+        $aMail = array();
         $aMail['subject']=$aSurveyInfo['email_register_subj'];
         $aMail['message']=$aSurveyInfo['email_register'];
         $aReplacementFields=array();
