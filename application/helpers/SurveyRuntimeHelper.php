@@ -1830,6 +1830,8 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn btn btn-lg btn-primary ';
         $this->aSurveyInfo['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl ';
         $this->aSurveyInfo['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
+        $this->aSurveyInfo['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
+        $this->aSurveyInfo['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
 
 
         $this->aSurveyInfo['attr']['navigatorcollbutton'] = '  type="submit" name="move" accesskey="p" ';
@@ -1837,6 +1839,19 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['attr']['completedwrapper'] =  $this->aSurveyInfo['attr']['completedtext'] = $this->aSurveyInfo['attr']['quotamessage']  = $this->aSurveyInfo['attr']['navigator'] = $this->aSurveyInfo['attr']['navigatorcoll'] = $this->aSurveyInfo['attr']['navigatorcolr'] = $this->aSurveyInfo['attr']['completedquotaurl'] ='';
 
 
+        // Register
+        $this->aSurveyInfo['class']['register']                = ' container ';
+        $this->aSurveyInfo['class']['registerrow']             = ' row ';
+        $this->aSurveyInfo['class']['registerrowjumbotrondiv'] = ' container clearfix ';
+        $this->aSurveyInfo['class']['registerform']            = ' register-form row ';
+        $this->aSurveyInfo['class']['registerul']              = ' alert alert-danger list-unstyled ';
+        $this->aSurveyInfo['class']['registerformcol']         = ' col-md-8 col-md-offset-2 ';
+        $this->aSurveyInfo['class']['registerformcolrow']      = ' form-group row ';
+
+        $this->aSurveyInfo['attr']['registerul']               =  ' role="alert" ';
+
+
+        $this->aSurveyInfo['attr']['register'] = $this->aSurveyInfo['attr']['registerrow'] = $this->aSurveyInfo['attr']['jumbotron'] = $this->aSurveyInfo['attr']['registerrowjumbotrondiv'] = $this->aSurveyInfo['attr']['registerulli'] = $this->aSurveyInfo['class']['registerformcol'] = $this->aSurveyInfo['attr']['registerformcolrow'] = '';
 
         // Warnings
         $this->aSurveyInfo['class']['activealert']       = ' alert alert-warning alert-dismissible fade in alert-dismissible ';

@@ -17,13 +17,12 @@
 #}
 {{ C.Html.form(aSurveyInfo.sRegisterFormUrl,'post',({'id' : 'limesurvey', 'role' : 'form', 'class' : 'form'})) }}
 
-<input type="hidden" name="lang" value="{{aSurveyInfo.sLanguage}}" id="register_lang" />
-<input type="hidden" name="register" value="true" id="register_register" />
+{{aSurveyInfo.registerform.hiddeninputs}}
 
-<div class='col-md-8 col-md-offset-2'>
+<div class='{{ aSurveyInfo.class.registerformcol }}' {{ aSurveyInfo.attr.registerformcol }}>
     {# Participants first name #}
-    <div class='form-group row'>
-        <label for='register_firstname' class='control-label '>{{ gT("First name:") }}</label>
+    <div class='{{ aSurveyInfo.class.registerformcolrow }}' {{ aSurveyInfo.attr.registerformcolrow }}>
+        <label for='register_firstname' class='{{ aSurveyInfo.class.registerformcolrowlabel }}control-label '>{{ gT("First name:") }}</label>
         <div class="">
             {{ C.Html.textField('register_firstname', aSurveyInfo.sFirstName, ({'id' : 'register_firstname','class' : 'form-control'})) }}
         </div>
@@ -36,7 +35,7 @@
             {{ C.Html.textField('register_lastname', aSurveyInfo.sLastName, ({'id' : 'register_lastname', 'class' : 'form-control'})) }}
         </div>
     </div>
-    
+
     {# Participants email #}
     <div class='form-group row'>
         <label for='register_email' class='control-label'> {{ gT("Email address:") }} {{ include('./subviews/required.twig') }}</label>
@@ -84,7 +83,7 @@
                 {{ continue }}
             </button>
         </div>
-    </div>  
+    </div>
 
     {# If there is additional form parts, a.e. trhough a plugin render it out here #}
     <div class="row">

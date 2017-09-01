@@ -131,10 +131,10 @@ class RegisterController extends LSYii_Controller {
                 $redirectUrl = Yii::app()->getController()->createUrl('/'.$iSurveyId.'/', array('token' => $oToken->token, 'lang'=>$sLanguage));
                 Yii::app()->getController()->redirect($redirectUrl);
                 Yii::app()->end();
-            } 
+            }
 
             self::sendRegistrationEmail($iSurveyId,$iTokenId);
-            
+
         }
 
         // Display the page
@@ -196,7 +196,7 @@ class RegisterController extends LSYii_Controller {
         $registerFormEvent = array();
         if(!is_null($event->get('registerForm'))){
             $registerFormEvent = $event->get('registerForm');
-            if(!isset($registerFormEvent['append']) ||  $registerFormEvent['append'] == false ) 
+            if(!isset($registerFormEvent['append']) ||  $registerFormEvent['append'] == false )
                 return $event->get('registerForm');
         }
         $aFieldValue=$this->getFieldValue($iSurveyId);
@@ -211,7 +211,7 @@ class RegisterController extends LSYii_Controller {
         $aData['aExtraAttributes']=$aRegisterAttributes;
         $aData['bCaptcha'] = function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen', $oSurvey->usecaptcha);
         $aData['sRegisterFormUrl'] = App()->createUrl('register/index',array('sid'=>$iSurveyId));
-        
+
         $aData['formAdditions'] = '';
         if(!empty($registerFormEvent)){
             $aData['formAdditions'] = $registerFormEvent['formAppend'];
@@ -225,7 +225,7 @@ class RegisterController extends LSYii_Controller {
         {
             $aData['aErrors'] = array();
         }
-        
+
         $aData['sStartDate'] = $this->getStartDate($iSurveyId ,true);
 
         $aData['thissurvey'] = $oSurvey->attributes;
@@ -502,6 +502,11 @@ class RegisterController extends LSYii_Controller {
         // }
 
         $aData['aSurveyInfo'] = self::getRegisterForm($iSurveyId);
+
+        $aData['aSurveyInfo']['registerform']['hiddeninputs'] = '<input value="'.$aData['aSurveyInfo']['sLanguage'].'"  type="hidden" name="lang" id="register_lang" /><input  value="true" type="hidden" name="register"id="register_register" />';
+
+
+
         Yii::app()->twigRenderer->renderTemplateFromFile('layout_register.twig',$aData, false);
 
         // // Test if we come from index or from register
@@ -512,7 +517,7 @@ class RegisterController extends LSYii_Controller {
         //     App()->getClientScript()->registerPackage('jqueryui');
         //     App()->getClientScript()->registerPackage('jquery-touch-punch');
         //     App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
-            
+
         // }else{
         //     // Survey/index need renderPartial
         //     Yii::app()->twigRenderer->renderTemplateFromFile('layout_register.twig',$aData, false);
