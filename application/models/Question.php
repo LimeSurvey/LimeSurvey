@@ -302,6 +302,10 @@ class Question extends LSActiveRecord
         return $aAttributeNames;
     }
 
+    public function getTypeGroup(){
+        
+    }
+
     /**
      * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
      * @param integer $sid

@@ -688,25 +688,37 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion=false){
+
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
-        if (!(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) || $bHonorConditions==false) && $attributes['hidden'] === 1){
+
+        if (!(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) || $bHonorConditions==false) && $attributes['hidden'] === 1)
+        {
             return false;
         }
+
         $aQuestionAttributes = $oQuestion->attributes;
-        if(count($oQuestion->subquestions) > 0){
+
+        if(count($oQuestion->subquestions) > 0)
+        {
             $aQuestionAttributes['subquestions'] = array();
             foreach($oQuestion->subquestions as $oSubquestion){
                 $aQuestionAttributes['subquestions'][$oSubquestion->qid] = $this->getQuestionArray($oSubquestion,$oResponses,$bHonorConditions,true);
             }
         }
+
         $fieldname= $oQuestion->sid."X".$oQuestion->gid."X";
-        if($subquestion){
+        
+        if($subquestion)
+        {
             $fieldname.=$oQuestion->parents['qid'].$oQuestion->title;
         } else {
             $fieldname.=$oQuestion->qid;
         }
+
         $aQuestionAttributes['fieldname'] = $fieldname;
+        $aQuestionAttributes['questionclass'] = Question::getQuestionClass($oQuestion->type);
         $aQuestionAttributes['answervalue'] = isset($oResponses[$fieldname]) ? $oResponses[$fieldname] : null;
+
         // $aQuestionAttributes['answervalue'] = Answer::model()->getAnswerFromCode($aQuestionAttributes['qid'],$fieldname,$sLanguageCode);
         return $aQuestionAttributes;
     }
@@ -720,21 +732,28 @@ class SurveyDynamic extends LSActiveRecord
 
         foreach ($oGroupList as $oSurveyGroup)
         {
-            if (!(LimeExpressionManager::GroupIsRelevant($oSurveyGroup->gid) || $bHonorConditions==false)){
+
+            if (!(LimeExpressionManager::GroupIsRelevant($oSurveyGroup->gid) || $bHonorConditions==false))
+            {
                 continue; 
             }
+
             $aAnswersArray = array();
-            foreach ($oSurveyGroup->questions as $oQuestion){
+
+            foreach ($oSurveyGroup->questions as $oQuestion)
+            {
                 $aQuestionArray = $this->getQuestionArray($oQuestion, $oResponses, $bHonorConditions);
 
                 if($aQuestionArray === false) continue;
 
                 $aAnswersArray[$oQuestion->qid] = $aQuestionArray;
             }
+
             $aGroupAttributes = $oSurveyGroup->attributes;
             $aGroupAttributes['answerArray'] = $aAnswersArray;
             $aGroupAttributes['debug'] = $oResponses->attributes;
             $aGroupArray[$oSurveyGroup->gid] = $aGroupAttributes;
+            
         }
 
         return $aGroupArray;

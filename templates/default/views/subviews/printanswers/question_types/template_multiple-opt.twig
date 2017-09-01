@@ -1,0 +1,16 @@
+ <div class="col-md-8">
+    {% for subquestionId, subquestion in question.subquestions %}
+        <div class="row">
+            <div class="col-md-4 text-right">
+                <b>{{subquestion.question}} ({{subquestion.qid}})</b>
+            </div>
+            <div class="col-md-8 text-left">
+                {% if subquestion.answervalue is sameas("Y") %}
+                    <input type="checkbox" disabled="disabled" checked="checked" />
+                {% else %}
+                    <input type="checkbox" disabled="disabled" />
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>

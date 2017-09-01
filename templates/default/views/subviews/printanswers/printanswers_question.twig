@@ -1,23 +1,12 @@
 <div class="row">
+    {% block question_name %}
     <div class="col-md-4">
-        <b>{{question.question}} ({{question.qid}})</b>
+        <b>{{question.question}} ({{question.qid}})</b><br/>
+        <small>{{gT("Type:")}} ({{question.questionclass}})</small>
     </div>
-    {% if question.subquestions is empty %}
-        <div class="col-md-8">
-            {{question.answervalue}}
-        </div>
-    {% else %}
-        <div class="col-md-8">
-            {% for subquestionId, subquestion in question.subquestions %}
-                <div class="row">
-                    <div class="col-md-4 text-right">
-                        <b>{{subquestion.question}} ({{subquestion.qid}})</b>
-                    </div>
-                    <div class="col-md-8 text-left">
-                        {{subquestion.answervalue}}
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    {% endblock  %}
+    {% block question_answer %}
+        {% set questionTemplate = './subviews/printanswers/question_types/template_' ~ question.questionclass ~ '.twig' %}
+        {{ include(questionTemplate) }}
+    {% endblock  %}
 </div>
