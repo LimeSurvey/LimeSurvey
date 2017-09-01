@@ -33,13 +33,13 @@
 
 
         {# completed#}
-        <div class="completed-wrapper">
+        <div class="{{ aSurveyInfo.class.completedwrapper }}" {{ aSurveyInfo.attr.completedwrapper }}>
 
             {# LS 2.50 Plugins HTML NOTE: plugins should now use the event defined in LSETwigViewRenderer::renderTemplateFromString() #}
             {{ aSurveyInfo.aQuotas.sPluginBlocks }}
 
-            <div class='completed-text'>
-                <div class='quotamessage limesurveycore'>
+            <div class='{{ aSurveyInfo.class.completedtext }}' {{ aSurveyInfo.attr.completedtext }}>
+                <div class='{{ aSurveyInfo.class.quotamessage }}' {{ aSurveyInfo.attr.quotamessage }}>
                     {{ aSurveyInfo.aQuotas.sMessage  }}
                 </div>
 
@@ -73,19 +73,19 @@
                                 )
                         }}
 
-                            <div class="navigator row" id="navigator-container">
-                                <div class="col-xs-6 text-left">
-                                    <!-- Previous button container -->
-                                    <div class="col-xs-6 text-left">
-                                        <!-- Button previous -->
-                                        <button type="submit" value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" name="move" class=" ls-move-btn ls-move-previous-btn btn btn-lg btn-default" accesskey="p">
-                                            {{ "Previous" | t }}
-                                        </button>
-                                    </div>
+                            <div class="{{ aSurveyInfo.class.navigator }}" id="{{ aSurveyInfo.id.navigator }}" {{ aSurveyInfo.attr.navigator }}>
+
+                                <!-- Previous button container -->
+                                <div class="{{ aSurveyInfo.class.navigatorcoll }}" {{ aSurveyInfo.attr.navigatorcoll }}>
+                                    <!-- Button previous -->
+                                    <button  value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" class=" {{ aSurveyInfo.class.navigatorcollbutton }} " {{ aSurveyInfo.attr.navigatorcollbutton }} >
+                                        {{ "Previous" | t }}
+                                    </button>
                                 </div>
-                                <div class="col-xs-6 text-right">
+
+                                <div class=" {{ aSurveyInfo.class.navigatorcolr }} " {{ aSurveyInfo.attr.navigatorcolr }}>
                                     <!-- Button submit -->
-                                    <button type="submit" value="confirmquota" name="move" class=" ls-move-btn ls-move-submit-btn btn btn-lg btn-primary" accesskey="l">
+                                    <button  {{ aSurveyInfo.attr.navigatorcolrbutton}} class=" {{ aSurveyInfo.class.navigatorcolrbutton}}  " >
                                         {{ "Submit" | t }}
                                     </button>
                                 </div>
@@ -103,8 +103,8 @@
                 {% endif %}
 
                 {% if(aSurveyInfo.aQuotas.sUrl != '') %}
-                    <div class="url-wrapper url-wrapper-survey-quotaurl">
-                        <a href="{{ aSurveyInfo.aQuotas.sUrl }}" class="ls-endurl ls-quotaurl">
+                    <div class="{{ aSurveyInfo.class.completedquotaurl }}" {{ aSurveyInfo.attr.completedquotaurl }}>
+                        <a href="{{ aSurveyInfo.aQuotas.sUrl }}" class="{{ aSurveyInfo.class.completedquotaurla }}" {{ aSurveyInfo.attr.completedquotaurla }}>
                             {{ aSurveyInfo.aQuotas.sUrlDescription }}
                         </a>
                     </div>

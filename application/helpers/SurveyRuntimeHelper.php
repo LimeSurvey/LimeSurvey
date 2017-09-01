@@ -1817,6 +1817,27 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['attr']['loadrowcol'] = $this->aSurveyInfo['class']['returntosurvey'] = $this->aSurveyInfo['attr']['returntosurveydiv'] = $this->aSurveyInfo['class']['returntosurveydiva']  = '';
 
 
+        // Completed
+        $this->aSurveyInfo['id']['navigator']           = 'navigator-container';
+
+        $this->aSurveyInfo['class']['completedwrapper']     = ' completed-wrapper ';
+        $this->aSurveyInfo['class']['completedtext']        = ' completed-text ';
+        $this->aSurveyInfo['class']['quotamessage']         = ' quotamessage limesurveycore ';
+        $this->aSurveyInfo['class']['navigator']            = ' navigator row ';
+        $this->aSurveyInfo['class']['navigatorcoll']        = ' col-xs-6 text-left ';
+        $this->aSurveyInfo['class']['navigatorcollbutton']  = ' ls-move-btn ls-move-previous-btn btn btn-lg btn-default ';
+        $this->aSurveyInfo['class']['navigatorcolr']        = ' col-xs-6 text-right ';
+        $this->aSurveyInfo['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn btn btn-lg btn-primary ';
+        $this->aSurveyInfo['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl ';
+        $this->aSurveyInfo['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
+
+
+        $this->aSurveyInfo['attr']['navigatorcollbutton'] = '  type="submit" name="move" accesskey="p" ';
+        $this->aSurveyInfo['attr']['navigatorcolrbutton'] = '  type="submit" name="move" value="confirmquota" accesskey="l"   ';
+        $this->aSurveyInfo['attr']['completedwrapper'] =  $this->aSurveyInfo['attr']['completedtext'] = $this->aSurveyInfo['attr']['quotamessage']  = $this->aSurveyInfo['attr']['navigator'] = $this->aSurveyInfo['attr']['navigatorcoll'] = $this->aSurveyInfo['attr']['navigatorcolr'] = $this->aSurveyInfo['attr']['completedquotaurl'] ='';
+
+
+
         // Warnings
         $this->aSurveyInfo['class']['activealert']       = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
         $this->aSurveyInfo['class']['errorHtml']         = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
