@@ -1862,6 +1862,7 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['class']['registersave']             = ' form-group row';
         $this->aSurveyInfo['class']['registersavediv']          = ' col-md-offset-7 ';
         $this->aSurveyInfo['class']['registersavedivbutton']    = ' btn btn-default ';
+        $this->aSurveyInfo['class']['registerhead']             = ' row h2 ';
 
 
 
@@ -1877,7 +1878,7 @@ class SurveyRuntimeHelper {
         $this->aSurveyInfo['attr']['register']                  = $this->aSurveyInfo['attr']['registerrow'] = $this->aSurveyInfo['attr']['jumbotron'] = $this->aSurveyInfo['attr']['registerrowjumbotrondiv'] = $this->aSurveyInfo['attr']['registerulli'] = $this->aSurveyInfo['class']['registerformcol'] = '';
         $this->aSurveyInfo['attr']['registerformcolrow']        =  $this->aSurveyInfo['attr']['registerformcolrowb'] = $this->aSurveyInfo['attr']['registerformcolrowbdiv'] = $this->aSurveyInfo['class']['registerformcolrowc'] = $this->aSurveyInfo['class']['registerformcolrowcdiv'] = $this->aSurveyInfo['attr']['registerformextras'] = '';
         $this->aSurveyInfo['attr']['registerformcolrowcdiv']    = $this->aSurveyInfo['attr']['registerformcaptcha'] = $this->aSurveyInfo['attr']['registerformcaptchadiv'] = $this->aSurveyInfo['attr']['registerformcaptchadivb'] = $this->aSurveyInfo['attr']['registerformcaptchadivc'] = $this->aSurveyInfo['attr']['registersave'] = '';
-        $this->aSurveyInfo['attr']['registersavediv'] = '';
+        $this->aSurveyInfo['attr']['registersavediv'] = $this->aSurveyInfo['attr']['registerhead'] = $this->aSurveyInfo['attr']['registermessagea'] = $this->aSurveyInfo['attr']['registermessageb'] = $this->aSurveyInfo['attr']['registermessagec'] = '';
 
         // Warnings
         $this->aSurveyInfo['class']['activealert']       = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
