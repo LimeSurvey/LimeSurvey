@@ -257,6 +257,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
         }
 
+        // Add core classes and attributes
+        $aClassAndAttributes = $oTemplate->getClassAndAttributes();
+        $aDatas["aSurveyInfo"] = array_merge($aDatas["aSurveyInfo"], $aClassAndAttributes);
 
         // Plugin for blocks replacement
         // TODO: add blocks to template....
