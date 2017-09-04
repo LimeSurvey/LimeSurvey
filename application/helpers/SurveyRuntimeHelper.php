@@ -1840,18 +1840,44 @@ class SurveyRuntimeHelper {
 
 
         // Register
-        $this->aSurveyInfo['class']['register']                = ' container ';
-        $this->aSurveyInfo['class']['registerrow']             = ' row ';
-        $this->aSurveyInfo['class']['registerrowjumbotrondiv'] = ' container clearfix ';
-        $this->aSurveyInfo['class']['registerform']            = ' register-form row ';
-        $this->aSurveyInfo['class']['registerul']              = ' alert alert-danger list-unstyled ';
-        $this->aSurveyInfo['class']['registerformcol']         = ' col-md-8 col-md-offset-2 ';
-        $this->aSurveyInfo['class']['registerformcolrow']      = ' form-group row ';
+        $this->aSurveyInfo['class']['register']                 = ' container ';
+        $this->aSurveyInfo['class']['registerrow']              = ' row ';
+        $this->aSurveyInfo['class']['registerrowjumbotrondiv']  = ' container clearfix ';
+        $this->aSurveyInfo['class']['registerform']             = ' register-form row ';
+        $this->aSurveyInfo['class']['registerul']               = ' alert alert-danger list-unstyled ';
+        $this->aSurveyInfo['class']['registerformcol']          = ' col-md-8 col-md-offset-2 ';
+        $this->aSurveyInfo['class']['registerformcolrow']       = ' form-group row ';
+        $this->aSurveyInfo['class']['registerformcolrowb']      = ' form-group row ';
+        $this->aSurveyInfo['class']['registerformcolrowc']      = ' form-group row ';
+        $this->aSurveyInfo['class']['registerformextras']       = ' form-group row ';
+        $this->aSurveyInfo['class']['registerformcaptcha']      = ' form-group row captcha-item ';
+        $this->aSurveyInfo['class']['registerformcolrowblabel'] = ' control-label ';
+        $this->aSurveyInfo['class']['registerformcolrowclabel'] = ' control-label ';
+        $this->aSurveyInfo['class']['registerformextraslabel']  = ' control-label ';
+        $this->aSurveyInfo['class']['registerformcaptchalabel'] = ' control-label ';
+        $this->aSurveyInfo['class']['registerformcaptchadivb']  = ' input-group ';
+        $this->aSurveyInfo['class']['registerformcaptchadivc']  = ' control-label captcha-widget ';
+        $this->aSurveyInfo['class']['registerformcaptchainput'] = ' form-control ';
+        $this->aSurveyInfo['class']['registermandatoryinfo']    = ' row ';
+        $this->aSurveyInfo['class']['registersave']             = ' form-group row';
+        $this->aSurveyInfo['class']['registersavediv']          = ' col-md-offset-7 ';
+        $this->aSurveyInfo['class']['registersavedivbutton']    = ' btn btn-default ';
 
-        $this->aSurveyInfo['attr']['registerul']               =  ' role="alert" ';
 
 
-        $this->aSurveyInfo['attr']['register'] = $this->aSurveyInfo['attr']['registerrow'] = $this->aSurveyInfo['attr']['jumbotron'] = $this->aSurveyInfo['attr']['registerrowjumbotrondiv'] = $this->aSurveyInfo['attr']['registerulli'] = $this->aSurveyInfo['class']['registerformcol'] = $this->aSurveyInfo['attr']['registerformcolrow'] = '';
+
+        $this->aSurveyInfo['attr']['registerul']                = ' role="alert" ';
+        $this->aSurveyInfo['attr']['registerformcolrowblabel']  = ' for="register_lastname"  ';
+        $this->aSurveyInfo['attr']['registerformcolrowclabel']  = ' for="register_email"  ';
+        $this->aSurveyInfo['attr']['registerformcaptchalabel']  = ' for="loadsecurity"  ';
+        $this->aSurveyInfo['attr']['registerformcaptchainput']  = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
+        $this->aSurveyInfo['attr']['registermandatoryinfo']     = ' aria-hidden="true" ';
+        $this->aSurveyInfo['class']['registersavedivbutton']    = ' type="submit" id="savebutton" name="savesubmit" value="save"';
+
+        $this->aSurveyInfo['attr']['register']                  = $this->aSurveyInfo['attr']['registerrow'] = $this->aSurveyInfo['attr']['jumbotron'] = $this->aSurveyInfo['attr']['registerrowjumbotrondiv'] = $this->aSurveyInfo['attr']['registerulli'] = $this->aSurveyInfo['class']['registerformcol'] = '';
+        $this->aSurveyInfo['attr']['registerformcolrow']        =  $this->aSurveyInfo['attr']['registerformcolrowb'] = $this->aSurveyInfo['attr']['registerformcolrowbdiv'] = $this->aSurveyInfo['class']['registerformcolrowc'] = $this->aSurveyInfo['class']['registerformcolrowcdiv'] = $this->aSurveyInfo['attr']['registerformextras'] = '';
+        $this->aSurveyInfo['attr']['registerformcolrowcdiv']    = $this->aSurveyInfo['attr']['registerformcaptcha'] = $this->aSurveyInfo['attr']['registerformcaptchadiv'] = $this->aSurveyInfo['attr']['registerformcaptchadivb'] = $this->aSurveyInfo['attr']['registerformcaptchadivc'] = $this->aSurveyInfo['attr']['registersave'] = '';
+        $this->aSurveyInfo['attr']['registersavediv'] = '';
 
         // Warnings
         $this->aSurveyInfo['class']['activealert']       = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
