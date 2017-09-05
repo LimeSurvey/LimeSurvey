@@ -717,7 +717,14 @@ class SurveyDynamic extends LSActiveRecord
 
         $aQuestionAttributes['fieldname'] = $fieldname;
         $aQuestionAttributes['questionclass'] = Question::getQuestionClass($oQuestion->type);
+        if($aQuestionAttributes['questionclass'] === 'date') {
+            $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge(self::$survey->attributes, $oQuestion->survey->languagesettings[$oQuestion->language]->attributes ));
+        }
         $aQuestionAttributes['answervalue'] = isset($oResponses[$fieldname]) ? $oResponses[$fieldname] : null;
+        if($aQuestionAttributes['questionclass'] === 'language') {
+            $languageArray = getLanguageData(false, $aQuestionAttributes['answervalue']);
+            $aQuestionAttributes['languageArray'] = $languageArray[ $aQuestionAttributes['answervalue'] ];
+        }
 
         // $aQuestionAttributes['answervalue'] = Answer::model()->getAnswerFromCode($aQuestionAttributes['qid'],$fieldname,$sLanguageCode);
         return $aQuestionAttributes;

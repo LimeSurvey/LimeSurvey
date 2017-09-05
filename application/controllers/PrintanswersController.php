@@ -130,6 +130,7 @@
                 $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
                 $groupArray = $oResponseRow->getPrintAnswersArray( $sSRID, $sLanguage,$printanswershonorsconditions);
                 $aData['aSurveyInfo']=$aSurveyInfo;
+                $aData['aSurveyInfo']['dateFormat']=getDateFormatData(Yii::app()->session['dateformat']);
                 $aData['aSurveyInfo']['groupArray'] = $groupArray;
                 $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, false);
