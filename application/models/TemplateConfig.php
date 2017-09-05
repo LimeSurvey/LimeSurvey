@@ -359,6 +359,67 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
         $aClassAndAttributes['attr']['passwordrowcolspan'] = $aClassAndAttributes['attr']['captcharow']  = $aClassAndAttributes['attr']['captcharowlabel']  = $aClassAndAttributes['attr']['captcharowcol'] = $aClassAndAttributes['attr']['captcharowcoldiv'] = $aClassAndAttributes['attr']['loadrow'] = '';
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva']  = '';
 
+        // Save
+        $aClassAndAttributes['class']['savecontainer']                 = ' well clearfix save-message ';
+        $aClassAndAttributes['class']['savecontainertitle']            = ' h2 ';
+        $aClassAndAttributes['class']['savecontainertext']             = ' text-info ';
+        $aClassAndAttributes['class']['savecontainertextpc']           = ' info-email-optional ls-info ';
+        $aClassAndAttributes['class']['savecontainerwarning']          = ' text-warning ';
+        $aClassAndAttributes['class']['saveformcontainer']             = ' save-form ';
+        $aClassAndAttributes['class']['saveformcontainerul']           = ' alert alert-danger list-unstyled ';
+        $aClassAndAttributes['class']['saveformsurvey']                = ' save-survey-form form-horizontal ';
+        $aClassAndAttributes['class']['saveformsurveydiva']            = ' form-group save-survey-row save-survey-name ';
+        $aClassAndAttributes['class']['saveformsurveydivalabel']       = ' control-label col-sm-3 save-survey-label ';
+        $aClassAndAttributes['class']['saveformsurveydivalabelsmall']  = ' text-danger asterisk fa fa-asterisk pull-left small ';
+        $aClassAndAttributes['class']['saveformsurveydivalabelspan']   = ' sr-only text-danger asterisk ';
+        $aClassAndAttributes['class']['saveformsurveydivb']            = ' col-sm-7 save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivc']            = ' form-group save-survey-row save-survey-password ';
+        $aClassAndAttributes['class']['saveformsurveydivclabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivcsmall']       = ' text-danger asterisk fa fa-asterisk pull-left small ';
+        $aClassAndAttributes['class']['saveformsurveydivcspan']        = ' sr-only text-danger asterisk ';
+        $aClassAndAttributes['class']['saveformsurveydivcdiv']         = ' col-sm-7 save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivd']            = ' form-group save-survey-row save-survey-password ';
+        $aClassAndAttributes['class']['saveformsurveydivdlabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivdlabelsmall']  = ' text-danger asterisk fa fa-asterisk pull-left small ';
+        $aClassAndAttributes['class']['saveformsurveydivdlabelspan']   = ' sr-only text-danger asterisk ';
+        $aClassAndAttributes['class']['saveformsurveydivddiv']         = ' col-sm-7 save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydive']            = ' form-group save-survey-row save-survey-password ';
+        $aClassAndAttributes['class']['saveformsurveydivelabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivediv']         = ' col-sm-7 save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivf']            = ' form-group save-survey-row save-survey-captcha ';
+        $aClassAndAttributes['class']['saveformsurveydivflabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivfdiv']         = ' col-sm-7 save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivfdivdiv']      = ' input-group ';
+        $aClassAndAttributes['class']['saveformsurveydivfdivdivdiv']   = ' input-group-addon captcha-image ';
+        $aClassAndAttributes['class']['saveformsurveydivfdivdivinput'] = ' form-control ';
+        $aClassAndAttributes['class']['saveformsurveydivg']            = ' form-group save-survey-row save-survey-submit ';
+        $aClassAndAttributes['class']['saveformsurveydivgdiv']         = ' col-sm-7 col-md-offset-3 save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivgdivbutton']   = ' btn btn-default ';
+        $aClassAndAttributes['class']['saveformsurveydivh']            = ' return-to-survey ';
+        $aClassAndAttributes['class']['saveformsurveydivhdiv']         = ' url-wrapper url-wrapper-survey-return ';
+        $aClassAndAttributes['class']['saveformsurveydivhdiva']        = ' ls-return ';
+
+
+
+        $aClassAndAttributes['attr']['saveformcontainerul']            = ' role="alert" ';
+        $aClassAndAttributes['attr']['saveformsurveydivalabel']        = ' for="savename" ';
+        $aClassAndAttributes['attr']['saveformsurveydivalabelsmall']   = ' aria-hidden="true" ';
+        $aClassAndAttributes['attr']['saveformsurveydivclabel']        = ' for="savepass" ';
+        $aClassAndAttributes['attr']['saveformsurveydivcsmall']        = ' aria-hidden="true" ';
+        $aClassAndAttributes['attr']['saveformsurveydivdlabel']        = ' for="savepass2" ';
+        $aClassAndAttributes['attr']['saveformsurveydivdlabelsmall']   = ' aria-hidden="true" ';
+        $aClassAndAttributes['attr']['saveformsurveydivelabel']        = ' for="saveemail" ';
+        $aClassAndAttributes['attr']['saveformsurveydivflabel']        = ' for="loadsecurity" ';
+        $aClassAndAttributes['attr']['saveformsurveydivfdivdivdivimg'] = ' alt="captcha" ';
+        $aClassAndAttributes['attr']['saveformsurveydivfdivdivinput']  = '  type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
+        $aClassAndAttributes['attr']['saveformsurveydivgdivbutton']    = ' type="submit" id="savebutton" name="savesubmit" value="save"';
+
+
+        $aClassAndAttributes['attr']['savecontainer'] = $aClassAndAttributes['attr']['savecontainertitle'] = $aClassAndAttributes['attr']['savecontainertext'] = $aClassAndAttributes['attr']['savecontainerwarning'] = $aClassAndAttributes['attr']['saveformcontainer'] = $aClassAndAttributes['attr']['saveformcontainerli']   = '';
+        $aClassAndAttributes['attr']['savecontainertextpa'] = $aClassAndAttributes['attr']['savecontainertextpb'] = $aClassAndAttributes['attr']['savecontainertextpc'] = $aClassAndAttributes['attr']['savecontainertextpd'] = $aClassAndAttributes['attr']['saveformsurveydiva'] = $aClassAndAttributes['attr']['saveformsurveydivalabelspan'] = '';
+        $aClassAndAttributes['attr']['saveformsurveydivc'] = $aClassAndAttributes['attr']['saveformsurveydivcspan'] = $aClassAndAttributes['attr']['saveformsurveydivcdiv'] = $aClassAndAttributes['attr']['saveformsurveydivd'] = $aClassAndAttributes['attr']['saveformsurveydivdlabelspan'] = $aClassAndAttributes['attr']['saveformsurveydivddiv'] = '';
+        $aClassAndAttributes['attr']['saveformsurveydive'] = $aClassAndAttributes['attr']['saveformsurveydivediv'] = $aClassAndAttributes['attr']['saveformsurveydivf']   = $aClassAndAttributes['attr']['saveformsurveydivfdiv'] = $aClassAndAttributes['attr']['saveformsurveydivfdivdiv'] = $aClassAndAttributes['attr']['saveformsurveydivfdivdivdiv'] = '';
+        $aClassAndAttributes['attr']['saveformsurveydivgdiv'] = $aClassAndAttributes['attr']['saveformsurveydivh'] = $aClassAndAttributes['attr']['saveformsurveydivhdiv']   = '';
 
         // Completed
         $aClassAndAttributes['id']['navigator']           = 'navigator-container';
