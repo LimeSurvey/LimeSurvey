@@ -564,7 +564,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
         $aClassAndAttributes['class']['navigatorbuttonl']      = ' col-xs-6 text-left ';
         $aClassAndAttributes['class']['navigatorbuttonprev']   = ' ls-move-btn ls-move-previous-btn btn btn-lg btn-default ';
         $aClassAndAttributes['class']['navigatorbuttonr']      = ' col-xs-6 text-right ';
-        $aClassAndAttributes['class']['navigatorbuttonsumbit'] = ' ls-move-btn ls-move-submit-btn btn btn-lg btn-primary ';
+        $aClassAndAttributes['class']['navigatorbuttonsubmit'] = ' ls-move-btn ls-move-submit-btn btn btn-lg btn-primary ';
         $aClassAndAttributes['class']['navigatorbuttonnext']   = ' ls-move-btn ls-move-next-btn ls-move-submit-btn btn btn-lg btn-primary ';
         $aClassAndAttributes['class']['loadsavecontainer']     = ' navigator row ';
         $aClassAndAttributes['class']['loadsavecol']           = ' col-sm-6 save-clearall-wrapper ';
@@ -572,7 +572,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
         $aClassAndAttributes['class']['savebutton']            = ' ls-saveaction ls-loadall btn btn-default ';
 
         $aClassAndAttributes['attr']['navigatorbuttonprev']   = ' type="submit" value="moveprev" name="move" accesskey="p" accesskey="n"';
-        $aClassAndAttributes['attr']['navigatorbuttonsumbit'] = ' type="submit" value="movesubmit" name="move" accesskey="l" ';
+        $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' type="submit" value="movesubmit" name="move" accesskey="l" ';
         $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' type="submit" value="movenext" name="move"  ';
         $aClassAndAttributes['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" accesskey="L"';
         $aClassAndAttributes['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" accesskey="s" ';
