@@ -687,8 +687,17 @@ class SurveyDynamic extends LSActiveRecord
         }
     }
 
-    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion=false){
-
+    /**
+     * Get an array to find question data responsively
+     *
+     * @param Question $oQuestion
+     * @param SurveyDynamic $oResponses
+     * @param boolean $bHonorConditions
+     * @param boolean $subquestion
+     * @param boolean $getComment
+     * @return array
+     */
+    public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion=false, $getComment=false){
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
 
         if (!(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) || $bHonorConditions==false) && $attributes['hidden'] === 1)
@@ -702,31 +711,80 @@ class SurveyDynamic extends LSActiveRecord
         {
             $aQuestionAttributes['subquestions'] = array();
             foreach($oQuestion->subquestions as $oSubquestion){
-                $aQuestionAttributes['subquestions'][$oSubquestion->qid] = $this->getQuestionArray($oSubquestion,$oResponses,$bHonorConditions,true);
+                //dont collect scale_id > 0
+                if($oSubquestion->scale_id > 0) continue; 
+
+                $subQuestionArray = array();
+                $subQuestionArray = $this->getQuestionArray($oSubquestion,$oResponses,$bHonorConditions,true);
+                if($oQuestion->type == "P"){
+                    $subQuestionArray['comment'] = $this->getQuestionArray($oSubquestion,$oResponses,$bHonorConditions,true, true);
+                }
+
+                $aQuestionAttributes['subquestions'][$oSubquestion->qid] = $subQuestionArray;
+                
+                
+            }
+            //Get other options
+            if(in_array($oQuestion->type, ["M","P"]) && $oQuestion->other=="Y"){
+                $oOtherQuestion = new Question($oQuestion->attributes);
+                $oOtherQuestion->setAttributes(array(
+                    "sid" => $oQuestion->sid,
+                    "gid" => $oQuestion->gid,
+                    "type" => "T",
+                    "parent_qid" => $oQuestion->qid,
+                    "qid" => "other",
+                    "question" => "other",
+                    "title" => "other"
+                ),false);
+                $aQuestionAttributes['subquestions']["other"] = $this->getQuestionArray($oOtherQuestion,$oResponses,$bHonorConditions,true);
+                if($oQuestion->type == "P"){
+                    $aQuestionAttributes['subquestions']["other"]['comment'] = $this->getQuestionArray($oOtherQuestion,$oResponses,$bHonorConditions,true, true);
+                }
             }
         }
 
-        $fieldname= $oQuestion->sid."X".$oQuestion->gid."X";
+        $fieldname= $oQuestion->basicFieldName;
         
-        if($subquestion)
-        {
-            $fieldname.=$oQuestion->parents['qid'].$oQuestion->title;
-        } else {
-            $fieldname.=$oQuestion->qid;
+        if(in_array($oQuestion->type, ["F","A","B","E","C","H","Q","K","T"])){
+            $fieldname.=$oQuestion->title;
+        }
+        
+        if($getComment === true){
+            $fieldname.='comment';
         }
 
         $aQuestionAttributes['fieldname'] = $fieldname;
         $aQuestionAttributes['questionclass'] = Question::getQuestionClass($oQuestion->type);
+
+        if($oQuestion->scale_id == 1){
+            return  $aQuestionAttributes;
+        }
+
         if($aQuestionAttributes['questionclass'] === 'date') {
             $aQuestionAttributes['dateformat'] = getDateFormatDataForQID($aQuestionAttributes, array_merge(self::$survey->attributes, $oQuestion->survey->languagesettings[$oQuestion->language]->attributes ));
         }
+
         $aQuestionAttributes['answervalue'] = isset($oResponses[$fieldname]) ? $oResponses[$fieldname] : null;
+        
         if($aQuestionAttributes['questionclass'] === 'language') {
             $languageArray = getLanguageData(false, $aQuestionAttributes['answervalue']);
             $aQuestionAttributes['languageArray'] = $languageArray[ $aQuestionAttributes['answervalue'] ];
         }
+        
+        if($oQuestion->parent_qid != 0 && $oQuestion->parents['type'] === "1"){
+            $tempFieldname = $fieldname.'#0';
+            $aQuestionAttributes['answervalues'][0] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            $tempFieldname = $fieldname.'#1';
+            $aQuestionAttributes['answervalues'][1] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;        
+        }
+        
+        if($oQuestion->parent_qid != 0 && in_array($oQuestion->parents['type'], [";", ":"])){
+            foreach(Question::model()->findAllByAttributes(array('parent_qid' => $aQuestionAttributes['parent_qid'], 'scale_id' => ($oQuestion->parents['type'] == '1' ? 2 : 1))) as $oScaleSubquestion){
+                $tempFieldname = $fieldname.'_'.$oScaleSubquestion->title;
+                $aQuestionAttributes['answervalues'][$oScaleSubquestion->title] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
+            }
+        }
 
-        // $aQuestionAttributes['answervalue'] = Answer::model()->getAnswerFromCode($aQuestionAttributes['qid'],$fieldname,$sLanguageCode);
         return $aQuestionAttributes;
     }
 

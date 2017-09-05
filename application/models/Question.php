@@ -1051,4 +1051,13 @@ class Question extends LSActiveRecord
         return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!');
     }
 
+
+    public function getBasicFieldName(){
+        if($this->parent_qid != 0){
+            return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
+        } else {
+            return "{$this->sid}X{$this->gid}X{$this->qid}";
+        }
+    }
+
 }
