@@ -1985,6 +1985,16 @@ function checkCompletedQuota($surveyid,$return=false)
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
 
+    $thissurvey['aQuotas']['hiddeninputs']      = '<input type="hidden" name="sid"      value="'.$thissurvey['sid'].'" />
+                                                   <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />
+                                                   <input type="hidden" name="thisstep" value="'.$thissurvey['aQuotas']['sQuotaStep'].'" />';
+
+   foreach($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post){
+       $thissurvey['aQuotas']['hiddeninputs']      .= '<input type="hidden" name="'.$field.'"   value="'.$post.'" />';
+   }
+
+    //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
+
     if ($closeSurvey){
         killSurveySession($surveyid);
 

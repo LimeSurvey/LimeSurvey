@@ -91,13 +91,7 @@
                                 </div>
                             </div>
 
-                            <input type="hidden" name="sid"      value="{{ aSurveyInfo.sid  }}" />
-                            <input type="hidden" name="token"    value="{{ aSurveyInfo.aQuotas.sClientToken }}" />
-                            <input type="hidden" name="thisstep" value="{{ aSurveyInfo.aQuotas.sQuotaStep }}" />
-
-                            {% for field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
-                                <input type="hidden" name="{{ field }}"   value="{{ post }}" />
-                            {% endfor %}
+                            {{ aSurveyInfo.hiddeninputs }}
 
                         </form>
                 {% endif %}
