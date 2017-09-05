@@ -1,16 +1,12 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
  <div class="col-md-8">
-    {% if question.subquestions is empty %}
+    <div class="row">
+        <div class="col-md-4 text-right">
+        </div>
+        <div class="col-md-8 text-left">
             {{question.answervalue}}
-    {% else %}
-            {% for subquestionId, subquestion in question.subquestions %}
-                <div class="row">
-                    <div class="col-md-4 text-right">
-                        <b>{{subquestion.question}} ({{subquestion.qid}})</b>
-                    </div>
-                    <div class="col-md-8 text-left">
-                        {{subquestion.answervalue}}
-                    </div>
-                </div>
-            {% endfor %}
-    {% endif %}
+        </div>
+    </div>
 </div>
+{% endblock %}

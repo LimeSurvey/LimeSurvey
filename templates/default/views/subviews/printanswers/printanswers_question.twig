@@ -6,8 +6,7 @@
     </div>
     {% endblock  %}
     {% block question_answer %}
-        {% set questionTemplate = './subviews/printanswers/question_types/template_' ~ question.questionclass ~ '.twig' %}
-        {{ include(questionTemplate) }}
+        {{ include('./subviews/printanswers/question_types/template_generic_question.twig') }}
     {% endblock  %}
 </div>
 

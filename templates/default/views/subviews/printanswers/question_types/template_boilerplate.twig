@@ -1,16 +1,13 @@
- <div class="col-md-8">
-    {% if question.subquestions is empty %}
+{% extends "./subviews/printanswers/printanswers_question.twig" %}
+
+{% block question_name %}
+    <div class="col-xs-10">
+        <p>({{question.qid}}) <br/>{{question.question}}</p>
+        <small>{{gT("Type:")}} ({{question.questionclass}})</small>
+    </div>
+{% endblock %}
+{% block question_answer %}
+    <div class="col-xs-2">
             {{question.answervalue}}
-    {% else %}
-            {% for subquestionId, subquestion in question.subquestions %}
-                <div class="row">
-                    <div class="col-md-4 text-right">
-                        <b>{{subquestion.question}} ({{subquestion.qid}})</b>
-                    </div>
-                    <div class="col-md-8 text-left">
-                        {{subquestion.answervalue}}
-                    </div>
-                </div>
-            {% endfor %}
-    {% endif %}
-</div>
+    </div>
+{% endblock %}
