@@ -1448,7 +1448,7 @@ class SurveyAdmin extends Survey_Common_Action
     function expire($iSurveyID)
     {
         $iSurveyID = (int) $iSurveyID;
-        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
+        if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveyactivation', 'update'))
         {
             Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
