@@ -179,7 +179,7 @@ class Save {
             $saved_control->identifier = $_POST['savename']; // Binding does escape, so no quoting/escaping necessary
             $saved_control->access_code = hash('sha256',$_POST['savepass']);
             $saved_control->email = $_POST['saveemail'];
-            $saved_control->ip = getIPAddress();
+            $saved_control->ip = ($thissurvey['ipaddr']=='Y')?getIPAddress():'';
             $saved_control->saved_thisstep = $thisstep;
             $saved_control->status = 'S';
             $saved_control->saved_date = $today;

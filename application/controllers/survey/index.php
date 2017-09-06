@@ -140,8 +140,7 @@ class index extends CAction {
             SetSurveyLanguage( $surveyid, $sDisplayLanguage);
         }
 
-        if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) )
-        {
+        if ( $this->_isClientTokenDifferentFromSessionToken($clienttoken,$surveyid) ) {
             $sReloadUrl=$this->getController()->createUrl("/survey/index/sid/{$surveyid}",array('token'=>$clienttoken,'lang'=>App()->language,'newtest'=>'Y'));
             $asMessage = array(
             gT('Token mismatch'),
@@ -149,6 +148,8 @@ class index extends CAction {
             "<a class='reloadlink newsurvey' href={$sReloadUrl}>".gT("Click here to start the survey.")."</a>"
             );
             $this->_createNewUserSessionAndRedirect($surveyid, $redata, __LINE__, $asMessage);
+        } elseif(!$clienttoken) {
+            $clienttoken= isset($_SESSION['survey_'.$surveyid]['token']) ? $_SESSION['survey_'.$surveyid]['token'] : ""; // Fix for #12003
         }
 
         if ( $this->_isSurveyFinished($surveyid) && ($thissurvey['alloweditaftercompletion'] != 'Y' || $thissurvey['tokenanswerspersistence'] != 'Y')) // No test for response update
@@ -241,7 +242,6 @@ class index extends CAction {
         {
             $token=$clienttoken;
         }
-
         //GET BASIC INFORMATION ABOUT THIS SURVEY
         $thissurvey=getSurveyInfo($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
@@ -333,7 +333,7 @@ class index extends CAction {
             {
                 $sLoadSecurity=Yii::app()->request->getPost('loadsecurity');
                 $captcha = Yii::app()->getController()->createAction('captcha');
-                $captchaCorrect = $captcha->validate( $sLoadsecurity, false);
+                $captchaCorrect = $captcha->validate( $sLoadSecurity, false);
 
                 if(empty($sLoadSecurity))
                 {
@@ -515,7 +515,7 @@ class index extends CAction {
             $this->_printTemplateContent($thistpl.'/clearall.pstpl', $redata, __LINE__);
 
             $this->_printTemplateContent($thistpl.'/endpage.pstpl', $redata, __LINE__);
-            doFooter();
+            doFooter($surveyid);
             exit;
         }
 
@@ -684,9 +684,6 @@ class index extends CAction {
 
     function _canUserPreviewSurvey($iSurveyID)
     {
-        if ( !isset($_SESSION['loginID']) ) // This is not needed because Permission::model()->hasSurveyPermission control connexion
-            return false;
-
         return Permission::model()->hasSurveyPermission($iSurveyID,'surveycontent','read');
     }
 
@@ -701,12 +698,11 @@ class index extends CAction {
 
         if(isset($redata['surveyid']) && $redata['surveyid'] && !isset($thisurvey))
         {
-            $thissurvey=getSurveyInfo($redata['surveyid']);
-            $sTemplateDir= $oTemplate->viewPath;
+            $surveyId = $redata['surveyid'];
         }
         else
         {
-            $sTemplateDir= $oTemplate->viewPath;
+            $surveyId = null;
         }
         sendCacheHeaders();
 
@@ -719,7 +715,7 @@ class index extends CAction {
         $this->_printMessage($asMessage);
         $this->_printTemplateContent($oTemplate->viewPath.'/endpage.pstpl', $redata, $iDebugLine);
 
-        doFooter();
+        doFooter($surveyId);  // It's OK for surveyId to be null here
         exit;
     }
 

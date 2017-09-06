@@ -106,7 +106,7 @@ class questiongroups extends Survey_Common_Action
             $aData['sidemenu']['state'] = false;
 
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'import_view', $aData);
         }
@@ -134,7 +134,7 @@ class questiongroups extends Survey_Common_Action
 
 
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'importGroup_view', $aData);
         }
@@ -176,7 +176,7 @@ class questiongroups extends Survey_Common_Action
 
             $aData['sidemenu']['state'] = false;
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
             $aData['surveybar']['importquestiongroup'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;  // Close button
             $aData['surveybar']['savebutton']['form'] = true;
@@ -203,64 +203,54 @@ class questiongroups extends Survey_Common_Action
         {
             Yii::app()->loadHelper('surveytranslator');
 
-            $sSurveyLanguages = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $sSurveyLanguages[] = Survey::model()->findByPk($surveyid)->language;
-            $errorstring = '';
+            $sSurveyLanguages = Survey::model()->findByPk($surveyid)->getAllLanguages();
             foreach ($sSurveyLanguages as $sLanguage)
-                if (empty($_POST['group_name_' . $sLanguage]))
-                    $errorstring.= getLanguageNameFromCode($sLanguage, false) . "\\n";
-
-            if ($errorstring != '')
-                $this->getController()->redirect(array('admin/survey/sa/view/surveyid/' . $surveyid));
-
-            else
             {
-                $sInsertArray=array();
-                foreach ($sSurveyLanguages as $sLanguage)
-                {
-                    $sGroupname = Yii::app()->request->getPost('group_name_' . $sLanguage);
-                    $sGroupDescription = Yii::app()->request->getPost('description_' . $sLanguage);
-                    // Decode entities
-                    $sGroupname = html_entity_decode($sGroupname, ENT_QUOTES, "UTF-8");
-                    $sGroupDescription = html_entity_decode($sGroupDescription, ENT_QUOTES, "UTF-8");
-                    // Fix bug with FCKEditor saving strange BR types
-                    $sGroupname = fixCKeditorText($sGroupname);
-                    $sGroupDescription = fixCKeditorText($sGroupDescription);
-                    $sInsertArray[$sLanguage] = array(
-                        'sid' => $surveyid,
-                        'group_name' => $sGroupname,
-                        'description' => $sGroupDescription,
-                        'group_order' => getMaxGroupOrder($surveyid),
-                        'language' => $sLanguage,
-                        'randomization_group' => Yii::app()->request->getPost('randomization_group'),
-                        'grelevance' => Yii::app()->request->getPost('grelevance')
-                    );
+                $oGroup=new QuestionGroup;
+                $oGroup->sid=$surveyid;
+                if(isset($newGroupID)){
+                    switchMSSQLIdentityInsert('groups',true);
+                    $oGroup->gid=$newGroupID;
                 }
-                $newGroupID=QuestionGroup::model()->insertNewGroup($sInsertArray);
-                if ($newGroupID===false) {
-                    // Error, redirect back.
-                    Yii::app()->setFlashMessage(gT("Question group was not saved. Please check if the survey is active."), 'error');
-                    $this->getController()->redirect(Yii::app()->request->urlReferrer);
+                $oGroup->group_name = Yii::app()->request->getPost('group_name_' . $sLanguage,"");
+                $oGroup->description = Yii::app()->request->getPost('description_' . $sLanguage,"");
+                if(!isset($newGroupOrder)){
+                    $newGroupOrder=getMaxGroupOrder($surveyid);
                 }
-
-                $questions = new Question('search');
-                $questions->gid = $newGroupID;
-                Yii::app()->setFlashMessage(gT("New question group was saved."));
-
-                if($questions->search()->itemCount<1)
-                {
-                    Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'),'<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">','</a>'),'info');
-                }
-                if(Yii::app()->request->getPost('close-after-save') === 'true')
-                {
-                    $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
-                }
-                else
-                {
-                    // After save, go to edit
-                    $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$newGroupID"));
+                $oGroup->group_order=$newGroupOrder;
+                $oGroup->language =$sLanguage;
+                $oGroup->randomization_group =Yii::app()->request->getPost('randomization_group');
+                $oGroup->grelevance =Yii::app()->request->getPost('grelevance');
+                if($oGroup->save()){
+                    if(!isset($newGroupID)){
+                        $newGroupID=$oGroup->gid;
+                    }
+                    else
+                    {
+                        switchMSSQLIdentityInsert('groups',true);
+                    }
+                }else{
+                    Yii::app()->setFlashMessage(CHtml::errorSummary($oGroup),'error');
                 }
             }
+            if(!isset($newGroupID)){
+                // Error, redirect back.
+                Yii::app()->setFlashMessage(gT("Question group was not saved."), 'error');
+                $this->getController()->redirect(array("admin/questiongroups/sa/add/surveyid/$surveyid"));
+            }
+
+            Yii::app()->setFlashMessage(gT("New question group was saved."));
+            Yii::app()->setFlashMessage(sprintf(gT('You can now %sadd a question%s in this group.'),'<a href="'.Yii::app()->createUrl("admin/questions/sa/newquestion/surveyid/$surveyid/gid/$newGroupID").'">','</a>'),'info');
+            if(Yii::app()->request->getPost('close-after-save') === 'true')
+            {
+                $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
+            }
+            else
+            {
+                // After save, go to edit
+                $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$newGroupID"));
+            }
+
         }
         else
         {
@@ -325,7 +315,7 @@ class questiongroups extends Survey_Common_Action
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['group_name'] = $grow['group_name'];
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
         $aData['surveyIsActive'] = $surveyinfo['active']=='Y';
         $aData['questiongroupbar']['buttons']['view'] = true;
 
@@ -430,7 +420,7 @@ class questiongroups extends Survey_Common_Action
             $aData['aBaseLanguage'] = $aBaseLanguage;
 
             $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
 
             ///////////
             // sidemenu
@@ -459,7 +449,6 @@ class questiongroups extends Survey_Common_Action
     public function update($gid)
     {
         $gid = (int) $gid;
-
         $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
         $surveyid = $group->sid;
 
@@ -508,7 +497,7 @@ class questiongroups extends Survey_Common_Action
                 }
             }
 
-            Yii::app()->session['flashmessage'] = gT("Question group successfully saved.");
+            Yii::app()->setFlashMessage(gT("Question group successfully saved."));
 
             if(Yii::app()->request->getPost('close-after-save') === 'true')
                 $this->getController()->redirect(array('admin/questiongroups/sa/view/surveyid/' . $surveyid . '/gid/' . $gid));

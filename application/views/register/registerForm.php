@@ -29,13 +29,13 @@
 <?php if($bCaptcha){ ?>
     <div class='form-group col-sm-12'>
         <label for="loadsecurity" class='control-label col-md-4 col-sm-12'>
-            <p class="col-sm-6 col-md-12 remove-padding"><?php eT("Please enter the letters you see below:"); ?></p>
+            <p class="col-sm-6 col-md-12 remove-padding"><?php eT("Please solve the following equation:"); ?></p>
             <span class="col-sm-6 col-md-12">
                 <?php $this->widget('CCaptcha',
                     array(
                         'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
                         'buttonType' => 'button',
-                        'buttonLabel' => gt('Reload image')
+                        'buttonLabel' => gt('Reload image', 'unescaped')
                 )); ?>
             </span>
         </label>

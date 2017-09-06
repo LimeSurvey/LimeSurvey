@@ -1,3 +1,7 @@
+<?php
+/* @var $this AdminController */
+/* @var QuestionGroup $oQuestionGroup */
+?>
 <?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
 
@@ -52,7 +56,7 @@
                         'eqrow'=>$eqrow,
                         'addlanguages'=>$addlanguages,
                         'surveyid'=>$surveyid,
-                        'gid'=>NULL, 'qid'=>NULL,
+                        'gid'=>$groupid, 'qid'=>NULL,
                         'adding'=>$adding,
                         'aqresult'=>$aqresult,
                         'action'=>$action
@@ -157,7 +161,7 @@
                             <div class="panel-body">
                                 <div>
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for="question_type_button">
+                                        <label class="col-sm-4 control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
                                             ?>
@@ -239,7 +243,7 @@
                                     </div>
 
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for='gid'><?php eT("Question group:"); ?></label>
+                                        <label class="col-sm-4 control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
                                         <div class="col-sm-8">
                                             <select name='gid' id='gid' class="form-control" <?php if ($activated == "Y"){echo " disabled ";} ?> >
                                                 <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
@@ -251,7 +255,7 @@
                                     </div>
 
                                     <div  class="form-group" id="OtherSelection">
-                                        <label class="col-sm-4 control-label"><?php eT("Option 'Other':"); ?></label>
+                                        <label class="col-sm-4 control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
                                         <?php if ($activated != "Y"): ?>
                                             <div class="col-sm-8">
                                                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $eqrow['other'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
@@ -263,7 +267,7 @@
                                     </div>
 
                                     <div id='MandatorySelection' class="form-group">
-                                        <label class="col-sm-4 control-label"><?php eT("Mandatory:"); ?></label>
+                                        <label class="col-sm-4 control-label" title="<?php eT("Set \"Mandatory\" state");?>"><?php eT("Mandatory:"); ?></label>
                                         <div class="col-sm-8">
                                             <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
@@ -271,7 +275,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label" for='relevance'><?php eT("Relevance equation:"); ?></label>
+                                        <label class="col-sm-4 control-label" for='relevance' title="<?php eT("Relevance equation");?>"><?php eT("Relevance equation:"); ?></label>
                                         <div class="col-sm-8">
                                             <textarea class="form-control" rows='1' id='relevance' name='relevance' <?php if ($eqrow['conditions_number']) {?> readonly='readonly'<?php } ?> ><?php echo $eqrow['relevance']; ?></textarea>
                                             <?php if ($eqrow['conditions_number']) :?>
@@ -281,7 +285,7 @@
                                     </div>
 
                                     <div id='Validation'  class="form-group">
-                                        <label class="col-sm-4 control-label" for='preg'><?php eT("Validation:"); ?></label>
+                                        <label class="col-sm-4 control-label" for='preg'  title="<?php eT("Validation:");?>"><?php eT("Validation:"); ?></label>
                                         <div class="col-sm-8">
                                             <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
                                         </div>
@@ -341,19 +345,18 @@
         <?php if ($adding): ?>
             <input type='hidden' name='action' value='insertquestion' />
             <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />
-            <p><input type='submit'  class="hidden" value='<?php eT("Add question"); ?>' />
-            <?php elseif ($copying): ?>
+            <p><input type='submit'  class="hidden" value='<?php eT("Add question"); ?>' /></p>
+        <?php elseif ($copying): ?>
             <input type='hidden' name='action' value='copyquestion' />
             <input type='hidden' id='oldqid' name='oldqid' value='<?php echo $qid; ?>' />
-            <p><input type='submit'  class="hidden" value='<?php eT("Copy question"); ?>' />
-            <?php else: ?>
+            <p><input type='submit'  class="hidden" value='<?php eT("Copy question"); ?>' /></p>
+        <?php else: ?>
             <input type='hidden' name='action' value='updatequestion' />
             <input type='hidden' id='qid' name='qid' value='<?php echo $qid; ?>' />
-            <p><button type='submit' class="saveandreturn hidden" name="redirection" value="edit"><?php eT("Save") ?> </button>
+            <p><button type='submit' class="saveandreturn hidden" name="redirection" value="edit"><?php eT("Save") ?> </button></p>
             <input type='submit'  class="hidden" value='<?php eT("Save and close"); ?>' />
-            <?php endif; ?>
+        <?php endif; ?>
         <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />
-        <?php // endif;?>
         </form>
     </div>
 </div>

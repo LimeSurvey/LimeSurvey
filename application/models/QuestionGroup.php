@@ -348,9 +348,9 @@ class QuestionGroup extends LSActiveRecord
         if (parent::beforeSave())
         {
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-
-            if ($surveyIsActive && $this->getIsNewRecord())
+            if ($surveyIsActive && $this->getIsNewRecord()) /* And for multi lingual, when add a new language ? */
             {
+                $this->addError('gid',gT("You can not add a group if survey is active."));
                 return false;
             }
             return true;
@@ -371,6 +371,19 @@ class QuestionGroup extends LSActiveRecord
         $sQuery= "select count(*) from {{groups}}
             left join {{questions}} on  {{groups}}.gid={{questions}}.gid
             where {{groups}}.sid={$surveyid} and qid is null";
+        return Yii::app()->db->createCommand($sQuery)->queryScalar();
+    }
+
+    /**
+     * Used in frontend helper, buildsurveysession.
+     * @param int $surveyid
+     * @return int
+     */
+    public static function getTotalGroupsWithQuestions($surveyid)
+    {
+        $sQuery= "select count(DISTINCT {{groups}}.gid) from {{groups}}
+            left join {{questions}} on  {{groups}}.gid={{questions}}.gid
+            where {{groups}}.sid={$surveyid} and qid is not null";
         return Yii::app()->db->createCommand($sQuery)->queryScalar();
     }
 

@@ -66,7 +66,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 ),
         'usersearchbase' => array(
                 'type' => 'string',
-                'label' => 'Base DN for the user search operation'
+                'label' => 'Base DN for the user search operation. Multiple bases may be separated by a semicolon (;)'
                 ),
         'extrauserfilter' => array(
                 'type' => 'string',
@@ -99,6 +99,16 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         'automaticsurveycreation' => array(
                 'type' => 'checkbox',
                 'label' => 'Grant survey creation permission to automatically created users'
+        	),
+        'groupsearchbase' => array(
+                'type' => 'string',
+                'label' => 'Optional base DN for group restriction',
+                'help' => 'E.g., ou=Groups,dc=example,dc=com'
+                ),
+        'groupsearchfilter' => array(
+                'type' => 'string',
+                'label' => 'Optional filter for group restriction',
+                'help' => 'Required if group search base set. E.g. (&(cn=limesurvey)(memberUid=$username)) or (&(cn=limesurvey)(member=$userdn))'
                 )
     );
 
@@ -214,15 +224,21 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $usersearchfilter = "($searchuserattribute=$new_user)";
         }
         // Search for the user
-        $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute,$fullnameattribute));
-        $rescount=ldap_count_entries($ldapconn,$dnsearchres);
-        if ($rescount == 1)
-        {
-            $userentry=ldap_get_entries($ldapconn, $dnsearchres);
-            $new_email = flattenText($userentry[0][strtolower($mailattribute)][0]);
-            $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
-        }
-        else
+	$userentry = false;
+	// try each semicolon-separated search base in order
+	foreach(explode(";",$usersearchbase) as $usb)
+	{
+          $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute,$fullnameattribute));
+          $rescount=ldap_count_entries($ldapconn,$dnsearchres);
+          if ($rescount == 1)
+          {
+              $userentry=ldap_get_entries($ldapconn, $dnsearchres);
+              $new_email = flattenText($userentry[0][strtolower($mailattribute)][0]);
+              $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
+	      break;
+          }
+	}
+	if(!$userentry)
         {
             $oEvent->set('errorCode',self::ERROR_LDAP_NO_SEARCH_RESULT);
             $oEvent->set('errorMessageTitle',gT('Username not found in LDAP server'));
@@ -434,6 +450,8 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         $usersearchbase		= $this->get('usersearchbase');
         $binddn     		= $this->get('binddn');
         $bindpwd     		= $this->get('bindpwd');
+        $groupsearchbase        = $this->get('groupsearchbase');
+        $groupsearchfilter      = $this->get('groupsearchfilter');
 
         // Try to connect
         $ldapconn = $this->createConnection();
@@ -492,6 +510,23 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
                 ldap_close($ldapconn); // all done? close connection
                 return;
+            }
+
+            // If specifed, check group membership
+            if ($groupsearchbase != '' && $groupsearchfilter != '')
+            {
+                $keywords = array('$username','$userdn');
+                $substitutions = array($username,$userdn);
+                $filter = str_replace($keywords, $substitutions, $groupsearchfilter);
+                $groupsearchres = ldap_search($ldapconn, $groupsearchbase, $filter);
+                $grouprescount = ldap_count_entries($ldapconn, $groupsearchres);
+                if ($grouprescount < 1)
+                {
+                    $this->setAuthFailure(self::ERROR_USERNAME_INVALID,
+                    gT('Valid username but not authorized by group restriction'));
+                    ldap_close($ldapconn); // all done? close connection
+                    return;
+                }
             }
 
             // binding to ldap server with the userDN and privided credentials

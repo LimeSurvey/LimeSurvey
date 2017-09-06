@@ -75,6 +75,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!isset($showgroupinfo)) { $showgroupinfo = Yii::app()->getConfig('showgroupinfo'); }
     if (!isset($showqnumcode)) { $showqnumcode = Yii::app()->getConfig('showqnumcode'); }
     $_surveyid = Yii::app()->getConfig('surveyID');
+
+    if($_surveyid) {
+        $totalgroups = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
+    }
+    else {
+        $totalgroups = "";
+    }
+
     if (!isset($showxquestions)) { $showxquestions = Yii::app()->getConfig('showxquestions'); }
     if (!isset($s_lang)) { $s_lang = (isset(Yii::app()->session['survey_'.$_surveyid]['s_lang']) ? Yii::app()->session['survey_'.$_surveyid]['s_lang'] : 'en'); }
     if($_surveyid && !isset($thissurvey))
@@ -297,7 +305,6 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_therearexquestions = '';
     };
 
-
     if (isset($token))
     {
         $_token = $token;
@@ -372,7 +379,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_datestamp = '-';
     }
-    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y")
+    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y" && !$iscompleted)
     {
         $_saveall = doHtmlSaveAll(isset($move)?$move:NULL);
         $_savelinks = doHtmlSaveLinks(isset($move)?$move:NULL);
@@ -517,17 +524,27 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if (isset($thissurvey['usecaptcha']) && function_exists("ImageCreate") && isCaptchaEnabled('saveandloadscreen', $thissurvey['usecaptcha']))
     {
-        $_loadform .="
-            <div class='form-group load-survey-row load-survey-captcha'>
-                <label class='control-label col-sm-3 load-survey-label label-cell' for='loadsecurity'>" . gT("Security question:") . "</label>
-                <div class='col-sm-2 captcha-image' valign='middle'>
-                    <img src='".Yii::app()->getController()->createUrl('/verification/image/sid/'.((isset($surveyid)) ? $surveyid : ''))."' alt='' />
+        $_loadform .='<div class="col-sm-12 form-group">
+                <label class="col-md-4 col-sm-12 control-label">
+                    <p class="col-sm-6 col-md-12 remove-padding">'.gT("Please solve the following equation:").'</p>
+                    <span class="col-sm-6 col-md-12">';
+        $_loadform .=Yii::app()->getController()->widget('CCaptcha',array(
+                    'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
+                    'buttonType' => 'button',
+                    'buttonLabel' => gt('Reload image', 'unescaped')
+                ),true);
+        $_loadform .='</span>
+                </label>
+                <div class="col-sm-6">
+                    <div>&nbsp;</div>'
+                    . CHtml::textField('loadsecurity', '', array(
+                        'id' => 'captchafield',
+                        'class' => 'text input-sm form-control ',
+                        'required' => 'required'
+                    )).'
                 </div>
-                <div class='col-sm-3 captcha-input' valign='middle'>
-                    <input class='form-control' type='text' size='5' maxlength='3' id='loadsecurity' name='loadsecurity' value='' alt=''/>
-                </div>
-            </div>
-        ";
+            </div><br/>';
+
     }
 
     $_loadform .="
@@ -624,7 +641,6 @@ EOD;
  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', '$_googleAnalyticsAPIKey', 'auto');
-ga('send', 'pageview');
 ga('send', 'pageview', '$_trackURL');
 
 </script>
@@ -645,7 +661,7 @@ EOD;
     {
         if (file_exists ($oTemplate->path.'/'.$oTemplate->siteLogo ))
         {
-            $sitelogo= '<img class="img-responsive" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'" alt=""/>';
+            $sitelogo= '<img class="img-responsive site-surveylist-logo custom custom-margin top-15 bottom-15" src="'.App()->getAssetManager()->publish( $oTemplate->path.'/'.$oTemplate->siteLogo).'" alt=""/>';
         }
     }
 
@@ -683,6 +699,7 @@ EOD;
     $coreReplacements['MOVENEXTBUTTON'] = isset($movenextbutton) ? $movenextbutton : '';    // global
     $coreReplacements['NOSURVEYID'] = (isset($surveylist))?$surveylist['nosid']:'';
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
+    $coreReplacements['NUMBEROFGROUPS'] = $totalgroups;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
     $coreReplacements['PRIVACY'] = isset($privacy) ? $privacy : '';    // global
     $coreReplacements['PRIVACYMESSAGE'] = "<span class='privacy-title'>".gT("A note on privacy")."</span><span class='privacy-body'><br />".gT("This survey is anonymous.")."<br />".gT("The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it.").' '.gT("If you used an identifying token to access this survey, please rest assured that this token will not be stored together with your responses. It is managed in a separate database and will only be updated to indicate whether you did (or did not) complete this survey. There is no way of matching identification tokens with survey responses.").'</span>';
@@ -698,7 +715,7 @@ EOD;
     $coreReplacements['SAVEFORM'] = $_saveform;
     $coreReplacements['SAVEHEADING'] = gT("Save your unfinished survey");
     $coreReplacements['SAVEMESSAGE'] = gT("Enter a name and password for this survey and click save below.")."<br />\n".gT("Your survey will be saved using that name and password, and can be completed later by logging in with the same name and password.")."<br /><br />\n<span class='emailoptional'>".gT("If you give an email address, an email containing the details will be sent to you.")."</span><br /><br />\n".gT("After having clicked the save button you can either close this browser window or continue filling out the survey.");
-    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config
+    $coreReplacements['SID'] = Yii::app()->getConfig('surveyID','');// Allways use surveyID from config, leave it to be sure to have something (EM setVariableAndTokenMappingsForExpressionManager replace it)
     $coreReplacements['SITENAME'] = Yii::app()->getConfig('sitename');
     $coreReplacements['SITELOGO'] = $sitelogo;
     $coreReplacements['SUBMITBUTTON'] = $_submitbutton;

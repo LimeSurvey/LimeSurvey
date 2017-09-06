@@ -114,8 +114,8 @@
                 <?php else: ?>
                     <?php  eT("Timings will be saved."); ?>
                     <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                    <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']); // Maybe use a readonly dropdown ??>
-                <?php endif;?>
+                    <?php echo CHtml::hiddenField('savetimings',$esrow['savetimings']);  // Maybe use a readonly dropdown? ?>
+                <?php endif; ?>
             <?php else: ?>
                 <?php
                     $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -176,9 +176,9 @@
     </div>
     <!-- Google Analytics -->
     <div class="form-group">
-        <label class="col-sm-5 control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics API key:"); ?></label>
+        <label class="col-sm-5 control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
         <div class="col-sm-7">
-            <?php echo CHtml::textField('googleanalyticsapikey',$esrow['googleanalyticsapikey'],array('size'=>20), array('class'=>"form-control")); ?>
+            <?php echo CHtml::textField('googleanalyticsapikey',$esrow['googleanalyticsapikey'],array('size'=>20,'class'=>"form-control")); ?>
         </div>
     </div>
     <!-- Google Analytics style -->

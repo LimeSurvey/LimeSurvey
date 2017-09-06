@@ -40,8 +40,8 @@ class RegisterController extends LSYii_Controller {
     {
         return array(
             'captcha' => array(
-                'class' => 'CCaptchaAction',
-                'backColor'=>0xf6f6f6
+                'class' => 'CaptchaExtendedAction',
+                'mode'=>CaptchaExtendedAction::MODE_MATH
             )
         );
     }
@@ -85,24 +85,21 @@ class RegisterController extends LSYii_Controller {
             $iSurveyId=Yii::app()->request->getPost('sid');
 
         $oSurvey=Survey::model()->find("sid=:sid",array(':sid'=>$iSurveyId));
-
-        $sLanguage = Yii::app()->request->getParam('lang');
-        if (!$sLanguage)
-        {
-            $sLanguage = Survey::model()->findByPk($iSurveyId)->language;
-        }
-
-        if (!$oSurvey){
+        /* Throw 404 if needed */
+        $sLanguage = Yii::app()->request->getParam('lang',Yii::app()->getConfig('defaultlang'));
+        Yii::app()->setLanguage($sLanguage);
+        if (!$oSurvey) {
             throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }elseif($oSurvey->allowregister!='Y' || !tableExists("{{tokens_{$iSurveyId}}}")){
+        } elseif($oSurvey->allowregister!='Y' || !tableExists("{{tokens_{$iSurveyId}}}")) {
             throw new CHttpException(404,"The survey in which you are trying to register don't accept registration. It may have been updated or the link you were given is outdated or incorrect.");
-        }
-        elseif(!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))){
+        } elseif(!is_null($oSurvey->expires) && $oSurvey->expires < dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust'))) {
             $this->redirect(array('survey/index','sid'=>$iSurveyId,'lang'=>$sLanguage));
         }
-
-        Yii::app()->setLanguage($sLanguage);
-
+        /* Fix language according to existing language in survey */
+        if (!in_array($sLanguage,$oSurvey->getAllLanguages())) {
+            $sLanguage = $oSurvey->language;
+            Yii::app()->setLanguage($sLanguage);
+        }
 
         $event = new PluginEvent('beforeRegister');
         $event->set('surveyid', $iSurveyId);
@@ -138,9 +135,9 @@ class RegisterController extends LSYii_Controller {
         // Check the security question's answer
         if (function_exists("ImageCreate") && isCaptchaEnabled('registrationscreen',$aSurveyInfo['usecaptcha']) )
         {
-            $sLoadsecurity=Yii::app()->request->getPost('loadsecurity','');
+            $sLoadSecurity=Yii::app()->request->getPost('loadsecurity','');
             $captcha=Yii::app()->getController()->createAction("captcha");
-            $captchaCorrect = $captcha->validate( $sLoadsecurity, false);
+            $captchaCorrect = $captcha->validate( $sLoadSecurity, false);
 
             if (!$captchaCorrect)
             {
@@ -229,6 +226,7 @@ class RegisterController extends LSYii_Controller {
         $sLanguage=App()->language;
         $aSurveyInfo=getSurveyInfo($iSurveyId,$sLanguage);
 
+        $aMail = array();
         $aMail['subject']=$aSurveyInfo['email_register_subj'];
         $aMail['message']=$aSurveyInfo['email_register'];
         $aReplacementFields=array();
@@ -443,7 +441,7 @@ class RegisterController extends LSYii_Controller {
     /**
     * Get the date if survey is future
     * @param $iSurveyId
-    * @return localized date
+    * @return null|string date
     */
     public function getStartDate($iSurveyId){
         $aSurveyInfo=getSurveyInfo($iSurveyId,Yii::app()->language);
@@ -494,6 +492,6 @@ class RegisterController extends LSYii_Controller {
             // Survey/index need renderPartial
             echo $this->renderPartial('/register/display',$aViewData, true, true);
         }
-        doFooter();
+        doFooter($iSurveyId);
     }
 }

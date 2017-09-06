@@ -46,7 +46,7 @@
         $columnNames='"'.implode('","',$aColumnHeaders).'"';
     }
     $sJsonColumnInformation=json_encode($aTokenColumns);
-    // Build the javasript variables to pass to the jqGrid
+    // Build the javasript variables to pass to the page
 ?>
 <script type="text/javascript">
     var sAddParticipantToCPDBText = '<?php eT("Add participants to central database",'js');?>';
@@ -174,8 +174,8 @@
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                         'itemsCssClass' =>'table-striped',
                         'columns' => $model->attributesForGrid,
-
                         'ajaxUpdate'=>true,
+                        'ajaxType'=>'POST',
                         'afterAjaxUpdate' => 'reinstallParticipantsFilterDatePicker'
                     ));
                 ?>

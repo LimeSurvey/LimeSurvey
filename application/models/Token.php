@@ -273,8 +273,8 @@
         {
             $aRules= array(
                 array('token', 'unique', 'allowEmpty' => true),
-                array('firstname','LSYii_Validators'),
-                array('lastname','LSYii_Validators'),
+                array('firstname','LSYii_Validators','except'=>'FinalSubmit'),
+                array('lastname','LSYii_Validators','except'=>'FinalSubmit'),
                 array(implode(',', $this->tableSchema->columnNames), 'safe'),
                 array('remindercount','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                 array('email','filter','filter'=>'trim'),

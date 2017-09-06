@@ -79,7 +79,7 @@ class templates extends Survey_Common_Action
     */
     public function tmp($id)
     {
-        $iTime= preg_replace("/[^0-9]$/", '', $id);
+        $iTime = $id = CHtml::encode($id);
         $sFile = Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR."template_temp_{$iTime}.html";
 
         if(!is_file($sFile) || !file_exists($sFile)) {
@@ -293,7 +293,7 @@ class templates extends Survey_Common_Action
         $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
         $tempdir = Yii::app()->getConfig('tempdir');
         $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
-        $filename=sanitize_filename($_FILES['upload_file']['name'],false,false);// Don't force lowercase or alphanumeric
+        $filename=sanitize_filename($_FILES['upload_file']['name'],false,false,false);// Don't force lowercase or alphanumeric
 
         $dirfilepath = $oEditedTemplate->filesPath;
         if (!file_exists($dirfilepath))
@@ -409,6 +409,7 @@ class templates extends Survey_Common_Action
         App()->getClientScript()->reset();
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'admin_core.js');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'templates.js');
+        AdminTheme::staticRegisterScriptFile('ADMIN_SCRIPT_PATH', 'notifications.js' );
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
         $aData['fullpagebar']['returnbutton']=true;
@@ -729,7 +730,6 @@ class templates extends Survey_Common_Action
         Yii::app()->loadHelper("admin/template");
         $aData = array();
         $time = date("ymdHis");
-
         // Prepare textarea class for optional javascript
         $templateclasseditormode = getGlobalSetting('defaulttemplateeditormode'); // default
         if (Yii::app()->session['templateeditormode'] == 'none')
@@ -756,23 +756,21 @@ class templates extends Survey_Common_Action
                 $myoutput = str_replace($cssfile, $cssfile . "?t=$time", $myoutput);
             }
 
-
             $myoutput = implode("\n", $myoutput);
-
-
 
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('jquery-touch-punch');
             $this->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
-
+            App()->getClientScript()->unregisterPackage('admin-theme');         // We remove the admin package
             App()->getClientScript()->render($myoutput);
+
             @fwrite($fnew, $myoutput);
             @fclose($fnew);
         }
         if (Yii::app()->session['templateeditormode'] !== 'default') {
             $sTemplateEditorMode = Yii::app()->session['templateeditormode'];
         } else {
-            $sTemplateEditorMode = getGlobalSetting('templateeditormode', 'full');
+            $sTemplateEditorMode = getGlobalSetting('templateeditormode');
         }
         $sExtension=substr(strrchr($editfile, '.'), 1);
         switch ($sExtension)
@@ -950,6 +948,7 @@ class templates extends Survey_Common_Action
             'navigator.pstpl',
             'endpage.pstpl'
         );
+        /* not used : data updated between load */
         $Question = array('startpage.pstpl',
             'survey.pstpl',
             'startgroup.pstpl',
@@ -965,27 +964,33 @@ class templates extends Survey_Common_Action
             'completed.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $Clearall = array('startpage.pstpl',
             'clearall.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $Register = array('startpage.pstpl',
             'survey.pstpl',
             'register.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $Save = array('startpage.pstpl',
             'save.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $Load = array('startpage.pstpl',
             'load.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $printtemplate = array('startpage.pstpl',
             'printanswers.pstpl',
             'endpage.pstpl'
         );
+        /* not used */
         $printablesurveytemplate = array('print_survey.pstpl',
             'print_group.pstpl',
             'print_question.pstpl'
@@ -1060,7 +1065,7 @@ class templates extends Survey_Common_Action
         $thissurvey['tokenanswerspersistence'] = "Y";
         $thissurvey['templatedir'] = $templatename;
         $thissurvey['format'] = "G";
-        $thissurvey['surveyls_url'] = "http://www.limesurvey.org/";
+        $thissurvey['surveyls_url'] = "https://www.limesurvey.org/";
         $thissurvey['surveyls_urldescription'] = gT("Some URL description");
         $thissurvey['usecaptcha'] = "A";
         $percentcomplete = makegraph(6, 10);
@@ -1212,11 +1217,9 @@ class templates extends Survey_Common_Action
                     'MOVENEXTBUTTON' => '<button type="submit" id="movenextbtn" value="movenext" name="movenext" accesskey="n" class="submit button btn btn-primary btn-lg">'.gT('Next').'</button>'
                 );
                 $files=$Welcome ;
-                foreach ($Welcome as $qs) {
+                foreach ($files as $qs) {
                     $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/$qs", $aData, $oEditedTemplate));
                 }
-
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath  . "/endpage.pstpl", $aData, $oEditedTemplate));
                 break;
 
             case 'register':

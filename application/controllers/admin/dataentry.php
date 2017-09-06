@@ -143,14 +143,14 @@ class dataentry extends Survey_Common_Action
         Yii::app()->loadHelper('admin/import');
         // Fill option
         $aOptions=array();
-        $aOptions['bDeleteFistLine']=(Yii::app()->request->getPost('dontdeletefirstline') == "dontdeletefirstline")?false:true;// Force, maybe function change ;)
-        if(Yii::app()->request->getPost('noid')==="noid"){
+        $aOptions['bDeleteFistLine']=! (bool) Yii::app()->request->getPost('dontdeletefirstline');
+        if(Yii::app()->request->getPost('noid')){
             $aOptions['sExistingId']='ignore';
         }else{
             $aOptions['sExistingId']=Yii::app()->request->getPost('insertmethod');
         }
-        $aOptions['bNotFinalized']=(Yii::app()->request->getPost('notfinalized') == "notfinalized");
-        $aOptions['bForceImport']=(Yii::app()->request->getPost('forceimport') == "forceimport");
+        $aOptions['bNotFinalized']=(bool) Yii::app()->request->getPost('notfinalized');
+        $aOptions['bForceImport']=(bool) Yii::app()->request->getPost('forceimport');
         $aOptions['sCharset']=Yii::app()->request->getPost('vvcharset');
         $aOptions['sSeparator']="\t";
         $aResult=CSVImportResponses($filePath,$iSurveyId,$aOptions);
@@ -376,6 +376,12 @@ class dataentry extends Survey_Common_Action
                {
                    $targetResponse[$targetField] = $sourceResponse[$sourceField];
                }
+
+               $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+               $beforeDataEntryImport->set('iSurveyID',$iSurveyId);
+               $beforeDataEntryImport->set('oModel',$targetResponse);
+               App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
                $imported++;
                $targetResponse->save();
                $aSRIDConversions[$iOldID]=$targetResponse->id;
@@ -701,8 +707,8 @@ class dataentry extends Survey_Common_Action
                             ;
                             if ($idrow[$fname['fieldname']]!='')
                             {
-                                $datetimeobj = new Date_Time_Converter($idrow[$fname['fieldname']], "Y-m-d H:i:s");
-                                $thisdate = $datetimeobj->convert($dateformatdetails['phpdate']);
+                                $datetimeobj = DateTime::createFromFormat("!Y-m-d H:i:s", $idrow[$fname['fieldname']]);
+                                $thisdate = $datetimeobj->format($dateformatdetails['phpdate']);
                             }
                             else
                             {
@@ -1410,6 +1416,12 @@ class dataentry extends Survey_Common_Action
 
             $delquery = "DELETE FROM $surveytable WHERE id=$id";
             Yii::app()->loadHelper('database');
+
+            $beforeDataEntryDelete = new PluginEvent('beforeDataEntryDelete');
+            $beforeDataEntryDelete->set('iSurveyID',$surveyid);
+            $beforeDataEntryDelete->set('iResponseID',$id);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
+
             $delresult = dbExecuteAssoc($delquery) or safeDie ("Couldn't delete record $id<br />\n");
 
             $aData['sidemenu']['state'] = false;
@@ -1488,12 +1500,15 @@ class dataentry extends Survey_Common_Action
                         $qidattributes = getQuestionAttributeValues($irow['qid']);
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
-                        $this->getController()->loadLibrary('Date_Time_Converter');
-                        $datetimeobj = new date_time_converter($thisvalue,$dateformatdetails['phpdate']) ;
+                        $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
+                        if ($datetimeobj) {
+                            $dateoutput  = $datetimeobj->format('Y-m-d H:i');
+                        } else {
+                            $dateoutput = '';
+                        }
                         //need to check if library get initialized with new value of constructor or not.
 
-                        //$datetimeobj = new Date_Time_Converter($thisvalue,$dateformatdetails['phpdate']);
-                        $updateqr .= dbQuoteID($fieldname)." = '{$datetimeobj->convert("Y-m-d H:i:s")}', \n";
+                        $updateqr .= dbQuoteID($fieldname)." = '{$dateoutput}', \n";
                     }
                 }
                 elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
@@ -1526,6 +1541,11 @@ class dataentry extends Survey_Common_Action
             }
             $updateqr = substr($updateqr, 0, -3);
             $updateqr .= " WHERE id=$id";
+
+            $beforeDataEntryUpdate = new PluginEvent('beforeDataEntryUpdate');
+            $beforeDataEntryUpdate->set('iSurveyID',$surveyid);
+            $beforeDataEntryUpdate->set('iResponseID',$id);
+            App()->getPluginManager()->dispatchEvent($beforeDataEntryUpdate);
 
             $updateres = dbExecuteAssoc($updateqr) or safeDie("Update failed:<br />\n<br />$updateqr");
 
@@ -1746,11 +1766,15 @@ class dataentry extends Survey_Common_Action
                         }
                         elseif ($irow['type'] == 'D')
                         {
-                            Yii::app()->loadLibrary('Date_Time_Converter');
                             $qidattributes = getQuestionAttributeValues($irow['qid']);
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
-                            $datetimeobj = new Date_Time_Converter($_POST[$fieldname],$dateformatdetails['phpdate']);
-                            $insert_data[$fieldname] = $datetimeobj->convert("Y-m-d H:i:s");
+                            $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
+                            if($datetimeobj) {
+                                $dateoutput = $datetimeobj->format('Y-m-d H:i');
+                            } else {
+                                $dateoutput = '';
+                            }
+                            $insert_data[$fieldname] = $dateoutput;
                         }
                         else
                         {
@@ -1765,6 +1789,12 @@ class dataentry extends Survey_Common_Action
                 {
                     $new_response->$column = $value;
                 }
+
+                $beforeDataEntryCreate = new PluginEvent('beforeDataEntryCreate');
+                $beforeDataEntryCreate->set('iSurveyID',$surveyid);
+                $beforeDataEntryCreate->set('oModel',$new_response);
+                App()->getPluginManager()->dispatchEvent($beforeDataEntryCreate);
+
                 $new_response->save();
                 $last_db_id = $new_response->getPrimaryKey();
                 if (isset($_POST['closerecord']) && isset($_POST['token']) && $_POST['token'] != '') // submittoken
@@ -1891,8 +1921,9 @@ class dataentry extends Survey_Common_Action
                                 $message .= gT("Reload your survey by clicking on the following link (or pasting it into your browser):")."\n";
                                 $aParams=array('lang'=>$saver['language'],'loadname'=>$saver['identifier'],'loadpass'=>$saver['password']);
                                 if (isset($tokendata['token'])) { $aParams['token']= $tokendata['token']; }
-                                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/loadall/reload/scid/{$scid}/",$aParams);
-                                $from = $thissurvey['adminemail'];
+                                $message .= Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}/loadall/reload/scid/{$scid}/",$aParams);
+                                $from     = $thissurvey['adminemail'];
+                                $sitename = Yii::app()->getConfig('sitename');
                                 if (SendEmailMessage($message, $subject, $saver['email'], $from, $sitename, false, getBounceEmail($surveyid)))
                                 {
                                     $emailsent="Y";
@@ -2439,23 +2470,21 @@ class dataentry extends Survey_Common_Action
         if(!empty($qidattributes['array_filter']))
         {
 
-            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid));
-            if(is_object($newquestiontext))
-            {
-                $newquestiontext->getAttribute('question');
+            /** @var Question $question */
+            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filte'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            if($question) {
                 $output .= "\n<p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($newquestiontext)))."
+                ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($question->question)))."
                 </p>\n";
             }
         }
         if(!empty($qidattributes['array_filter_exclude']))
         {
-            $newquestiontext = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid));
-            if(is_object($newquestiontext))
-            {
-                $newquestiontext->getAttribute('question');
+            /** @var Question $question */
+            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter_exclude'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            if($question) {
                 $output .= "\n    <p class='extrahelp'>
-                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($newquestiontext))."
+                ".sprintf(gT("Only answer this question for the items you did not select in question %s ('%s')"),$qidattributes['array_filter_exclude'], breakToNewline($question->question))."
                 </p>\n";
             }
         }

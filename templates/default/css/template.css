@@ -62,12 +62,12 @@ div[id^="group-"]>div {
  */
 
  #navigator-container {
-     margin-top: 4em;
-     padding-top: 1em;
      padding-bottom: 1em;
  }
- #navigator-container>div
+ #navigator-container > hr
  {
+    margin-top: 0px;
+    margin-bottom: 0px;
  }
 
  #main-col {
@@ -277,6 +277,12 @@ li.responsive-content
 
 #surveys-list-jumbotron {
     text-align: center;
+}
+
+#surveys-list-jumbotron img.site-surveylist-logo {
+    max-width: 35%;
+    display: block;
+    margin: 15px auto;
 }
 
 /*#outerframeContainer {
@@ -1092,4 +1098,14 @@ div.yes-no .btn-group label {
 
 .label-danger {
     white-space: normal;
+}
+
+p.return-to-survey{
+    clear:left;
+}
+
+/* Make sure question index menu is not too long. */
+#index-menu ul.dropdown-menu {
+    max-height: 90vh;
+    overflow-y: scroll;
 }

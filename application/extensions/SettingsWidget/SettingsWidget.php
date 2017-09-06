@@ -360,7 +360,7 @@ class SettingsWidget extends CWidget
         $editorOptions = array_merge(array(
             'html' => true,
         ), isset($metaData['editorOptions']) ? $metaData['editorOptions'] : array());
-        return Chtml::tag('div', $htmlOptions,
+        return Chtml::tag('div', array("style"=>'height:auto;width:100%','class'=>'well'),
             $this->widget('yiiwheels.widgets.html5editor.WhHtml5Editor', array(
                 'name' => $name,
                 'value' => $value,

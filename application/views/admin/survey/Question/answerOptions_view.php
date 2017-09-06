@@ -42,10 +42,8 @@
                 <ul class="nav nav-tabs">
                     <?php foreach ($anslangs as $i => $anslang):?>
                         <li role="presentation" <?php if($i==0){echo 'class="active"';}?>>
-                            <a data-toggle="tab" href='#tabpage_<?php echo $anslang; ?>'><?php echo getLanguageNameFromCode($anslang, false); ?>
-                                <?php if ($anslang==Survey::model()->findByPk($surveyid)->language):?>
-                                    (<?php echo gT("Base language"); ?>)
-                                <?php endif;?>
+                            <a data-toggle="tab" href='#tabpage_<?php echo $anslang; ?>'>
+                                <?php echo getLanguageNameFromCode($anslang, false).($anslang==Survey::model()->findByPk($surveyid)->language ? ' ('.gT("Base language").')':''); ?>
                             </a>
                         </li>
                     <?php endforeach;?>
@@ -239,6 +237,7 @@
                             id="add-input-javascript-datas"
                             data-url="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowForAllLanguages/');?>"
                             data-quickurl="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowQuickAdd/');?>"
+                            data-assessmentvisible="<?php echo (isset($assessmentvisible) && $assessmentvisible==true ? "1" : "0"); ?>"
                             data-errormessage="An error occured while processing the ajax request."
                             data-surveyid="<?php echo $surveyid;?>"
                             data-gid="<?php echo $gid;?>"

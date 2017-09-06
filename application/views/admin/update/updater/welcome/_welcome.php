@@ -47,8 +47,8 @@
             <?php endif;?>
         <?php endif;?>
 
-        <strong><?php eT('Your update key:');?> <?php echo $serverAnswer->key_infos->keyid; ?></strong><br/>
-        <strong><?php eT('Valid until:');?> <?php echo $sValidityDate; ?></strong><br/>
+        <strong><?php eT('Your update key:');?> <?php if(! (App()->getConfig('hide_update_key'))) { echo $serverAnswer->key_infos->keyid;}else{ echo '<em>XXXXXXX</em>'; } ?></strong><br/>
+        <strong><?php eT('Valid until:');?> <?php  echo $sValidityDate; ?></strong><br/>
         <?php  if ($serverAnswer->key_infos->remaining_updates!=-999) { ?>
             <strong><?php eT('Remaining updates:');?> <?php echo $serverAnswer->key_infos->remaining_updates;?></strong><br/>
         <?php } ?>

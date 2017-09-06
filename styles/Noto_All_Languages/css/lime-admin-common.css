@@ -228,7 +228,9 @@ html {
   padding-top: 0;
   padding-bottom: 10px;
   background-color: transparent; }
-
+#welcome-jumbotron>img{
+  width: 350px;
+}
 .surveymanagerbar {
   margin-top: -20px;
   padding-top: 5px; }
@@ -424,7 +426,7 @@ html {
   .welcome .panel-body img {
     height: 4em;
     margin-bottom: 1em; }
-.welcome .login-pannel .panel-body img {
+.welcome .login-panel .panel-body img {
   margin-bottom: 0; }
 
 .alert {
@@ -449,13 +451,17 @@ html {
 #edit-question-body {
   min-height: 1200px; }
 
+.profile-img-card{
+  margin-top: 32px;
+}
+
 #profile-img {
   min-height: 80px; }
 
 @media screen and (min-width: 1280px) and (max-width: 1680px) {
   #profile-img {
     min-height: 0; } }
-.login-pannel {
+.login-panel {
   margin-top: 40px; }
 
 .login-content {
@@ -2179,4 +2185,1058 @@ table#responsedetail tr td{
 
 #quick-add-condition-modal .modal-dialog {
     width: 800px;
+}
+
+#login-panel {
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto
+}
+
+/*
+ * Row with equal height columns
+ * --------------------------------------------------
+ */
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+  margin-bottom: 30px;
+}
+
+.welcome .panel {
+    height: 110%;
+    min-width: 200px;
+}
+
+.welcome .panel-body {
+    padding: 0px;
+}
+
+.welcome .panel-heading {
+    height: 25%;
+    display:flex;
+     align-items: center;
+     justify-content: center;
+}
+
+.welcome .panel-body {
+    height: 75%;
+    width: 100%;
+}
+
+.welcome .panel-body .panel-body-ico, .welcome .panel-body .panel-body-link {
+    width: 100%;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.welcome .panel-body .panel-body-ico{
+    height: 70%;
+}
+
+.welcome .panel-body .panel-body-link {
+    height: 30%;
+}
+
+input[type="file"].form-control {
+    border: none;
+    padding-left: 0px;
+}
+
+#insertmethod-container{
+    display: none;
+}
+
+
+/* To make Statistics printable really easy */
+
+@page {
+  size: A4 portrait;
+  margin-left: 0.8cm;
+  margin-right: 0.8cm;
+  margin-top: 1.4cm;
+  margin-bottom: 1.8cm;
+}
+
+@media print{
+
+  html,body {
+    margin: 0;
+    max-width: 90%;
+  }
+  body{
+    text-align: left;
+    padding: 12px;
+    overflow: visible;
+    position: absolute;
+    top: 24px;
+    left: 14px;
+  }
+
+  body.onStatistics a:not(.printable),
+  body.onStatistics p:not(.printable),
+  body.onStatistics button:not(.printable),
+  body.onStatistics nav:not(.printable),
+  body.onStatistics form:not(.printable),
+  body.onStatistics footer:not(.printable),
+  body.onStatistics h1:not(.printable),
+  body.onStatistics h2:not(.printable),
+  body.onStatistics h3:not(.printable),
+  body.onStatistics h4:not(.printable),
+  body.onStatistics h5:not(.printable),
+  body.onStatistics .jumbotron,
+  body.onStatistics .menubar,
+  body.onStatistics>div:not(#in_survey_common),
+  body.onStatistics>div#in_survey_common>div>div:not(#statisticsview)
+  {
+    display: none !important;
+    visibility: none !important;
+    overflow: hidden !important;
+    padding: 0;
+    position: absolute;
+    left: 0;
+    margin: 0 !important;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  body.onStatistics div:not(.printable) {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+
+  /*body.onStatistics td:not(.printable),
+  body.onStatistics th:not(.printable),*/
+  /*body.onStatistics table:not(.printable),*/
+
+  body.onStatistics a.printable,
+  body.onStatistics p.printable,
+  body.onStatistics div.printable,
+  body.onStatistics div.printable table,
+  body.onStatistics table.printable,
+  body.onStatistics h1.printable,
+  body.onStatistics h2.printable,
+  body.onStatistics h3.printable,
+  body.onStatistics h4.printable,
+  body.onStatistics h5.printable{
+    width: 95% !important;
+    max-width: 100%;
+    float: none;
+    margin: auto;
+    padding-left: 0 !important;
+  }
+
+  body.onStatistics div.printable{
+    page-break-after  : always;
+    page-break-before : avoid;
+    page-break-inside : avoid;
+    display: block;
+  }
+  body.onStatistics table.printable{
+    page-break-after  : always;
+    page-break-before : avoid;
+    page-break-inside : avoid;
+  }
+
+  body.onStatistics div.printable table.printable{
+    page-break-after  : avoid ;
+    page-break-before : avoid;
+  }
+
+  body.onStatistics table.printable thead,
+  body.onStatistics table.printable tbody,
+  body.onStatistics table.printable tr{
+    width: 100% !important;
+    margin:0;
+  }
+
+  body.onStatistics table.printable canvas{
+    page-break-after  : avoid;
+    page-break-before : avoid;
+    page-break-inside : avoid;
+  }
+
+  body.onStatistics .side-body{
+    max-width: 100%;
+    margin: 0 !important;
+  }
+  body.onStatistics .side-menu{
+    display: none !important;
+    visibility: none !important;
+    overflow: hidden !important;
+    padding: 0;
+    margin: 0;
+  }
+  body.onStatistics .absolute-wrapper{
+    display: none !important;
+    visibility: none !important;
+    overflow: hidden !important;
+    padding: 0;
+    margin: 0;
+  }
+}
+//custom margin and padding
+.custom.custom-no-padding {
+  padding: 0;
+}
+.custom.custom-no-margin {
+  padding: 0;
+}
+.custom.custom-padding.add5 {
+  padding: 5px;
+}
+.custom.custom-padding.left-5 {
+  padding-left: 5px;
+}
+.custom.custom-padding.right-5 {
+  padding-right: 5px;
+}
+.custom.custom-padding.top-5 {
+  padding-top: 5px;
+}
+.custom.custom-padding.bottom-5 {
+  padding-bottom: 5px;
+}
+.custom.custom-padding.add10 {
+  padding: 10px;
+}
+.custom.custom-padding.left-10 {
+  padding-left: 10px;
+}
+.custom.custom-padding.right-10 {
+  padding-right: 10px;
+}
+.custom.custom-padding.top-10 {
+  padding-top: 10px;
+}
+.custom.custom-padding.bottom-10 {
+  padding-bottom: 10px;
+}
+.custom.custom-padding.add15 {
+  padding: 15px;
+}
+.custom.custom-padding.left-15 {
+  padding-left: 15px;
+}
+.custom.custom-padding.right-15 {
+  padding-right: 15px;
+}
+.custom.custom-padding.top-15 {
+  padding-top: 15px;
+}
+.custom.custom-padding.bottom-15 {
+  padding-bottom: 15px;
+}
+.custom.custom-padding.add20 {
+  padding: 20px;
+}
+.custom.custom-padding.left-20 {
+  padding-left: 20px;
+}
+.custom.custom-padding.right-20 {
+  padding-right: 20px;
+}
+.custom.custom-padding.top-20 {
+  padding-top: 20px;
+}
+.custom.custom-padding.bottom-20 {
+  padding-bottom: 20px;
+}
+.custom.custom-padding.add25 {
+  padding: 25px;
+}
+.custom.custom-padding.left-25 {
+  padding-left: 25px;
+}
+.custom.custom-padding.right-25 {
+  padding-right: 25px;
+}
+.custom.custom-padding.top-25 {
+  padding-top: 25px;
+}
+.custom.custom-padding.bottom-25 {
+  padding-bottom: 25px;
+}
+.custom.custom-padding.add30 {
+  padding: 30px;
+}
+.custom.custom-padding.left-30 {
+  padding-left: 30px;
+}
+.custom.custom-padding.right-30 {
+  padding-right: 30px;
+}
+.custom.custom-padding.top-30 {
+  padding-top: 30px;
+}
+.custom.custom-padding.bottom-30 {
+  padding-bottom: 30px;
+}
+.custom.custom-padding.add35 {
+  padding: 35px;
+}
+.custom.custom-padding.left-35 {
+  padding-left: 35px;
+}
+.custom.custom-padding.right-35 {
+  padding-right: 35px;
+}
+.custom.custom-padding.top-35 {
+  padding-top: 35px;
+}
+.custom.custom-padding.bottom-35 {
+  padding-bottom: 35px;
+}
+@media only screen and (min-width: 961px) {
+  .custom.custom-padding-responsive.large.add5 {
+    padding: 5px;
+  }
+  .custom.custom-padding-responsive.large.left-5 {
+    padding-left: 5px;
+  }
+  .custom.custom-padding-responsive.large.right-5 {
+    padding-right: 5px;
+  }
+  .custom.custom-padding-responsive.large.top-5 {
+    padding-top: 5px;
+  }
+  .custom.custom-padding-responsive.large.bottom-5 {
+    padding-bottom: 5px;
+  }
+  .custom.custom-padding-responsive.large.add10 {
+    padding: 10px;
+  }
+  .custom.custom-padding-responsive.large.left-10 {
+    padding-left: 10px;
+  }
+  .custom.custom-padding-responsive.large.right-10 {
+    padding-right: 10px;
+  }
+  .custom.custom-padding-responsive.large.top-10 {
+    padding-top: 10px;
+  }
+  .custom.custom-padding-responsive.large.bottom-10 {
+    padding-bottom: 10px;
+  }
+  .custom.custom-padding-responsive.large.add15 {
+    padding: 15px;
+  }
+  .custom.custom-padding-responsive.large.left-15 {
+    padding-left: 15px;
+  }
+  .custom.custom-padding-responsive.large.right-15 {
+    padding-right: 15px;
+  }
+  .custom.custom-padding-responsive.large.top-15 {
+    padding-top: 15px;
+  }
+  .custom.custom-padding-responsive.large.bottom-15 {
+    padding-bottom: 15px;
+  }
+  .custom.custom-padding-responsive.large.add20 {
+    padding: 20px;
+  }
+  .custom.custom-padding-responsive.large.left-20 {
+    padding-left: 20px;
+  }
+  .custom.custom-padding-responsive.large.right-20 {
+    padding-right: 20px;
+  }
+  .custom.custom-padding-responsive.large.top-20 {
+    padding-top: 20px;
+  }
+  .custom.custom-padding-responsive.large.bottom-20 {
+    padding-bottom: 20px;
+  }
+  .custom.custom-padding-responsive.large.add25 {
+    padding: 25px;
+  }
+  .custom.custom-padding-responsive.large.left-25 {
+    padding-left: 25px;
+  }
+  .custom.custom-padding-responsive.large.right-25 {
+    padding-right: 25px;
+  }
+  .custom.custom-padding-responsive.large.top-25 {
+    padding-top: 25px;
+  }
+  .custom.custom-padding-responsive.large.bottom-25 {
+    padding-bottom: 25px;
+  }
+  .custom.custom-padding-responsive.large.add30 {
+    padding: 30px;
+  }
+  .custom.custom-padding-responsive.large.left-30 {
+    padding-left: 30px;
+  }
+  .custom.custom-padding-responsive.large.right-30 {
+    padding-right: 30px;
+  }
+  .custom.custom-padding-responsive.large.top-30 {
+    padding-top: 30px;
+  }
+  .custom.custom-padding-responsive.large.bottom-30 {
+    padding-bottom: 30px;
+  }
+  .custom.custom-padding-responsive.large.add35 {
+    padding: 35px;
+  }
+  .custom.custom-padding-responsive.large.left-35 {
+    padding-left: 35px;
+  }
+  .custom.custom-padding-responsive.large.right-35 {
+    padding-right: 35px;
+  }
+  .custom.custom-padding-responsive.large.top-35 {
+    padding-top: 35px;
+  }
+  .custom.custom-padding-responsive.large.bottom-35 {
+    padding-bottom: 35px;
+  }
+}
+@media only screen and (min-width: 769px) {
+  .custom.custom-padding-responsive.medium.add5 {
+    padding: 5px;
+  }
+  .custom.custom-padding-responsive.medium.left-5 {
+    padding-left: 5px;
+  }
+  .custom.custom-padding-responsive.medium.right-5 {
+    padding-right: 5px;
+  }
+  .custom.custom-padding-responsive.medium.top-5 {
+    padding-top: 5px;
+  }
+  .custom.custom-padding-responsive.medium.bottom-5 {
+    padding-bottom: 5px;
+  }
+  .custom.custom-padding-responsive.medium.add10 {
+    padding: 10px;
+  }
+  .custom.custom-padding-responsive.medium.left-10 {
+    padding-left: 10px;
+  }
+  .custom.custom-padding-responsive.medium.right-10 {
+    padding-right: 10px;
+  }
+  .custom.custom-padding-responsive.medium.top-10 {
+    padding-top: 10px;
+  }
+  .custom.custom-padding-responsive.medium.bottom-10 {
+    padding-bottom: 10px;
+  }
+  .custom.custom-padding-responsive.medium.add15 {
+    padding: 15px;
+  }
+  .custom.custom-padding-responsive.medium.left-15 {
+    padding-left: 15px;
+  }
+  .custom.custom-padding-responsive.medium.right-15 {
+    padding-right: 15px;
+  }
+  .custom.custom-padding-responsive.medium.top-15 {
+    padding-top: 15px;
+  }
+  .custom.custom-padding-responsive.medium.bottom-15 {
+    padding-bottom: 15px;
+  }
+  .custom.custom-padding-responsive.medium.add20 {
+    padding: 20px;
+  }
+  .custom.custom-padding-responsive.medium.left-20 {
+    padding-left: 20px;
+  }
+  .custom.custom-padding-responsive.medium.right-20 {
+    padding-right: 20px;
+  }
+  .custom.custom-padding-responsive.medium.top-20 {
+    padding-top: 20px;
+  }
+  .custom.custom-padding-responsive.medium.bottom-20 {
+    padding-bottom: 20px;
+  }
+  .custom.custom-padding-responsive.medium.add25 {
+    padding: 25px;
+  }
+  .custom.custom-padding-responsive.medium.left-25 {
+    padding-left: 25px;
+  }
+  .custom.custom-padding-responsive.medium.right-25 {
+    padding-right: 25px;
+  }
+  .custom.custom-padding-responsive.medium.top-25 {
+    padding-top: 25px;
+  }
+  .custom.custom-padding-responsive.medium.bottom-25 {
+    padding-bottom: 25px;
+  }
+  .custom.custom-padding-responsive.medium.add30 {
+    padding: 30px;
+  }
+  .custom.custom-padding-responsive.medium.left-30 {
+    padding-left: 30px;
+  }
+  .custom.custom-padding-responsive.medium.right-30 {
+    padding-right: 30px;
+  }
+  .custom.custom-padding-responsive.medium.top-30 {
+    padding-top: 30px;
+  }
+  .custom.custom-padding-responsive.medium.bottom-30 {
+    padding-bottom: 30px;
+  }
+  .custom.custom-padding-responsive.medium.add35 {
+    padding: 35px;
+  }
+  .custom.custom-padding-responsive.medium.left-35 {
+    padding-left: 35px;
+  }
+  .custom.custom-padding-responsive.medium.right-35 {
+    padding-right: 35px;
+  }
+  .custom.custom-padding-responsive.medium.top-35 {
+    padding-top: 35px;
+  }
+  .custom.custom-padding-responsive.medium.bottom-35 {
+    padding-bottom: 35px;
+  }
+}
+.custom.custom-padding-responsive.small.add5 {
+  padding: 5px;
+}
+.custom.custom-padding-responsive.small.left-5 {
+  padding-left: 5px;
+}
+.custom.custom-padding-responsive.small.right-5 {
+  padding-right: 5px;
+}
+.custom.custom-padding-responsive.small.top-5 {
+  padding-top: 5px;
+}
+.custom.custom-padding-responsive.small.bottom-5 {
+  padding-bottom: 5px;
+}
+.custom.custom-padding-responsive.small.add10 {
+  padding: 10px;
+}
+.custom.custom-padding-responsive.small.left-10 {
+  padding-left: 10px;
+}
+.custom.custom-padding-responsive.small.right-10 {
+  padding-right: 10px;
+}
+.custom.custom-padding-responsive.small.top-10 {
+  padding-top: 10px;
+}
+.custom.custom-padding-responsive.small.bottom-10 {
+  padding-bottom: 10px;
+}
+.custom.custom-padding-responsive.small.add15 {
+  padding: 15px;
+}
+.custom.custom-padding-responsive.small.left-15 {
+  padding-left: 15px;
+}
+.custom.custom-padding-responsive.small.right-15 {
+  padding-right: 15px;
+}
+.custom.custom-padding-responsive.small.top-15 {
+  padding-top: 15px;
+}
+.custom.custom-padding-responsive.small.bottom-15 {
+  padding-bottom: 15px;
+}
+.custom.custom-padding-responsive.small.add20 {
+  padding: 20px;
+}
+.custom.custom-padding-responsive.small.left-20 {
+  padding-left: 20px;
+}
+.custom.custom-padding-responsive.small.right-20 {
+  padding-right: 20px;
+}
+.custom.custom-padding-responsive.small.top-20 {
+  padding-top: 20px;
+}
+.custom.custom-padding-responsive.small.bottom-20 {
+  padding-bottom: 20px;
+}
+.custom.custom-padding-responsive.small.add25 {
+  padding: 25px;
+}
+.custom.custom-padding-responsive.small.left-25 {
+  padding-left: 25px;
+}
+.custom.custom-padding-responsive.small.right-25 {
+  padding-right: 25px;
+}
+.custom.custom-padding-responsive.small.top-25 {
+  padding-top: 25px;
+}
+.custom.custom-padding-responsive.small.bottom-25 {
+  padding-bottom: 25px;
+}
+.custom.custom-padding-responsive.small.add30 {
+  padding: 30px;
+}
+.custom.custom-padding-responsive.small.left-30 {
+  padding-left: 30px;
+}
+.custom.custom-padding-responsive.small.right-30 {
+  padding-right: 30px;
+}
+.custom.custom-padding-responsive.small.top-30 {
+  padding-top: 30px;
+}
+.custom.custom-padding-responsive.small.bottom-30 {
+  padding-bottom: 30px;
+}
+.custom.custom-padding-responsive.small.add35 {
+  padding: 35px;
+}
+.custom.custom-padding-responsive.small.left-35 {
+  padding-left: 35px;
+}
+.custom.custom-padding-responsive.small.right-35 {
+  padding-right: 35px;
+}
+.custom.custom-padding-responsive.small.top-35 {
+  padding-top: 35px;
+}
+.custom.custom-padding-responsive.small.bottom-35 {
+  padding-bottom: 35px;
+}
+.custom.custom-margin.add5 {
+  margin: 5px;
+}
+.custom.custom-margin.left-5 {
+  margin-left: 5px;
+}
+.custom.custom-margin.right-5 {
+  margin-right: 5px;
+}
+.custom.custom-margin.top-5 {
+  margin-top: 5px;
+}
+.custom.custom-margin.bottom-5 {
+  margin-bottom: 5px;
+}
+.custom.custom-margin.add10 {
+  margin: 10px;
+}
+.custom.custom-margin.left-10 {
+  margin-left: 10px;
+}
+.custom.custom-margin.right-10 {
+  margin-right: 10px;
+}
+.custom.custom-margin.top-10 {
+  margin-top: 10px;
+}
+.custom.custom-margin.bottom-10 {
+  margin-bottom: 10px;
+}
+.custom.custom-margin.add15 {
+  margin: 15px;
+}
+.custom.custom-margin.left-15 {
+  margin-left: 15px;
+}
+.custom.custom-margin.right-15 {
+  margin-right: 15px;
+}
+.custom.custom-margin.top-15 {
+  margin-top: 15px;
+}
+.custom.custom-margin.bottom-15 {
+  margin-bottom: 15px;
+}
+.custom.custom-margin.add20 {
+  margin: 20px;
+}
+.custom.custom-margin.left-20 {
+  margin-left: 20px;
+}
+.custom.custom-margin.right-20 {
+  margin-right: 20px;
+}
+.custom.custom-margin.top-20 {
+  margin-top: 20px;
+}
+.custom.custom-margin.bottom-20 {
+  margin-bottom: 20px;
+}
+.custom.custom-margin.add25 {
+  margin: 25px;
+}
+.custom.custom-margin.left-25 {
+  margin-left: 25px;
+}
+.custom.custom-margin.right-25 {
+  margin-right: 25px;
+}
+.custom.custom-margin.top-25 {
+  margin-top: 25px;
+}
+.custom.custom-margin.bottom-25 {
+  margin-bottom: 25px;
+}
+.custom.custom-margin.add30 {
+  margin: 30px;
+}
+.custom.custom-margin.left-30 {
+  margin-left: 30px;
+}
+.custom.custom-margin.right-30 {
+  margin-right: 30px;
+}
+.custom.custom-margin.top-30 {
+  margin-top: 30px;
+}
+.custom.custom-margin.bottom-30 {
+  margin-bottom: 30px;
+}
+.custom.custom-margin.add35 {
+  margin: 35px;
+}
+.custom.custom-margin.left-35 {
+  margin-left: 35px;
+}
+.custom.custom-margin.right-35 {
+  margin-right: 35px;
+}
+.custom.custom-margin.top-35 {
+  margin-top: 35px;
+}
+.custom.custom-margin.bottom-35 {
+  margin-bottom: 35px;
+}
+.custom.custom-child-margin.left-to-right * {
+  margin-left: 3px;
+}
+.custom.custom-child-margin.right-to-left * {
+  margin-right: 3px;
+}
+@media only screen and (min-width: 961px) {
+  .custom.custom-margin-responsive.large.add5 {
+    margin: 5px;
+  }
+  .custom.custom-margin-responsive.large.left-5 {
+    margin-left: 5px;
+  }
+  .custom.custom-margin-responsive.large.right-5 {
+    margin-right: 5px;
+  }
+  .custom.custom-margin-responsive.large.top-5 {
+    margin-top: 5px;
+  }
+  .custom.custom-margin-responsive.large.bottom-5 {
+    margin-bottom: 5px;
+  }
+  .custom.custom-margin-responsive.large.add10 {
+    margin: 10px;
+  }
+  .custom.custom-margin-responsive.large.left-10 {
+    margin-left: 10px;
+  }
+  .custom.custom-margin-responsive.large.right-10 {
+    margin-right: 10px;
+  }
+  .custom.custom-margin-responsive.large.top-10 {
+    margin-top: 10px;
+  }
+  .custom.custom-margin-responsive.large.bottom-10 {
+    margin-bottom: 10px;
+  }
+  .custom.custom-margin-responsive.large.add15 {
+    margin: 15px;
+  }
+  .custom.custom-margin-responsive.large.left-15 {
+    margin-left: 15px;
+  }
+  .custom.custom-margin-responsive.large.right-15 {
+    margin-right: 15px;
+  }
+  .custom.custom-margin-responsive.large.top-15 {
+    margin-top: 15px;
+  }
+  .custom.custom-margin-responsive.large.bottom-15 {
+    margin-bottom: 15px;
+  }
+  .custom.custom-margin-responsive.large.add20 {
+    margin: 20px;
+  }
+  .custom.custom-margin-responsive.large.left-20 {
+    margin-left: 20px;
+  }
+  .custom.custom-margin-responsive.large.right-20 {
+    margin-right: 20px;
+  }
+  .custom.custom-margin-responsive.large.top-20 {
+    margin-top: 20px;
+  }
+  .custom.custom-margin-responsive.large.bottom-20 {
+    margin-bottom: 20px;
+  }
+  .custom.custom-margin-responsive.large.add25 {
+    margin: 25px;
+  }
+  .custom.custom-margin-responsive.large.left-25 {
+    margin-left: 25px;
+  }
+  .custom.custom-margin-responsive.large.right-25 {
+    margin-right: 25px;
+  }
+  .custom.custom-margin-responsive.large.top-25 {
+    margin-top: 25px;
+  }
+  .custom.custom-margin-responsive.large.bottom-25 {
+    margin-bottom: 25px;
+  }
+  .custom.custom-margin-responsive.large.add30 {
+    margin: 30px;
+  }
+  .custom.custom-margin-responsive.large.left-30 {
+    margin-left: 30px;
+  }
+  .custom.custom-margin-responsive.large.right-30 {
+    margin-right: 30px;
+  }
+  .custom.custom-margin-responsive.large.top-30 {
+    margin-top: 30px;
+  }
+  .custom.custom-margin-responsive.large.bottom-30 {
+    margin-bottom: 30px;
+  }
+  .custom.custom-margin-responsive.large.add35 {
+    margin: 35px;
+  }
+  .custom.custom-margin-responsive.large.left-35 {
+    margin-left: 35px;
+  }
+  .custom.custom-margin-responsive.large.right-35 {
+    margin-right: 35px;
+  }
+  .custom.custom-margin-responsive.large.top-35 {
+    margin-top: 35px;
+  }
+  .custom.custom-margin-responsive.large.bottom-35 {
+    margin-bottom: 35px;
+  }
+}
+@media only screen and (min-width: 769px) {
+  .custom.custom-margin-responsive.medium.add5 {
+    margin: 5px;
+  }
+  .custom.custom-margin-responsive.medium.left-5 {
+    margin-left: 5px;
+  }
+  .custom.custom-margin-responsive.medium.right-5 {
+    margin-right: 5px;
+  }
+  .custom.custom-margin-responsive.medium.top-5 {
+    margin-top: 5px;
+  }
+  .custom.custom-margin-responsive.medium.bottom-5 {
+    margin-bottom: 5px;
+  }
+  .custom.custom-margin-responsive.medium.add10 {
+    margin: 10px;
+  }
+  .custom.custom-margin-responsive.medium.left-10 {
+    margin-left: 10px;
+  }
+  .custom.custom-margin-responsive.medium.right-10 {
+    margin-right: 10px;
+  }
+  .custom.custom-margin-responsive.medium.top-10 {
+    margin-top: 10px;
+  }
+  .custom.custom-margin-responsive.medium.bottom-10 {
+    margin-bottom: 10px;
+  }
+  .custom.custom-margin-responsive.medium.add15 {
+    margin: 15px;
+  }
+  .custom.custom-margin-responsive.medium.left-15 {
+    margin-left: 15px;
+  }
+  .custom.custom-margin-responsive.medium.right-15 {
+    margin-right: 15px;
+  }
+  .custom.custom-margin-responsive.medium.top-15 {
+    margin-top: 15px;
+  }
+  .custom.custom-margin-responsive.medium.bottom-15 {
+    margin-bottom: 15px;
+  }
+  .custom.custom-margin-responsive.medium.add20 {
+    margin: 20px;
+  }
+  .custom.custom-margin-responsive.medium.left-20 {
+    margin-left: 20px;
+  }
+  .custom.custom-margin-responsive.medium.right-20 {
+    margin-right: 20px;
+  }
+  .custom.custom-margin-responsive.medium.top-20 {
+    margin-top: 20px;
+  }
+  .custom.custom-margin-responsive.medium.bottom-20 {
+    margin-bottom: 20px;
+  }
+  .custom.custom-margin-responsive.medium.add25 {
+    margin: 25px;
+  }
+  .custom.custom-margin-responsive.medium.left-25 {
+    margin-left: 25px;
+  }
+  .custom.custom-margin-responsive.medium.right-25 {
+    margin-right: 25px;
+  }
+  .custom.custom-margin-responsive.medium.top-25 {
+    margin-top: 25px;
+  }
+  .custom.custom-margin-responsive.medium.bottom-25 {
+    margin-bottom: 25px;
+  }
+  .custom.custom-margin-responsive.medium.add30 {
+    margin: 30px;
+  }
+  .custom.custom-margin-responsive.medium.left-30 {
+    margin-left: 30px;
+  }
+  .custom.custom-margin-responsive.medium.right-30 {
+    margin-right: 30px;
+  }
+  .custom.custom-margin-responsive.medium.top-30 {
+    margin-top: 30px;
+  }
+  .custom.custom-margin-responsive.medium.bottom-30 {
+    margin-bottom: 30px;
+  }
+  .custom.custom-margin-responsive.medium.add35 {
+    margin: 35px;
+  }
+  .custom.custom-margin-responsive.medium.left-35 {
+    margin-left: 35px;
+  }
+  .custom.custom-margin-responsive.medium.right-35 {
+    margin-right: 35px;
+  }
+  .custom.custom-margin-responsive.medium.top-35 {
+    margin-top: 35px;
+  }
+  .custom.custom-margin-responsive.medium.bottom-35 {
+    margin-bottom: 35px;
+  }
+}
+.custom.custom-margin-responsive.small.add5 {
+  margin: 5px;
+}
+.custom.custom-margin-responsive.small.left-5 {
+  margin-left: 5px;
+}
+.custom.custom-margin-responsive.small.right-5 {
+  margin-right: 5px;
+}
+.custom.custom-margin-responsive.small.top-5 {
+  margin-top: 5px;
+}
+.custom.custom-margin-responsive.small.bottom-5 {
+  margin-bottom: 5px;
+}
+.custom.custom-margin-responsive.small.add10 {
+  margin: 10px;
+}
+.custom.custom-margin-responsive.small.left-10 {
+  margin-left: 10px;
+}
+.custom.custom-margin-responsive.small.right-10 {
+  margin-right: 10px;
+}
+.custom.custom-margin-responsive.small.top-10 {
+  margin-top: 10px;
+}
+.custom.custom-margin-responsive.small.bottom-10 {
+  margin-bottom: 10px;
+}
+.custom.custom-margin-responsive.small.add15 {
+  margin: 15px;
+}
+.custom.custom-margin-responsive.small.left-15 {
+  margin-left: 15px;
+}
+.custom.custom-margin-responsive.small.right-15 {
+  margin-right: 15px;
+}
+.custom.custom-margin-responsive.small.top-15 {
+  margin-top: 15px;
+}
+.custom.custom-margin-responsive.small.bottom-15 {
+  margin-bottom: 15px;
+}
+.custom.custom-margin-responsive.small.add20 {
+  margin: 20px;
+}
+.custom.custom-margin-responsive.small.left-20 {
+  margin-left: 20px;
+}
+.custom.custom-margin-responsive.small.right-20 {
+  margin-right: 20px;
+}
+.custom.custom-margin-responsive.small.top-20 {
+  margin-top: 20px;
+}
+.custom.custom-margin-responsive.small.bottom-20 {
+  margin-bottom: 20px;
+}
+.custom.custom-margin-responsive.small.add25 {
+  margin: 25px;
+}
+.custom.custom-margin-responsive.small.left-25 {
+  margin-left: 25px;
+}
+.custom.custom-margin-responsive.small.right-25 {
+  margin-right: 25px;
+}
+.custom.custom-margin-responsive.small.top-25 {
+  margin-top: 25px;
+}
+.custom.custom-margin-responsive.small.bottom-25 {
+  margin-bottom: 25px;
+}
+.custom.custom-margin-responsive.small.add30 {
+  margin: 30px;
+}
+.custom.custom-margin-responsive.small.left-30 {
+  margin-left: 30px;
+}
+.custom.custom-margin-responsive.small.right-30 {
+  margin-right: 30px;
+}
+.custom.custom-margin-responsive.small.top-30 {
+  margin-top: 30px;
+}
+.custom.custom-margin-responsive.small.bottom-30 {
+  margin-bottom: 30px;
+}
+.custom.custom-margin-responsive.small.add35 {
+  margin: 35px;
+}
+.custom.custom-margin-responsive.small.left-35 {
+  margin-left: 35px;
+}
+.custom.custom-margin-responsive.small.right-35 {
+  margin-right: 35px;
+}
+.custom.custom-margin-responsive.small.top-35 {
+  margin-top: 35px;
+}
+.custom.custom-margin-responsive.small.bottom-35 {
+  margin-bottom: 35px;
 }

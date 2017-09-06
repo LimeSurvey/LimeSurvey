@@ -119,14 +119,14 @@
 
 
                     <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid0']; ?>"
-                        id="java<?php echo $ansrow['myfid0']; ?>" value=""
-                        <?php echo $ansrow['sessionfname0']; ?>
+                        id="java<?php echo $ansrow['myfid0']; ?>"
+                        value="<?php echo $ansrow['sessionfname0']; ?>"
                     />
 
                     <?php if (count($labelans1) > 0): ?>
                         <input type="hidden" disabled="disabled" name="java<?php echo $ansrow['myfid1']; ?>"
-                            id="java<?php echo $ansrow['myfid1']; ?>" value=""
-                            <?php echo $ansrow['sessionfname1']; ?>
+                            id="java<?php echo $ansrow['myfid1']; ?>"
+                            value="<?php echo $ansrow['sessionfname1']; ?>"
                         />
                     <?php endif; ?>
 

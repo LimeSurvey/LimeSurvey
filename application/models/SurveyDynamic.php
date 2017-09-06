@@ -302,7 +302,6 @@ class SurveyDynamic extends LSActiveRecord
         if (Permission::model()->hasSurveyPermission(self::$sid,'responses','delete'))
         {
             $aPostDatas = json_encode(array('sResponseId'=>$this->id));
-            //$button .= '<a class="deleteresponse btn btn-default btn-xs" href="'.$sDeleteUrl.'" role="button" data-toggle="modal" data-ajax="true" data-post="'.$aPostDatas.'" data-target="#confirmation-modal" data-tooltip="true" title="'. sprintf(gT('Delete response %s'),$this->id).'"><span class="glyphicon glyphicon-trash text-danger" ></span></a>';
             $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='". sprintf(gT('Delete response %s'),$this->id)."'><span class='glyphicon glyphicon-trash text-danger' ></span></a>";
         }
 
@@ -338,7 +337,7 @@ class SurveyDynamic extends LSActiveRecord
                 $sSurveyEntry .='<tr>';
                 if (isset($aFilesInfo[$iFileIndex]))
                 {
-                    $sSurveyEntry.= '<td>'.CHtml::link(rawurldecode($aFilesInfo[$iFileIndex]['name']), App()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>self::$sid,"iResponseId"=>$this->id,"sFileName"=>$aFilesInfo[$iFileIndex]['name'])) ).'</td>';
+                    $sSurveyEntry.= '<td>'.CHtml::link(CHtml::encode(rawurldecode($aFilesInfo[$iFileIndex]['name'])), App()->createUrl("/admin/responses",array("sa"=>"actionDownloadfile","surveyid"=>self::$sid,"iResponseId"=>$this->id,"iQID"=>$oFieldMap->qid,"iIndex"=>$iFileIndex)) ).'</td>';
                     $sSurveyEntry.= '<td>'.sprintf('%s Mb',round($aFilesInfo[$iFileIndex]['size']/1000,2)).'</td>';
 
                     if ($aQuestionAttributes['show_title'])
@@ -571,6 +570,7 @@ class SurveyDynamic extends LSActiveRecord
 
     public function search()
     {
+
        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
        $criteria = new CDbCriteria;
        $sort     = new CSort;
@@ -604,7 +604,14 @@ class SurveyDynamic extends LSActiveRecord
            $criteria->addCondition('t.submitdate IS NULL');
        }
 
+       // When selection of responses come from statistics
+       // TODO: This provide a first step to enable the old jQgrid selector system, and could be use for users and tokens
+       if (Yii::app()->user->getState('sql_'.self::$sid) != null ){
+           $criteria->condition .= Yii::app()->user->getState('sql_'.self::$sid);
+       }
+
        $this->filterColumns($criteria);
+
 
        $dataProvider=new CActiveDataProvider('SurveyDynamic', array(
            'sort'=>$sort,

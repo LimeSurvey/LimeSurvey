@@ -19,6 +19,7 @@ class Question extends LSActiveRecord
 
     // Stock the active group_name for questions list filtering
     public $group_name;
+    public $gid;
 
     /**
     * Returns the static model of Settings table
@@ -220,11 +221,7 @@ class Question extends LSActiveRecord
         {
             $aLanguages = array($sLanguage);
         }
-
-        if ($iQuestionID)
-        {
-            $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID);
-        }
+        $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID,$sLanguage);
         $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
         uasort($aAttributeNames, 'categorySort');
         foreach ($aAttributeNames as $iKey => $aAttribute)
@@ -255,6 +252,7 @@ class Question extends LSActiveRecord
                 }
             }
         }
+
         return $aAttributeNames;
     }
 
@@ -829,7 +827,39 @@ class Question extends LSActiveRecord
         return $sIcon;
     }
 
-
+    /**
+     * Get an new title/code for a question
+     * @param integer $index base for question code (exemple : inde of question when survey import)
+     * @return string|null : new title, null if impossible
+     */
+    public function getNewTitle($index=0)
+    {
+        $sOldTitle=$this->title;
+        if($this->validate(array('title'))){
+            return $sOldTitle;
+        }
+        /* Maybe it's an old invalid title : try to fix it */
+        $sNewTitle=preg_replace("/[^A-Za-z0-9]/", '', $sOldTitle);
+        if (is_numeric(substr($sNewTitle,0,1)))
+        {
+            $sNewTitle='q' . $sNewTitle;
+        }
+        /* Maybe there are another question with same title try to fix it 10 times */
+        $attempts = 0;
+        while (!$this->validate(array('title')))
+        {
+            $rand = mt_rand(0, 1024);
+            $sNewTitle= 'q' . $index.'r' . $rand ;
+            $this->title = $sNewTitle;
+            $attempts++;
+            if ($attempts > 10)
+            {
+                $this->addError('title', 'Failed to resolve question code problems after 10 attempts.');
+                return null;
+            }
+        }
+        return $sNewTitle;
+    }
 
     public function search()
     {
@@ -886,10 +916,8 @@ class Question extends LSActiveRecord
         $qid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.qid::varchar' : 't.qid');
         $criteria2->compare($qid_reference, $this->title, true, 'OR');
 
-
-        if($this->group_name != '')
-        {
-            $criteria->compare('groups.group_name', $this->group_name, true, 'AND');
+        if($this->gid != ''){
+            $criteria->compare('groups.gid', $this->gid, true, 'AND');
         }
 
         $criteria->mergeWith($criteria2, 'AND');
@@ -915,7 +943,6 @@ class Question extends LSActiveRecord
         if (parent::beforeSave())
         {
             $surveyIsActive = Survey::model()->findByPk($this->sid)->active !== 'N';
-
             if ($surveyIsActive && $this->getIsNewRecord())
             {
                 return false;
@@ -959,4 +986,35 @@ class Question extends LSActiveRecord
         ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
         ." AND parent_qid=0")->read();
     }
+
+    /**
+     * Fix sub question of a parent question
+     * Must be call after base language subquestion is set
+     * @todo : move other fix here ?
+     * @return void
+     */
+    public function fixSubQuestions(){
+        if($this->parent_qid){
+            return;
+        }
+        $oSurvey=Survey::model()->findByPk($this->sid);
+
+        /* Delete sub question in all other language */
+        $criteria = new CDbCriteria;
+        $criteria->compare('parent_qid',$this->qid);
+        $criteria->addNotInCondition('language', $oSurvey->getAllLanguages());
+        Question::model()->deleteAll($criteria);// Must log count of deleted ?
+
+        /* Delete invalid subquestions (not in primary language */
+        $validSubQuestion = Question::model()->findAll(array(
+            'select'=>'title',
+            'condition'=>'parent_qid=:parent_qid AND language=:language',
+            'params'=>array('parent_qid' => $this->qid,'language' => $oSurvey->language)
+        ));
+        $criteria = new CDbCriteria;
+        $criteria->compare('parent_qid',$this->qid);
+        $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
+        Question::model()->deleteAll($criteria);// Must log count of deleted ?
+    }
+
 }

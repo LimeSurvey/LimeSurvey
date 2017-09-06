@@ -99,12 +99,12 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
         $result = Yii::app()->db->createCommand()->insert('{{groups}}', $insertdata);
 
         if (isset($insertdata['gid'])) switchMSSQLIdentityInsert('groups',false);
-        $results['groups']++;
 
         if (!isset($aGIDReplacements[$oldgid]))
         {
             $newgid=getLastInsertID('{{groups}}');
             $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
+            $results['groups']++;
         }
     }
 
@@ -410,14 +410,7 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
         {
             $insertdata[(string)$key]=(string)$value;
         }
-        if ($options['autorename'])
-        {
-            // Check if code already exists
-            while (Question::model()->countByAttributes(array('title'=>$insertdata['title'],'sid'=>$iNewSID))>0)
-            {
-                $insertdata['title']=randomChars(5);
-            }
-        }
+
         $iOldSID=$insertdata['sid'];
         $insertdata['sid']=$iNewSID;
         $insertdata['gid']=$newgid;
@@ -434,21 +427,29 @@ function XMLImportQuestion($sFullFilePath, $iNewSID, $newgid, $options=array('au
             $insertdata['qid']=$aQIDReplacements[$oldqid];
         }
 
-        $ques = new Question;
-        if ($insertdata)
-            XSSFilterArray($insertdata);
-        foreach ($insertdata as $k => $v)
-            $ques->$k = $v;
-        $result = $ques->save();
-        if (!$result)
+        $oQuestion = new Question('import');
+        $oQuestion->setAttributes($insertdata, false);
+        if(!$oQuestion->validate(array('title')) && $options['autorename']){
+            if(isset($sNewTitle)){
+                $oQuestion->title=$sNewTitle;
+            }else{
+                $sOldTitle=$oQuestion->title;
+                $oQuestion->title=$sNewTitle=$oQuestion->getNewTitle();
+                if(!$sNewTitle){
+                    $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
+                    return $results;
+                }
+                $results['importwarnings'][] = sprintf(gT("Question code %s was updated to %s."),$sOldTitle,$sNewTitle);
+            }
+        }
+        if (!$oQuestion->save())
         {
-            $results['fatalerror'] = CHtml::errorSummary($ques,gT("The question could not be imported for the following reasons:"));
+            $results['fatalerror'] = CHtml::errorSummary($oQuestion,gT("The question could not be imported for the following reasons:"));
             return $results;
         }
         if (!isset($aQIDReplacements[$oldqid]))
         {
-            $newqid=getLastInsertID($ques->tableName());
-            $aQIDReplacements[$oldqid]=$newqid; // add old and new qid to the mapping array
+            $newqid=$aQIDReplacements[$oldqid]=$oQuestion->qid;
         }
     }
 
@@ -1015,11 +1016,10 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                 $insertdata['gid']=$aGIDReplacements[$oldgid];
             }
             $newgid = QuestionGroup::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data [3]<br />");
-            $results['groups']++;
-
             if (!isset($aGIDReplacements[$oldgid]))
             {
                 $aGIDReplacements[$oldgid]=$newgid; // add old and new qid to the mapping array
+                $results['groups']++;
             }
             else
             {
@@ -1238,12 +1238,12 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             if (!isset($insertdata['qid']))
             {
                 $aQIDReplacements[$oldsqid]=$newsqid; // add old and new qid to the mapping array
+                $results['subquestions']++;
             }
             else
             {
                 switchMSSQLIdentityInsert('questions',false);
             }
-            $results['subquestions']++;
         }
     }
 
@@ -1640,13 +1640,13 @@ function XMLImportTokens($sFullFilePath,$iSurveyID,$sCreateMissingAttributeField
             $insertdata[(string)$key]=(string)$value;
         }
 
-        $token = Token::create($iSurveyID);
+        $token = Token::create($iSurveyID,'allowinvalidemail');
         $token->setAttributes($insertdata, false);
-        if (!$token->save())
-        {
-            $results['warnings'][]=gT("Skipped tokens entry:").' '. implode('. ',$token->errors['token']);
-        };
-        $results['tokens']++;
+        if (!$token->save()) {
+            $results['warnings'][]=CHtml::errorSummary($token,gT("Skipped tokens entry:"));
+        } else {
+            $results['tokens']++;
+        }
     }
     switchMSSQLIdentityInsert('tokens_'.$iSurveyID,false);
     if (Yii::app()->db->getDriverName() == 'pgsql')
@@ -1764,6 +1764,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     $aRealFieldNames = Yii::app()->db->getSchema()->getTable(SurveyDynamic::model($iSurveyId)->tableName())->getColumnNames();
     //$aCsvHeader=array_map("trim",explode($aOptions['sSeparator'], trim(array_shift($aFileResponses))));
     $aCsvHeader=str_getcsv(array_shift($aFileResponses),$aOptions['sSeparator'],$aOptions['sQuoted']);
+    LimeExpressionManager::SetDirtyFlag($iSurveyId); // Be sure survey EM code are up to date
     $aLemFieldNames=LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
     $aKeyForFieldNames=array();// An array assicated each fieldname with corresponding responses key
     if(!$aCsvHeader){
@@ -1936,6 +1937,11 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
                 }
                 if($oSurvey->save())
                 {
+                    $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
+                    $beforeDataEntryImport->set('iSurveyID',$iSurveyId);
+                    $beforeDataEntryImport->set('oModel',$oSurvey);
+                    App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
+
                     $oTransaction->commit();
                     if($bExistingsId && $aOptions['sExistingId']!='renumber')
                     {
@@ -2116,17 +2122,15 @@ function TSVImportSurvey($sFullFilePath)
 
     $file = stream_get_contents($handle);
     fclose($handle);
-
     // fix Excel non-breaking space
     $file = str_replace("0xC20xA0",' ',$file);
-    $filelines = explode("\n",$file);
-    $row = array_shift($filelines);
-    $headers = explode("\t",$row);
-    $rowheaders = array();
-    foreach ($headers as $header)
-    {
-        $rowheaders[] = trim($header);
-    }
+    // Replace all different newlines styles with \n
+    $file = preg_replace('~\R~u', "\n", $file);
+    $tmp = fopen('php://temp', 'r+');
+    fwrite($tmp,$file);
+    rewind($tmp);
+    $rowheaders = fgetcsv($tmp,0,"\t",'"');
+    $rowheaders = array_map('trim',$rowheaders);
     // remove BOM from the first header cell, if needed
     $rowheaders[0] = preg_replace("/^\W+/","",$rowheaders[0]);
     if (preg_match('/class$/',$rowheaders[0]))
@@ -2135,12 +2139,9 @@ function TSVImportSurvey($sFullFilePath)
     }
 
     $adata = array();
-    foreach ($filelines as $rowline)
-    {
+    while (($row = fgetcsv($tmp,0,"\t",'"')) !== FALSE) {
         $rowarray = array();
-        $row = explode("\t",$rowline);
-        for ($i = 0; $i < count($rowheaders); ++$i)
-        {
+        for ($i = 0; $i < count($rowheaders); ++$i) {
             $val = (isset($row[$i]) ? $row[$i] : '');
             // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
             if (preg_match('/^".*"$/',$val))
@@ -2151,7 +2152,7 @@ function TSVImportSurvey($sFullFilePath)
         }
         $adata[] = $rowarray;
     }
-
+    fclose($tmp);
     $results['defaultvalues']=0;
     $results['answers']=0;
     $results['surveys']=0;

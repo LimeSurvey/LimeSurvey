@@ -152,17 +152,18 @@ class database extends Survey_Common_Action
             /* @todo : add it to upgrage DB system, and see for the lsa */
             if($sQuestionType=="R" && Survey::model()->findByPk($iSurveyID)->active=="Y")
             {
-                QuestionAttribute::model()->find(
+                $oQuestionAttributeMaxSubQuestions = QuestionAttribute::model()->find(
                     "qid = :qid AND attribute = 'max_subquestions'",
                     array(':qid' => $iQuestionID)
                 );
-
-                $answerCount=Answer::model()->countByAttributes(array('qid' => $iQuestionID,'language'=>Survey::model()->findByPk($iSurveyID)->language));
-                $oQuestionAttribute = new QuestionAttribute();
-                $oQuestionAttribute->qid = $iQuestionID;
-                $oQuestionAttribute->attribute = 'max_subquestions';
-                $oQuestionAttribute->value = $answerCount;
-                $oQuestionAttribute->save();
+                if(!$oQuestionAttributeMaxSubQuestions) {
+                    $answerCount=Answer::model()->countByAttributes(array('qid' => $iQuestionID,'language'=>Survey::model()->findByPk($iSurveyID)->language));
+                    $oQuestionAttributeMaxSubQuestions = new QuestionAttribute();
+                    $oQuestionAttributeMaxSubQuestions->qid = $iQuestionID;
+                    $oQuestionAttributeMaxSubQuestions->attribute = 'max_subquestions';
+                    $oQuestionAttributeMaxSubQuestions->value = $answerCount;
+                    $oQuestionAttributeMaxSubQuestions->save();
+                }
 
             }
 
@@ -229,11 +230,11 @@ class database extends Survey_Common_Action
             LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
             if (!Yii::app()->request->getPost('bFullPOST'))
             {
-                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."));
+                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."),'error');
             }
             else
             {
-                Yii::app()->session['flashmessage']= gT("Answer options were successfully saved.");
+                Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
             }
             LimeExpressionManager::SetDirtyFlag();
             if ($sDBOutput != '')
@@ -793,14 +794,14 @@ class database extends Survey_Common_Action
                     $langCriteria->compare('attribute',$validAttribute['name']);
                     $langCriteria->addNotInCondition('language',$aLanguages);
                     QuestionAttribute::model()->deleteAll($langCriteria);
-                    /* But not in don't work for null value in mysql ? */
+                    /* But not in don't work for null value : then delete IS NULL */
                     QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid AND language IS NULL',array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
 
                     foreach ($aLanguages as $sLanguage)
                     {// TODO sanitise XSS
                         $value=Yii::app()->request->getPost($validAttribute['name'].'_'.$sLanguage);
-                        $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID, 'language'=>$sLanguage));
-                        if (count($iInsertCount)>0)
+                        $iInsertCount = QuestionAttribute::model()->countByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID, 'language'=>$sLanguage));
+                        if ($iInsertCount>0)
                         {
                             if ($value!='')
                             {
@@ -824,27 +825,15 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    $value=Yii::app()->request->getPost($validAttribute['name']);
-
+                    $value=Yii::app()->request->getPost($validAttribute['name'],'');
                     if ($validAttribute['name']=='multiflexible_step' && trim($value)!='') {
                         $value=floatval($value);
                         if ($value==0) $value=1;
                     };
-
-                    $iInsertCount = QuestionAttribute::model()->findAllByAttributes(array('attribute'=>$validAttribute['name'], 'qid'=>$iQuestionID));
-                    if (count($iInsertCount)>0)
-                    {
-                        if($value!=$validAttribute['default'] && trim($value)!="")
-                        {
-                            QuestionAttribute::model()->updateAll(array('value'=>$value),'attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
-                        }
-                        else
-                        {
-                            QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
-                        }
-                    }
-                    elseif($value!=$validAttribute['default'] && trim($value)!="")
-                    {
+                    /* we must have only one element, and this element must be null, then reset always (see #11980)*/
+                    /* We can update, but : this happen only for admin and not a lot, then : delete + add */
+                    QuestionAttribute::model()->deleteAll('attribute=:attribute AND qid=:qid', array(':attribute'=>$validAttribute['name'], ':qid'=>$iQuestionID));
+                    if($value!=$validAttribute['default'] && trim($value)!==""){
                         $attribute = new QuestionAttribute;
                         $attribute->qid = $iQuestionID;
                         $attribute->value = $value;
@@ -1165,7 +1154,6 @@ class database extends Survey_Common_Action
                 /* Date management */
                 Yii::app()->loadHelper('surveytranslator');
                 $formatdata=getDateFormatData(Yii::app()->session['dateformat']);
-                Yii::app()->loadLibrary('Date_Time_Converter');
                 $startdate = App()->request->getPost('startdate');
                 if (trim($startdate)=="")
                 {
@@ -1173,9 +1161,8 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    Yii::app()->loadLibrary('Date_Time_Converter');
-                    $datetimeobj = new date_time_converter($startdate,$formatdata['phpdate'].' H:i'); //new Date_Time_Converter($startdate,$formatdata['phpdate'].' H:i');
-                    $startdate=$datetimeobj->convert("Y-m-d H:i:s");
+                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $startdate );
+                    $startdate=$datetimeobj->format("Y-m-d H:i:s");
                 }
                 $expires = App()->request->getPost('expires');
                 if (trim($expires)=="")
@@ -1184,8 +1171,8 @@ class database extends Survey_Common_Action
                 }
                 else
                 {
-                    $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
-                    $expires=$datetimeobj->convert("Y-m-d H:i:s");
+                    $datetimeobj = DateTime::createFromFormat($formatdata['phpdate'].' H:i', $expires);
+                    $expires=$datetimeobj->format("Y-m-d H:i:s");
                 }
 
                 // Only owner and superadmins may change the survey owner
@@ -1234,20 +1221,17 @@ class database extends Survey_Common_Action
                 $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
                 $oSurvey->emailresponseto = App()->request->getPost('emailresponseto');
                 $oSurvey->emailnotificationto = App()->request->getPost('emailnotificationto');
-                $oSurvey->googleanalyticsapikeysetting = App()->request->getPost('googleanalyticsapikeysetting');
-                if( $oSurvey->googleanalyticsapikeysetting == "Y")
-                {
-                    $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+                switch(App()->request->getPost('googleanalyticsapikeysetting')) {
+                    case "Y":
+                        $oSurvey->googleanalyticsapikey = App()->request->getPost('googleanalyticsapikey');
+                        break;
+                    case "G":
+                        $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
+                        break;
+                    case "N":
+                    default:
+                        $oSurvey->googleanalyticsapikey = "";
                 }
-                else if( $oSurvey->googleanalyticsapikeysetting == "G")
-                {
-                    $oSurvey->googleanalyticsapikey = "9999useGlobal9999";
-                }
-                else if( $oSurvey->googleanalyticsapikeysetting == "N")
-                {
-                    $oSurvey->googleanalyticsapikey = "";
-                }
-
                 $oSurvey->googleanalyticsstyle = App()->request->getPost('googleanalyticsstyle');
                 $oSurvey->tokenlength = (App()->request->getPost('tokenlength')<5  || App()->request->getPost('tokenlength')>36)?15:App()->request->getPost('tokenlength');
                 $oSurvey->adminemail = App()->request->getPost('adminemail');
@@ -1256,7 +1240,6 @@ class database extends Survey_Common_Action
                 $event = new PluginEvent('beforeSurveySettingsSave');
                 $event->set('modifiedSurvey', $oSurvey);
                 App()->getPluginManager()->dispatchEvent($event);
-
                 if ($oSurvey->save())
                 {
                     Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
@@ -1315,13 +1298,17 @@ class database extends Survey_Common_Action
                     {
                         continue;  // this parameter name seems to be invalid - just ignore it
                     }
-                    unset($aURLParam['act']);
+                    $aURLParam['targetqid']  = $aURLParam['qid'];
+                    $aURLParam['targetsqid'] = $aURLParam['sqid'];
+                    unset($aURLParam['actionBtn']);
                     unset($aURLParam['title']);
                     unset($aURLParam['id']);
+                    unset($aURLParam['qid']);
+                    unset($aURLParam['targetQuestionText']);
+                    unset($aURLParam['sqid']);
                     if ($aURLParam['targetqid']=='') $aURLParam['targetqid']=NULL;
                     if ($aURLParam['targetsqid']=='') $aURLParam['targetsqid']=NULL;
                     $aURLParam['sid']=$iSurveyID;
-
                     $param = new SurveyURLParameter;
                     foreach ($aURLParam as $k => $v)
                         $param->$k = $v;

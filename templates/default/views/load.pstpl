@@ -12,7 +12,7 @@
             <br />
             <div class="load-form">{LOADFORM}</div>
             <br />
-            <span class="return-to-survey">{RETURNTOSURVEY}</span>
+            <p class="return-to-survey">{RETURNTOSURVEY}</p>
             <br /><br />
         </td>
     </tr>

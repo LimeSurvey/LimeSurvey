@@ -11,7 +11,7 @@
 
                         <span class="groupTitle">
 
-                                <?php echo $aGroup['name']; ?>
+                                <?php echo flattenText($aGroup['name']); ?>
 
                             (<?php echo gT("Question group").$aGroup['gid']; ?>)
                         </span>

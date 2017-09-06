@@ -76,13 +76,32 @@ class PluginManager extends Survey_Common_Action
     }
 
     /**
+     * Activate or deactivate a plugin
+     *
+     * @return void
+     */
+    public function changestate(){
+        //Yii::app()->request->validateCsrfToken();
+        $id = Yii::app()->request->getPost('id');
+        $type = Yii::app()->request->getPost('type');
+        if($type=="activate")
+        {
+            $this->activate($id);
+        }
+        else if($type=="deactivate")
+        {
+            $this->deactivate($id);
+        }
+    }
+
+    /**
      * Activate a plugin
      *
      * @todo Defensive programming
      * @param int $id Plugin id
      * @return void
      */
-    public function activate($id)
+    private function activate($id)
     {
         if(!Permission::model()->hasGlobalPermission('settings','update'))
         {
@@ -129,7 +148,7 @@ class PluginManager extends Survey_Common_Action
      * @param int $id
      * @return void
      */
-    public function deactivate($id)
+    private function deactivate($id)
     {
         if(!Permission::model()->hasGlobalPermission('settings','update'))
         {

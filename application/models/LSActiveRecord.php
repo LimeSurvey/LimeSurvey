@@ -139,6 +139,42 @@ class LSActiveRecord extends CActiveRecord
 
         return $maxIds[$field];
     }
+    
+    /**
+     * Return the min value for a field
+     *
+     * This is a convenience method, that uses the primary key of the model to
+     * retrieve the highest value.
+     *
+     * @param string  $field        The field that contains the Id, when null primary key is used if it is a single field
+     * @param boolean $forceRefresh Don't use value from static cache but always requery the database
+     * @return false|int
+     */
+    public function getMinId($field = null, $forceRefresh = false)
+    {
+        static $minIds = array();
+
+        if (is_null($field)) {
+            $primaryKey = $this->getMetaData()->tableSchema->primaryKey;
+            if (is_string($primaryKey)) {
+                $field = $primaryKey;
+            } else {
+                // Composite key, throw a warning to the programmer
+                throw new Exception(sprintf('Table %s has a composite primary key, please explicitly state what field you need the min value for.', $this->tableName()));           }
+        }
+
+        if ($forceRefresh || !array_key_exists($field, $minIds)) {
+            $minId = $this->dbConnection->createCommand()
+                    ->select('MIN(' .  $this->dbConnection->quoteColumnName($field) . ')')
+                    ->from($this->tableName())
+                    ->queryScalar();
+
+            // Save so we can reuse in the same request
+            $minIds[$field] = $minId;
+        }
+
+        return $minIds[$field];
+    }
 
     /**
      * @todo This should also be moved to the behavior at some point.

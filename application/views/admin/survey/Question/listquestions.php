@@ -39,11 +39,11 @@
                             <!-- select group -->
                             <div class="form-group">
                                 <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
-                                    <select name="group_name" class="form-control">
+                                    <select name="gid" class="form-control">
                                         <option value=""><?php eT('(Any group)');?></option>
                                         <?php foreach($model->AllGroups as $group): ?>
-                                            <option value="<?php echo $group->group_name;?>" <?php if( $group->group_name == $model->group_name){echo 'selected';} ?>>
-                                                <?php echo $group->group_name;?>
+                                            <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>
+                                                <?php echo flattenText($group->group_name);?>
                                             </option>
                                         <?php endforeach?>
                                     </select>

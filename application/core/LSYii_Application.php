@@ -58,8 +58,10 @@ class LSYii_Application extends CWebApplication
             }
         }
         // Runtime path has to be set before  parent constructor is executed
-        $aApplicationConfig['runtimePath']=$settings['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
-
+        // User can set it in own config using Yii
+        if(!isset($aApplicationConfig['runtimePath'])){
+            $aApplicationConfig['runtimePath']=$settings['tempdir'] . DIRECTORY_SEPARATOR. 'runtime';
+        }
         parent::__construct($aApplicationConfig);
 
         $ls_config = require(__DIR__ . '/../config/config-defaults.php');
@@ -67,7 +69,6 @@ class LSYii_Application extends CWebApplication
         $version_config = require(__DIR__ . '/../config/version.php');
         $updater_version_config = require(__DIR__ . '/../config/updater_version.php');
         $settings = array_merge($ls_config, $version_config, $email_config, $updater_version_config);
-
 
         if(file_exists(__DIR__ . '/../config/config.php'))
         {
@@ -84,6 +85,7 @@ class LSYii_Application extends CWebApplication
         {
             $this->setConfig($key, $value);
         }
+        /* Don't touch to linkAssets : you can set it in config.php */
         // Asset manager path can only be set after App was constructed because it relies on App()
         App()->getAssetManager()->setBaseUrl($settings['tempurl']. '/assets');
         App()->getAssetManager()->setBasePath($settings['tempdir'] . '/assets');
@@ -211,6 +213,13 @@ class LSYii_Application extends CWebApplication
     */
     public function setLanguage( $sLanguage )
     {
+        // This method is also called from AdminController and LSUser
+        // But if a param is defined, it should always have the priority
+        // eg: index.php/admin/authentication/sa/login/&lang=de
+        if ( $this->request->getParam('lang') !== null && in_array('authentication', explode( '/', Yii::app()->request->url)) ){
+            $sLanguage = $this->request->getParam('lang');
+        }
+
         $sLanguage=preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
         $this->messages->catalog = $sLanguage;
         App()->session['_lang'] = $sLanguage;                                   // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/

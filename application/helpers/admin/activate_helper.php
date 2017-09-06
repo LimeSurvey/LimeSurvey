@@ -260,16 +260,17 @@ function activateSurvey($iSurveyID, $simulate = false)
     $bCreateSurveyDir=false;
     // Specify case sensitive collations for the token
     $sCollation='';
-    if  (Yii::app()->db->driverName=='mysqli' | Yii::app()->db->driverName=='mysqli'){
-        $sCollation=" COLLATE 'utf8_bin'";
+    if  (Yii::app()->db->driverName=='mysqli' || Yii::app()->db->driverName=='mysql'){
+        $sCollation=" COLLATE 'utf8mb4_bin'";
     }
-    if  (Yii::app()->db->driverName=='sqlsrv' | Yii::app()->db->driverName=='dblib' | Yii::app()->db->driverName=='mssql'){
+    if  (Yii::app()->db->driverName=='sqlsrv' || Yii::app()->db->driverName=='dblib' || Yii::app()->db->driverName=='mssql'){
         $sCollation=" COLLATE SQL_Latin1_General_CP1_CS_AS";
     }
     //Check for any additional fields for this survey and create necessary fields (token and datestamp)
-    $arSurvey = Survey::model()->findByAttributes(array('sid' => $iSurveyID));
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $oSurvey->fixInvalidQuestions();
     //Get list of questions for the base language
-    $sFieldMap = createFieldMap($iSurveyID,'full',true,false,$arSurvey->language);
+    $sFieldMap = createFieldMap($iSurveyID,'full',true,false,$oSurvey->language);
     //For each question, create the appropriate field(s)
     foreach ($sFieldMap as $j=>$aRow)
     {
@@ -342,11 +343,11 @@ function activateSurvey($iSurveyID, $simulate = false)
                     $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
             case "ipaddress":
-                if ($arSurvey->ipaddr == "Y")
+                if ($oSurvey->ipaddr == "Y")
                     $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
             case "url":
-                if ($arSurvey->refurl == "Y")
+                if ($oSurvey->refurl == "Y")
                     $aTableDefinition[$aRow['fieldname']] = "text";
                 break;
             case "token":
@@ -386,7 +387,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             default:
                 $aTableDefinition[$aRow['fieldname']] = "string(5)";
         }
-        if ($arSurvey->anonymized == 'N' && !array_key_exists('token',$aTableDefinition)){
+        if ($oSurvey->anonymized == 'N' && !array_key_exists('token',$aTableDefinition)){
             $aTableDefinition['token'] = 'string(35)'.$sCollation;
         }
         if ($simulate){
@@ -463,7 +464,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         }
     }
 
-    if ($arSurvey->savetimings == "Y")
+    if ($oSurvey->savetimings == "Y")
     {
         $timingsfieldmap = createTimingsFieldMap($iSurveyID,"full",false,false,getBaseLanguageFromSurveyID($iSurveyID));
 

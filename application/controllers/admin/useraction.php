@@ -41,6 +41,9 @@ class UserAction extends Survey_Common_Action
         $value = Yii::app()->request->getPost($param);
         if(!$value)
         {
+            /* This already return GET or POST : : http://www.yiiframework.com/doc/api/1.1/CHttpRequest#getParam-detail
+             * DB update need $_POST, then only Yii::app()->request->getPost or control Yii::app()->request->getIsPostRequest()
+             **/
             $value = Yii::app()->request->getParam($param);
         }
         return $value;
@@ -122,12 +125,6 @@ class UserAction extends Survey_Common_Action
                 // add new user to userlist
                 $sresult = User::model()->getAllRecords(array('uid' => $iNewUID));
                 $srow = count($sresult);
-                $userlist = getUserList();
-                array_push($userlist, array("user" => $srow['users_name'], "uid" => $srow['uid'], "email" => $srow['email'],
-                "password" => $srow["password"], "parent_id" => $srow['parent_id'], // "level"=>$level,
-                "create_survey" => $srow['create_survey'], "participant_panel" => $srow['participant_panel'], "configurator" => $srow['configurator'], "create_user" => $srow['create_user'],
-                "delete_user" => $srow['delete_user'], "superadmin" => $srow['superadmin'], "manage_template" => $srow['manage_template'],
-                "manage_label" => $srow['manage_label']));
 
                 // send Mail
                 $body = sprintf(gT("Hello %s,"), $new_full_name) . "<br /><br />\n";
@@ -183,87 +180,91 @@ class UserAction extends Survey_Common_Action
     */
     public function deluser()
     {
-
-        if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
-            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
-            $this->getController()->redirect(array("admin/user/sa/index"));
-        }
-
-        $action = $this->_getPostOrParam("action");
-
-        $aViewUrls = array();
-
-        // CAN'T DELETE ORIGINAL SUPERADMIN (with findByAttributes : found the first user without parent)
-        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-
-        $postuserid = $this->_getPostOrParam("uid");
-        $postuser = flattenText($this->_getPostOrParam("user"));
-
-        if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
-        {
-            Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"),'error');
-            $this->getController()->redirect(array("admin/user/sa/index"));
-            return;
-        }
-
-        //If there was no uid transferred
-        if (!$postuserid)
-        {
-            Yii::app()->setFlashMessage(gT("Could not delete user. User was not supplied."),'error');
-            $this->getController()->redirect(array("admin/user/sa/index"));
-            return;
-        }
-
-        $sresultcount = 0; // 1 if I am parent of $postuserid
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-        {
-            $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
-            $sresultcount = count($sresult);
-        }
-
-        if (Permission::model()->hasGlobalPermission('superadmin','read') || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID'])
-        {
-            $transfer_surveys_to = 0;
-            $ownerUser = User::model()->findAll();
-            $aData = array();
-            $aData['users'] = $ownerUser;
-
-            $current_user = Yii::app()->session['loginID'];
-            if (count($ownerUser) == 2) {
-                $action = "finaldeluser";
-                foreach ($ownerUser as &$user)
-                {
-                    if ($postuserid != $user['uid'])
-                        $transfer_surveys_to = $user['uid'];
-                }
+        if(Yii::app()->request->getIsPostRequest()){ /* DB action : need post request */
+            if (!Permission::model()->hasGlobalPermission('superadmin','read') && !Permission::model()->hasGlobalPermission('users','delete')) {
+                Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
+                $this->getController()->redirect(array("admin/user/sa/index"));
             }
 
-            $ownerUser = Survey::model()->findAllByAttributes(array('owner_id' => $postuserid));
-            if (count($ownerUser) == 0) {
-                $action = "finaldeluser";
-            }
+            $action = $this->_getPostOrParam("action");
 
-            if ($action == "finaldeluser")
+            $aViewUrls = array();
+
+            // CAN'T DELETE ORIGINAL SUPERADMIN (with findByAttributes : found the first user without parent)
+            $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
+
+            $postuserid = $this->_getPostOrParam("uid");
+            $postuser = flattenText($this->_getPostOrParam("user"));
+
+            if ($oInitialAdmin && $oInitialAdmin->uid == $postuserid) // it's the original superadmin !!!
             {
-                $this->deleteFinalUser($ownerUser, $transfer_surveys_to);
+                Yii::app()->setFlashMessage(gT("Initial Superadmin cannot be deleted!"),'error');
+                $this->getController()->redirect(array("admin/user/sa/index"));
+                return;
+            }
+
+            //If there was no uid transferred
+            if (!$postuserid)
+            {
+                Yii::app()->setFlashMessage(gT("Could not delete user. User was not supplied."),'error');
+                $this->getController()->redirect(array("admin/user/sa/index"));
+                return;
+            }
+
+            $sresultcount = 0; // 1 if I am parent of $postuserid
+            if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+            {
+                $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+                $sresultcount = count($sresult);
+            }
+
+            if (Permission::model()->hasGlobalPermission('superadmin','read') || $sresultcount > 0 || $postuserid == Yii::app()->session['loginID'])
+            {
+                $transfer_surveys_to = 0;
+                $ownerUser = User::model()->findAll();
+                $aData = array();
+                $aData['users'] = $ownerUser;
+
+                $current_user = Yii::app()->session['loginID'];
+                if (count($ownerUser) == 2) {
+                    $action = "finaldeluser";
+                    foreach ($ownerUser as &$user)
+                    {
+                        if ($postuserid != $user['uid'])
+                            $transfer_surveys_to = $user['uid'];
+                    }
+                }
+
+                $ownerUser = Survey::model()->findAllByAttributes(array('owner_id' => $postuserid));
+                if (count($ownerUser) == 0) {
+                    $action = "finaldeluser";
+                }
+
+                if ($action == "finaldeluser")
+                {
+                    $this->deleteFinalUser($ownerUser, $transfer_surveys_to);
+                }
+                else
+                {
+                    $aData['postuserid'] = $postuserid;
+                    $aData['postuser'] = $postuser;
+                    $aData['current_user'] = $current_user;
+
+                    $aViewUrls['deluser'][] = $aData;
+                    $this->_renderWrappedTemplate('user', $aViewUrls);
+                }
             }
             else
             {
-                $aData['postuserid'] = $postuserid;
-                $aData['postuser'] = $postuser;
-                $aData['current_user'] = $current_user;
-
-                $aViewUrls['deluser'][] = $aData;
-                $this->_renderWrappedTemplate('user', $aViewUrls);
+                Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
+                $this->getController()->redirect(array("admin/user/sa/index"));
             }
-        }
-        else
-        {
-            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
-            $this->getController()->redirect(array("admin/user/sa/index"));
-        }
 
-        return $aViewUrls;
+            return $aViewUrls;
+        }
+        /* No action done, come back to user/index */
+        $this->getController()->redirect(array("admin/user/sa/index"));
+
     }
 
     /**
@@ -453,6 +454,10 @@ class UserAction extends Survey_Common_Action
 
     public function savepermissions()
     {
+        if (!Permission::model()->hasGlobalPermission('users','update')) {
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
 
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
@@ -586,25 +591,23 @@ class UserAction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', 'users.js');
         $postuserid = (int) Yii::app()->request->getPost("uid");
-        $aData['postuser']  = flattenText(Yii::app()->request->getPost("user"));
-        $aData['postemail'] = flattenText(Yii::app()->request->getPost("email"));
-        $aData['postuserid'] = $postuserid;
-        $aData['postfull_name'] = flattenText(Yii::app()->request->getPost("full_name"));
+        $oUser = User::model()->findByAttributes(array('uid' => $postuserid));
+        if(!$oUser) {
+            // @todo : review to send a 403
+            $this->getController()->redirect(array("admin/user/sa/index"));
+        }
+        $aData['oUser']=$oUser;
         $this->_refreshtemplates();
         $templaterights=array();
-        foreach (getUserList() as $usr)
+
+        $trights = Permission::model()->findAllByAttributes(array('uid' => $oUser->uid,'entity'=>'template'));
+        foreach ($trights as $srow)
         {
-            if ($usr['uid'] == $postuserid)
-            {
-                $trights = Permission::model()->findAllByAttributes(array('uid' => $usr['uid'],'entity'=>'template'));
-                foreach ($trights as $srow)
-                {
-                    $templaterights[$srow["permission"]] = array("use"=>$srow["read_p"]);
-                }
-                $templates = Template::model()->findAll();
-                $aData['data'] = array('templaterights'=>$templaterights,'templates'=>$templates);
-            }
+            $templaterights[$srow["permission"]] = array("use"=>$srow["read_p"]);
         }
+        $templates = Template::model()->findAll();
+        $aData['data'] = array('templaterights'=>$templaterights,'templates'=>$templates);
+
 
         $aData['fullpagebar']['savebutton']['form'] = 'modtemplaterightsform';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
@@ -665,6 +668,7 @@ class UserAction extends Survey_Common_Action
     {
         // Save Data
         if (Yii::app()->request->getPost("action")) {
+            $oUserModel = User::model()->findByPk(Yii::app()->session['loginID']);
             $aData = array(
             'lang' => Yii::app()->request->getPost('lang'),
             'dateformat' => Yii::app()->request->getPost('dateformat'),
@@ -674,18 +678,34 @@ class UserAction extends Survey_Common_Action
             'full_name'=> Yii::app()->request->getPost('fullname'),
             'email'=> Yii::app()->request->getPost('email')
             );
+
             if (Yii::app()->request->getPost('password')!='' && !Yii::app()->getConfig('demoMode'))
             {
-                if (Yii::app()->request->getPost('password')==Yii::app()->request->getPost('repeatpassword'))
-                {
+                $oldPassword = Yii::app()->request->getPost('oldpassword');
+                $oldPasswordHash = hash( "sha256", $oldPassword);
+                $newPassword = Yii::app()->request->getPost('password');
+                $repeatPassword = Yii::app()->request->getPost('repeatpassword');
+                
+                //First test if old and new password are identical => This is not allowed
+                if(trim($oldPassword) === trim($newPassword)){
+                    Yii::app()->setFlashMessage(gT("Your new password was not saved because it matches the old password."),'error');
+
+                //Then test the new password and the repeat password for identity
+                } else if(trim($newPassword) !== trim($repeatPassword)){
+                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."),'error');
+
+                //Now check if the old password matches the old password saved
+                } else if($oUserModel->password !== $oldPasswordHash){
+                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."),'error');
+                
+                //At last if everything worked set the new password
+                } else {
                     $aData['password']=hash( "sha256",Yii::app()->request->getPost('password'));
                 }
-                else
-                {
-                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."),'error');
-                }
             }
-            $uresult = User::model()->updateByPk(Yii::app()->session['loginID'], $aData);
+            
+            $oUserModel->setAttributes($aData);
+            $uresult = $oUserModel->save();
 
             if (Yii::app()->request->getPost('lang')=='auto')
             {

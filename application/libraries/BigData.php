@@ -258,7 +258,7 @@
         public function __construct($fileName, $deleteAfterUse = true, $defaultEcho ='base64')
         {
             $this->fileName = $fileName;
-            $this->deleteAfterUse = true;
+            $this->deleteAfterUse = $deleteAfterUse;
             $this->defaultEcho = $defaultEcho;
 
         }

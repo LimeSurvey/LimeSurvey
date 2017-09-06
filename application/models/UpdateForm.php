@@ -317,8 +317,8 @@ class UpdateForm extends CFormModel
     {
         foreach ( $updateinfos as $file )
         {
-            $sFileToDelete = str_replace("..", "", $file->file);
-            if ($file->type =='D' && file_exists($this->rootdir.$sFileToDelete) )
+            $sFileToDelete = str_replace("..", "", $file['file']);
+            if ($file['type'] =='D' && file_exists($this->rootdir.$sFileToDelete) )
             {
                 if ( is_file($this->rootdir.$sFileToDelete ) )
                 {
@@ -461,9 +461,11 @@ class UpdateForm extends CFormModel
         // Format the array for presentation in the view
         if (count($readonlyfiles))
         {
-            foreach (array_unique($readonlyfiles) as $aFile)
+            foreach (array_unique($readonlyfiles) as $sFile)
             {
-                $aReadOnlyFiles[]=substr($aFile,strlen(Yii::app()->getConfig("rootdir")));
+                // If substr return wrong, the root directory is not writable
+                $sCleanFile = substr($sFile,strlen(Yii::app()->getConfig("rootdir")));
+                $aReadOnlyFiles[] = ($sCleanFile)?$sCleanFile:$sFile;
             }
             sort($aReadOnlyFiles);
             $readonlyfiles=$aReadOnlyFiles;
@@ -489,7 +491,7 @@ class UpdateForm extends CFormModel
         {
 
             // To block the access to subdirectories
-            $sFileToZip = str_replace("..", "", $file->file);
+            $sFileToZip = str_replace("..", "", $file['file']);
 
             if (is_file($this->publicdir.$sFileToZip)===true && basename($sFileToZip)!='config.php')
             {
@@ -766,6 +768,7 @@ class UpdateForm extends CFormModel
         // We check if the file read only
         if ($file['type'] == 'A' && !file_exists($this->rootdir . $file['file']) || ($file['type'] == 'D' && file_exists($this->rootdir . $file['file'])))
         {
+
             $searchpath = $this->rootdir . $file['file'];
             $is_writable = is_writable(dirname($searchpath));
 
@@ -965,7 +968,6 @@ class UpdateForm extends CFormModel
             }
         }
 
-        //var_dump($return); die();
         return($return);
     }
 

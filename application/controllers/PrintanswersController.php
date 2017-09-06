@@ -87,7 +87,7 @@
                 ."\t".sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), Yii::app()->getConfig("siteadminemail"))."\n"
                 ."</center><br />\n";
                 echo templatereplace(file_get_contents($oTemplate->viewPath.'/endpage.pstpl'),array());
-                doFooter();
+                doFooter($iSurveyID);
                 exit;
             }
             //Fin session time out
@@ -98,7 +98,7 @@
             //Ensure Participants printAnswer setting is set to true or that the logged user have read permissions over the responses.
             if ($aSurveyInfo['printanswers'] == 'N' && !Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
             {
-                throw new CHttpException(401, 'You are not allowed to print answers.');
+                throw new CHttpException(401, gT('You are not allowed to print answers.'));
             }
 
             //CHECK IF SURVEY IS ACTIVATED AND EXISTS

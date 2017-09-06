@@ -1,6 +1,6 @@
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
     <?php if($tableExists):?>
-    <h3><?php eT("Import a VV survey file"); ?></h3>
+    <h3><?php eT("Import a VV response data file"); ?></h3>
     <?php endif;?>
 
         <div class="row">
@@ -11,7 +11,7 @@
     ?>
     <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>'form-horizontal'));?>
 
-    <div class="panel panel-primary" id="pannel-1" style="opacity: 1; top: 0px;">
+    <div class="panel panel-primary" id="panel-1">
         <div class="panel-heading">
             <h4 class="panel-title">
                 <?php eT("General");?>
@@ -21,10 +21,10 @@
         <div class="panel-body">
             <div class="form-group">
                 <label for="csv_vv_file" class="col-sm-2 control-label">
-                    <?php eT("File:");?>
+                    <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
-                <div class="col-sm-4">
-                    <input type="file" value="" name="csv_vv_file" id="csv_vv_file" class="form-control">
+                <div class="col-sm-6">
+                    <input type="file" value="" name="csv_vv_file" id="csv_vv_file" class="form-control"  accept='.csv,.vv,.txt' required>
                 </div>
             </div>
 
@@ -33,11 +33,17 @@
                     <?php eT("Exclude record IDs?"); ?>
                 </label>
                 <div class="col-sm-4">
-                    <?php echo CHtml::checkBox('noid',true,array('value'=>"noid",'onChange' => 'javascript:form.insertmethod.disabled=this.checked')) ?>
+                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'noid',
+                        'value'=> 'noid',
+                        'onLabel'=>gT('Yes'),
+                        'offLabel'=>gT('No')
+                        ));
+                    ?>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="insertmethod-container">
                 <label for="insertmethod" class="col-sm-2 control-label">
                     <?php eT("When an imported record matches an existing record ID:"); ?>
                 </label>
@@ -47,8 +53,8 @@
                             'renumber' => gT("Renumber the new record."),
                             'replace' => gT("Replace the existing record."),
                             'replaceanswers' => gT("Replace answers in file in the existing record."),
-                            ),array('disabled'=>'disabled','class'=>'form-control')); ?>
-
+                            ),array('disabled'=>'disabled','class'=>'form-control'));
+                     ?>
                 </div>
             </div>
 
@@ -57,7 +63,13 @@
                     <?php eT("Import as not finalized answers?"); ?>
                 </label>
                 <div class="col-sm-4">
-                    <?php echo CHtml::checkBox('notfinalized',false,array('value'=>"notfinalized")); ?>
+                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'notfinalized',
+                        'value'=> false,
+                        'onLabel'=>gT('Yes'),
+                        'offLabel'=>gT('No')
+                        ));
+                    ?>
                 </div>
             </div>
 
@@ -75,7 +87,13 @@
                     <?php eT("First line contains the code of questions:"); ?>
                 </label>
                 <div class="col-sm-4">
-                    <?php echo CHtml::checkBox('dontdeletefirstline',false,array('value'=>"dontdeletefirstline")); ?>
+                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'dontdeletefirstline',
+                        'value'=> false,
+                        'onLabel'=>gT('Yes'),
+                        'offLabel'=>gT('No')
+                        ));
+                    ?>
                 </div>
             </div>
 
@@ -84,7 +102,13 @@
                     <?php eT("Force import:"); ?>
                 </label>
                 <div class="col-sm-4">
-                    <?php echo CHtml::checkBox('forceimport',false,array('value'=>"forceimport")); ?>
+                    <?php  $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
+                        'name' => 'forceimport',
+                        'value'=> false,
+                        'onLabel'=>gT('Yes'),
+                        'offLabel'=>gT('No')
+                        ));
+                    ?>
                 </div>
             </div>
 
@@ -119,3 +143,17 @@
         <?php } ?>
 
 </div></div></div>
+
+<script>
+$(document).ready(function() {
+    $('#noid').on('switchChange.bootstrapSwitch', function(event, state) {
+        if (!state){
+            $('#insertmethod').removeAttr('disabled');
+            $('#insertmethod-container').show('slow');
+        }else{
+            $('#insertmethod').attr('disabled','disabled');
+            $('#insertmethod-container').hide('slow');
+        }
+    });
+});
+</script>

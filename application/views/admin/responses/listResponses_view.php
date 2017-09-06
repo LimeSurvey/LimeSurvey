@@ -38,9 +38,24 @@
 
     <div class="row">
         <div class="col-sm-12">
-            <div class="content-right scrolling-wrapper"    >
+            <div id='top-scroller' class="content-right scrolling-wrapper"    >
+            <div id='fake-content'>&nbsp;</div>
+            </div>
+            <div id='bottom-scroller' class="content-right scrolling-wrapper"    >
                 <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
                 <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
+
+                <?php if (Yii::app()->user->getState('sql_'.$surveyid) != null ):?>
+                    <!-- Filter is on -->
+                    <?php eT("Showing filtered results"); ?>
+
+                    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl('admin/responses', array("sa"=>'browse','surveyid'=>$surveyid, 'filters'=>'reset')); ?>" role="button">
+                        <?php eT("View without the filter."); ?>
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+
+                <?php endif;?>
+
                 <?php
                     // the massive actions dropup button
                     $massiveAction = App()->getController()->renderPartial('/admin/responses/massive_actions/_selector', array(), true, false);
@@ -153,10 +168,26 @@
                         {
                             $colName = viewHelper::getFieldCode($fieldmap[$column->name],array('LEMcompat'=>true)); // This must be unique ......
                             $base64jsonFieldMap = base64_encode(json_encode($fieldmap[$column->name]));
+                            $colDetails = '';
+
+                            if(isset($fieldmap[$column->name]['subquestion'])){
+                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion'].'</em><br/>';
+                            }
+
+                            if(isset($fieldmap[$column->name]['subquestion1'])){
+                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion1'].'</em><br/>';
+                            }
+
+                            if(isset($fieldmap[$column->name]['subquestion2'])){
+                                $colDetails .=  '<em>'.$fieldmap[$column->name]['subquestion2'].'</em><br/>';
+                            }
+
+
+                            $colDetails .= ellipsize($fieldmap[$column->name]['question'], $model->ellipsize_header_value);
 
                             $aColumns[]=
                                 array(
-                                    'header' => '<span data-toggle="tooltip" data-placement="bottom" title="'.quoteText(strip_tags($fieldmap[$column->name]['question'])).'">'.$colName.' <br/> '.ellipsize($fieldmap[$column->name]['question'], $model->ellipsize_header_value).'</span>',
+                                    'header' => '<span data-toggle="tooltip" data-placement="bottom" title="'.quoteText(strip_tags($fieldmap[$column->name]['question'])).'">'.$colName.' <br/> '.$colDetails.'</span>',
                                     'headerHtmlOptions'=>array('style'=>'min-width: 350px;'),
                                     'name' => $column->name,
                                     'type' => 'raw',

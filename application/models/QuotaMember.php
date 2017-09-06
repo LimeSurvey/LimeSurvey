@@ -27,14 +27,27 @@ class QuotaMember extends LSActiveRecord
     {
         return parent::model($class);
     }
-    
+
     public function rules()
     {
         return array(
             array('code', 'required', 'on'=>array('create'))
             );
     }
-
+    /**
+     * Returns the relations
+     *
+     * @access public
+     * @return array
+     */
+    public function relations()
+    {
+        return array(
+            'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
+            'question' => array(self::BELONGS_TO, 'Question', 'qid'),
+            'quota' => array(self::BELONGS_TO, 'Quota', 'quota_id'),
+        );
+    }
     /**
      * Returns the setting's table name to be used by the model
      *
@@ -55,6 +68,57 @@ class QuotaMember extends LSActiveRecord
     public function primaryKey()
     {
         return 'id';
+    }
+
+    public function getMemberInfo()
+    {
+        $sFieldName = null;
+        $sValue = null;
+
+        switch($this->question->type) {
+            case "L":
+            case "O":
+            case "!":
+                $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+                $sValue = $this->code;
+                break;
+            case "M":
+                $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid.$this->code;
+                $sValue = "Y";
+                break;
+            case "A":
+            case "B":
+                $temp = explode('-',$this->code);
+                $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
+                $sValue = $temp[1];
+                break;
+            case "I":
+            case "G":
+            case "Y":
+                $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
+                $sValue = $this->code;
+                break;
+            default:
+                // "Impossible" situation.
+                \Yii::log(
+                    sprintf(
+                        "This question type %s is not supported for quotas and should not have been possible to set!",
+                        $this->question->type
+                    ),
+                    'warning',
+                    'application.model.QuotaMember'
+                );
+                break;
+        }
+
+        return array(
+            'title' => $this->question->title,
+            'type' => $this->question->type,
+            'code' => $this->code,
+            'value' => $sValue,
+            'qid' => $this->qid,
+            'fieldname' => $sFieldName,
+        );
     }
 
     function insertRecords($data)

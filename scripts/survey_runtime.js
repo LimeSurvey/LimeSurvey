@@ -78,7 +78,7 @@ function setJsVar(){
     bFixNumAuto=LSvar.bFixNumAuto;
     bNumRealValue=LSvar.bNumRealValue;
     LEMradix=LSvar.sLEMradix;
-    numRegex = new RegExp('[^-' + LEMradix + '0-9]','g');
+    numRegex = new RegExp('[^-\.,0-9]','g');
     intRegex = new RegExp('[^-0-9]','g');
 }
 // Deactivate all other button on submit
@@ -162,78 +162,109 @@ function checkconditions(value, name, type, evt_type)
 /**
  * fixnum_checkconditions : javascript function attach to some element
  * Update the answer of the user to be numeric and launch checkconditions
+ *
+ * Also checks if any of the arrow keys is pressed to avoid unecessary hassle.
  */
 function fixnum_checkconditions(value, name, type, evt_type, intonly)
 {
-    newval = new String(value);
+    if(window.event){
+    var keyPressed =  window.event.keyCode || 0;
+    if(
+            keyPressed == 37 //left arrow
+        ||  keyPressed == 39 //right arrow
+    ){return false; }
+    }
 
+    var decimalValue;
+    var newval = new String(value);
+    var checkNumericRegex = new RegExp(/^(-)?[0-9]*(,|\.|)[0-9]*$/);
+    var cleansedValue = newval.replace(numRegex,'');
     /**
-     * If have to use parsed value.
-     */
+    * If have to use parsed value.
+    */
     if(!bNumRealValue)
     {
-        if (typeof intonly !=='undefined' && intonly==1) {
-            newval = newval.replace(intRegex,'');
+        if(checkNumericRegex.test(value)) {
+            try{
+                decimalValue = new Decimal(cleansedValue);
+            } catch(e){
+                try{
+                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                } catch(e){
+                    decimalValue = new Decimal(NaN);
+                }
+            }
+
+            if (typeof intonly !=='undefined' && intonly==1) {
+                newval = decimalValue.trunc();
+            }
+        } else {
+            newval = cleansedValue;
         }
-        else {
-            newval = newval.replace(numRegex,'');
-        }
-        aNewval = newval.split(LEMradix);
-        if(aNewval.length>0){
-            newval=aNewval[0];
-        }
-        if(aNewval.length>1){
-            newval=newval+"."+aNewval[1];
-        }
-        if (newval != '-' && newval != '.' && newval != '-.' && newval != parseFloat(newval)) {// Todo : do it in reg
-            newval = '';
-        }
+
     }
 
     /**
      * If have to fix numbers automatically.
      */
-    if(bFixNumAuto)
+    if(bFixNumAuto && (newval != ""))
     {
+        var addition = "";
+        if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
+            addition = cleansedValue.split("").pop();
+        }
+        var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/);
+        if(matchFollowingZeroes){
+            addition = LEMradix+matchFollowingZeroes[3];
+        }
+        if(decimalValue == undefined){
+            try{
+                decimalValue = new Decimal(cleansedValue);
+            } catch(e){
+                try{
+                    decimalValue = new Decimal(cleansedValue.replace(',','.'));
+                } catch(e){
+                    decimalValue = new Decimal(NaN);
+
+                }
+            }
+        }
 
         /**
          * Work on length of the number
          * Avoid numbers longer than 20 characters before the decimal separator and 10 after the decimal separator.
          */
-        var midval = newval;
-        var aNewval = midval.split('.');
-        var newval = '';
-
-        // Treat integer part
-        if (aNewval.length > 0) {
-            var intpart = aNewval[0];
-            newval = (intpart.length > 20) ? '99999999999999999999' : intpart;
-        }
-
         // Treat decimal part, if there is one.
         // Trim after 10th decimal if larger than 10 decimals.
-        if (aNewval.length > 1) {
-            var decpart = aNewval[1];
-            if (decpart.length > 10){
-                decpart = decpart.substr(0,10);
-            }
-            else {
-                decpart = aNewval[1];
-            }
-            newval = newval + "." + decpart;
+        if(decimalValue.dp()>10){
+            decimalValue.toDecimalPlaces(10);
         }
 
         /**
          * Set display value
          */
-        displayVal = newval;
-        if (LEMradix === ',') {
-            displayVal = displayVal.split('.').join(',');
+        displayVal = decimalValue.toString();
+        if (displayVal=='NaN')
+        {
+            newval=displayVal;
+            displayVal=value;
         }
-        if (name.match(/other$/)) {
-            $('#answer'+name+'text').val(displayVal);
+        else{
+            if(LEMradix==",")
+                displayVal = displayVal.replace(/\./,',');
+
+            newval = displayVal+addition
+
+            if (name.match(/other$/)) {
+                if($('#answer'+name+'text').val() != newval){
+                    $('#answer'+name+'text').val(newval);
+                }
+            }
+
+            if($('#answer'+name).val() != newval){
+                $('#answer'+name).val(newval);
+            }
         }
-        $('#answer'+name).val(displayVal);
     }
 
     /**

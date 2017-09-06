@@ -19,7 +19,7 @@
                             $sTabTitle = getLanguageNameFromCode($sLanguage, false);
                             if ($sLanguage == Survey::model()->findByPk($iSurveyID)->language)
                             {
-                                $sTabTitle .= '(' . gT("Base language") . ')';
+                                $sTabTitle .= ' (' . gT("Base language") . ')';
                             }
                             ?>
                             <li <?php if ($c){$c=false; echo 'class="active"'; }?> >

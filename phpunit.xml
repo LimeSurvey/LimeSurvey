@@ -1,0 +1,10 @@
+<phpunit bootstrap="tests/bootstrap.php" stderr="true" >
+    <testsuites>
+        <testsuite name="Questions">
+            <directory>tests/questions</directory>
+        </testsuite>
+        <testsuite name="Helpers">
+            <directory>tests/helpers</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

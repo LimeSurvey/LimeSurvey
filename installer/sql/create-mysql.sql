@@ -368,7 +368,7 @@ CREATE TABLE `prefix_sessions`(
 --
 CREATE TABLE `prefix_settings_global` (
   `stg_name` varchar(50) NOT NULL default '',
-  `stg_value` varchar(255) NOT NULL default '',
+  `stg_value` text NOT NULL,
   PRIMARY KEY (`stg_name`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -609,11 +609,13 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     `display_class` VARCHAR(31) DEFAULT 'default' COMMENT 'Bootstrap class, like warning, info, success',
     `created` DATETIME NOT NULL,
     `first_read` DATETIME DEFAULT NULL,
+    `hash` VARCHAR(64) DEFAULT '',
     PRIMARY KEY (`id`),
-    INDEX(`entity`, `entity_id`, `status`)
+    INDEX(`entity`, `entity_id`, `status`),
+    INDEX(`hash`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '260');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '263');

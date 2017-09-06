@@ -1,5 +1,5 @@
 <?php if (isset($datestamp) && $datestamp == "Y"): ?>
-    <div class="panel panel-primary " id="pannel-1">
+    <div class="panel panel-primary " id="panel-1">
         <div class="panel-heading">
             <h4 class="panel-title"><?php eT("Submission date"); ?></h4>
         </div>

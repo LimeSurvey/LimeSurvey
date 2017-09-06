@@ -51,7 +51,7 @@
                 class='code code-title'
                 name='code_<?php echo $position; ?>_<?php echo $scale_id; ?>'
                 value="<?php echo $title; ?>"
-                maxlength='5' 
+                maxlength='5'
                 pattern='<?php echo $sPattern; ?>'
                 required='required'
             />

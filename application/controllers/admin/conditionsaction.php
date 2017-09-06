@@ -105,7 +105,7 @@ class conditionsaction extends Survey_Common_Action {
 
         $aData['sidemenu']['state'] = false;
         $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
         $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;  // Close button
         $aData['questionbar']['buttons']['conditions'] = TRUE;
 
@@ -229,6 +229,7 @@ class conditionsaction extends Survey_Common_Action {
 
         $cquestions = array();
         $canswers   = array();
+        $pquestions = array();
 
         $language = Survey::model()->findByPk($iSurveyID)->language;
         $this->language = $language;
@@ -597,8 +598,8 @@ class conditionsaction extends Survey_Common_Action {
                         true
                     );
                 }
-                // If we have a condition, allways reset the condition, this can fix old import (see #09344)
-                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
+                // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
             }
             else
             { // no condition ==> disable delete all conditions button, and display a simple comment
@@ -1989,7 +1990,7 @@ class conditionsaction extends Survey_Common_Action {
     {
         $request = Yii::app()->request;
         $aViewUrls = array('output' => '');
-        if ($subaction == "editthiscondition") { 
+        if ($subaction == "editthiscondition") {
             // in edit mode we read previous values in order to dusplay them in the corresponding inputs
             if ($request->getPost('EDITConditionConst') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
@@ -2013,7 +2014,8 @@ class conditionsaction extends Survey_Common_Action {
             }
             elseif (is_array($request->getPost('EDITcanswers'))) { // was a predefined answers post
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
-                $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$request->getPost('EDITcanswers')[0]."');\n";
+                $EDITcanswers = $request->getPost('EDITcanswers');
+                $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$EDITcanswers[0]."');\n";
             }
 
             if ($request->getPost('csrctoken') != '') {

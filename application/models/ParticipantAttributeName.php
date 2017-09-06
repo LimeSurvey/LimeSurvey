@@ -269,29 +269,45 @@ class ParticipantAttributeName extends LSActiveRecord
         $ids = ParticipantAttributeName::model()->findAll("visible = 'TRUE'");
         //Then find a language for each one - the current $lang, if possible, english second, otherwise, the first in the list
         foreach($ids as $id) {
-            $langs=ParticipantAttributeNameLang::model()->findAll("attribute_id = :attribute_id", array(":attribute_id"=>$id->attribute_id));
-            $language=null;
-            foreach($langs as $lang) {
-                //If we can find a language match, set the language and exit
-                if($lang->lang == $sLanguageFilter) {
-                    $language = $lang->lang;
-                    $attribute_name = $lang->attribute_name;
-                    break;
+
+            $langs = ParticipantAttributeNameLang::model()->findAll(
+                "attribute_id = :attribute_id",
+                array(
+                    ":attribute_id" => $id->attribute_id
+                )
+            );
+
+            if ($langs) {
+                $language=null;
+                foreach($langs as $lang) {
+                    //If we can find a language match, set the language and exit
+                    if($lang->lang == $sLanguageFilter) {
+                        $language = $lang->lang;
+                        $attribute_name = $lang->attribute_name;
+                        break;
+                    }
+                    if($lang->lang == "en") {
+                        $language = $lang->lang;
+                        $attribute_name = $lang->attribute_name;
+                    }
                 }
-                if($lang->lang == "en") {
-                    $language = $lang->lang;
-                    $attribute_name = $lang->attribute_name;
+                if($language==null) {
+                    $language=$langs[0]->lang;
+                    $attribute_name=$langs[0]->attribute_name;
                 }
             }
-            if($language==null) {
-                $language=$langs[0]->lang;
-                $attribute_name=$langs[0]->attribute_name;
+            else {
+                $language = Yii::app()->session['adminlang'];
+                $attribute_name = $id->defaultname;
             }
-            $output[$id->attribute_id]=array("attribute_id"=>$id->attribute_id,
-                          "attribute_type"=>$id->attribute_type,
-                          "visible"=>$id->visible,
-                          "attribute_name"=>$attribute_name,
-                          "lang"=>$language);
+
+            $output[$id->attribute_id] = array(
+                "attribute_id"      => $id->attribute_id,
+                "attribute_type"    => $id->attribute_type,
+                "visible"           => $id->visible,
+                "attribute_name"    => $attribute_name,
+                "lang"              => $language
+            );
         }
         return $output;
     }
@@ -405,6 +421,7 @@ class ParticipantAttributeName extends LSActiveRecord
                 ->select('*')
                 ->from('{{participant_attribute_values}}')
                 ->where('attribute_id = :attribute_id')
+                ->order('value_id ASC')
                 ->bindParam(":attribute_id", $attribute_id, PDO::PARAM_INT)
                 ->queryAll();
         }

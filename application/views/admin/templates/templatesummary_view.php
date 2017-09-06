@@ -108,13 +108,6 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     <input type='hidden' name='screenname' value='<?php echo HTMLEscape($screenname); ?>' />
                     <input type='hidden' name='templatename' value='<?php echo $templatename; ?>' />
                     <input type='hidden' name='action' value='templateuploadfile' />
-                    <?php if(isset($_GET['editfile'])):?>
-                        <input type='hidden' name='editfileindex' value='<?php echo $_GET['editfile']; ?>' />
-                        <?php endif;?>
-                    <?php if(isset($_GET['useindex'])):?>
-                        <input type='hidden' name='useindex' value='<?php echo $_GET['useindex']; ?>' />
-                        <?php endif;?>
-
                     </form>
                     <?php
                 }
@@ -138,7 +131,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                     </div>
                     <div class="modal-body">
                         <?php eT('To use a picture in a .pstpl file:');?><br/>
-                        <code>&lt;img src="{TEMPLATEURL}/files/yourpicture.png" /&gt;</code><br/><br/>
+                        <code>&lt;img src="{TEMPLATEURL}files/yourpicture.png" /&gt;</code><br/><br/>
                         <?php eT("To use a picture in a .css file: ");?><br/>
                         <code>background-image: url('../files/yourpicture.png');</code><br/><br/>
                         <?php eT("To place the logo anywhere in a .pstpl file: ");?><br/>

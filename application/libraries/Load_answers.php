@@ -18,7 +18,7 @@ class Load_answers {
         $redata = compact(array_keys(get_defined_vars()));
         $sTemplatePath=$_SESSION['survey_'.$surveyid]['templatepath'];
         sendCacheHeaders();
-        doHeader();
+         doHeader();
 
         $oTemplate = Template::model()->getInstance(null, $surveyid);
 
@@ -33,17 +33,18 @@ class Load_answers {
 
         echo CHtml::form(array("/survey/index","sid"=>$surveyid), 'post')."\n";
         echo templatereplace(file_get_contents($oTemplate->viewPath."load.pstpl"),array(),$redata);
+
         //PRESENT OPTIONS SCREEN (Replace with Template Later)
         //END
         echo "<input type='hidden' name='loadall' value='reload' />\n";
         if (isset($clienttoken) && $clienttoken != "")
         {
-            echo "<input type='hidden' name='token' value='$clienttoken' />\n";
+            echo CHtml::hiddenField('token',$clienttoken);
         }
         echo "</form>";
 
         echo templatereplace(file_get_contents($oTemplate->viewPath."endpage.pstpl"),array(),$redata);
-        doFooter();
+        doFooter($surveyid);
         exit;
 
 

@@ -13,26 +13,25 @@
 */
 
 /**
+ * @param array $a
+ * @param string $subkey
  * @param string $order
+ * @return array
  */
 function subval_sort($a, $subkey, $order)
 {
     $b = array();
     $c = array();
-    foreach ($a as $k => $v)
-    {
+    foreach ($a as $k => $v) {
         $b[$k] = strtolower($v[$subkey]);
     }
-    if ($order == "asc")
-    {
+    if ($order == "asc") {
         asort($b, SORT_REGULAR);
     }
-    else
-    {
+    else {
         arsort($b, SORT_REGULAR);
     }
-    foreach ($b as $key => $val)
-    {
+    foreach ($b as $key => $val) {
         $c[] = $a[$key];
     }
     return $c;
@@ -53,21 +52,6 @@ class participantsaction extends Survey_Common_Action
         Yii::import('application.helpers.admin.ajax_helper', true);
 
         parent::runWithParams($params);
-    }
-
-    /**
-     * Loads jqGrid for the view
-     * @param string $sScript Subaction
-     */
-    private function _loadjqGrid($sScript = '', $aData = array())
-    {
-        $aData['aAttributes'] = ParticipantAttributeName::model()->getAllAttributes();
-        App()->getClientScript()->registerPackage('jqgrid');
-        if (!empty($sScript))
-        {
-            $this->registerScriptFile( 'ADMIN_SCRIPT_PATH', $sScript . '.js');
-            $this->_renderWrappedTemplate('participants', array('participantsPanel', $sScript), $aData);
-        }
     }
 
     /**
@@ -570,7 +554,7 @@ class participantsaction extends Survey_Common_Action
             $aData['blacklisted'] = 'N';
         }
 
-        $extraAttributes = Yii::app()->request->getPost('Attributes');
+        $extraAttributes = Yii::app()->request->getPost('Attributes', array());
 
         switch ($operation) {
             case 'edit':
@@ -593,7 +577,7 @@ class participantsaction extends Survey_Common_Action
      * @param array $extraAttributes
      * @return void
      */
-    public function updateParticipant($aData, $extraAttributes)
+    public function updateParticipant($aData, array $extraAttributes = array())
     {
         $participant = Participant::model()->findByPk($aData['participant_id']);
 
@@ -614,7 +598,7 @@ class participantsaction extends Survey_Common_Action
         $participant->attributes = $aData;
         $success['participant'] = $participant->save();
 
-        foreach( $extraAttributes as $htmlName => $attributeValue ) {
+        foreach($extraAttributes as $htmlName => $attributeValue ) {
             list(,$attribute_id) = explode('_',$htmlName);
             $data = array(
                 'attribute_id'=>$attribute_id, 
@@ -633,7 +617,7 @@ class participantsaction extends Survey_Common_Action
      * @param array $extraAttributes
      * @return string json
      */
-    public function addParticipant($aData, $extraAttributes)
+    public function addParticipant($aData, array $extraAttributes = array())
     {
         if (Permission::model()->hasGlobalPermission('participantpanel', 'create')) {
             $uuid = Participant::gen_uuid();
@@ -1346,7 +1330,7 @@ class participantsaction extends Survey_Common_Action
         }
 
         // Generate HTML for alternative languages
-        $languagesOfAttribute = [];
+        $languagesOfAttribute = array();
         foreach($model->participant_attribute_names_lang as $single_language)
         {
             $languagesOfAttribute[$single_language['lang']] = $single_language['attribute_name']; 
@@ -1364,6 +1348,9 @@ class participantsaction extends Survey_Common_Action
         {
             $aData['languagesForDropdown'][$key] = $languageDetail['description']." (".($languageDetail['nativedescription']).")"; 
         }
+
+        // Default visibility to false
+        $model->visible = $model->visible ?: 'FALSE';
 
         $html = $this->getController()->renderPartial(
             '/admin/participants/modal_subviews/_editAttribute',
@@ -2034,7 +2021,7 @@ class participantsaction extends Survey_Common_Action
     }
 
     /*
-     * Sends the data in JSON format extracted from the database to be displayed using the jqGrid
+     * Sends the data in JSON format extracted from the database to be displayed using the datatable
      * Echoes json
      * @return void
      */
