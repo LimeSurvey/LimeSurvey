@@ -1501,9 +1501,14 @@ class dataentry extends Survey_Common_Action
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
                         $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
+                        if ($datetimeobj) {
+                            $dateoutput  = $datetimeobj->format('Y-m-d H:i');
+                        } else {
+                            $dateoutput = '';
+                        }
                         //need to check if library get initialized with new value of constructor or not.
 
-                        $updateqr .= dbQuoteID($fieldname)." = '{$datetimeobj->format("Y-m-d H:i:s")}', \n";
+                        $updateqr .= dbQuoteID($fieldname)." = '{$dateoutput}', \n";
                     }
                 }
                 elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
@@ -1764,7 +1769,12 @@ class dataentry extends Survey_Common_Action
                             $qidattributes = getQuestionAttributeValues($irow['qid']);
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                             $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
-                            $insert_data[$fieldname] = $datetimeobj->format("Y-m-d H:i:s");
+                            if($datetimeobj) {
+                                $dateoutput = $datetimeobj->format('Y-m-d H:i');
+                            } else {
+                                $dateoutput = '';
+                            }
+                            $insert_data[$fieldname] = $dateoutput;
                         }
                         else
                         {
