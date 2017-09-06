@@ -2,7 +2,7 @@
  {% block question_answer %}
  <div class="col-md-8">
     {% if question.subquestions is empty %}
-            {{question.answervalue}}
+            {{question.answervalue | escape}}
     {% else %}
             {% for subquestionId, subquestion in question.subquestions %}
                 <div class="row">

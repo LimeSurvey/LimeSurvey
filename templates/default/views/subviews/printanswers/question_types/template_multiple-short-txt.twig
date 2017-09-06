@@ -4,7 +4,7 @@
     {% for subquestionId, subquestion in question.subquestions %}
         <div class="row">
             <div class="col-md-8">
-                {{subquestion.answervalue}}
+                {{subquestion.answervalue|escape}}
             </div>
             <div class="col-md-4 text-left">
                 <b>{{subquestion.question}} ({{subquestion.qid}})</b>

@@ -75,7 +75,7 @@
             $SurveyRuntimeHelper = new SurveyRuntimeHelper();
             $SurveyRuntimeHelper->setJavascriptVar($iSurveyID);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
-            $oTemplate = Template::model()->getInstance(null, $iSurveyID);
+            $oTemplate = Template::model()->getInstance(null, null, $iSurveyID);
             /* Need a Template function to replace this line */
             //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
@@ -83,7 +83,6 @@
             if (!isset($_SESSION['survey_'.$iSurveyID]['finished']) || !isset($_SESSION['survey_'.$iSurveyID]['srid']))
             //display "sorry but your session has expired"
             {
-                $oTemplate = Template::model()->getInstance('', $iSurveyID);
                 $this->sTemplate=$oTemplate->sTemplateName;
                 $error=$this->renderPartial("/survey/system/errorWarning",array(
                     'aErrors'=>array(
@@ -124,21 +123,22 @@
             $sAnonymized = $aSurveyInfo['anonymized'];
             //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
             //SHOW HEADER
+            $oResponseRow = SurveyDynamic::model($iSurveyID);
+            $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
+            $groupArray = $oResponseRow->getPrintAnswersArray( $sSRID, $sLanguage,$printanswershonorsconditions);
+            $aData['aSurveyInfo']=$aSurveyInfo;
+            $aData['aSurveyInfo']['dateFormat']=getDateFormatData(Yii::app()->session['dateformat']);
+            $aData['aSurveyInfo']['groupArray'] = $groupArray;
+            $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
+            
             if ($sExportType != 'pdf')
             {
-                $oResponseRow = SurveyDynamic::model($iSurveyID);
-                $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
-                $groupArray = $oResponseRow->getPrintAnswersArray( $sSRID, $sLanguage,$printanswershonorsconditions);
-                $aData['aSurveyInfo']=$aSurveyInfo;
-                $aData['aSurveyInfo']['dateFormat']=getDateFormatData(Yii::app()->session['dateformat']);
-                $aData['aSurveyInfo']['groupArray'] = $groupArray;
-                $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, false);
             }
             if($sExportType == 'pdf')
             {
                 // Get images for TCPDF from template directory
-                define('K_PATH_IMAGES', getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
+                define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
 
                 Yii::import('application.libraries.admin.pdf', true);
                 Yii::import('application.helpers.pdfHelper');
@@ -148,9 +148,7 @@
                 $sDefaultHeaderString = $sSurveyName." (".gT("ID",'unescaped').":".$iSurveyID.")";
                 $oPDF->initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $sSurveyName, $sDefaultHeaderString);
 
-                LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
-                // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
-                LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);
+                ////////// OLD WAY!
                 $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
                 $aFullResponseTable = getFullResponseTable($iSurveyID,$sSRID,$sLanguage,$printanswershonorsconditions);
                 //Get the fieldmap @TODO: do we need to filter out some fields?
@@ -182,11 +180,20 @@
                         $oPDF->addAnswer($fname[0]." ".$fname[1], $fname[2]);
                     }
                 }
+                ////////// END OLD WAY 
 
+                LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
+                // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
+                LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);
+               
+                // //////////// NEW WAY CURRENTLY NOT WORKING!
+                // $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, true);
+                // $oPDF->writeHTML($html, true, false, true, false, '');
+                // //////////// END NEW WAY
                 header("Pragma: public");
                 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
                 $sExportFileName = sanitize_filename($sSurveyName);
-                $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf","D");
+                $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf","F");
             }
 
             LimeExpressionManager::FinishProcessingGroup();
