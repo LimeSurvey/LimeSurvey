@@ -667,11 +667,33 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
         $aClassAndAttributes['class']['submitwrapperdivb']  = ' url-wrapper url-wrapper-survey-print ';
         $aClassAndAttributes['class']['submitwrapperdivba']  = ' ls-print ';
 
-
-
-
         $aClassAndAttributes['attr']['previewsubmit']     = $aClassAndAttributes['attr']['previewsubmittext'] = $aClassAndAttributes['attr']['previewsubmitstrong'] = $aClassAndAttributes['attr']['submitwrapper'] = $aClassAndAttributes['attr']['submitwrappertext'] = $aClassAndAttributes['attr']['submitwrapperdiv'] = '';
         $aClassAndAttributes['attr']['submitwrapperdiva'] = $aClassAndAttributes['attr']['submitwrapperdivaa'] = $aClassAndAttributes['attr']['submitwrapperdivb'] = $aClassAndAttributes['attr']['submitwrapperdivba'] = '';
+
+        // Survey list
+        $aClassAndAttributes['id']['surveylistrow']          = 'surveys-list-container';
+        $aClassAndAttributes['id']['surveylistrowjumbotron'] = 'surveys-list-jumbotron';
+        $aClassAndAttributes['id']['surveylistfooter']       = 'surveyListFooter';
+
+        $aClassAndAttributes['class']['surveylistrow']             = ' row ';
+        $aClassAndAttributes['class']['surveylistrowdiva']         = ' col-xs-12 survey-list-heading ';
+        $aClassAndAttributes['class']['surveylistrowdivadiv']      = ' h3 ';
+        $aClassAndAttributes['class']['surveylistrowdivb']         = ' col-xs-12 survey-list ';
+        $aClassAndAttributes['class']['surveylistrowdivbdiv']      = ' surveys-list-container ';
+        $aClassAndAttributes['class']['surveylistrowdivbdivul']    = ' list-unstyled surveys-list ';
+        $aClassAndAttributes['class']['surveylistrowdivbdivulli']  = ' btn-group btn-block ';
+        $aClassAndAttributes['class']['surveylistrowdivbdivullia'] = ' surveytitle btn btn-primary ';
+        $aClassAndAttributes['class']['surveylistrowdivc']         = ' col-xs-12 survey-contact ';
+        $aClassAndAttributes['class']['surveylistfooter']          = ' footer ';
+        $aClassAndAttributes['class']['surveylistfootercont']      = ' container ';
+
+        $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
+        $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
+
+
+
+        $aClassAndAttributes['attr']['surveylistrow'] = $aClassAndAttributes['attr']['surveylistrowjumbotron'] = $aClassAndAttributes['attr']['surveylistrowdiva'] = $aClassAndAttributes['attr']['surveylistrowdivadiv'] = $aClassAndAttributes['attr']['surveylistrowdivb'] = $aClassAndAttributes['attr']['surveylistrowdivbdivul'] = '';
+        $aClassAndAttributes['attr']['surveylistrowdivbdivulli'] = $aClassAndAttributes['attr']['surveylistrowdivc'] = $aClassAndAttributes['attr']['surveylistfooter'] = $aClassAndAttributes['attr']['surveylistfootercont'] = $aClassAndAttributes['class']['surveylistfootercontp'] = '';
 
         // Save/Load links
         $aClassAndAttributes['class']['loadlinksli']  = ' ls-no-js-hidden ';
