@@ -657,6 +657,21 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
         $aClassAndAttributes['attr']['indexmenugli']  = $aClassAndAttributes['attr']['indexmenugspan'] = $aClassAndAttributes['attr']['indexmenusgul'] = $aClassAndAttributes['attr']['indexmenusli'] = $aClassAndAttributes['attr']['indexmenusspan'] = $aClassAndAttributes['attr']['indexmenussul'] = '';
         $aClassAndAttributes['attr']['indexmenusddh'] = $aClassAndAttributes['attr']['indexmenusddspan']  = $aClassAndAttributes['attr']['indexmenusddul'] = $aClassAndAttributes['attr']['indexmenussli'] = $aClassAndAttributes['attr']['indexmenusgli'] = '';
 
+        // Preview submit
+        $aClassAndAttributes['class']['previewsubmit']      = ' completed-wrapper  ';
+        $aClassAndAttributes['class']['previewsubmittext']  = ' completed-text  ';
+        $aClassAndAttributes['class']['submitwrapper']      = ' completed-wrapper  ';
+        $aClassAndAttributes['class']['submitwrappertext']  = ' completed-text  ';
+        $aClassAndAttributes['class']['submitwrapperdiva']  = ' url-wrapper url-wrapper-survey-print ';
+        $aClassAndAttributes['class']['submitwrapperdivaa'] = ' ls-print ';
+        $aClassAndAttributes['class']['submitwrapperdivb']  = ' url-wrapper url-wrapper-survey-print ';
+        $aClassAndAttributes['class']['submitwrapperdivba']  = ' ls-print ';
+
+
+
+
+        $aClassAndAttributes['attr']['previewsubmit']     = $aClassAndAttributes['attr']['previewsubmittext'] = $aClassAndAttributes['attr']['previewsubmitstrong'] = $aClassAndAttributes['attr']['submitwrapper'] = $aClassAndAttributes['attr']['submitwrappertext'] = $aClassAndAttributes['attr']['submitwrapperdiv'] = '';
+        $aClassAndAttributes['attr']['submitwrapperdiva'] = $aClassAndAttributes['attr']['submitwrapperdivaa'] = $aClassAndAttributes['attr']['submitwrapperdivb'] = $aClassAndAttributes['attr']['submitwrapperdivba'] = '';
 
         // Save/Load links
         $aClassAndAttributes['class']['loadlinksli']  = ' ls-no-js-hidden ';

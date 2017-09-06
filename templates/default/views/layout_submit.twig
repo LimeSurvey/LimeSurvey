@@ -39,11 +39,11 @@
         {# This will display the script and the hidden inputs needed for Expression Manager #}
         {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-        <div class="completed-wrapper">
-            <div class='completed-text'>
+        <div class="{{ aSurveyInfo.class.submitwrapper }}" {{ aSurveyInfo.attr.submitwrapper }}>
+            <div class='{{ aSurveyInfo.class.submitwrappertext }}' {{ aSurveyInfo.attr.submitwrappertext }}>
                 {% if (aSurveyInfo.aCompleted.showDefault == true) %}
-                    <p>{{ "Thank you!" | t }}</p>
-                    <p>{{ "Your survey responses have been recorded." | t }}</p>
+                    <p {{ aSurveyInfo.attr.submitwrappertextpa }}>{{ "Thank you!" | t }}</p>
+                    <p {{ aSurveyInfo.attr.submitwrappertextpb }}>{{ "Your survey responses have been recorded." | t }}</p>
                 {% else %}
                     {{ aSurveyInfo.aCompleted.sEndText }}
                 {% endif %}
@@ -56,8 +56,8 @@
                 {#  Link to Print Answer Preview #}
                 {% if (aSurveyInfo.aCompleted.aPrintAnswers.show == true) %}
                     <!--  Link to Print Answer Preview -->
-                    <div class="url-wrapper url-wrapper-survey-print">
-                        <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" class="ls-print">
+                    <div class="{{ aSurveyInfo.class.submitwrapperdiva }}" {{ aSurveyInfo.attr.submitwrapperdiv }}>
+                        <a href="{{ aSurveyInfo.aCompleted.aPrintAnswers.sUrl }}" class="{{ aSurveyInfo.class.submitwrapperdivaa }}" {{ aSurveyInfo.attr.submitwrapperdivaa }}>
                             {{ "Print your answers." | t }}
                         </a>
                     </div>
@@ -66,8 +66,8 @@
                 {# Link to Public statistics #}
                 {% if (aSurveyInfo.aCompleted.aPublicStatistics.show == true) %}
                     <!-- Link to Public statistics -->
-                    <div class="url-wrapper url-wrapper-survey-print">
-                        <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" class="ls-print">
+                    <div class="{{ aSurveyInfo.class.submitwrapperdivb }}" {{ aSurveyInfo.attr.submitwrapperdivb }}>
+                        <a href="{{ aSurveyInfo.aCompleted.aPublicStatistics.sUrl }}" class="{{ aSurveyInfo.class.submitwrapperdivba }}" {{ aSurveyInfo.attr.submitwrapperdivba }}>
                             {{ "View the statistics for this survey." | t }}
                         </a>
                     </div>
