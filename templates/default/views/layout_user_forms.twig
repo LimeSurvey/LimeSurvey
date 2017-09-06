@@ -23,23 +23,23 @@ TODO: register
     {# Headers, metadatas, etc #}
     {{ include('./subviews/head.twig') }}
 
-    <body class=" {{ aSurveyInfo.class.body }} lang-{{surveylanguage}} {{surveyformat}}" {{ aSurveyInfo.attr.body }}>
+    <body class="{{ aSurveyInfo.class.body }} lang-{{surveylanguage}} {{surveyformat}}" {{ aSurveyInfo.attr.body }}>
 
         {# Bootstrap Navigation Bar: the top menu #}
         {{ include('./subviews/nav_bar.twig') }}
 
 
         <!-- Outer Frame Container -->
-        <div class="outerframe container" id="outerframeContainer">
+        <div class="{{ aSurveyInfo.class.outerframe }}" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }}>
 
             <!-- Main Row -->
-            <div id="main-row">
+            <div id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }}>
 
                 <!-- Main Col -->
-                <div class="col-centered" id="main-col">
+                <div class="{{ aSurveyInfo.class.maincol }}" id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
 
-                    <div class='{{aSurveyInfo.aForm.sType}}-page'>
-                        <div class="h3">
+                    <div class='{{aSurveyInfo.aForm.sType}}-page' {{ aSurveyInfo.attr.maincoldiv }}>
+                        <div class="{{ aSurveyInfo.class.maincoldivdiva }}" {{ aSurveyInfo.attr.maincoldivdiva }}>
                             {# OLD FORMHEADING #}
                             {% if aSurveyInfo.aForm.sType == 'token'  %}
                                 {{ "To participate in this restricted survey, you need a valid token." | t }}
@@ -50,11 +50,11 @@ TODO: register
                             {% endif %}
                         </div>
 
-                        <div class="well container-fluid">
+                        <div class="{{ aSurveyInfo.class.maincoldivdivb }}" {{ aSurveyInfo.attr.maincoldivdivb }}>
 
                             {# TOKEN #}
                             {% if aSurveyInfo.aForm.sType == 'token'  %}
-                                <p class='text-info'>
+                                <p class='{{ aSurveyInfo.class.maincoldivdivbp }}' {{ aSurveyInfo.attr.maincoldivdivbp }}>
                                     {% if aSurveyInfo.aForm.token == null  %}
                                         {{ "If you have been issued a token, please enter it in the box below and click continue." | t }}
                                     {% else %}
@@ -64,14 +64,14 @@ TODO: register
                             {% endif %}
 
                             {% if  not empty(aSurveyInfo.aForm.aEnterErrors) %}
-                                <ul class='alert alert-danger list-unstyled' role='alert'>
+                                <ul class='{{ aSurveyInfo.class.maincoldivdivbul }}' {{ aSurveyInfo.attr.maincoldivdivbul }}>
                                     {% for  key, error in aSurveyInfo.aForm.aEnterErrors %}
                                         <li>{{ error }}</li>
                                     {% endfor %}
                                 </ul>
                             {% endif %}
 
-                            <div class="form-{{ aSurveyInfo.aForm.sType }}">
+                            <div class="form-{{ aSurveyInfo.aForm.sType }} {{ aSurveyInfo.class.maincoldivdivbdiv }}" {{ aSurveyInfo.attr.maincoldivdivbdiv }} >
                                 {#
                                     array of attributes of the form tag.
                                     To add a new attribute, just add an entry:
@@ -97,19 +97,19 @@ TODO: register
 
                                 {% if aSurveyInfo.aForm.sType == 'token'  %}
 
-                                    <div class='form-group'>
-                                        <label class='control-label col-sm-3' for='loadname'>
-                                            <small class="text-danger asterisk fa fa-asterisk small superset" aria-hidden='true'></small>
+                                    <div class='{{ aSurveyInfo.class.maincolform }}' {{ aSurveyInfo.attr.maincolform }}>
+                                        <label class='{{ aSurveyInfo.class.maincolformlabel }}' {{ aSurveyInfo.attr.maincolformlabel }}>
+                                            <small class="{{ aSurveyInfo.class.maincolformlabelsmall }}" {{ aSurveyInfo.attr.maincolformlabelsmall }} ></small>
                                             {{ "Token:" | t }}
-                                            <span class="sr-only text-danger asterisk">
+                                            <span class="{{ aSurveyInfo.class.maincolformlabelspan }}" {{ aSurveyInfo.attr.maincolformlabelspan }}>
                                                 ( {{ "Mandatory" | t }} )
                                             <span>
 
                                         </label>
 
-                                        <div class='col-sm-7 load-survey-input input-cell'>
+                                        <div class='{{ aSurveyInfo.class.maincolformdiva }}' {{ aSurveyInfo.attr.maincolformdiva }}>
                                             {% if aSurveyInfo.aForm.token == null  %}
-                                                <input class='form-control' type='password' id='token' name='token' value='' required>
+                                                <input class='{{ aSurveyInfo.class.maincolformdivainput }}' {{ aSurveyInfo.attr.maincolformdivainput }} >
                                             {% else %}
 
                                                 {% set passwordFieldHtmlOptions = {
@@ -132,22 +132,24 @@ TODO: register
 
                                     {#  CAPTACHA INSIDE TOKEN FORM #}
                                     {% if ( aSurveyInfo.aForm.bCaptchaEnabled == true ) %}
-                                        <div class='form-group captcha-item'>
+                                        <div class='{{ aSurveyInfo.class.maincolformdivb }}' {{ aSurveyInfo.attr.maincolformdivb }}>
+
                                             <!-- Doesn't seems aria capable -->
-                                            <label class='control-label col-sm-3' for='loadsecurity'>
+                                            <label class='{{ aSurveyInfo.class.maincolformdivblabel }}' {{ aSurveyInfo.attr.maincolformdivblabel }} >
                                                 {{ "Please enter the letters you see:" | t }}
-                                                <small class="text-danger asterisk fa fa-asterisk pull-left small" aria-hidden='true'></small>
-                                                <span class="sr-only text-danger asterisk">
+                                                <small class="{{ aSurveyInfo.class.maincolformdivblabelsmall }}"  {{ aSurveyInfo.attr.maincolformdivblabelsmall }} ></small>
+                                                <span  class="{{ aSurveyInfo.class.maincolformdivblabelspan }}" {{ aSurveyInfo.attr.maincolformdivblabelspan }}>
                                                     ( {{ "Mandatory" | t }} )
                                                 <span>
                                             </label>
-                                            <div class='col-sm-7'>
-                                                <div class='ls-input-group'>
-                                                    <div class='ls-input-group-extra captcha-widget' >
+
+                                            <div class='{{ aSurveyInfo.class.maincolformdivbdiv }}' {{ aSurveyInfo.attr.maincolformdivbdiv }}>
+                                                <div class='{{ aSurveyInfo.class.maincolformdivbdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdiv }}>
+                                                    <div class='{{ aSurveyInfo.class.maincolformdivbdivdivdiv }}' {{ aSurveyInfo.attr.maincolformdivbdivdivdiv }} >
                                                         {# see: LS_Twig_Extension::renderCaptcha() in application/core/LS_Twig_Extension.php #}
                                                         {{ renderCaptcha() }}
                                                     </div>
-                                                    <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>
+                                                    <input class='{{ aSurveyInfo.class.maincolformdivbdivdivinput }}' {{ aSurveyInfo.attr.maincolformdivbdivdivinput }} >
                                                 </div>
                                             </div>
                                         </div>
@@ -155,9 +157,9 @@ TODO: register
 
                                     {{ aSurveyInfo.aForm.hiddenFields }}
 
-                                    <div class='form-group load-survey-row load-survey-submit'>
-                                        <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
-                                            <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'>
+                                    <div class='{{ aSurveyInfo.class.maincolformdivc }}' {{ aSurveyInfo.attr.maincolformdivc }}>
+                                        <div class='{{ aSurveyInfo.class.maincolformdivcdiv }}' {{ aSurveyInfo.attr.maincolformdivcdiv }}>
+                                            <button class='{{ aSurveyInfo.class.maincolformdivcdivbutton }}' {{ aSurveyInfo.attr.maincolformdivcdivbutton }}>
                                                 {{ "Continue" | t }}
                                             </button>
                                         </div>
@@ -165,26 +167,26 @@ TODO: register
                                 {% endif %}
 
                                 {% if aSurveyInfo.aForm.sType == 'captcha'  %}
-                                    <div class='form-group'>
-                                        <div class='form-group captcha-item'>
-                                            <label class='control-label col-sm-3' for='loadsecurity'>
+                                    <div class='{{ aSurveyInfo.class.maincolformdivd }}' {{ aSurveyInfo.attr.maincolformdivd }}>
+                                        <div class='{{ aSurveyInfo.class.maincolformdivddiv }}' {{ aSurveyInfo.attr.maincolformdivddiv }}>
+                                            <label class='{{ aSurveyInfo.class.maincolformdivddivlabel }}' {{ aSurveyInfo.attr.maincolformdivddivlabel }}>
                                                 {{ "Please enter the letters you see:" | t }}
                                             </label>
-                                            <div class='col-sm-7'>
-                                                <div class='ls-input-group'>
-                                                    <div class='ls-input-group-extra captcha-widget' >
+                                            <div class='{{ aSurveyInfo.class.maincolformdivddivcol }}' {{ aSurveyInfo.attr.maincolformdivddivcol }}>
+                                                <div class='{{ aSurveyInfo.class.maincolformdivddivcoldiv }}' {{ aSurveyInfo.attr.maincolformdivddivcoldiv }}>
+                                                    <div class='{{ aSurveyInfo.class.maincolformdivddivcoldivdiv }}' {{ aSurveyInfo.attr.maincolformdivddivcoldivdiv }} >
                                                         {{ renderCaptcha() }}
                                                     </div>
-                                                    <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>
+                                                    <input class='{{ aSurveyInfo.class.maincolformdivddivcolinput }}' {{ aSurveyInfo.attr.maincolformdivddivcolinput }} >
                                                 </div>
                                             </div>
                                         </div>
 
                                         {{ aSurveyInfo.aForm.hiddenFields }}
 
-                                        <div class='form-group load-survey-row load-survey-submit'>
-                                            <div class='col-sm-7 col-md-offset-3 load-survey-input input-cell'>
-                                                <button type='submit' id='default' name="continue" class='btn btn-default' value='continue'>
+                                        <div class='{{ aSurveyInfo.class.maincolformdivddivb }}' {{ aSurveyInfo.attr.maincolformdivddivb }}>
+                                            <div class='{{ aSurveyInfo.class.maincolformdivddivbdiv }}' {{ aSurveyInfo.attr.maincolformdivddivbdiv }}>
+                                                <button {{ aSurveyInfo.attr.maincolformdivddivbdivbutton }} class='{{ aSurveyInfo.class.maincolformdivddivbdivbutton }}' >
                                                     {{ "Continue" | t }}
                                                 </button>
                                             </div>

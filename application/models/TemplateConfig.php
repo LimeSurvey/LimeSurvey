@@ -299,7 +299,58 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
         $aClassAndAttributes['class']['body']  = ''.$this->sTemplateName;
         $aClassAndAttributes['class']['outerframe'] = ' outerframe container ' ;
         $aClassAndAttributes['class']['maincol'] = ' col-centered ' ;
-        $aClassAndAttributes['attr']['html']   = $thissurvey['attr']['body'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
+        $aClassAndAttributes['attr']['html']   = $thissurvey['attr']['body'] = $aClassAndAttributes['id']['outerframe'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
+
+        // User forms
+        $aClassAndAttributes['class']['maincoldivdiva']               = ' h3 ';
+        $aClassAndAttributes['class']['maincoldivdivb']               = ' well container-fluid ';
+        $aClassAndAttributes['class']['maincoldivdivbp']              = ' text-info ';
+        $aClassAndAttributes['class']['maincoldivdivbul']             = ' alert alert-danger list-unstyled ';
+        $aClassAndAttributes['class']['maincoldivdivbdiv']            = ' ';
+        $aClassAndAttributes['class']['maincolform']                  = ' form-group ';
+        $aClassAndAttributes['class']['maincolformlabel']             = ' control-label col-sm-3 ';
+        $aClassAndAttributes['class']['maincolformlabelsmall']        = ' text-danger asterisk fa fa-asterisk small superset ';
+        $aClassAndAttributes['class']['maincolformlabelspan']         = ' sr-only text-danger asterisk ';
+        $aClassAndAttributes['class']['maincolformdiva']              = ' col-sm-7 load-survey-input input-cell ';
+        $aClassAndAttributes['class']['maincolformdivainput']         = ' form-control ';
+        $aClassAndAttributes['class']['maincolformdivb']              = ' form-group captcha-item ';
+        $aClassAndAttributes['class']['maincolformdivblabel']         = ' control-label col-sm-3 ';
+        $aClassAndAttributes['class']['maincolformdivblabelsmall']    = ' text-danger asterisk fa fa-asterisk pull-left small ';
+        $aClassAndAttributes['class']['maincolformdivblabelspan']     = ' sr-only text-danger asterisk ';
+        $aClassAndAttributes['class']['maincolformdivbdiv']           = ' col-sm-7 ';
+        $aClassAndAttributes['class']['maincolformdivbdivdiv']        = ' ls-input-group ';
+        $aClassAndAttributes['class']['maincolformdivbdivdivdiv']     = ' ls-input-group-extra captcha-widget ';
+        $aClassAndAttributes['class']['maincolformdivbdivdivinput']   = ' form-control ';
+        $aClassAndAttributes['class']['maincolformdivc']              = ' form-group load-survey-row load-survey-submit ';
+        $aClassAndAttributes['class']['maincolformdivcdiv']           = ' col-sm-7 col-md-offset-3 load-survey-input input-cell ';
+        $aClassAndAttributes['class']['maincolformdivcdivbutton']     = ' btn btn-default ';
+        $aClassAndAttributes['class']['maincolformdivd']              = ' form-group ';
+        $aClassAndAttributes['class']['maincolformdivddiv']           = ' form-group captcha-item ';
+        $aClassAndAttributes['class']['maincolformdivddivlabel']      = ' control-label col-sm-3 ';
+        $aClassAndAttributes['class']['maincolformdivddivcol']        = ' col-sm-7 ';
+        $aClassAndAttributes['class']['maincolformdivddivcoldiv']     = ' ls-input-group ';
+        $aClassAndAttributes['class']['maincolformdivddivcoldivdiv']  = ' ls-input-group-extra captcha-widget ';
+        $aClassAndAttributes['class']['maincolformdivddivcolinput']   = ' form-control ';
+        $aClassAndAttributes['class']['maincolformdivddivb']          = ' form-group load-survey-row load-survey-submit ';
+        $aClassAndAttributes['class']['maincolformdivddivbdiv']       = ' col-sm-7 col-md-offset-3 load-survey-input input-cell ';
+        $aClassAndAttributes['class']['maincolformdivddivbdivbutton'] = ' btn btn-default ';
+
+
+        $aClassAndAttributes['attr']['maincolformdivainput']          = ' type="password" id="token" name="token" value="" required ';
+        $aClassAndAttributes['attr']['maincoldivdivbul']              =  ' role="alert" ';
+        $aClassAndAttributes['attr']['maincolformlabel']              = ' for="loadname"';
+        $aClassAndAttributes['attr']['maincolformlabelsmall']         = ' aria-hidden="true" ';
+        $aClassAndAttributes['attr']['maincolformdivblabel']          = ' for="loadsecurity" ';
+        $aClassAndAttributes['attr']['maincolformdivblabelsmall']     = ' aria-hidden="true" ';
+        $aClassAndAttributes['attr']['maincolformdivbdivdivinput']    = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
+        $aClassAndAttributes['attr']['maincolformdivcdivbutton']      = ' type="submit" id="default" name="continue"  value="continue" ';
+        $aClassAndAttributes['attr']['maincolformdivddivlabel']       = ' for="loadsecurity" ';
+        $aClassAndAttributes['attr']['maincolformdivddivcolinput']    = ' type="text" size="15" maxlength="15" id="loadsecurity" name="loadsecurity" value="" alt="" required ';
+        $aClassAndAttributes['attr']['maincolformdivddivbdivbutton'] = ' type="submit" id="default" name="continue" value="continue" ';
+
+        $aClassAndAttributes['attr']['maincol'] = $aClassAndAttributes['attr']['maincoldiva'] = $aClassAndAttributes['attr']['maincoldivdivb'] = $aClassAndAttributes['attr']['maincoldivdivbp'] = $aClassAndAttributes['attr']['maincoldivdivbdiv'] = $aClassAndAttributes['attr']['maincolform'] = '';
+        $aClassAndAttributes['attr']['maincolformlabelspan']   = $aClassAndAttributes['attr']['maincolformdiva'] = $aClassAndAttributes['attr']['maincolformdivb'] = $aClassAndAttributes['attr']['maincolformdivbdiv'] = $aClassAndAttributes['class']['maincolformdivbdivdivdiv'] = $aClassAndAttributes['attr']['maincolformdivcdiv'] = ' ';
+        $aClassAndAttributes['attr']['maincolformdivd']  = $aClassAndAttributes['attr']['maincolformdivddiv'] = $aClassAndAttributes['attr']['maincolformdivddivcol'] = $aClassAndAttributes['attr']['maincolformdivddivcoldiv'] = $aClassAndAttributes['attr']['maincolformdivddivb'] = '';
 
 
         // Clear all
