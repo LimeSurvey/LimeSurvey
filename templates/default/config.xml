@@ -136,6 +136,7 @@
 
                 <error>
                     <file type="view" role="layout">layout_errors.twig</file>
+                    <file type="css">./css/errors.css</file>
                 </error>
 
                 <clearall>
