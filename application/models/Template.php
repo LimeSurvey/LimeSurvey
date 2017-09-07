@@ -377,6 +377,11 @@ class Template extends LSActiveRecord
      */
     public static function getInstance($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=null)
     {
+        // The error page from default template can be called when no survey found with a specific ID. 
+        if ($sTemplateName === null && $iSurveyId === null){
+            $sTemplateName = "default";
+        }
+
         if($bForceXML === null){
             // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
             if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
