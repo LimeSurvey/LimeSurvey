@@ -17,14 +17,30 @@
 
 #}
 
+{% if (aSurveyInfo.printPdf == 1) %} 
+{{ include('./subviews/printanswers/printanswers_style.twig') }}
+<style> 
+    body{ 
+        font-size: 11pt;
+        line-height: 80%; 
+    } 
+    div{
+        margin: 0;
+        padding: 0;
+    }
+</style> 
+{% endif %}
+
 <div class="container">
-    {{ C.Html.form(aSurveyInfo.printAnswersHeadFormUrl, 'post') }}
-    <div class="row">
-        <div class="col-sm-12">
-            {{ gT("Export this responses as PDF:") }} <button class="" type="submit">{{ gT("PDF export") }}</button>
+    {% if (aSurveyInfo.printPdf != 1) %} 
+        {{ C.Html.form(aSurveyInfo.printAnswersHeadFormUrl, 'post') }}
+        <div class="row">
+            <div class="col-sm-12">
+                {{ gT("Export this responses as PDF:") }} <button class="" type="submit">{{ gT("PDF export") }}</button>
+            </div>
         </div>
-    </div>
-    {{ C.Html.endForm }}
+        {{ C.Html.endForm }}
+    {% endif %}
 
 
 

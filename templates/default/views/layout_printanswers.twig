@@ -18,22 +18,23 @@
 {# Call the global layout #}
 {% extends "./layout_global.twig" %}
 
-{# Replace the progress block #}
-{% block progress %}
-{% endblock %}
-
 {# Replace the content block #}
-{% block content %}
+{% block body %}
 
-    {# render the layout_global content block #}
-    {{ parent() }}
+    {% if (aSurveyInfo.printPdf != 1) %} 
+        {% block nav_bar %} 
+        {% endblock %} 
+    {% endif %} 
 
-    <div class="container">
-        {# This will display the script and the hidden inputs needed for Expression Manager #}
-        {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+    <section>
+        {% if (aSurveyInfo.printPdf != 1) %} 
+            {# This will display the script and the hidden inputs needed for Expression Manager #}
+            {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
+        {% endif %} 
 
         {{ include('./subviews/printanswers/printanswers_head.twig') }}
         {{ include('./subviews/printanswers/printanswers_table.twig') }}
         {{ include('./subviews/printanswers/printanswers_foot.twig') }}
+    </section>
 
 {% endblock %}

@@ -145,55 +145,21 @@
                 $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings(App()->language);
 
                 $oPDF = new pdf();
+                $oPDF->setCellMargins(1,1,1,1);
+                $oPDF->setCellPaddings(1,1,1,1);
                 $sDefaultHeaderString = $sSurveyName." (".gT("ID",'unescaped').":".$iSurveyID.")";
                 $oPDF->initAnswerPDF($aSurveyInfo, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $sSurveyName, $sDefaultHeaderString);
-
-                ////////// OLD WAY!
-                $printanswershonorsconditions = Yii::app()->getConfig('printanswershonorsconditions');
-                $aFullResponseTable = getFullResponseTable($iSurveyID,$sSRID,$sLanguage,$printanswershonorsconditions);
-                //Get the fieldmap @TODO: do we need to filter out some fields?
-                if(!$survey->isDateStamp || $survey->isAnonymized){
-                    unset ($aFullResponseTable['submitdate']);
-                }else{
-                    unset ($aFullResponseTable['id']);
-                }
-                unset ($aFullResponseTable['token']);
-                unset ($aFullResponseTable['lastpage']);
-                unset ($aFullResponseTable['startlanguage']);
-                unset ($aFullResponseTable['datestamp']);
-                unset ($aFullResponseTable['startdate']);
-                foreach ($aFullResponseTable as $sFieldname=>$fname)
-                {
-                    if (substr($sFieldname,0,4) == 'gid_')
-                    {
-                        $oPDF->addGidAnswer($fname[0], $fname[1]);
-                    }
-                    elseif ($sFieldname=='submitdate')
-                    {
-                        if($sAnonymized != 'Y')
-                        {
-                            $oPDF->addAnswer($fname[0]." ".$fname[1], $fname[2]);
-                        }
-                    }
-                    elseif (substr($sFieldname,0,4) != 'qid_') // Question text is already in subquestion text, skipping it
-                    {
-                        $oPDF->addAnswer($fname[0]." ".$fname[1], $fname[2]);
-                    }
-                }
-                ////////// END OLD WAY 
-
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
                 LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);
-               
-                // //////////// NEW WAY CURRENTLY NOT WORKING!
-                // $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, true);
-                // $oPDF->writeHTML($html, true, false, true, false, '');
-                // //////////// END NEW WAY
+                $aData['aSurveyInfo']['printPdf'] = 1;
+                $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, true);
+                $oPDF->writeHTML($html, true, false, true, false, '');
+
                 header("Pragma: public");
                 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
                 $sExportFileName = sanitize_filename($sSurveyName);
-                $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf","F");
+                $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf","D");
             }
 
             LimeExpressionManager::FinishProcessingGroup();
