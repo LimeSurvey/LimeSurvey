@@ -1426,7 +1426,7 @@ class participantsaction extends Survey_Common_Action
                 }
             }
         }
-        if(is_array($AttributeNameLanguages) &&  $operation === 'edit')
+        if(is_array($AttributeNameLanguages))
         {
             foreach($AttributeNameLanguages as $lnKey => $lnValue)
             {
