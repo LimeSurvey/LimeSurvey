@@ -18,13 +18,13 @@
  * and Contributors (http://phpjs.org/authors)
  */
 
-/* Default event to trigger on answer part
- * see https://manual.limesurvey.org/Project_ideas_for_GSoC_2015#Expression_Manager_JavaScript_optimizations
- * Actually only for list with comment and select in ranking
+/**
+ * Default event to trigger on answer part
+ * Launch function according to anser-item type
+ * @todo : checkconditions/fixnum_checkconditions in this function
  **/
-$(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not([onkeyup])",function(event){
-    // 'keyup' can be replaced by event.type (but not really needed)
-    // 'text' can be replaced by $(this)[0].type ('textarea' here) (but not really needed)
+/* text/number item */
+$(document).on("keyup change",".answer-item textarea:not([onkeyup]),.answer-item :text:not([onkeyup])",function(event){
     if($(this).data("number"))// data-type ?
     {
         fixnum_checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup', $(this).data("integer"))
@@ -34,10 +34,17 @@ $(document).on("keyup",".text-item textarea:not([onkeyup]),.text-item :text:not(
         checkconditions($(this).val(), $(this).attr('name'), 'text', 'keyup')
     }
 });
-$(document).on("change",".select-item select:not([onchange])",function(event){
-    //$('#java'+$(this).attr("name")).val($(this).val()); Not needed for ranking, needed for ? select already have val() and are unique by name
-    if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ))
-        ExprMgr_process_relevance_and_tailoring("onchange",$(this).attr("name"),"select-one");
+/* select/dropdown item */
+$(document).on("change",".select-item select:not([onchange]),.dropdown-item select:not([onchange])",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
+});
+/* radio/button item */
+$(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:not([onclick])",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
+});
+/* checkbox item */
+$(document).on("change",".checkbox-item :checkbox:not([onclick])",function(event){
+    checkconditions($(this).val(), $(this).attr('name'), 'checkbox', 'click')
 });
 
 /**
@@ -47,7 +54,9 @@ var pad = function(num,places) {
   var zero = places - num.toString().length + 1;
   return Array(+(zero > 0 && zero)).join("0") + num;
 }
-
+/**
+ * All EM function (see em_core_helper.php)
+ */
 function LEMcount()
 {
     // takes variable number of arguments - returns count of those arguments that are not null/empty
