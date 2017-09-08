@@ -1237,6 +1237,8 @@ class tokens extends Survey_Common_Action
 
         Yii::app()->loadHelper('surveytranslator');
         Yii::app()->loadHelper('/admin/htmleditor');
+        Yii::app()->session['FileManagerContext'] = "edit:emailsettings:{$iSurveyId}";
+        initKcfinder();
         Yii::app()->loadHelper('replacements');
 
         $token = Token::model($iSurveyId)->find();
