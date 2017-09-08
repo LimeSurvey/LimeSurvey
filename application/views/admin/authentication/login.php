@@ -98,19 +98,17 @@
 
 
                                 echo CHtml::label(gT('Language'), 'loginlang');
-
+                                
                                 $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                     'name' => 'loginlang',
                                     'data' => $languageData,
+                                    'value' => $language,
                                     'pluginOptions' => array(
-                                    'options' => array(
-                                        'value' => 'default'
-                                    ),
-                                    'htmlOptions' => array(
-                                        'id' => 'loginlang'
-                                    ),
-
-                                )));
+                                        'htmlOptions' => array(
+                                            'id' => 'loginlang'
+                                        ),
+                                    )
+                                ));
                                 ?>
 
                                 <?php   if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)

@@ -101,24 +101,21 @@ class AdminController extends LSYii_Controller
     {
         // From personal settings
         if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
-            if (Yii::app()->request->getPost('lang')=='auto')
-            {
+            if (Yii::app()->request->getPost('lang')=='auto') {
                 $sLanguage= getBrowserLanguage();
-            }
-            else
-            {
+            } else {
                 $sLanguage=sanitize_languagecode(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
-
-        if (empty(Yii::app()->session['adminlang']))
+        if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-
+        }
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
 
-        if (!empty($this->user_id))
+        if (!empty($this->user_id)) {
             $this->_GetSessionUserRights($this->user_id);
+        }
     }
 
     /**
@@ -274,8 +271,9 @@ class AdminController extends LSYii_Controller
     */
     public function _getAdminHeader($meta = false, $return = false)
     {
-        if (empty(Yii::app()->session['adminlang']))
+        if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
+        }
 
         $aData = array();
         $aData['adminlang'] = Yii::app()->language;
