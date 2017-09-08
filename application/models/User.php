@@ -64,8 +64,24 @@ class User extends LSActiveRecord
     public function rules()
     {
         return array(
-        array('users_name, password, email', 'required'),
-        array('email', 'email'),
+            array('users_name, password, email', 'required'),
+            array('users_name','unique'),
+            array('email', 'email'),
+            array('full_name', 'LSYii_Validators'), // XSS if non super-admin
+            array('parent_id', 'default','value'=>0),
+            array('parent_id', 'numerical', 'integerOnly'=>true),
+            array('lang','default','value'=>Yii::app()->getConfig('defaultlang')),
+            array('lang','LSYii_Validators','isLanguage'=>true),
+            array('htmleditormode','default','value'=>'default'),
+            array('htmleditormode','in','range'=>array('default','inline','popup','none'), 'allowEmpty'=>true),
+            array('questionselectormode','default','value'=>'default'),
+            array('questionselectormode','in','range'=>array('default','full','none'), 'allowEmpty'=>true),
+            array('templateeditormode','default','value'=>'default'),
+            array('templateeditormode','in','range'=>array('default','full','none'), 'allowEmpty'=>true),
+            //array('dateformat', 'default','value'=>????), // What is the default ?
+            array('dateformat', 'numerical', 'integerOnly'=>true, 'allowEmpty'=>true),
+            // created as datetime default current date in create scenario ?
+            // modifier as datetime default current date ?
         );
     }
 
