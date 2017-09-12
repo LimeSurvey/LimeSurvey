@@ -1323,4 +1323,37 @@ class Survey extends LSActiveRecord
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
         Question::model()->deleteAll($criteria);// Must log count of deleted ?
     }
+
+    /**
+     * Returns true if this survey has any question of type $type.
+     * @param char $type Question type, like 'L', 'T', etc.
+     * @param boolean $includeSubquestions If true, will also check the types of subquestions.
+     * @return boolean
+     */
+    public function hasQuestionType($type, $includeSubquestions = false)
+    {
+        if (!is_string($type) || strlen($type) !== 1) {
+            throw new InvalidArgumentException('$type must be a string of length 1');
+        }
+
+        if ($includeSubquestions) {
+            $joinCondition =
+                '{{questions.sid}} = {{surveys.sid}} AND {{questions.type}} = :type';
+        } else {
+            $joinCondition =
+                '{{questions.sid}} = {{surveys.sid}} AND {{questions.parent_qid}} = 0 AND {{questions.type}} = :type';
+        }
+
+        $result = Yii::app()->db->createCommand()
+            ->select('{{surveys.sid}}')
+            ->from('{{surveys}}')
+            ->join(
+                '{{questions}}',
+                $joinCondition,
+                array(':type' => $type)
+            )
+            ->where('{{surveys.sid}} = :sid', array(':sid' => $this->sid))
+            ->queryRow();
+        return $result !== false;
+    }
 }
