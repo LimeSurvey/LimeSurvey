@@ -7137,7 +7137,7 @@
         * Also create list of variables that need to be declared
         * @return string : line to be added to content Javacript line + hidden input (can't use register script...)
         */
-        static function GetRelevanceAndTailoringJavaScript()
+        static function GetRelevanceAndTailoringJavaScript($bReturnArray=false)
         {
             $aQuestionsWithDependencies = array();
             $now = microtime(true);
@@ -7147,11 +7147,15 @@
             $allJsVarsUsed=array();
             $rowdividList=array();   // list of subquestions needing relevance entries
             /* All function for expression manager */
+            
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js" );
             /* Call the function when trigerring event */
             App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END,  array("class"=>"toRemoveOnAjax"));
 
-            $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+            if (!$bReturnArray) {
+                $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+            }
+
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
             if ($LEM->surveyMode == 'group')
             {
@@ -7851,7 +7855,10 @@
                 }
             }
 
-            $jsParts[] = "//-->\n</script>\n";
+            if (!$bReturnArray){
+                $jsParts[] = "//-->\n</script>\n";
+            }
+
 
             // Now figure out which variables have not been declared (those not on the current page)
             $undeclaredJsVars = array();
@@ -7897,7 +7904,13 @@
                 {
                     // TODO - is different type needed for text?  Or process value to striphtml?
                     if ($jsVar == '') continue;
-                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                    $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+
+                    if ($bReturnArray){
+                        $inputParts[] = $sInput;
+                    }else{
+                        $jsParts[] = $sInput;
+                    }
                 }
             }
             else
@@ -7925,7 +7938,12 @@
                 foreach ($undeclaredJsVars as $jsVar)
                 {
                     if ($jsVar == '') continue;
-                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                    $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                    if ($bReturnArray){
+                        $inputParts[] = $sInput;
+                    }else{
+                        $jsParts[] = $sInput;
+                    }
                 }
             }
             foreach ($qidList as $qid)
@@ -7936,7 +7954,12 @@
                 else {
                     $relStatus = 1;
                 }
-                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
+                $sInput = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
+                if ($bReturnArray){
+                    $inputParts[] = $sInput;
+                }else{
+                    $jsParts[] = $sInput;
+                }
             }
 
             foreach ($gseqList as $gseq)
@@ -7947,18 +7970,39 @@
                 else {
                     $relStatus = 1;
                 }
-                $jsParts[] = "<input type='hidden' id='relevanceG" . $gseq . "' name='relevanceG" . $gseq .  "' value='" . $relStatus . "'/>\n";
+                $sInput = "<input type='hidden' id='relevanceG" . $gseq . "' name='relevanceG" . $gseq .  "' value='" . $relStatus . "'/>\n";
+                if ($bReturnArray){
+                    $inputParts[] = $sInput;
+                }else{
+                    $jsParts[] = $sInput;
+                }
             }
             foreach ($rowdividList as $key=>$val)
             {
-                $jsParts[] = "<input type='hidden' id='relevance" . $key . "' name='relevance" . $key .  "' value='" . $val . "'/>\n";
+                $sInput = "<input type='hidden' id='relevance" . $key . "' name='relevance" . $key .  "' value='" . $val . "'/>\n";
+                if ($bReturnArray){
+                    $inputParts[] = $sInput;
+                }else{
+                    $jsParts[] = $sInput;
+                }
+
             }
             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
 
-            $jsParts[]="<input type='hidden' id='aQuestionsWithDependencies' data-qids='".json_encode($aQuestionsWithDependencies)."' />";
+            $sInput="<input type='hidden' id='aQuestionsWithDependencies' data-qids='".json_encode($aQuestionsWithDependencies)."' />";
+            if ($bReturnArray){
+                $inputParts[] = $sInput;
+            }else{
+                $jsParts[] = $sInput;
+            }
 
-            return implode('',$jsParts);
+            if ($bReturnArray){
+                return array( "scripts" => $jsParts, "inputs" => $inputParts);
+            }else{
+                return implode('',$jsParts);
+            }
+
         }
 
         static function setTempVars($vars)
