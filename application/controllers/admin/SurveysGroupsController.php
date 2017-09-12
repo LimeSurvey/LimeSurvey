@@ -80,8 +80,8 @@ class SurveysGroupsController extends Survey_Common_Action
         $oSurveySearch->gsid = $model->gsid;
         $aData['oSurveySearch'] = $oSurveySearch;
 
-        $oTemplateOptions = TemplateConfiguration::getInstance(null, null, $model->gsid);
-        $oTemplateOptions->bUseMagicInherit = false;
+        $oTemplateOptions = TemplateConfiguration::getInstanceFromSurveyGroup($model->gsid);
+
         $oTemplateOptionsReplacement = TemplateConfiguration::model()->findByPk($oTemplateOptions->id);
         $templateOptionPage           = $oTemplateOptionsReplacement->optionPage;
 
