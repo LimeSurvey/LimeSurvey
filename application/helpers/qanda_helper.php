@@ -5307,6 +5307,8 @@ function do_array_multiflexi($ia)
     $answertypeclass            = "";
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header.");
     $checkconditionFunction     = "fixnum_checkconditions";
+    $minvalue                   = '';
+    $maxvalue                   = '';
 
     /*
      * Question Attributes
