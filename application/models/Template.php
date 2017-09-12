@@ -377,7 +377,7 @@ class Template extends LSActiveRecord
      */
     public static function getInstance($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=null)
     {
-        // The error page from default template can be called when no survey found with a specific ID. 
+        // The error page from default template can be called when no survey found with a specific ID.
         if ($sTemplateName === null && $iSurveyId === null){
             $sTemplateName = "default";
         }
@@ -392,9 +392,11 @@ class Template extends LSActiveRecord
         }
 
         if (empty(self::$instance)) {
-            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyGroupId, $iSurveyId, $bForceXML);
+            // getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=false)
+            self::$instance = $toto = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
             self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
+
 
         return self::$instance;
     }
