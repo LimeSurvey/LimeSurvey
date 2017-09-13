@@ -56,14 +56,14 @@ class LSYii_Validators extends CValidator {
             $object->$attribute=$this->xssFilter($object->$attribute);
             if($this->isUrl)
             {
-                $object->$attribute=str_replace('javascript:','',html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8")); 
+                $object->$attribute=str_replace('javascript:','',html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"));
             }
         }
         // Note that URL checking only checks basic URL properties. As a URL can contain EM expression there needs to be a lot of freedom.
         if($this->isUrl)
         {
             if ($object->$attribute== 'http://' || $object->$attribute=='https://') {$object->$attribute="";}
-            $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"); 
+            $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8");
         }
         if($this->isLanguage)
         {
@@ -135,8 +135,8 @@ class LSYii_Validators extends CValidator {
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
         $sFiltered=preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#','{$1}',$filter->purify($value));
-        Yii::import('application.helpers.expressions.em_core_helper');// Already imported in em_manager_helper.php ?
-        $oExpressionManager= new ExpressionManager;
+        Yii::import('application.helpers.expressions.em_core_helper', 'true');// Already imported in em_manager_helper.php ?
+        $oExpressionManager= new ExpressionManager();
         /**  We get 2 array : one filtered, other unfiltered **/
         $aValues=$oExpressionManager->asSplitStringOnExpressions($value);// Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
         $aFilteredValues=$oExpressionManager->asSplitStringOnExpressions($sFiltered);// Same but for the filtered string
