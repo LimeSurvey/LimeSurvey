@@ -44,7 +44,7 @@
     <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
     <options>
-        <ajaxmode>on</ajaxmode>
+        <ajaxmode>off</ajaxmode>
         <brandlogo>on</brandlogo>
         <boxcontainer>on</boxcontainer>
         <backgroundimage>on</backgroundimage>
