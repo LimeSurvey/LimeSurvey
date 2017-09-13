@@ -127,6 +127,13 @@ return array(
             'ckeditor'
         )
     ),
+    'pjax' => array(
+        'devBaseUrl' => 'assets/packages/pjax/',
+        'basePath' => 'core.pjax',
+        'js' => array(
+            'pjax.js',
+        ),
+    ),
     'adminpanel' => array(
         'devBaseUrl' => 'assets/packages/adminpanel/',
         'basePath' => 'core.adminpanel',
@@ -140,7 +147,12 @@ return array(
         ),
         'css' => array(
             'build/lsadminpanel.css'
+            )
+        ),
+        'depends' => array(
+            'pjax',
+            'jquery'
         )
-    )
+          
     
 );

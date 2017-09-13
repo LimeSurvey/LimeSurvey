@@ -23,6 +23,10 @@ module.exports = {
     path: exportPath,
     filename: appName
   },
+  externals: {
+    jquery: 'jQuery',
+    pjax: 'Pjax',
+  },
   module: {
     rules: [{
       test: /\.scss$/,

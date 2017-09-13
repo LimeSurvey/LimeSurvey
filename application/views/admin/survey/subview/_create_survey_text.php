@@ -78,25 +78,6 @@ $surveyid = $aTabContents['surveyid'];
             </div>
         </div>
         <div class="col-sm-12 col-md-6">
-            <!-- Survey Group -->
-            <div class="form-group">
-                <label class="control-label ">
-                    <?php eT("Survey Group:"); ?>
-                </label>
-                <div class="">
-                    <?php
-                    $aSurveyGroups = SurveysGroups::getSurveyGroupsList();
-                    $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
-                        'asDropDownList' => true,
-                        'htmlOptions'=>array('style'=>"width: 80%"),
-                        'data' => $aSurveyGroups,
-                        'value' => key($aSurveyGroups),
-                        'name' => 'gsid',
-                        'pluginOptions' => array()
-                    ));?>
-                </div>
-            </div>
-
 
             <!-- End URL -->
             <div class="form-group">

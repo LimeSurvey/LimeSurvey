@@ -428,6 +428,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 315) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            $oDB->createCommand()->update('{{template_configuration}}', 
+                array('packages_to_load'=>'pjax'),
+                'id=1'
+            );
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>315),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
 
     }
     catch(Exception $e)

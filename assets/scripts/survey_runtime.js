@@ -115,7 +115,7 @@ function checkconditions(value, name, type, evt_type)
     }
 
     // $isRelevant = $.inArray(result, aQuestionsWithDependencies); NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
-    $isRelevant = 1;
+    var $isRelevant = 1;
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1)
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
