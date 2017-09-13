@@ -707,9 +707,12 @@ class TemplateConfiguration extends TemplateConfig
             //check for surveygroup id if a survey is given
             if($this->sid != null ){
                 $oSurvey = Survey::model()->findByPk($this->sid);
-                $this->oParentTemplate = Template::getTemplateConfiguration(null,null,$oSurvey->gsid);
-                $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
-                return $this->oParentTemplate;
+                $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName,null,$oSurvey->gsid);
+                if (is_a($oParentTemplate, 'TemplateConfiguration')){
+                    $this->oParentTemplate = $oParentTemplate;
+                    $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
+                    return $this->oParentTemplate;
+                }
             }
 
             //check for surveygroup id if a surveygroup is given
@@ -717,14 +720,18 @@ class TemplateConfiguration extends TemplateConfig
                 $oSurveyGroup = SurveysGroups::model()->findByPk($this->gsid);
                 //Switch if the surveygroup inherits from a parent surveygroup
                 if($oSurveyGroup->parent_id != 0) {
-                    $this->oParentTemplate = Template::getTemplateConfiguration(null,null,$oSurveyGroup->parent_id);
-                    $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
-                    return $this->oParentTemplate;
+                    $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName,null,$oSurveyGroup->parent_id);
+                    if (is_a($oParentTemplate, 'TemplateConfiguration')){
+                        $this->oParentTemplate = $oParentTemplate;
+                        $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
+                        return $this->oParentTemplate;
+                    }
+
                 }
             }
 
             //in the endcheck for general global template
-            $this->oParentTemplate = Template::getTemplateConfiguration($this->templates_name);
+            $this->oParentTemplate = Template::getTemplateConfiguration($this->templates_name, null, null);
             $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
             return $this->oParentTemplate;
         }
