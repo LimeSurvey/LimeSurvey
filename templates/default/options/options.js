@@ -100,8 +100,8 @@ var prepare = function(){
                 try{
                     currentThemeObject = JSON.parse($('#TemplateConfiguration_cssframework_css').val());
                 } catch(e){ console.error('No valid css framework theme field!'); }
-            
-                currentThemeObject.replace = currentThemeObject.replace || [['css/bootstrap.css','']];
+                
+                currentThemeObject = {"replace" : [['css/bootstrap.css','']]};
                 $('#simple_edit_cssframework').val(currentThemeObject.replace[0][1]);
             }
 
