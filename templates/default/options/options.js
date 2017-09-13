@@ -8,7 +8,7 @@ var prepare = function(){
     var generalInherit = function(){return $('#TemplateConfiguration_options').val() === 'inherit'; };
     var updateFieldSettings = function(){
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
-            optionObject[$(item).attr('name')] = $(item).val(); 
+            optionObject[$(item).attr('name')] = $(item).val();
             if($(item).attr('type') == 'radio'){
                 optionObject[$(item).attr('name')] = $(item).prop('checked') ? 'on' : 'off';
             }
@@ -20,7 +20,7 @@ var prepare = function(){
         $('.action_hide_on_inherit').addClass('hidden');
     }
 
-    if($('#TemplateConfiguration_options').length>0 && !generalInherit()){      
+    if($('#TemplateConfiguration_options').length>0 && !generalInherit()){
 
         try{
             optionObject = JSON.parse($('#TemplateConfiguration_options').val());
@@ -31,10 +31,10 @@ var prepare = function(){
     if($('.action_update_options_string_form').length > 0 ){
         //Update values in the form to the template options
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
-            
+
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
             $(item).val(itemValue);
-                
+
         });
         $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
@@ -56,11 +56,11 @@ var prepare = function(){
                 var newOptionObject = {};
                 //get all values
                 $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
-                    newOptionObject[$(item).attr('name')] = $(item).val();              
+                    newOptionObject[$(item).attr('name')] = $(item).val();
                 });
                 $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
                     if($(item).prop('checked'))
-                        newOptionObject[$(item).attr('name')] = $(item).val();              
+                        newOptionObject[$(item).attr('name')] = $(item).val();
                 });
                 //now write the newly created object to the correspondent field as a json string
                 $('#TemplateConfiguration_options').val(JSON.stringify(newOptionObject));
@@ -80,7 +80,7 @@ var prepare = function(){
         });
         //hotswapping the fields
         $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
-            optionObject[$(this).attr('name')] = $(this).val(); 
+            optionObject[$(this).attr('name')] = $(this).val();
             if($(this).attr('type') == 'radio'){
                 optionObject[$(this).attr('name')] = $(this).prop('checked') ? 'on' : 'off';
             }
@@ -89,7 +89,7 @@ var prepare = function(){
         //hotswapping the radio fields
         $('.action_update_options_string_form').find('.selector_option_radio_field').on('change', function(evt){
             $(this).prop('checked',true);
-            optionObject[$(this).attr('name')] = $(this).val(); 
+            optionObject[$(this).attr('name')] = $(this).val();
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
 
@@ -116,7 +116,7 @@ var prepare = function(){
                 }
 
             })
-        }   
+        }
     }
     setTimeout(function(){deferred.resolve()},650);
 

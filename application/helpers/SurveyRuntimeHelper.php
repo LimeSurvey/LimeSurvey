@@ -1619,7 +1619,7 @@ class SurveyRuntimeHelper {
 
     private function initTemplate()
     {
-        $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);
+        $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);        
         $this->sTemplateViewPath = $oTemplate->viewPath;
         //$oTemplate->registerAssets();
     }

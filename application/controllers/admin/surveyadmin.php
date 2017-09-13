@@ -66,7 +66,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     public function listsurveys()
-    {
+    {        
         Yii::app()->loadHelper('surveytranslator');
         $aData = array();
         $aData['issuperadmin'] = false;

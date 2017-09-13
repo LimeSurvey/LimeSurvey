@@ -9,7 +9,7 @@
     <div class='row container-fluid'>
         <div class="col-md-6 text-left">
         </div>
-  
+
 
         <!-- Right actions -->
         <div class="col-md-4 text-right">
