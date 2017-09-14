@@ -392,7 +392,7 @@ class SurveyRuntimeHelper {
         LimeExpressionManager::FinishProcessingGroup($this->LEMskipReprocessing);
         $aScriptsAndHiddenInputs = LimeExpressionManager::GetRelevanceAndTailoringJavaScript(true);
         $sScripts =  implode('',$aScriptsAndHiddenInputs['scripts']);
-        Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_HEAD);
+        Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
         $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = implode('',$aScriptsAndHiddenInputs['inputs']);
         Yii::app()->clientScript->registerScript('triggerEmRelevance',"triggerEmRelevance();",CClientScript::POS_END);
         Yii::app()->clientScript->registerScript('updateMandatoryErrorClass',"updateMandatoryErrorClass();",CClientScript::POS_END);         /* Maybe only if we have mandatory error ?*/

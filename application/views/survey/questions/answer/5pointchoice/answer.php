@@ -29,18 +29,14 @@ echo \CHtml::hiddenField("java{$name}",$sessionValue,array(
 ));
 ?>
 
-<?php if($slider_rating==1):?>
-    <script type='text/javascript'>
-    <!--
-        doRatingStar( <?php echo  $sliderId;?> );
-    -->
-    </script>
-<?php elseif($slider_rating==2):?>
-    <script type='text/javascript'>
-    <!--
-        var doRatingSlider_<?php echo  $sliderId; ?> = new getRatingSlider( <?php echo  $sliderId; ?> );
-        doRatingSlider_<?php echo  $sliderId; ?>();
-    -->
-    </script>
-<?php endif;?>
+<?php 
+if($slider_rating==1){
+    Yii::app()->clientScript->registerScript('doRatingStar_'.$sliderId, "doRatingStar(".$sliderId.");",CClientScript::POS_END);
+} else if($slider_rating==2) {
+    Yii::app()->clientScript->registerScript("doRatingSlider_".$sliderId, "
+        var doRatingSlider_".$sliderId."= new getRatingSlider( ".$sliderId.");
+        doRatingSlider_".$sliderId."();
+    ",CClientScript::POS_END);
+}
+?>
 <!-- end of answer -->

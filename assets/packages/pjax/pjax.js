@@ -28,7 +28,7 @@ var Pjax = function(options) {
         opt.url = st.state.url
         opt.title = st.state.title
         opt.history = false
-
+        opt.requestOptions = {};
         if (st.state.uid < this.lastUid) {
           opt.backward = true
         }
@@ -55,6 +55,8 @@ Pjax.prototype = {
   reload: _dereq_("./lib/reload.js"),
 
   attachLink: _dereq_("./lib/proto/attach-link.js"),
+
+  attachForm: _dereq_("./lib/proto/attach-form.js"),
 
   forEachSelectors: function(cb, context, DOMcontext) {
     return _dereq_("./lib/foreach-selectors.js").bind(this)(this.options.selectors, cb, context, DOMcontext)
@@ -152,7 +154,7 @@ Pjax.prototype = {
     trigger(document, "pjax:send", options);
 
     // Do the request
-    this.doRequest(href, function(html) {
+    this.doRequest(href, options.requestOptions, function(html) {
       // Fail if unable to load HTML via AJAX
       if (html === false) {
         trigger(document,"pjax:complete pjax:error", options)
@@ -242,7 +244,7 @@ else {
   module.exports = stupidPjax
 }
 
-},{"./lib/clone.js":2,"./lib/events/on.js":4,"./lib/events/trigger.js":5,"./lib/execute-scripts.js":6,"./lib/foreach-els.js":7,"./lib/foreach-selectors.js":8,"./lib/is-supported.js":9,"./lib/proto/attach-link.js":11,"./lib/proto/get-elements.js":12,"./lib/proto/log.js":13,"./lib/proto/parse-dom.js":14,"./lib/proto/parse-options.js":16,"./lib/proto/refresh.js":17,"./lib/reload.js":18,"./lib/request.js":19,"./lib/switches-selectors.js":20,"./lib/uniqueid.js":22}],2:[function(_dereq_,module,exports){
+},{"./lib/clone.js":2,"./lib/events/on.js":4,"./lib/events/trigger.js":5,"./lib/execute-scripts.js":6,"./lib/foreach-els.js":7,"./lib/foreach-selectors.js":8,"./lib/is-supported.js":9,"./lib/proto/attach-form.js":11,"./lib/proto/attach-link.js":12,"./lib/proto/get-elements.js":13,"./lib/proto/log.js":14,"./lib/proto/parse-dom.js":15,"./lib/proto/parse-options.js":17,"./lib/proto/refresh.js":18,"./lib/reload.js":19,"./lib/request.js":20,"./lib/switches-selectors.js":21,"./lib/uniqueid.js":23}],2:[function(_dereq_,module,exports){
 module.exports = function(obj) {
   if (null === obj || "object" != typeof obj) {
     return obj
@@ -412,6 +414,103 @@ var clone = _dereq_("../clone")
 var attrClick = "data-pjax-click-state"
 var attrKey = "data-pjax-keyup-state"
 
+var formAction = function(el, event){
+
+  this.options.requestOptions = {
+    requestUrl : el.getAttribute('action') || window.location.href,
+    requestMethod : el.getAttribute('method') || 'GET',
+  }
+
+  //create a testable virtual link of the form action
+  var virtLinkElement = document.createElement('a');
+  virtLinkElement.setAttribute('href', this.options.requestOptions.actionUrl);
+
+  // Ignore external links.
+  if (virtLinkElement.protocol !== window.location.protocol || el.host !== window.location.host) {
+    el.setAttribute(attrClick, "external");
+    return
+  }
+
+  // Ignore click if we are on an anchor on the same page
+  if (virtLinkElement.pathname === window.location.pathname && el.hash.length > 0) {
+    el.setAttribute(attrClick, "anchor-present");
+    return
+  }
+
+  // if declared as a full reload, just normally submit the form
+  if ( this.options.currentUrlFullReload) {
+    el.setAttribute(attrClick, "reload");
+    return;
+  }
+
+  event.preventDefault()
+
+  // This solution is rather simple and works on IE9 and above as well as on any other major browser
+  //Filtering all of the fields on the form
+  var paramObject = [].filter.call(el.elements, function(el) {
+      //Allow only elements that don't have the 'checked' property
+      //Or those who have it, and it's checked for them.
+      return typeof(el.checked) === 'undefined' || el.checked;
+      //Practically, filter out checkboxes/radios which aren't checekd.
+  })
+  .filter(function(el) { return !!el.name; }) //Nameless elements die.
+  .map(function(el) {
+      //Map each field into a name=value string, make sure to properly escape!
+      return { name: encodeURIComponent(el.name), value: encodeURIComponent(el.value)};
+  });
+
+  //Creating a getString
+  var paramsString = (paramObject.map(function(value,index){return value.name+"="+value.value;})).join('&');
+
+  this.options.requestOptions.requestPayload = paramObject;
+  this.options.requestOptions.requestPayloadString = paramsString;
+
+  this.loadUrl(virtLinkElement.href, clone(this.options))
+
+};
+
+var isDefaultPrevented = function(event) {
+  return event.defaultPrevented || event.returnValue === false;
+};
+
+
+module.exports = function(el) {
+  var that = this
+
+  on(el, "submit", function(event) {
+    if (isDefaultPrevented(event)) {
+      return
+    }
+
+    formAction.call(that, el, event)
+  })
+
+  on(el, "keyup", function(event) {
+    if (isDefaultPrevented(event)) {
+      return
+    }
+
+    // Don’t break browser special behavior on links (like page in new window)
+    if (event.which > 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+      el.setAttribute(attrKey, "modifier")
+      return
+    }
+
+    if (event.keyCode == 13) {
+      formAction.call(that, el, event)
+    }
+  }.bind(this))
+}
+
+},{"../clone":2,"../events/on":4,"../polyfills/Function.prototype.bind":10}],12:[function(_dereq_,module,exports){
+_dereq_("../polyfills/Function.prototype.bind")
+
+var on = _dereq_("../events/on")
+var clone = _dereq_("../clone")
+
+var attrClick = "data-pjax-click-state"
+var attrKey = "data-pjax-keyup-state"
+
 var linkAction = function(el, event) {
   // Don’t break browser special behavior on links (like page in new window)
   if (event.which > 1 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
@@ -457,7 +556,7 @@ var linkAction = function(el, event) {
     this.reload()
     return
   }
-
+  this.options.requestOptions = this.options.requestOptions || {};
   el.setAttribute(attrClick, "load")
   this.loadUrl(el.href, clone(this.options))
 }
@@ -494,12 +593,12 @@ module.exports = function(el) {
   }.bind(this))
 }
 
-},{"../clone":2,"../events/on":4,"../polyfills/Function.prototype.bind":10}],12:[function(_dereq_,module,exports){
+},{"../clone":2,"../events/on":4,"../polyfills/Function.prototype.bind":10}],13:[function(_dereq_,module,exports){
 module.exports = function(el) {
   return el.querySelectorAll(this.options.elements)
 }
 
-},{}],13:[function(_dereq_,module,exports){
+},{}],14:[function(_dereq_,module,exports){
 module.exports = function() {
   if (this.options.debug && console) {
     if (typeof console.log === "function") {
@@ -512,7 +611,7 @@ module.exports = function() {
   }
 }
 
-},{}],14:[function(_dereq_,module,exports){
+},{}],15:[function(_dereq_,module,exports){
 var forEachEls = _dereq_("../foreach-els")
 
 var parseElement = _dereq_("./parse-element")
@@ -521,7 +620,7 @@ module.exports = function(el) {
   forEachEls(this.getElements(el), parseElement, this)
 }
 
-},{"../foreach-els":7,"./parse-element":15}],15:[function(_dereq_,module,exports){
+},{"../foreach-els":7,"./parse-element":16}],16:[function(_dereq_,module,exports){
 module.exports = function(el) {
   switch (el.tagName.toLowerCase()) {
   case "a":
@@ -531,8 +630,11 @@ module.exports = function(el) {
     }
     break
 
-  case "form":
-    throw "Pjax doesnt support <form> yet."
+    case "form":
+      // only attach link if el does not already have link attached
+      if (!el.hasAttribute('data-pjax-click-state')) {
+        this.attachForm(el)
+      }
     break
 
   default:
@@ -540,7 +642,7 @@ module.exports = function(el) {
   }
 }
 
-},{}],16:[function(_dereq_,module,exports){
+},{}],17:[function(_dereq_,module,exports){
 /* global _gaq: true, ga: true */
 
 module.exports = function(options){
@@ -579,18 +681,21 @@ module.exports = function(options){
     options.analytics = function() {}
   }
 }
-},{}],17:[function(_dereq_,module,exports){
+},{}],18:[function(_dereq_,module,exports){
 module.exports = function(el) {
   this.parseDOM(el || document)
 }
 
-},{}],18:[function(_dereq_,module,exports){
+},{}],19:[function(_dereq_,module,exports){
 module.exports = function() {
   window.location.reload()
 }
 
-},{}],19:[function(_dereq_,module,exports){
-module.exports = function(location, callback) {
+},{}],20:[function(_dereq_,module,exports){
+module.exports = function(location, options, callback) {
+  options = options || {};
+  var requestMethod = options.requestMethod || 'GET';
+
   var request = new XMLHttpRequest()
 
   request.onreadystatechange = function() {
@@ -609,13 +714,21 @@ module.exports = function(location, callback) {
     location += (!/[?&]/.test(location) ? "?" : "&") + new Date().getTime()
   }
 
-  request.open("GET", location, true)
+  request.open(requestMethod, location, true)
   request.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+
+  // Add the request payload if available
+  if(options.requestPayloadString != undefined && options.requestPayloadString != ''){
+    //Send the proper header information along with the request
+    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    request.send(options.requestPayloadString)
+  }
   request.send(null)
+
   return request
 }
 
-},{}],20:[function(_dereq_,module,exports){
+},{}],21:[function(_dereq_,module,exports){
 var forEachEls = _dereq_("./foreach-els")
 
 var defaultSwitches = _dereq_("./switches")
@@ -652,7 +765,7 @@ module.exports = function(switches, switchesOptions, selectors, fromEl, toEl, op
   }, this)
 }
 
-},{"./foreach-els":7,"./switches":21}],21:[function(_dereq_,module,exports){
+},{"./foreach-els":7,"./switches":22}],22:[function(_dereq_,module,exports){
 var on = _dereq_("./events/on.js")
 // var off = require("./lib/events/on.js")
 // var trigger = require("./lib/events/trigger.js")
@@ -769,7 +882,7 @@ module.exports = {
   }
 }
 
-},{"./events/on.js":4}],22:[function(_dereq_,module,exports){
+},{"./events/on.js":4}],23:[function(_dereq_,module,exports){
 module.exports = (function() {
   var counter = 0
   return function() {

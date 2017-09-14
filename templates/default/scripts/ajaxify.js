@@ -22,18 +22,48 @@ var AjaxSubmitObject = function () {
         }, 1800);
     };
 
-    var bindActions = function () {
+    var checkScriptNotLoaded = function(scriptNode){
+        if(!!scriptNode.src){
+            return ($('head').find('script[src="'+scriptNode.src+'"]').length > 0);
+        }
+        return true;
+    }
 
+    var appendScript = function(scriptText, scriptPosition, src){
+        src = src || '';
+        scriptPosition = scriptPosition || null;
+        var scriptNode = document.createElement('script');
+        scriptNode.type  = "text/javascript";
+        if(src != false){
+            scriptNode.src   = src;
+        }
+        scriptNode.text  = scriptText;
+        scriptNode.attributes.class = "toRemoveOnAjax";
+        switch(scriptPosition) {
+            case "head": if(checkScriptNotLoaded(scriptNode)){ document.head.appendChild(scriptNode); } break;
+            case "body": document.body.appendChild(scriptNode); break;
+            case "beginScripts": document.getElementById('beginScripts').appendChild(scriptNode); break;
+            case "bottomScripts": //fallthrough
+            default: document.getElementById('bottomScripts').appendChild(scriptNode); break;
+
+        }
+    };
+
+    var bindActions = function () {
+        var globalPjax = new Pjax({
+            elements: "#limesurvey", // default is "a[href], form[action]"
+            selectors: [".headScripts", "#dynamicReloadContainer", "#beginScripts", "#bottomScripts"]
+        });
         // Always bind to document to not need to bind again
         $(document).on("click", ".ls-move-btn",function () {
-            move = $(this).attr("value");
+            var move = $(this).attr("value");
+            $("#limesurvey").append("<input name='"+move+"' value='"+move+"' type='hidden' />")
         });
 
         // If the user try to submit the form
         // Always bind to document to not need to bind again
         $(document).on("submit", "#limesurvey", function (e) {
             e.preventDefault();
-
             // Prevent multiposting
             //Check if there is an active submit
             //If there is -> return immediately
@@ -48,56 +78,87 @@ var AjaxSubmitObject = function () {
             var aPost = $(this).serialize();
 
             // We add the value of the button clicked to the post request
-            aPost += "&move=" + move;
+            // aPost += "&move=" + move;
 
-            $.ajax({
-                url: sUrl,
-                type: 'POST',
-                dataType: 'html',
-                data: aPost,
+            // $.ajax({
+            //     url: sUrl,
+            //     type: 'POST',
+            //     dataType: 'html',
+            //     data: aPost,
 
-                success: function (body_html, status, request) {
+            //     success: function (body_html, status, request) {
 
-                    $('.toRemoveOnAjax').each(function () {
-                        $(this).remove();
-                    });
+            //         $('.toRemoveOnAjax').each(function () {
+            //             $(this).remove();
+            //         });
 
-                    var currentUrl = window.location.href;
-                    var cleanUrl = currentUrl.replace("&newtest=Y", "").replace(/\?newtest=Y(\&)?/, '?');
+            //         var currentUrl = window.location.href;
+            //         var cleanUrl = currentUrl.replace("&newtest=Y", "").replace(/\?newtest=Y(\&)?/, '?');
 
-                    if (currentUrl != cleanUrl) {
-                        window.history.pushState({
-                            "html": body_html,
-                            "pageTitle": request.getResponseHeader('title')
-                        }, "", cleanUrl);
-                    }
-
-                    var $dataScripts = $(body_html).filter('script');
-                    var $newBody = $($.parseHTML(body_html));
-                    var $replaceableContainer = $newBody.find('div#dynamicReloadContainer');
-                    $("#dynamicReloadContainer").empty().append($replaceableContainer);
-
-                    $dataScripts.each(function () {
-                        $(this).attr('type', 'text/javascript').addClass('toRemoveOnAjax').prependTo('body');
-                    });
-
-                    // We end the loading animation
-                    endLoadingBar();
+            //         if (currentUrl != cleanUrl) {
+            //             window.history.pushState({
+            //                 "html": body_html,
+            //                 "pageTitle": request.getResponseHeader('title')
+            //             }, "", cleanUrl);
+            //         }
+            //         var fragment = document.createElement('html');
+            //         fragment.innerHTML = body_html;
+            //         console.log(fragment);
+            //         var newDocument =  $(fragment);
+            //         console.log(newDocument);
+            //         var $newBody = $(newDocument).find('body');
+            //         var $newHead = $(newDocument).find('head');
+            //         console.log($newHead, $newBody );
+            //         var $replaceableContainer = $newBody.find('div#dynamicReloadContainer').html();
+            //         var $bodyDataScripts = $newBody.children('script');
+            //         var $headDataScripts = $newHead.children('script');
+            //         console.log($bodyDataScripts);
+            //         console.log($headDataScripts);
+            //         var $replaceableTopScriptContainer = $newBody.find('#beginScripts');
+            //         var $replaceableBottomScriptContainer = $newBody.find('#bottomScripts');
                     
-                    //free submitting again
-                    activeSubmit = false;
+                    
+            //         $headDataScripts.each(function () {
+            //             appendScript($(this).html(), 'head', $(this).attr('src'));
+            //         });
+            //         $bodyDataScripts.each(function () {
+            //             appendScript($(this).html(), 'body', $(this).attr('src'));
+            //         });
+                    
+            //         $("#beginScripts").empty();
+            //         $replaceableTopScriptContainer.find('script').each(function(i,scriptTag){
+            //             appendScript($(this).html(), 'beginScripts', $(this).attr('src'));
+            //             //$("#beginScripts").append(scriptTag);
+            //         });
+                    
+            //         $("#dynamicReloadContainer").empty().html($replaceableContainer);
+                    
+            //         $replaceableBottomScriptContainer.find('script').each(function(i,scriptTag){
+            //             appendScript($(this).html(), 'bottomScripts', $(this).attr('src'));
+            //             // $("#bottomScripts").append(scriptTag);
+            //         });
 
-                    //also trigger the pjax:complete event to load all adherent scripts
-                    $(document).trigger('pjax:complete');
 
-                },
 
-                error: function (result, status, error) {
-                    alert("ERROR");
-                    console.log(result);
-                }
+            //         //also trigger the pjax:complete event to load all adherent scripts
+                    
+            //     },
+                
+            //     error: function (result, status, error) {
+            //         alert("ERROR");
+            //         console.log(result);
+            //     }
+
+            $(document).on('pjax:complete.onreload', function(){
+                // We end the loading animation
+                endLoadingBar();
+                //free submitting again
+                activeSubmit = false;
+                $(document).off('.onreload');
             });
+            
         });
+        return globalPjax;
     };
     return {
         bindActions: bindActions,

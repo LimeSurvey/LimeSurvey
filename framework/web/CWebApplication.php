@@ -167,7 +167,7 @@ class CWebApplication extends CApplication
 				'class'=>'CPhpAuthManager',
 			),
 			'clientScript'=>array(
-				'class'=>'CClientScript',
+				'class'=>'LSYii_ClientScript',
 			),
 			'widgetFactory'=>array(
 				'class'=>'CWidgetFactory',

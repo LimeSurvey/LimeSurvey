@@ -73,7 +73,7 @@
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
-            pjax
+            ["pjax"]
         </packages>
 
         <!--
