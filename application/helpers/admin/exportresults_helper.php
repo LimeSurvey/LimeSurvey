@@ -58,7 +58,7 @@ class ExportSurveyResultsService
     * @param FormattingOptions $oOptions
     * @param string $sFilter               
     */
-    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter = '', $aFields = array())
+    function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter = '')
     {
         //Do some input validation.
         if (empty($iSurveyId))
