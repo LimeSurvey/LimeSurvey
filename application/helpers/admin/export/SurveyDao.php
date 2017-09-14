@@ -101,10 +101,9 @@ class SurveyDao
 
         $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
         // Get info about the survey
-        debugbreak();
-/*        if (!empty($aFields)){
+        if (!empty($aFields)){
             $aSelectFields=array_intersect($aFields,$aSelectFields);
-        }*/
+        }
         // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField)
            $sField ="{{survey_{$survey->id}}}.".$sField;
