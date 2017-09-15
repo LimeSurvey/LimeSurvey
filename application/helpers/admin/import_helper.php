@@ -30,7 +30,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $xml                   = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
 
 
-    if ($xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
+    if ($xml===false || $xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
