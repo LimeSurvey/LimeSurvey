@@ -73,7 +73,7 @@ div[id^="group-"]>div {
     margin-top: 0px;
     margin-bottom: 0px;
  }
- 
+
  #main-col {
      margin-top: 1em;
  }
@@ -904,7 +904,6 @@ body div.row .question-container {
 .answer-container
 {
     border-width: 0px 1px 0px 1px;
-    padding-top: 3em;
     background-color: white;
 }
 
