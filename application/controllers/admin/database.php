@@ -778,14 +778,17 @@ class database extends Survey_Common_Action
             $criteria = new CDbCriteria;
             $criteria->compare('qid',$iQuestionID);
             $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
-            foreach ($validAttributes as  $validAttribute)
-            {
+            foreach ($validAttributes as  $validAttribute) {
                 $criteria->compare('attribute', '<>'.$validAttribute['name']);
             }
             QuestionAttribute::model()->deleteAll($criteria);
             $aLanguages=array_merge(array(Survey::model()->findByPk($iSurveyID)->language),Survey::model()->findByPk($iSurveyID)->additionalLanguages);
             foreach ($validAttributes as $validAttribute)
             {
+                /* Readonly attribute : disable save */
+                if($validAttribute['readonly'] || ($validAttribute['readonly_when_active'] && Survey::model()->findByPk($iSurveyID)->getIsActive()) ) {
+                    continue;
+                }
                 if ($validAttribute['i18n'])
                 {
                     /* Delete invalid language : not needed but cleaner */
