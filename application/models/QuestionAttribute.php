@@ -75,6 +75,27 @@ class QuestionAttribute extends LSActiveRecord
         );
     }
 
+    /**
+     * {@inheritdoc}
+     * Reset silently readonly attributes
+     */
+    public function beforeSave() {
+        if (!$this->isNewRecord) {
+            $attributeDefinition = \QuestionHelper::getAttributesDefinitions();
+            if(isset($attributeDefinition[$this->attribute]) && $attributeDefinition[$this->attribute]['readonly']) {
+                $actualValue = self::model()->findByPk($this->qaid);
+                $this->value = $actualValue->value;
+            }
+            if(isset($attributeDefinition[$this->attribute]) && $attributeDefinition[$this->attribute]['readonly_when_active']) {
+                $oQuestion = Question::model()->find("qid=:qid",array('qid'=>$iQuestionID));
+                if(Survey::model()->findByPk($oQuestion->sid->isActive()) ) {
+                    $this->value = $actualValue->value;
+                }
+            }
+        }
+        return parent::beforeSave();
+    }
+
     public function setQuestionAttribute($iQuestionID,$sAttributeName, $sValue)
     {
         $oModel = new self;
@@ -140,7 +161,7 @@ class QuestionAttribute extends LSActiveRecord
                         if (count($iInsertCount)>0)
                         {
                             // Update
-                             QuestionAttribute::model()->updateAll(array('value'=>$sValue),'attribute=:attribute AND qid=:qid', array(':attribute'=>$sAttribute, ':qid'=>$iQid));
+                            QuestionAttribute::model()->updateAll(array('value'=>$sValue),'attribute=:attribute AND qid=:qid', array(':attribute'=>$sAttribute, ':qid'=>$iQid));
                         }
                         else
                         {
