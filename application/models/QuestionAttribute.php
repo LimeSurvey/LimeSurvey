@@ -88,7 +88,7 @@ class QuestionAttribute extends LSActiveRecord
             }
             if(isset($attributeDefinition[$this->attribute]) && $attributeDefinition[$this->attribute]['readonly_when_active']) {
                 $oQuestion = Question::model()->find("qid=:qid",array('qid'=>$iQuestionID));
-                if(Survey::model()->findByPk($oQuestion->sid)->isActive()) ) {
+                if(Survey::model()->findByPk($oQuestion->sid->isActive()) ) {
                     $this->value = $actualValue->value;
                 }
             }
