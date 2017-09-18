@@ -281,7 +281,7 @@ class SurveyDynamic extends LSActiveRecord
         $sEditUrl     = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
         $sDownloadUrl = App()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>self::$sid,"sResponseId"=>$this->id));
         $sDeleteUrl   = App()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>self::$sid));
-        $sAttachmentDeleteUrl = App()->createUrl("admin/responses",array("sa"=>"actionDeleteAttachments","surveyid"=>self::$sid));
+        $sAttachmentDeleteUrl = App()->createUrl("admin/responses",array("sa"=>"actionDeleteAttachments","surveyid"=>self::$sid, "sResponseId" => $this->id));
         $button       = "";
 
         // View detail icon

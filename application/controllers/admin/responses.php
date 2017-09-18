@@ -630,6 +630,33 @@ class responses extends Survey_Common_Action
     }
 
     /**
+     * Delete all attachments for one response.
+     */
+    public function actionDeleteAttachments()
+    {
+        $surveyId = Yii::app()->request->getQuery('surveyid');
+        $responseId = Yii::app()->request->getQuery('sResponseId');
+
+        if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
+            $response = Response::model($surveyId)->findByPk($responseId);
+            if (empty($response)) {
+                $errors = $response->deleteFiles();
+                if (empty($errors)) {
+                    // All is OK.
+                } else {
+                    // Could not delete all files.
+                    // implode(', ', $errors) <--- Could not delete these files.
+                }
+            } else {
+
+            }
+        } else {
+            // No permission.
+            die(gT('No permission'));
+        }
+    }
+
+    /**
      * Time statistics for responses
      *
      * @param int $iSurveyID
