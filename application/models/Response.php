@@ -89,6 +89,24 @@
         }
 
         /**
+         * Returns true if any uploaded file still exists
+         * on the filesystem.
+         * @return boolean
+         */
+        public function someFileExists($sQID = 0)
+        {
+            $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
+            foreach ($this->getFiles($sQID) as $fileInfo)
+            {
+                $basename = basename($fileInfo['filename']);
+                if (file_exists($uploaddir . $basename)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
          * Delete all uploaded files for this response.
          * @return string[] Name of files that could not be removed.
          */
@@ -131,8 +149,7 @@
                             $errors[] = $fileInfo['filename'];
                         } else {
                             //$filesData[$sgqa][$i]['filename'] = 'deleted';
-                            $fileInfos[$i]['name'] = '<deleted>';
-                            $fileInfos[$i]['filename'] = '<deleted>';
+                            $fileInfos[$i]['name'] = $fileInfo['name'] . sprintf(' (%s)', gT('deleted'));
                             $this->$sgqa = json_encode($fileInfos);
                             $this->save();
                         }

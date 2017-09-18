@@ -293,13 +293,15 @@ class SurveyDynamic extends LSActiveRecord
             $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Edit this response").'"><span class="glyphicon glyphicon-pencil text-success" ></span></a>';
         }
 
+        $responseHasFiles = Response::model(self::$sid)->findByPk($this->id)->someFileExists();
+
         // Download icon
-        if (hasFileUploadQuestion(self::$sid))
+        if (hasFileUploadQuestion(self::$sid) && $responseHasFiles)
         {
-            if (Response::model(self::$sid)->findByPk($this->id)->getFiles())
-            {
-                $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
-            }
+            $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
+        } else
+        {
+            $button .= '<a class="btn btn-default btn-xs invisible" href="#" role="button"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
         }
 
         $aPostDatas = json_encode(array('sResponseId'=>$this->id));
@@ -312,7 +314,7 @@ class SurveyDynamic extends LSActiveRecord
 
         // Delete all attachments
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            if (hasFileUploadQuestion(self::$sid)) {
+            if (hasFileUploadQuestion(self::$sid) && $responseHasFiles) {
                 $button .= sprintf(
                     "<a class='deleteattachments btn btn-default btn-xs' data-ajax-url='%s' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
                         <span class='glyphicon glyphicon-paperclip text-danger'></span>
