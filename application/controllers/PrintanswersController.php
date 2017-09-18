@@ -37,7 +37,7 @@
         * @param bool $printableexport
         * @return
         */
-        function actionView($surveyid,$printableexport='quexmlpdf')
+        function actionView($surveyid,$printableexport=FALSE)
         {
             Yii::app()->loadHelper("frontend");
             Yii::import('application.libraries.admin.pdf');
@@ -75,7 +75,7 @@
             $SurveyRuntimeHelper = new SurveyRuntimeHelper();
             $SurveyRuntimeHelper->setJavascriptVar($iSurveyID);
             $aSurveyInfo = getSurveyInfo($iSurveyID,$sLanguage);
-            $oTemplate = Template::model()->getInstance(null, null, $iSurveyID);
+            $oTemplate = Template::model()->getInstance(null, $iSurveyID);
             /* Need a Template function to replace this line */
             //Yii::app()->clientScript->registerPackage( 'survey-template' );
 
@@ -130,6 +130,7 @@
             $aData['aSurveyInfo']['dateFormat']=getDateFormatData(Yii::app()->session['dateformat']);
             $aData['aSurveyInfo']['groupArray'] = $groupArray;
             $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
+            $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
             
             if (empty($sExportType))
             {
