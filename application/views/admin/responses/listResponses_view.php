@@ -75,7 +75,7 @@
                             'id'=>'action',
                             'value'=>'$data->buttons',
                             'type'=>'raw',
-                            'htmlOptions' => array('class' => 'text-left'),
+                            'htmlOptions' => array('class' => 'text-left response-buttons'),
                             'filter'=>false,
                         ),
 

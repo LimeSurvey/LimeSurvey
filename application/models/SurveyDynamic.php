@@ -277,6 +277,7 @@ class SurveyDynamic extends LSActiveRecord
         $sEditUrl     = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
         $sDownloadUrl = App()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>self::$sid,"sResponseId"=>$this->id));
         $sDeleteUrl   = App()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>self::$sid));
+        $sAttachmentDeleteUrl = App()->createUrl("admin/responses",array("sa"=>"actionDeleteAttachments","surveyid"=>self::$sid));
         //$sDeleteUrl   = "#";
         $button       = "";
 
@@ -298,11 +299,27 @@ class SurveyDynamic extends LSActiveRecord
             }
         }
 
+        $aPostDatas = json_encode(array('sResponseId'=>$this->id));
+
         // Delete icon
         if (Permission::model()->hasSurveyPermission(self::$sid,'responses','delete'))
         {
-            $aPostDatas = json_encode(array('sResponseId'=>$this->id));
             $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='". sprintf(gT('Delete response %s'),$this->id)."'><span class='glyphicon glyphicon-trash text-danger' ></span></a>";
+        }
+
+        // Delete all attachments
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
+            $survey = \Survey::model()->findByPk(self::$sid);
+            if ($survey->hasQuestionType('|')) {
+                $button .= sprintf(
+                    "<a class='deleteattachments btn btn-default btn-xs' data-ajax-url='%s' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
+                        <span class='glyphicon glyphicon-paperclip text-danger'></span>
+                        </a>",
+                    $sAttachmentDeleteUrl,
+                    $aPostDatas,
+                    gT('Delete all attachments for this response')
+                );
+            }
         }
 
         return $button;
