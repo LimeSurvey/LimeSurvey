@@ -404,6 +404,95 @@ class tokens extends Survey_Common_Action
     }
 
     /**
+     * The fields with a value "lskeep" will not be updated
+     */
+    public function editMultiple()
+    {
+        $aTokenIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $iSurveyId = Yii::app()->request->getPost('sid');
+        $aResults     = array();
+
+        if ( Permission::model()->hasSurveyPermission($iSurveyId, 'tokens', 'update') ){
+            // CHECK TO SEE IF A TOKEN TABLE EXISTS FOR THIS SURVEY
+            if (tableExists('{{tokens_' . $iSurveyId . '}}')){
+
+                // First we create the array of fields to update
+                $aData = array();
+                $aResults['global']['result']  = true;
+                // Valid from
+                if (trim(Yii::app()->request->getPost('validfrom')) != 'lskeep'){
+                    if (trim(Yii::app()->request->getPost('validfrom')) == '')
+                        $aData['validfrom'] = null;
+                    else
+                        $aData['validfrom']= date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
+                }
+
+                // Valid until
+                if (trim(Yii::app()->request->getPost('validuntil')) != 'lskeep'){
+                    if (trim(Yii::app()->request->getPost('validuntil')) == '')
+                        $aData['validuntil'] = null;
+                    else
+                        $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
+                }
+
+                // Core Fields
+                $aCoreTokenFields = array('firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft' );
+                foreach($aCoreTokenFields as $sCoreTokenField)
+                if (trim(Yii::app()->request->getPost($sCoreTokenField)) != 'lskeep'){
+                    $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
+                }
+
+                // Attibutes fields
+                $attrfieldnames = GetParticipantAttributes($iSurveyId);
+                foreach ($attrfieldnames as $attr_name => $desc){
+                    if (trim(Yii::app()->request->getPost($attr_name)) != 'lskeep'){
+                        $value = flattenText(Yii::app()->request->getPost($attr_name));
+                        if ($desc['mandatory'] == 'Y' && trim($value) == '') {
+                            Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');
+                            $this->getController()->refresh();
+                        }
+                        $aData[$attr_name] = $value;
+                    }
+                }
+
+                if (count($aData) > 0){
+                    foreach ($aTokenIds as $iTokenId){
+                        $iTokenId = (int) $iTokenId;
+                        $token = Token::model($iSurveyId)->find('tid=' . $iTokenId);
+
+                        foreach ($aData as $k => $v){
+                            $token->$k = $v;
+                        }
+
+                        $bUpdateSuccess = $token->update();
+                        if ( $bUpdateSuccess ){
+                            $aResults[$iTokenId]['status']    = true;
+                            $aResults[$iTokenId]['message']   = gT('Updated');
+                        }else{
+                            $aResults[$iTokenId]['status']    = false;
+                            $aResults[$iTokenId]['message']   = $token->error;
+                        }
+                    }
+                }else{
+                    $aResults['global']['result']  = false;
+                    $aResults['global']['message'] = gT('Nothing to update');
+                }
+
+            }else{
+                $aResults['global']['result']  = false;
+                $aResults['global']['message'] = gT('No token table found for that survey!');
+            }
+        }else{
+            $aResults['global']['result'] = false;
+            $aResults['global']['message'] = gT("We are sorry but you don't have permissions to do this.");
+        }
+
+
+        Yii::app()->getController()->renderPartial('/admin/token/massive_actions/_update_results', array('aResults'=>$aResults));
+
+    }
+
+    /**
      * Called by if a token is saved after editing
      * @todo Check if method is still in use
      * @param int $iSurveyId The Survey ID
