@@ -271,6 +271,10 @@ class SurveyDynamic extends LSActiveRecord
         return ($this->submitdate != '')?'<span class="text-success fa fa-check"></span>':'<span class="text-warning fa fa-times"></span>';
     }
 
+    /**
+     * Get buttons HTML for response browse view.
+     * @return string HTML
+     */
     public function getButtons()
     {
         $sViewUrl     = App()->createUrl("/admin/responses/sa/view/surveyid/".self::$sid."/id/".$this->id);
@@ -278,7 +282,6 @@ class SurveyDynamic extends LSActiveRecord
         $sDownloadUrl = App()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>self::$sid,"sResponseId"=>$this->id));
         $sDeleteUrl   = App()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>self::$sid));
         $sAttachmentDeleteUrl = App()->createUrl("admin/responses",array("sa"=>"actionDeleteAttachments","surveyid"=>self::$sid));
-        //$sDeleteUrl   = "#";
         $button       = "";
 
         // View detail icon
