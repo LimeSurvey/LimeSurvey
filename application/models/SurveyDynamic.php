@@ -316,7 +316,7 @@ class SurveyDynamic extends LSActiveRecord
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
             if (hasFileUploadQuestion(self::$sid) && $responseHasFiles) {
                 $button .= sprintf(
-                    "<a class='deleteattachments btn btn-default btn-xs' data-ajax-url='%s' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
+                    "<a class='deleteattachments btn btn-default btn-xs' data-ajax-url='%s' data-gridid='responses-grid' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
                         <span class='glyphicon glyphicon-paperclip text-danger'></span>
                         </a>",
                     $sAttachmentDeleteUrl,

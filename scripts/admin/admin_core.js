@@ -236,13 +236,18 @@ $(document).ready(function(){
                     url: $(e.relatedTarget).data('ajax-url'),
                     data: postDatas,
 
-                    success : function(html, statut)
+                    success : function(response, status)
                     {
                         $.fn.yiiGridView.update(gridid);                   // Update the surveys list
                         $('#confirmation-modal').modal('hide');
+                        if (response && response.success) {
+                            notifyFader(response.success, 'well-lg bg-primary text-center');
+                        } else if (response && response.error) {
+                            notifyFader(response.error, 'well-lg bg-danger text-center');
+                        }
                     },
-                    error :  function(html, statut){
-                        $('#confirmation-modal .modal-body-text').append(html.responseText);
+                    error :  function(response, status){
+                        $('#confirmation-modal .modal-body-text').append(response.responseText);
                     }
 
                 });
