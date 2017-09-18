@@ -513,11 +513,16 @@ class responses extends Survey_Common_Action
     */
     public function actionDelete($surveyid)
     {
+        Yii::import('application.helpers.admin.ajax_helper', true);
+
         $iSurveyId = (int) $surveyid;
         if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
         {
             $ResponseId  = ( Yii::app()->request->getPost('sItems') != '') ? json_decode(Yii::app()->request->getPost('sItems')):json_decode(Yii::app()->request->getPost('sResponseId'), true);
             $aResponseId = (is_array($ResponseId))?$ResponseId:array($ResponseId);
+
+            $errors = 0;
+            $timingErrors = 0;
 
             foreach($aResponseId as $iResponseId)
             {
@@ -526,14 +531,27 @@ class responses extends Survey_Common_Action
                 $beforeDataEntryDelete->set('iResponseID',$iResponseId);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
 
-                Response::model($iSurveyId)->findByPk($iResponseId)->delete(true);
-                $oSurvey=Survey::model()->findByPk($iSurveyId);
-                if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)
-                    SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
+                $result = Response::model($iSurveyId)->findByPk($iResponseId)->delete(true);
+
+                if (!$result) {
+                    $errors++;
+                } else {
+                    $oSurvey=Survey::model()->findByPk($iSurveyId);
+                    if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)
+                        $result = SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
+                        if (!$result) {
+                            $timingErrors++;
+                        }
+                    }
                 }
             }
 
-            return $aResponseId;
+            if ($errors == 0 && $timingErrors == 0) {
+                ls\ajax\AjaxHelper::outputSuccess(gT('Response(s) deleted.'));
+            } else {
+                ls\ajax\AjaxHelper::outputError(gT('Error during response deletion.'));
+            }
+
         }
     }
 
