@@ -312,8 +312,7 @@ class SurveyDynamic extends LSActiveRecord
 
         // Delete all attachments
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $survey = \Survey::model()->findByPk(self::$sid);
-            if ($survey->hasQuestionType('|')) {
+            if (hasFileUploadQuestion(self::$sid)) {
                 $button .= sprintf(
                     "<a class='deleteattachments btn btn-default btn-xs' data-ajax-url='%s' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
                         <span class='glyphicon glyphicon-paperclip text-danger'></span>

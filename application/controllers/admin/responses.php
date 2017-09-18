@@ -630,25 +630,28 @@ class responses extends Survey_Common_Action
     }
 
     /**
-     * Delete all attachments for one response.
+     * Delete all uploaded files for one response.
+     * @return void
      */
     public function actionDeleteAttachments()
     {
-        $surveyId = Yii::app()->request->getQuery('surveyid');
-        $responseId = Yii::app()->request->getQuery('sResponseId');
+        $surveyId = (int) Yii::app()->request->getQuery('surveyid');
+        $responseId = (int) Yii::app()->request->getQuery('sResponseId');
 
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
             $response = Response::model($surveyId)->findByPk($responseId);
-            if (empty($response)) {
-                $errors = $response->deleteFiles();
+            if (!empty($response)) {
+                $errors = $response->deleteFilesAndFilename();
                 if (empty($errors)) {
                     // All is OK.
+                    die('Deleted');
                 } else {
                     // Could not delete all files.
                     // implode(', ', $errors) <--- Could not delete these files.
+                    die('Errors');
                 }
             } else {
-
+                die('Found no response');
             }
         } else {
             // No permission.
