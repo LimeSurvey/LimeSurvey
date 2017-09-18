@@ -37,7 +37,7 @@
         * @param bool $printableexport
         * @return
         */
-        function actionView($surveyid,$printableexport=FALSE)
+        function actionView($surveyid,$printableexport='quexmlpdf')
         {
             Yii::app()->loadHelper("frontend");
             Yii::import('application.libraries.admin.pdf');
@@ -131,11 +131,11 @@
             $aData['aSurveyInfo']['groupArray'] = $groupArray;
             $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
             
-            if ($sExportType != 'pdf')
+            if (empty($sExportType))
             {
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, false);
             }
-            if($sExportType == 'pdf')
+            else if($sExportType == 'pdf')
             {
                 // Get images for TCPDF from template directory
                 define('K_PATH_IMAGES', Template::getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
@@ -160,9 +160,29 @@
                 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
                 $sExportFileName = sanitize_filename($sSurveyName);
                 $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf","D");
-            }
+                LimeExpressionManager::FinishProcessingGroup();
+                LimeExpressionManager::FinishProcessingPage();
+            } else if ($sExportType == 'quexmlpdf') {
 
-            LimeExpressionManager::FinishProcessingGroup();
-            LimeExpressionManager::FinishProcessingPage();
+                Yii::import("application.libraries.admin.quexmlpdf",TRUE);
+
+                $quexmlpdf = new quexmlpdf();
+
+                // Setting the selected language for printout
+                App()->setLanguage($sLanguage);
+
+                $quexmlpdf->setLanguage($sLanguage);
+
+                set_time_limit(120);
+
+                Yii::app()->loadHelper('export');
+
+                $quexml = quexml_export($iSurveyID,$sLanguage,$sSRID);
+
+                $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
+
+                $sExportFileName = sanitize_filename($sSurveyName);
+                $quexmlpdf->Output($sExportFileName."-".$iSurveyID."-queXML.pdf",'D');
+			}
         }
     }

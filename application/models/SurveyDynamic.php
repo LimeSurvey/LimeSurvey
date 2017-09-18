@@ -266,6 +266,7 @@ class SurveyDynamic extends LSActiveRecord
     public function getButtons()
     {
         $sViewUrl     = App()->createUrl("/admin/responses/sa/view/surveyid/".self::$sid."/id/".$this->id);
+        $sViewPDFUrl     = App()->createUrl("/admin/responses/sa/viewquexmlpdf/surveyid/".self::$sid."/id/".$this->id);
         $sEditUrl     = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
         $sDownloadUrl = App()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>self::$sid,"sResponseId"=>$this->id));
         $sDeleteUrl   = App()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>self::$sid));
@@ -274,6 +275,9 @@ class SurveyDynamic extends LSActiveRecord
 
         // View detail icon
         $button .= '<a class="btn btn-default btn-xs" href="'.$sViewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details").'"><span class="fa fa-list-alt" ></span></a>';
+
+		// View quexMLPDF icon
+        $button .= '<a class="btn btn-default btn-xs" href="'.$sViewPDFUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View response details as queXML PDF").'"><span class="fa fa-file-o" ></span></a>';
 
         // Edit icon
         if (Permission::model()->hasSurveyPermission(self::$sid,'responses','update')) {
