@@ -898,11 +898,12 @@ function QueXMLSkipTo($qid,$value,$cfieldname = "")
 /**
 * from export_structure_quexml.php
 */
-function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false,$varname="")
+function QueXMLCreateFixed($qid,$iResponseID,$fieldmap,$rotate=false,$labels=true,$scale=0,$other=false,$varname="")
 {
     global $dom;
-
     global $quexmllang;
+    global $iSurveyID;
+
     App()->setLanguage($quexmllang);
 
     if ($labels)
@@ -952,11 +953,15 @@ function QueXMLCreateFixed($qid,$rotate=false,$labels=true,$scale=0,$other=false
 
         $contingentQuestion = $dom->createElement("contingentQuestion");
         $length = $dom->createElement("length",24);
+        $format = $dom->createElement("format","longtext");
         $text = $dom->createElement("text",quexml_get_lengthth($qid,"other_replace_text",gT("Other")));
 
         $contingentQuestion->appendChild($text);
         $contingentQuestion->appendChild($length);
+        $contingentQuestion->appendChild($format);
         $contingentQuestion->setAttribute("varName",$varname . 'other');
+
+        quexml_set_default_value($contingentQuestion,$iResponseID,$qid,$iSurveyID,$fieldmap,"other");
 
         $category->appendChild($contingentQuestion);
 
@@ -993,7 +998,7 @@ function quexml_get_lengthth($qid,$attribute,$default, $quexmllang=false)
 /**
 * from export_structure_quexml.php
 */
-function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = false,$other = false)
+function quexml_create_multi(&$question,$qid,$varname,$iResponseID,$fieldmap,$scale_id = false,$free = false,$other = false,$yesvalue = "1")
 {
     global $dom;
     global $quexmllang ;
@@ -1019,7 +1024,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 
             $label = $dom->createElement("label",QueXMLCleanup($Row['question'],''));
 
-            $value= $dom->createElement("value",1);
+            $value= $dom->createElement("value",$yesvalue);
             $nextcode = $Row['title'];
 
             $category->appendChild($label);
@@ -1040,7 +1045,16 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
         else
             $response->appendChild(QueXMLCreateFree($free['f'],$free['len'],$Row['question']));
 
-        $response->setAttribute("varName",QueXMLCleanup($Row['title']));
+        $response->setAttribute("varName",$varname . "_" . QueXMLCleanup($Row['title']));
+
+        if ($scale_id == false) {
+            //if regular multiple choice question
+            quexml_set_default_value($response,$iResponseID,$Row['qid'],$iSurveyID,$fieldmap,false,true);
+        } else {
+            //if array multi style question
+            $dvname = substr($varname,stripos($varname,"_")+1) . "_" . $Row['title'];
+            quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap,$dvname);
+        }
 
         $question->appendChild($response);
     }
@@ -1053,7 +1067,7 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 
         $label = $dom->createElement("label",quexml_get_lengthth($qid,"other_replace_text",gT("Other")));
 
-        $value= $dom->createElement("value",1);
+        $value= $dom->createElement("value",$yesvalue);
 
         //Get next code
         if (is_numeric($nextcode))
@@ -1066,16 +1080,21 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 
         $contingentQuestion = $dom->createElement("contingentQuestion");
         $length = $dom->createElement("length",24);
+        $format = $dom->createElement("format","longtext");
         $text = $dom->createElement("text",quexml_get_lengthth($qid,"other_replace_text",gT("Other")));
 
         $contingentQuestion->appendChild($text);
         $contingentQuestion->appendChild($length);
+        $contingentQuestion->appendChild($format);
         $contingentQuestion->setAttribute("varName",$varname . 'other');
+
+        quexml_set_default_value($contingentQuestion,$iResponseID,$qid,$iSurveyID,$fieldmap,"other");
 
         $category->appendChild($contingentQuestion);
 
         $fixed->appendChild($category);
         $response->appendChild($fixed);
+
         $response->setAttribute("varName",$varname . QueXMLCleanup($nextcode));
 
         $question->appendChild($response);
@@ -1091,22 +1110,32 @@ function quexml_create_multi(&$question,$qid,$varname,$scale_id = false,$free = 
 /**
 * from export_structure_quexml.php
 */
-function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = false)
+function quexml_create_subQuestions(&$question,$qid,$varname,$iResponseID,$fieldmap,$use_answers = false,$aid=false,$scale=false)
 {
     global $dom;
-    global $quexmllang ;
+    global $quexmllang;
+	global $iSurveyID;
 
-    if ($use_answers)
-        $Query = "SELECT answer as question, code as title FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
-    else
+    if ($use_answers) {
+        $Query = "SELECT qid, answer as question, code as title, sortorder as aid FROM {{answers}} WHERE qid = $qid  AND language='$quexmllang' ORDER BY sortorder ASC";
+    } else {
         $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
+	}
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
     foreach($QueryResult->readAll() as $Row)
     {
+		if ($use_answers) {
+			$aid = $Row["aid"];
+		}
         $subQuestion = $dom->createElement("subQuestion");
         $text = $dom->createElement("text",QueXMLCleanup($Row['question'],''));
         $subQuestion->appendChild($text);
         $subQuestion->setAttribute("varName",$varname .'_'. QueXMLCleanup($Row['title']));
+        if ($use_answers == false && $aid != false) { //dual scale array questions
+            quexml_set_default_value($subQuestion,$iResponseID,$qid,$iSurveyID,$fieldmap,false,false,$Row['title'],$scale);
+        } else {
+            quexml_set_default_value($subQuestion,$iResponseID,$Row['qid'],$iSurveyID,$fieldmap,false,!$use_answers,$aid);
+        }
         $question->appendChild($subQuestion);
     }
 
@@ -1114,15 +1143,126 @@ function quexml_create_subQuestions(&$question,$qid,$varname,$use_answers = fals
 }
 
 /**
+ * Set defaultValue attribute of provided element from response table
+ *
+ * @param mixed $element DOM element to add attribute to
+ * @param int $iResponseID The response id
+ * @param int $qid The qid of the question
+ * @param int $iSurveyID The survey id
+ * @param array $fieldmap A mapping of fields to qid
+ * @param bool|string $fieldadd Anything additional to search for in the field name
+ * @param bool|string $usesqid Search using sqid instead of qid
+ * @param bool|string $usesaid Search using aid 
+ */
+function quexml_set_default_value(&$element,$iResponseID,$qid,$iSurveyID,$fieldmap,$fieldadd = false,$usesqid = false,$usesaid = false,$usesscale = false)
+{
+    //insert response into form if provided
+    if ($iResponseID) {
+        $colname = "";
+		$search = "qid";
+		if ($usesqid) {
+			$search = "sqid";
+		}
+        foreach($fieldmap as $key => $detail) {
+            if ($detail[$search] == $qid) {
+				if (($fieldadd == false || substr($key,(strlen($fieldadd) * -1)) == $fieldadd) &&
+					($usesaid == false || ($detail["aid"] == $usesaid)) &&
+                    ($usesscale == false || ($detail["scale_id"] == $usesscale))) {
+	                $colname = $key;
+	                break;
+				}
+            }
+        }
+        if ($colname != "") {
+            $Query = "SELECT `$colname` AS value FROM {{survey_$iSurveyID}} WHERE id = $iResponseID";
+            $QRE = Yii::app()->db->createCommand($Query)->query();
+            $QROW = $QRE->read();
+			$value = $QROW['value'];
+            $element->setAttribute("defaultValue",$value);
+        }
+    }
+}
+
+
+/**
+ * Create a queXML question element
+ *
+ * @param array $RowQ Question details in array
+ * @param bool|string $additional Any additional question text to append
+ */
+function quexml_create_question($RowQ,$additional = false)
+{
+	global $dom;
+
+    $question = $dom->createElement("question");
+
+    //create a new text element for each new line
+    $questiontext = explode('<br />',$RowQ['question']);
+    foreach ($questiontext as $qt)
+    {
+        $txt = QueXMLCleanup($qt);
+        if (!empty($txt))
+        {
+            $text = $dom->createElement("text",$txt);
+            $question->appendChild($text);
+        }
+    }
+
+	if ($additional !== false) {
+        $txt = QueXMLCleanup($additional);
+        $text = $dom->createElement("text",$txt);
+        $question->appendChild($text);
+	}
+
+    //directive
+    if (!empty($RowQ['help']))
+    {
+        $directive = $dom->createElement("directive");
+        $position = $dom->createElement("position","during");
+        $text = $dom->createElement("text",QueXMLCleanup($RowQ['help']));
+        $administration = $dom->createElement("administration","self");
+
+        $directive->appendChild($position);
+        $directive->appendChild($text);
+        $directive->appendChild($administration);
+
+        $question->appendChild($directive);
+    }
+
+    if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
+    {
+
+        $RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
+
+        if (!empty($RowQ['printable_help']))
+        {
+            $directive = $dom->createElement("directive");
+            $position = $dom->createElement("position","before");
+            $text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
+            $administration = $dom->createElement("administration","self");
+            $directive->appendChild($position);
+            $directive->appendChild($text);
+            $directive->appendChild($administration);
+            $question->appendChild($directive);
+        }
+    }
+
+	return $question;
+}
+
+
+/**
 * Export quexml survey.
 */
-function quexml_export($surveyi, $quexmllan)
+function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 {
     global $dom, $quexmllang, $iSurveyID;
     $quexmllang = $quexmllan;
     $iSurveyID = $surveyi;
 
     App()->setLanguage($quexmllang);
+
+    $fieldmap = createFieldMap($iSurveyID,'short',false,false,$quexmllang);
 
     $dom = new DOMDocument('1.0','UTF-8');
 
@@ -1239,233 +1379,217 @@ function quexml_export($surveyi, $quexmllan)
         $QR = Yii::app()->db->createCommand($Query)->query();
         foreach($QR->readAll() as $RowQ)
         {
-            $question = $dom->createElement("question");
             $type = $RowQ['type'];
             $qid = $RowQ['qid'];
 
             $other = false;
             if ($RowQ['other'] == 'Y') $other = true;
 
-            //create a new text element for each new line
-            $questiontext = explode('<br />',$RowQ['question']);
-            foreach ($questiontext as $qt)
-            {
-                $txt = QueXMLCleanup($qt);
-                if (!empty($txt))
-                {
-                    $text = $dom->createElement("text",$txt);
-                    $question->appendChild($text);
-                }
-            }
-
-
-            //directive
-            if (!empty($RowQ['help']))
-            {
-                $directive = $dom->createElement("directive");
-                $position = $dom->createElement("position","during");
-                $text = $dom->createElement("text",QueXMLCleanup($RowQ['help']));
-                $administration = $dom->createElement("administration","self");
-
-                $directive->appendChild($position);
-                $directive->appendChild($text);
-                $directive->appendChild($administration);
-
-                $question->appendChild($directive);
-            }
-
-            if (Yii::app()->getConfig('quexmlshowprintablehelp')==true)
-            {
-
-                $RowQ['printable_help']=quexml_get_lengthth($qid,"printable_help","", $quexmllang);
-
-                if (!empty($RowQ['printable_help']))
-                {
-                    $directive = $dom->createElement("directive");
-                    $position = $dom->createElement("position","before");
-                    $text = $dom->createElement("text", '['.gT('Only answer the following question if:')." ".QueXMLCleanup($RowQ['printable_help'])."]");
-                    $administration = $dom->createElement("administration","self");
-                    $directive->appendChild($position);
-                    $directive->appendChild($text);
-                    $directive->appendChild($administration);
-                    $question->appendChild($directive);
-                }
-            }
-
-            $response = $dom->createElement("response");
             $sgq = $RowQ['title'];
-            $response->setAttribute("varName",$sgq);
 
-            switch ($type)
-            {
-                case "X": //BOILERPLATE QUESTION - none should appear
+			//if this is a multi-flexi style question, create multiple questions
+			if ($type == ':' || $type == ';') {
+		
+		        $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
+    			$SQueryResult = Yii::app()->db->createCommand($Query)->query();
+		
+			    foreach($SQueryResult->readAll() as $SRow)  {
+                    $question = quexml_create_question($RowQ,$SRow['question']);
 
-                    break;
-                case "5": //5 POINT CHOICE radio-buttons
-                    $response->appendChild(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
-                    $question->appendChild($response);
-                    break;
-                case "D": //DATE
-                    $response->appendChild(QueXMLCreateFree("date","8",""));
-                    $question->appendChild($response);
-                    break;
-                case "L": //LIST drop-down/radio-button list
-                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
-                    $question->appendChild($response);
-                    break;
-                case "!": //List - dropdown
-                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
-                    $question->appendChild($response);
-                    break;
-                case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    $response = $dom->createElement("response");
-                    $response->setAttribute("varName",QueXMLCleanup($sgq));
-                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
+					if ($type == ":") {
+                        //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
+                        $mcb  = quexml_get_lengthth($qid,'multiflexible_checkbox',-1);
+                        if ($mcb != -1)
+                            quexml_create_multi($question,$qid,$sgq . "_" . $SRow['title'],$iResponseID,$fieldmap,1);
+                        else
+                        {
+                            //get multiflexible_max and maximum_chars - if set then make boxes of max of these widths
+                            $mcm = max(quexml_get_lengthth($qid,'maximum_chars',1), strlen(quexml_get_lengthth($qid,'multiflexible_max',1)));
+                            quexml_create_multi($question,$qid,$sgq . "_" . $SRow['title'],$iResponseID,$fieldmap,1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+                        }
+                    } else if ($type == ";") {
+						//multi-flexi array text
 
-                    $response2 = $dom->createElement("response");
-                    $response2->setAttribute("varName",QueXMLCleanup($sgq) . "_comment");
-                    $response2->appendChild(QueXMLCreateFree("longtext","40",""));
-
-                    $question->appendChild($response);
-                    $question->appendChild($response2);
-                    break;
-                case "R": //RANKING STYLE
-                    quexml_create_subQuestions($question,$qid,$sgq,true);
-                    $Query = "SELECT COUNT(*) as sc FROM {{answers}} WHERE qid = $qid AND language='$quexmllang' ";
-                    $QRE = Yii::app()->db->createCommand($Query)->query();
-                    //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
-                    //$QROW = mysql_fetch_assoc($QRE);
-                    $QROW = $QRE->read();
-                    $response->appendChild(QueXMLCreateFree("integer",strlen($QROW['sc']),""));
-                    $question->appendChild($response);
-                    break;
-                case "M": //Multiple choice checkbox
-                    quexml_create_multi($question,$qid,$sgq,false,false,$other);
-                    break;
-                case "P": //Multiple choice with comments checkbox + text
-                    //Not yet implemented
-                    quexml_create_multi($question,$qid,$sgq,false,false,$other);
-                    //no comments added
-                    break;
-                case "Q": //MULTIPLE SHORT TEXT
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","10"),""));
-                    $question->appendChild($response);
-                    break;
-                case "K": //MULTIPLE NUMERICAL
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->appendChild(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
-                    $question->appendChild($response);
-                    break;
-                case "N": //NUMERICAL QUESTION TYPE
-                    $response->appendChild(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
-                    $question->appendChild($response);
-                    break;
-                case "S": //SHORT FREE TEXT
-                    // default is fieldlength of 24 characters.
-                    $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","24"),""));
-                    $question->appendChild($response);
-                    break;
-                case "T": //LONG FREE TEXT
-                    $response->appendChild(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","40"),""));
-                    $question->appendChild($response);
-                    break;
-                case "U": //HUGE FREE TEXT
-                    $response->appendChild(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","80"),""));
-                    $question->appendChild($response);
-                    break;
-                case "Y": //YES/NO radio-buttons
-                    $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y',gT("No") => 'N')));
-                    $question->appendChild($response);
-                    break;
-                case "G": //GENDER drop-down list
-                    $response->appendChild(QueXMLFixedArray(array(gT("Female") => 'F',gT("Male") => 'M')));
-                    $question->appendChild($response);
-                    break;
-                case "A": //ARRAY (5 POINT CHOICE) radio-buttons
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->appendChild(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
-                    $question->appendChild($response);
-                    break;
-                case "B": //ARRAY (10 POINT CHOICE) radio-buttons
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->appendChild(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
-                    $question->appendChild($response);
-                    break;
-                case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y',gT("Uncertain") => 'U',gT("No") => 'N')));
-                    $question->appendChild($response);
-                    break;
-                case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->appendChild(QueXMLFixedArray(array(gT("Increase") => 'I',gT("Same") => 'S',gT("Decrease") => 'D')));
-                    $question->appendChild($response);
-                    break;
-                case "F": //ARRAY (Flexible) - Row Format
-                    //select subQuestions from answers table where QID
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
-                    $question->appendChild($response);
-                    //select fixed responses from
-                    break;
-                case "H": //ARRAY (Flexible) - Column Format
-                    quexml_create_subQuestions($question,$RowQ['qid'],$sgq);
-                    $response->appendChild(QueXMLCreateFixed($qid,true,false,0,$other,$sgq));
-                    $question->appendChild($response);
-                    break;
-                case "1": //Dualscale multi-flexi array
-                    //select subQuestions from answers table where QID
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    //get the header of the first scale of the dual scale question
-                    $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerA'";
-                    $QRE = Yii::app()->db->createCommand($Query)->query();
-                    $QROW = $QRE->read();
-                    $response = $dom->createElement("response");
-                    if ($QROW['value'])
-                        $response->setAttribute("varName",QueXMLCleanup($QROW['value']));
-                    $response->appendChild(QueXMLCreateFixed($qid,false,false,0,$other,$sgq));
-
-                    //get the header of the second scale of the dual scale question
-                    $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerB'";
-                    $QRE = Yii::app()->db->createCommand($Query)->query();
-                    $QROW = $QRE->read();
-                    $response2 = $dom->createElement("response");
-                    if ($QROW['value'])
-                        $response2->setAttribute("varName",QueXMLCleanup($QROW['value']));
-                    $response2->appendChild(QueXMLCreateFixed($qid,false,false,1,$other,$sgq));
-                    $question->appendChild($response);
-                    $question->appendChild($response2);
-                    break;
-                case ":": //multi-flexi array numbers
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
-                    $mcb  = quexml_get_lengthth($qid,'multiflexible_checkbox',-1);
-                    if ($mcb != -1)
-                        quexml_create_multi($question,$qid,$sgq,1);
-                    else
-                    {
-                        //get multiflexible_max and maximum_chars - if set then make boxes of max of these widths
-                        $mcm = max(quexml_get_lengthth($qid,'maximum_chars',1), strlen(quexml_get_lengthth($qid,'multiflexible_max',1)));
-                        quexml_create_multi($question,$qid,$sgq,1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+                        //foreach question where scale_id = 1 this is a textbox
+                        quexml_create_multi($question,$qid,$sgq . "_" . $SRow['title'],$iResponseID,$fieldmap,1,array('f' => 'text', 'len' => quexml_get_lengthth($qid,'maximum_chars',10), 'lab' => ''));
                     }
-                    break;
-                case ";": //multi-flexi array text
-                    quexml_create_subQuestions($question,$qid,$sgq);
-                    //foreach question where scale_id = 1 this is a textbox
-                    quexml_create_multi($question,$qid,$sgq,1,array('f' => 'text', 'len' => quexml_get_lengthth($qid,'maximum_chars',10), 'lab' => ''));
-                    break;
-                case "^": //SLIDER CONTROL - not supported
-                    $response->appendChild(QueXMLFixedArray(array("NOT SUPPORTED:$type" => 1)));
-                    $question->appendChild($response);
-                    break;
-            } //End Switch
+                    $section->appendChild($question);
+				}
+
+            } else if ($type == '1') { //dual scale array need to split into two questions
+                $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerA'";
+                $QRE = Yii::app()->db->createCommand($Query)->query();
+                $QROW = $QRE->read();
+                $question = quexml_create_question($RowQ,$QROW['value']);
+
+                //select subQuestions from answers table where QID
+                quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap,false,true,0);
+                //get the header of the first scale of the dual scale question
+                $response = $dom->createElement("response");
+                $response->appendChild(QueXMLCreateFixed($qid,$iResponseID,$fieldmap,false,false,0,$other,$sgq));
+                $question->appendChild($response);
+
+                $section->appendChild($question);
+
+                $Query = "SELECT value FROM {{question_attributes}} WHERE qid = $qid AND language='$quexmllang' AND attribute='dualscale_headerB'";
+                $QRE = Yii::app()->db->createCommand($Query)->query();
+                $QROW = $QRE->read();
+                $question = quexml_create_question($RowQ,$QROW['value']);
+        
+                //get the header of the second scale of the dual scale question
+                quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap,false,true,1);
+                $response2 = $dom->createElement("response");
+                $response2->appendChild(QueXMLCreateFixed($qid,$iResponseID,$fieldmap,false,false,1,$other,$sgq));
+                $question->appendChild($response2);
+
+                $section->appendChild($question);
+
+            } else {
+				$question = quexml_create_question($RowQ);
+
+                $response = $dom->createElement("response");
+                $response->setAttribute("varName",$sgq);
 
 
+                switch ($type)
+                {
+                    case "X": //BOILERPLATE QUESTION - none should appear
 
+                        break;
+                    case "5": //5 POINT CHOICE radio-buttons
+                        $response->appendChild(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "D": //DATE
+                        $response->appendChild(QueXMLCreateFree("date","10",""));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "L": //LIST drop-down/radio-button list
+                        $response->appendChild(QueXMLCreateFixed($qid,$iResponseID,$fieldmap,false,false,0,$other,$sgq));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "!": //List - dropdown
+                        $response->appendChild(QueXMLCreateFixed($qid,$iResponseID,$fieldmap,false,false,0,$other,$sgq));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "O": //LIST WITH COMMENT drop-down/radio-button list + textarea
+                        quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap);
+                        $response = $dom->createElement("response");
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $response->setAttribute("varName",QueXMLCleanup($sgq));
+                        $response->appendChild(QueXMLCreateFixed($qid,$iResponseID,$fieldmap,false,false,0,$other,$sgq));
 
-            $section->appendChild($question);
+                        $response2 = $dom->createElement("response");
+                        quexml_set_default_value($response2,$iResponseID,$qid,$iSurveyID,$fieldmap,"comment");
+                        $response2->setAttribute("varName",QueXMLCleanup($sgq) . "_comment");
+                        $response2->appendChild(QueXMLCreateFree("longtext","40",""));
+
+                        $question->appendChild($response);
+                        $question->appendChild($response2);
+                        break;
+                    case "R": //RANKING STYLE
+                        quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap,true);
+                        $Query = "SELECT MAX(CHAR_LENGTH(code)) as sc FROM {{answers}} WHERE qid = $qid AND language='$quexmllang' ";
+                        $QRE = Yii::app()->db->createCommand($Query)->query();
+                        //$QRE = mysql_query($Query) or die ("ERROR: $QRE<br />".mysql_error());
+                        //$QROW = mysql_fetch_assoc($QRE);
+                        $QROW = $QRE->read();
+                        $response->appendChild(QueXMLCreateFree("integer",$QROW['sc'],""));
+                        $question->appendChild($response);
+                        break;
+                    case "M": //Multiple choice checkbox
+                        quexml_create_multi($question,$qid,$sgq,$iResponseID,$fieldmap,false,false,$other,"Y");
+                        break;
+                    case "P": //Multiple choice with comments checkbox + text
+                        //Not yet implemented
+                        quexml_create_multi($question,$qid,$sgq,$iResponseID,$fieldmap,false,false,$other,"Y");
+                        //no comments added
+                        break;
+                    case "Q": //MULTIPLE SHORT TEXT
+                        quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap);
+                        $response->appendChild(QueXMLCreateFree("text",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                        $question->appendChild($response);
+                        break;
+                    case "K": //MULTIPLE NUMERICAL
+                        quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap);
+                        $response->appendChild(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                        $question->appendChild($response);
+                        break;
+                    case "N": //NUMERICAL QUESTION TYPE
+                        $response->appendChild(QueXMLCreateFree("integer",quexml_get_lengthth($qid,"maximum_chars","10"),""));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "S": //SHORT FREE TEXT
+                        // default is fieldlength of 24 characters.
+                        $response->appendChild(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"maximum_chars","24"),""));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "T": //LONG FREE TEXT
+                        $response->appendChild(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","40"),""));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "U": //HUGE FREE TEXT
+                        $response->appendChild(QueXMLCreateFree("longtext",quexml_get_lengthth($qid,"display_rows","80"),""));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "Y": //YES/NO radio-buttons
+                        $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y',gT("No") => 'N')));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "G": //GENDER drop-down list
+                        $response->appendChild(QueXMLFixedArray(array(gT("Female") => 'F',gT("Male") => 'M')));
+                        quexml_set_default_value($response,$iResponseID,$qid,$iSurveyID,$fieldmap);
+                        $question->appendChild($response);
+                        break;
+                    case "A": //ARRAY (5 POINT CHOICE) radio-buttons
+                        quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap);
+                        $response->appendChild(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5)));
+                        $question->appendChild($response);
+                        break;
+                    case "B": //ARRAY (10 POINT CHOICE) radio-buttons
+                        quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap);
+                        $response->appendChild(QueXMLFixedArray(array("1" => 1,"2" => 2,"3" => 3,"4" => 4,"5" => 5,"6" => 6,"7" => 7,"8" => 8,"9" => 9,"10" => 10)));
+                        $question->appendChild($response);
+                        break;
+                    case "C": //ARRAY (YES/UNCERTAIN/NO) radio-buttons
+                        quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap);
+                        $response->appendChild(QueXMLFixedArray(array(gT("Yes") => 'Y',gT("Uncertain") => 'U',gT("No") => 'N')));
+                        $question->appendChild($response);
+                        break;
+                    case "E": //ARRAY (Increase/Same/Decrease) radio-buttons
+                        quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap);
+                        $response->appendChild(QueXMLFixedArray(array(gT("Increase") => 'I',gT("Same") => 'S',gT("Decrease") => 'D')));
+                        $question->appendChild($response);
+                        break;
+                    case "F": //ARRAY (Flexible) - Row Format
+                        //select subQuestions from answers table where QID
+                        quexml_create_subQuestions($question,$qid,$sgq,$iResponseID,$fieldmap);
+                        $response->appendChild(QueXMLCreateFixed($qid,$iResponseID,$fieldmap,false,false,0,$other,$sgq));
+                        $question->appendChild($response);
+                        //select fixed responses from
+                        break;
+                    case "H": //ARRAY (Flexible) - Column Format
+                        quexml_create_subQuestions($question,$RowQ['qid'],$sgq,$iResponseID,$fieldmap);
+                        $response->appendChild(QueXMLCreateFixed($qid,$iResponseID,$fieldmap,true,false,0,$other,$sgq));
+                        $question->appendChild($response);
+                        break;
+                    case "^": //SLIDER CONTROL - not supported
+                        $response->appendChild(QueXMLFixedArray(array("NOT SUPPORTED:$type" => 1)));
+                        $question->appendChild($response);
+                        break;
+                } //End Switch
+
+                $section->appendChild($question);
+			}
         }
 
 
