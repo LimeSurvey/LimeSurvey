@@ -63,14 +63,27 @@
             return $files;
         }
 
+        /**
+         * Delete all uploaded files for this response.
+         * @return string[] Name of files that could not be removed.
+         */
         public function deleteFiles()
         {
+            $errors = [];
             $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
             foreach ($this->getFiles() as $fileInfo)
             {
-                @unlink($uploaddir . basename($fileInfo['filename']));
+                $basename = basename($fileInfo['filename']);
+                $result = @unlink($uploaddir . $basename);
+                if (!$result)
+                {
+                    $errors[] = $fileInfo['filename'];
+                }
             }
+
+            return $errors;
         }
+
         public function delete($deleteFiles = false) {
             if ($deleteFiles) {
                 $this->deleteFiles();
