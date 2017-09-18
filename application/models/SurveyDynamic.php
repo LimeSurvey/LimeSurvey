@@ -309,15 +309,15 @@ class SurveyDynamic extends LSActiveRecord
         // Delete icon
         if (Permission::model()->hasSurveyPermission(self::$sid,'responses','delete'))
         {
-            $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='". sprintf(gT('Delete response %s'),$this->id)."'><span class='glyphicon glyphicon-trash text-danger' ></span></a>";
+            $button .= "<a class='deleteresponse btn btn-danger btn-xs text-danger' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='". sprintf(gT('Delete response %s'),$this->id)."'><span class='fa fa-trash-o' ></span></a>";
         }
 
         // Delete all attachments
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
             if (hasFileUploadQuestion(self::$sid) && $responseHasFiles) {
                 $button .= sprintf(
-                    "<a class='deleteattachments btn btn-default btn-xs' data-ajax-url='%s' data-gridid='responses-grid' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
-                        <span class='glyphicon glyphicon-paperclip text-danger'></span>
+                    "<a class='deleteattachments btn btn-danger btn-xs text-danger' data-ajax-url='%s' data-gridid='responses-grid' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
+                        <span class='glyphicon glyphicon-paperclip'></span>
                         </a>",
                     $sAttachmentDeleteUrl,
                     $aPostDatas,
