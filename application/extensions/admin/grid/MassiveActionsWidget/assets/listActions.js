@@ -172,12 +172,16 @@ $(document).on('click', '.listActions a', function ()
                     $modalBody.empty().html(html);                      // Inject the returned HTML in the modal body
                 }
 
+                if (html.ajaxHelper) {
+                    LS.ajaxHelperOnSuccess(html);
+                    return;
+                }
+
                 if (onSuccess) {
                     var func = eval(onSuccess);
                     func(html);
                     return;
                 }
-
             },
             error :  function(html, statut){
                 $ajaxLoader.hide();
