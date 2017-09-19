@@ -205,7 +205,7 @@ $(document).ready(function(){
         $modal.data('ajax-url', actionUrl);
         $modal.data('href', "#");
         $modal.modal('show');
-        $modal.find('.modal-footer-yes-no').find('a.btn-ok').on('click', function(click){
+        $modal.find('.modal-footer-yes-no').find('a.btn-ok').unbind('click').on('click', function(click){
             $.ajax({
                 url: actionUrl,
                 method: "GET",
