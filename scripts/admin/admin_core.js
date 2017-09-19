@@ -240,10 +240,10 @@ $(document).ready(function(){
                     {
                         $.fn.yiiGridView.update(gridid);                   // Update the surveys list
                         $('#confirmation-modal').modal('hide');
-                        if (response && response.success) {
-                            notifyFader(response.success, 'well-lg bg-primary text-center');
-                        } else if (response && response.error) {
-                            notifyFader(response.error, 'well-lg bg-danger text-center');
+
+                        // Use Ajax helper here if it's used on server.
+                        if (response.ajaxHelper) {
+                            LS.ajaxHelperOnSuccess(response);
                         }
                     },
                     error :  function(response, status){
