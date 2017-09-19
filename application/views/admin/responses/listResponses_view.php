@@ -1,4 +1,6 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Display"))); ?>
+
     <h3><?php eT('Survey responses'); ?></h3>
 
 
