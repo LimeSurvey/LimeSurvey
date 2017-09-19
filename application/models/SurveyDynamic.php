@@ -281,7 +281,7 @@ class SurveyDynamic extends LSActiveRecord
         $sEditUrl     = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
         $sDownloadUrl = App()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>self::$sid,"sResponseId"=>$this->id));
         $sDeleteUrl   = App()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>self::$sid));
-        $sAttachmentDeleteUrl = App()->createUrl("admin/responses",array("sa"=>"actionDeleteAttachments","surveyid"=>self::$sid, "sResponseId" => $this->id));
+        $sAttachmentDeleteUrl = App()->createUrl("admin/responses",array("sa"=>"actionDeleteAttachments"));
         $button       = "";
 
         // View detail icon
@@ -304,7 +304,12 @@ class SurveyDynamic extends LSActiveRecord
             $button .= '<a class="btn btn-default btn-xs invisible" href="#" role="button"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
         }
 
-        $aPostDatas = json_encode(array('sResponseId'=>$this->id));
+        $aPostDatas = json_encode(
+            array(
+                'surveyid' => self::$sid,
+                'sResponseId' => $this->id
+            )
+        );
 
         // Delete icon
         if (Permission::model()->hasSurveyPermission(self::$sid,'responses','delete'))

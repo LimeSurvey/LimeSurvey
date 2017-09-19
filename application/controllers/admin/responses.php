@@ -655,8 +655,9 @@ class responses extends Survey_Common_Action
     {
         Yii::import('application.helpers.admin.ajax_helper', true);
 
-        $surveyId = (int) Yii::app()->request->getQuery('surveyid');
-        $responseId = (int) Yii::app()->request->getQuery('sResponseId');
+        $request    = Yii::app()->request;
+        $surveyId   = (int) $request->getPost('surveyid');
+        $responseId = (int) $request->getPost('sResponseId');
 
         if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
             $response = Response::model($surveyId)->findByPk($responseId);
@@ -667,7 +668,6 @@ class responses extends Survey_Common_Action
                     ls\ajax\AjaxHelper::outputSuccess(gT('Uploaded files deleted.'));
                 } else {
                     // Could not delete all files.
-                    // implode(', ', $errors) <--- Could not delete these files.
                     ls\ajax\AjaxHelper::outputError(
                         gT('Could not delete some files: ') . implode(', ', $errors)
                     );
