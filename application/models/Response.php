@@ -135,7 +135,8 @@
          */
         public function deleteFilesAndFilename()
         {
-            $errors = [];
+            $errors = array();
+            $success = 0;
             $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
             $filesData = $this->getFilesAndSqga();
             foreach ($filesData as $sgqa => $fileInfos) {
@@ -151,7 +152,12 @@
                             //$filesData[$sgqa][$i]['filename'] = 'deleted';
                             $fileInfos[$i]['name'] = $fileInfo['name'] . sprintf(' (%s)', gT('deleted'));
                             $this->$sgqa = json_encode($fileInfos);
-                            $this->save();
+                            $result = $this->save();
+                            if ($result) {
+                                $success++;
+                            } else {
+                                $errors[] = 'Could not update filename info for file ' . $fileInfo['filename'];
+                            }
                         }
                     } else {
                         // TODO: Internal error - wrong filename saved?
@@ -159,7 +165,7 @@
                 }
             }
 
-            return $errors;
+            return array($success, $errors);
         }
 
         public function delete($deleteFiles = false) {
