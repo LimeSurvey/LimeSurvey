@@ -157,6 +157,7 @@ class JsonOutput
     public function __toString()
     {
         return json_encode(array(
+            'ajaxHelper' => true,  // To help JS parse in some cases.
             'success' => $this->success,
             'result' => $this->result,
             'error' => $this->error,
