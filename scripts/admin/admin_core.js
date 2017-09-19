@@ -229,6 +229,7 @@ $(document).ready(function(){
             var postDatas   = $(e.relatedTarget).data('post');
             var gridid      = $(e.relatedTarget).data('gridid');
 
+            $(this).find('.btn-ok').unbind('click');
             $(this).find('.btn-ok').on('click', function(ev)
             {
                 $.ajax({
