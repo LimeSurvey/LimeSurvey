@@ -420,15 +420,15 @@ class tokens extends Survey_Common_Action
                 $aData = array();
                 $aResults['global']['result']  = true;
                 // Valid from
-                if (trim(Yii::app()->request->getPost('validfrom')) != 'lskeep'){
-                    if (trim(Yii::app()->request->getPost('validfrom')) == '')
+                if (trim(Yii::app()->request->getPost('validfrom', 'lskeep' )) != 'lskeep'){
+                    if (trim(Yii::app()->request->getPost('validfrom', 'lskeep')) == '')
                         $aData['validfrom'] = null;
                     else
                         $aData['validfrom']= date('Y-m-d H:i:s', strtotime(trim($_POST['validfrom'])));
                 }
 
                 // Valid until
-                if (trim(Yii::app()->request->getPost('validuntil')) != 'lskeep'){
+                if (trim(Yii::app()->request->getPost('validuntil', 'lskeep')) != 'lskeep'){
                     if (trim(Yii::app()->request->getPost('validuntil')) == '')
                         $aData['validuntil'] = null;
                     else
@@ -438,14 +438,14 @@ class tokens extends Survey_Common_Action
                 // Core Fields
                 $aCoreTokenFields = array('firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft' );
                 foreach($aCoreTokenFields as $sCoreTokenField)
-                if (trim(Yii::app()->request->getPost($sCoreTokenField)) != 'lskeep'){
+                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep'){
                     $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
                 }
 
                 // Attibutes fields
                 $attrfieldnames = GetParticipantAttributes($iSurveyId);
                 foreach ($attrfieldnames as $attr_name => $desc){
-                    if (trim(Yii::app()->request->getPost($attr_name)) != 'lskeep'){
+                    if (trim(Yii::app()->request->getPost($attr_name, 'lskeep')) != 'lskeep'){
                         $value = flattenText(Yii::app()->request->getPost($attr_name));
                         if ($desc['mandatory'] == 'Y' && trim($value) == '') {
                             Yii::app()->setFlashMessage(sprintf(gT('%s cannot be left empty'), $desc['description']), 'error');

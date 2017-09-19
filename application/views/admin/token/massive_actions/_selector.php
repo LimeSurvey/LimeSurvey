@@ -33,7 +33,7 @@
                     'no'            => gT('Cancel'),
                     'keepopen'      => 'yes',
                     'sModalTitle'   => gT('Edit tokens'),
-                    'htmlModalBody' => $this->renderPartial('./token/massive_actions/_update', array(), true),
+                    'htmlModalBody' => $this->renderPartial('./token/massive_actions/_update', array('dateformatdetails' => getDateFormatData(Yii::app()->session['dateformat'])), true),
                 ),
 
                 // Delete

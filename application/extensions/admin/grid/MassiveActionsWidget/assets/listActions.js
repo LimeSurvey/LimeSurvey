@@ -260,7 +260,12 @@ function prepareBsDateTimePicker($gridid){
 }
 // get user session datetimesettings
 function getDefaultDateTimePickerSettings() {
-    var url = 'index.php?r=admin/survey&sa=datetimesettings';
+    //Switch between path and get based routing
+    if(/\/index\.php(\/)?\?r=admin/.test(window.location.href)){
+        var url = "/index.php?r=admin/survey&sa=datetimesettings";
+    } else {
+        var url = "/index.php/admin/survey/sa/datetimesettings";
+    }
     var mydata = [];
     $.ajaxSetup({
         async: false
