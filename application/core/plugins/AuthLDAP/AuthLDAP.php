@@ -109,6 +109,10 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             'type' => 'string',
             'label' => 'Optional filter for group restriction',
             'help' => 'Required if group search base set. E.g. (&(cn=limesurvey)(memberUid=$username)) or (&(cn=limesurvey)(member=$userdn))'
+        ),
+        'allowInitialUser' => array(
+            'type' => 'checkbox',
+            'label' => 'Allow initial user to login via LDAP',
         )
     );
 
@@ -134,7 +138,6 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         if (!function_exists("ldap_connect")){
             $event = $this->getEvent();
             $event->set('success', false);
-
             $event->set('message', gT("LDAP authentication failed: LDAP PHP module is not available."));
         }
     }
@@ -147,8 +150,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     public function createNewUser()
     {
         // Do nothing if the user to be added is not LDAP type
-        if (flattenText(Yii::app()->request->getPost('user_type')) != 'LDAP')
-        {
+        if (flattenText(Yii::app()->request->getPost('user_type')) != 'LDAP') {
             return;
         }
 
@@ -224,21 +226,20 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
             $usersearchfilter = "($searchuserattribute=$new_user)";
         }
         // Search for the user
-	$userentry = false;
-	// try each semicolon-separated search base in order
-	foreach(explode(";",$usersearchbase) as $usb)
-	{
-          $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute,$fullnameattribute));
-          $rescount=ldap_count_entries($ldapconn,$dnsearchres);
-          if ($rescount == 1)
-          {
-              $userentry=ldap_get_entries($ldapconn, $dnsearchres);
-              $new_email = flattenText($userentry[0][$mailattribute][0]);
-              $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
-	      break;
-          }
-	}
-	if(!$userentry)
+        $userentry = false;
+        // try each semicolon-separated search base in order
+        foreach(explode(";",$usersearchbase) as $usb)
+        {
+            $dnsearchres = ldap_search($ldapconn, $usersearchbase, $usersearchfilter, array($mailattribute,$fullnameattribute));
+            $rescount=ldap_count_entries($ldapconn,$dnsearchres);
+            if ($rescount == 1) {
+                $userentry=ldap_get_entries($ldapconn, $dnsearchres);
+                $new_email = flattenText($userentry[0][$mailattribute][0]);
+                $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
+                break;
+            }
+        }
+        if(!$userentry)
         {
             $oEvent->set('errorCode',self::ERROR_LDAP_NO_SEARCH_RESULT);
             $oEvent->set('errorMessageTitle',gT('Username not found in LDAP server'));
@@ -256,12 +257,9 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         }
         $new_pass = createPassword();
         // If user is being auto created we set parent ID to 1 (admin user)
-        if (isset(Yii::app()->session['loginID']))
-        {
+        if (isset(Yii::app()->session['loginID'])) {
             $parentID = Yii::app()->session['loginID'];
-        }
-        else
-        {
+        } else {
             $parentID = 1;
         }
         $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, $parentID, $new_email);
@@ -426,10 +424,15 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
               return;
             }
         }
-        if ($user !== null && ($user->uid == 1 || !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid)))
-        {
-            $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
-            return;
+        if ($user !== null) {
+            // We have the user : let check if can login via LDAP
+            if( ( $user->uid == 1 && !$this->getSetting('allowInitialUser') )
+                ||
+                !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid)
+            ) {
+                $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('LDAP authentication method is not allowed for this user'));
+                return;
+            }
         }
 
         if (empty($password))
