@@ -205,7 +205,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label"  for='email'><?php eT("Email:"); ?></label>
                         <div class="col-sm-4">
-                            <input class='form-control' type='email' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
+                            <input class='form-control action_validate_email' data-targetfield="#emailstatus" type='text' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
                         </div>
 
                         <!-- Email Status -->
@@ -216,16 +216,6 @@
                             </div>
 
                     </div>
-                    <script>
-                        $('#email').on('keyup', function(){
-                            //This is the official w3c regex to check for valid email addresses
-                            var regexemail = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-                            if(regexemail.test($(this).val())){
-                                $('#emailstatus').val('OK');
-                            }
-                        });
-                    </script>
-
 
                     <!-- Invitation sent, Reminder sent -->
                     <div class="form-group">

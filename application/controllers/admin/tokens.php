@@ -435,8 +435,17 @@ class tokens extends Survey_Common_Action
                         $aData['validuntil'] = date('Y-m-d H:i:s', strtotime(trim($_POST['validuntil'])));
                 }
 
+                // Email
+                if (trim(Yii::app()->request->getPost('email', 'lskeep')) != 'lskeep'){
+                    $isValid = preg_match('/^([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+))(,([a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)))*$/', Yii::app()->request->getPost('email'));
+                    if ($isValid)
+                        $aData['email'] = 'lskeep';
+                    else
+                        $aData['email'] = Yii::app()->request->getPost('email');
+                }
+
                 // Core Fields
-                $aCoreTokenFields = array('firstname', 'lastname', 'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft' );
+                $aCoreTokenFields = array('firstname', 'lastname',  'emailstatus', 'token', 'language', 'sent', 'remindersent', 'completed', 'usesleft' );
                 foreach($aCoreTokenFields as $sCoreTokenField)
                 if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep'){
                     $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
