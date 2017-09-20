@@ -461,14 +461,12 @@ class UserAction extends Survey_Common_Action
 
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
-        if (Yii::app()->session['loginID']==$iUserID) {
+        if (Yii::app()->session['loginID'] == $iUserID) {
             Yii::app()->setFlashMessage(gT("You are not allowed to edit your own user permissions."),"error");
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
-        // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
-        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ( Permission::isForcedSuperAdmin($iUserID) ) // it's the original superadmin !!!
-        {
+        // Can not update forced superadmin rights
+        if ( Permission::isForcedSuperAdmin($iUserID) ) {
             Yii::app()->setFlashMessage(gT("This Superadmin permissions cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
