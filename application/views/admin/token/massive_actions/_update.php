@@ -41,12 +41,19 @@
             <!-- Tabs content-->
             <div class="tab-content">
             <div id="general" class="tab-pane active fade in">
-
+                <div class="form-group">
+                    <div class="col-sm-1">
+                        <label class="" >
+                        <?php eT("Modify"); ?>
+                        </label>
+                    </div>
+                    <div class="col-sm-11"></div>
+                </div>
                 <!-- Completed -->
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
@@ -114,7 +121,7 @@
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
@@ -128,7 +135,7 @@
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
@@ -142,7 +149,7 @@
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
@@ -156,7 +163,7 @@
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
@@ -170,7 +177,7 @@
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
@@ -221,14 +228,14 @@
                                 </div>
                             </div>
                         </div>
-                        <input class='form-control hidden custom-data selector_submitField YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="<?php if (isset($sentDBValue)){echo $sentDBValue;}else{echo "N";}?>" />
+                        <input class='form-control hidden custom-data selector_submitField YesNoDateHidden' type='text' size='20' id='sent' name='sent' value="lskeep" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
@@ -288,13 +295,13 @@
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
                     <label class="col-sm-3 control-label"  for='remindercount'><?php eT("Reminder count:"); ?></label>
                     <div class="col-sm-8">
-                        <input class='form-control custom-data selector_submitField' type='number' size='6' id='remindercount' name='remindercount' value="lskeep" disabled />
+                        <input class='form-control custom-data selector_submitField' type='text' size='6' id='remindercount' name='remindercount' value="lskeep" disabled />
                     </div>
                 </div>
 
@@ -302,13 +309,13 @@
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
                     <label class="col-sm-3 control-label"  for='usesleft'><?php eT("Uses left:"); ?></label>
                     <div class="col-sm-8">
-                        <input class='form-control custom-data selector_submitField' type='number' size='20' id='usesleft' name='usesleft' value="lskeep" disabled />
+                        <input class='form-control custom-data selector_submitField' type='text' size='20' id='usesleft' name='usesleft' value="lskeep" disabled />
                     </div>
                 </div>
 
@@ -316,7 +323,7 @@
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
@@ -325,17 +332,18 @@
                     <div class="col-sm-8 has-feedback">
                         <div id="validfrom_datetimepicker" class="input-group date">
                             <input
-                                class="YesNoDatePicker form-control custom-data selector_submitField"
+                                class="YesNoDatePicker form-control action_datepickerUpdateHiddenField"
                                 id="validfrom"
                                 type="text"
                                 value="lskeep"
-                                name="validfrom"
+                                name="validfrom_date"
                                 data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                 data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
                                 disabled
                             >
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
+                        <input id="sbmtvalid" type="hidden" name="validfrom" value="lskeep" class="custom-data selector_submitField" />
                     </div>
                 </div>
 
@@ -343,7 +351,7 @@
                 <div class="form-group">
                     <div class="col-sm-1">
                         <label class="" >
-                            <?php eT("Change"); ?>
+                            
                             <input type="checkbox" class="action_check_to_keep_old_value"></input>
                         </label>
                     </div>
@@ -351,17 +359,18 @@
                     <div class="col-sm-8 has-feedback">
                         <div id="validuntil_datetimepicker" class="input-group date">
                             <input
-                                class="YesNoDatePicker form-control custom-data selector_submitField"
+                                class="YesNoDatePicker form-control action_datepickerUpdateHiddenField"
                                 id="validuntil"
                                 type="text"
                                 value="lskeep"
-                                name="validuntil"
+                                name="validuntil_date"
                                 data-date-format="<?php echo $dateformatdetails['jsdate'];?> HH:mm"
                                 data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>"
                                 disabled
                             >
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                         </div>
+                        <input id="sbmtvalid" type="hidden" name="validuntil" value="lskeep" class="custom-data selector_submitField" />
                     </div>
                 </div>
 
@@ -382,12 +391,20 @@
 
             <!-- Custom attibutes -->
             <div id="custom" class="tab-pane fade in">
+                <div class="form-group">
+                    <div class="col-sm-1">
+                        <label class="" >
+                        <?php eT("Modify"); ?>
+                        </label>
+                    </div>
+                    <div class="col-sm-11"></div>
+                </div>
                 <!-- Attributes -->
                 <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
                     <div class="form-group">
                         <div class="col-sm-1">
                             <label class="" >
-                                <?php eT("Change"); ?>
+                                
                                 <input type="checkbox" class="action_check_to_keep_old_value"></input>
                             </label>
                         </div>
@@ -415,7 +432,11 @@
 
     });
    };
-
+   var bindDatepicker = function(myFormGroup){
+    myFormGroup.find('.action_datepickerUpdateHiddenField').on('change dp.change', function(){
+        myFormGroup.find('.selector_submitField').val($(this).val());
+    })
+   }
     $('#email').on('keyup', function(){
         //Don't change emailstatus when it is still disabled
         if($('#emailstatus').prop('disabled')) return;
@@ -441,6 +462,7 @@
             $(this).closest('.form-group').find('.selector_submitField').val('lskeep');
         } else {
             bindBSSwitch(myFormGroup);
+            bindDatepicker(myFormGroup);
         }
 
     })
