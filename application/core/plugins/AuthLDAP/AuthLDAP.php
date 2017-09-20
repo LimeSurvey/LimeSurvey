@@ -426,7 +426,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
         }
         if ($user !== null) {
             // We have the user : let check if can login via LDAP
-            if( ( $user->uid == 1 && !$this->getSetting('allowInitialUser') )
+            if( ( $user->uid == 1 && !$this->get('allowInitialUser') )
                 ||
                 !Permission::model()->hasGlobalPermission('auth_ldap','read',$user->uid)
             ) {
