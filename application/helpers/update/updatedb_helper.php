@@ -308,7 +308,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             createSurveyGroupTables306($oDB);
             $oTransaction->commit();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>306),"stg_name='DBVersion'");
-        }      
+        }
 
         /**
          * User settings table
@@ -403,7 +403,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          */
         if ($iOldDBVersion < 313) {
             $oTransaction = $oDB->beginTransaction();
-            
+
             addColumn('{{surveymenu_entries}}','active', "int(1) NOT NULL DEFAULT '0'");
             addColumn('{{surveymenu}}','active', "int(1) NOT NULL DEFAULT '0'");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('active'=>1));
@@ -418,8 +418,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          */
         if ($iOldDBVersion < 314) {
             $oTransaction = $oDB->beginTransaction();
-            
-            $oDB->createCommand()->update('{{surveymenu_entries}}', 
+
+            $oDB->createCommand()->update('{{surveymenu_entries}}',
                 array('name'=>'resources', 'title'=>'Add/Edit resources to the survey', 'menu_title'=>'Resources', 'menu_description'=>'Add/Edit resources to the survey'),
                 'id=15'
             );
@@ -430,8 +430,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
         if ($iOldDBVersion < 315) {
             $oTransaction = $oDB->beginTransaction();
-            
-            $oDB->createCommand()->update('{{template_configuration}}', 
+
+            $oDB->createCommand()->update('{{template_configuration}}',
                 array('packages_to_load'=>'pjax'),
                 'id=1'
             );
@@ -630,7 +630,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
             "changed_at" => date('Y-m-d H:i:s'),
             "changed_by" =>0,
             "created_at" =>date('Y-m-d H:i:s'),
-            "created_by" =>  0          
+            "created_by" =>  0
         ));
     $oDB->createCommand()->insert(
         '{{surveymenu}}',
@@ -647,7 +647,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
             "changed_at" => date('Y-m-d H:i:s'),
             "changed_by" =>0,
             "created_at" =>date('Y-m-d H:i:s'),
-            "created_by" =>  0          
+            "created_by" =>  0
         ));
 
 
@@ -762,7 +762,7 @@ function createSurveyGroupTables306($oDB)
     ));
 
     $oDB->createCommand()->addColumn('{{surveys}}','gsid',"int(11) DEFAULT 1");
-    
+
 
 }
 
@@ -773,11 +773,11 @@ function createSurveyGroupTables306($oDB)
 function upgradeTemplateTables304($oDB)
 {
     // Drop the old survey rights table.
-    if (tableExists('{templates}')) {
+    if (tableExists('{{templates}}')) {
         $oDB->createCommand()->dropTable('{{templates}}');
     }
 
-    if (tableExists('{template_configuration}')) {
+    if (tableExists('{{template_configuration}}')) {
         $oDB->createCommand()->dropTable('{{template_configuration}}');
     }
 
