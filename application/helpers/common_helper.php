@@ -6141,6 +6141,44 @@ function array_diff_assoc_recursive($array1, $array2) {
     return $difference;
 }
 
+/**
+ * Calculate folder size
+ * NB: If this function is changed, please notify LimeSurvey GmbH.
+ *     An exact copy of this function is used to calculate storage
+ *     limit on LimeSurvey Pro hosting.
+ * @param string $dir Folder
+ * @return integer Size in bytes.
+ */
+function folderSize($dir)
+{
+    $size = 0;
+    foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+        if (is_file($each)) {
+            // NB: stat() can be used to calculate disk usage (instead
+            // of file size - it's not the same thing).
+            //$stat = stat($each);
+            //$tmpsize = $stat[11] * $stat[12] / 8;
+            //$size += $tmpsize;
+            $size += filesize($each);
+        } else {
+            $size += folderSize($each);
+        }
+    }
+    return $size;
+}
+
+/**
+ * Format size in human readable format.
+ * @param int $bytes
+ * @param int $decimals
+ * @return string
+ */
+function humanFilesize($bytes, $decimals = 2)
+{
+    $sz = 'BKMGTP';
+    $factor = floor((strlen($bytes) - 1) / 3);
+    return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+}
 
     /**
      * @param string $sSize

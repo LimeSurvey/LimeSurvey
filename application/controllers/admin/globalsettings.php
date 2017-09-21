@@ -108,7 +108,83 @@ class GlobalSettings extends Survey_Common_Action
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
+        $data['storage'] = $this->getStorageData();
+
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
+    }
+
+    /**
+     * Get data to use in storage tab.
+     * @return array
+     */
+    protected function getStorageData()
+    {
+        $data = array();
+
+        $uploaddir = Yii::app()->getConfig("uploaddir");
+        $decimals = 0;
+
+        $data['totalStorage'] = humanFilesize(folderSize($uploaddir), $decimals);
+        $data['templateSize'] = humanFilesize(folderSize($uploaddir . '/templates'), $decimals);
+        $data['surveySize']   = humanFilesize(folderSize($uploaddir . '/surveys'), $decimals);
+        $data['labelSize']    = humanFilesize(folderSize($uploaddir . '/surveys'), $decimals);
+
+        $data['surveys'] = $this->getSurveyFolderStorage($uploaddir, $decimals);
+        $data['templates'] = $this->getTemplateFolderStorage($uploaddir, $decimals);
+
+        return $data;
+    }
+
+    /**
+     * Get storage of folder storage.
+     * @param string $uploaddir
+     * @param int $decimals
+     * @return array
+     */
+    protected function getSurveyFolderStorage($uploaddir, $decimals)
+    {
+        $surveyFolders = array_filter(glob($uploaddir . '/surveys/*'), 'is_dir');
+        $surveys = array();
+        foreach ($surveyFolders as $folder) {
+            $parts = explode('/', $folder);
+            $surveyId = (int) end($parts);
+            $surveyinfo = getSurveyInfo($surveyId);
+            $size = folderSize($folder);
+            if ($size > 0) {
+                $surveys[] = array(
+                    'sizeInBytes' => $size,
+                    'size'        => humanFilesize($size, $decimals),
+                    'name'        => $surveyinfo['name'],
+                    'sid'         => $surveyId
+                );
+            }
+        }
+        return $surveys;
+    }
+
+    /**
+     * Get storage of template folders.
+     * @param string $uploaddir
+     * @param int $decimals
+     * @return array
+     */
+    protected function getTemplateFolderStorage($uploaddir, $decimals)
+    {
+        $templateFolders = array_filter(glob($uploaddir . '/templates/*'), 'is_dir');
+        $templates = array();
+        foreach ($templateFolders as $folder) {
+            $parts = explode('/', $folder);
+            $templateName = end($parts);
+            $size = folderSize($folder);
+            if ($size > 0) {
+                $templates[] = array(
+                    'sizeInBytes' => $size,
+                    'size'        => humanFilesize($size, $decimals),
+                    'name'        => $templateName
+                );
+            }
+        }
+        return $templates;
     }
 
     private function _saveSettings()
