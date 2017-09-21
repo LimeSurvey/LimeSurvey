@@ -1106,6 +1106,6 @@ p.return-to-survey{
 
 /* Make sure question index menu is not too long. */
 #index-menu ul.dropdown-menu {
-    max-height: 90vh;
+    max-height: 50vh;
     overflow-y: scroll;
 }
