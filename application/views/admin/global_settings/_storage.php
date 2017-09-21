@@ -30,22 +30,26 @@
     </tr>
 </table>
 
-<label><?php eT('Survey storage'); ?></label>
-<table class='table table-striped table-bordered'>
-    <?php foreach ($surveys as $survey): ?>
-    <tr>
-        <td><?php echo $survey['name']; ?> (<?php echo $survey['sid']; ?>)</td>
-        <td><?php echo $survey['size']; ?></td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+<?php if ($surveys): ?>
+    <label><?php eT('Survey storage'); ?></label>
+    <table class='table table-striped table-bordered'>
+        <?php foreach ($surveys as $survey): ?>
+        <tr>
+            <td><?php echo $survey['name']; ?> (<?php echo $survey['sid']; ?>)</td>
+            <td><?php echo $survey['size']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
 
-<label><?php eT('Template storage'); ?></label>
-<table class='table table-striped table-bordered'>
-    <?php foreach ($templates as $templates): ?>
-    <tr>
-        <td><?php echo $templates['name']; ?></td>
-        <td><?php echo $templates['size']; ?></td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+<?php if ($templates): ?>
+    <label><?php eT('Template storage'); ?></label>
+    <table class='table table-striped table-bordered'>
+        <?php foreach ($templates as $templates): ?>
+        <tr>
+            <td><?php echo $templates['name']; ?></td>
+            <td><?php echo $templates['size']; ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
