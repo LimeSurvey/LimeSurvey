@@ -170,7 +170,6 @@ class JsonOutput
             'success'          => $this->success,
             'result'           => $this->result,
             'error'            => $this->error,
-            'type'             => $this->type,
             'loggedIn'         => $this->loggedIn,
             'hasPermission'    => $this->hasPermission,
             'noPermissionText' => gT('No permission')
