@@ -35,7 +35,54 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.67.2 (build 170726) to 2.67.3 (build 170728) July 28, 2017
+Changes from 2.67.3 (build 170728) to 2.70.0 (build 170728) Sept 28, 2017
+-New feature: Add mass action to delete uploaded files for multiple responses at once (Olle Haerstedt)
+-New feature: New button to remove uploaded files while keeping the response it self (Olle Haerstedt)
+-New feature: Storage data overview in global settings (Olle Haerstedt)
+-New feature: Added editing of participants/tokens to mass actions(LouisGac & markusfluer)
+-Fixed issue #12279: Unable to upload image when send invitation (Denis Chenu)
+-Fixed issue #12585: In quotas some answer options using non-ASCII characters are not shown in overview (Carsten Schmitz)
+-Fixed issue #12641: On registering any lang can be set and accepted. (Denis Chenu)
+-Fixed issue #12652: AuditLog plugin reset langage to default when register (#803) (Denis Chenu)
+-Fixed issue #12655: Unable to update lang in Personnal settings (Denis Chenu)
+-Fixed issue #12678: Save ranking question type can broke survey database (Denis Chenu)
+-Fixed issue: Can't add new participant in CPDB when audit log is active (Olle Haerstedt)
+-Fixed issue: CPDB attribute language name didn't save (Olle Haerstedt)
+-Fixed issue: Don't bind multiple click events on yes/no modal (Olle Haerstedt)
+-Fixed issue: Login form language is not updated after error (Denis Chenu)
+-Fixed issue: Pagination in Central Participant database not working when using MSSQL (encelado)
+-Fixed issue: Question index menu is too high when survey is big (Olle Haerstedt)
+-Fixed issue: Quota general screen not working because of missing language definition (markusfluer)
+-Fixed issue: Should not be possible to change ranking columns when survey is active (Olle Haerstedt)
+-Fixed issue: Too many columns error message on response export even if only a few columns were selected (Carsten Schmitz)
+-Fixed issue: Wrong date conversion at data entry edit/new (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Dutch by zfocuz, Han
+#Updated translation: Dutch (Informal) by Nickko, zfocuz, Han
+#Updated translation: Estonian by vipgroup, jeskiv
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by jeskiv, Calidonia
+#Updated translation: German by Magnar
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Russian by vipgroup
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+#Updated translation: Valencian by joamuran, jeskiv, vbraque
+
+Changes from 2.67.2 (build 170726) to 2.67.3 (build 170728) Jul 28, 2017
 #Updated translation: Dutch (Informal) by Han
 #Updated translation: Dutch by Han
 #Updated translation: French (France) by arnaud21
@@ -66,14 +113,14 @@ Changes from 2.67.2 (build 170726) to 2.67.3 (build 170728) July 28, 2017
 -Fixed issue: Pagination of participants list not working (LouisGac)
 -Fixed issue: Subquestions not saved in quick translation (LouisGac)
 
-Changes from 2.67.1 (build 170626) to 2.67.2 (build 170726) July 26, 2017
+Changes from 2.67.1 (build 170626) to 2.67.2 (build 170726) Jul 26, 2017
 -Fixed issue #12491: Permission to delete participants not obeyed in export dialog (Carsten Schmitz)
 -Fixed issue: Default template with questions of white font color (markusfluer)
 -Fixed issue: Importing a Tab-separated survey CSV file with multiline text in the question field does not properly work (Carsten Schmitz)
 -Fixed issue: QuickMenu break usage of newDirectRequest for other plugin (Denis Chenu)
 -Fixed issue: unable to save Google Analytics key by survey (Denis Chenu)
 
-Changes from 2.67.0 (build 170622) to 2.67.1 (build 170626) June 26, 2017
+Changes from 2.67.0 (build 170622) to 2.67.1 (build 170626) Jun 26, 2017
 -Fixed issue #12414: exporting printable - template assets not visible in some extractors (eg windows default) (#701) (Tõnis Ormisson)
 -Fixed issue: Error in database update syntax (Olle Harstedt)
 #Updated translation: Catalan by qualitatuvic
@@ -83,7 +130,7 @@ Changes from 2.67.0 (build 170622) to 2.67.1 (build 170626) June 26, 2017
 #Updated translation: Polish (Informal) by elissa
 #Updated translation: Turkish by kayazeren
 
-Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) June 22, 2017
+Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) Jun 22, 2017
 -New feature: Opting out of a survey requires a one-click confirmation (Carsten Schmitz)
 -Fixed issue #12476: Quicktranslation tabs not working (markusfluer)
 -Fixed issue: convertDateTimeFormat gets wrong fromdateformat in survey list (Olle Haerstedt)
@@ -99,7 +146,7 @@ Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) June 22, 2017
 #Updated translation: Turkish by kayazeren
 
 
-Changes from 2.65.6 (build 170615) to 2.66.0 (build 170619) June 19, 2017
+Changes from 2.65.6 (build 170615) to 2.66.0 (build 170619) Jun 19, 2017
 -New feature #12468: EM placeholder {SID} in email templates (Denis Chenu)
 -Fixed issue #12101: Placeholder "TOKEN" does not work in Equation question (Denis Chenu)
 -Fixed issue #12166: No possibility to share users with some webserver configurations (Carsten Schmitz)
@@ -126,7 +173,7 @@ Changes from 2.65.6 (build 170615) to 2.66.0 (build 170619) June 19, 2017
 #Updated translation: Turkish by kayazeren
 
 
-Changes from 2.65.5 (build 170613) to 2.65.6 (build 170615) June 15, 2017
+Changes from 2.65.5 (build 170613) to 2.65.6 (build 170615) Jun 15, 2017
 -Fixed issue: DateTime increased when going forward and back (Olle Haerstedt)
 -Fixed issue: Missing hash column in notifications table (Olle Haerstedt)
 -Fixed issue: Replacement fields are unsorted (Carsten Schmitz)
@@ -140,7 +187,7 @@ Changes from 2.65.5 (build 170613) to 2.65.6 (build 170615) June 15, 2017
 #Updated translation: Turkish by kayazeren
 
 
-Changes from 2.65.4 (build 170612) to 2.65.5 (build 170613) June 13, 2017
+Changes from 2.65.4 (build 170612) to 2.65.5 (build 170613) Jun 13, 2017
 -Fixed issue: Date questions do not properly save the date
 -Fixed issue #11868: Zlib library missing (Carsten Schmitz)
 -Fixed issue #11995: Removing language from global settings produces fatal error (Carsten Schmitz)
@@ -150,7 +197,7 @@ Changes from 2.65.4 (build 170612) to 2.65.5 (build 170613) June 13, 2017
 #Updated translation: Polish (Informal) by elissa
 
 
-Changes from 2.65.3 (build 170607) to 2.65.4 (build 170612) June 12, 2017
+Changes from 2.65.3 (build 170607) to 2.65.4 (build 170612) Jun 12, 2017
 -Fixed issue #12225: [security] Cross-Site Scripting (Denis Chenu)
 -Fixed issue #12417: Error when creating a question group multiple languages and using MSSQL (Carsten Schmitz)
 -Fixed issue #12463: "Quick add.." replace function does not work anymore (Denis Chenu)
@@ -165,7 +212,7 @@ Changes from 2.65.3 (build 170607) to 2.65.4 (build 170612) June 12, 2017
 #Updated translation: Slovenian by lado
 #Updated translation: Turkish by kayazeren
 
-Changes from 2.65.2 (build 170606) to 2.65.3 (build 170607) June 7, 2017
+Changes from 2.65.2 (build 170606) to 2.65.3 (build 170607) Jun 7, 2017
 -Fixed issue: LimeSurvey logos too big
 -Fixed issue #12460: Filtering statistics based on numeric question details (e.g. "Number less than X") has no effect (LouisGac)
 #Updated translation: French (France) by arnaud21
