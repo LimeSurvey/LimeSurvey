@@ -72,10 +72,7 @@
 
     <div id="storage" class="tab-pane col-md-6 col-md-offset-1">
         <?php
-            $this->renderPartial(
-                "./global_settings/_storage",
-                $storage
-            );
+            $this->renderPartial("./global_settings/_storage");
         ?>
     </div>
 </div>

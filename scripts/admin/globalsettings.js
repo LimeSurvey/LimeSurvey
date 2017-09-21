@@ -10,6 +10,20 @@ $(document).ready(function(){
     $('#btnAdd').click(addLanguages);
     $("#frmglobalsettings").submit(UpdateRestrictedLanguages);
 
+    var getStorageUrl = '';
+    $('#global-settings-calculate-storage').on(
+        'click',
+        function(ev) {
+            ev.preventDefault();
+            var url = $('input[name="global-settings-storage-url"]').val();
+            LS.ajax({
+                url: url,
+                method: 'GET'
+            });
+            return false;
+        }
+    );
+
     // Code copied from: https://stackoverflow.com/questions/18999501/bootstrap-3-keep-selected-tab-on-page-refresh
     if (location.hash) {
         $('a[href=\'' + location.hash + '\']').tab('show');
@@ -18,7 +32,6 @@ $(document).ready(function(){
     if (activeTab) {
         $('a[href="' + activeTab + '"]').tab('show');
     }
-
     $('body').on('click', 'a[data-toggle=\'tab\']', function (e) {
         e.preventDefault();
         var tab_name = this.getAttribute('href');

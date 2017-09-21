@@ -1,55 +1,20 @@
 <?php
 
 /**
- * @var string $uploaddir
  * @since 2017-09-20
  * @author Olle Härstedt
  */
 
-
-
 ?>
 
-<label><?php eT('Overview'); ?></label>
-<table class='table table-striped table-bordered'>
-    <tr>
-        <td><?php eT('Total storage:'); ?></td>
-        <td><?php echo $totalStorage; ?></td>
-    </tr>
-    <tr>
-        <td><?php eT('Survey storage:'); ?></td>
-        <td><?php echo $surveySize; ?></td>
-    </tr>
-    <tr>
-        <td><?php eT('Template storage:'); ?></td>
-        <td><?php echo $templateSize; ?></td>
-    </tr>
-    <tr>
-        <td><?php eT('Label set storage:'); ?></td>
-        <td><?php echo $labelSize; ?></td>
-    </tr>
-</table>
-
-<?php if ($surveys): ?>
-    <label><?php eT('Survey storage'); ?></label>
-    <table class='table table-striped table-bordered'>
-        <?php foreach ($surveys as $survey): ?>
-        <tr>
-            <td><?php echo $survey['name']; ?> (<?php echo $survey['sid']; ?>)</td>
-            <td><?php echo $survey['size']; ?></td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
-<?php endif; ?>
-
-<?php if ($templates): ?>
-    <label><?php eT('Template storage'); ?></label>
-    <table class='table table-striped table-bordered'>
-        <?php foreach ($templates as $templates): ?>
-        <tr>
-            <td><?php echo $templates['name']; ?></td>
-            <td><?php echo $templates['size']; ?></td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
-<?php endif; ?>
+<div id='global-settings-storage'>
+    <input type='hidden' name='global-settings-storage-url' value='<?php echo Yii::app()->createUrl('admin/globalsettings', array('sa' => 'getStorageData')); ?>' />
+    <button id='global-settings-calculate-storage' class='btn btn-default '>
+        <span class='fa fa-cogs'></span>&nbsp;
+        <?php eT('Calculate storage'); ?>
+    </button>
+    <br/>
+    <span class='text-muted'>
+        <?php eT('Depending on the number of uploaded files, this might take some time.'); ?>
+    </span>
+</div>

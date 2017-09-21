@@ -108,17 +108,16 @@ class GlobalSettings extends Survey_Common_Action
         $data['sideMenuBehaviour'] = getGlobalSetting('sideMenuBehaviour');
         $data['aListOfThemeObjects'] = AdminTheme::getAdminThemeList();
 
-        $data['storage'] = $this->getStorageData();
-
         $this->_renderWrappedTemplate('', 'globalSettings_view', $data);
     }
 
     /**
-     * Get data to use in storage tab.
-     * @return array
+     * Loaded by Ajax when user clicks "Calculate storage".
+     * @return void
      */
-    protected function getStorageData()
+    public function getStorageData()
     {
+        Yii::import('application.helpers.admin.ajax_helper', true);
         $data = array();
 
         $uploaddir = Yii::app()->getConfig("uploaddir");
@@ -127,12 +126,18 @@ class GlobalSettings extends Survey_Common_Action
         $data['totalStorage'] = humanFilesize(folderSize($uploaddir), $decimals);
         $data['templateSize'] = humanFilesize(folderSize($uploaddir . '/templates'), $decimals);
         $data['surveySize']   = humanFilesize(folderSize($uploaddir . '/surveys'), $decimals);
-        $data['labelSize']    = humanFilesize(folderSize($uploaddir . '/surveys'), $decimals);
+        $data['labelSize']    = humanFilesize(folderSize($uploaddir . '/labels'), $decimals);
 
-        $data['surveys'] = $this->getSurveyFolderStorage($uploaddir, $decimals);
+        $data['surveys']   = $this->getSurveyFolderStorage($uploaddir, $decimals);
         $data['templates'] = $this->getTemplateFolderStorage($uploaddir, $decimals);
 
-        return $data;
+        $html = Yii::app()->getController()->renderPartial(
+            '/admin/global_settings/_storage_ajax',
+            $data,
+            true
+        );
+
+        ls\ajax\AjaxHelper::outputHtml($html, 'global-settings-storage');
     }
 
     /**
