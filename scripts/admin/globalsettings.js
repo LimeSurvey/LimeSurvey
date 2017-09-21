@@ -9,8 +9,20 @@ $(document).ready(function(){
     $('#btnRemove').click(removeLanguages);
     $('#btnAdd').click(addLanguages);
     $("#frmglobalsettings").submit(UpdateRestrictedLanguages);
+
+    // Code copied from: https://stackoverflow.com/questions/18999501/bootstrap-3-keep-selected-tab-on-page-refresh
+    if (location.hash) {
+        $("a[href='" + location.hash + "']").tab("show");
+    }
+    $(document.body).on("click", "a[data-toggle]", function(event) {
+        location.hash = this.getAttribute("href");
+    });
 });
 
+$(window).on("popstate", function() {
+    var anchor = location.hash || $("a[data-toggle='tab']").first().attr("href");
+    $("a[href='" + anchor + "']").tab("show");
+});
 
 // Add a language to available languages if it was selected as default language
 function defaultLanguageChange(ui,evt){
