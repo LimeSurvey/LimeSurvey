@@ -10,7 +10,7 @@
 <label><?php eT('Overview'); ?></label>
 <table class='table table-striped table-bordered'>
     <tr>
-        <td><?php eT('Total storage:'); ?></td>
+        <td style='width: 70%;'><?php eT('Total storage:'); ?></td>
         <td><?php echo $totalStorage; ?></td>
     </tr>
     <tr>
@@ -32,7 +32,7 @@
     <table class='table table-striped table-bordered'>
         <?php foreach ($surveys as $survey): ?>
         <tr>
-            <td><?php echo $survey['name']; ?> (<?php echo $survey['sid']; ?>)</td>
+            <td style='width: 70%;'><?php echo $survey['name']; ?> (<?php echo $survey['sid']; ?>)</td>
             <td><?php echo $survey['size']; ?></td>
         </tr>
         <?php endforeach; ?>
@@ -44,7 +44,7 @@
     <table class='table table-striped table-bordered'>
         <?php foreach ($templates as $templates): ?>
         <tr>
-            <td><?php echo $templates['name']; ?></td>
+            <td style='width: 70%;'><?php echo $templates['name']; ?></td>
             <td><?php echo $templates['size']; ?></td>
         </tr>
         <?php endforeach; ?>
