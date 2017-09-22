@@ -7,7 +7,7 @@ get things working in your environment. There are a few guidelines that we
 need contributors to follow so that we can have a chance of keeping on
 top of things.
 
-## Getting Started
+## Getting started
 
 * Make sure you have a [LimeSurvey account](https://www.limesurvey.org)
 * Make sure you have a [GitHub account](https://github.com/signup/free)
@@ -16,7 +16,7 @@ top of things.
   * Make sure you fill in the earliest version that you know has the issue.
 * Fork the repository on GitHub
 
-## Making Changes
+## Making changes
 
 * Create a topic branch from where you want to base your work.
   * This is usually the master branch.
@@ -31,13 +31,12 @@ top of things.
   [commit message guidelines](https://manual.limesurvey.org/Standard_for_Git_commit_messages).
 
 
-## Writing Translatable Code
+## Writing translatable code
 
-We use gettext-tooling to
-extract user-facing strings and pull in translations based on the user's locale
-at runtime. In order for this tooling to work, all user-facing strings must be
-wrapped in the `gT()` translation function, so they can be extracted into files
-for the translators.
+We use gettext-tooling to extract user-facing strings and pull in translations 
+based on the user's locale at runtime. In order for this tooling to work, all 
+user-facing strings must be wrapped in the `gT()` translation function, so they 
+can be extracted into files for the translators.
 
 When adding user-facing strings to your work, follow these guidelines:
 * Use full sentences. Strings built up out of concatenated bits are hard to translate.
@@ -49,7 +48,7 @@ It is the responsibility of contributors to ensure that all
 user-facing strings are marked in new PRs before merging.
 
 
-## Submitting Changes
+## Submitting changes
 
 * Push your changes to a topic branch in your fork of the repository.
 * Submit a pull request to the repository in the LimeSurvey organization.
@@ -59,7 +58,7 @@ user-facing strings are marked in new PRs before merging.
 * After feedback has been given we expect responses within two weeks. After two
   weeks we may close the pull request if it isn't showing any activity.
 
-# Additional Resources
+# Additional resources
 
 * [Bug tracker (Mantis)](https://bugs.limesurvey.org)
 * [Standard for Git commit messages](https://manual.limesurvey.org/Standard_for_Git_commit_messages)
