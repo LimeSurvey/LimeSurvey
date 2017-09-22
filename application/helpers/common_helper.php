@@ -6176,8 +6176,12 @@ function folderSize($dir)
 function humanFilesize($bytes, $decimals = 2)
 {
     $sz = 'BKMGTP';
-    $factor = floor((strlen($bytes) - 1) / 3);
-    return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+    //$factor = floor((strlen($bytes) - 1) / 3);
+    $factor = 2;
+    $string = sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+    $aLangData = getLanguageData();
+    $radix = getRadixPointData($aLangData[Yii::app()->session['adminlang']]['radixpoint']);
+    return str_replace('.', $radix['separator'], $string);
 }
 
     /**

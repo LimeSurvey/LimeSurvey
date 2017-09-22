@@ -121,7 +121,7 @@ class GlobalSettings extends Survey_Common_Action
         $data = array();
 
         $uploaddir = Yii::app()->getConfig("uploaddir");
-        $decimals = 0;
+        $decimals = 1;
 
         $data['totalStorage'] = humanFilesize(folderSize($uploaddir), $decimals);
         $data['templateSize'] = humanFilesize(folderSize($uploaddir . '/templates'), $decimals);
