@@ -621,7 +621,7 @@ class Permission extends LSActiveRecord
      */
     public static function isForcedSuperAdmin($iUserID)
     {
-        return in_array($iUserID,App()->getConfig('superadmin_force'));
+        return in_array($iUserID,App()->getConfig('forcedsuperadmin'));
     }
     /**
     * Returns true if a user has global permission for a certain action.

@@ -597,7 +597,7 @@ $config['proxy_host_port'] = 80;
  * Default use the user created at the installation.
  * @var integer[]
  */
-$config['superadmin_force'] = [1];
+$config['forcedsuperadmin'] = [1];
 
 // === Advanced Setup
 //The following url and dir locations do not need to be modified unless you have a non-standard
