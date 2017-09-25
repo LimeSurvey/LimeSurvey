@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-09-25 18:01:00+00:00\n"
+"POT-Creation-Date: 2017-09-25 18:09:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4764,7 +4764,7 @@ msgid "You are not allowed to edit your own user permissions."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:470
-msgid "This Superadmin permissions cannot be updated!"
+msgid "The permissions of this superadmin cannot be updated!"
 msgstr ""
 
 #: application/controllers/admin/useraction.php:490
