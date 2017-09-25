@@ -467,7 +467,7 @@ class UserAction extends Survey_Common_Action
         }
         // Can not update forced superadmin rights
         if ( Permission::isForcedSuperAdmin($iUserID) ) {
-            Yii::app()->setFlashMessage(gT("This Superadmin permissions cannot be updated!"),'error');
+            Yii::app()->setFlashMessage(gT("The permissions of this superadmin cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
