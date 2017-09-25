@@ -241,7 +241,7 @@ class Authentication extends Survey_Common_Action
 
             if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>'.gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you').'<br>';
+                $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you').'<br>';
             } else {
                 $aData['message'] = '<br>'.$this->_sendPasswordEmail($sEmailAddr, $aFields).'</br>';
             }
@@ -277,7 +277,7 @@ class Authentication extends Survey_Common_Action
         {
             User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
-            $sMessage = gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you');
+            $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you');
         }
         else
         {

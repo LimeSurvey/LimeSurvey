@@ -439,7 +439,7 @@ class templates extends Survey_Common_Action
             die('No permission');
         }
         // This is where the temp file is
-        $sFileToDelete=sanitize_filename(App()->request->getPost('otherfile'),false,false);
+        $sFileToDelete=sanitize_filename(App()->request->getPost('otherfile'),false,false,false);
         $sTemplateName=Template::templateNameFilter(App()->request->getPost('templatename'));
         $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName);
         $templatedir = $oEditedTemplate->viewPath;
