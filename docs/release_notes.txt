@@ -35,9 +35,33 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.67.3 (build 170728) to 2.70.0 (build 170728) Sept 28, 2017
+
+Changes from 2.70.0 (build 170921) to 2.71.0 (build 170925) Sept 25, 2017
+-New feature #12690: Allow super-admin set by other user's than 1 (#810) (Denis Chenu)
+-Fixed issue: Can't delete file in template editor that contains a blank (Carsten Schmitz)
+-Fixed issue: template-rtl.css not loaded (LouisGac)
+-Fixed issue: Token editing - couldn't change to attributes tab (markusfluer)
+#Updated translation: Chinese (Taiwan) (Traditional) by ChadPeng
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Malay by norazlannorden
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Slovak by dusanm
+#Updated translation: Spanish (Argentina) (Informal) by cripton
+#Updated translation: Spanish (Chile) by fernandoessv
+#Updated translation: Spanish (Mexican) by eusebiocuke
+#Updated translation: Thai by miracles, adzpire, heartjavac, tomzt
+
+Changes from 2.67.3 (build 170728) to 2.70.0 (build 170921) Sept 21, 2017
 -New feature: Add mass action to delete uploaded files for multiple responses at once (Olle Haerstedt)
--New feature: New button to remove uploaded files while keeping the response it self (Olle Haerstedt)
+-New feature: New button to remove uploaded files while keeping the response itself (Olle Haerstedt)
 -New feature: Storage data overview in global settings (Olle Haerstedt)
 -New feature: Added editing of participants/tokens to mass actions (LouisGac & markusfluer)
 -Fixed issue #12279: Unable to upload image when send invitation (Denis Chenu)
