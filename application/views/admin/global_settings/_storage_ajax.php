@@ -9,23 +9,28 @@
 
 <label><?php eT('Overview'); ?></label>
 <table class='table table-striped table-bordered'>
-    <tr>
-        <td style='width: 70%;'><?php eT('Total storage:'); ?></td>
-        <td><?php echo $totalStorage; ?></td>
-    </tr>
-    <tr>
-        <td><?php eT('Survey storage:'); ?></td>
-        <td><?php echo $surveySize; ?></td>
-    </tr>
-    <tr>
-        <td><?php eT('Template storage:'); ?></td>
-        <td><?php echo $templateSize; ?></td>
-    </tr>
-    <tr>
-        <td><?php eT('Label set storage:'); ?></td>
-        <td><?php echo $labelSize; ?></td>
-    </tr>
+    <tfoot>
+        <tr>
+            <td style='width: 70%;'><?php eT('Total storage:'); ?></td>
+            <td><?php echo $totalStorage; ?></td>
+        </tr>
+    </tfoot>
+    <tbody>
+        <tr>
+            <td><?php eT('Survey storage:'); ?></td>
+            <td><?php echo $surveySize; ?></td>
+        </tr>
+        <tr>
+            <td><?php eT('Template storage:'); ?></td>
+            <td><?php echo $templateSize; ?></td>
+        </tr>
+        <tr>
+            <td><?php eT('Label set storage:'); ?></td>
+            <td><?php echo $labelSize; ?></td>
+        </tr>
+    </tbody>
 </table>
+
 
 <?php if ($surveys): ?>
     <label><?php eT('Survey storage'); ?></label>
