@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-09-25 10:51:28+00:00\n"
+"POT-Creation-Date: 2017-09-25 18:01:00+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3316,7 +3316,7 @@ msgid "The requested files do not exist on the server."
 msgstr ""
 
 #: application/controllers/admin/responses.php:694
-msgid "Found no response with id %d"
+msgid "Found no response with ID %d"
 msgstr ""
 
 #: application/controllers/admin/responses.php:700
@@ -3324,7 +3324,7 @@ msgid "Error: Could not delete some files: "
 msgstr ""
 
 #: application/controllers/admin/responses.php:704
-msgid "%d file(s) deleted."
+msgid "%d file deleted.|%d files deleted."
 msgstr ""
 
 #: application/controllers/admin/responses.php:761
@@ -4103,7 +4103,7 @@ msgid "Nothing to update"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:492
-msgid "No token table found for that survey!"
+msgid "No participant table found for this survey!"
 msgstr ""
 
 #: application/controllers/admin/tokens.php:732
@@ -6718,10 +6718,6 @@ msgstr ""
 #: application/helpers/userstatistics_helper.php:2143
 #: application/helpers/userstatistics_helper.php:2191
 msgid "Not displayed"
-msgstr ""
-
-#: application/helpers/admin/statistics_helper.php:2577
-msgid "Faulty query: "
 msgstr ""
 
 #: application/helpers/admin/statistics_helper.php:2606
@@ -13127,27 +13123,21 @@ msgid "Depending on the number of uploaded files, this might take some time."
 msgstr ""
 
 #: application/views/admin/global_settings/_storage_ajax.php:14
-msgid "Total storage:"
+msgid "Total storage"
 msgstr ""
 
 #: application/views/admin/global_settings/_storage_ajax.php:20
-msgid "Survey storage:"
-msgstr ""
-
-#: application/views/admin/global_settings/_storage_ajax.php:24
-msgid "Template storage:"
-msgstr ""
-
-#: application/views/admin/global_settings/_storage_ajax.php:28
-msgid "Label set storage:"
-msgstr ""
-
 #: application/views/admin/global_settings/_storage_ajax.php:36
 msgid "Survey storage"
 msgstr ""
 
+#: application/views/admin/global_settings/_storage_ajax.php:24
 #: application/views/admin/global_settings/_storage_ajax.php:48
 msgid "Template storage"
+msgstr ""
+
+#: application/views/admin/global_settings/_storage_ajax.php:28
+msgid "Label set storage"
 msgstr ""
 
 #: application/views/admin/homepagesettings/_form.php:20
@@ -17527,7 +17517,7 @@ msgstr ""
 
 #: application/views/admin/token/massive_actions/_selector.php:26
 #: application/views/admin/token/massive_actions/_selector.php:35
-msgid "Batch edit tokens"
+msgid "Batch-edit participants"
 msgstr ""
 
 #: application/views/admin/token/massive_actions/_selector.php:53
