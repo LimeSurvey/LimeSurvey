@@ -194,7 +194,7 @@ class TemplateConfiguration extends CFormModel
             window.console = dummyConsole;
         </script>";
 
-        if (getLanguageRTL(App()->language))
+        if (getLanguageRTL($this->oSurvey->language))
         {
             $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
             $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
