@@ -691,7 +691,7 @@ class responses extends Survey_Common_Action
                         $allErrors = array_merge($allErrors, $errors);
                     }
                 } else {
-                    $allErrors[] = sprintf(gT('Found no response with id %d'), $responseId);
+                    $allErrors[] = sprintf(gT('Found no response with ID %d'), $responseId);
                 }
             }
 
@@ -701,7 +701,7 @@ class responses extends Survey_Common_Action
                 );
             } else {
                 // All is OK.
-                ls\ajax\AjaxHelper::outputSuccess(sprintf(gT('%d file(s) deleted.'), $allSuccess));
+                ls\ajax\AjaxHelper::outputSuccess(sprintf(ngT('%d file deleted.|%d files deleted.',$allSuccess), $allSuccess));
             }
         } else {
             // No permission.

@@ -23,7 +23,7 @@
                     'action'      => 'edit',
                     'url'         => App()->createUrl('/admin/tokens/sa/editMultiple/'),
                     'iconClasses' => 'fa fa-pencil text-success',
-                    'text'        => gT('Batch edit tokens'),
+                    'text'        => gT('Batch-edit participants'),
                     'grid-reload' => 'yes',
 
                     // modal
@@ -32,7 +32,7 @@
                     'yes'           => gT('Apply'),
                     'no'            => gT('Cancel'),
                     'keepopen'      => 'yes',
-                    'sModalTitle'   => gT('Batch edit tokens'),
+                    'sModalTitle'   => gT('Batch-edit participants'),
                     'htmlModalBody' => $this->renderPartial('./token/massive_actions/_update', array('dateformatdetails' => getDateFormatData(Yii::app()->session['dateformat'])), true),
                 ),
 

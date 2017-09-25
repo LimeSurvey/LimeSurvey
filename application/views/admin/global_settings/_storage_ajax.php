@@ -11,21 +11,21 @@
 <table class='table table-striped table-bordered'>
     <tfoot>
         <tr>
-            <td style='width: 70%;'><?php eT('Total storage:'); ?></td>
+            <td style='width: 70%;'><?php eT('Total storage'); ?></td>
             <td><?php echo $totalStorage; ?></td>
         </tr>
     </tfoot>
     <tbody>
         <tr>
-            <td><?php eT('Survey storage:'); ?></td>
+            <td><?php eT('Survey storage'); ?></td>
             <td><?php echo $surveySize; ?></td>
         </tr>
         <tr>
-            <td><?php eT('Template storage:'); ?></td>
+            <td><?php eT('Template storage'); ?></td>
             <td><?php echo $templateSize; ?></td>
         </tr>
         <tr>
-            <td><?php eT('Label set storage:'); ?></td>
+            <td><?php eT('Label set storage'); ?></td>
             <td><?php echo $labelSize; ?></td>
         </tr>
     </tbody>

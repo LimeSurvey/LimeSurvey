@@ -489,7 +489,7 @@ class tokens extends Survey_Common_Action
 
             }else{
                 $aResults['global']['result']  = false;
-                $aResults['global']['message'] = gT('No token table found for that survey!');
+                $aResults['global']['message'] = gT('No participant table found for this survey!');
             }
         }else{
             $aResults['global']['result'] = false;

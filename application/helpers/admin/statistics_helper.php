@@ -2574,7 +2574,7 @@ class statistics_helper {
                 $row=Yii::app()->db->createCommand($query)->queryScalar();
             } catch (Exception $ex) {
                 $row = 0;
-                Yii::app()->setFlashMessage(gT('Faulty query: ') . $query, 'error');
+                Yii::app()->setFlashMessage('Faulty query: ' . htmlspecialchars($query), 'error');
             }
 
             //store temporarily value of answer count of question type '5' and 'A'.
