@@ -8726,13 +8726,13 @@ EOD;
                                     // For an explanation of the exclamation mark, see this thread:
                                     // http://stackoverflow.com/questions/43740037/datetime-converts-wrong-when-system-time-is-30-march
                                     $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
-
                                     if ($dateTime === false) {
                                         $message = sprintf(
                                             'Could not convert date %s to format %s. Please check your date format settings.',
                                             trim($value),
                                             $aDateFormatData['phpdate']
                                         );
+                                        $value = "INVALID"; // This don't disable submitting survey  … ("" neither)
                                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
@@ -8740,7 +8740,7 @@ EOD;
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
-                                            $value = "";// Or $value="INVALID" ? : dropdown is OK with this not default.
+                                            $value = "";// This don't disable submitting survey  … ("INVALID" neither)
                                         }
                                     }
                                 }
@@ -8782,8 +8782,8 @@ EOD;
                         }
                         $_SESSION[$LEM->sessid][$sq] = $value;
                         $_update = array (
-                        'type'=>$type,
-                        'value'=>$value,
+                            'type'=>$type,
+                            'value'=>$value,
                         );
                         $updatedValues[$sq] = $_update;
                         $LEM->updatedValues[$sq] = $_update;
