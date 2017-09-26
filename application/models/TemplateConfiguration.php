@@ -194,8 +194,8 @@ class TemplateConfiguration extends CFormModel
         </script>";
 
 
-        if (Yii::app()->getParam('lang', null) !== null){
-            $sTemplateLang = Yii::app()->getParam('lang');
+        if (Yii::app()->request->getParam('lang', null) !== null){
+            $sTemplateLang = Yii::app()->request->getParam('lang');
         }else{
             // If the template is called for survey listing, then the application language should be used
             $sTemplateLang = (isset($this->oSurvey->language))?$this->oSurvey->language:App()->language;
