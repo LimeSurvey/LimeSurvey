@@ -25,11 +25,10 @@ $(document).ready(function(){
     );
 
     // Code copied from: https://stackoverflow.com/questions/18999501/bootstrap-3-keep-selected-tab-on-page-refresh
+    var activeTab = localStorage.getItem('activeTab');
     if (location.hash) {
         $('a[href=\'' + location.hash + '\']').tab('show');
-    }
-    var activeTab = localStorage.getItem('activeTab');
-    if (activeTab) {
+    } else if (activeTab) {
         $('a[href="' + activeTab + '"]').tab('show');
     }
     $('body').on('click', 'a[data-toggle=\'tab\']', function (e) {
