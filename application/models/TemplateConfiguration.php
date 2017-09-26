@@ -194,10 +194,13 @@ class TemplateConfiguration extends CFormModel
             window.console = dummyConsole;
         </script>";
 
-        if (getLanguageRTL($this->oSurvey->language))
-        {
-            $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
-            $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
+        //NB: Since LS3, this function is called only when rendering the template
+        // Before LS3, this function is called even from admin interface (which is not needed), and $this->oSurvey->language is not set. 
+        if (isset($this->oSurvey->language)){
+            if (getLanguageRTL($this->oSurvey->language)){
+                $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
+                $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
+            }
         }
 
         if (Yii::app()->getConfig('debug') == 0)
