@@ -36,6 +36,25 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.71.0 (build 170925) to 2.71.1 (build 170927) Sept 27, 2017
+-Fixed issue #12703: rtl css not loaded in Survey listing (LouisGac)
+-Fixed issue #12710: Unable to view survey with debug=2 (LouisGac)
+-Fixed issue #12711: Date with dropdow throw SQL error with pgsql (Denis Chenu)
+-Fixed issue #12719: RTL always loaded (and inverse ;) ) (LouisGac)
+-Fixed issue: Global user permission changes are not saved anymore (Carsten Schmitz)
+-Fixed issue: RTL CSS not loaded when defining language by URL or post (LouisGac)
+#Updated translation: Arabic by ktharwat
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, gregi
+#Updated translation: Hungarian by kkd
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
 Changes from 2.70.0 (build 170921) to 2.71.0 (build 170925) Sept 25, 2017
 -New feature #12690: Allow super-admin set by other user's than 1 (#810) (Denis Chenu)
 -Fixed issue: Can't delete file in template editor that contains a blank (Carsten Schmitz)
