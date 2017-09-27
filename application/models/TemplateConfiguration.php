@@ -193,13 +193,8 @@ class TemplateConfiguration extends CFormModel
             window.console = dummyConsole;
         </script>";
 
-
-        if (Yii::app()->request->getParam('lang', null) !== null){
-            $sTemplateLang = Yii::app()->request->getParam('lang');
-        }else{
-            // If the template is called for survey listing, then the application language should be used
-            $sTemplateLang = (isset($this->oSurvey->language))?$this->oSurvey->language:App()->language;
-        }
+        // If the template is called for survey listing, then the application language should be used
+        $sTemplateLang = (isset($this->oSurvey))?$this->oSurvey->getLanguageForSurveyTaking():App()->language;
 
         if (getLanguageRTL( $sTemplateLang )){
             $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)

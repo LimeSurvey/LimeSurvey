@@ -144,6 +144,32 @@ class Survey extends LSActiveRecord
     }
 
     /**
+     * Return the language of the current survey
+     * It can be:
+     *  - the selected language by user via the language selector (POST then Session)
+     *  - the selected language via URL (GET then Session)
+     *  - the survey default language
+     *
+     * @return string the correct language 
+     */
+    public function getLanguageForSurveyTaking()
+    {
+        // Default: the survey language
+        $sLang =  $this->language;
+
+        if (Yii::app()->request->getParam('lang', null) !== null){
+            // POST or GET
+            $sLang = Yii::app()->request->getParam('lang');
+        }else{
+            // SESSION
+            if (isset(Yii::app()->session['survey_'.$this->sid]['s_lang'])){
+                $sLang = Yii::app()->session['survey_'.$this->sid]['s_lang'] ;
+            }
+        }
+        return $sLang;
+    }
+
+    /**
      * Expires a survey. If the object was invoked using find or new surveyId can be ommited.
      * @param int $surveyId
      * @return bool
