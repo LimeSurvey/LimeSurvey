@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-09-25 18:09:27+00:00\n"
+"POT-Creation-Date: 2017-09-27 13:12:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -967,8 +967,8 @@ msgstr ""
 #: application/controllers/admin/useraction.php:352
 #: application/controllers/admin/useraction.php:368
 #: application/controllers/admin/useraction.php:458
-#: application/controllers/admin/useraction.php:556
-#: application/controllers/admin/useraction.php:636
+#: application/controllers/admin/useraction.php:557
+#: application/controllers/admin/useraction.php:637
 msgid "You do not have permission to access this page."
 msgstr ""
 
@@ -1516,8 +1516,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:141
 #: application/models/ParticipantShare.php:148
 #: application/models/ParticipantShare.php:256
-#: application/models/Survey.php:516 application/models/Survey.php:815
-#: application/models/Survey.php:821
+#: application/models/Survey.php:542 application/models/Survey.php:841
+#: application/models/Survey.php:847
 #: application/views/admin/conditions/deleteAllConditions.php:15
 #: application/views/admin/dataentry/content_view.php:632
 #: application/views/admin/dataentry/content_view.php:700
@@ -1669,8 +1669,8 @@ msgstr ""
 #: application/models/ParticipantShare.php:141
 #: application/models/ParticipantShare.php:148
 #: application/models/ParticipantShare.php:256
-#: application/models/Survey.php:520 application/models/Survey.php:815
-#: application/models/Survey.php:821
+#: application/models/Survey.php:546 application/models/Survey.php:841
+#: application/models/Survey.php:847
 #: application/views/admin/dataentry/content_view.php:633
 #: application/views/admin/dataentry/content_view.php:702
 #: application/views/admin/dataentry/vvimport.php:40
@@ -3088,7 +3088,7 @@ msgstr ""
 #: application/controllers/admin/surveyadmin.php:981
 #: application/core/Survey_Common_Action.php:671
 #: application/core/Survey_Common_Action.php:976
-#: application/models/Survey.php:761
+#: application/models/Survey.php:787
 msgid "Invalid survey ID"
 msgstr ""
 
@@ -3622,7 +3622,7 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:752
 #: application/controllers/admin/tokens.php:2726
 #: application/controllers/admin/tokens.php:2769
-#: application/controllers/admin/useraction.php:843
+#: application/controllers/admin/useraction.php:844
 #: application/helpers/common_helper.php:4628
 #: application/helpers/common_helper.php:4633
 #: application/helpers/common_helper.php:4638
@@ -4767,43 +4767,43 @@ msgstr ""
 msgid "The permissions of this superadmin cannot be updated!"
 msgstr ""
 
-#: application/controllers/admin/useraction.php:490
+#: application/controllers/admin/useraction.php:491
 msgid "Permissions were successfully updated."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:495
+#: application/controllers/admin/useraction.php:496
 msgid "There was a problem updating the user permissions."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:518
+#: application/controllers/admin/useraction.php:519
 msgid "Note: You can only give limited permissions to other users because your own permissions are limited, too."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:626
+#: application/controllers/admin/useraction.php:627
 msgid "Template permissions were updated successfully."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:630
+#: application/controllers/admin/useraction.php:631
 msgid "Error while updating template permissions."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:668
+#: application/controllers/admin/useraction.php:669
 msgid "Your new password was not saved because it matches the old password."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:672
+#: application/controllers/admin/useraction.php:673
 msgid "Your new password was not saved because the passwords did not match."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:676
+#: application/controllers/admin/useraction.php:677
 msgid "Your new password was not saved because the old password was wrong."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:703
+#: application/controllers/admin/useraction.php:704
 msgid "Your personal settings were successfully saved."
 msgstr ""
 
-#: application/controllers/admin/useraction.php:714
+#: application/controllers/admin/useraction.php:715
 #: application/views/admin/participants/importCSV_view.php:45
 msgid "(Autodetect)"
 msgstr ""
@@ -5298,7 +5298,7 @@ msgid "List question groups"
 msgstr ""
 
 #: application/core/plugins/QuickMenu/QuickMenu.php:262
-#: application/models/Survey.php:1053
+#: application/models/Survey.php:1079
 #: application/views/admin/survey/surveybar_view.php:166
 msgid "General settings & texts"
 msgstr ""
@@ -5338,7 +5338,7 @@ msgstr ""
 #: application/helpers/questionHelper.php:387
 #: application/helpers/questionHelper.php:744
 #: application/helpers/userstatistics_helper.php:2933
-#: application/models/Permission.php:84 application/models/Survey.php:1058
+#: application/models/Permission.php:84 application/models/Survey.php:1084
 #: application/views/admin/export/statistics_subviews/_statistics_header.php:3
 #: application/views/admin/export/statistics_user_view.php:17
 #: application/views/admin/export/statistics_view.php:14
@@ -6031,7 +6031,7 @@ msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:40
 #: application/helpers/common_helper.php:284 application/models/Quota.php:114
-#: application/models/Survey.php:927
+#: application/models/Survey.php:953
 msgid "Active"
 msgstr ""
 
@@ -6040,7 +6040,7 @@ msgid "Active and running"
 msgstr ""
 
 #: application/extensions/admin/survey/ListSurveysWidget/views/searchBox.php:42
-#: application/helpers/common_helper.php:294 application/models/Survey.php:887
+#: application/helpers/common_helper.php:294 application/models/Survey.php:913
 msgid "Inactive"
 msgstr ""
 
@@ -11072,19 +11072,19 @@ msgstr ""
 msgid "running"
 msgstr ""
 
-#: application/models/Survey.php:909
+#: application/models/Survey.php:935
 msgid "End: %s"
 msgstr ""
 
-#: application/models/Survey.php:910
+#: application/models/Survey.php:936
 msgid "Expired: %s"
 msgstr ""
 
-#: application/models/Survey.php:911
+#: application/models/Survey.php:937
 msgid "Start: %s"
 msgstr ""
 
-#: application/models/Survey.php:1068
+#: application/models/Survey.php:1094
 #: application/views/admin/survey/surveySummary_view.php:124
 #: application/views/admin/survey/surveySummary_view.php:170
 #: application/views/admin/survey/surveySummary_view.php:192
@@ -11094,7 +11094,7 @@ msgstr ""
 msgid "Add new question"
 msgstr ""
 
-#: application/models/Survey.php:1072
+#: application/models/Survey.php:1098
 #: application/views/admin/survey/surveySummary_view.php:103
 #: application/views/admin/survey/surveySummary_view.php:148
 #: application/views/admin/survey/surveybar_view.php:25
