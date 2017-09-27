@@ -366,7 +366,7 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
     if (empty($sLanguage)){
         $sLanguage=getBaseLanguageFromSurveyID($iSurveyID);
     }
-    $fieldmap = createFieldMap($iSurveyID,'full',false,false,$sLanguage);
+    $fieldmap = createFieldMap($iSurveyID,'full',true,false,$sLanguage);
 
     #See if tokens are being used
     $bTokenTableExists = tableExists('tokens_'.$iSurveyID);
