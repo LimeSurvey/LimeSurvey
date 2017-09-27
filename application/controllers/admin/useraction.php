@@ -465,7 +465,7 @@ class UserAction extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("You are not allowed to edit your own user permissions."),"error");
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
-        // Can not update forced superadmin rights
+        // Can not update forced superadmin  rights
         if ( Permission::isForcedSuperAdmin($iUserID) ) {
             Yii::app()->setFlashMessage(gT("The permissions of this superadmin cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
@@ -480,7 +480,8 @@ class UserAction extends Survey_Common_Action
                     continue;
                 }
                 if ($CRUDValue) {
-                    $aPermissions[$sPermissionKey][$sCRUDKey] = intval(Yii::app()->getRequest()->getPost("perm_{$sPermissionKey}_{$sCRUDKey}"));
+                    $sPermissionPostValue=Yii::app()->getRequest()->getPost("perm_{$sPermissionKey}_{$sCRUDKey}",'');
+                    $aPermissions[$sPermissionKey][$sCRUDKey] = $sPermissionPostValue=='on'?1:0;
                 }
             }
         }
