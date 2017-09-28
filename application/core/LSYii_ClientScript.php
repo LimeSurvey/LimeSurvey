@@ -394,11 +394,18 @@ class LSYii_ClientScript extends CClientScript {
 	public function renderBodyEnd(&$output)
 	{
 		if(!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END])
-			&& !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]))
-			return;
+            && !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]))
+        {
+            str_replace('<###end###>','',$output);
+            return;
+        }
 
-		$fullPage=0;
-		$output=preg_replace('/(<\\/body\s*>)/is','<###end###>$1',$output,1,$fullPage);
+        $fullPage=0;
+        if(preg_match('/<###end###>/', $output))
+            $fullPage=1;
+        else
+            $output=preg_replace('/(<\\/body\s*>)/is','<###end###>$1',$output,1,$fullPage);
+        
 		$html='';
 		if(isset($this->scriptFiles[self::POS_END]))
 		{
@@ -435,9 +442,13 @@ class LSYii_ClientScript extends CClientScript {
 
 
 		if($fullPage)
-			$output=str_replace('<###end###>',$html,$output);
-		else
-			$output=$output.$html;
+        {
+            $output=str_replace('<###end###>',$html,$output);
+        }
+        else
+        {
+            $output=$output.$html;
+        }
     }
     
     /**

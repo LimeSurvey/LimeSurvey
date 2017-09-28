@@ -971,7 +971,7 @@ class SurveyRuntimeHelper {
                 $aPopup  = $this->popup = array($aResult['message']);
             }
 
-            Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
+            Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_BEGIN);
             Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
 
             // reshow the form if there is an error
@@ -1190,8 +1190,8 @@ class SurveyRuntimeHelper {
             $aLSJavascriptVar['showpopup']     = (int)Yii::app()->getConfig('showpopups');
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
-            App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD, array("class"=>"toRemoveOnAjax"));
-            App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN,  array("class"=>"toRemoveOnAjax"));                 // Ensure all js var is set before rendering the page (User can click before $.ready)
+            App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
+            App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN); // Ensure all js var is set before rendering the page (User can click before $.ready)
         }
     }
 

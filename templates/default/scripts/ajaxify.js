@@ -52,30 +52,24 @@ var AjaxSubmitObject = function () {
     var bindActions = function () {
         var globalPjax = new Pjax({
             elements: "#limesurvey", // default is "a[href], form[action]"
-            selectors: [".headScripts", "#dynamicReloadContainer", "#beginScripts", "#bottomScripts"]
+            selectors: ["#dynamicReloadContainer", "#beginScripts", "#bottomScripts"]
         });
         // Always bind to document to not need to bind again
         $(document).on("click", ".ls-move-btn",function () {
-            var move = $(this).attr("value");
-            $("#limesurvey").append("<input name='"+move+"' value='"+move+"' type='hidden' />")
+            $("#limesurvey").append("<input name='"+$(this).attr("name")+"' value='"+$(this).attr("value")+"' type='hidden' />");
         });
 
         // If the user try to submit the form
         // Always bind to document to not need to bind again
         $(document).on("submit", "#limesurvey", function (e) {
-            e.preventDefault();
             // Prevent multiposting
             //Check if there is an active submit
             //If there is -> return immediately
             if(activeSubmit) return;
             //block further submissions
             activeSubmit = true;
-
             //start the loading animation
             startLoadingBar();
-
-            var sUrl = $(this).attr("action");
-            var aPost = $(this).serialize();
 
             // We add the value of the button clicked to the post request
             // aPost += "&move=" + move;
@@ -154,12 +148,20 @@ var AjaxSubmitObject = function () {
                 endLoadingBar();
                 //free submitting again
                 activeSubmit = false;
+                if (/<###begin###>/.test($('#beginScripts').html())) {
+                    $('#beginScripts').html("");
+                }
+                if (/<###end###>/.test($('#bottomScripts').html())){
+                    $('#bottomScripts').html("");
+                }
+                
                 $(document).off('.onreload');
             });
             
         });
         return globalPjax;
     };
+
     return {
         bindActions: bindActions,
         startLoadingBar: startLoadingBar,

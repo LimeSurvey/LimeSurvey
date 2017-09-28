@@ -306,7 +306,7 @@ function updateMandatoryErrorClass(){
  */
 function showStartPopups()
 {
-    if(LSvar.showpopup && $(LSvar.startPopups).length){
+    if(LSvar.showpopup && typeof(LSvar.startPopups) == 'array' && LSvar.startPopups.length){
         startPopup=LSvar.startPopups.map(function(text) {
             return $("<div/>").html(text).text();
         });

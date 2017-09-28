@@ -44,12 +44,12 @@
             {# On last page, Next button become submit button. #}
             {% if aNavigator.aMoveNext.value == "movesubmit" %}
                 <!-- Button submit -->
-                <button  {{ aSurveyInfo.attr.navigatorbuttonsubmit }} class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }}">
+                <button type="submit"  {{ aSurveyInfo.attr.navigatorbuttonsubmit }} class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }}">
                     {{ "Submit" | t }}
                 </button>
             {% else %}
                 <!-- Button Next -->
-                <button {{ aSurveyInfo.attr.navigatorbuttonnext }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} " >
+                <button type="submit" {{ aSurveyInfo.attr.navigatorbuttonnext }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} " >
                     {{ "Next" | t }}
                 </button>
             {% endif %}

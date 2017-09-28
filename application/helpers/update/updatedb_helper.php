@@ -430,9 +430,9 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
         if ($iOldDBVersion < 315) {
             $oTransaction = $oDB->beginTransaction();
-
-            $oDB->createCommand()->update('{{template_configuration}}',
-                array('packages_to_load'=>'pjax'),
+            
+            $oDB->createCommand()->update('{{template_configuration}}', 
+                array('packages_to_load'=>'["pjax"]'),
                 'id=1'
             );
 

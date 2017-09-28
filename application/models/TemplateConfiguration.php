@@ -578,13 +578,15 @@ class TemplateConfiguration extends TemplateConfig
 
         // Not mandatory (use package dependances)
         $this->setCssFramework();
-
+        $this->packages = $this->getDependsPackages($this);
         if (!empty($this->packages_to_load)){
-            $this->packages = json_decode($this->packages_to_load);
+            $templateToLoadPackages = json_decode($this->packages_to_load);
+            if(is_array($templateToLoadPackages))
+                $this->packages =  array_merge( $templateToLoadPackages, $this->getDependsPackages($this));
         }
 
         // Add depend package according to packages
-        $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
+        $this->depends   =  array_merge($this->depends, $this->packages);
     }
 
     private function setCssFramework()
@@ -719,7 +721,7 @@ class TemplateConfiguration extends TemplateConfig
             if($this->sid == null && $this->gsid != null ){
                 $oSurveyGroup = SurveysGroups::model()->findByPk($this->gsid);
                 //Switch if the surveygroup inherits from a parent surveygroup
-                if($oSurveyGroup->parent_id != 0) {
+                if($oSurveyGroup != null && $oSurveyGroup->parent_id != 0) {
                     $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName,null,$oSurveyGroup->parent_id);
                     if (is_a($oParentTemplate, 'TemplateConfiguration')){
                         $this->oParentTemplate = $oParentTemplate;
@@ -748,7 +750,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     public function __get($name)
     {
-        $aAttributesThatCanBeInherited = array('files_css', 'files_js', 'options', 'cssframework_name', 'cssframework_css', 'cssframework_js');
+        $aAttributesThatCanBeInherited = array('files_css', 'files_js', 'options', 'cssframework_name', 'cssframework_css', 'cssframework_js', 'packages_to_load');
 
         if (in_array($name, $aAttributesThatCanBeInherited) && $this->bUseMagicInherit){
             // Full inheritance of the whole field

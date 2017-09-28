@@ -7150,7 +7150,7 @@
             
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js" );
             /* Call the function when trigerring event */
-            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END,  array("class"=>"toRemoveOnAjax"));
+            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
 
             if (!$bReturnArray) {
                 $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
