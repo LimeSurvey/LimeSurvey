@@ -634,7 +634,7 @@ class Survey extends LSActiveRecord
     *
     * @access public
     * @param int $iSurveyID
-    * @param bool @recursive
+    * @param bool $recursive
     * @return boolean
     */
     public function deleteSurvey($iSurveyID, $recursive=true)

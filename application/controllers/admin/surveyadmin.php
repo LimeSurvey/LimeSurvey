@@ -50,19 +50,26 @@ class SurveyAdmin extends Survey_Common_Action
 
     /**
      * Delete multiple survey
+     * @return void
      */
     public function deleteMultiple()
     {
         $aSurveys = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults = array();
-        foreach($aSurveys as $iSurveyID)
-        {
-            $oSurvey                        = Survey::model()->findByPk($iSurveyID);
-            $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
-            $aResults[$iSurveyID]['result'] = $oSurvey->deleteSurvey($iSurveyID, $recursive=true);
+        foreach ($aSurveys as $iSurveyID) {
+            if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
+                $oSurvey                        = Survey::model()->findByPk($iSurveyID);
+                $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
+                $aResults[$iSurveyID]['result'] = $this->_deleteSurvey($iSurveyID);
+            }
         }
 
-        Yii::app()->getController()->renderPartial('ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results', array('aResults'=>$aResults,'successLabel'=>gT('Deleted')));
+        Yii::app()->getController()->renderPartial(
+            'ext.admin.survey.ListSurveysWidget.views.massive_actions._action_results',
+            array(
+                'aResults'     => $aResults,
+                'successLabel' => gT('Deleted'))
+        );
     }
 
     public function listsurveys()
@@ -1546,15 +1553,17 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * This private function deletes a survey
-    * Important: If you change this function also change the remotecontrol XMLRPC function
-    *
-    * @param mixed $iSurveyID  The survey ID to delete
-    */
+     * This private function deletes a survey
+     * Important: If you change this function also change the remotecontrol XMLRPC function
+     *
+     * @param mixed $iSurveyID  The survey ID to delete
+     * @return boolean
+     */
     private function _deleteSurvey($iSurveyID)
     {
-        Survey::model()->deleteSurvey($iSurveyID);
+        $result = Survey::model()->deleteSurvey($iSurveyID);
         rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID);
+        return $result;
     }
 
     /**
