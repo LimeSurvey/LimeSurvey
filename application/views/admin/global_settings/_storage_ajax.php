@@ -37,7 +37,10 @@
     <table class='table table-striped table-bordered'>
         <?php foreach ($surveys as $survey): ?>
         <tr>
-            <td style='width: 70%;'><?php echo $survey['name']; ?> (<?php echo $survey['sid']; ?>)</td>
+            <td style='width: 70%;'>
+                <?php echo $survey['name']; ?>
+                (<a href="<?php echo $this->createUrl('admin/survey', array('sa' => 'view', 'surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
+            </td>
             <td><?php echo $survey['size']; ?></td>
         </tr>
         <?php endforeach; ?>
