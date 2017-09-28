@@ -60,7 +60,7 @@ class SurveyAdmin extends Survey_Common_Action
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
                 $oSurvey                        = Survey::model()->findByPk($iSurveyID);
                 $aResults[$iSurveyID]['title']  = $oSurvey->correct_relation_defaultlanguage->surveyls_title;
-                $aResults[$iSurveyID]['result'] = $this->_deleteSurvey($iSurveyID);
+                $aResults[$iSurveyID]['result'] = Survey::model()->deleteSurvey($iSurveyID);
             }
         }
 
@@ -748,7 +748,7 @@ class SurveyAdmin extends Survey_Common_Action
             if (Yii::app()->request->getPost("delete") == 'yes')
             {
                 $aData['issuperadmin'] = Permission::model()->hasGlobalPermission('superadmin','read');
-                $this->_deleteSurvey($iSurveyID);
+                Survey::model()->deleteSurvey($iSurveyID);
                 Yii::app()->session['flashmessage'] = gT("Survey deleted.");
                 $this->getController()->redirect(array("admin/index"));
             }
@@ -780,7 +780,7 @@ class SurveyAdmin extends Survey_Common_Action
             {
                 if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
                 {
-                    $this->_deleteSurvey($iSurveyID);
+                    Survey::model()->deleteSurvey($iSurveyID);
                 }
             }
         }
@@ -1550,20 +1550,6 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['total'] = 1;
 
         echo ls_json_encode($aData);
-    }
-
-    /**
-     * This private function deletes a survey
-     * Important: If you change this function also change the remotecontrol XMLRPC function
-     *
-     * @param mixed $iSurveyID  The survey ID to delete
-     * @return boolean
-     */
-    private function _deleteSurvey($iSurveyID)
-    {
-        $result = Survey::model()->deleteSurvey($iSurveyID);
-        rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID);
-        return $result;
     }
 
     /**

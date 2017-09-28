@@ -717,6 +717,9 @@ class Survey extends LSActiveRecord
                     //Remove any survey_links to the CPDB
                     SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
                     Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
+
+                    // Delete all uploaded files.
+                    rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID);
                 }
                 return true;
             }
