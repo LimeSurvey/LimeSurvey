@@ -41,7 +41,17 @@
                 <?php echo $survey['name']; ?>
                 (<a href="<?php echo $this->createUrl('admin/survey', array('sa' => 'view', 'surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
             </td>
-            <td><?php echo $survey['size']; ?></td>
+            <td>
+                <?php echo $survey['size']; ?>
+                <?php if ($survey['showPurgeButton']): ?>
+                    <span
+                        class='fa fa-trash pull-right btn btn-danger btn-xs'
+                        data-toggle='tooltip'
+                        title='<?php eT('Purge survey'); ?>'
+                    >
+                    </span>
+                <?php endif; ?>
+            </td>
         </tr>
         <?php endforeach; ?>
     </table>
