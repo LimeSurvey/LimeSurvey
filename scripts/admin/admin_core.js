@@ -972,6 +972,7 @@ LS.ajaxHelperOnSuccess = function(response) {
     // Put HTML into element.
     else if (response.outputType == 'jsonoutputhtml') {
         $('#' + response.target).html(response.html);
+        doToolTip();
     }
     // Success popup
     else if (response.success) {
