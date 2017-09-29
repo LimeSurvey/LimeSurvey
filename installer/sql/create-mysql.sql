@@ -632,9 +632,9 @@ CREATE TABLE `prefix_surveymenu` (
   `position` varchar(255)  NOT NULL DEFAULT 'side',
   `description` text ,
   `active` int(1) NOT NULL DEFAULT '0',
-  `changed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `changed_at` datetime NULL,
   `changed_by` int(11) NOT NULL DEFAULT '0',
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime NOT NULL,
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `ordering` (`ordering`),
@@ -644,6 +644,9 @@ CREATE TABLE `prefix_surveymenu` (
 INSERT INTO `prefix_surveymenu` VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, NOW(),0,NOW(),0);
 INSERT INTO `prefix_surveymenu` VALUES (2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',1, NOW(),0,NOW(),0);
 
+--
+-- Surveymenu entries
+--
 CREATE TABLE `prefix_surveymenu_entries` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `menu_id` int(11) DEFAULT NULL,
@@ -667,9 +670,9 @@ CREATE TABLE `prefix_surveymenu_entries` (
   `getdatamethod` varchar(255)  NOT NULL DEFAULT '',
   `language` varchar(255)  NOT NULL DEFAULT 'en-GB',
   `active` int(1) NOT NULL DEFAULT '0',
-  `changed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `changed_at` datetime NULL,
   `changed_by` int(11) NOT NULL DEFAULT '0',
-  `created_at` datetime DEFAULT NULL,
+  `created_at` datetime NOT NULL,
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `menu_id` (`menu_id`),
@@ -714,13 +717,13 @@ INSERT INTO `prefix_surveymenu_entries` VALUES
 
 
 -- -----------------------------------------------------
--- Table `prefix_templates`
+-- Table prefix_templates
 -- -----------------------------------------------------
 CREATE TABLE `prefix_templates` (
   `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `folder` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `creation_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_date` datetime NOT NULL,
   `author` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `author_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `author_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -748,7 +751,7 @@ INSERT INTO `prefix_templates` VALUES
 
 
 -- -----------------------------------------------------
--- Table `prefix_template_configuration`
+-- Table prefix_template_configuration
 -- -----------------------------------------------------
 CREATE TABLE `prefix_template_configuration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -779,7 +782,7 @@ INSERT INTO `prefix_template_configuration`  VALUES
 
 
 -- -----------------------------------------------------
--- Table `prefix_surveys_groups`
+-- Table prefix_surveys_groups
 -- -----------------------------------------------------
 CREATE TABLE `prefix_surveys_groups` (
   `gsid` int(11) NOT NULL,
@@ -794,12 +797,9 @@ CREATE TABLE `prefix_surveys_groups` (
   `modified` datetime DEFAULT NULL,
   `created_by` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 ALTER TABLE `prefix_surveys_groups`
   ADD PRIMARY KEY (`gsid`);
 
-ALTER TABLE `prefix_surveys_groups`
-  MODIFY `gsid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `order`, `owner_uid`, `parent_id`, `created`, `modified`, `created_by`) VALUES
   (1, 'default', 'Default Survey Group', 'LimeSurvey core default survey group', 0, 1, NULL, '2017-07-20 17:09:30', '2017-07-20 17:09:30', 1);

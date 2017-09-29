@@ -232,7 +232,7 @@ CREATE TABLE [prefix_plugins] (
 [id] int NOT NULL identity(1,1),
 [name] varchar(50) NOT NULL,
 [active] int NOT NULL default '0',
-[version] varchar(32) default null,
+[version] varchar(32) NULL,
 PRIMARY KEY  (id)
 );
 
@@ -490,7 +490,7 @@ CREATE TABLE [prefix_surveys_languagesettings] (
 [email_admin_responses_subj] nvarchar(255) NULL,
 [email_admin_responses] nvarchar(max) NULL,
 [surveyls_numberformat] int NOT NULL DEFAULT 0,
-[attachments] nvarchar(max) NULL default NULL,
+[attachments] nvarchar(max) NULL,
 PRIMARY KEY ([surveyls_survey_id],[surveyls_language])
 );
 
@@ -552,10 +552,10 @@ PRIMARY KEY  ([folder])
 
 CREATE TABLE prefix_boxes (
   [id] int NOT NULL IDENTITY,
-  [position] int DEFAULT NULL ,
+  [position] int NULL ,
   [url] varchar(max) NOT NULL ,
   [title] varchar(max) NOT NULL ,
-  [ico] varchar(max) DEFAULT NULL,
+  [ico] varchar(max) NULL,
   [desc] varchar(max) NOT NULL ,
   [page] varchar(max) NOT NULL ,
   [usergroup] int NOT NULL,
@@ -601,9 +601,9 @@ CREATE TABLE prefix_notifications (
     [status] nvarchar(15) NOT NULL DEFAULT 'new',
     [importance] int NOT NULL DEFAULT 1,
     [display_class] nvarchar(31) DEFAULT 'default',
-    [hash] nvarchar(64) DEFAULT NULL,
+    [hash] nvarchar(64) NULL,
     [created] datetime NOT NULL,
-    [first_read] datetime DEFAULT NULL,
+    [first_read] datetime NULL,
     PRIMARY KEY ([id])
 );
 CREATE INDEX [notif_index] ON [prefix_notifications] ([entity_id],[entity],[status]);
@@ -614,10 +614,10 @@ CREATE INDEX [notif_hash_index] ON [prefix_notifications] ([hash]);
 --
 CREATE TABLE prefix_settings_user (
     [uid] int NOT NULL,
-    [entity] varchar(15) DEFAULT NULL,
-    [entity_id] varchar(31) DEFAULT NULL,
+    [entity] varchar(15) NULL,
+    [entity_id] varchar(31) NULL,
     [stg_name] varchar(63) NOT NULL,
-    [stg_value] nvarchar(max) DEFAULT NULL,
+    [stg_value] nvarchar(max) NULL,
     PRIMARY KEY ([uid], [entity], [entity_id], [stg_name])
 );
 
@@ -627,17 +627,18 @@ CREATE TABLE prefix_settings_user (
 
 CREATE TABLE prefix_surveymenu (
   [id] int(11) NOT NULL ,
-  [parent_id] int(11) DEFAULT NULL,
-  [survey_id] int(11) DEFAULT NULL,
-  [user_id] int(11) DEFAULT NULL,
+  [parent_id] int(11) NULL,
+  [survey_id] int(11) NULL,
+  [user_id] int(11) NULL,
   [ordering] int(11) DEFAULT '0',
   [level] int(11) DEFAULT '0',
-  [title] VARCHAR(255)  NOT NULL DEFAULT '',
+  [title] NVARCHAR(255)  NOT NULL DEFAULT '',
   [position] VARCHAR(255)  NOT NULL DEFAULT 'side',
-  [description] VARCHAR(MAX) ,
-  [changed_at] datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  [description] NVARCHAR(MAX) ,
+  [active] int(1) NOT NULL DEFAULT '0',
+  [changed_at] datetime NULL,
   [changed_by] int(11) NOT NULL DEFAULT '0',
-  [created_at] datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  [created_at] datetime NOT NULL DEFAULT,
   [created_by] int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY ([id])
 );
@@ -648,18 +649,21 @@ create index [order_index] on [prefix_surveymenu] ([ordering]);
 create index [title_index] on [prefix_surveymenu] ([title]);
 
 
-INSERT INTO prefix_surveymenu VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',NOW(),0,NOW(),0);
-INSERT INTO prefix_surveymenu VALUES (2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',NOW(),0,NOW(),0);
+INSERT INTO [prefix_surveymenu] VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',NOW(),0,NOW(),0);
+INSERT INTO [prefix_surveymenu] VALUES (2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',NOW(),0,NOW(),0);
 
+--
+-- Surveymenu entries
+--
 CREATE TABLE prefix_surveymenu_entries (
-  [id] int(11) NOT NULL ,
-  [menu_id] int(11) DEFAULT NULL,
-  [user_id] int(11) DEFAULT NULL,
+  [id] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
+  [menu_id] int(11) NULL,
+  [user_id] int(11) NULL,
   [ordering] int(11) DEFAULT '0',
   [name] VARCHAR(255)  NOT NULL DEFAULT '',
-  [title] VARCHAR(255)  NOT NULL DEFAULT '',
-  [menu_title] VARCHAR(255)  NOT NULL DEFAULT '',
-  [menu_description] text ,
+  [title] NVARCHAR(255)  NOT NULL DEFAULT '',
+  [menu_title] NVARCHAR(255)  NOT NULL DEFAULT '',
+  [menu_description] NVARCHAR(max),
   [menu_icon] VARCHAR(255)  NOT NULL DEFAULT '',
   [menu_icon_type] VARCHAR(255)  NOT NULL DEFAULT '',
   [menu_class] VARCHAR(255)  NOT NULL DEFAULT '',
@@ -669,124 +673,149 @@ CREATE TABLE prefix_surveymenu_entries (
   [partial] VARCHAR(255)  NOT NULL DEFAULT '',
   [classes] VARCHAR(255)  NOT NULL DEFAULT '',
   [permission] VARCHAR(255)  NOT NULL DEFAULT '',
-  [permission_grade] VARCHAR(255)  DEFAULT NULL,
-  [data] text ,
+  [permission_grade] VARCHAR(255)  NULL,
+  [data] NVARCHAR(max) NULL,
   [getdatamethod] VARCHAR(255)  NOT NULL DEFAULT '',
   [language] VARCHAR(255)  NOT NULL DEFAULT 'en-GB',
-  [changed_at] datetime NOT NULL DEFAULT CURRENT_datetime,
+  [active] int(1) NOT NULL DEFAULT '0',
+  [changed_at] datetime NULL,
   [changed_by] int(11) NOT NULL DEFAULT '0',
-  [created_at] datetime DEFAULT NULL,
-  [created_by] int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY ([id]),
-  FOREIGN KEY ([menu_id]) REFERENCES  prefix_surveymenu ([id]) ON DELETE CASCADE
+  [created_at] datetime NOT NULL,
+  [created_by] int(11) NOT NULL DEFAULT '0'
 );
-
+ 
 create index [order_index] on [prefix_surveymenu] ([ordering]);
 create index [user_index] on [prefix_surveymenu] ([user]);
 create index [title_index] on [prefix_surveymenu] ([title]);
 create index [menu_title_index] on [prefix_surveymenu] ([menu_title]);
 
-INSERT INTO prefix_surveymenu_entries VALUES
-(1,1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(2,1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',NOW(),0,NOW(),0),
-(3,1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',NOW(),0,NOW(),0),
-(4,1,NULL,4,'template_options','Template options','Template options','Edit Template options for this survey','paint-brush','fontawesome',,'','admin/templateoptions/sa/updatesurvey','','','','','templates','read','{"render": {"link": { "pjaxed": false, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}','','en-GB',NOW(),0,NOW(),0);
-(5,1,NULL,5,'participants','Survey participants','Survey participants','Go to survey participant and token settings','user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(6,1,NULL,6,'presentation','Presentation &amp; navigation settings','Presentation','Edit presentation and navigation settings','eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',NOW(),0,NOW(),0),
-(7,1,NULL,7,'publication','Publication and access control settings','Publication &amp; access','Edit settings for publicationa and access control','key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',NOW(),0,NOW(),0),
-(8,1,NULL,8,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(9,1,NULL,9,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',NOW(),0,NOW(),0),
-(10,1,NULL,10,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(11,1,NULL,11,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(12,1,NULL,12,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',NOW(),0,NOW(),0),
-(13,1,NULL,13,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(14,1,NULL,14,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',NOW(),0,NOW(),0),
-(15,1,NULL,15,'ressources','Add/Edit ressources to the survey','Ressources','Add/Edit ressources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',NOW(),0,NOW(),0),
-(16,2,NULL,1,'activateSurvey','Activate survey','Activate survey','Activate survey','play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(17,2,NULL,2,'deactivateSurvey','Stop this survey','Stop this survey','Stop this survey','stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(18,2,NULL,3,'testSurvey','Go to survey','Go to survey','Go to survey','cog','fontawesome','','survey/index/','','','','','','','{\"render\"\: {\"link\"\: {\"external\"\: true, \"data\"\: {\"sid\"\: [\"survey\",\"sid\"], \"newtest\"\: \"Y\", \"lang\"\: [\"survey\",\"language\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(19,2,NULL,4,'listQuestions','List questions','List questions','List questions','list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(20,2,NULL,5,'listQuestionGroups','List question groups','List question groups','List question groups','th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(21,2,NULL,6,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',NOW(),0,NOW(),0),
-(22,2,NULL,7,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(23,2,NULL,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(24,2,NULL,9,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(25,2,NULL,10,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(26,2,NULL,11,'surveyLogicFile','Survey logic file','Survey logic file','Survey logic file','sitemap','fontawesome','','admin/expressions/sa/survey_logic_file/','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
-(27,2,NULL,12,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','user','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','_tabTokens','en-GB',NOW(),0,NOW(),0),
-(28,2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{render\: {\"link\"\: {}}','','en-GB',NOW(),0,NOW(),0),
-(29,2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',NOW(),0,NOW(),0),
-(20,2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',NOW(),0,NOW(),0),
-(31,2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',NOW(),0,NOW(),0),
+SET IDENTITY_INSERT [prefix_surveymenu_entries] ON;
 
+INSERT INTO [prefix_surveymenu_entries] VALUES
+(1,1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(2,1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, NOW(),0,NOW(),0),
+(3,1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',1, NOW(),0,NOW(),0),
+(4,1,NULL,4,'template_options','Template options','Template options','Edit Template options for this survey','paint-brush','fontawesome','','admin/templateoptions/sa/updatesurvey','','','','','templates','read','{"render": {"link": { "pjaxed": false, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(5,1,NULL,5,'participants','Survey participants','Survey participants','Go to survey participant and token settings','user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(6,1,NULL,6,'presentation','Presentation &amp; navigation settings','Presentation','Edit presentation and navigation settings','eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',1, NOW(),0,NOW(),0),
+(7,1,NULL,7,'publication','Publication and access control settings','Publication &amp; access','Edit settings for publicationa and access control','key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',1, NOW(),0,NOW(),0),
+(8,1,NULL,8,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(9,1,NULL,9,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',1, NOW(),0,NOW(),0),
+(10,1,NULL,10,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(11,1,NULL,11,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(12,1,NULL,12,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',1, NOW(),0,NOW(),0),
+(13,1,NULL,13,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(14,1,NULL,14,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',1, NOW(),0,NOW(),0),
+(15,1,NULL,15,'resources','Add/Edit resources to the survey','Resources','Add/Edit resources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',1, NOW(),0,NOW(),0),
+(16,2,NULL,1,'activateSurvey','Activate survey','Activate survey','Activate survey','play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(17,2,NULL,2,'deactivateSurvey','Stop this survey','Stop this survey','Stop this survey','stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(18,2,NULL,3,'testSurvey','Go to survey','Go to survey','Go to survey','cog','fontawesome','','survey/index/','','','','','','','{\"render\"\: {\"link\"\: {\"external\"\: true, \"data\"\: {\"sid\"\: [\"survey\",\"sid\"], \"newtest\"\: \"Y\", \"lang\"\: [\"survey\",\"language\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(19,2,NULL,4,'listQuestions','List questions','List questions','List questions','list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(20,2,NULL,5,'listQuestionGroups','List question groups','List question groups','List question groups','th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(21,2,NULL,6,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, NOW(),0,NOW(),0),
+(22,2,NULL,7,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(23,2,NULL,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(24,2,NULL,9,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(25,2,NULL,10,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(26,2,NULL,11,'surveyLogicFile','Survey logic file','Survey logic file','Survey logic file','sitemap','fontawesome','','admin/expressions/sa/survey_logic_file/','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0),
+(27,2,NULL,12,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','user','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','_tabTokens','en-GB',1, NOW(),0,NOW(),0),
+(28,2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{render\: {\"link\"\: {}}','','en-GB',1, NOW(),0,NOW(),0),
+(29,2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, NOW(),0,NOW(),0),
+(30,2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, NOW(),0,NOW(),0),
+(31,2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, NOW(),0,NOW(),0);
+SET IDENTITY_INSERT [prefix_surveymenu_entries] ON;
 
 
 -- -----------------------------------------------------
--- Table [prefix_templates]
+-- Table prefix_templates
 -- -----------------------------------------------------
 CREATE TABLE prefix_templates (
-  [name] varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  [folder] varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  [title] varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  [creation_date] timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  [author] varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  [author_email] varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  [author_url] varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  [copyright] mediumtext COLLATE utf8mb4_unicode_ci,
-  [license] mediumtext COLLATE utf8mb4_unicode_ci,
-  [version] varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  [api_version] varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  [view_folder] varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  [files_folder] varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  [description] text COLLATE utf8mb4_unicode_ci,
-  [last_update] datetime DEFAULT NULL,
-  [owner_id] int(11) DEFAULT NULL,
-  [extends_templates_name] varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  [name] nVARCHAR(150) NOT NULL,
+  [folder] varchar(45) NULL,
+  [title] nvarchar(100) NOT NULL,
+  [creation_date] datetime NOT NULL,
+  [author] varchar(150) NULL,
+  [author_email] varchar(255) NULL,
+  [author_url] varchar(255) NULL,
+  [copyright] nvarchar(max) NULL,
+  [license] nvarchar(max) NULL,
+  [version] nvarchar(45) NULL,
+  [api_version] varchar(45) NOT NULL,
+  [view_folder] varchar(45) NOT NULL,
+  [files_folder] varchar(45) NOT NULL,
+  [description] nvarchar(max) NULL,
+  [last_update] datetime NULL,
+  [owner_id] int(11) NULL,
+  [extends_templates_name] nvarchar(150) NULL,
   PRIMARY KEY ([name])
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);
 
 
 
-INSERT INTO prefix_templates VALUES
+INSERT INTO [prefix_templates] VALUES
   ('default', 'default', 'Advanced Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', 'LimeSurvey Advanced Template:\\r\\nMany options for user customizations. \\r\\n', NULL, 1, '');
-INSERT INTO `prefix_templates` VALUES
+INSERT INTO [prefix_templates] VALUES
     ('minimal', 'minimal', 'Minimal Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '');
-INSERT INTO prefix_templates VALUES
+INSERT INTO [prefix_templates] VALUES
     ('material', 'material', 'Material Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License     or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>", NULL, 1, 'default');
 
 
-
 -- -----------------------------------------------------
--- Table [prefix_template_configuration]
+-- Table prefix_template_configuration
 -- -----------------------------------------------------
 CREATE TABLE prefix_template_configuration (
-  [id] int(11) NOT NULL AUTO_INCREMENT,
-  [templates_name] varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  [sid] int(11) DEFAULT NULL,
-  [gsid] int(11) DEFAULT NULL,
-  [uid] int(11) DEFAULT NULL,
-  [files_css] mediumtext COLLATE utf8mb4_unicode_ci,
-  [files_js] mediumtext COLLATE utf8mb4_unicode_ci,
-  [files_print_css] mediumtext COLLATE utf8mb4_unicode_ci,
-  [options] mediumtext COLLATE utf8mb4_unicode_ci,
-  [cssframework_name] varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  [cssframework_css] mediumtext COLLATE utf8mb4_unicode_ci,
-  [cssframework_js] mediumtext COLLATE utf8mb4_unicode_ci,
-  [packages_to_load] mediumtext COLLATE utf8mb4_unicode_ci,
-  [packages_ltr] mediumtext COLLATE utf8mb4_unicode_ci,
-  [packages_rtl] mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY([id])
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  [id] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
+  [templates_name] nvarchar(150) NOT NULL,
+  [sid] int(11) NULL,
+  [gsid] int(11) NULL,
+  [uid] int(11) NULL,
+  [files_css] nvarchar(max) NULL,
+  [files_js] nvarchar(max) NULL,
+  [files_print_css] nvarchar(max) NULL,
+  [options] varchar(max) NULL,
+  [cssframework_name] nvarchar(45) NULL,
+  [cssframework_css] nvarchar(max) NULL,
+  [cssframework_js] nvarchar(max) NULL,
+  [packages_to_load] nvarchar(max) NULL,
+  [packages_ltr] nvarchar(max) NULL,
+  [packages_rtl] nvarchar(max) NULL
+);
 
+SET IDENTITY_INSERT [prefix_template_configuration] ON;
 
-INSERT INTO prefix_template_configuration VALUES
+INSERT INTO [prefix_template_configuration] VALUES
   (1,'default',NULL,NULL,NULL,'{"add": ["css/template.css", "css/animate.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','','','');
 INSERT INTO prefix_template_configuration VALUES
   (2, 'minimal', NULL, NULL, NULL, '{"add": ["css/template.css"]}', '{"add": ["scripts/template.js"]}', '{"add":"css/print_template.css",}', '{}', 'bootstrap', '{}', '', '', '', '');
 INSERT INTO prefix_template_configuration VALUES
   (3,'material',NULL,NULL,NULL,'{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','','','');
+SET IDENTITY_INSERT [prefix_template_configuration] OFF;
+
+-- -----------------------------------------------------
+-- Table prefix_surveys_groups
+-- -----------------------------------------------------
+CREATE TABLE [prefix_surveys_groups] (
+  [gsid] int(11) NOT NULL PRIMARY KEY,
+  [name] varchar(45) NOT NULL,
+  [title] varchar(100) NULL,
+  [template] varchar(128) NULL DEFAULT 'default',
+  [description] nvarchar(max) NULL,
+  [order] int(11) NOT NULL,
+  [owner_uid] int(11) NULL,
+  [parent_id] int(11) NULL,
+  [created] datetime NULL,
+  [modified] datetime NULL,
+  [created_by] int(11) NOT NULL
+);
+
+SET IDENTITY_INSERT [prefix_surveys_groups] ON;
+INSERT INTO [prefix_surveys_groups] ([gsid], [name], [title], [description], [sortorder], [owner_uid], [parent_id], [created], [modified], [created_by]) VALUES
+  (1, 'default', 'Default Survey Group', 'LimeSurvey core default survey group', 0, 1, NULL, '2017-07-20 17:09:30', '2017-07-20 17:09:30', 1);
+SET IDENTITY_INSERT [prefix_surveys_groups] ON;
+
+
 
 --
 -- Version Info
 --
-INSERT INTO prefix_settings_global VALUES ('DBVersion', '309');
+INSERT INTO [prefix_settings_global] VALUES ('DBVersion', '314');
