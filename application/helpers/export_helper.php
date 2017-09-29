@@ -221,12 +221,17 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     $length_vallabel = 120;
 
-
-    if (!isset($field['LStype']) || empty($field['LStype'])) return false;
+    if (!isset($field['LStype']) || empty($field['LStype'])) {
+        return false;
+    }
     $answers=array();
     if (strpos("!LORFWZWH1",$field['LStype']) !== false) {
         if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
             //We have a comment field, so free text
+            return array(
+                'SPSStype' => "A",
+                'size' => stringSize($field['sql_name']),
+            );
         } else {
             $query = "SELECT {{answers}}.code, {{answers}}.answer,
             {{questions}}.type FROM {{answers}}, {{questions}} WHERE";
@@ -241,16 +246,19 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
             {
                 $displayvaluelabel = 0;
                 # Build array that has to be returned
-                foreach ($result as $row)
-                {
+                foreach ($result as $row) {
                     $answers[] = array('code'=>$row['code'], 'value'=>mb_substr(stripTagsFull($row["answer"]),0,$length_vallabel));
                 }
             }
         }
-    } elseif ($field['LStype'] == ':') {
+    }
+    if ($field['LStype'] == ':') {
+        /* FIXME : Show as input attribute */
         $displayvaluelabel = 0;
         //Get the labels that could apply!
-        if (is_null($qidattributes)) $qidattributes=getQuestionAttributeValues($field["qid"]);
+        if (is_null($qidattributes)) {
+            $qidattributes=getQuestionAttributeValues($field["qid"]);
+        }
         if (trim($qidattributes['multiflexible_max'])!='') {
             $maxvalue=$qidattributes['multiflexible_max'];
         } else {
@@ -277,32 +285,56 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         {
             $answers[] = array('code'=>$i, 'value'=>$i);
         }
-    } elseif ($field['LStype'] == 'M' && substr($field['code'],-5) != 'other' && $field['size'] > 0)
-    {
-        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
-        $answers[] = array('code'=>0, 'value'=>gT('Not Selected'));
-    } elseif ($field['LStype'] == "P" && substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment')
-    {
-        $answers[] = array('code'=>1, 'value'=>gT('Yes'));
-        $answers[] = array('code'=>0, 'value'=>gT('Not Selected'));
-    } elseif ($field['LStype'] == "G" && $field['size'] > 0)
-    {
+    }
+    if ($field['LStype'] == 'M') {
+        if(substr($field['code'],-5) != 'other' && $field['size'] > 0) {
+            return array(
+                'SPSStype' => "A",
+                'size' => stringSize($field['sql_name']),
+            );
+        } else {
+            $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+            $answers[] = array('code'=>0, 'value'=>gT('Not Selected'));
+        }
+    }
+    if ($field['LStype'] == "P" ) {
+        if(substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment') {
+            return array(
+                'SPSStype' => "A",
+                'size' => stringSize($field['sql_name']),
+            );
+        } else{
+            $answers[] = array('code'=>1, 'value'=>gT('Yes'));
+            $answers[] = array('code'=>0, 'value'=>gT('Not Selected'));
+        }
+    }
+    if ($field['LStype'] == "G" && $field['size'] > 0) {
         $answers[] = array('code'=>1, 'value'=>gT('Female'));
         $answers[] = array('code'=>2, 'value'=>gT('Male'));
-    } elseif ($field['LStype'] == "Y" && $field['size'] > 0)
-    {
+    }
+    if ($field['LStype'] == "Y" && $field['size'] > 0) {
         $answers[] = array('code'=>1, 'value'=>gT('Yes'));
         $answers[] = array('code'=>2, 'value'=>gT('No'));
-    } elseif ($field['LStype'] == "C" && $field['size'] > 0)
-    {
+    }
+    if ($field['LStype'] == "C" && $field['size'] > 0) {
         $answers[] = array('code'=>1, 'value'=>gT('Yes'));
         $answers[] = array('code'=>2, 'value'=>gT('No'));
         $answers[] = array('code'=>3, 'value'=>gT('Uncertain'));
-    } elseif ($field['LStype'] == "E" && $field['size'] > 0)
-    {
+    }
+    if ($field['LStype'] == "E" && $field['size'] > 0) {
         $answers[] = array('code'=>1, 'value'=>gT('Increase'));
         $answers[] = array('code'=>2, 'value'=>gT('Same'));
         $answers[] = array('code'=>3, 'value'=>gT('Decrease'));
+    }
+    if( in_array($field['LStype'],array('S','T','U')) ) {
+        return array(
+            'size' => stringSize($field['sql_name']),
+        );
+    }
+    if( in_array($field['LStype'],array('N','K')) ) {
+        return array(
+            'size' => decimalSize($field['sql_name']),
+        );
     }
     if (count($answers)>0) {
         //check the max width of the answers
@@ -310,8 +342,12 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         $spsstype = $field['SPSStype'];
         foreach ($answers as $answer) {
             $len = mb_strlen($answer['code']);
-            if ($len>$size) $size = $len;
-            if ($spsstype=='F' && (isNumericExtended($answer['code'])===false || $size>16)) $spsstype='A';
+            if ($len>$size) {
+                $size = $len;
+            }
+            if ($spsstype=='F' && (isNumericExtended($answer['code'])===false || $size>16)) {
+                $spsstype='A';
+            }
         }
         $answers['SPSStype'] = $spsstype;
         $answers['size'] = $size;
@@ -349,13 +385,13 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
         'L'=>Array('name'=>'List (Radio)','size'=>1,'SPSStype'=>'F'),
         'O'=>Array('name'=>'List With Comment','size'=>1,'SPSStype'=>'F'),
         'T'=>Array('name'=>'Long free text','size'=>1,'SPSStype'=>'A'),
-        'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),
+        'K'=>Array('name'=>'Multiple Numerical Input','size'=>1,'SPSStype'=>'F'),// Why not F32.10 because it's DECIMAL(30,10) in DB ? (32 because - and .)
         'M'=>Array('name'=>'Multiple choice','size'=>1,'SPSStype'=>'F'),
         'P'=>Array('name'=>'Multiple choice with comments','size'=>1,'SPSStype'=>'F'),
-        'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'F'),
-        'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),
+        'Q'=>Array('name'=>'Multiple Short Text','size'=>1,'SPSStype'=>'A'),
+        'N'=>Array('name'=>'Numerical Input','size'=>3,'SPSStype'=>'F','Scale'=>3),// Why not F32.10 because it's DECIMAL(30,10) in DB ? (32 because - and .)
         'R'=>Array('name'=>'Ranking','size'=>1,'SPSStype'=>'F'),
-        'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'F'),
+        'S'=>Array('name'=>'Short free text','size'=>1,'SPSStype'=>'A'),
         'Y'=>Array('name'=>'Yes/No','size'=>1,'SPSStype'=>'F'),
         ':'=>Array('name'=>'Multi flexi numbers','size'=>1,'SPSStype'=>'F','Scale'=>3),
         ';'=>Array('name'=>'Multi flexi text','size'=>1,'SPSStype'=>'A'),
@@ -458,34 +494,67 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
                 $fgid=$fielddata['gid'];
                 $code=mb_substr($fielddata['fieldname'],strlen($fsid."X".$fgid."X".$qid));
                 $varlabel=$fielddata['question'];
-                if (isset($fielddata['scale'])) $varlabel = "[{$fielddata['scale']}] ". $varlabel;
-                if (isset($fielddata['subquestion'])) $varlabel = "[{$fielddata['subquestion']}] ". $varlabel;
-                if (isset($fielddata['subquestion2'])) $varlabel = "[{$fielddata['subquestion2']}] ". $varlabel;
-                if (isset($fielddata['subquestion1'])) $varlabel = "[{$fielddata['subquestion1']}] ". $varlabel;
+                if (isset($fielddata['scale'])) {
+                    $varlabel = "[{$fielddata['scale']}] ". $varlabel;
+                }
+                if (isset($fielddata['subquestion'])) {
+                    $varlabel = "[{$fielddata['subquestion']}] ". $varlabel;
+                }
+                if (isset($fielddata['subquestion2'])) {
+                    $varlabel = "[{$fielddata['subquestion2']}] ". $varlabel;
+                }
+                if (isset($fielddata['subquestion1'])) {
+                    $varlabel = "[{$fielddata['subquestion1']}] ". $varlabel;
+                }
                 $ftitle=$fielddata['title'];
-                if (!is_null($code) && $code<>"" ) $ftitle .= "_$code";
-                if (isset($typeMap[$ftype]['size'])) $val_size = $typeMap[$ftype]['size'];
-                if (isset($fielddata['scale_id'])) $scale_id = $fielddata['scale_id'];
-                if($fieldtype == '') $fieldtype = $typeMap[$ftype]['SPSStype'];
+                if (!is_null($code) && $code<>"" ) {
+                    $ftitle .= "_$code";
+                }
+                if (isset($typeMap[$ftype]['size'])) {
+                    $val_size = $typeMap[$ftype]['size'];
+                }
+                if (isset($fielddata['scale_id'])) {
+                    $scale_id = $fielddata['scale_id'];
+                }
+                if($fieldtype == '') {
+                    $fieldtype = $typeMap[$ftype]['SPSStype'];
+                }
                 if (isset($typeMap[$ftype]['hide'])) {
                     $hide = $typeMap[$ftype]['hide'];
                     $diff++;
                 }
                 //Get default scale for this type
-                if (isset($typeMap[$ftype]['Scale'])) $export_scale = $typeMap[$ftype]['Scale'];
+                if (isset($typeMap[$ftype]['Scale'])) {
+                    $export_scale = $typeMap[$ftype]['Scale'];
+                }
                 //But allow override
                 $aQuestionAttribs = getQuestionAttributeValues($qid);
-                if (isset($aQuestionAttribs['scale_export'])) $export_scale = $aQuestionAttribs['scale_export'];
+                if (isset($aQuestionAttribs['scale_export'])) {
+                    $export_scale = $aQuestionAttribs['scale_export'];
+                }
             }
 
         }
         $iFieldNumber++;
         $fid = $iFieldNumber - $diff;
         $lsLong = isset($typeMap[$ftype]["name"])?$typeMap[$ftype]["name"]:$ftype;
-        $tempArray = array('id'=>"$prefix$fid",'name'=>mb_substr($fieldname, 0, 8),
-        'qid'=>$qid,'code'=>$code,'SPSStype'=>$fieldtype,'LStype'=>$ftype,"LSlong"=>$lsLong,
-        'ValueLabels'=>'','VariableLabel'=>$varlabel,"sql_name"=>$fieldname,"size"=>$val_size,
-        'title'=>$ftitle,'hide'=>$hide,'scale'=>$export_scale, 'scale_id'=>$scale_id);
+        $tempArray = array(
+            'id'=>$prefix.$fid,
+            'name'=>mb_substr($fieldname, 0, 8),
+            'qid'=>$qid,
+            'code'=>$code,
+            'SPSStype'=>$fieldtype,
+            'LStype'=>$ftype,
+            'LSlong'=>$lsLong,
+            'ValueLabels'=>'',
+            'VariableLabel'=>$varlabel,
+            'sql_name'=>$fieldname,
+            'size'=>$val_size,
+            'title'=>$ftitle,
+            'hide'=>$hide,
+            'scale'=>$export_scale,
+            'scale_id'=>$scale_id
+        );
         //Now check if we have to retrieve value labels
         $answers = SPSSGetValues($tempArray, $aQuestionAttribs, $sLanguage);
         if (is_array($answers)) {
@@ -498,7 +567,9 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
                 $tempArray['SPSStype'] = $answers['SPSStype'];
                 unset($answers['SPSStype']);
             }
-            $tempArray['answers'] = $answers;
+            if (!empty($answers)) {
+                $tempArray['answers'] = $answers;
+            }
         }
         $fields[] = $tempArray;
     }
@@ -1860,4 +1931,62 @@ function CPDBExport($data,$filename)
     }
     echo $tokenoutput;
     exit;
+}
+
+/**
+ * Find the string size according DB size for existing question
+ * Column name must be SGQA currently
+ * @param string sColumn column
+ * @return integer
+ **/
+function stringSize($sColumn)
+{
+    // Find the sid
+    $iSurveyId=substr($sColumn, 0, strpos($sColumn, 'X'));
+    switch (Yii::app()->db->driverName){
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+            $lengthWord='LEN';
+            break;
+        default:
+            $lengthWord='LENGTH';
+    }
+    $lengthReal = Yii::app()->db->createCommand()
+    ->select("{$lengthWord}(".Yii::app()->db->quoteColumnName($sColumn).")")
+    ->from("{{survey_".$iSurveyId."}}")
+    ->order("{$lengthWord}(".Yii::app()->db->quoteColumnName($sColumn).")  DESC")
+    ->limit(1)
+    ->queryScalar();
+    return (int)$lengthReal;
+}
+/**
+ * Find the numeric size according DB size for existing question
+ * Column name must be SGQA currently
+ * @see https://www.gnu.org/software/pspp/manual/html_node/Basic-Numeric-Formats.html#Basic-Numeric-Formats ?
+ * @param string sColumn column
+ * @return integer
+ **/
+function decimalSize($sColumn)
+{
+    // Find the sid
+    $iSurveyId=substr($sColumn, 0, strpos($sColumn, 'X'));
+    $sColumn = Yii::app()->db->quoteColumnName($sColumn);
+    $maxNumeric = Yii::app()->db
+    ->createCommand("SELECT MIN($sColumn) FROM {{survey_".$iSurveyId."}}")
+    ->queryScalar();
+    $integerMaxLen = strlen(intval($maxNumeric));
+
+    $minNumeric = Yii::app()->db
+    ->createCommand("SELECT MIN($sColumn) FROM {{survey_".$iSurveyId."}}")
+    ->queryScalar();
+    $integerMinLen = strlen(intval($maxNumeric));
+
+    $haveMinus = ($minNumeric < 0);
+    $maxIntegerLen=max([$integerMaxLen,$integerMinLen]);
+    // return always 10 0 after . (decimal(30.10))
+    if($haveMinus) {
+        return $maxIntegerLen+11;
+    }
+    return $integerPart+10;
 }

@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -356,27 +356,16 @@ class export extends Survey_Common_Action {
         //        $typeMap = $this->_getTypeMap();
 
         $filterstate = incompleteAnsFilterState();
-        $spssver = returnGlobal('spssver');
-
-        if ( is_null($spssver) )
-        {
-            if ( ! Yii::app()->session['spssversion'] )
-            {
-                Yii::app()->session['spssversion'] = 2;    //Set default to 2, version 16 or up
-            }
-
-            $spssver = Yii::app()->session['spssversion'];
+        if(!Yii::app()->session['spssversion']) { // Default to 2 (16 and up)
+            Yii::app()->session['spssversion'] = 2;
         }
-        else
-        {
-            Yii::app()->session['spssversion'] = $spssver;
-        }
+        $spssver = Yii::app()->request->getParam('spssver',Yii::app()->session['spssversion']); 
+        Yii::app()->session['spssversion'] = $spssver;
 
         $length_varlabel = '231'; // Set the max text length of Variable Labels
         $length_vallabel = '120'; // Set the max text length of Value Labels
 
-        switch ( $spssver )
-        {
+        switch ( $spssver ) {
             case 1:    //<16
                 $iLength     = '255'; // Set the max text length of the Value
                 break;
@@ -476,10 +465,10 @@ class export extends Survey_Common_Action {
             header("Content-type: application/download; charset=UTF-8");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Pragma: public");
-
             // Build array that has to be returned
             $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
+            /* Broken part : why 500 lines ? Must get whole or none : never use some sample to construct syntax …
             //Now get the query string with all fields to export
             $query = SPSSGetQuery($iSurveyID, 500, 0);  // Sample first 500 responses for adjusting fieldmap
             $result = $query->queryAll();
@@ -492,7 +481,7 @@ class export extends Survey_Common_Action {
                 foreach ( $fields as $iIndex=>$aField )
                 {
                     //Performance improvement, don't recheck fields that have valuelabels
-                    if ( ! isset($aField['answers']) )
+                    if (!isset($aField['answers']) )
                     {
                         $strTmp = mb_substr(stripTagsFull($row[$aField['sql_name']]), 0, $iLength);
                         $len = mb_strlen($strTmp);
@@ -509,7 +498,7 @@ class export extends Survey_Common_Action {
                     }
                 }
             }
-
+            */
             /**
             * End of DATA print out
             *
@@ -545,14 +534,17 @@ class export extends Survey_Common_Action {
 
             foreach ( $fields as $field )
             {
-                if( $field['SPSStype'] == 'DATETIME23.2' ) $field['size'] = '';
-
-                if($field['SPSStype'] == 'F' && ($field['LStype'] == 'N' || $field['LStype'] == 'K'))
-                {
-                    $field['size'] .= '.' . ($field['size']-1);
+                if( $field['SPSStype'] == 'DATETIME23.2' ) {
+                    $field['size'] = '';
                 }
 
-                if ( !$field['hide'] ) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
+                if($field['SPSStype'] == 'F' && ($field['LStype'] == 'N' || $field['LStype'] == 'K')) {
+                    $field['size'] .= '.10'; // For N and K : DB are in DECIMAL(30.10), then always ten 0
+                }
+
+                if ( !$field['hide'] ) {
+                    echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
+                }
             }
 
             echo ".\nCACHE.\n"
@@ -653,7 +645,7 @@ class export extends Survey_Common_Action {
                 }
             }
             echo "RESTORE LOCALE.\n";
-            exit;
+            App()->end();
         }
     }
 
