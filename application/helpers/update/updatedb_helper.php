@@ -799,7 +799,7 @@ function upgradeTemplateTables304($oDB)
         'description'            => 'TEXT',
         'last_update'            => 'DATETIME DEFAULT NULL',
         'owner_id'               => 'INT(11) DEFAULT NULL',
-        'extends_templates_name' => 'string(150) DEFAULT NULL',
+        'extends_template_name' => 'string(150) DEFAULT NULL',
         'PRIMARY KEY (name)'
     ));
 
@@ -820,7 +820,7 @@ function upgradeTemplateTables304($oDB)
         'files_folder'           => 'files',
         'description'            => "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)",
         'owner_id'               => '1',
-        'extends_templates_name' => '',
+        'extends_template_name' => '',
     ));
 
     // Add minimal template
@@ -840,7 +840,7 @@ function upgradeTemplateTables304($oDB)
         'files_folder'           => 'files',
         'description'            => '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.',
         'owner_id'               => '1',
-        'extends_templates_name' => '',
+        'extends_template_name' => '',
     ));
 
 
@@ -862,14 +862,14 @@ function upgradeTemplateTables304($oDB)
         'files_folder'           => 'files',
         'description'            => "<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>",
         'owner_id'               => '1',
-        'extends_templates_name' => 'default',
+        'extends_template_name' => 'default',
     ));
 
 
     // Add template configuration table
     $oDB->createCommand()->createTable('{{template_configuration}}', array(
         'id'                => 'pk',
-        'templates_name'    => 'string(150) NOT NULL',
+        'template_name'    => 'string(150) NOT NULL',
         'sid'               => 'int(11) DEFAULT NULL',
         'gsid'              => 'int(11) DEFAULT NULL',
         'uid'               => 'int(11) DEFAULT NULL',
@@ -886,7 +886,7 @@ function upgradeTemplateTables304($oDB)
     // Add global configuration for Advanced Template
     $oDB->createCommand()->insert('{{template_configuration}}', array(
         'id'                => '1',
-        'templates_name'    => 'default',
+        'template_name'    => 'default',
         'files_css'         => '{"add": ["css/template.css", "css/animate.css"]}',
         'files_js'          => '{"add": ["scripts/template.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',
@@ -901,7 +901,7 @@ function upgradeTemplateTables304($oDB)
     // Add global configuration for Minimal Template
     $oDB->createCommand()->insert('{{template_configuration}}', array(
         'id'                => '2',
-        'templates_name'    => 'minimal',
+        'template_name'    => 'minimal',
         'files_css'         => '{"add": ["css/template.css"]}',
         'files_js'          => '{"add": ["scripts/template.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',
@@ -915,7 +915,7 @@ function upgradeTemplateTables304($oDB)
     // Add global configuration for Material Template
     $oDB->createCommand()->insert('{{template_configuration}}', array(
         'id'                => '3',
-        'templates_name'    => 'material',
+        'template_name'    => 'material',
         'files_css'         => '{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}',
         'files_js'          => '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',

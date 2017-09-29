@@ -333,7 +333,7 @@ class SurveyAdmin extends Survey_Common_Action
         $survey->save();
 
         $oTemplateConfiguration = $survey->surveyTemplateConfiguration;
-        $oTemplateConfiguration->templates_name = $sTemplate;
+        $oTemplateConfiguration->template_name = $sTemplate;
         $oTemplateConfiguration->save();
 
     }

@@ -169,7 +169,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function addFileReplacementInDB($sFile, $sType)
     {
-        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'=>$this->sTemplateName));
+        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('template_name'=>$this->sTemplateName));
         foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
             $oTemplateConfigurationModel->addFileReplacement($sFile, $sType);
         }

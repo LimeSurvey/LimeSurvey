@@ -544,7 +544,7 @@ CREATE TABLE `prefix_users` (
 
 
 --
--- Table structure & data for table boxes
+-- Table boxes
 --
 CREATE TABLE IF NOT EXISTS `prefix_boxes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -585,7 +585,7 @@ CREATE INDEX `quota_idx2` ON `prefix_quota` (`sid`);
 CREATE INDEX `parent_qid_idx` ON `prefix_questions` (`parent_qid`);
 
 --
--- Notification table
+-- Table notifications
 --
 CREATE TABLE IF NOT EXISTS `prefix_notifications` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -605,7 +605,7 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
 
 --
--- User settings table
+-- Table settings_user 
 --
 CREATE TABLE IF NOT EXISTS `prefix_settings_user` (
     `id` int(11) NOT NULL auto_increment,
@@ -620,7 +620,6 @@ CREATE TABLE IF NOT EXISTS `prefix_settings_user` (
 --
 -- Surveymenu
 --
-
 CREATE TABLE `prefix_surveymenu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
@@ -675,10 +674,10 @@ CREATE TABLE `prefix_surveymenu_entries` (
   `created_at` datetime NOT NULL,
   `created_by` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `menu_id` (`menu_id`),
-  KEY `ordering` (`ordering`),
-  KEY `title` (`title`(191)),
-  KEY `menu_title` (`menu_title`(191))
+  KEY `menu_id_index` (`menu_id`),
+  KEY `ordering_index` (`ordering`),
+  KEY `title_index` (`title`(191)),
+  KEY `menu_title_index` (`menu_title`(191))
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -720,6 +719,7 @@ INSERT INTO `prefix_surveymenu_entries` VALUES
 -- Table prefix_templates
 -- -----------------------------------------------------
 CREATE TABLE `prefix_templates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `folder` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -737,17 +737,17 @@ CREATE TABLE `prefix_templates` (
   `last_update` datetime DEFAULT NULL,
   `owner_id` int(11) DEFAULT NULL,
   `extends_templates_name` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`name`)
+  PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
 INSERT INTO `prefix_templates` VALUES
-  ('default', 'default', 'Advanced Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '');
+  (1,'default', 'default', 'Advanced Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '');
 INSERT INTO `prefix_templates` VALUES
-  ('minimal', 'minimal', 'Minimal Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '');
+  (2,'minimal', 'minimal', 'Minimal Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '');
 INSERT INTO `prefix_templates` VALUES
-    ('material', 'material', 'Material Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>", NULL, 1, 'default');
+    ('material', 'material', 'Material Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta''s Material design theme for Bootstrap 3</small>', NULL, 1, 'default');
 
 
 -- -----------------------------------------------------
@@ -755,7 +755,7 @@ INSERT INTO `prefix_templates` VALUES
 -- -----------------------------------------------------
 CREATE TABLE `prefix_template_configuration` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `templates_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `template_name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `sid` int(11) DEFAULT NULL,
   `gsid` int(11) DEFAULT NULL,
   `uid` int(11) DEFAULT NULL,
@@ -790,7 +790,7 @@ CREATE TABLE `prefix_surveys_groups` (
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT 'default',
   `description` text COLLATE utf8mb4_unicode_ci,
-  `order` int(11) NOT NULL,
+  `sortorder` int(11) NOT NULL,
   `owner_uid` int(11) DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
@@ -808,4 +808,4 @@ INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `or
 --
 -- Version Info
 --
-INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '314');
+INSERT INTO `prefix_settings_global` VALUES ('DBVersion', '315');

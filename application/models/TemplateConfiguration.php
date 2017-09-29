@@ -19,7 +19,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  *
  * The followings are the available columns in table '{{template_configuration}}':
  * @property string $id
- * @property string $templates_name
+ * @property string $template_name
  * @property string $gsid
  * @property string $sid
  * @property string $files_css
@@ -89,13 +89,13 @@ class TemplateConfiguration extends TemplateConfig
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('templates_name', 'required'),
+            array('template_name', 'required'),
             array('id, sid, gsid', 'numerical', 'integerOnly'=>true),
-            array('templates_name', 'length', 'max'=>150),
+            array('template_name', 'length', 'max'=>150),
             array('cssframework_name', 'length', 'max'=>45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load', 'safe'),
             // The following rule is used by search().
-            array('id, templates_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on'=>'search'),
+            array('id, template_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on'=>'search'),
         );
     }
 
@@ -105,7 +105,7 @@ class TemplateConfiguration extends TemplateConfig
     public function relations()
     {
         return array(
-            'template' => array(self::HAS_ONE, 'Template', array('name' => 'templates_name')),
+            'template' => array(self::HAS_ONE, 'Template', array('name' => 'template_name')),
         );
     }
 
@@ -116,7 +116,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         return array(
             'id' => 'ID',
-            'templates_name' => 'Templates Name',
+            'template_name' => 'Templates Name',
             'sid' => 'Sid',
             'gsid' => 'Gsid',
             'files_css' => 'Files Css',
@@ -138,8 +138,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     public static function getInstanceFromTemplateName($sTemplateName){
         return  self::model()->find(
-            'templates_name=:templates_name AND sid IS NULL AND gsid IS NULL',
-            array(':templates_name'=>$sTemplateName)
+            'template_name=:template_name AND sid IS NULL AND gsid IS NULL',
+            array(':template_name'=>$sTemplateName)
         );
     }
 
@@ -158,8 +158,8 @@ class TemplateConfiguration extends TemplateConfig
 
         $criteria = new CDbCriteria();
         $criteria->addCondition('gsid=:gsid');
-        $criteria->addCondition('templates_name=:templates_name');
-        $criteria->params = array('gsid' => $iSurveyGroupId, 'templates_name' => $sTemplateName);
+        $criteria->addCondition('template_name=:template_name');
+        $criteria->params = array('gsid' => $iSurveyGroupId, 'template_name' => $sTemplateName);
         $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
         // No specific template configuration for this surveygroup => create one
@@ -192,8 +192,8 @@ class TemplateConfiguration extends TemplateConfig
 
         $criteria = new CDbCriteria();
         $criteria->addCondition('sid=:sid');
-        $criteria->addCondition('templates_name=:templates_name');
-        $criteria->params = array('sid' => $iSurveyId, 'templates_name' => $sTemplateName);
+        $criteria->addCondition('template_name=:template_name');
+        $criteria->params = array('sid' => $iSurveyId, 'template_name' => $sTemplateName);
 
         $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
 
@@ -264,7 +264,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria->addCondition('gsid IS NULL');
 
         $criteria->compare('id',$this->id);
-        $criteria->compare('templates_name',$this->templates_name,true);
+        $criteria->compare('template_name',$this->template_name,true);
         $criteria->compare('files_css',$this->files_css,true);
         $criteria->compare('files_js',$this->files_js,true);
         $criteria->compare('files_print_css',$this->files_print_css,true);
@@ -324,12 +324,12 @@ class TemplateConfiguration extends TemplateConfig
         $oNewTemplate->files_folder           = $oEditTemplateDb->files_folder;
         //$oNewTemplate->description           TODO: a more complex modal whith email, author, url, licence, desc, etc
         $oNewTemplate->owner_id               = Yii::app()->user->id;
-        $oNewTemplate->extends_templates_name = $oEditedTemplate->oMotherTemplate->sTemplateName;
+        $oNewTemplate->extends_template_name = $oEditedTemplate->oMotherTemplate->sTemplateName;
 
         if ($oNewTemplate->save()){
             $oNewTemplateConfiguration                    = new TemplateConfiguration;
-            $oNewTemplateConfiguration->templates_name    = $oEditedTemplate->sTemplateName;
-            $oNewTemplateConfiguration->templates_name    = $oEditedTemplate->sTemplateName;
+            $oNewTemplateConfiguration->template_name    = $oEditedTemplate->sTemplateName;
+            $oNewTemplateConfiguration->template_name    = $oEditedTemplate->sTemplateName;
             $oNewTemplateConfiguration->options           = json_encode($oEditedTemplate->oOptions);
 
 
@@ -551,8 +551,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function setMotherTemplates()
     {
-        if(!empty($this->template->extends_templates_name)){
-            $sMotherTemplateName   = $this->template->extends_templates_name;
+        if(!empty($this->template->extends_template_name)){
+            $sMotherTemplateName   = $this->template->extends_template_name;
             $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
             $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null);
             if ($this->oMotherTemplate->checkTemplate()){
@@ -630,8 +630,8 @@ class TemplateConfiguration extends TemplateConfig
 
     protected function addMotherTemplatePackage($packages)
     {
-        if (!empty($this->template->extends_templates_name)){
-            $sMotherTemplateName = (string) $this->template->extends_templates_name;
+        if (!empty($this->template->extends_template_name)){
+            $sMotherTemplateName = (string) $this->template->extends_template_name;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
         }
         return $packages;
@@ -731,7 +731,7 @@ class TemplateConfiguration extends TemplateConfig
             }
 
             //in the endcheck for general global template
-            $this->oParentTemplate = Template::getTemplateConfiguration($this->templates_name, null, null);
+            $this->oParentTemplate = Template::getTemplateConfiguration($this->template_name, null, null);
             $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
             return $this->oParentTemplate;
         }
