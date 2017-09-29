@@ -39,7 +39,11 @@
         <tr>
             <td style='width: 70%;'>
                 <?php echo $survey['name']; ?>
-                (<a href="<?php echo $this->createUrl('admin/survey', array('sa' => 'view', 'surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
+                <?php if ($survey['deleted']): ?>
+                    (<?php echo $survey['sid']; ?>)
+                <?php else: ?>
+                    (<a href="<?php echo $this->createUrl('admin/survey', array('sa' => 'view', 'surveyid' => $survey['sid'])); ?>"><?php echo $survey['sid']; ?></a>)
+                <?php endif; ?>
             </td>
             <td>
                 <?php echo $survey['size']; ?>
@@ -47,7 +51,8 @@
                     <span
                         class='fa fa-trash pull-right btn btn-danger btn-xs'
                         data-toggle='tooltip'
-                        title='<?php eT('Purge survey'); ?>'
+                        onclick='window.location = "<?php echo $this->createUrl('admin/survey', array('sa' => 'purge', 'purge_sid' => $survey['sid'])); ?>"'
+                        title='<?php eT('Delete survey files'); ?>'
                     >
                     </span>
                 <?php endif; ?>

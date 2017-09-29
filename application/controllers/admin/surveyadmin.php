@@ -768,6 +768,41 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
+     * Remove files not deleted properly.
+     * Purge is only available for surveys that were already deleted but for some reason
+     * left files behind.
+     * @param int $purge_sid
+     * @return void
+     */
+    public function purge($purge_sid)
+    {
+        $purge_sid = (int) $purge_sid;
+        if (Permission::model()->hasGlobalPermission('superadmin', 'delete')) {
+            $survey = Survey::model()->findByPk($purge_sid);
+            if (empty($survey)) {
+                $result = rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $purge_sid);
+                if ($result) {
+                    Yii::app()->user->setFlash('success', gT('Survey files deleted.'));
+                } else {
+                    Yii::app()->user->setFlash('error', gT('Error: Could not delete survey files.'));
+                }
+            } else {
+                // Should not be possible.
+                Yii::app()->user->setFlash(
+                    'error',
+                    gT('Error: Cannot purge files for a survey that is not deleted. Please delete the survey normally in the survey view.')
+                );
+            }
+        } else {
+            Yii::app()->user->setFlash('error', gT('Access denied'));
+        }
+
+        $this->getController()->redirect(
+            $this->getController()->createUrl('admin/globalsettings')
+        );
+    }
+
+    /**
     * Takes the edit call from the detailed survey view, which either deletes the survey information
     */
     public function editSurvey_json()
