@@ -1988,5 +1988,5 @@ function decimalSize($sColumn)
     if($haveMinus) {
         return $maxIntegerLen+11;
     }
-    return $integerPart+10;
+    return $maxIntegerLen+10;
 }
