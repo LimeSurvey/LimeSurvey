@@ -739,7 +739,7 @@ CREATE TABLE prefix_templates (
   [description] nvarchar(max) NULL,
   [last_update] datetime NULL,
   [owner_id] int NULL,
-  [extends_templates_name] nvarchar(150) NULL
+  [extends] nvarchar(150) NULL
 );
 
 

@@ -607,7 +607,7 @@ CREATE TABLE IF NOT EXISTS `prefix_notifications` (
 --
 -- Table settings_user 
 --
-CREATE TABLE IF NOT EXISTS `prefix_settings_user` (
+CREATE TABLE `prefix_settings_user` (
     `id` int(11) NOT NULL auto_increment,
     `uid` int(11) NOT NULL,
     `entity` VARCHAR(15) DEFAULT NULL,
@@ -736,7 +736,7 @@ CREATE TABLE `prefix_templates` (
   `description` text COLLATE utf8mb4_unicode_ci,
   `last_update` datetime DEFAULT NULL,
   `owner_id` int(11) DEFAULT NULL,
-  `extends_templates_name` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `extends` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -747,7 +747,7 @@ INSERT INTO `prefix_templates` VALUES
 INSERT INTO `prefix_templates` VALUES
   (2,'minimal', 'minimal', 'Minimal Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '');
 INSERT INTO `prefix_templates` VALUES
-    ('material', 'material', 'Material Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta''s Material design theme for Bootstrap 3</small>', NULL, 1, 'default');
+    (3,'material', 'material', 'Material Template', '2017-07-12 10:00:00', 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta''s Material design theme for Bootstrap 3</small>', NULL, 1, 'default');
 
 
 -- -----------------------------------------------------
@@ -785,7 +785,7 @@ INSERT INTO `prefix_template_configuration`  VALUES
 -- Table prefix_surveys_groups
 -- -----------------------------------------------------
 CREATE TABLE `prefix_surveys_groups` (
-  `gsid` int(11) NOT NULL,
+  `gsid` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `template` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT 'default',
