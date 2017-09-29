@@ -159,10 +159,10 @@ class GlobalSettings extends Survey_Common_Action
                 $surveys[] = array(
                     'sizeInBytes' => $size,
                     'size'        => humanFilesize($size, $decimals),
-                    'name'        => empty($surveyinfo['name']) ? '(' . gT('deleted') . ')' : $surveyinfo['name'],
-                    'deleted'     => empty($surveyinfo['name']),
+                    'name'        => $surveyinfo === false ? '(' . gT('deleted') . ')' : $surveyinfo['name'],
+                    'deleted'     => $surveyinfo === false,
                     'showPurgeButton' => Permission::model()->hasGlobalPermission('superadmin', 'delete')
-                                         && empty($surveyinfo['name']),
+                                         && $surveyinfo === false,
                     'sid'         => $surveyId
                 );
             }
