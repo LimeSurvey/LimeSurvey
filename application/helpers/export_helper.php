@@ -1958,6 +1958,7 @@ function stringSize($sColumn)
     ->order("{$lengthWord}(".Yii::app()->db->quoteColumnName($sColumn).")  DESC")
     ->limit(1)
     ->queryScalar();
+
     return (int)$lengthReal;
 }
 /**
@@ -1973,7 +1974,7 @@ function decimalSize($sColumn)
     $iSurveyId=substr($sColumn, 0, strpos($sColumn, 'X'));
     $sColumn = Yii::app()->db->quoteColumnName($sColumn);
     $maxNumeric = Yii::app()->db
-    ->createCommand("SELECT MIN($sColumn) FROM {{survey_".$iSurveyId."}}")
+    ->createCommand("SELECT MAX($sColumn) FROM {{survey_".$iSurveyId."}}")
     ->queryScalar();
     $integerMaxLen = strlen(intval($maxNumeric));
 
