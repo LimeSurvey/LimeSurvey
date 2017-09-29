@@ -600,8 +600,7 @@ CREATE TABLE prefix_notifications (
     "display_class" character varying(31) DEFAULT 'default',
     "hash" character varying(64) DEFAULT NULL,
     "created" timestamp NOT NULL,
-    "first_read" timestamp DEFAULT NULL,
-    CONSTRAINT prefix_notifications_pkey PRIMARY KEY (id)
+    "first_read" timestamp DEFAULT NULL
 );
 CREATE INDEX prefix_index ON prefix_notifications USING btree (entity, entity_id, status);
 CREATE INDEX notif_hash_index ON prefix_notifications USING btree (hash);
@@ -636,16 +635,15 @@ CREATE TABLE prefix_surveymenu (
   "changed_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   "changed_by" integer NOT NULL DEFAULT '0',
   "created_at" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  "created_by" integer NOT NULL DEFAULT '0',
-  PRIMARY KEY ("id")
+  "created_by" integer NOT NULL DEFAULT '0'
 );
 
 create index surveymenu_ordering_index on prefix_surveymenu ("ordering");
 create index surveymenu_title_index on prefix_surveymenu ("title");
 
 
-INSERT INTO prefix_surveymenu VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',NOW(),0,NOW(),0);
-INSERT INTO prefix_surveymenu VALUES (2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',NOW(),0,NOW(),0);
+INSERT INTO prefix_surveymenu VALUES (1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, NOW(),0,NOW(),0);
+INSERT INTO prefix_surveymenu VALUES (2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',1, NOW(),0,NOW(),0);
 
 --
 -- Surveymenu entries
@@ -675,11 +673,10 @@ CREATE TABLE prefix_surveymenu_entries (
   "changed_at" timestamp NULL,
   "changed_by" integer NOT NULL DEFAULT '0',
   "created_at" timestamp NOT NULL,
-  "created_by" integer NOT NULL DEFAULT '0',
-  PRIMARY KEY (id)
+  "created_by" integer NOT NULL DEFAULT '0'
 );
 
-create index surveymenu_entries_menu_id_index on prefix_surveymenu_entries (menu_id_index);
+create index surveymenu_entries_menu_id_index on prefix_surveymenu_entries ("menu_id");
 create index surveymenu_entries_ordering_index on prefix_surveymenu_entries ("ordering");
 create index surveymenu_entries_title_index on prefix_surveymenu_entries (title);
 create index surveymenu_entries_menu_title_index on prefix_surveymenu_entries (menu_title);
@@ -800,7 +797,7 @@ CREATE TABLE "prefix_surveys_groups" (
 );
 
 
-INSERT INTO "prefix_surveys_groups" ("gsid", "name", "title", "description", "order", "owner_uid", "parent_id", "created", "modified", "created_by") VALUES
+INSERT INTO "prefix_surveys_groups" ("gsid", "name", "title", "description", "sortorder", "owner_uid", "parent_id", "created", "modified", "created_by") VALUES
   (1, 'default', 'Default Survey Group', 'LimeSurvey core default survey group', 0, 1, NULL, '2017-07-20 17:09:30', '2017-07-20 17:09:30', 1);
 
 --

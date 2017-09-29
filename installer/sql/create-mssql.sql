@@ -783,7 +783,7 @@ INSERT INTO [prefix_template_configuration] ([template_name],[sid],[gsid],[uid],
 -- Table prefix_surveys_groups
 -- -----------------------------------------------------
 CREATE TABLE [prefix_surveys_groups] (
-  [gsid] int NOT NULL PRIMARY KEY,
+  [gsid] int NOT NULL IDENTITY (1,1) PRIMARY KEY,
   [name] varchar(45) NOT NULL,
   [title] varchar(100) NULL,
   [template] varchar(128) NULL DEFAULT 'default',
