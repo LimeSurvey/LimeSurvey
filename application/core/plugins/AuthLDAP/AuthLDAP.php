@@ -233,7 +233,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
           if ($rescount == 1)
           {
               $userentry=ldap_get_entries($ldapconn, $dnsearchres);
-              $new_email = flattenText($userentry[0][$mailattribute][0]);
+              $new_email = flattenText($userentry[0][strtolower($mailattribute)][0]);
               $new_full_name = flattenText($userentry[0][strtolower($fullnameattribute)][0]);
 	      break;
           }
