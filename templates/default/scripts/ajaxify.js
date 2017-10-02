@@ -52,7 +52,8 @@ var AjaxSubmitObject = function () {
     var bindActions = function () {
         var globalPjax = new Pjax({
             elements: "#limesurvey", // default is "a[href], form[action]"
-            selectors: ["#dynamicReloadContainer", "#beginScripts", "#bottomScripts"]
+            selectors: ["#dynamicReloadContainer", "#beginScripts", "#bottomScripts"],
+            
         });
         // Always bind to document to not need to bind again
         $(document).on("click", ".ls-move-btn",function () {
@@ -148,14 +149,14 @@ var AjaxSubmitObject = function () {
                 endLoadingBar();
                 //free submitting again
                 activeSubmit = false;
-                if (/<###begin###>/.test($('#beginScripts').html())) {
-                    $('#beginScripts').html("");
+                if (/<###begin###>/.test($('#beginScripts').text())) {
+                    $('#beginScripts').text("");
                 }
-                if (/<###end###>/.test($('#bottomScripts').html())){
-                    $('#bottomScripts').html("");
+                if (/<###end###>/.test($('#bottomScripts').text())){
+                    $('#bottomScripts').text("");
                 }
                 
-                $(document).off('.onreload');
+                $(document).off('pjax:complete.onreload');
             });
             
         });

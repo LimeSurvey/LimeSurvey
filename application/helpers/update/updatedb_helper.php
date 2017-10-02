@@ -317,16 +317,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 307) {
             $oTransaction = $oDB->beginTransaction();
             if (tableExists('{settings_user}')) {
-                $oDB->createCommand()->dropTable('{{settings_user}}');
+                $oDB->createCommand()->ecxecute('DROP {{settings_user}} CASCADE');
             }
             $oDB->createCommand()->createTable('{{settings_user}}', array(
-                'id' => 'int NOT NULL AUTO_INCREMENT',
+                'id' => 'pk',
                 'uid' => 'integer NOT NULL',
                 'entity' => 'string(15)',
                 'entity_id' => 'string(31)',
                 'stg_name' => 'string(63) not null',
                 'stg_value' => 'text',
-                'PRIMARY KEY (id)'
+                
             ));
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>307),"stg_name='DBVersion'");
             $oTransaction->commit();
@@ -372,6 +372,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 310) {
             $oTransaction = $oDB->beginTransaction();
             reCreateSurveyMenuTable310($oDB);
+            
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>310),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -404,8 +405,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 313) {
             $oTransaction = $oDB->beginTransaction();
 
-            addColumn('{{surveymenu_entries}}','active', "int(1) NOT NULL DEFAULT '0'");
-            addColumn('{{surveymenu}}','active', "int(1) NOT NULL DEFAULT '0'");
+            addColumn('{{surveymenu_entries}}','active', "boolean DEFAULT '0'");
+            addColumn('{{surveymenu}}','active', "boolean DEFAULT '0'");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('active'=>1));
             $oDB->createCommand()->update('{{surveymenu}}', array('active'=>1));
 
@@ -485,28 +486,28 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
 function createSurveyMenuTable293($oDB) {
         // Drop the old survey rights table.
-    if (tableExists('{surveymenu}')) {
-        $oDB->createCommand()->dropTable('{{surveymenu}}');
-    }
-
     if (tableExists('{surveymenu_entries}')) {
-        $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
+        $oDB->createCommand()->execute('DROP {{surveymenu_entries}} CASCADE');
+    }
+        
+    if (tableExists('{surveymenu}')) {
+        $oDB->createCommand()->execute('DROP {{surveymenu}} CASCADE');
     }
 
 
     $oDB->createCommand()->createTable('{{surveymenu}}', array(
-        "id" => "int NOT NULL AUTO_INCREMENT",
+        "id" => "pk",
         "parent_id" => "int DEFAULT NULL",
         "survey_id" => "int DEFAULT NULL",
         "order" => "int DEFAULT '0'",
         "level" => "int DEFAULT '0'",
         "title" => "character varying(255)  NOT NULL DEFAULT ''",
         "description" => "text ",
-        "changed_at" => "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+        "changed_at" => "timestamp",
         "changed_by" => "int NOT NULL DEFAULT '0'",
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "int NOT NULL DEFAULT '0'",
-        'PRIMARY KEY (id)'
+        
     ));
 
     $oDB->createCommand()->insert(
@@ -527,7 +528,7 @@ function createSurveyMenuTable293($oDB) {
     );
 
     $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
-        "id" => "int NOT NULL AUTO_INCREMENT",
+        "id" => "pk",
         "menu_id" => "int DEFAULT NULL",
         "order" => "int DEFAULT '0'",
         "name" => "character varying(255)  NOT NULL DEFAULT ''",
@@ -547,7 +548,7 @@ function createSurveyMenuTable293($oDB) {
         "data" => "text ",
         "getdatamethod" => "character varying(255)  NOT NULL DEFAULT ''",
         "language" => "character varying(255)  NOT NULL DEFAULT 'en-GB'",
-        "changed_at" => "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
+        "changed_at" => "timestamp",
         "changed_by" => "int NOT NULL DEFAULT '0'",
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "int NOT NULL DEFAULT '0'",
@@ -597,23 +598,22 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     }
 
     $oDB->createCommand()->createTable('{{surveymenu}}', array(
-        "id" =>  "int(11) NOT NULL AUTO_INCREMENT",
-        "parent_id" =>  "int(11) DEFAULT NULL",
-        "survey_id" =>  "int(11) DEFAULT NULL",
-        "user_id" =>  "int(11) DEFAULT NULL",
-        "ordering" =>  "int(11) DEFAULT '0'",
-        "level" =>  "int(11) DEFAULT '0'",
+        "id" =>  "pk",
+        "parent_id" =>  "integer DEFAULT NULL",
+        "survey_id" =>  "integer DEFAULT NULL",
+        "user_id" =>  "integer DEFAULT NULL",
+        "ordering" =>  "integer DEFAULT '0'",
+        "level" =>  "integer DEFAULT '0'",
         "title" =>  "varchar(255)  NOT NULL DEFAULT ''",
         "position" =>  "varchar(255)  NOT NULL DEFAULT 'side'",
         "description" =>  "text ",
-        "changed_at" =>  "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
-        "changed_by" =>  "int(11) NOT NULL DEFAULT '0'",
+        "changed_at" =>  "timestamp",
+        "changed_by" =>  "integer NOT NULL DEFAULT '0'",
         "created_at" =>  "datetime DEFAULT NULL",
-        "created_by" =>  "int(11) NOT NULL DEFAULT '0'",
-        "PRIMARY KEY (`id`)",
-        "KEY `ordering` (`ordering`)",
-        "KEY `title` (`title`(250))"
+        "created_by" =>  "integer NOT NULL DEFAULT '0'",
     ));
+    $oDB->createCommand()->createIndex('idx_ordering', '{{surveymenu}}', 'ordering');
+    $oDB->createCommand()->createIndex('idx_title', '{{surveymenu}}', 'title');
 
     $oDB->createCommand()->insert(
         '{{surveymenu}}',
@@ -652,10 +652,10 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
 
 
  $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
-        "id" => "int(11) NOT NULL AUTO_INCREMENT",
-        "menu_id" => "int(11) DEFAULT NULL",
-        "user_id" => "int(11) DEFAULT NULL",
-        "ordering" => "int(11) DEFAULT '0'",
+        "id" => "pk",
+        "menu_id" => "integer DEFAULT NULL",
+        "user_id" => "integer DEFAULT NULL",
+        "ordering" => "integer DEFAULT '0'",
         "name" => "varchar(255)  NOT NULL DEFAULT ''",
         "title" => "varchar(255)  NOT NULL DEFAULT ''",
         "menu_title" => "varchar(255)  NOT NULL DEFAULT ''",
@@ -673,16 +673,15 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "data" => "text ",
         "getdatamethod" => "varchar(255)  NOT NULL DEFAULT ''",
         "language" => "varchar(255)  NOT NULL DEFAULT 'en-GB'",
-        "changed_at" => "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP",
-        "changed_by" => "int(11) NOT NULL DEFAULT '0'",
-        "created_at" => "datetime DEFAULT NULL",
-        "created_by" => "int(11) NOT NULL DEFAULT '0'",
-        "PRIMARY KEY (`id`)",
-        "KEY `menu_id` (`menu_id`)",
-        "KEY `ordering` (`ordering`)",
-        "KEY `title` (`title`(191))",
-        "KEY `menu_title` (`menu_title`(191))"
+        "changed_at" => "timestamp",
+        "changed_by" => "integer NOT NULL DEFAULT '0'",
+        "created_at" => "timestamp DEFAULT NULL",
+        "created_by" => "integer NOT NULL DEFAULT '0'"
     ));
+    $oDB->createCommand()->createIndex('idx_menu_id', '{{surveymenu_entries}}', 'menu_id');
+    $oDB->createCommand()->createIndex('idx_ordering_entries', '{{surveymenu_entries}}', 'ordering');
+    $oDB->createCommand()->createIndex('idx_title_entries', '{{surveymenu_entries}}', 'title');
+    $oDB->createCommand()->createIndex('idx_menu_title', '{{surveymenu_entries}}', 'menu_title');
 
     $colsToAdd = array("id","menu_id","user_id","ordering","name","title","menu_title","menu_description","menu_icon","menu_icon_type","menu_class","menu_link","action","template","partial","classes","permission","permission_grade","data","getdatamethod","language","changed_at","changed_by","created_at","created_by");
     $rowsToAdd = array(
@@ -730,7 +729,7 @@ function createSurveyGroupTables306($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{surveys_groups}')) {
-        $oDB->createCommand()->dropTable('{{surveys_groups}}');
+        $oDB->createCommand()->execute('DROP {{surveys_groups}}');
     }
 
 
@@ -740,12 +739,12 @@ function createSurveyGroupTables306($oDB)
         'name'        => 'string(45) NOT NULL',
         'title'       => 'string(100) DEFAULT NULL',
         'description' => 'text DEFAULT NULL',
-        'order'       => 'int(11) NOT NULL',
-        'owner_uid'   => 'int(11) DEFAULT NULL',
-        'parent_id'   => 'int(11) DEFAULT NULL',
+        'order'       => 'integer NOT NULL',
+        'owner_uid'   => 'integer DEFAULT NULL',
+        'parent_id'   => 'integer DEFAULT NULL',
         'created'     => 'DATETIME',
         'modified'    => 'DATETIME',
-        'created_by'  => 'int(11) NOT NULL'
+        'created_by'  => 'integer NOT NULL'
     ));
 
     // Add default template
@@ -761,7 +760,7 @@ function createSurveyGroupTables306($oDB)
         'created_by'  => '1'
     ));
 
-    $oDB->createCommand()->addColumn('{{surveys}}','gsid',"int(11) DEFAULT 1");
+    $oDB->createCommand()->addColumn('{{surveys}}','gsid',"integer DEFAULT 1");
 
 
 }
@@ -774,11 +773,11 @@ function upgradeTemplateTables304($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{{templates}}')) {
-        $oDB->createCommand()->dropTable('{{templates}}');
+        $oDB->createCommand()->execute('DROP {{templates}} CASCADE');
     }
 
     if (tableExists('{{template_configuration}}')) {
-        $oDB->createCommand()->dropTable('{{template_configuration}}');
+        $oDB->createCommand()->execute('DROP {{template_configuration}} CASCADE');
     }
 
     // Create templates table
@@ -798,8 +797,8 @@ function upgradeTemplateTables304($oDB)
         'files_folder'           => 'string(45) NOT NULL',
         'description'            => 'TEXT',
         'last_update'            => 'DATETIME DEFAULT NULL',
-        'owner_id'               => 'INT(11) DEFAULT NULL',
-        'extends_template_name' => 'string(150) DEFAULT NULL',
+        'owner_id'               => 'integer DEFAULT NULL',
+        'extends_templates_name' => 'string(150) DEFAULT NULL',
         'PRIMARY KEY (name)'
     ));
 
@@ -869,10 +868,10 @@ function upgradeTemplateTables304($oDB)
     // Add template configuration table
     $oDB->createCommand()->createTable('{{template_configuration}}', array(
         'id'                => 'pk',
-        'template_name'    => 'string(150) NOT NULL',
-        'sid'               => 'int(11) DEFAULT NULL',
-        'gsid'              => 'int(11) DEFAULT NULL',
-        'uid'               => 'int(11) DEFAULT NULL',
+        'templates_name'    => 'string(150) NOT NULL',
+        'sid'               => 'integer DEFAULT NULL',
+        'gsid'              => 'integer DEFAULT NULL',
+        'uid'               => 'integer DEFAULT NULL',
         'files_css'         => 'MEDIUMTEXT',
         'files_js'          => 'MEDIUMTEXT',
         'files_print_css'   => 'MEDIUMTEXT',

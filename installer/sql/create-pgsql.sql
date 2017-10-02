@@ -410,6 +410,7 @@ CREATE TABLE prefix_survey_url_parameters (
 --
 CREATE TABLE prefix_surveys (
     "sid" integer NOT NULL,
+    "gsid" integer NOT NULL,
     "owner_id" integer NOT NULL,
     "admin" character varying(50),
     "active" character varying(1) DEFAULT 'N' NOT NULL,
