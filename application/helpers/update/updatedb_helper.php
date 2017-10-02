@@ -627,7 +627,6 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     $oDB->createCommand()->insert(
         '{{surveymenu}}',
         array(
-            "id" =>1,
             "parent_id" =>NULL,
             "survey_id" =>NULL,
             "user_id" =>NULL,
@@ -644,7 +643,6 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     $oDB->createCommand()->insert(
         '{{surveymenu}}',
         array(
-            "id" =>2,
             "parent_id" =>NULL,
             "survey_id" =>NULL,
             "user_id" =>NULL,
@@ -893,7 +891,6 @@ function upgradeTemplateTables304($oDB)
 
     // Add global configuration for Advanced Template
     $oDB->createCommand()->insert('{{template_configuration}}', array(
-        'id'                => '1',
         'templates_name'    => 'default',
         'files_css'         => '{"add": ["css/template.css", "css/animate.css"]}',
         'files_js'          => '{"add": ["scripts/template.js"]}',
@@ -908,7 +905,6 @@ function upgradeTemplateTables304($oDB)
 
     // Add global configuration for Minimal Template
     $oDB->createCommand()->insert('{{template_configuration}}', array(
-        'id'                => '2',
         'templates_name'    => 'minimal',
         'files_css'         => '{"add": ["css/template.css"]}',
         'files_js'          => '{"add": ["scripts/template.js"]}',
@@ -922,7 +918,6 @@ function upgradeTemplateTables304($oDB)
 
     // Add global configuration for Material Template
     $oDB->createCommand()->insert('{{template_configuration}}', array(
-        'id'                => '3',
         'templates_name'    => 'material',
         'files_css'         => '{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}',
         'files_js'          => '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}',
