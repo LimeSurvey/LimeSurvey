@@ -20,7 +20,7 @@ $oTransaction = $oDB->beginTransaction();
         'answer' => 'text',
         'sortorder' => 'integer', 
         'assessment_value' => 'integer', 
-        'language' => 'string(20) DEFAULT "en"'	,
+        'language' => "string(20) DEFAULT 'en'"	,
         'scale_id' => 'integer DEFAULT 0',
     ));
     $oDB->createCommand()->createIndex('answers_idx2', '{{answers}}', 'sortorder', false);
@@ -39,7 +39,7 @@ $oTransaction = $oDB->beginTransaction();
         'minimum' =>    'string(50)',
         'maximum' =>    'string(50)',
         'message' =>    'text',
-        'language' =>   'string(20) DEFAULT "en"'
+        'language' =>   "string(20) DEFAULT 'en'"
     ));
     $oDB->createCommand()->createIndex('assessments_idx2', '{{assessments}}', 'sid', false);
     $oDB->createCommand()->createIndex('assessments_idx3', '{{assessments}}', 'gid', false);
@@ -51,21 +51,21 @@ $oTransaction = $oDB->beginTransaction();
 
     $oDB->createCommand()->createTable('{{boxes}}', array(
       'id' => "pk",
-      'position' => "integer DEFAULT NULL COMMENT 'position of the box'",
-      'url' => "text NOT NULL COMMENT 'URL the box points'",
-      'title' => "text NOT NULL COMMENT 'Box title'",
-      'ico' => "string(255) DEFAULT NULL COMMENT 'the ico name in font'",
-      'desc' => "text NOT NULL COMMENT 'Box description'",
-      'page' => "text NOT NULL COMMENT 'Page name where the box should be shown '",
-      'usergroup' => "integer NOT NULL COMMENT  'Those boxes will be shown for that user group'"
+      'position' => "integer DEFAULT NULL ",
+      'url' => "text NOT NULL ",
+      'title' => "text NOT NULL ",
+      'ico' => "string(255) DEFAULT NULL ",
+      'desc' => "text NOT NULL ",
+      'page' => "text NOT NULL ",
+      'usergroup' => "integer NOT NULL "
     ));
 
-    $oDB->createCommand()->insert("{{boxes}}", ['id' => 1, 'position' => 1, 'url' => 'admin/survey/sa/newsurvey', 'title' => 'Create survey', 'ico' => 'add', 'desc' => 'Create a new survey', 'page' => 'welcome', 'usergroup' => '-2']);
-    $oDB->createCommand()->insert("{{boxes}}", ['id' => 2, 'position' => 2, 'url' => 'admin/survey/sa/listsurveys', 'title' => 'List surveys', 'ico' => 'list', 'desc' => 'List available surveys', 'page' => 'welcome', 'usergroup' => '-1']);
-    $oDB->createCommand()->insert("{{boxes}}", ['id' => 3, 'position' => 3, 'url' => 'admin/globalsettings', 'title' => 'Global settings', 'ico' => 'settings', 'desc' => 'Edit global settings', 'page' => 'welcome', 'usergroup' => '-2']);
-    $oDB->createCommand()->insert("{{boxes}}", ['id' => 4, 'position' => 4, 'url' => 'admin/update', 'title' => 'ComfortUpdate', 'ico' => 'shield', 'desc' => 'Stay safe and up to date', 'page' => 'welcome', 'usergroup' => '-2']);
-    $oDB->createCommand()->insert("{{boxes}}", ['id' => 5, 'position' => 5, 'url' => 'admin/labels/sa/view', 'title' => 'Label sets', 'ico' => 'label', 'desc' => 'Edit label sets', 'page' => 'welcome', 'usergroup' => '-2']);
-    $oDB->createCommand()->insert("{{boxes}}", ['id' => 6, 'position' => 6, 'url' => 'admin/templateoptions', 'title' => 'Templates', 'ico' => 'templates', 'desc' => 'View templates list', 'page' => 'welcome', 'usergroup' => '-2']);
+    $oDB->createCommand()->insert("{{boxes}}", ['position' => 1, 'url' => 'admin/survey/sa/newsurvey', 'title' => 'Create survey', 'ico' => 'add', 'desc' => 'Create a new survey', 'page' => 'welcome', 'usergroup' => '-2']);
+    $oDB->createCommand()->insert("{{boxes}}", ['position' => 2, 'url' => 'admin/survey/sa/listsurveys', 'title' => 'List surveys', 'ico' => 'list', 'desc' => 'List available surveys', 'page' => 'welcome', 'usergroup' => '-1']);
+    $oDB->createCommand()->insert("{{boxes}}", ['position' => 3, 'url' => 'admin/globalsettings', 'title' => 'Global settings', 'ico' => 'settings', 'desc' => 'Edit global settings', 'page' => 'welcome', 'usergroup' => '-2']);
+    $oDB->createCommand()->insert("{{boxes}}", ['position' => 4, 'url' => 'admin/update', 'title' => 'ComfortUpdate', 'ico' => 'shield', 'desc' => 'Stay safe and up to date', 'page' => 'welcome', 'usergroup' => '-2']);
+    $oDB->createCommand()->insert("{{boxes}}", ['position' => 5, 'url' => 'admin/labels/sa/view', 'title' => 'Label sets', 'ico' => 'label', 'desc' => 'Edit label sets', 'page' => 'welcome', 'usergroup' => '-2']);
+    $oDB->createCommand()->insert("{{boxes}}", ['position' => 6, 'url' => 'admin/templateoptions', 'title' => 'Templates', 'ico' => 'templates', 'desc' => 'View templates list', 'page' => 'welcome', 'usergroup' => '-2']);
 
 try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
 
@@ -79,7 +79,7 @@ $oTransaction = $oDB->beginTransaction();
         'cfieldname' => "string(50) NOT NULL default ''",
         'method' => "string(5) NOT NULL default ''",
         'value' => "string(255) NOT NULL default ''",
-        'scenario' => "integer NOT NULL default '1'"
+        'scenario' => "integer NOT NULL default 1"
     ));
     $oDB->createCommand()->createIndex('conditions_idx2', '{{conditions}}', 'qid', false);
     $oDB->createCommand()->createIndex('conditions_idx3', '{{conditions}}', 'cqid', false);
@@ -187,16 +187,16 @@ $oTransaction = $oDB->beginTransaction();
 
     $oDB->createCommand()->createTable('{{notifications}}', array(
         'id' =>  "pk",
-        'entity' =>  "string(15) NOT NULL COMMENT 'Should be either survey or user'",
+        'entity' =>  "string(15) NOT NULL ",
         'entity_id' =>  "integer NOT NULL",
         'title' =>  "string(255) NOT NULL",
         'message' =>  "TEXT NOT NULL",
-        'status' =>  "string(15) NOT NULL DEFAULT 'new' COMMENT 'new or read'",
+        'status' =>  "string(15) NOT NULL DEFAULT 'new' ",
         'importance' =>  "integer NOT NULL DEFAULT 1",
-        'display_class' =>  "string(31) DEFAULT 'default' COMMENT 'Bootstrap class, like warning, info, success'",
-        'hash' =>  "string(64) DEFAULT NULL COMMENT 'Hash of title, message and entity to avoid duplication'",
-        'created' =>  "DATETIME NOT NULL",
-        'first_read' =>  "DATETIME DEFAULT NULL",
+        'display_class' =>  "string(31) DEFAULT 'default' ",
+        'hash' =>  "string(64) DEFAULT NULL ",
+        'created' =>  "datetime default NULL",
+        'first_read' =>  "datetime default NULL",
     ));
 
     $oDB->createCommand()->createIndex('notifications_pk', '{{notifications}}', ['entity', 'entity_id', 'status'], false);
@@ -289,7 +289,7 @@ $oTransaction = $oDB->beginTransaction();
     $oDB->createCommand()->createTable('{{participant_shares}}', array(
         'participant_id' =>  "string(50) NOT NULL",
         'share_uid' =>  "integer NOT NULL",
-        'date_added' =>  "datetime NOT NULL",
+        'date_added' =>  "datetime default NULL",
         'can_edit' =>  "string(5) NOT NULL",
     ));
 
@@ -308,12 +308,12 @@ $oTransaction = $oDB->beginTransaction();
         'entity_id' =>  "integer NOT NULL",
         'uid' =>  "integer NOT NULL",
         'permission' =>  "string(100) NOT NULL",
-        'create_p' =>  "integer NOT NULL default '0'",
-        'read_p' =>  "integer NOT NULL default '0'",
-        'update_p' =>  "integer NOT NULL default '0'",
-        'delete_p' =>  "integer NOT NULL default '0'",
-        'import_p' =>  "integer NOT NULL default '0'",
-        'export_p' =>  "integer NOT NULL default '0'",
+        'create_p' =>  "integer NOT NULL default 0",
+        'read_p' =>  "integer NOT NULL default 0",
+        'update_p' =>  "integer NOT NULL default 0",
+        'delete_p' =>  "integer NOT NULL default 0",
+        'import_p' =>  "integer NOT NULL default 0",
+        'export_p' =>  "integer NOT NULL default 0",
     ));
 
     $oDB->createCommand()->createIndex('idx1_permissions', '{{permissions}}', ['entity_id', 'entity', 'permission', 'uid'], true); 
@@ -327,7 +327,7 @@ $oTransaction = $oDB->beginTransaction();
     $oDB->createCommand()->createTable('{{plugins}}', array(
         'id' =>  "pk",
         'name' =>  "string(50) NOT NULL",
-        'active' =>  "integer NOT NULL default '0'",
+        'active' =>  "integer NOT NULL default 0",
         'version' =>  "string(32) default null",
     ));
 
@@ -365,7 +365,7 @@ $oTransaction = $oDB->beginTransaction();
         'question_order' =>  "integer NOT NULL",
         'language' =>  "string(20) default 'en'",
         'scale_id' =>  "integer NOT NULL default '0'",
-        'same_default' =>  "integer NOT NULL default '0' COMMENT 'Saves if user set to use the same default value across languages in default options dialog'",
+        'same_default' =>  "integer NOT NULL default '0'",
         'relevance' =>  "text",
         'modulename' =>  "string(255) DEFAULT NULL",
     ));
@@ -455,7 +455,7 @@ $oTransaction = $oDB->beginTransaction();
         'ip' => "text NOT NULL",
         'saved_thisstep' => "text NOT NULL",
         'status' => "string(1) NOT NULL default ''",
-        'saved_date' => "datetime NOT NULL",
+        'saved_date' => "datetime default NULL",
         'refurl' => "text",
     ));
 
@@ -471,7 +471,7 @@ $oTransaction = $oDB->beginTransaction();
     $oDB->createCommand()->createTable('{{sessions}}', array(
         'id' => "string(32) NOT NULL",
         'expire' => "integer DEFAULT NULL",
-        'data' => "longblob",
+        'data' => "binary",
     ));
 
     $oDB->createCommand()->addPrimaryKey('sessions_pk', '{{sessions}}', 'id');
@@ -526,28 +526,16 @@ $oTransaction = $oDB->beginTransaction();
         'active' => "integer NOT NULL DEFAULT '0'",
         'changed_at' => "datetime NULL",
         'changed_by' => "integer NOT NULL DEFAULT '0'",
-        'created_at' => "datetime NOT NULL",
+        'created_at' => "datetime default NULL",
         'created_by' => "integer NOT NULL DEFAULT '0'",
     ));
     
     $oDB->createCommand()->createIndex('idx1_surveymenu', '{{surveymenu}}', 'ordering', false);
     $oDB->createCommand()->createIndex('idx2_surveymenu', '{{surveymenu}}', 'title', false);
-    $headerArray = ['id',
-'parent_id',
-'survey_id',
-'user_id',
-'ordering',
-'level',
-'title',
-'position',
-'description',
-'active',
-'changed_at',
-'changed_by',
-'created_at',
-'created_by'];
-    $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [1,NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
-    $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [2,NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+
+    $headerArray = ['parent_id','survey_id','user_id','ordering','level','title','position','description','active','changed_at','changed_by','created_at','created_by'];
+    $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+    $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
 
     try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
 
@@ -579,7 +567,7 @@ $oTransaction = $oDB->beginTransaction();
         'active' =>  "integer NOT NULL DEFAULT '0'",
         'changed_at' =>  "datetime NULL",
         'changed_by' =>  "integer NOT NULL DEFAULT '0'",
-        'created_at' =>  "datetime NOT NULL",
+        'created_at' =>  "datetime default NULL",
         'created_by' =>  "integer NOT NULL DEFAULT '0'",
     ));
 
@@ -589,39 +577,39 @@ $oTransaction = $oDB->beginTransaction();
     $oDB->createCommand()->createIndex('idx4_surveymenu_entries', '{{surveymenu_entries}}', 'language', false);
     $oDB->createCommand()->createIndex('idx5_surveymenu_entries', '{{surveymenu_entries}}', 'menu_title', false);
 
-    $headerArray = ['id','menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
+    $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
     $basicMenues = [
-        [1,1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [2,1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [3,1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [4,1,NULL,4,'template_options','Template options','Template options','Edit Template options for this survey','paint-brush','fontawesome','','admin/templateoptions/sa/updatesurvey','','','','','templates','read','{"render": {"link": { "pjaxed": false, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [5,1,NULL,5,'participants','Survey participants','Survey participants','Go to survey participant and token settings','user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [6,1,NULL,6,'presentation','Presentation &amp; navigation settings','Presentation','Edit presentation and navigation settings','eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [7,1,NULL,7,'publication','Publication and access control settings','Publication &amp; access','Edit settings for publicationa and access control','key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [8,1,NULL,8,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [9,1,NULL,9,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [10,1,NULL,10,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [11,1,NULL,11,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [12,1,NULL,12,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [13,1,NULL,13,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [14,1,NULL,14,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [15,1,NULL,15,'resources','Add/Edit resources to the survey','Resources','Add/Edit resources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [16,2,NULL,1,'activateSurvey','Activate survey','Activate survey','Activate survey','play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [17,2,NULL,2,'deactivateSurvey','Stop this survey','Stop this survey','Stop this survey','stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [18,2,NULL,3,'testSurvey','Go to survey','Go to survey','Go to survey','cog','fontawesome','','survey/index/','','','','','','','{\"render\"\: {\"link\"\: {\"external\"\: true, \"data\"\: {\"sid\"\: [\"survey\",\"sid\"], \"newtest\"\: \"Y\", \"lang\"\: [\"survey\",\"language\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [19,2,NULL,4,'listQuestions','List questions','List questions','List questions','list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [20,2,NULL,5,'listQuestionGroups','List question groups','List question groups','List question groups','th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [21,2,NULL,6,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [22,2,NULL,7,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [23,2,NULL,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [24,2,NULL,9,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [25,2,NULL,10,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [26,2,NULL,11,'surveyLogicFile','Survey logic file','Survey logic file','Survey logic file','sitemap','fontawesome','','admin/expressions/sa/survey_logic_file/','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [27,2,NULL,12,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','user','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','_tabTokens','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [28,2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{render\: {\"link\"\: {}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [29,2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [30,2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-        [31,2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,4,'template_options','Template options','Template options','Edit Template options for this survey','paint-brush','fontawesome','','admin/templateoptions/sa/updatesurvey','','','','','templates','read','{"render": {"link": { "pjaxed": false, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,5,'participants','Survey participants','Survey participants','Go to survey participant and token settings','user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,6,'presentation','Presentation &amp; navigation settings','Presentation','Edit presentation and navigation settings','eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,7,'publication','Publication and access control settings','Publication &amp; access','Edit settings for publicationa and access control','key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,8,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,9,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,10,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,11,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,12,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,13,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,14,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [1,NULL,15,'resources','Add/Edit resources to the survey','Resources','Add/Edit resources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,1,'activateSurvey','Activate survey','Activate survey','Activate survey','play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,2,'deactivateSurvey','Stop this survey','Stop this survey','Stop this survey','stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,3,'testSurvey','Go to survey','Go to survey','Go to survey','cog','fontawesome','','survey/index/','','','','','','','{\"render\"\: {\"link\"\: {\"external\"\: true, \"data\"\: {\"sid\"\: [\"survey\",\"sid\"], \"newtest\"\: \"Y\", \"lang\"\: [\"survey\",\"language\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,4,'listQuestions','List questions','List questions','List questions','list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,5,'listQuestionGroups','List question groups','List question groups','List question groups','th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,6,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,7,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,9,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,10,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,11,'surveyLogicFile','Survey logic file','Survey logic file','Survey logic file','sitemap','fontawesome','','admin/expressions/sa/survey_logic_file/','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,12,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','user','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','_tabTokens','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{render\: {\"link\"\: {}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+        [2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
     ];
     foreach($basicMenues as $basicMenu){
         $oDB->createCommand()->insert("{{surveymenu_entries}}", array_combine($headerArray, $basicMenu));
@@ -717,8 +705,8 @@ $oTransaction = $oDB->beginTransaction();
         'sortorder' => "integer NOT NULL",
         'owner_uid' => "integer DEFAULT NULL",
         'parent_id' => "integer DEFAULT NULL",
-        'created' => "datetime DEFAULT NULL",
-        'modified' => "datetime DEFAULT NULL",
+        'created' => "datetime default NULL",
+        'modified' => "datetime default NULL",
         'created_by' => "integer NOT NULL"
     ));
 
@@ -726,7 +714,6 @@ $oTransaction = $oDB->beginTransaction();
     $oDB->createCommand()->createIndex('idx2_surveys_groups', '{{surveys_groups}}', 'title', false);    
 
     $oDB->createCommand()->insert("{{surveys_groups}}", [
-        'gsid' => 1,
         'name' => 'default', 
         'title' => 'Default Survey Group',
         'template' =>  NULL, 
@@ -819,7 +806,7 @@ $oTransaction = $oDB->beginTransaction();
         'name' =>  "string(150) NOT NULL",
         'folder' =>  "string(45) DEFAULT NULL",
         'title' =>  "string(100) NOT NULL",
-        'creation_date' =>  "datetime NOT NULL",
+        'creation_date' =>  "datetime default NULL",
         'author' =>  "string(150) DEFAULT NULL",
         'author_email' =>  "string(255) DEFAULT NULL",
         'author_url' =>  "string(255) DEFAULT NULL",
@@ -830,7 +817,7 @@ $oTransaction = $oDB->beginTransaction();
         'view_folder' =>  "string(45) NOT NULL",
         'files_folder' =>  "string(45) NOT NULL",
         'description' =>  "text ",
-        'last_update' =>  "datetime DEFAULT NULL",
+        'last_update' =>  "datetime default NULL",
         'owner_id' =>  "integer DEFAULT NULL",
         'extends' =>  "string(150)  DEFAULT NULL",
     ));
@@ -840,10 +827,10 @@ $oTransaction = $oDB->beginTransaction();
     $oDB->createCommand()->createIndex('idx3_templates', '{{templates}}', 'owner_id', false);    
     $oDB->createCommand()->createIndex('idx4_templates', '{{templates}}', 'extends', false);    
     
-    $headerArray = ['id','name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder','description','last_update','owner_id','extends'];
-    $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, [1,'default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '']));
-    $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,[2,'minimal', 'minimal', 'Minimal Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '']));
-    $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,[3,'material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', NULL, 1, 'default']));
+    $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder','description','last_update','owner_id','extends'];
+    $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '']));
+    $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['minimal', 'minimal', 'Minimal Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '']));
+    $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', NULL, 1, 'default']));
     
     
 try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
@@ -875,10 +862,10 @@ $oTransaction = $oDB->beginTransaction();
     $oDB->createCommand()->createIndex('idx3_template_configuration', '{{template_configuration}}', 'gsid', false);    
     $oDB->createCommand()->createIndex('idx4_template_configuration', '{{template_configuration}}', 'uid', false);    
 
-    $headerArray = ['id','template_name','sid','gsid','uid','files_css','files_js','files_print_css','options','cssframework_name','cssframework_css','cssframework_js','packages_to_load','packages_ltr','packages_rtl'];
-    $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,[1,'default',NULL,NULL,NULL,'{"add": ["css/template.css", "css/animate.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','','','']));
-    $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,[2,'minimal',NULL,NULL,NULL,'{"add": ["css/template.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{}','bootstrap','{}','','','','']));
-    $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,[3,'material',NULL,NULL,NULL,'{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','','','']));
+    $headerArray = ['template_name','sid','gsid','uid','files_css','files_js','files_print_css','options','cssframework_name','cssframework_css','cssframework_js','packages_to_load','packages_ltr','packages_rtl'];
+    $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['default',NULL,NULL,NULL,'{"add": ["css/template.css", "css/animate.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','','','']));
+    $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['minimal',NULL,NULL,NULL,'{"add": ["css/template.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{}','bootstrap','{}','','','','']));
+    $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','','','']));
    
     
 try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}

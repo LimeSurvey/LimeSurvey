@@ -108,9 +108,8 @@ class SurveymenuEntries extends LSActiveRecord
 
 	public static function reorderMenu($menuId){
 		$criteriaItems = new CDbCriteria();
-		$criteriaItems->addCondition(['menu_id = :menu_id']);
-		$criteriaItems->order='ordering ASC';
-		$criteriaItems->params = ['menu_id' => (int) $menuId];
+		$criteriaItems->compare('menu_id', (int) $menuId, false );
+		$criteriaItems->order='t.ordering ASC';
 		$menuEntriesInMenu = SurveymenuEntries::model()->findAll($criteriaItems);
 		
 		$statistics =
@@ -448,7 +447,7 @@ class SurveymenuEntries extends LSActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(
-				'defaultOrder'=>'menu_id ASC, `ordering` ASC',
+				'defaultOrder'=>'t.menu_id ASC, t.ordering ASC',
 			)
 		));
 	}

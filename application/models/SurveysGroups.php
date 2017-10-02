@@ -243,7 +243,7 @@ class SurveysGroups extends LSActiveRecord
 
 	public function getNextOrderPosition(){
 		$oSurveysGroups = SurveysGroups::model()->findAll();
-		return count($oSurveysGroups);
+		return count($oSurveysGroups)+1;
 	}
 
     public function getParentGroupOptions (){
