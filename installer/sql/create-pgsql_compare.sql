@@ -1216,7 +1216,7 @@ ALTER TABLE lime_surveys_languagesettings OWNER TO limesurvey;
 
 CREATE TABLE lime_template_configuration (
     id integer NOT NULL,
-    templates_name character varying(150) NOT NULL,
+    template_name character varying(150) NOT NULL,
     sid integer,
     gsid integer,
     uid integer,

@@ -754,7 +754,7 @@ INSERT INTO prefix_templates VALUES
 -- -----------------------------------------------------
 CREATE TABLE prefix_template_configuration (
   "id" serial PRIMARY KEY NOT NULL,
-  templates_name character varying(150)  NOT NULL,
+  template_name character varying(150)  NOT NULL,
   sid integer DEFAULT NULL,
   gsid integer DEFAULT NULL,
   uid integer DEFAULT NULL,

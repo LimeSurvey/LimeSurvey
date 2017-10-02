@@ -433,13 +433,22 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction = $oDB->beginTransaction();
             
             $oDB->createCommand()->update('{{template_configuration}}', 
-                array('packages_to_load'=>'["pjax"]'),
-                'id=1'
-            );
+            array('packages_to_load'=>'["pjax"]'),
+            'id=1'
+        );
+        
+        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>315),"stg_name='DBVersion'");
+        $oTransaction->commit();
+    }
+    if ($iOldDBVersion < 316) {
+        $oTransaction = $oDB->beginTransaction();
+        
+        $oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>315),"stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
+        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>316),"stg_name='DBVersion'");
+        $oTransaction->commit();
+    }
+                        
 
 
     }
@@ -868,7 +877,7 @@ function upgradeTemplateTables304($oDB)
     // Add template configuration table
     $oDB->createCommand()->createTable('{{template_configuration}}', array(
         'id'                => 'pk',
-        'templates_name'    => 'string(150) NOT NULL',
+        'template_name'    => 'string(150) NOT NULL',
         'sid'               => 'integer DEFAULT NULL',
         'gsid'              => 'integer DEFAULT NULL',
         'uid'               => 'integer DEFAULT NULL',
