@@ -161,7 +161,8 @@ CREATE TABLE `prefix_participant_attribute_names` (
   `attribute_type` varchar(4) NOT NULL,
   `defaultname` varchar(255) NOT NULL,
   `visible` varchar(5) NOT NULL,
-  PRIMARY KEY (`attribute_id`,`attribute_type`)
+  PRIMARY KEY (`attribute_id`),
+  INDEX `idx1_prefix_participant_attribute_names` (`attribute_id`,`attribute_type`)
 ) ENGINE=MYISAM CHARACTER SET utf8mb4 ;
 
 
@@ -795,13 +796,12 @@ CREATE TABLE `prefix_surveys_groups` (
   `parent_id` int(11) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
-  `created_by` int(11) NOT NULL
+  `created_by` int(11) NOT NULL,
+  PRIMARY KEY (`gsid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-ALTER TABLE `prefix_surveys_groups`
-  ADD PRIMARY KEY (`gsid`);
 
 
-INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `order`, `owner_uid`, `parent_id`, `created`, `modified`, `created_by`) VALUES
+INSERT INTO `prefix_surveys_groups` (`gsid`, `name`, `title`, `description`, `sortorder`, `owner_uid`, `parent_id`, `created`, `modified`, `created_by`) VALUES
   (1, 'default', 'Default Survey Group', 'LimeSurvey core default survey group', 0, 1, NULL, '2017-07-20 17:09:30', '2017-07-20 17:09:30', 1);
 
 

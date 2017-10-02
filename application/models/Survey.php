@@ -22,6 +22,7 @@ use \LimeSurvey\PluginManager\PluginEvent;
  *
  * @property integer $sid Survey ID
  * @property integer $owner_id
+ * @property integer $gsid Survey ID
  * @property string $admin Survey Admin's full name
  * @property string $active Whether survey is acive or not (Y/N)
  * @property string $expires Expiry date (YYYY-MM-DD hh:mm:ss)
@@ -276,6 +277,7 @@ class Survey extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('gsid', 'numerical', 'integerOnly'=>true),
             array('datecreated', 'default','value'=>date("Y-m-d")),
             array('startdate', 'default','value'=>NULL),
             array('expires', 'default','value'=>NULL),
@@ -1398,7 +1400,9 @@ class Survey extends LSActiveRecord
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
         $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
-        $criteria->compare('t.gsid',$this->gsid, true, 'AND');
+        
+        
+        $criteria->compare('t.gsid',[$this->gsid], false, 'AND');
 
 
         // Active filter
