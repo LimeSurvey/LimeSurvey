@@ -80,27 +80,19 @@
                 <div class="">
                     <?php
                     $aAllLanguages=getLanguageDataRestricted (false,'short');
-                    $aAdditionalLanguages = (isset($surveyid) && $surveyid!=0) ?  Survey::model()->findByPk($surveyid)->additionalLanguages : [];
-                    foreach( $aAdditionalLanguages as $sSurveyLang)
-                    {
-                        if(!array_key_exists($sSurveyLang,$aAllLanguages))
-                        {
-                            $aAllLanguages[$sSurveyLang]=getLanguageNameFromCode($sSurveyLang,false);
-                        }
-                    }
                     unset($aAllLanguages[$oSurvey->language]);
 
                     Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                         'asDropDownList' => true,
                         'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
                         'data' => $aAllLanguages,
-                        'value' =>  $aAdditionalLanguages,
+                        'value' =>  $oSurvey->additionalLanguages,
                         'name' => 'additional_languages',
                         'pluginOptions' => array(
                             'placeholder' => gt('Select additional languages','unescaped'),
                     )));
                     ?>
-                    <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $aAdditionalLanguages); ?>'>
+                    <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $oSurvey->additionalLanguages); ?>'>
                 </div>
             </div>
 
