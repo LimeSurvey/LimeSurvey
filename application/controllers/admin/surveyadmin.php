@@ -136,13 +136,6 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_registerScriptFiles();
         Yii::app()->loadHelper('surveytranslator');
         $esrow = $this->_fetchSurveyInfo('newsurvey');
-        // Default setting is to use the global Google Analytics key If one exists
-        $globalKey = getGlobalSetting('googleanalyticsapikey');
-        if($globalKey != ""){
-            $survey->googleanalyticsapikey = "9999useGlobal9999";
-            $survey->googleanalyticsapikeysetting = "G";
-        }
-
         Yii::app()->loadHelper('admin/htmleditor');
 
         $aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
