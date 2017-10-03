@@ -86,12 +86,14 @@
                 </div>
             </div>
 
+            <?php if(!$oSurvey->isNewRecord):?>
             <!-- Additional Languages -->
             <div class="form-group">
                 <label class=" control-label"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
                 <div class="">
                     <?php
                     $aAllLanguages=getLanguageDataRestricted (false,'short');
+                    unset($aAllLanguages[$oSurvey->language]);
 
                     Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                         'asDropDownList' => true,
@@ -106,6 +108,7 @@
                     <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $oSurvey->additionalLanguages); ?>'>
                 </div>
             </div>
+            <?php endif;?>
 
             <!-- Survey owner -->
             <?php

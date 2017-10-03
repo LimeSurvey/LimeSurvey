@@ -126,8 +126,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function newsurvey()
     {
-        if (!Permission::model()->hasGlobalPermission('surveys','create'))
-        {
+        if (!Permission::model()->hasGlobalPermission('surveys','create')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
@@ -166,6 +165,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
 
+    // TODO document me, please :)
     public function fakebrowser()
     {
         Yii::app()->getController()->renderPartial('/admin/survey/newSurveyBrowserMessage', array());
@@ -1923,14 +1923,14 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     /**
-    * Saves the new survey after the creation screen is submitted
-    *
-    * @param $iSurveyID  The survey id to be used for the new survey. If already taken a new random one will be used.
-    */
+     * Saves the new survey after the creation screen is submitted
+     *
+     * @param integer $iSurveyID The survey id to be used for the new survey. If already taken a new random one will be used.
+     * @return string
+     */
     function insert($iSurveyID=null)
     {
-        if (Permission::model()->hasGlobalPermission('surveys','create'))
-        {
+        if (Permission::model()->hasGlobalPermission('surveys','create')) {
             // Check if survey title was set
             if (Yii::app()->request->getPost('surveyls_title')=='')
             {
