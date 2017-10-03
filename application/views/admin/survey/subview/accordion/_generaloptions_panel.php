@@ -68,9 +68,21 @@
         <div class="col-md-6 col-sm-12">
             <!-- Base language -->
             <div class="form-group">
+
                 <label class=" control-label" ><?php  eT("Base language:") ; ?></label>
                 <div class="" style="padding-top: 7px;">
+                    <?php if($oSurvey->isNewRecord):?>
+                    <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
+                        'asDropDownList' => true,
+                        'htmlOptions'=>array('style'=>"width: 80%"),
+                        'data' => getLanguageDataRestricted (false,'short'),
+                        'value' => $oSurvey->language,
+                        'name' => 'language',
+                        'pluginOptions' => array()
+                    ));?>
+                    <?php else:?>
                     <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>
+                    <?php endif;?>
                 </div>
             </div>
 
@@ -80,7 +92,6 @@
                 <div class="">
                     <?php
                     $aAllLanguages=getLanguageDataRestricted (false,'short');
-                    unset($aAllLanguages[$oSurvey->language]);
 
                     Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                         'asDropDownList' => true,
