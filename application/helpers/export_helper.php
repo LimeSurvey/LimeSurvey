@@ -115,96 +115,104 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
         foreach ($fields as $field)
         {
             $fieldno = strtoupper($field['sql_name']);
-            if ($field['SPSStype']=='DATETIME23.2'){
-                #convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
-                if (isset($row[$fieldno]))
-                {
+            if($field['SPSStype']=='DATETIME23.2') {
+                // convert mysql  datestamp (yyyy-mm-dd hh:mm:ss) to SPSS datetime (dd-mmm-yyyy hh:mm:ss) format
+                if (isset($row[$fieldno])) {
                     list( $year, $month, $day, $hour, $minute, $second ) = preg_split( '([^0-9])', $row[$fieldno] );
-                    if ($year != '' && (int)$year >= 1900)
-                    {
+                    if ($year != '' && (int)$year >= 1900) {
                         echo $q.date('d-m-Y H:i:s', mktime( $hour, $minute, $second, $month, $day, $year ) ).$q;
-                    } else
-                    {
+                    } else {
                         echo ($na);
                     }
-                }  else
-                {
+                }  else {
                     echo ($na);
                 }
-            } else if ($field['LStype'] == 'Y')
-                {
-                    if ($row[$fieldno] == 'Y')    // Yes/No Question Type
-                    {
-                        echo( $q. 1 .$q);
-                    } else if ($row[$fieldno] == 'N'){
-                            echo( $q. 2 .$q);
-                        } else {
-                            echo($na);
-                    }
-                } else if ($field['LStype'] == 'G')    //Gender
-                    {
-                        if ($row[$fieldno] == 'F')
-                        {
-                            echo( $q. 1 .$q);
-                        } else if ($row[$fieldno] == 'M'){
+            } else {
+                switch ($field['LStype']) {
+                    case 'Y': // Yes/No Question Type
+                        switch ($row[$fieldno]) {
+                            case 'Y':
+                                echo( $q. 1 .$q);
+                                break;
+                            case 'N':
                                 echo( $q. 2 .$q);
-                            } else {
+                                break;
+                            default:
                                 echo($na);
                         }
-                    } else if ($field['LStype'] == 'C')    //Yes/No/Uncertain
-                        {
-                            if ($row[$fieldno] == 'Y')
-                            {
+                        break;
+                    case 'G': //Gender
+                        switch ($row[$fieldno]) {
+                            case 'F':
                                 echo( $q. 1 .$q);
-                            } else if ($row[$fieldno] == 'N'){
-                                    echo( $q. 2 .$q);
-                                } else if ($row[$fieldno] == 'U'){
-                                        echo( $q. 3 .$q);
-                                    } else {
-                                        echo($na);
+                                break;
+                            case 'M':
+                                echo( $q. 2 .$q);
+                                break;
+                            default:
+                                echo($na);
+                        }
+                        break;
+                    case 'C': //Yes/No/Uncertain
+                        switch ($row[$fieldno]) {
+                            case 'Y':
+                                echo( $q. 1 .$q);
+                                break;
+                            case 'N':
+                                echo( $q. 2 .$q);
+                                break;
+                            case 'U':
+                                echo( $q. 3 .$q);
+                                break;
+                            default:
+                                echo($na);
+                        }
+                        break;
+                   case 'E': //Increase / Same / Decrease
+                        switch ($row[$fieldno]) {
+                            case 'I':
+                                echo( $q. 1 .$q);
+                                break;
+                            case 'S':
+                                echo( $q. 2 .$q);
+                                break;
+                            case 'D':
+                                echo( $q. 3 .$q);
+                                break;
+                            default:
+                                echo($na);
+                        }
+                        break;
+                    case 'P':
+                    case 'M':
+                        if(substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other') {
+                            if ($row[$fieldno] == 'Y') {
+                                echo($q. 1 .$q);
+                            } elseif(isset($row[$fieldno])) {
+                                echo($q. 0 .$q);
+                            } else {
+                                echo($na);
                             }
-                        } else if ($field['LStype'] == 'E')     //Increase / Same / Decrease
-                            {
-                                if ($row[$fieldno] == 'I')
-                                {
-                                    echo( $q. 1 .$q);
-                                } else if ($row[$fieldno] == 'S'){
-                                        echo( $q. 2 .$q);
-                                    } else if ($row[$fieldno] == 'D'){
-                                            echo( $q. 3 .$q);
-                                        } else {
-                                            echo($na);
-                                }
-                            } elseif (($field['LStype'] == 'P' || $field['LStype'] == 'M') && (substr($field['code'],-7) != 'comment' && substr($field['code'],-5) != 'other'))
-                            {
-                                if ($row[$fieldno] == 'Y')
-                                {
-                                    echo($q. 1 .$q);
-                                } elseif(isset($row[$fieldno]))
-                                {
-                                    echo($q. 0 .$q);
-                                } else {
-                                    echo($na);
-                                }
-                            } elseif (!$field['hide']) {
-                                $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
-                                if (trim($strTmp) != ''){
-                                    if($q=='\'') $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
-                                    if($q=='"') $strTemp=str_replace(array('"',"\n","\r"),array('""',' ',' '),trim($strTmp));
-                                    /*
-                                    * Temp quick fix for replacing decimal dots with comma's
-                                    if (isNumericExtended($strTemp)) {
-                                    $strTemp = str_replace('.',',',$strTemp);
-                                    }
-                                    */
-                                    echo $q. $strTemp .$q ;
-                                }
-                                else
-                                {
-                                    echo $na;
-                                }
+                            break; // Break inside if : comment and other are string to be filtered
+                        }
+                    default:
+                        $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
+                        if (trim($strTmp) != ''){
+                            if($q=='\'') $strTemp=str_replace(array("'","\n","\r"),array("''",' ',' '),trim($strTmp));
+                            if($q=='"') $strTemp=str_replace(array('"',"\n","\r"),array('""',' ',' '),trim($strTmp));
+                            /*
+                            * Temp quick fix for replacing decimal dots with comma's
+                            if (isNumericExtended($strTemp)) {
+                            $strTemp = str_replace('.',',',$strTemp);
                             }
-                            if ($i<$num_fields && !$field['hide']) echo ',';
+                            */
+                            echo $q. $strTemp .$q ;
+                        } else {
+                            echo $na;
+                        }
+                }
+            }
+            if ($i<$num_fields && !$field['hide']) echo ',';
             $i++;
         }
         echo "\n";
@@ -222,6 +230,9 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     $length_vallabel = 120;
 
     if (!isset($field['LStype']) || empty($field['LStype'])) {
+        return false;
+    }
+    if (isset($field['hide']) && $field['hide']) {
         return false;
     }
     $answers=array();
@@ -247,7 +258,11 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
                 $displayvaluelabel = 0;
                 # Build array that has to be returned
                 foreach ($result as $row) {
-                    $answers[] = array('code'=>$row['code'], 'value'=>mb_substr(stripTagsFull($row["answer"]),0,$length_vallabel));
+                    $answers[] = array(
+                        'code'=>$row['code'],
+                        'value'=>mb_substr(stripTagsFull($row["answer"])
+                        )
+                    );
                 }
             }
         }
@@ -264,14 +279,12 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         } else {
             $maxvalue=10;
         }
-        if (trim($qidattributes['multiflexible_min'])!='')
-        {
+        if (trim($qidattributes['multiflexible_min'])!='') {
             $minvalue=$qidattributes['multiflexible_min'];
         } else {
             $minvalue=1;
         }
-        if (trim($qidattributes['multiflexible_step'])!='')
-        {
+        if (trim($qidattributes['multiflexible_step'])!='') {
             $stepvalue=$qidattributes['multiflexible_step'];
         } else {
             $stepvalue=1;
@@ -281,13 +294,12 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
             $maxvalue=1;
             $stepvalue=1;
         }
-        for ($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue)
-        {
+        for ($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue) {
             $answers[] = array('code'=>$i, 'value'=>$i);
         }
     }
     if ($field['LStype'] == 'M') {
-        if(substr($field['code'],-5) != 'other' && $field['size'] > 0) {
+        if(substr($field['code'],-5) != 'other') {
             return array(
                 'SPSStype' => "A",
                 'size' => stringSize($field['sql_name']),
@@ -308,32 +320,33 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
             $answers[] = array('code'=>0, 'value'=>gT('Not Selected'));
         }
     }
-    if ($field['LStype'] == "G" && $field['size'] > 0) {
+    if ($field['LStype'] == "G") {
         $answers[] = array('code'=>1, 'value'=>gT('Female'));
         $answers[] = array('code'=>2, 'value'=>gT('Male'));
     }
-    if ($field['LStype'] == "Y" && $field['size'] > 0) {
+    if ($field['LStype'] == "Y") {
         $answers[] = array('code'=>1, 'value'=>gT('Yes'));
         $answers[] = array('code'=>2, 'value'=>gT('No'));
     }
-    if ($field['LStype'] == "C" && $field['size'] > 0) {
+    if ($field['LStype'] == "C") {
         $answers[] = array('code'=>1, 'value'=>gT('Yes'));
         $answers[] = array('code'=>2, 'value'=>gT('No'));
         $answers[] = array('code'=>3, 'value'=>gT('Uncertain'));
     }
-    if ($field['LStype'] == "E" && $field['size'] > 0) {
+    if ($field['LStype'] == "E") {
         $answers[] = array('code'=>1, 'value'=>gT('Increase'));
         $answers[] = array('code'=>2, 'value'=>gT('Same'));
         $answers[] = array('code'=>3, 'value'=>gT('Decrease'));
     }
-    if( in_array($field['LStype'],array('S','T','U')) ) {
-        return array(
-            'size' => stringSize($field['sql_name']),
-        );
-    }
+
     if( in_array($field['LStype'],array('N','K')) ) {
         return array(
             'size' => decimalSize($field['sql_name']),
+        );
+    }
+    if(in_array($field['LStype'],array('Q','S','T','U',';','*')) ) {
+        return array(
+            'size' => stringSize($field['sql_name']),
         );
     }
     if (count($answers)>0) {
@@ -353,7 +366,10 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         $answers['size'] = $size;
         return $answers;
     } else {
-        return false;
+        /* Not managed (currently): url, IP, … */
+        return array(
+            'size' => stringSize($field['sql_name']),
+        );
     }
 }
 
@@ -1962,32 +1978,48 @@ function stringSize($sColumn)
     return (int)$lengthReal;
 }
 /**
- * Find the numeric size according DB size for existing question
+ * Find the numeric size according DB size for existing question for SPSS export
  * Column name must be SGQA currently
- * @see https://www.gnu.org/software/pspp/manual/html_node/Basic-Numeric-Formats.html#Basic-Numeric-Formats ?
  * @param string sColumn column
- * @return integer
+ * @return string integersize.decimalsize 
  **/
 function decimalSize($sColumn)
 {
     // Find the sid
     $iSurveyId=substr($sColumn, 0, strpos($sColumn, 'X'));
     $sColumn = Yii::app()->db->quoteColumnName($sColumn);
-    $maxNumeric = Yii::app()->db
+
+    /* Find the max len of integer part for positive value*/
+    $maxInDB = Yii::app()->db
     ->createCommand("SELECT MAX($sColumn) FROM {{survey_".$iSurveyId."}}")
     ->queryScalar();
-    $integerMaxLen = strlen(intval($maxNumeric));
-
-    $minNumeric = Yii::app()->db
+    $integerMaxLen = strlen(intval($maxInteger));
+    /* Find the max len of integer part for negative value including minus when export (adding 1 to lenght) */
+    $minIntger = Yii::app()->db
     ->createCommand("SELECT MIN($sColumn) FROM {{survey_".$iSurveyId."}}")
     ->queryScalar();
     $integerMinLen = strlen(intval($maxNumeric));
-
-    $haveMinus = ($minNumeric < 0);
+    /* Get size of integer part */
     $maxIntegerLen=max([$integerMaxLen,$integerMinLen]);
-    // return always 10 0 after . (decimal(30.10))
-    if($haveMinus) {
-        return $maxIntegerLen+11;
-    }
-    return $maxIntegerLen+10;
+    
+    /* Find the max len of decimal part */
+    $maxDecimal = Yii::app()->db
+    ->createCommand("SELECT MAX(ABS(REVERSE($sColumn))) FROM {{survey_".$iSurveyId."}}") // Must control in another DB : mysql is OK
+    ->queryScalar();
+    $decimalMaxLen = strlen(intval($maxDecimal));
+
+    return $maxIntegerLen.".".$decimalMaxLen;
+}
+/**
+ * @todo
+ * Find the numeric size according DB size for existing question for SPSS export
+ * Column name must be SGQA currently
+ * @see https://www.gnu.org/software/pspp/manual/html_node/Basic-Numeric-Formats.html#Basic-Numeric-Formats ?
+ * Attention : value can be send without . . If dot is not set: SPSS add it according to decimal part …
+ * @param string sColumn column
+ * @return string size.decimalsize 
+ **/
+function floatSize($sColumn)
+{
+    /* TODO */
 }
