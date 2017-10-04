@@ -103,12 +103,13 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
      /**
-     * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
-     *
-     * @param  string $sFile      the  file to look for (must contain relative path, unless it's a view file)
-     * @param string $oRTemplate template from which the recurrence should start
-     * @return TemplateManifest
-     */
+      * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
+      *
+      * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
+      * @param string $oRTemplate template from which the recurrence should start
+      * @return TemplateManifest
+      * @throws Exception
+      */
      public function getTemplateForFile($sFile, $oRTemplate)
      {
          while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
@@ -186,8 +187,9 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
       * It will check if css/js (relative to path), or view (view path)
       * It will search for current template and mother templates
       *
-      * @param   string  $sFile          relative path to the file
-      * @param   string  $oTemplate      the template where to look for (and its mother templates)
+      * @param   string $sFile relative path to the file
+      * @param   string $oTemplate the template where to look for (and its mother templates)
+      * @return bool|string
       */
      protected function getFilePath($sFile, $oTemplate)
      {

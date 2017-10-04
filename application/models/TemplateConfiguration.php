@@ -304,6 +304,7 @@ class TemplateConfiguration extends TemplateConfig
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
      * @return mixed true on success | exception
+     * @throws Exception
      */
     public static function importManifest($sTemplateName)
     {
@@ -396,6 +397,8 @@ class TemplateConfiguration extends TemplateConfig
      *
      * @param string $sFile the file to replace
      * @param string $sType css|js
+     * @return bool|void
+     * @throws Exception
      */
     public function addFileReplacement($sFile, $sType)
     {
