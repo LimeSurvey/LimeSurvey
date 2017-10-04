@@ -80,7 +80,6 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
 
     // Build array that has to be returned
     $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
-
     // Now see if we have parameters for from (offset) & num (limit)
     $limit = App()->getRequest()->getParam('limit');
     $offset = App()->getRequest()->getParam('offset');
@@ -195,6 +194,15 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
                             }
                             break; // Break inside if : comment and other are string to be filtered
                         }
+                    case ':':
+                        $aSize=explode(".",$field['size']);
+                        if(isset($aSize[1]) && $aSize[1]) {
+                            // We need to add decimal
+                            echo $q .  number_format($row[$fieldno],$aSize[1],".","") . $q;
+                        } else {
+                            echo $q .  $row[$fieldno] . $q;
+                        }
+                        break;
                     default:
                         $strTmp=mb_substr(stripTagsFull($row[$fieldno]), 0, $iLength);
                         if (trim($strTmp) != ''){
@@ -240,7 +248,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
             //We have a comment field, so free text
             return array(
-                'SPSStype' => "A",
+                'SPSStype' => "F",
                 'size' => stringSize($field['sql_name']),
             );
         } else {
@@ -274,28 +282,22 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         if (is_null($qidattributes)) {
             $qidattributes=getQuestionAttributeValues($field["qid"]);
         }
-        if (trim($qidattributes['multiflexible_max'])!='') {
-            $maxvalue=$qidattributes['multiflexible_max'];
+
+        if($qidattributes['multiflexible_checkbox']) {
+            $answers[] = array('code'=>1, 'value'=>1);
+            $answers[] = array('code'=>0, 'value'=>0); // 0 happen only when checked + unchecked. Not when just leave unchecked
+        } elseif($qidattributes['input_boxes']) {
+            return array(
+                'SPSStype' => "F",
+                'size' => numericSize($field['sql_name']),
+            );
         } else {
-            $maxvalue=10;
-        }
-        if (trim($qidattributes['multiflexible_min'])!='') {
-            $minvalue=$qidattributes['multiflexible_min'];
-        } else {
-            $minvalue=1;
-        }
-        if (trim($qidattributes['multiflexible_step'])!='') {
-            $stepvalue=$qidattributes['multiflexible_step'];
-        } else {
-            $stepvalue=1;
-        }
-        if ($qidattributes['multiflexible_checkbox']!=0) {
-            $minvalue=0;
-            $maxvalue=1;
-            $stepvalue=1;
-        }
-        for ($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue) {
-            $answers[] = array('code'=>$i, 'value'=>$i);
+            $minvalue = trim($qidattributes['multiflexible_min']) ? $qidattributes['multiflexible_min'] : 1;
+            $maxvalue = trim($qidattributes['multiflexible_max']) ? $qidattributes['multiflexible_max'] : 10;
+            $stepvalue = trim($qidattributes['multiflexible_step']) ? $qidattributes['multiflexible_step'] : 1;
+            for ($i=$minvalue; $i<=$maxvalue; $i+=$stepvalue) {
+                $answers[] = array('code'=>$i, 'value'=>$i);
+            }
         }
     }
     if ($field['LStype'] == 'M') {
@@ -341,7 +343,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
 
     if( in_array($field['LStype'],array('N','K')) ) {
         return array(
-            'size' => decimalSize($field['sql_name']),
+            'size' => numericSize($field['sql_name']),
         );
     }
     if(in_array($field['LStype'],array('Q','S','T','U',';','*')) ) {
@@ -1984,43 +1986,34 @@ function stringSize($sColumn)
  * @param string sColumn column
  * @return string integersize.decimalsize 
  **/
-function decimalSize($sColumn)
+function numericSize($sColumn)
 {
     // Find the sid
     $iSurveyId=substr($sColumn, 0, strpos($sColumn, 'X'));
     $sColumn = Yii::app()->db->quoteColumnName($sColumn);
 
     /* Find the max len of integer part for positive value*/
-    $maxInDB = Yii::app()->db
+    $maxInteger = Yii::app()->db
     ->createCommand("SELECT MAX($sColumn) FROM {{survey_".$iSurveyId."}}")
     ->queryScalar();
     $integerMaxLen = strlen(intval($maxInteger));
     /* Find the max len of integer part for negative value including minus when export (adding 1 to lenght) */
-    $minIntger = Yii::app()->db
+    $minInteger = Yii::app()->db
     ->createCommand("SELECT MIN($sColumn) FROM {{survey_".$iSurveyId."}}")
     ->queryScalar();
-    $integerMinLen = strlen(intval($maxNumeric));
+    $integerMinLen = strlen(intval($minInteger));
     /* Get size of integer part */
     $maxIntegerLen=max([$integerMaxLen,$integerMinLen]);
     
     /* Find the max len of decimal part */
     $maxDecimal = Yii::app()->db
-    ->createCommand("SELECT MAX(ABS(REVERSE($sColumn))) FROM {{survey_".$iSurveyId."}}") // Must control in another DB : mysql is OK
+    ->createCommand("SELECT MAX(REVERSE(ABS($sColumn))) FROM {{survey_".$iSurveyId."}}") // Must control in another DB : mysql is OK
     ->queryScalar();
-    $decimalMaxLen = strlen(intval($maxDecimal));
-
+    // With integer : Decimal return 00000000000.1 and float return the integer
+    if(intval($maxDecimal) && strpos($maxDecimal,'.')) {
+        $decimalMaxLen = strlen(intval($maxDecimal));
+    } else {
+        $decimalMaxLen = 0;// Or just return $maxIntegerLen ?
+    }
     return $maxIntegerLen.".".$decimalMaxLen;
-}
-/**
- * @todo
- * Find the numeric size according DB size for existing question for SPSS export
- * Column name must be SGQA currently
- * @see https://www.gnu.org/software/pspp/manual/html_node/Basic-Numeric-Formats.html#Basic-Numeric-Formats ?
- * Attention : value can be send without . . If dot is not set: SPSS add it according to decimal part …
- * @param string sColumn column
- * @return string size.decimalsize 
- **/
-function floatSize($sColumn)
-{
-    /* TODO */
 }
