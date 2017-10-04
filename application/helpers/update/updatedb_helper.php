@@ -462,6 +462,19 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     }
                         
 
+    
+    //Rename order to sortorder
+
+    if ($iOldDBVersion < 318) {
+        $oTransaction = $oDB->beginTransaction();
+        
+        //$oDB->createCommand()->renameColumn('{{surveys_groups}}', 'order', 'sortorder');
+
+        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>318),"stg_name='DBVersion'");
+        $oTransaction->commit();
+    }
+                        
+
 
     }
     catch(Exception $e)
