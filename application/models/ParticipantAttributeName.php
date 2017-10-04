@@ -421,20 +421,20 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
      * this is a very specific function used to get the attributes that are
      * not present for the participant
-     * @param integer $attributeid
+     * @param array $attributeIds
      * @return array
      */
-    function getNotAddedAttributes($attributeid)
+    function getNotAddedAttributes($attributeIds)
     {
         $output = array();
         $notin=array();
-        foreach($attributeid as $row) {
+        foreach($attributeIds as $row) {
             $notin[] = $row;
         }
 
         $criteria = new CDbCriteria();
         $alias = $this->getTableAlias();
-        $criteria->addNotInCondition("$alias.attribute_id", $attributeid);
+        $criteria->addNotInCondition("$alias.attribute_id", $attributeIds);
         $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($criteria);
         foreach($records as $row) { //Iterate through each attribute
             $thisname="";
