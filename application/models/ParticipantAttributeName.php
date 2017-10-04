@@ -713,7 +713,7 @@ class ParticipantAttributeName extends LSActiveRecord
         $query = Yii::app()->db->createCommand()
             ->select('attribute_id')
             ->from('{{participant_attribute_names}}')
-            ->order('attribute_id','desc')
+            ->order('attribute_id DESC')
             ->queryAll();
         return $query;
     }
