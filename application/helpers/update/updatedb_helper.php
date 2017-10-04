@@ -440,12 +440,24 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>315),"stg_name='DBVersion'");
         $oTransaction->commit();
     }
+
     if ($iOldDBVersion < 316) {
         $oTransaction = $oDB->beginTransaction();
         
         $oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
 
         $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>316),"stg_name='DBVersion'");
+        $oTransaction->commit();
+    }
+    
+    //Transition of the password field to a TEXT type
+
+    if ($iOldDBVersion < 317) {
+        $oTransaction = $oDB->beginTransaction();
+        
+        transferPasswordFieldToText($oDB);
+
+        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>317),"stg_name='DBVersion'");
         $oTransaction->commit();
     }
                         
@@ -491,6 +503,33 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     Yii::app()->setConfig('Updating',false);
     return true;
+}
+
+function transferPasswordFieldToText($oDB){
+    switch($oDB->getDriverName()){
+        case 'mysql':
+        case 'mysqli':
+            $oDB->createCommand()->alterColumn( '{{users}}','password', 'TEXT NOT NULL');
+        break;
+        case 'pgsql':
+        
+        $userPasswords = $oDB->createCommand()->select(['uid', "encode(password::bytea, 'escape') as password"])->from('{{users}}')->queryAll();
+        
+        $oDB->createCommand()->renameColumn('{{users}}', 'password', 'password_blob');
+        $oDB->createCommand()->addColumn('{{users}}', 'password', "TEXT NOT NULL DEFAULT 'nopw'");
+
+        foreach($userPasswords as $userArray){
+            $oDB->createCommand()->update('{{users}}', ['password' => $userArray['password']], 'uid=:uid' , [':uid'=> $userArray['uid']] );
+        }
+        
+            $oDB->createCommand()->dropColumn('{{users}}', 'password_blob');
+        break;
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+        default: 
+        break;
+    }
 }
 
 function createSurveyMenuTable293($oDB) {

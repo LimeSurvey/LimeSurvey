@@ -1,78 +1,67 @@
 <?php
 function createDatabase($oDB){
-/**
- * Populate the database for a limesurvey installation
- */
- 
-////// Current database version: //////
-    $databaseCurrentVersion = "316";
-///////////////////////////////////////
-
-Yii::app()->loadHelper('database');
-// $oDB                        = Yii::app()->getDb();
-
-//answers table
-$oTransaction = $oDB->beginTransaction();
+    /**
+    * Populate the database for a limesurvey installation
+    */
     
-    $oDB->createCommand()->createTable('{{answers}}', array(
+    ////// Current database version: //////
+    $databaseCurrentVersion = "317";
+    ///////////////////////////////////////
+    
+    Yii::app()->loadHelper('database');
+    // $oDB                        = Yii::app()->getDb();
+    
+    $oTransaction = $oDB->beginTransaction();
+    try{
+        //answers table
+        $oDB->createCommand()->createTable('{{answers}}', array(
         'qid' => 'pk',
         'code' => 'string(5) not null',
         'answer' => 'text',
-        'sortorder' => 'integer', 
-        'assessment_value' => 'integer', 
+        'sortorder' => 'integer',
+        'assessment_value' => 'integer',
         'language' => "string(20) DEFAULT 'en'"	,
         'scale_id' => 'integer DEFAULT 0',
-    ));
-    $oDB->createCommand()->createIndex('answers_idx2', '{{answers}}', 'sortorder', false);
-    
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// assessements
-$oTransaction = $oDB->beginTransaction();
-    
-    $oDB->createCommand()->createTable('{{assessments}}', array(
+        ));
+        $oDB->createCommand()->createIndex('answers_idx2', '{{answers}}', 'sortorder', false);
+        
+        // assessements
+        $oDB->createCommand()->createTable('{{assessments}}', array(
         'id' =>         'pk',
         'sid' =>        'integer DEFAULT 0',
         'scope' =>      'string(5)'	,
         'gid' =>        'integer DEFAULT 0',
-        'name' =>       'text',	 
+        'name' =>       'text',
         'minimum' =>    'string(50)',
         'maximum' =>    'string(50)',
         'message' =>    'text',
         'language' =>   "string(20) DEFAULT 'en'"
-    ));
-    $oDB->createCommand()->createIndex('assessments_idx2', '{{assessments}}', 'sid', false);
-    $oDB->createCommand()->createIndex('assessments_idx3', '{{assessments}}', 'gid', false);
-    
-try{ $oTransaction->commit(); }catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-    
-// boxes
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{boxes}}', array(
-      'id' => "pk",
-      'position' => "integer DEFAULT NULL ",
-      'url' => "text NOT NULL ",
-      'title' => "text NOT NULL ",
-      'ico' => "string(255) DEFAULT NULL ",
-      'desc' => "text NOT NULL ",
-      'page' => "text NOT NULL ",
-      'usergroup' => "integer NOT NULL "
-    ));
-
-    $oDB->createCommand()->insert("{{boxes}}", ['position' => 1, 'url' => 'admin/survey/sa/newsurvey', 'title' => 'Create survey', 'ico' => 'add', 'desc' => 'Create a new survey', 'page' => 'welcome', 'usergroup' => '-2']);
-    $oDB->createCommand()->insert("{{boxes}}", ['position' => 2, 'url' => 'admin/survey/sa/listsurveys', 'title' => 'List surveys', 'ico' => 'list', 'desc' => 'List available surveys', 'page' => 'welcome', 'usergroup' => '-1']);
-    $oDB->createCommand()->insert("{{boxes}}", ['position' => 3, 'url' => 'admin/globalsettings', 'title' => 'Global settings', 'ico' => 'settings', 'desc' => 'Edit global settings', 'page' => 'welcome', 'usergroup' => '-2']);
-    $oDB->createCommand()->insert("{{boxes}}", ['position' => 4, 'url' => 'admin/update', 'title' => 'ComfortUpdate', 'ico' => 'shield', 'desc' => 'Stay safe and up to date', 'page' => 'welcome', 'usergroup' => '-2']);
-    $oDB->createCommand()->insert("{{boxes}}", ['position' => 5, 'url' => 'admin/labels/sa/view', 'title' => 'Label sets', 'ico' => 'label', 'desc' => 'Edit label sets', 'page' => 'welcome', 'usergroup' => '-2']);
-    $oDB->createCommand()->insert("{{boxes}}", ['position' => 6, 'url' => 'admin/templateoptions', 'title' => 'Templates', 'ico' => 'templates', 'desc' => 'View templates list', 'page' => 'welcome', 'usergroup' => '-2']);
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// conditions
-$oTransaction = $oDB->beginTransaction();
-    
-    $oDB->createCommand()->createTable('{{conditions}}', array(
+        ));
+        $oDB->createCommand()->createIndex('assessments_idx2', '{{assessments}}', 'sid', false);
+        $oDB->createCommand()->createIndex('assessments_idx3', '{{assessments}}', 'gid', false);
+        
+        // boxes
+        $oDB->createCommand()->createTable('{{boxes}}', array(
+        'id' => "pk",
+        'position' => "integer NULL ",
+        'url' => "text NOT NULL ",
+        'title' => "text NOT NULL ",
+        'ico' => "string(255) NULL ",
+        'desc' => "text NOT NULL ",
+        'page' => "text NOT NULL ",
+        'usergroup' => "integer NOT NULL "
+        ));
+        
+        $oDB->createCommand()->insert("{{boxes}}", ['position' => 1, 'url' => 'admin/survey/sa/newsurvey', 'title' => 'Create survey', 'ico' => 'add', 'desc' => 'Create a new survey', 'page' => 'welcome', 'usergroup' => '-2']);
+        $oDB->createCommand()->insert("{{boxes}}", ['position' => 2, 'url' => 'admin/survey/sa/listsurveys', 'title' => 'List surveys', 'ico' => 'list', 'desc' => 'List available surveys', 'page' => 'welcome', 'usergroup' => '-1']);
+        $oDB->createCommand()->insert("{{boxes}}", ['position' => 3, 'url' => 'admin/globalsettings', 'title' => 'Global settings', 'ico' => 'settings', 'desc' => 'Edit global settings', 'page' => 'welcome', 'usergroup' => '-2']);
+        $oDB->createCommand()->insert("{{boxes}}", ['position' => 4, 'url' => 'admin/update', 'title' => 'ComfortUpdate', 'ico' => 'shield', 'desc' => 'Stay safe and up to date', 'page' => 'welcome', 'usergroup' => '-2']);
+        $oDB->createCommand()->insert("{{boxes}}", ['position' => 5, 'url' => 'admin/labels/sa/view', 'title' => 'Label sets', 'ico' => 'label', 'desc' => 'Edit label sets', 'page' => 'welcome', 'usergroup' => '-2']);
+        $oDB->createCommand()->insert("{{boxes}}", ['position' => 6, 'url' => 'admin/templateoptions', 'title' => 'Templates', 'ico' => 'templates', 'desc' => 'View templates list', 'page' => 'welcome', 'usergroup' => '-2']);
+        
+        
+        // conditions
+        $oDB->createCommand()->createTable('{{conditions}}', array(
         'cid' => 'pk',
         'qid' => "integer NOT NULL default '0'",
         'cqid' => "integer NOT NULL default '0'",
@@ -80,62 +69,49 @@ $oTransaction = $oDB->beginTransaction();
         'method' => "string(5) NOT NULL default ''",
         'value' => "string(255) NOT NULL default ''",
         'scenario' => "integer NOT NULL default 1"
-    ));
-    $oDB->createCommand()->createIndex('conditions_idx2', '{{conditions}}', 'qid', false);
-    $oDB->createCommand()->createIndex('conditions_idx3', '{{conditions}}', 'cqid', false);
-    
-    try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-    
-    
-// defaultvalues
-$oTransaction = $oDB->beginTransaction();
-    
-    $oDB->createCommand()->createTable('{{defaultvalues}}', array(
+        ));
+        $oDB->createCommand()->createIndex('conditions_idx2', '{{conditions}}', 'qid', false);
+        $oDB->createCommand()->createIndex('conditions_idx3', '{{conditions}}', 'cqid', false);
+        
+        
+        // defaultvalues
+        $oDB->createCommand()->createTable('{{defaultvalues}}', array(
         'qid' =>  "integer NOT NULL default '0'",
         'scale_id' =>  "integer NOT NULL default '0'",
         'sqid' =>  "integer NOT NULL default '0'",
         'language' =>  "string(20) NOT NULL",
         'specialtype' =>  "string(20) NOT NULL default ''",
         'defaultvalue' =>  "text",
-    ));
-
-    $oDB->createCommand()->addPrimaryKey('defaultvalues_pk', '{{defaultvalues}}', ['qid', 'specialtype', 'language', 'scale_id', 'sqid'], false);
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// expression_errors
-$oTransaction = $oDB->beginTransaction();
-    
-    $oDB->createCommand()->createTable('{{expression_errors}}', array(
+        ));
+        
+        $oDB->createCommand()->addPrimaryKey('defaultvalues_pk', '{{defaultvalues}}', ['qid', 'specialtype', 'language', 'scale_id', 'sqid'], false);
+        
+        // expression_errors
+        $oDB->createCommand()->createTable('{{expression_errors}}', array(
         'id' =>  "pk",
-        'errortime' =>  "string(50) DEFAULT NULL",
-        'sid' =>  "integer DEFAULT NULL",
-        'gid' =>  "integer DEFAULT NULL",
-        'qid' =>  "integer DEFAULT NULL",
-        'gseq' =>  "integer DEFAULT NULL",
-        'qseq' =>  "integer DEFAULT NULL",
+        'errortime' =>  "string(50) NULL",
+        'sid' =>  "integer NULL",
+        'gid' =>  "integer NULL",
+        'qid' =>  "integer NULL",
+        'gseq' =>  "integer NULL",
+        'qseq' =>  "integer NULL",
         'type' =>  "string(50)",
         'eqn' =>  "text",
         'prettyprint' =>  "text",
-    ));
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// failed_login_attempts
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{failed_login_attempts}}', array(
+        ));
+        
+        
+        // failed_login_attempts
+        $oDB->createCommand()->createTable('{{failed_login_attempts}}', array(
         'id' =>  "pk",
         'ip' =>  "string(40) NOT NULL",
         'last_attempt' =>  "string(20) NOT NULL",
         'number_attempts' =>  "integer NOT NULL",
-    ));
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// groups
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{groups}}', array(
+        ));
+        
+        
+        // groups
+        $oDB->createCommand()->createTable('{{groups}}', array(
         'gid' =>  "pk",
         'sid' =>  "integer NOT NULL default '0'",
         'group_name' =>  "string(100) NOT NULL default ''",
@@ -143,49 +119,38 @@ $oTransaction = $oDB->beginTransaction();
         'description' =>  "text",
         'language' =>  "string(20) default 'en'",
         'randomization_group' =>  "string(20) NOT NULL default ''",
-        'grelevance' =>  "text DEFAULT NULL"
-    ));
-    $oDB->createCommand()->createIndex('idx1_groups', '{{groups}}', 'sid', false);
-    $oDB->createCommand()->createIndex('idx2_groups', '{{groups}}', 'group_name', false);
-    $oDB->createCommand()->createIndex('idx3_groups', '{{groups}}', 'language', false);
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// labels
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{labels}}', array(
-        'lid' =>  "integer NOT NULL default '0'",
+        'grelevance' =>  "text NULL"
+        ));
+        $oDB->createCommand()->createIndex('idx1_groups', '{{groups}}', 'sid', false);
+        $oDB->createCommand()->createIndex('idx2_groups', '{{groups}}', 'group_name', false);
+        $oDB->createCommand()->createIndex('idx3_groups', '{{groups}}', 'language', false);
+        
+        
+        // labels
+        $oDB->createCommand()->createTable('{{labels}}', array(
+        'lid' =>  "pk",
         'code' =>  "string(5) NOT NULL default ''",
         'title' =>  "text",
         'sortorder' =>  "integer NOT NULL",
         'language' =>  "string(20) default 'en'",
         'assessment_value' =>  "integer NOT NULL default '0'",
-    ));
-
-    $oDB->createCommand()->addPrimaryKey('labels_pk', '{{labels}}', ['lid', 'sortorder', 'language'], false);
-    
-    $oDB->createCommand()->createIndex('idx1_labels', '{{labels}}', 'code', false);
-    $oDB->createCommand()->createIndex('idx2_labels', '{{labels}}', 'language', false);
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// labelsets
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{labelsets}}', array(
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_labels', '{{labels}}', 'code', false);
+        $oDB->createCommand()->createIndex('idx2_labels', '{{labels}}', 'sortorder', false);
+        $oDB->createCommand()->createIndex('idx3_labels', '{{labels}}', 'language', false);
+        
+        
+        // labelsets
+        $oDB->createCommand()->createTable('{{labelsets}}', array(
         'lid' => 'pk',
         'label_name' =>  "string(100) default ''",
         'languages' =>  "string(200) default 'en'",
-    ));
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-
-// notifications
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{notifications}}', array(
+        ));
+        
+        
+        // notifications
+        $oDB->createCommand()->createTable('{{notifications}}', array(
         'id' =>  "pk",
         'entity' =>  "string(15) NOT NULL ",
         'entity_id' =>  "integer NOT NULL",
@@ -194,115 +159,89 @@ $oTransaction = $oDB->beginTransaction();
         'status' =>  "string(15) NOT NULL DEFAULT 'new' ",
         'importance' =>  "integer NOT NULL DEFAULT 1",
         'display_class' =>  "string(31) DEFAULT 'default' ",
-        'hash' =>  "string(64) DEFAULT NULL ",
-        'created' =>  "datetime default NULL",
-        'first_read' =>  "datetime default NULL",
-    ));
-
-    $oDB->createCommand()->createIndex('notifications_pk', '{{notifications}}', ['entity', 'entity_id', 'status'], false);
-    $oDB->createCommand()->createIndex('idx1_notifications', '{{notifications}}', 'hash', false);
-    
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-//  participants
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{participants}}', array(
+        'hash' =>  "string(64) NULL ",
+        'created' =>  "datetime NULL",
+        'first_read' =>  "datetime NULL",
+        ));
+        
+        $oDB->createCommand()->createIndex('notifications_pk', '{{notifications}}', ['entity', 'entity_id', 'status'], false);
+        $oDB->createCommand()->createIndex('idx1_notifications', '{{notifications}}', 'hash', false);
+        
+        
+        //  participants
+        $oDB->createCommand()->createTable('{{participants}}', array(
         'participant_id' =>  "string(50) NOT NULL",
-        'firstname' =>  "string(150) DEFAULT NULL",
-        'lastname' =>  "string(150) DEFAULT NULL",
+        'firstname' =>  "string(150) NULL",
+        'lastname' =>  "string(150) NULL",
         'email' =>  "text",
-        'language' =>  "string(40) DEFAULT NULL",
+        'language' =>  "string(40) NULL",
         'blacklisted' =>  "string(1) NOT NULL",
         'owner_uid' =>  "integer NOT NULL",
         'created_by' =>  "integer NOT NULL",
         'created' =>  "datetime",
         'modified' =>  "datetime",
-    ));
-
-    $oDB->createCommand()->addPrimaryKey('participant_pk', '{{participants}}', 'participant_id', false);
-    $oDB->createCommand()->createIndex('idx1_participants', '{{participants}}', 'firstname', false);
-    $oDB->createCommand()->createIndex('idx2_participants', '{{participants}}', 'lastname', false);
-    $oDB->createCommand()->createIndex('idx3_participants', '{{participants}}', 'language', false);
-    
-    try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-    
-// participant_attribute
-$oTransaction = $oDB->beginTransaction();
-    
-    $oDB->createCommand()->createTable('{{participant_attribute}}', array(
+        ));
+        
+        $oDB->createCommand()->addPrimaryKey('participant_pk', '{{participants}}', 'participant_id', false);
+        $oDB->createCommand()->createIndex('idx1_participants', '{{participants}}', 'firstname', false);
+        $oDB->createCommand()->createIndex('idx2_participants', '{{participants}}', 'lastname', false);
+        $oDB->createCommand()->createIndex('idx3_participants', '{{participants}}', 'language', false);
+        
+        
+        // participant_attribute
+        $oDB->createCommand()->createTable('{{participant_attribute}}', array(
         'participant_id' =>  "string(50) NOT NULL",
         'attribute_id' =>  "integer NOT NULL",
         'value' =>  "text NOT NULL",
-    ));
-
-    $oDB->createCommand()->addPrimaryKey('participant_attribute_pk', '{{participant_attribute}}', ['participant_id', 'attribute_id']);
-    
-    try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-    
-// participant_attribute_names_lang
-$oTransaction = $oDB->beginTransaction();
-try{
-
-    $oDB->createCommand()->createTable('{{participant_attribute_names_lang}}', array(
+        ));
+        
+        $oDB->createCommand()->addPrimaryKey('participant_attribute_pk', '{{participant_attribute}}', ['participant_id', 'attribute_id']);
+        
+        
+        // participant_attribute_names_lang
+        $oDB->createCommand()->createTable('{{participant_attribute_names_lang}}', array(
         'attribute_id' =>  "integer NOT NULL",
         'attribute_name' =>  "string(255) NOT NULL",
         'lang' =>  "string(20) NOT NULL",
         ));
-
-    $oDB->createCommand()->addPrimaryKey('participant_attribute_names_lang_pk', '{{participant_attribute_names_lang}}', ['attribute_id', 'lang']);
-
-    $oTransaction->commit();
-
-}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-
-// participant_attribute_names
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{participant_attribute_names}}', array(
+        
+        $oDB->createCommand()->addPrimaryKey('participant_attribute_names_lang_pk', '{{participant_attribute_names_lang}}', ['attribute_id', 'lang']);
+        
+        
+        
+        // participant_attribute_names
+        $oDB->createCommand()->createTable('{{participant_attribute_names}}', array(
         'attribute_id' =>  "pk",
         'attribute_type' =>  "string(4) NOT NULL",
         'defaultname' =>  "string(255) NOT NULL",
         'visible' =>  "string(5) NOT NULL",
-    ));
-
-    $oDB->createCommand()->createIndex('idx_participant_attribute_names', '{{participant_attribute_names}}', ['attribute_id', 'attribute_type']);
-
- try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-//participant_attribute_values
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{participant_attribute_values}}', array(
+        ));
+        
+        $oDB->createCommand()->createIndex('idx_participant_attribute_names', '{{participant_attribute_names}}', ['attribute_id', 'attribute_type']);
+        
+        
+        //participant_attribute_values
+        $oDB->createCommand()->createTable('{{participant_attribute_values}}', array(
         'value_id' => "pk",
         'attribute_id' => "integer NOT NULL",
         'value' => "text NOT NULL",
-    ));
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-
-//participant_shares
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{participant_shares}}', array(
+        ));
+        
+        
+        
+        //participant_shares
+        $oDB->createCommand()->createTable('{{participant_shares}}', array(
         'participant_id' =>  "string(50) NOT NULL",
         'share_uid' =>  "integer NOT NULL",
-        'date_added' =>  "datetime default NULL",
+        'date_added' =>  "datetime NULL",
         'can_edit' =>  "string(5) NOT NULL",
-    ));
-
-    $oDB->createCommand()->addPrimaryKey('participant_shares_pk', '{{participant_shares}}', ['participant_id', 'share_uid'], false);
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-
-// permissions
-
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{permissions}}', array(
+        ));
+        
+        $oDB->createCommand()->addPrimaryKey('participant_shares_pk', '{{participant_shares}}', ['participant_id', 'share_uid'], false);
+        
+        
+        // permissions
+        $oDB->createCommand()->createTable('{{permissions}}', array(
         'id' =>  "pk",
         'entity' =>  "string(50) NOT NULL",
         'entity_id' =>  "integer NOT NULL",
@@ -314,43 +253,33 @@ $oTransaction = $oDB->beginTransaction();
         'delete_p' =>  "integer NOT NULL default 0",
         'import_p' =>  "integer NOT NULL default 0",
         'export_p' =>  "integer NOT NULL default 0",
-    ));
-
-    $oDB->createCommand()->createIndex('idx1_permissions', '{{permissions}}', ['entity_id', 'entity', 'permission', 'uid'], true); 
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-
-// plugins
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{plugins}}', array(
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_permissions', '{{permissions}}', ['entity_id', 'entity', 'permission', 'uid'], true);
+        
+        
+        // plugins
+        $oDB->createCommand()->createTable('{{plugins}}', array(
         'id' =>  "pk",
         'name' =>  "string(50) NOT NULL",
         'active' =>  "integer NOT NULL default 0",
-        'version' =>  "string(32) default null",
-    ));
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// plugin_settings
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{plugin_settings}}', array(
+        'version' =>  "string(32) NULL",
+        ));
+        
+        
+        // plugin_settings
+        $oDB->createCommand()->createTable('{{plugin_settings}}', array(
         'id' => "pk",
         'plugin_id' => "integer NOT NULL",
         'model' => "string(50) NULL",
         'model_id' => "integer NULL",
         'key' => "string(50) NOT NULL",
         'value' => "text NULL",
-    ));
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// questions
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{questions}}', array(
+        ));
+        
+        
+        // questions
+        $oDB->createCommand()->createTable('{{questions}}', array(
         'qid' =>  "pk",
         'parent_qid' =>  "integer NOT NULL default '0'",
         'sid' =>  "integer NOT NULL default '0'",
@@ -361,91 +290,77 @@ $oTransaction = $oDB->beginTransaction();
         'preg' =>  "text",
         'help' =>  "text",
         'other' =>  "string(1) NOT NULL default 'N'",
-        'mandatory' =>  "string(1) default NULL",
+        'mandatory' =>  "string(1) NULL",
         'question_order' =>  "integer NOT NULL",
         'language' =>  "string(20) default 'en'",
         'scale_id' =>  "integer NOT NULL default '0'",
         'same_default' =>  "integer NOT NULL default '0'",
         'relevance' =>  "text",
-        'modulename' =>  "string(255) DEFAULT NULL",
-    ));
-
-    $oDB->createCommand()->createIndex('idx1_questions', '{{questions}}', 'sid', false); 
-    $oDB->createCommand()->createIndex('idx2_questions', '{{questions}}', 'gid', false); 
-    $oDB->createCommand()->createIndex('idx3_questions', '{{questions}}', 'type', false); 
-    $oDB->createCommand()->createIndex('idx4_questions', '{{questions}}', 'title', false); 
-    $oDB->createCommand()->createIndex('idx5_questions', '{{questions}}', 'parent_qid', false); 
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// question_attributes
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{question_attributes}}', array(
+        'modulename' =>  "string(255) NULL",
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_questions', '{{questions}}', 'sid', false);
+        $oDB->createCommand()->createIndex('idx2_questions', '{{questions}}', 'gid', false);
+        $oDB->createCommand()->createIndex('idx3_questions', '{{questions}}', 'type', false);
+        $oDB->createCommand()->createIndex('idx4_questions', '{{questions}}', 'title', false);
+        $oDB->createCommand()->createIndex('idx5_questions', '{{questions}}', 'parent_qid', false);
+        
+        
+        
+        // question_attributes
+        $oDB->createCommand()->createTable('{{question_attributes}}', array(
         'qaid' => "pk",
         'qid' => "integer NOT NULL default '0'",
-        'attribute' => "string(50) default NULL",
-        'value' => "text default NULL",
-        'language' => "string(20) default NULL",
-    ));
-
-    $oDB->createCommand()->createIndex('idx1_question_attributes', '{{question_attributes}}', 'qid', false); 
-    $oDB->createCommand()->createIndex('idx2_question_attributes', '{{question_attributes}}', 'attribute', false); 
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// quota
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{quota}}', array(
+        'attribute' => "string(50) NULL",
+        'value' => "text NULL",
+        'language' => "string(20) NULL",
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_question_attributes', '{{question_attributes}}', 'qid', false);
+        $oDB->createCommand()->createIndex('idx2_question_attributes', '{{question_attributes}}', 'attribute', false);
+        
+        
+        // quota
+        $oDB->createCommand()->createTable('{{quota}}', array(
         'id' => "pk",
-        'sid' => "integer default NULL",
-        'name' => "string(255) default NULL",
-        'qlimit' => "integer default NULL",
-        'action' => "integer default NULL",
+        'sid' => "integer NULL",
+        'name' => "string(255) NULL",
+        'qlimit' => "integer NULL",
+        'action' => "integer NULL",
         'active' => "integer NOT NULL default '1'",
         'autoload_url' => "integer NOT NULL default '0'",
-    ));
-
-    $oDB->createCommand()->createIndex('idx1_quota', '{{quota}}', 'sid', false); 
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-//quota_languagesettings
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{quota_languagesettings}}', array(
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_quota', '{{quota}}', 'sid', false);
+        
+        
+        //quota_languagesettings
+        $oDB->createCommand()->createTable('{{quota_languagesettings}}', array(
         'quotals_id' => "pk",
         'quotals_quota_id' => "integer NOT NULL default '0'",
         'quotals_language' => "string(45) NOT NULL default 'en'",
-        'quotals_name' => "string(255) default NULL",
+        'quotals_name' => "string(255) NULL",
         'quotals_message' => "text NOT NULL",
         'quotals_url' => "string(255)",
         'quotals_urldescrip' => "string(255)",
-    ));
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// quota_members
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{quota_members}}', array(
+        ));
+        
+        
+        // quota_members
+        $oDB->createCommand()->createTable('{{quota_members}}', array(
         'id' => "pk",
-        'sid' => "integer default NULL",
-        'qid' => "integer default NULL",
-        'quota_id' => "integer default NULL",
-        'code' => "string(11) default NULL",
-    ));
-
-    $oDB->createCommand()->createIndex('idx1_quota_members', '{{quota_members}}', ['sid', 'qid', 'quota_id', 'code'], true); 
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-
-// saved_control
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{saved_control}}', array(
+        'sid' => "integer NULL",
+        'qid' => "integer NULL",
+        'quota_id' => "integer NULL",
+        'code' => "string(11) NULL",
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_quota_members', '{{quota_members}}', ['sid', 'qid', 'quota_id', 'code'], true);
+        
+        
+        
+        // saved_control
+        $oDB->createCommand()->createTable('{{saved_control}}', array(
         'scid' => "pk",
         'sid' => "integer NOT NULL default '0'",
         'srid' => "integer NOT NULL default '0'",
@@ -455,97 +370,89 @@ $oTransaction = $oDB->beginTransaction();
         'ip' => "text NOT NULL",
         'saved_thisstep' => "text NOT NULL",
         'status' => "string(1) NOT NULL default ''",
-        'saved_date' => "datetime default NULL",
+        'saved_date' => "datetime NULL",
         'refurl' => "text",
-    ));
-
-    $oDB->createCommand()->createIndex('idx1_saved_control', '{{saved_control}}', 'sid'); 
-    $oDB->createCommand()->createIndex('idx2_saved_control', '{{saved_control}}', 'srid'); 
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-
-// sessions
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{sessions}}', array(
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_saved_control', '{{saved_control}}', 'sid');
+        $oDB->createCommand()->createIndex('idx2_saved_control', '{{saved_control}}', 'srid');
+        
+        
+        // sessions
+        
+        $oDB->createCommand()->createTable('{{sessions}}', array(
         'id' => "string(32) NOT NULL",
-        'expire' => "integer DEFAULT NULL",
+        'expire' => "integer NULL",
         'data' => "binary",
-    ));
-
-    $oDB->createCommand()->addPrimaryKey('sessions_pk', '{{sessions}}', 'id');
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// settings_global
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{settings_global}}', array(
+        ));
+        
+        $oDB->createCommand()->addPrimaryKey('sessions_pk', '{{sessions}}', 'id');
+        
+        
+        // settings_global
+        
+        $oDB->createCommand()->createTable('{{settings_global}}', array(
         'stg_name' =>  "string(50) NOT NULL default ''",
         'stg_value' =>  "text NOT NULL",
-    ));
-
-    $oDB->createCommand()->addPrimaryKey('settings_global_pk', '{{settings_global}}', 'stg_name');
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-//settings_user 
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{settings_user}}', array(
+        ));
+        
+        $oDB->createCommand()->addPrimaryKey('settings_global_pk', '{{settings_global}}', 'stg_name');
+        
+        
+        
+        //settings_user
+        
+        $oDB->createCommand()->createTable('{{settings_user}}', array(
         'id' => "pk",
         'uid' => "integer NOT NULL",
-        'entity' => "string(15) DEFAULT NULL",
-        'entity_id' => "string(31) DEFAULT NULL",
+        'entity' => "string(15) NULL",
+        'entity_id' => "string(31) NULL",
         'stg_name' => "string(63) NOT NULL",
-        'stg_value' => "TEXT DEFAULT NULL",
-    ));
-    
-    $oDB->createCommand()->createIndex('idx1_settings_user', '{{settings_user}}', 'uid', false);
-    $oDB->createCommand()->createIndex('idx2_settings_user', '{{settings_user}}', 'entity', false);
-    $oDB->createCommand()->createIndex('idx3_settings_user', '{{settings_user}}', 'entity_id', false);
-    $oDB->createCommand()->createIndex('idx4_settings_user', '{{settings_user}}', 'stg_name', false);
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-
-//Surveymenu
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{surveymenu}}', array(
+        'stg_value' => "TEXT NULL",
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_settings_user', '{{settings_user}}', 'uid', false);
+        $oDB->createCommand()->createIndex('idx2_settings_user', '{{settings_user}}', 'entity', false);
+        $oDB->createCommand()->createIndex('idx3_settings_user', '{{settings_user}}', 'entity_id', false);
+        $oDB->createCommand()->createIndex('idx4_settings_user', '{{settings_user}}', 'stg_name', false);
+        
+        
+        
+        
+        //Surveymenu
+        
+        $oDB->createCommand()->createTable('{{surveymenu}}', array(
         'id' => "pk",
-        'parent_id' => "integer DEFAULT NULL",
-        'survey_id' => "integer DEFAULT NULL",
-        'user_id' => "integer DEFAULT NULL",
-        'ordering' => "integer DEFAULT '0'",
-        'level' => "integer DEFAULT '0'",
+        'parent_id' => "integer NULL",
+        'survey_id' => "integer NULL",
+        'user_id' => "integer NULL",
+        'ordering' => "integer NULL DEFAULT '0'",
+        'level' => "integer NULL DEFAULT '0'",
         'title' => "string(255)  NOT NULL DEFAULT ''",
         'position' => "string(255)  NOT NULL DEFAULT 'side'",
         'description' => "text ",
         'active' => "integer NOT NULL DEFAULT '0'",
         'changed_at' => "datetime NULL",
         'changed_by' => "integer NOT NULL DEFAULT '0'",
-        'created_at' => "datetime default NULL",
+        'created_at' => "datetime NULL",
         'created_by' => "integer NOT NULL DEFAULT '0'",
-    ));
-    
-    $oDB->createCommand()->createIndex('idx1_surveymenu', '{{surveymenu}}', 'ordering', false);
-    $oDB->createCommand()->createIndex('idx2_surveymenu', '{{surveymenu}}', 'title', false);
-
-    $headerArray = ['parent_id','survey_id','user_id','ordering','level','title','position','description','active','changed_at','changed_by','created_at','created_by'];
-    $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
-    $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
-
-    try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-
-// Surveymenu entries
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_surveymenu', '{{surveymenu}}', 'ordering', false);
+        $oDB->createCommand()->createIndex('idx2_surveymenu', '{{surveymenu}}', 'title', false);
+        
+        $headerArray = ['parent_id','survey_id','user_id','ordering','level','title','position','description','active','changed_at','changed_by','created_at','created_by'];
+        $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+        $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [NULL,NULL,NULL,0,0,'quickmenue','collapsed','quickmenu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+        
+        
+        
+        // Surveymenu entries
+        
+        $oDB->createCommand()->createTable('{{surveymenu_entries}}', array(
         'id' =>  "pk",
-        'menu_id' =>  "integer DEFAULT NULL",
-        'user_id' =>  "integer DEFAULT NULL",
+        'menu_id' =>  "integer NULL",
+        'user_id' =>  "integer NULL",
         'ordering' =>  "integer DEFAULT '0'",
         'name' =>  "string(255)  NOT NULL DEFAULT ''",
         'title' =>  "string(255)  NOT NULL DEFAULT ''",
@@ -560,25 +467,25 @@ $oTransaction = $oDB->beginTransaction();
         'partial' =>  "string(255)  NOT NULL DEFAULT ''",
         'classes' =>  "string(255)  NOT NULL DEFAULT ''",
         'permission' =>  "string(255)  NOT NULL DEFAULT ''",
-        'permission_grade' =>  "string(255)  DEFAULT NULL",
+        'permission_grade' =>  "string(255)  NULL",
         'data' =>  "text ",
         'getdatamethod' =>  "string(255)  NOT NULL DEFAULT ''",
         'language' =>  "string(255)  NOT NULL DEFAULT 'en-GB'",
         'active' =>  "integer NOT NULL DEFAULT '0'",
         'changed_at' =>  "datetime NULL",
         'changed_by' =>  "integer NOT NULL DEFAULT '0'",
-        'created_at' =>  "datetime default NULL",
+        'created_at' =>  "datetime NULL",
         'created_by' =>  "integer NOT NULL DEFAULT '0'",
-    ));
-
-    $oDB->createCommand()->createIndex('idx1_surveymenu_entries', '{{surveymenu_entries}}', 'menu_id', false);
-    $oDB->createCommand()->createIndex('idx2_surveymenu_entries', '{{surveymenu_entries}}', 'ordering', false);
-    $oDB->createCommand()->createIndex('idx3_surveymenu_entries', '{{surveymenu_entries}}', 'title', false);
-    $oDB->createCommand()->createIndex('idx4_surveymenu_entries', '{{surveymenu_entries}}', 'language', false);
-    $oDB->createCommand()->createIndex('idx5_surveymenu_entries', '{{surveymenu_entries}}', 'menu_title', false);
-
-    $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
-    $basicMenues = [
+        ));
+        
+        $oDB->createCommand()->createIndex('idx1_surveymenu_entries', '{{surveymenu_entries}}', 'menu_id', false);
+        $oDB->createCommand()->createIndex('idx2_surveymenu_entries', '{{surveymenu_entries}}', 'ordering', false);
+        $oDB->createCommand()->createIndex('idx3_surveymenu_entries', '{{surveymenu_entries}}', 'title', false);
+        $oDB->createCommand()->createIndex('idx4_surveymenu_entries', '{{surveymenu_entries}}', 'language', false);
+        $oDB->createCommand()->createIndex('idx5_surveymenu_entries', '{{surveymenu_entries}}', 'menu_title', false);
+        
+        $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
+        $basicMenues = [
         [1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
         [1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
         [1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
@@ -610,35 +517,31 @@ $oTransaction = $oDB->beginTransaction();
         [2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
         [2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
         [2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-    ];
-    foreach($basicMenues as $basicMenu){
-        $oDB->createCommand()->insert("{{surveymenu_entries}}", array_combine($headerArray, $basicMenu));
-    }
+        ];
+            
+        foreach($basicMenues as $basicMenu){
+            $oDB->createCommand()->insert("{{surveymenu_entries}}", array_combine($headerArray, $basicMenu));
+        }
 
 
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
 
-
-// surveys
-
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{surveys}}', array(
+        // surveys
+        $oDB->createCommand()->createTable('{{surveys}}', array(
         'sid' => "integer NOT NULL",
         'owner_id' => "integer NOT NULL",
         'gsid' => "integer default '1'",
-        'admin' => "string(50) default NULL",
+        'admin' => "string(50) NULL",
         'active' => "string(1) NOT NULL default 'N'",
-        'expires' => "datetime default NULL",
-        'startdate' => "datetime default NULL",
-        'adminemail' => "string(254) default NULL",
+        'expires' => "datetime NULL",
+        'startdate' => "datetime NULL",
+        'adminemail' => "string(254) NULL",
         'anonymized' => "string(1) NOT NULL default 'N'",
-        'faxto' => "string(20) default NULL",
-        'format' => "string(1) default NULL",
+        'faxto' => "string(20) NULL",
+        'format' => "string(1) NULL",
         'savetimings' => "string(1) NOT NULL default 'N'",
         'template' => "string(100) default 'default'",
-        'language' => "string(50) default NULL",
-        'additional_languages' => "string(255) default NULL",
+        'language' => "string(50) NULL",
+        'additional_languages' => "string(255) NULL",
         'datestamp' => "string(1) NOT NULL default 'N'",
         'usecookie' => "string(1) NOT NULL default 'N'",
         'allowregister' => "string(1) NOT NULL default 'N'",
@@ -649,7 +552,7 @@ $oTransaction = $oDB->beginTransaction();
         'printanswers' => "string(1) NOT NULL default 'N'",
         'ipaddr' => "string(1) NOT NULL default 'N'",
         'refurl' => "string(1) NOT NULL default 'N'",
-        'datecreated' => "date default NULL",
+        'datecreated' => "date NULL",
         'publicstatistics' => "string(1) NOT NULL default 'N'",
         'publicgraphs' => "string(1) NOT NULL default 'N'",
         'listpublic' => "string(1) NOT NULL default 'N'",
@@ -659,10 +562,10 @@ $oTransaction = $oDB->beginTransaction();
         'assessments' => "string(1) NOT NULL default 'N'",
         'usecaptcha' => "string(1) NOT NULL default 'N'",
         'usetokens' => "string(1) NOT NULL default 'N'",
-        'bounce_email' => "string(254) default NULL",
+        'bounce_email' => "string(254) NULL",
         'attributedescriptions' => "text",
-        'emailresponseto' => "text default NULL",
-        'emailnotificationto' => "text default NULL",
+        'emailresponseto' => "text NULL",
+        'emailnotificationto' => "text NULL",
         'tokenlength' => "integer NOT NULL default '15'",
         'showxquestions' => "string(1) default 'Y'",
         'showgroupinfo' => "string(1) default 'B'",
@@ -681,59 +584,51 @@ $oTransaction = $oDB->beginTransaction();
         'navigationdelay' => "integer NOT NULL default '0'",
         'nokeyboard' => "string(1) default 'N'",
         'alloweditaftercompletion' => "string(1) default 'N'",
-        'googleanalyticsstyle' => "string(1) DEFAULT NULL",
-        'googleanalyticsapikey' => "string(25) DEFAULT NULL",
-    ));
+        'googleanalyticsstyle' => "string(1) NULL",
+        'googleanalyticsapikey' => "string(25) NULL",
+        ));
 
-    $oDB->createCommand()->addPrimaryKey('surveys_pk', '{{surveys}}', 'sid');
-    
-    $oDB->createCommand()->createIndex('idx1_surveys', '{{surveys}}', 'owner_id', false);
-    $oDB->createCommand()->createIndex('idx2_surveys', '{{surveys}}', 'gsid', false);
+        $oDB->createCommand()->addPrimaryKey('surveys_pk', '{{surveys}}', 'sid');
 
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
+        $oDB->createCommand()->createIndex('idx1_surveys', '{{surveys}}', 'owner_id', false);
+        $oDB->createCommand()->createIndex('idx2_surveys', '{{surveys}}', 'gsid', false);
 
-// surveys_groups
 
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{surveys_groups}}', array(
+        // surveys_groups
+        $oDB->createCommand()->createTable('{{surveys_groups}}', array(
         'gsid' => "pk",
         'name' => "string(45) NOT NULL",
-        'title' => "string(100) DEFAULT NULL",
+        'title' => "string(100) NULL",
         'template' => "string(128) DEFAULT 'default'",
         'description' => "text ",
         'sortorder' => "integer NOT NULL",
-        'owner_uid' => "integer DEFAULT NULL",
-        'parent_id' => "integer DEFAULT NULL",
-        'created' => "datetime default NULL",
-        'modified' => "datetime default NULL",
+        'owner_uid' => "integer NULL",
+        'parent_id' => "integer NULL",
+        'created' => "datetime NULL",
+        'modified' => "datetime NULL",
         'created_by' => "integer NOT NULL"
-    ));
+        ));
 
-    $oDB->createCommand()->createIndex('idx1_surveys_groups', '{{surveys_groups}}', 'name', false);    
-    $oDB->createCommand()->createIndex('idx2_surveys_groups', '{{surveys_groups}}', 'title', false);    
+        $oDB->createCommand()->createIndex('idx1_surveys_groups', '{{surveys_groups}}', 'name', false);
+        $oDB->createCommand()->createIndex('idx2_surveys_groups', '{{surveys_groups}}', 'title', false);
 
-    $oDB->createCommand()->insert("{{surveys_groups}}", [
-        'name' => 'default', 
+        $oDB->createCommand()->insert("{{surveys_groups}}", [
+        'name' => 'default',
         'title' => 'Default Survey Group',
-        'template' =>  NULL, 
-        'description' => 'LimeSurvey core default survey group', 
-        'sortorder' => 0, 
-        'owner_uid' => 1, 
-        'parent_id' => NULL, 
-        'created' => date('Y-m-d H:i:s'), 
-        'modified' => date('Y-m-d H:i:s'), 
+        'template' =>  NULL,
+        'description' => 'LimeSurvey core default survey group',
+        'sortorder' => 0,
+        'owner_uid' => 1,
+        'parent_id' => NULL,
+        'created' => date('Y-m-d H:i:s'),
+        'modified' => date('Y-m-d H:i:s'),
         'created_by' => 1
-    ]);
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
+        ]);
 
 
-// surveys_languagesettings
 
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{surveys_languagesettings}}', array(
+        // surveys_languagesettings
+        $oDB->createCommand()->createTable('{{surveys_languagesettings}}', array(
         'surveyls_survey_id' => "integer NOT NULL",
         'surveyls_language' => "string(45) NOT NULL DEFAULT 'en'",
         'surveyls_title' => "string(200) NOT NULL",
@@ -757,141 +652,117 @@ $oTransaction = $oDB->beginTransaction();
         'email_admin_responses_subj' => "string(255) NULL",
         'email_admin_responses' => "TEXT NULL",
         'surveyls_numberformat' => "INT NOT NULL DEFAULT 0",
-        'attachments' => "text DEFAULT NULL",
-    ));
+        'attachments' => "text NULL",
+        ));
 
-    $oDB->createCommand()->addPrimaryKey('surveys_languagesettings_pk', '{{surveys_languagesettings}}', ['surveyls_survey_id', 'surveyls_language']);
+        $oDB->createCommand()->addPrimaryKey('surveys_languagesettings_pk', '{{surveys_languagesettings}}', ['surveyls_survey_id', 'surveyls_language']);
 
-    $oDB->createCommand()->createIndex('idx1_surveys_languagesettings', '{{surveys_languagesettings}}', 'surveyls_title', false);    
+        $oDB->createCommand()->createIndex('idx1_surveys_languagesettings', '{{surveys_languagesettings}}', 'surveyls_title', false);
 
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
 
-// survey_links
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{survey_links}}', array(
+        // survey_links
+        $oDB->createCommand()->createTable('{{survey_links}}', array(
         'participant_id' => "string(50) NOT NULL",
         'token_id' => "integer NOT NULL",
         'survey_id' => "integer NOT NULL",
         'date_created' => "datetime",
         'date_invited' => "datetime",
         'date_completed' => "datetime",
-    ));
+        ));
 
-    $oDB->createCommand()->addPrimaryKey('survey_links_pk', '{{survey_links}}', ['participant_id','token_id','survey_id']);
+        $oDB->createCommand()->addPrimaryKey('survey_links_pk', '{{survey_links}}', ['participant_id','token_id','survey_id']);
 
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
 
-// survey_url_parameters
 
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{survey_url_parameters}}', array(
+        // survey_url_parameters
+        $oDB->createCommand()->createTable('{{survey_url_parameters}}', array(
         'id' => "pk",
         'sid' => "integer NOT NULL",
         'parameter' => "string(50) NOT NULL",
         'targetqid' => "integer NULL",
         'targetsqid' => "integer NULL",
-    ));
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
+        ));
 
 
-// templates
 
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{templates}}', array(
+        // templates
+        $oDB->createCommand()->createTable('{{templates}}', array(
         'id' =>  "pk",
         'name' =>  "string(150) NOT NULL",
-        'folder' =>  "string(45) DEFAULT NULL",
+        'folder' =>  "string(45) NULL",
         'title' =>  "string(100) NOT NULL",
-        'creation_date' =>  "datetime default NULL",
-        'author' =>  "string(150) DEFAULT NULL",
-        'author_email' =>  "string(255) DEFAULT NULL",
-        'author_url' =>  "string(255) DEFAULT NULL",
+        'creation_date' =>  "datetime NULL",
+        'author' =>  "string(150) NULL",
+        'author_email' =>  "string(255) NULL",
+        'author_url' =>  "string(255) NULL",
         'copyright' =>  "text ",
         'license' =>  "text ",
-        'version' =>  "string(45) DEFAULT NULL",
+        'version' =>  "string(45) NULL",
         'api_version' =>  "string(45) NOT NULL",
         'view_folder' =>  "string(45) NOT NULL",
         'files_folder' =>  "string(45) NOT NULL",
         'description' =>  "text ",
-        'last_update' =>  "datetime default NULL",
-        'owner_id' =>  "integer DEFAULT NULL",
-        'extends' =>  "string(150)  DEFAULT NULL",
-    ));
+        'last_update' =>  "datetime NULL",
+        'owner_id' =>  "integer NULL",
+        'extends' =>  "string(150)  NULL",
+        ));
 
-    $oDB->createCommand()->createIndex('idx1_templates', '{{templates}}', 'name', false);    
-    $oDB->createCommand()->createIndex('idx2_templates', '{{templates}}', 'title', false);    
-    $oDB->createCommand()->createIndex('idx3_templates', '{{templates}}', 'owner_id', false);    
-    $oDB->createCommand()->createIndex('idx4_templates', '{{templates}}', 'extends', false);    
-    
-    $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder','description','last_update','owner_id','extends'];
-    $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '']));
-    $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['minimal', 'minimal', 'Minimal Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '']));
-    $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', NULL, 1, 'default']));
-    
-    
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
+        $oDB->createCommand()->createIndex('idx1_templates', '{{templates}}', 'name', false);
+        $oDB->createCommand()->createIndex('idx2_templates', '{{templates}}', 'title', false);
+        $oDB->createCommand()->createIndex('idx3_templates', '{{templates}}', 'owner_id', false);
+        $oDB->createCommand()->createIndex('idx4_templates', '{{templates}}', 'extends', false);
 
-// template_configuration
+        $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder','description','last_update','owner_id','extends'];
+        $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '']));
+        $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['minimal', 'minimal', 'Minimal Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '']));
+        $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', NULL, 1, 'default']));
 
-$oTransaction = $oDB->beginTransaction();
 
-    $oDB->createCommand()->createTable('{{template_configuration}}', array(
+        // template_configuration
+        $oDB->createCommand()->createTable('{{template_configuration}}', array(
         'id' => "pk",
         'template_name' => "string(150)  NOT NULL",
-        'sid' => "integer DEFAULT NULL",
-        'gsid' => "integer DEFAULT NULL",
-        'uid' => "integer DEFAULT NULL",
+        'sid' => "integer NULL",
+        'gsid' => "integer NULL",
+        'uid' => "integer NULL",
         'files_css' => "text",
         'files_js' => "text",
         'files_print_css' => "text",
         'options' => "text ",
-        'cssframework_name' => "string(45) DEFAULT NULL",
+        'cssframework_name' => "string(45) NULL",
         'cssframework_css' => "text",
         'cssframework_js' => "text",
         'packages_to_load' => "text",
         'packages_ltr' => "text",
         'packages_rtl' => "text",
-    ));
+        ));
 
-    $oDB->createCommand()->createIndex('idx1_template_configuration', '{{template_configuration}}', 'template_name', false);    
-    $oDB->createCommand()->createIndex('idx2_template_configuration', '{{template_configuration}}', 'sid', false);    
-    $oDB->createCommand()->createIndex('idx3_template_configuration', '{{template_configuration}}', 'gsid', false);    
-    $oDB->createCommand()->createIndex('idx4_template_configuration', '{{template_configuration}}', 'uid', false);    
+        $oDB->createCommand()->createIndex('idx1_template_configuration', '{{template_configuration}}', 'template_name', false);
+        $oDB->createCommand()->createIndex('idx2_template_configuration', '{{template_configuration}}', 'sid', false);
+        $oDB->createCommand()->createIndex('idx3_template_configuration', '{{template_configuration}}', 'gsid', false);
+        $oDB->createCommand()->createIndex('idx4_template_configuration', '{{template_configuration}}', 'uid', false);
 
-    $headerArray = ['template_name','sid','gsid','uid','files_css','files_js','files_print_css','options','cssframework_name','cssframework_css','cssframework_js','packages_to_load','packages_ltr','packages_rtl'];
-    $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['default',NULL,NULL,NULL,'{"add": ["css/template.css", "css/animate.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','','','']));
-    $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['minimal',NULL,NULL,NULL,'{"add": ["css/template.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{}','bootstrap','{}','','','','']));
-    $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','','','']));
-   
-    
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-    
+        $headerArray = ['template_name','sid','gsid','uid','files_css','files_js','files_print_css','options','cssframework_name','cssframework_css','cssframework_js','packages_to_load','packages_ltr','packages_rtl'];
+        $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['default',NULL,NULL,NULL,'{"add": ["css/template.css", "css/animate.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','','','']));
+        $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['minimal',NULL,NULL,NULL,'{"add": ["css/template.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{}','bootstrap','{}','','','','']));
+        $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','','','']));
 
-//user_in_groups
 
-$oTransaction = $oDB->beginTransaction();
 
-    $oDB->createCommand()->createTable('{{user_in_groups}}', array(
+        //user_in_groups
+        $oDB->createCommand()->createTable('{{user_in_groups}}', array(
         'ugid' => "integer NOT NULL",
         'uid' => "integer NOT NULL",
-    ));
-    
-    $oDB->createCommand()->addPrimaryKey('user_in_groups_pk', '{{user_in_groups}}', ['ugid','uid']);
+        ));
 
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
+        $oDB->createCommand()->addPrimaryKey('user_in_groups_pk', '{{user_in_groups}}', ['ugid','uid']);
 
-// users
 
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{users}}', array(
+        // users
+        $oDB->createCommand()->createTable('{{users}}', array(
         'uid' => "pk",
         'users_name' => "string(64) NOT NULL default ''",
-        'password' => "binary NOT NULL",
+        'password' => "text NOT NULL",
         'full_name' => "string(50) NOT NULL",
         'parent_id' => "integer NOT NULL",
         'lang' => "string(20)",
@@ -903,35 +774,34 @@ $oTransaction = $oDB->beginTransaction();
         'dateformat' => "integer NOT NULL DEFAULT 1",
         'created' => "datetime",
         'modified' => "datetime",
-    ));
+        ));
 
-    $oDB->createCommand()->createIndex('idx1_users', '{{users}}', 'users_name', true);   
-    $oDB->createCommand()->createIndex('idx2_users', '{{users}}', 'email', false);   
-
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
+        $oDB->createCommand()->createIndex('idx1_users', '{{users}}', 'users_name', true);
+        $oDB->createCommand()->createIndex('idx2_users', '{{users}}', 'email', false);
 
 
-
-//user_groups
-
-$oTransaction = $oDB->beginTransaction();
-
-    $oDB->createCommand()->createTable('{{user_groups}}', array(
+        //user_groups
+        $oDB->createCommand()->createTable('{{user_groups}}', array(
         'ugid' => "pk",
         'name' => "string(20) NOT NULL",
         'description' => "TEXT NOT NULL",
         'owner_id' => "integer NOT NULL",
-    ));
+        ));
 
-    $oDB->createCommand()->createIndex('idx1_user_groups', '{{user_groups}}', 'name', true);   
+        $oDB->createCommand()->createIndex('idx1_user_groups', '{{user_groups}}', 'name', true);
 
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
 
-// Set database version
+        // Set database version
+        $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
 
-$oTransaction = $oDB->beginTransaction();
-    
-    $oDB->createCommand()->insert("{{settings_global}}", ['stg_name'=> 'DBVersion' , 'stg_value' => $databaseCurrentVersion]);
+        $oTransaction->commit();
+        
+        }catch(Exception $e){
+            
+            $oTransaction->rollback(); 
 
-try{$oTransaction->commit();}catch(Exception $e){throw new CHttpException(print_r(["ERROR" => $e, "transaction" => $oDB->currentTransaction()]),true);}
-}
+            throw new CHttpException(500, $e->getMessage()."
+            
+            ".$e->getTraceAsString());
+        }
+    }
