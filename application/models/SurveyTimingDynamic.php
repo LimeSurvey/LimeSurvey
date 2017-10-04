@@ -37,7 +37,8 @@ class SurveyTimingDynamic extends LSActiveRecord
             self::$survey = $survey;
             $refresh = true;
         }
-        
+
+        /** @var self $model */
         $model = parent::model(__CLASS__);
         
         //We need to refresh if we changed sid

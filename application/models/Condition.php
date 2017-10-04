@@ -36,7 +36,9 @@ class Condition extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /**
@@ -300,7 +302,7 @@ class Condition extends LSActiveRecord
     /**
      * @param int $qid
      * @param Condition $scenarionr
-     * @return array
+     * @return CDbDataReader
      */
     public function getConditionsToken($qid, Condition $scenarionr)
     {

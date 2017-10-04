@@ -48,6 +48,7 @@ class SurveyDynamic extends LSActiveRecord
             $refresh = true;
         }
 
+        /** @var self $model */
         $model = parent::model(__CLASS__);
 
         //We need to refresh if we changed sid
@@ -695,20 +696,18 @@ class SurveyDynamic extends LSActiveRecord
      * @param boolean $bHonorConditions
      * @param boolean $subquestion
      * @param boolean $getComment
-     * @return array
+     * @return array | boolean
      */
     public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion=false, $getComment=false){
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
 
-        if (!(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) || $bHonorConditions==false) && $attributes['hidden'] === 1)
-        {
+        if (!(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) || $bHonorConditions==false) && $attributes['hidden'] === 1) {
             return false;
         }
 
         $aQuestionAttributes = $oQuestion->attributes;
 
-        if(count($oQuestion->subquestions) > 0)
-        {
+        if(count($oQuestion->subquestions) > 0) {
             $aQuestionAttributes['subquestions'] = array();
             foreach($oQuestion->subquestions as $oSubquestion){
                 //dont collect scale_id > 0

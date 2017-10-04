@@ -90,7 +90,6 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
      /**
      * Returns the complete URL path to a given template name
      *
-     * @param string $sTemplateName
      * @return string template url
      */
      public function getTemplateURL()
@@ -103,12 +102,13 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
      /**
-     * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
-     *
-     * @param  string $sFile      the  file to look for (must contain relative path, unless it's a view file)
-     * @param string $oRTemplate template from which the recurrence should start
-     * @return TemplateManifest
-     */
+      * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
+      *
+      * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
+      * @param TemplateConfig $oRTemplate template from which the recurrence should start
+      * @return TemplateConfiguration
+      * @throws Exception
+      */
      public function getTemplateForFile($sFile, $oRTemplate)
      {
          while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
