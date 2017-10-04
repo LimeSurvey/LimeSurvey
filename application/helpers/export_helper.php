@@ -299,7 +299,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         }
     }
     if ($field['LStype'] == 'M') {
-        if(substr($field['code'],-5) != 'other') {
+        if(substr($field['code'],-5) == 'other') {
             return array(
                 'SPSStype' => "A",
                 'size' => stringSize($field['sql_name']),
@@ -310,7 +310,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         }
     }
     if ($field['LStype'] == "P" ) {
-        if(substr($field['code'],-5) != 'other' && substr($field['code'],-7) != 'comment') {
+        if(substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
             return array(
                 'SPSStype' => "A",
                 'size' => stringSize($field['sql_name']),
@@ -346,6 +346,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
     }
     if(in_array($field['LStype'],array('Q','S','T','U',';','*')) ) {
         return array(
+            'SPSStype' => "A",
             'size' => stringSize($field['sql_name']),
         );
     }
