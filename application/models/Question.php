@@ -806,8 +806,11 @@ class Question extends LSActiveRecord
     }
 
     /**
-    * get subquestions fort the current question object in the right order
-    */
+     * get subquestions fort the current question object in the right order
+     * @param int $random
+     * @param string $exclude_all_others
+     * @return array
+     */
     public function getOrderedSubQuestions($random=0, $exclude_all_others='')
     {
         if ($random==1) {

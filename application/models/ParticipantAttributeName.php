@@ -601,6 +601,7 @@ class ParticipantAttributeName extends LSActiveRecord
 
     /**
      * @todo Doc
+     * @param array $data
      */
     function saveAttributeLanguages($data)
     {

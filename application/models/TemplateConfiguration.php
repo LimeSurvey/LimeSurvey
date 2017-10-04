@@ -374,6 +374,7 @@ class TemplateConfiguration extends TemplateConfig
      *
      * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
      * @param  string $iSurveyId the id of the survey. If
+     * @param bool $bUseMagicInherit
      * @return $this
      */
     public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true)
@@ -484,8 +485,10 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *
-     * @var $jFiles string json
+     * @param TemplateConfiguration $oTemplate
+     * @param string $sType
      * @return array
+     * @internal param string $jFiles json
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
