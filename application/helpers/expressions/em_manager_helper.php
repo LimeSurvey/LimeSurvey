@@ -4943,10 +4943,6 @@
                     {
                         $knownVar = $LEM->knownVars[$LEM->qcode2sgqa[$k]];
                     }
-                    else if (isset($LEM->tempVars[$k]))
-                    {
-                        $knownVar = $LEM->tempVars[$k];
-                    }
                     else
                     {
                         continue;
@@ -8810,20 +8806,16 @@ EOD;
         static public function isValidVariable($varName)
         {
             $LEM =& LimeExpressionManager::singleton();
-
-            if (isset($LEM->knownVars[$varName]))
-            {
+            if(isset($LEM->tempVars[$varName])) {
                 return true;
             }
-            else if (isset($LEM->qcode2sgqa[$varName]))
-                {
-                    return true;
-                }
-                else if (isset($LEM->tempVars[$varName]))
-                    {
-                        return true;
-                    }
-                    return false;
+            if(isset($LEM->knownVars[$varName])) {
+                return true;
+            }
+            if(isset($LEM->qcode2sgqa[$varName])) {
+                return true;
+            }
+            return false;
         }
 
         /**
@@ -8847,21 +8839,17 @@ EOD;
             $varName = $args[0];
             $varName = preg_replace("/^(?:INSERTANS:)?(.*?)$/", "$1", $varName);
 
-            if (isset($this->knownVars[$varName]))
-            {
+            if( isset($this->tempVars[$varName]) ) {
+                // Forced value
+                $var = $this->tempVars[$varName];
+            } elseif ( isset($this->knownVars[$varName]) ) {
+                // SGQA from survey (session)
                 $var = $this->knownVars[$varName];
-            }
-            else if (isset($this->qcode2sgqa[$varName]))
-                {
-                    $var = $this->knownVars[$this->qcode2sgqa[$varName]];
-                }
-                else if (isset($this->tempVars[$varName]))
-                    {
-                        $var = $this->tempVars[$varName];
-                    }
-                    else
-                    {
-                        return '{' . $name . '}';
+            } elseif ( isset($this->qcode2sgqa[$varName]) ) {
+                // QCODE from survey (session) or template_replace core value
+                $var = $this->knownVars[$this->qcode2sgqa[$varName]];
+            } else {
+                return '{' . $name . '}';
             }
             $sgqa = isset($var['sgqa']) ? $var['sgqa'] : NULL;
             if (is_null($attr))
