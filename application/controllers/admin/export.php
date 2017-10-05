@@ -370,16 +370,18 @@ class export extends Survey_Common_Action {
                 $iLength     = '255'; // Set the max text length of the Value
                 break;
             case 2:    //>=16
-                $iLength     = '16384'; // Set the max text length of the Value
-                break;
             default:
                 $iLength     = '16384'; // Set the max text length of the Value
         }
 
         $headerComment = '*$Rev: 121017 $' . " $filterstate $spssver.\n";
 
-        if ( isset($_POST['dldata']) ) $subaction = "dldata";
-        if ( isset($_POST['dlstructure']) ) $subaction = "dlstructure";
+        if ( Yii::app()->request->getPost('dldata') ) {
+            $subaction = "dldata";
+        }
+        if ( Yii::app()->request->getPost('dlstructure') ) {
+            $subaction = "dlstructure";
+        }
 
         if  ( ! isset($subaction) )
         {
@@ -441,8 +443,7 @@ class export extends Survey_Common_Action {
         Yii::app()->loadHelper("admin/exportresults");
         viewHelper::disableHtmlLogging();
 
-        if ( $subaction == 'dldata' )
-        {
+        if ( $subaction == 'dldata' ) {
             header("Content-Disposition: attachment; filename=survey_" . $iSurveyID . "_SPSS_data_file.dat");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -456,60 +457,19 @@ class export extends Survey_Common_Action {
             $sNoAnswerValue = (isset($_POST['noanswervalue']) && $_POST['noanswervalue'] != '' )?'\''.$_POST['noanswervalue'].'\'':'';
             SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue,'\'',false, $sLanguage);
 
-            exit;
+            App()->end();
         }
 
-        if ( $subaction == 'dlstructure' )
-        {
+        if ( $subaction == 'dlstructure' ) {
             header("Content-Disposition: attachment; filename=survey_" . $iSurveyID . "_SPSS_syntax_file.sps");
             header("Content-type: application/download; charset=UTF-8");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Pragma: public");
-            // Build array that has to be returned
             $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
-            /* Broken part : why 500 lines ? Must get whole or none : never use some sample to construct syntax …
-            //Now get the query string with all fields to export
-            $query = SPSSGetQuery($iSurveyID, 500, 0);  // Sample first 500 responses for adjusting fieldmap
-            $result = $query->queryAll();
-
-            $num_fields = 0;
-            //Now we check if we need to adjust the size of the field or the type of the field
-            foreach ( $result as $row )
-            {
-
-                foreach ( $fields as $iIndex=>$aField )
-                {
-                    //Performance improvement, don't recheck fields that have valuelabels
-                    if (!isset($aField['answers']) )
-                    {
-                        $strTmp = mb_substr(stripTagsFull($row[$aField['sql_name']]), 0, $iLength);
-                        $len = mb_strlen($strTmp);
-
-                        if ( $len > $fields[$iIndex]['size'] ) $fields[$iIndex]['size'] = $len;
-
-                        if ( trim($strTmp) != '' )
-                        {
-                            if ( $fields[$iIndex]['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $fields[$iIndex]['size'] > 16) )
-                            {
-                                $fields[$iIndex]['SPSStype'] = 'A';
-                            }
-                        }
-                    }
-                }
-            }
-            */
-            /**
-            * End of DATA print out
-            *
-            * Now $fields contains accurate length data, and the DATA LIST can be rendered -- then the contents of the temp file can
-            * be sent to the client.
-            */
-            if ( $spssver == 2 )
-            {
+            if ( $spssver == 2 ) {
                 echo "\xEF\xBB\xBF";
             }
-
             echo $headerComment;
 
             if  ($spssver == 2 )
@@ -537,11 +497,6 @@ class export extends Survey_Common_Action {
                 if( $field['SPSStype'] == 'DATETIME23.2' ) {
                     $field['size'] = '';
                 }
-
-                if($field['SPSStype'] == 'F' && ($field['LStype'] == 'N' || $field['LStype'] == 'K')) {
-                    $field['size'] .= '.10'; // For N and K : DB are in DECIMAL(30.10), then always ten 0
-                }
-
                 if ( !$field['hide'] ) {
                     echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
                 }
