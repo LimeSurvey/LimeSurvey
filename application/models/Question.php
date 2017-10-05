@@ -807,19 +807,17 @@ class Question extends LSActiveRecord
 
     /**
     * get subquestions fort the current question object in the right order
+     * @return self[]
     */
     public function getOrderedSubQuestions($random=0, $exclude_all_others='')
     {
-        if ($random==1) {
-            // TODO : USE AR PATTERN
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY ".dbRandom();
-        }
-        else {
-            // TODO : USE AR PATTERN
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY question_order";
-        }
-
-        $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
+        $criteria = (new CDbCriteria());
+        $criteria->addCondition('t.parent_qid=:qid');
+        $criteria->addCondition('t.scale_id=0');
+        $criteria->addCondition('t.language=:language');
+        $criteria->params = [':qid'=>$this->qid,':language'=>$this->language];
+        $criteria->order= ($random ==1 ? (new CDbExpression('RAND()')):'question_order ASC');
+        $ansresult = Question::model()->findAll($criteria);
 
         //if  exclude_all_others is set then the related answer should keep its position at all times
         //thats why we have to re-position it if it has been randomized
@@ -835,7 +833,6 @@ class Question extends LSActiveRecord
                 $position++;
             }
         }
-
         return $ansresult;
     }
 
