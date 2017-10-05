@@ -15,9 +15,6 @@ if (!defined('BASEPATH'))
  *
   */
 
-//TODO separate class file (add exceptions folder?)
-class TemplateException extends Exception {}
-
 /**
  * Class Template
  *
