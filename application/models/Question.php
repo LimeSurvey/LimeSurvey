@@ -984,24 +984,6 @@ class Question extends LSActiveRecord
         }
     }
 
-    /**
-     * Used in frontend helper, buildsurveysession.
-     * @deprecated 2017-10-06
-     * @see Survey->getCountTotalQuestions use as $oSurvey->countTotalQuestions
-     * @param int $surveyid
-     * @return int
-     */
-    public static function getTotalQuestions($surveyid)
-    {
-        $sQuery = "SELECT count(*)\n"
-            ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
-            ." WHERE {{questions}}.sid=".$surveyid."\n"
-            ." AND {{groups}}.language='".App()->getLanguage()."'\n"
-            ." AND {{questions}}.language='".App()->getLanguage()."'\n"
-            ." AND {{questions}}.parent_qid=0\n";
-        return Yii::app()->db->createCommand($sQuery)->queryScalar();
-    }
-
 
     /**
      * Fix sub question of a parent question
