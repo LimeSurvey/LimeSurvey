@@ -120,16 +120,6 @@ class User extends LSActiveRecord
     }
 
     /**
-     * TODO via relation
-     * @return mixed
-     */
-    public function getParentUser(){
-        $parent_user = $this->parentAndUser( $this->uid );
-        return $parent_user['parent'];
-    }
-
-
-    /**
      * @return string
      */
     public function getSurveysCreated(){
