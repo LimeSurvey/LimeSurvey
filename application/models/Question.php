@@ -356,12 +356,6 @@ class Question extends LSActiveRecord
         return $command->query()->readAll();
     }
 
-    /** @inheritdoc */
-    public function afterSave()
-    {
-        parent::afterSave();
-        tracevar($this->getErrors());
-    }
 
 
     /**
