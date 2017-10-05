@@ -235,8 +235,6 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
 * @return array or false
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
-    $length_vallabel = 120;
-
     if (!isset($field['LStype']) || empty($field['LStype'])) {
         return false;
     }
@@ -437,10 +435,20 @@ function SPSSFieldMap($iSurveyID, $prefix = 'V', $sLanguage='')
             //Drop the token field, since it is in the survey too
             if($attributefield!='token') {
                 $iFieldNumber++;
-                $fields[] = array('id'=>"{$prefix}{$iFieldNumber}",'name'=>mb_substr($attributefield, 0, 8),
-                'qid'=>0,'code'=>'','SPSStype'=>'A','LStype'=>'Undef',
-                'VariableLabel'=>$attributedescription['description'],'sql_name'=>$attributefield,'size'=>'100',
-                'title'=>$attributefield,'hide'=>0, 'scale'=>'');
+                $fields[] = array(
+                    'id'=>"{$prefix}{$iFieldNumber}",
+                    'name'=>mb_substr($attributefield, 0, 8),
+                    'qid'=>0,
+                    'code'=>'',
+                    'SPSStype'=>'A',
+                    'LStype'=>'Undef',
+                    'VariableLabel'=>$attributedescription['description'],
+                    'sql_name'=>$attributefield,
+                    'size'=>'100',
+                    'title'=>$attributefield,
+                    'hide'=>0,
+                    'scale'=>''
+                );
             }
         }
     }
@@ -2012,8 +2020,11 @@ function numericSize($sColumn)
     // With integer : Decimal return 00000000000.1 and float return the integer
     if(intval($maxDecimal) && strpos($maxDecimal,'.')) {
         $decimalMaxLen = strlen(intval($maxDecimal));
+        // Width is integer width + the dot + decimal width
+        $maxLen = $maxIntegerLen+1+$decimalMaxLen;
     } else {
         $decimalMaxLen = 0;// Or just return $maxIntegerLen ?
+        $maxLen = $maxIntegerLen;
     }
-    return $maxIntegerLen.".".$decimalMaxLen;
+    return $maxLen.".".$decimalMaxLen;
 }
