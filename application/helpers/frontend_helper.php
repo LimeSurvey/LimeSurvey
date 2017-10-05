@@ -852,11 +852,10 @@ function buildsurveysession($surveyid,$preview=false)
     SetSurveyLanguage ($surveyid, $language_to_set);
     UpdateGroupList ($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $totalquestions               = Question::model()->getTotalQuestions($surveyid);
+    $totalquestions               = $survey->countTotalQuestions;
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
-    $iNumberofQuestions           = Question::model()->getNumberOfQuestions($surveyid);                     // Fix totalquestions by substracting Test Display questions
 
-    $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
+    $_SESSION['survey_'.$surveyid]['totalquestions'] = $survey->countInputQuestions;
 
     // 2. SESSION VARIABLE: totalsteps
     setTotalSteps($surveyid, $thissurvey, $totalquestions);

@@ -986,6 +986,8 @@ class Question extends LSActiveRecord
 
     /**
      * Used in frontend helper, buildsurveysession.
+     * @deprecated 2017-10-06
+     * @see Survey->getCountTotalQuestions use as $oSurvey->countTotalQuestions
      * @param int $surveyid
      * @return int
      */
@@ -1000,22 +1002,6 @@ class Question extends LSActiveRecord
         return Yii::app()->db->createCommand($sQuery)->queryScalar();
     }
 
-    /**
-     * Used in frontend helper, buildsurveysession.
-     * @todo Rename
-     * @param int $surveyid
-     * @return array|false??? Return from CDbDataReader::read()
-     */
-    public static function getNumberOfQuestions($surveyid)
-    {
-        return dbExecuteAssoc("SELECT count(*)\n"
-            ." FROM {{questions}}"
-            ." WHERE type in ('X','*')\n"
-            ." AND sid={$surveyid}"
-            ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
-            ." AND parent_qid=0")
-            ->read();
-    }
 
     /**
      * Fix sub question of a parent question
