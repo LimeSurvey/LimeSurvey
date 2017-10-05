@@ -76,14 +76,14 @@
                         <!-- Export results to application -->
                         <li>
                             <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid"); ?>'>
-                                <?php eT("Export results to application"); ?>
+                                <?php eT("Export responses"); ?>
                             </a>
                         </li>
 
                         <!-- Export results to a SPSS/PASW command file -->
                         <li>
                             <a href='<?php echo $this->createUrl("admin/export/sa/exportspss/sid/$surveyid"); ?>'>
-                                <?php eT("Export results to a SPSS/PASW command file"); ?>
+                                <?php eT("Export responses to SPSS"); ?>
                             </a>
                         </li>
 
