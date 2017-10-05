@@ -388,7 +388,6 @@ class Survey extends LSActiveRecord
      * @param int $loginID
      * @return CActiveRecord
      *
-     * TODO: replace this by a correct relation
      */
     public function permission($loginID)
     {
