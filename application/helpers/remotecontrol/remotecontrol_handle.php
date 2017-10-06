@@ -2063,7 +2063,7 @@ class remotecontrol_handle
                 if(!$oQuota->save()){
                     return ['success' => false, 'message' => $oQuota->errors];
                 } else {
-                    return ['success' => true,'active'=>$oQuota->active];
+                    return ['success' => true,'message'=>$oQuota->active];
                 }
             } else {
                 return ['success' => false, 'message' =>'Denied!'];
