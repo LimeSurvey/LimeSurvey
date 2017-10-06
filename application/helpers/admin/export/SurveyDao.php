@@ -96,7 +96,7 @@ class SurveyDao
     * @param string $completionState all, complete or incomplete
     * @param string $aFields If empty all, otherwise only select the selected fields from the survey response table
     */
-    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='', $completionState = 'all', $aFields = array() )
+    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='', $completionState = 'all', $aFields = array(), $aResponsesId = array() )
     {
 
         $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
@@ -128,12 +128,33 @@ class SurveyDao
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.id';
         }
 
-        $aParams = array(
-            'min'=>$iMinimum,
-            'max'=>$iMaximum
-        );
-        $selection = '{{survey_' . $survey->id . '}}.id >= :min AND {{survey_' . $survey->id . '}}.id <= :max';
-        $oRecordSet->where($selection, $aParams);
+
+        if (empty($aResponsesId)){
+            $aParams = array(
+                'min'=>$iMinimum,
+                'max'=>$iMaximum
+            );
+            $selection = '{{survey_' . $survey->id . '}}.id >= :min AND {{survey_' . $survey->id . '}}.id <= :max';
+            $oRecordSet->where($selection, $aParams);
+        }else{
+            $aResponsesId = explode(',', $aResponsesId);
+
+            foreach($aResponsesId as $i => $iResponseId){
+
+                $iResponseId = (int) $iResponseId;
+                $selection = '{{survey_' . $survey->id . '}}.id = :id'.$i;
+
+
+                if($i === 0){
+                    $oRecordSet->where($selection, array('id'.$i=>$iResponseId));
+                }else{
+                    $oRecordSet->orWhere($selection, array('id'.$i=>$iResponseId));
+                }
+            }
+        }
+
+
+//var_dump($aParams); die();
 
         if(is_string($sFilter) && $sFilter)
             $oRecordSet->andWhere($sFilter);
