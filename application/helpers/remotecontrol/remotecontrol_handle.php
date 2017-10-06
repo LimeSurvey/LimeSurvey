@@ -2039,6 +2039,41 @@ class remotecontrol_handle
     }
 
     /**
+     * Toggle the status of the quota to enable/disable quota
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param integer $iQuotaId Quota ID
+     * @param boolean $enabled Whether quota is to be enabled (true) or disabled (false). Default=true
+     * @return array ['success'=>bool, 'message'=>string]
+     */
+    public function toggle_quota($sSessionKey, $iQuotaId, $enabled = true)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            /** @var Quota $oQuota */
+            $oQuota = Quota::model()->findByPk($iQuotaId);
+            if (!$oQuota){
+                return [
+                    'success' => false,
+                    'message' => 'Error: Invalid quota ID'
+                ];
+            }
+            $oSurvey = $oQuota->survey;
+            if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'quotas', 'update')) {
+                $oQuota->active = (int) $enabled;
+                if(!$oQuota->save()){
+                    return ['success' => false, 'message' => $oQuota->errors];
+                } else {
+                    return ['success' => true];
+                }
+            } else {
+                return ['success' => false, 'message' =>'Denied!'];
+            }
+        } else {
+            return ['success' => false, 'message' =>'Invalid session key'];
+        }
+    }
+
+    /**
     * List the survey belonging to a user
     *
     * If user is admin he can get surveys of every user (parameter sUser) or all surveys (sUser=null)
