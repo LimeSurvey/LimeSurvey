@@ -10,12 +10,11 @@ class remotecontrol_handle
     protected $controller;
 
     /**
-    * Constructor, stores the action instance into this handle class
-    *
-    * @access public
-    * @param AdminController $controller
-    * @return void
-    */
+     * Constructor, stores the action instance into this handle class
+     *
+     * @access public
+     * @param AdminController $controller
+     */
     public function __construct(AdminController $controller)
     {
         $this->controller = $controller;
@@ -432,7 +431,7 @@ class remotecontrol_handle
     * @param string $sLanguage (optional) language of the survey to use (default from Survey)
     * @param string $graph (optional) Create graph option (default : no)
     * @param int|array $groupIDs (optional) array or integer containing the groups we choose to generate statistics from
-    * @return string in case of success : Base64 encoded string with the statistics file
+    * @return string|array in case of success : Base64 encoded string with the statistics file
     */
     public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0', $groupIDs=null)
     {
@@ -706,6 +705,7 @@ class remotecontrol_handle
             else
                 return array('status' => 'No permission');
         }
+        return null;
     }
 
     /**
@@ -761,6 +761,7 @@ class remotecontrol_handle
             else
                 return array('status' => 'No permission');
         }
+        return null;
     }
 
 
@@ -1078,11 +1079,12 @@ class remotecontrol_handle
     }
 
     /**
-    * Find response IDs given a survey ID and a token.
-    * @param string $sSessionKey
-    * @param int $iSurveyID
-    * @param string $sToken
-    */
+     * Find response IDs given a survey ID and a token.
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+     * @param string $sToken
+     * @return array
+     */
     public function get_response_ids($sSessionKey, $iSurveyID, $sToken)
     {
         if ($this->_checkSessionKey($sSessionKey))
@@ -1808,7 +1810,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID Id of the Survey that participants belong
-    * @param array|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
+    * @param array|int $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
     * @param array $aTokenData Data to change
     * @return array Result of the change action
     */
@@ -2105,7 +2107,7 @@ class remotecontrol_handle
     * @param int $uid Optional parameter user id.
     * @return array The list of users in case of success
     */
-    public function list_users($sSessionKey = null, $uid = FALSE)
+    public function list_users($sSessionKey = null, $uid = null)
     {    
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -2299,7 +2301,7 @@ class remotecontrol_handle
     * @param bool $bEmail Send only pending invites (TRUE) or resend invites only (FALSE)
     * @return array Result of the action
     */
-    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = false, $bEmail = true )
+    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true )
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
@@ -2451,7 +2453,7 @@ class remotecontrol_handle
                 if (!isset($aResponseData['startlanguage']))
                 $aResponseData['startlanguage'] = $oSurvey->language;
 
-            if ($oSurvey->datestamp=='Y') {
+            if ($oSurvey->isDateStamp) {
                 if (array_key_exists('datestamp', $aResponseData) && empty($aResponseData['datestamp']))
                     unset($aResponseData['datestamp']);
                 else if (!isset($aResponseData['datestamp']))
@@ -2469,6 +2471,7 @@ class remotecontrol_handle
             $result_id = $survey_dynamic->insertRecords($aResponseData);
 
             if ($result_id) {
+                // FIXME $sToken is undefined!!
                 $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $sToken, 'id' => $result_id));
                 foreach ($oResponse->getFiles() as $aFile) {
                     $sUploadPath = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/";
@@ -2481,7 +2484,7 @@ class remotecontrol_handle
                         }
 
                         if (!rename($sFileTempName, $sFileRealName)) {
-                            return array('status' => 'Unable to move files ' . $sFileTmpName . ' ' . $sFileRealName);
+                            return array('status' => 'Unable to move files ' . $sFileTempName . ' ' . $sFileRealName);
                         }
                     }
 
@@ -2618,6 +2621,7 @@ class remotecontrol_handle
         if (!isset($aFieldMap[$sFieldName])) {
             return array('status' => 'Can not obtain field map');
         }
+        //FIXME undefined function getQuestionAttributeValues()
         $aAttributes = getQuestionAttributeValues($aFieldMap[$sFieldName]['qid']);
 
         $iFileUploadTotalSpaceMB = Yii::app()->getConfig('iFileUploadTotalSpaceMB');
@@ -2657,6 +2661,7 @@ class remotecontrol_handle
         return array(
             "success"   => true,
             "size"      => $size,
+            //FIXME $filename not defined!!!
             "name"      => rawurlencode(basename($filename)),
             "ext"       => $ext,
             "filename"  => $randfilename,
