@@ -299,7 +299,6 @@ class remotecontrol_handle
     * Properties available are restricted
     * * Always
     *     * sid
-    *     * owner_id
     *     * active
     *     * language
     *     * additional_languages
@@ -333,7 +332,7 @@ class remotecontrol_handle
             {
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
-                unset($aSurveyData['owner_id']);
+                //unset($aSurveyData['owner_id']);
                 unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
                 unset($aSurveyData['additional_languages']);
