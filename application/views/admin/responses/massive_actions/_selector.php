@@ -65,6 +65,24 @@
             'actionType' => 'window-location-href'
         );
 
+
+        // Export responses
+        $buttons[] = array(
+            // li element
+            'type'            => 'action',
+            'action'          => 'export',
+            'url'             =>  App()->createUrl('admin/export/sa/exportresults/surveyid/'.$_GET['surveyid']),
+            'iconClasses'     => 'glyphicon glyphicon-download-alt',
+            'text'            =>  gT('Export'),
+
+            'aLinkSpecificDatas'  => array(
+                'input-name'     => 'tokenids',
+            ),
+
+            // modal
+            'actionType'    => 'fill-session-and-redirect',
+        );
+
     }
 
     $this->widget('ext.admin.grid.MassiveActionsWidget.MassiveActionsWidget', array(

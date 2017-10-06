@@ -220,8 +220,9 @@
                 ?>
             </div>
 
-            <!-- To update rows per page via ajax -->
+            <!-- To update rows per page via ajax setSession-->
             <script type="text/javascript">
+                var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/responses/", array("sa" => "setSession")); ?>"; // For massive export
                 jQuery(function($) {
                     jQuery(document).on("change", '#pageSize', function(){
                         $.fn.yiiGridView.update('responses-grid',{ data:{ pageSize: $(this).val() }});
