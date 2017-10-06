@@ -5527,9 +5527,12 @@
 
                     if ($finished) {
                         // Delete the save control record if successfully finalize the submission
-                        $params =[':srid'=>$_SESSION[$this->sessid]['srid'],':sid'=>$this->sid];
-                        $savedControl = SavedControl::model()
-                            ->findByAttributes(['srid'=>':srid','sid'=>':sid'],'',$params);
+                        $criteria = new CDbCriteria;
+                        $criteria->addCondition('srid=:srid');
+                        $criteria->addCondition('sid=:sid');
+                        $criteria->params = [':srid'=>$_SESSION[$this->sessid]['srid'],':sid'=>$this->sid];
+                        $savedControl = SavedControl::model()->findAll($criteria);
+
                         if($savedControl){
                             $savedControl->delete();
                         }
