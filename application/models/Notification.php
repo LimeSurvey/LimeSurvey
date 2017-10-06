@@ -9,12 +9,12 @@
  * @property string $entity_id survey id or user id
  * @property string $title
  * @property string $message
+ * @property string $status new, read
  * @property integer $importance 1 or 3. 3 will show popup on page load, 2 is reserved for future bell animation.
  * @property string $display_class warning, danger, success
- * @property string $status new, read
- * @property DateTime $created When the notification was created
- * @property DateTime $first_read When the notification was read
  * @property string $hash
+ * @property string $created When the notification was created
+ * @property string $first_read When the notification was read
  */
 class Notification extends LSActiveRecord
 {

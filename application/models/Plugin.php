@@ -19,6 +19,7 @@
  * @property integer $id
  * @property string $name
  * @property integer $active
+ * @property string $version
  *
  */
 class Plugin extends CActiveRecord {

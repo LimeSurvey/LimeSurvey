@@ -18,10 +18,11 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
  *
  * The followings are the available columns in table '{{template_configuration}}':
- * @property string $id
+ * @property integer $id Primary key
  * @property string $template_name
- * @property string $gsid
- * @property string $sid
+ * @property integer $sid Survey ID
+ * @property integer $gsid
+ * @property integer $uid user ID
  * @property string $files_css
  * @property string $files_js
  * @property string $files_print_css
@@ -29,11 +30,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * @property string $cssframework_name
  * @property string $cssframework_css
  * @property string $cssframework_js
- * @property string $viewdirectory
- * @property string $filesdirectory
  * @property string $packages_to_load
+ * @property string $packages_ltr
  * @property string $packages_rtl
- *
+ * @property string $packages_rtl
  *
  * @package       LimeSurvey
  * @subpackage    Backend

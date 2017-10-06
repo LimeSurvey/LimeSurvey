@@ -16,7 +16,7 @@
 /**
  * Class Assessment
  *
- * @property integer $id
+ * @property integer $id Primary key
  * @property integer $sid Survey id
  * @property integer $gid Group id
  * @property string $scope
