@@ -65,7 +65,7 @@ $(document).on('click', '.listActions a', function ()
     {
         // postUrl is defined as a var in the View
         $(this).load(postUrl, {
-            participantid:$oCheckedItems},function(){
+            itemsid:$oCheckedItems},function(){
                 $(location).attr('href',$actionUrl);
             });
         return;
