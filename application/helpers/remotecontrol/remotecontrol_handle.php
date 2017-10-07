@@ -2039,14 +2039,15 @@ class remotecontrol_handle
     }
 
     /**
-     * Toggle the status of the quota to enable/disable quota
+     * Set Quota Attributes
+     * Retuns an array containing the boolean 'success' and 'message' with either errors or Quota attributes (on success)
      * @access public
      * @param string $sSessionKey Auth credentials
      * @param integer $iQuotaId Quota ID
-     * @param boolean $enabled Whether quota is to be enabled (true) or disabled (false). Default=true
+     * @param array $aQuotaData Quota attributes as array eg ['active'=>1,'limit'=>100]
      * @return array ['success'=>bool, 'message'=>string]
      */
-    public function toggle_quota($sSessionKey, $iQuotaId, $enabled = true)
+    public function set_quota_properties($sSessionKey, $iQuotaId, $aQuotaData)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             /** @var Quota $oQuota */
@@ -2059,11 +2060,20 @@ class remotecontrol_handle
             }
             $oSurvey = $oQuota->survey;
             if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'quotas', 'update')) {
-                $oQuota->active = (int) $enabled;
+
+                // don't accept id & sid
+                isset($aQuotaData['id']) ? unset($aQuotaData['id']):null;
+                isset($aQuotaData['sid']) ? unset($aQuotaData['sid']):null;
+
+                // accept boolean input also
+                isset($aQuotaData['active']) ? $aQuotaData['active'] = (int) $aQuotaData['active']:null;
+                isset($aQuotaData['autoload_url']) ? $aQuotaData['autoload_url'] = (int) $aQuotaData['autoload_url']:null;
+
+                $oQuota->attributes = $aQuotaData;
                 if(!$oQuota->save()){
                     return ['success' => false, 'message' => $oQuota->errors];
                 } else {
-                    return ['success' => true,'message'=>$oQuota->active];
+                    return ['success' => true,'message'=>$oQuota->attributes];
                 }
             } else {
                 return ['success' => false, 'message' =>'Denied!'];
