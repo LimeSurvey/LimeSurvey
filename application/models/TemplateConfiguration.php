@@ -18,10 +18,11 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
  *
  * The followings are the available columns in table '{{template_configuration}}':
- * @property string $id
+ * @property integer $id Primary key
  * @property string $template_name
- * @property string $gsid
- * @property string $sid
+ * @property integer $sid Survey ID
+ * @property integer $gsid
+ * @property integer $uid user ID
  * @property string $files_css
  * @property string $files_js
  * @property string $files_print_css
@@ -29,11 +30,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * @property string $cssframework_name
  * @property string $cssframework_css
  * @property string $cssframework_js
- * @property string $viewdirectory
- * @property string $filesdirectory
  * @property string $packages_to_load
+ * @property string $packages_ltr
  * @property string $packages_rtl
- *
+ * @property string $packages_rtl
  *
  * @package       LimeSurvey
  * @subpackage    Backend
@@ -306,6 +306,7 @@ class TemplateConfiguration extends TemplateConfig
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
      * @return mixed true on success | exception
+     * @throws Exception
      */
     public static function importManifest($sTemplateName)
     {
@@ -375,6 +376,7 @@ class TemplateConfiguration extends TemplateConfig
      *
      * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
      * @param  string $iSurveyId the id of the survey. If
+     * @param bool $bUseMagicInherit
      * @return $this
      */
     public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true)
@@ -398,6 +400,8 @@ class TemplateConfiguration extends TemplateConfig
      *
      * @param string $sFile the file to replace
      * @param string $sType css|js
+     * @return bool|void
+     * @throws Exception
      */
     public function addFileReplacement($sFile, $sType)
     {
@@ -483,8 +487,10 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *
-     * @var $jFiles string json
+     * @param TemplateConfiguration $oTemplate
+     * @param string $sType
      * @return array
+     * @internal param string $jFiles json
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {

@@ -108,6 +108,9 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property boolean $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
+ * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
+ * @property integer $countInputQuestions Count of questions that need input (skipping text-display etc.)
+ * @property integer $countNoInputQuestions Count of questions that DO NOT need input (skipping text-display etc.)
  *
  * All Y/N columns in the model can be accessed as boolean values:
  * @property bool $isActive Whether Survey is active
@@ -388,7 +391,6 @@ class Survey extends LSActiveRecord
      * @param int $loginID
      * @return CActiveRecord
      *
-     * TODO: replace this by a correct relation
      */
     public function permission($loginID)
     {
@@ -1484,6 +1486,7 @@ class Survey extends LSActiveRecord
      * @todo Should really be saved as three fields in the database!
      */
     public static function transcribeCaptchaOptions() {
+        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
         $registration = App()->request->getPost('usecaptcha_registration');
         $saveandload = App()->request->getPost('usecaptcha_saveandload');
@@ -1524,7 +1527,7 @@ class Survey extends LSActiveRecord
      * @todo Should really be saved as three fields in the database!
      */
     public static function saveTranscribeCaptchaOptions(Survey $oSurvey) {
-
+        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
         $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
@@ -1680,6 +1683,38 @@ class Survey extends LSActiveRecord
         $condn = array('sid'=>$this->sid,'language'=>$this->language);
         $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
         return $sumresult3 ;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getCountTotalQuestions(){
+        $condn = array('sid'=>$this->sid,'language'=>$this->language,'parent_qid'=>0);
+        $sumresult = Question::model()->countByAttributes($condn);
+        return (int) $sumresult;
+    }
+
+    /**
+     * Get the coutn of questions that do not need input (skipping text-display etc.)
+     * @return integer
+     */
+    public function getCountNoInputQuestions(){
+        $condn = array(
+            'sid'=>$this->sid,
+            'language'=>$this->language,
+            'parent_qid'=>0,
+            'type'=>['X','*'],
+        );
+        $sumresult = Question::model()->countByAttributes($condn);
+        return (int) $sumresult;
+    }
+
+    /**
+     * Get the coutn of questions that need input (skipping text-display etc.)
+     * @return integer
+     */
+    public function getCountInputQuestions(){
+        return $this->countTotalQuestions - $this->countNoInputQuestions;
     }
 
 }

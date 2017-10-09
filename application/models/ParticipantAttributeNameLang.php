@@ -19,7 +19,7 @@
  * @property string $attribute_name
  * @property string $lang
  *
- * @property ParticipantAttributeName $participant_attribute_names //TODO should be singular
+ * @property ParticipantAttributeName $participant_attribute_name
  */
 class ParticipantAttributeNameLang extends LSActiveRecord
 {
@@ -65,7 +65,7 @@ class ParticipantAttributeNameLang extends LSActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
+            'participant_attribute_name'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
 		);
 	}
 

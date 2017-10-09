@@ -15,14 +15,25 @@ if (!defined('BASEPATH'))
  *
   */
 
-//TODO separate class file (add exceptions folder?)
-class TemplateException extends Exception {}
-
 /**
  * Class Template
  *
+ * @property string $name Template name
  * @property string $folder Template folder name eg: 'default'
- * @property integer $creator User ID of Template creator
+ * @property string $title
+ * @property string $creation_date
+ * @property string $author
+ * @property string $author_email
+ * @property string $author_url
+ * @property string $copyright
+ * @property string $license
+ * @property string $version
+ * @property string $view_folder
+ * @property string $files_folder
+ * @property string $description
+ * @property string $last_update
+ * @property integer $owner_id
+ * @property string $extends_template_name
  */
 class Template extends LSActiveRecord
 {

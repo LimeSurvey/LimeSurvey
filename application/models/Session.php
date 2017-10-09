@@ -13,6 +13,13 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class Session
+ *
+ * @property string $id Primary Key
+ * @property integer $expire
+ * @property string $data
+ */
 class Session extends CActiveRecord
 {
 	/**

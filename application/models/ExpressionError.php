@@ -15,11 +15,11 @@
 /**
  * Class ExpressionError
  *
- * @property integer $id
+ * @property integer $id Primary key
  * @property string $errortime
- * @property integer $sid
- * @property integer $gid
- * @property integer $qid
+ * @property integer $sid Survey ID
+ * @property integer $gid Group ID
+ * @property integer $qid Question ID
  * @property integer $gseq
  * @property integer $qseq
  * @property string $type

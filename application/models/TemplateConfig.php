@@ -13,10 +13,14 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 */
 
 /*
- * Common methods for TemplateConfiguration and TemplateManifest
  */
 
- class TemplateConfig extends CActiveRecord
+/**
+ * Class TemplateConfig
+ * Common methods for TemplateConfiguration and TemplateManifest
+ *
+ */
+class TemplateConfig extends CActiveRecord
  {
     /** @var string $sTemplateName The template name */
     public $sTemplateName='';
@@ -106,7 +110,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
       *
       * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
       * @param TemplateConfig $oRTemplate template from which the recurrence should start
-      * @return TemplateConfiguration
+      * @return TemplateConfig
       * @throws Exception
       */
      public function getTemplateForFile($sFile, $oRTemplate)
@@ -186,8 +190,9 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
       * It will check if css/js (relative to path), or view (view path)
       * It will search for current template and mother templates
       *
-      * @param   string  $sFile          relative path to the file
-      * @param   string  $oTemplate      the template where to look for (and its mother templates)
+      * @param   string $sFile relative path to the file
+      * @param   string $oTemplate the template where to look for (and its mother templates)
+      * @return bool|string
       */
      protected function getFilePath($sFile, $oTemplate)
      {
