@@ -106,10 +106,12 @@
             $sAnonymized = $aSurveyInfo['anonymized'];
             //OK. IF WE GOT THIS FAR, THEN THE SURVEY EXISTS AND IT IS ACTIVE, SO LETS GET TO WORK.
             //SHOW HEADER
-            if ($sExportType != 'pdf')
+            if (empty($sExportType))
             {
                 $sOutput = CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/pdf"), 'post')
                 ."<center><input class='btn btn-default' type='submit' value='".gT("PDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
+                $sOutput .= CHtml::form(array("printanswers/view/surveyid/{$iSurveyID}/printableexport/quexmlpdf"), 'post')
+                ."<center><input class='btn btn-default' type='submit' value='".gT("queXMLPDF export")."'id=\"exportbutton\"/><input type='hidden' name='printableexport' /></center></form>";
                 $sOutput .= "\t<div class='printouttitle'><strong>".gT("Survey name (ID):")."</strong> $sSurveyName ($iSurveyID)</div><p>&nbsp;\n";
                 LimeExpressionManager::StartProcessingPage(true);  // means that all variables are on the same page
                 // Since all data are loaded, and don't need JavaScript, pretend all from Group 1
@@ -165,9 +167,9 @@
                 echo "</body></html>";
 
                 ob_flush();
-            }
-            if($sExportType == 'pdf')
-            {
+                LimeExpressionManager::FinishProcessingGroup();
+                LimeExpressionManager::FinishProcessingPage();
+            } else if($sExportType == 'pdf') {
                 // Get images for TCPDF from template directory
                 define('K_PATH_IMAGES', getTemplatePath($aSurveyInfo['template']).DIRECTORY_SEPARATOR);
 
@@ -218,9 +220,29 @@
                 header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
                 $sExportFileName = sanitize_filename($sSurveyName);
                 $oPDF->Output($sExportFileName."-".$iSurveyID.".pdf","D");
-            }
+                LimeExpressionManager::FinishProcessingGroup();
+                LimeExpressionManager::FinishProcessingPage();
+            } else if ($sExportType == 'quexmlpdf') {
 
-            LimeExpressionManager::FinishProcessingGroup();
-            LimeExpressionManager::FinishProcessingPage();
+                Yii::import("application.libraries.admin.quexmlpdf",TRUE);
+
+                $quexmlpdf = new quexmlpdf();
+
+                // Setting the selected language for printout
+                App()->setLanguage($sLanguage);
+
+                $quexmlpdf->setLanguage($sLanguage);
+
+                set_time_limit(120);
+
+                Yii::app()->loadHelper('export');
+
+                $quexml = quexml_export($iSurveyID,$sLanguage,$sSRID);
+
+                $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
+
+                $sExportFileName = sanitize_filename($sSurveyName);
+                $quexmlpdf->Output($sExportFileName."-".$iSurveyID."-queXML.pdf",'D');
+			}
         }
     }
