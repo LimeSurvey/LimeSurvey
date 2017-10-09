@@ -30,7 +30,9 @@ class PluginSetting extends CActiveRecord {
      * @return PluginSetting
      */
     public static function model($className = __CLASS__) {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 
     /** @inheritdoc */

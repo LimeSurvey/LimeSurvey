@@ -200,8 +200,9 @@ class Template extends LSActiveRecord
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
      * @param integer $iSurveyId        the id of the survey.
-     * @param boolean $bForceXML
-     * @return StdClass
+     * @param integer $iSurveyId        the id of the survey.
+     * @param boolean $bForceXML        the id of the survey.
+     * @return TemplateConfiguration
      */
     public static function getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=false)
     {
@@ -508,10 +509,12 @@ class Template extends LSActiveRecord
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Templates the static model class
+     * @return Template the static model class
      */
     public static function model($className=__CLASS__)
     {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 }

@@ -94,7 +94,6 @@ class TemplateConfig extends CActiveRecord
      /**
      * Returns the complete URL path to a given template name
      *
-     * @param string $sTemplateName
      * @return string template url
      */
      public function getTemplateURL()
@@ -110,8 +109,8 @@ class TemplateConfig extends CActiveRecord
       * Get the template for a given file. It checks if a file exist in the current template or in one of its mother templates
       *
       * @param  string $sFile the  file to look for (must contain relative path, unless it's a view file)
-      * @param string $oRTemplate template from which the recurrence should start
-      * @return TemplateManifest
+      * @param TemplateConfig $oRTemplate template from which the recurrence should start
+      * @return TemplateConfig
       * @throws Exception
       */
      public function getTemplateForFile($sFile, $oRTemplate)

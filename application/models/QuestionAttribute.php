@@ -31,7 +31,9 @@ class QuestionAttribute extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -150,7 +152,7 @@ class QuestionAttribute extends LSActiveRecord
      * @access public
      * @param int $iQuestionID
      * @param string $sLanguage restrict to this language (@todo : add it in qanda)
-     * @return array
+     * @return array|boolean
      * @throws CException
      */
     public function getQuestionAttributes($iQuestionID,$sLanguage=null)

@@ -257,7 +257,9 @@ class Notification extends LSActiveRecord
 	 */
 	public static function model($className=__CLASS__)
 	{
-		return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
 	}
 
     /**

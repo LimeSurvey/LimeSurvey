@@ -283,11 +283,13 @@ class TemplateConfiguration extends TemplateConfig
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return TemplateConfigurationDB the static model class
+     * @return TemplateConfiguration the static model class
      */
     public static function model($className=__CLASS__)
     {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 
     // For list, so no "setConfiguration" before

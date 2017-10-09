@@ -20,7 +20,9 @@
          * @return Response
          */
         public static function model($className = null) {
-            return parent::model($className);
+            /** @var self $model */
+            $model =parent::model($className);
+            return $model;
         }
         /**
          *

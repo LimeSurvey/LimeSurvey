@@ -46,7 +46,9 @@ class Permission extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /**
@@ -704,6 +706,6 @@ class Permission extends LSActiveRecord
         if($sEntityName=='survey') {
             return $sEntityName::Model()->findByPk($iEntityID)->owner_id; // ALternative : if owner_id exist in $sEntityName::model()->findByPk($iEntityID), but unsure actually $sEntityName have always a model
         }
-        return;
+        return null;
     }
 }
