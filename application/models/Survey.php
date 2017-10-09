@@ -171,6 +171,13 @@ class Survey extends LSActiveRecord
         $this->htmlemail = 'Y';
         $this->format = 'G';
 
+        // Default setting is to use the global Google Analytics key If one exists
+        $globalKey = getGlobalSetting('googleanalyticsapikey');
+        if($globalKey != ""){
+            $this->googleanalyticsapikey = "9999useGlobal9999";
+            $this->googleanalyticsapikeysetting = "G";
+        }
+
 
         $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
         $validator= new LSYii_Validators;
