@@ -388,7 +388,6 @@ class Survey extends LSActiveRecord
      * @param int $loginID
      * @return CActiveRecord
      *
-     * TODO: replace this by a correct relation
      */
     public function permission($loginID)
     {
@@ -1484,6 +1483,7 @@ class Survey extends LSActiveRecord
      * @todo Should really be saved as three fields in the database!
      */
     public static function transcribeCaptchaOptions() {
+        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
         $registration = App()->request->getPost('usecaptcha_registration');
         $saveandload = App()->request->getPost('usecaptcha_saveandload');
@@ -1524,7 +1524,7 @@ class Survey extends LSActiveRecord
      * @todo Should really be saved as three fields in the database!
      */
     public static function saveTranscribeCaptchaOptions(Survey $oSurvey) {
-
+        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
         $registration = App()->request->getPost('usecaptcha_registration', null);
         $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
