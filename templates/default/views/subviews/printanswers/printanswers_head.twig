@@ -40,6 +40,13 @@
             </div>
         </div>
         {{ C.Html.endForm }}
+        {{ C.Html.form(aSurveyInfo.printAnswersHeadFormQueXMLUrl, 'post') }}
+        <div class="row">
+            <div class="col-sm-12">
+                {{ gT("Export this responses as PDF:") }} <button class="" type="submit">{{ gT("queXMLPDF export") }}</button>
+            </div>
+        </div>
+        {{ C.Html.endForm }}
     {% endif %}
 
 
