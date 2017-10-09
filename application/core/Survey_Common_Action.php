@@ -911,8 +911,8 @@ class Survey_Common_Action extends CAction
      */
     function _surveysidemenu($aData)
     {
-
         $iSurveyID = $aData['surveyid'];
+
         $survey=Survey::model()->findByPk($iSurveyID);
         // TODO : create subfunctions
         $sumresult1 = Survey::model()->with(array(
@@ -967,6 +967,7 @@ class Survey_Common_Action extends CAction
                     }
                 }
             }
+
             $aData['quickmenu'] = $this->renderQuickmenu($aData);
             $aData['beforeSideMenuRender'] = $this->beforeSideMenuRender($aData);
             $aData['aGroups'] = $aGroups;

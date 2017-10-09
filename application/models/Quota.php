@@ -151,8 +151,7 @@ class Quota extends LSActiveRecord
         if (count($this->quotaMembers) > 0) {
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
-            foreach ($this->quotaMembers as $member)
-            {
+            foreach ($this->quotaMembers as $member) {
                 if(!in_array($member->memberInfo['fieldname'],$aExistingColumnName)) {
                     \Yii::log(
                         sprintf(
@@ -168,15 +167,12 @@ class Quota extends LSActiveRecord
             }
 
             $oCriteria = new CDbCriteria;
-            $oCriteria->condition="submitdate IS NOT NULL";
+            $oCriteria->condition= new CDbExpression("submitdate IS NOT NULL");
             foreach ($aQuotaColumns as $sColumn=>$aValue)
             {
-                if(count($aValue)==1)
-                {
+                if(count($aValue)==1) {
                     $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind
-                }
-                else
-                {
+                } else {
                     $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
                 }
             }

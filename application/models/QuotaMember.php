@@ -25,7 +25,7 @@
  * @property Survey $survey
  * @property Question $question
  * @property Quota $quota
- * @property array $memberinfo
+ * @property array $memberInfo
  */
 class QuotaMember extends LSActiveRecord
 {
@@ -87,6 +87,10 @@ class QuotaMember extends LSActiveRecord
                 case "L":
                 case "O":
                 case "!":
+                case "I":
+                case "G":
+                case "Y":
+                case "*":
                     $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
                     $sValue = $this->code;
                     break;
@@ -99,12 +103,6 @@ class QuotaMember extends LSActiveRecord
                     $temp = explode('-',$this->code);
                     $sFieldName=$this->sid->sid.'X'.$this->question->gid.'X'.$this->qid.$temp[0];
                     $sValue = $temp[1];
-                    break;
-                case "I":
-                case "G":
-                case "Y":
-                    $sFieldName=$this->sid.'X'.$this->question->gid.'X'.$this->qid;
-                    $sValue = $this->code;
                     break;
                 default:
                     // "Impossible" situation.

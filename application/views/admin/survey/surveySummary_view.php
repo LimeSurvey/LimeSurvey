@@ -429,7 +429,7 @@ $surveyid = $oSurvey->sid;
                             </div>
                         </div>
                     </li>
-                    
+
                     <!-- End message -->
                     <li class="list-group-item">
                         <div class="ls-flex-row col-12">
@@ -448,7 +448,7 @@ $surveyid = $oSurvey->sid;
             </div>
         </div>
     </div>
-    <div class="row">    
+    <div class="row">
         <div class="col-md-12 col-lg-6">
             <ul class="list-group">
                     <!-- Administrator -->
@@ -473,7 +473,7 @@ $surveyid = $oSurvey->sid;
                         </div>
                     </div>
                 </li>
-                
+
                 <!-- Number of questions/groups -->
                 <li class="list-group-item">
                     <div class="ls-flex-row col-12">
@@ -512,7 +512,7 @@ $surveyid = $oSurvey->sid;
                         </div>
                     </div>
                 </li>
-                
+
                 <!-- Template -->
                 <li class="list-group-item">
                     <div class="ls-flex-row col-12">
@@ -567,7 +567,7 @@ $surveyid = $oSurvey->sid;
                                 <strong><?php eT("Table column usage");?>: </strong>
                         </div>
                         <div class="col-8">
-                                <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> 
+                                <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div>
                         </div>
                     </div>
                     <div class="ls-flex-row col-12">
@@ -587,12 +587,12 @@ $surveyid = $oSurvey->sid;
                         </div>
                         <div class="col-8">
                             <strong><?php echo $column_usage;?>%</strong>
-                            <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> 
+                            <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div>
                         </div>
                     </div>
                 <?php }
             } ?>
-            </div>      
+            </div>
         </div>
     </div>
 </div>
