@@ -132,5 +132,3 @@ class SurveymenuEntryData extends CFormModel {
     }
 
 }
-
-?>
