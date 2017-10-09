@@ -15,14 +15,25 @@ if (!defined('BASEPATH'))
  *
   */
 
-//TODO separate class file (add exceptions folder?)
-class TemplateException extends Exception {}
-
 /**
  * Class Template
  *
+ * @property string $name Template name
  * @property string $folder Template folder name eg: 'default'
- * @property integer $creator User ID of Template creator
+ * @property string $title
+ * @property string $creation_date
+ * @property string $author
+ * @property string $author_email
+ * @property string $author_url
+ * @property string $copyright
+ * @property string $license
+ * @property string $version
+ * @property string $view_folder
+ * @property string $files_folder
+ * @property string $description
+ * @property string $last_update
+ * @property integer $owner_id
+ * @property string $extends_template_name
  */
 class Template extends LSActiveRecord
 {
@@ -51,14 +62,14 @@ class Template extends LSActiveRecord
         return array(
             array('name, title, creation_date', 'required'),
             array('owner_id', 'numerical', 'integerOnly'=>true),
-            array('name, author, extends_templates_name', 'length', 'max'=>150),
+            array('name, author, extends_template_name', 'length', 'max'=>150),
             array('folder, version, api_version, view_folder, files_folder', 'length', 'max'=>45),
             array('title', 'length', 'max'=>100),
             array('author_email, author_url', 'length', 'max'=>255),
             array('copyright, license, description, last_update', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('name, folder, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, view_folder, files_folder, description, last_update, owner_id, extends_templates_name', 'safe', 'on'=>'search'),
+            array('name, folder, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, view_folder, files_folder, description, last_update, owner_id, extends_template_name', 'safe', 'on'=>'search'),
         );
     }
 
@@ -94,7 +105,7 @@ class Template extends LSActiveRecord
             'description' => 'Description',
             'last_update' => 'Last Update',
             'owner_id' => 'Owner',
-            'extends_templates_name' => 'Extends Templates Name',
+            'extends_template_name' => 'Extends Templates Name',
         );
     }
 
@@ -190,8 +201,8 @@ class Template extends LSActiveRecord
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
      * @param integer $iSurveyId        the id of the survey.
      * @param integer $iSurveyId        the id of the survey.
-     * @param integer $bForceXML        the id of the survey.
-     * @return StdClass
+     * @param boolean $bForceXML        the id of the survey.
+     * @return TemplateConfiguration
      */
     public static function getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=false)
     {
@@ -375,20 +386,28 @@ class Template extends LSActiveRecord
      * @param int|string $iSurveyGroupId
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName='', $iSurveyId='', $iSurveyGroupId='', $bForceXML=false)
+    public static function getInstance($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=null)
     {
+        // The error page from default template can be called when no survey found with a specific ID.
+        if ($sTemplateName === null && $iSurveyId === null){
+            $sTemplateName = "default";
+        }
 
-        // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
-        if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
-            $bForceXML=true;
-        }elseif( App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
-            $bForceXML=false;
+        if($bForceXML === null){
+            // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
+            if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
+                $bForceXML=true;
+            }elseif( App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
+                $bForceXML=false;
+            }
         }
 
         if (empty(self::$instance)) {
-            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
+            // getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=false)
+            self::$instance = $toto = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
             self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
+
 
         return self::$instance;
     }
@@ -479,7 +498,7 @@ class Template extends LSActiveRecord
         $criteria->compare('description',$this->description,true);
         $criteria->compare('last_update',$this->last_update,true);
         $criteria->compare('owner_id',$this->owner_id);
-        $criteria->compare('extends_templates_name',$this->extends_templates_name,true);
+        $criteria->compare('extends_template_name',$this->extends_template_name,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -490,10 +509,12 @@ class Template extends LSActiveRecord
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Templates the static model class
+     * @return Template the static model class
      */
     public static function model($className=__CLASS__)
     {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 }

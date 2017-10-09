@@ -44,7 +44,7 @@
 
     <!-- NOTE: Material extends Default, but it doesn't provides the same options (no box container, no background image, no theme switcher) -->
     <options>
-        <ajaxmode>on</ajaxmode>
+        <ajaxmode>off</ajaxmode>
         <brandlogo>on</brandlogo>
         <boxcontainer>on</boxcontainer>
         <animatebody>on</animatebody>

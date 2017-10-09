@@ -5,7 +5,7 @@
  * plugins then would have to extend PluginBase in the
  * namespace instead of this class.
  */
-class PluginBase extends \ls\pluginmanager\PluginBase
+class PluginBase extends \LimeSurvey\PluginManager\PluginBase
 {
 
 }

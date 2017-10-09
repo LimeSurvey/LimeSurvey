@@ -10,8 +10,6 @@ $templateData['oSurvey'] = $oSurvey;
 ?>
 
 <script type="text/javascript">
-    var standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
-    var templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
     var formId = '<?=$entryData['name']?>';
 </script>
 
@@ -52,3 +50,31 @@ if(isset($scripts))
         </form>
     </div>
 </div>
+<script type="text/javascript">
+$(document).on('ready pjax:complete', function(){
+
+    $('#<?=$entryData['name']?>').off('submit');
+
+    $('#<?=$entryData['name']?>').on('submit', function(e){
+      e.preventDefault();
+      var data = $(this).serializeArray();
+      var uri = $(this).attr('action');
+      $.ajax({
+        url: uri,
+        method:'POST',
+        data: data,
+        success: function(result){
+          if(result.redirecturl != undefined ){
+            window.location.href=result.redirecturl;
+          } else {
+            window.location.reload();
+          }
+        },
+        error: function(result){
+          console.log({result: result});
+        }
+      });
+      return false;
+    });
+});
+</script>

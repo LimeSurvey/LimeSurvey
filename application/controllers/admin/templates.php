@@ -42,8 +42,8 @@ class templates extends Survey_Common_Action
     */
     public function templatezip($templatename)
     {
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
-        $oEditedTemplate->prepareTemplateRendering($sTemplateName);
+        $oEditedTemplate = Template::getInstance($templatename);
+
         if (!Permission::model()->hasGlobalPermission('templates','export'))
         {
             die('No permission');
@@ -229,8 +229,8 @@ class templates extends Survey_Common_Action
         $action = returnGlobal('action');
         $editfile = App()->request->getPost('editfile');
         $templatename = returnGlobal('templatename');
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename);
-        $oEditedTemplate->prepareTemplateRendering($sTemplateName);
+        $oEditedTemplate = Template::getInstance($templatename);
+
         $templatedir = $oEditedTemplate->viewPath;
         $screenname = returnGlobal('screenname');
         $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
@@ -389,7 +389,7 @@ class templates extends Survey_Common_Action
         }
 
         $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
-        $oEditedTemplate = Template::model()->getTemplateConfiguration($sTemplateName); $oEditedTemplate->prepareTemplateRendering($sTemplateName);
+        $oEditedTemplate = Template::getInstance($sTemplateName);
         $templatedir     = $oEditedTemplate->viewPath;
         $filesdir        = $oEditedTemplate->filesPath;
         $sPostedFile     = App()->request->getPost('otherfile');
@@ -781,7 +781,7 @@ class templates extends Survey_Common_Action
     protected function _initialise($templatename, $screenname, $editfile, $showsummary = true)
     {
         // LimeSurvey style
-        $oEditedTemplate = Template::model()->getInstance($templatename, null,null, true);
+        $oEditedTemplate = Template::getInstance($templatename, null,null, true);
 
             //App()->getClientScript()->reset();
         Yii::app()->loadHelper('surveytranslator');

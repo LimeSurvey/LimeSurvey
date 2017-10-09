@@ -182,8 +182,8 @@ $internalConfig = array(
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
         ),
         'pluginManager' => array(
-            'class' => "\\ls\\pluginmanager\\PluginManager",
-            'api' => "\\ls\\pluginmanager\\LimesurveyApi"
+            'class' => "\\LimeSurvey\\PluginManager\\PluginManager",
+            'api' => "\\LimeSurvey\\PluginManager\\LimesurveyApi"
         ),
         'format'=>array(
             'class'=>'application.extensions.CustomFormatter'
@@ -246,7 +246,7 @@ $internalConfig = array(
 
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set', 'autoescape', 'block'),
-                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
+                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys', 'date'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),

@@ -1,5 +1,5 @@
 <?php
-namespace ls\pluginmanager;
+namespace LimeSurvey\PluginManager;
 use Yii;
 use Hash;
 Yii::import('application.helpers.Hash');

@@ -32,14 +32,14 @@
 
                     array(
                         'header' => gT('name'),
-                        'name' => 'templates_name',
-                        'value'=>'$data->templates_name',
+                        'name' => 'template_name',
+                        'value'=>'$data->template_name',
                         'htmlOptions' => array('class' => 'col-md-2'),
                     ),
 
                     array(
                         'header' => gT('Description'),
-                        'name' => 'templates_name',
+                        'name' => 'template_name',
                         'value'=>'$data->template->description',
                         'htmlOptions' => array('class' => 'col-md-3'),
                         'type'=>'raw',
@@ -56,7 +56,7 @@
                     array(
                         'header' => gT('extends'),
                         'name' => 'templates_extends',
-                        'value'=>'$data->template->extends_templates_name',
+                        'value'=>'$data->template->extends',
                         'htmlOptions' => array('class' => 'col-md-2'),
                     ),
 

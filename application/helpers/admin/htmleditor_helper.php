@@ -247,7 +247,7 @@
 
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
-        . "$(document).on('ready pjax:complete', 
+        . "$(document).on('ready pjax:complete triggerCreateCKEditor', 
             function(){ 
                 if($('#".$fieldname."').length >0){
                     var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {

@@ -66,7 +66,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     public function listsurveys()
-    {
+    {        
         Yii::app()->loadHelper('surveytranslator');
         $aData = array();
         $aData['issuperadmin'] = false;
@@ -126,8 +126,7 @@ class SurveyAdmin extends Survey_Common_Action
     */
     public function newsurvey()
     {
-        if (!Permission::model()->hasGlobalPermission('surveys','create'))
-        {
+        if (!Permission::model()->hasGlobalPermission('surveys','create')) {
             Yii::app()->user->setFlash('error', gT("Access denied"));
             $this->getController()->redirect(Yii::app()->request->urlReferrer);
         }
@@ -136,13 +135,6 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_registerScriptFiles();
         Yii::app()->loadHelper('surveytranslator');
         $esrow = $this->_fetchSurveyInfo('newsurvey');
-        // Default setting is to use the global Google Analytics key If one exists
-        $globalKey = getGlobalSetting('googleanalyticsapikey');
-        if($globalKey != ""){
-            $survey->googleanalyticsapikey = "9999useGlobal9999";
-            $survey->googleanalyticsapikeysetting = "G";
-        }
-
         Yii::app()->loadHelper('admin/htmleditor');
 
         $aViewUrls['output']  = PrepareEditorScript(false, $this->getController());
@@ -173,6 +165,7 @@ class SurveyAdmin extends Survey_Common_Action
         $this->_renderWrappedTemplate('survey', $aViewUrls, $arrayed_data);
     }
 
+    // TODO document me, please :)
     public function fakebrowser()
     {
         Yii::app()->getController()->renderPartial('/admin/survey/newSurveyBrowserMessage', array());
@@ -333,7 +326,7 @@ class SurveyAdmin extends Survey_Common_Action
         $survey->save();
 
         $oTemplateConfiguration = $survey->surveyTemplateConfiguration;
-        $oTemplateConfiguration->templates_name = $sTemplate;
+        $oTemplateConfiguration->template_name = $sTemplate;
         $oTemplateConfiguration->save();
 
     }
@@ -1119,6 +1112,7 @@ class SurveyAdmin extends Survey_Common_Action
                     $aTabTitles[$sLang] .= ' (' . gT("Base language") . ')';
                 }
 
+                $aData['i'] = $i;
                 $aData['esrow'] = $esrow;
                 $aData['action'] = "editsurveylocalesettings";
                 $aData['dateformatdetails'] = getDateFormatData(Yii::app()->session['dateformat']);
@@ -1808,7 +1802,8 @@ class SurveyAdmin extends Survey_Common_Action
         $iSurveyID = (int) $iSurveyID;
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))
         {
-            die();
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
+            $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
         }
         Yii::app()->session['flashmessage'] = gT("The survey was successfully expired by setting an expiration date in the survey settings.");
         Survey::model()->expire($iSurveyID);
@@ -1921,25 +1916,21 @@ class SurveyAdmin extends Survey_Common_Action
     */
     private function _registerScriptFiles()
     {
-        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'surveysettings.js');
         App()->getClientScript()->registerPackage('jquery-json');
-        App()->clientScript->registerPackage('bootstrap-switch');
+        App()->getClientScript()->registerPackage('bootstrap-switch');
         App()->getClientScript()->registerPackage('jquery-datatable');
-        App()->clientScript->registerPackage('adminpanel');
-        App()->clientScript->registerPackage('ckeditor');
-        App()->clientScript->registerPackage('ckeditoradditions');
 
     }
 
     /**
-    * Saves the new survey after the creation screen is submitted
-    *
-    * @param $iSurveyID  The survey id to be used for the new survey. If already taken a new random one will be used.
-    */
+     * Saves the new survey after the creation screen is submitted
+     *
+     * @param integer $iSurveyID The survey id to be used for the new survey. If already taken a new random one will be used.
+     * @return string
+     */
     function insert($iSurveyID=null)
     {
-        if (Permission::model()->hasGlobalPermission('surveys','create'))
-        {
+        if (Permission::model()->hasGlobalPermission('surveys','create')) {
             // Check if survey title was set
             if (Yii::app()->request->getPost('surveyls_title')=='')
             {

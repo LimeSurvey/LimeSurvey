@@ -31,7 +31,6 @@ var Template = function(){
         $('#limesurvey :input:visible:enabled:first').focus();
     };
 
-
     /**
      * fix padding of body according to navbar-fixed-top
      * in endpage and in $(window).resize
@@ -177,17 +176,5 @@ var Template = function(){
 }
 
 
-
-
-/**
- * Replace all existing alert default javascript function
- */
-//~ window.alert = function(message, title) {
-    //~ $(function() {
-        //~ $("#bootstrap-alert-box-modal .modal-header .h4").text(title || "");
-        //~ $("#bootstrap-alert-box-modal .modal-body").html("<p>"+message+"</p>" || "");
-        //~ $("#bootstrap-alert-box-modal").modal('show');
-    //~ });
-//~ };
 
 

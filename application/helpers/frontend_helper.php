@@ -14,7 +14,7 @@
 // TODO: Why needed?
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
-use \ls\pluginmanager\PluginEvent;
+use \LimeSurvey\PluginManager\PluginEvent;
 
 function loadanswers()
 {
@@ -852,11 +852,10 @@ function buildsurveysession($surveyid,$preview=false)
     SetSurveyLanguage ($surveyid, $language_to_set);
     UpdateGroupList ($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $totalquestions               = Question::model()->getTotalQuestions($surveyid);
+    $totalquestions               = $survey->countTotalQuestions;
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
-    $iNumberofQuestions           = Question::model()->getNumberOfQuestions($surveyid);                     // Fix totalquestions by substracting Test Display questions
 
-    $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
+    $_SESSION['survey_'.$surveyid]['totalquestions'] = $survey->countInputQuestions;
 
     // 2. SESSION VARIABLE: totalsteps
     setTotalSteps($surveyid, $thissurvey, $totalquestions);
@@ -1985,6 +1984,16 @@ function checkCompletedQuota($surveyid,$return=false)
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
 
+    $thissurvey['aQuotas']['hiddeninputs']      = '<input type="hidden" name="sid"      value="'.$thissurvey['sid'].'" />
+                                                   <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />
+                                                   <input type="hidden" name="thisstep" value="'.$thissurvey['aQuotas']['sQuotaStep'].'" />';
+
+   foreach($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post){
+       $thissurvey['aQuotas']['hiddeninputs']      .= '<input type="hidden" name="'.$field.'"   value="'.$post.'" />';
+   }
+
+    //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
+
     if ($closeSurvey){
         killSurveySession($surveyid);
 
@@ -2059,9 +2068,11 @@ function getReferringUrl()
 /**
 * Shows the welcome page, used in group by group and question by question mode
 */
-function display_first_page($thissurvey) {
+function display_first_page($thissurvey, $aSurveyInfo)
+{
     global $token, $surveyid;
 
+    $thissurvey                 = $aSurveyInfo;
     $thissurvey['aNavigator']   = getNavigatorDatas();
 
     LimeExpressionManager::StartProcessingPage();
@@ -2091,6 +2102,10 @@ function display_first_page($thissurvey) {
     LimeExpressionManager::FinishProcessingPage();
 
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
+    $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] =  '';
+
+
+
 
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }

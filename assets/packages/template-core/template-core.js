@@ -15,7 +15,7 @@ $(function() {
  */
 /* showStartPopups : replace core function : allow HTML and use it. */
 function showStartPopups(){
-    if(LSvar.showpopup && $(LSvar.startPopups).length){
+    if(LSvar.showpopup && typeof(LSvar.startPopups) == 'array' && LSvar.startPopups.length){
         startPopup=LSvar.startPopups.map(function(text) {
             return "<p>"+text+"</p>";
         });
@@ -66,30 +66,35 @@ function addHoverColumn(){
  * @see core/package/limesurvey/survey.js:triggerEmClassChange
  */
 function triggerEmClassChangeTemplate(){
-    $('.ls-em-tip').on('classChangeError', function() {
-        /* If user choose hide-tip : leave it */
-        //~ $parent = $(this).parent('div.qquestion-valid-container');
-        //~ if ($parent.hasClass('hide-tip'))
-        //~ {
-            //~ $parent.removeClass('hide-tip',1);
-            //~ $parent.addClass('tip-was-hidden',1);
-        //~ }
-        $questionContainer = $(this).parents('div.question-container');
-        $questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+    $('.ls-em-tip').each(function(){
+        $(this).on('classChangeError', function() {
+            console.log('change error');
+            /* If user choose hide-tip : leave it */
+             $parent = $(this).parent('div.hide-tip');
+             if ($parent.hasClass('hide-tip'))
+             {
+                 $parent.removeClass('hide-tip',1);
+                 $parent.addClass('tip-was-hidden',1);
+             }
+            $questionContainer = $(this).parents('div.question-container');
+            $questionContainer.addClass('input-error'); /* No difference betwwen error after submit and error before submit : think (Shnoulle) it's better to have a difference */
+        });
+
+        $(this).on('classChangeGood', function() {
+            /* If user choose hide-tip : leave it */
+             $parent = $(this).parents('div.hide-tip');
+             $parent.removeClass('text-danger');
+             $parent.addClass('text-info');
+             if ($parent.hasClass('tip-was-hidden'))
+             {
+                $parent.removeClass('tip-was-hidden').addClass('hide-tip');
+             }
+            $questionContainer = $(this).parents('div.question-container');
+            $questionContainer.removeClass('input-error');/* Not working with mandatory question ... */
+        });
     });
 
-    $('.ls-em-tip').on('classChangeGood', function() {
-        /* If user choose hide-tip : leave it */
-        //~ $parent = $(this).parents('div.question-valid-container');
-        //~ $parent.removeClass('text-danger');
-        //~ $parent.addClass('text-info');
-        //~ if ($parent.hasClass('tip-was-hidden'))
-        //~ {
-            //~ $parent.removeClass('tip-was-hidden').addClass('hide-tip');
-        //~ }
-        $questionContainer = $(this).parents('div.question-container');
-        $questionContainer.removeClass('input-error');/* Not working with mandatory question ... */
-    });
+
 }
 /**
  * Hide/show question if all sub-questions is hidden
@@ -116,7 +121,7 @@ function hideQuestionWithRelevanceSubQuestion(){
     });
 }
 /**
- * Hide/show parent multiple list 
+ * Hide/show parent multiple list
  * @see core/package/limesurvey/survey.js:triggerEmRelevanceSubQuestion
  * @see https://bugs.limesurvey.org/view.php?id=11787
  * Must be before ready (event happen before ready)

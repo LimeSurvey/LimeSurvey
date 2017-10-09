@@ -1,12 +1,16 @@
+//globals formId
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueLocalStorage from 'vue-localstorage';
 import Sidebar from './components/sidebar.vue';
 import Topbar from './components/topbar.vue';
 import getAppState from './store/vuex-store.js';
+import LOG from './mixins/logSystem.js';
+
 
 Vue.use(Vuex);
 Vue.use(VueLocalStorage);
+Vue.use(LOG);
 
 Vue.mixin({
   methods: {
@@ -50,37 +54,13 @@ if (document.getElementById('vue-app-main-container')) {
       const maxHeight = ($('#in_survey_common').height() - 35) || 400;
       this.$store.commit('changeMaxHeight', maxHeight);
       this.updatePjaxLinks();
+      $(document).on('click', 'ul.pagination>li>a', function(){
+        this.updatePjaxLinks();
+      });
     }
   });
 }
 
-
-// $(document).on('ready pjax:complete', ()=>{
-//   if($('#vue-app-main-container').length >0 ){
-
-//     const
-//         menuOffset = $('nav.navbar').outerHeight()+45,
-//         menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
-//         footerHeight = $('footer').outerHeight()+65,
-//         documentHeight = screen.availHeight || screen.height,
-//         innerMenuHeight = $('#surveybarid').outerHeight();
-
-//     let vueAppContainerHeight = documentHeight-( menuOffset + menuHeight + footerHeight );
-//     let inSurveyCommonHeight = vueAppContainerHeight - (innerMenuHeight + 45);
-
-//     console.log({
-//       menuOffset : menuOffset,
-//       menuHeight : menuHeight,
-//       footerHeight : footerHeight,
-//       documentHeight : documentHeight,
-//       innerMenuHeight : innerMenuHeight,
-//       vueAppContainerHeight : vueAppContainerHeight,
-//       inSurveyCommonHeight : inSurveyCommonHeight
-//     });
-
-//      $('#vue-app-main-container').css('min-height', vueAppContainerHeight+'px');
-//   }
-// });
 $(document).on('pjax:send', () => {
   $('#pjax-file-load-container').find('div').css({
     'width': '20%',
@@ -96,6 +76,7 @@ $(document).on('pjax:complete', () => {
     });
   }, 2200);
 });
+
 // const topmenu = new Vue(
 //   {  
 //     el: '#vue-top-menu-app',

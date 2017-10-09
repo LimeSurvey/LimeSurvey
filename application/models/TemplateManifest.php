@@ -169,7 +169,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function addFileReplacementInDB($sFile, $sType)
     {
-        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'=>$this->sTemplateName));
+        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('template_name'=>$this->sTemplateName));
         foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
             $oTemplateConfigurationModel->addFileReplacement($sFile, $sType);
         }
@@ -368,7 +368,7 @@ class TemplateManifest extends TemplateConfiguration
      * @param  string $iSurveyId the id of the survey. If
      * @return $this
      */
-    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='')
+    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true)
     {
         $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
         $this->setIsStandard();                                                 // Check if  it is a CORE template

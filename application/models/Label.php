@@ -16,7 +16,7 @@
 /**
  * Class Label
  *
- * @property integer $lid ID
+ * @property integer $lid Primary Key
  * @property string $code
  * @property string $title
  * @property integer $sortorder
@@ -48,7 +48,9 @@ class Label extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */

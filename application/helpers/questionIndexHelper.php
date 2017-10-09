@@ -16,7 +16,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
-namespace ls\helpers;
+namespace LimeSurvey\Helpers;
 use Yii;
 use LimeExpressionManager;
 

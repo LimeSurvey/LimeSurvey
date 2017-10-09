@@ -52,6 +52,8 @@ class SurveysGroupsController extends Survey_Common_Action
         }
 
         $aData['model'] = $model;
+        $aData['fullpagebar']['savebutton']['form'] = 'surveys-groups-form';
+
         $this->_renderWrappedTemplate('surveysgroups', 'create', $aData);
     }
 
@@ -78,8 +80,8 @@ class SurveysGroupsController extends Survey_Common_Action
         $oSurveySearch->gsid = $model->gsid;
         $aData['oSurveySearch'] = $oSurveySearch;
 
-        $oTemplateOptions = Template::getTemplateConfiguration(null, null, $model->gsid);
-        $oTemplateOptions->bUseMagicInherit = false;
+        $oTemplateOptions = TemplateConfiguration::getInstanceFromSurveyGroup($model->gsid);
+
         $oTemplateOptionsReplacement = TemplateConfiguration::model()->findByPk($oTemplateOptions->id);
         $templateOptionPage           = $oTemplateOptionsReplacement->optionPage;
 

@@ -3,6 +3,8 @@
  * Import survey
  */
 ?>
+<div class="ls-flex-row wrap align-content-center align-items-center">
+<div class="container-fluid col-sm-10 col-md-8">
 <!-- tab import survey -->
     <!-- import form -->
     <?php echo CHtml::form(array('admin/survey/sa/copy'), 'post', array('id'=>'importsurvey', 'name'=>'importsurvey', 'class'=>'', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'. gT('Please select a file to import!', 'js').'");')); ?>
@@ -33,9 +35,9 @@
             </div>
 
             <!-- Submit -->
-            <div class='form-group'>
-                <div class=' col-sm-offset-3'>
-                    <input type='submit' class="btn btn-default" value='<?php  eT("Import survey"); ?>' />
+            <div class='form-group col-12'>
+                <div class=''>
+                    <input type='submit' class="btn btn-default col-6" value='<?php  eT("Import survey"); ?>' />
                 </div>
             </div>
 
@@ -43,7 +45,8 @@
             <input type='hidden' name='action' value='importsurvey' />
         </div>
     </form>
-
+</div>
+</div>
     <div id='pleaseselectfile-popup' class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">

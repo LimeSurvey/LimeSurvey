@@ -4,11 +4,11 @@
  * This is the model class for table "{{settings_user}}".
  *
  * The followings are the available columns in table '{{settings_user}}':
- * @property integer $uid
- * @property string $entity
- * @property string $entity_id
- * @property string $stg_name
- * @property string $stg_value
+ * @property integer $uid User id
+ * @property string $entity Entity name
+ * @property string $entity_id Entity ID
+ * @property string $stg_name Setting name
+ * @property string $stg_value Setting Value
  */
 class SettingsUser extends CActiveRecord
 {
@@ -102,6 +102,8 @@ class SettingsUser extends CActiveRecord
 	 */
 	public static function model($className=__CLASS__)
 	{
-		return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
 	}
 }

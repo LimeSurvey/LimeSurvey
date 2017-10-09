@@ -20,9 +20,9 @@
 
 {# Replace the content block #}
 {% block content %}
-    <div class='return-to-survey'>
-        <div class="url-wrapper url-wrapper-survey-return">
-            <a href="{{ aSurveyInfo.surveyUrl }}" class="ls-return">{{ "Restart this Survey" | t}}</a>
+    <div class='{{ aSurveyInfo.class.clearall }}' {{ aSurveyInfo.attr.clearall }}>
+        <div class=" {{ aSurveyInfo.class.clearalldiv }} " {{ aSurveyInfo.attr.clearalldiv }}>
+            <a href="{{ aSurveyInfo.surveyUrl }}" class="{{ aSurveyInfo.class.clearalla }}" {{ aSurveyInfo.attr.clearalla }}>{{ "Restart this Survey" | t}}</a>
         </div>
     </div>
 {% endblock %}

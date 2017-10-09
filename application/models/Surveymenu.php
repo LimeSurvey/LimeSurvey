@@ -16,6 +16,7 @@
  * @property integer $changed_by
  * @property string $created_at
  * @property integer $created_by
+ * @property integer $active
  *
  * The followings are the available model relations:
  * @property SurveymenuEntries[] $surveymenuEntries
@@ -362,6 +363,8 @@ class Surveymenu extends LSActiveRecord
 	 */
 	public static function model($className=__CLASS__)
 	{
-		return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
 	}
 }

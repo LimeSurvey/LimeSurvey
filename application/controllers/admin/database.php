@@ -38,7 +38,7 @@ class database extends Survey_Common_Action
                 'format' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'expires' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'additional_languages' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'startdate' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'startdate' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'template' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'assessments' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'anonymized' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -76,6 +76,9 @@ class database extends Survey_Common_Action
                 'adminemail' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'bounce_email' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'gsid' => ['type'=> '', 'default' => 1, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'usecaptcha_surveyaccess' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'usecaptcha_registration' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
+                'usecaptcha_saveandload' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
             ];
         private $updatedFields = [];
 
@@ -335,22 +338,22 @@ class database extends Survey_Common_Action
                     Condition::model()->updateAll(array('value'=>$sCode), 'cqid=:cqid AND value=:value', array(':cqid'=>$this->iQuestionID, ':value'=>$sOldCode));
                 }
             }  // for ($sortorderid=0;$sortorderid<$maxcount;$sortorderid++)
-        }  //  for ($scale_id=0;
 
-        LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
-        if (!Yii::app()->request->getPost('bFullPOST'))
-        {
-            Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."),'error');
+            LimeExpressionManager::UpgradeConditionsToRelevance($iSurveyID);
+            if (!Yii::app()->request->getPost('bFullPOST'))
+            {
+                Yii::app()->setFlashMessage(gT("Not all answer options were saved. This usually happens due to server limitations ( PHP setting max_input_vars) - please contact your system administrator."),'error');
+            }
+            else
+            {
+                Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
+            }
+            LimeExpressionManager::SetDirtyFlag();
+            if(Yii::app()->request->getPost('close-after-save') === 'true'){
+                $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
+            }
+            $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
         }
-        else
-        {
-            Yii::app()->setFlashMessage(gT("Answer options were successfully saved."));
-        }
-        LimeExpressionManager::SetDirtyFlag();
-        if(Yii::app()->request->getPost('close-after-save') === 'true'){
-            $this->getController()->redirect(array('admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
-        }
-        $this->getController()->redirect(array('/admin/questions/sa/answeroptions/surveyid/'.$iSurveyID.'/gid/'.$this->iQuestionGroupID.'/qid/'.$this->iQuestionID));
     }
 
     /**
@@ -600,7 +603,7 @@ class database extends Survey_Common_Action
         // Remove invalid question attributes on saving
         $criteria = new CDbCriteria;
         $criteria->compare('qid',$this->iQuestionID);
-        $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
+        $validAttributes=\LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
         // If the question has a custom template, we first check if it provides custom attributes
         //~ $oAttributeValues = QuestionAttribute::model()->find("qid=:qid and attribute='question_template'",array('qid'=>$cqr->qid));
         //~ if (is_object($oAttributeValues && $oAttributeValues->value)){
@@ -1028,8 +1031,10 @@ class database extends Survey_Common_Action
             $current_template = $oSurvey->template;
             $new_template =  $this->_filterEmptyFields($oSurvey,'template');
             if(  $current_template != '' && $current_template !== $new_template ){
-                $currentConfiguration = Template::getTemplateConfiguration($current_template);
-                TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
+                $currentConfiguration = TemplateConfiguration::getInstance($current_template, $oSurvey->gsid, $oSurvey->sid);
+                
+                if(is_a($currentConfiguration, "TemplateConfiguration"))
+                    TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
             }
             $oSurvey->template = $new_template;
             
@@ -1077,7 +1082,7 @@ class database extends Survey_Common_Action
             $oSurvey->sendconfirmation = $this->_filterEmptyFields($oSurvey,'sendconfirmation');
             $oSurvey->tokenanswerspersistence = $this->_filterEmptyFields($oSurvey,'tokenanswerspersistence');
             $oSurvey->alloweditaftercompletion = $this->_filterEmptyFields($oSurvey,'alloweditaftercompletion');
-            $oSurvey->usecaptcha = Survey::transcribeCaptchaOptions();
+            $oSurvey->usecaptcha = Survey::saveTranscribeCaptchaOptions($oSurvey);
             $oSurvey->emailresponseto = $this->_filterEmptyFields($oSurvey,'emailresponseto');
             $oSurvey->emailnotificationto = $this->_filterEmptyFields($oSurvey,'emailnotificationto');
             $oSurvey->googleanalyticsapikeysetting = $this->_filterEmptyFields($oSurvey,'googleanalyticsapikeysetting');
@@ -1105,6 +1110,7 @@ class database extends Survey_Common_Action
             $event->set('modifiedSurvey', $oSurvey);
             App()->getPluginManager()->dispatchEvent($event);
             $aAfterApplyAttributes = $oSurvey->attributes;
+
             if ($oSurvey->save())
             {
                 Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
@@ -1223,16 +1229,15 @@ class database extends Survey_Common_Action
 
     private function _filterEmptyFields(&$oSurvey, $fieldArrayName, $newValue=null){
         $aSurvey = $oSurvey->attributes;
+
         if($newValue === null)
         {
-            $newValue = App()->request->getPost($fieldArrayName, '');
+            $newValue = App()->request->getPost($fieldArrayName, NULL);
         }
 
-        $newValue = trim($newValue);
 
-        if(empty($newValue))
+        if($newValue === NULL)
         {
-
             $newValue = isset($aSurvey[$fieldArrayName]) ? $aSurvey[$fieldArrayName] : $oSurvey->{$fieldArrayName};
 
         } 
@@ -1240,13 +1245,17 @@ class database extends Survey_Common_Action
         {
             $this->updatedFields[] = $fieldArrayName;
         }
+        
+        $newValue = trim($newValue);
 
         $options = $this->updateableFields[$fieldArrayName];
         switch($options['type']){
             case 'yesno':
                 if($newValue != 'Y' && $newValue != 'N')
+                {
                     $newValue = (int) $newValue;
                     $newValue = ($newValue===1) ? 'Y' : 'N';
+                }
             break;
             case 'Int' : 
                 $newValue = (int) $newValue;
@@ -1377,24 +1386,20 @@ class database extends Survey_Common_Action
                         $oOldQuestion = Question::model()->findByPk($oldQID);
                     }
                     if (returnGlobal('copysubquestions') == 1) {
-                        $aSQIDMappings = array();
-                        $r1 = $oOldQuestion->subquestions;
-                        $aSubQuestions = $r1->readAll();
-
-                        foreach ($aSubQuestions as $qr1) {
-                            $qr1['parent_qid'] = $this->iQuestionID;
+                        $aSQIDMappings = [];
+                        foreach ($oOldQuestion->subquestions as $qr1) {
+                            $qr1->parent_qid = $this->iQuestionID;
                             $oldqid= '';
-                            if (isset($aSQIDMappings[$qr1['qid']])) {
-                                $qr1['qid'] = $aSQIDMappings[$qr1['qid']];
+                            if (isset($aSQIDMappings[$qr1->qid])) {
+                                $qr1->qid = $aSQIDMappings[$qr1->qid];
                             } else {
-                                $oldqid = $qr1['qid'];
-                                unset($qr1['qid']);
+                                $oldqid = $qr1->qid;
+                                $qr1->qid = null;
                             }
 
-                            $qr1['gid'] = $this->iQuestionGroupID;
-                            $iInsertID = Question::model()->insertRecords($qr1);
-                            if (!isset($qr1['qid'])) {
-                                $aSQIDMappings[$oldqid] = $iInsertID;
+                            $qr1->gid = $this->iQuestionGroupID;
+                            if($qr1->save()){
+                                $aSQIDMappings[$oldqid] = $qr1->gid;
                             }
                         }
                     }
@@ -1433,7 +1438,7 @@ class database extends Survey_Common_Action
                         }
                     }
                 } else {
-                    $validAttributes=\ls\helpers\questionHelper::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
+                    $validAttributes=\LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings(Yii::app()->request->getPost('type'));
 
                     // If the question has a custom template, we first check if it provides custom attributes
                     $aAttributeValues['question_template'] = 'core';

@@ -9,6 +9,7 @@
 
 <div class="container">
     <div class="row h1"><?php eT('Update TemplateOptions for ').$model->id; ?></div>
+    <div class="row h1"><?php eT('Update TemplateOptions for '); echo '<em>' . $model->template_name . '</em>'; ?></div>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
         <!-- Nav tabs -->
@@ -82,7 +83,7 @@
                 <?php echo $form->errorSummary($model); ?>
 
 
-                <?php echo $form->hiddenField($model,'templates_name'); ?>
+                <?php echo $form->hiddenField($model,'template_name'); ?>
                 <?php echo $form->hiddenField($model,'sid'); ?>
                 <?php echo $form->hiddenField($model,'gsid'); ?>
                 <?php echo $form->hiddenField($model,'uid'); ?>

@@ -50,7 +50,7 @@ export default {
     mounted(){
         const self = this;
         // this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
-        //     console.log('quickmenu',result);
+        //     self.$log.debug('quickmenu',result);
         //     self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
         //     self.$localStorage.set('collapsedmenues', JSON.stringify(self.menues));
         //     self.$forceUpdate();

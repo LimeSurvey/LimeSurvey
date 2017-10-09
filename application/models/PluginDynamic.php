@@ -35,9 +35,11 @@ class PluginDynamic extends LSActiveRecord
         $model=new $class($this->tableName(), null);
         return $model;
     }
+
     /**
      * We have a custom implementation here since the parents' implementation
      * does not create a new model for each table name.
+     * @param string $sTableName
      * @return Plugin
      */
     public static function model($sTableName = null)

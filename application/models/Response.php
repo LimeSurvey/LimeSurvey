@@ -20,7 +20,9 @@
          * @return Response
          */
         public static function model($className = null) {
-            return parent::model($className);
+            /** @var self $model */
+            $model =parent::model($className);
+            return $model;
         }
         /**
          *
@@ -31,11 +33,13 @@
         public static function create($surveyId, $scenario = 'insert') {
             return parent::create($surveyId, $scenario);
         }
+
         /**
-        * Get all files related to this response and (optionally) question ID.
-        * 
-        * @param integer $sQID The question ID - optional - Default 0
-        */
+         * Get all files related to this response and (optionally) question ID.
+         *
+         * @param integer $sQID The question ID - optional - Default 0
+         * @return array
+         */
         public function getFiles($sQID=0)
         {
             $survey = Survey::model()->findByPk($this->dynamicId);

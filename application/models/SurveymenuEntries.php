@@ -28,6 +28,7 @@
  * @property integer $changed_by
  * @property string $created_at
  * @property integer $created_by
+ * @property integer $active
  *
  * The followings are the available model relations:
  * @property Surveymenu $menu
@@ -108,9 +109,8 @@ class SurveymenuEntries extends LSActiveRecord
 
 	public static function reorderMenu($menuId){
 		$criteriaItems = new CDbCriteria();
-		$criteriaItems->addCondition(['menu_id = :menu_id']);
-		$criteriaItems->order='ordering ASC';
-		$criteriaItems->params = ['menu_id' => (int) $menuId];
+		$criteriaItems->compare('menu_id', (int) $menuId, false );
+		$criteriaItems->order='t.ordering ASC';
 		$menuEntriesInMenu = SurveymenuEntries::model()->findAll($criteriaItems);
 		
 		$statistics =
@@ -448,7 +448,7 @@ class SurveymenuEntries extends LSActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 			'sort'=>array(
-				'defaultOrder'=>'menu_id ASC, `ordering` ASC',
+				'defaultOrder'=>'t.menu_id ASC, t.ordering ASC',
 			)
 		));
 	}
@@ -462,6 +462,8 @@ class SurveymenuEntries extends LSActiveRecord
 	 */
 	public static function model($className=__CLASS__)
 	{
-		return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
 	}
 }

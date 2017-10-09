@@ -113,6 +113,8 @@ class SurveyRuntimeHelper {
             $this->setPreview();
         }
 
+
+
         $this->moveSubmitIfNeeded();
         $this->setGroup();
 
@@ -227,7 +229,7 @@ class SurveyRuntimeHelper {
 
         if ($this->aSurveyInfo['questionindex']){
             if(!$this->previewquestion && !$this->previewgrp){
-                $this->aSurveyInfo['aQuestionIndex']['items'] = ls\helpers\questionIndexHelper::getInstance()->getIndexItems();
+                $this->aSurveyInfo['aQuestionIndex']['items'] = LimeSurvey\Helpers\questionIndexHelper::getInstance()->getIndexItems();
 
                 if($this->aSurveyInfo['questionindex'] > 1){
                     $this->aSurveyInfo['aQuestionIndex']['type'] = 'full';
@@ -384,12 +386,16 @@ class SurveyRuntimeHelper {
             $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
         }
 
-
+        /**
+         *  Expression Manager Scrips and inputs
+         */
         LimeExpressionManager::FinishProcessingGroup($this->LEMskipReprocessing);
-        $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = LimeExpressionManager::GetRelevanceAndTailoringJavaScript();
+        $aScriptsAndHiddenInputs = LimeExpressionManager::GetRelevanceAndTailoringJavaScript(true);
+        $sScripts =  implode('',$aScriptsAndHiddenInputs['scripts']);
+        Yii::app()->clientScript->registerScript('lemscripts', $sScripts, CClientScript::POS_BEGIN);
+        $this->aSurveyInfo['EM']['ScriptsAndHiddenInputs'] = implode('',$aScriptsAndHiddenInputs['inputs']);
         Yii::app()->clientScript->registerScript('triggerEmRelevance',"triggerEmRelevance();",CClientScript::POS_END);
-        /* Maybe only if we have mandatory error ?*/
-        Yii::app()->clientScript->registerScript('updateMandatoryErrorClass',"updateMandatoryErrorClass();",CClientScript::POS_END);
+        Yii::app()->clientScript->registerScript('updateMandatoryErrorClass',"updateMandatoryErrorClass();",CClientScript::POS_END);         /* Maybe only if we have mandatory error ?*/
         LimeExpressionManager::FinishProcessingPage();
 
         /**
@@ -907,7 +913,8 @@ class SurveyRuntimeHelper {
         // submit page.
         if ($this->sSurveyMode != 'survey' && $_SESSION[$this->LEMsessid]['step'] == 0){
             $_SESSION[$this->LEMsessid]['test']=time();
-            display_first_page($this->thissurvey);
+
+            display_first_page($this->thissurvey, $this->aSurveyInfo);
             Yii::app()->end(); // So we can still see debug messages
         }
     }
@@ -964,7 +971,7 @@ class SurveyRuntimeHelper {
                 $aPopup  = $this->popup = array($aResult['message']);
             }
 
-            Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_HEAD);
+            Yii::app()->clientScript->registerScript('startPopup',"LSvar.startPopups=".json_encode($aPopup).";",CClientScript::POS_BEGIN);
             Yii::app()->clientScript->registerScript('showStartPopups',"showStartPopups();",CClientScript::POS_END);
 
             // reshow the form if there is an error
@@ -1183,8 +1190,8 @@ class SurveyRuntimeHelper {
             $aLSJavascriptVar['showpopup']     = (int)Yii::app()->getConfig('showpopups');
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
-            App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD, array("class"=>"toRemoveOnAjax"));
-            App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN,  array("class"=>"toRemoveOnAjax"));                 // Ensure all js var is set before rendering the page (User can click before $.ready)
+            App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
+            App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN); // Ensure all js var is set before rendering the page (User can click before $.ready)
         }
     }
 
@@ -1612,7 +1619,7 @@ class SurveyRuntimeHelper {
 
     private function initTemplate()
     {
-        $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);
+        $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);        
         $this->sTemplateViewPath = $oTemplate->viewPath;
         //$oTemplate->registerAssets();
     }
@@ -1654,8 +1661,8 @@ class SurveyRuntimeHelper {
         $this->setSurveyMode();
         $this->setSurveyOptions();
 
-        $this->previewgrp      = ($this->sSurveyMode == 'group' && isset($param['action'])    && ($param['action'] == 'previewgroup'))    ? true : false;
-        $this->previewquestion = ($this->sSurveyMode == 'question' && isset($param['action']) && ($param['action'] == 'previewquestion')) ? true : false;
+        $this->previewgrp      = ($this->sSurveyMode == 'group' && isset($this->param['action'])    && ($this->param['action'] == 'previewgroup'))    ? true : false;
+        $this->previewquestion = ($this->sSurveyMode == 'question' && isset($this->param['action']) && ($this->param['action'] == 'previewquestion')) ? true : false;
         $this->preview         = ($this->previewquestion || $this->previewgrp);
         $this->sLangCode       = App()->language;
     }
@@ -1670,8 +1677,7 @@ class SurveyRuntimeHelper {
         }
 
         if ($this->sSurveyMode == 'group' && $this->previewgrp){
-            // FIXME $param not defined
-            $_gid = sanitize_int($param['gid']);
+            $_gid = sanitize_int($this->param['gid']);
 
             LimeExpressionManager::StartSurvey($this->aSurveyInfo['sid'], 'group', $this->aSurveyOptions, false, $this->LEMdebugLevel);
             $gseq = LimeExpressionManager::GetGroupSeq($_gid);
@@ -1692,10 +1698,7 @@ class SurveyRuntimeHelper {
             $this->aStepInfo         = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
 
         }elseif($this->sSurveyMode == 'question' && $this->previewquestion){
-            /**
-             FIXME $param not defined
-             */
-            $_qid       = sanitize_int($param['qid']);
+            $_qid       = sanitize_int($this->param['qid']);
 
             LimeExpressionManager::StartSurvey($this->iSurveyid, 'question', $this->aSurveyOptions, false, $this->LEMdebugLevel);
             $qSec       = LimeExpressionManager::GetQuestionSeq($_qid);

@@ -289,7 +289,6 @@ class LS_Twig_Extension extends Twig_Extension
         self::unregisterPackage('bootstrap-template');
         self::unregisterPackage('fontawesome');
         self::unregisterPackage('template-default-ltr');
-        self::unregisterPackage('survey-template-default');
         self::unregisterPackage('decimal');
         self::unregisterScriptFile('/assets/scripts/survey_runtime.js');
         self::unregisterScriptFile('/assets/scripts/admin/expression.js');

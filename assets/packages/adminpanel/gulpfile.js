@@ -15,7 +15,7 @@ const
   gulpWebpack = require('gulp-webpack'),
   sass = require('gulp-sass');
 
-gulp.task('default', ['compile']);
+gulp.task('default', function(cb){runSequence('compile:production','compile',cb);});
 
 //general combined tasks
 gulp.task('compile', ['sass', 'webpack']);
@@ -32,6 +32,10 @@ gulp.task('sass:watch', function () {
 });
 gulp.task('webpack:watch', function () {
   gulp.watch(['./src/**/**.js', './src/**/**.vue'], ['webpack']);
+});
+
+gulp.task('lint:watch', function () {
+  gulp.watch(['./src/**/**.js', './src/**/**.vue'], ['js:lint']);
 });
 
 
@@ -58,6 +62,8 @@ gulp.task('sass:production', function (cb) {
 });
 
 gulp.task('webpack', function (cb) {
+  process.env.NODE_ENV = 'developement';
+  process.env.WEBPACK_ENV = 'developement';
   pump([
     gulp.src('src/main.js'),
     gulpWebpack(require('./webpack.config.js'), webpack),
@@ -67,16 +73,14 @@ gulp.task('webpack', function (cb) {
   );
 });
 gulp.task('webpack:production', function (cb) {
+  process.env.NODE_ENV = 'production';
   process.env.WEBPACK_ENV = 'production';
   pump([
     gulp.src('src/main.js'),
     gulpWebpack(require('./webpack.config.js'), webpack),
     gulp.dest('build/')
   ],
-  function () {
-    process.env.WEBPACK_ENV = 'dev';
-    cb();
-  }
+  cb
   );
 });
 

@@ -8,7 +8,7 @@
  * @property string $name
  * @property string $title
  * @property string $description
- * @property integer $order
+ * @property integer $sortorder
  * @property integer $owner_uid
  * @property integer $parent_id
  * @property string $created
@@ -33,8 +33,8 @@ class SurveysGroups extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, order, created_by', 'required'),
-            array('order, owner_uid, parent_id, created_by', 'numerical', 'integerOnly'=>true),
+            array('name, sortorder, created_by', 'required'),
+            array('sortorder, owner_uid, parent_id, created_by', 'numerical', 'integerOnly'=>true),
             array('name', 'length', 'max'=>45),
             array('title', 'length', 'max'=>100),
             array('description, created, modified', 'safe'),
@@ -67,7 +67,7 @@ class SurveysGroups extends LSActiveRecord
             'name' => 'Name',
             'title' => 'Title',
             'description' => 'Description',
-            'order' => 'Order',
+            'sortorder' => 'Sortorder',
             'owner_uid' => 'Owner Uid',
             'parent_id' => 'Parent',
             'created' => 'Created',
@@ -140,9 +140,9 @@ class SurveysGroups extends LSActiveRecord
 
                 array(
                     'header' => gT('Order'),
-                    'name' => 'order',
+                    'name' => 'sortorder',
                     'type' => 'raw',
-                    'value'=>'CHtml::link($data->order, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'value'=>'CHtml::link($data->sortorder, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
                     'htmlOptions' => array('class' => 'hidden-xs has-link'),
                 ),
@@ -150,7 +150,7 @@ class SurveysGroups extends LSActiveRecord
 
                 array(
                     'header' => gT('Actions'),
-                    'name' => 'order',
+                    'name' => 'sortorder',
                     'type' => 'raw',
                     'value'=> '$data->buttons',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
@@ -182,7 +182,7 @@ class SurveysGroups extends LSActiveRecord
         $criteria->compare('name',$this->name,true);
         $criteria->compare('title',$this->title,true);
         $criteria->compare('description',$this->description,true);
-        $criteria->compare('order',$this->order);
+        $criteria->compare('sortorder',$this->sortorder);
         $criteria->compare('owner_uid',$this->owner_uid);
         $criteria->compare('parent_id',$this->parent_id);
         $criteria->compare('created',$this->created,true);
@@ -243,7 +243,7 @@ class SurveysGroups extends LSActiveRecord
 
 	public function getNextOrderPosition(){
 		$oSurveysGroups = SurveysGroups::model()->findAll();
-		return count($oSurveysGroups);
+		return count($oSurveysGroups)+1;
 	}
 
     public function getParentGroupOptions (){
@@ -267,6 +267,8 @@ class SurveysGroups extends LSActiveRecord
      */
     public static function model($className=__CLASS__)
     {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 }

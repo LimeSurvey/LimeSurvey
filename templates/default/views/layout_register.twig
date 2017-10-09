@@ -24,22 +24,22 @@
     {# render the layout_global content block #}
     {{ parent() }}
 
-    <div class="container">
+    <div class="{{ aSurveyInfo.class.register }}" {{ aSurveyInfo.attr.register }}>
         {# This will display the script and the hidden inputs needed for Expression Manager #}
         {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-        <div class="row">
-            <div class='jumbotron'>
+        <div class="{{ aSurveyInfo.class.registerrow }}" {{ aSurveyInfo.attr.registerrow }}>
+            <div class='{{ aSurveyInfo.class.registerrowjumbotron }}' {{ aSurveyInfo.attr.registerrowjumbotron }}>
             {{ include('./subviews/registration/register_head.twig') }}
-                <div class="container clearfix">
+                <div class="{{ aSurveyInfo.class.registerrowjumbotrondiv }}" {{ aSurveyInfo.attr.registerrowjumbotrondiv }}>
                     {{ include('./subviews/registration/register_message.twig') }}
                 </div>
             </div>
         </div>
         {{ include('./subviews/registration/register_error.twig') }}
-        <div class="register-form row">
+        <div class="{{ aSurveyInfo.class.registerform }}" {{ aSurveyInfo.attr.registerform }}>
             {{ include('./subviews/registration/register_form.twig') }}
-        </div> 
+        </div>
     </div>
     <input type='hidden' class='hidemenubutton'/>
 

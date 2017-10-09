@@ -31,6 +31,8 @@
  * @property string $modified Time modified Time created Time user was modified as 'YYYY-MM-DD hh:mm:ss'
  *
  * @property Permission[] $permissions
+ * @property User $parentUser Parent user
+ * @property string $parentUserName  Parent user's name
  */
 class User extends LSActiveRecord
 {
@@ -46,7 +48,9 @@ class User extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -59,6 +63,14 @@ class User extends LSActiveRecord
     public function primaryKey()
     {
         return 'uid';
+    }
+    /** @inheritdoc */
+    public function relations()
+    {
+        return array(
+            'permissions' => array(self::HAS_MANY, 'Permission', 'uid'),
+            'parentUser' => array(self::HAS_ONE, 'User', array('uid' => 'parent_id') ),
+        );
     }
 
     /** @inheritdoc */
@@ -108,16 +120,6 @@ class User extends LSActiveRecord
             ->queryRow();
         return $user;
     }
-
-    /**
-     * TODO via relation
-     * @return mixed
-     */
-    public function getParentUser(){
-        $parent_user = $this->parentAndUser( $this->uid );
-        return $parent_user['parent'];
-    }
-
 
     /**
      * @return string
@@ -278,13 +280,6 @@ class User extends LSActiveRecord
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
 
-    /** @inheritdoc */
-	public function relations()
-	{
-		return array(
-			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
-		);
-	}
 
     /**
      * Return all super admins in the system
@@ -416,6 +411,15 @@ class User extends LSActiveRecord
             . "</div>";
     }
 
+    public function getParentUserName(){
+        if($this->parentUser){
+            return $this->parentUser->users_name;
+        }
+        // root user, no parent
+        return null;
+    }
+
+
     /**
      * @return array
      */
@@ -452,8 +456,8 @@ class User extends LSActiveRecord
         }
 
         $cols[] = array(
-            "name" => 'parentUser',
-            "header" => gT("Created by")
+            "name" =>"parentUserName",
+            "header" => gT("Created by"),
         );
         return $cols;
     }

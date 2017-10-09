@@ -3,10 +3,12 @@
  * Copy survey
  */
 ?>
+<div class="ls-flex-row wrap align-content-center align-items-center">
+<div class="container-fluid col-sm-10 col-md-8">
 <!-- tab copy survey -->
     <!-- copy survey form -->
     <?php echo CHtml::form(array('admin/survey/sa/copy'), 'post', array('id'=>'copysurveyform', 'name'=>'copysurveyform', 'class'=>'form30 ')); ?>
-
+        <div class="ls-flex-column col-md-6">
         <!-- Select survey -->
         <div class="form-group">
             <label for='copysurveylist' class=" control-label"><?php  eT("Select survey to copy:"); ?> </label>
@@ -38,7 +40,7 @@
         <!-- New survey id -->
         <div class="form-group">
             <label class=" control-label" for='copysurveyid'><?php echo  eT("New survey id:"); ?> </label>
-            <div class="col-sm-1">
+            <div class="">
                 <input  type='text' id='copysurveyid' size='82' maxlength='6' name='copysurveyid' value='' class="form-control" />
             </div>
             <div class="">
@@ -47,7 +49,8 @@
               </p>
             </div>
         </div>
-
+        </div>
+         <div class="ls-flex-column col-md-6">
         <!-- Convert resource links -->
         <div class="form-group">
             <label class=" control-label" for='copysurveytranslinksfields'><?php echo  eT("Convert resource links and expression fields?"); ?> </label>
@@ -143,11 +146,14 @@
                 ?>
             </div>
         </div>
+        </div>
 
         <!-- Submit -->
         <div class="text-center">
-                <input type='submit' class='btn btn-default' value='<?php  eT("Copy survey"); ?>' />
-                <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
-                <input type='hidden' name='action' value='copysurvey' />
+            <input type='submit' class='btn btn-default col-6' value='<?php  eT("Copy survey"); ?>' />
+            <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
+            <input type='hidden' name='action' value='copysurvey' />
         </div>
     </form>
+</div>
+</div>
