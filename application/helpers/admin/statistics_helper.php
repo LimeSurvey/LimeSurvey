@@ -1568,7 +1568,6 @@ class statistics_helper {
             //moved because it's better to have "no answer" at the end of the list instead of the beginning
             //put data into array
             $alist[]=array("", gT("No answer"), false, 'is_no_answer');
-
         }
 
         return array("alist"=>$alist, "qtitle"=>$qtitle, "qquestion"=>$qquestion, "qtype"=>$qtype, "statisticsoutput"=>$statisticsoutput, "parentqid"=>$qqid);
@@ -1832,7 +1831,13 @@ class statistics_helper {
                     {
                         $flatLabel = $al[0];
                     }
-                    $lbl[$flatLabel] = $row;
+                    // Duplicate labels can exist.
+                    // TODO: Support three or more duplicates.
+                    if (isset($lbl[$flatLabel])) {
+                        $lbl[$flatLabel . ' (2)'] = $row;
+                    } else {
+                        $lbl[$flatLabel] = $row;
+                    }
                 }
 
 
@@ -2420,6 +2425,8 @@ class statistics_helper {
         $ColumnName_RM=array();
         //echo '<pre>'; var_dump($outputs['alist']); echo '</pre>';die;
         $statisticsoutput_footer  = "<script>";
+
+        $lbl = array();
         foreach ($outputs['alist'] as $al)
         {
             //picks out answer list ($outputs['alist']/$al)) that come from the multiple list above
@@ -2548,7 +2555,12 @@ class statistics_helper {
             if (!empty($sql)) {$query .= " AND $sql";}
 
             //get data
-            $row=Yii::app()->db->createCommand($query)->queryScalar();
+            try {
+                $row=Yii::app()->db->createCommand($query)->queryScalar();
+            } catch (Exception $ex) {
+                $row = 0;
+                Yii::app()->setFlashMessage(gT('Faulty query: ') . $query, 'error');
+            }
 
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero
@@ -2818,7 +2830,13 @@ class statistics_helper {
                     $flatLabel = $al[0];
                 }
 
-                $lbl[$flatLabel] = $row;
+                // Duplicate labels can exist.
+                // TODO: Support three or more duplicates.
+                if (isset($lbl[$flatLabel])) {
+                    $lbl[$flatLabel . ' (2)'] = $row;
+                } else {
+                    $lbl[$flatLabel] = $row;
+                }
             }
 
 
@@ -3564,13 +3582,7 @@ class statistics_helper {
             }
         }
 
-
-        if ($outputType=='html') {
-
-        }
-
         // _statisticsoutput_graphs.php
-
 
         //-------------------------- PCHART OUTPUT ----------------------------
         list($qsid, $qgid, $qqid) = explode("X", $rt, 3);
@@ -3739,7 +3751,6 @@ class statistics_helper {
                 {
                     $graph_labels_percent = array();
                 }
-
 
                 $iCanvaHeight = $iMaxLabelLength * 3;
                 $aData['iCanvaHeight'] = ($iCanvaHeight > 150)?$iCanvaHeight:150;

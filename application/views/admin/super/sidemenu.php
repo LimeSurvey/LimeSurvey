@@ -19,10 +19,13 @@
     {
         $showSideMenu = true;
     }
-    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/surveyid/$surveyid");
-    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/surveyid/$surveyid");
-    $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/surveyid/".$surveyid);
-    $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyid);
+    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/" ,["surveyid" => $surveyid]);
+    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/" ,["surveyid" => $surveyid]);
+    $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/" ,["surveyid" =>  $surveyid]);
+    if(isset($oQuestionGroup))
+        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid, "gid" => $oQuestionGroup->gid]);
+    else 
+        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid]);
 
     if ($activated)
     {
@@ -31,18 +34,15 @@
     }
 
 ?>
-<div class="ls-flex col-sm-4 col-md-4 col-lg-3 hidden-xs nofloat nooverflow">
-    <div id="vue-side-menu-app" class="col-12" data-surveyid='<?=$surveyid?>'>
-        <sidebar 
-            :options="[]" 
-            get-questions-url="<?=$getQuestionsUrl ?>" 
-            get-menu-url="<?=$getMenuUrl ?>" 
-            create-question-group-link ="<?=$createQuestionGroupLink?>"
-            create-question-link ="<?=$createQuestionLink?>"
-            :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>', createQuestionGroup:'<?php eT("Create questiongroup");?>', createQuestion:'<?php eT("Create question");?>' }"
-        ></sidebar>
-    </div>
-</div>
+<sidebar 
+    :options="[]" 
+    surveyid = '<?=$surveyid?>'
+    get-questions-url="<?=$getQuestionsUrl ?>" 
+    get-menu-url="<?=$getMenuUrl ?>" 
+    create-question-group-link ="<?=$createQuestionGroupLink?>"
+    create-question-link ="<?=$createQuestionLink?>"
+    :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>', createQuestionGroup:'<?php eT("Add questiongroup");?>', createQuestion:'<?php eT("Add question");?>' }"
+></sidebar>
 
 
 <?php 

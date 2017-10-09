@@ -1,0 +1,24 @@
+.ajax_loading_indicator {
+    height: 6px;
+    position: fixed;
+    display:none;
+    top: 1px;
+    left: 0;
+    width: 100%;
+    width: 100vw;
+    z-index: 20000;
+    transition: opacity 500ms linear;
+    transition-delay: 1000ms;
+}
+
+
+.ajax_loading_indicator .ajax_loading_indicator {
+    display: none;
+    height: 8px;
+    border-radius: 1px;
+    -webkit-transition-timing-function: ease-in-out;
+    transition-timing-function: ease-in-out;
+    /* Safari */
+    -webkit-transition: width 1.6s;
+    transition: width 1.6s;
+}

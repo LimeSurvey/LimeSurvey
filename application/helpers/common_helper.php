@@ -184,9 +184,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
     if(is_null($cached)) {
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
-            ->with('defaultlanguage')
-            ->findAll(array('order'=>'surveyls_title'));
-
+            ->findAll();
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
@@ -203,7 +201,10 @@ function getSurveyList($returnarray=false, $surveyid=false)
                     'error');
             }
         }
-
+        
+        usort($surveynames, function($a, $b){
+                return strcmp($a['surveyls_title'], $b['surveyls_title']);
+        });
         $cached = $surveynames;
     } else {
         $surveynames = $cached;
@@ -1785,7 +1786,9 @@ function createFieldMap($survey, $style='short', $force_refresh=false, $question
         if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
         {
             if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
+
             $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
+            
             if ($style == "full")
             {
                 $fieldmap[$fieldname]['title']=$arow['title'];
@@ -3191,6 +3194,9 @@ function safeDie($text)
     die(implode( '<br />',$textarray));
 }
 
+/**
+ * @param string $str
+ */
 function fixCKeditorText($str)
 {
     $str = str_replace('<br type="_moz" />','',$str);

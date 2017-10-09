@@ -1,6 +1,12 @@
+
+// Namespace
+var LS = LS || {
+    onDocumentReady: {}
+};
 var formSubmitting = false;
 var changed = false;
-$(document).ready(function(){
+
+$(document).on('ready  pjax:complete', function(){
     var sourceItem;
     $('ol.organizer').nestedSortable({
         doNotClear: true,

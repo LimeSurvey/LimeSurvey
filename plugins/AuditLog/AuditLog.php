@@ -1,5 +1,5 @@
 <?php
-    class AuditLog extends \ls\pluginmanager\PluginBase {
+    class AuditLog extends \LimeSurvey\PluginManager\PluginBase {
 
         protected $storage = 'DbStorage';
         static protected $description = 'Core: Create an audit log of changes';
@@ -423,9 +423,9 @@
             else
             {
                 $sAction = 'update';
-                $oCurrentUser=$this->api->getCurrentUser();
                 $aOldValues=$this->api->getParticipant($oNewParticipant->participant_id)->getAttributes();
             }
+            $oCurrentUser=$this->api->getCurrentUser();
             $aNewValues=$oNewParticipant->getAttributes();
             if (count(array_diff_assoc($aNewValues,$aOldValues)))
             {

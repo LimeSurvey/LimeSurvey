@@ -1,5 +1,5 @@
 <?php
-class Authwebserver extends ls\pluginmanager\AuthPluginBase
+class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
 {
     protected $storage = 'DbStorage';    
     

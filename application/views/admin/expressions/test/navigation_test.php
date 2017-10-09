@@ -49,8 +49,8 @@ else {
 
     
 
-    $surveyInfo = explode('|',Yii::app()->request->getParam('sid'));
-    $surveyid = sanitize_int($surveyInfo[0]);
+    // $surveyInfo = explode('|',Yii::app()->request->getParam('sid'));
+    // $surveyid = sanitize_int($surveyInfo[0]);
     $assessments = ($surveyInfo[1] == 'Y');
     $surveyMode = sanitize_paranoid_string(Yii::app()->request->getParam('surveyMode'));
     $LEMdebugLevel = (

@@ -881,14 +881,14 @@ function do_5pointchoice($ia)
     if($aQuestionAttributes['slider_rating']==1){
         $slider_rating = 1;
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'star-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."star-rating.js");
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."star-rating.js", LSYii_ClientScript::POS_BEGIN);
     }
 
     if($aQuestionAttributes['slider_rating']==2){
         $slider_rating = 2;
         Yii::app()->getClientScript()->registerPackage('emoji');
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'slider-rating.css');
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js");
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."slider-rating.js", LSYii_ClientScript::POS_BEGIN);
     }
 
 
@@ -2637,7 +2637,7 @@ function do_file_upload($ia)
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
-    $(document).ready(function(){
+    $(document).on("ready pjax:complete", function(){
     var fieldname = "'.$ia[1].'";
     var filecount = $("#"+fieldname+"_filecount").val();
     var json = $("#"+fieldname).val();
@@ -2703,7 +2703,7 @@ function do_file_upload($ia)
                         <div class="h4 modal-title">' . ngT("Upload file|Upload files", $aQuestionAttributes['max_num_of_files']) . '</div>
                     </div>
                     <div class="modal-body file-upload-modal-body">
-                        <iframe id="uploader' . $ia[1] . '" name="uploader' . $ia[1] . '" class="uploader-frame" src="' . $uploadurl . '" title="' . gT("Upload") .'></iframe>
+                        <iframe id="uploader' . $ia[1] . '" name="uploader' . $ia[1] . '" class="uploader-frame" src="' . $uploadurl . '" title="' . gT("Upload") .'"></iframe>
                     </div>
                     <div class="modal-footer file-upload-modal-footer">
                         <button type="button" class="btn btn-success" data-dismiss="modal">' . gT("Save changes") . '</button>
@@ -5307,6 +5307,8 @@ function do_array_multiflexi($ia)
     $answertypeclass            = "";
     $caption                    = gT("A table of subquestions on each cell. The subquestion texts are in the colum header and concern the row header.");
     $checkconditionFunction     = "fixnum_checkconditions";
+    $minvalue                   = '';
+    $maxvalue                   = '';
 
     /*
      * Question Attributes

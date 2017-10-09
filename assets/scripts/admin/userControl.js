@@ -1,3 +1,3 @@
-$(document).ready(function() {
-$( "#tabs" ).tabs();
+$(document).on('ready  pjax:complete', function() {
+    $( "#tabs" ).tabs();
 });

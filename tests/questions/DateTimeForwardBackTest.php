@@ -68,8 +68,8 @@ class DateTimeForwardBackTest extends TestBaseClass
         $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
-        \Yii::app()->setController(new \CController('dummyid'));
-        buildsurveysession(self::$surveyId);
+        \Yii::app()->setController(new DummyController('dummyid'));
+        \buildsurveysession(self::$surveyId);
         $result = \LimeExpressionManager::StartSurvey(
             self::$surveyId,
             $surveyMode,
@@ -106,7 +106,7 @@ class DateTimeForwardBackTest extends TestBaseClass
         \LimeExpressionManager::ProcessCurrentResponses();
 
         // Check answer in database.
-        $query = 'SELECT * FROM lime_survey_' . self::$surveyId;
+        $query = 'SELECT * FROM {{survey_' . self::$surveyId . '}}';
         $result = \Yii::app()->db->createCommand($query)->queryAll();
         $this->assertEquals($result[0][$sgqa], '1970-01-01 10:00:00', 'Answer in database is 10:00');
 
@@ -115,8 +115,8 @@ class DateTimeForwardBackTest extends TestBaseClass
             $_SESSION['survey_' . self::$surveyId]['fieldarray'][0],
             self::$surveyId
         );
-        $this->assertEquals(false, strpos($qanda[0][1], "val('11:00')"), 'No 11:00 value from qanda');
-        $this->assertNotEquals(false, strpos($qanda[0][1], "val('10:00')"), 'One 10:00 value from qanda');
+        $this->assertEquals(false, strpos($qanda[0][1], "value=\"11:00\""), 'No 11:00 value from qanda');
+        $this->assertNotEquals(false, strpos($qanda[0][1], "value=\"10:00\""), 'One 10:00 value from qanda');
 
         self::$testHelper->deactivateSurvey(self::$surveyId);
     }

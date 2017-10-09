@@ -77,8 +77,9 @@ class Question extends LSActiveRecord
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
             'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
-            'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
-            'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language")
+            'parents' => array(self::HAS_ONE, 'Question', array( "qid" => "parent_qid")),
+            'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
+            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid', "language" => "language"))
         );
     }
 
@@ -230,7 +231,7 @@ class Question extends LSActiveRecord
         }
         $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID,$sLanguage);
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
-        $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
+        $aAttributeNames = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
 
         // If the question has a custom template, we first check if it provides custom attributes
 
@@ -299,6 +300,10 @@ class Question extends LSActiveRecord
             }
         }
         return $aAttributeNames;
+    }
+
+    public function getTypeGroup(){
+        
     }
 
     /**
@@ -1044,6 +1049,15 @@ class Question extends LSActiveRecord
     /** @return array */
     public static function getQuotableTypes(){
         return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!');
+    }
+
+
+    public function getBasicFieldName(){
+        if($this->parent_qid != 0){
+            return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
+        } else {
+            return "{$this->sid}X{$this->gid}X{$this->qid}";
+        }
     }
 
 }

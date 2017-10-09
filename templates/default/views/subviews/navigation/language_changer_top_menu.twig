@@ -29,19 +29,19 @@
     {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
 
     <!-- Language Changer, top menu version -->
-    <li class="dropdown ls-no-js-hidden">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+    <li class="{{ aSurveyInfo.class.lctli }}" {{ aSurveyInfo.attr.lctli }} >
+        <a class="{{ aSurveyInfo.class.lcta }}" {{ aSurveyInfo.attr.lcta }} >
 
             {# NOTE:  {{ aLCD.aListLang[aLCD.sSelected] | t }}: retreives the language name of the selected language and translates it #}
             {{ "Language:" | t }} {{ aLCD.aListLang[aLCD.sSelected] | t }}
-            <span class="caret"></span>
+            <span class="{{ aSurveyInfo.class.lctspan }}" {{ aSurveyInfo.attr.lctspan }} ></span>
         </a>
 
-        <ul class="dropdown-menu" id="langs-container" style="overflow: scroll">
+        <ul class="{{ aSurveyInfo.class.lctdropdown }}" id="{{ aSurveyInfo.id.lctdropdown }}" {{ aSurveyInfo.attr.lctdropdown }} >
             {# List of available languages.  #}
             {% for value, lang in aLCD.aListLang %}
-                <li class="index-item">
-                    <a href='#' data-limesurvey-lang='{{ value }}' class="ls-language-link">
+                <li class="{{ aSurveyInfo.class.lctdropdownli }}" {{ aSurveyInfo.attr.lctdropdownli }}>
+                    <a href='#' data-limesurvey-lang='{{ value }}' class="{{ aSurveyInfo.class.lctdropdownlia }}" {{ aSurveyInfo.attr.lctdropdownlia }}>
                         {{ lang | t }}
                     </a>
                 </li>

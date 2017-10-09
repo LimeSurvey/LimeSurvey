@@ -52,8 +52,8 @@
 
    function pData()
     {
-     $this->Data                           = "";
-     $this->DataDescription                = "";
+     $this->Data                           = array();
+     $this->DataDescription                = array();
      $this->DataDescription["Position"]    = "Name";
      $this->DataDescription["Format"]["X"] = "number";
      $this->DataDescription["Format"]["Y"] = "number";

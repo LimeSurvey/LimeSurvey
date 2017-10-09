@@ -17,7 +17,7 @@
                     <div class='row'>
                         <h2><?php echo sprintf(gT("New answer for quota '%s'"), $quota_name);?></h2>
                         <p class="lead"><?php eT("Select answer:");?></p>
-                        <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']), 'class' => 'form-horizontal')); ?>
+                        <?php echo CHtml::form(array("admin/quotas/sa/insertquotaanswer/surveyid/{$iSurveyId}"), 'post', array('#'=>'quota_'.sanitize_int($_POST['quota_id']), 'class' => '')); ?>
                             <div class='form-group'>
                                 <div class='col-sm-5 col-sm-offset-4'>
                                     <select class='form-control' name="quota_anscode" size="15">

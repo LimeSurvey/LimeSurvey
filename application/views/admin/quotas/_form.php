@@ -10,24 +10,24 @@
 
 <?php echo $form->hiddenField($oQuota,'id'); ?>
 <div class="form-group">
-    <?php echo $form->labelEx($oQuota,'name',array('class'=>'control-label col-sm-3')); ?>
-    <div class='col-sm-9'>
+    <?php echo $form->labelEx($oQuota,'name',array('class'=>'control-label ')); ?>
+    <div class=''>
         <?php echo $form->textField($oQuota,'name',array('class'=>'form-control')); ?>
         <?php echo $form->error($oQuota,'name'); ?>
     </div>
 </div>
 
 <div class="form-group">
-    <?php echo $form->labelEx($oQuota,'qlimit',array('class'=>'control-label col-sm-3')); ?>
-    <div class='col-sm-9'>
+    <?php echo $form->labelEx($oQuota,'qlimit',array('class'=>'control-label ')); ?>
+    <div class=''>
         <?php echo $form->textField($oQuota,'qlimit',array('class'=>'form-control')); ?>
         <?php echo $form->error($oQuota,'qlimit'); ?>
     </div>
 </div>
 
 <div class="form-group">
-    <?php echo $form->labelEx($oQuota,'action',array('class'=>'control-label col-sm-3')); ?>
-    <div class='col-sm-9'>
+    <?php echo $form->labelEx($oQuota,'action',array('class'=>'control-label ')); ?>
+    <div class=''>
         <?php echo $form->dropDownList($oQuota,'action',
             array(
                 Quota::ACTION_TERMINATE =>gT("Terminate survey"),
@@ -39,8 +39,8 @@
 </div>
 
 <div class="form-group">
-    <?php echo $form->labelEx($oQuota,'autoload_url',array('class'=>'control-label col-sm-3')); ?>
-    <div class='col-sm-9'>
+    <?php echo $form->labelEx($oQuota,'autoload_url',array('class'=>'control-label ')); ?>
+    <div class=''>
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'model' => $oQuota,
             'attribute' => 'autoload_url',
@@ -52,8 +52,8 @@
 </div>
 
 <div class="form-group">
-    <?php echo $form->labelEx($oQuota,'active',array('class'=>'control-label col-sm-3')); ?>
-    <div class='col-sm-9'>
+    <?php echo $form->labelEx($oQuota,'active',array('class'=>'control-label ')); ?>
+    <div class=''>
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'model' => $oQuota,
             'attribute' => 'active',

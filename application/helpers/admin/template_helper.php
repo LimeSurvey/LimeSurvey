@@ -41,24 +41,6 @@ function getListOfFiles($wh){
     return $arr;
 }
 
-/**
-* Load this editfile
-*
-* @param string $template name
-* @param string $templatefile
-* @param string[] $templates directory
-* @return string
-*/
-function filetext($templatename,$templatefile,$templates) {
-    $sFileName = gettemplatefilename($templatename,$templatefile);
-    if (file_exists($sFileName))
-    {
-        return file_get_contents($sFileName);
-    }
-    else
-    {
-    }
-}
 
 /**
  * @param string $target
@@ -155,34 +137,3 @@ function templateExtractFilter($p_event, &$p_header)
     }
 }
 
-/**
-* Determine the storage path for a file
-* TODO: remove all that logic.
-*
-* @param string $template
-* @param string $templatefile
-*/
-function gettemplatefilename($template, $templatefile) {
-    $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
-    switch (pathinfo($templatefile, PATHINFO_EXTENSION))
-    {
-        case 'twig':
-            // TODO: recursivity
-            $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
-            return $oEditedTemplate->viewPath.$templatefile;
-            break;
-        case 'pstpl':
-            $oEditedTemplate = Template::model()->getTemplateConfiguration($template);
-            return $oEditedTemplate->viewPath.$templatefile;
-            break;
-        case 'css':
-            return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;
-            break;
-        case 'js':
-            return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;
-            break;
-        default:
-            return $oEditedTemplate->path.DIRECTORY_SEPARATOR.$templatefile;
-            break;
-    }
-}

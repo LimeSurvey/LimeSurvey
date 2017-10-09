@@ -1,6 +1,6 @@
 <?php
 // see: https://scrutinizer-ci.com/g/LimeSurvey/LimeSurvey/issues/master/files/application/controllers/admin/authentication.php?selectedSeverities[0]=10&orderField=path&order=asc&honorSelectedPaths=0
-// use ls\pluginmanager\PluginEvent;
+// use LimeSurvey\PluginManager\PluginEvent;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -250,6 +250,22 @@ class Authentication extends Survey_Common_Action
         }
     }
 
+    public static function runDbUpgrade(){
+        // Check if the DB is up to date
+        if (Yii::app()->db->schema->getTable('{{surveys}}') )
+        {
+            $sDBVersion = getGlobalSetting('DBVersion');
+        }
+        if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate')
+        {
+            // Try a silent update first
+            Yii::app()->loadHelper('update/updatedb');
+            if (!db_upgrade_all(intval($sDBVersion),true)){
+                $this->redirect(array('/admin/databaseupdate/sa/db'));
+            }
+        }
+    }
+
     /**
      * Send the forgot password email
      *
@@ -329,6 +345,7 @@ class Authentication extends Survey_Common_Action
     {
         if (!Yii::app()->user->getIsGuest())
         {
+            $this->runDbUpgrade();
             $this->getController()->redirect(array('/admin'));
         }
     }
@@ -358,6 +375,7 @@ class Authentication extends Survey_Common_Action
      */
     private static function doRedirect()
     {
+        self::runDbUpgrade();
         $returnUrl = App()->user->getReturnUrl(array('/admin'));
         Yii::app()->getController()->redirect($returnUrl);
     }

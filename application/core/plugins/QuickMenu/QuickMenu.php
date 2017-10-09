@@ -6,7 +6,7 @@
  * @since 2016-04-22
  * @author Olle Härstedt
  */
-class QuickMenu extends \ls\pluginmanager\PluginBase
+class QuickMenu extends \LimeSurvey\PluginManager\PluginBase
 {
     static protected $description = 'Add a quick-menu when the question explorer is collapsed';
     static protected $name = 'QuickMenu';
@@ -103,7 +103,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
         ),
         'statistics' => array(
             'type' => 'checkbox',
-            'label' => 'Statistics&nbsp;<span class="fa fa-stats"></span>',
+            'label' => 'Statistics&nbsp;<span class="fa fa-bar-chart"></span>',
             'default' => '0',
             'help' => 'Needed permission: Statistics - View'
         ),
@@ -324,7 +324,7 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
                 'name' => 'statistics',
                 'href' => Yii::app()->getController()->createUrl("admin/statistics/sa/index/surveyid/$surveyId"),
                 'tooltip' => gT('Statistics'),
-                'iconClass' => 'fa fa-stats navbar-brand',
+                'iconClass' => 'fa fa-bar-chart navbar-brand',
                 'showOnlyWhenSurveyIsActivated' => true,
                 'neededPermission' => array('statistics', 'read')
             )),
@@ -547,29 +547,22 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
 
     public function newDirectRequest()
     {
+        if ($this->event->get('target') != "QuickMenu") {
+            return; // Allow other plugin action
+        }
         $user = $this->api->getCurrentUser();
-
-        if ($user === false || $user === null)
-        {
-            throw new CException("Invalid request: user is not logged in or does not exist");
+        if ($user === false || $user === null) {
+            throw new \CException("Invalid request: user is not logged in or does not exist");
         }
 
         $event = $this->event;
-        if ($event->get('target') == "QuickMenu")
-        {
-            // you can get other params from the request object
-            $request = $event->get('request');
-
-            $functionToCall = $event->get('function');
-
-            if ($functionToCall == 'saveOrder')
-            {
-                echo $this->saveOrder($request);
-            }
-            else
-            {
-                throw new \CException("Invalid request: not supported method: " . $functionToCall);
-            }
+        // you can get other params from the request object
+        $request = $event->get('request');
+        $functionToCall = $event->get('function');
+        if ($functionToCall == 'saveOrder') {
+            echo $this->saveOrder($request);
+        } else {
+            throw new \CException("Invalid request: not supported method: " . $functionToCall);
         }
     }
 }

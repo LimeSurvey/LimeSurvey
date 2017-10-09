@@ -1,5 +1,5 @@
 <?php
-use ls\pluginmanager\AuthPluginBase;
+use LimeSurvey\PluginManager\AuthPluginBase;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -657,6 +657,7 @@ class UserAction extends Survey_Common_Action
     {
         // Save Data
         if (Yii::app()->request->getPost("action")) {
+            $oUserModel = User::model()->findByPk(Yii::app()->session['loginID']);
             $aData = array(
             'lang' => Yii::app()->request->getPost('lang'),
             'dateformat' => Yii::app()->request->getPost('dateformat'),
@@ -666,18 +667,34 @@ class UserAction extends Survey_Common_Action
             'full_name'=> Yii::app()->request->getPost('fullname'),
             'email'=> Yii::app()->request->getPost('email')
             );
+
             if (Yii::app()->request->getPost('password')!='' && !Yii::app()->getConfig('demoMode'))
             {
-                if (Yii::app()->request->getPost('password')==Yii::app()->request->getPost('repeatpassword'))
-                {
+                $oldPassword = Yii::app()->request->getPost('oldpassword');
+                $oldPasswordHash = hash( "sha256", $oldPassword);
+                $newPassword = Yii::app()->request->getPost('password');
+                $repeatPassword = Yii::app()->request->getPost('repeatpassword');
+                
+                //First test if old and new password are identical => This is not allowed
+                if(trim($oldPassword) === trim($newPassword)){
+                    Yii::app()->setFlashMessage(gT("Your new password was not saved because it matches the old password."),'error');
+
+                //Then test the new password and the repeat password for identity
+                } else if(trim($newPassword) !== trim($repeatPassword)){
+                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."),'error');
+
+                //Now check if the old password matches the old password saved
+                } else if($oUserModel->password !== $oldPasswordHash){
+                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."),'error');
+                
+                //At last if everything worked set the new password
+                } else {
                     $aData['password']=hash( "sha256",Yii::app()->request->getPost('password'));
                 }
-                else
-                {
-                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."),'error');
-                }
             }
-            $uresult = User::model()->updateByPk(Yii::app()->session['loginID'], $aData);
+            
+            $oUserModel->setAttributes($aData);
+            $uresult = $oUserModel->save();
 
             if (Yii::app()->request->getPost('lang')=='auto')
             {
@@ -722,6 +739,13 @@ class UserAction extends Survey_Common_Action
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
         $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
+        //Get data for personal menues
+        $oSurveymenu = Surveymenu::model();
+        $oSurveymenu->user_id = $user->uid;
+        $oSurveymenuEntries = SurveymenuEntries::model();
+        $oSurveymenuEntries->user_id = $user->uid;
+        $aData['surveymenu_data']['model'] = $oSurveymenu;
+        $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
         // Render personal settings view
         if (isset($_POST['saveandclose']))
         {

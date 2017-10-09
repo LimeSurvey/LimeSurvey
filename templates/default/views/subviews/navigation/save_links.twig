@@ -19,8 +19,8 @@
 #}
 {% if aSurveyInfo.bShowLoadButton == true %}
     <!-- Load unfinished survey button -->
-    <li class="ls-no-js-hidden">
-        <a href="#" data-limesurvey-submit='{ "loadall":"loadall" }' class='ls-link-action ls-link-loadall'>
+    <li class="{{ aSurveyInfo.class.loadlinksli }}" {{ aSurveyInfo.attr.loadlinksli }}>
+        <a href="#" data-limesurvey-submit='{ "loadall":"loadall" }' class='{{ aSurveyInfo.class.loadlinkslia }}' {{ aSurveyInfo.attr.loadlinkslia }}>
             {{ 'Load unfinished survey' | t }}
         </a>
     </li>
@@ -28,8 +28,8 @@
 
 {% if aSurveyInfo.bShowSaveButton == true %}
     <!-- Resume later button -->
-    <li class="ls-no-js-hidden">
-        <a href="#" data-limesurvey-submit='{ "saveall":"saveall" }' class='ls-link-action ls-link-saveall'>
+    <li class="{{ aSurveyInfo.class.savelinksli }}" {{ aSurveyInfo.attr.savelinksli }}>
+        <a href="#" data-limesurvey-submit='{ "saveall":"saveall" }' class='{{ aSurveyInfo.class.savelinkslia }}'>
             {{ 'Resume later' | t }}
         </a>
     </li>

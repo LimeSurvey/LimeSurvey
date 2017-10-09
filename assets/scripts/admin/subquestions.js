@@ -13,6 +13,9 @@
  */
 
 // @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&dn=gpl-2.0.txt  GNU/GPL License v2 or later
+var LS = LS || {
+    onDocumentReady: {}
+};
 
 var labelcache=[];
 
@@ -24,7 +27,7 @@ $(document).on("click","#editsubquestionsform :submit", function() {
     return code_duplicates_check();
 });
 
-$(document).ready(function(){
+$(document).on('ready  pjax:complete', function(){
 
     $('.tab-page:first .answertable tbody').sortable({
         containment:'parent',

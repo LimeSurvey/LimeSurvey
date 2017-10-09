@@ -1,5 +1,5 @@
 <input type="hidden" name="lang" value="<?php echo $sLanguage; ?>" id="register_lang" />
-<div class='form-horizontal'>
+<div class=''>
     <div class='form-group'>
         <label for='register_firstname' class='control-label col-sm-5'><?php eT("First name:"); ?></label>
         <div class="col-sm-7">

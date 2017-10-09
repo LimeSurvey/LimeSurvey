@@ -75,7 +75,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return self::$survey->timingsTableName;
+        return '{{survey_' . intval(self::$sid) . '_timings}}';
     }
 
     /**

@@ -8,75 +8,68 @@ var entryPoint = ['./src/main.js'];
 var exportPath = path.resolve(__dirname, './build');
 
 // Enviroment flag
-var plugins = [];
-var env = process.env.WEBPACK_ENV;
+var plugins = [
+  new webpack.EnvironmentPlugin(['NODE_ENV'])
+];
 
-// Differ settings based on production flag
-if (env === 'production') {
-  var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+appName = appName + '.js';
 
-  plugins.push(new UglifyJsPlugin({ minimize: true }));
-  plugins.push(new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: '"production"'
-    }
-  }
-  ));
-
-  appName = appName + '.min.js';
-} else {
-  appName = appName + '.js';
-}
 
 // Main Settings config
 module.exports = {
   entry: entryPoint,
+  devtool: 'source-map',
   output: {
     path: exportPath,
     filename: appName
   },
+  externals: {
+    jquery: 'jQuery',
+    pjax: 'Pjax',
+  },
   module: {
-    rules: [
-      {
-        test: /\.scss$/,
-        use: [
-          {
-            loader: "style-loader" // creates style nodes from JS strings
-          }, {
-            loader: "css-loader" // translates CSS into CommonJS
-          }, {
-            loader: "sass-loader" // compiles Sass to CSS
-          }
-        ]
-      },
-      {
-        test: /\.vue$/,
-        use: 'vue-loader'
-      }
+    rules: [{
+      test: /\.scss$/,
+      use: [{
+        loader: 'style-loader' // creates style nodes from JS strings
+      }, {
+        loader: 'css-loader' // translates CSS into CommonJS
+      }, {
+        loader: 'sass-loader' // compiles Sass to CSS
+      }]
+    },
+    {
+      test: /\.vue$/,
+      use: 'vue-loader'
+    }
     ],
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: [
-          'babel-loader',
-          "eslint-loader"
-          ],
-        query: {
-          presets: ['es2015']
-        }
+    loaders: [{
+      test: /\.vue$/,
+      loader: [
+        'vue-loader',
+        'eslint-loader',
+        'babel'
+      ],
+    },
+    {
+      test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
+      loader: [
+        'eslint-loader',
+        'babel'
+      ],
+      options: {
+        data: '$env: ' + process.env.NODE_ENV + ';'
       },
-      {
-        test: /\.vue$/,
-        loader: [
-          'vue-loader'
-          ],
-      },
-      {
-        loader: "sass-loader",
-        options: {
-            data: "$env: " + process.env.NODE_ENV + ";"
-        }
+      query: {
+        presets: ['es2015']
+      }
+    },
+    {
+      loader: 'sass-loader',
+      options: {
+        data: '$env: ' + process.env.NODE_ENV + ';'
+      }
     }
     ]
   },

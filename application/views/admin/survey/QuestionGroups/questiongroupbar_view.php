@@ -87,7 +87,7 @@
 
                 <!-- Edit button -->
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
+                    <a class="btn btn-default " href="<?php echo $this->createUrl('admin/questiongroups/sa/edit/surveyid/'.$surveyid.'/gid/'.$gid); ?>" role="button">
                         <span class="icon-edit"></span>
                         <?php eT("Edit current question group");?>
                     </a>
@@ -95,7 +95,7 @@
 
                 <!-- Check survey logic -->
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
+                    <a class="btn btn-default " href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/"); ?>" role="button">
                         <span class="icon-expressionmanagercheck"></span>
                         <?php eT("Check survey logic for current question group"); ?>
                     </a>
@@ -135,7 +135,7 @@
                 <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','export')):?>
 
                     <!-- Export -->
-                    <a class="btn btn-default" href="<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>" role="button">
+                    <a class="btn btn-default " href="<?php echo $this->createUrl("admin/export/sa/group/surveyid/$surveyid/gid/$gid");?>" role="button">
 
                         <span class="icon-export"></span>
                         <?php eT("Export this question group"); ?>
@@ -247,6 +247,7 @@
                     <span class="fa fa-floppy-o"></span>
                     <?php eT("Save");?>
                 </a>
+               
                 <?php endif; ?>
             <?php endif; ?>
             

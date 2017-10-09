@@ -51,14 +51,14 @@ class Template extends LSActiveRecord
         return array(
             array('name, title, creation_date', 'required'),
             array('owner_id', 'numerical', 'integerOnly'=>true),
-            array('name, author, extends_templates_name', 'length', 'max'=>150),
+            array('name, author, extends_template_name', 'length', 'max'=>150),
             array('folder, version, api_version, view_folder, files_folder', 'length', 'max'=>45),
             array('title', 'length', 'max'=>100),
             array('author_email, author_url', 'length', 'max'=>255),
             array('copyright, license, description, last_update', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('name, folder, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, view_folder, files_folder, description, last_update, owner_id, extends_templates_name', 'safe', 'on'=>'search'),
+            array('name, folder, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, view_folder, files_folder, description, last_update, owner_id, extends_template_name', 'safe', 'on'=>'search'),
         );
     }
 
@@ -94,7 +94,7 @@ class Template extends LSActiveRecord
             'description' => 'Description',
             'last_update' => 'Last Update',
             'owner_id' => 'Owner',
-            'extends_templates_name' => 'Extends Templates Name',
+            'extends_template_name' => 'Extends Templates Name',
         );
     }
 
@@ -188,26 +188,17 @@ class Template extends LSActiveRecord
      * TODO : more tests should be done, with a call to private function _is_valid_template(), testing not only if it has a config.xml, but also id this file is correct, if the files refered in css exist, etc.
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
-     * @param integer $iSurveyId        the id of the survey. If
+     * @param integer $iSurveyId        the id of the survey.
+     * @param integer $iSurveyId        the id of the survey.
+     * @param integer $bForceXML        the id of the survey.
      * @return StdClass
      */
-    public static function getTemplateConfiguration($sTemplateName='', $iSurveyId='', $bForceXML=false)
+    public static function getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=false)
     {
 
         // First we try to get a confifuration row from DB
         if (!$bForceXML){
-            if (!empty($sTemplateName)){
-                $oTemplate = self::model()->findByPk($sTemplateName);
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
-            }else{
-                $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid=:sid', array(':templates_name'=>$sTemplateName, ':sid' => $iSurveyId ));
-
-                // No specific template configuration for this survey
-                if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')){
-                    $sTemplateName = Survey::model()->findByPk($iSurveyId)->template;
-                    $oTemplateConfigurationModel = TemplateConfiguration::model()->find('templates_name=:templates_name AND sid IS NULL AND gsid IS NULL', array(':templates_name'=>$sTemplateName));
-                }
-            }
+           $oTemplateConfigurationModel = TemplateConfiguration::getInstance($sTemplateName, $iSurveyGroupId, $iSurveyId);
         }
 
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
@@ -215,7 +206,7 @@ class Template extends LSActiveRecord
             $oTemplateConfigurationModel = new TemplateManifest;
         }
 
-        $oTemplateConfigurationModel->setTemplateConfiguration($sTemplateName, $iSurveyId);
+        //$oTemplateConfigurationModel->prepareTemplateRendering($sTemplateName, $iSurveyId);
         return $oTemplateConfigurationModel;
     }
 
@@ -300,9 +291,10 @@ class Template extends LSActiveRecord
                     && $sTemplatePath != ".." && $sTemplatePath!=".svn"
                     && (file_exists("{$sUserTemplateRootDir}/{$sTemplatePath}/config.xml"))) {
 
-                    $oTemplate = self::getTemplateConfiguration($sTemplatePath, '', true);
+                    $oTemplate = self::getTemplateConfiguration($sTemplatePath,null,null,true);
+
                     if (is_object($oTemplate)){
-                        $aTemplateList[$oTemplate->sTemplateName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
+                        $aTemplateList[$sTemplatePath] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
                     }
                 }
             }
@@ -373,25 +365,39 @@ class Template extends LSActiveRecord
     /**
      * Get instance of template object.
      * Will instantiate the template object first time it is called.
-     * Please use this instead of global variable.
+     *
+     * NOTE 1: This function will call prepareTemplateRendering that create/update all the packages needed to render the template, which imply to do the same for all mother templates
+     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to use this one. Call it only before rendering anything related to the template.
+     * NOTE 3: If you need to get the related configuration to this template, rather use: getTemplateConfiguration()
      *
      * @param string $sTemplateName
      * @param int|string $iSurveyId
+     * @param int|string $iSurveyGroupId
      * @return TemplateConfiguration
      */
-    public static function getInstance($sTemplateName='', $iSurveyId='', $bForceXML=false)
+    public static function getInstance($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=null)
     {
+        // The error page from default template can be called when no survey found with a specific ID.
+        if ($sTemplateName === null && $iSurveyId === null){
+            $sTemplateName = "default";
+        }
 
-        // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
-        if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
-            $bForceXML=true;
-        }elseif( App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
-            $bForceXML=false;
+        if($bForceXML === null){
+            // Template developper could prefer to work with XML rather than DB as a first step, for quick and easy changes
+            if (App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
+                $bForceXML=true;
+            }elseif( App()->getConfig('force_xmlsettings_for_survey_rendering') && YII_DEBUG){
+                $bForceXML=false;
+            }
         }
 
         if (empty(self::$instance)) {
-            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $bForceXML);
+            // getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=false)
+            self::$instance = $toto = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
+            self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
+
+
         return self::$instance;
     }
 
@@ -420,7 +426,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array('default');
+        $standardTemplates = array('default', 'minimal', 'material');
         return $standardTemplates;
 
         /*
@@ -444,7 +450,7 @@ class Template extends LSActiveRecord
             self::$standardTemplates = $standardTemplates;
         }
 */
-        return self::$standardTemplates;
+    //    return self::$standardTemplates;
     }
 
     /**
@@ -481,7 +487,7 @@ class Template extends LSActiveRecord
         $criteria->compare('description',$this->description,true);
         $criteria->compare('last_update',$this->last_update,true);
         $criteria->compare('owner_id',$this->owner_id);
-        $criteria->compare('extends_templates_name',$this->extends_templates_name,true);
+        $criteria->compare('extends_template_name',$this->extends_template_name,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,

@@ -198,6 +198,7 @@
 
     function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
     {
+
         $htmlcode = '';
         $toolbaroption="";
         $sFileBrowserAvailable='';
@@ -246,29 +247,26 @@
 
         $htmlcode .= ""
         . "<script type=\"text/javascript\">\n"
-        . "$(document).ready(
-        function(){ var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-        customConfig : \"".Yii::app()->getConfig('adminscripts')."ckeditor-config.js\"
-        ,LimeReplacementFieldsType : \"".$fieldtype."\"
-        ,LimeReplacementFieldsSID : \"".$surveyID."\"
-        ,LimeReplacementFieldsGID : \"".$gID."\"
-        ,LimeReplacementFieldsQID : \"".$qID."\"
-        ,LimeReplacementFieldsAction : \"".$action."\"
-        ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
-        ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
-        . $sFileBrowserAvailable
-        . $htmlformatoption
-        . $toolbaroption
-        ."});
+        . "$(document).on('ready pjax:complete triggerCreateCKEditor', 
+            function(){ 
+                if($('#".$fieldname."').length >0){
+                    var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
+                    customConfig : \"".Yii::app()->getConfig('adminscripts')."ckeditor-config.js\"
+                    ,LimeReplacementFieldsType : \"".$fieldtype."\"
+                    ,LimeReplacementFieldsSID : \"".$surveyID."\"
+                    ,LimeReplacementFieldsGID : \"".$gID."\"
+                    ,LimeReplacementFieldsQID : \"".$qID."\"
+                    ,LimeReplacementFieldsAction : \"".$action."\"
+                    ,LimeReplacementFieldsPath : \"".Yii::app()->getController()->createUrl("admin/limereplacementfields/sa/index/")."\"
+                    ,language:'".sTranslateLangCode2CK(Yii::app()->session['adminlang'])."'"
+                    . $sFileBrowserAvailable
+                    . $htmlformatoption
+                    . $toolbaroption
+                    ."});
 
-CKEDITOR.editorConfig = function( config )
-{
-    config.uiColor = '#FFF';
-};
-
-        \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
+                    \$('#$fieldname').parents('ul:eq(0)').addClass('editor-parent');
+                }
         });";
-
 
         $htmlcode.= '</script>';
 

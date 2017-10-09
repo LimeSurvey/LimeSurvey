@@ -17,7 +17,7 @@
 
 
 <!-- No JavaScript alert -->
-<div class='alert alert-danger ls-js-hidden warningjs' data-type='checkjavascript'>
+<div class='{{ aSurveyInfo.class.nojs  }}'  {{ aSurveyInfo.attr.nojs  }} data-type='checkjavascript'>
     {{
         "Caution: JavaScript execution is disabled in your browser or for this website. You may not be able to answer all questions in this survey. Please, verify your browser parameters."
         | t

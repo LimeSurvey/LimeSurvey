@@ -4,7 +4,7 @@
  *
  */
 ?>
-<div class='save-survey-form form-horizontal'>
+<div class='save-survey-form '>
     <div class='form-group save-survey-row save-survey-name'>
         <label class='control-label col-sm-3 save-survey-label' for='savename'><?php echo gT("Saved name:") ?></label>
         <div class='col-sm-7 save-survey-input input-cell'>

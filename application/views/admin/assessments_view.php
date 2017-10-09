@@ -132,7 +132,7 @@
 <!-- Edition -->
 <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")): ?>
     <br />
-    <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form-horizontal','id'=>'assessmentsform','name'=>'assessmentsform', 'role' => 'form'));?>
+    <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form','id'=>'assessmentsform','name'=>'assessmentsform', 'role' => 'form'));?>
         <h4><?php echo $actiontitle;?></h4>
 
             <!-- Scope, Total, Group -->

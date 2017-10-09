@@ -14,7 +14,7 @@
 // TODO: Why needed?
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
-use \ls\pluginmanager\PluginEvent;
+use \LimeSurvey\PluginManager\PluginEvent;
 
 function loadanswers()
 {
@@ -1393,7 +1393,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
 
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid),'aSurveyInfo'=>$thissurvey), false);
             break;
 
         case "register": //Register new user
@@ -1490,7 +1490,7 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
-    Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid),'aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -1985,6 +1985,16 @@ function checkCompletedQuota($surveyid,$return=false)
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
 
+    $thissurvey['aQuotas']['hiddeninputs']      = '<input type="hidden" name="sid"      value="'.$thissurvey['sid'].'" />
+                                                   <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />
+                                                   <input type="hidden" name="thisstep" value="'.$thissurvey['aQuotas']['sQuotaStep'].'" />';
+
+   foreach($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post){
+       $thissurvey['aQuotas']['hiddeninputs']      .= '<input type="hidden" name="'.$field.'"   value="'.$post.'" />';
+   }
+
+    //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
+
     if ($closeSurvey){
         killSurveySession($surveyid);
 
@@ -1992,7 +2002,7 @@ function checkCompletedQuota($surveyid,$return=false)
             header("Location: ".$sUrl);
         }
     }
-    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid),'aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -2059,9 +2069,11 @@ function getReferringUrl()
 /**
 * Shows the welcome page, used in group by group and question by question mode
 */
-function display_first_page($thissurvey) {
+function display_first_page($thissurvey, $aSurveyInfo)
+{
     global $token, $surveyid;
 
+    $thissurvey                 = $aSurveyInfo;
     $thissurvey['aNavigator']   = getNavigatorDatas();
 
     LimeExpressionManager::StartProcessingPage();
@@ -2091,8 +2103,12 @@ function display_first_page($thissurvey) {
     LimeExpressionManager::FinishProcessingPage();
 
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
+    $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] =  '';
 
-    Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('aSurveyInfo'=>$thissurvey), false);
+
+
+
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }
 
 /**

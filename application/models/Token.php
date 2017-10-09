@@ -28,7 +28,7 @@
  *
  */
 
-use \ls\pluginmanager\PluginEvent;
+use \LimeSurvey\PluginManager\PluginEvent;
 
 /**
  * Class Token

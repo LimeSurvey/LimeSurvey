@@ -1,7 +1,7 @@
 /**
  * Welcome page panels animations
  */
-$(document).ready(function(){
+$(document).on('ready pjax:complete',function(){
 
     /**
      * Panel shown one by one

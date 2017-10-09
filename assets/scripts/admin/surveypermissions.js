@@ -1,4 +1,8 @@
-$(document).ready(function(){
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+$(document).on('ready  pjax:complete', function(){
     $(':checkbox:not(:checked)[data-indeterminate=1]').prop('indeterminate', true)
 
     $(".surveysecurity").tablesorter({

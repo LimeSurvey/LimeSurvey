@@ -9,6 +9,8 @@
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
 $minVersion = ($debug>0) ? "":".min";
+$minFolder = ($debug>0) ? "/dev":"/min";
+
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
 if(isset($_GET['isAjax'])){
@@ -65,7 +67,8 @@ return array(
 
     // bootstrap-slider : for multinumeric with slider
     'bootstrap-slider' => array(
-        'basePath' => 'third_party.bootstrap-slider',
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/slider',
+        'basePath' => 'core.bootstrap.plugins.slider',
         'css'=> array(
             'css/bootstrap-slider'.$minVersion.'.css'
         ),
@@ -74,6 +77,72 @@ return array(
         ),
         'depends' => array(
             'jquery',
+            'bootstrap'
+        )
+    ),
+
+    // Bootstrap Multiselect
+    'bootstrap-multiselect' => array(
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/multiselect',
+        'basePath' => 'core.bootstrap.plugins.multiselect',
+        'js' => array(
+            'js/bootstrap-multiselect.js',
+        ),
+        'css' => array(
+            'css/bootstrap-multiselect.css',
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
+        )
+    ),
+
+    // Bootstrap Multiselect2
+    'bootstrap-select2' => array(
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/select2',
+        'basePath' => 'core.bootstrap.plugins.select2',
+        'js' => array(
+            'js/select2.full'.$minVersion.'.js',
+        ),
+        'css' => array(
+            'css/select2-bootstrap.css',
+            'css/select2.css',
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
+        )
+    ),
+
+    'bootstrap-datetimepicker' => array(
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/datetimepicker/build',
+        'basePath' => 'core.bootstrap.plugins.datetimepicker.build',
+        'css' => array(
+            'css/bootstrap-datetimepicker'.$minVersion.'.css'
+        ),
+        'js' => array(
+            'js/bootstrap-datetimepicker.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
+        )
+    ),
+
+    'bootstrap-switch' => array(
+        'devBaseUrl' => 'assets/packages/bootstrap/plugins/switch/',
+        'basePath' => 'core.bootstrap.plugins.switch',
+        'css' => array(
+            'css/bootstrap-switch.min.css'
+        ),
+        'js' => array(
+            'js/bootstrap-switch.min.js'
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap',
+            'moment'
         )
     ),
 
@@ -194,26 +263,12 @@ return array(
         )
     ),
 
-    // Bootstrap Multiselect
-    'bootstrap-multiselect' => array(
-        'basePath' => 'third_party.bootstrap-multiselect',
-        'js' => array(
-            'js/bootstrap-multiselect.js',
-        ),
-        'css' => array(
-            'css/bootstrap-multiselect.css',
-        ),
-        'depends' => array(
-            'jquery'
-        )
-    ),
-
     // Ace
     'ace' => array(
         'devBaseUrl' => 'third_party/ace',
         'basePath' => 'third_party.ace',
         'js' => array(
-            'ace.js'
+            $minFolder.'/ace.js'
         ),
         'depends' => array(
             'jquery-ace'
@@ -257,6 +312,7 @@ return array(
     // Decimal.js calculate in js
     'decimal' => array(
         'devBaseUrl' => 'third_party/decimal',
+        'devBaseUrl' => 'third_party/decimal',
         'basePath' => 'third_party.decimal',
         'js' => array(
             'decimal.js'
@@ -284,35 +340,6 @@ return array(
         ),
     ),
 
-    'bootstrap-datetimepicker' => array(
-        'basePath' => 'third_party.bootstrap-datetimepicker.build',
-        'css' => array(
-            'css/bootstrap-datetimepicker'.$minVersion.'.css'
-        ),
-        'js' => array(
-            'js/bootstrap-datetimepicker.min.js'
-        ),
-        'depends' => array(
-            'jquery',
-            'bootstrap',
-            'moment'
-        )
-    ),
-
-    'bootstrap-switch' => array(
-        'basePath' => 'third_party.bootstrap-switch',
-        'css' => array(
-            'css/bootstrap-switch.min.css'
-        ),
-        'js' => array(
-            'js/bootstrap-switch.min.js'
-        ),
-        'depends' => array(
-            'jquery',
-            'bootstrap',
-            'moment'
-        )
-    ),
     'emoji' => array(
         'basePath' => 'third_party.emojifont',
         'css' => array(

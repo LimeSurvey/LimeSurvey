@@ -370,7 +370,7 @@ class Permission extends LSActiveRecord
         }
 
         $condition = array('entity_id' => $iEntityID, 'uid' => $iUserID);
-        $oEvent=new \ls\pluginmanager\PluginEvent('beforePermissionSetSave');
+        $oEvent=new \LimeSurvey\PluginManager\PluginEvent('beforePermissionSetSave');
         $oEvent->set('aNewPermissions',$aFilteredPermissions);
         $oEvent->set('iSurveyID',$iEntityID);
         $oEvent->set('iUserID',$iUserID);
@@ -538,7 +538,7 @@ class Permission extends LSActiveRecord
         //      they should read permissions via the model
         //      and they should add row in permission table  (entity = plugin, etc)
 
-        $oEvent=new \ls\pluginmanager\PluginEvent('beforeHasPermission');
+        $oEvent=new \LimeSurvey\PluginManager\PluginEvent('beforeHasPermission');
         $oEvent->set('iEntityID',$iEntityID);
         $oEvent->set('sEntityName',$sEntityName);
         $oEvent->set('sPermission',$sPermission);

@@ -1,13 +1,9 @@
-body
-{
+body {
      padding-bottom: 10px;
      background-color: #f6f6f6;
-}
-/* The header */
-body
-{
      padding-top: 60px;/* now is redefine in JS to fit any title length */
 }
+    
 .navbar-action-link{
     padding-right:1em; /* really close to window without */
 }
@@ -75,6 +71,10 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 .question-container {
   margin-bottom: 2em;
   background:white;
+  border-bottom: 1px solid #dbdbdb;
+}
+.question-container-printanswers {
+  margin-bottom: 1em;
   border-bottom: 1px solid #dbdbdb;
 }
 
@@ -769,4 +769,20 @@ div.yes-no .btn-group label {
 
 p.return-to-survey{
     clear:left;
+}
+
+.text-break-pre{
+    white-space: pre-line;
+}
+
+.child-row-spacing>.row{
+    padding-bottom: 8px;
+}
+.child-row-border-bottom>.row:last-child{
+    padding-bottom: 0;
+}
+
+.superset {
+    font-size: 50%;
+    vertical-align: top;
 }

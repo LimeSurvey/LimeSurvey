@@ -111,7 +111,7 @@ class Participant extends LSActiveRecord
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<span class='fa fa-%s' ></span>" //icon class
+            . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
         if ($this->userHasPermissionToEdit()) {
@@ -497,9 +497,11 @@ class Participant extends LSActiveRecord
         $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM ".$DBCountActiveSurveys." cas WHERE cas.participant_id = t.participant_id )";
 
         $criteria->select = array(
-            '*',
+            't.*',
+            'shares.share_uid',
+            'shares.date_added',
+            'shares.can_edit',
             $sqlCountActiveSurveys . ' AS countActiveSurveys',
-            't.participant_id',
             't.participant_id AS id',   // This is need to avoid confusion between t.participant_id and shares.participant_id
         );
         if($this->extraCondition) {

@@ -180,6 +180,7 @@ class homepagesettings extends Survey_Common_Action
             'bShowLastSurveyAndQuestion'=>(getGlobalSetting('show_last_survey_and_question')=="show"),
             'bShowSurveyList'=>(getGlobalSetting('show_survey_list')=="show"),
             'bShowSurveyListSearch'=>(getGlobalSetting('show_survey_list_search')=="show"),
+            'bBoxesInContainer'=>(getGlobalSetting('boxes_in_container')=="yes"),
             'iBoxesByRow'=>(int) getGlobalSetting('boxes_by_row'),
             'iBoxesOffset'=>(int) getGlobalSetting('boxes_offset'),
         );
@@ -288,6 +289,25 @@ class homepagesettings extends Survey_Common_Action
             $bShowSurveyListSearch = (getGlobalSetting('show_survey_list_search')=="show")?"hide":"show";
             setGlobalSetting('show_survey_list_search', $bShowSurveyListSearch);
             echo $bShowSurveyListSearch;
+        }
+    }
+
+    /**
+     * Performs the AJAX toggle of show_survey_list_search
+     */
+    public function changeBoxesInContainer()
+    {
+        if (Yii::app()->getConfig('demoMode'))
+        {
+            Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+        }
+
+        if ( Permission::model()->hasGlobalPermission('settings', 'update') )
+        {
+            $changeBoxesInContainer = (getGlobalSetting('boxes_in_container')=="yes")?"no":"yes";
+            setGlobalSetting('boxes_in_container', $changeBoxesInContainer);
+            echo $changeBoxesInContainer;
         }
     }
 

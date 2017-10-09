@@ -63,12 +63,18 @@ if (! defined('BASEPATH')) exit('No direct script access allowed');
 */
 class update extends Survey_Common_Action
 {
+    
     /**
      * First function to be called, when comming to admin/update
      *
      */
     public function index()
     {
+        if (Yii::app()->getConfig('demoMode'))
+        {
+            Yii::app()->setFlashMessage(gT('This function cannot be executed because demo mode is active.'),'error');
+            $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin"));
+        }
         $buttons = 1;
         $updateModel = new UpdateForm();
         $serverAnswer = $updateModel->getUpdateInfo($buttons);

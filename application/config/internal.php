@@ -182,8 +182,8 @@ $internalConfig = array(
             'basePath' => __DIR__ . DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'locale'
         ),
         'pluginManager' => array(
-            'class' => "\\ls\\pluginmanager\\PluginManager",
-            'api' => "\\ls\\pluginmanager\\LimesurveyApi"
+            'class' => "\\LimeSurvey\\PluginManager\\PluginManager",
+            'api' => "\\LimeSurvey\\PluginManager\\LimesurveyApi"
         ),
         'format'=>array(
             'class'=>'application.extensions.CustomFormatter'
@@ -246,7 +246,7 @@ $internalConfig = array(
 
             'sandboxConfig' => array(
                 'tags' => array('if', 'for', 'set', 'autoescape', 'block'),
-                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys'),
+                'filters' => array('escape', 'raw', 't', 'merge', 'length', 'gT', 'keys', 'date'),
                 'methods' => array(
                     'ETwigViewRendererStaticClassProxy' =>  array("encode", "textfield", "form", "link", "emailField", "beginForm", "endForm", "dropDownList", "htmlButton", "passwordfield" ),
                     'Survey'                            =>  array("getAllLanguages", "localizedtitle"),
@@ -256,6 +256,9 @@ $internalConfig = array(
                     'ETwigViewRendererYiiCoreStaticClassesProxy' => array("Html"),
                     'LSYii_Application'                          => array("request"),
                     'TemplateConfiguration'             =>  array("sTemplateurl"),
+                    'Survey' => array('sid','admin','active','expires','startdate','anonymized','format','savetimings','template','language','datestamp','usecookie','allowprev','printanswers','showxquestions','showgroupinfo','shownoanswer','showqnumcode','showwelcome','showprogress','questionindex','navigationdelay','nokeyboard','alloweditaftercompletion','hasTokensTable','hasResponsesTable'),
+                    'Question' => array('qid','parent_qid','sid','gid','type','title','question','help','other','mandatory','language','scale_qid'),
+                    'QuestionGroups' => array('gid','sid','group_name','group_order','description','language','randomization_group','grelevance')
                 ),
                 'functions' => array('include', 'dump', 'flatEllipsizeText', 'getLanguageData', 'array_flip', 'array_intersect_key', 'registerPublicCssFile', 'registerTemplateCssFile', 'registerGeneralScript', 'registerTemplateScript', 'registerScript', 'unregisterPackage', 'unregisterScriptFile', 'unregisterScriptForAjax','listCoreScripts', 'listScriptFiles', 'getAllQuestionClasses','intval', 'count', 'empty', 'reset', 'renderCaptcha', 'getPost','getParam', 'getQuery', 'isset', 'str_replace', 'assetPublish', 'image', 'sprintf', 'gT' ),
             ),

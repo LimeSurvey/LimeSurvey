@@ -2,8 +2,8 @@
 <div id='<?php echo "tab-$grouplang-$tab"; ?>' class="tab-pane fade in <?php echo $active; ?>">
 
     <div class='form-group'>
-        <label class='col-sm-2 control-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
-        <div class='col-sm-6'>
+        <label class=' control-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
+        <div class=''>
             <?php
             $sSubjectField=$details['field']['subject'];
             echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$sSubjectField,array('class' => 'form-control', 'size'=>80)); ?>
@@ -11,18 +11,18 @@
     </div>
 
     <div class='form-group'>
-        <label class='col-sm-2 control-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
-        <div class='col-sm-6'>
+        <label class=' control-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
+        <div class=''>
             <?php
             $sBodyField=$details['field']['body'];
             echo CHtml::textArea("email_{$tab}_{$grouplang}",$esrow->$sBodyField,array('cols'=>80,'rows'=>20, 'class'=>'form-control')); ?>
             <?php echo getEditor("email-$tab","email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
         </div>
-        <div class='col-sm-6'></div>
+        <div class=''></div>
     </div>
     <div class='form-group '>
-        <label class='col-sm-2 control-label'><?php et('Actions:');?></label>
-        <div class='col-sm-6'>
+        <label class=' control-label'><?php et('Actions:');?></label>
+        <div class=''>
             <?php echo CHtml::link(gT("Validate expressions"),array('admin/validate','sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab),array('title'=>$details['title'],"target"=>"dialog","class"=>'btn btn-default')); ?>
             <?php
             $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
@@ -35,7 +35,7 @@
     if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
     { ?>
         <div class='form-group'>
-            <label class='control-label col-sm-2' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
+            <label class='control-label ' for="attachments_<?php echo "{$grouplang}-{$tab}"; ?>"><?php echo $details['attachments']; ?></label>
             <div class='col-sm-10'>
                 <button class="add-attachment btn btn-default" id="add-attachment-<?php echo "{$grouplang}-{$tab}"; ?>"><?php eT("Add file"); ?></button>
             </div>
@@ -43,7 +43,7 @@
 
         <?php } ?>
     <div class='form-group'>
-        <div class='col-sm-6 col-sm-offset-2'>
+        <div class=' '>
             <table data-template="[<?php echo $grouplang; ?>][<?php echo $tab ?>]" id ="attachments-<?php echo $grouplang; ?>-<?php echo $tab ?>" class="attachments" style="width: 100%;">
                 <tr>
                     <th><?php eT("Action"); ?></th>

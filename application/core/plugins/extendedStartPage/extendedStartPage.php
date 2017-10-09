@@ -7,7 +7,7 @@
  * @author Markus Flür
  *
  */
-class ExtendedStartpage extends \ls\pluginmanager\PluginBase
+class ExtendedStartpage extends \LimeSurvey\PluginManager\PluginBase
 {
     static protected $description = 'Extended start page view';
     static protected $name = 'extendStartpage';

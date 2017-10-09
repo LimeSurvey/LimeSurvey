@@ -50,7 +50,7 @@
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'statistics', 'read')): ?>
                 <!-- Get statistics from these responses -->
                 <a class="btn btn-default" href='<?php echo $this->createUrl("admin/statistics/sa/index/surveyid/$surveyid"); ?>' role="button">
-                    <span class="fa fa-stats text-success"></span>
+                    <span class="fa fa-bar-chart text-success"></span>
                     <?php eT("Statistics"); ?>
                 </a>
 
@@ -76,14 +76,14 @@
                         <!-- Export results to application -->
                         <li>
                             <a href='<?php echo $this->createUrl("admin/export/sa/exportresults/surveyid/$surveyid"); ?>'>
-                                <?php eT("Export results to application"); ?>
+                                <?php eT("Export responses"); ?>
                             </a>
                         </li>
 
                         <!-- Export results to a SPSS/PASW command file -->
                         <li>
                             <a href='<?php echo $this->createUrl("admin/export/sa/exportspss/sid/$surveyid"); ?>'>
-                                <?php eT("Export results to a SPSS/PASW command file"); ?>
+                                <?php eT("Export responses to SPSS"); ?>
                             </a>
                         </li>
 
@@ -177,12 +177,12 @@
             <?php if(isset($menu['stats'])):?>
                 <?php if (isset($menu['expertstats']) && $menu['expertstats'] =  true):?>
                     <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/index/surveyid/'.$surveyid); ?>" role="" id="">
-                        <span class="fa fa-stats"></span>
+                        <span class="fa fa-bar-chart"></span>
                         <?php eT("Expert mode"); ?>
                     </a>
                 <?php else: ?>
                     <a class="btn btn-info" href="<?php echo App()->createUrl('/admin/statistics/sa/simpleStatistics/surveyid/'.$surveyid); ?>" role="" id="">
-                        <span class="fa fa-stats"></span>
+                        <span class="fa fa-bar-chart"></span>
                         <?php eT("Simple mode"); ?>
                     </a>
                     <a class="btn btn-success" href="#" role="button" id="save-button">

@@ -210,6 +210,13 @@ class LSYii_Application extends CWebApplication
      */
     public function setLanguage( $sLanguage )
     {
+        // This method is also called from AdminController and LSUser
+        // But if a param is defined, it should always have the priority
+        // eg: index.php/admin/authentication/sa/login/&lang=de
+        if ( $this->request->getParam('lang') !== null && in_array('authentication', explode( '/', Yii::app()->request->url)) ){
+            $sLanguage = $this->request->getParam('lang');
+        }
+
         $sLanguage=preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
         $this->messages->catalog = $sLanguage;
         App()->session['_lang'] = $sLanguage;                                   // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
@@ -223,7 +230,7 @@ class LSYii_Application extends CWebApplication
     {
         if (!isset($this->api))
         {
-            $this->api = new \ls\pluginmanager\LimesurveyApi();
+            $this->api = new \LimeSurvey\PluginManager\LimesurveyApi();
         }
         return $this->api;
     }

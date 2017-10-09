@@ -17,8 +17,8 @@
     gT('Stay safe and up to date');
     gT('Label sets');
     gT('Edit label sets');
-    gT('Template editor');
-    gT('Edit LimeSurvey templates');
+    gT('Templates');
+    gT('View templates list');
 ?>
 
 <!-- Welcome view -->
@@ -101,6 +101,7 @@
             'display'=>'allboxesinrows',
             'boxesbyrow'=>$iBoxesByRow,
             'offset'=>$sBoxesOffSet,
+            'boxesincontainer' => $bBoxesInContainer
         ));
     ?>
 
@@ -126,7 +127,7 @@
             <div class="panel-body">
                 <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'>
                     <span class="icon-list" style="font-size: 4em"></span>
-		    <span class="sr-only"><?php eT('List surveys');?></span>
+            <span class="sr-only"><?php eT('List surveys');?></span>
                 </a><br><br>
                 <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'><?php eT('List surveys');?></a>
             </div>

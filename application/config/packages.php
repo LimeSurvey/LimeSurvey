@@ -9,6 +9,9 @@
  * To enjoy this feature, add to your package definition a 'devBaseUrl' with the relative url to your package
  *
  */
+$debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+/* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
+$minVersion = ($debug>0) ? "":".min";
 /* needed ? @see third_party.php */
 if(isset($_GET['isAjax'])){
     return array();
@@ -103,19 +106,53 @@ return array(
             'bootstrap-slider',
         )
     ),
+    'ckeditor' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditor/',
+        'basePath' => 'core.ckeditor',
+        'js' => array(
+            'ckeditor.js',
+        ),
+        'depends' => array(
+            'jquery',
+            'bootstrap'
+        ),
+    ),
+    'ckeditoradditions' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditoradditions/',
+        'basePath' => 'core.ckeditoradditions',
+        'js' => array(
+            'ckeditoradditions.js',
+        ),
+        'depends' => array(
+            'ckeditor'
+        )
+    ),
+    'pjax' => array(
+        'devBaseUrl' => 'assets/packages/pjax/',
+        'basePath' => 'core.pjax',
+        'js' => array(
+            'pjax.js',
+        ),
+    ),
     'adminpanel' => array(
-        'devBaseUrl' => 'assets/packages/adminpanel/build/',
-        'basePath' => 'core.adminpanel.build',
+        'devBaseUrl' => 'assets/packages/adminpanel/',
+        'basePath' => 'core.adminpanel',
         'coreScriptPosition'=>CClientScript::POS_END,
         'defaultScriptFilePosition' =>CClientScript::POS_END,
         'defaultScriptPosition' =>CClientScript::POS_END,
         'position' =>CClientScript::POS_END,
         'js' => array(
-            'lsadminpanel.js'
+            'build/lsadminpanel'.$minVersion.'.js',
+            'lib/surveysettings.js'
         ),
         'css' => array(
-            'lsadminpanel.css'
+            'build/lsadminpanel.css'
+            )
+        ),
+        'depends' => array(
+            'pjax',
+            'jquery'
         )
-    )
-
+          
+    
 );
