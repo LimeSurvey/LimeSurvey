@@ -5525,11 +5525,17 @@
                         $cSave->set_answer_time();
                     }
 
-                    if ($finished)
-                    {
+                    if ($finished) {
                         // Delete the save control record if successfully finalize the submission
-                        $query = "DELETE FROM {{saved_control}} where srid=".$_SESSION[$this->sessid]['srid'].' and sid='.$this->sid;
-                        Yii::app()->db->createCommand($query)->execute();
+                        $criteria = new CDbCriteria;
+                        $criteria->addCondition('srid=:srid');
+                        $criteria->addCondition('sid=:sid');
+                        $criteria->params = [':srid'=>$_SESSION[$this->sessid]['srid'],':sid'=>$this->sid];
+                        $savedControl = SavedControl::model()->findAll($criteria);
+
+                        if($savedControl){
+                            $savedControl->delete();
+                        }
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                             $message .= ';<br />'.$query;
