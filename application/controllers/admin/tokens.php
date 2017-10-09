@@ -1485,8 +1485,10 @@ class tokens extends Survey_Common_Action
                                                        ->createAbsoluteUrl("/survey/index",array("sid"=>$iSurveyId,"token"=>$emrow['token'],"lang"=>trim($emrow['language'])));
                     // Add some var for expression : actually only EXPIRY because : it's used in limereplacement field and have good reason to have it.
                     $fieldsarray["{EXPIRY}"]=$aData['thissurvey']["expires"];
-                    $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
-                    '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
+                    $customheaders = array(
+                        0 => "X-surveyid: " . $iSurveyId,
+                        1 => "X-tokenid: " . $fieldsarray["{TOKEN}"]
+                    );
                     global $maildebug;
                     $modsubject = $sSubject[$emrow['language']];
                     $modmessage = $sMessage[$emrow['language']];
@@ -1571,6 +1573,17 @@ class tokens extends Survey_Common_Action
                         $to = $event->get('to');
                         $from = $event->get('from');
                         $bounce = $event->get('bounce');
+
+                        if (!empty($cc = $event->get('cc')))
+                        {
+                            $customheaders[] = 'CC: ' . (is_array($cc) ? join(',', $cc) : $cc); // as per PHPmailer note that addCC only works on win32
+                        }
+
+                        if (!empty($bcc = $event->get('bcc')))
+                        {
+                            $customheaders[] = 'BCC: ' . (is_array($bcc) ? join(',', $bcc) : $bcc); // as per PHPmailer note that addBCC only works on win32
+                        }
+
                         if ($event->get('send', true) == false)
                         {
                             // This is some ancient global used for error reporting instead of a return value from the actual mail function..
