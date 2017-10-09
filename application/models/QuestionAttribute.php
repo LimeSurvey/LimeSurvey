@@ -22,6 +22,9 @@
  * @property string $value Attribute value
  * @property string $language Language code eg:'en'
  *
+ * @property Question $question
+ * @property Survey $survey
+ *
  */
 class QuestionAttribute extends LSActiveRecord
 {
@@ -52,6 +55,7 @@ class QuestionAttribute extends LSActiveRecord
     public function relations()
     {
         return array(
+            /** NB! do not use this relation use $this->question instead @see getQuestion() */
             'qid' => array(self::BELONGS_TO, 'Question', 'qid', 'together' => true),
         );
     }
@@ -263,5 +267,28 @@ class QuestionAttribute extends LSActiveRecord
             $command->order($orderby);
         }
         return $command->queryAll();
+    }
+
+    /**
+     * @return Question
+     */
+    public function getQuestion(){
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('qid=:qid');
+        $criteria->params = [':qid'=>$this->qid];
+        if($this->language){
+            $criteria->addCondition('language=:language');
+            $criteria->params = [':qid'=>$this->qid,':language'=>$this->language];
+        }
+        /** @var Question $model */
+        $model = Question::model()->find($criteria);
+        return $model;
+    }
+
+    /**
+     * @return Survey
+     */
+    public function getSurvey(){
+        return $this->question->survey;
     }
 }

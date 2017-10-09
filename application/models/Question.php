@@ -40,6 +40,7 @@ if (!defined('BASEPATH'))
  * @property QuestionGroup $groups  //TODO should be singular
  * @property Question $parents      //TODO should be singular
  * @property Question[] $subquestions
+ * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property string[] $quotableTypes Question types that can be used for quotas
  */
 class Question extends LSActiveRecord
@@ -1008,6 +1009,16 @@ class Question extends LSActiveRecord
         } else {
             return "{$this->sid}X{$this->gid}X{$this->qid}";
         }
+    }
+
+    /**
+     * @return QuestionAttribute[]
+     */
+    public function getQuestionAttributes(){
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('qid=:qid');
+        $criteria->params = [':qid'=>$this->qid];
+        return QuestionAttribute::model()->findAll($criteria);
     }
 
 }

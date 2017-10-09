@@ -269,9 +269,9 @@ class questions extends Survey_Common_Action
 
 
         $oQuestion = Question::model()->findByAttributes(array(
-        'qid' => $qid,
-        'gid' => $gid,
-        'language' => $survey->language
+            'qid' => $qid,
+            'gid' => $gid,
+            'language' => $survey->language
         ));
 
         $questionrow = $oQuestion->attributes;
@@ -1006,7 +1006,7 @@ class questions extends Survey_Common_Action
     /**
      * Add a new question
      * @param $surveyid int the sid
-     * @return html
+     * @return string html
      */
     public function newquestion($surveyid)
     {
