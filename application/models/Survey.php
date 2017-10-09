@@ -108,6 +108,9 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property boolean $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
  * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
+ * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
+ * @property integer $countInputQuestions Count of questions that need input (skipping text-display etc.)
+ * @property integer $countNoInputQuestions Count of questions that DO NOT need input (skipping text-display etc.)
  *
  * All Y/N columns in the model can be accessed as boolean values:
  * @property bool $isActive Whether Survey is active
@@ -1680,6 +1683,38 @@ class Survey extends LSActiveRecord
         $condn = array('sid'=>$this->sid,'language'=>$this->language);
         $sumresult3 = QuestionGroup::model()->countByAttributes($condn); //Checked)
         return $sumresult3 ;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getCountTotalQuestions(){
+        $condn = array('sid'=>$this->sid,'language'=>$this->language,'parent_qid'=>0);
+        $sumresult = Question::model()->countByAttributes($condn);
+        return (int) $sumresult;
+    }
+
+    /**
+     * Get the coutn of questions that do not need input (skipping text-display etc.)
+     * @return integer
+     */
+    public function getCountNoInputQuestions(){
+        $condn = array(
+            'sid'=>$this->sid,
+            'language'=>$this->language,
+            'parent_qid'=>0,
+            'type'=>['X','*'],
+        );
+        $sumresult = Question::model()->countByAttributes($condn);
+        return (int) $sumresult;
+    }
+
+    /**
+     * Get the coutn of questions that need input (skipping text-display etc.)
+     * @return integer
+     */
+    public function getCountInputQuestions(){
+        return $this->countTotalQuestions - $this->countNoInputQuestions;
     }
 
 }
