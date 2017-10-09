@@ -200,8 +200,7 @@ class Template extends LSActiveRecord
      *
      * @param string $sTemplateName     the name of the template to load. The string come from the template selector in survey settings
      * @param integer $iSurveyId        the id of the survey.
-     * @param integer $iSurveyId        the id of the survey.
-     * @param integer $bForceXML        the id of the survey.
+     * @param boolean $bForceXML
      * @return StdClass
      */
     public static function getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=false)

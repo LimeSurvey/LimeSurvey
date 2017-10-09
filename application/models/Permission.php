@@ -437,6 +437,7 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * @param integer $iUserID
      * @param integer $iSurveyID
      */
     public function giveAllSurveyPermissions($iUserID, $iSurveyID)
@@ -653,12 +654,12 @@ class Permission extends LSActiveRecord
     }
 
     /**
-    * Returns true if a user has permission to read/create/update a certain template
-    * @param $sPermission string Name of the permission - see function getGlobalPermissions
-    * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer User ID - if not given the one of the current user is used
-    * @return bool True if user has the permission
-    */
+     * Returns true if a user has permission to read/create/update a certain template
+     * @param string $sTemplateName
+     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
+     * @param $iUserID integer User ID - if not given the one of the current user is used
+     * @return bool True if user has the permission
+     */
     public function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
     {
         return $this->hasPermission(0, 'global', 'templates', $sCRUD, $iUserID) || $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
@@ -666,8 +667,8 @@ class Permission extends LSActiveRecord
 
     /**
     * function used to order Permission by language string
-    * @param aApermission array The first permission information
-    * @param aBpermission array The second permission information
+    * @param array $aApermission The first permission information
+    * @param array $aBpermission The second permission information
     * @return integer
     */
     private static function comparePermissionTitle($aApermission,$aBpermission)

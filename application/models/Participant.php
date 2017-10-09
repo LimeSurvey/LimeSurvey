@@ -254,6 +254,7 @@ class Participant extends LSActiveRecord
 
     /**
      * Get options for a drop-down attribute
+     * @param string $attribute_id
      * @return array
      */
     public function getOptionsForAttribute($attribute_id) {
@@ -287,7 +288,7 @@ class Participant extends LSActiveRecord
     /**
      * @param string $attributeTextId E.g. ea_145
      * @param mixed $attribute_id
-     * @return
+     * @return string
      */
     public function getParticipantAttribute($attributeTextId, $attribute_id=false)
     {
@@ -663,6 +664,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * @param integer $userid
      * @return int
      */
     public function getParticipantsOwnerCount($userid)
@@ -742,8 +744,13 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * @param bool $count
+     * @param array $attid
+     * @param CDbCriteria $search
+     * @param integer $userid
      * @param integer $page
      * @param integer $limit
+     * @param null $order
      * @return CDbCommand
      */
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
@@ -798,7 +805,6 @@ class Participant extends LSActiveRecord
         $data->setJoin($joinValue);
 
         if (!empty($search)) {
-            /* @var $search CDbCriteria */
              $aSearch = $search->toArray();
              $aConditions[] = $aSearch['condition'];
              $aParams = $aSearch['params'];
@@ -855,8 +861,9 @@ class Participant extends LSActiveRecord
      * references in the survey_links table (but not in matching tokens tables)
      * and then all the participants attributes.
      * @param string $rows Participants ID separated by comma
+     * @param bool $bFilter
      * @return int number of deleted participants
-     **/
+     */
     public function deleteParticipants($rows, $bFilter=true)
     {
         // Converting the comma separated IDs to an array and assign chunks of 100 entries to have a reasonable query size

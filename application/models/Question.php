@@ -787,9 +787,11 @@ class Question extends LSActiveRecord
     }
 
     /**
-    * get subquestions fort the current question object in the right order
-     * @return self[]
-    */
+     * get subquestions fort the current question object in the right order
+     * @param int $random
+     * @param string $exclude_all_others
+     * @return array
+     */
     public function getOrderedSubQuestions($random=0, $exclude_all_others='')
     {
         $criteria = (new CDbCriteria());

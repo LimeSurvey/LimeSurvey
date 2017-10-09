@@ -220,6 +220,7 @@ class Condition extends LSActiveRecord
 
     /**
      * @param int $qid
+     * @param string $language
      * @param Condition $scenarionr
      * @return int
      */
@@ -246,6 +247,7 @@ class Condition extends LSActiveRecord
 
     /**
      * @param int $qid
+     * @param $language
      * @param Condition $scenarionr
      * @return array
      */
