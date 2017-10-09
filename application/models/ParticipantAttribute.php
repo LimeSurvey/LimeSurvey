@@ -22,7 +22,7 @@
  * @property string $value
  *
  * @property Participant $participant
- * @property ParticipantAttributeName $participant_attribute_names //todo this should be singular not plural
+ * @property ParticipantAttributeName $participant_attribute_name
  */
 class ParticipantAttribute extends LSActiveRecord
 {
@@ -55,7 +55,7 @@ class ParticipantAttribute extends LSActiveRecord
         // class name for the relations automatically generated below.
         return array(
             'participant' => array(self::HAS_ONE, 'Participant', 'participant_id'),
-            'participant_attribute_names'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
+            'participant_attribute_name'=>array(self::BELONGS_TO, 'ParticipantAttributeName', 'attribute_id')
         );
     }
 
