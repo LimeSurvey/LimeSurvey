@@ -59,7 +59,7 @@ class CHtmlPurifier extends COutputProcessor
 	 * @see http://htmlpurifier.org/live/configdoc/plain.html
 	 */
 	private $_options=null;
-	
+
 	/**
 	 * Processes the captured output.
 	 * This method purifies the output using {@link http://htmlpurifier.org HTML Purifier}.
@@ -70,11 +70,11 @@ class CHtmlPurifier extends COutputProcessor
 		$output=$this->purify($output);
 		parent::processOutput($output);
 	}
-	
+
 	/**
 	 * Purifies the HTML content by removing malicious code.
 	 * @param mixed $content the content to be purified.
-	 * @return mixed the purified content 
+	 * @return mixed the purified content
 	 */
 	public function purify($content)
 	{
@@ -84,7 +84,7 @@ class CHtmlPurifier extends COutputProcessor
 			$content=$this->getPurifier()->purify($content);
 		return $content;
 	}
-	
+
 	/**
 	 * Set the options for HTML Purifier and create a new HTML Purifier instance based on these options.
 	 * @param mixed $options the options for HTML Purifier
@@ -96,7 +96,7 @@ class CHtmlPurifier extends COutputProcessor
 		$this->createNewHtmlPurifierInstance();
 		return $this;
 	}
-	
+
 	/**
 	 * Get the options for the HTML Purifier instance.
 	 * @return mixed the HTML Purifier instance options
@@ -105,18 +105,18 @@ class CHtmlPurifier extends COutputProcessor
 	{
 		return $this->_options;
 	}
-	
+
 	/**
 	 * Get the HTML Purifier instance or create a new one if it doesn't exist.
 	 * @return HTMLPurifier
 	 */
-	protected function getPurifier()
+	public function getPurifier()
 	{
 		if($this->_purifier!==null)
 			return $this->_purifier;
 		return $this->createNewHtmlPurifierInstance();
 	}
-	
+
 	/**
 	 * Create a new HTML Purifier instance.
 	 * @return HTMLPurifier
