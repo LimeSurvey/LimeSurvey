@@ -1478,7 +1478,9 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
             }
             $insertdata['sid']=$iNewSID; // remap the survey id
             $insertdata['qid']=$aQIDReplacements[(int)$insertdata['qid']]; // remap the qid
-            $insertdata['quota_id']=$aQuotaReplacements[(int)$insertdata['quota_id']]; // remap the qid
+            if(isset($insertdata['quota_id'])){
+                $insertdata['quota_id']=$aQuotaReplacements[(int)$insertdata['quota_id']]; // remap the qid
+            }
             unset($insertdata['id']);
             // now translate any links
             $result=QuotaMember::model()->insertRecords($insertdata) or safeDie(gT("Error").": Failed to insert data[13]<br />");
@@ -2314,26 +2316,22 @@ function TSVImportSurvey($sFullFilePath)
 
                 // For multi numeric survey : same name, add the gid to have same name on different gid. Bad for EM.
                 $fullqname="G{$gid}_".$qname;
-                if (isset($qinfo[$fullqname]))
-                {
+                if (isset($qinfo[$fullqname])) {
                     $qseq = $qinfo[$fullqname]['question_order'];
                     $qid = $qinfo[$fullqname]['qid'];
                     $insertdata['qid']  = $qid;
                     $insertdata['question_order'] = $qseq;
-                }
-                else
-                {
+                } else {
                     $insertdata['question_order'] = $qseq;
                 }
-                // Insert question and keep the qid for multi language survey
-                $result = Question::model()->insertRecords($insertdata);
-                if(!$result){
+                $question = new Question();
+                $question->attributes = $insertdata;
+                if(!$question->save()){
                     $results['error'][] = gT("Error")." : ".gT("Could not insert question").". ".gT("Text file row number ").$rownumber." (".$qname.")";
                     break;
                 }
-                $newqid = $result;
-                if (!isset($qinfo[$fullqname]))
-                {
+                $newqid = $question->qid;
+                if (!isset($qinfo[$fullqname])) {
                     $results['questions']++;
                     $qid=$newqid; // save this for later
                     $qinfo[$fullqname]['qid'] = $qid;
@@ -2342,10 +2340,8 @@ function TSVImportSurvey($sFullFilePath)
                 $aseq=0;    //reset the answer sortorder
                 $sqseq = 0;    //reset the sub question sortorder
                 // insert question attributes
-                foreach ($row as $key=>$val)
-                {
-                    switch($key)
-                    {
+                foreach ($row as $key=>$val) {
+                    switch($key) {
                         case 'class':
                         case 'type/scale':
                         case 'name':
@@ -2460,22 +2456,22 @@ function TSVImportSurvey($sFullFilePath)
                         $insertdata['question_order'] = $qseq;
                     }
                     // Insert sub question and keep the sqid for multi language survey
-                    $newsqid = Question::model()->insertRecords($insertdata);
-                    if(!$newsqid){
+                    $question = new Question();
+                    $question->attributes = $insertdata;
+                    if(!$question->save()){
                         $results['error'][] = gT("Error")." : ".gT("Could not insert subquestion").". ".gT("Text file row number ").$rownumber." (".$qname.")";
                         break;
                     }
-                    if (!isset($sqinfo[$fullsqname]))
-                    {
+
+                    if (!isset($sqinfo[$fullsqname])) {
                         $sqinfo[$fullsqname]['question_order'] = $qseq++;
-                        $sqid=$newsqid; // save this for later
+                        $sqid=$question->qid; // save this for later
                         $sqinfo[$fullsqname]['sqid'] = $sqid;
                         $results['subquestions']++;
                     }
 
                     // insert default value
-                    if (isset($row['default']) && $row['default']!="")
-                    {
+                    if (isset($row['default']) && $row['default']!="") {
                         $insertdata=array();
                         $insertdata['qid'] = $qid;
                         $insertdata['sqid'] = $sqid;

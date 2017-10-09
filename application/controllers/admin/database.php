@@ -1386,24 +1386,20 @@ class database extends Survey_Common_Action
                         $oOldQuestion = Question::model()->findByPk($oldQID);
                     }
                     if (returnGlobal('copysubquestions') == 1) {
-                        $aSQIDMappings = array();
-                        $r1 = $oOldQuestion->subquestions;
-                        $aSubQuestions = $r1->readAll();
-
-                        foreach ($aSubQuestions as $qr1) {
-                            $qr1['parent_qid'] = $this->iQuestionID;
+                        $aSQIDMappings = [];
+                        foreach ($oOldQuestion->subquestions as $qr1) {
+                            $qr1->parent_qid = $this->iQuestionID;
                             $oldqid= '';
-                            if (isset($aSQIDMappings[$qr1['qid']])) {
-                                $qr1['qid'] = $aSQIDMappings[$qr1['qid']];
+                            if (isset($aSQIDMappings[$qr1->qid])) {
+                                $qr1->qid = $aSQIDMappings[$qr1->qid];
                             } else {
-                                $oldqid = $qr1['qid'];
-                                unset($qr1['qid']);
+                                $oldqid = $qr1->qid;
+                                $qr1->qid = null;
                             }
 
-                            $qr1['gid'] = $this->iQuestionGroupID;
-                            $iInsertID = Question::model()->insertRecords($qr1);
-                            if (!isset($qr1['qid'])) {
-                                $aSQIDMappings[$oldqid] = $iInsertID;
+                            $qr1->gid = $this->iQuestionGroupID;
+                            if($qr1->save()){
+                                $aSQIDMappings[$oldqid] = $qr1->gid;
                             }
                         }
                     }

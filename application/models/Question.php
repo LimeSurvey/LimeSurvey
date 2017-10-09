@@ -92,7 +92,7 @@ class Question extends LSActiveRecord
         $aRules= array(
                     array('title','required','on' => 'update, insert','message'=>gT('Question code may not be empty.','unescaped')),
                     array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
-                    array('qid', 'numerical','integerOnly'=>true),
+                    array('qid,sid,gid,parent_qid', 'numerical','integerOnly'=>true),
                     array('qid', 'unique', 'criteria'=>array(
                                     'condition'=>'language=:language',
                                     'params'=>array(':language'=>$this->language)
@@ -105,6 +105,9 @@ class Question extends LSActiveRecord
                     array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                     array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                     array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+                    array('type','length', 'min' => 1, 'max'=>1),
+                    array('preg,relevance','safe'),
+                    array('modulename','length','max'=>255),
                 );
         // Always enforce unicity on Sub question code (DB issue).
         if($this->parent_qid) {
@@ -353,29 +356,7 @@ class Question extends LSActiveRecord
         return $command->query()->readAll();
     }
 
-    /**
-     * Insert an array into the questions table
-     * Returns null if insertion fails, otherwise the new QID
-     *
-     * This function is called from database.php and import_helper.php
-     * TODO: as said by Shnoulle, it must be replace by using validate and save from controller.
-     *
-     * @param array $data
-     * @return int
-     */
-    function insertRecords($data)
-    {
-        // This function must be deprecated : don't find a way to have getErrors after (Shnoulle on 131206)
-        $oRecord = new self;
-        foreach ($data as $k => $v){
-            $oRecord->$k = $v;
-        }
-        if($oRecord->validate()) {
-            $oRecord->save();
-            return $oRecord->qid;
-        }
-        tracevar($oRecord->getErrors());
-    }
+
 
     /**
      * Delete a bunch of questions in one go
