@@ -278,6 +278,7 @@ class export extends Survey_Common_Action {
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
         $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from'));
         $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to'));
+        $options->aResponses = nice_addslashes(Yii::app()->request->getPost('responses_id'));
         $options->answerFormat = $sAnswerFormat;
         $options->convertY = $bConvertY;
         $options->yValue = ($bConvertY)?$sYValue:null;
@@ -1370,7 +1371,7 @@ class export extends Survey_Common_Action {
      */
     private function _exportPrintableHtmls($iSurveyID,$readFile = true){
         $oSurvey = Survey::model()->findByPk($iSurveyID);
-        $assetsDir = Template::getTemplateURL($oSurvey->template);
+        $assetsDir = substr(Template::getTemplateURL($oSurvey->template),1);
         $fullAssetsDir = Template::getTemplatePath($oSurvey->template);
         $aLanguages = $oSurvey->getAllLanguages();
 

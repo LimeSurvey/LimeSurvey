@@ -83,7 +83,6 @@ class QuotaLanguageSetting extends LSActiveRecord
     {
         return array(
             array('quotals_message','required'),
-            array('quotals_url','url'),
             array('quotals_name','LSYii_Validators'),// No access in quota editor, set to quota.name
             array('quotals_message','LSYii_Validators'),
             array('quotals_url','LSYii_Validators','isUrl'=>true),

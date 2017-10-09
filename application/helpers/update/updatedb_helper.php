@@ -1556,12 +1556,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->createTable('{{notifications}}', array(
                 'id' => 'pk',
                 'entity' => 'string(15) not null',
-                'entity_id' => 'int not null',
+                'entity_id' => 'integer not null',
                 'title' => 'string not null',  // varchar(255) in postgres
                 'message' => 'text not null',
-                'status' => 'string(15) default \'new\'',
-                'importance' => 'int default 1',
-                'display_class' => 'string(31) default \'default\'',
+                'status' => "string(15) not null default 'new' ",
+                'importance' => 'integer default 1',
+                'display_class' => "string(31) default 'default'",
                 'created' => 'datetime not null',
                 'first_read' => 'datetime null'
             ));
@@ -1576,17 +1576,30 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
-        /*
-         * The hash value of a notification is used to calculate uniqueness.
-         * @since 2016-08-10
-         * @author Olle Haerstedt
-         */
         if ($iOldDBVersion < 261) {
             $oTransaction = $oDB->beginTransaction();
+            /*
+             * The hash value of a notification is used to calculate uniqueness.
+             * @since 2016-08-10
+             * @author Olle Haerstedt
+             */
             addColumn('{{notifications}}', 'hash', 'string(64)');
             $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        
+        if ($iOldDBVersion < 262) {
+            $oTransaction = $oDB->beginTransaction();
+            alterColumn('{{settings_global}}','stg_value',"text",false);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 263) {
+            $oTransaction = $oDB->beginTransaction();
+            // Dummy version update for hash column in installation SQL.
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>263),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
     }
@@ -1616,7 +1629,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     $superadmins = User::model()->getSuperAdmins();
     Notification::broadcast(array(
         'title' => gT('Database update'),
-        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '261')
+        'message' => sprintf(gT('The database has been updated from version %s to version %s.'), $iOldDBVersion, '263')
     ), $superadmins);
     fixLanguageConsistencyAllSurveys();
     Yii::app()->setConfig('Updating',false);

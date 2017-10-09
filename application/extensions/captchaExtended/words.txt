@@ -1,0 +1,6 @@
+We choose to do "Hello World" testing mainly to achieve our goal, i.e., to find out the minimal overhead of each framework. 
+Many people complain that the "Hello World" application is meaningless because a real world application often needs to deal 
+with more complex tasks, such as database queries. This is not very true. In reality, especially in a large scale Web 2.0 application, 
+we often encounter scenarios that are very close to "Hello World". For example, an application may need to respond to an AJAX request 
+that should return the current server timestamp; a page has a large portion of its content being cached and an application just needs to 
+fetch the cached content and display it.

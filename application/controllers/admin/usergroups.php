@@ -52,9 +52,8 @@ class Usergroups extends Survey_Common_Action
 
                 foreach ($eguresult as $egurow)
                 {
-                    $to[] = $egurow->users->users_name . ' <' . $egurow->users->email . '>';
+                    $to[] = \CHtml::encode($egurow->users->users_name) . ' <' . $egurow->users->email . '>';
                 }
-
                 $from_user_result = User::model()->findByPk(Yii::app()->session['loginID']);
                 $from_user_row = $from_user_result;
 
@@ -77,10 +76,8 @@ class Usergroups extends Survey_Common_Action
                 $body = str_replace("\n.", "\n..", $body);
                 $body = wordwrap($body, 70);
 
-
-                //echo $body . '-'.$subject .'-'.'<pre>'.htmlspecialchars($to).'</pre>'.'-'.$from;
                 if (SendEmailMessage($body, $subject, $to, $from, '')) {
-                    list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => "Message(s) sent successfully!"));
+                    list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => gT("Message(s) sent successfully!")));
                 }
                 else
                 {

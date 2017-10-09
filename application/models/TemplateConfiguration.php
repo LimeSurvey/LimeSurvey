@@ -67,8 +67,7 @@ class TemplateConfiguration extends CFormModel
         $this->sTemplateName = $sTemplateName;
         $this->iSurveyId     = (int) $iSurveyId;
 
-        if ($sTemplateName=='')
-        {
+        if ($sTemplateName==''){
             $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
             $this->sTemplateName = $this->oSurvey->template;
         }
@@ -194,11 +193,14 @@ class TemplateConfiguration extends CFormModel
             window.console = dummyConsole;
         </script>";
 
-        if (getLanguageRTL(App()->language))
-        {
+        // If the template is called for survey listing, then the application language should be used
+        $sTemplateLang = (isset($this->oSurvey))?$this->oSurvey->getLanguageForSurveyTaking():App()->language;
+
+        if (getLanguageRTL( $sTemplateLang )){
             $oCssFiles = $this->config->files->rtl->css->filename; // In RTL mode, original CSS files should not be loaded, else padding-left could be added to padding-right.)
             $oJsFiles  = $this->config->files->rtl->js->filename;   // In RTL mode,
         }
+
 
         if (Yii::app()->getConfig('debug') == 0)
         {

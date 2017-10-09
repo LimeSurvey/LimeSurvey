@@ -215,7 +215,7 @@ class DbStorage implements iPluginStorage {
         
         if ($id == null && $model != null)
         {
-            throw new Exception("DbStorage::set cannot store setting for model $model without valid id.");
+            throw new \Exception("DbStorage::set cannot store setting for model $model without valid id.");
         }
         $attributes = array(
             'plugin_id' => $plugin->getId(),

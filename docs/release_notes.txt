@@ -36,18 +36,324 @@ CHANGE LOG
 ------------------------------------------------------
 
 
+Changes from 2.71.0 (build 170925) to 2.71.1 (build 170927) Sept 27, 2017
+-Fixed issue #12703: rtl css not loaded in Survey listing (LouisGac)
+-Fixed issue #12710: Unable to view survey with debug=2 (LouisGac)
+-Fixed issue #12711: Date with dropdow throw SQL error with pgsql (Denis Chenu)
+-Fixed issue #12719: RTL always loaded (and inverse ;) ) (LouisGac)
+-Fixed issue: Global user permission changes are not saved anymore (Carsten Schmitz)
+-Fixed issue: RTL CSS not loaded when defining language by URL or post (LouisGac)
+#Updated translation: Arabic by ktharwat
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, gregi
+#Updated translation: Hungarian by kkd
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+Changes from 2.70.0 (build 170921) to 2.71.0 (build 170925) Sept 25, 2017
+-New feature #12690: Allow super-admin set by other user's than 1 (#810) (Denis Chenu)
+-Fixed issue: Can't delete file in template editor that contains a blank (Carsten Schmitz)
+-Fixed issue: template-rtl.css not loaded (LouisGac)
+-Fixed issue: Token editing - couldn't change to attributes tab (markusfluer)
+#Updated translation: Chinese (Taiwan) (Traditional) by ChadPeng
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Malay by norazlannorden
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Slovak by dusanm
+#Updated translation: Spanish (Argentina) (Informal) by cripton
+#Updated translation: Spanish (Chile) by fernandoessv
+#Updated translation: Spanish (Mexican) by eusebiocuke
+#Updated translation: Thai by miracles, adzpire, heartjavac, tomzt
+
+Changes from 2.67.3 (build 170728) to 2.70.0 (build 170921) Sept 21, 2017
+-New feature: Add mass action to delete uploaded files for multiple responses at once (Olle Haerstedt)
+-New feature: New button to remove uploaded files while keeping the response itself (Olle Haerstedt)
+-New feature: Storage data overview in global settings (Olle Haerstedt)
+-New feature: Added editing of participants/tokens to mass actions (LouisGac & markusfluer)
+-Fixed issue #12279: Unable to upload image when send invitation (Denis Chenu)
+-Fixed issue #12585: In quotas some answer options using non-ASCII characters are not shown in overview (Carsten Schmitz)
+-Fixed issue #12641: On registering any lang can be set and accepted (Denis Chenu)
+-Fixed issue #12652: AuditLog plugin resets language to default on registration (Denis Chenu)
+-Fixed issue #12655: Unable to update language in personal settings (Denis Chenu)
+-Fixed issue #12678: Save ranking question type can break survey database (Denis Chenu)
+-Fixed issue: Can't add new participant in CPDB when audit log is active (Olle Haerstedt)
+-Fixed issue: CPDB attribute language name didn't save (Olle Haerstedt)
+-Fixed issue: Don't bind multiple click events on yes/no modal (Olle Haerstedt)
+-Fixed issue: Login form language is not updated after error (Denis Chenu)
+-Fixed issue: Pagination in Central Participant database not working when using MSSQL (encelado)
+-Fixed issue: Question index menu is too high when survey is big (Olle Haerstedt)
+-Fixed issue: Quota general screen not working because of missing language definition (markusfluer)
+-Fixed issue: Should not be possible to change ranking columns when survey is active (Olle Haerstedt)
+-Fixed issue: Too many columns error message on response export even if only a few columns were selected (Carsten Schmitz)
+-Fixed issue: Wrong date conversion at data entry edit/new (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: Czech by jelen1, VBraun
+#Updated translation: Dutch by zfocuz, Han
+#Updated translation: Dutch (Informal) by Nickko, zfocuz, Han
+#Updated translation: Estonian by vipgroup, jeskiv
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by jeskiv, Calidonia
+#Updated translation: German by Magnar
+#Updated translation: Greek by kiolalis
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kyrgyz by kmaksat
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Russian by vipgroup
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+#Updated translation: Valencian by joamuran, jeskiv, vbraque
+
+Changes from 2.67.2 (build 170726) to 2.67.3 (build 170728) Jul 28, 2017
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German (Informal) by actxcellence, c_schmitz
+#Updated translation: German by Thomas218, actxcellence, c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Russian by c0der, vipgroup
+#Updated translation: Slovenian by lado, dusan
+#Updated translation: Spanish (Mexican) by fernandoessv
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by adzpire, tomzt
+#Updated translation: Turkish by kayazeren
+-Fixed issue #12492  Use of "text fields" as filter in "Participants" and "Answers" (markusfluer)
+-Fixed issue: Added fallback if tidy is not available (markusfluer)
+-Fixed issue: Another soon to be fixed tidy error (markusfluer)
+-Fixed issue: Maximum file size not visible during VV import (Carsten Schmitz)
+-Fixed issue: Security issue - Users need to put in their old password to change the current (markusfluer)
+-Fixed issue: Tidy was not configured for utf-8 (markusfluer)
+-Fixed issue: Wrong colours in statistics graphs when labels are duplicated (Olle Haerstedt)
+-Fixed issue: Empty array instead of null for tidy_repair_string (markusfluer)
+-Fixed issue: Pagination of participants list not working (LouisGac)
+-Fixed issue: Subquestions not saved in quick translation (LouisGac)
+
+Changes from 2.67.1 (build 170626) to 2.67.2 (build 170726) Jul 26, 2017
+-Fixed issue #12491: Permission to delete participants not obeyed in export dialog (Carsten Schmitz)
+-Fixed issue: Default template with questions of white font color (markusfluer)
+-Fixed issue: Importing a Tab-separated survey CSV file with multiline text in the question field does not properly work (Carsten Schmitz)
+-Fixed issue: QuickMenu break usage of newDirectRequest for other plugin (Denis Chenu)
+-Fixed issue: unable to save Google Analytics key by survey (Denis Chenu)
+
+Changes from 2.67.0 (build 170622) to 2.67.1 (build 170626) Jun 26, 2017
+-Fixed issue #12414: exporting printable - template assets not visible in some extractors (eg windows default) (#701) (Tõnis Ormisson)
+-Fixed issue: Error in database update syntax (Olle Harstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by kkd
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.66.0 (build 170619) to 2.67.0 (build 170622) Jun 22, 2017
+-New feature: Opting out of a survey requires a one-click confirmation (Carsten Schmitz)
+-Fixed issue #12476: Quicktranslation tabs not working (markusfluer)
+-Fixed issue: convertDateTimeFormat gets wrong fromdateformat in survey list (Olle Haerstedt)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by kkd
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Turkish by kayazeren
+
+
+Changes from 2.65.6 (build 170615) to 2.66.0 (build 170619) Jun 19, 2017
+-New feature #12468: EM placeholder {SID} in email templates (Denis Chenu)
+-Fixed issue #12101: Placeholder "TOKEN" does not work in Equation question (Denis Chenu)
+-Fixed issue #12166: No possibility to share users with some webserver configurations (Carsten Schmitz)
+-Fixed issue: Allow more date formats in date question default answer (Olle Haerstedt)
+-Fixed issue: avoid very rare possible duplicate id on a page (LouisGac)
+-Fixed issue: DateTime object can be false (Olle Haerstedt)
+-Fixed issue: possible page broke when import TSV survey (Denis Chenu)
+-Fixed issue: Unable to use pop up editor in survey setting (Denis Chenu)
+-Fixed issue: [security] XSS in survey list (Denis Chenu)
+#Updated translation: Arabic by noway
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by wksosam
+#Updated translation: Czech by VBraun
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence, c_schmitz
+#Updated translation: German (Informal) by fwittmann, c_schmitz
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Slovak by dusanm
+#Updated translation: Turkish by kayazeren
+
+
+Changes from 2.65.5 (build 170613) to 2.65.6 (build 170615) Jun 15, 2017
+-Fixed issue: DateTime increased when going forward and back (Olle Haerstedt)
+-Fixed issue: Missing hash column in notifications table (Olle Haerstedt)
+-Fixed issue: Replacement fields are unsorted (Carsten Schmitz)
+-Fixed issue: Replacement fields editor not properly working (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Turkish by kayazeren
+
+
+Changes from 2.65.4 (build 170612) to 2.65.5 (build 170613) Jun 13, 2017
+-Fixed issue: Date questions do not properly save the date
+-Fixed issue #11868: Zlib library missing (Carsten Schmitz)
+-Fixed issue #11995: Removing language from global settings produces fatal error (Carsten Schmitz)
+-Fixed issue #12031:Download files button in Response detail screen mislabelled (Carsten Schmitz)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+
+Changes from 2.65.3 (build 170607) to 2.65.4 (build 170612) Jun 12, 2017
+-Fixed issue #12225: [security] Cross-Site Scripting (Denis Chenu)
+-Fixed issue #12417: Error when creating a question group multiple languages and using MSSQL (Carsten Schmitz)
+-Fixed issue #12463: "Quick add.." replace function does not work anymore (Denis Chenu)
+-Fixed issue: Fixed confusing captcha (markusfluer)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Dutch by DonMul, Han
+#Updated translation: Dutch (Informal) by DonMul, Han
+#Updated translation: Italian by darpao, lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Slovenian by lado
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.65.2 (build 170606) to 2.65.3 (build 170607) Jun 7, 2017
+-Fixed issue: LimeSurvey logos too big
+-Fixed issue #12460: Filtering statistics based on numeric question details (e.g. "Number less than X") has no effect (LouisGac)
+#Updated translation: French (France) by arnaud21
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+
+Changes from 2.65.1 (build 170522) to 2.65.2 (build 170606) June 6, 2017
+-New feature: Add some collapse feature to remotecontrol function list (Denis Chenu)
+-New feature: RemoteControl : allow to get all attributes in get function (Denis Chenu)
+-Fixed issue #12368: RemoteControl: properties that are available are not shown (Denis Chenu)
+-Fixed issue #12372: Unsuitable CAPTCHA (markusfluer)
+-Fixed issue #12432: Reflected XSS in Notifications (thanks to mrbreaker) (Denis Chenu)
+-Fixed issue #12433: [security] Reflected XSS (Thanks to mrbreaker) (Denis Chenu)
+-Fixed issue #12436: [security] Potential SQL injection through Notifications (Denis Chenu)
+-Fixed issue #12450: DataEntry not opening with array filter questions (Tõnis Ormisson)
+-Fixed issue #12452: Numeric vars are treated as string during comparison (Carsten Schmitz)
+-Fixed issue: Saveall display even if completed (ImperatorTheo)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Spanish (Chile) by jrojas
+#Updated translation: Turkish by kayazeren
+
+Changes from 2.65.0 (build 170502) to 2.65.1 (build 170522) May 22, 2017
+-Fixed issue #12258: Incorrect date validation when using mm-yyyy dateformat (Olle Haerstedt)
+-Fixed issue #12371: 5-point array question with semantic differential has bold font on left side and normal font on right side (LouisGac)
+-Fixed issue #12372: Unsuitable CAPTCHA (Carsten Schmitz)
+-Fixed issue #12379: Audit Plugin: Property "PluginDynamic.reason" is not defined on Response Table Import (Carsten Schmitz)
+-Fixed issue: [security] Weakness in survey import code replacement (Carsten Schmitz)
+#Updated translation: Arabic by DeveloperChris
+#Updated translation: Bosnian by dichteros
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Hong Kong) (Traditional) by oc25
+#Updated translation: Dutch by Han
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Indonesian by ysulistya, radhwaw
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by femariso, mauriciofurtado
+#Updated translation: Portuguese (Portugal) by samarta
+#Updated translation: Thai by tomzt
+
+Changes from 2.64.7 (build 170404) to 2.65.0 (build 170502) May 2, 2017
+-New feature: Add massive set-expiry to survey-list (Tõnis Ormisson)
+-New feature: LDAP auth group filtering, support for $userdn (Enrico Polesel)
+-New feature: Option to reset response ID when copying a survey (Carsten Schmitz)
+-Fixed issue #12154: production CSS files contains info about *.css.map (LouisGac)
+-Fixed issue #12179: Missing translation in panel integration settings (Carsten Schmitz)
+-Fixed issue #12235: the template model of the administration interface changes the color of a template button (LouisGac)
+-Fixed issue #12237: Tips are missing in "General options" (Tõnis Ormisson)
+-Fixed issue #12263: Error when uploading additional file in template editor (Carsten Schmitz)
+-Fixed issue #12267: Quotas quick report (export to .csv) is missing (LouisGac)
+-Fixed issue #12270: [security] XSS Vulnerability (Matthew)
+-Fixed issue: IP address always saved even if not activated in survey settings (LouisGac)
+-Fixed issue: wrong url generation for survey new test, that could lead to session problem when combined with wrong resources url (eg: favicon). (LouisGac)
+-Fixed wrong URL at instructions for adding your own logo to a template (Marcel Minke)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Croatian by kmilojev
+#Updated translation: Czech by jelen1
+#Updated translation: Finnish by tigger, jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by actxcellence, c_schmitz
+#Updated translation: German (Informal) by actxcellence, c_schmitz, Rolime
+#Updated translation: Hungarian by fcsanyi, kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Portuguese (Brazil) by holch, mauriciofurtado
+#Updated translation: Portuguese (Portugal) by holch, devUSIT, samarta
+#Updated translation: Russian by ddrmoscow, c0der, vipgroup
+#Updated translation: Valencian by joamuran
+
 Changes from 2.64.6 (build 170332) to 2.64.7 (build 170404) Apr 4, 2017
 -Fixed issue #12187: invitation mails are not being sent using json-rpc (brammeleman)
 -Fixed issue #12249: This survey does not work with quota (Denis Chenu)
 -Fixed issue #12254: CSRF issue in admin after testing a survey (Carsten Schmitz)
 -Fixed issue: Collation error in token import when the file charset is not properly detected (Carsten Schmitz)
-#Updated translation: Czech by c_schmitz
+#Updated translation: Czech
 #Updated translation: Dutch by Han
 #Updated translation: Dutch (Informal) by Han
 #Updated translation: Hungarian by kkd
 #Updated translation: Norwegian (Bokmål) by pmonstad
 #Updated translation: Norwegian (Nynorsk) by pmonstad
-#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Portuguese (Portugal) by samarta
 
 
 Changes from 2.64.5 (build 170331) to 2.64.6 (build 170332) Mar 31, 2017
@@ -386,7 +692,7 @@ Changes from 2.57.0 (build 161202) to 2.57.1 (build 161205) Dec 5 2016
 #Updated translation: Kyrgyz by kmaksat
 #Updated translation: Norwegian (Bokmål) by pmonstad
 #Updated translation: Norwegian (Nynorsk) by pmonstad
-#Updated translation: Spanish (Spain) by c_schmitz, aesteban
+#Updated translation: Spanish (Spain) by aesteban
 
 Changes from  2.56.1 (build 161117) to 2.57.0 (build 161202) Dec 2 2016
 -New feature: Single table PDF export in statistics
@@ -440,7 +746,7 @@ Changes from  2.55.3 (build 161111) to 2.56 (build 161117) Nov 17 2016
 -New feature #11741: Login limesurvey using the email address (Louis Gac)
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: French (France) by DenisChenu
-#Updated translation: Greek by c_schmitz, kiolalis
+#Updated translation: Greek by kiolalis
 #Updated translation: Portuguese (Brazil) by holch
 #Updated translation: Russian by ddrmoscow, t6nnp6nn, vipgroup
 #Updated translation: Vietnamese by rinodung
@@ -523,7 +829,7 @@ Changes from  2.54.3 (build 161014) to 2.54.4 (build 161018) Oct 18, 2016
 -Fixed issue #11806: Blank page in conditions (Olle Haerstedt)
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: Dutch by kpadm, Han
-#Updated translation: Dutch (Informal) by c_schmitz, Han
+#Updated translation: Dutch (Informal) by Han
 #Updated translation: Finnish by jeskiv
 #Updated translation: German by Joffm, c_schmitz
 #Updated translation: Italian by lfanfoni
@@ -622,11 +928,11 @@ Changes from  2.52 (build 160908) to 2.53 (build 161004) Oct 04, 2016
 -Fixed issue: SQL error with postgresql when filling integer fields in tokens list (Alfredo Esteban)
 -Fixed issue: UID not logged when creating token (Alfredo Esteban)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Danish by c_schmitz
+#Updated translation: Danish
 #Updated translation: Finnish by tigger, jeskiv
 #Updated translation: French (France) by arnaud21
 #Updated translation: German (Informal) by c_schmitz, ecoplan
-#Updated translation: Hungarian by c_schmitz
+#Updated translation: Hungarian
 #Updated translation: Italian by lfanfoni
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Norwegian (Bokmål) by pmonstad
@@ -791,7 +1097,7 @@ Changes from  2.50.1 (build 160823) to 2.51.0 (build 160829) Aug 29, 2016
 -Fixed issue: Untranslated text for example question (Carsten Schmitz)
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: Chinese (Simplified) by yanglaw, popcorner, liudidi
-#Updated translation: Dutch by c_schmitz, Han
+#Updated translation: Dutch by Han
 #Updated translation: Dutch (Informal) by Han
 #Updated translation: French (France) by arnaud21
 #Updated translation: German by c_schmitz
@@ -876,7 +1182,7 @@ Changes from 2.50+ (build 160810) to 2.50+ (build 160812) Aug 12, 2016
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elisa
 #Updated translation: Polish (Informal) by elisa
-#Updated translation: Swedish by c_schmitz, maxzomborszki
+#Updated translation: Swedish by maxzomborszki
 
 Changes from 2.50+ (build 160804) to 2.50+ (build 160810) Aug 10, 2016
 -Fixed issue #11497: Lack of padding when survey menu shrinks to two rows (markusfluer)
@@ -1207,8 +1513,8 @@ Changes from 2.50+ (build 160606) to 2.50+ (build 160613) June 13, 2016
 -Fixed issue: Question index menu doesn't show active item. (LouisGac)
 -Fixed issue: Survey list, sort arrow direction not updated when sorting by a column (LouisGac)
 #Updated translation: Catalan by qualitatuvic
-#Updated translation: Chinese (Simplified) by c_schmitz, yooyooh, yanglaw, zhoubin86282972
-#Updated translation: Croatian by c_schmitz, rovinj
+#Updated translation: Chinese (Simplified) by yooyooh, yanglaw, zhoubin86282972
+#Updated translation: Croatian by rovinj
 #Updated translation: Dutch by Han
 #Updated translation: Dutch (Informal) by Han
 #Updated translation: Estonian by t6nnp6nn
@@ -1405,7 +1711,7 @@ Changes from 2.50+ (build 160517) to 2.50+ (build 160523) May 23, 2016
 #Updated translation: German by c_schmitz
 #Updated translation: Hebrew by devbyu
 #Updated translation: Indonesian by radhwaw
-#Updated translation: Latvian by c_schmitz, vipgroup, marcic
+#Updated translation: Latvian by vipgroup, marcic
 #Updated translation: Norwegian (Bokmal) by pmonstad
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elisa
@@ -1414,7 +1720,7 @@ Changes from 2.50+ (build 160517) to 2.50+ (build 160523) May 23, 2016
 Changes from 2.50+ (build 160516) to 2.50+ (build 160517) May 17, 2016
 -Fixed issue: Can't add answer options
 #Updated translation: French (France) by arnaud21
-#Updated translation: Hungarian by c_schmitz, hunkissleslie, Kengo06
+#Updated translation: Hungarian by hunkissleslie, Kengo06
 #Updated translation: Indonesian by radhwaw
 #Updated translation: Italian by lfanfoni
 #Updated translation: Italian (Informal) by lfanfoni
@@ -1765,7 +2071,7 @@ Changes from 2.50+ (build 160414) to 2.50+ (build 160415) Apr 14, 2016
 #Updated translation: Norwegian (Nynorsk) by pmonstad
 #Updated translation: Polish by elisa
 #Updated translation: Polish (Informal) by elisa
-#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Portuguese (Portugal) by samarta
 #Updated translation: Ukrainian
 
 Changes from 2.50+ (build 160413) to 2.50+ (build 160414) Apr 13, 2016
@@ -2445,7 +2751,7 @@ Changes from 2.50+ (build 160204) to 2.50+ (build 160206) Feb 6, 2016
 #Updated translation: Catalan by qualitatuvic
 #Updated translation: Dutch by Han
 #Updated translation: Dutch (Informal) by coeneisma, Han
-#Updated translation: French (France) by c_schmitz, arnaud21
+#Updated translation: French (France) by arnaud21
 #Updated translation: Italian by lfanfoni
 #Updated translation: Italian (Informal) by lfanfoni
 #Updated translation: Japanese by nomoto

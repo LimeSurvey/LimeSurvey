@@ -124,6 +124,51 @@ class responses extends Survey_Common_Action
 
 
     /**
+    * View a single response as queXML PDF
+    *
+    * @param mixed $iSurveyID
+    * @param mixed $iId
+    * @param mixed $sBrowseLang
+    */
+    public function viewquexmlpdf($iSurveyID, $iId, $sBrowseLang = '')
+    {
+        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        {
+            $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
+            $sBrowseLanguage = $aData['language'];
+
+		    Yii::import("application.libraries.admin.quexmlpdf",TRUE);
+
+            $quexmlpdf = new quexmlpdf();
+
+            // Setting the selected language for printout
+            App()->setLanguage($sBrowseLanguage);
+
+            $quexmlpdf->setLanguage($sBrowseLanguage);
+
+            set_time_limit(120);
+
+            Yii::app()->loadHelper('export');
+
+            $quexml = quexml_export($iSurveyID,$sBrowseLanguage,$iId);
+
+            $quexmlpdf->create($quexmlpdf->createqueXML($quexml));
+
+            $quexmlpdf->Output("$iSurveyID-$iId-queXML.pdf",'D');
+        }
+        else
+        {
+            $aData = array();
+            $aData['surveyid'] = $iSurveyID;
+            $message = array();
+            $message['title']= gT('Access denied!');
+            $message['message']= gT('You do not have permission to access this page.');
+            $message['class']= "error";
+            $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
+        }
+    }   
+
+    /**
     * View a single response in detail
     *
     * @param mixed $iSurveyID
@@ -513,11 +558,16 @@ class responses extends Survey_Common_Action
     */
     public function actionDelete($surveyid)
     {
+        Yii::import('application.helpers.admin.ajax_helper', true);
+
         $iSurveyId = (int) $surveyid;
         if (Permission::model()->hasSurveyPermission($iSurveyId,'responses','delete'))
         {
             $ResponseId  = ( Yii::app()->request->getPost('sItems') != '') ? json_decode(Yii::app()->request->getPost('sItems')):json_decode(Yii::app()->request->getPost('sResponseId'), true);
             $aResponseId = (is_array($ResponseId))?$ResponseId:array($ResponseId);
+
+            $errors = 0;
+            $timingErrors = 0;
 
             foreach($aResponseId as $iResponseId)
             {
@@ -526,14 +576,33 @@ class responses extends Survey_Common_Action
                 $beforeDataEntryDelete->set('iResponseID',$iResponseId);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryDelete);
 
-                Response::model($iSurveyId)->findByPk($iResponseId)->delete(true);
-                $oSurvey=Survey::model()->findByPk($iSurveyId);
-                if($oSurvey->savetimings == "Y"){// TODO : add it to response delete (maybe test if timing table exist)
-                    SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
+                $response = Response::model($iSurveyId)->findByPk($iResponseId);
+                if ($response) {
+                    $result = $response->delete(true);
+                } else {
+                    $errors++;
+                }
+
+                if (!$result) {
+                    $errors++;
+                } else {
+                    $oSurvey=Survey::model()->findByPk($iSurveyId);
+                    // TODO : add it to response delete (maybe test if timing table exist)
+                    if ($oSurvey->savetimings == "Y") {
+                        $result = SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
+                        if (!$result) {
+                            $timingErrors++;
+                        }
+                    }
                 }
             }
 
-            return $aResponseId;
+            if ($errors == 0 && $timingErrors == 0) {
+                ls\ajax\AjaxHelper::outputSuccess(gT('Response(s) deleted.'));
+            } else {
+                ls\ajax\AjaxHelper::outputError(gT('Error during response deletion.'));
+            }
+
         }
     }
 
@@ -626,6 +695,62 @@ class responses extends Survey_Common_Action
                 Yii::app()->setFlashMessage(gT("The requested files do not exist on the server."),'error');
                 $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$iSurveyId));
             }
+        }
+    }
+
+    /**
+     * Delete all uploaded files for one response.
+     * @return void
+     */
+    public function actionDeleteAttachments()
+    {
+        Yii::import('application.helpers.admin.ajax_helper', true);
+
+        $request     = Yii::app()->request;
+        $surveyid    = (int) $request->getPost('surveyid');
+        $sid         = (int) $request->getPost('sid');
+        $surveyId    = $sid ? $sid : $surveyid;
+        $responseId  = (int) $request->getPost('sResponseId');
+        $stringItems = json_decode($request->getPost('sItems'));
+        // Cast all ids to int.
+        $items       = array_map(
+            function ($id) {
+                return (int) $id;
+            },
+            is_array($stringItems) ? $stringItems : array()
+        );
+        $responseIds = $responseId ? array($responseId) : $items;
+
+        $allErrors = array();
+        $allSuccess = 0;
+
+        if (Permission::model()->hasSurveyPermission($surveyId, 'responses', 'delete')) {
+            foreach ($responseIds as $responseId) {
+                $response = Response::model($surveyId)->findByPk($responseId);
+                if (!empty($response)) {
+                    list($success, $errors) = $response->deleteFilesAndFilename();
+                    if (empty($errors)) {
+                        $allSuccess += $success;
+                    } else {
+                        // Could not delete all files.
+                        $allErrors = array_merge($allErrors, $errors);
+                    }
+                } else {
+                    $allErrors[] = sprintf(gT('Found no response with ID %d'), $responseId);
+                }
+            }
+
+            if ($allErrors) {
+                ls\ajax\AjaxHelper::outputError(
+                    gT('Error: Could not delete some files: ') . implode(', ', $allErrors)
+                );
+            } else {
+                // All is OK.
+                ls\ajax\AjaxHelper::outputSuccess(sprintf(ngT('%d file deleted.|%d files deleted.',$allSuccess), $allSuccess));
+            }
+        } else {
+            // No permission.
+            ls\ajax\AjaxHelper::outputNoPermission();
         }
     }
 
@@ -919,6 +1044,25 @@ class responses extends Survey_Common_Action
         // No files : redirect to browse with a alert
         Yii::app()->setFlashMessage(gT("Sorry, there are no files for this response."),'error');
         $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$iSurveyID));
+    }
+
+
+
+    /**
+     * Responsible for setting the session variables for attribute map page redirect
+     * @todo Use user session?
+     * @todo Used?
+     */
+    public function setSession($unset=false, $sid=null)
+    {
+        if (!$unset){
+            unset(Yii::app()->session['responsesid']);
+            Yii::app()->session['responsesid'] = Yii::app()->request->getPost('itemsid');
+        }else{
+            unset(Yii::app()->session['responsesid']);
+            $this->getController()->redirect(array("admin/export","sa"=>"exportresults","surveyid"=>$sid));
+        }
+
     }
 
     /**

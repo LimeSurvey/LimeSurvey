@@ -1418,6 +1418,7 @@ class questionHelper
                 "sortorder"=>1000,
                 "i18n"=>false,
                 "readonly"=>false,
+                "readonly_when_active"=>false,
             );
             foreach($aQuestionTypeAttribute as $attribute=>$settings)
             {

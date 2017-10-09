@@ -35,6 +35,11 @@ class Authentication extends Survey_Common_Action
      */
     public function index()
     {
+        /* Set adminlang to the one set in dropdown */
+        if(Yii::app()->request->getPost('loginlang','default')!='default') {
+            Yii::app()->session['adminlang'] = Yii::app()->request->getPost('loginlang','default');
+            Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
+        }
         // The page should be shown only for non logged in users
         $this->_redirectIfLoggedIn();
 
@@ -223,12 +228,9 @@ class Authentication extends Survey_Common_Action
     {
         $this->_redirectIfLoggedIn();
 
-        if (!Yii::app()->request->getPost('action'))
-        {
+        if (!Yii::app()->request->getPost('action')) {
             $this->_renderWrappedTemplate('authentication', 'forgotpassword');
-        }
-        else
-        {
+        } else {
             $sUserName = Yii::app()->request->getPost('user');
             $sEmailAddr = Yii::app()->request->getPost('email');
 
@@ -237,13 +239,10 @@ class Authentication extends Survey_Common_Action
             // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"),Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
 
-            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid'])))
-            {
+            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>'.gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you').'<br>';
-            }
-            else
-            {
+                $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you').'<br>';
+            } else {
                 $aData['message'] = '<br>'.$this->_sendPasswordEmail($sEmailAddr, $aFields).'</br>';
             }
             $this->_renderWrappedTemplate('authentication', 'message', $aData);
@@ -278,7 +277,7 @@ class Authentication extends Survey_Common_Action
         {
             User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
-            $sMessage = gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you');
+            $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you');
         }
         else
         {
@@ -373,6 +372,7 @@ class Authentication extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
+        $aData['language'] = Yii::app()->getLanguage() != Yii::app()->getConfig("defaultlang") ? Yii::app()->getLanguage() : 'default';
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

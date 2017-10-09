@@ -49,6 +49,12 @@
     // Build the javasript variables to pass to the page
 ?>
 <script type="text/javascript">
+    var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/setSession"); ?>";
+
+    /*
+        Most of those variable were for jQgrid and are not use anymore
+        TODO: clean it
+    */
     var sAddParticipantToCPDBText = '<?php eT("Add participants to central database",'js');?>';
     var sLoadText = '<?php eT("Loading...",'js');?>';
     var sSelectRowMsg = "<?php eT("Please select at least one participant.", 'js') ?>";
@@ -77,7 +83,7 @@
     var delmsg = "<?php eT("Are you sure you want to delete the selected entries?") ?>";
     var surveyID = "<?php echo $surveyid; ?>";
     var jsonUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/getTokens_json/surveyid/{$surveyid}"); ?>";
-    var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/participants/sa/setSession"); ?>";
+
     var editUrl = "<?php echo Yii::app()->getController()->createUrl("admin/tokens/sa/editToken/surveyid/{$surveyid}"); ?>";
     var sEmptyRecords ='<?php eT("Participant table is empty.",'js');?>';
     var sCaption ='';
@@ -174,8 +180,8 @@
                                 array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto'))),
                         'itemsCssClass' =>'table-striped',
                         'columns' => $model->attributesForGrid,
-
                         'ajaxUpdate'=>true,
+                        'ajaxType'=>'POST',
                         'afterAjaxUpdate' => 'reinstallParticipantsFilterDatePicker'
                     ));
                 ?>

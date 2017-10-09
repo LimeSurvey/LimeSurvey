@@ -10,22 +10,22 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Link to manual -->
-            <div class="col-xs-6 col-md-4 col-lg-1 ">
+            <div class="col-xs-6 col-sm-4 ">
                 <a href='http://manual.limesurvey.org' onclick='function go(ev) { ev.preventDefault(); var win = window.open("http://manual.limesurvey.org", "_blank"); win.focus(); }; go(event);'>
                     <span class="glyphicon glyphicon-info-sign" id="info-footer"></span>
                 </a>
             </div>
 
             <!-- Support / Donate -->
-            <div  class="col-xs-6 col-md-4  col-lg-5 text-right"  >
+            <div  class="col-xs-6 col-sm-4 text-center"  >
                 <a href='http://donate.limesurvey.org' target="_blank">
                     <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
 
             <!-- Lime survey website -->
-            <div class="col-xs-6 col-md-4 col-lg-6 text-right">
-                <a  title='<?php eT("Visit our website!"); ?>' href='http://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber.$buildtext;?>
+            <div class="col-xs-12 col-sm-4 text-right">
+                <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber.$buildtext;?>
             </div>
         </div>
     </div>

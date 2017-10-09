@@ -32,14 +32,14 @@
 //the complicated default slider setting will be simplified header_remove
 //Three cases:
 //  1: posted value safed
-//  2: default value set 
+//  2: default value set
 //  3: slider starts in middle position
 
 $sliderStart = 'null';
 if($dispVal) //posted value => higest priority
 {
     $sliderStart = $dispVal;
-} 
+}
 else if($slider_default) //
 {
     $sliderStart = $slider_default;
@@ -65,7 +65,7 @@ else if($slider_middlestart==1) //
         <?php endif;?>
         <div>
 
-        <div class='slider-container row'>
+        <div class='slider-container row slider-untouched'>
             <div class='col-xs-12 col-sm-<?php echo $tiwidth; ?>'>
                         <?php if (!empty($sliderright) || !empty($sliderleft)): ?>
                             <span class='pull-left col-xs-12 col-sm-3 slider-left-span'><?php echo $sliderleft;?></span>
@@ -184,6 +184,7 @@ else if($slider_middlestart==1) //
                     // we need to show the tooltip (if it was hidden)
                     // and to update the value of the input element with correct format
                     theSlider.on('slideStart', function(){
+                        $('#javatbd' + myfname).find('.slider-container').removeClass('slider-untouched').removeClass('slider-reset').addClass('slider-touched');
                         $('#javatbd' + myfname).find('div.tooltip').show(); // Show the tooltip
                         value = $inputEl.val(); // We get the current value of the bootstrapSlider
                         //console.log('value', value);
@@ -203,6 +204,7 @@ else if($slider_middlestart==1) //
 
                     // Click the reset button
                     $('#answer' + '<?php echo $myfname; ?>' + '_resetslider').on('click', function() {
+                        $('#javatbd' + myfname).find('.slider-container').removeClass('slider-touched').addClass('slider-reset');
                         $('#javatbd' + myfname).find('div.tooltip').hide();
 
                         // Position slider button at beginning

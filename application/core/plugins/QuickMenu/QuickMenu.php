@@ -551,29 +551,22 @@ class QuickMenu extends \ls\pluginmanager\PluginBase
 
     public function newDirectRequest()
     {
+        if ($this->event->get('target') != "QuickMenu") {
+            return; // Allow other plugin action
+        }
         $user = $this->api->getCurrentUser();
-
-        if ($user === false || $user === null)
-        {
-            throw new CException("Invalid request: user is not logged in or does not exist");
+        if ($user === false || $user === null) {
+            throw new \CException("Invalid request: user is not logged in or does not exist");
         }
 
         $event = $this->event;
-        if ($event->get('target') == "QuickMenu")
-        {
-            // you can get other params from the request object
-            $request = $event->get('request');
-
-            $functionToCall = $event->get('function');
-
-            if ($functionToCall == 'saveOrder')
-            {
-                echo $this->saveOrder($request);
-            }
-            else
-            {
-                throw new \CException("Invalid request: not supported method: " . $functionToCall);
-            }
+        // you can get other params from the request object
+        $request = $event->get('request');
+        $functionToCall = $event->get('function');
+        if ($functionToCall == 'saveOrder') {
+            echo $this->saveOrder($request);
+        } else {
+            throw new \CException("Invalid request: not supported method: " . $functionToCall);
         }
     }
 }

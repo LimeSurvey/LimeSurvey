@@ -79,7 +79,7 @@
                         'header' => gT('Owner'),
                         'name' => 'owner',
                         'type' => 'raw',
-                        'value'=>'CHtml::link($data->owner->users_name, Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
+                        'value'=>'CHtml::link(CHtml::encode($data->owner->users_name), Yii::app()->createUrl("admin/survey/sa/view/",array("surveyid"=>$data->sid)))',
                         'headerHtmlOptions'=>array('class' => 'hidden-md hidden-sm hidden-xs'),
                         'htmlOptions' => array('class' => 'hidden-md hidden-sm hidden-xs has-link'),
                     ),

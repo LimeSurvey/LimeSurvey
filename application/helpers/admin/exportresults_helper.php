@@ -56,7 +56,7 @@ class ExportSurveyResultsService
     * @param mixed $sLanguageCode
     * @param csv|doc|pdf|xls $sExportPlugin Type of export
     * @param FormattingOptions $oOptions
-    * @param string $sFilter 
+    * @param string $sFilter               
     */
     function exportSurvey($iSurveyId, $sLanguageCode, $sExportPlugin, FormattingOptions $oOptions, $sFilter = '')
     {
@@ -105,9 +105,8 @@ class ExportSurveyResultsService
         $surveyDao = new SurveyDao();
         $survey = $surveyDao->loadSurveyById($iSurveyId, $sLanguageCode);
         $writer->init($survey, $sLanguageCode, $oOptions);
-                
-        $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState);
         
+        $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
         $writer->write($survey, $sLanguageCode, $oOptions,true);
         $result = $writer->close();
         

@@ -27,7 +27,6 @@ if (!defined('BASEPATH'))
  * @property string $adminemail
  * @property string $anonymized
  * @property string $faxto
- * @property string $format
  * @property string $savetimings
  * @property string $template Template name
  * @property string $language
@@ -45,7 +44,6 @@ if (!defined('BASEPATH'))
  * @property string $publicstatistics
  * @property string $publicgraphs
  * @property string $listpublic
- * @property string $htmlemail
  * @property string $sendconfirmation
  * @property string $tokenanswerspersistence
  * @property string $assessments
@@ -94,9 +92,12 @@ class Survey extends LSActiveRecord
      * @var array
      */
     protected $findByPkCache = array();
-    /* Default settings for new survey */
-    /* This settings happen for whole new Survey, not only admin/survey/sa/newsurvey */
+
+    /** @var string  A : All in one, G : Group by group, Q : question by question */
     public $format = 'G';
+    /**
+     * @property string $htmlemail Y mean all email related to this survey use HTML format
+     */
     public $htmlemail='Y';
 
     public $full_answers_account=null;
@@ -140,6 +141,32 @@ class Survey extends LSActiveRecord
         {
             return $this->languagesettings[$this->language]->surveyls_title;
         }
+    }
+
+    /**
+     * Return the language of the current survey
+     * It can be:
+     *  - the selected language by user via the language selector (POST then Session)
+     *  - the selected language via URL (GET then Session)
+     *  - the survey default language
+     *
+     * @return string the correct language 
+     */
+    public function getLanguageForSurveyTaking()
+    {
+        // Default: the survey language
+        $sLang =  $this->language;
+
+        if (Yii::app()->request->getParam('lang', null) !== null){
+            // POST or GET
+            $sLang = Yii::app()->request->getParam('lang');
+        }else{
+            // SESSION
+            if (isset(Yii::app()->session['survey_'.$this->sid]['s_lang'])){
+                $sLang = Yii::app()->session['survey_'.$this->sid]['s_lang'] ;
+            }
+        }
+        return $sLang;
     }
 
     /**
@@ -607,7 +634,7 @@ class Survey extends LSActiveRecord
     *
     * @access public
     * @param int $iSurveyID
-    * @param bool @recursive
+    * @param bool $recursive
     * @return boolean
     */
     public function deleteSurvey($iSurveyID, $recursive=true)
@@ -690,6 +717,9 @@ class Survey extends LSActiveRecord
                     //Remove any survey_links to the CPDB
                     SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
                     Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
+
+                    // Delete all uploaded files.
+                    rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID);
                 }
                 return true;
             }
@@ -746,11 +776,19 @@ class Survey extends LSActiveRecord
         $condition = array('sid' => $iSurveyID, 'language' => $baselang);
 
         //// TODO : replace this with a HAS MANY relation !
-        $sumresult1 = Survey::model()->with(array('languagesettings'=>array('condition'=>'surveyls_language=language')))->find('sid = :surveyid', array(':surveyid' => $iSurveyID)); //$sumquery1, 1) ; //Checked
+        $sumresult1 = Survey::model()->with(
+            array(
+                'languagesettings' => array(
+                    'condition' => 'surveyls_language = language'
+                )
+            ))->find(
+                'sid = :surveyid',
+                array(':surveyid' => $iSurveyID)
+            ); //$sumquery1, 1) ; //Checked
         if (is_null($sumresult1))
         {
             Yii::app()->session['flashmessage'] = gT("Invalid survey ID");
-            $this->getController()->redirect(array("admin/index"));
+            Yii::app()->getController()->redirect(array("admin/index"));
         } //  if surveyid is invalid then die to prevent errors at a later time
         $surveyinfo = $sumresult1->attributes;
         $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
@@ -1247,6 +1285,7 @@ class Survey extends LSActiveRecord
         return 'N';
     }
 
+
     /**
     * Method to make an approximation on how long a survey will last
     * Approx is 3 questions each minute.
@@ -1312,5 +1351,38 @@ class Survey extends LSActiveRecord
         $criteria->addCondition('parent_qid != 0');
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
         Question::model()->deleteAll($criteria);// Must log count of deleted ?
+    }
+
+    /**
+     * Returns true if this survey has any question of type $type.
+     * @param char $type Question type, like 'L', 'T', etc.
+     * @param boolean $includeSubquestions If true, will also check the types of subquestions.
+     * @return boolean
+     */
+    public function hasQuestionType($type, $includeSubquestions = false)
+    {
+        if (!is_string($type) || strlen($type) !== 1) {
+            throw new InvalidArgumentException('$type must be a string of length 1');
+        }
+
+        if ($includeSubquestions) {
+            $joinCondition =
+                '{{questions.sid}} = {{surveys.sid}} AND {{questions.type}} = :type';
+        } else {
+            $joinCondition =
+                '{{questions.sid}} = {{surveys.sid}} AND {{questions.parent_qid}} = 0 AND {{questions.type}} = :type';
+        }
+
+        $result = Yii::app()->db->createCommand()
+            ->select('{{surveys.sid}}')
+            ->from('{{surveys}}')
+            ->join(
+                '{{questions}}',
+                $joinCondition,
+                array(':type' => $type)
+            )
+            ->where('{{surveys.sid}} = :sid', array(':sid' => $this->sid))
+            ->queryRow();
+        return $result !== false;
     }
 }

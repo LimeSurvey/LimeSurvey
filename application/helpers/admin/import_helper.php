@@ -30,7 +30,7 @@ function XMLImportGroup($sFullFilePath, $iNewSID)
     $xml                   = simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
 
 
-    if ($xml==false || $xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
+    if ($xml===false || $xml->LimeSurveyDocType!='Group') safeDie('This is not a valid LimeSurvey group structure XML file.');
 
     $iDBVersion = (int) $xml->DBVersion;
     $aQIDReplacements=array();
@@ -858,6 +858,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
     $results['quota']=0;
     $results['quotals']=0;
     $results['quotamembers']=0;
+    $results['plugin_settings']=0;
     $results['survey_url_parameters']=0;
     $results['importwarnings']=array();
 
@@ -1538,6 +1539,34 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
     }
 
+    // Import Survey plugins settings
+    if(isset($xml->plugin_settings)) {
+        $pluginNamesWarning=array(); // To shown not exist warning only one time.
+        foreach ($xml->plugin_settings->rows->row as $row)
+        {
+            // Find plugin id
+            if(isset($row->name)) {
+                $oPlugin = Plugin::model()->find("name = :name",array(":name"=>$row->name));
+                if($oPlugin) {
+                    $setting = new PluginSetting;
+                    $setting->plugin_id = $oPlugin->id;
+                    $setting->model = "Survey";
+                    $setting->model_id = $iNewSID;
+                    $setting->key = (string) $row->key;
+                    $setting->value = (string) $row->value;
+                    if($setting->save()) {
+                        $results['plugin_settings']++;
+                    } else {
+                        $results['importwarnings'][] = sprintf(gT("An error happen when try to save %s for plugin %s"),CHtml::encode($row->key),CHtml::encode($row->name));
+                    }
+                } elseif(!isset($pluginNamesWarning[(string)$row->name])) {
+                    $results['importwarnings'][] = sprintf(gT("Plugin %s didn't exist, settings not imported"),CHtml::encode($row->name));
+                    $pluginNamesWarning[(string)$row->name] = 1;
+                }
+            }
+        }
+    }
+
     // Set survey rights
     Permission::model()->giveAllSurveyPermissions(Yii::app()->session['loginID'],$iNewSID);
     $aOldNewFieldmap=reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDReplacements);
@@ -1764,6 +1793,7 @@ function CSVImportResponses($sFullFilePath,$iSurveyId,$aOptions=array())
     $aRealFieldNames = Yii::app()->db->getSchema()->getTable(SurveyDynamic::model($iSurveyId)->tableName())->getColumnNames();
     //$aCsvHeader=array_map("trim",explode($aOptions['sSeparator'], trim(array_shift($aFileResponses))));
     $aCsvHeader=str_getcsv(array_shift($aFileResponses),$aOptions['sSeparator'],$aOptions['sQuoted']);
+    LimeExpressionManager::SetDirtyFlag($iSurveyId); // Be sure survey EM code are up to date
     $aLemFieldNames=LimeExpressionManager::getLEMqcode2sgqa($iSurveyId);
     $aKeyForFieldNames=array();// An array assicated each fieldname with corresponding responses key
     if(!$aCsvHeader){
@@ -2121,19 +2151,15 @@ function TSVImportSurvey($sFullFilePath)
 
     $file = stream_get_contents($handle);
     fclose($handle);
-
     // fix Excel non-breaking space
     $file = str_replace("0xC20xA0",' ',$file);
     // Replace all different newlines styles with \n
     $file = preg_replace('~\R~u', "\n", $file);
-    $filelines = explode("\n",$file);
-    $row = array_shift($filelines);
-    $headers = explode("\t",$row);
-    $rowheaders = array();
-    foreach ($headers as $header)
-    {
-        $rowheaders[] = trim($header);
-    }
+    $tmp = fopen('php://temp', 'r+');
+    fwrite($tmp,$file);
+    rewind($tmp);
+    $rowheaders = fgetcsv($tmp,0,"\t",'"');
+    $rowheaders = array_map('trim',$rowheaders);
     // remove BOM from the first header cell, if needed
     $rowheaders[0] = preg_replace("/^\W+/","",$rowheaders[0]);
     if (preg_match('/class$/',$rowheaders[0]))
@@ -2142,12 +2168,9 @@ function TSVImportSurvey($sFullFilePath)
     }
 
     $adata = array();
-    foreach ($filelines as $rowline)
-    {
+    while (($row = fgetcsv($tmp,0,"\t",'"')) !== FALSE) {
         $rowarray = array();
-        $row = explode("\t",$rowline);
-        for ($i = 0; $i < count($rowheaders); ++$i)
-        {
+        for ($i = 0; $i < count($rowheaders); ++$i) {
             $val = (isset($row[$i]) ? $row[$i] : '');
             // if Excel was used, it surrounds strings with quotes and doubles internal double quotes.  Fix that.
             if (preg_match('/^".*"$/',$val))
@@ -2158,7 +2181,7 @@ function TSVImportSurvey($sFullFilePath)
         }
         $adata[] = $rowarray;
     }
-
+    fclose($tmp);
     $results['defaultvalues']=0;
     $results['answers']=0;
     $results['surveys']=0;

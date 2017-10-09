@@ -2821,7 +2821,7 @@ function SendEmailMessage($body, $subject, $to, $from, $sitename, $ishtml=false,
     $sent=$mail->Send();
     $maildebug=$mail->ErrorInfo;
     if ($emailsmtpdebug>0) {
-        $maildebug .= '<li>'. gT('SMTP debug output:').'</li><pre>'.strip_tags(ob_get_contents()).'</pre>';
+        $maildebug .= '<br><strong>'. gT('SMTP debug output:').'</strong><pre>'.\CHtml::encode(ob_get_contents()).'</pre>';
         ob_end_clean();
     }
     $maildebugbody=$mail->Body;
@@ -3472,6 +3472,8 @@ function getNextCode($sourcecode)
 */
 function translateLinks($sType, $iOldSurveyID, $iNewSurveyID, $sString)
 {
+    $iOldSurveyID = (int)$iOldSurveyID; 
+    $iNewSurveyID = (int)$iNewSurveyID; // To avoid injection of a /e regex modifier without having to check all execution paths
     if ($sType == 'survey')
     {
         $sPattern = '(http(s)?:\/\/)?(([a-z0-9\/\.])*(?=(\/upload))\/upload\/surveys\/'.$iOldSurveyID.'\/)';
@@ -3627,6 +3629,9 @@ function safeDie($text)
     die(implode( '<br />',$textarray));
 }
 
+/**
+ * @param string $str
+ */
 function fixCKeditorText($str)
 {
     $str = str_replace('<br type="_moz" />','',$str);
@@ -3891,9 +3896,13 @@ function useFirebug()
 */
 function convertDateTimeFormat($value, $fromdateformat, $todateformat)
 {
-    Yii::import('application.libraries.Date_Time_Converter', true);
-    $date = new Date_Time_Converter($value, $fromdateformat);
-    return $date->convert($todateformat);
+    $date = DateTime::createFromFormat($fromdateformat, $value);
+    if ($date) {
+        return $date->format($todateformat);
+    } else {
+        $date = new DateTime($value);
+        return $date->format($todateformat);
+    }
 }
 
 /**
@@ -4565,7 +4574,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
             if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0]))
             {
-                $sOldCode=preg_quote($sOldCode,'/');
+                $sOldCode=preg_quote($sOldCode,'~');
                 $arQuestion->relevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->relevance,-1,$iCount);
                 $bModified = $bModified || $iCount;
                 $arQuestion->question=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->question,-1,$iCount);
@@ -4583,7 +4592,7 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
         $bModified=false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
-            $sOldCode=preg_quote($sOldCode,'/');
+            $sOldCode=preg_quote($sOldCode,'~');
             $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
             $bModified = $bModified || $iCount;
             $arGroup->description=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->description,-1,$iCount);
@@ -5362,7 +5371,7 @@ function getUserGroupList($ugid=NULL,$outputformat='optionlist')
 
             if ($gn['ugid'] == $ugid) {$selecter .= " selected='selected'"; $svexist = 1;}
             $link = Yii::app()->getController()->createUrl("/admin/usergroups/sa/view/ugid/".$gn['ugid']);
-            $selecter .=" value='{$link}'>{$gn['name']}</option>\n";
+            $selecter .=" value='{$link}'>".\CHtml::encode($gn['name'])."</option>\n";
             $simplegidarray[] = $gn['ugid'];
         }
     }
@@ -5401,7 +5410,7 @@ function getGroupUserList($ugid)
         foreach($surveynames as $sv)
         {
             $surveyselecter .= "<option";
-            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
+            $surveyselecter .=" value='{$sv['uid']}'>".\CHtml::encode($sv['users_name'])." (".\CHtml::encode($sv['full_name']).")</option>\n";
         }
     }
     $surveyselecter = "<option value='-1' selected='selected'>".gT("Please choose...")."</option>\n".$surveyselecter;
@@ -5808,7 +5817,7 @@ function getSurveyUserList($bIncludeOwner=true, $bIncludeSuperAdmins=true,$surve
             in_array($sv['uid'],$authorizedUsersList))
         {
             $surveyselecter .= "<option";
-            $surveyselecter .=" value='{$sv['uid']}'>{$sv['users_name']} {$sv['full_name']}</option>\n";
+            $surveyselecter .=" value='{$sv['uid']}'>".\CHtml::encode($sv['users_name'])." ".\CHtml::encode($sv['full_name'])."</option>\n";
             $svexist = true;
         }
     }
@@ -6132,6 +6141,48 @@ function array_diff_assoc_recursive($array1, $array2) {
     return $difference;
 }
 
+/**
+ * Calculate folder size
+ * NB: If this function is changed, please notify LimeSurvey GmbH.
+ *     An exact copy of this function is used to calculate storage
+ *     limit on LimeSurvey Pro hosting.
+ * @param string $dir Folder
+ * @return integer Size in bytes.
+ */
+function folderSize($dir)
+{
+    $size = 0;
+    foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+        if (is_file($each)) {
+            // NB: stat() can be used to calculate disk usage (instead
+            // of file size - it's not the same thing).
+            //$stat = stat($each);
+            //$tmpsize = $stat[11] * $stat[12] / 8;
+            //$size += $tmpsize;
+            $size += filesize($each);
+        } else {
+            $size += folderSize($each);
+        }
+    }
+    return $size;
+}
+
+/**
+ * Format size in human readable format.
+ * @param int $bytes
+ * @param int $decimals
+ * @return string
+ */
+function humanFilesize($bytes, $decimals = 2)
+{
+    $sz = 'BKMGTP';
+    //$factor = floor((strlen($bytes) - 1) / 3);
+    $factor = 2;
+    $string = sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+    $aLangData = getLanguageData();
+    $radix = getRadixPointData($aLangData[Yii::app()->session['adminlang']]['radixpoint']);
+    return str_replace('.', $radix['separator'], $string);
+}
 
     /**
      * @param string $sSize

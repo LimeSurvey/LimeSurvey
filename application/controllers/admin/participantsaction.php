@@ -318,14 +318,14 @@ class participantsaction extends Survey_Common_Action
         if($participantParam)
         {
             $model->attributes=$participantParam;
-        } 
+        }
         $searchcondition = $request->getPost('searchcondition');
         $searchparams = array();
         if($searchcondition)
         {
             $searchparams = explode('||', $searchcondition);
             $model->addSurveyFilter($searchparams);
-        } 
+        }
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -420,9 +420,9 @@ class participantsaction extends Survey_Common_Action
         if($participant_id)
         {
             $model = Participant::model()->findByPk($participant_id);
-            $operationType = "edit";     
+            $operationType = "edit";
         }
-        else 
+        else
         {
             $model = new Participant;
             $operationType = "add";
@@ -601,7 +601,7 @@ class participantsaction extends Survey_Common_Action
         foreach($extraAttributes as $htmlName => $attributeValue ) {
             list(,$attribute_id) = explode('_',$htmlName);
             $data = array(
-                'attribute_id'=>$attribute_id, 
+                'attribute_id'=>$attribute_id,
                 'participant_id'=>$aData['participant_id'],
                 'value' => $attributeValue
             );
@@ -1071,8 +1071,8 @@ class participantsaction extends Survey_Common_Action
         {
             $condition = explode("%7C%7C", Yii::app()->request->getPost('searchcondition',''));
             $search = Participant::model()->getParticipantsSearchMultipleCondition($condition);
-        } 
-        else 
+        }
+        else
         {
             $search = null;
         }
@@ -1125,7 +1125,7 @@ class participantsaction extends Survey_Common_Action
            $searchSelected = new CDbCriteria;
         if(!empty($chosenParticipants))
             $searchSelected->addInCondition("{{participant_id}}",$chosenParticipantsArray);
-        else 
+        else
             $searchSelected = null;
 
         if($search)
@@ -1148,7 +1148,7 @@ class participantsaction extends Survey_Common_Action
             $search = new CDbCriteria;
             $search->addInCondition("p.participant_id",$chosenParticipants);
         }
-        else 
+        else
         {
             $search = null;
         }
@@ -1166,7 +1166,7 @@ class participantsaction extends Survey_Common_Action
             $search = new CDbCriteria;
             $search->addInCondition("p.participant_id",$chosenParticipants);
         }
-        else 
+        else
         {
             $search = null;
         }
@@ -1255,7 +1255,7 @@ class participantsaction extends Survey_Common_Action
         if(Yii::app()->request->getParam('ParticipantAttributeName'))
         {
             $model->attributes=Yii::app()->request->getParam('ParticipantAttributeName');
-        } 
+        }
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -1320,20 +1320,20 @@ class participantsaction extends Survey_Common_Action
         if($attribute_id)
         {
             $model = ParticipantAttributeName::model()->findByPk($attribute_id);
-            $editType = "edit";     
+            $editType = "edit";
         }
         else
         {
             $model = new ParticipantAttributeName();
             $model->attribute_type = 'TB';
-            $editType = "new";     
+            $editType = "new";
         }
 
         // Generate HTML for alternative languages
         $languagesOfAttribute = array();
         foreach($model->participant_attribute_names_lang as $single_language)
         {
-            $languagesOfAttribute[$single_language['lang']] = $single_language['attribute_name']; 
+            $languagesOfAttribute[$single_language['lang']] = $single_language['attribute_name'];
         }
 
         $aData = array(
@@ -1341,12 +1341,12 @@ class participantsaction extends Survey_Common_Action
             'editType' => $editType,
             'languagesOfAttribute' => $languagesOfAttribute
         );
-        
+
         $allLangDetailArray = getLanguageData(false, Yii::app()->language);
         $aData['languagesForDropdown'][''] = gT("Select language to add");
         foreach($allLangDetailArray as $key=>$languageDetail)
         {
-            $aData['languagesForDropdown'][$key] = $languageDetail['description']." (".($languageDetail['nativedescription']).")"; 
+            $aData['languagesForDropdown'][$key] = $languageDetail['description']." (".($languageDetail['nativedescription']).")";
         }
 
         // Default visibility to false
@@ -1400,12 +1400,12 @@ class participantsaction extends Survey_Common_Action
         $AttributeNameLanguages = Yii::app()->request->getPost('ParticipantAttributeNameLanguages');
         $ParticipantAttributeNamesDropdown = Yii::app()->request->getPost('ParticipantAttributeNamesDropdown');
         $operation = Yii::app()->request->getPost('oper');
-        if($operation === 'edit') 
+        if($operation === 'edit')
         {
             $ParticipantAttributNamesModel = ParticipantAttributeName::model()->findByPk( $AttributeNameAttributes['attribute_id']);
             $success[] = $ParticipantAttributNamesModel->saveAttribute($AttributeNameAttributes);
         }
-        else 
+        else
         {
             $ParticipantAttributNamesModel = new ParticipantAttributeName;
             $ParticipantAttributNamesModel->setAttributes($AttributeNameAttributes);
@@ -1426,7 +1426,7 @@ class participantsaction extends Survey_Common_Action
                 }
             }
         }
-        if(is_array($AttributeNameLanguages) &&  $operation === 'edit')
+        if(is_array($AttributeNameLanguages))
         {
             foreach($AttributeNameLanguages as $lnKey => $lnValue)
             {
@@ -1437,13 +1437,13 @@ class participantsaction extends Survey_Common_Action
                 );
                 $success[] = $ParticipantAttributNamesModel->saveAttributeLanguages($savaLanguageArray);
             }
-        }  
+        }
         ls\ajax\AjaxHelper::outputSuccess(gT("Attribute successfully updated"));
-    } 
+    }
 
     /**
      * Deletes a translation from an Attribute, if it has at least one translation
-     * Requires POST 'attribute_id' (int), 'lang' (string) [language-code] 
+     * Requires POST 'attribute_id' (int), 'lang' (string) [language-code]
      * Echoes 'success' (boolean), 'successMessage' (string|null), 'errorMessage' (string|null)
      * @return void
      */
@@ -1463,11 +1463,11 @@ class participantsaction extends Survey_Common_Action
         }
     }
     /**
-     * Deletes a single Attribute via AJAX-call 
+     * Deletes a single Attribute via AJAX-call
      * Requires POST 'attribute_id' (int)
      * Echoes json-encoded array 'success' (boolean), successMessage (string)
      * @return void
-     */ 
+     */
     public function deleteSingleAttribute()
     {
         $attribute_id = Yii::app()->request->getPost('attribute_id');
@@ -1795,7 +1795,7 @@ class participantsaction extends Survey_Common_Action
         if(Yii::app()->request->getParam('ParticipantShare'))
         {
             $model->attributes = Yii::app()->request->getParam('ParticipantShare');
-        } 
+        }
         // data to be passed to view
         $aData = array(
             'names' => User::model()->findAll(),
@@ -1911,7 +1911,7 @@ class participantsaction extends Survey_Common_Action
             ParticipantShare::model()->updateShare($aData);
         }
     }
-   
+
     /**
      * Receives an ajax call containing the participant id in the fourth segment of the url
      * Supplies list of survey links - surveys of which this participant is on the tokens table
@@ -2111,7 +2111,7 @@ class participantsaction extends Survey_Common_Action
     public function setSession()
     {
         unset(Yii::app()->session['participantid']);
-        Yii::app()->session['participantid'] = Yii::app()->request->getPost('participantid');
+        Yii::app()->session['participantid'] = Yii::app()->request->getPost('itemsid');
     }
 
     /**

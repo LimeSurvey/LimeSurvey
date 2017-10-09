@@ -71,8 +71,9 @@ class SurveyController extends LSYii_Controller
             'uploader' => 'application.controllers.uploader',
             'verification' => 'application.controllers.verification',
             'captcha' => array(
-                'class' => 'CCaptchaAction', 
-                'backColor'=>0xf6f6f6
+              'class'=>'CaptchaExtendedAction',
+              // if needed, modify settings
+              'mode'=>CaptchaExtendedAction::MODE_MATH,
             )
         );
     }

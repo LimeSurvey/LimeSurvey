@@ -25,6 +25,7 @@ class printablesurvey extends Survey_Common_Action
 
     /**
      * Show printable survey
+     * @param string $lang
      */
     function index($surveyid, $lang = null)
     {

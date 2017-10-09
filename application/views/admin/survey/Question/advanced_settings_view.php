@@ -31,9 +31,10 @@ $currentfieldset='';
         <!-- Input -->
         <div class="col-sm-8">
             <?php
-                if ($aAttribute['readonly'] && $bIsActive)
+                if ( $aAttribute['readonly'] || ($aAttribute['readonly_when_active'] && $bIsActive) )
                 {
-                    echo $aAttribute['value'];
+                    // Alternate solution (maybe better for 3.0) : add the readonly/disable attribute (for singleselect or switch or buttongroup : this is really needed)
+                    echo "<div class='form-control-static'>".\CHtml::encode($aAttribute['value'])."</div>";
                 }
                 else
                 {

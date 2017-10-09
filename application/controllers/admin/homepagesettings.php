@@ -56,6 +56,11 @@ class homepagesettings extends Survey_Common_Action
         $model=new Boxes;
         if(isset($_POST['Boxes']))
         {
+            if (Yii::app()->getConfig('demoMode'))
+            {
+                Yii::app()->setFlashMessage(gT('This setting cannot be changed because demo mode is active.'),'error');
+                $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/homepagesettings"));
+            }
             $model->attributes=$_POST['Boxes'];
             if($model->save())
             {

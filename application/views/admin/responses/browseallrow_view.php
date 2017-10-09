@@ -4,6 +4,9 @@
 <a href='<?php echo $this->createUrl("admin/responses/sa/view/surveyid/$surveyid/id/{$dtrow['id']}"); ?>'>
     <span class="glyphicon glyphicon-list-alt text-success" title="<?php eT('View response details'); ?>"></span>
 </a>
+<a href='<?php echo $this->createUrl("admin/responses/sa/viewquexmlpdf/surveyid/$surveyid/id/{$dtrow['id']}"); ?>'>
+    <span class="glyphicon glyphicon-file text-success" title="<?php eT('View response details as queXML PDF'); ?>"></span>
+</a>
 <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'update'))
 { ?>
 <a href='<?php echo $this->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$dtrow['id']}"); ?>'>

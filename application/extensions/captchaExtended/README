@@ -1,0 +1,65 @@
+Captcha Extended
+================
+
+Captcha Extended is an extension written for Yii framework.
+It enhances original captcha code delivered along with the framework.
+
+Features
+========
+- supports modes: logical, words, mathverbal, math, default
+- supports extended characters latin1, latin2 (utf-8) including middle- east- european and cyrillyc characters
+- implements masking elements: dots density, through lines, fillSections, font color varying.
+
+INSTALLATION
+============
+
+1) Unzip CaptchaExtended.zip files into ../protected/extensions/captchaExtended/*.*
+
+2) Register class paths to [CaptchaExtendedAction] and [CaptchaExtendedValidator], e.g. in components/controller.php:
+
+	public function init(){
+		// register class paths for extension captcha extended
+		Yii::$classMap = array_merge( Yii::$classMap, array(
+			'CaptchaExtendedAction' => Yii::getPathOfAlias('ext.captchaExtended').DIRECTORY_SEPARATOR.'CaptchaExtendedAction.php',
+			'CaptchaExtendedValidator' => Yii::getPathOfAlias('ext.captchaExtended').DIRECTORY_SEPARATOR.'CaptchaExtendedValidator.php'
+		));
+	}
+
+3) Define action in controller, e.g. SiteController:
+
+	public function actions(){
+		return array(
+			'captcha'=>array(
+				'class'=>'CaptchaExtendedAction',
+			),
+		);
+	}
+
+4) Define client validation in model::rules():
+
+	public function rules(){
+		return array(
+			array('verifyCode', 'CaptchaExtendedValidator', 'allowEmpty'=>!CCaptcha::checkRequirements()),
+		);
+	}
+	
+5) If needed, collect localized strings via CLI command "yiic message messages/config.php" and translate captcha related strings.
+
+6) If needed, you can tune captcha modes and visibility options: 
+	- In "words" mode, you can place your own file [words.txt] or [words.yourlanguage.txt]
+	- If needed, you can ..
+		-> set the dots density [0-100], 
+		-> the number of through lines [0-] 
+		-> the number of fillSections [0-], 
+		-> font and background colors
+
+7) Test & enjoy!
+
+=============================
+
+Please report bug to lubosdz AT hotmail DOT com.
+
+Thanx
+Lubos
+29/08/2011
+Bratislava, Slovakia

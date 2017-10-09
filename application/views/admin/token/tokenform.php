@@ -45,28 +45,28 @@
 
             <!-- Tabs -->
             <?php if( count($attrfieldnames) > 0 ):?>
-                <ul class="nav nav-tabs" id="edit-survey-text-element-language-selection">
+                <ul class="nav nav-tabs selector_active-tabs" role="tablist" id="edit-participant-token-change-extra-attributes">
 
-                    <!-- Common  -->
-                    <li role="presentation" class="active">
-                        <a data-toggle="tab" href="#general" aria-expanded="true">
-                            <?php eT('General'); ?>
+                <!-- Common  -->
+                <li role="presentation" class="active">
+                    <a data-toggle="tab" href="#general-single" aria-expanded="true">
+                        <?php eT('General'); ?>
+                    </a>
+                    </li>
+
+                    <!-- Custom attibutes -->
+                    <li role="presentation" class="">
+                        <a data-toggle="tab" href="#custom-single" aria-expanded="false">
+                            <?php eT('Additional attributes'); ?>
                         </a>
-                        </li>
-
-                        <!-- Custom attibutes -->
-                        <li role="presentation" class="">
-                            <a data-toggle="tab" href="#custom" aria-expanded="false">
-                                <?php eT('Additional attributes'); ?>
-                            </a>
-                        </li>
-                    </ul>
+                    </li>
+                </ul>
             <?php endif; ?>
 
             <!-- Tabs content-->
             <div class="tab-content">
                 <!-- General -->
-                <div id="general" class="tab-pane fade in  active ">
+                <div id="general-single" class="tab-pane fade in active ">
 
                     <!-- ID,Completed  -->
                     <div class="form-group">
@@ -205,7 +205,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label"  for='email'><?php eT("Email:"); ?></label>
                         <div class="col-sm-4">
-                            <input class='form-control' type='text' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
+                            <input class='form-control action_validate_email' data-targetfield="#emailstatus" type='text' maxlength='320' size='50' id='email' name='email' value="<?php if (isset($email)){echo $email;} ?>" />
                         </div>
 
                         <!-- Email Status -->
@@ -217,11 +217,8 @@
 
                     </div>
 
-
-
                     <!-- Invitation sent, Reminder sent -->
                     <div class="form-group">
-
                         <!-- Invitation sent -->
                         <label class="col-sm-2 control-label"  for='sent'><?php eT("Invitation sent?"); ?></label>
                         <div class="col-sm-4 <?php echo $sCointainerClass;?>" id="sent-yes-no-date-container" data-locale="<?php echo convertLStoDateTimePickerLocale(Yii::app()->session['adminlang']);?>">
@@ -421,13 +418,13 @@
                 </div>
 
                 <!-- Custom attibutes -->
-                <div id="custom" class="tab-pane fade in">
+                <div id="custom-single" class="tab-pane fade in">
                     <!-- Attributes -->
                     <?php foreach ($attrfieldnames as $attr_name => $attr_description): ?>
                         <div class="form-group">
                             <label class="col-sm-2 control-label"  for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
                             <div class="col-sm-10">
-                                <input type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
+                                <input class="form-control" type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
                             </div>
                         </div>
                     <?php endforeach; ?>
