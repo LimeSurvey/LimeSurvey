@@ -36,10 +36,10 @@ use \LimeSurvey\PluginManager\PluginEvent;
  * @property integer $tid Token ID
  * @property string $participant_id Participant ID
  * @property string $firstname Participant's first name
- * @property string $lasttname Participant's last name
+ * @property string $lastname Participant's last name
  * @property string $email Participant's e-mail address
  * @property string $emailstatus Participant's e-mail address status: OK/bounced/OptOut
- * @property string $token Participant's unique token
+ * @property string $token Participant's token
  * @property string $language Participant's language eg: en
  * @property string $blacklisted Whether participant is blacklisted: (Y/N)
  * @property string $sent

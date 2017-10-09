@@ -16,7 +16,7 @@
 /**
  * Class Label
  *
- * @property integer $lid ID
+ * @property integer $lid Primary Key
  * @property string $code
  * @property string $title
  * @property integer $sortorder

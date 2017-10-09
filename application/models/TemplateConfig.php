@@ -13,10 +13,14 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 */
 
 /*
- * Common methods for TemplateConfiguration and TemplateManifest
  */
 
- class TemplateConfig extends CActiveRecord
+/**
+ * Class TemplateConfig
+ * Common methods for TemplateConfiguration and TemplateManifest
+ *
+ */
+class TemplateConfig extends CActiveRecord
  {
     /** @var string $sTemplateName The template name */
     public $sTemplateName='';
