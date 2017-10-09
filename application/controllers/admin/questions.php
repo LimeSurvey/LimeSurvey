@@ -683,48 +683,47 @@ class questions extends Survey_Common_Action
         }
 
         $surveyid = sanitize_int($surveyid);
+        $oSurvey = Survey::model()->findByPk($surveyid);
         $qid = sanitize_int($qid);
         $gid = sanitize_int($gid);
 
         // Get languages select on survey.
-        $anslangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-        $baselang = Survey::model()->findByPk($surveyid)->language;
+        $anslangs = $oSurvey->additionalLanguages;
 
-        $oQuestion      = Question::model()->findByPk(array('qid' => $qid, 'language' => $baselang));
+        $oQuestion      = Question::model()->findByPk(array('qid' => $qid, 'language' => $oSurvey->language));
         $aParentQuestion = $oQuestion->attributes;
 
         $sQuestiontype = $aParentQuestion['type'];
         $aQuestiontypeInfo = getQuestionTypeList($sQuestiontype, 'array');
         $iScaleCount = $aQuestiontypeInfo[$sQuestiontype]['subquestions'];
 
-        for ($iScale = 0; $iScale < $iScaleCount; $iScale++)
-        {
+        for ($iScale = 0; $iScale < $iScaleCount; $iScale++) {
             $subquestiondata = Question::model()->findAllByAttributes(array(
             'parent_qid' => $qid,
-            'language' => $baselang,
+            'language' => $oSurvey->language,
             'scale_id' => $iScale
             ));
 
-            if (empty($subquestiondata))
-            {
-                //Question::model()->insert();
+            if (empty($subquestiondata)) {
                 $data = array(
-                'sid' => $surveyid,
-                'gid' => $gid,
-                'parent_qid' => $qid,
-                'title' => 'SQ001',
-                'question' => '',
-                'question_order' => 1,
-                'language' => $baselang,
-                'relevance' => '1',
-                'scale_id' => $iScale,
+                    'sid' => $surveyid,
+                    'gid' => $gid,
+                    'parent_qid' => $qid,
+                    'title' => 'SQ001',
+                    'question' => '',
+                    'question_order' => 1,
+                    'language' => $oSurvey->language,
+                    'relevance' => '1',
+                    'scale_id' => $iScale,
                 );
-                Question::model()->insertRecords($data);
+                $subQuestion = new Question();
+                $subQuestion->attributes = $data;
+                $subQuestion->save();
 
                 $subquestiondata = Question::model()->findAllByAttributes(array(
-                'parent_qid' => $qid,
-                'language' => $baselang,
-                'scale_id' => $iScale
+                    'parent_qid' => $qid,
+                    'language' => $oSurvey->language,
+                    'scale_id' => $iScale
                 ));
             }
 
@@ -766,12 +765,12 @@ class questions extends Survey_Common_Action
             }
         }
 
-        array_unshift($anslangs, $baselang);
+        array_unshift($anslangs, $oSurvey->language);
         /* Fix subquestions */
         $oQuestion->fixSubQuestions();
 
         // Check sort order for subquestions
-        $qresult = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $baselang));
+        $qresult = Question::model()->findByAttributes(array('qid' => $qid, 'language' => $oSurvey->language));
         if (!is_null($qresult))
             $qtype = $qresult->type;
 
@@ -781,7 +780,7 @@ class questions extends Survey_Common_Action
             $cacount = Question::model()->count(array(
             'parent_qid' => $qid,
             'question_order' => null,
-            'language' => $baselang
+            'language' => $oSurvey->language
             ));
 
             if ($cacount)

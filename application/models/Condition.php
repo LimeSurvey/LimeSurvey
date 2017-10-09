@@ -156,10 +156,10 @@ class Condition extends LSActiveRecord
      */
     public function getScenarios($qid)
     {
-
-        $scenarioquery = "SELECT DISTINCT scenario FROM ".$this->tableName()." WHERE qid=".$qid." ORDER BY scenario";
-
-        return Yii::app()->db->createCommand($scenarioquery)->query();
+        $query = "SELECT DISTINCT scenario FROM ".$this->tableName()." WHERE qid=:qid ORDER BY scenario";
+        $command =Yii::app()->db->createCommand($query);
+        $command->params = [':qid'=>$qid];
+        return $command->query();
     }
 
     /**
