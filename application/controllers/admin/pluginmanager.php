@@ -46,15 +46,18 @@ class PluginManager extends Survey_Common_Action
             /* @var $plugin Plugin */
             if (array_key_exists($oPlugin->name, $aDiscoveredPlugins))
             {
-                $aPluginSettings = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id)->getPluginSettings(false);
-                $data[]          = array(
-                    'id'          => $oPlugin->id,
-                    'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
-                    'description' => $aDiscoveredPlugins[$oPlugin->name]['description'],
-                    'active'      => $oPlugin->active,
-                    'settings'    => $aPluginSettings,
-                    'new'         => !in_array($oPlugin->name, $aInstalledNames)
-                );
+                $plugin = App()->getPluginManager()->loadPlugin($oPlugin->name, $oPlugin->id);
+                if ($plugin) {
+                    $aPluginSettings = $plugin->getPluginSettings(false);
+                    $data[]          = array(
+                        'id'          => $oPlugin->id,
+                        'name'        => $aDiscoveredPlugins[$oPlugin->name]['pluginName'],
+                        'description' => $aDiscoveredPlugins[$oPlugin->name]['description'],
+                        'active'      => $oPlugin->active,
+                        'settings'    => $aPluginSettings,
+                        'new'         => !in_array($oPlugin->name, $aInstalledNames)
+                    );
+                }
             } else
             {
                 // This plugin is missing, maybe the files were deleted but the record was not removed from the database

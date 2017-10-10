@@ -306,11 +306,14 @@ class PluginManager extends \CApplicationComponent {
             if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName))
             {
                 if ($this->getPluginInfo($pluginName) !== false) {
-                    $this->plugins[$id] = new $pluginName($this, $id);
+                    if (class_exists($pluginName)) {
+                        $this->plugins[$id] = new $pluginName($this, $id);
 
-
-                    if (method_exists($this->plugins[$id], 'init')) {
-                        $this->plugins[$id]->init();
+                        if (method_exists($this->plugins[$id], 'init')) {
+                            $this->plugins[$id]->init();
+                        }
+                    } else {
+                        $this->plugins[$id] = null;
                     }
                 } else {
                     $this->plugins[$id] = null;
