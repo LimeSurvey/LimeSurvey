@@ -30574,7 +30574,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             parameterRows: [],
             currentParameter: {},
             modalShown: false,
-            isNew: false
+            isNew: false,
+            toDeleteRow: null
         };
     },
     computed: {
@@ -30638,7 +30639,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
             this.toggleModal();
         },
-        deleteRow(parameterRow) {},
+        deleteRow(parameterRow) {
+            this.toDeleteRow = parameterRow;
+            $('#lspanelintegration-deletePopup').modal('toggle');
+        },
+        cancelDelete() {
+            this.toDeleteRow = null;
+        },
+        confirmDelete() {
+            if (this.toDeleteRow !== null) {
+                let paramIdx = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.findIndex(this.parameterRows, item => {
+                    return item.id === this.toDeleteRow.id;
+                });
+                if (paramIdx != -1) this.parameterRows.splice(paramIdx, 1);
+            }
+            $('#lspanelintegration-deletePopup').modal('toggle');
+        },
         toggleModal() {
             this.modalShown = !this.modalShown;
             $('#lspanelintegration-parameterPopup').modal('toggle');
@@ -30651,7 +30667,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     created() {},
-    mounted() {}
+    mounted() {
+        this.getParameterRows();
+    }
 });
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
@@ -30701,6 +30719,9 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'lspanel-parameter-popup',
@@ -30716,6 +30737,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {};
     },
     computed: {
+        selectedQuestion() {
+            return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.find(this.questions, (item, i) => {
+                return this.parameterRow.qid == item.qid && (!item.sqid || item.sqid == this.parameterRow.sqid);
+            });
+        },
         popupTitle() {
             return this.isNew ? this.translate.popup.newParam : this.translate.popup.editParam;
         },
@@ -30733,18 +30759,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         _ellipsize(text, iMaxLength, fPosition, sEllipsis) {
             text = text || '';
             fPosition = fPosition || 1;
-            sEllipsis = sEllipsis || '&hellip;';
+            sEllipsis = sEllipsis || '...';
 
             const cleanString = text;
             const iStrLen = cleanString.length;
-            const sBegin = cleanString.substring(0, Math.floor(iMaxLength * fPosition));
-            const sEnd = cleanString.substring(iStrLen - (iMaxLength - sBegin.length), iStrLen);
-            return sBegin + sEllipsis + sEnd;
+            if (iStrLen > iMaxLength) {
+                const sBegin = cleanString.substring(0, Math.floor(iMaxLength * fPosition));
+                const sEnd = cleanString.substring(iStrLen - (iMaxLength - sBegin.length), iStrLen);
+                return sBegin + sEllipsis + sEnd;
+            }
+            return text;
         },
         printQuestion(question) {
             const questionText = this._ellipsize(question.question, 43, 0.75);
-            const subquestionText = ` - ${this._ellipsize(question.squestion, 30, .75)}`;
-            const returnstring = `${question.title}: ${questionText}${subquestionText}`;
+            const subquestionText = ` - ${this._ellipsize(question.sqquestion, 30, .75)}`;
+            const returnstring = `${question.title}: ${questionText}${subquestionText.length > 3 ? subquestionText : ''}`;
             return returnstring;
         },
         saveChangedParameter() {
@@ -30754,9 +30783,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$emit('canceledit');
         },
         updateValues() {
-            let qidSqid = this.parameterRow.targetQuestionText.split('-');
-            this.parameterRow.qid = qidSqid[0];
-            this.parameterRow.sqid = qidSqid[1] || '';
+            this.parameterRow.qid = this.selectedQuestion.qid;
+            this.parameterRow.sqid = this.selectedQuestion.sqid || '';
+            this.parameterRow.targetQuestionText = this.printQuestion(this.selectedQuestion);
         }
     },
     created() {},
@@ -30772,22 +30801,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "modal-content"
   }, [_c('div', {
     staticClass: "modal-header"
-  }, [_c('button', {
-    attrs: {
-      "type": "button",
-      "aria-label": "Close"
-    },
-    on: {
-      "click": function($event) {
-        $event.preventDefault();
-        _vm.cancelEditParameter()
-      }
-    }
-  }, [_c('span', {
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
+  }, [_c('h4', {
     staticClass: "modal-title",
     attrs: {
       "id": "exampleModalLabel"
@@ -30799,7 +30813,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "control-label ",
+    staticClass: "control-label",
     attrs: {
       "for": "paramname"
     }
@@ -30836,8 +30850,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.parameterRow.targetQuestionText),
-      expression: "parameterRow.targetQuestionText"
+      value: (_vm.selectedQuestion),
+      expression: "selectedQuestion"
     }],
     staticClass: "form-control",
     attrs: {
@@ -30852,7 +30866,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           var val = "_value" in o ? o._value : o.value;
           return val
         });
-        _vm.parameterRow.targetQuestionText = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+        _vm.selectedQuestion = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
       }, function($event) {
         _vm.updateValues()
       }]
@@ -30865,7 +30879,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('option', {
       key: question.qid,
       domProps: {
-        "value": question.qid + (question.sqid ? '-' + question.sqid : '')
+        "value": question,
+        "selected": question.qid == _vm.parameterRow.qid
       }
     }, [_vm._v("\n                            " + _vm._s(_vm.printQuestion(question)) + " \n                        ")])
   })], 2)])]), _vm._v(" "), _c('div', [_c('input', {
@@ -31030,6 +31045,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         expression: "true"
       }]
     }, [_c('div', [_c('button', {
+      staticClass: "btn btn-sm btn-default",
       on: {
         "click": function($event) {
           $event.preventDefault();
@@ -31039,6 +31055,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-edit"
     })]), _vm._v(" "), _c('button', {
+      staticClass: "btn btn-sm btn-danger",
       on: {
         "click": function($event) {
           $event.preventDefault();
@@ -31060,8 +31077,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         rawName: "v-show",
         value: (true),
         expression: "true"
-      }]
-    }, [_vm._v(" " + _vm._s(parameterRow.targetQuestionText) + " ")]), _vm._v(" "), _c('td', {
+      }],
+      domProps: {
+        "innerHTML": _vm._s(parameterRow.targetQuestionText)
+      }
+    }), _vm._v(" "), _c('td', {
       directives: [{
         name: "show",
         rawName: "v-show",
@@ -31128,7 +31148,46 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "updateparam": _vm.paramUpdated,
       "canceledit": _vm.toggleModal
     }
-  })], 1)])])
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "modal fade",
+    attrs: {
+      "id": "lspanelintegration-deletePopup",
+      "role": "dialog"
+    }
+  }, [_c('div', {
+    staticClass: "modal-dialog",
+    attrs: {
+      "role": "document"
+    }
+  }, [_c('div', {
+    staticClass: "modal-content"
+  }, [_c('div', {
+    staticClass: "modal-body"
+  }, [_vm._v("\n                    " + _vm._s(_vm.translate.popup.sureToDelete) + "\n                ")]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer"
+  }, [_c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.cancelDelete($event)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.translate.popup.deleteCancel))]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.confirmDelete($event)
+      }
+    }
+  }, [_vm._v(_vm._s(_vm.translate.popup.deleteConfirm))])])])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

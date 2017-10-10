@@ -21,7 +21,8 @@
                 parameterRows: [],
                 currentParameter: {},
                 modalShown: false,
-                isNew : false
+                isNew : false,
+                toDeleteRow: null
             };
         },
         computed: {
@@ -85,6 +86,20 @@
                 this.toggleModal();
             },
             deleteRow(parameterRow){
+                this.toDeleteRow = parameterRow;
+                $('#lspanelintegration-deletePopup').modal('toggle');
+            },
+            cancelDelete(){
+                this.toDeleteRow = null;
+
+            },
+            confirmDelete(){
+                if(this.toDeleteRow !== null){
+                    let paramIdx = _.findIndex(this.parameterRows, (item)=>{return item.id === this.toDeleteRow.id});
+                    if(paramIdx != -1)
+                        this.parameterRows.splice(paramIdx,1);
+                }
+                $('#lspanelintegration-deletePopup').modal('toggle');
 
             },
             toggleModal(){
@@ -97,7 +112,9 @@
             }
         },
         created () { },
-        mounted () { }
+        mounted () { 
+            this.getParameterRows();
+        }
     }
 </script>
 
@@ -124,12 +141,12 @@
                             <td v-show="showAllColumns"> {{parameterRow.id}} </td>
                             <td v-show="true"> 
                                 <div>
-                                    <button @click.prevent="editRow(parameterRow)"><i class="fa fa-edit"></i></button>
-                                    <button @click.prevent="deleteRow(parameterRow)"><i class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-default" @click.prevent="editRow(parameterRow)"><i class="fa fa-edit"></i></button>
+                                    <button class="btn btn-sm btn-danger" @click.prevent="deleteRow(parameterRow)"><i class="fa fa-trash"></i></button>
                                 </div> 
                             </td>
                             <td v-show="true"> {{parameterRow.parameter }} </td>
-                            <td v-show="true"> {{parameterRow.targetQuestionText }} </td>
+                            <td v-show="true" v-html="parameterRow.targetQuestionText"> </td>
                             <td v-show="showAllColumns"> {{parameterRow.sid }} </td>
                             <td v-show="showAllColumns"> {{parameterRow.qid }} </td>
                             <td v-show="showAllColumns"> {{parameterRow.sqid }} </td>
@@ -148,6 +165,20 @@
         <div class="modal fade" :class="{ in: modalShown }"  id="lspanelintegration-parameterPopup" role="dialog">
             <div class="modal-dialog" role="document">
                 <parameterpopup :translate="translate" :questions="questions" :is-new="isNew" :parameter-row="currentParameter" v-on:updateparam="paramUpdated" v-on:canceledit="toggleModal" ></parameterpopup>
+            </div>
+        </div>
+
+        <div class="modal fade" id="lspanelintegration-deletePopup" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        {{translate.popup.sureToDelete}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" @click.prevent="cancelDelete">{{translate.popup.deleteCancel}}</button>
+                        <button type="button" class="btn btn-primary" @click.prevent="confirmDelete">{{translate.popup.deleteConfirm}}</button>
+                    </div>
+                </div>
             </div>
         </div>
 

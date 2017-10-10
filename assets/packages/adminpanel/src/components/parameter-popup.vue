@@ -1,4 +1,5 @@
 <script>
+import _ from 'lodash';
 export default {
     name : 'lspanel-parameter-popup',
     components : {},
@@ -10,9 +11,14 @@ export default {
         'isNew' : {type: Boolean}
     },
     data(){
-        return {};
+        return {
+            
+        };
     },
     computed : {
+        selectedQuestion(){
+            return _.find(this.questions, (item,i)=>{ return (this.parameterRow.qid == item.qid && ( !item.sqid || item.sqid == this.parameterRow.sqid)); });
+        },
         popupTitle(){
             return this.isNew ? this.translate.popup.newParam : this.translate.popup.editParam ;
         },
@@ -31,19 +37,22 @@ export default {
         _ellipsize(text, iMaxLength, fPosition, sEllipsis){
             text = text || '';
             fPosition = fPosition || 1;
-            sEllipsis = sEllipsis || '&hellip;';
+            sEllipsis = sEllipsis || '...';
 
             const cleanString = text;
             const iStrLen = cleanString.length;
-            const sBegin = cleanString.substring(0, Math.floor(iMaxLength * fPosition));
-            const sEnd = cleanString.substring(iStrLen-(iMaxLength-sBegin.length),iStrLen);
-            return sBegin+sEllipsis+sEnd;
+            if(iStrLen>iMaxLength){
+                const sBegin = cleanString.substring(0, Math.floor(iMaxLength * fPosition));
+                const sEnd = cleanString.substring(iStrLen-(iMaxLength-sBegin.length),iStrLen);
+                return sBegin+sEllipsis+sEnd;
+            }
+            return text;
 
         },
         printQuestion(question){
             const questionText = this._ellipsize(question.question, 43, 0.75);
-            const subquestionText = ` - ${this._ellipsize(question.squestion,30,.75)}`;
-            const returnstring = `${question.title}: ${questionText}${subquestionText}`;
+            const subquestionText = ` - ${this._ellipsize(question.sqquestion,30,.75)}`;
+            const returnstring = `${question.title}: ${questionText}${(subquestionText.length > 3 ? subquestionText : '')}`;
             return returnstring;
         },
         saveChangedParameter(){
@@ -54,9 +63,9 @@ export default {
 
         },
         updateValues(){
-            let qidSqid = this.parameterRow.targetQuestionText.split('-');
-            this.parameterRow.qid = qidSqid[0];
-            this.parameterRow.sqid = qidSqid[1] || '';
+            this.parameterRow.qid = this.selectedQuestion.qid;
+            this.parameterRow.sqid = this.selectedQuestion.sqid || '';
+            this.parameterRow.targetQuestionText = this.printQuestion(this.selectedQuestion);
         }
     },
     created(){},
@@ -68,13 +77,12 @@ export default {
 <template>
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" @click.prevent="cancelEditParameter()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="exampleModalLabel">{{popupTitle}}</h4>
         </div>
         <div class="modal-body">
             <div class='row'>
                 <div class='form-group'>
-                    <label class='control-label ' for='paramname'>{{translate.popup.paramName}}</label>
+                    <label class='control-label' for='paramname'>{{translate.popup.paramName}}</label>
                     <div class=''>
                         <input class='form-control' name='paramname' type='text' v-model="parameterRow.parameter" size='20' />
                     </div>
@@ -82,9 +90,9 @@ export default {
                 <div class='form-group'>
                     <label class='control-label ' for='targetquestion'>{{translate.popup.targetQuestion}}</label>
                     <div class=''>
-                        <select class='form-control' name='targetquestion' size='1' v-model="parameterRow.targetQuestionText" @change="updateValues()">
+                        <select class='form-control' name='targetquestion' size='1' v-model="selectedQuestion" @change="updateValues()">
                             <option value=''>{{translate.popup.noTargetQuestion}}</option>
-                            <option v-for="question in questions" v-bind:key="question.qid" :value="question.qid+(question.sqid ? '-'+question.sqid : '')">
+                            <option v-for="question in questions" v-bind:key="question.qid" :value="question" :selected="question.qid==parameterRow.qid">
                                 {{printQuestion(question)}} 
                             </option>
                         </select>
