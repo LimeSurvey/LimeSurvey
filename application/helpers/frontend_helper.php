@@ -1480,7 +1480,7 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
 function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
 {
     // Template settings
-    //$surveyid          = $thissurvey['sid'];
+    $surveyid          = $thissurvey['sid'];
     //$oTemplate         = Template::model()->getInstance('', $surveyid);
     //$oTemplate->registerAssets();
 
