@@ -43,11 +43,12 @@ function isvalidCoord(val){
 
 // OSMap functions
 function OSGeoInitialize(question,latLng){
+		var currentProtocol = location.protocol
 		var tileServerURL = {
-			OSM : "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}",
-			HUM : "http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}",
-			CYC : "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}",
-			TRA : "http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}"
+			OSM : currentProtocol+"//{s}.tile.openstreetmap.org/{z}/{x}/{y}",
+			HUM : currentProtocol+"//{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}",
+			CYC : currentProtocol+"//{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}",
+			TRA : currentProtocol+"//{s}.tile.thunderforest.com/transport/{z}/{x}/{y}"
 		};
 		var name = question.substr(0,question.length - 2);
 		// tiles layers def
@@ -212,16 +213,31 @@ function OSGeoInitialize(question,latLng){
 		}
 		$("#searchbox_"+name).autocomplete({
 			appendTo: $("#searchbox_"+name).parent(),
+			minLength: 3,
+			select: function( event, ui ) {
+				if(ui.item.source=="OpenStreetmap/Nominatim")
+				{
+					console.log(ui.item);
+					map.setView([ui.item.lat, ui.item.lng], 13);
+					marker.setLatLng([ui.item.lat, ui.item.lng]);
+					UI_update(ui.item.lat, ui.item.lng);
+				}
+			},
+			open: function() { 
+				$( this ).addClass( "searching" );
+			},
+			close: function() {
+				$( this ).removeClass( "searching" );
+			},
 			source: function( request, response ) {
 				$.ajax({
-					url: "http://api.geonames.org/searchJSON",
-					dataType: "jsonp",
+					url: currentProtocol+"//nominatim.openstreetmap.org/search/",
+					dataType: "json",
 					data: {
-						username : LSmap.geonameUser,
-						featureClass : 'P',
-						maxRows : 5,
-						lang : LSmap.geonameLang,
-						name_startsWith: request.term
+						format: 'json',
+						limit : 5,
+						'accept-language' : LSmap.geonameLang,
+						q: request.term
 					},
 					beforeSend : function(jqXHR, settings) {
 						if($("#restrictToExtent_"+name).prop('checked'))
@@ -230,34 +246,26 @@ function OSGeoInitialize(question,latLng){
 						}
 					},
 					success: function( data ) {
-						response($.map(data.geonames, function(item) {
+						var responses = $.map(data, function(item) {
 						return {
-							label: item.name + ", " + item.countryName,
+							label: item.display_name,
 							lat: item.lat,
-							lng: item.lng,
-							source: "GeoNames"
+							lng: item.lon,
+							source: "OpenStreetmap/Nominatim"
 							};
-						}));
+						})
+						response(responses);
 					}
 				});
-			},
-			minLength: 3,
-			select: function( event, ui ) {
-				if(ui.item.source=="GeoNames")
-				{
-					map.setView([ui.item.lat, ui.item.lng], 13);
-					marker.setLatLng([ui.item.lat, ui.item.lng]);
-					UI_update(ui.item.lat, ui.item.lng);
-				}
-			},
-			 open: function() { 
-				$( this ).addClass( "searching" );
-			},
-			close: function() {
-				$( this ).removeClass( "searching" );
 			}
 		});
-        
+        $("#searchbox_"+name).on('keydown', function(e){
+			if(e.keyCode == 13){
+				e.preventDefault();
+				
+				return false;
+			}
+		})
         var mapQuestion = $('#question'+name.split('X')[2]);
         
         function resetMapTiles(mapQuestion) {
