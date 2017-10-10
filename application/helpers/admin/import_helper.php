@@ -1557,7 +1557,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
                     if($setting->save()) {
                         $results['plugin_settings']++;
                     } else {
-                        $results['importwarnings'][] = sprintf(gT("An error happen when try to save %s for plugin %s"),CHtml::encode($row->key),CHtml::encode($row->name));
+                        $results['importwarnings'][] = sprintf(gT("Error when saving %s for plugin %s"),CHtml::encode($row->key),CHtml::encode($row->name));
                     }
                 } elseif(!isset($pluginNamesWarning[(string)$row->name])) {
                     $results['importwarnings'][] = sprintf(gT("Plugin %s didn't exist, settings not imported"),CHtml::encode($row->name));
