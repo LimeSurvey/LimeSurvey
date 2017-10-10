@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-10 10:11:40+00:00\n"
+"POT-Creation-Date: 2017-10-10 11:15:33+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6326,7 +6326,7 @@ msgid "Title of subquestion %s was updated to %s."
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1560
-msgid "An error happen when try to save %s for plugin %s"
+msgid "Error when saving %s for plugin %s"
 msgstr ""
 
 #: application/helpers/admin/import_helper.php:1563
