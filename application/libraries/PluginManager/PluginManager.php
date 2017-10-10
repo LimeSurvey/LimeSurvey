@@ -241,6 +241,7 @@ class PluginManager extends \CApplicationComponent {
      * static function inside the plugin file.
      *
      * @param string $pluginClass The classname of the plugin
+     * @return array|null
      */
     public function getPluginInfo($pluginClass, $pluginDir = null)
     {
@@ -269,10 +270,14 @@ class PluginManager extends \CApplicationComponent {
             }
         }
 
-        $result['description'] = call_user_func(array($class, 'getDescription'));
-        $result['pluginName'] = call_user_func(array($class, 'getName'));
-        $result['pluginClass'] = $class;
-        return $result;
+        if (!class_exists($class)) {
+            return null;
+        } else {
+            $result['description'] = call_user_func(array($class, 'getDescription'));
+            $result['pluginName'] = call_user_func(array($class, 'getName'));
+            $result['pluginClass'] = $class;
+            return $result;
+        }
     }
 
     /**
