@@ -35,8 +35,40 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.71.1 (build 170927) to 2.72.0 (build 170927) Oct 10, 2017
+-New feature #12691: Allow initial superadmin to login via LDAP (Denis Chenu)
+-New feature #9235: Copy, export and import survey plugin settings (Denis Chenu)
+-New feature: Copy survey from remotecontroll (#688) (Stefan Verweij)
+-New feature: Mass action to export selected responses (LouisGac)
+-New feature: Purge survey files possibly left from erroneous delete (Olle Haerstedt)
+-New feature: queXMLPDF export with response data (#807) (Adam Zammit)
+-New translation: Kirundi - kindly provided by Victorin Luisier
+-Fixed issue #12452: Conditional routing doesn't work on scale and array questions (#783) (opinioni)
+-Fixed issue #12552: Some typos (Carsten Schmitz)
+-Fixed issue #12639: Quota end-url does not allow surrounding EM (#798) (Tõnis Ormisson)
+-Fixed issue #12704: Participants receive wrong tokens after testing (Denis Chenu)
+-Fixed issue #12731: When sending mails to an user group, the success message is not translated to German. (Carsten Schmitz)
+-Fixed issue #12736: Incomplete warning for anonymous surveys (Olle Haerstedt)
+-Fixed issue: Delete survey folder when using massive action survey delete (Olle Haerstedt)
+-Fixed issue: Don't use short-hand array notation (Olle Harstedt)
+-Fixed issue: Maps not working properly on https + bugfixes (markusfluer)
+-Fixed issue: Typecheck the XML variable from the GroupImport method (#804) (Kevin Broeren)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by yanglaw
+#Updated translation: French (France) by arnaud21
+#Updated translation: German by c_schmitz
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: Hungarian by kkd
+#Updated translation: Italian by lfanfoni
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Kirundi by Victorin Luisier
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish by elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Turkish by kayazeren
 
-Changes from 2.71.0 (build 170925) to 2.71.1 (build 170927) Sept 27, 2017
+Changes from 2.71.0 (build 170925) to 2.71.1 (build 170927) Sep 27, 2017
 -Fixed issue #12703: rtl css not loaded in Survey listing (LouisGac)
 -Fixed issue #12710: Unable to view survey with debug=2 (LouisGac)
 -Fixed issue #12711: Date with dropdow throw SQL error with pgsql (Denis Chenu)
