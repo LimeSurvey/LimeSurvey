@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import VueLocalStorage from 'vue-localstorage';
 import Sidebar from './components/sidebar.vue';
 import Topbar from './components/topbar.vue';
+import ParameterTable from './components/parameter-table.vue';
 import getAppState from './store/vuex-store.js';
 import LOG from './mixins/logSystem.js';
 
@@ -24,12 +25,13 @@ const AppState = getAppState(LS.globalUserId);
 
 if (document.getElementById('vue-app-main-container')) {
   // eslint-disable-next-line
-  const sidemenu = new Vue({
+  const vueGeneralApp = new Vue({
     el: '#vue-app-main-container',
     store: AppState,
     components: {
       'sidebar': Sidebar,
       'topbar': Topbar,
+      'lspanelparametertable': ParameterTable,
     },
     created() {
       const
@@ -59,6 +61,7 @@ if (document.getElementById('vue-app-main-container')) {
       });
     }
   });
+  global.vueGeneralApp = vueGeneralApp;
 }
 
 $(document).on('pjax:send', () => {

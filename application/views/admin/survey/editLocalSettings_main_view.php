@@ -64,10 +64,12 @@ $(document).on('ready pjax:complete', function(){
         method:'POST',
         data: data,
         success: function(result){
+
+            console.log({result: result});
           if(result.redirecturl != undefined ){
-            window.location.href=result.redirecturl;
+            //window.location.href=result.redirecturl;
           } else {
-            window.location.reload();
+            //window.location.reload();
           }
         },
         error: function(result){

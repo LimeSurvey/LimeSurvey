@@ -27,7 +27,9 @@ export default {
         setActiveMenuItemIndex(menuItem){
             let activeMenuIndex = menuItem.id;
             this.$store.commit('lastMenuItemOpen', menuItem);
-            $('a#'+this.menu.id+'_'+menuItem.id)[0].click();
+            
+            if($('a#'+this.menu.id+'_'+menuItem.id)[0])
+                $('a#'+this.menu.id+'_'+menuItem.id)[0].click();
             
         },
         checkIsOpen(toCheckMenu){

@@ -147,12 +147,11 @@ return array(
         ),
         'css' => array(
             'build/lsadminpanel.css'
-            )
         ),
         'depends' => array(
             'pjax',
             'jquery'
         )
-          
+    )
     
 );

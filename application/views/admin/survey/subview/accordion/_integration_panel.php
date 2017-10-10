@@ -22,8 +22,32 @@
     var sAddParam = "<?php  eT('Add URL parameter','js');?>";
     var sEditParam = "<?php  eT('Edit URL parameter','js');?>";
     var iSurveyId = "<?php  echo $surveyid; ?>";
+    var questionArray =JSON.parse('<?php echo json_encode($questions); ?>');
 </script>
 <!-- Container -->
+<lspanelparametertable :sid="<?php  echo $surveyid; ?>" json-url="<?php echo App()->createUrl('admin/survey/sa/getUrlParamsJson', array('surveyid' => $surveyid))?>" :translate="{
+    table: {
+        idColumn : '<?php eT('ID');?>',
+        actionColumn : '<?php eT('Action');?>',
+        parameterColumn : '<?php eT('Parameter');?>',
+        questionColumn : '<?php eT('Target question');?>',
+        sidColumn : '<?php eT('Survey id');?>',
+        qidColumn : '<?php eT('Question id');?>',
+        sqidColumn : '<?php eT('SubQuestion ID');?>',
+        addParameter : '<?php eT('Add URL parameter');?>'
+    },
+    popup: {
+        editParam : '<?php eT('Edit URL parameter');?>',
+        newParam : '<?php eT('Add URL parameter');?>',
+        paramName : '<?php eT('Parameter');?>',
+        targetQuestion : '<?php eT('Target question');?>',
+        noTargetQuestion : '<?php eT('(No target question)');?>',
+        save : '<?php eT('Save');?>',
+        cancel : '<?php eT('Cancel');?>'
+    }
+}"></lspanelparametertable>
+
+<?php /*
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
@@ -41,4 +65,5 @@
 
 <!-- Modal box to add a parameter -->
 <div data-copy="submitsurveybutton"></div>
-<?php $this->renderPartial('survey/subview/addPanelIntegrationParameter_view', array('questions' => $questions)); ?>
+<?php $this->renderPartial('survey/subview/addPanelIntegrationParameter_view', array('questions' => $questions)); ?> 
+*/?>

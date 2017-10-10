@@ -932,13 +932,11 @@ class SurveyAdmin extends Survey_Common_Action
             $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
             Yii::app()->end();
         }
+        
+        $templateData = is_array($menuEntry->data) ? $menuEntry->data : [];
 
-        if( empty($menuEntry->data)) {
-            $templateData = call_user_func_array(array($this,$menuEntry->getdatamethod), array('survey'=>$survey));
-        }
-        else
-        {
-            $templateData = $menuEntry->data;
+        if( !empty($menuEntry->getdatamethod)) {
+            $templateData = array_merge($templateData, call_user_func_array(array($this,$menuEntry->getdatamethod), array('survey'=>$survey)));
         }
 
         $templateData = array_merge($this->_getGeneralTemplateData($iSurveyID), $templateData);
@@ -1761,6 +1759,8 @@ class SurveyAdmin extends Survey_Common_Action
      */
     private function _tabPanelIntegration($survey)
     {
+
+        App()->getClientScript()->registerPackage('jquery-datatable');
         $aData = array();
         $oResult = Question::model()->getQuestionsWithSubQuestions($survey->sid, $survey->language, "({{questions}}.type = 'T'  OR  {{questions}}.type = 'Q'  OR  {{questions}}.type = 'T' OR {{questions}}.type = 'S')");
         $aData['questions'] = $oResult;
