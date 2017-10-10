@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-10 10:01:11+00:00\n"
+"POT-Creation-Date: 2017-10-10 10:11:40+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16337,7 +16337,8 @@ msgid "Cannot be changed"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:53
-msgid "If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants. If you are running a closed survey by using tokens you will NOT be able to link responses to users if the survey is set to be anonymous."
+#: application/views/admin/survey/subview/accordion/_tokens_panel.php:168
+msgid "If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants. If you are running a closed survey you will NOT be able to link responses to participants if the survey is set to be anonymous."
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_notification_panel.php:63
@@ -16589,10 +16590,6 @@ msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_tokens_panel.php:162
 msgid "You can't use Anonymized responses when Token-based answers persistence is enabled."
-msgstr ""
-
-#: application/views/admin/survey/subview/accordion/_tokens_panel.php:168
-msgid "If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants. If you are running a closed survey by using participants you will NOT be able to link responses to users if the survey is set to be anonymous."
 msgstr ""
 
 #: application/views/admin/survey/subview/addPanelIntegrationParameter_view.php:16
