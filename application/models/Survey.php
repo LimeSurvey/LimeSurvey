@@ -172,6 +172,7 @@ class Survey extends LSActiveRecord
         $this->format = 'G';
 
         // Default setting is to use the global Google Analytics key If one exists
+        Yii::import('application.helpers.globalsettings_helper', true);
         $globalKey = getGlobalSetting('googleanalyticsapikey');
         if($globalKey != ""){
             $this->googleanalyticsapikey = "9999useGlobal9999";
