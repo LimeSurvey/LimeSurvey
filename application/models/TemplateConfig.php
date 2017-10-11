@@ -768,6 +768,21 @@ class TemplateConfig extends CActiveRecord
 
     }
 
+    public function __toString()
+    {
+        $s = '';
+        foreach($this as $k => $v){
+            $s .= " <strong> $k : </strong>  $v  <br/>";
+         }
+
+         $aProp = get_object_vars($this);
+         foreach ( $aProp as $k => $v) {
+             $s .= " <strong> $k : </strong>  $v  <br/>";
+
+         }
+
+         return $s;
+    }
 
     // TODO: try to refactore most of those methods in TemplateConfiguration and TemplateManifest so we can define their body here.
     // It will consist in adding private methods to get the values of variables... See what has been done for createTemplatePackage
