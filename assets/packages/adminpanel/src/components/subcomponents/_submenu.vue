@@ -53,7 +53,7 @@ export default {
         },
         getLinkClass(menuItem){
             let classes = "ls-flex-row nowrap align-item-center align-content-center ";
-            classes += (menuItem.pjax ? 'pjax' : '');
+            classes += (menuItem.pjax ? 'pjax ' : ' ');
             classes += menuItem.menu_class;
             return classes;
         }

@@ -106,6 +106,16 @@ class SurveymenuEntries extends LSActiveRecord
         return $oSurveymenuEntries->getPrimaryKey();
     }
 
+    public function reorder(){
+
+		$menusWithEntries = SurveymenuEntries::model()->findAll(array(
+            'select'=>'t.menu_id',
+            'distinct'=>true,
+        ));
+        foreach($menusWithEntries as $key=>$menuWithEntry){
+            self::reorderMenu($menuWithEntry->menu_id);
+        }
+    }
 
 	public static function reorderMenu($menuId){
 		$criteriaItems = new CDbCriteria();
@@ -215,6 +225,19 @@ class SurveymenuEntries extends LSActiveRecord
 		return $options;
 	}
 
+	public function getUserIdOptions (){
+		$oUsers = User::model()->findAll();
+		$options = [
+			NULL => gT('All users')
+		];
+		foreach($oUsers as $oUser){
+			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
+			$options[$oUser->uid] = $oUser->full_name;
+		}
+		//return join('\n',$options);
+		return $options;
+    }
+    
 	public function getUserOptions (){
 		
 		$oUsers = User::model()->findAll();
@@ -273,7 +296,7 @@ class SurveymenuEntries extends LSActiveRecord
         $cols = array(
 			array(
 			'name' => 'id',
-			'value' => '\'<input type="checkbox" name="selectMenuToEdit" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
+			'value' => '\'<input type="checkbox" name="id[]" class="action_selectthisentry" value="\'.$data->id.\'" />\'',
 			'type' => 'raw',
 			'filter' => false
 			),
@@ -481,7 +504,7 @@ class SurveymenuEntries extends LSActiveRecord
             [1,NULL,11,'assessments','Edit assessments','Assessments','Edit and look at the asessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,12,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,13,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,14,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+            [1,NULL,14,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read','{"render": {"link": { "pjaxed": false}}}','_tabPanelIntegration','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,15,'resources','Add/Edit resources to the survey','Resources','Add/Edit resources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,NULL,1,'activateSurvey','Activate survey','Activate survey','Activate survey','play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [2,NULL,2,'deactivateSurvey','Stop this survey','Stop this survey','Stop this survey','stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],

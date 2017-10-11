@@ -12,6 +12,7 @@
 // );
 
 $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+$massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entries/massive_action/_selector', array(), true, false);
 ?>
 <div class="container-fluid ls-space padding left-50 right-50">
     <div class="ls-flex-column ls-space padding left-35 right-35">
@@ -20,6 +21,10 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
             <a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewmenuentry">
                 <i class="fa fa-plus"></i>&nbsp;
                 <?php eT('New menu entry') ?>
+            </a>
+            <a class="btn btn-warning pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" id="reorderentries">
+                <i class="fa fa-plus"></i>&nbsp;
+                <?php eT('Reorder entries') ?>
             </a>
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
                 <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
@@ -51,7 +56,8 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
                     'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view col-12'),
                     'ajaxType' => 'POST',
                     'ajaxUpdate' => true,
-                    'afterAjaxUpdate'=>'surveyMenuEntryFunctions.bindAction',
+                    'afterAjaxUpdate'=>'bindAction',
+                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
                 ));
             ?>
             </div>
@@ -120,6 +126,7 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
     var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenuentry','surveymenu-entries-grid', {
       loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menuentries/sa/getsurveymenuentryform' ) ?>",
       restoreEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore'); ?>",
+      reorderEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/reorder'); ?>",
       deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/delete'); ?>"
     }),
     bindAction = surveyMenuEntryFunctions.getBindActionForSurveymenuEntries();

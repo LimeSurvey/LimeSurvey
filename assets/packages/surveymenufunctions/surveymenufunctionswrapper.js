@@ -57,6 +57,20 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
             })
         });
     },
+    runReorderEntries = function(){
+        $.ajax({
+            url: urls.reorderEntriesUrl,
+            data: {},
+            method: 'POST',
+            dataType: 'json',
+            success: function (result) {
+                $.fn.yiiGridView.update(targetGrid);
+            },
+            error: function(error){
+                console.log(error);
+            }
+        });
+    },
     runRestoreModal =  function () {
         $('#restoremodal').find('.modal-content').html('<div class="ls-flex align-items-center align-content-center" style="height:200px"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>')
         $.ajax({
@@ -99,6 +113,12 @@ var SurveyMenuFunctionsWrapper = function (targetCreateModal, targetGrid, urls) 
                 });
                 $('.action_selectthisentry').on('click', function (e) {
                     e.stopPropagation();
+                });
+                
+                $('#reorderentries').on('click', function (e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    runReorderEntries();
                 });
         
                 $('.action_surveymenuEntries_editModal').on('click', function (e) {

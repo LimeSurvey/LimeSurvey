@@ -109,6 +109,21 @@ class Surveymenu extends LSActiveRecord
 		return $options;
 	}
 
+	public function getUserIdOptions (){
+		$oUsers = User::model()->findAll();
+		$options = [
+			NULL => gT('All users')
+		];
+		foreach($oUsers as $oUser){
+			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
+			$options[$oUser->uid] = $oUser->full_name;
+		}
+		//return join('\n',$options);
+		return $options;
+	}
+
+
+
 	public function getNextOrderPosition(){
 		$oSurveymenus = Surveymenu::model()->findAll('parent_id=:parent_id',array('parent_id'=>0));
 		return count($oSurveymenus);

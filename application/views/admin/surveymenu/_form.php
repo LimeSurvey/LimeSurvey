@@ -39,6 +39,12 @@
 				<?php echo $form->labelEx($model,'survey_id'); ?>
 				<?php echo $form->dropDownList($model,'survey_id', $model->getSurveyIdOptions()); ?>
 				<?php echo $form->error($model,'survey_id'); ?>
+            </div>
+            
+			<div class="form-group">
+				<?php echo $form->labelEx($model,'user_id'); ?>
+				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions()); ?>
+				<?php echo $form->error($model,'user_id'); ?>
 			</div>
 
 			<div class="form-group">
