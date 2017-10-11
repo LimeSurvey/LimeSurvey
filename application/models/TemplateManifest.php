@@ -55,6 +55,10 @@ class TemplateManifest extends TemplateConfiguration
     {
         $aScreenFiles = array();
 
+        if (empty($this->templateEditor)) {
+            return array();
+        }
+
         $filesFromXML = (is_null($sScreen)) ? (array) $this->templateEditor->screens->xpath('//file') : $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
 
         foreach( $filesFromXML as $file){
@@ -76,6 +80,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getLayoutForScreen($sScreen)
     {
+        if (empty($this->templateEditor)) {
+            return false;
+        }
+
         $filesFromXML = $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
 
         foreach( $filesFromXML as $file){
