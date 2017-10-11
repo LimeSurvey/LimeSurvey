@@ -316,7 +316,7 @@ class UploaderController extends SurveyController {
         App()->clientScript->registerScript('sNeededScriptVar',$sNeededScriptVar,CClientScript::POS_HEAD);
         App()->clientScript->registerScript('sLangScriptVar',$sLangScriptVar,CClientScript::POS_HEAD);
         $oTemplate = Template::model()->getInstance('',$surveyid);
-        Yii::app()->clientScript->registerPackage( 'survey-template' );
+        Yii::app()->clientScript->registerPackage('survey-template-'.$oTemplate->sTemplateName);
 
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'ajaxupload.js');
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'uploader.js');
