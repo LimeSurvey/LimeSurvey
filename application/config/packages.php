@@ -152,6 +152,17 @@ return array(
             'pjax',
             'jquery'
         )
+    ),
+    'surveymenufunctions' => array(
+        'devBaseUrl' => 'assets/packages/surveymenufunctions/',
+        'basePath' => 'core.surveymenufunctions',
+        'js' => array(
+            'surveymenufunctionswrapper'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'pjax',
+            'jquery'
+        )
     )
     
 );

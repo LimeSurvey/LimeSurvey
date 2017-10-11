@@ -210,7 +210,7 @@ class SurveymenuController extends Survey_Common_Action
 
         $data = array();
         $data['model'] = Surveymenu::model();
-
+        App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('surveymenu/index'), $data);
 	}
 

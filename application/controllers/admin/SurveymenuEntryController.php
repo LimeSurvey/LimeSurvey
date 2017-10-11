@@ -31,7 +31,8 @@ class SurveymenuEntryController extends Survey_Common_Action
 		$filterAndSearch = Yii::app()->request->getPost('SurveymenuEntries', []);
         $data['model'] = SurveymenuEntries::model();
 		$data['model']->setAttributes($filterAndSearch);
-		$data['user'] = Yii::app()->session['loginID'];
+        $data['user'] = Yii::app()->session['loginID'];
+        App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
 	}
 
