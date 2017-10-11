@@ -164,21 +164,21 @@ class Surveymenu extends LSActiveRecord
 		
 		if(Permission::model()->hasGlobalPermission('settings', 'update')){
 
-			$deleteData = array(
-				'action_surveymenu_deleteModal',
+            
+            $editData = array(
+                'action_surveymenu_editModal',
 				'text-danger',
-				gT("Delete this surveymenu"),
-				'trash text-danger'
-			);
-
-			$buttons .= vsprintf($raw_button_template, $deleteData);
-
-			$editData = array(
-				'action_surveymenu_editModal',
-				'text-danger',
-				gT("Delete this surveymenu"),
+				gT("Edit this surveymenu"),
 				'edit'
 			);
+            $deleteData = array(
+                'action_surveymenu_deleteModal',
+                'text-danger',
+                gT("Delete this surveymenu"),
+                'trash text-danger'
+            );
+
+            $buttons .= vsprintf($raw_button_template, $deleteData);
 
 			$buttons .= vsprintf($raw_button_template, $editData);
 		}
@@ -276,6 +276,30 @@ class Surveymenu extends LSActiveRecord
 		return parent::onAfterSave($event);
 
 	}
+
+     /**
+     * Method to restore the default surveymenu entries
+     * This method will fail if the surveymenus have been tempered, or wrongly set
+     *
+     * @return void
+     */
+    public function restoreDefaults(){
+        $oDB = Yii::app()->db;
+        $oTransaction = $oDB->beginTransaction();
+        try {
+            $oDB->createCommand()->truncateTable('{{surveymenu}}');
+
+            $headerArray = ['parent_id','survey_id','user_id','ordering','level','title','position','description','active','changed_at','changed_by','created_at','created_by'];
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'surveymenu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'quickmenue','collapsed','quickmenu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+            
+            $oTransaction->commit();
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
 
 	/**
      * @return array

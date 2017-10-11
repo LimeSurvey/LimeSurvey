@@ -127,7 +127,49 @@ class SurveymenuController extends Survey_Common_Action
 		}
 	}
 
-
+	/**
+	 * Restores the default surveymenus
+	 */
+	public function restore(){
+        if( Yii::app()->request->isPostRequest )
+		{
+            //Check for permission!
+            if(!Permission::model()->hasGlobalPermission('superadmin','read'))
+            {
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array(
+                        'data' => [
+                            'success'=> false,
+                            'redirect' => false,
+                            'debug' => [$model, $_POST],
+                            'debugErrors' => $model->getErrors(),
+                            'message' => gT("You don't have the right to restore the settings to default")
+                        ]
+                    ),
+                    false,
+                    false
+                );
+            }
+            //get model to do the work
+            $model=Surveymenu::model();
+            $success = $model->restoreDefaults();
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success'=> $success,
+                        'redirect' => false,
+                        'debug' => [$model, $_POST],
+                        'debugErrors' => $model->getErrors(),
+                        'message' =>  ($success ? gT("Default survey menus restored.") : gT("Something went wrong!"))
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+    }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

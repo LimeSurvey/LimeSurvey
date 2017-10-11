@@ -122,6 +122,50 @@ class SurveymenuEntryController extends Survey_Common_Action
 	}
 
 	/**
+	 * Restores the default surveymenu entries
+	 */
+	public function restore(){
+        if( Yii::app()->request->isPostRequest )
+		{
+            //Check for permission!
+            if(!Permission::model()->hasGlobalPermission('superadmin','read'))
+            {
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array(
+                        'data' => [
+                            'success'=> false,
+                            'redirect' => false,
+                            'debug' => [$model, $_POST],
+                            'debugErrors' => $model->getErrors(),
+                            'message' => gT("You don't have the right to restore the settings to default")
+                        ]
+                    ),
+                    false,
+                    false
+                );
+            }
+            //get model to do the work
+            $model=SurveymenuEntries::model();
+            $success = $model->restoreDefaults();
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success'=> $success,
+                        'redirect' => false,
+                        'debug' => [$model, $_POST],
+                        'debugErrors' => $model->getErrors(),
+                        'message' =>  ($success ? gT("Default survey menu entries restored.") : gT("Something went wrong! Are the surveymenus properly restored?"))
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+    }
+
+	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
