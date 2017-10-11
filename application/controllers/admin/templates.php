@@ -1092,6 +1092,8 @@ class templates extends Survey_Common_Action
         $aData['relativePathEditfile'] = $editfile;
         $aViewUrls['templateeditorbar_view'][] = $aData;
 
+        $this->showIntroNotification();
+
         if ($showsummary)
         {
             Yii::app()->clientScript->registerPackage( $oEditedTemplate->sPackageName );
@@ -1101,6 +1103,28 @@ class templates extends Survey_Common_Action
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');
 
         return $aViewUrls;
+    }
+
+    /**
+     * First time user visits template editor on 3.0, show
+     * a notification about manual and forum.
+     * @return void
+     */
+    protected function showIntroNotification()
+    {
+        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        $not = new UniqueNotification(array(
+            'user_id'    => $user->uid,
+            'title'      => gT('LimeSurvey 3.0 template editor'),
+            'markAsNew'  => false,
+            'importance' => Notification::HIGH_IMPORTANCE,
+            'message'    => sprintf(
+                gT('Welcome to the new template editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the <a target="_blank" href="%s">LimeSurvey manual</a>. For further questions and information, feel free to post your questions on the <a target="_blank" href="%s">LimeSurvey forum</a>.', 'unescaped'),
+                'http://manual.limesurvey.org/Templating',
+                'https://www.limesurvey.org/community/forums'
+            )
+        ));
+        $not->save();
     }
 
     /**
