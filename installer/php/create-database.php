@@ -438,7 +438,6 @@ function createDatabase($oDB){
         'created_by' => "integer NOT NULL DEFAULT '0'",
         ));
         
-        $oDB->createCommand()->createIndex('idx1_surveymenu', '{{surveymenu}}', 'ordering', false);
         $oDB->createCommand()->createIndex('idx2_surveymenu', '{{surveymenu}}', 'title', false);
         
         $headerArray = ['parent_id','survey_id','user_id','ordering','level','title','position','description','active','changed_at','changed_by','created_at','created_by'];
@@ -479,9 +478,7 @@ function createDatabase($oDB){
         ));
         
         $oDB->createCommand()->createIndex('idx1_surveymenu_entries', '{{surveymenu_entries}}', 'menu_id', false);
-        $oDB->createCommand()->createIndex('idx2_surveymenu_entries', '{{surveymenu_entries}}', 'ordering', false);
         $oDB->createCommand()->createIndex('idx3_surveymenu_entries', '{{surveymenu_entries}}', 'title', false);
-        $oDB->createCommand()->createIndex('idx4_surveymenu_entries', '{{surveymenu_entries}}', 'language', false);
         $oDB->createCommand()->createIndex('idx5_surveymenu_entries', '{{surveymenu_entries}}', 'menu_title', false);
         
         $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
@@ -631,7 +628,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createTable('{{surveys_languagesettings}}', array(
         'surveyls_survey_id' => "integer NOT NULL",
         'surveyls_language' => "string(45) NOT NULL DEFAULT 'en'",
-        'surveyls_title' => "string(200) NOT NULL",
+        'surveyls_title' => "string(192) NOT NULL",
         'surveyls_description' => "TEXT NULL",
         'surveyls_welcometext' => "TEXT NULL",
         'surveyls_endtext' => "TEXT NULL",
@@ -766,7 +763,7 @@ function createDatabase($oDB){
         'full_name' => "string(50) NOT NULL",
         'parent_id' => "integer NOT NULL",
         'lang' => "string(20)",
-        'email' => "string(254)",
+        'email' => "string(192)",
         'htmleditormode' => "string(7) default 'default'",
         'templateeditormode' => "string(7) NOT NULL default 'default'",
         'questionselectormode' => "string(7) NOT NULL default 'default'",
