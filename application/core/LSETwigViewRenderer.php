@@ -221,7 +221,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      *
      * @param string $line The line of HTML/Twig to render
      * @param array $aDatas Array containing the datas needed to render the view ($thissurvey)
-     * @param TemplateConfiguration $oRTemplate
+     * @param TemplateConfiguration $oTemplate
      * @param boolean $bReturn Should the function echo the result, or just returns it?
      * @return string
      */
@@ -256,8 +256,10 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
 
         // Add the template options
-        foreach($oTemplate->oOptions as $key => $value){
-            $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+        if ($oTemplate->oOptions) {
+            foreach($oTemplate->oOptions as $key => $value){
+                $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+            }
         }
 
         // Add core classes and attributes

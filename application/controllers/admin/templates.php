@@ -337,8 +337,6 @@ class templates extends Survey_Common_Action
     */
     public function index($editfile = '', $screenname = 'welcome', $templatename = '')
     {
-
-
         if ($templatename=='') {
             $templatename = Yii::app()->getConfig("defaulttemplate");
         }
@@ -363,7 +361,16 @@ class templates extends Survey_Common_Action
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
         $aData['fullpagebar']['returnbutton']=true;
-        $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
+        try {
+            $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
+        } catch (\Exception $ex) {
+            /*
+            $aViewUrls = $this->_initialise('default', 'welcome', '', true, true);
+            $aData = array();
+            $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
+             */
+            $this->index('', 'welcome', '');
+        }
 
         // This helps handle the load/save buttons)
         if ($screenname != 'welcome')
@@ -790,7 +797,7 @@ class templates extends Survey_Common_Action
         $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
 
 
-        if ($editfile==''){
+        if ($editfile=='' && $files){
             $editfile == $files[0];
         }
 
