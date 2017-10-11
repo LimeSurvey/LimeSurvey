@@ -51,10 +51,9 @@ class PluginSetting extends CActiveRecord {
     public function rules() {
         return array(
             array('plugin_id','numerical', 'integerOnly'=>true), // 'allowEmpty'=>false ?
-            array('model','string', 'max'=>255,'allowEmpty'=>true),
+            array('model','length', 'max'=>255,'allowEmpty'=>true),
             array('model_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
-            array('key','string', 'max'=>255),
-            array('value','string'),
+            array('key','length', 'max'=>255),
         );
     }
 }
