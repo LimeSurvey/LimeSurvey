@@ -480,6 +480,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         $oTransaction = $oDB->beginTransaction();
         
         $oDB->createCommand()->update('{{surveymenu_entries}}',array('data'=>'{"render": {"link": { "pjaxed": false}}}'),"name='panelintegration'");
+        $oDB->createCommand()->renameColumn('{{templates}}','extends_template_name','extends');
 
         $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>319),"stg_name='DBVersion'");
         $oTransaction->commit();
