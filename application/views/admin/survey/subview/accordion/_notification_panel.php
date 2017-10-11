@@ -1,4 +1,4 @@
-participantsphp
+<?php
 /**
  * Notificatin panel
  */
