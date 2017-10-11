@@ -327,7 +327,7 @@ class TemplateConfiguration extends TemplateConfig
         $oNewTemplate->files_folder           = $oEditTemplateDb->files_folder;
         //$oNewTemplate->description           TODO: a more complex modal whith email, author, url, licence, desc, etc
         $oNewTemplate->owner_id               = Yii::app()->user->id;
-        $oNewTemplate->extends_template_name = $oEditedTemplate->oMotherTemplate->sTemplateName;
+        $oNewTemplate->extends = $oEditedTemplate->oMotherTemplate->sTemplateName;
 
         if ($oNewTemplate->save()){
             $oNewTemplateConfiguration                    = new TemplateConfiguration;
@@ -559,8 +559,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function setMotherTemplates()
     {
-        if(!empty($this->template->extends_template_name)){
-            $sMotherTemplateName   = $this->template->extends_template_name;
+        if(!empty($this->template->extends)){
+            $sMotherTemplateName   = $this->template->extends;
             $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
             $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null);
             if ($this->oMotherTemplate->checkTemplate()){
@@ -640,8 +640,8 @@ class TemplateConfiguration extends TemplateConfig
 
     protected function addMotherTemplatePackage($packages)
     {
-        if (!empty($this->template->extends_template_name)){
-            $sMotherTemplateName = (string) $this->template->extends_template_name;
+        if (!empty($this->template->extends)){
+            $sMotherTemplateName = (string) $this->template->extends;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
         }
         return $packages;
