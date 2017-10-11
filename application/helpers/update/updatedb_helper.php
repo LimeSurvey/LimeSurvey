@@ -868,7 +868,7 @@ function upgradeTemplateTables304($oDB)
         'description'            => 'TEXT',
         'last_update'            => 'datetime DEFAULT NULL',
         'owner_id'               => 'integer DEFAULT NULL',
-        'extends_templates_name' => 'string(150) DEFAULT NULL',
+        'extends_template_name' => 'string(150) DEFAULT NULL',
         'PRIMARY KEY (name)'
     ));
 
@@ -889,7 +889,7 @@ function upgradeTemplateTables304($oDB)
         'files_folder'           => 'files',
         'description'            => "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)",
         'owner_id'               => '1',
-        'extends_templates_name' => '',
+        'extends_template_name' => '',
     ));
 
     // Add minimal template
@@ -909,7 +909,7 @@ function upgradeTemplateTables304($oDB)
         'files_folder'           => 'files',
         'description'            => '<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own solution.',
         'owner_id'               => '1',
-        'extends_templates_name' => '',
+        'extends_template_name' => '',
     ));
 
 
@@ -931,7 +931,7 @@ function upgradeTemplateTables304($oDB)
         'files_folder'           => 'files',
         'description'            => "<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta's Material design theme for Bootstrap 3</small>",
         'owner_id'               => '1',
-        'extends_templates_name' => 'default',
+        'extends_template_name' => 'default',
     ));
 
 

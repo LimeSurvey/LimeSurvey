@@ -1256,7 +1256,7 @@ CREATE TABLE lime_templates (
     description text,
     last_update timestamp without time zone,
     owner_id integer,
-    extends_templates_name character varying(150) DEFAULT NULL::character varying
+    extends_template_name character varying(150) DEFAULT NULL::character varying
 );
 
 
