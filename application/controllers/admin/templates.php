@@ -364,11 +364,6 @@ class templates extends Survey_Common_Action
         try {
             $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
         } catch (\Exception $ex) {
-            /*
-            $aViewUrls = $this->_initialise('default', 'welcome', '', true, true);
-            $aData = array();
-            $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
-             */
             $this->index('', 'welcome', '');
         }
 
