@@ -296,7 +296,7 @@
                 <?php eT('This template is out of date.');?>
             </div>
             <?php
-                printf(gT("We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API"),intval(App()->getConfig("versionnumber")));
+                printf(gT("We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API."),intval(App()->getConfig("versionnumber")));
             ?>
         </div>
     <?php endif;?>
