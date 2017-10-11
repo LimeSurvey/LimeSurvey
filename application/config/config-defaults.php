@@ -93,9 +93,6 @@ $config['showpopups']         =   1;                // Show popup messages if ma
 
 $config['maxemails']          = 50;               // The maximum number of emails to send in one go (this is to prevent your mail server or script from timeouting when sending mass mail)
 
-// Enable or Disable LDAP feature
-$config['enableLdap'] = false;
-
 // Experimental parameters, only change if you know what you're doing
 //
 // filterout_incomplete_answers
