@@ -639,7 +639,7 @@ class TemplateConfig extends CActiveRecord
 
         // Question group
         $aClassAndAttributes['class']['groupcontainer'] = ' group-container ';
-        $aClassAndAttributes['class']['groupcontainer'] = ' group-title text-center h3 ';
+        $aClassAndAttributes['class']['grouptitle'] = ' group-title text-center h3 ';
         $aClassAndAttributes['class']['groupdesc']      = ' group-description row well ';
 
         $aClassAndAttributes['attr']['questiongroup']  = $aClassAndAttributes['attr']['groupcontainer'] = $aClassAndAttributes['attr']['groupcontainer'] = $aClassAndAttributes['attr']['groupdesc'] = '';
