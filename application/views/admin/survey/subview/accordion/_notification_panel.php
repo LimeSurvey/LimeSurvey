@@ -4,7 +4,7 @@ participantsphp
  */
 ?>
 <!-- Notification panel -->
-<div id='notification'  class="tab-pane fade in">
+<div  id='notification'  class="tab-pane fade in">
 
     <!-- email basic to -->
     <div class="form-group">
