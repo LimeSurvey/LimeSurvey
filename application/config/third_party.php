@@ -105,8 +105,8 @@ return array(
             'js/select2.full'.$minVersion.'.js',
         ),
         'css' => array(
-            'css/select2-bootstrap.css',
             'css/select2.css',
+            'css/select2-bootstrap.css',
         ),
         'depends' => array(
             'jquery',

@@ -118,7 +118,9 @@
                     <div class=""><?php
                         Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                             'asDropDownList' => true,
-                            'htmlOptions'=>array('style'=>"width: 80%"),
+                            'htmlOptions'=>array(
+                                'style'=>'width:100%;'
+                            ),
                             'data' => isset($users) ?  $users : [],
                             'value' => $oSurvey->owner_id,
                             'name' => 'owner_id',
@@ -243,7 +245,7 @@
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                     'asDropDownList' => true,
-                    'htmlOptions'=>array('style'=>"width: 80%"),
+                    'htmlOptions'=>array('style'=>"width: 100%"),
                     'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
                     'value' => $oSurvey->gsid,
                     'name' => 'gsid',
