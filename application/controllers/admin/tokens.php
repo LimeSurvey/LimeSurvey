@@ -1962,7 +1962,7 @@ class tokens extends Survey_Common_Action
                                 if (isset($responseGroup[$j][$ldap_queries[$ldapq]['language']]))
                                     $mylanguage = ldap_readattr($responseGroup[$j][$ldap_queries[$ldapq]['language']]);
 
-                                // In case Ldap Server encoding isn't UTF-8, let's translate
+                                // In case LDAP Server encoding isn't UTF-8, let's translate
                                 // the strings to UTF-8
                                 if ($ldapencoding != '')
                                 {

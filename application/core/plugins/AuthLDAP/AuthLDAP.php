@@ -17,7 +17,7 @@ class AuthLDAP extends ls\pluginmanager\AuthPluginBase
     protected $settings = array(
         'server' => array(
             'type' => 'string',
-            'label' => 'Ldap server',
+            'label' => 'LDAP server',
             'help' => 'e.g. ldap://ldap.example.com or ldaps://ldap.example.com'
         ),
         'ldapport' => array(

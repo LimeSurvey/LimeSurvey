@@ -35,7 +35,17 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
-Changes from 2.71.1 (build 170927) to 2.72.0 (build 170927) Oct 10, 2017
+Changes from 2.72.0 (build 171010) to 2.72.1 (build 171012) Oct 12, 2017
+-Fixed issue #12551: Untranslated string (Carsten Schmitz)
+-Fixed issue #12765: When saving survey settings an error is shown. (Carsten Schmitz)
+-Fixed issue: Unable to save plugin settings (Denis Chenu)
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: French (France) by arnaud21
+#Updated translation: Hungarian by kkd
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Norwegian (Bokmål) by pmonstad
+
+Changes from 2.71.1 (build 170927) to 2.72.0 (build 171010) Oct 10, 2017
 -New feature #12691: Allow initial superadmin to login via LDAP (Denis Chenu)
 -New feature #9235: Copy, export and import survey plugin settings (Denis Chenu)
 -New feature: Copy survey from remotecontroll (#688) (Stefan Verweij)
