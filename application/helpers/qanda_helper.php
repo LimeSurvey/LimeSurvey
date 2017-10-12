@@ -2511,13 +2511,12 @@ function do_file_upload($ia)
             $filecountvalue = $tempval;
         }
     }
-    $value = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'utf-8');
-    $fileuploadDatas = array(
+    $fileuploadData = array(
         'fileid' => $ia[1],
-        'value' => $value,
+        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'filecountvalue'=>$filecountvalue,
     );
-    $answer .= doRender('/survey/questions/file_upload/answer', $fileuploadDatas, true);
+    $answer .= doRender('/survey/questions/file_upload/answer', $fileuploadData, true);
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
