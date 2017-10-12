@@ -13,7 +13,7 @@ function doFileUpload(){
     if (filecount > 0)
     {
         var jsontext = window.parent.window.$('#'+fieldname).val();
-        var json = eval('(' + jsontext + ')');
+        var json = JSON.parse(jsontext);
         if( $('#field'+fieldname+'_listfiles').length==0){
             $("<ul id='field"+fieldname+"_listfiles' class='files-list' />").insertAfter("#uploadstatus");
         }
@@ -133,7 +133,7 @@ function doFileUpload(){
 
             // Once the file has been uploaded via AJAX,
             // the preview is appended to the list of files
-            var metadata = eval('(' + response + ')');
+            var metadata = JSON.parse(response);
 
             var count = parseInt($('#'+fieldname+'_licount').val());
             count++;
@@ -231,13 +231,11 @@ function passJSON(fieldname, show_title, show_comment, pos) {
         if ($("#"+fieldname+"_li_"+i).is(':visible'))
         {
             var passDataObject = {};
-            preJson
-
             if ($("#"+fieldname+"_show_title").val() == 1)
-                passDataObject.title = $("#"+fieldname+"_title_"  +i).val().replace(/"/g, '\\"');
+                passDataObject.title = $("#"+fieldname+"_title_"  +i).val();
 
             if ($("#"+fieldname+"_show_comment").val() == 1)
-                passDataObject.comment = $("#"+fieldname+"_comment_"+i).val().replace(/"/g, '\\"');
+                passDataObject.comment = $("#"+fieldname+"_comment_"+i).val();
 
             passDataObject.size     = $("#"+fieldname+"_size_"   +i).val();
             passDataObject.name     = $("#"+fieldname+"_name_"   +i).val();
