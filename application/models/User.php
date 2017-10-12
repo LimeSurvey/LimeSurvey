@@ -331,7 +331,9 @@ class User extends LSActiveRecord
                         "action"=> "deluser"
                     ));
 
-                $deleteUser = "<button
+                $deleteUser = "
+                <span style='mar0;padding:0;' data-toggle='tooltip' title='".gT('Delete this user')."'>
+                <button
                 data-toggle='modal'
                 data-href='#'
                 data-onclick='$.post(".$deleteUrl.",{
@@ -345,7 +347,7 @@ class User extends LSActiveRecord
                 data-message='".gT("Delete this user")."'
                 class='btn btn-default btn-xs'>
                     <span class='fa fa-trash  text-danger'></span>
-                </button>";
+                </button></span>";
             }
         } else {
             if (Permission::model()->hasGlobalPermission('superadmin','read')
@@ -382,7 +384,8 @@ class User extends LSActiveRecord
                     ));
 
                      //'admin/user/sa/deluser'
-                    $deleteUser = "<button
+                    $deleteUser = "<span style='margin:0;padding:0;display: inline-block;' data-toggle='tooltip' title='".gT('Delete this user')."'>
+                    <button
                         id='delete_user_".$this->uid."'
                         data-toggle='modal'
                         data-target='#confirmation-modal'
@@ -394,7 +397,7 @@ class User extends LSActiveRecord
                         data-message='".gT("Do you want to delete this user?")."'
                         class='btn btn-default btn-xs '>
                             <span class='fa fa-trash  text-danger'></span>
-                        </button>";
+                        </button></span>";
                 }
 
                 if (Yii::app()->session['loginID'] == "1" && $this->parent_id !=1 ) {
