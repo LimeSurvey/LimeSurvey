@@ -625,7 +625,6 @@ function createSurveyMenuTable293($oDB) {
         "changed_by" => "int NOT NULL DEFAULT '0'",
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "int NOT NULL DEFAULT '0'",
-        "PRIMARY KEY (id)",
         "FOREIGN KEY (menu_id) REFERENCES  {{surveymenu}} (id) ON DELETE CASCADE"
     ));
 
