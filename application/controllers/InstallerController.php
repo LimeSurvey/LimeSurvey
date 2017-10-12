@@ -949,9 +949,10 @@ class InstallerController extends CController {
     * Installer::_setup_tables()
     * Function that actually modify the database. Read $sqlfile and execute it.
     * @param string $sFileName
+    * @param array $aDbConfig
     * @return  Empty string if everything was okay - otherwise the error messages
     */
-    function _setup_tables($sFileName, $aDbConfig = array(), $sDatabasePrefix = '')
+    public function _setup_tables($sFileName, $aDbConfig = array())
     {
         $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
         extract($aDbConfig);
@@ -967,8 +968,6 @@ class InstallerController extends CController {
         }
         require_once($sFileName);
         return createDatabase($this->connection);
-        //return $this->_executeSQLFile($sFileName, $sDatabasePrefix);
-        //return $this->_runDatabaseInstaller($sFileName, $sDatabasePrefix);
     }
 
     /**
