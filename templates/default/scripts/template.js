@@ -85,6 +85,34 @@ var Template = function(){
         });
     }
 
+    var initLanguageChanger = function(selectorItem, selectorGlobalForm){
+        $(selectorItem).on('change',function() {
+            var lang = $(this).val();
+            console.log(lang, 'changed');
+            // If there are no form : we can't use it */
+            /* No form, not targeturl : just see what happen */
+            var target = window.location.href;
+            $("<form>", {
+                "class":'ls-js-hidden',
+                "html": '<input type="hidden" name="lang" value="' + lang + '" />',
+                "action": target,
+                "method": 'get'
+            }).appendTo('body').submit();
+        });
+    };
+
+    var initTopMenuLanguageChanger = function(selectorItem, selectorGlobalForm){
+        // $(selectorContainer).height($('#main-row').height());
+        $(selectorItem).on('click', function(){
+            var lang = $(this).data('limesurvey-lang');
+            /* The limesurvey form exist in document, move select and button inside and click */
+            $(selectorGlobalForm+" [name='lang']").remove();                        // Remove existing lang selector
+            $("<input type='hidden'>").attr('name','lang').val(lang).appendTo($(selectorGlobalForm));
+            $('#changlangButton').clone().appendTo($(selectorGlobalForm)).click();
+
+        });
+    };
+
     var init = function(){
 
         /**
@@ -170,7 +198,9 @@ var Template = function(){
         sliderSuffixClone : sliderSuffixClone,
         fixBodyPadding : fixBodyPadding,
         hideQuestionWithRelevanceSubQuestion : hideQuestionWithRelevanceSubQuestion,
-        hideEmptyPart : hideEmptyPart
+        hideEmptyPart : hideEmptyPart,
+        initLanguageChanger: initLanguageChanger,
+        initTopMenuLanguageChanger: initTopMenuLanguageChanger
     }
 
 }

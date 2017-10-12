@@ -13,6 +13,9 @@ body {
   .surveys-list .btn-group {
     width: 50%;
   }
+  .language_change_container{
+      height: 90vh;
+  }
 }
 
 .group-title-container {

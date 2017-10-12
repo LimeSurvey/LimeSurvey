@@ -661,12 +661,12 @@ class TemplateConfig extends CActiveRecord
         // Language changer
         $aClassAndAttributes['id']['lctdropdown']    = 'langs-container';
 
-        $aClassAndAttributes['class']['lctli']          = ' dropdown ls-no-js-hidden lctli ';
-        $aClassAndAttributes['class']['lctla']          = ' dropdown-toggle ';
-        $aClassAndAttributes['class']['lctspan']        = ' caret ';
-        $aClassAndAttributes['class']['lctdropdown']    = ' dropdown-menu ';
-        $aClassAndAttributes['class']['lctdropdownli']  = ' index-item ';
-        $aClassAndAttributes['class']['lctdropdownlia'] = ' ls-language-link ';
+        $aClassAndAttributes['class']['lctli']          = 'dropdown ls-no-js-hidden form-change-lang ';
+        $aClassAndAttributes['class']['lctla']          = 'dropdown-toggle ';
+        $aClassAndAttributes['class']['lctspan']        = 'caret ';
+        $aClassAndAttributes['class']['lctdropdown']    = 'dropdown-menu ';
+        $aClassAndAttributes['class']['lctdropdownli']  = 'index-item ';
+        $aClassAndAttributes['class']['lctdropdownlia'] = 'ls-language-link ';
 
         $aClassAndAttributes['attr']['lctla']       = ' data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" ';
         $aClassAndAttributes['attr']['lctdropdown'] = ' style="overflow: scroll" ';

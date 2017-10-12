@@ -29,16 +29,15 @@
         'attribute' : 'value',
     #}
     {% set htmlOptions = {
-            'id'             : false,
+            'id'             : 'langchangerSelectMain',
             'class'          : aSurveyInfo.class.formcontrol,
             'data-targeturl' : aLCD.targetUrl,
         }
     %}
-
     <!-- Language Changer -->
-    <div class=" {{ aSurveyInfo.class.languagechanger }} " {{ aSurveyInfo.attr.languagechanger }} >
-        <label class="{{ aSurveyInfo.class.formgroup }} {{ aSurveyInfo.attr.formgroup }}">
-            <span class="{{ aSurveyInfo.class.controllabel }}" {{ aSurveyInfo.attr.controllabel }}>{{ "Language:" | t }}</span>
+    <div class=" {{ aSurveyInfo.class.formgroup }} " {{ aSurveyInfo.attr.formgroup }} >
+        <label class="{{ aSurveyInfo.class.controllabel }}" {{ aSurveyInfo.attr.controllabel }} for="langchangerSelectMain">
+            <span class="{{ aSurveyInfo.class.languagechanger }}" {{ aSurveyInfo.attr.languagechanger }}>{{ "Language:" | t }}</span>
             {{
                 C.Html.dropDownList(
                     'lang',
@@ -47,9 +46,9 @@
                     htmlOptions
                 )
             }}
-
         </label>
 
+    </div>
         {% if aLCD.withForm == true %}
             <!-- for no js functionality (need form) -->
             {% set buttonhtmlOptions = {
@@ -68,32 +67,11 @@
                 )
             }}
             {% endif %}
-    </div>
-{% endif %}
 
-
-{# TODO: add a javascript file, and register it here #}
-<script>
-// Method for link
-$(document).ready(function(){
-    $('.form-change-lang').on('change','select',function() {
-        var lang = $(this).val();
-        /* we are not in a forum, can not submit directly */
-        if($('form#limesurvey').length==1){
-            /* The limesurvey form exist in document, move select and button inside and click */
-            $("form#limesurvey [name='lang']").remove();                        // Remove existing lang selector
-            $("<input type='hidden'>").attr('name','lang').val(lang).appendTo($('form#limesurvey'));
-            $('#changlangButton').clone().appendTo($('form#limesurvey')).click();
-        }else{
-            // If there are no form : we can't use it */
-            /* No form, not targeturl : just see what happen */
-            $("<form>", {
-                "class":'ls-js-hidden',
-                "html": '<input type="hidden" name="lang" value="' + lang + '" />',
-                "action": target,
-                "method": 'get'
-            }).appendTo(document.body).submit();
-        }
+    <script>
+    $(document).on('ready pjax:complete', function(){
+        template.initLanguageChanger('#langchangerSelectMain', 'form#limesurvey');
     });
-});
-</script>
+    </script>
+
+{% endif %}
