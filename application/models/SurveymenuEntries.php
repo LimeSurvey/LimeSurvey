@@ -69,7 +69,7 @@ class SurveymenuEntries extends LSActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'menu' => array(self::BELONGS_TO, 'Surveymenu', 'menu_id'),
+			'menu' => array(self::BELONGS_TO, 'Surveymenu', 'menu_id', 'together' => true),
 			'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
 		);
 	}
@@ -214,13 +214,13 @@ class SurveymenuEntries extends LSActiveRecord
 		$criteria=new CDbCriteria;
 		if(Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin','read'))
 		{
-			$criteria->compare('menu_id','<> 1');
-			$criteria->compare('menu_id','<> 2');
+			$criteria->compare('id','<> 0');
+			$criteria->compare('id','<> 1');
 		}
 		$oSurveymenus = Surveymenu::model()->findAll($criteria);
 		$options = [];
 		foreach($oSurveymenus as $oSurveymenu){
-			$options[$oSurveymenu->id] = $oSurveymenu->title;
+			$options["".$oSurveymenu->id] = $oSurveymenu->title;
 		}
 		return $options;
 	}

@@ -26,7 +26,7 @@
             </div>
             <label class="col-sm-3 control-label"  for='menu_id'><?php eT("Menu ID?"); ?></label>
             <div class="col-sm-8">
-                <?php echo TbHtml::dropDownList('menu_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getMenuIdOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+                <?php echo TbHtml::dropDownList('menu_id', 'lskeep', (['lskeep' => gT('Keep old value')]+$model->getMenuIdOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
             </div>
         </div>
 

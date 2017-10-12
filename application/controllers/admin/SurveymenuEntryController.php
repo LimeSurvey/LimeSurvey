@@ -241,23 +241,30 @@ class SurveymenuEntryController extends Survey_Common_Action
                 $success[$menuEntryid] = $model->delete(); 
             }
 
-			return Yii::app()->getController()->renderPartial(
-				'/admin/super/_renderJson',
-				array(
-					'data' => [
-						'success'=> $success,
-						'redirect' => $this->getController()->createUrl('admin/menus/sa/view'),
-						'debug' => [$model, $_POST],
-						'debugErrors' => $model->getErrors(),
-						'settings' => array(
-							'extrasettings' => false,
-							'parseHTML' => false,
-						)
-					]
-				),
-				false,
-				false
-			);
+            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $returnData = array(
+                'data' => [
+                    'success'=> $success,
+                    'redirect' => $this->getController()->createUrl('admin/menuentries/sa/view'),
+                    'settings' => array(
+                        'extrasettings' => false,
+                        'parseHTML' => false,
+                    )
+                ]
+            );
+            
+            if($debug > 0){
+                $returnData['data']['debug'] = [$model, $_POST];
+                $returnData['data']['debugErrors'] = $model->getErrors();
+            }
+    
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                $returnData, 
+                false,
+                false
+            );
+
 		}
     }
 	/**
@@ -273,24 +280,31 @@ class SurveymenuEntryController extends Survey_Common_Action
 			$success = false;
 			$model = $this->loadModel($menuEntryid);
 			$success = $model->delete();
+            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 
-			return Yii::app()->getController()->renderPartial(
-				'/admin/super/_renderJson',
-				array(
-					'data' => [
-						'success'=> $success,
-						'redirect' => $this->getController()->createUrl('admin/menus/sa/view'),
-						'debug' => [$model, $_POST],
-						'debugErrors' => $model->getErrors(),
-						'settings' => array(
-							'extrasettings' => false,
-							'parseHTML' => false,
-						)
-					]
-				),
-				false,
-				false
-			);
+            $returnData = array(
+                'data' => [
+                    'success'=> $success,
+                    'redirect' => $this->getController()->createUrl('admin/menuentries/sa/view'),
+                    'settings' => array(
+                        'extrasettings' => false,
+                        'parseHTML' => false,
+                    )
+                ]
+            );
+            
+            if($debug > 0){
+                $returnData['data']['debug'] = [$model, $_POST];
+                $returnData['data']['debugErrors'] = $model->getErrors();
+            }
+    
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                $returnData, 
+                false,
+                false
+            );
+            
 		}
 	}
 
@@ -303,24 +317,31 @@ class SurveymenuEntryController extends Survey_Common_Action
 		{
 			$model = SurveymenuEntries::model();
 			$success = $model->reorder();
-
-			return Yii::app()->getController()->renderPartial(
-				'/admin/super/_renderJson',
-				array(
-					'data' => [
-						'success'=> $success,
-						'redirect' => false,
-						'debug' => [$model, $_POST],
-						'debugErrors' => $model->getErrors(),
-						'settings' => array(
-							'extrasettings' => false,
-							'parseHTML' => false,
-						)
-					]
-				),
-				false,
-				false
-			);
+            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            
+            $returnData = array(
+                'data' => [
+                    'success'=> $success,
+                    'redirect' => $this->getController()->createUrl('admin/menuentries/sa/view'),
+                    'settings' => array(
+                        'extrasettings' => false,
+                        'parseHTML' => false,
+                    )
+                ]
+            );
+            
+            if($debug > 0){
+                $returnData['data']['debug'] = [$model, $_POST];
+                $returnData['data']['debugErrors'] = $model->getErrors();
+            }
+    
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                $returnData, 
+                false,
+                false
+            );
+            
 		}
 	}
 

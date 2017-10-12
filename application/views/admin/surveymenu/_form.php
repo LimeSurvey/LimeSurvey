@@ -15,7 +15,6 @@
 	'htmlOptions' => ['class' =>'form '],
 	'action' => Yii::app()->getController()->createUrl('admin/menus/sa/update', ['id' => $model->id])
 )); ?>
-	<p><pre><?=$model->isNewRecord?></pre></p>
 	<div class="modal-header">
 		<?php $model->isNewRecord ? eT('Create new surveymenu') : eT('Edit surveymenu') ?>
 	</div>
