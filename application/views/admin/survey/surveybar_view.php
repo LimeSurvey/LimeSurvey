@@ -98,7 +98,7 @@
                     <!-- activate expired survey -->
                     <?php if($expired) : ?>
                         <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<?php eT('This survey is active but expired.'); ?><br><?php eT('Click to adjust.'); ?>">
-                            <a href='<?php echo $this->createUrl("admin/survey/editlocalsettings/surveyid/$surveyid#publicationoptions");?>'class="btn btn-success btntooltip" >
+                            <a href='<?php echo $this->createUrl("admin/survey/sa/rendersidemenulink/subaction/publication", ['surveyid' => $surveyid]);?>'class="btn btn-success btntooltip" >
                                 <span class="fa fa-ban">&nbsp;</span>
                                 <?php eT("Expired");?>
                             </a>
