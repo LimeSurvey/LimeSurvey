@@ -93,20 +93,26 @@
                                 <!-- Interface language -->
                                 <div class="form-group">
                                     <?php echo CHtml::label(gT("Interface language:"), 'lang', array('class'=>" control-label")); ?>
-                                    <div class="">
+                                    <div class="selector_contain_select2">
                                         <?php
                                         $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                                             'asDropDownList' => true,
                                             'name' => 'lang',
                                             'data' => $aLanguageData,
                                             'pluginOptions' => array(
+                                                'buttonWidth' => '100%',
                                                 'htmlOptions' => array(
-                                                    'id' => 'lang',
-                                                    'class'=> "form-control"
-                                                    )
-                                                ),
-                                                'value' => $sSavedLanguage
-                                            ));
+                                                    'id' => 'lang', 
+                                                    'style'=> "widht:100%;"
+                                                )
+                                            ),
+                                            'value' => $sSavedLanguage,
+                                            'htmlOptions' => array(
+                                                'class'=> "form-control",
+                                                'style'=> "widht:100%;",
+                                                'data-width' => '100%'
+                                            )
+                                        ));
                                             
                                             ?>
                                     </div>
