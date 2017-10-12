@@ -46,7 +46,7 @@
     </div>
 
     <div class="row">
-        <?php $model->sortorder = $model->sortorder ? $model->order : $model->getNextOrderPosition(); ?>
+        <?php $model->sortorder = $model->sortorder ? $model->sortorder : $model->getNextOrderPosition(); ?>
         <?php echo $form->labelEx($model,'sortorder'); ?>
         <?php echo $form->textField($model,'sortorder'); ?>
         <?php echo $form->error($model,'sortorder'); ?>

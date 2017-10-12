@@ -48,7 +48,7 @@ class SurveysGroupsController extends Survey_Common_Action
             $model->name = sanitize_paranoid_string($model->name);
             $model->created_by = $model->owner_uid = Yii::app()->user->id;
             if($model->save())
-                $this->getController()->redirect(array('admin/survey/sa/listsurveys '));
+                $this->getController()->redirect( $this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
         }
 
         $aData['model'] = $model;

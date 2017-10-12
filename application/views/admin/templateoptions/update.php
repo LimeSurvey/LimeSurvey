@@ -8,7 +8,6 @@
 
 
 <div class="container">
-    <div class="row h1"><?php eT('Update TemplateOptions for ').$model->id; ?></div>
     <div class="row h1"><?php eT('Update TemplateOptions for '); echo '<em>' . $model->template_name . '</em>'; ?></div>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
