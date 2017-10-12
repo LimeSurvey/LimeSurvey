@@ -267,7 +267,6 @@ class database extends Survey_Common_Action
             $iMaxCount=(int) Yii::app()->request->getPost('answercount_'.$iScaleID);
             for ($iSortOrderID=1;$iSortOrderID<$iMaxCount;$iSortOrderID++) {
                 $sCode=sanitize_paranoid_string(Yii::app()->request->getPost('code_'.$iSortOrderID.'_'.$iScaleID));
-                //var_dump($sCode);
                 $iAssessmentValue=(int) Yii::app()->request->getPost('assessment_'.$iSortOrderID.'_'.$iScaleID);
                 foreach ($survey->allLanguages as $sLanguage) {
                     $sAnswerText=Yii::app()->request->getPost('answer_'.$sLanguage.'_'.$iSortOrderID.'_'.$iScaleID);
@@ -1092,39 +1091,40 @@ class database extends Survey_Common_Action
 
     }
 
-    private function _filterEmptyFields(&$oSurvey, $fieldArrayName, $newValue=null){
+    /**
+     * @param Survey $oSurvey
+     * @param string $fieldArrayName
+     * @param mixed $newValue
+     * @return mixed
+     */
+    private function _filterEmptyFields($oSurvey, $fieldArrayName, $newValue = null)
+    {
         $aSurvey = $oSurvey->attributes;
 
-        if($newValue === null)
-        {
-            $newValue = App()->request->getPost($fieldArrayName, NULL);
+        if ($newValue === null) {
+            $newValue = App()->request->getPost($fieldArrayName, null);
         }
 
-
-        if($newValue === NULL)
-        {
+        if ($newValue === null) {
             $newValue = isset($aSurvey[$fieldArrayName]) ? $aSurvey[$fieldArrayName] : $oSurvey->{$fieldArrayName};
-
-        } 
-        else 
-        {
+        } else {
             $this->updatedFields[] = $fieldArrayName;
         }
         
         $newValue = trim($newValue);
 
         $options = $this->updateableFields[$fieldArrayName];
-        switch($options['type']){
+        switch ($options['type']) {
             case 'yesno':
-                if($newValue != 'Y' && $newValue != 'N')
-                {
+                if ($newValue != 'Y' && $newValue != 'N') {
                     $newValue = (int) $newValue;
                     $newValue = ($newValue===1) ? 'Y' : 'N';
                 }
-            break;
-            case 'Int' : 
+                break;
+            case 'Int':
                 $newValue = (int) $newValue;
-        }  
+                break;
+        }
 
         return $newValue;
     }
