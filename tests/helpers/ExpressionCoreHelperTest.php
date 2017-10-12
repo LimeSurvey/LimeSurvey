@@ -11,6 +11,10 @@ use PHPUnit\Framework\TestCase;
  */
 class ExpressionManagerCoreTest extends TestBaseClass
 {
+    /**
+     * @var int
+     */
+    public static $surveyId = null;
 
     /**
      * List of expressions to test.
@@ -53,6 +57,25 @@ class ExpressionManagerCoreTest extends TestBaseClass
         exec('node -v', $output);
         if (strpos($output[0], 'command not found') !== false) {
             die('Node is not installed');
+        }
+
+        // Import survey
+        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_563168.lss';
+        if (!file_exists($surveyFile)) {
+            die('Fatal error: found no survey file');
+        }
+        $translateLinksFields = false;
+        $newSurveyName = null;
+        $result = importSurveyFile(
+            $surveyFile,
+            $translateLinksFields,
+            $newSurveyName,
+            null
+        );
+        if ($result) {
+            self::$surveyId = $result['newsid'];
+        } else {
+            die('Fatal error: Could not import survey');
         }
     }
 
@@ -319,11 +342,11 @@ class ExpressionManagerCoreTest extends TestBaseClass
     protected function compareExpression($sgqa, $value, $expression, $jsonEncode = true, $onlynum = 1)
     {
         // Input value 3.
-        $_SESSION['survey_563168'][$sgqa] = $value;
+        $_SESSION['survey_' . self::$surveyId][$sgqa] = $value;
 
         $em = new \ExpressionManager();
         $lem = \LimeExpressionManager::singleton();
-        $lem->setVariableAndTokenMappingsForExpressionManager('563168');
+        $lem->setVariableAndTokenMappingsForExpressionManager(self::$surveyId);
         $lem->setKnownVars(
             [
                 $sgqa => [
