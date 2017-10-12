@@ -147,12 +147,16 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         $oRTemplate = Template::model()->getInstance();
         $oTemplate  = $this->getTemplateForView($sView, $oRTemplate);
-        $line       = file_get_contents($oTemplate->viewPath.$sView);
-        $result     = $this->renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn);
+        if ($oTemplate) {
+            $line       = file_get_contents($oTemplate->viewPath.$sView);
+            $result     = $this->renderTemplateFromString($line, $aDatas, $oRTemplate, $bReturn);
 
-        if ($bReturn){
-            Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
-            return $result;
+            if ($bReturn) {
+                Yii::app()->clientScript->registerPackage($oRTemplate->sPackageName);
+                return $result;
+            }
+        } else {
+            // TODO: Internal error? Show error message?
         }
 
         return null;
