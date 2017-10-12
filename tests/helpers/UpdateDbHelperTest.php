@@ -38,6 +38,9 @@ class UpdateDbHelperTest extends TestBaseClass
      */
     public function testInstallSql()
     {
+        // SQL not used anymore, see the PHP file.
+        $this->markTestSkipped();
+
         $db = \Yii::app()->getDb();
 
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
