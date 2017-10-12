@@ -37,7 +37,6 @@ class database extends Survey_Common_Action
                 'faxto' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'format' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'expires' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
-                'additional_languages' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'startdate' => ['type'=> 'default', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'template' => ['type'=> '', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
                 'assessments' => ['type'=> 'yesno', 'default' => false, 'dbname'=>false, 'active'=>true, 'required'=>[]],
@@ -926,7 +925,10 @@ class database extends Survey_Common_Action
 
 
             $oSurvey->assessments = $this->_filterEmptyFields($oSurvey, 'assessments');
-            $oSurvey->additional_languages =  $this->_filterEmptyFields($oSurvey, 'additional_languages', implode(' ', Yii::app()->request->getPost('additional_languages', array())));
+
+            if(!is_null(Yii::app()->request->getPost('additional_languages'))){
+                $oSurvey->additional_languages =  implode(' ', Yii::app()->request->getPost('additional_languages', array()));
+            }
 
             if ($oSurvey->active!='Y') {
                 $oSurvey->anonymized =  $this->_filterEmptyFields($oSurvey, 'anonymized');
@@ -1116,11 +1118,11 @@ class database extends Survey_Common_Action
         $options = $this->updateableFields[$fieldArrayName];
         switch ($options['type']) {
             case 'yesno':
-                if ($newValue != 'Y' && $newValue != 'N') {
-                    $newValue = (int) $newValue;
-                    $newValue = ($newValue===1) ? 'Y' : 'N';
-                }
-                break;
+            if ($newValue != 'Y' && $newValue != 'N') {
+                $newValue = (int) $newValue;
+                $newValue = ($newValue===1) ? 'Y' : 'N';
+            }
+            break;
             case 'Int':
                 $newValue = (int) $newValue;
                 break;
