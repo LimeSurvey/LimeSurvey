@@ -468,8 +468,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     if ($iOldDBVersion < 318) {
         $oTransaction = $oDB->beginTransaction();
         
-        $oDB->createCommand()->renameColumn('{{surveys_groups}}', 'order', 'sortorder');
-
         $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>318),"stg_name='DBVersion'");
         $oTransaction->commit();
     }
@@ -480,7 +478,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         $oTransaction = $oDB->beginTransaction();
         
         $oDB->createCommand()->update('{{surveymenu_entries}}',array('data'=>'{"render": {"link": { "pjaxed": false}}}'),"name='panelintegration'");
-        $oDB->createCommand()->renameColumn('{{templates}}','extends_template_name','extends');
 
         $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>319),"stg_name='DBVersion'");
         $oTransaction->commit();
@@ -621,7 +618,7 @@ function createSurveyMenuTable293($oDB) {
         "data" => "text ",
         "getdatamethod" => "character varying(255)  NOT NULL DEFAULT ''",
         "language" => "character varying(255)  NOT NULL DEFAULT 'en-GB'",
-        "changed_at" => "timestamp",
+        "changed_at" => "datetime DEFAULT NULL",
         "changed_by" => "int NOT NULL DEFAULT '0'",
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "int NOT NULL DEFAULT '0'",
@@ -745,7 +742,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "language" => "varchar(255)  NOT NULL DEFAULT 'en-GB'",
         "changed_at" => "timestamp",
         "changed_by" => "integer NOT NULL DEFAULT '0'",
-        "created_at" => "timestamp DEFAULT NULL",
+        "created_at" => "datetime DEFAULT NULL",
         "created_by" => "integer NOT NULL DEFAULT '0'"
     ));
     $oDB->createCommand()->createIndex('idx_menu_id', '{{surveymenu_entries}}', 'menu_id');

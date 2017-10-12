@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @since 2017-06-16
+ * @group dbhelper
  */
 class UpdateDbHelperTest extends TestBaseClass
 {
