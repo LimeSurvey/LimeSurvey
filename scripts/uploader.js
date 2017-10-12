@@ -225,16 +225,16 @@ function passJSON(fieldname, show_title, show_comment, pos) {
     var filecount = 0;
     var licount   = parseInt($('#'+fieldname+'_licount').val());
     var i = 1;
+
     while (i <= licount)
     {
-
         if ($("#"+fieldname+"_li_"+i).is(':visible'))
         {
             var passDataObject = {};
             preJson
 
             if ($("#"+fieldname+"_show_title").val() == 1)
-                passDataObject.title = +$("#"+fieldname+"_title_"  +i).val().replace(/"/g, '\\"');
+                passDataObject.title = $("#"+fieldname+"_title_"  +i).val().replace(/"/g, '\\"');
 
             if ($("#"+fieldname+"_show_comment").val() == 1)
                 passDataObject.comment = $("#"+fieldname+"_comment_"+i).val().replace(/"/g, '\\"');
@@ -245,9 +245,9 @@ function passJSON(fieldname, show_title, show_comment, pos) {
             passDataObject.ext      = $("#"+fieldname+"_ext_"    +i).val();
 
             filecount += 1;
+            preJson.push(passDataObject);
         }
         i += 1;
-        preJson.push(passDataObject);
     }
     
     var jsonString = JSON.stringify(preJson);
