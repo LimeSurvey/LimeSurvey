@@ -56,7 +56,7 @@
                     array(
                         'header' => gT('extends'),
                         'name' => 'templates_extends',
-                        'value'=>'$data->template->extends',
+                        'value'=>'$data->template->extends_templates_name',
                         'htmlOptions' => array('class' => 'col-md-2'),
                     ),
 

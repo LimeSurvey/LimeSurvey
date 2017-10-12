@@ -156,7 +156,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
                 return $result;
             }
         } else {
-            // TODO: Internal error? Show error message?
+            trigger_error("TEMPLATE ERROR!", E_USER_ERROR);
         }
 
         return null;
