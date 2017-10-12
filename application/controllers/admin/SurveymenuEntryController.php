@@ -154,7 +154,7 @@ class SurveymenuEntryController extends Survey_Common_Action
                     foreach ($aData as $k => $v){
                         $oSurveyMenuEntry->$k = $v;
                     }
-
+                    
                     $bUpdateSuccess = $oSurveyMenuEntry->update();
                     if ( $bUpdateSuccess ){
                         $aResults[$iSurveyMenuEntryId]['status']    = true;
@@ -227,6 +227,39 @@ class SurveymenuEntryController extends Survey_Common_Action
         }
     }
 
+	/**
+	 * Deletes an array of models.
+	 */
+	public function massDelete()
+	{
+		if( Yii::app()->request->isPostRequest )
+		{
+			$aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
+            $success = [];
+            foreach($aSurveyMenuEntryIds as $menuEntryid){
+                $model = $this->loadModel($menuEntryid);
+                $success[$menuEntryid] = $model->delete(); 
+            }
+
+			return Yii::app()->getController()->renderPartial(
+				'/admin/super/_renderJson',
+				array(
+					'data' => [
+						'success'=> $success,
+						'redirect' => $this->getController()->createUrl('admin/menus/sa/view'),
+						'debug' => [$model, $_POST],
+						'debugErrors' => $model->getErrors(),
+						'settings' => array(
+							'extrasettings' => false,
+							'parseHTML' => false,
+						)
+					]
+				),
+				false,
+				false
+			);
+		}
+    }
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.

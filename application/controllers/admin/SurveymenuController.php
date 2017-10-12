@@ -94,18 +94,17 @@ class SurveymenuController extends Survey_Common_Action
 	}
     public function batchEdit()
     {
-        $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
         $aResults     = array();
-        $oBaseModel = SurveymenuEntries::model();
+        $oBaseModel = Surveymenu::model();
         if ( Permission::model()->hasGlobalPermission('settings','update') )
         {
-
             // First we create the array of fields to update
             $aData = array();
             $aResults['global']['result']  = true;
 
             // Core Fields
-            $aCoreTokenFields = array('position', 'parent',  'survey', 'user', 'language');
+            $aCoreTokenFields = array('position', 'parent',  'survey', 'user');
 
             foreach($aCoreTokenFields as $sCoreTokenField)
             {
@@ -117,21 +116,21 @@ class SurveymenuController extends Survey_Common_Action
             
             if (count($aData) > 0)
             {
-                foreach ($aSurveyMenuEntryIds as $iSurveyMenuEntryId){
-                    $iSurveyMenuEntryId = (int) $iSurveyMenuEntryId;
-                    $oSurveyMenuEntry = SurveymenuEntries::model()->findByPk($iSurveyMenuEntryId);
+                foreach ($aSurveyMenuIds as $iSurveyMenuId){
+                    $iSurveyMenuId = (int) $iSurveyMenuId;
+                    $oSurveyMenu = Surveymenu::model()->findByPk($iSurveyMenuId);
 
                     foreach ($aData as $k => $v){
-                        $oSurveyMenuEntry->$k = $v;
+                        $oSurveyMenu->$k = $v;
                     }
 
-                    $bUpdateSuccess = $oSurveyMenuEntry->update();
+                    $bUpdateSuccess = $oSurveyMenu->update();
                     if ( $bUpdateSuccess ){
-                        $aResults[$iSurveyMenuEntryId]['status']    = true;
-                        $aResults[$iSurveyMenuEntryId]['message']   = gT('Updated');
+                        $aResults[$iSurveyMenuId]['status']    = true;
+                        $aResults[$iSurveyMenuId]['message']   = gT('Updated');
                     }else{
-                        $aResults[$iSurveyMenuEntryId]['status']    = false;
-                        $aResults[$iSurveyMenuEntryId]['message']   = $oSurveyMenuEntry->error;
+                        $aResults[$iSurveyMenuId]['status']    = false;
+                        $aResults[$iSurveyMenuId]['message']   = $iSurveyMenuId->error;
                     }
                 }
             }
@@ -148,11 +147,45 @@ class SurveymenuController extends Survey_Common_Action
             $aResults['global']['message'] = gT("We are sorry but you don't have permissions to do this.");
         }
 
-        $oBaseModel->reorder();
 
         Yii::app()->getController()->renderPartial('/admin/surveymenu/massive_action/_update_results', array('aResults'=>$aResults));
 
     }
+
+	/**
+	 * Deletes an array of models.
+	 */
+	public function massDelete()
+	{
+		if( Yii::app()->request->isPostRequest )
+		{
+			$aSurveyMenuIds = json_decode(Yii::app()->request->getPost('sItems'));
+            $success = [];
+            foreach($aSurveyMenuIds as $menuid){
+                $model = $this->loadModel($menuid);
+                $success[$menuid] = $model->delete(); 
+            }
+
+			return Yii::app()->getController()->renderPartial(
+				'/admin/super/_renderJson',
+				array(
+					'data' => [
+						'success'=> $success,
+						'redirect' => $this->getController()->createUrl('admin/menus/sa/view'),
+						'debug' => [$model, $_POST],
+						'debugErrors' => $model->getErrors(),
+						'settings' => array(
+							'extrasettings' => false,
+							'parseHTML' => false,
+						)
+					]
+				),
+				false,
+				false
+			);
+		}
+    }
+    
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.

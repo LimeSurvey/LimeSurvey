@@ -5,7 +5,7 @@
  */
 ?>
 <?php
-    $model = SurveymenuEntries::model();
+    $model = Surveymenu::model();
 ?>
 
 <form class="custom-modal-datas form form-horizontal">

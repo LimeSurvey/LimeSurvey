@@ -209,7 +209,7 @@ class Surveymenu extends LSActiveRecord
         $cols = array(
 			array(
 			'name' => 'id',
-			'value' => '\'<input type="checkbox" name="selectMenuToEdit" class="action_selectthismenu" value="\'.$data->id.\'" />\'',
+			'value' => '\'<input type="checkbox" name="id[]" class="action_selectthismenu" value="\'.$data->id.\'" />\'',
 			'type' => 'raw'
 			),
 			array(

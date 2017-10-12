@@ -12,6 +12,8 @@
 // );
 // 
 $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+$massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massive_action/_selector', array(), true, false);
+
 ?>
 <div class="container-fluid ls-space padding left-50 right-50">
 	<div class="ls-flex-column ls-space padding left-35 right-35">
@@ -52,7 +54,8 @@ $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageS
 					'itemsCssClass' => 'table table-responsive table-striped',
 					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
 					'ajaxType' => 'POST',
-					'ajaxUpdate' => true,
+                    'ajaxUpdate' => true,
+                    'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
     				'afterAjaxUpdate'=>'bindAction',
 				));
 				?>

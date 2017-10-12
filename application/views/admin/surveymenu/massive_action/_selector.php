@@ -15,7 +15,7 @@
             // li element
             'type'        => 'action',
             'action'      => 'delete',
-            'url'         =>  App()->createUrl('/admin/menu/sa/massDelete/'),
+            'url'         =>  App()->createUrl('/admin/menus/sa/massDelete/'),
             'iconClasses' => 'text-danger fa fa-trash',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
@@ -35,7 +35,7 @@
         $buttons[] = array(
             'type' => 'action',
             'action' => 'batchEdit',
-            'url' => App()->createUrl('/admin/menu/sa/batchEdit/'),
+            'url' => App()->createUrl('/admin/menus/sa/batchEdit/'),
             'iconClasses' => 'fa fa-download',
             'text' => gT('Batch edit'),
             'grid-reload' => 'yes',
@@ -46,7 +46,7 @@
             'yes'           => gT('Apply'),
             'no'            => gT('Cancel'),
             'sModalTitle'   => gT('Batch edit the menus'),
-            'htmlModalBody' => $this->renderPartial('./surveymenu/massive_actions/_update', [], true)
+            'htmlModalBody' => $this->renderPartial('./surveymenu/massive_action/_update', [], true)
         );
 
     }
