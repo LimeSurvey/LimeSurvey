@@ -33,7 +33,7 @@ if (!defined('BASEPATH'))
  * @property string $description
  * @property string $last_update
  * @property integer $owner_id
- * @property string $extends_templates_name
+ * @property string $extends
  */
 class Template extends LSActiveRecord
 {
@@ -62,14 +62,14 @@ class Template extends LSActiveRecord
         return array(
             array('name, title, creation_date', 'required'),
             array('owner_id', 'numerical', 'integerOnly'=>true),
-            array('name, author, extends_templates_name', 'length', 'max'=>150),
+            array('name, author, extends', 'length', 'max'=>150),
             array('folder, version, api_version, view_folder, files_folder', 'length', 'max'=>45),
             array('title', 'length', 'max'=>100),
             array('author_email, author_url', 'length', 'max'=>255),
             array('copyright, license, description, last_update', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('name, folder, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, view_folder, files_folder, description, last_update, owner_id, extends_templates_name', 'safe', 'on'=>'search'),
+            array('name, folder, title, creation_date, author, author_email, author_url, copyright, license, version, api_version, view_folder, files_folder, description, last_update, owner_id, extends', 'safe', 'on'=>'search'),
         );
     }
 
@@ -105,7 +105,7 @@ class Template extends LSActiveRecord
             'description' => 'Description',
             'last_update' => 'Last Update',
             'owner_id' => 'Owner',
-            'extends_templates_name' => 'Extends Templates Name',
+            'extends' => 'Extends Templates Name',
         );
     }
 
@@ -498,7 +498,7 @@ class Template extends LSActiveRecord
         $criteria->compare('description',$this->description,true);
         $criteria->compare('last_update',$this->last_update,true);
         $criteria->compare('owner_id',$this->owner_id);
-        $criteria->compare('extends_templates_name',$this->extends_templates_name,true);
+        $criteria->compare('extends',$this->extends,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
