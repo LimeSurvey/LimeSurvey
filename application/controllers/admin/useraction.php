@@ -344,7 +344,6 @@ class UserAction extends Survey_Common_Action
 
             if (Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID'] == $postuserid ||
             (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) ) {
-                $sresult = User::model()->parentAndUser($postuserid);
                 if(empty($sresult)) {
                     Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
                     $this->getController()->redirect(array("admin/user/sa/index"));
@@ -352,7 +351,6 @@ class UserAction extends Survey_Common_Action
                 $oUser = User::model()->findByPk($postuserid);
                 $aData = array();
                 $aData['oUser'] = $oUser;
-                $aData['aUserData'] = $sresult;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
                 // Close button, UrlReferrer;

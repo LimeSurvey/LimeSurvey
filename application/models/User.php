@@ -70,6 +70,7 @@ class User extends LSActiveRecord
         return array(
             'permissions' => array(self::HAS_MANY, 'Permission', 'uid'),
             'parentUser' => array(self::HAS_ONE, 'User', array('uid' => 'parent_id') ),
+            'settings' => array(self::HAS_MANY, 'SettingsUser', 'uid')
         );
     }
 
@@ -102,23 +103,6 @@ class User extends LSActiveRecord
         $data = $this->findAll($criteria);
 
         return $data;
-    }
-
-    /**
-     * @param integer $postuserid
-     * @return mixed
-     */
-    public function parentAndUser($postuserid)
-    {
-        $user = Yii::app()->db->createCommand()
-            ->select('a.users_name, a.full_name, a.email, a.uid,  b.users_name AS parent')
-            ->limit(1)
-            ->where('a.uid = :postuserid')
-            ->from("{{users}} a")
-            ->leftJoin('{{users}} AS b', 'a.parent_id = b.uid')
-            ->bindParam(":postuserid", $postuserid, PDO::PARAM_INT)
-            ->queryRow();
-        return $user;
     }
 
     /**
@@ -213,21 +197,6 @@ class User extends LSActiveRecord
         $oUser=$this->findByPk($iUserID);
         return (bool) $oUser->delete();
     }
-
-    /**
-     * Returns user share settings
-     * TODO this seems unused, delete? should be done via relation
-     * @access public
-     * @return array
-     */
-    public function getShareSetting()
-    {
-        $this->db->where(array("uid"=>$this->session->userdata('loginID')));
-        $result= $this->db->get('users');
-        return $result->row();
-    }
-
-
 
     /**
      * Finds user by username
