@@ -501,6 +501,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         $oTransaction->commit();
     }
 
+    if ($iOldDBVersion < 321) {
+        $oTransaction = $oDB->beginTransaction();
+        $oDB->createCommand()->update(
+            '{{surveymenu_entries}}',
+            array('data' => '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}'),
+            "name = 'statistics' OR name = 'responses'"
+        );
+        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>321),"stg_name='DBVersion'");
+        $oTransaction->commit();
+    }
 
     }
     catch(Exception $e)
