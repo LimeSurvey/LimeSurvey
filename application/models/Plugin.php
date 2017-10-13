@@ -47,7 +47,7 @@ class Plugin extends CActiveRecord {
     public function rules() {
         return array(
             array('name','length', 'max'=>255),
-            array('active','default', 0),
+            array('active','default', 'value'=>0),
             array('active','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
         );
     }
