@@ -494,6 +494,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         $oTransaction->commit();
     }
                         
+    if ($iOldDBVersion < 320) {
+        $oTransaction = $oDB->beginTransaction();
+        $oDB->createCommand()->update('{{surveymenu_entries}}',array('action'=>'updatesurveylocalesettings_generalsettings'),"name='generalsettings'");
+        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>320),"stg_name='DBVersion'");
+        $oTransaction->commit();
+    }
 
 
     }
