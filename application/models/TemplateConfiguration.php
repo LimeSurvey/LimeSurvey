@@ -54,6 +54,8 @@ class TemplateConfiguration extends TemplateConfig
 
     // Caches
 
+    public $allDbTemplateFolders = null;
+
     /** @var string $sPreviewImgTag the template preview image tag for the template list*/
     public $sPreviewImgTag;
 
@@ -308,42 +310,23 @@ class TemplateConfiguration extends TemplateConfig
      * @return mixed true on success | exception
      * @throws Exception
      */
-    public static function importManifest($sTemplateName)
+    public static function importManifest($sTemplateName, $aDatas=array() )
     {
-        $oEditedTemplate                      = Template::model()->getTemplateConfiguration($sTemplateName, null,null, false);
-        $oEditedTemplate->prepareTemplateRendering($sTemplateName);
+        if ( !empty($aDatas['extends'])  ){
 
-        $oEditTemplateDb                      = Template::model()->findByPk($oEditedTemplate->oMotherTemplate->sTemplateName);
-        $oNewTemplate                         = new Template;
-        $oNewTemplate->name                   = $oEditedTemplate->sTemplateName;
-        $oNewTemplate->folder                 = $oEditedTemplate->sTemplateName;
-        $oNewTemplate->title                  = $oEditedTemplate->sTemplateName;  // For now, when created via template editor => name == folder == title
-        $oNewTemplate->creation_date          = date("Y-m-d H:i:s");
-        $oNewTemplate->author                 = Yii::app()->user->name;
-        $oNewTemplate->author_email           = ''; // privacy
-        $oNewTemplate->author_url             = ''; // privacy
-        $oNewTemplate->api_version            = $oEditTemplateDb->api_version;
-        $oNewTemplate->view_folder            = $oEditTemplateDb->view_folder;
-        $oNewTemplate->files_folder           = $oEditTemplateDb->files_folder;
-        //$oNewTemplate->description           TODO: a more complex modal whith email, author, url, licence, desc, etc
-        $oNewTemplate->owner_id               = Yii::app()->user->id;
-        $oNewTemplate->extends = $oEditedTemplate->oMotherTemplate->sTemplateName;
+            $oEditTemplateDb                 = Template::model()->findByPk($aDatas['extends']);
 
-        if ($oNewTemplate->save()){
-            $oNewTemplateConfiguration                    = new TemplateConfiguration;
-            $oNewTemplateConfiguration->template_name    = $oEditedTemplate->sTemplateName;
-            $oNewTemplateConfiguration->template_name    = $oEditedTemplate->sTemplateName;
-            $oNewTemplateConfiguration->options           = json_encode($oEditedTemplate->oOptions);
-
-
-            if ($oNewTemplateConfiguration->save()){
-                return true;
-            }else{
-                throw new Exception($oNewTemplateConfiguration->getErrors());
-            }
-        }else{
-            throw new Exception($oNewTemplate->getErrors());
+            $aDatas['api_version']           = $oEditTemplateDb->api_version;
+            $aDatas['view_folder']           = $oEditTemplateDb->view_folder;
+            $aDatas['author_email']          = $oEditTemplateDb->author_email;
+            $aDatas['author_url']            = $oEditTemplateDb->author_url;
+            $aDatas['copyright']             = $oEditTemplateDb->copyright;
+            $aDatas['version']               = $oEditTemplateDb->version;
+            $aDatas['license']               = $oEditTemplateDb->license;
+            $aDatas['files_folder']          = $oEditTemplateDb->files_folder;
         }
+
+        return parent::importManifest($sTemplateName, $aDatas );
     }
 
     public function setToInherit(){
@@ -382,15 +365,20 @@ class TemplateConfiguration extends TemplateConfig
     public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true)
     {
         $this->bUseMagicInherit = $bUseMagicInherit;
+        $this->setBasics($sTemplateName, $iSurveyId);
+        $this->setMotherTemplates();                                            // Recursive mother templates configuration
+        $this->setThisTemplate();                                               // Set the main config values of this template
+        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
+        return $this;
+    }
+
+    public function setBasics($sTemplateName='', $iSurveyId='')
+    {
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard();                                                 // Check if  it is a CORE template
         $this->path = ($this->isStandard)
             ? Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder
             : Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
-        $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        $this->setThisTemplate();                                               // Set the main config values of this template
-        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
-        return $this;
     }
 
     /**
@@ -430,11 +418,12 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getButtons()
     {
-        $sEditorUrl = Yii::app()->getController()->createUrl('admin/templates/sa/view', array("templatename"=>$this->template->name));
-        $sOptionUrl = Yii::app()->getController()->createUrl('admin/templateoptions/sa/update', array("id"=>$this->id));
+        $sEditorUrl    = Yii::app()->getController()->createUrl('admin/templates/sa/view', array("templatename"=>$this->template_name));
+        $sOptionUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/update', array("id"=>$this->id));
+        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/templateoptions/sa/uninstall/', array("templatename"=>$this->template_name));
 
         $sEditorLink = "<a
-            id='template_editor_link'
+            id='template_editor_link_".$this->template_name."'
             href='".$sEditorUrl."'
             class='btn btn-default'>
                 <span class='icon-templates'></span>
@@ -447,7 +436,7 @@ class TemplateConfiguration extends TemplateConfig
 
         if ($this->hasOptionPage){
             $OptionLink .=  "<a
-                id='template_options_link'
+                id='template_options_link_".$this->template_name."'
                 href='".$sOptionUrl."'
                 class='btn btn-default'>
                     <span class='fa fa-tachometer'></span>
@@ -455,9 +444,22 @@ class TemplateConfiguration extends TemplateConfig
                 </a>";
         }
 
+        $sUninstallLink = "<a
+            id='remove_fromdb_link_".$this->template_name."'
+            href='".$sUninstallUrl."'
+            class='btn btn-default btn-danger'>
+                <span class='icon-trash'></span>
+                ".gT('Uninstall')."
+            </a>";
 
 
-        return $sEditorLink.'<br><br>'.$OptionLink;
+        $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
+
+        if (!$this->isStandard){
+            $sButtons .= '<br><br>'.$sUninstallLink ;
+        }
+
+        return $sButtons;
     }
 
     public function getHasOptionPage()
@@ -518,7 +520,7 @@ class TemplateConfiguration extends TemplateConfig
                 }
             }
         }
-        
+
 
         return $this->aFilesToLoad[$sType];
     }
@@ -681,7 +683,7 @@ class TemplateConfiguration extends TemplateConfig
                 $this->aFrameworkAssetsToReplace[$sType] = array_merge($this->aFrameworkAssetsToReplace, (array) $aFieldValue['remove'] );
             }
         }
-        
+
 
         return $this->aFrameworkAssetsToReplace[$sType];
     }
@@ -705,7 +707,7 @@ class TemplateConfiguration extends TemplateConfig
             $aReplace = $aAsset[1];
             $this->aReplacements[$sType][] = $aReplace;
         }
-        
+
 
         return $this->aReplacements[$sType];
     }
@@ -746,6 +748,41 @@ class TemplateConfiguration extends TemplateConfig
             return $this->oParentTemplate;
         }
         return $this->oParentTemplate;
+    }
+
+
+    public function getTemplatesWithNoDb()
+    {
+        $aTemplatesInUpload   =  Template::getUploadTemplates();
+        $aTemplatesInDb       =  $this->getAllDbTemplateFolders();
+        $aTemplatesWithoutDB  = array();
+
+        foreach ($aTemplatesInUpload as $sName => $sPath) {
+            if (! in_array($sName, $aTemplatesInDb) ){
+                $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);    // Get the manifest
+            }
+        }
+
+        return $aTemplatesWithoutDB;
+    }
+
+    public function getAllDbTemplateFolders()
+    {
+        if (empty($this->allDbTemplateFolders)){
+
+            $oCriteria = new CDbCriteria;
+            $oCriteria->select = 'folder';
+            $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
+
+            $aAllDbTemplateFolders = array();
+            foreach ($oAllDbTemplateFolders as $oAllDbTemplateFolders){
+                $aAllDbTemplateFolders[] = $oAllDbTemplateFolders->folder;
+            }
+
+            $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
+        }
+
+        return $this->allDbTemplateFolders;
     }
 
     /**

@@ -174,7 +174,10 @@ class templateoptions  extends Survey_Common_Action
 
         $aData = array();
 
-        $model = new TemplateConfiguration('search');
+        //$model = new TemplateConfiguration('search');
+        $model = new TemplateConfiguration();
+
+        //$aFtpTemplates = ;
 
         $aData['model'] = $model;
         $this->_renderWrappedTemplate('templateoptions', 'index', $aData);
@@ -211,6 +214,19 @@ class templateoptions  extends Survey_Common_Action
 
 
         return $model;
+    }
+
+
+    public function importManifest($templatename)
+    {
+        TemplateManifest::importManifest($templatename);
+        $this->getController()->redirect(array("admin/templateoptions"));
+    }
+
+    public function uninstall($templatename)
+    {
+        TemplateConfiguration::uninstall($templatename);
+        $this->getController()->redirect(array("admin/templateoptions"));
     }
 
     /**

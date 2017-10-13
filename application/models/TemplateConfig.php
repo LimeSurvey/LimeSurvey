@@ -784,6 +784,60 @@ class TemplateConfig extends CActiveRecord
          return $s;
     }
 
+
+    public static function uninstall($templatename )
+    {
+        if (Permission::model()->hasGlobalPermission('templates','delete'))
+        {
+            $oTemplate                = Template::model()->findByAttributes(array('name' => $templatename));
+            if( $oTemplate->delete()){
+                $oTemplateConfig      = TemplateConfiguration::model()->findByAttributes(array('template_name' => $templatename));
+                return TemplateConfiguration::model()->deleteAll('template_name=:templateName', array(':templateName' => $templatename) );
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
+     * @param string $sTemplateName the name of the template to import
+     * @return mixed true on success | exception
+     * @throws Exception
+     */
+    public static function importManifest($sTemplateName, $aDatas )
+    {
+        $oNewTemplate                = new Template;
+        $oNewTemplate->name          = $sTemplateName;
+        $oNewTemplate->folder        = $sTemplateName;
+        $oNewTemplate->title         = $sTemplateName;  // For now, when created via template editor => name == folder == title
+        $oNewTemplate->creation_date = date("Y-m-d H:i:s");
+        $oNewTemplate->author        = Yii::app()->user->name;
+        $oNewTemplate->author_email  = ''; // privacy
+        $oNewTemplate->author_url    = ''; // privacy
+        $oNewTemplate->api_version   = $aDatas['api_version'];
+        $oNewTemplate->view_folder   = $aDatas['view_folder'];
+        $oNewTemplate->files_folder  = $aDatas['files_folder'];
+        //$oNewTemplate->description  TODO: a more complex modal whith email, author, url, licence, desc, etc
+        $oNewTemplate->owner_id      = Yii::app()->user->id;
+        $oNewTemplate->extends       = $aDatas['extends'];
+
+        if ($oNewTemplate->save()){
+            $oNewTemplateConfiguration                   = new TemplateConfiguration;
+            $oNewTemplateConfiguration->template_name    = $sTemplateName;
+            $oNewTemplateConfiguration->template_name    = $sTemplateName;
+            $oNewTemplateConfiguration->options          = json_encode($aDatas['aOptions']);
+
+
+            if ($oNewTemplateConfiguration->save()){
+                return true;
+            }else{
+                throw new Exception($oNewTemplateConfiguration->getErrors());
+            }
+        }else{
+            throw new Exception($oNewTemplate->getErrors());
+        }
+    }
+
     // TODO: try to refactore most of those methods in TemplateConfiguration and TemplateManifest so we can define their body here.
     // It will consist in adding private methods to get the values of variables... See what has been done for createTemplatePackage
     // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data

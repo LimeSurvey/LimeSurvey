@@ -37,6 +37,8 @@ if (!defined('BASEPATH'))
  */
 class Template extends LSActiveRecord
 {
+    /** @var array $aTemplatesInUploadDir cache for the method getUploadTemplates */
+    public static $aTemplatesInUploadDir = null;
 
     /** @var Template - The instance of template object */
     private static $instance;
@@ -215,6 +217,8 @@ class Template extends LSActiveRecord
         // If no row found, or if the template folder for this configuration row doesn't exist we load the XML config (which will load the default XML)
         if ( $bForceXML || !is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || ! $oTemplateConfigurationModel->checkTemplate()){
             $oTemplateConfigurationModel = new TemplateManifest;
+            $oTemplateConfigurationModel->setBasics($sTemplateName, $iSurveyId);
+
         }
 
         //$oTemplateConfigurationModel->prepareTemplateRendering($sTemplateName, $iSurveyId);
@@ -462,6 +466,34 @@ class Template extends LSActiveRecord
         }
 */
     //    return self::$standardTemplates;
+    }
+
+
+
+
+    public static function getUploadTemplates()
+    {
+
+        if(empty(self::$aTemplatesInUploadDir)){
+
+            $sUserTemplateRootDir = Yii::app()->getConfig("usertemplaterootdir");
+            $aTemplateList        = array();
+
+            if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)){
+
+                while (false !== ($sFileName = readdir($handle))){
+
+                    if (!is_file("$sUserTemplateRootDir/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName!=".svn" && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml") )){
+                        $aTemplateList[$sFileName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sFileName;
+                    }
+                }
+                closedir($handle);
+            }
+            ksort($aTemplateList);
+            self::$aTemplatesInUploadDir = $aTemplateList;
+        }
+
+        return self::$aTemplatesInUploadDir;
     }
 
     /**
