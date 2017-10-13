@@ -122,8 +122,11 @@ class database extends Survey_Common_Action
         }
         if (($sAction == "updatesurveylocalesettings") && (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
             $this->actionUpdateSurveyLocaleSettings($iSurveyID);
-
         }
+        if (($sAction == "updatesurveylocalesettings_generalsettings") && (Permission::model()->hasSurveyPermission($iSurveyID, 'surveylocale', 'update') || Permission::model()->hasSurveyPermission($iSurveyID, 'surveysettings', 'update'))) {
+            $this->actionUpdateSurveyLocaleSettingsGeneralSettings($iSurveyID);
+        }
+
 
         //$this->getController()->redirect(array("/admin"), "refresh");
     }
@@ -854,7 +857,6 @@ class database extends Survey_Common_Action
 
                     $oSurveyLanguageSetting= SurveyLanguageSetting::model()->findByPk(array('surveyls_survey_id'=>$iSurveyID, 'surveyls_language'=>$langname));
                     $oSurveyLanguageSetting->setAttributes($data);
-                    $save = false;
                     $save = $oSurveyLanguageSetting->save(); // save the change to database
                     if ((!empty($short_title)) || (!empty($description)) || (!empty($welcome)) || (!empty($endtext)) || (!empty($sURL)) || (!empty($sURLDescription)) || (!empty($dateformat)) || (!empty($numberformat))) {
                     }
@@ -896,39 +898,14 @@ class database extends Survey_Common_Action
                 $datetimeobj = new date_time_converter($expires, $formatdata['phpdate'].' H:i'); //new Date_Time_Converter($expires, $formatdata['phpdate'].' H:i');
                 $expires=$datetimeobj->convert("Y-m-d H:i:s");
             }
-
-            // Only owner and superadmins may change the survey owner
-            if ($oSurvey->owner_id == Yii::app()->session['loginID'] || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
-                $oSurvey->owner_id = $this->_filterEmptyFields($oSurvey, 'owner_id');
-            }
-
-            //for the new template system we have to check that the changed template is also applied
-            $current_template = $oSurvey->template;
-            $new_template =  $this->_filterEmptyFields($oSurvey, 'template');
-            if ($current_template != '' && $current_template !== $new_template) {
-                $currentConfiguration = TemplateConfiguration::getInstance($current_template, $oSurvey->gsid, $oSurvey->sid);
-                
-                if (is_a($currentConfiguration, "TemplateConfiguration")) {
-                    TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
-                }
-            }
-            $oSurvey->template = $new_template;
             
             //$oSurvey, $fieldArray, $newValue
-            $oSurvey->admin =  $this->_filterEmptyFields($oSurvey, 'admin');
             $oSurvey->expires =  $expires;
             $oSurvey->startdate =  $startdate;
-            $oSurvey->faxto = $this->_filterEmptyFields($oSurvey, 'faxto');
-            $oSurvey->gsid = $this->_filterEmptyFields($oSurvey, 'gsid');
-            $oSurvey->format = $this->_filterEmptyFields($oSurvey, 'format');
             
 
 
             $oSurvey->assessments = $this->_filterEmptyFields($oSurvey, 'assessments');
-
-            if(!is_null(Yii::app()->request->getPost('additional_languages'))){
-                $oSurvey->additional_languages =  implode(' ', Yii::app()->request->getPost('additional_languages', array()));
-            }
 
             if ($oSurvey->active!='Y') {
                 $oSurvey->anonymized =  $this->_filterEmptyFields($oSurvey, 'anonymized');
@@ -977,8 +954,6 @@ class database extends Survey_Common_Action
             $tokenlength = $this->_filterEmptyFields($oSurvey, 'tokenlength');
             $oSurvey->tokenlength = ($tokenlength <5  || $tokenlength>36) ? 15 : $tokenlength;
 
-            $oSurvey->adminemail = $this->_filterEmptyFields($oSurvey, 'adminemail');
-            $oSurvey->bounce_email = $this->_filterEmptyFields($oSurvey, 'bounce_email');
             $event = new PluginEvent('beforeSurveySettingsSave');
             $event->set('modifiedSurvey', $oSurvey);
             App()->getPluginManager()->dispatchEvent($event);
@@ -994,35 +969,6 @@ class database extends Survey_Common_Action
 
         /* Reload $oSurvey (language are fixed : need it ?) */
         $oSurvey=Survey::model()->findByPk($iSurveyID);
-
-        /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
-        $aAvailableLanguage=$oSurvey->getAllLanguages();
-        $oCriteria = new CDbCriteria;
-        $oCriteria->compare('surveyls_survey_id', $iSurveyID);
-        $oCriteria->addNotInCondition('surveyls_language', $aAvailableLanguage);
-        SurveyLanguageSetting::model()->deleteAll($oCriteria);
-
-        /* Add new language fixLanguageConsistency do it ?*/
-        foreach ($oSurvey->additionalLanguages as $sLang) {
-            if ($sLang) {
-                $oLanguageSettings = SurveyLanguageSetting::model()->find('surveyls_survey_id=:surveyid AND surveyls_language=:langname', array(':surveyid'=>$iSurveyID,':langname'=>$sLang));
-                if (!$oLanguageSettings) {
-                    $oLanguageSettings= new SurveyLanguageSetting;
-                    $languagedetails=getLanguageDetails($sLang);
-                    $oLanguageSettings->surveyls_survey_id = $iSurveyID;
-                    $oLanguageSettings->surveyls_language = $sLang;
-                    $oLanguageSettings->surveyls_title = ''; // Not in default model ?
-                    $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
-                    if (!$oLanguageSettings->save()) {
-                        Yii::app()->setFlashMessage(gT("Survey language could not be created."), "error");
-                        tracevar($oLanguageSettings->getErrors());
-                    }
-                }
-            }
-        }
-        /* Language fix : remove and add question/group */
-        cleanLanguagesFromSurvey($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
-        fixLanguageConsistency($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
 
         // Url params in json
         $aURLParams=json_decode(Yii::app()->request->getPost('allurlparams'), true);
@@ -1091,6 +1037,85 @@ class database extends Survey_Common_Action
             }
         }
 
+    }
+
+    /**
+     * Action for the page "General settings".
+     * @param int $iSurveyID
+     * @return void
+     */
+    protected function actionUpdateSurveyLocaleSettingsGeneralSettings($iSurveyID)
+    {
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $request = Yii::app()->request;
+        $oSurvey->additional_languages =  implode(' ', Yii::app()->request->getPost('additional_languages', array()));
+        $oSurvey->admin =  $request->getPost('admin');
+        $oSurvey->adminemail = $request->getPost('adminemail');
+        $oSurvey->bounce_email = $request->getPost('bounce_email');
+        $oSurvey->faxto = $request->getPost('faxto');
+        $oSurvey->gsid = $request->getPost('gsid');
+        $oSurvey->format = $request->getPost('format');
+
+        // For the new template system we have to check that the changed template is also applied.
+        $current_template = $oSurvey->template;
+        $new_template =  $request->getPost('template');
+        if ($current_template != '' && $current_template !== $new_template) {
+            $currentConfiguration = TemplateConfiguration::getInstance(
+                $current_template,
+                $oSurvey->gsid,
+                $oSurvey->sid
+            );
+
+            if (is_a($currentConfiguration, "TemplateConfiguration")) {
+                TemplateConfiguration::model()->deleteByPk($currentConfiguration->id);
+            }
+        }
+        $oSurvey->template = $new_template;
+
+        // Only owner and superadmins may change the survey owner
+        if ($oSurvey->owner_id == Yii::app()->session['loginID']
+            || Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+            $oSurvey->owner_id = $request->getPost('owner_id');
+        }
+
+        /* Delete removed language cleanLanguagesFromSurvey do it already why redo it (cleanLanguagesFromSurvey must be moved to model) ?*/
+        $aAvailableLanguage = $oSurvey->getAllLanguages();
+        $oCriteria = new CDbCriteria;
+        $oCriteria->compare('surveyls_survey_id', $iSurveyID);
+        $oCriteria->addNotInCondition('surveyls_language', $aAvailableLanguage);
+        SurveyLanguageSetting::model()->deleteAll($oCriteria);
+
+        /* Add new language fixLanguageConsistency do it ?*/
+        foreach ($oSurvey->additionalLanguages as $sLang) {
+            if ($sLang) {
+                $oLanguageSettings = SurveyLanguageSetting::model()->find(
+                    'surveyls_survey_id=:surveyid AND surveyls_language=:langname',
+                    array(':surveyid'=>$iSurveyID,':langname'=>$sLang)
+                );
+                if (!$oLanguageSettings) {
+                    $oLanguageSettings= new SurveyLanguageSetting;
+                    $languagedetails=getLanguageDetails($sLang);
+                    $oLanguageSettings->surveyls_survey_id = $iSurveyID;
+                    $oLanguageSettings->surveyls_language = $sLang;
+                    $oLanguageSettings->surveyls_title = ''; // Not in default model ?
+                    $oLanguageSettings->surveyls_dateformat = $languagedetails['dateformat'];
+                    if (!$oLanguageSettings->save()) {
+                        Yii::app()->setFlashMessage(gT("Survey language could not be created."), "error");
+                        tracevar($oLanguageSettings->getErrors());
+                    }
+                }
+            }
+        }
+        /* Language fix : remove and add question/group */
+        cleanLanguagesFromSurvey($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
+        fixLanguageConsistency($iSurveyID, implode(" ", $oSurvey->additionalLanguages));
+
+
+        if ($oSurvey->save()) {
+            Yii::app()->setFlashMessage(gT("Survey settings were successfully saved."));
+        } else {
+            Yii::app()->setFlashMessage(gT("Survey could not be updated."), "error");
+        }
     }
 
     /**

@@ -135,7 +135,7 @@
             <!-- Administrator -->
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
-                <?php $admin = ($oSurvey->owner ? $oSurvey->owner->full_name : $oSurvey->admin); ?>
+                <?php $admin = empty($oSurvey->admin) ? $oSurvey->owner->full_name : $oSurvey->admin; ?>
                 <label class=" control-label"  for='admin'><?php  eT("Administrator:"); ?></label>
                 <div class="">
                     <input class="form-control" type='text' size='50' id='admin' name='admin' value="<?php echo htmlspecialchars($admin); ?>" />
@@ -145,7 +145,7 @@
             <!-- Admin email -->
             <div class="form-group">
                 <?php //Switch for creation/editing ?>
-                <?php $admin_email = $oSurvey->adminemail ? $oSurvey->owner->email : $oSurvey->adminemail; ?>
+                <?php $admin_email = empty($oSurvey->adminemail) ? $oSurvey->owner->email : $oSurvey->adminemail; ?>
                 <label class=" control-label"  for='adminemail'><?php  eT("Admin email:"); ?></label>
                 <div class="">
                     <input class="form-control" type='email' size='50' id='adminemail' name='adminemail' value="<?php echo htmlspecialchars($admin_email); ?>" />
