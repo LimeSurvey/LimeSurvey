@@ -58,7 +58,11 @@
                     default:
                         throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
                     }
-                    $this->_executeSQLFile(dirname(Yii::app()->basePath).'/installer/sql/create-'.$sql_file.'.sql');
+
+                    $sFileName = dirname(APPPATH).'/installer/php/create-database.php';
+                    require_once($sFileName);
+                    createDatabase($this->connection);
+
                     $this->connection->createCommand()->insert($this->connection->tablePrefix.'users', array(
                         'users_name'=>$sArgument[0],
                         'password'=>hash('sha256',$sArgument[1]),
