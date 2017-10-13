@@ -568,6 +568,8 @@ class templates extends Survey_Common_Action
             die('No permission');
         }
 
+        $changedtext = null;
+
         if (returnGlobal('changes')) {
             $changedtext = returnGlobal('changes');
             $changedtext = str_replace('<?', '', $changedtext);
