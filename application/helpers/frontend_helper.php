@@ -663,7 +663,6 @@ function sendSubmitNotifications($surveyid)
         $srid = $_SESSION['survey_'.$surveyid]['srid'];
     $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
     $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-    debugbreak();
     $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->getController()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
     $aReplacementVars['EDITRESPONSEURL']=Yii::app()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
     $aReplacementVars['STATISTICSURL']=Yii::app()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
