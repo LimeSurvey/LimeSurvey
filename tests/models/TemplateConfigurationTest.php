@@ -16,7 +16,8 @@ class TemplateConfigurationTest extends TestBaseClass
      */
     public function testCopyMinimalTemplate()
     {
-        //$tempConf = new \TemplateConfiguration();
-        //$tempConf->prepareTemplateRendering();
+        $tempConf = new \TemplateConfiguration();
+        $tempConf->template = 'default';
+        $tempConf->prepareTemplateRendering('default');
     }
 }
