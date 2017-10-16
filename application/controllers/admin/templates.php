@@ -470,7 +470,6 @@ class templates extends Survey_Common_Action
 
         $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
         $copydir = sanitize_dirname(Yii::app()->request->getPost("copydir"));
-        $action  = Yii::app()->request->getPost("action");
 
         if ($newname && $copydir) {
             // Copies all the files from one template directory to a new one
@@ -484,7 +483,6 @@ class templates extends Survey_Common_Action
                 // We just copy the while directory structure, but only the xml file
                 // TODO: copy template options
                 $oFileHelper->copyDirectory($copydirname,$newdirname, array('fileTypes' => array('xml', 'png', 'jpg')));
-                $templatename = $newname;
                 //TemplateConfiguration::removeAllNodes($newdirname);
                 TemplateManifest::extendsConfig($copydir, $newname );
                 TemplateConfiguration::importManifest($newname);
