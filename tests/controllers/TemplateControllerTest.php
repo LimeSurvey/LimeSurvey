@@ -31,9 +31,13 @@ class TemplateControllerTest extends TestBaseClass
         // Simulate a POST.
         $_POST['newname'] = $newname;
         $_POST['copydir'] = 'default';
+        $_SERVER['SERVER_NAME'] = 'localhost';
 
         $contr = new \templates(new DummyController('dummyid'));
         $contr->templatecopy();
+        $template = \Template::model()->find('name = \'foobartest\'');
+        $this->assertNotEmpty($template);
+        $this->assertEquals('foobartest', $template->name);
     }
 
     /**
