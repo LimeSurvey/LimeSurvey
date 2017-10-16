@@ -91,7 +91,7 @@
                 <div class="{{ aSurveyInfo.class.saveform }}" {{ aSurveyInfo.attr.saveform }}>
 
                     <!-- Saved name  -->
-                    <div class="{{ aSurveyInfo.class.saveformrow }}" {{ aSurveyInfo.attr.saveformrow }}>
+                    <div class="{{ aSurveyInfo.class.saveformrow }} row form-group " {{ aSurveyInfo.attr.saveformrow }}>
                         <label class="{{ aSurveyInfo.class.saveformrowlabel }} control-label col-sm-3 " {{ aSurveyInfo.attr.saveformrowlabel }}>
                             {{ "Saved name:" | t }}
                             <small class="{{ aSurveyInfo.class.saveformrowlabelsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformrowlabelsmall }} ></small>
@@ -110,8 +110,8 @@
                             <span class="{{ aSurveyInfo.class.passwordrowcolspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.passwordrowcolspan }}>{{ "Mandatory" | t }}<span>
                         </label>
 
-                        <div class='col-sm-7 save-survey-input input-cell'>
-                            <input class='form-control' type='password' id='loadpass' name='loadpass' value='' required>
+                        <div class='{{ aSurveyInfo.class.passwordrowinput }} col-sm-7'>
+                            <input class='form-control' {{ aSurveyInfo.attr.passwordrowinputi }} >
                         </div>
                     </div>
 

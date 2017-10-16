@@ -304,7 +304,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['body']  = $this->sTemplateName;
         $aClassAndAttributes['class']['outerframe'] = ' outerframe ' ;
         $aClassAndAttributes['class']['maincol'] = ' ' ;
-        $aClassAndAttributes['attr']['html']   = $thissurvey['attr']['body'] = $aClassAndAttributes['id']['outerframe'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
+        $aClassAndAttributes['attr']['html']   = $thissurvey['attr']['body'] = $aClassAndAttributes['attr']['outerframe'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
 
         // User forms
         $aClassAndAttributes['class']['maincoldivdiva']               = '  ';
@@ -375,7 +375,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['loadformul']            = ' ';
         $aClassAndAttributes['class']['loadformform']          = ' ls-form form form-horizontal ';
         $aClassAndAttributes['class']['saveform']              = ' save-survey-form ';
-        $aClassAndAttributes['class']['saveformrow']           = ' row form-group save-survey-row save-survey-name ';
+        $aClassAndAttributes['class']['saveformrow']           = ' save-survey-row save-survey-name ';
         $aClassAndAttributes['class']['saveformrowlabel']      = ' load-survey-label ';
         $aClassAndAttributes['class']['saveformrowlabelsmall'] = '  ';
         $aClassAndAttributes['class']['saveformrowlabelspan']  = '  ';
@@ -385,6 +385,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['passwordrowcol']        = ' load-survey-label label-cell ';
         $aClassAndAttributes['class']['passwordrowcolsmall']   = '  ';
         $aClassAndAttributes['class']['passwordrowcolspan']    = '  ';
+        $aClassAndAttributes['class']['passwordrowinput']      = ' save-survey-input input-cell ';
+
         $aClassAndAttributes['class']['captcharow']            = ' save-survey-row save-survey-captcha ';
         $aClassAndAttributes['class']['captcharowlabel']       = ' save-survey-label label-cell ';
         $aClassAndAttributes['class']['captcharowcol']         = ' save-survey-input input-cell ';
@@ -402,6 +404,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['saveformrowlabel']       = ' for="savename" ';
         $aClassAndAttributes['attr']['saveformrowlabelsmall']  = ' aria-hidden="true" ';
         $aClassAndAttributes['attr']['saveformrowcolinput']    = ' type="text"  name="loadname" value="" required ';
+        $aClassAndAttributes['attr']['passwordrowinputi']      = ' type="password" id="loadpass" name="loadpass" value="" required ';
+
         $aClassAndAttributes['attr']['passwordrowcol']         = ' for="loadpass" ';
         $aClassAndAttributes['attr']['passwordrowcolsmall']    = ' aria-hidden="true"';
         $aClassAndAttributes['attr']['captcharowcoldivdivimg'] = ' alt="captcha" ';
