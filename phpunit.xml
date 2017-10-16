@@ -9,5 +9,8 @@
         <testsuite name="Models">
             <directory>tests/models</directory>
         </testsuite>
+        <testsuite name="Controllers">
+            <directory>tests/controllers</directory>
+        </testsuite>
     </testsuites>
 </phpunit>
