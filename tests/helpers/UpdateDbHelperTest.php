@@ -40,6 +40,11 @@ class UpdateDbHelperTest extends TestBaseClass
             // Only this error is OK.
             self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
         }
+
+        $dbo->setActive(false);
+        unset($dbo);
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
     }
 
     /**
@@ -73,6 +78,7 @@ class UpdateDbHelperTest extends TestBaseClass
         $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
 
         // Dump database to file.
+        /*
         $output = array();
         $result = exec(
             sprintf(
@@ -84,6 +90,7 @@ class UpdateDbHelperTest extends TestBaseClass
         );
         $this->assertEmpty($output, 'No output from mysqldump');
         $this->assertEmpty($result, 'No last line output from mysqldump');
+         */
 
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
@@ -112,6 +119,7 @@ class UpdateDbHelperTest extends TestBaseClass
         }
 
         // Dump database to file.
+        /*
         $output = array();
         $result = exec(
             sprintf(
@@ -123,6 +131,7 @@ class UpdateDbHelperTest extends TestBaseClass
         );
         $this->assertEmpty($output, 'No output from mysqldump');
         $this->assertEmpty($result, 'No last line output from mysqldump');
+         */
 
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
@@ -142,6 +151,7 @@ class UpdateDbHelperTest extends TestBaseClass
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
 
         // Dump database to file.
+        /*
         $output = array();
         $result = exec(
             sprintf(
@@ -153,6 +163,7 @@ class UpdateDbHelperTest extends TestBaseClass
         );
         $this->assertEmpty($output, 'No output from mysqldump');
         $this->assertEmpty($result, 'No last line output from mysqldump');
+         */
 
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
