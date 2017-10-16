@@ -801,11 +801,16 @@ class TemplateConfig extends CActiveRecord
     /**
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
+     * @param array $aDatas
      * @return mixed true on success | exception
-     * @throws Exception
+     * @throws Exception, InvalidArgumentException
      */
-    public static function importManifest($sTemplateName, $aDatas )
+    public static function importManifest($sTemplateName, $aDatas)
     {
+        if (empty($aDatas)) {
+            throw new InvalidArgumentException('$aDatas cannot be empty');
+        }
+
         $oNewTemplate                = new Template;
         $oNewTemplate->name          = $sTemplateName;
         $oNewTemplate->folder        = $sTemplateName;
