@@ -27,11 +27,6 @@
             <div id="{{ aSurveyInfo.id.dynamicreload }}">
             {% block body %}
 
-                {# Bootstrap Navigation Bar: the top menu #}
-                {% block nav_bar %}
-                    {{ include('./subviews/nav_bar.twig') }}
-                {% endblock %}
-
                 {# Top Container: in this template, it contains only  #}
                 {% block progress %}
                     {{ include('./subviews/progess_bar.twig') }}

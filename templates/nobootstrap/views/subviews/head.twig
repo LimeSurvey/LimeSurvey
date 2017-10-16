@@ -18,8 +18,6 @@
 {% if(aSurveyInfo.jYesNo) %}
     {{ registerScript('activateConfirmLanguage',"$.extend(LSvar.lang," ~ aSurveyInfo.jYesNo ~ ")", "POS_BEGIN") }}
 {% endif %}
-{{ registerScript('activateActionLink',"activateActionLink();", "POS_END") }}
-{{ registerScript('activateConfirmButton',"activateConfirmButton();", "POS_END") }}
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />

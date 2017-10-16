@@ -21,16 +21,12 @@
 {# Replace the content block #}
 {% block body %}
 
-    {% if (aSurveyInfo.printPdf != 1) %} 
-        {% block nav_bar %} 
-        {% endblock %} 
-    {% endif %} 
 
     <section>
-        {% if (aSurveyInfo.printPdf != 1) %} 
+        {% if (aSurveyInfo.printPdf != 1) %}
             {# This will display the script and the hidden inputs needed for Expression Manager #}
             {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
-        {% endif %} 
+        {% endif %}
 
         {{ include('./subviews/printanswers/printanswers_head.twig') }}
         {{ include('./subviews/printanswers/printanswers_table.twig') }}
