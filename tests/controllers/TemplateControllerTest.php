@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @since 2017-10-15
  * @group tempcontr
+ * @group template
  */
 class TemplateControllerTest extends TestBaseClass
 {

@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @since 2017-06-13
  * @group tempconf
+ * @group template
  */
 class TemplateConfigurationTest extends TestBaseClass
 {

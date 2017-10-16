@@ -167,6 +167,7 @@ class UpdateDbHelperTest extends TestBaseClass
     public function testDbUpgradeFrom315()
     {
         $this->updateDbFromVersion(315);
+
     }
 
     /**
