@@ -17,13 +17,13 @@
 #}
 
 <!-- Privacy message -->
-<div class="{{ aSurveyInfo.class.privacycontainer }} row" {{ aSurveyInfo.attr.privacycontainer }}>
-    <div class="{{ aSurveyInfo.class.privacycol }}  col-sm-12 col-centered" {{ aSurveyInfo.attr.privacycol }}>
-        <div class="{{ aSurveyInfo.class.privacyhead }} h4 text-primary " {{ aSurveyInfo.attr.privacyhead }}>
+<div class="{{ aSurveyInfo.class.privacycontainer }}">
+    <div class="{{ aSurveyInfo.class.privacycol }}">
+        <div>
             {{ "This survey is anonymous." | t }}
         </div>
         <div>
-            <p class="{{ aSurveyInfo.class.privacybody }}" {{ aSurveyInfo.attr.privacybody }}>
+            <p class="{{ aSurveyInfo.class.privacybody }}">
                 {{
                     "The record of your survey responses does not contain any identifying information about you, unless a specific survey question explicitly asked for it."
                     | t

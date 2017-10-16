@@ -20,33 +20,33 @@
 
 {% set aAssessments = aSurveyInfo.aAssessments.datas %}
 <!-- Assessments -->
-<table class="{{ aSurveyInfo.class.assessmenttable }} table" {{ aSurveyInfo.attr.assessmenttable }}>
+<table class="{{ aSurveyInfo.class.assessmenttable }} " >
 
     <!-- Heading -->
     <tr>
-        <td class="{{ aSurveyInfo.class.assessmentheading }}" {{ aSurveyInfo.attr.assessmentheading }}>
+        <td class="{{ aSurveyInfo.class.assessmentheading }}" >
             {{ "Your assessment" | t }}
         </td>
     </tr>
 
     <!-- Results -->
     <tr>
-        <td class="{{ aSurveyInfo.class.assessmentscontainer }}" {{ aSurveyInfo.attr.assessmentscontainer }} >
+        <td class="{{ aSurveyInfo.class.assessmentscontainer }}" >
             {% if aAssessments.subtotal.show %}
                 {% for key,val in aAssessments.subtotal %}
                     {% if aAssessments.group %}
                         {% if key in aAssessments.group | keys %}
                             {% for assessed in aAssessments.group[key] %}
                                 {% if ( val >= assessed.min and val <= assessed.max ) %}
-                                <table class='{{ aSurveyInfo.class.assessmentstable }} table' {{ aSurveyInfo.attr.assessmentstable }}>
-                                    <tr {{ aSurveyInfo.attr.assessmentstabletr }} >
-                                        <th {{ aSurveyInfo.attr.assessmentstableth }} >
+                                <table class='{{ aSurveyInfo.class.assessmentstable }} ' >
+                                    <tr>
+                                        <th>
                                             {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
                                         </th>
                                     </tr>
 
-                                    <tr  {{ aSurveyInfo.attr.assessmentstabletr }} >
-                                        <td {{ aSurveyInfo.attr.assessmentstabletd }} >
+                                    <tr>
+                                        <td>
                                             {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.message)  }}
                                         </td>
                                     </tr>
@@ -64,15 +64,15 @@
             {% if aAssessments.total.show %}
                 {% for assessed in aAssessments.total %}
                     {% if ( aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
-                        <table class='{{ aSurveyInfo.class.assessmentstablet }} table' {{ aSurveyInfo.attr.assessmentstablet }} >
-                            <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
-                                <th {{ aSurveyInfo.attr.assessmentstabletth }}>
+                        <table class='{{ aSurveyInfo.class.assessmentstablet }}'>
+                            <tr>
+                                <th>
                                     {# Beleive it or not, val is defined in previous loop... -_- #}
                                     {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
                                 </th>
                             </tr>
-                            <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
-                                <td {{ aSurveyInfo.attr.assessmentstablettd }}>
+                            <tr>
+                                <td>
                                     {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.message)  }}
                                 </td>
                             </tr>

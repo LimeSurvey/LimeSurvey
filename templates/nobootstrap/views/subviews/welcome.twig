@@ -22,26 +22,26 @@
 #}
 
 <!-- Welcome Message -->
-<div id="{{ aSurveyInfo.id.welcomecontainer }}" class="{{ aSurveyInfo.class.welcomecontainer }}" {{ aSurveyInfo.attr.welcomecontainer }}>
+<div id="{{ aSurveyInfo.id.welcomecontainer }}">
 
     <!-- Survey Name -->
-    <h1 class="{{ aSurveyInfo.class.surveyname }} text-center" {{ aSurveyInfo.attr.surveyname }} >
+    <h1 class="{{ aSurveyInfo.class.surveyname }}">
         {{ aSurveyInfo.name }}
     </h1>
 
     <!-- Survey description -->
-    <div class="{{ aSurveyInfo.class.description }} text-info text-center" {{ aSurveyInfo.attr.description }}>
+    <div class="{{ aSurveyInfo.class.description }}" >
         {{ aSurveyInfo.description }}
     </div>
 
     <!-- Welcome text -->
-    <div class="{{ aSurveyInfo.class.welcome }} h4 text-primary" {{ aSurveyInfo.attr.welcome }}>
+    <div class="{{ aSurveyInfo.class.welcome }}">
         {{ aSurveyInfo.welcome }}
     </div>
 
     <!-- Question count -->
-    <div class="{{ aSurveyInfo.class.questioncount }} text-muted" {{ aSurveyInfo.attr.questioncount }}>
-        <div class='{{ aSurveyInfo.class.questioncounttext }}' {{ aSurveyInfo.attr.questioncounttext }}>
+    <div class="{{ aSurveyInfo.class.questioncount }}">
+        <div class='{{ aSurveyInfo.class.questioncounttext }}'>
 
             {# If survey creator set "show x questions" in survey setting  #}
             {% if aSurveyInfo.bShowxquestions == true %}

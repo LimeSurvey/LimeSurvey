@@ -36,17 +36,17 @@
 {% endif %}
 
 <!-- Question -->
-<div id="question{{ aQuestion.qid }}" class=" row {{ sClasses }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}  " {{ aSurveyInfo.attr.questioncontainer }}>
+<div id="question{{ aQuestion.qid }}" class=" {{ sClasses }} {{ aQuestion.input_error_class }} {{ aSurveyInfo.class.questioncontainer }}  " {{ aSurveyInfo.attr.questioncontainer }}>
 
     <!-- Question text -->
-    <div class="{{ aSurveyInfo.class.questiontitlecontainer }}  col-xs-12 " {{ aSurveyInfo.attr.questiontitlecontainer }} >
+    <div class="{{ aSurveyInfo.class.questiontitlecontainer }} " >
 
         {# If the question is mandatory, the asterisk will be shown  #}
         {% if aQuestion.mandatory != '' %}
             <!-- Add a visual information + just Mandatory string for aria : can be improved -->
-            <div class="{{ aSurveyInfo.class.questionasterix }} pull-left" {{ aSurveyInfo.attr.questionasterix }} >
-                <small class="{{ aSurveyInfo.class.questionasterixsmall }} text-danger fa fa-asterisk small" {{ aSurveyInfo.attr.questionasterixsmall }}></small>
-                <span class="{{ aSurveyInfo.class.questionasterixspan }} sr-only text-danger" {{ aSurveyInfo.attr.questionasterixspan }} >
+            <div class="{{ aSurveyInfo.class.questionasterix }}">
+                <small class="{{ aSurveyInfo.class.questionasterixsmall }}" {{ aSurveyInfo.attr.questionasterixsmall }}></small>
+                <span>
                     {{ "(This question is mandatory)" | t }}
                 </span>
             </div>
@@ -54,20 +54,20 @@
 
         {# If the question number is to be shown (set in survey settings) #}
         {% if (aShow.question_number) %}
-            <span class='{{ aSurveyInfo.class.questionnumber }}' {{ aSurveyInfo.attr.questionnumber }} >
+            <span class='{{ aSurveyInfo.class.questionnumber }}'>
                 {{ aQuestion.number }}
             </span>
         {% endif %}
 
         {# If the question code is to be shown (set in survey settings) #}
         {% if (aShow.question_code) %}
-            <span class='{{ aSurveyInfo.class.questioncode }}' {{ aSurveyInfo.attr.questioncode }}>
+            <span class='{{ aSurveyInfo.class.questioncode }}'>
                 {{ aQuestion.code }}
             </span>
         {% endif %}
 
         {# The question text as entered by the survey creator in question editing #}
-        <div class="{{ aSurveyInfo.class.questiontext }}" {{ aSurveyInfo.attr.questiontext }}>
+        <div class="{{ aSurveyInfo.class.questiontext }}" >
             <div id="ls-question-text-{{ aQuestion.SGQ }}" class="{{ aSurveyInfo.class.lsquestiontext }}" {{ aSurveyInfo.attr.lsquestiontext }}>
                 {{ aQuestion.text | raw }}
             </div>
@@ -75,7 +75,7 @@
     </div>
 
     <!-- LimeSurvey valid message and help -->
-    <div class="{{ aSurveyInfo.class.questionvalidcontainer }}  text-info col-xs-12" {{ aSurveyInfo.attr.questionvalidcontainer }}>
+    <div class="{{ aSurveyInfo.class.questionvalidcontainer }}">
         {{ aQuestion.valid_message      | raw }} {# The validation message, eg: "Only numbers may be entered in this field.". This text is inside EM Helper, and can be changed by creating a translation file #}
         {{ aQuestion.man_message        | raw }} {# The question mandatory error message: "This question is mandatory!". This text is inside EM Helper, and can be changed by creating a translation file #}
         {{ aQuestion.file_valid_message | raw }} {# Used only for file upload question type... TODO: check if we can remove it and use valid_message for file upload question type too #}
@@ -83,14 +83,14 @@
 
     {# The rendering of the answers: the input elements the survey respondent interacts with. #}
     <!-- Answer -->
-    <div class="{{ aSurveyInfo.class.answercontainer }} col-xs-12" {{ aSurveyInfo.attr.answercontainer }}>
+    <div class="{{ aSurveyInfo.class.answercontainer }}" >
         {# NOTE: If you want to customize the question rendering, use a question template #}
         {{ aQuestion.answer | raw }}
     </div>
 
     {# The additional question help as entered by the survey creator in question editing #}
     <!-- Survey question help -->
-    <div class="{{ aSurveyInfo.class.helpcontainer }}  text-info col-xs-12 " {{ aSurveyInfo.attr.helpcontainer }}>
+    <div class="{{ aSurveyInfo.class.helpcontainer }}">
         {% if aQuestion.help.show %}
             <div class="{{ aSurveyInfo.class.lsquestionhelp }}">
                 {{ aQuestion.help.text | raw }}
