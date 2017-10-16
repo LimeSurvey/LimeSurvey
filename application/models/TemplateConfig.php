@@ -821,8 +821,7 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate->author_url    = ''; // privacy
         $oNewTemplate->api_version   = $aDatas['api_version'];
         $oNewTemplate->view_folder   = $aDatas['view_folder'];
-        $oNewTemplate->files_folder  = $aDatas['files_folder'];
-        //$oNewTemplate->description  TODO: a more complex modal whith email, author, url, licence, desc, etc
+        $oNewTemplate->files_folder  = $aDatas['files_folder'];        
         $oNewTemplate->owner_id      = Yii::app()->user->id;
         $oNewTemplate->extends       = $aDatas['extends'];
 

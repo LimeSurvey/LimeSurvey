@@ -227,15 +227,15 @@ class TemplateConfiguration extends TemplateConfig
         $oTemplateConfigurationModel = new TemplateConfiguration();
 
         if ($sTemplateName!=null){
-            $oTemplateConfigurationModel = @TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
         }
 
         if($iSurveyGroupId!=null && $iSurveyId==null) {
-            $oTemplateConfigurationModel = @TemplateConfiguration::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
         }
 
         if($iSurveyId!=null) {
-            $oTemplateConfigurationModel = @TemplateConfiguration::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
         }
 
         return $oTemplateConfigurationModel;

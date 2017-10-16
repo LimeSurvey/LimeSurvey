@@ -23,7 +23,6 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class TemplateManifest extends TemplateConfiguration
 {
     public $templateEditor;
-
     public $sPreviewImgTag;
 
     /**
@@ -64,7 +63,6 @@ class TemplateManifest extends TemplateConfiguration
         $filesFromXML = (is_null($sScreen)) ? (array) $this->templateEditor->screens->xpath('//file') : $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
 
         foreach( $filesFromXML as $file){
-
             if ( $file->attributes()->type == $sType ){
                 $aScreenFiles[] = (string) $file;
             }
