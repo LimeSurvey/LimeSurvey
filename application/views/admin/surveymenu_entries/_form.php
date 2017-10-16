@@ -107,7 +107,12 @@
 		</div>
 		<!-- Start collapsed advanced options -->
 		<div class="collapse" id="collapseAdvancedOptions">
-
+            <div class="form-group">
+				<?php echo $form->labelEx($model,'user_id'); ?>
+				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions()); ?>
+				<?php echo $form->error($model,'user_id'); ?>
+            </div>
+            
 			<div class="form-group">
 				<?php echo $form->labelEx($model,'action'); ?>
 				<?php echo $form->textField($model,'action',array('size'=>60,'maxlength'=>255)); ?>

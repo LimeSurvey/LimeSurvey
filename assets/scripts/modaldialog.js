@@ -17,7 +17,7 @@ function openUploadModalDialog(){
             $(this).dialog("close");
         };
 
-        $('#file-upload-modal-' + fieldname).modal();
+        $('#file-upload-modal-' + fieldname).appendTo('body').modal();
         $(document).on('shown.bs.modal','#file-upload-modal-' + fieldname, function()
         {
             updateMaxHeightModalbody($(this));

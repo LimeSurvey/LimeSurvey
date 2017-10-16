@@ -31,7 +31,8 @@ class SurveymenuEntryController extends Survey_Common_Action
 		$filterAndSearch = Yii::app()->request->getPost('SurveymenuEntries', []);
         $data['model'] = SurveymenuEntries::model();
 		$data['model']->setAttributes($filterAndSearch);
-		$data['user'] = Yii::app()->session['loginID'];
+        $data['user'] = Yii::app()->session['loginID'];
+        App()->getClientScript()->registerPackage('surveymenufunctions');
         $this->_renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
 	}
 
@@ -119,8 +120,153 @@ class SurveymenuEntryController extends Survey_Common_Action
             false,
             false
         );
-	}
+    }
+    
+    public function batchEdit()
+    {
+        $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
+        $aResults     = array();
+        $oBaseModel = SurveymenuEntries::model();
+        if ( Permission::model()->hasGlobalPermission('settings','update') )
+        {
 
+            // First we create the array of fields to update
+            $aData = array();
+            $aResults['global']['result']  = true;
+
+            // Core Fields
+            $aCoreTokenFields = array('menu_id', 'menu_class',  'permission', 'permission_grade', 'language');
+
+            foreach($aCoreTokenFields as $sCoreTokenField)
+            {
+                if (trim(Yii::app()->request->getPost($sCoreTokenField, 'lskeep')) != 'lskeep')
+                {
+                    $aData[$sCoreTokenField] = flattenText(Yii::app()->request->getPost($sCoreTokenField));
+                }
+            }
+            
+            if (count($aData) > 0)
+            {
+                foreach ($aSurveyMenuEntryIds as $iSurveyMenuEntryId){
+                    $iSurveyMenuEntryId = (int) $iSurveyMenuEntryId;
+                    $oSurveyMenuEntry = SurveymenuEntries::model()->findByPk($iSurveyMenuEntryId);
+
+                    foreach ($aData as $k => $v){
+                        $oSurveyMenuEntry->$k = $v;
+                    }
+                    
+                    $bUpdateSuccess = $oSurveyMenuEntry->update();
+                    if ( $bUpdateSuccess ){
+                        $aResults[$iSurveyMenuEntryId]['status']    = true;
+                        $aResults[$iSurveyMenuEntryId]['message']   = gT('Updated');
+                    }else{
+                        $aResults[$iSurveyMenuEntryId]['status']    = false;
+                        $aResults[$iSurveyMenuEntryId]['message']   = $oSurveyMenuEntry->error;
+                    }
+                }
+            }
+            else
+            {
+                $aResults['global']['result']  = false;
+                $aResults['global']['message'] = gT('Nothing to update');
+            }
+
+        } 
+        else 
+        {
+            $aResults['global']['result'] = false;
+            $aResults['global']['message'] = gT("We are sorry but you don't have permissions to do this.");
+        }
+
+        $oBaseModel->reorder();
+
+        Yii::app()->getController()->renderPartial('/admin/surveymenu_entries/massive_action/_update_results', array('aResults'=>$aResults));
+
+    }
+	/**
+	 * Restores the default surveymenu entries
+	 */
+	public function restore(){
+        if( Yii::app()->request->isPostRequest )
+		{
+            //Check for permission!
+            if(!Permission::model()->hasGlobalPermission('superadmin','read'))
+            {
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson',
+                    array(
+                        'data' => [
+                            'success'=> false,
+                            'redirect' => false,
+                            'debug' => [$model, $_POST],
+                            'debugErrors' => $model->getErrors(),
+                            'message' => gT("You don't have the right to restore the settings to default")
+                        ]
+                    ),
+                    false,
+                    false
+                );
+            }
+            //get model to do the work
+            $model=SurveymenuEntries::model();
+            $success = $model->restoreDefaults();
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                array(
+                    'data' => [
+                        'success'=> $success,
+                        'redirect' => false,
+                        'debug' => [$model, $_POST],
+                        'debugErrors' => $model->getErrors(),
+                        'message' =>  ($success ? gT("Default survey menu entries restored.") : gT("Something went wrong! Are the surveymenus properly restored?"))
+                    ]
+                ),
+                false,
+                false
+            );
+        }
+    }
+
+	/**
+	 * Deletes an array of models.
+	 */
+	public function massDelete()
+	{
+		if( Yii::app()->request->isPostRequest )
+		{
+			$aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
+            $success = [];
+            foreach($aSurveyMenuEntryIds as $menuEntryid){
+                $model = $this->loadModel($menuEntryid);
+                $success[$menuEntryid] = $model->delete(); 
+            }
+
+            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            $returnData = array(
+                'data' => [
+                    'success'=> $success,
+                    'redirect' => $this->getController()->createUrl('admin/menuentries/sa/view'),
+                    'settings' => array(
+                        'extrasettings' => false,
+                        'parseHTML' => false,
+                    )
+                ]
+            );
+            
+            if($debug > 0){
+                $returnData['data']['debug'] = [$model, $_POST];
+                $returnData['data']['debugErrors'] = $model->getErrors();
+            }
+    
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                $returnData, 
+                false,
+                false
+            );
+
+		}
+    }
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -134,24 +280,68 @@ class SurveymenuEntryController extends Survey_Common_Action
 			$success = false;
 			$model = $this->loadModel($menuEntryid);
 			$success = $model->delete();
+            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 
-			return Yii::app()->getController()->renderPartial(
-				'/admin/super/_renderJson',
-				array(
-					'data' => [
-						'success'=> $success,
-						'redirect' => $this->getController()->createUrl('admin/menus/sa/view'),
-						'debug' => [$model, $_POST],
-						'debugErrors' => $model->getErrors(),
-						'settings' => array(
-							'extrasettings' => false,
-							'parseHTML' => false,
-						)
-					]
-				),
-				false,
-				false
-			);
+            $returnData = array(
+                'data' => [
+                    'success'=> $success,
+                    'redirect' => $this->getController()->createUrl('admin/menuentries/sa/view'),
+                    'settings' => array(
+                        'extrasettings' => false,
+                        'parseHTML' => false,
+                    )
+                ]
+            );
+            
+            if($debug > 0){
+                $returnData['data']['debug'] = [$model, $_POST];
+                $returnData['data']['debugErrors'] = $model->getErrors();
+            }
+    
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                $returnData, 
+                false,
+                false
+            );
+            
+		}
+	}
+
+	/**
+	 * Reorders the entries
+	 */
+	public function reorder()
+	{
+		if( Yii::app()->request->isPostRequest )
+		{
+			$model = SurveymenuEntries::model();
+			$success = $model->reorder();
+            $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+            
+            $returnData = array(
+                'data' => [
+                    'success'=> $success,
+                    'redirect' => $this->getController()->createUrl('admin/menuentries/sa/view'),
+                    'settings' => array(
+                        'extrasettings' => false,
+                        'parseHTML' => false,
+                    )
+                ]
+            );
+            
+            if($debug > 0){
+                $returnData['data']['debug'] = [$model, $_POST];
+                $returnData['data']['debugErrors'] = $model->getErrors();
+            }
+    
+            return Yii::app()->getController()->renderPartial(
+                '/admin/super/_renderJson',
+                $returnData, 
+                false,
+                false
+            );
+            
 		}
 	}
 

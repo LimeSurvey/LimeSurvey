@@ -23,13 +23,16 @@ class CPDBException extends Exception {}
  * This is the model class for table "{{participants}}".
  *
  * The followings are the available columns in table '{{participants}}':
- * @property string $participant_id
+ * @property string $participant_id Primary Key
  * @property string $firstname
  * @property string $lastname
  * @property string $email
  * @property string $language
- * @property string $blacklisted
+ * @property integer $blacklisted
  * @property integer $owner_uid
+ * @property integer $created_by
+ * @property string $created Date-time of creation
+ * @property string $modified Date-time of modification
  *
  * @property User $owner
  * @property SurveyLink[] $surveylinks
@@ -56,7 +59,9 @@ class Participant extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -251,6 +256,7 @@ class Participant extends LSActiveRecord
 
     /**
      * Get options for a drop-down attribute
+     * @param string $attribute_id
      * @return array
      */
     public function getOptionsForAttribute($attribute_id) {
@@ -284,7 +290,7 @@ class Participant extends LSActiveRecord
     /**
      * @param string $attributeTextId E.g. ea_145
      * @param mixed $attribute_id
-     * @return
+     * @return string
      */
     public function getParticipantAttribute($attributeTextId, $attribute_id=false)
     {
@@ -497,9 +503,11 @@ class Participant extends LSActiveRecord
         $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM ".$DBCountActiveSurveys." cas WHERE cas.participant_id = t.participant_id )";
 
         $criteria->select = array(
-            '*',
+            't.*',
+            'shares.share_uid',
+            'shares.date_added',
+            'shares.can_edit',
             $sqlCountActiveSurveys . ' AS countActiveSurveys',
-            't.participant_id',
             't.participant_id AS id',   // This is need to avoid confusion between t.participant_id and shares.participant_id
         );
         if($this->extraCondition) {
@@ -658,6 +666,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * @param integer $userid
      * @return int
      */
     public function getParticipantsOwnerCount($userid)
@@ -737,8 +746,13 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * @param bool $count
+     * @param array $attid
+     * @param CDbCriteria $search
+     * @param integer $userid
      * @param integer $page
      * @param integer $limit
+     * @param null $order
      * @return CDbCommand
      */
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
@@ -793,7 +807,6 @@ class Participant extends LSActiveRecord
         $data->setJoin($joinValue);
 
         if (!empty($search)) {
-            /* @var $search CDbCriteria */
              $aSearch = $search->toArray();
              $aConditions[] = $aSearch['condition'];
              $aParams = $aSearch['params'];
@@ -850,8 +863,9 @@ class Participant extends LSActiveRecord
      * references in the survey_links table (but not in matching tokens tables)
      * and then all the participants attributes.
      * @param string $rows Participants ID separated by comma
+     * @param bool $bFilter
      * @return int number of deleted participants
-     **/
+     */
     public function deleteParticipants($rows, $bFilter=true)
     {
         // Converting the comma separated IDs to an array and assign chunks of 100 entries to have a reasonable query size

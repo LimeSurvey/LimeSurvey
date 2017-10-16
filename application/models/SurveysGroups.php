@@ -8,14 +8,14 @@
  * @property string $name
  * @property string $title
  * @property string $description
- * @property integer $order
+ * @property integer $sortorder
  * @property integer $owner_uid
  * @property integer $parent_id
  * @property string $created
  * @property string $modified
  * @property integer $created_by
  */
-class SurveysGroups extends CActiveRecord
+class SurveysGroups extends LSActiveRecord
 {
     /**
      * @return string the associated database table name
@@ -33,8 +33,8 @@ class SurveysGroups extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('name, order, created_by', 'required'),
-            array('order, owner_uid, parent_id, created_by', 'numerical', 'integerOnly'=>true),
+            array('name, sortorder, created_by', 'required'),
+            array('sortorder, owner_uid, parent_id, created_by', 'numerical', 'integerOnly'=>true),
             array('name', 'length', 'max'=>45),
             array('title', 'length', 'max'=>100),
             array('description, created, modified', 'safe'),
@@ -67,13 +67,97 @@ class SurveysGroups extends CActiveRecord
             'name' => 'Name',
             'title' => 'Title',
             'description' => 'Description',
-            'order' => 'Order',
+            'sortorder' => 'Sortorder',
             'owner_uid' => 'Owner Uid',
             'parent_id' => 'Parent',
             'created' => 'Created',
             'modified' => 'Modified',
             'created_by' => 'Created By',
         );
+    }
+
+    public function getColumns(){
+        return array(
+
+                array(
+                    'id'=>'gsid',
+                    'class'=>'CCheckBoxColumn',
+                    'selectableRows' => '100',
+                ),
+
+                array(
+                    'header' => gT('Survey Group ID'),
+                    'name' => 'gsid',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+                array(
+                    'header' => gT('Name'),
+                    'name' => 'name',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->name, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'has-link'),
+                ),
+
+                array(
+                    'header' => gT('Title'),
+                    'name' => 'title',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->title, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'has-link'),
+                ),
+
+                array(
+                    'header' => gT('Description'),
+                    'name' => 'description',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->description, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+                array(
+                    'header' => gT('Parent Group'),
+                    'name' => 'parent',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link( $data->parentTitle, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+                array(
+                    'header' => gT('Owner'),
+                    'name' => 'owner',
+                    'value'=>'$data->owner->users_name',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+                array(
+                    'header' => gT('Order'),
+                    'name' => 'sortorder',
+                    'type' => 'raw',
+                    'value'=>'CHtml::link($data->sortorder, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+
+                array(
+                    'header' => gT('Actions'),
+                    'name' => 'sortorder',
+                    'type' => 'raw',
+                    'value'=> '$data->buttons',
+                    'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                ),
+
+            );
     }
 
     /**
@@ -98,7 +182,7 @@ class SurveysGroups extends CActiveRecord
         $criteria->compare('name',$this->name,true);
         $criteria->compare('title',$this->title,true);
         $criteria->compare('description',$this->description,true);
-        $criteria->compare('order',$this->order);
+        $criteria->compare('sortorder',$this->sortorder);
         $criteria->compare('owner_uid',$this->owner_uid);
         $criteria->compare('parent_id',$this->parent_id);
         $criteria->compare('created',$this->created,true);
@@ -132,10 +216,14 @@ class SurveysGroups extends CActiveRecord
     public function getButtons()
     {
         $sDeleteUrl     = App()->createUrl("admin/surveysgroups/sa/delete", array("id"=>$this->gsid));
+        $sEditUrl     = App()->createUrl("admin/surveysgroups/sa/update", array("id"=>$this->gsid));
         $button         = '';
 
+        if (! $this->gsid !== 1){
+            $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" ></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
+        }
         if (! $this->hasSurveys){
-            $button .= '<a class="btn btn-default" href="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete survey group').'"><span class="fa fa-trash text-danger " ></span><span class="sr-only">'.gT('Delete survey group').'</span></a>';
+            $button .= '<a class="btn btn-default" href="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger " ></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
         }
 
         return $button;
@@ -148,10 +236,28 @@ class SurveysGroups extends CActiveRecord
 
         foreach( $oSurveyGroups as $oSurveyGroup){
             $aSurveyList[$oSurveyGroup->gsid] = $oSurveyGroup->title;
-        }
-
+        } 
+        
         return $aSurveyList;
     }
+
+	public function getNextOrderPosition(){
+		$oSurveysGroups = SurveysGroups::model()->findAll();
+		return count($oSurveysGroups)+1;
+	}
+
+    public function getParentGroupOptions (){
+		$oSurveysGroups = SurveysGroups::model()->findAll();
+		$options = [
+			'' => gT('No parent menu')
+		];
+		foreach($oSurveysGroups as $oSurveysGroup){
+			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
+			$options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
+		}
+		//return join('\n',$options);
+		return $options;
+	}
 
     /**
      * Returns the static model of the specified AR class.
@@ -161,6 +267,8 @@ class SurveysGroups extends CActiveRecord
      */
     public static function model($className=__CLASS__)
     {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 }

@@ -33,7 +33,9 @@ abstract class Dynamic extends LSActiveRecord
         elseif (is_numeric($className)) {
             $className = get_called_class() . '_' . $className;
         }
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 
     /**

@@ -15,7 +15,6 @@
 	'htmlOptions' => ['class' =>'form '],
 	'action' => Yii::app()->getController()->createUrl('admin/menus/sa/update', ['id' => $model->id])
 )); ?>
-	<p><pre><?=$model->isNewRecord?></pre></p>
 	<div class="modal-header">
 		<?php $model->isNewRecord ? eT('Create new surveymenu') : eT('Edit surveymenu') ?>
 	</div>
@@ -39,6 +38,12 @@
 				<?php echo $form->labelEx($model,'survey_id'); ?>
 				<?php echo $form->dropDownList($model,'survey_id', $model->getSurveyIdOptions()); ?>
 				<?php echo $form->error($model,'survey_id'); ?>
+            </div>
+            
+			<div class="form-group">
+				<?php echo $form->labelEx($model,'user_id'); ?>
+				<?php echo $form->dropDownList($model,'user_id', $model->getUserIdOptions()); ?>
+				<?php echo $form->error($model,'user_id'); ?>
 			</div>
 
 			<div class="form-group">

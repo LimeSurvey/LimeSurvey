@@ -29,9 +29,11 @@
         <css>
             <filename>css/template.css</filename>
             <filename>css/animate.css</filename>
+            <filename>css/ajaxify.css</filename>
         </css>
         <js>
             <filename>scripts/template.js</filename>
+            <filename>scripts/ajaxify.js</filename>
         </js>
         <print_css>
             <filename>css/print_template.css</filename>
@@ -42,7 +44,7 @@
     <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
     <options>
-        <ajaxmode>on</ajaxmode>
+        <ajaxmode>off</ajaxmode>
         <brandlogo>on</brandlogo>
         <boxcontainer>on</boxcontainer>
         <backgroundimage>on</backgroundimage>
@@ -71,6 +73,7 @@
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
         <packages>
+            ["pjax"]
         </packages>
 
         <!--
@@ -134,6 +137,7 @@
 
                 <error>
                     <file type="view" role="layout">layout_errors.twig</file>
+                    <file type="css">./css/errors.css</file>
                 </error>
 
                 <clearall>

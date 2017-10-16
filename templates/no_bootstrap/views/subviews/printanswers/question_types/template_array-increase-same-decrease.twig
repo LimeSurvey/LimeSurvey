@@ -1,0 +1,23 @@
+ {% extends "./subviews/printanswers/printanswers_question.twig" %}
+ {% block question_answer %}
+ <div class="col-md-8">
+    {% for subquestionId, subquestion in question.subquestions %}
+        <div class="row">
+            <div class="col-md-4 text-right">
+            {% if subquestion.answervalue is sameas("I") %}
+                {{ gT("Increase") }} <i class="fa fa-plus"></i>
+            {% elseif subquestion.answervalue is sameas("S") %}
+                {{ gT("Same") }} <i class="fa fa-circle"></i>
+            {% elseif subquestion.answervalue is sameas("D") %}
+                {{ gT("Decrease") }} <i class="fa fa-minus"></i>
+            {% else %}
+
+            {% endif %}
+            </div>
+            <div class="col-md-8 text-left">
+                <b>{{subquestion.question}} ({{subquestion.qid}})</b>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

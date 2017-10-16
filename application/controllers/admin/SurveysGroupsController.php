@@ -45,13 +45,15 @@ class SurveysGroupsController extends Survey_Common_Action
         if(isset($_POST['SurveysGroups']))
         {
             $model->attributes=$_POST['SurveysGroups'];
-            $model->name = sanitize_paranoid_string($_POST['SurveysGroups']['title']);
+            $model->name = sanitize_paranoid_string($model->name);
             $model->created_by = $model->owner_uid = Yii::app()->user->id;
             if($model->save())
-                $this->getController()->redirect(array('admin/survey/sa/listsurveys '));
+                $this->getController()->redirect( $this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
         }
 
         $aData['model'] = $model;
+        $aData['fullpagebar']['savebutton']['form'] = 'surveys-groups-form';
+
         $this->_renderWrappedTemplate('surveysgroups', 'create', $aData);
     }
 
@@ -71,13 +73,21 @@ class SurveysGroupsController extends Survey_Common_Action
         {
             $model->attributes=$_POST['SurveysGroups'];
             if($model->save())
-                $this->getController()->redirect(array('admin/survey/sa/listsurveys '));
+                $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
         }
         $aData['model'] = $model;
         $oSurveySearch = new Survey('search');
         $oSurveySearch->gsid = $model->gsid;
-
         $aData['oSurveySearch'] = $oSurveySearch;
+
+        $oTemplateOptions = TemplateConfiguration::getInstanceFromSurveyGroup($model->gsid);
+
+        $oTemplateOptionsReplacement = TemplateConfiguration::model()->findByPk($oTemplateOptions->id);
+        $templateOptionPage           = $oTemplateOptionsReplacement->optionPage;
+
+        $aData['templateOptionsModel'] = $oTemplateOptions;
+        $aData['templateOptionPage'] = $templateOptionPage;
+
         $this->_renderWrappedTemplate('surveysgroups', 'update', $aData);
     }
 

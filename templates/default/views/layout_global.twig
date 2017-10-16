@@ -16,73 +16,83 @@
 #}
 {% if( not ( aSurveyInfo.options.ajaxmode == "on" and getPost('ajax')=="on"  )) %}
     <!DOCTYPE html>
-    <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="no-js {{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }}">
+    <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
 
         {# Headers, metadata, etc #}
         {{ include('./subviews/head.twig') }}
 
-    </html>
+        <body class=" {{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
+        {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
+            <div class="progress ajax_loading_indicator" id="ajax_loading_indicator">
+                <div class="progress-bar progress-bar-info ajax_loading_indicator_bar" id="ajax_loading_indicator_bar" role="progressbar">
+                </div>
+            </div>
+        {% endif %}
 
-    <body class="default lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" >
+        {% if (aSurveyInfo.options.backgroundimage == "on") %}
+            {{ registerTemplateCssFile("css/background-image.css") }}
+        {% endif %}
 
-    {% if (aSurveyInfo.options.backgroundimage == "on") %}
-        {{ registerTemplateCssFile("css/background-image.css") }}
-    {% endif %}
-
-    {% if (aSurveyInfo.options.boxcontainer == "off") %}
+        {% if (aSurveyInfo.options.boxcontainer == "off") %}
         {{ registerTemplateCssFile("css/no-container.css") }}
-    {% endif %}
+        {% endif %}
 
 {% else %}
-        {{ unregisterScriptForAjax()}}
+    {{ unregisterScriptForAjax()}}
+    <body>
 {% endif %}
+        <div id="beginScripts">
+            <###begin###>
+        </div>
+        {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
+        <article>
+            <div id="{{ aSurveyInfo.id.dynamicreload }}">
+            {% block body %}
 
-
-
-{% block body %}
-
-    {# Bootstrap Navigation Bar: the top menu #}
-    {% block nav_bar %}
-        {{ include('./subviews/nav_bar.twig') }}
-    {% endblock %}
-
-    {# Top Container: in this template, it contains only  #}
-    {% block progress %}
-        {{ include('./subviews/progess_bar.twig') }}
-    {% endblock %}
-
-    <!-- Outer Frame Container -->
-    <div class="outerframe container {% if (aSurveyInfo.options.animatebody == "on") %} animated {{ aSurveyInfo.options.bodyanimation }} {%endif%}" id="outerframeContainer">
-
-        <!-- Main Row -->
-        <div id="main-row">
-            <!-- Main Col -->
-            <div class="col-centered" id="main-col">
-
-                {# This is the main block that will be replaced/extended by other layouts#}
-                {% block content %}
-                    {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
-                    {{ include('./subviews/warnings.twig') }}
+                {# Bootstrap Navigation Bar: the top menu #}
+                {% block nav_bar %}
+                    {{ include('./subviews/nav_bar.twig') }}
                 {% endblock %}
-            </div> <!-- main col -->
-        </div> <!-- main row -->
-    </div> <!-- outer frame container -->
 
-    {# Bootstrap alert modal #}
-    {{ include('./subviews/bootstrap_alert_modal.twig') }}
+                {# Top Container: in this template, it contains only  #}
+                {% block progress %}
+                    {{ include('./subviews/progess_bar.twig') }}
+                {% endblock %}
 
-    <!-- some template.js function launched before ready -->
-    <script type="text/javascript">
-    /*<![CDATA[*/
-        sliderSuffixClone();
-        fixBodyPadding();
-        hideQuestionWithRelevanceSubQuestion();
-        hideEmptyPart();
-    /*]]>*/
-    </script>
-{% endblock %}
+                <!-- Outer Frame Container -->
+                <div class="{{ aSurveyInfo.class.outerframe }} container {% if (aSurveyInfo.options.animatebody == "on") %} animated {{ aSurveyInfo.options.bodyanimation }} {%endif%}" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >
 
-{% if( not ( aSurveyInfo.options.ajaxmode == "on" and getPost('ajax')=="on"  )) %}
+                    <!-- Main Row -->
+                    <div id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }} >
+                        <!-- Main Col -->
+                        <div class="{{ aSurveyInfo.class.maincol }} col-centered  " id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
+
+                            {# This is the main block that will be replaced/extended by other layouts#}
+                            {% block content %}
+                                {# Include the various Warnings (preview mode, unanswered mandatory questions, etc) #}
+                                {{ include('./subviews/warnings.twig') }}
+                            {% endblock %}
+                        </div> <!-- main col -->
+                    </div> <!-- main row -->
+                </div> <!-- outer frame container -->
+
+                {# Bootstrap alert modal #}
+                {{ include('./subviews/bootstrap_alert_modal.twig') }}
+
+                <!-- some template.js function launched before ready -->
+                <script type="text/javascript">
+                    /*<![CDATA[*/
+                        if(template === undefined){
+                            var template = new Template();
+                        }
+                        template.initGlobal();
+                    /*]]>*/
+                </script>
+            {% endblock %}
+            </div>
+        </article>
+        <div id="bottomScripts">
+            <###end###>
+        </div>
     </body>
-    </html>
-{% endif %}
+</html>

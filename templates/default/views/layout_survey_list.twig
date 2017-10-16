@@ -25,32 +25,33 @@
 {% block content %}
     {{  registerTemplateCssFile('./css/survey-list.css') }}
 
-    <div class="row" id="surveys-list-container">
+    <div class="{{ aSurveyInfo.class.surveylistrow }} row" id="{{ aSurveyInfo.id.surveylistrow }}" {{ aSurveyInfo.attr.surveylistrow }}>
 
         {# include the alert for no JavaScript #}
         {{ include('./subviews/no_js_alert.twig') }}
 
-        <div class="" id="surveys-list-jumbotron">
+        <div id="{{ aSurveyInfo.id.surveylistrowjumbotron }}" {{ aSurveyInfo.attr.surveylistrowjumbotron }}>
             {{ image('./files/logo_340.png', aSurveyInfo.name, {"class": "img-responsive center-block"}) }}
             {{ aSurveyInfo.sSiteName }}
         </div>
 
-        <div class="col-xs-12 survey-list-heading">
-            <div class='h3 '>
+        <div class="{{ aSurveyInfo.class.surveylistrowdiva }} col-xs-12" {{ aSurveyInfo.attr.surveylistrowdiva }}>
+            <div class='{{ aSurveyInfo.class.surveylistrowdivadiv }} h3' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
                 {{ "The following surveys are available:" | t }}
             </div>
         </div>
-        <div class="col-xs-12 survey-list">
-            <div class='surveys-list-container'>
-                <ul class='list-unstyled surveys-list'>
+
+        <div class="{{ aSurveyInfo.class.surveylistrowdivb }} col-xs-12" {{ aSurveyInfo.attr.surveylistrowdivb }}>
+            <div class='{{ aSurveyInfo.class.surveylistrowdivbdiv }}' {{ aSurveyInfo.attr.surveylistrowdivbdiv }}>
+                <ul class='{{ aSurveyInfo.class.surveylistrowdivbdivul }} list-unstyled ' {{ aSurveyInfo.attr.surveylistrowdivbdivul }}>
 
                     {% for key, oSurvey in aSurveyInfo.publicSurveys %}
-                        <li class="btn-group btn-block">
+                        <li class="{{ aSurveyInfo.class.surveylistrowdivbdivulli }} btn-group btn-block" {{ aSurveyInfo.attr.surveylistrowdivbdivulli }}>
                             <a
                                 href="{{ oSurvey.sSurveyUrl }}"
                                 title="{{ "Start survey" | t }}"
                                 lang="{{ oSurvey.language }}"
-                                class="surveytitle btn btn-primary {% if (oSurvey.publicstatistics == "Y") %} col-xs-10 col-md-11 {% else %} col-xs-12 {% endif %}"  >
+                                class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }} btn btn-primary {% if (oSurvey.publicstatistics == "Y") %} col-xs-10 col-md-11 {% else %} col-xs-12 {% endif %}"  >
                                 {{ oSurvey.localizedTitle }}
                             </a>
                         </li>
@@ -58,24 +59,25 @@
                 </ul>
             </div>
         </div>
-        <div class="col-xs-12 survey-contact">
+        <div class="{{ aSurveyInfo.class.surveylistrowdivc }} col-xs-12 " {{ aSurveyInfo.attr.surveylistrowdivc }}>
              {{ sprintf( gT("Please contact %s ( %s ) for further assistance."), aSurveyInfo.sSiteAdminName, aSurveyInfo.sSiteAdminEmail ) }}
         </div>
 
     </div>
 
-    <div id="surveyListFooter" class="footer">
-        <div class="container">
-            <p>
-                <a href="http://www.limesurvey.org" target="_blank">
+    <div id="{{ aSurveyInfo.id.surveylistfooter }}" class="{{ aSurveyInfo.class.surveylistfooter }}" {{ aSurveyInfo.attr.surveylistfooter }}>
+        <div class="{{ aSurveyInfo.class.surveylistfootercont }} container" {{ aSurveyInfo.attr.surveylistfootercont }}>
+            <p {{ aSurveyInfo.attr.surveylistfootercontp }}>
+                <a {{ aSurveyInfo.attr.surveylistfootercontpaa }} >
                     {{ image("poweredby.png", "LimeSurvey Survey Software") }}
-                    </a>
-                    <br />
-                    <a href="http://www.limesurvey.org" target="_blank">
+                </a>
+
+                <br />
+                <a {{ aSurveyInfo.attr.surveylistfootercontpab }} >
                     The Online Survey Tool
-                    </a>
-                    - Free & Open Source
-                    <br />
+                </a>
+                - Free & Open Source
+                <br />
             </p>
         </div>
     </div>

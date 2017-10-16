@@ -911,8 +911,8 @@ class Survey_Common_Action extends CAction
      */
     function _surveysidemenu($aData)
     {
-
         $iSurveyID = $aData['surveyid'];
+
         $survey=Survey::model()->findByPk($iSurveyID);
         // TODO : create subfunctions
         $sumresult1 = Survey::model()->with(array(
@@ -967,6 +967,7 @@ class Survey_Common_Action extends CAction
                     }
                 }
             }
+
             $aData['quickmenu'] = $this->renderQuickmenu($aData);
             $aData['beforeSideMenuRender'] = $this->beforeSideMenuRender($aData);
             $aData['aGroups'] = $aGroups;
@@ -1282,40 +1283,23 @@ class Survey_Common_Action extends CAction
     public function _userGroupBar(array $aData)
     {
         $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0 ;
-        if (!empty($aData['display']['menu_bars']['user_group']))
-        {
+        if (!empty($aData['display']['menu_bars']['user_group'])) {
             $data = $aData;
             Yii::app()->loadHelper('database');
 
             if (!empty($ugid)) {
-                $sQuery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = {$ugid}";
-                if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-                {
-                    $sQuery .=" AND gu.uid = ".Yii::app()->session['loginID'];
+                $userGroup = UserGroup::model()->findByPk($ugid);
+                $uid = Yii::app()->session['loginID'];
+                if($userGroup && $userGroup->hasUser($uid)){
+                    $data['userGroup'] = $userGroup;
+                }else{
+                    $data['userGroup'] = null;
                 }
-
-                $grpresult = Yii::app()->db->createCommand($sQuery)->queryRow();  //Checked
-
-                if ($grpresult) {
-                    $grpresultcount=1;
-                    $grow = array_map('htmlspecialchars', $grpresult);
-                }
-                else
-                {
-                    $grpresultcount=0;
-                    $grow = false;
-                }
-
-                $data['grow'] = $grow;
-                $data['grpresultcount'] = $grpresultcount;
-
             }
 
-            $data['ugid'] = $ugid;
             $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
 
-            if(isset($aData['usergroupbar']['closebutton']['url']))
-            {
+            if(isset($aData['usergroupbar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
                 $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
             }

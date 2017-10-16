@@ -217,7 +217,12 @@ class quotas extends Survey_Common_Action
                 foreach ($oQuota->quotaMembers as $oQuotaMember)
                 {
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $iSurveyId, $oQuota['id']);
-                    $answerText=isset($aQuestionAnswers[$oQuotaMember['code']]) ? flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']) : null;
+                    if($oQuotaMember->question->type == '*'){
+                        $answerText=$oQuotaMember->code ;
+                    }else{
+                        $answerText=isset($aQuestionAnswers[$oQuotaMember['code']]) ? flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']) : null;
+                    }
+
                     $aQuotaItems[$oQuota['id']][] = array(
                         'oQuestion' => Question::model()->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
                         'answer_title' => $answerText,
@@ -394,47 +399,36 @@ class quotas extends Survey_Common_Action
 
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
-        $sBaseLang = $aData['sBaseLang'];
         $aViewUrls = array();
+        $quota = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
+        $aData['oQuota'] = $quota;
 
         if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
-            $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
-
-            foreach ($result as $aQuotaDetails){
-                $quota_name = $aQuotaDetails['name'];
-            }
 
             $result = $oSurvey->quotableQuestions;
             if (empty($result)) {
                 $aViewUrls[] = 'newanswererror_view';
             } else {
-                $aData['newanswer_result'] = $result;
-                $aData['quota_name'] = $quota_name;
                 $aViewUrls[] = 'newanswer_view';
             }
         }
 
         if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create')) {
-            $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
-
-            foreach ($result as $aQuotaDetails){
-                $sQuotaName = $aQuotaDetails['name'];
-            }
+            $oQuestion = Question::model()->findByPk(array('qid' => Yii::app()->request->getPost('quota_qid'), 'language' => $oSurvey->language));
 
             $aQuestionAnswers = self::getQuotaAnswers(Yii::app()->request->getPost('quota_qid'), $iSurveyId, Yii::app()->request->getPost('quota_id'));
             $x = 0;
 
-            foreach ($aQuestionAnswers as $aQACheck)
-            {
+            foreach ($aQuestionAnswers as $aQACheck) {
                 if (isset($aQACheck['rowexists']))
                     $x++;
             }
 
             reset($aQuestionAnswers);
+            $aData['oQuestion'] = $oQuestion;
             $aData['question_answers'] = $aQuestionAnswers;
             $aData['x'] = $x;
-            $aData['quota_name'] = $sQuotaName;
             $aViewUrls[] = 'newanswertwo_view';
         }
 
@@ -561,7 +555,7 @@ class quotas extends Survey_Common_Action
 
             foreach ($aAnsResults as $aDbAnsList)
             {
-                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40), 'code' => $aDbAnsList['code']);
+                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => $aDbAnsList['answer'], 'code' => $aDbAnsList['code']);
             }
 
         } elseif ($aQuestionType == 'A')

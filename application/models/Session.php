@@ -13,6 +13,13 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class Session
+ *
+ * @property string $id Primary Key
+ * @property integer $expire
+ * @property string $data
+ */
 class Session extends CActiveRecord
 {
 	/**
@@ -21,7 +28,9 @@ class Session extends CActiveRecord
 	 */
 	public static function model($class = __CLASS__)
 	{
-		return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
 	}
 
     /** @inheritdoc */

@@ -10,8 +10,6 @@ $templateData['oSurvey'] = $oSurvey;
 ?>
 
 <script type="text/javascript">
-    var standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
-    var templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
     var formId = '<?=$entryData['name']?>';
 </script>
 
@@ -45,27 +43,40 @@ if(isset($scripts))
         -->
         <input type="hidden" name="action" value="<?=$entryData['action']?>" />
         <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" />
+        <input type="hidden" name="surveyid" value="<?php echo $surveyid; ?>" />
         <input type="hidden" name="language" value="<?php echo $surveyls_language; ?>" />
         <input type="hidden" name="responsejson" value="1" />
         <input type='submit' class="hide" id="globalsetting_submit" />
         </form>
-        <script>
-            $('#<?=$entryData['name']?>').on('submit', function(){
-                var data = $(this).serializeArray();
-                var url = $(this).attr('action');
-                $.ajax({
-                    url : url,
-                    data : data,
-                    method: "POST", 
-                    dataType: 'json',
-                    success: function(result,xhr){
-                        window.location.reload();
-                    },
-                    error: function(error){
-                        try{console.trace(error);}catch(e){console.log(error);}
-                    }
-                });
-            });
-        </script>
     </div>
 </div>
+<script type="text/javascript">
+$(document).on('ready pjax:complete', function(){
+
+    $('#<?=$entryData['name']?>').off('submit');
+
+    $('#<?=$entryData['name']?>').on('submit', function(e){
+      e.preventDefault();
+      var data = $(this).serializeArray();
+      var uri = $(this).attr('action');
+      $.ajax({
+        url: uri,
+        method:'POST',
+        data: data,
+        success: function(result){
+
+            console.log({result: result});
+          if(result.redirecturl != undefined ){
+            window.location.href=result.redirecturl;
+          } else {
+            window.location.reload();
+          }
+        },
+        error: function(result){
+          console.log({result: result});
+        }
+      });
+      return false;
+    });
+});
+</script>

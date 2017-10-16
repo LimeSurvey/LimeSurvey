@@ -46,7 +46,9 @@ class Permission extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /**
@@ -370,7 +372,7 @@ class Permission extends LSActiveRecord
         }
 
         $condition = array('entity_id' => $iEntityID, 'uid' => $iUserID);
-        $oEvent=new \ls\pluginmanager\PluginEvent('beforePermissionSetSave');
+        $oEvent=new \LimeSurvey\PluginManager\PluginEvent('beforePermissionSetSave');
         $oEvent->set('aNewPermissions',$aFilteredPermissions);
         $oEvent->set('iSurveyID',$iEntityID);
         $oEvent->set('iUserID',$iUserID);
@@ -437,6 +439,7 @@ class Permission extends LSActiveRecord
     }
 
     /**
+     * @param integer $iUserID
      * @param integer $iSurveyID
      */
     public function giveAllSurveyPermissions($iUserID, $iSurveyID)
@@ -538,7 +541,7 @@ class Permission extends LSActiveRecord
         //      they should read permissions via the model
         //      and they should add row in permission table  (entity = plugin, etc)
 
-        $oEvent=new \ls\pluginmanager\PluginEvent('beforeHasPermission');
+        $oEvent=new \LimeSurvey\PluginManager\PluginEvent('beforeHasPermission');
         $oEvent->set('iEntityID',$iEntityID);
         $oEvent->set('sEntityName',$sEntityName);
         $oEvent->set('sPermission',$sPermission);
@@ -653,12 +656,12 @@ class Permission extends LSActiveRecord
     }
 
     /**
-    * Returns true if a user has permission to read/create/update a certain template
-    * @param $sPermission string Name of the permission - see function getGlobalPermissions
-    * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
-    * @param $iUserID integer User ID - if not given the one of the current user is used
-    * @return bool True if user has the permission
-    */
+     * Returns true if a user has permission to read/create/update a certain template
+     * @param string $sTemplateName
+     * @param $sCRUD string The permission detailsyou want to check on: 'create','read','update','delete','import' or 'export'
+     * @param $iUserID integer User ID - if not given the one of the current user is used
+     * @return bool True if user has the permission
+     */
     public function hasTemplatePermission($sTemplateName, $sCRUD='read', $iUserID=null)
     {
         return $this->hasPermission(0, 'global', 'templates', $sCRUD, $iUserID) || $this->hasPermission(0, 'template', $sTemplateName, $sCRUD, $iUserID);
@@ -666,8 +669,8 @@ class Permission extends LSActiveRecord
 
     /**
     * function used to order Permission by language string
-    * @param aApermission array The first permission information
-    * @param aBpermission array The second permission information
+    * @param array $aApermission The first permission information
+    * @param array $aBpermission The second permission information
     * @return integer
     */
     private static function comparePermissionTitle($aApermission,$aBpermission)
@@ -703,6 +706,6 @@ class Permission extends LSActiveRecord
         if($sEntityName=='survey') {
             return $sEntityName::Model()->findByPk($iEntityID)->owner_id; // ALternative : if owner_id exist in $sEntityName::model()->findByPk($iEntityID), but unsure actually $sEntityName have always a model
         }
-        return;
+        return null;
     }
 }

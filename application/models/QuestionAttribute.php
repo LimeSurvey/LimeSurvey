@@ -22,6 +22,9 @@
  * @property string $value Attribute value
  * @property string $language Language code eg:'en'
  *
+ * @property Question $question
+ * @property Survey $survey
+ *
  */
 class QuestionAttribute extends LSActiveRecord
 {
@@ -31,7 +34,9 @@ class QuestionAttribute extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -50,6 +55,7 @@ class QuestionAttribute extends LSActiveRecord
     public function relations()
     {
         return array(
+            /** NB! do not use this relation use $this->question instead @see getQuestion() */
             'qid' => array(self::BELONGS_TO, 'Question', 'qid', 'together' => true),
         );
     }
@@ -150,7 +156,7 @@ class QuestionAttribute extends LSActiveRecord
      * @access public
      * @param int $iQuestionID
      * @param string $sLanguage restrict to this language (@todo : add it in qanda)
-     * @return array
+     * @return array|boolean
      * @throws CException
      */
     public function getQuestionAttributes($iQuestionID,$sLanguage=null)
@@ -179,7 +185,7 @@ class QuestionAttribute extends LSActiveRecord
                 throw new \CException("Question is corrupt: no type defined for question " . $iQuestionID);
             }
 
-            $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sType);
+            $aAttributeNames = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sType);
 
             /* Get whole existing attribute for this question in an array*/
             $oAttributeValues = QuestionAttribute::model()->findAll("qid=:qid",array('qid'=>$iQuestionID));
@@ -261,5 +267,28 @@ class QuestionAttribute extends LSActiveRecord
             $command->order($orderby);
         }
         return $command->queryAll();
+    }
+
+    /**
+     * @return Question
+     */
+    public function getQuestion(){
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('qid=:qid');
+        $criteria->params = [':qid'=>$this->qid];
+        if($this->language){
+            $criteria->addCondition('language=:language');
+            $criteria->params = [':qid'=>$this->qid,':language'=>$this->language];
+        }
+        /** @var Question $model */
+        $model = Question::model()->find($criteria);
+        return $model;
+    }
+
+    /**
+     * @return Survey
+     */
+    public function getSurvey(){
+        return $this->question->survey;
     }
 }

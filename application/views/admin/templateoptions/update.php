@@ -8,7 +8,7 @@
 
 
 <div class="container">
-    <div class="row h1"><?php eT('Update TemplateOptions for ').$model->id; ?></div>
+    <div class="row h1"><?php eT('Update TemplateOptions for '); echo '<em>' . $model->template_name . '</em>'; ?></div>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
         <!-- Nav tabs -->
@@ -53,16 +53,36 @@
                 ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="advanced">
+            <?php 
+                $actionBaseUrl = 'admin/templateoptions/sa/update/';
+                $actionUrlArray = array('id' => $model->id);
+                
+                if($model->sid) {
+                    unset($actionUrlArray['id']); 
+                    $actionUrlArray['sid'] = $model->sid; 
+                    $actionUrlArray['surveyd'] = $model->sid;
+                    $actionUrlArray['gsid'] = $model->gsid;
+                    $actionBaseUrl = 'admin/templateoptions/sa/updatesurvey/';
+                    }
+                if($model->gsid) {
+                    unset($actionUrlArray['id']); 
+                    $actionBaseUrl = 'admin/templateoptions/sa/updatesurveygroup/';
+                    $actionUrlArray['gsid'] = $model->gsid;
+                }
+
+                $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl,$actionUrlArray);
+            ?>
                 <?php $form=$this->beginWidget('TbActiveForm', array(
                     'id'=>'template-options-form',
                     'enableAjaxValidation'=>false,
-                    'htmlOptions' => ['class' => 'form ']
+                    'htmlOptions' => ['class' => 'form '],
+                    'action' => $actionUrl
                 )); ?>
                 <p class="note">Fields with <span class="required">*</span> are required.</p>
                 <?php echo $form->errorSummary($model); ?>
 
 
-                <?php echo $form->hiddenField($model,'templates_name'); ?>
+                <?php echo $form->hiddenField($model,'template_name'); ?>
                 <?php echo $form->hiddenField($model,'sid'); ?>
                 <?php echo $form->hiddenField($model,'gsid'); ?>
                 <?php echo $form->hiddenField($model,'uid'); ?>

@@ -1,5 +1,5 @@
 <?php
-use ls\pluginmanager\AuthPluginBase;
+use LimeSurvey\PluginManager\AuthPluginBase;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -344,7 +344,6 @@ class UserAction extends Survey_Common_Action
 
             if (Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID'] == $postuserid ||
             (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) ) {
-                $sresult = User::model()->parentAndUser($postuserid);
                 if(empty($sresult)) {
                     Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
                     $this->getController()->redirect(array("admin/user/sa/index"));
@@ -352,7 +351,6 @@ class UserAction extends Survey_Common_Action
                 $oUser = User::model()->findByPk($postuserid);
                 $aData = array();
                 $aData['oUser'] = $oUser;
-                $aData['aUserData'] = $sresult;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
                 // Close button, UrlReferrer;
@@ -693,12 +691,12 @@ class UserAction extends Survey_Common_Action
                 }
             }
             
-            $oUserModel->setAttributes($aData);
+            $oUserModel->setAttributes($aData,false);
             $uresult = $oUserModel->save();
 
             if (Yii::app()->request->getPost('lang')=='auto')
             {
-                $sLanguage= getBrowserLanguage();
+                $sLanguage = getBrowserLanguage();
             }
             else
             {
@@ -722,17 +720,19 @@ class UserAction extends Survey_Common_Action
         }
 
         // Get user lang
-        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        unset($oUser);
+        $oUser = User::model()->findByPk(Yii::app()->session['loginID']);
+
         $aLanguageData=array('auto'=>gT("(Autodetect)"));
         foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind)
         {
            $aLanguageData[$langkey]=html_entity_decode($languagekind['nativedescription'].' - '.$languagekind['description'],ENT_COMPAT,'utf-8');
         }
         $aData['aLanguageData'] = $aLanguageData;
-        $aData['sSavedLanguage'] = $user->lang;
-        $aData['sUsername'] = $user->users_name;
-        $aData['sFullname'] = $user->full_name;
-        $aData['sEmailAdress'] = $user->email;
+        $aData['sSavedLanguage'] = $oUser->lang;
+        $aData['sUsername'] = $oUser->users_name;
+        $aData['sFullname'] = $oUser->full_name;
+        $aData['sEmailAdress'] = $oUser->email;
 
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
@@ -741,9 +741,9 @@ class UserAction extends Survey_Common_Action
 
         //Get data for personal menues
         $oSurveymenu = Surveymenu::model();
-        $oSurveymenu->user_id = $user->uid;
+        $oSurveymenu->user_id = $oUser->uid;
         $oSurveymenuEntries = SurveymenuEntries::model();
-        $oSurveymenuEntries->user_id = $user->uid;
+        $oSurveymenuEntries->user_id = $oUser->uid;
         $aData['surveymenu_data']['model'] = $oSurveymenu;
         $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
         // Render personal settings view

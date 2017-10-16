@@ -103,8 +103,8 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
     {
-        $oTemplate = self::getTemplateForRessource($sTemplateCssFileName);
-        Yii::app()->getClientScript()->packages[$oTemplate->sPackageName]['js'][]=$sTemplateCssFileName;
+        $oTemplate = self::getTemplateForRessource($sTemplateScriptFileName);
+        Yii::app()->getClientScript()->packages[$oTemplate->sPackageName]['js'][]=$sTemplateScriptFileName;
     }
 
     /**
@@ -289,7 +289,6 @@ class LS_Twig_Extension extends Twig_Extension
         self::unregisterPackage('bootstrap-template');
         self::unregisterPackage('fontawesome');
         self::unregisterPackage('template-default-ltr');
-        self::unregisterPackage('survey-template-default');
         self::unregisterPackage('decimal');
         self::unregisterScriptFile('/assets/scripts/survey_runtime.js');
         self::unregisterScriptFile('/assets/scripts/admin/expression.js');

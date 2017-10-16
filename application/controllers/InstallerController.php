@@ -487,7 +487,7 @@ class InstallerController extends CController {
         if ($bCreateDB) //Database has been successfully created
         {
             $sDsn = self::_getDsn($sDatabaseType, $sDatabaseLocation, $sDatabasePort, $sDatabaseName, $sDatabaseUser, $sDatabasePwd);
-            $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
+            $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
 
             Yii::app()->session['populatedatabase'] = true;
             Yii::app()->session['databaseexist'] = true;
@@ -574,7 +574,7 @@ class InstallerController extends CController {
         }
 
         //checking DB Connection
-        $aErrors = self::_setup_tables(dirname(APPPATH).'/installer/sql/create-'.$sql_file.'.sql');
+        $aErrors = self::_setup_tables(dirname(APPPATH).'/installer/php/create-database.php');
         if ($aErrors === false)
         {
             $model->addError('dblocation', gT('Try again! Connection with database failed. Reason: ').implode(', ', $aErrors));
@@ -949,9 +949,10 @@ class InstallerController extends CController {
     * Installer::_setup_tables()
     * Function that actually modify the database. Read $sqlfile and execute it.
     * @param string $sFileName
+    * @param array $aDbConfig
     * @return  Empty string if everything was okay - otherwise the error messages
     */
-    function _setup_tables($sFileName, $aDbConfig = array(), $sDatabasePrefix = '')
+    public function _setup_tables($sFileName, $aDbConfig = array())
     {
         $aDbConfig= empty($aDbConfig) ? self::_getDatabaseConfig() : $aDbConfig;
         extract($aDbConfig);
@@ -965,8 +966,8 @@ class InstallerController extends CController {
         } catch(Exception $e) {
             return array($e->getMessage());
         }
-
-        return $this->_executeSQLFile($sFileName, $sDatabasePrefix);
+        require_once($sFileName);
+        return createDatabase($this->connection);
     }
 
     /**
@@ -1298,7 +1299,7 @@ class InstallerController extends CController {
         }
         try
         {
-            $this->connection = new CDbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
+            $this->connection = new DbConnection($sDsn, $sDatabaseUser, $sDatabasePwd);
             if($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib')
             {
                 $this->connection->emulatePrepare = true;
@@ -1359,7 +1360,7 @@ class InstallerController extends CController {
                 else
                 {
                     // Use same exception than Yii ? unclear
-                    throw new CDbException('CDbConnection failed to open the DB connection.',(int)$e->getCode(),$e->errorInfo);
+                    throw new DbConnection('CDbConnection failed to open the DB connection.',(int)$e->getCode(),$e->errorInfo);
                 }
             }
             $testPdo = null;

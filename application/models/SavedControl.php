@@ -11,6 +11,21 @@
  * See COPYRIGHT.php for copyright notices and details.
  *
  */
+
+/**
+ * Class SavedControl
+ * @property integer $scid Primary key
+ * @property integer $sid Survey id
+ * @property integer $srid
+ * @property string $identifier
+ * @property string $access_code
+ * @property string $email
+ * @property string $ip
+ * @property string $saved_thisstep
+ * @property string $status
+ * @property string $saved_date
+ * @property string $refurl
+ */
 class SavedControl extends LSActiveRecord {
 
     /** @inheritdoc */

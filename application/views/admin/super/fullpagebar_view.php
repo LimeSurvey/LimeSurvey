@@ -7,21 +7,9 @@
 <!-- Full page menu bar -->
 <div class='menubar' id="fullpagebar">
     <div class='row container-fluid'>
-
-        <!-- Left Actions -->
-        <div class="col-md-8">
-            <!-- Create a new survey  -->
-            <?php if (isset($fullpagebar['button']['newsurvey']) && Permission::model()->hasGlobalPermission('surveys','create')):?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>" role="button">
-                    <span class="icon-add text-success"></span>
-                    <?php eT("Create a new survey");?>
-                </a>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/surveysgroups/sa/create"); ?>" role="button">
-                    <span class="icon-add text-success"></span>
-                    <?php eT("Create a new survey group");?>
-                </a>
-            <?php endif;?>
+        <div class="col-md-6 text-left">
         </div>
+
 
         <!-- Right actions -->
         <div class="col-md-4 text-right">

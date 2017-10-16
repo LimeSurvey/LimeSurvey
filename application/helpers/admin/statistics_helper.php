@@ -2555,7 +2555,12 @@ class statistics_helper {
             if (!empty($sql)) {$query .= " AND $sql";}
 
             //get data
-            $row=Yii::app()->db->createCommand($query)->queryScalar();
+            try {
+                $row=Yii::app()->db->createCommand($query)->queryScalar();
+            } catch (Exception $ex) {
+                $row = 0;
+                Yii::app()->setFlashMessage(gT('Faulty query: ') . $query, 'error');
+            }
 
             //store temporarily value of answer count of question type '5' and 'A'.
             $tempcount = -1; //count can't be less han zero

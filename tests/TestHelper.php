@@ -108,7 +108,7 @@ class TestHelper extends \PHPUnit_Framework_TestCase
         \Survey::model()->resetCache();  // Make sure the saved values will be picked up
 
         $result = \activateSurvey($surveyId);
-        $this->assertEquals(['status' => 'OK'], $result, 'Activate survey is OK');
+        $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
     }
 
     /**

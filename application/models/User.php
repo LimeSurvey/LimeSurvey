@@ -31,6 +31,8 @@
  * @property string $modified Time modified Time created Time user was modified as 'YYYY-MM-DD hh:mm:ss'
  *
  * @property Permission[] $permissions
+ * @property User $parentUser Parent user
+ * @property string $parentUserName  Parent user's name
  */
 class User extends LSActiveRecord
 {
@@ -46,7 +48,9 @@ class User extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -59,6 +63,15 @@ class User extends LSActiveRecord
     public function primaryKey()
     {
         return 'uid';
+    }
+    /** @inheritdoc */
+    public function relations()
+    {
+        return array(
+            'permissions' => array(self::HAS_MANY, 'Permission', 'uid'),
+            'parentUser' => array(self::HAS_ONE, 'User', array('uid' => 'parent_id') ),
+            'settings' => array(self::HAS_MANY, 'SettingsUser', 'uid')
+        );
     }
 
     /** @inheritdoc */
@@ -91,33 +104,6 @@ class User extends LSActiveRecord
 
         return $data;
     }
-
-    /**
-     * @param integer $postuserid
-     * @return mixed
-     */
-    public function parentAndUser($postuserid)
-    {
-        $user = Yii::app()->db->createCommand()
-            ->select('a.users_name, a.full_name, a.email, a.uid,  b.users_name AS parent')
-            ->limit(1)
-            ->where('a.uid = :postuserid')
-            ->from("{{users}} a")
-            ->leftJoin('{{users}} AS b', 'a.parent_id = b.uid')
-            ->bindParam(":postuserid", $postuserid, PDO::PARAM_INT)
-            ->queryRow();
-        return $user;
-    }
-
-    /**
-     * TODO via relation
-     * @return mixed
-     */
-    public function getParentUser(){
-        $parent_user = $this->parentAndUser( $this->uid );
-        return $parent_user['parent'];
-    }
-
 
     /**
      * @return string
@@ -213,21 +199,6 @@ class User extends LSActiveRecord
     }
 
     /**
-     * Returns user share settings
-     * TODO this seems unused, delete? should be done via relation
-     * @access public
-     * @return array
-     */
-    public function getShareSetting()
-    {
-        $this->db->where(array("uid"=>$this->session->userdata('loginID')));
-        $result= $this->db->get('users');
-        return $result->row();
-    }
-
-
-
-    /**
      * Finds user by username
      * @param string $sUserName
      * @return User
@@ -278,13 +249,6 @@ class User extends LSActiveRecord
         return Yii::app()->db->createCommand($query2)->bindParam(":surveyid", $surveyid, PDO::PARAM_INT)->bindParam(":postugid", $postusergroupid, PDO::PARAM_INT)->query(); //Checked
     }
 
-    /** @inheritdoc */
-	public function relations()
-	{
-		return array(
-			'permissions' => array(self::HAS_MANY, 'Permission', 'uid')
-		);
-	}
 
     /**
      * Return all super admins in the system
@@ -336,7 +300,9 @@ class User extends LSActiveRecord
                         "action"=> "deluser"
                     ));
 
-                $deleteUser = "<button
+                $deleteUser = "
+                <span style='mar0;padding:0;' data-toggle='tooltip' title='".gT('Delete this user')."'>
+                <button
                 data-toggle='modal'
                 data-href='#'
                 data-onclick='$.post(".$deleteUrl.",{
@@ -350,7 +316,7 @@ class User extends LSActiveRecord
                 data-message='".gT("Delete this user")."'
                 class='btn btn-default btn-xs'>
                     <span class='fa fa-trash  text-danger'></span>
-                </button>";
+                </button></span>";
             }
         } else {
             if (Permission::model()->hasGlobalPermission('superadmin','read')
@@ -387,7 +353,8 @@ class User extends LSActiveRecord
                     ));
 
                      //'admin/user/sa/deluser'
-                    $deleteUser = "<button
+                    $deleteUser = "<span style='margin:0;padding:0;display: inline-block;' data-toggle='tooltip' title='".gT('Delete this user')."'>
+                    <button
                         id='delete_user_".$this->uid."'
                         data-toggle='modal'
                         data-target='#confirmation-modal'
@@ -399,7 +366,7 @@ class User extends LSActiveRecord
                         data-message='".gT("Do you want to delete this user?")."'
                         class='btn btn-default btn-xs '>
                             <span class='fa fa-trash  text-danger'></span>
-                        </button>";
+                        </button></span>";
                 }
 
                 if (Yii::app()->session['loginID'] == "1" && $this->parent_id !=1 ) {
@@ -415,6 +382,15 @@ class User extends LSActiveRecord
             . $changeOwnership
             . "</div>";
     }
+
+    public function getParentUserName(){
+        if($this->parentUser){
+            return $this->parentUser->users_name;
+        }
+        // root user, no parent
+        return null;
+    }
+
 
     /**
      * @return array
@@ -452,8 +428,8 @@ class User extends LSActiveRecord
         }
 
         $cols[] = array(
-            "name" => 'parentUser',
-            "header" => gT("Created by")
+            "name" =>"parentUserName",
+            "header" => gT("Created by"),
         );
         return $cols;
     }

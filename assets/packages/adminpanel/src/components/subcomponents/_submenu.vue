@@ -26,7 +26,10 @@ export default {
     methods:{
         setActiveMenuItemIndex(menuItem){
             let activeMenuIndex = menuItem.id;
-            this.$store.commit('lastMenuItemOpen', menuItem)
+            this.$store.commit('lastMenuItemOpen', menuItem);
+            
+            if($('a#'+this.menu.id+'_'+menuItem.id)[0])
+                $('a#'+this.menu.id+'_'+menuItem.id)[0].click();
             
         },
         checkIsOpen(toCheckMenu){
@@ -39,8 +42,7 @@ export default {
         },
         setActiveMenuIndex(menu){
             let activeMenuIndex = menu.id;
-            this.$store.commit('lastMenuOpen', menu)
-            
+            this.$store.commit('lastMenuOpen', menu);
         },
         setOpenSubpanel(sId){
             this.openSubpanelId = sId;
@@ -51,7 +53,7 @@ export default {
         },
         getLinkClass(menuItem){
             let classes = "ls-flex-row nowrap align-item-center align-content-center ";
-            classes += (menuItem.pjax ? 'pjax' : '');
+            classes += (menuItem.pjax ? 'pjax ' : ' ');
             classes += menuItem.menu_class;
             return classes;
         }
@@ -65,7 +67,7 @@ export default {
         const self = this;
         this.updatePjaxLinks();
         // this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-        //     console.log('sidemenues',result);
+        //     self.$log.debug('sidemenues',result);
         //     self.menues =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
         //     self.$localStorage.set('sidemenues', JSON.stringify(self.menues));
         //     self.$forceUpdate();
@@ -75,20 +77,20 @@ export default {
 </script>
 <template>
     <ul class="list-group subpanel col-12" :class="'level-'+(menu.level)">
-        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' ">
-            <a href="#" :title="submenu.description" @click.stop="setActiveMenuIndex(submenu)"  data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center">
+        <li v-for="(submenu, index) in menu.submenus" class="list-group-item" v-bind:key="submenu.id" v-bind:class="checkIsOpen(submenu) ? 'menu-selected' : '' " @click.stop="setActiveMenuIndex(submenu)" >
+            <a href="#" :title="submenu.description"   data-toggle="tooltip" class="ls-flex-row nowrap align-item-center align-content-center" :class="checkIsOpen(submenu) ? 'ls-space margin bottom-5' : ''">
                 <div class="ls-space col-sm-10 padding all-0">
-                    <menuicon icon-type="fontawesome" icon="level-down"></menuicon>
+                    <menuicon icon-type="fontawesome" icon="arrow-right"></menuicon>
                     <span v-html="submenu.title"></span>
                 </div>
-                <div class="col-sm-2 text-center ls-space padding all-0">
-                    <i class="fa" v-bind:class="(!checkIsOpen(submenu) ? 'fa-chevron-up' : 'fa-chevron-down')">&nbsp;</i>
+                <div class="col-sm-2 text-center ls-space padding all-0"  v-bind:class="(checkIsOpen(submenu) ? 'menu-open' : '')">
+                    <i class="fa fa-level-down"></i>
                 </div>
             </a>
             <submenu v-if="checkIsOpen(submenu)" :menu="submenu"></submenu>
         </li>
-        <li v-for="(menuItem, index) in sortedMenuEntries" class="list-group-item" @click="setActiveMenuItemIndex(menuItem)"  v-bind:key="menuItem.id" v-bind:class="$store.state.lastMenuItemOpen==menuItem.id ? 'selected' : '' ">
-            <a :href="menuItem.link" :title="menuItem.menu_description"  data-toggle="tooltip" :class="getLinkClass(menuItem)">
+        <li v-for="(menuItem, index) in sortedMenuEntries" class="list-group-item" @click.stop="setActiveMenuItemIndex(menuItem)"  v-bind:key="menuItem.id" v-bind:class="$store.state.lastMenuItemOpen==menuItem.id ? 'selected' : '' ">
+            <a :href="menuItem.link" :id="'sidemenu_'+menu.id+'_'+menuItem.id" :title="menuItem.menu_description"  data-toggle="tooltip" :class="getLinkClass(menuItem)">
                 <div class="ls-space padding all-0" v-bind:class="$store.state.lastMenuItemOpen == menuItem.id ? 'col-sm-10' : 'col-sm-12' ">
                     <menuicon :icon-type="menuItem.menu_icon_type" :icon="menuItem.menu_icon"></menuicon>
                     <span v-html="menuItem.menu_title"></span>

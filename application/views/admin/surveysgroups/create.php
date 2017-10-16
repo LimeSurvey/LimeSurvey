@@ -8,7 +8,7 @@
     <?php $this->renderPartial('super/fullpagebar_view', array(
         'fullpagebar' => array(
             'returnbutton'=>array(
-                'url'=>'index',
+                'url'=>'admin/survey/sa/listsurveys#surveygroups',
                 'text'=>gT('Close'),
             ),
         )

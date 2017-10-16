@@ -91,7 +91,7 @@ export default {
             
             //unload every selection
             this.$store.commit('closeAllMenus');
-            // console.log('setMenuActive', {
+            // self.$log.debug('setMenuActive', {
             //     lastMenuItemObject : lastMenuItemObject,
             //     lastQuickMenuItemObject : lastQuickMenuItemObject,
             //     lastQuestionObject : lastQuestionObject,
@@ -149,10 +149,12 @@ export default {
             if(this.isMouseDown){
                 this.isMouseDown = false;
                 this.$store.state.isCollapsed = false;
-                if(this.sideBarWidth < 315 && !this.$store.state.isCollapsed) {
-                    this.$store.state.isCollapsed = true;
+                if(parseInt(this.sideBarWidth) < 335 && !this.$store.state.isCollapsed) {
+                    this.toggleCollapse();
+                    this.$store.commit('changeSidebarwidth', '340px');
+                } else {
+                    this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 }
-                this.$store.commit('changeSidebarwidth', this.sideBarWidth);
                 $('#sidebar').addClass('transition-animate-width');
                 $('#pjax-content').removeClass('transition-animate-width');
             }
@@ -180,7 +182,7 @@ export default {
     },
     created(){
         const self = this;
-        console.log(this.$store.state);
+        // self.$log.debug(this.$store.state);
         this.currentTab = self.$store.state.currentTab;
         this.activeMenuIndex = this.$store.state.lastMenuOpen; 
         if(this.$store.state.isCollapsed){ 
@@ -196,7 +198,7 @@ export default {
         //retrieve the current menues via ajax
         //questions
         this.get(this.getQuestionsUrl).then( (result) =>{
-            console.log(result);
+            // self.$log.debug(result);
             self.questiongroups = result.data.groups;
             self.$store.commit('updateQuestiongroups', self.questiongroups);
             self.$forceUpdate();
@@ -205,7 +207,7 @@ export default {
 
         //sidemenus
         this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-            console.log('sidemenues',result);
+            self.$log.debug('sidemenues',result);
             self.sidemenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
             self.$store.commit('updateSidemenus', self.sidemenus);
             self.$forceUpdate();
@@ -214,7 +216,7 @@ export default {
 
         //collapsedmenus
         this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
-            console.log('quickmenu',result);
+            self.$log.debug('quickmenu',result);
             self.collapsedmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
             self.$store.commit( 'updateCollapsedmenus', self.collapsedmenus);
             self.$forceUpdate();
@@ -223,7 +225,7 @@ export default {
 
         //topmenus
         this.get(this.getMenuUrl, {position: 'top'}).then( (result) =>{
-            console.log('topmenus',result);
+            self.$log.debug('topmenus',result);
             self.topmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
             self.$store.commit('updateTopmenus', self.topmenus);
             self.$forceUpdate();
@@ -232,7 +234,7 @@ export default {
 
         //bottommenus
         this.get(this.getMenuUrl, {position: 'bottom'}).then( (result) =>{
-            console.log('bottommenus',result);
+            self.$log.debug('bottommenus',result);
             self.bottommenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
             self.$store.commit('updateBottommenus', self.bottommenus);
             self.$forceUpdate();

@@ -1,4 +1,4 @@
-<div class="col-lg-4 col-sm-6 ls-flex-column" style="padding:15px; height: 200px;" >
+<div class="<?php echo $sizeClass; ?> ls-flex-column" style="padding:15px; height: 200px;" >
     <div class="panel panel-primary panel-clickable" id="panel-<?php echo $position; ?>"
          data-url="<?php echo $url; ?>"<?php if ($external) {
         echo ' data-target="_blank"';

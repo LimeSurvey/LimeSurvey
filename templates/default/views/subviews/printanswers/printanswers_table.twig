@@ -1,0 +1,37 @@
+
+{% if (aSurveyInfo.printPdf != 1) %} 
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>{{ gT("Survey name (ID):") }} {{aSurveyInfo.surveyls_title}} ({{aSurveyInfo.sid}})</h2>
+        </div>
+    </div>
+{% endif %} 
+
+{% for groupid,group in aSurveyInfo.groupArray %}
+    {% if (aSurveyInfo.printPdf == 1) %} 
+    <br pagebreak="true" /> 
+    {% endif %}
+    <groupsection class="groupSection"> 
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>{{group.group_name}} ({{group.gid}})</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container-fluid col-xs-11 col-md-10 col-xs-offset-1 col-md-offset-2">
+                {% for questionId,question in group.answerArray %}
+                {% set questionTemplate = './subviews/printanswers/question_types/template_' ~ question.questionclass ~ '.twig' %}
+                {{ include(questionTemplate) }}
+                {% endfor %} 
+            </div>
+        </div>
+    </groupsection> 
+{% endfor %}
+
+
+
+
+
+
+
+

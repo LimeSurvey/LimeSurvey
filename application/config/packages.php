@@ -127,19 +127,42 @@ return array(
             'ckeditor'
         )
     ),
+    'pjax' => array(
+        'devBaseUrl' => 'assets/packages/pjax/',
+        'basePath' => 'core.pjax',
+        'js' => array(
+            'pjax.js',
+        ),
+    ),
     'adminpanel' => array(
-        'devBaseUrl' => 'assets/packages/adminpanel/build/',
-        'basePath' => 'core.adminpanel.build',
+        'devBaseUrl' => 'assets/packages/adminpanel/',
+        'basePath' => 'core.adminpanel',
         'coreScriptPosition'=>CClientScript::POS_END,
         'defaultScriptFilePosition' =>CClientScript::POS_END,
         'defaultScriptPosition' =>CClientScript::POS_END,
         'position' =>CClientScript::POS_END,
         'js' => array(
-            'lsadminpanel'.$minVersion.'.js'
+            'build/lsadminpanel'.$minVersion.'.js',
+            'lib/surveysettings.js'
         ),
         'css' => array(
-            'lsadminpanel.css'
+            'build/lsadminpanel.css'
+        ),
+        'depends' => array(
+            'pjax',
+            'jquery'
+        )
+    ),
+    'surveymenufunctions' => array(
+        'devBaseUrl' => 'assets/packages/surveymenufunctions/',
+        'basePath' => 'core.surveymenufunctions',
+        'js' => array(
+            'surveymenufunctionswrapper'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'pjax',
+            'jquery'
         )
     )
-
+    
 );

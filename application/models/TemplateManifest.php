@@ -23,6 +23,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class TemplateManifest extends TemplateConfiguration
 {
     public $templateEditor;
+    public $sPreviewImgTag;
 
     /**
      * Public interface specific to TemplateManifest
@@ -55,10 +56,13 @@ class TemplateManifest extends TemplateConfiguration
     {
         $aScreenFiles = array();
 
+        if (empty($this->templateEditor)) {
+            return array();
+        }
+
         $filesFromXML = (is_null($sScreen)) ? (array) $this->templateEditor->screens->xpath('//file') : $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
 
         foreach( $filesFromXML as $file){
-
             if ( $file->attributes()->type == $sType ){
                 $aScreenFiles[] = (string) $file;
             }
@@ -76,6 +80,10 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function getLayoutForScreen($sScreen)
     {
+        if (empty($this->templateEditor)) {
+            return false;
+        }
+
         $filesFromXML = $this->templateEditor->screens->xpath('//'.$sScreen.'/file');
 
         foreach( $filesFromXML as $file){
@@ -169,7 +177,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public function addFileReplacementInDB($sFile, $sType)
     {
-        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('templates_name'=>$this->sTemplateName));
+        $oTemplateConfigurationModels = TemplateConfiguration::model()->findAllByAttributes(array('template_name'=>$this->sTemplateName));
         foreach($oTemplateConfigurationModels as $oTemplateConfigurationModel){
             $oTemplateConfigurationModel->addFileReplacement($sFile, $sType);
         }
@@ -201,6 +209,91 @@ class TemplateManifest extends TemplateConfiguration
         }
         return $otherfiles;
     }
+
+
+    public function getPreview()
+    {
+        if (empty($this->sPreviewImgTag)){
+            $previewUrl =  $this->getTemplateURL();// $this->getTemplateURL();//Template::getTemplateURL($this->template->name);
+            $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
+        }
+        return $this->sPreviewImgTag;
+    }
+
+    /**
+     * NOTE: a core template will always be in the DB. So this function concerns only uploaded templates
+     */
+    public function getTemplateURL()
+    {
+        return Yii::app()->getConfig("usertemplaterooturl").'/'.$this->sTemplateName.'/';
+    }
+
+
+    public function getButtons()
+    {
+        $sEditorUrl  = Yii::app()->getController()->createUrl('admin/templates/sa/view', array("templatename"=>$this->sTemplateName));
+        $sLoadUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/importmanifest/', array("templatename"=>$this->sTemplateName));
+        $sDeleteUrl  = Yii::app()->getController()->createUrl('admin/templateoptions/sa/deleteTemplate/', array("templatename"=>$this->sTemplateName));
+
+        // TODO: load to DB
+        $sEditorLink = "<a
+            id='template_editor_link_".$this->sTemplateName."'
+            href='".$sEditorUrl."'
+            class='btn btn-default'>
+                <span class='icon-templates'></span>
+                ".gT('Template editor')."
+            </a>";
+
+            //
+
+        $sLoadLink = '';
+
+        $sLoadLink .=  "<a
+                id='template_options_link_".$this->sTemplateName."'
+                href='".$sLoadUrl."'
+                class='btn btn-default '>
+                    <span class='fa fa-download text-warning'></span>
+                    ".gT('Install')."
+                </a>";
+
+        $sDeleteLink =  "<a
+                id='template_options_link_".$this->sTemplateName."'
+                href='".$sDeleteUrl."'
+                class='btn btn-danger '>
+                    <span class='fa fa-trash text-warning'></span>
+                    ".gT('Delete')."
+                </a>";
+
+
+        return $sEditorLink.'<br><br>'.$sLoadLink.'<br><br>'; //.$sDeleteLink;
+    }
+
+    /**
+     * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
+     * @param string $sTemplateName the name of the template to import
+     * @return mixed true on success | exception
+     * @throws Exception
+     */
+    public static function importManifest($sTemplateName, $aDatas=array()  )
+    {
+        $oTemplate             = Template::getTemplateConfiguration($sTemplateName, null, null, true);
+
+        $aDatas['api_version']   = (string) $oTemplate->config->metadatas->apiVersion;
+        $aDatas['extends']       = (string) $oTemplate->config->metadatas->extends;
+        $aDatas['author_email']  = (string) $oTemplate->config->metadatas->authorEmail;
+        $aDatas['author_url']    = (string) $oTemplate->config->metadatas->authorUrl;
+        $aDatas['copyright']     = (string) $oTemplate->config->metadatas->copyright;
+        $aDatas['version']       = (string) $oTemplate->config->metadatas->version;
+        $aDatas['license']       = (string) $oTemplate->config->metadatas->license;
+        $aDatas['view_folder']   = (string) $oTemplate->config->engine->viewdirectory;
+        $aDatas['files_folder']  = (string) $oTemplate->config->engine->filesdirectory;
+        $aDatas['aOptions']      = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0  )?array():$oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
+
+
+        return parent::importManifest($sTemplateName, $aDatas );
+    }
+
+
 
     /**
      * Update the config file of a given template so that it extends another one
@@ -368,16 +461,22 @@ class TemplateManifest extends TemplateConfiguration
      * @param  string $iSurveyId the id of the survey. If
      * @return $this
      */
-    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
+    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true)
+    {
+        $this->setBasics($sTemplateName, $iSurveyId);
+        $this->setMotherTemplates();                                            // Recursive mother templates configuration
+        @$this->setThisTemplate();                                               // Set the main config values of this template
+        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
+        return $this;
+    }
+
+
+    public function setBasics($sTemplateName='', $iSurveyId='')
     {
         $this->setTemplateName($sTemplateName, $iSurveyId);                     // Check and set template name
         $this->setIsStandard();                                                 // Check if  it is a CORE template
         $this->setPath();                                                       // Check and set path
         $this->readManifest();                                                  // Check and read the manifest to set local params
-        $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        @$this->setThisTemplate();                                               // Set the main config values of this template
-        $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
-        return $this;
     }
 
     /**
@@ -475,14 +574,14 @@ class TemplateManifest extends TemplateConfiguration
 
     /**
      * Configure the mother template (and its mother templates)
-     * This is an object recursive call to TemplateManifest::setTemplateConfiguration()
+     * This is an object recursive call to TemplateManifest::prepareTemplateRendering()
      */
     protected function setMotherTemplates()
     {
         if (isset($this->config->metadatas->extends)){
             $sMotherTemplateName   = (string) $this->config->metadatas->extends;
             $this->oMotherTemplate = new TemplateManifest;
-            $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
+            $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName); // Object Recursion
         }
     }
 
@@ -565,4 +664,5 @@ class TemplateManifest extends TemplateConfiguration
         }
         return $aAssetsToRemove;
     }
+
 }

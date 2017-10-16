@@ -230,7 +230,7 @@ class LSYii_Application extends CWebApplication
     {
         if (!isset($this->api))
         {
-            $this->api = new \ls\pluginmanager\LimesurveyApi();
+            $this->api = new \LimeSurvey\PluginManager\LimesurveyApi();
         }
         return $this->api;
     }

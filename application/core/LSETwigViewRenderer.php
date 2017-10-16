@@ -147,12 +147,16 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         $oRTemplate = Template::model()->getInstance();
         $oTemplate  = $this->getTemplateForView($sView, $oRTemplate);
-        $line       = file_get_contents($oTemplate->viewPath.$sView);
-        $result     = $this->renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn);
+        if ($oTemplate) {
+            $line       = file_get_contents($oTemplate->viewPath.$sView);
+            $result     = $this->renderTemplateFromString($line, $aDatas, $oRTemplate, $bReturn);
 
-        if ($bReturn){
-            Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
-            return $result;
+            if ($bReturn) {
+                Yii::app()->clientScript->registerPackage($oRTemplate->sPackageName);
+                return $result;
+            }
+        } else {
+            trigger_error("TEMPLATE ERROR!", E_USER_ERROR);
         }
 
         return null;
@@ -221,12 +225,15 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      *
      * @param string $line The line of HTML/Twig to render
      * @param array $aDatas Array containing the datas needed to render the view ($thissurvey)
-     * @param TemplateConfiguration $oRTemplate
+     * @param TemplateConfiguration $oTemplate
      * @param boolean $bReturn Should the function echo the result, or just returns it?
      * @return string
      */
     public function renderTemplateFromString( $line, $aDatas, $oTemplate, $bReturn=false)
     {
+        $aClassAndAttributes = $oTemplate->getClassAndAttributes();
+        $aDatas["aSurveyInfo"] = array_merge($aDatas["aSurveyInfo"], $aClassAndAttributes);
+
         $oRTemplate   = $oTemplate;
         $this->_twig  = $twig = parent::getTwig();
         $loader       = $this->_twig->getLoader();
@@ -253,10 +260,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
 
         // Add the template options
-        foreach($oTemplate->oOptions as $key => $value){
-            $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+        if ($oTemplate->oOptions) {
+            foreach($oTemplate->oOptions as $key => $value){
+                $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
+            }
         }
 
+        // Add core classes and attributes
 
         // Plugin for blocks replacement
         // TODO: add blocks to template....
