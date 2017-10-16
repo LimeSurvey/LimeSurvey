@@ -30,14 +30,14 @@
     #}
     {% set htmlOptions = {
             'id'             : 'langchangerSelectMain',
-            'class'          : aSurveyInfo.class.formcontrol,
+            'class'          : 'form-control',
             'data-targeturl' : aLCD.targetUrl,
         }
     %}
     <!-- Language Changer -->
-    <div class=" {{ aSurveyInfo.class.formgroup }} " {{ aSurveyInfo.attr.formgroup }} >
-        <label class="{{ aSurveyInfo.class.controllabel }}" {{ aSurveyInfo.attr.controllabel }} for="langchangerSelectMain">
-            <span class="{{ aSurveyInfo.class.languagechanger }}" {{ aSurveyInfo.attr.languagechanger }}>{{ "Language:" | t }}</span>
+    <div class=" {{ aSurveyInfo.class.formgroup }} form-group " {{ aSurveyInfo.attr.formgroup }} >
+        <label class="{{ aSurveyInfo.class.controllabel }} control-label" {{ aSurveyInfo.attr.controllabel }} for="langchangerSelectMain">
+            <span class="{{ aSurveyInfo.class.languagechanger }} form-inline" {{ aSurveyInfo.attr.languagechanger }}>{{ "Language:" | t }}</span>
             {{
                 C.Html.dropDownList(
                     'lang',

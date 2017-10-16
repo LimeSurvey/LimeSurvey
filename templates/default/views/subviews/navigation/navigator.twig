@@ -23,20 +23,20 @@
 {% set aNavigator = aSurveyInfo.aNavigator %}
 
 <!-- PRESENT THE NAVIGATOR -->
-<div class="{{ aSurveyInfo.class.navigatorcontainer }}" id="{{ aSurveyInfo.id.navigatorcontainer }}" {{ aSurveyInfo.attr.navigatorcontainer }}>
+<div class="{{ aSurveyInfo.class.navigatorcontainer }} row navigator" id="{{ aSurveyInfo.id.navigatorcontainer }}" {{ aSurveyInfo.attr.navigatorcontainer }}>
 
     <!-- Previous button container -->
-    <div class="{{ aSurveyInfo.class.navigatorbuttonl }}" {{ aSurveyInfo.attr.navigatorbuttonl }}>
+    <div class="{{ aSurveyInfo.class.navigatorbuttonl }} col-xs-6 text-left" {{ aSurveyInfo.attr.navigatorbuttonl }}>
 
         {# Previous button must be set to ON in survey settings (and it's not shown in first page, in All in One survey mode, etc) #}
         {% if aNavigator.aMovePrev.show %}
             <!-- Button previous -->
-            <button  {{ aSurveyInfo.attr.navigatorbuttonprev }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} " >
+            <button  {{ aSurveyInfo.attr.navigatorbuttonprev }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonprev }} btn btn-lg btn-default  " >
                 {{ "Previous" | t }}
             </button>
         {% endif %}
     </div>
-    <div class="{{ aSurveyInfo.class.navigatorbuttonr }}">
+    <div class="{{ aSurveyInfo.class.navigatorbuttonr }} col-xs-6 text-right">
 
         {# Next button is not always shown (last page, all in one mode, etc) #}
         {% if aNavigator.aMoveNext.show %}
@@ -44,12 +44,12 @@
             {# On last page, Next button become submit button. #}
             {% if aNavigator.aMoveNext.value == "movesubmit" %}
                 <!-- Button submit -->
-                <button type="submit"  {{ aSurveyInfo.attr.navigatorbuttonsubmit }} class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }}">
+                <button type="submit"  {{ aSurveyInfo.attr.navigatorbuttonsubmit }} class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonsubmit }} btn btn-lg btn-primary">
                     {{ "Submit" | t }}
                 </button>
             {% else %}
                 <!-- Button Next -->
-                <button type="submit" {{ aSurveyInfo.attr.navigatorbuttonnext }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} " >
+                <button type="submit" {{ aSurveyInfo.attr.navigatorbuttonnext }}  class=" {{ aNavigator.disabled }} {{ aSurveyInfo.class.navigatorbuttonnext }} btn btn-lg btn-primary " >
                     {{ "Next" | t }}
                 </button>
             {% endif %}
@@ -58,13 +58,13 @@
 </div>
 
 <!-- Save and load buttons-->
-<div class="{{ aSurveyInfo.class.loadsavecontainer }}" {{ aSurveyInfo.attr.loadsavecontainer }}>
-    <div class="{{ aSurveyInfo.class.loadsaveccol }} " {{ aSurveyInfo.attr.loadsaveccol }} >
+<div class="{{ aSurveyInfo.class.loadsavecontainer }} navigator row" {{ aSurveyInfo.attr.loadsavecontainer }}>
+    <div class="{{ aSurveyInfo.class.loadsaveccol }} col-sm-6 " {{ aSurveyInfo.attr.loadsaveccol }} >
 
         {# Loading survey must be allowed in survey settings, and it must not be shown once survey is completed #}
         {% if aNavigator.load.show == "Y" %}
             <!-- Button load unfinished survey -->
-            <button {{ aSurveyInfo.attr.loadbutton }}  class="{{ aSurveyInfo.class.loadbutton }}" >
+            <button {{ aSurveyInfo.attr.loadbutton }}  class="{{ aSurveyInfo.class.loadbutton }}  btn btn-default" >
                 {{ "Load unfinished survey" | t }}
             </button>
         {% endif %}
@@ -72,7 +72,7 @@
         {# Saving survey must be allowed in survey settings, and it must not be shown on welcome page or once survey is completed #}
         {% if aNavigator.save.show == "Y" %}
             <!-- Button resume later -->
-            <button {{ aSurveyInfo.attr.savebutton }} class="{{ aSurveyInfo.class.savebutton }}" >
+            <button {{ aSurveyInfo.attr.savebutton }} class="{{ aSurveyInfo.class.savebutton }}  btn btn-default" >
                 {{ "Resume later" | t }}
             </button>
         {% endif %}

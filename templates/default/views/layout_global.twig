@@ -22,7 +22,7 @@
         {{ include('./subviews/head.twig') }}
 
         <body class=" {{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
-        {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %} 
+        {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
             <div class="progress ajax_loading_indicator" id="ajax_loading_indicator">
                 <div class="progress-bar progress-bar-info ajax_loading_indicator_bar" id="ajax_loading_indicator_bar" role="progressbar">
                 </div>
@@ -60,12 +60,12 @@
                 {% endblock %}
 
                 <!-- Outer Frame Container -->
-                <div class="{{ aSurveyInfo.class.outerframe }}  {% if (aSurveyInfo.options.animatebody == "on") %} animated {{ aSurveyInfo.options.bodyanimation }} {%endif%}" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >
+                <div class="{{ aSurveyInfo.class.outerframe }} container {% if (aSurveyInfo.options.animatebody == "on") %} animated {{ aSurveyInfo.options.bodyanimation }} {%endif%}" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >
 
                     <!-- Main Row -->
                     <div id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }} >
                         <!-- Main Col -->
-                        <div class="{{ aSurveyInfo.class.maincol }} " id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
+                        <div class="{{ aSurveyInfo.class.maincol }} col-centered  " id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
 
                             {# This is the main block that will be replaced/extended by other layouts#}
                             {% block content %}

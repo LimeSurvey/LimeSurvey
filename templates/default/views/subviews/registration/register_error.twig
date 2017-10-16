@@ -16,7 +16,7 @@
 
 #}
 {% if aSurveyInfo.errors is not empty %}
-    <ul class='{{ aSurveyInfo.class.registerul }}' {{ aSurveyInfo.attr.registerul }} >
+    <ul class='{{ aSurveyInfo.class.registerul }} alert alert-danger list-unstyled' {{ aSurveyInfo.attr.registerul }} >
         {% for error in aSurveyInfo.errors  %}
             <!-- Error Html warnings -->
                 <li {{ aSurveyInfo.attr.registerulli }} >{{ error }}</li>

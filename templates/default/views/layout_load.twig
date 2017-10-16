@@ -41,9 +41,9 @@
         {# This will display the script and the hidden inputs needed for Expression Manager #}
         {{ aSurveyInfo.EM.ScriptsAndHiddenInputs  }}
 
-        <div class="{{ aSurveyInfo.class.savemessage }}" {{ aSurveyInfo.attr.savemessage }}>
-            <div class="{{ aSurveyInfo.class.savemessagetitle }}" {{ aSurveyInfo.attr.savemessagetitle }}>{{ "Load unfinished survey" | t }}</div>
-            <div class="{{ aSurveyInfo.class.savemessagetext }}" {{ aSurveyInfo.attr.savemessagetext }}>
+        <div class="{{ aSurveyInfo.class.savemessage }} well clearfix" {{ aSurveyInfo.attr.savemessage }}>
+            <div class="{{ aSurveyInfo.class.savemessagetitle }} h2" {{ aSurveyInfo.attr.savemessagetitle }}>{{ "Load unfinished survey" | t }}</div>
+            <div class="{{ aSurveyInfo.class.savemessagetext }} text-info" {{ aSurveyInfo.attr.savemessagetext }}>
                 <p {{ aSurveyInfo.attr.savemessagetextp }} > {{ "You can load a survey that you have previously saved from this screen." | t }} </p>
                 <p {{ aSurveyInfo.attr.savemessagetextpb }} > {{ "Type in the 'name' you used to save the survey, and the password." | t }} </p>
             </div>
@@ -52,7 +52,7 @@
         <div class="{{ aSurveyInfo.class.loadform }}" {{ aSurveyInfo.attr.loadform }}>
 
             {% if count(aSurveyInfo.aLoadForm.aErrors) > 0 %}
-                <ul class="{{ aSurveyInfo.class.loadformul }}" {{ aSurveyInfo.attr.loadformul }} >
+                <ul class="{{ aSurveyInfo.class.loadformul }} alert alert-danger list-unstyled " {{ aSurveyInfo.attr.loadformul }} >
                     {% for key,error in aSurveyInfo.aLoadForm.aErrors %}
                         <li {{ aSurveyInfo.attr.loadformulli }}>{{ error }}</li>
                     {% endfor %}
@@ -92,22 +92,22 @@
 
                     <!-- Saved name  -->
                     <div class="{{ aSurveyInfo.class.saveformrow }}" {{ aSurveyInfo.attr.saveformrow }}>
-                        <label class="{{ aSurveyInfo.class.saveformrowlabel }}" {{ aSurveyInfo.attr.saveformrowlabel }}>
+                        <label class="{{ aSurveyInfo.class.saveformrowlabel }} control-label col-sm-3 " {{ aSurveyInfo.attr.saveformrowlabel }}>
                             {{ "Saved name:" | t }}
-                            <small class="{{ aSurveyInfo.class.saveformrowlabelsmall }}" {{ aSurveyInfo.attr.saveformrowlabelsmall }} ></small>
-                            <span class="{{ aSurveyInfo.class.saveformrowlabelspan }}"  {{ aSurveyInfo.attr.saveformrowlabelspan }} >{{ "Mandatory" | t }}<span>
+                            <small class="{{ aSurveyInfo.class.saveformrowlabelsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.saveformrowlabelsmall }} ></small>
+                            <span class="{{ aSurveyInfo.class.saveformrowlabelspan }} sr-only text-danger asterisk"  {{ aSurveyInfo.attr.saveformrowlabelspan }} >{{ "Mandatory" | t }}<span>
                         </label>
-                        <div class="{{ aSurveyInfo.class.saveformrowcol }}" {{ aSurveyInfo.attr.saveformrowcol }}>
-                            <input class="{{ aSurveyInfo.class.saveformrowcolinput }}" {{ aSurveyInfo.attr.saveformrowcolinput }} id="{{ aSurveyInfo.id.saveformrowcolinput }}" >
+                        <div class="{{ aSurveyInfo.class.saveformrowcol }} col-sm-7 input-cell" {{ aSurveyInfo.attr.saveformrowcol }}>
+                            <input class="{{ aSurveyInfo.class.saveformrowcolinput }} form-control" {{ aSurveyInfo.attr.saveformrowcolinput }} id="{{ aSurveyInfo.id.saveformrowcolinput }}" >
                         </div>
                     </div>
 
                     <!-- Password -->
-                    <div class="{{ aSurveyInfo.class.passwordrow }}" {{ aSurveyInfo.attr.passwordrow }}>
-                        <label class='{{ aSurveyInfo.class.passwordrowcol }}'  {{ aSurveyInfo.attr.passwordrowcol }} >
+                    <div class="{{ aSurveyInfo.class.passwordrow }} row form-group " {{ aSurveyInfo.attr.passwordrow }}>
+                        <label class='{{ aSurveyInfo.class.passwordrowcol }} control-label col-sm-3 '  {{ aSurveyInfo.attr.passwordrowcol }} >
                             {{ "Password:" | t }}
-                            <small class="{{ aSurveyInfo.class.passwordrowcolsmall }}" {{ aSurveyInfo.attr.passwordrowcolsmall }}></small>
-                            <span class="{{ aSurveyInfo.class.passwordrowcolspan }}" {{ aSurveyInfo.attr.passwordrowcolspan }}>{{ "Mandatory" | t }}<span>
+                            <small class="{{ aSurveyInfo.class.passwordrowcolsmall }} text-danger asterisk fa fa-asterisk pull-left small" {{ aSurveyInfo.attr.passwordrowcolsmall }}></small>
+                            <span class="{{ aSurveyInfo.class.passwordrowcolspan }} sr-only text-danger asterisk" {{ aSurveyInfo.attr.passwordrowcolspan }}>{{ "Mandatory" | t }}<span>
                         </label>
 
                         <div class='col-sm-7 save-survey-input input-cell'>
@@ -117,25 +117,25 @@
 
                     {% if aSurveyInfo.aLoadForm.aCaptcha.show %}
                         <!-- Captcha -->
-                        <div class='{{ aSurveyInfo.class.captcharow }}' {{ aSurveyInfo.attr.captcharow }}>
-                            <label class='{{ aSurveyInfo.class.captcharowlabel }}'  {{ aSurveyInfo.attr.captcharowlabel }}>
+                        <div class='{{ aSurveyInfo.class.captcharow }} row form-group ' {{ aSurveyInfo.attr.captcharow }}>
+                            <label class='{{ aSurveyInfo.class.captcharowlabel }} control-label col-sm-3 '  {{ aSurveyInfo.attr.captcharowlabel }}>
                                 {{ "Security question:" | t }}
                             </label>
-                            <div class='{{ aSurveyInfo.class.captcharowcol }}' {{ aSurveyInfo.attr.captcharowcol }}>
+                            <div class='{{ aSurveyInfo.class.captcharowcol }} col-sm-7 ' {{ aSurveyInfo.attr.captcharowcol }}>
                                 <div class='{{ aSurveyInfo.class.captcharowcoldiv }}' {{ aSurveyInfo.attr.captcharowcoldiv }}>
                                     <div class='{{ aSurveyInfo.class.captcharowcoldivdiv }}' {{ aSurveyInfo.attr.captcharowcoldivdiv }} >
                                         <img src="{{ aSurveyInfo.aLoadForm.aCaptcha.sImageUrl }}" {{ aSurveyInfo.attr.captcharowcoldivdivimg }} />
                                     </div>
-                                    <input id="{{ aSurveyInfo.id.captcharowcoldivinput }}" class='{{ aSurveyInfo.class.captcharowcoldivinput }}' {{ aSurveyInfo.attr.captcharowcoldivinput }} />
+                                    <input id="{{ aSurveyInfo.id.captcharowcoldivinput }}" class='{{ aSurveyInfo.class.captcharowcoldivinput }} form-control' {{ aSurveyInfo.attr.captcharowcoldivinput }} />
                                 </div>
                             </div>
                         </div>
                     {% endif %}
 
                     <!-- load button -->
-                    <div class='{{ aSurveyInfo.class.loadrow }}' {{ aSurveyInfo.attr.loadrow }}>
-                        <div class='{{ aSurveyInfo.class.loadrowcol }}' {{ aSurveyInfo.attr.loadrowcol }}>
-                            <button class='{{ aSurveyInfo.class.loadrowcolbutton }}' {{ aSurveyInfo.attr.loadrowcolbutton }} >
+                    <div class='{{ aSurveyInfo.class.loadrow }} row form-group ' {{ aSurveyInfo.attr.loadrow }}>
+                        <div class='{{ aSurveyInfo.class.loadrowcol }} col-sm-7 col-md-offset-3 ' {{ aSurveyInfo.attr.loadrowcol }}>
+                            <button class='{{ aSurveyInfo.class.loadrowcolbutton }} btn btn-default' {{ aSurveyInfo.attr.loadrowcolbutton }} >
                                 {{ "Load now" | t }}
                             </button>
                         </div>

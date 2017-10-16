@@ -29,15 +29,15 @@
     {% set aLCD  = aSurveyInfo.alanguageChanger.datas %}
 
     <!-- Language Changer, top menu version -->
-    <li class="{{ aSurveyInfo.class.lctli }}" {{ aSurveyInfo.attr.lctli }} >
-        <a class="{{ aSurveyInfo.class.lctla }}" {{ aSurveyInfo.attr.lctla }} >
+    <li class="{{ aSurveyInfo.class.lctli }} dropdown" {{ aSurveyInfo.attr.lctli }} >
+        <a class="{{ aSurveyInfo.class.lctla }} dropdown-toggle" {{ aSurveyInfo.attr.lctla }} >
 
             {# NOTE:  {{ aLCD.aListLang[aLCD.sSelected] | t }}: retreives the language name of the selected language and translates it #}
             {{ "Language:" | t }} {{ aLCD.aListLang[aLCD.sSelected] | t }}
-            <span class="{{ aSurveyInfo.class.lctspan }}" {{ aSurveyInfo.attr.lctspan }} ></span>
+            <span class="{{ aSurveyInfo.class.lctspan }} caret" {{ aSurveyInfo.attr.lctspan }} ></span>
         </a>
 
-        <ul class="{{ aSurveyInfo.class.lctdropdown }} language_change_container" id="{{ aSurveyInfo.id.lctdropdown }}" {{ aSurveyInfo.attr.lctdropdown }} >
+        <ul class="{{ aSurveyInfo.class.lctdropdown }} dropdown-menu" id="{{ aSurveyInfo.id.lctdropdown }}" {{ aSurveyInfo.attr.lctdropdown }} >
             {# List of available languages.  #}
             {% for value, lang in aLCD.aListLang %}
                 <li class="{{ aSurveyInfo.class.lctdropdownli }}" {{ aSurveyInfo.attr.lctdropdownli }}>

@@ -20,7 +20,7 @@
 
 {% set aAssessments = aSurveyInfo.aAssessments.datas %}
 <!-- Assessments -->
-<table class="{{ aSurveyInfo.class.assessmenttable }}" {{ aSurveyInfo.attr.assessmenttable }}>
+<table class="{{ aSurveyInfo.class.assessmenttable }} table" {{ aSurveyInfo.attr.assessmenttable }}>
 
     <!-- Heading -->
     <tr>
@@ -38,7 +38,7 @@
                         {% if key in aAssessments.group | keys %}
                             {% for assessed in aAssessments.group[key] %}
                                 {% if ( val >= assessed.min and val <= assessed.max ) %}
-                                <table class='{{ aSurveyInfo.class.assessmentstable }}' {{ aSurveyInfo.attr.assessmentstable }}>
+                                <table class='{{ aSurveyInfo.class.assessmentstable }} table' {{ aSurveyInfo.attr.assessmentstable }}>
                                     <tr {{ aSurveyInfo.attr.assessmentstabletr }} >
                                         <th {{ aSurveyInfo.attr.assessmentstableth }} >
                                             {{ str_replace( [ "{PERC}", "{TOTAL}" ], [ val, aAssessments.total_score ], assessed.name)  }}
@@ -64,7 +64,7 @@
             {% if aAssessments.total.show %}
                 {% for assessed in aAssessments.total %}
                     {% if ( aAssessments.total_score  >= assessed.min and aAssessments.total_score <= assessed.max ) %}
-                        <table class='{{ aSurveyInfo.class.assessmentstablet }}' {{ aSurveyInfo.attr.assessmentstablet }} >
+                        <table class='{{ aSurveyInfo.class.assessmentstablet }} table' {{ aSurveyInfo.attr.assessmentstablet }} >
                             <tr {{ aSurveyInfo.attr.assessmentstablettr }}>
                                 <th {{ aSurveyInfo.attr.assessmentstabletth }}>
                                     {# Beleive it or not, val is defined in previous loop... -_- #}

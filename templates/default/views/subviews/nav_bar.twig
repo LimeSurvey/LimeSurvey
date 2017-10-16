@@ -19,8 +19,8 @@
 
 <!-- Bootstrap Navigation Bar -->
 {% if(aSurveyInfo.class.navbar) %}
-<div class="{{ aSurveyInfo.class.navbar }}  {{ aSurveyInfo.attr.navbar }}">
-    <div class="{{ aSurveyInfo.class.navbarheader }}  {{ aSurveyInfo.attr.navbarheader }} ">
+<div class="{{ aSurveyInfo.class.navbar }} navbar-fixed-top" {{ aSurveyInfo.attr.navbar }}>
+    <div class="{{ aSurveyInfo.class.navbarheader }}  " {{ aSurveyInfo.attr.navbarheader }} >
         <button type="button" class="{{ aSurveyInfo.class.navbartoggle }}" {{ aSurveyInfo.attr.navbartoggle }}  >
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
@@ -40,7 +40,7 @@
         {% endif %}
     </div>
     <div id="{{ aSurveyInfo.id.navbar }}" class="{{ aSurveyInfo.class.navbarcollapse }}" {{ aSurveyInfo.attr.navbarcollapse }} >
-        <ul class="{{ aSurveyInfo.class.navbarlink }}" {{ aSurveyInfo.attr.navbarlink }}>
+        <ul class="{{ aSurveyInfo.class.navbarlink }} navbar-right" {{ aSurveyInfo.attr.navbarlink }}>
             {{ include('./subviews/navigation/save_links.twig') }}
             {{ include('./subviews/navigation/clearall_links.twig') }}
             {{ include('./subviews/navigation/question_index_menu.twig') }}

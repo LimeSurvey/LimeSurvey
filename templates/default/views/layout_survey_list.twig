@@ -25,7 +25,7 @@
 {% block content %}
     {{  registerTemplateCssFile('./css/survey-list.css') }}
 
-    <div class="{{ aSurveyInfo.class.surveylistrow }}" id="{{ aSurveyInfo.id.surveylistrow }}" {{ aSurveyInfo.attr.surveylistrow }}>
+    <div class="{{ aSurveyInfo.class.surveylistrow }} row" id="{{ aSurveyInfo.id.surveylistrow }}" {{ aSurveyInfo.attr.surveylistrow }}>
 
         {# include the alert for no JavaScript #}
         {{ include('./subviews/no_js_alert.twig') }}
@@ -35,23 +35,23 @@
             {{ aSurveyInfo.sSiteName }}
         </div>
 
-        <div class="{{ aSurveyInfo.class.surveylistrowdiva }}" {{ aSurveyInfo.attr.surveylistrowdiva }}>
-            <div class='{{ aSurveyInfo.class.surveylistrowdivadiv }} ' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
+        <div class="{{ aSurveyInfo.class.surveylistrowdiva }} col-xs-12" {{ aSurveyInfo.attr.surveylistrowdiva }}>
+            <div class='{{ aSurveyInfo.class.surveylistrowdivadiv }} h3' {{ aSurveyInfo.attr.surveylistrowdivadiv }}>
                 {{ "The following surveys are available:" | t }}
             </div>
         </div>
 
-        <div class="{{ aSurveyInfo.class.surveylistrowdivb }}" {{ aSurveyInfo.attr.surveylistrowdivb }}>
+        <div class="{{ aSurveyInfo.class.surveylistrowdivb }} col-xs-12" {{ aSurveyInfo.attr.surveylistrowdivb }}>
             <div class='{{ aSurveyInfo.class.surveylistrowdivbdiv }}' {{ aSurveyInfo.attr.surveylistrowdivbdiv }}>
-                <ul class='{{ aSurveyInfo.class.surveylistrowdivbdivul }}' {{ aSurveyInfo.attr.surveylistrowdivbdivul }}>
+                <ul class='{{ aSurveyInfo.class.surveylistrowdivbdivul }} list-unstyled ' {{ aSurveyInfo.attr.surveylistrowdivbdivul }}>
 
                     {% for key, oSurvey in aSurveyInfo.publicSurveys %}
-                        <li class="{{ aSurveyInfo.class.surveylistrowdivbdivulli }}" {{ aSurveyInfo.attr.surveylistrowdivbdivulli }}>
+                        <li class="{{ aSurveyInfo.class.surveylistrowdivbdivulli }} btn-group btn-block" {{ aSurveyInfo.attr.surveylistrowdivbdivulli }}>
                             <a
                                 href="{{ oSurvey.sSurveyUrl }}"
                                 title="{{ "Start survey" | t }}"
                                 lang="{{ oSurvey.language }}"
-                                class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }} {% if (oSurvey.publicstatistics == "Y") %} col-xs-10 col-md-11 {% else %} col-xs-12 {% endif %}"  >
+                                class="{{ aSurveyInfo.class.surveylistrowdivbdivullia }} btn btn-primary {% if (oSurvey.publicstatistics == "Y") %} col-xs-10 col-md-11 {% else %} col-xs-12 {% endif %}"  >
                                 {{ oSurvey.localizedTitle }}
                             </a>
                         </li>
@@ -59,14 +59,14 @@
                 </ul>
             </div>
         </div>
-        <div class="{{ aSurveyInfo.class.surveylistrowdivc }}" {{ aSurveyInfo.attr.surveylistrowdivc }}>
+        <div class="{{ aSurveyInfo.class.surveylistrowdivc }} col-xs-12 " {{ aSurveyInfo.attr.surveylistrowdivc }}>
              {{ sprintf( gT("Please contact %s ( %s ) for further assistance."), aSurveyInfo.sSiteAdminName, aSurveyInfo.sSiteAdminEmail ) }}
         </div>
 
     </div>
 
     <div id="{{ aSurveyInfo.id.surveylistfooter }}" class="{{ aSurveyInfo.class.surveylistfooter }}" {{ aSurveyInfo.attr.surveylistfooter }}>
-        <div class="{{ aSurveyInfo.class.surveylistfootercont }}" {{ aSurveyInfo.attr.surveylistfootercont }}>
+        <div class="{{ aSurveyInfo.class.surveylistfootercont }} container" {{ aSurveyInfo.attr.surveylistfootercont }}>
             <p {{ aSurveyInfo.attr.surveylistfootercontp }}>
                 <a {{ aSurveyInfo.attr.surveylistfootercontpaa }} >
                     {{ image("poweredby.png", "LimeSurvey Survey Software") }}

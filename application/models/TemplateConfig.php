@@ -286,10 +286,10 @@ class TemplateConfig extends CActiveRecord
         // Welcome
         $aClassAndAttributes['id']['welcomecontainer']     =  'welcome-container ';
         $aClassAndAttributes['class']['welcomecontainer']  = '';
-        $aClassAndAttributes['class']['surveyname']        = " survey-name text-center ";
-        $aClassAndAttributes['class']['description']       = " text-info text-center survey-description ";
-        $aClassAndAttributes['class']['welcome']           = " survey-welcome h4 text-primary ";
-        $aClassAndAttributes['class']['questioncount']     = " number-of-questions text-muted ";
+        $aClassAndAttributes['class']['surveyname']        = " survey-name ";
+        $aClassAndAttributes['class']['description']       = " survey-description ";
+        $aClassAndAttributes['class']['welcome']           = " survey-welcome ";
+        $aClassAndAttributes['class']['questioncount']     = " number-of-questions  ";
         $aClassAndAttributes['class']['questioncounttext'] = " question-count-text ";
 
         $aClassAndAttributes['attr']['questioncounttext'] = '';
@@ -300,45 +300,45 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['id']['maincol']       = 'main-col' ;
         $aClassAndAttributes['id']['dynamicreload'] = 'dynamicReloadContainer' ;
 
-        $aClassAndAttributes['class']['html']  = 'no-js';
-        $aClassAndAttributes['class']['body']  = ''.$this->sTemplateName;
-        $aClassAndAttributes['class']['outerframe'] = ' outerframe container ' ;
-        $aClassAndAttributes['class']['maincol'] = ' col-centered ' ;
+        $aClassAndAttributes['class']['html']  = ' no-js ';
+        $aClassAndAttributes['class']['body']  = $this->sTemplateName;
+        $aClassAndAttributes['class']['outerframe'] = ' outerframe ' ;
+        $aClassAndAttributes['class']['maincol'] = ' ' ;
         $aClassAndAttributes['attr']['html']   = $thissurvey['attr']['body'] = $aClassAndAttributes['id']['outerframe'] = $thissurvey['attr']['mainrow'] = $thissurvey['attr']['maincol']  = '';
 
         // User forms
-        $aClassAndAttributes['class']['maincoldivdiva']               = ' h3 ';
-        $aClassAndAttributes['class']['maincoldivdivb']               = ' well container-fluid ';
-        $aClassAndAttributes['class']['maincoldivdivbp']              = ' text-info ';
-        $aClassAndAttributes['class']['maincoldivdivbul']             = ' alert alert-danger list-unstyled ';
+        $aClassAndAttributes['class']['maincoldivdiva']               = '  ';
+        $aClassAndAttributes['class']['maincoldivdivb']               = '  ';
+        $aClassAndAttributes['class']['maincoldivdivbp']              = '  ';
+        $aClassAndAttributes['class']['maincoldivdivbul']             = '  ';
         $aClassAndAttributes['class']['maincoldivdivbdiv']            = ' ';
-        $aClassAndAttributes['class']['maincolform']                  = ' form-group ';
-        $aClassAndAttributes['class']['maincolformlabel']             = ' control-label col-sm-3 ';
-        $aClassAndAttributes['class']['maincolformlabelsmall']        = ' text-danger asterisk fa fa-asterisk small superset ';
-        $aClassAndAttributes['class']['maincolformlabelspan']         = ' sr-only text-danger asterisk ';
-        $aClassAndAttributes['class']['maincolformdiva']              = ' col-sm-7 load-survey-input input-cell ';
-        $aClassAndAttributes['class']['maincolformdivainput']         = ' form-control ';
-        $aClassAndAttributes['class']['maincolformdivb']              = ' form-group captcha-item ';
-        $aClassAndAttributes['class']['maincolformdivblabel']         = ' control-label col-sm-3 ';
-        $aClassAndAttributes['class']['maincolformdivblabelsmall']    = ' text-danger asterisk fa fa-asterisk pull-left small ';
-        $aClassAndAttributes['class']['maincolformdivblabelspan']     = ' sr-only text-danger asterisk ';
-        $aClassAndAttributes['class']['maincolformdivbdiv']           = ' col-sm-7 ';
+        $aClassAndAttributes['class']['maincolform']                  = '  ';
+        $aClassAndAttributes['class']['maincolformlabel']             = '  ';
+        $aClassAndAttributes['class']['maincolformlabelsmall']        = ' superset ';
+        $aClassAndAttributes['class']['maincolformlabelspan']         = ' ';
+        $aClassAndAttributes['class']['maincolformdiva']              = '  load-survey-input input-cell ';
+        $aClassAndAttributes['class']['maincolformdivainput']         = '  ';
+        $aClassAndAttributes['class']['maincolformdivb']              = ' captcha-item ';
+        $aClassAndAttributes['class']['maincolformdivblabel']         = '  ';
+        $aClassAndAttributes['class']['maincolformdivblabelsmall']    = '  ';
+        $aClassAndAttributes['class']['maincolformdivblabelspan']     = '  ';
+        $aClassAndAttributes['class']['maincolformdivbdiv']           = '  ';
         $aClassAndAttributes['class']['maincolformdivbdivdiv']        = ' ls-input-group ';
         $aClassAndAttributes['class']['maincolformdivbdivdivdiv']     = ' ls-input-group-extra captcha-widget ';
-        $aClassAndAttributes['class']['maincolformdivbdivdivinput']   = ' form-control ';
-        $aClassAndAttributes['class']['maincolformdivc']              = ' form-group load-survey-row load-survey-submit ';
-        $aClassAndAttributes['class']['maincolformdivcdiv']           = ' col-sm-7 col-md-offset-3 load-survey-input input-cell ';
-        $aClassAndAttributes['class']['maincolformdivcdivbutton']     = ' btn btn-default ';
-        $aClassAndAttributes['class']['maincolformdivd']              = ' form-group ';
-        $aClassAndAttributes['class']['maincolformdivddiv']           = ' form-group captcha-item ';
-        $aClassAndAttributes['class']['maincolformdivddivlabel']      = ' control-label col-sm-3 ';
-        $aClassAndAttributes['class']['maincolformdivddivcol']        = ' col-sm-7 ';
+        $aClassAndAttributes['class']['maincolformdivbdivdivinput']   = '  ';
+        $aClassAndAttributes['class']['maincolformdivc']              = ' load-survey-row load-survey-submit ';
+        $aClassAndAttributes['class']['maincolformdivcdiv']           = ' load-survey-input input-cell ';
+        $aClassAndAttributes['class']['maincolformdivcdivbutton']     = '  ';
+        $aClassAndAttributes['class']['maincolformdivd']              = '  ';
+        $aClassAndAttributes['class']['maincolformdivddiv']           = '  captcha-item ';
+        $aClassAndAttributes['class']['maincolformdivddivlabel']      = '  ';
+        $aClassAndAttributes['class']['maincolformdivddivcol']        = '  ';
         $aClassAndAttributes['class']['maincolformdivddivcoldiv']     = ' ls-input-group ';
         $aClassAndAttributes['class']['maincolformdivddivcoldivdiv']  = ' ls-input-group-extra captcha-widget ';
-        $aClassAndAttributes['class']['maincolformdivddivcolinput']   = ' form-control ';
-        $aClassAndAttributes['class']['maincolformdivddivb']          = ' form-group load-survey-row load-survey-submit ';
-        $aClassAndAttributes['class']['maincolformdivddivbdiv']       = ' col-sm-7 col-md-offset-3 load-survey-input input-cell ';
-        $aClassAndAttributes['class']['maincolformdivddivbdivbutton'] = ' btn btn-default ';
+        $aClassAndAttributes['class']['maincolformdivddivcolinput']   = '  ';
+        $aClassAndAttributes['class']['maincolformdivddivb']          = ' load-survey-row load-survey-submit ';
+        $aClassAndAttributes['class']['maincolformdivddivbdiv']       = ' load-survey-input input-cell ';
+        $aClassAndAttributes['class']['maincolformdivddivbdivbutton'] = '  ';
 
 
         $aClassAndAttributes['attr']['maincolformdivainput']          = ' type="password" id="token" name="token" value="" required ';
@@ -368,32 +368,32 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['id']['saveformrowcolinput']    = 'loadname';
         $aClassAndAttributes['id']['captcharowcoldivinput']  = 'loadsecurity';
 
-        $aClassAndAttributes['class']['savemessage']           = '  well clearfix save-message ';
-        $aClassAndAttributes['class']['savemessagetitle']      = '  h2 ';
-        $aClassAndAttributes['class']['savemessagetext']       = ' text-info ';
+        $aClassAndAttributes['class']['savemessage']           = ' save-message ';
+        $aClassAndAttributes['class']['savemessagetitle']      = '  ';
+        $aClassAndAttributes['class']['savemessagetext']       = '  ';
         $aClassAndAttributes['class']['loadform']              = ' load-form ';
-        $aClassAndAttributes['class']['loadformul']            = ' alert alert-danger list-unstyled ';
+        $aClassAndAttributes['class']['loadformul']            = ' ';
         $aClassAndAttributes['class']['loadformform']          = ' ls-form form form-horizontal ';
         $aClassAndAttributes['class']['saveform']              = ' save-survey-form ';
         $aClassAndAttributes['class']['saveformrow']           = ' row form-group save-survey-row save-survey-name ';
-        $aClassAndAttributes['class']['saveformrowlabel']      = ' control-label col-sm-3 load-survey-label ';
-        $aClassAndAttributes['class']['saveformrowlabelsmall'] = ' text-danger asterisk fa fa-asterisk pull-left small ';
-        $aClassAndAttributes['class']['saveformrowlabelspan']  = ' sr-only text-danger asterisk ';
-        $aClassAndAttributes['class']['saveformrowcol']        = ' col-sm-7 save-survey-input input-cell ';
-        $aClassAndAttributes['class']['saveformrowcolinput']   = ' form-control ';
-        $aClassAndAttributes['class']['passwordrow']           = ' row form-group load-survey-row load-survey-password ';
-        $aClassAndAttributes['class']['passwordrowcol']        = ' control-label col-sm-3 load-survey-label label-cell ';
-        $aClassAndAttributes['class']['passwordrowcolsmall']   = ' text-danger asterisk fa fa-asterisk pull-left small ';
-        $aClassAndAttributes['class']['passwordrowcolspan']    = ' sr-only text-danger asterisk ';
-        $aClassAndAttributes['class']['captcharow']            = ' row form-group save-survey-row save-survey-captcha ';
-        $aClassAndAttributes['class']['captcharowlabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
-        $aClassAndAttributes['class']['captcharowcol']         = ' col-sm-7 save-survey-input input-cell ';
-        $aClassAndAttributes['class']['captcharowcoldiv']      = '  input-group ';
+        $aClassAndAttributes['class']['saveformrowlabel']      = ' load-survey-label ';
+        $aClassAndAttributes['class']['saveformrowlabelsmall'] = '  ';
+        $aClassAndAttributes['class']['saveformrowlabelspan']  = '  ';
+        $aClassAndAttributes['class']['saveformrowcol']        = '  save-survey-input  ';
+        $aClassAndAttributes['class']['saveformrowcolinput']   = '  ';
+        $aClassAndAttributes['class']['passwordrow']           = ' load-survey-row load-survey-password ';
+        $aClassAndAttributes['class']['passwordrowcol']        = ' load-survey-label label-cell ';
+        $aClassAndAttributes['class']['passwordrowcolsmall']   = '  ';
+        $aClassAndAttributes['class']['passwordrowcolspan']    = '  ';
+        $aClassAndAttributes['class']['captcharow']            = ' save-survey-row save-survey-captcha ';
+        $aClassAndAttributes['class']['captcharowlabel']       = ' save-survey-label label-cell ';
+        $aClassAndAttributes['class']['captcharowcol']         = ' save-survey-input input-cell ';
+        $aClassAndAttributes['class']['captcharowcoldiv']      = ' input-group ';
         $aClassAndAttributes['class']['captcharowcoldivdiv']   = ' input-group-addon captcha-image ';
-        $aClassAndAttributes['class']['captcharowcoldivinput'] = ' form-control ';
-        $aClassAndAttributes['class']['loadrow']               = ' row form-group save-survey-row save-survey-submit ';
-        $aClassAndAttributes['class']['loadrowcol']            = ' col-sm-7 col-md-offset-3 save-survey-input input-cell ';
-        $aClassAndAttributes['class']['loadrowcolbutton']      = ' btn btn-default ';
+        $aClassAndAttributes['class']['captcharowcoldivinput'] = '  ';
+        $aClassAndAttributes['class']['loadrow']               = ' save-survey-row save-survey-submit ';
+        $aClassAndAttributes['class']['loadrowcol']            = ' save-survey-input input-cell ';
+        $aClassAndAttributes['class']['loadrowcolbutton']      = '  ';
         $aClassAndAttributes['class']['returntosurvey']        = ' return-to-survey ';
         $aClassAndAttributes['class']['returntosurveydiv']     = ' url-wrapper url-wrapper-survey-return ';
         $aClassAndAttributes['class']['returntosurveydiva']    = ' ls-return ';
@@ -416,41 +416,41 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['loadrowcol'] = $aClassAndAttributes['class']['returntosurvey'] = $aClassAndAttributes['attr']['returntosurveydiv'] = $aClassAndAttributes['class']['returntosurveydiva']  = '';
 
         // Save
-        $aClassAndAttributes['class']['savecontainer']                 = ' well clearfix save-message ';
-        $aClassAndAttributes['class']['savecontainertitle']            = ' h2 ';
-        $aClassAndAttributes['class']['savecontainertext']             = ' text-info ';
+        $aClassAndAttributes['class']['savecontainer']                 = ' save-message ';
+        $aClassAndAttributes['class']['savecontainertitle']            = '  ';
+        $aClassAndAttributes['class']['savecontainertext']             = '  ';
         $aClassAndAttributes['class']['savecontainertextpc']           = ' info-email-optional ls-info ';
-        $aClassAndAttributes['class']['savecontainerwarning']          = ' text-warning ';
+        $aClassAndAttributes['class']['savecontainerwarning']          = '  ';
         $aClassAndAttributes['class']['saveformcontainer']             = ' save-form ';
-        $aClassAndAttributes['class']['saveformcontainerul']           = ' alert alert-danger list-unstyled ';
-        $aClassAndAttributes['class']['saveformsurvey']                = ' save-survey-form form-horizontal ';
-        $aClassAndAttributes['class']['saveformsurveydiva']            = ' form-group save-survey-row save-survey-name ';
-        $aClassAndAttributes['class']['saveformsurveydivalabel']       = ' control-label col-sm-3 save-survey-label ';
-        $aClassAndAttributes['class']['saveformsurveydivalabelsmall']  = ' text-danger asterisk fa fa-asterisk pull-left small ';
-        $aClassAndAttributes['class']['saveformsurveydivalabelspan']   = ' sr-only text-danger asterisk ';
-        $aClassAndAttributes['class']['saveformsurveydivb']            = ' col-sm-7 save-survey-input input-cell ';
-        $aClassAndAttributes['class']['saveformsurveydivc']            = ' form-group save-survey-row save-survey-password ';
-        $aClassAndAttributes['class']['saveformsurveydivclabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
-        $aClassAndAttributes['class']['saveformsurveydivcsmall']       = ' text-danger asterisk fa fa-asterisk pull-left small ';
-        $aClassAndAttributes['class']['saveformsurveydivcspan']        = ' sr-only text-danger asterisk ';
-        $aClassAndAttributes['class']['saveformsurveydivcdiv']         = ' col-sm-7 save-survey-input input-cell ';
-        $aClassAndAttributes['class']['saveformsurveydivd']            = ' form-group save-survey-row save-survey-password ';
-        $aClassAndAttributes['class']['saveformsurveydivdlabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
-        $aClassAndAttributes['class']['saveformsurveydivdlabelsmall']  = ' text-danger asterisk fa fa-asterisk pull-left small ';
-        $aClassAndAttributes['class']['saveformsurveydivdlabelspan']   = ' sr-only text-danger asterisk ';
-        $aClassAndAttributes['class']['saveformsurveydivddiv']         = ' col-sm-7 save-survey-input input-cell ';
-        $aClassAndAttributes['class']['saveformsurveydive']            = ' form-group save-survey-row save-survey-password ';
-        $aClassAndAttributes['class']['saveformsurveydivelabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
-        $aClassAndAttributes['class']['saveformsurveydivediv']         = ' col-sm-7 save-survey-input input-cell ';
-        $aClassAndAttributes['class']['saveformsurveydivf']            = ' form-group save-survey-row save-survey-captcha ';
-        $aClassAndAttributes['class']['saveformsurveydivflabel']       = ' control-label col-sm-3 save-survey-label label-cell ';
-        $aClassAndAttributes['class']['saveformsurveydivfdiv']         = ' col-sm-7 save-survey-input input-cell ';
-        $aClassAndAttributes['class']['saveformsurveydivfdivdiv']      = ' input-group ';
+        $aClassAndAttributes['class']['saveformcontainerul']           = ' ';
+        $aClassAndAttributes['class']['saveformsurvey']                = ' save-survey-form  ';
+        $aClassAndAttributes['class']['saveformsurveydiva']            = ' save-survey-row save-survey-name ';
+        $aClassAndAttributes['class']['saveformsurveydivalabel']       = '  save-survey-label ';
+        $aClassAndAttributes['class']['saveformsurveydivalabelsmall']  = ' ';
+        $aClassAndAttributes['class']['saveformsurveydivalabelspan']   = '  ';
+        $aClassAndAttributes['class']['saveformsurveydivb']            = ' save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivc']            = '  save-survey-row save-survey-password ';
+        $aClassAndAttributes['class']['saveformsurveydivclabel']       = ' save-survey-label label-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivcsmall']       = '  ';
+        $aClassAndAttributes['class']['saveformsurveydivcspan']        = '  ';
+        $aClassAndAttributes['class']['saveformsurveydivcdiv']         = ' save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivd']            = ' save-survey-row save-survey-password ';
+        $aClassAndAttributes['class']['saveformsurveydivdlabel']       = ' save-survey-label label-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivdlabelsmall']  = ' ';
+        $aClassAndAttributes['class']['saveformsurveydivdlabelspan']   = '  ';
+        $aClassAndAttributes['class']['saveformsurveydivddiv']         = ' save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydive']            = ' save-survey-row save-survey-password ';
+        $aClassAndAttributes['class']['saveformsurveydivelabel']       = ' save-survey-label label-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivediv']         = ' save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivf']            = ' save-survey-row save-survey-captcha ';
+        $aClassAndAttributes['class']['saveformsurveydivflabel']       = ' save-survey-label label-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivfdiv']         = ' save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivfdivdiv']      = '  ';
         $aClassAndAttributes['class']['saveformsurveydivfdivdivdiv']   = ' input-group-addon captcha-image ';
-        $aClassAndAttributes['class']['saveformsurveydivfdivdivinput'] = ' form-control ';
-        $aClassAndAttributes['class']['saveformsurveydivg']            = ' form-group save-survey-row save-survey-submit ';
-        $aClassAndAttributes['class']['saveformsurveydivgdiv']         = ' col-sm-7 col-md-offset-3 save-survey-input input-cell ';
-        $aClassAndAttributes['class']['saveformsurveydivgdivbutton']   = ' btn btn-default ';
+        $aClassAndAttributes['class']['saveformsurveydivfdivdivinput'] = ' ';
+        $aClassAndAttributes['class']['saveformsurveydivg']            = '  save-survey-row save-survey-submit ';
+        $aClassAndAttributes['class']['saveformsurveydivgdiv']         = ' save-survey-input input-cell ';
+        $aClassAndAttributes['class']['saveformsurveydivgdivbutton']   = '  ';
         $aClassAndAttributes['class']['saveformsurveydivh']            = ' return-to-survey ';
         $aClassAndAttributes['class']['saveformsurveydivhdiv']         = ' url-wrapper url-wrapper-survey-return ';
         $aClassAndAttributes['class']['saveformsurveydivhdiva']        = ' ls-return ';
@@ -467,7 +467,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['saveformsurveydivelabel']        = ' for="saveemail" ';
         $aClassAndAttributes['attr']['saveformsurveydivflabel']        = ' for="loadsecurity" ';
         $aClassAndAttributes['attr']['saveformsurveydivfdivdivdivimg'] = ' alt="captcha" ';
-        $aClassAndAttributes['attr']['saveformsurveydivfdivdivinput']  = '  type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
+        $aClassAndAttributes['attr']['saveformsurveydivfdivdivinput']  = ' type="text" size="5" maxlength="3" id="loadsecurity" name="loadsecurity" value="" alt="" ';
         $aClassAndAttributes['attr']['saveformsurveydivgdivbutton']    = ' type="submit" id="savebutton" name="savesubmit" value="save"';
 
 
@@ -483,11 +483,11 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['completedwrapper']     = ' completed-wrapper ';
         $aClassAndAttributes['class']['completedtext']        = ' completed-text ';
         $aClassAndAttributes['class']['quotamessage']         = ' quotamessage limesurveycore ';
-        $aClassAndAttributes['class']['navigator']            = ' navigator row ';
-        $aClassAndAttributes['class']['navigatorcoll']        = ' col-xs-6 text-left ';
-        $aClassAndAttributes['class']['navigatorcollbutton']  = ' ls-move-btn ls-move-previous-btn btn btn-lg btn-default ';
-        $aClassAndAttributes['class']['navigatorcolr']        = ' col-xs-6 text-right ';
-        $aClassAndAttributes['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn btn btn-lg btn-primary ';
+        $aClassAndAttributes['class']['navigator']            = ' navigator ';
+        $aClassAndAttributes['class']['navigatorcoll']        = '  ';
+        $aClassAndAttributes['class']['navigatorcollbutton']  = ' ls-move-btn ls-move-previous-btn ';
+        $aClassAndAttributes['class']['navigatorcolr']        = '  ';
+        $aClassAndAttributes['class']['navigatorcolrbutton']  = ' ls-move-btn ls-move-submit-btn ';
         $aClassAndAttributes['class']['completedquotaurl']    = ' url-wrapper url-wrapper-survey-quotaurl ';
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
         $aClassAndAttributes['class']['completedquotaurla']   = ' ls-endurl ls-quotaurl ';
@@ -500,29 +500,31 @@ class TemplateConfig extends CActiveRecord
 
 
         // Register
-        $aClassAndAttributes['class']['register']                 = ' container ';
-        $aClassAndAttributes['class']['registerrow']              = ' row ';
-        $aClassAndAttributes['class']['registerrowjumbotrondiv']  = ' container clearfix ';
-        $aClassAndAttributes['class']['registerform']             = ' register-form row ';
-        $aClassAndAttributes['class']['registerul']               = ' alert alert-danger list-unstyled ';
-        $aClassAndAttributes['class']['registerformcol']          = ' col-md-8 col-md-offset-2 ';
-        $aClassAndAttributes['class']['registerformcolrow']       = ' form-group row ';
-        $aClassAndAttributes['class']['registerformcolrowb']      = ' form-group row ';
-        $aClassAndAttributes['class']['registerformcolrowc']      = ' form-group row ';
-        $aClassAndAttributes['class']['registerformextras']       = ' form-group row ';
-        $aClassAndAttributes['class']['registerformcaptcha']      = ' form-group row captcha-item ';
-        $aClassAndAttributes['class']['registerformcolrowblabel'] = ' control-label ';
-        $aClassAndAttributes['class']['registerformcolrowclabel'] = ' control-label ';
-        $aClassAndAttributes['class']['registerformextraslabel']  = ' control-label ';
-        $aClassAndAttributes['class']['registerformcaptchalabel'] = ' control-label ';
-        $aClassAndAttributes['class']['registerformcaptchadivb']  = ' input-group ';
-        $aClassAndAttributes['class']['registerformcaptchadivc']  = ' control-label captcha-widget ';
-        $aClassAndAttributes['class']['registerformcaptchainput'] = ' form-control ';
-        $aClassAndAttributes['class']['registermandatoryinfo']    = ' row ';
-        $aClassAndAttributes['class']['registersave']             = ' form-group row';
-        $aClassAndAttributes['class']['registersavediv']          = ' col-md-offset-7 ';
-        $aClassAndAttributes['class']['registersavedivbutton']    = ' btn btn-default ';
-        $aClassAndAttributes['class']['registerhead']             = ' row h2 ';
+        $aClassAndAttributes['class']['register']                 = '  ';
+        $aClassAndAttributes['class']['registerrow']              = '  ';
+        $aClassAndAttributes['class']['registerrowjumbotrondiv']  = ' ';
+
+        $aClassAndAttributes['class']['registerform']             = ' register-form  ';
+        $aClassAndAttributes['class']['registerul']               = '  ';
+        $aClassAndAttributes['class']['registerformcolrowlabel']  = ' ';
+        $aClassAndAttributes['class']['registerformcol']          = '  ';
+        $aClassAndAttributes['class']['registerformcolrow']       = ' ';
+        $aClassAndAttributes['class']['registerformcolrowb']      = '  ';
+        $aClassAndAttributes['class']['registerformcolrowc']      = '  ';
+        $aClassAndAttributes['class']['registerformextras']       = '  ';
+        $aClassAndAttributes['class']['registerformcaptcha']      = ' captcha-item ';
+        $aClassAndAttributes['class']['registerformcolrowblabel'] = ' ';
+        $aClassAndAttributes['class']['registerformcolrowclabel'] = ' ';
+        $aClassAndAttributes['class']['registerformextraslabel']  = '  ';
+        $aClassAndAttributes['class']['registerformcaptchalabel'] = '  ';
+        $aClassAndAttributes['class']['registerformcaptchadivb']  = '  ';
+        $aClassAndAttributes['class']['registerformcaptchadivc']  = '  captcha-widget ';
+        $aClassAndAttributes['class']['registerformcaptchainput'] = '  ';
+        $aClassAndAttributes['class']['registermandatoryinfo']    = '  ';
+        $aClassAndAttributes['class']['registersave']             = ' ';
+        $aClassAndAttributes['class']['registersavediv']          = '  ';
+        $aClassAndAttributes['class']['registersavedivbutton']    = '  ';
+        $aClassAndAttributes['class']['registerhead']             = '  ';
 
 
 
@@ -541,49 +543,48 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['registersavediv'] = $aClassAndAttributes['attr']['registerhead'] = $aClassAndAttributes['attr']['registermessagea'] = $aClassAndAttributes['attr']['registermessageb'] = $aClassAndAttributes['attr']['registermessagec'] = '';
 
         // Warnings
-        $aClassAndAttributes['class']['activealert']       = ' alert alert-warning alert-dismissible fade in alert-dismissible ';
-        $aClassAndAttributes['class']['errorHtml']         = ' fade in alert-dismissible ls-questions-have-errors alert alert-danger ';
-        $aClassAndAttributes['class']['activealertbutton'] = ' close ';
-        $aClassAndAttributes['class']['errorHtmlbutton']   = ' close ';
+        $aClassAndAttributes['class']['activealert']       = '  ';
+        $aClassAndAttributes['class']['errorHtml']         = ' ls-questions-have-errors ';
+        $aClassAndAttributes['class']['activealertbutton'] = '  ';
+        $aClassAndAttributes['class']['errorHtmlbutton']   = ' ';
         $aClassAndAttributes['attr']['activealertbutton']  = ' type="button"  data-dismiss="alert" aria-label="Close" ';
         $aClassAndAttributes['attr']['errorHtmlbutton']    = ' type="button"  data-dismiss="alert" aria-label="Close" ';
 
         $aClassAndAttributes['attr']['activealert']  = 'role="alert"';
 
         // Required
-        $aClassAndAttributes['class']['required']     = ' text-danger asterisk fa fa-asterisk pull-left small ';
-        $aClassAndAttributes['class']['requiredspan'] = ' sr-only text-danger asterisk ';
+        $aClassAndAttributes['class']['required']     = '  ';
+        $aClassAndAttributes['class']['requiredspan'] = '  ';
         $aClassAndAttributes['attr']['required']      = ' aria-hidden="true" ';
         $aClassAndAttributes['class']['required']     = '';
 
         // Progress bar
         $aClassAndAttributes['class']['topcontainer'] = ' top-container ';
-        $aClassAndAttributes['class']['topcontent']   = ' container top-content ';
+        $aClassAndAttributes['class']['topcontent']   = ' top-content ';
         $aClassAndAttributes['class']['progress']     = ' progress ';
         $aClassAndAttributes['class']['progressbar']  = ' progress-bar ';
         $aClassAndAttributes['attr']['progressbar']   = $aClassAndAttributes['attr']['topcontainer'] = $aClassAndAttributes['class']['topcontent'] = $aClassAndAttributes['attr']['progressbar']  =  $aClassAndAttributes['attr']['progress']  = ' ';
 
         // No JS alert
-        $aClassAndAttributes['class']['nojs'] = ' alert alert-danger ls-js-hidden warningjs ';
-        $aClassAndAttributes['attr']['nojs']  = ' alert alert-danger ls-js-hidden warningjs ';
+        $aClassAndAttributes['class']['nojs'] = ' ls-js-hidden warningjs ';
+        $aClassAndAttributes['attr']['nojs']  = ' ';
 
         // NavBar
-        $aClassAndAttributes['id']['navbar']            = 'navbar';
-        $aClassAndAttributes['class']['navbar']         = ' navbar navbar-default navbar-fixed-top ';
+        $aClassAndAttributes['id']['navbar']            = ' navbar';
+        $aClassAndAttributes['class']['navbar']         = ' navbar navbar-default';
         $aClassAndAttributes['class']['navbarheader']   = ' navbar-header ';
         $aClassAndAttributes['class']['navbartoggle']   = ' navbar-toggle collapsed ';
         $aClassAndAttributes['class']['navbarbrand']    = ' navbar-brand ';
         $aClassAndAttributes['class']['navbarcollapse'] = ' collapse navbar-collapse ';
-        $aClassAndAttributes['class']['navbarlink']     = ' nav navbar-nav navbar-right navbar-action-link ';
+        $aClassAndAttributes['class']['navbarlink']     = ' nav navbar-nav  navbar-action-link ';
 
         $aClassAndAttributes['attr']['navbartoggle']    = ' data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" ';
         $aClassAndAttributes['attr']['navbar']  =  $aClassAndAttributes['attr']['navbarheader']  = $aClassAndAttributes['attr']['navbarbrand'] = $aClassAndAttributes['attr']['navbarcollapse']  = $aClassAndAttributes['attr']['navbarlink'] = '';
 
         // Language changer
-        $aClassAndAttributes['class']['languagechanger'] = '  form-inline form-change-lang  ';
-        $aClassAndAttributes['class']['formgroup']       = '  form-group ';
-        $aClassAndAttributes['class']['controllabel']    = '  control-label  ';
-        $aClassAndAttributes['class']['formcontrol']     = '  form-control  ';
+        $aClassAndAttributes['class']['languagechanger'] = '  form-change-lang  ';
+        $aClassAndAttributes['class']['formgroup']       = ' ';
+        $aClassAndAttributes['class']['controllabel']    = ' ';
         $aClassAndAttributes['class']['aLCDWithForm']    = '  btn btn-default ls-js-hidden ';
 
         $aClassAndAttributes['attr']['languagechanger']  =  $aClassAndAttributes['attr']['formgroup']  = $aClassAndAttributes['attr']['controllabel'] = '';
@@ -607,29 +608,29 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['alertmodal'] = $aClassAndAttributes['attr']['modaldialog'] = $aClassAndAttributes['attr']['modalcontent'] = $aClassAndAttributes['attr']['modaltitle'] = $aClassAndAttributes['attr']['modalbody'] = $aClassAndAttributes['attr']['modalfooter'] =  '';
 
         // Assessments
-        $aClassAndAttributes['class']['assessmenttable']      = ' assessment-table table ';
-        $aClassAndAttributes['class']['assessmentstable']     = ' assessments table ';
-        $aClassAndAttributes['class']['assessmentstablet']    = ' assessments table ';
+        $aClassAndAttributes['class']['assessmenttable']      = ' assessment-table ';
+        $aClassAndAttributes['class']['assessmentstable']     = ' assessments ';
+        $aClassAndAttributes['class']['assessmentstablet']    = ' assessments ';
         $aClassAndAttributes['class']['assessmentheading']    = ' assessment-heading ';
         $aClassAndAttributes['class']['assessmentscontainer'] = ' assessments-container ';
 
         $aClassAndAttributes['attr']['assessmentstablet'] = 'align="center"';
 
-        $aClassAndAttributes['attr']['assessmenttable'] = $aClassAndAttributes['attr']['assessmentstablettr'] = $aClassAndAttributes['attr']['assessmentstabletth'] = $aClassAndAttributes['attr']['assessmentstablettd'] = $aClassAndAttributes['attr']['assessmentstableth'] = $aClassAndAttributes['attr']['assessmentstabletd'] = $aClassAndAttributes['attr']['assessmentstabletd'] = $aClassAndAttributes['attr']['assessmentheading'] = $aClassAndAttributes['attr']['assessmentscontainer'] = $aClassAndAttributes['attr']['assessmentstable'] = '';
+        $aClassAndAttributes['attr']['assessmenttable'] = $aClassAndAttributes['attr']['assessmentstabletr'] = $aClassAndAttributes['attr']['assessmentstablettr'] = $aClassAndAttributes['attr']['assessmentstabletth'] = $aClassAndAttributes['attr']['assessmentstablettd'] = $aClassAndAttributes['attr']['assessmentstableth'] = $aClassAndAttributes['attr']['assessmentstabletd'] = $aClassAndAttributes['attr']['assessmentstabletd'] = $aClassAndAttributes['attr']['assessmentheading'] = $aClassAndAttributes['attr']['assessmentscontainer'] = $aClassAndAttributes['attr']['assessmentstable'] = '';
 
         // Questions
-        $aClassAndAttributes['class']['questioncontainer']       = ' question-container row ';
-        $aClassAndAttributes['class']['questiontitlecontainer']  = ' question-title-container bg-primary col-xs-12 ';
-        $aClassAndAttributes['class']['questionasterix']         = ' asterisk pull-left ';
-        $aClassAndAttributes['class']['questionasterixsmall']    = ' text-danger fa fa-asterisk small ';
-        $aClassAndAttributes['class']['questionasterixspan']     = ' sr-only text-danger ';
+        $aClassAndAttributes['class']['questioncontainer']       = ' question-container  ';
+        $aClassAndAttributes['class']['questiontitlecontainer']  = ' question-title-container ';
+        $aClassAndAttributes['class']['questionasterix']         = ' asterisk   ';
+        $aClassAndAttributes['class']['questionasterixsmall']    = '  ';
+        $aClassAndAttributes['class']['questionasterixspan']     = '  ';
         $aClassAndAttributes['class']['questionnumber']          = ' text-muted question-number ';
         $aClassAndAttributes['class']['questioncode']            = ' text-muted question-code ';
         $aClassAndAttributes['class']['questiontext']            = ' question-text ';
         $aClassAndAttributes['class']['lsquestiontext']          = ' ls-label-question ';
-        $aClassAndAttributes['class']['questionvalidcontainer']  = ' question-valid-container bg-primary text-info col-xs-12 ';
-        $aClassAndAttributes['class']['answercontainer']         = ' answer-container  col-xs-12 ';
-        $aClassAndAttributes['class']['helpcontainer']           = ' question-help-container text-info col-xs-12 ';
+        $aClassAndAttributes['class']['questionvalidcontainer']  = ' question-valid-container  ';
+        $aClassAndAttributes['class']['answercontainer']         = ' answer-container   ';
+        $aClassAndAttributes['class']['helpcontainer']           = ' question-help-container ';
         $aClassAndAttributes['class']['lsquestionhelp']          = ' ls-questionhelp ';
 
         $aClassAndAttributes['attr']['questionasterixsmall'] = ' aria-hidden="true" ';
@@ -639,15 +640,15 @@ class TemplateConfig extends CActiveRecord
 
         // Question group
         $aClassAndAttributes['class']['groupcontainer'] = ' group-container ';
-        $aClassAndAttributes['class']['grouptitle'] = ' group-title text-center h3 ';
-        $aClassAndAttributes['class']['groupdesc']      = ' group-description row well ';
+        $aClassAndAttributes['class']['grouptitle']     = ' group-title  ';
+        $aClassAndAttributes['class']['groupdesc']      = ' group-description ';
 
         $aClassAndAttributes['attr']['questiongroup']  = $aClassAndAttributes['attr']['groupcontainer'] = $aClassAndAttributes['attr']['groupcontainer'] = $aClassAndAttributes['attr']['groupdesc'] = '';
 
         // Privacy
-        $aClassAndAttributes['class']['privacycontainer'] = ' row privacy ';
-        $aClassAndAttributes['class']['privacycol']       = ' col-sm-12 col-centered ';
-        $aClassAndAttributes['class']['privacyhead']      = ' h4 text-primary ';
+        $aClassAndAttributes['class']['privacycontainer'] = ' privacy ';
+        $aClassAndAttributes['class']['privacycol']       = ' ';
+        $aClassAndAttributes['class']['privacyhead']      = ' ';
         $aClassAndAttributes['class']['privacybody']      = ' ls-privacy-body ';
 
         $aClassAndAttributes['attr']['privacycontainer'] = $aClassAndAttributes['attr']['privacycol'] = $aClassAndAttributes['attr']['privacyhead'] = $aClassAndAttributes['attr']['privacybody'] = '';
@@ -661,10 +662,10 @@ class TemplateConfig extends CActiveRecord
         // Language changer
         $aClassAndAttributes['id']['lctdropdown']    = 'langs-container';
 
-        $aClassAndAttributes['class']['lctli']          = 'dropdown ls-no-js-hidden form-change-lang ';
-        $aClassAndAttributes['class']['lctla']          = 'dropdown-toggle ';
-        $aClassAndAttributes['class']['lctspan']        = 'caret ';
-        $aClassAndAttributes['class']['lctdropdown']    = 'dropdown-menu ';
+        $aClassAndAttributes['class']['lctli']          = ' ls-no-js-hidden form-change-lang ';
+        $aClassAndAttributes['class']['lctla']          = ' ';
+        $aClassAndAttributes['class']['lctspan']        = ' ';
+        $aClassAndAttributes['class']['lctdropdown']    = ' language_change_container ';
         $aClassAndAttributes['class']['lctdropdownli']  = 'index-item ';
         $aClassAndAttributes['class']['lctdropdownlia'] = 'ls-language-link ';
 
@@ -677,16 +678,16 @@ class TemplateConfig extends CActiveRecord
         // Navigator
         $aClassAndAttributes['id']['navigatorcontainer'] = 'navigator-container';
 
-        $aClassAndAttributes['class']['navigatorcontainer']    = ' navigator row ';
-        $aClassAndAttributes['class']['navigatorbuttonl']      = ' col-xs-6 text-left ';
-        $aClassAndAttributes['class']['navigatorbuttonprev']   = ' ls-move-btn ls-move-previous-btn btn btn-lg btn-default ';
-        $aClassAndAttributes['class']['navigatorbuttonr']      = ' col-xs-6 text-right ';
-        $aClassAndAttributes['class']['navigatorbuttonsubmit'] = ' ls-move-btn ls-move-submit-btn btn btn-lg btn-primary ';
-        $aClassAndAttributes['class']['navigatorbuttonnext']   = ' ls-move-btn ls-move-next-btn ls-move-submit-btn btn btn-lg btn-primary ';
-        $aClassAndAttributes['class']['loadsavecontainer']     = ' navigator row ';
-        $aClassAndAttributes['class']['loadsavecol']           = ' col-sm-6 save-clearall-wrapper ';
-        $aClassAndAttributes['class']['loadbutton']            = ' ls-saveaction ls-loadall btn btn-default ';
-        $aClassAndAttributes['class']['savebutton']            = ' ls-saveaction ls-loadall btn btn-default ';
+        $aClassAndAttributes['class']['navigatorcontainer']    = '   ';
+        $aClassAndAttributes['class']['navigatorbuttonl']      = '  ';
+        $aClassAndAttributes['class']['navigatorbuttonprev']   = ' ls-move-btn ls-move-previous-btn ';
+        $aClassAndAttributes['class']['navigatorbuttonr']      = '  ';
+        $aClassAndAttributes['class']['navigatorbuttonsubmit'] = ' ls-move-btn ls-move-submit-btn  ';
+        $aClassAndAttributes['class']['navigatorbuttonnext']   = ' ls-move-btn ls-move-next-btn ls-move-submit-btn  ';
+        $aClassAndAttributes['class']['loadsavecontainer']     = '  ';
+        $aClassAndAttributes['class']['loadsaveccol']          = ' save-clearall-wrapper ';
+        $aClassAndAttributes['class']['loadbutton']            = ' ls-saveaction ls-loadall ';
+        $aClassAndAttributes['class']['savebutton']            = ' ls-saveaction ls-loadall ';
 
         $aClassAndAttributes['attr']['navigatorbuttonprev']   = ' type="submit" value="moveprev" name="move" accesskey="p" accesskey="n"';
         $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' type="submit" value="movesubmit" name="move" accesskey="l" ';
@@ -695,17 +696,17 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" accesskey="s" ';
 
         // Index Menu
-        $aClassAndAttributes['class']['indexmenugli']     = ' dropdown ls-index-menu ls-no-js-hidden  ';
-        $aClassAndAttributes['class']['indexmenuglia']    = ' dropdown-toggle  ';
-        $aClassAndAttributes['class']['indexmenugspan']   = ' caret ';
-        $aClassAndAttributes['class']['indexmenusgul']    = ' dropdown-menu ';
-        $aClassAndAttributes['class']['indexmenusli']     = ' dropdown ls-index-menu ls-no-js-hidden  ';
-        $aClassAndAttributes['class']['indexmenuslia']    = ' dropdown-toggle  ';
-        $aClassAndAttributes['class']['indexmenusspan']   = ' caret ';
-        $aClassAndAttributes['class']['indexmenussul']    = ' dropdown-menu ';
-        $aClassAndAttributes['class']['indexmenusddh']    = ' dropdown-menu ';
-        $aClassAndAttributes['class']['indexmenusddspan'] = ' caret ';
-        $aClassAndAttributes['class']['indexmenusddul']   = ' dropdown-menu dropdown-sub-menu ';
+        $aClassAndAttributes['class']['indexmenugli']     = ' ls-index-menu ls-no-js-hidden  ';
+        $aClassAndAttributes['class']['indexmenuglia']    = '   ';
+        $aClassAndAttributes['class']['indexmenugspan']   = '  ';
+        $aClassAndAttributes['class']['indexmenusgul']    = '  ';
+        $aClassAndAttributes['class']['indexmenusli']     = ' ls-index-menu ls-no-js-hidden  ';
+        $aClassAndAttributes['class']['indexmenuslia']    = '   ';
+        $aClassAndAttributes['class']['indexmenusspan']   = '  ';
+        $aClassAndAttributes['class']['indexmenussul']    = '  ';
+        $aClassAndAttributes['class']['indexmenusddh']    = '  ';
+        $aClassAndAttributes['class']['indexmenusddspan'] = '  ';
+        $aClassAndAttributes['class']['indexmenusddul']   = '  dropdown-sub-menu ';
 
         $aClassAndAttributes['attr']['indexmenuglia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
         $aClassAndAttributes['attr']['indexmenuslia']          = ' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"';
@@ -731,17 +732,17 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['id']['surveylistrowjumbotron'] = 'surveys-list-jumbotron';
         $aClassAndAttributes['id']['surveylistfooter']       = 'surveyListFooter';
 
-        $aClassAndAttributes['class']['surveylistrow']             = ' row ';
-        $aClassAndAttributes['class']['surveylistrowdiva']         = ' col-xs-12 survey-list-heading ';
-        $aClassAndAttributes['class']['surveylistrowdivadiv']      = ' h3 ';
-        $aClassAndAttributes['class']['surveylistrowdivb']         = ' col-xs-12 survey-list ';
+        $aClassAndAttributes['class']['surveylistrow']             = '  ';
+        $aClassAndAttributes['class']['surveylistrowdiva']         = '  survey-list-heading ';
+        $aClassAndAttributes['class']['surveylistrowdivadiv']      = '  ';
+        $aClassAndAttributes['class']['surveylistrowdivb']         = '  survey-list ';
         $aClassAndAttributes['class']['surveylistrowdivbdiv']      = ' surveys-list-container ';
-        $aClassAndAttributes['class']['surveylistrowdivbdivul']    = ' list-unstyled surveys-list ';
-        $aClassAndAttributes['class']['surveylistrowdivbdivulli']  = ' btn-group btn-block ';
-        $aClassAndAttributes['class']['surveylistrowdivbdivullia'] = ' surveytitle btn btn-primary ';
-        $aClassAndAttributes['class']['surveylistrowdivc']         = ' col-xs-12 survey-contact ';
+        $aClassAndAttributes['class']['surveylistrowdivbdivul']    = ' surveys-list ';
+        $aClassAndAttributes['class']['surveylistrowdivbdivulli']  = '  ';
+        $aClassAndAttributes['class']['surveylistrowdivbdivullia'] = ' surveytitle  ';
+        $aClassAndAttributes['class']['surveylistrowdivc']         = ' survey-contact ';
         $aClassAndAttributes['class']['surveylistfooter']          = ' footer ';
-        $aClassAndAttributes['class']['surveylistfootercont']      = ' container ';
+        $aClassAndAttributes['class']['surveylistfootercont']      = '  ';
 
         $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
         $aClassAndAttributes['attr']['surveylistfootercontpaa']      = ' href="http://www.limesurvey.org"  target="_blank" ';
@@ -821,7 +822,7 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate->author_url    = ''; // privacy
         $oNewTemplate->api_version   = $aDatas['api_version'];
         $oNewTemplate->view_folder   = $aDatas['view_folder'];
-        $oNewTemplate->files_folder  = $aDatas['files_folder'];        
+        $oNewTemplate->files_folder  = $aDatas['files_folder'];
         $oNewTemplate->owner_id      = Yii::app()->user->id;
         $oNewTemplate->extends       = $aDatas['extends'];
 
