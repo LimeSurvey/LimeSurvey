@@ -324,6 +324,8 @@ class TemplateConfiguration extends TemplateConfig
             $aDatas['version']               = $oEditTemplateDb->version;
             $aDatas['license']               = $oEditTemplateDb->license;
             $aDatas['files_folder']          = $oEditTemplateDb->files_folder;
+
+            // Import options from global configuration.
             $options = TemplateConfiguration::model()->find(
                 'sid IS NULL AND gsid IS NULL AND uid IS NULL AND template_name = :template_name',
                 ['template_name' => $aDatas['extends']]
