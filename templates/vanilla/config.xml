@@ -8,8 +8,8 @@
 <config>
     <!-- Those metadata will be displayed in the template configuration page. They are not used for now. -->
     <metadatas>
-        <name>Minimal</name>
-        <creationDate>08/01/2016</creationDate>
+        <name>Vanilla</name>
+        <creationDate>16/10/2017</creationDate>
         <author>Louis-Sébastien Gac Artigas</author>
         <authorEmail>louis.gac@limesurvey.org</authorEmail>
         <authorUrl>http://www.limesurvey.org</authorUrl>
@@ -17,8 +17,8 @@
         <license>GNU General Public License version 2 or later</license>
         <version>1.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Minimal Template</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based template.]]></description>
-        <last_update>2016-11-14 17:21:00</last_update>
+        <description><![CDATA[<strong>LimeSurvey Vanilla Template</strong><br>A clean and simple base that can be used by developers to create their own Bootstrap based template.]]></description>
+        <last_update>2017-10-16 17:21:00</last_update>
     </metadatas>
 
     <!--
@@ -37,7 +37,7 @@
         </print_css>
     </files>
 
-    <!-- You can add here any option you want. It will be available in twig file via aSurveyInfo.options.youroptionname -->
+    <!-- no options in this template. Check the Advanced Template to see how to add your own custom options to your template !-->
     <options>
     </options>
 
@@ -76,6 +76,7 @@
                     <file type="view" role="subview">./subviews/progess_bar.twig</file>
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/language_changer.twig</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>
                 </question>
@@ -84,6 +85,7 @@
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_survey_list.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </surveylist>
 
@@ -94,6 +96,7 @@
                     <file type="view" role="subview">./subviews/warnings.twig</file>
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="css">./css/template.css</file>
                     <file type="js">./scripts/template.js</file>
                 </welcome>
@@ -102,6 +105,7 @@
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_submit.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </completed>
 
@@ -110,17 +114,20 @@
                     <file type="view" role="layout">layout_submit.twig</file>
                     <file type="view" role="subview">./subviews/assessments.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </assessments>
 
                 <error>
                     <file type="view" role="layout">layout_errors.twig</file>
+                    <file type="css">./css/errors.css</file>
                 </error>
 
                 <clearall>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_clearall.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </clearall>
 
@@ -128,6 +135,7 @@
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_load.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </load>
 
@@ -135,6 +143,7 @@
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_save.twig</file>
                     <file type="css">./css/template.css</file>
+                    <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </save>
             </screens>
