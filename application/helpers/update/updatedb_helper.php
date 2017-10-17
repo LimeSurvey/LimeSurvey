@@ -391,6 +391,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
          */
         if ($iOldDBVersion < 312) {
             $oTransaction = $oDB->beginTransaction();
+            // Already added in beta 2 but with wrong type
+            try{ $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_ltr'); } catch(Exception $e) {};
+            try{ $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_rtl'); } catch(Exception $e) {};
+
             addColumn('{{template_configuration}}','packages_ltr', "text");
             addColumn('{{template_configuration}}','packages_rtl', "text");
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>312),"stg_name='DBVersion'");
@@ -682,13 +686,14 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     $oDB->schema->getTables();
     $oDB->schema->refresh();
 
-    // Drop the old surveymenu table.
-    if (tableExists('{surveymenu}')) {                               
-        $oDB->createCommand()->dropTable('{{surveymenu}}');
-    }
     // Drop the old surveymenu_entries table.
     if (tableExists('{surveymenu_entries}')) {
         $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
+    }
+
+    // Drop the old surveymenu table.
+    if (tableExists('{surveymenu}')) {                               
+        $oDB->createCommand()->dropTable('{{surveymenu}}');
     }
 
     $oDB->createCommand()->createTable('{{surveymenu}}', array(
