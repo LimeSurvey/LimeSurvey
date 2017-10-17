@@ -50,14 +50,23 @@
                       <h4 class="modal-title"><?php echo sprintf(gT("Welcome to %s!"), 'LimeSurvey'); ?></h4>
                     </div>
                     <div class="modal-body">
-                        <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
-                        <ol>
-                            <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'),
-                                        "<span class='icon-add text-success'></span>"); ?></li>
-                            <li><?php eT('Create a new question group inside your survey.'); ?></li>
-                            <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
-                            <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<span class='icon-do text-success'></span>"); ?></li>
-                        </ol>
+                        <div class="container-fluid">
+                            <div class="row" id="selector__welcome-modal--simplesteps">
+                                <p><?php eT("Some piece-of-cake steps to create your very own first survey:"); ?></p>
+                                <ol>
+                                    <li><?php echo sprintf(gT('Create a new survey clicking on the %s icon.'),
+                                                "<span class='icon-add text-success'></span>"); ?></li>
+                                    <li><?php eT('Create a new question group inside your survey.'); ?></li>
+                                    <li><?php eT('Create one or more questions inside the new question group.'); ?></li>
+                                    <li><?php echo sprintf(gT('Done. Test your survey using the %s icon.'), "<span class='icon-do text-success'></span>"); ?></li>
+                                </ol>
+                            </div>
+                            <div class="row"><hr/></div>
+                            <div class="row" id="selector__welcome-modal--tutorial">
+                                <p><?php eT('Or, try out our interactive tutorial tour'); ?> </p>
+                                <p class="text-center"><button class="btn btn-primary btn-lg" id="selector__welcome-modal--starttour"><?php eT("Start the tour"); ?></button></p>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close');?></button>
@@ -146,7 +155,7 @@
             </div>
         </div>
 
-    </div>
+    </>
 </div>
 
 <!-- Notification setting -->

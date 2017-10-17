@@ -64,9 +64,9 @@ export default {
 <template>
     <div id="questionexplorer" class="ls-flex-column fill ls-ba">
         <div class="ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar">
-            <a v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" :href="createQuestionGroupLink" class="btn btn-small btn-primary">
+            <a id="adminpanel__sidebar--selectorCreateQuestionGroup" v-if="( createQuestionGroupLink!=undefined && createQuestionGroupLink.length>1 )" :href="createQuestionGroupLink" class="btn btn-small btn-primary">
                 <i class="fa fa-plus"></i>&nbsp;{{translate.createQuestionGroup}}</a>
-            <a v-if="( createQuestionLink!=undefined && createQuestionLink.length>1 )" :href="createQuestionLink" class="btn btn-small btn-default ls-space margin right-10">
+            <a id="adminpanel__sidebar--selectorCreateQuestion" v-if="( createQuestionLink!=undefined && createQuestionLink.length>1 )" :href="createQuestionLink" class="btn btn-small btn-default ls-space margin right-10">
                 <i class="fa fa-plus-circle"></i>&nbsp;{{translate.createQuestion}}</a>
         </div>
         <ul class="list-group">

@@ -264,8 +264,8 @@ export default {
                         <transition name="fade">
                             <div class="ls-flex-item grow-10 col-12" v-if="!$store.state.isCollapsed">
                                 <div class="btn-group btn-group col-12">
-                                    <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
-                                    <button class="btn col-6 force color white onhover tabbutton" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
+                                    <button id="adminpanel__sidebar--selectorSettingsButton" class="btn col-6 force color white onhover tabbutton" :class="activeTab('settings') ? 'btn-primary' : 'btn-default'" @click="changeTab('settings')">{{translate.settings}}</button>
+                                    <button id="adminpanel__sidebar--selectorStructureButton" class="btn col-6 force color white onhover tabbutton" :class="activeTab('questiontree') ? 'btn-primary' : 'btn-default'" @click="changeTab('questiontree')">{{translate.structure}}</button>
                                 </div>
                             </div>
                         </transition>

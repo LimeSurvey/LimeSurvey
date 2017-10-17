@@ -50,7 +50,7 @@ $surveyid = $aTabContents['surveyid'];
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'createsample',
-                            'value' => 1,
+                            'value' => 0,
                             'onLabel'=>gT('On'),
                             'offLabel'=>gT('Off')
                         )); ?>

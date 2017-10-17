@@ -153,6 +153,38 @@ return array(
             'jquery'
         )
     ),
+    'lstutorial' => array(
+        'devBaseUrl' => 'assets/packages/lstutorial/',
+        'basePath' => 'core.lstutorial',
+        'coreScriptPosition'=>CClientScript::POS_BEGIN,
+        'defaultScriptFilePosition' =>CClientScript::POS_BEGIN,
+        'defaultScriptPosition' =>CClientScript::POS_BEGIN,
+        'position' =>CClientScript::POS_BEGIN,
+        'js' => array(
+            'build/lstutorial'.$minVersion.'.js',
+        ),
+        'css' => array(
+            'build/lstutorial.css'
+        ),
+        'depends' => array(
+            'pjax',
+            'jquery'
+        )
+    ),
+    'adminbasics' => array(
+        'devBaseUrl' => 'assets/packages/adminbasics/',
+        'basePath' => 'core.adminbasics',
+        'js' => array(
+            'js/admin_core.js',
+            'js/notifications.js'
+        ),
+        'depends' => array(
+            'pjax',
+            'jquery',
+            'adminpanel',
+            'lstutorial'
+        )
+    ),
     'surveymenufunctions' => array(
         'devBaseUrl' => 'assets/packages/surveymenufunctions/',
         'basePath' => 'core.surveymenufunctions',
@@ -163,6 +195,7 @@ return array(
             'pjax',
             'jquery'
         )
-    )
+    ),
+    
     
 );

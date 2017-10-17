@@ -31,6 +31,23 @@ if ($('#save-and-close-form-button').length>0){
     });
 }
 
+if ($('#save-and-new-question-button').length > 0){
+    $('#save-and-new-question-button').on('click', function(ev)
+    {
+        ev.preventDefault();
+        var $form = getForm(this);
+        formSubmitting = true;
+        $form.append('<input name="saveandnewquestion" value="'+$('#save-and-new-question-button').attr('href')+'" />');
+        
+        for(var instanceName in CKEDITOR.instances) {
+            CKEDITOR.instances[instanceName].updateElement();
+        }
+
+        $form.find('[type="submit"]').first().trigger('click');
+
+    });
+}
+
 // Attach this <input> tag to form to check for closing after save
 var closeAfterSaveInput = $("<input>")
     .attr("type", "hidden")

@@ -322,9 +322,9 @@ class templates extends Survey_Common_Action
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap']=$aBootstrapPackage;
-        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');
+        // App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'templates.js');
-        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'notifications.js');
+        // App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'notifications.js');
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
         $aData['fullpagebar']['returnbutton']=true;
@@ -1067,7 +1067,7 @@ class templates extends Survey_Common_Action
             $aViewUrls = array_merge($aViewUrls, $this->_templatesummary($templatename, $screenname, $sEditfile, $editfile, $aAllTemplates, $files, $cssfiles, $jsfiles, $otherfiles, $myoutput));
         }
 
-        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');
+        // App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'admin_core.js');
 
         return $aViewUrls;
     }

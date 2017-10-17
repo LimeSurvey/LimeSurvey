@@ -92,6 +92,25 @@ if ($('#save-and-new-button').length > 0){
     });
 }
 
+
+if ($('#save-and-new-question-button').length > 0){
+    $('#save-and-new-question-button').on('click', function(ev)
+    {
+        ev.preventDefault();
+        var $form = getForm(this);
+        formSubmitting = true;
+        $form.append('<input name="saveandnewquestion" value="'+$('#save-and-new-question-button').attr('href')+'" />');
+        
+        for(var instanceName in CKEDITOR.instances) {
+            CKEDITOR.instances[instanceName].updateElement();
+        }
+
+        $form.find('[type="submit"]').first().trigger('click');
+
+    });
+}
+
+
 // Save-and-close button
 if ($('#save-and-close-button').length > 0){
     $('#save-and-close-button').on('click', function(ev)

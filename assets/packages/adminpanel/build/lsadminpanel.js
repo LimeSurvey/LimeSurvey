@@ -29937,6 +29937,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('button', {
     staticClass: "btn col-6 force color white onhover tabbutton",
     class: _vm.activeTab('settings') ? 'btn-primary' : 'btn-default',
+    attrs: {
+      "id": "adminpanel__sidebar--selectorSettingsButton"
+    },
     on: {
       "click": function($event) {
         _vm.changeTab('settings')
@@ -29945,6 +29948,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v(_vm._s(_vm.translate.settings))]), _vm._v(" "), _c('button', {
     staticClass: "btn col-6 force color white onhover tabbutton",
     class: _vm.activeTab('questiontree') ? 'btn-primary' : 'btn-default',
+    attrs: {
+      "id": "adminpanel__sidebar--selectorStructureButton"
+    },
     on: {
       "click": function($event) {
         _vm.changeTab('questiontree')

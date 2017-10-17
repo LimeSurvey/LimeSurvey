@@ -44,8 +44,8 @@ class AdminController extends LSYii_Controller
         // This line is needed for template editor to work
         $oAdminTheme = AdminTheme::getInstance();
 
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') .  'admin_core.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'notifications.js' );
+        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') .  'admin_core.js');
+        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'notifications.js' );
     }
 
     /**

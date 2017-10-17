@@ -645,11 +645,17 @@
                         $paramArray = array();
                         $paramArray["surveyid"] = $surveyid;
                         $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", $paramArray);
+                        $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
                     ?>
+
+                    <a class="btn btn-success" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" role="button">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php eT("Save and add question");?>
+                    </a>
 
                     <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">
                         <span class="fa fa-floppy-o"></span>
-                        <?php eT("Save and new");?>
+                        <?php eT("Save and new group");?>
                     </a>
                 <?php endif;?>
                 <?php if(isset($surveybar['importquestion'])):?>

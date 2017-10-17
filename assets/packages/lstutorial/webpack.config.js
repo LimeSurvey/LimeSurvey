@@ -9,7 +9,7 @@ var exportPath = path.resolve(__dirname, './build');
 
 // Enviroment flag
 var plugins = [
-  new webpack.EnvironmentPlugin(['NODE_ENV'])
+    new webpack.EnvironmentPlugin(['NODE_ENV'])
 ];
 
 appName = appName + '.js';
@@ -17,49 +17,48 @@ appName = appName + '.js';
 
 // Main Settings config
 module.exports = {
-  entry: entryPoint,
-  devtool: 'source-map',
-  output: {
-    path: exportPath,
-    filename: appName
-  },
-  externals: {
-    jquery: 'jQuery',
-    pjax: 'Pjax',
-  },
-  module: {
-    rules: [{
-      test: /\.scss$/,
-      use: [{
-        loader: 'style-loader' // creates style nodes from JS strings
-      }, {
-        loader: 'css-loader' // translates CSS into CommonJS
-      }, {
-        loader: 'sass-loader' // compiles Sass to CSS
-      }]
+    entry: entryPoint,
+    devtool: 'source-map',
+    output: {
+        path: exportPath,
+        filename: appName
     },
-    ],
-    loaders: [{
-      test: /\.js$/,
-      exclude: /(node_modules|bower_components)/,
-      loader: [
-        'eslint-loader',
-        'babel'
-      ],
-      options: {
-        data: '$env: ' + process.env.NODE_ENV + ';'
-      },
-      query: {
-        presets: ['es2015']
-      }
+    externals: {
+        jquery: 'jQuery',
+        pjax: 'Pjax'
     },
-    {
-      loader: 'sass-loader',
-      options: {
-        data: '$env: ' + process.env.NODE_ENV + ';'
-      }
-    }
-    ]
-  },
-  plugins
+    module: {
+        rules: [{
+            test: /\.scss$/,
+            use: [{
+                loader: 'style-loader' // creates style nodes from JS strings
+            }, {
+                loader: 'css-loader' // translates CSS into CommonJS
+            }, {
+                loader: 'sass-loader' // compiles Sass to CSS
+            }]
+        }, ],
+        loaders: [{
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: [
+                    'eslint-loader',
+                    'babel'
+                ],
+                options: {
+                    data: '$env: ' + process.env.NODE_ENV + ';'
+                },
+                query: {
+                    presets: ['es2015']
+                }
+            },
+            {
+                loader: 'sass-loader',
+                options: {
+                    data: '$env: ' + process.env.NODE_ENV + ';'
+                }
+            }
+        ]
+    },
+    plugins
 };

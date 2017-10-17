@@ -43,7 +43,7 @@ gulp.task('lint:watch', function () {
 gulp.task('sass', function () {
   return gulp.src('./scss/main.scss')
     .pipe(sass().on('error', sass.logError))
-    .pipe(concat('lsadminpanel.css'))
+    .pipe(concat('lstutorial.css'))
     .pipe(gulp.dest('./build'));
 });
 
