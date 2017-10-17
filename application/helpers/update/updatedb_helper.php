@@ -315,7 +315,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 307) {
             $oTransaction = $oDB->beginTransaction();
             if (tableExists('{settings_user}')) {
-                $oDB->createCommand('DROP TABLE {{settings_user}} CASCADE')->execute();
+                $oDB->createCommand()->dropTable('{{settings_user}}');
             }
             $oDB->createCommand()->createTable('{{settings_user}}', array(
                 'id' => 'pk',
@@ -582,11 +582,11 @@ function transferPasswordFieldToText($oDB){
 function createSurveyMenuTable293($oDB) {
         // Drop the old survey rights table.
     if (tableExists('{surveymenu_entries}')) {
-        $oDB->createCommand('DROP TABLE {{surveymenu_entries}} CASCADE')->execute();
+        $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
     }
         
     if (tableExists('{surveymenu}')) {
-        $oDB->createCommand('DROP TABLE {{surveymenu}} CASCADE')->execute();
+        $oDB->createCommand()->dropTable('{{surveymenu}}');
     }
 
 
@@ -683,12 +683,12 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     $oDB->schema->refresh();
 
     // Drop the old surveymenu table.
-    if (tableExists('{surveymenu}')) {
-        $oDB->createCommand('DROP TABLE {{surveymenu}} CASCADE')->execute();
+    if (tableExists('{surveymenu}')) {                               
+        $oDB->createCommand()->dropTable('{{surveymenu}}');
     }
     // Drop the old surveymenu_entries table.
     if (tableExists('{surveymenu_entries}')) {
-        $oDB->createCommand('DROP TABLE {{surveymenu_entries}} CASCADE')->execute();
+        $oDB->createCommand()->dropTable('{{surveymenu_entries}}');
     }
 
     $oDB->createCommand()->createTable('{{surveymenu}}', array(
@@ -819,9 +819,9 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
  */
 function createSurveyGroupTables306($oDB)
 {
-    // Drop the old survey rights table.
+    // Drop the old survey groups table.
     if (tableExists('{surveys_groups}')) {
-        $oDB->createCommand()->execute('DROP TABLE {{surveys_groups}}');
+        $oDB->createCommand()->dropTable('{{surveys_groups}}');
     }
 
 
@@ -865,11 +865,11 @@ function upgradeTemplateTables304($oDB)
 {
     // Drop the old survey rights table.
     if (tableExists('{{templates}}')) {
-        $oDB->createCommand('DROP TABLE {{templates}} CASCADE')->execute();
+        $oDB->createCommand()->dropTable('{{templates}}');
     }
 
     if (tableExists('{{template_configuration}}')) {
-        $oDB->createCommand('DROP TABLE {{template_configuration}} CASCADE')->execute();
+        $oDB->createCommand()->dropTable('{{template_configuration}}');
     }
 
     // Create templates table
