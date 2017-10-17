@@ -246,9 +246,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                     $combined = array_combine($colsToAdd,$row);
                     $oDB->createCommand()->insert('{{surveymenu_entries}}', $combined);
             }
-
-
-
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>296),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
