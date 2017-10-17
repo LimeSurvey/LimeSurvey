@@ -21,7 +21,7 @@ function createDatabase($oDB){
     try{
         //answers table
         $oDB->createCommand()->createTable('{{answers}}', array(
-        'qid' => 'pk',
+        'qid' => 'integer not null',
         'code' => 'string(5) not null',
         'answer' => 'text',
         'sortorder' => 'integer',
@@ -29,7 +29,9 @@ function createDatabase($oDB){
         'language' => "string(20) DEFAULT 'en'"	,
         'scale_id' => 'integer DEFAULT 0',
         ));
-        $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
+        
+        $oDB->createCommand()->addPrimaryKey('answers_pk', '{{defaultvalues}}', ['qid', 'code', 'language', 'scale_id'], false);
+        $oDB->createCommand()->createIndex('answers_idx2', '{{answers}}', 'sortorder', false);
 
         // assessements
         $oDB->createCommand()->createTable('{{assessments}}', array(
