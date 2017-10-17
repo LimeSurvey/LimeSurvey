@@ -361,12 +361,8 @@ class templates extends Survey_Common_Action
         App()->getClientScript()->registerPackage('ace');
         App()->getClientScript()->registerPackage('jsuri');
         $aData['fullpagebar']['returnbutton']=true;
-        try {
-            $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
-        } catch (\Exception $ex) {
-            $this->index('', 'welcome', '');
-        }
 
+        $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
         // This helps handle the load/save buttons)
         if ($screenname != 'welcome')
         {
