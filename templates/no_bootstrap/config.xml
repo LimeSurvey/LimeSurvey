@@ -68,7 +68,6 @@
                     <file type="view" role="layout">layout_main.twig</file>
                     <file type="view" role="subview">./subviews/survey/group.twig</file>
                     <file type="view" role="subview">./subviews/survey/question.twig</file>
-                    <file type="view" role="subview">./subviews/nav_bar.twig</file>
                     <file type="view" role="subview">./subviews/head.twig</file>
                     <file type="view" role="subview">./subviews/warnings.twig</file>
                     <file type="view" role="subview">./subviews/progess_bar.twig</file>
