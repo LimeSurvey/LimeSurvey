@@ -75,6 +75,7 @@
         </div>
     </div>
 
+    <?php if (count($model->templatesWithNoDb) > 0):?>
     <h3><?php eT('Available Templates:'); ?></h3>
     <div class="row">
         <div class="col-sm-12 content-right">
@@ -106,4 +107,5 @@
 
         </div>
     </div>
+<?php endif;?>
 </div>
