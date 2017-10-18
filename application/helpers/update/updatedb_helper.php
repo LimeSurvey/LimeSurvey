@@ -33,6 +33,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     if ($bSilent && (count(array_intersect($aCriticalDBVersions,$aAllUpdates))>0)){
         return false;
     }
+    // If DBVersion is older than 258 don't allow database update
+    If ($iOldDBVersion<258)
+    {
+        return false;
+    }
 
     /// This function does anything necessary to upgrade
     /// older versions to match current functionality
@@ -1142,7 +1147,12 @@ function rollBackToTransactionBookmark($sBookmark='limesurvey')
     }
 }
 
-
+/** 
+* Drop a default value in MSSQL
+* 
+* @param mixed $fieldname
+* @param mixed $tablename
+*/
 function dropDefaultValueMSSQL($fieldname, $tablename)
 {
     // find out the name of the default constraint
@@ -1161,7 +1171,7 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
 }
 
 /**
-* This function drops a unique Key of an MSSQL database field by using the name of the field it lies upon and the table name
+* This function drops a unique Key of an MSSQL database field by using the field name and the table name
 *
 * @param string $sFieldName
 * @param string $sTableName
@@ -1179,8 +1189,11 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
 }
 
 /**
- * @param string $sFieldName
- */
+* This function drops a secondary key of an MSSQL database field by using the field name and the table name
+* 
+* @param mixed $sFieldName
+* @param mixed $sTableName
+*/
 function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
 {
     $oDB = Yii::app()->getDb();
