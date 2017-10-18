@@ -293,7 +293,69 @@ class TemplateManifest extends TemplateConfiguration
         return parent::importManifest($sTemplateName, $aDatas );
     }
 
+    /**
+     * Get the DOMDocument of the Manifest
+     * @param  string      $sConfigPath path where to find the manifest
+     * @return DOMDocument
+     */
+    public static function getManifestDOM($sConfigPath)
+    {
+        // First we get the XML file
+        $oNewManifest = new DOMDocument();
+        $oNewManifest->load($sConfigPath."/config.xml");
+        return $oNewManifest;
+    }
 
+
+    /**
+     * Change the name inside the DOMDocument (will not save it)
+     * @param DOMDocument   $oNewManifest  The DOMDOcument of the manifest
+     * @param string        $sName         The wanted name
+     */
+    public static function changeNameInDOM($oNewManifest, $sName)
+    {
+        $oConfig      = $oNewManifest->getElementsByTagName('config')->item(0);
+        $oMetadatas   = $oConfig->getElementsByTagName('metadatas')->item(0);
+        $oOldNameNode = $oMetadatas->getElementsByTagName('name')->item(0);
+        $oNvNameNode  = $oNewManifest->createElement('name', $sName);
+        $oMetadatas->replaceChild($oNvNameNode, $oOldNameNode);
+    }
+
+    /**
+     * Change the date inside the DOMDocument
+     * @param DOMDocument   $oNewManifest  The DOMDOcument of the manifest
+     * @param string        $sDate         The wanted date, if empty the current date with config time adjustment will be used
+     */
+    public static function changeDateInDOM($oNewManifest, $sDate='')
+    {
+        $date           = (empty($date))?dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust")):$date;
+        $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
+        $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
+        $oOldDateNode   = $oMetadatas->getElementsByTagName('creationDate')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('creationDate', $sDate);
+        $oMetadatas->replaceChild($oNvDateNode, $oOldDateNode);
+        $oOldUpdateNode = $oMetadatas->getElementsByTagName('last_update')->item(0);
+        $oNvDateNode    = $oNewManifest->createElement('last_update', $sDate);
+        $oMetadatas->replaceChild($oNvDateNode, $oOldUpdateNode);
+    }
+
+    /**
+     * Change the template name inside the manifest (called from template editor)
+     * NOTE: all tests (like template exist, etc) are done from template controller.
+     *
+     * @param string $sOldName The old name of the template
+     * @param string $sNewName The newname of the template
+     */
+    public static function rename($sOldName,$sNewName)
+    {
+        libxml_disable_entity_loader(false);
+        $sConfigPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
+        $oNewManifest = self::getManifestDOM($sConfigPath);
+        self::changeNameInDOM($oNewManifest, $sNewName);
+        self::changeDateInDOM($oNewManifest);
+        $oNewManifest->save($sConfigPath."/config.xml");
+        libxml_disable_entity_loader(true);
+    }
 
     /**
      * Update the config file of a given template so that it extends another one

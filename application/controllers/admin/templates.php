@@ -411,42 +411,45 @@ class templates extends Survey_Common_Action
     */
     public function templaterename()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','update'))
-        {
+        if (!Permission::model()->hasGlobalPermission('templates','update')){
             die('No permission');
         }
+
         if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
 
             $sOldName = sanitize_dirname(returnGlobal('copydir'));
             $sNewName = sanitize_dirname(returnGlobal('newname'));
             $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
             $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
-            if (isStandardTemplate(returnGlobal('newname')))
-            {
+
+            if (isStandardTemplate(returnGlobal('newname'))){
                 Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("This name is reserved for standard template.", "js"));
 
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }
-            elseif (file_exists($sNewDirectoryPath))
-            {
+            }elseif (file_exists($sNewDirectoryPath)){
                 Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("A template with that name already exists.", "js"));
 
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }
-            elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false)
-            {
+            }elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false){
                 Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js"));
 
                 $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }
-            else
-            {
-                Survey::model()->updateAll(array( 'template' => $sNewName ), "template = :oldname", array(':oldname'=>$sOldName));
-                if ( getGlobalSetting('defaulttemplate')==$sOldName)
-                {
-                    setGlobalSetting('defaulttemplate',$sNewName);
+            }else{
+
+                $oTemplate = Template::model()->findByAttributes(array('name' => $sOldName));
+
+                if ( is_a($oTemplate, 'Template') ){
+                    $oTemplate->renameTo($sNewName);
+                    if ( getGlobalSetting('defaulttemplate')==$sOldName){
+                        setGlobalSetting('defaulttemplate',$sNewName);
+                    }
+
+                    $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>'layout_first_page.twig','screenname'=>'welcome','templatename'=>$sNewName));
+                }else{
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template `%s` could not be found.", "js"), $sOldName));
                 }
-                $this->index("startpage.pstpl", "welcome", $sNewName);
+
+                $this->getController()->redirect(array('admin/templateoptions'));
             }
         }
     }

@@ -774,6 +774,18 @@ class TemplateConfiguration extends TemplateConfig
         return $aTemplatesWithoutDB;
     }
 
+    /**
+     * Change the template name inside the configuration entries (called from template editor)
+     * NOTE: all tests (like template exist, etc) are done from template controller.
+     *
+     * @param string $sOldName The old name of the template
+     * @param string $sNewName The newname of the template
+     */
+    public static function rename($sOldName,$sNewName)
+    {
+        self::model()->updateAll(array( 'template_name' => $sNewName  ), "template_name = :oldname", array(':oldname'=>$sOldName));
+    }
+
     public function getAllDbTemplateFolders()
     {
         if (empty($this->allDbTemplateFolders)){

@@ -407,8 +407,7 @@ class Template extends LSActiveRecord
         }
 
         if (empty(self::$instance)) {
-            // getTemplateConfiguration($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=false)
-            self::$instance = $toto = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
+            self::$instance = self::getTemplateConfiguration($sTemplateName, $iSurveyId, $iSurveyGroupId, $bForceXML);
             self::$instance->prepareTemplateRendering($sTemplateName, $iSurveyId);
         }
 
@@ -494,6 +493,23 @@ class Template extends LSActiveRecord
         }
 
         return self::$aTemplatesInUploadDir;
+    }
+
+
+    /**
+     * Change the template name inside DB and the manifest (called from template editor)
+     * NOTE: all tests (like template exist, etc) are done from template controller.
+     *
+     * @param string $sNewName The newname of the template
+     */
+    public function renameTo($sNewName)
+    {
+        Yii::import('application.helpers.sanitize_helper', true);
+        $sNewName = sanitize_paranoid_string($sNewName);
+        Survey::model()->updateAll(array( 'template' => $sNewName ), "template = :oldname", array(':oldname'=>$this->name));
+        Template::model()->updateAll(array( 'name' => $sNewName, 'folder' => $sNewName  ), "name = :oldname", array(':oldname'=>$this->name));
+        TemplateConfiguration::rename($this->name, $sNewName);
+        TemplateManifest::rename($this->name,$sNewName);
     }
 
     /**
