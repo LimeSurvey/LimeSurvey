@@ -766,7 +766,19 @@ class UserAction extends Survey_Common_Action
                 $post = new Template;
                 $post->folder = $tp;
                 $post->creator = Yii::app()->session['loginID'];
-                $post->save();
+
+                try {
+                    $post->save();
+                } catch (Exception $ex) {
+                    Yii::app()->setFlashMessage(
+                        sprintf(
+                            gT('Could not save template %s: %s'),
+                            $tp,
+                            $ex->getMessage()
+                        ),
+                        'error'
+                    );
+                }
             }
         }
         return true;
