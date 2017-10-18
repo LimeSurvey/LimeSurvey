@@ -1471,9 +1471,9 @@ function upgradeTokenTables179()
             }
             $oDB->createCommand("UPDATE {$sTableName} set email={$sSubstringCommand}(email,1,254)")->execute();
             try { setTransactionBookmark(); $oDB->createCommand()->dropIndex("idx_{$sTableName}_efl",$sTableName); } catch(Exception $e) { rollBackToTransactionBookmark();}
-            alterColumn($sTableName, 'email', "string(254)");
-            alterColumn($sTableName, 'firstname', "string(150)");
-            alterColumn($sTableName, 'lastname', "string(150)");
+            try { setTransactionBookmark(); alterColumn($sTableName, 'email', "string(254)"); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); alterColumn($sTableName, 'firstname', "string(150)"); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); alterColumn($sTableName, 'lastname', "string(150)"); } catch(Exception $e) { rollBackToTransactionBookmark();}
         }
     }
 }
