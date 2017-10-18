@@ -583,6 +583,19 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
+    protected function getTemplateForPath($oRTemplate, $sPath )
+    {
+        while (empty($oRTemplate->template->$sPath)){
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                throw new Exception("can't find a template for '$sPath' path !");
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+        return $oRTemplate;
+    }
+
     /**
      * Set the default configuration values for the template, and use the motherTemplate value if needed
      */
@@ -590,8 +603,9 @@ class TemplateConfiguration extends TemplateConfig
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
         $this->apiVersion  = (!empty($this->template->api_version))? $this->template->api_version : $this->oMotherTemplate->apiVersion;
-        $this->viewPath    = (!empty($this->template->view_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->view_folder.DIRECTORY_SEPARATOR : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->view_folder.DIRECTORY_SEPARATOR;
-        $this->filesPath   = (!empty($this->template->files_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->files_folder.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->file_folder.DIRECTORY_SEPARATOR;
+
+        $this->viewPath    =  $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
+        $this->filesPath   = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR ;
 
         // Options are optional
         $this->setOptions();

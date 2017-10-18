@@ -371,7 +371,10 @@ class TemplateManifest extends TemplateConfiguration
         $aNodesToDelete[]   = $oConfig->getElementsByTagName('engine')->item(0);
 
         foreach($aNodesToDelete as $node){
-            $oConfig->removeChild($node);
+            // If extended template already extend another template, it will not have those nodes
+            if (is_a( $node, 'DOMNode')){
+                $oConfig->removeChild($node);
+            }
         }
     }
 
@@ -670,17 +673,32 @@ class TemplateManifest extends TemplateConfiguration
         }
     }
 
+    protected function getTemplateForPath($oRTemplate, $sPath )
+    {
+        while (empty($oRTemplate->config->xpath($sPath))){
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                throw new Exception("can't find a template for '$sPath' xpath !");
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+        return $oRTemplate;
+    }
+
     /**
      * Set the default configuration values for the template, and use the motherTemplate value if needed
      */
     protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion               = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion  :  (isset($this->oMotherTemplate->apiVersion) ? $this->oMotherTemplate->apiVersion : null);
-        $this->viewPath                 = (!empty($this->config->xpath("//viewdirectory")))   ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->viewdirectory.DIRECTORY_SEPARATOR    : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
-        $this->filesPath                = (!empty($this->config->xpath("//filesdirectory")))  ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->filesdirectory.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
-        $this->sFilesDirectory          = (!empty($this->config->xpath("//filesdirectory")))  ? $this->config->engine->filesdirectory   :  $this->oMotherTemplate->sFilesDirectory;
-        $this->templateEditor           = (!empty($this->config->xpath("//template_editor"))) ? $this->config->engine->template_editor : $this->oMotherTemplate->templateEditor;
+        $this->apiVersion         = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion  :  (isset($this->oMotherTemplate->apiVersion) ? $this->oMotherTemplate->apiVersion : null);
+
+
+        $this->viewPath           = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
+        $this->filesPath          = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, '//filesdirectory')->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
+        $this->sFilesDirectory    = $this->filesPath; // TODO: remove doublon
+        $this->templateEditor     = $this->getTemplateForPath($this, '//template_editor')->config->engine->template_editor;
 
         // Options are optional
         if (!empty($this->config->xpath("//options"))){
@@ -693,8 +711,8 @@ class TemplateManifest extends TemplateConfiguration
         }
 
         // Not mandatory (use package dependances)
-        $this->cssFramework             = (!empty($this->config->xpath("//cssframework")))    ? $this->config->engine->cssframework                                                                                  : '';
-        $this->packages                 = (!empty($this->config->xpath("//packages")))        ? $this->config->engine->packages                                                                                      : array();
+        $this->cssFramework             = (!empty($this->config->xpath("//cssframework")))    ? $this->config->engine->cssframework: '';
+        $this->packages                 = (!empty($this->config->xpath("//packages")))        ? $this->config->engine->packages: array();
 
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
