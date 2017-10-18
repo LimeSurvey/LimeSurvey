@@ -59,6 +59,16 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.6.4LTS (build 170202) to 2.6.5LTS (build 171018) Oct 18, 2017
+-Fixed issue #12234: [security] XSS in browse response (Denis Chenu)
+-Fixed issue #12234: [security] XSS in upload files (Denis Chenu)
+-Fixed issue: Adding missing 'Permission::model()->' to the permissions check in remote control export_timeline function (Stefan Verweij)
+-Fixed issue: Avoid very rare possible duplicate id on a page (LouisGac)
+-Fixed issue: Database integrity tool not working (Andrés Folgado, Denis Chenu)
+-Fixed issue: Error on update for some token tables (Carsten Schmitz)
+-Fixed issue: Replacing `@@SURVEYURL@@` incorrectly in RPC (#631) (Frederik Prijck)
+-Fixed issue: Wrong url generation for survey new test, that could lead to session problem when combined with wrong resources url (eg: favicon). (LouisGac)
+
 Changes from 2.6.3LTS (build 170112) to 2.6.4LTS (build 170202) Feb 3, 2017
 -Fixed issue #12078: Email sending problems with unvalidated SSL certificates (Carsten Schmitz)
 -Fixed issue #12093: Error when editing email templates und using PHP7 (Carsten Schmitz)
