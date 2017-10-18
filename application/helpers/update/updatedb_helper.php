@@ -26,7 +26,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     * @link https://manual.limesurvey.org/Database_versioning for explanations
     * @var array $aCriticalDBVersions An array of cricital database version.
     */
-    $aCriticalDBVersions = array();
+    $aCriticalDBVersions = array(310);
     $aAllUpdates         = range($iOldDBVersion+1,Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible
@@ -221,7 +221,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             addColumn('{{surveymenu}}', 'user_id', "int DEFAULT NULL");
             addColumn('{{surveymenu_entries}}', 'user_id', "int DEFAULT NULL");
 
-            $oDB->createCommand()->insert('{{surveymenu}}', array('id' => 2,'parent_id' => NULL,'survey_id' => NULL,'order' => 1,'level' => 0,'title' => 'quickmenu','description' => 'Quickmenu', 'position'=>'collapsed', 'changed_at' => date('Y-m-d H:i:s'),'changed_by' => 0,'created_at' => date('Y-m-d H:i:s'),'created_by' => 0));
+            $oDB->createCommand()->insert('{{surveymenu}}', array('parent_id' => NULL,'survey_id' => NULL,'order' => 1,'level' => 0,'title' => 'quickmenu','description' => 'Quickmenu', 'position'=>'collapsed', 'changed_at' => date('Y-m-d H:i:s'),'changed_by' => 0,'created_at' => date('Y-m-d H:i:s'),'created_by' => 0));
 
             $colsToAdd = array("menu_id","user_id","order","name","title","menu_title","menu_description","menu_icon","menu_icon_type","menu_class","menu_link","action","template","partial","classes","permission","permission_grade","data","getdatamethod","language","changed_at","changed_by","created_at","created_by");
             $rowsToAdd = array(
@@ -361,7 +361,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             );
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>309),"stg_name='DBVersion'");
             $oTransaction->commit();
-            SurveymenuEntries::reorderMenu(1);
         }
 
         /*
@@ -392,8 +391,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 312) {
             $oTransaction = $oDB->beginTransaction();
             // Already added in beta 2 but with wrong type
-            try{ $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_ltr'); } catch(Exception $e) {};
-            try{ $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_rtl'); } catch(Exception $e) {};
+            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_ltr'); } catch(Exception $e) { rollBackToTransactionBookmark();}            
+            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_rtl'); } catch(Exception $e) { rollBackToTransactionBookmark();}            
 
             addColumn('{{template_configuration}}','packages_ltr', "text");
             addColumn('{{template_configuration}}','packages_rtl', "text");
@@ -534,7 +533,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     $oDB->schemaCachingDuration=3600;
     // Load all tables of the application in the schema
     $oDB->schema->getTables();
-
     // clear the cache of all loaded tables
     $oDB->schema->refresh();
     $oDB->active = false;
@@ -604,7 +602,7 @@ function createSurveyMenuTable293($oDB) {
         "level" => "int DEFAULT '0'",
         "title" => "character varying(255)  NOT NULL DEFAULT ''",
         "description" => "text ",
-        "changed_at" => "timestamp",
+        "changed_at" => "datetime NULL",
         "changed_by" => "int NOT NULL DEFAULT '0'",
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "int NOT NULL DEFAULT '0'",
@@ -614,7 +612,6 @@ function createSurveyMenuTable293($oDB) {
     $oDB->createCommand()->insert(
         '{{surveymenu}}',
         array(
-            'id' => 1,
             'parent_id' => NULL,
             'survey_id' => NULL,
             'order' => 0,
@@ -708,7 +705,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "title" =>  "varchar(255)  NOT NULL DEFAULT ''",
         "position" =>  "varchar(255)  NOT NULL DEFAULT 'side'",
         "description" =>  "text ",
-        "changed_at" =>  "timestamp",
+        "changed_at" =>  "datetime NULL",
         "changed_by" =>  "integer NOT NULL DEFAULT '0'",
         "created_at" =>  "datetime DEFAULT NULL",
         "created_by" =>  "integer NOT NULL DEFAULT '0'",
@@ -772,7 +769,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "data" => "text ",
         "getdatamethod" => "varchar(255)  NOT NULL DEFAULT ''",
         "language" => "varchar(255)  NOT NULL DEFAULT 'en-GB'",
-        "changed_at" => "timestamp",
+        "changed_at" => "datetime NULL",
         "changed_by" => "integer NOT NULL DEFAULT '0'",
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "integer NOT NULL DEFAULT '0'"
@@ -1117,4 +1114,93 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 function addColumn($sTableName, $sColumn, $sType)
 {
     Yii::app()->db->createCommand()->addColumn($sTableName,$sColumn,$sType);
+}
+
+/**
+* Set a transaction bookmark - this is critical for Postgres because a transaction in Postgres cannot be continued unless you roll back to the transaction bookmark first
+* 
+* @param mixed $sBookmark  Name of the bookmark
+*/
+function setTransactionBookmark($sBookmark='limesurvey')
+{
+    if (Yii::app()->db->driverName=='pgsql')
+    {
+        Yii::app()->db->createCommand("SAVEPOINT {$sBookmark};")->execute();
+    }
+}
+
+/**
+* Roll back to a transaction bookmark
+* 
+* @param mixed $sBookmark   Name of the bookmark
+*/
+function rollBackToTransactionBookmark($sBookmark='limesurvey')
+{
+    if (Yii::app()->db->driverName=='pgsql')
+    {
+        Yii::app()->db->createCommand("ROLLBACK TO SAVEPOINT {$sBookmark};")->execute();
+    }
+}
+
+
+function dropDefaultValueMSSQL($fieldname, $tablename)
+{
+    // find out the name of the default constraint
+    // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
+    $dfquery ="SELECT c_obj.name AS constraint_name
+    FROM sys.sysobjects AS c_obj INNER JOIN
+    sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
+    sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
+    sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
+    WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{$tablename}')";
+    $defaultname = Yii::app()->getDb()->createCommand($dfquery)->queryRow();
+    if ($defaultname!=false)
+    {
+        Yii::app()->db->createCommand("ALTER TABLE {$tablename} DROP CONSTRAINT {$defaultname['constraint_name']}")->execute();
+    }
+}
+
+/**
+* This function drops a unique Key of an MSSQL database field by using the name of the field it lies upon and the table name
+*
+* @param string $sFieldName
+* @param string $sTableName
+*/
+function dropUniqueKeyMSSQL($sFieldName, $sTableName)
+{
+    $sQuery ="select TC.Constraint_Name, CC.Column_Name from information_schema.table_constraints TC
+    inner join information_schema.constraint_column_usage CC on TC.Constraint_Name = CC.Constraint_Name
+    where TC.constraint_type = 'Unique' and Column_name='{$sFieldName}' and TC.TABLE_NAME='{$sTableName}'";
+    $aUniqueKeyName = Yii::app()->getDb()->createCommand($sQuery)->queryRow();
+    if ($aUniqueKeyName!=false)
+    {
+        Yii::app()->getDb()->createCommand("ALTER TABLE {$sTableName} DROP CONSTRAINT {$aUniqueKeyName['Constraint_Name']}")->execute();
+    }
+}
+
+/**
+ * @param string $sFieldName
+ */
+function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
+{
+    $oDB = Yii::app()->getDb();
+    $sQuery="select
+    i.name as IndexName
+    from sys.indexes i
+    join sys.objects o on i.object_id = o.object_id
+    join sys.index_columns ic on ic.object_id = i.object_id
+    and ic.index_id = i.index_id
+    join sys.columns co on co.object_id = i.object_id
+    and co.column_id = ic.column_id
+    where i.[type] = 2
+    and i.is_unique = 0
+    and i.is_primary_key = 0
+    and o.[type] = 'U'
+    and ic.is_included_column = 0
+    and o.name='{$sTableName}' and co.name='{$sFieldName}'";
+    $aKeyName = Yii::app()->getDb()->createCommand($sQuery)->queryScalar();
+    if ($aKeyName!=false)
+    {
+        try { $oDB->createCommand()->dropIndex($aKeyName,$sTableName); } catch(Exception $e) { }
+    }
 }
