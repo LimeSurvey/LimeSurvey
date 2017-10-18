@@ -210,7 +210,7 @@
                         </div>
                     <?php else:?>
                         <!-- Preview/Execute survey -->
-                        <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
+                        <a class="btn btn-default  btntooltip selector__topbar--previewSurvey" href="<?php echo $this->createUrl("survey/index/sid/$surveyid/newtest/Y/lang/$oSurvey->language"); ?>" role="button"  accesskey='d' target='_blank'>
                             <span class="icon-do" ></span>
                             <?php if($oSurvey->active=='N'):?>
                                 <?php eT('Preview survey');?>

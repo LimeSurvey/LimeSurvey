@@ -28810,6 +28810,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted() {
         const self = this;
+        $(document).trigger('sidebar:mounted');
 
         //retrieve the current menues via ajax
         //questions
@@ -29078,6 +29079,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [((_vm.createQuestionGroupLink != undefined && _vm.createQuestionGroupLink.length > 1)) ? _c('a', {
     staticClass: "btn btn-small btn-primary",
     attrs: {
+      "id": "adminpanel__sidebar--selectorCreateQuestionGroup",
       "href": _vm.createQuestionGroupLink
     }
   }, [_c('i', {
@@ -29085,6 +29087,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }), _vm._v(" " + _vm._s(_vm.translate.createQuestionGroup))]) : _vm._e(), _vm._v(" "), ((_vm.createQuestionLink != undefined && _vm.createQuestionLink.length > 1)) ? _c('a', {
     staticClass: "btn btn-small btn-default ls-space margin right-10",
     attrs: {
+      "id": "adminpanel__sidebar--selectorCreateQuestion",
       "href": _vm.createQuestionLink
     }
   }, [_c('i', {

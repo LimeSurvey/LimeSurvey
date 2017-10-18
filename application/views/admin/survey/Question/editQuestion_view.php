@@ -320,7 +320,8 @@
             <p><button type='submit' class="saveandreturn hidden" name="redirection" value="edit"><?php eT("Save") ?> </button></p>
             <input type='submit'  class="hidden" value='<?php eT("Save and close"); ?>' />
         <?php endif; ?>
-        <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />
+        <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
+        <input type='hidden' name='close-after-save' value='true' />
         </form>
     </div>
 </div>

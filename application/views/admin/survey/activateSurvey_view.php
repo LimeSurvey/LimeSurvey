@@ -186,7 +186,7 @@
 
         <div class='col-sm-6 col-sm-offset-4'>
             <input type='hidden' name='ok' value='Y' />
-            <input type='submit' class="btn btn-success btn-lg " value="<?php eT("Save & activate survey"); ?>" />
+            <input id="activateSurvey__basicSettings--proceed" type='submit' class="btn btn-success btn-lg " value="<?php eT("Save & activate survey"); ?>" />
             <a class="btn btn-default btn-lg" href="<?php echo $this->createUrl("admin/survey/sa/view/surveyid/$surveyid"); ?>" role="button">
             <?php eT("Cancel"); ?>
             </a>

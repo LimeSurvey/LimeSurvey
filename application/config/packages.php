@@ -156,10 +156,10 @@ return array(
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
-        'coreScriptPosition'=>CClientScript::POS_BEGIN,
-        'defaultScriptFilePosition' =>CClientScript::POS_BEGIN,
-        'defaultScriptPosition' =>CClientScript::POS_BEGIN,
-        'position' =>CClientScript::POS_BEGIN,
+        'coreScriptPosition'=>CClientScript::POS_END,
+        'defaultScriptFilePosition' =>CClientScript::POS_END,
+        'defaultScriptPosition' =>CClientScript::POS_END,
+        'position' =>CClientScript::POS_END,
         'js' => array(
             'build/lstutorial'.$minVersion.'.js',
         ),
@@ -181,8 +181,7 @@ return array(
         'depends' => array(
             'pjax',
             'jquery',
-            'adminpanel',
-            'lstutorial'
+            'adminpanel'
         )
     ),
     'surveymenufunctions' => array(

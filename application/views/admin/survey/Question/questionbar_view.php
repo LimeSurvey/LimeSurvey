@@ -73,7 +73,7 @@ $aReplacementData=array();
                 <?php else:?>
 
                     <!-- test/execute survey -->
-                    <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
+                    <a class="btn btn-default  btntooltip selector__topbar--previewSurvey" href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
                         <span class="icon-do" ></span>
                         <?php if($oSurvey->active=='N'):?>
                             <?php eT('Preview survey');?>
@@ -174,7 +174,7 @@ $aReplacementData=array();
             <!-- subquestions -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
                 <?php if($qtypes[$qrrow['type']]['subquestions'] >0):?>
-                    <a class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <a id="adminpanel__topbar--selectorAddSubquestions" class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
                         <?php eT("Edit subquestions "); ?>
                     </a>
@@ -184,7 +184,7 @@ $aReplacementData=array();
 
             <!-- Answer Options -->
             <?php if( Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['answerscales'] > 0 ):?>
-                <a class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                <a id="adminpanel__topbar--selectorAddAnswerOptions" class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                     <span class="icon-defaultanswers"></span>
                     <?php eT("Edit answer options "); ?>
                 </a>

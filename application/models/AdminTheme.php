@@ -148,6 +148,7 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('bootstrap-select2');
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
             App()->getClientScript()->registerPackage('adminbasics');    // Combined scripts and style for the new admin panel
+            App()->getClientScript()->registerPackage('lstutorial');    // Tutorial scripts
             App()->getClientScript()->registerPackage('ckeditor');           //
             App()->getClientScript()->registerPackage('ckeditoradditions');   // CKEDITOR in a global sope
         }

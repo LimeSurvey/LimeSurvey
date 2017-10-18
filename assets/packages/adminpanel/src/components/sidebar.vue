@@ -193,7 +193,7 @@ export default {
     },
     mounted(){
         const self = this;
-
+        $(document).trigger('sidebar:mounted');
 
         //retrieve the current menues via ajax
         //questions
