@@ -115,10 +115,10 @@ class TemplateConfig extends CActiveRecord
       */
      public function getTemplateForFile($sFile, $oRTemplate)
      {
-         while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
+         while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)){
              $oMotherTemplate = $oRTemplate->oMotherTemplate;
              if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                 throw new Exception("no template found for  $sFile!");
+                 throw new Exception("no template found for  $sFile! Last template searched: ".$oRTemplate->sTemplateName );
                  break;
              }
              $oRTemplate = $oMotherTemplate;
@@ -856,6 +856,7 @@ class TemplateConfig extends CActiveRecord
     public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true){}
     public function addFileReplacement($sFile, $sType){}
 
+    protected function getTemplateForPath($oRTemplate, $sPath ) {}
     protected function getFilesToLoad($oTemplate, $sType){}
     protected function changeMotherConfiguration( $sType, $aSettings ){}
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false){}
