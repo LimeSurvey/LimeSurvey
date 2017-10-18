@@ -692,7 +692,7 @@ class TemplateManifest extends TemplateConfiguration
     protected function setThisTemplate()
     {
         // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion         = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion  :  (isset($this->oMotherTemplate->apiVersion) ? $this->oMotherTemplate->apiVersion : null);
+        $this->apiVersion         = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion  : null;
 
 
         $this->viewPath           = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory.DIRECTORY_SEPARATOR;

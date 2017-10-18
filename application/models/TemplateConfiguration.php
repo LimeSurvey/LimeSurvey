@@ -601,9 +601,8 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function setThisTemplate()
     {
-        // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion  = (!empty($this->template->api_version))? $this->template->api_version : $this->oMotherTemplate->apiVersion;
 
+        $this->apiVersion  = (!empty($this->template->api_version))? $this->template->api_version : null; // Mandtory setting in config XML 
         $this->viewPath    =  $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
         $this->filesPath   = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR ;
 
