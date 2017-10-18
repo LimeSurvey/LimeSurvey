@@ -115,9 +115,9 @@
                 <!-- Copy -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
                     <?php if (is_writable($usertemplaterootdir)):?>
-                        <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the copied template:"); ?>', '<?php echo gT("copy_of_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
+                        <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new template:"); ?>', '<?php echo gT("extends_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
                             <span class="icon-copy text-success"></span>
-                            <?php eT("Copy"); ?>
+                            <?php eT("Extend"); ?>
                         </a>
                         <?php else: ?>
                         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
@@ -283,8 +283,8 @@
                 <?php eT('Note: This is a standard template.');?>
             </strong>
             <?php
-            printf(gT('If you want to edit it %s please copy it first%s.'),"<a href='#' title=\"".gT("Copy Template")."\""
-                ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the copied template:")."', '".gT("copy_of_")."$templatename', '$templatename', 'copy')\">",'</a>');
+            printf(gT('If you want to edit it %s please extend it first%s.'),"<a href='#' title=\"".gT("Extend Template")."\""
+                ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the new template:")."', '".gT("extends_")."$templatename', '$templatename', 'copy')\">",'</a>');
             ?>
         </div>
     <?php endif;?>
