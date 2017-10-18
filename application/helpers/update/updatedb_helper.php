@@ -220,6 +220,11 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $aTables = dbGetTablesLike("survey\_%");
             if ($aTables) {
                 foreach ( $aTables as $sTableName ) {
+                    $oTableSchema=$oSchema->getTable($sTableName);
+                    // Only update the table if it really is a survey response table - there are other tables that start the same
+                    if (!in_array('lastpage',$oTableSchema->columnNames)) {
+                        continue;
+                    }
                     // If survey has active table, create seed column
                     Yii::app()->db->createCommand()->addColumn($sTableName, 'seed', 'string(31)');
 
