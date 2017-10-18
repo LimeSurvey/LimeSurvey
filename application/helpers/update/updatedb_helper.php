@@ -530,6 +530,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         return false;
     }
 
+    // Activate schema cache first - otherwise it won't be refreshed!
+    $oDB->schemaCachingDuration=3600;
     // Load all tables of the application in the schema
     $oDB->schema->getTables();
 
@@ -540,7 +542,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     // Force User model to refresh meta data (for updates from very old versions)
     User::model()->refreshMetaData();
-    Survey::model()->refreshMetaData();
 
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
