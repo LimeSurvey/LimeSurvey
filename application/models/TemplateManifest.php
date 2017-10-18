@@ -200,7 +200,7 @@ class TemplateManifest extends TemplateConfiguration
             while (false !== ($file = readdir($handle))){
                 if (!array_search($file, array("DUMMYENTRY", ".", "..", "preview.png"))) {
                     if (!is_dir($this->viewPath . DIRECTORY_SEPARATOR . $file)) {
-                        $otherfiles[] = $this->sFilesDirectory . DIRECTORY_SEPARATOR . $file;
+                        $otherfiles[$file] = $this->sFilesDirectory . DIRECTORY_SEPARATOR . $file;
                     }
                 }
             }

@@ -161,14 +161,14 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
             <div class="col-sm-12 well">
 
-                <?php foreach ($otherfiles as $file):?>
+                <?php foreach ($otherfiles as $fileName => $file):?>
                     <div class="row">
                         <div class="col-sm-9">
                             <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
                         </div>
                         <div class="col-sm-3">
                             <?php //TODO: make it ajax and less messy ?>
-                            <?php if ( $oEditedTemplate->getTemplateForFile($file, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName):?>
+                            <?php if ( $oEditedTemplate->getTemplateForFile($fileName, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName):?>
                                 <?php if (Permission::model()->hasGlobalPermission('templates','delete')): ?>
                                     <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
                                     <input type='hidden' name="otherfile" id="otherfile" value="<?php echo $file; ?>" />
