@@ -334,11 +334,9 @@ class TemplateConfiguration extends TemplateConfig
             $aDatas['files_folder']          = $oEditTemplateDb->files_folder;
 
             // Import options from global configuration.
-            $options = self::getInstanceFromTemplateName($aDatas['extends']);
-            if (empty($options)) {
-                throw new Exception('Could not find global options for template ' . $aDatas['extends']);
-            } else {
-                $aDatas['aOptions'] = $options;
+            $oMotherTemplate = self::getInstanceFromTemplateName($aDatas['extends']);
+            if (is_a($oMotherTemplate, 'TemplateConfiguration')) {
+                $aDatas['aOptions'] =  json_decode($oMotherTemplate->options);
             }
         }
 

@@ -480,21 +480,15 @@ class templates extends Survey_Common_Action
 
             if ($mkdirresult == 1) {
                 // We just copy the while directory structure, but only the xml file
-                // TODO: copy template options
                 $oFileHelper->copyDirectory($copydirname,$newdirname, array('fileTypes' => array('xml', 'png', 'jpg')));
                 //TemplateConfiguration::removeAllNodes($newdirname);
                 TemplateManifest::extendsConfig($copydir, $newname );
                 TemplateConfiguration::importManifest($newname, ['extends' => $copydir]);
                 $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
-            }
-
-            elseif ($mkdirresult == 2)
-            {
+            }elseif ($mkdirresult == 2){
                 Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
                 $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$copydir));
-            }
-            else
-            {
+            }else{
                 Yii::app()->setFlashMessage(sprintf(gT("Unable to create directory `%s`."), $newname),'error');
                 Yii::app()->setFlashMessage(gT("Please check the directory permissions."));
                 $this->getController()->redirect(array("admin/templates/sa/view"));
