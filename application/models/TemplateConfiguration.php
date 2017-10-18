@@ -322,21 +322,17 @@ class TemplateConfiguration extends TemplateConfig
     {
         if ( !empty($aDatas['extends'])  ){
 
-            $oEditTemplateDb                 = Template::model()->findByPk($aDatas['extends']);
-
-            $aDatas['api_version']           = $oEditTemplateDb->api_version;
-            $aDatas['view_folder']           = $oEditTemplateDb->view_folder;
-            $aDatas['author_email']          = $oEditTemplateDb->author_email;
-            $aDatas['author_url']            = $oEditTemplateDb->author_url;
-            $aDatas['copyright']             = $oEditTemplateDb->copyright;
-            $aDatas['version']               = $oEditTemplateDb->version;
-            $aDatas['license']               = $oEditTemplateDb->license;
-            $aDatas['files_folder']          = $oEditTemplateDb->files_folder;
-
-            // Import options from global configuration.
             $oMotherTemplate = self::getInstanceFromTemplateName($aDatas['extends']);
             if (is_a($oMotherTemplate, 'TemplateConfiguration')) {
-                $aDatas['aOptions'] =  json_decode($oMotherTemplate->options);
+                $aDatas['api_version']     = $oMotherTemplate->template->api_version;
+                $aDatas['view_folder']     = $oMotherTemplate->template->view_folder;
+                $aDatas['author_email']    = $oMotherTemplate->template->author_email;
+                $aDatas['author_url']      = $oMotherTemplate->template->author_url;
+                $aDatas['copyright']       = $oMotherTemplate->template->copyright;
+                $aDatas['version']         = $oMotherTemplate->template->version;
+                $aDatas['license']         = $oMotherTemplate->template->license;
+                $aDatas['files_folder']    = $oMotherTemplate->template->files_folder;
+                $aDatas['aOptions']        =  json_decode($oMotherTemplate->options);
             }
         }
 
