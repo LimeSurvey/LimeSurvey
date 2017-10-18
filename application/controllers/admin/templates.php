@@ -510,25 +510,25 @@ class templates extends Survey_Common_Action
     */
     public function delete($templatename)
     {
-        if (!Permission::model()->hasGlobalPermission('templates','delete'))
-        {
+        if (!Permission::model()->hasGlobalPermission('templates','delete')){
             die('No permission');
         }
+
         Yii::app()->loadHelper("admin/template");
-        if (array_key_exists($templatename,Template::getTemplateList()) && !Template::isStandardTemplate($templatename))
-        {
+
+        if (array_key_exists($templatename,Template::getTemplateList()) && !Template::isStandardTemplate($templatename)){
+
             if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
                 $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
 
                 // The default template could be the same as the one we're trying to remove
                 $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttemplate') == $templatename;
-                if ($globalDefaultIsGettingDeleted)
-                {
+
+                if ($globalDefaultIsGettingDeleted){
                     setGlobalSetting('defaulttemplate', 'default');
                 }
 
-                foreach ($surveys as $s)
-                {
+                foreach ($surveys as $s){
                     $s->template = Yii::app()->getConfig('defaulttemplate');
                     $s->save();
                 }
@@ -537,14 +537,14 @@ class templates extends Survey_Common_Action
                 Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
 
                 Yii::app()->setFlashMessage(sprintf(gT("Template '%s' was successfully deleted."), $templatename));
-            }
-            else
+            }else{
                 Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
-        }
-        else
-        {
+            }
+
+        }else{
             // Throw an error 500 ?
         }
+        
         // Redirect with default templatename, editfile and screenname
         $this->getController()->redirect(array("admin/templates/sa/view"));
     }
