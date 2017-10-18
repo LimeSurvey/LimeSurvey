@@ -298,8 +298,16 @@ class TemplateConfiguration extends TemplateConfig
     public function getPreview()
     {
         if (empty($this->sPreviewImgTag)){
-            $previewUrl =  Template::getTemplateURL($this->template->name);
-            $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
+
+            $previewPath =  Template::getTemplatePath($this->template->name);
+
+            if (file_exists($previewPath.'/preview.png')){
+                $previewUrl =  Template::getTemplateURL($this->template->name);
+                $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
+            }else{
+                $this->sPreviewImgTag = '<em>'.gT('no preview available').'</em>';
+            }
+
         }
         return $this->sPreviewImgTag;
     }
