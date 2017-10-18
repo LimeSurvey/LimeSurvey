@@ -12,9 +12,14 @@
 *
 */
 
-// There will be a file for each database (accordingly named to the dbADO scheme)
-// where based on the current database version the database is upgraded
-// For this there will be a settings table which holds the last time the database was upgraded
+/* Rules:
+- Never use models in the upgrade process - never ever!
+- Use the provided addColumn, alterColumn, dropPrimaryKey etc. functions where applicable - they ensure cross-DB compatibility
+- Never use foreign keys
+- Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii
+- If you want to use database functions make sure they exist on all three supported database types
+
+*/
 
 /**
  * @param integer $iOldDBVersion The previous database version
@@ -33,9 +38,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     if ($bSilent && (count(array_intersect($aCriticalDBVersions,$aAllUpdates))>0)){
         return false;
     }
-    // If DBVersion is older than 258 don't allow database update
-    If ($iOldDBVersion<184)
-    {
+    // If DBVersion is older than 184 don't allow database update
+    If ($iOldDBVersion<184) {
         return false;
     }
 
@@ -52,16 +56,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     try{
         // LS 2.5 table start at 250
-        if ($iOldDBVersion < 250)
-        {
+        if ($iOldDBVersion < 250) {       
             $oTransaction = $oDB->beginTransaction();
             createBoxes250();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>250),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
-        if ( $iOldDBVersion < 251 )
-        {
+        if ( $iOldDBVersion < 251 ) {
             $oTransaction = $oDB->beginTransaction();
             upgradeBoxesTable251();
 
@@ -70,16 +72,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
-        if ( $iOldDBVersion < 252 )
-        {
+        if ( $iOldDBVersion < 252 ) {
             $oTransaction = $oDB->beginTransaction();
             Yii::app()->db->createCommand()->addColumn('{{questions}}','modulename','string');
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>252),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ( $iOldDBVersion < 253 )
-        {
+        if ( $iOldDBVersion < 253 ) {
             $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables253();
 
@@ -87,24 +87,21 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>253),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ( $iOldDBVersion < 254 )
-        {
+        if ( $iOldDBVersion < 254 ) {
             $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables254();
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>254),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ( $iOldDBVersion < 255 )
-        {
+        if ( $iOldDBVersion < 255 ) {
             $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables255();
             // Update DBVersion
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>255),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ( $iOldDBVersion < 256 )
-        {
+        if ( $iOldDBVersion < 256 ) {
             $oTransaction = $oDB->beginTransaction();
             upgradeTokenTables256();
             alterColumn('{{participants}}', 'email', "text", false);
@@ -220,34 +217,20 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
             $oTransaction = $oDB->beginTransaction();
 
-            // Loop all surveys
-            $surveys = Survey::model()->findAll();
-            foreach ($surveys as $survey)
-            {
-                $prefix = Yii::app()->getDb()->tablePrefix;
-                $tableName = $prefix . 'survey_' . $survey->sid;
-
-                // If survey has active table, create seed column
-                $table = Yii::app()->db->schema->getTable($tableName);
-                if ($table)
-                {
-                    if (!isset($table->columns['seed']))
-                    {
-                        Yii::app()->db->createCommand()->addColumn($tableName, 'seed', 'string(31)');
-                    }
-                    else
-                    {
-                        continue;
-                    }
+            $aTables = dbGetTablesLike("survey\_%");
+            if ($aTables) {
+                foreach ( $aTables as $sTableName ) {
+                    // If survey has active table, create seed column
+                    Yii::app()->db->createCommand()->addColumn($sTableName, 'seed', 'string(31)');
 
                     // RAND is RANDOM in Postgres
                     switch (Yii::app()->db->driverName)
                     {
                         case 'pgsql':
-                            Yii::app()->db->createCommand("UPDATE $tableName SET seed = ROUND(RANDOM() * 10000000)")->execute();
+                            Yii::app()->db->createCommand("UPDATE {$sTableName} SET seed = ROUND(RANDOM() * 10000000)")->execute();
                             break;
                         default:
-                            Yii::app()->db->createCommand("UPDATE $tableName SET seed = ROUND(RAND() * 10000000, 0)")->execute();
+                            Yii::app()->db->createCommand("UPDATE {$sTableName} SET seed = ROUND(RAND() * 10000000, 0)")->execute();
                             break;
                     }
                 }
@@ -1141,6 +1124,209 @@ function upgradeTemplateTables298($oDB)
     ) ,"id=6");
 }
 
+function upgradeTokenTables256()
+{
+    $surveyidresult = dbGetTablesLike("tokens%");
+    $oDB = Yii::app()->getDb();
+    if ($surveyidresult)
+    {
+        foreach ( $surveyidresult as $sTableName )
+        {
+            try { setTransactionBookmark(); $oDB->createCommand()->dropIndex("idx_lime_{$sTableName}_efl",$sTableName); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            alterColumn($sTableName, 'email', "text");
+            alterColumn($sTableName, 'firstname', "string(150)");
+            alterColumn($sTableName, 'lastname', "string(150)");
+        }
+    }
+}
+
+
+function upgradeSurveyTables255()
+{
+    // We delete all the old boxes, and reinsert new ones
+    Yii::app()->getDb()->createCommand(
+        "DELETE FROM {{boxes}}"
+    )->execute();    
+    
+    // Then we recreate them
+    $oDB = Yii::app()->db;
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '1',
+        'url'      => 'admin/survey/sa/newsurvey' ,
+        'title'    => 'Create survey' ,
+        'ico'      => 'add' ,
+        'desc'     => 'Create a new survey' ,
+        'page'     => 'welcome',
+        'usergroup' => '-2',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '2',
+        'url'      =>  'admin/survey/sa/listsurveys',
+        'title'    =>  'List surveys',
+        'ico'      =>  'list',
+        'desc'     =>  'List available surveys',
+        'page'     =>  'welcome',
+        'usergroup' => '-1',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '3',
+        'url'      =>  'admin/globalsettings',
+        'title'    =>  'Global settings',
+        'ico'      =>  'global',
+        'desc'     =>  'Edit global settings',
+        'page'     =>  'welcome',
+        'usergroup' => '-2',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '4',
+        'url'      =>  'admin/update',
+        'title'    =>  'ComfortUpdate',
+        'ico'      =>  'shield',
+        'desc'     =>  'Stay safe and up to date',
+        'page'     =>  'welcome',
+        'usergroup' => '-2',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '5',
+        'url'      =>  'admin/labels/sa/view',
+        'title'    =>  'Label sets',
+        'ico'      =>  'labels',
+        'desc'     =>  'Edit label sets',
+        'page'     =>  'welcome',
+        'usergroup' => '-2',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '6',
+        'url'      =>  'admin/templates/sa/view',
+        'title'    =>  'Template editor',
+        'ico'      =>  'templates',
+        'desc'     =>  'Edit LimeSurvey templates',
+        'page'     =>  'welcome',
+        'usergroup' => '-2',
+    ));
+
+}
+
+function upgradeSurveyTables254()
+{
+    Yii::app()->db->createCommand()->dropColumn('{{boxes}}','img');
+    Yii::app()->db->createCommand()->addColumn('{{boxes}}','usergroup','integer');
+}
+
+function upgradeSurveyTables253()
+{
+    $oSchema = Yii::app()->db->schema;
+    $aTables = dbGetTablesLike("survey\_%");
+    foreach ( $aTables as $sTable )
+    {
+        $oTableSchema=$oSchema->getTable($sTable);
+        if (in_array('refurl',$oTableSchema->columnNames))
+        {
+            alterColumn($sTable,'refurl',"text");
+        }
+        if (in_array('ipaddr',$oTableSchema->columnNames))
+        {
+            alterColumn($sTable,'ipaddr',"text");
+        }
+    }
+}
+
+
+function upgradeBoxesTable251()
+{
+    Yii::app()->db->createCommand()->addColumn('{{boxes}}','ico','string');
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'add',
+                                                              'title'=>'Create survey')
+                                                              ,"id=1");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'list')
+                                                              ,"id=2");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'settings')
+                                                              ,"id=3");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'shield')
+                                                              ,"id=4");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'label')
+                                                              ,"id=5");
+    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'templates')
+                                                              ,"id=6");
+}
+
+/**
+ * Create boxes table
+ */
+function createBoxes250()
+{
+    $oDB = Yii::app()->db;
+    $oDB->createCommand()->createTable('{{boxes}}',array(
+        'id' => 'pk',
+        'position' => 'integer',
+        'url' => 'text',
+        'title' => 'text',
+        'img' => 'text',
+        'desc' => 'text',
+        'page'=>'text',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '1',
+        'url'      => 'admin/survey/sa/newsurvey' ,
+        'title'    => 'Create survey' ,
+        'img'      => 'add.png' ,
+        'desc'     => 'Create a new survey' ,
+        'page'     => 'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '2',
+        'url'      =>  'admin/survey/sa/listsurveys',
+        'title'    =>  'List surveys',
+        'img'      =>  'surveylist.png',
+        'desc'     =>  'List available surveys',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '3',
+        'url'      =>  'admin/globalsettings',
+        'title'    =>  'Global settings',
+        'img'      =>  'global.png',
+        'desc'     =>  'Edit global settings',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '4',
+        'url'      =>  'admin/update',
+        'title'    =>  'ComfortUpdate',
+        'img'      =>  'shield&#45;update.png',
+        'desc'     =>  'Stay safe and up to date',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '5',
+        'url'      =>  'admin/labels/sa/view',
+        'title'    =>  'Label sets',
+        'img'      =>  'labels.png',
+        'desc'     =>  'Edit label sets',
+        'page'     =>  'welcome',
+    ));
+
+    $oDB->createCommand()->insert('{{boxes}}', array(
+        'position' =>  '6',
+        'url'      =>  'admin/templates/sa/view',
+        'title'    =>  'Template editor',
+        'img'      =>  'templates.png',
+        'desc'     =>  'Edit LimeSurvey templates',
+        'page'     =>  'welcome',
+    ));
+}
+
+
 function fixLanguageConsistencyAllSurveys()
 {
     $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
@@ -1148,6 +1334,67 @@ function fixLanguageConsistencyAllSurveys()
     foreach ( $surveyidresult as $sv )
     {
         fixLanguageConsistency($sv['sid'],$sv['additional_languages']);
+    }
+}
+
+
+function upgradeSurveyTables181()
+{
+    $oDB = Yii::app()->db;
+    $oSchema = Yii::app()->db->schema;
+    if(Yii::app()->db->driverName!='pgsql')
+    {
+        $aTables = dbGetTablesLike("survey\_%");
+        if ($aTables)
+        {
+            foreach ( $aTables as $sTableName )
+            {
+                $oTableSchema=$oSchema->getTable($sTableName);
+                if (!in_array('token',$oTableSchema->columnNames)) continue; // No token field in this table
+                switch (Yii::app()->db->driverName){
+                    case 'sqlsrv':
+                    case 'dblib':
+                    case 'mssql': dropSecondaryKeyMSSQL('token',$sTableName);
+                        alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                        $oDB->createCommand()->createIndex("idx_{$sTableName}_".rand(1,50000),  $sTableName,'token');
+                        break;
+                    case 'mysql':
+                    case 'mysqli':
+                        alterColumn($sTableName, 'token', "string(35) COLLATE 'utf8_bin'");
+                        break;
+                    default: die('Unknown database driver');
+                }
+            }
+        }
+    }
+}
+
+function upgradeTokenTables181()
+{
+    $oDB = Yii::app()->db;
+    $oSchema = Yii::app()->db->schema;
+    if(Yii::app()->db->driverName!='pgsql')
+    {
+        $aTables = dbGetTablesLike("tokens%");
+        if ($aTables)
+        {
+            foreach ( $aTables as $sTableName )
+            {
+                switch (Yii::app()->db->driverName){
+                    case 'sqlsrv':
+                    case 'dblib':
+                    case 'mssql': dropSecondaryKeyMSSQL('token',$sTableName);
+                        alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
+                        $oDB->createCommand()->createIndex("idx_{$sTableName}_".rand(1,50000),  $sTableName,'token');
+                        break;
+                    case 'mysql':
+                    case 'mysqli':
+                        alterColumn($sTableName, 'token', "string(35) COLLATE 'utf8_bin'");
+                        break;
+                    default: die('Unknown database driver');
+                }
+            }
+        }
     }
 }
 
@@ -1317,4 +1564,77 @@ function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
     {
         try { $oDB->createCommand()->dropIndex($aKeyName,$sTableName); } catch(Exception $e) { }
     }
+}
+
+/**
+* Drops the primary key of a table
+* 
+* @param mixed $sTablename
+*/
+function dropPrimaryKey($sTablename)
+{
+    switch (Yii::app()->db->driverName){
+        case 'mysql':
+            $sQuery="ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY";
+            Yii::app()->db->createCommand($sQuery)->execute();
+            break;
+        case 'pgsql':
+        case 'sqlsrv':
+        case 'dblib':
+        case 'mssql':
+            $pkquery = "SELECT CONSTRAINT_NAME "
+            ."FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS "
+            ."WHERE (TABLE_NAME = '{{{$sTablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
+
+            $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
+            if ($primarykey!==false)
+            {
+                $sQuery="ALTER TABLE {{".$sTablename."}} DROP CONSTRAINT ".$primarykey[0];
+                Yii::app()->db->createCommand($sQuery)->execute();
+            }
+            break;
+        default: die('Unknown database type');
+    }
+
+}
+
+/**
+ * @param string $sTablename
+ */
+function addPrimaryKey($sTablename, $aColumns) {
+    return Yii::app()->db->createCommand()->addPrimaryKey('PK_'.$sTablename.'_'.randomChars(12,'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{'.$sTablename.'}}', $aColumns);
+}
+
+/**
+* Modifies a primary key in one command  - this is only tested on MySQL
+*
+* @param string $sTablename The table name
+* @param string[] $aColumns Column names to be in the new key
+*/
+function modifyPrimaryKey($sTablename, $aColumns) {
+    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+}
+
+
+
+/**
+ * @param string $sEncoding
+ * @param string $sCollation
+ */
+function fixMySQLCollations($sEncoding, $sCollation) {
+    $surveyidresult = dbGetTablesLike("%");
+    if ($surveyidresult)
+    {
+        foreach ( $surveyidresult as $sTableName )
+        {
+            try{
+                Yii::app()->getDb()->createCommand("ALTER TABLE {$sTableName} CONVERT TO CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
+            } catch(Exception $e){
+                // There are some big survey response tables that cannot be converted because the new charset probably uses
+                // more bytes per character than the old one - we just leave them as they are for now.
+            };
+        }
+    }
+    $sDatabaseName=getDBConnectionStringProperty('dbname');
+    Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};");
 }
