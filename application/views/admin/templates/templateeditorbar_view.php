@@ -229,10 +229,10 @@
                 <?php endif;?>
 
             <?php if(isset($fullpagebar['returnbutton'])):?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("/admin"); ?>" role="button">
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/templateoptions"); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
-                    <?php eT("Return to admin home"); ?>
+                    <?php eT("Return to template list"); ?>
                 </a>
                 <?php endif;?>
         </div>
