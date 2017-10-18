@@ -34,7 +34,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         return false;
     }
     // If DBVersion is older than 258 don't allow database update
-    If ($iOldDBVersion<258)
+    If ($iOldDBVersion<184)
     {
         return false;
     }
@@ -51,6 +51,107 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     Yii::app()->setConfig('Updating',true);
 
     try{
+        // LS 2.5 table start at 250
+        if ($iOldDBVersion < 250)
+        {
+            $oTransaction = $oDB->beginTransaction();
+            createBoxes250();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>250),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ( $iOldDBVersion < 251 )
+        {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeBoxesTable251();
+
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ( $iOldDBVersion < 252 )
+        {
+            $oTransaction = $oDB->beginTransaction();
+            Yii::app()->db->createCommand()->addColumn('{{questions}}','modulename','string');
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>252),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ( $iOldDBVersion < 253 )
+        {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeSurveyTables253();
+
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>253),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ( $iOldDBVersion < 254 )
+        {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeSurveyTables254();
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>254),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ( $iOldDBVersion < 255 )
+        {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeSurveyTables255();
+            // Update DBVersion
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>255),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        if ( $iOldDBVersion < 256 )
+        {
+            $oTransaction = $oDB->beginTransaction();
+            upgradeTokenTables256();
+            alterColumn('{{participants}}', 'email', "text", false);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>256),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 257) {
+            $oTransaction = $oDB->beginTransaction();
+            switch (Yii::app()->db->driverName){
+                case 'pgsql':
+                    $sSubstringCommand='substr';
+                    break;
+                default:
+                    $sSubstringCommand='substring';
+            }
+            $oDB->createCommand("UPDATE {{templates}} set folder={$sSubstringCommand}(folder,1,50)")->execute();
+            dropPrimaryKey('templates');
+            alterColumn('{{templates}}', 'folder', "string(50)", false);
+            addPrimaryKey('templates', 'folder');
+            dropPrimaryKey('participant_attribute_names_lang');
+            alterColumn('{{participant_attribute_names_lang}}', 'lang', "string(20)", false);
+            addPrimaryKey('participant_attribute_names_lang', array('attribute_id','lang'));
+            //Fixes the collation for the complete DB, tables and columns
+            if (Yii::app()->db->driverName=='mysql')
+            {
+                fixMySQLCollations('utf8mb4','utf8mb4_unicode_ci');
+                // Also apply again fixes from DBVersion 181 again for case sensitive token fields
+                upgradeSurveyTables181('utf8mb4_bin');
+                upgradeTokenTables181('utf8mb4_bin');
+            }
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>257),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        /**
+         * Remove adminimageurl from global settings
+         */
+        if ($iOldDBVersion < 258) {
+            $oTransaction = $oDB->beginTransaction();
+            Yii::app()->getDb()->createCommand(
+                "DELETE FROM {{settings_global}} WHERE stg_name='adminimageurl'"
+            )->execute();
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>258),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+        
         /**
          * Add table for notifications
          * @since 2016-08-04
