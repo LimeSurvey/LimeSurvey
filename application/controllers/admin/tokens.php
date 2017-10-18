@@ -2056,7 +2056,13 @@ class tokens extends Survey_Common_Action
                 }
                 else
                 {
-                    $aData['sError'] = gT("Can't bind to the LDAP directory");
+                    $sErrorMessage=ldap_error($ds);
+                    define(LDAP_OPT_DIAGNOSTIC_MESSAGE, 0x0032);
+                    if (ldap_get_option($ds, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error))
+                    {
+                       $sErrorMessage.= ' - '.$extended_error; 
+                    }
+                    $aData['sError'] = sprintf(gT("Can't bind to the LDAP directory. Error message: %s"),ldap_error($ds));
                     $this->_renderWrappedTemplate('token', array( 'ldapform'), $aData);
                 }
                 @ldap_close($ds);
