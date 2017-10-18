@@ -516,7 +516,7 @@ class templates extends Survey_Common_Action
 
         Yii::app()->loadHelper("admin/template");
 
-        if (array_key_exists($templatename,Template::getTemplateList()) && !Template::isStandardTemplate($templatename)){
+        if ( Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename)){
 
             if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
                 $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
@@ -533,7 +533,7 @@ class templates extends Survey_Common_Action
                     $s->save();
                 }
 
-                Template::model()->deleteAllByAttributes(array('folder' => $templatename));
+                TemplateConfiguration::uninstall($templatename);
                 Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
 
                 Yii::app()->setFlashMessage(sprintf(gT("Template '%s' was successfully deleted."), $templatename));
@@ -544,9 +544,9 @@ class templates extends Survey_Common_Action
         }else{
             // Throw an error 500 ?
         }
-        
+
         // Redirect with default templatename, editfile and screenname
-        $this->getController()->redirect(array("admin/templates/sa/view"));
+        $this->getController()->redirect(array("admin/templateoptions"));
     }
 
     /**
