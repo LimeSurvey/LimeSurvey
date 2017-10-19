@@ -103,8 +103,57 @@ class templates extends Survey_Common_Action
             Yii::app()->loadHelper('admin/template');
             $lid = returnGlobal('lid');
             $action = returnGlobal('action');
+            $uploadresult = "";
+            $success = false;
+            $debug = [];
+            if ($action == 'templateuploadlogo'){
+                // $iTemplateConfigurationId = Yii::app()->request->getPost('templateconfig');
+                // $oTemplateConfiguration = TemplateConfiguration::getInstanceFromConfigurationId($iTemplateConfigurationId);
+                $sTemplateName = Yii::app()->request->getPost('templatename');
+                $oTemplateConfiguration = Template::getInstance($sTemplateName);
 
-            if ($action == 'templateupload'){
+                $debug[] = $sTemplateName;
+                $debug[] = $oTemplateConfiguration;
+                if (Yii::app()->getConfig('demoMode')){
+                    $uploadresult = gT("Demo mode: Uploading logos is disabled.");
+                    return Yii::app()->getController()->renderPartial(
+                        '/admin/super/_renderJson', array('data' => ['success' => $success,'message' => $uploadresult, 'debug' => $debug]),false,false
+                    );
+                }
+                $debug[] = $_FILES;
+                if ($_FILES['upload_logo']['error']==1 || $_FILES['upload_logo']['error']==2){
+                    $uploadresult = sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024);
+                    return Yii::app()->getController()->renderPartial(
+                        '/admin/super/_renderJson', array('data' => ['success' => $success,'message' => $uploadresult, 'debug' => $debug]),false,false
+                    );
+                }
+                $checkImage = getimagesize($_FILES["upload_logo"]["tmp_name"]);
+                $debug[] = $checkImage;
+                if ($checkImage === false ||  !in_array($checkImage[2], [IMAGETYPE_JPEG,IMAGETYPE_PNG,IMAGETYPE_GIF]) ) {
+                    $uploadresult = gT("This file is not a supported image, please only upload images of jpeg,png or gif type");
+                    return Yii::app()->getController()->renderPartial(
+                        '/admin/super/_renderJson', array('data' => ['success' => $success,'message' => $uploadresult, 'debug' => $debug]),false,false
+                    );
+                }
+
+                $destdir = $oTemplateConfiguration->filesPath;
+                $filename = sanitize_filename($_FILES['upload_logo']['name'],false,false,false);// Don't force lowercase or alphanumeric
+                $fullfilepath = $destdir . $filename;
+                $debug[] = $destdir;
+                $debug[] = $filename;
+                $debug[] = $fullfilepath;
+                if (!@move_uploaded_file($_FILES['upload_logo']['tmp_name'], $fullfilepath)) {
+                    $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+                }else{
+                    $uploadresult = sprintf(gT("File %s uploaded"),$filename);
+                    $success=true;
+                };
+
+                return Yii::app()->getController()->renderPartial(
+                    '/admin/super/_renderJson', array('data' => ['success' => $success,'message' => $uploadresult, 'debug' => $debug]),false,false
+                );
+
+            } else if ($action == 'templateupload'){
                 if (Yii::app()->getConfig('demoMode')){
                     Yii::app()->user->setFlash('error',gT("Demo mode: Uploading templates is disabled."));
                     $this->getController()->redirect(array("admin/templates/sa/upload"));

@@ -328,7 +328,7 @@ Responsive navbar-brand image CSS
 }
 
 .logo-container>img {
-  height: 100%;
+  max-height: 120px;
   width: auto;
 }
 

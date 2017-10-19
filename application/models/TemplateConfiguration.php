@@ -138,6 +138,18 @@ class TemplateConfiguration extends TemplateConfig
      * @param [String] $sTemplateName
      * @return TemplateConfiguration
      */
+    public static function getInstanceFromConfigurationId($iTemplateConfigId){
+        $oTemplateConfiguration = self::model()->findByPk($iTemplateConfigId);
+        $oTemplateConfiguration->setThisTemplate();
+        return $oTemplateConfiguration;
+    }
+
+    /**
+     * Gets an instance of a templateconfiguration by name
+     *
+     * @param [String] $sTemplateName
+     * @return TemplateConfiguration
+     */
     public static function getInstanceFromTemplateName($sTemplateName){
         return  self::model()->find(
             'template_name=:template_name AND sid IS NULL AND gsid IS NULL',
@@ -504,10 +516,29 @@ class TemplateConfiguration extends TemplateConfig
         return true;
     }
 
+    private function _filterImages($file){
+        $checkImage = getimagesize($this->filesPath.$file['name']);
+        if (!($checkImage === false ||  !in_array($checkImage[2], [IMAGETYPE_JPEG,IMAGETYPE_PNG,IMAGETYPE_GIF])))
+            return ['filepath' => './files/'.$file['name'], 'filename'=>$file['name']];
+    }
+
+    protected function getOptionPageAttributes(){
+        $aData = $this->attributes;
+        $fileList = Template::getOtherFiles($this->filesPath);
+        $aData['brandlogoFileList'] = [];
+        foreach($fileList as $file){
+            $isImage = $this->_filterImages($file);
+            
+            if($isImage)
+                $aData['brandlogoFileList'][] = $isImage;
+        };
+        return $aData;
+    }
+
     public function getOptionPage()
     {
         $this->prepareTemplateRendering();
-        return Yii::app()->twigRenderer->renderOptionPage($this, array('templateConfiguration' =>$this->attributes));
+        return Yii::app()->twigRenderer->renderOptionPage($this, array('templateConfiguration' => $this->getOptionPageAttributes()));
     }
 
     /**

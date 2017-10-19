@@ -31,7 +31,7 @@
         {# Logo option #}
         {% if( aSurveyInfo.options.brandlogo == "on") %}
             <div class="{{ aSurveyInfo.class.navbarbrand }} logo-container"  {{ aSurveyInfo.attr.navbarbrand }}  >
-                {{ image('./files/logo_w_s.png', aSurveyInfo.name, {"class": "logo"}) }}
+                {{ image(aSurveyInfo.options.brandlogofile, aSurveyInfo.name, {"class": "logo img-responsive"}) }}
             </div>
         {% else %}
             <div class="{{ aSurveyInfo.class.navbarbrand }}"  {{ aSurveyInfo.attr.navbarbrand }} >

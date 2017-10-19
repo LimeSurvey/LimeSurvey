@@ -134,8 +134,8 @@
                 <?php if(Permission::model()->hasGlobalPermission('templates','read')): ?>
                     <!-- Template Editor -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
-                            <?php eT("Template editor");?>
+                        <a href="<?php echo $this->createUrl("admin/templateoptions"); ?>">
+                            <?php eT("Template list");?>
                         </a>
                     </li>
                     <?php endif;?>
