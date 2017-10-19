@@ -112,14 +112,12 @@
          */
         public function deleteFiles()
         {
-            $errors = [];
+            $errors = array();
             $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
-            foreach ($this->getFiles() as $fileInfo)
-            {
+            foreach ($this->getFiles() as $fileInfo) {
                 $basename = basename($fileInfo['filename']);
                 $result = @unlink($uploaddir . $basename);
-                if (!$result)
-                {
+                if (!$result) {
                     $errors[] = $fileInfo['filename'];
                 }
             }
