@@ -30,8 +30,8 @@ function createDatabase($oDB){
         'scale_id' => 'integer DEFAULT 0',
         ));
         
-        $oDB->createCommand()->addPrimaryKey('answers_pk', '{{defaultvalues}}', ['qid', 'code', 'language', 'scale_id'], false);
-        $oDB->createCommand()->createIndex('answers_idx2', '{{answers}}', 'sortorder', false);
+        $oDB->createCommand()->addPrimaryKey('{{answers_pk}}', '{{defaultvalues}}', ['qid', 'code', 'language', 'scale_id'], false);
+        $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
 
         // assessements
         $oDB->createCommand()->createTable('{{assessments}}', array(
