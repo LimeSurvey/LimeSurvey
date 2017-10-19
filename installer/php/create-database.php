@@ -2,6 +2,12 @@
 function createDatabase($oDB){
     /**
     * Populate the database for a limesurvey installation
+    * Rules:
+    * - Use the provided addColumn, alterColumn, dropPrimaryKey etc. functions where applicable - they ensure cross-DB compatibility
+    * - Never use foreign keys
+    * - Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii
+    * - If you want to use database functions make sure they exist on all three supported database types
+    * - Always prefix key/index names by using curly brackets {{ }}* 
     */
 
     ////// Current database version: //////
@@ -23,7 +29,7 @@ function createDatabase($oDB){
         'language' => "string(20) DEFAULT 'en'"	,
         'scale_id' => 'integer DEFAULT 0',
         ));
-        $oDB->createCommand()->createIndex('answers_idx2', '{{answers}}', 'sortorder', false);
+        $oDB->createCommand()->createIndex('{{answers_idx2}}', '{{answers}}', 'sortorder', false);
 
         // assessements
         $oDB->createCommand()->createTable('{{assessments}}', array(
@@ -37,8 +43,8 @@ function createDatabase($oDB){
         'message' =>    'text',
         'language' =>   "string(20) DEFAULT 'en'"
         ));
-        $oDB->createCommand()->createIndex('assessments_idx2', '{{assessments}}', 'sid', false);
-        $oDB->createCommand()->createIndex('assessments_idx3', '{{assessments}}', 'gid', false);
+        $oDB->createCommand()->createIndex('{{assessments_idx2}}', '{{assessments}}', 'sid', false);
+        $oDB->createCommand()->createIndex('{{assessments_idx3}}', '{{assessments}}', 'gid', false);
 
         // boxes
         $oDB->createCommand()->createTable('{{boxes}}', array(
@@ -70,8 +76,8 @@ function createDatabase($oDB){
         'value' => "string(255) NOT NULL default ''",
         'scenario' => "integer NOT NULL default 1"
         ));
-        $oDB->createCommand()->createIndex('conditions_idx2', '{{conditions}}', 'qid', false);
-        $oDB->createCommand()->createIndex('conditions_idx3', '{{conditions}}', 'cqid', false);
+        $oDB->createCommand()->createIndex('{{conditions_idx}}', '{{conditions}}', 'qid', false);
+        $oDB->createCommand()->createIndex('{{conditions_idx3}}', '{{conditions}}', 'cqid', false);
 
 
         // defaultvalues
@@ -84,7 +90,7 @@ function createDatabase($oDB){
         'defaultvalue' =>  "text",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('defaultvalues_pk', '{{defaultvalues}}', ['qid', 'specialtype', 'language', 'scale_id', 'sqid'], false);
+        $oDB->createCommand()->addPrimaryKey('{{defaultvalues_pk}}', '{{defaultvalues}}', ['qid', 'specialtype', 'language', 'scale_id', 'sqid'], false);
 
         // expression_errors
         $oDB->createCommand()->createTable('{{expression_errors}}', array(
@@ -121,9 +127,9 @@ function createDatabase($oDB){
         'randomization_group' =>  "string(20) NOT NULL default ''",
         'grelevance' =>  "text NULL"
         ));
-        $oDB->createCommand()->createIndex('idx1_groups', '{{groups}}', 'sid', false);
-        $oDB->createCommand()->createIndex('idx2_groups', '{{groups}}', 'group_name', false);
-        $oDB->createCommand()->createIndex('idx3_groups', '{{groups}}', 'language', false);
+        $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
+        $oDB->createCommand()->createIndex('{{idx2_groups}}', '{{groups}}', 'group_name', false);
+        $oDB->createCommand()->createIndex('{{idx3_groups}}', '{{groups}}', 'language', false);
 
 
         // labels
@@ -136,9 +142,9 @@ function createDatabase($oDB){
         'assessment_value' =>  "integer NOT NULL default '0'",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_labels', '{{labels}}', 'code', false);
-        $oDB->createCommand()->createIndex('idx2_labels', '{{labels}}', 'sortorder', false);
-        $oDB->createCommand()->createIndex('idx3_labels', '{{labels}}', 'language', false);
+        $oDB->createCommand()->createIndex('{{idx1_labels}}', '{{labels}}', 'code', false);
+        $oDB->createCommand()->createIndex('{{idx2_labels}}', '{{labels}}', 'sortorder', false);
+        $oDB->createCommand()->createIndex('{{idx3_labels}}', '{{labels}}', 'language', false);
 
 
         // labelsets
@@ -164,8 +170,8 @@ function createDatabase($oDB){
         'first_read' =>  "datetime NULL",
         ));
 
-        $oDB->createCommand()->createIndex('notifications_pk', '{{notifications}}', ['entity', 'entity_id', 'status'], false);
-        $oDB->createCommand()->createIndex('idx1_notifications', '{{notifications}}', 'hash', false);
+        $oDB->createCommand()->createIndex('{{notifications_pk}}', '{{notifications}}', ['entity', 'entity_id', 'status'], false);
+        $oDB->createCommand()->createIndex('{{idx1_notifications}}', '{{notifications}}', 'hash', false);
 
 
         //  participants
@@ -182,10 +188,10 @@ function createDatabase($oDB){
         'modified' =>  "datetime",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('participant_pk', '{{participants}}', 'participant_id', false);
-        $oDB->createCommand()->createIndex('idx1_participants', '{{participants}}', 'firstname', false);
-        $oDB->createCommand()->createIndex('idx2_participants', '{{participants}}', 'lastname', false);
-        $oDB->createCommand()->createIndex('idx3_participants', '{{participants}}', 'language', false);
+        $oDB->createCommand()->addPrimaryKey('{{participant_pk}}', '{{participants}}', 'participant_id', false);
+        $oDB->createCommand()->createIndex('{{idx1_participants}}', '{{participants}}', 'firstname', false);
+        $oDB->createCommand()->createIndex('{{idx2_participants}}', '{{participants}}', 'lastname', false);
+        $oDB->createCommand()->createIndex('{{idx3_participants}}', '{{participants}}', 'language', false);
 
 
         // participant_attribute
@@ -195,7 +201,7 @@ function createDatabase($oDB){
         'value' =>  "text NOT NULL",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('participant_attribute_pk', '{{participant_attribute}}', ['participant_id', 'attribute_id']);
+        $oDB->createCommand()->addPrimaryKey('{{participant_attribute_pk}}', '{{participant_attribute}}', ['participant_id', 'attribute_id']);
 
 
         // participant_attribute_names_lang
@@ -205,7 +211,7 @@ function createDatabase($oDB){
         'lang' =>  "string(20) NOT NULL",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('participant_attribute_names_lang_pk', '{{participant_attribute_names_lang}}', ['attribute_id', 'lang']);
+        $oDB->createCommand()->addPrimaryKey('{{participant_attribute_names_lang_pk}}', '{{participant_attribute_names_lang}}', ['attribute_id', 'lang']);
 
 
 
@@ -217,7 +223,7 @@ function createDatabase($oDB){
         'visible' =>  "string(5) NOT NULL",
         ));
 
-        $oDB->createCommand()->createIndex('idx_participant_attribute_names', '{{participant_attribute_names}}', ['attribute_id', 'attribute_type']);
+        $oDB->createCommand()->createIndex('{{idx_participant_attribute_names}}', '{{participant_attribute_names}}', ['attribute_id', 'attribute_type']);
 
 
         //participant_attribute_values
@@ -237,7 +243,7 @@ function createDatabase($oDB){
         'can_edit' =>  "string(5) NOT NULL",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('participant_shares_pk', '{{participant_shares}}', ['participant_id', 'share_uid'], false);
+        $oDB->createCommand()->addPrimaryKey('{{participant_shares_pk}}', '{{participant_shares}}', ['participant_id', 'share_uid'], false);
 
 
         // permissions
@@ -255,7 +261,7 @@ function createDatabase($oDB){
         'export_p' =>  "integer NOT NULL default 0",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_permissions', '{{permissions}}', ['entity_id', 'entity', 'permission', 'uid'], true);
+        $oDB->createCommand()->createIndex('{{idx1_permissions}}', '{{permissions}}', ['entity_id', 'entity', 'permission', 'uid'], true);
 
 
         // plugins
@@ -299,11 +305,11 @@ function createDatabase($oDB){
         'modulename' =>  "string(255) NULL",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_questions', '{{questions}}', 'sid', false);
-        $oDB->createCommand()->createIndex('idx2_questions', '{{questions}}', 'gid', false);
-        $oDB->createCommand()->createIndex('idx3_questions', '{{questions}}', 'type', false);
-        $oDB->createCommand()->createIndex('idx4_questions', '{{questions}}', 'title', false);
-        $oDB->createCommand()->createIndex('idx5_questions', '{{questions}}', 'parent_qid', false);
+        $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
+        $oDB->createCommand()->createIndex('{{idx2_questions}}', '{{questions}}', 'gid', false);
+        $oDB->createCommand()->createIndex('{{idx3_questions}}', '{{questions}}', 'type', false);
+        $oDB->createCommand()->createIndex('{{idx4_questions}}', '{{questions}}', 'title', false);
+        $oDB->createCommand()->createIndex('{{idx5_questions}}', '{{questions}}', 'parent_qid', false);
 
 
 
@@ -316,8 +322,8 @@ function createDatabase($oDB){
         'language' => "string(20) NULL",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_question_attributes', '{{question_attributes}}', 'qid', false);
-        $oDB->createCommand()->createIndex('idx2_question_attributes', '{{question_attributes}}', 'attribute', false);
+        $oDB->createCommand()->createIndex('{{idx1_question_attributes}}', '{{question_attributes}}', 'qid', false);
+        $oDB->createCommand()->createIndex('{{idx2_question_attributes}}', '{{question_attributes}}', 'attribute', false);
 
 
         // quota
@@ -331,7 +337,7 @@ function createDatabase($oDB){
         'autoload_url' => "integer NOT NULL default '0'",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_quota', '{{quota}}', 'sid', false);
+        $oDB->createCommand()->createIndex('{{idx1_quota}}', '{{quota}}', 'sid', false);
 
 
         //quota_languagesettings
@@ -355,7 +361,7 @@ function createDatabase($oDB){
         'code' => "string(11) NULL",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_quota_members', '{{quota_members}}', ['sid', 'qid', 'quota_id', 'code'], true);
+        $oDB->createCommand()->createIndex('{{idx1_quota_members}}', '{{quota_members}}', ['sid', 'qid', 'quota_id', 'code'], true);
 
 
 
@@ -374,8 +380,8 @@ function createDatabase($oDB){
         'refurl' => "text",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_saved_control', '{{saved_control}}', 'sid');
-        $oDB->createCommand()->createIndex('idx2_saved_control', '{{saved_control}}', 'srid');
+        $oDB->createCommand()->createIndex('{{idx1_saved_control}}', '{{saved_control}}', 'sid');
+        $oDB->createCommand()->createIndex('{{idx2_saved_control}}', '{{saved_control}}', 'srid');
 
 
         // sessions
@@ -386,7 +392,7 @@ function createDatabase($oDB){
         'data' => "binary",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('sessions_pk', '{{sessions}}', 'id');
+        $oDB->createCommand()->addPrimaryKey('{{sessions_pk}}', '{{sessions}}', 'id');
 
 
         // settings_global
@@ -396,7 +402,7 @@ function createDatabase($oDB){
         'stg_value' =>  "text NOT NULL",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('settings_global_pk', '{{settings_global}}', 'stg_name');
+        $oDB->createCommand()->addPrimaryKey('{{settings_global_pk}}', '{{settings_global}}', 'stg_name');
 
 
 
@@ -411,10 +417,10 @@ function createDatabase($oDB){
         'stg_value' => "TEXT NULL",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_settings_user', '{{settings_user}}', 'uid', false);
-        $oDB->createCommand()->createIndex('idx2_settings_user', '{{settings_user}}', 'entity', false);
-        $oDB->createCommand()->createIndex('idx3_settings_user', '{{settings_user}}', 'entity_id', false);
-        $oDB->createCommand()->createIndex('idx4_settings_user', '{{settings_user}}', 'stg_name', false);
+        $oDB->createCommand()->createIndex('{{idx1_settings_user}}', '{{settings_user}}', 'uid', false);
+        $oDB->createCommand()->createIndex('{{idx2_settings_user}}', '{{settings_user}}', 'entity', false);
+        $oDB->createCommand()->createIndex('{{idx3_settings_user}}', '{{settings_user}}', 'entity_id', false);
+        $oDB->createCommand()->createIndex('{{idx4_settings_user}}', '{{settings_user}}', 'stg_name', false);
 
 
 
@@ -438,7 +444,7 @@ function createDatabase($oDB){
         'created_by' => "integer NOT NULL DEFAULT '0'",
         ));
 
-        $oDB->createCommand()->createIndex('idx2_surveymenu', '{{surveymenu}}', 'title', false);
+        $oDB->createCommand()->createIndex('{{idx2_surveymenu}}', '{{surveymenu}}', 'title', false);
 
         $headerArray = ['parent_id','survey_id','user_id','ordering','level','title','position','description','active','changed_at','changed_by','created_at','created_by'];
         $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [NULL,NULL,NULL,0,0,'surveymenu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
@@ -477,9 +483,9 @@ function createDatabase($oDB){
         'created_by' =>  "integer NOT NULL DEFAULT '0'",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_surveymenu_entries', '{{surveymenu_entries}}', 'menu_id', false);
-        $oDB->createCommand()->createIndex('idx3_surveymenu_entries', '{{surveymenu_entries}}', 'title', false);
-        $oDB->createCommand()->createIndex('idx5_surveymenu_entries', '{{surveymenu_entries}}', 'menu_title', false);
+        $oDB->createCommand()->createIndex('{{idx1_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_id', false);
+        $oDB->createCommand()->createIndex('{{idx3_surveymenu_entries}}', '{{surveymenu_entries}}', 'title', false);
+        $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
 
         $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
         $basicMenues = [
@@ -585,10 +591,10 @@ function createDatabase($oDB){
         'googleanalyticsapikey' => "string(25) NULL",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('surveys_pk', '{{surveys}}', 'sid');
+        $oDB->createCommand()->addPrimaryKey('{{surveys_pk}}', '{{surveys}}', 'sid');
 
-        $oDB->createCommand()->createIndex('idx1_surveys', '{{surveys}}', 'owner_id', false);
-        $oDB->createCommand()->createIndex('idx2_surveys', '{{surveys}}', 'gsid', false);
+        $oDB->createCommand()->createIndex('{{idx1_surveys}}', '{{surveys}}', 'owner_id', false);
+        $oDB->createCommand()->createIndex('{{idx2_surveys}}', '{{surveys}}', 'gsid', false);
 
 
         // surveys_groups
@@ -606,8 +612,8 @@ function createDatabase($oDB){
         'created_by' => "integer NOT NULL"
         ));
 
-        $oDB->createCommand()->createIndex('idx1_surveys_groups', '{{surveys_groups}}', 'name', false);
-        $oDB->createCommand()->createIndex('idx2_surveys_groups', '{{surveys_groups}}', 'title', false);
+        $oDB->createCommand()->createIndex('{{idx1_surveys_groups}}', '{{surveys_groups}}', 'name', false);
+        $oDB->createCommand()->createIndex('{{idx2_surveys_groups}}', '{{surveys_groups}}', 'title', false);
 
         $oDB->createCommand()->insert("{{surveys_groups}}", [
         'name' => 'default',
@@ -652,9 +658,9 @@ function createDatabase($oDB){
         'attachments' => "text NULL",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('surveys_languagesettings_pk', '{{surveys_languagesettings}}', ['surveyls_survey_id', 'surveyls_language']);
+        $oDB->createCommand()->addPrimaryKey('{{surveys_languagesettings_pk}}', '{{surveys_languagesettings}}', ['surveyls_survey_id', 'surveyls_language']);
 
-        $oDB->createCommand()->createIndex('idx1_surveys_languagesettings', '{{surveys_languagesettings}}', 'surveyls_title', false);
+        $oDB->createCommand()->createIndex('{{idx1_surveys_languagesettings}}', '{{surveys_languagesettings}}', 'surveyls_title', false);
 
 
         // survey_links
@@ -667,7 +673,7 @@ function createDatabase($oDB){
         'date_completed' => "datetime",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('survey_links_pk', '{{survey_links}}', ['participant_id','token_id','survey_id']);
+        $oDB->createCommand()->addPrimaryKey('{{survey_links_pk}}', '{{survey_links}}', ['participant_id','token_id','survey_id']);
 
 
 
@@ -704,10 +710,10 @@ function createDatabase($oDB){
         'extends' =>  "string(150)  NULL",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_templates', '{{templates}}', 'name', false);
-        $oDB->createCommand()->createIndex('idx2_templates', '{{templates}}', 'title', false);
-        $oDB->createCommand()->createIndex('idx3_templates', '{{templates}}', 'owner_id', false);
-        $oDB->createCommand()->createIndex('idx4_templates', '{{templates}}', 'extends', false);
+        $oDB->createCommand()->createIndex('{{idx1_templates}}', '{{templates}}', 'name', false);
+        $oDB->createCommand()->createIndex('{{idx2_templates}}', '{{templates}}', 'title', false);
+        $oDB->createCommand()->createIndex('{{idx3_templates}}', '{{templates}}', 'owner_id', false);
+        $oDB->createCommand()->createIndex('{{idx4_templates}}', '{{templates}}', 'extends', false);
 
         $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder','description','last_update','owner_id','extends'];
         $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '']));
@@ -739,10 +745,10 @@ function createDatabase($oDB){
         'packages_rtl' => "text",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_template_configuration', '{{template_configuration}}', 'template_name', false);
-        $oDB->createCommand()->createIndex('idx2_template_configuration', '{{template_configuration}}', 'sid', false);
-        $oDB->createCommand()->createIndex('idx3_template_configuration', '{{template_configuration}}', 'gsid', false);
-        $oDB->createCommand()->createIndex('idx4_template_configuration', '{{template_configuration}}', 'uid', false);
+        $oDB->createCommand()->createIndex('{{idx1_template_configuration}}', '{{template_configuration}}', 'template_name', false);
+        $oDB->createCommand()->createIndex('{{idx2_template_configuration}}', '{{template_configuration}}', 'sid', false);
+        $oDB->createCommand()->createIndex('{{idx3_template_configuration}}', '{{template_configuration}}', 'gsid', false);
+        $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
 
         $headerArray = ['template_name','sid','gsid','uid','files_css','files_js','files_print_css','options','cssframework_name','cssframework_css','cssframework_js','packages_to_load','packages_ltr','packages_rtl'];
         $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['default',NULL,NULL,NULL,'{"add": ["css/template.css", "css/animate.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','','','']));
@@ -759,7 +765,7 @@ function createDatabase($oDB){
         'uid' => "integer NOT NULL",
         ));
 
-        $oDB->createCommand()->addPrimaryKey('user_in_groups_pk', '{{user_in_groups}}', ['ugid','uid']);
+        $oDB->createCommand()->addPrimaryKey('{{user_in_groups_pk}}', '{{user_in_groups}}', ['ugid','uid']);
 
 
         // users
@@ -780,8 +786,8 @@ function createDatabase($oDB){
         'modified' => "datetime",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_users', '{{users}}', 'users_name', true);
-        $oDB->createCommand()->createIndex('idx2_users', '{{users}}', 'email', false);
+        $oDB->createCommand()->createIndex('{{idx1_users}}', '{{users}}', 'users_name', true);
+        $oDB->createCommand()->createIndex('{{idx2_users}}', '{{users}}', 'email', false);
 
 
         //user_groups
@@ -792,7 +798,7 @@ function createDatabase($oDB){
         'owner_id' => "integer NOT NULL",
         ));
 
-        $oDB->createCommand()->createIndex('idx1_user_groups', '{{user_groups}}', 'name', true);
+        $oDB->createCommand()->createIndex('{{idx1_user_groups}}', '{{user_groups}}', 'name', true);
 
 
         // Set database version

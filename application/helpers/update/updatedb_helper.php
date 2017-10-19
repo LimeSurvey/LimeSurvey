@@ -18,6 +18,7 @@
 - Never use foreign keys
 - Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii
 - If you want to use database functions make sure they exist on all three supported database types
+- Always prefix key names by using curly brackets {{ }}
 
 */
 
@@ -168,7 +169,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'created' => 'datetime not null',
                 'first_read' => 'datetime null'
             ));
-            $oDB->createCommand()->createIndex('notif_index', '{{notifications}}', 'entity, entity_id, status', false);
+            $oDB->createCommand()->createIndex('{{notif_index}}', '{{notifications}}', 'entity, entity_id, status', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -189,7 +190,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             * @author Olle Haerstedt
             */
             addColumn('{{notifications}}', 'hash', 'string(64)');
-            $oDB->createCommand()->createIndex('notif_hash_index', '{{notifications}}', 'hash', false);
+            $oDB->createCommand()->createIndex('{{notif_hash_index}}', '{{notifications}}', 'hash', false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -801,8 +802,8 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "created_at" =>  "datetime DEFAULT NULL",
         "created_by" =>  "integer NOT NULL DEFAULT '0'",
     ));
-    $oDB->createCommand()->createIndex('idx_ordering', '{{surveymenu}}', 'ordering');
-    $oDB->createCommand()->createIndex('idx_title', '{{surveymenu}}', 'title');
+    $oDB->createCommand()->createIndex('{{idx_ordering}}', '{{surveymenu}}', 'ordering');
+    $oDB->createCommand()->createIndex('{{idx_title}}', '{{surveymenu}}', 'title');
 
     $oDB->createCommand()->insert(
         '{{surveymenu}}',
@@ -865,10 +866,10 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "integer NOT NULL DEFAULT '0'"
     ));
-    $oDB->createCommand()->createIndex('idx_menu_id', '{{surveymenu_entries}}', 'menu_id');
-    $oDB->createCommand()->createIndex('idx_ordering_entries', '{{surveymenu_entries}}', 'ordering');
-    $oDB->createCommand()->createIndex('idx_title_entries', '{{surveymenu_entries}}', 'title');
-    $oDB->createCommand()->createIndex('idx_menu_title', '{{surveymenu_entries}}', 'menu_title');
+    $oDB->createCommand()->createIndex('{{idx_menu_id}}', '{{surveymenu_entries}}', 'menu_id');
+    $oDB->createCommand()->createIndex('{{idx_ordering_entries}}', '{{surveymenu_entries}}', 'ordering');
+    $oDB->createCommand()->createIndex('{{idx_title_entries}}', '{{surveymenu_entries}}', 'title');
+    $oDB->createCommand()->createIndex('{{idx_menu_title}}', '{{surveymenu_entries}}', 'menu_title');
 
     $colsToAdd = array("menu_id","user_id","ordering","name","title","menu_title","menu_description","menu_icon","menu_icon_type","menu_class","menu_link","action","template","partial","classes","permission","permission_grade","data","getdatamethod","language","changed_at","changed_by","created_at","created_by");
     $rowsToAdd = array(
@@ -1356,7 +1357,7 @@ function upgradeSurveyTables181($sMySQLCollation)
                 case 'dblib':
                 case 'mssql': dropSecondaryKeyMSSQL('token',$sTableName);
                     alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
-                    $oDB->createCommand()->createIndex("idx_{$sTableName}_".rand(1,50000),  $sTableName,'token');
+                    $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1,40000).'}}',  $sTableName,'token');
                     break;
                 case 'mysql':
                 case 'mysqli':
@@ -1387,7 +1388,7 @@ function upgradeTokenTables181($sMySQLCollation)
                     case 'dblib':
                     case 'mssql': dropSecondaryKeyMSSQL('token',$sTableName);
                         alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
-                        $oDB->createCommand()->createIndex("idx_{$sTableName}_".rand(1,50000),  $sTableName,'token');
+                        $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1,50000).'}}',  $sTableName,'token');
                         break;
                     case 'mysql':
                     case 'mysqli':
