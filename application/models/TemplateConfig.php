@@ -37,9 +37,6 @@ class TemplateConfig extends CActiveRecord
     /** @var  string $viewPath Path of the views files (twig template) */
     public $viewPath;
 
-    /** @var  string $sFilesDirectory name of the file directory */
-    public $sFilesDirectory;
-
     /** @var  string $filesPath Path of the tmeplate's files */
     public $filesPath;
 

@@ -355,7 +355,7 @@ class templates extends Survey_Common_Action
             $templatedir     = $oEditedTemplate->viewPath;
             $filesdir        = $oEditedTemplate->filesPath;
             $sPostedFile     = App()->request->getPost('otherfile');
-            $sFileToDelete   = str_replace($oEditedTemplate->sFilesDirectory, '', $sPostedFile);
+            $sFileToDelete   = str_replace($oEditedTemplate->filesPath, '', $sPostedFile);
             $sFileToDelete   = sanitize_filename( $sFileToDelete ,false,false);
             $the_full_file_path = $filesdir . $sFileToDelete;
 

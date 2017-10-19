@@ -200,7 +200,7 @@ class TemplateManifest extends TemplateConfiguration
             while (false !== ($file = readdir($handle))){
                 if (!array_search($file, array("DUMMYENTRY", ".", "..", "preview.png"))) {
                     if (!is_dir($this->viewPath . DIRECTORY_SEPARATOR . $file)) {
-                        $otherfiles[$file] = $this->sFilesDirectory . DIRECTORY_SEPARATOR . $file;
+                        $otherfiles[$file] = $this->filesPath . DIRECTORY_SEPARATOR . $file;
                     }
                 }
             }
@@ -697,7 +697,6 @@ class TemplateManifest extends TemplateConfiguration
 
         $this->viewPath           = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
         $this->filesPath          = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, '//filesdirectory')->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
-        $this->sFilesDirectory    = $this->filesPath; // TODO: remove doublon
         $this->templateEditor     = $this->getTemplateForPath($this, '//template_editor')->config->engine->template_editor;
 
         // Options are optional
