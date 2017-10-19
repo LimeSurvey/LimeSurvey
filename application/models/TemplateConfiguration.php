@@ -431,7 +431,7 @@ class TemplateConfiguration extends TemplateConfig
         $sEditorUrl    = Yii::app()->getController()->createUrl('admin/templates/sa/view', array("templatename"=>$this->template_name));
         if (App()->getController()->action->id == "surveysgroups"){
             $gisd = Yii::app()->request->getQuery('id', null);
-            $sOptionUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/update', array("id"=>$this->id, "gsid"=>$gisd));
+            $sOptionUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/updatesurveygroup', array("id"=>$this->id, "gsid"=>$gisd));
         }else{
             $sOptionUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/update', array("id"=>$this->id));
         }

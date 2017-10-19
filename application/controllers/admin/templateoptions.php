@@ -118,10 +118,11 @@ class templateoptions  extends Survey_Common_Action
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id the ID of the model to be updated
      */
-    public function updatesurveygroup($gsid)
+    public function updatesurveygroup($id=null, $gsid)
     {
         if ( Permission::model()->hasGlobalPermission('templates', 'update')){
-            $model = TemplateConfiguration::getInstance(null, $gsid);
+            $sTemplateName = $id !==null ? TemplateConfiguration::model()->findByPk($id)->template_name : null;
+            $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
 
             if(isset($_POST['TemplateConfiguration'])){
                 $model->attributes=$_POST['TemplateConfiguration'];
@@ -129,7 +130,7 @@ class templateoptions  extends Survey_Common_Action
                     $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/",['id'=>$gsid]));
             }
 
-            $this->_updateCommon($model, $sid);
+            $this->_updateCommon($model);
         }else{
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
             $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/",['id'=>$gsid]));
@@ -241,6 +242,7 @@ class templateoptions  extends Survey_Common_Action
             'model'=>$model,
             'templateOptionPage' => $templateOptionPage
         );
+        
         if($sid !== null){
             $aData['surveyid'] = $sid;
             $aData['title_bar']['title'] = gT("Survey template options");
