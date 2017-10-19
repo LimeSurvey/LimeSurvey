@@ -75,9 +75,12 @@ class Tutorials extends LSActiveRecord
                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                     'title' => gT('The survey description'),
                     'placement' => 'top',
-                    'content' => gT("This is the description of the survey.%s
+                    'content' => sprintf(
+                        gT("This is the description of the survey.%s
                         Your participants will see this at first on their welcome screen.
                         Try to describe what your survey is about, but don't ask any question just yet."),
+                        '<br/>'
+                    ),
                     'redirect' => false,
                 ),
                 array( //5
@@ -157,7 +160,7 @@ class Tutorials extends LSActiveRecord
                     'content' => sprintf(
                         gT('This is the top bar.
                         This bar will change as you move through the functionalities.
-                        In this view it contains the most important LimeSurvey functionalities like activating and previewing the survey</p>'),
+                        In this view it contains the most important LimeSurvey functionalities like activating and previewing the survey'),
                         '<br/>'
                     ),
                     'redirect' => false,
@@ -183,7 +186,7 @@ class Tutorials extends LSActiveRecord
                     'content' => sprintf(
                         gT("What good would your survey be without questions?%s
                         In LimeSurvey a survey is organized in question groups and questions. To begin creating questions we first need a question group.
-                        %sClick on the add question group button%s"),
+                        %sClick on the 'Add questiongroup' button%s"),
                         '<br/>','<p class="alert bg-warning">','</p>'
                     ),
                     'reflex' => true,
@@ -316,6 +319,7 @@ class Tutorials extends LSActiveRecord
                 ),
                 array( //24
                     'element' => '#adminpanel__topbar--selectorAddSubquestions',
+                    'placement' => 'bottom',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                     'title' => gT('Add some subquestions to your question'),
                     'content' => sprintf(
@@ -341,7 +345,7 @@ class Tutorials extends LSActiveRecord
                         gT("Here you may add some subquestions for your question.%s
                         Every row is one subquestion. It's best practice to use logical or numerical codes for the subquestions.
                         Your participants cannot see the subquestion code, only the subquestion text itself.
-                        <p class='bg-info alert'>Pro tip: the subquestion may contain HTML code if you are logged in with admin mode.</p>"),
+                        %sPro tip: the subquestion may contain HTML code if you are logged in with admin mode.%s"),
                         "<br/>","<p class='bg-info alert'>","</p>"
                     ),
                     'redirect' => false,
@@ -354,7 +358,7 @@ class Tutorials extends LSActiveRecord
                     'content' => sprintf(
                         gT('Click on the plus sign to add another subquestion to your question.
                         %sPlease add at least two subquestions%s'),
-                        "<p class='bg-info warning'>","</p>"
+                        "<p class='bg-warning alert'>","</p>"
                     ),
                     'redirect' => false,
                 ),
@@ -366,7 +370,7 @@ class Tutorials extends LSActiveRecord
                     'content' => sprintf(
                         gT("You may save empty subquestions, but that would useless.
                         %sSave now and let's edit the answer options.%s"),
-                        "<p class='bg-info warning'>","</p>"
+                        "<p class='bg-warning alert'>","</p>"
                     ),
                     'reflex' => true,
                     'redirect' => false,
@@ -427,7 +431,7 @@ class Tutorials extends LSActiveRecord
                         gT("Now is the time to preview your first survey.%s
                         Just click on this button and a new window will open, where you can test run your survey.%s
                         Please be aware that your answers will not be saved, because the survey isn't active yet.
-                        %sReturn to this window when you are done testing.%s"),
+                        %sClick on 'Preview survey' and return to this window when you are done testing.%s"),
                         '<br/>','<br/>','<p class="alert bg-warning">','</p>'
                     ),
                     'redirect' => false,
