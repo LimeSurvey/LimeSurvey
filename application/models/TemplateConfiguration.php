@@ -429,7 +429,13 @@ class TemplateConfiguration extends TemplateConfig
     public function getButtons()
     {
         $sEditorUrl    = Yii::app()->getController()->createUrl('admin/templates/sa/view', array("templatename"=>$this->template_name));
-        $sOptionUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/update', array("id"=>$this->id));
+        if (App()->getController()->action->id == "surveysgroups"){
+            $gisd = Yii::app()->request->getQuery('id', null);
+            $sOptionUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/update', array("id"=>$this->id, "gsid"=>$gisd));
+        }else{
+            $sOptionUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/update', array("id"=>$this->id));
+        }
+
         $sUninstallUrl = Yii::app()->getController()->createUrl('admin/templateoptions/sa/uninstall/', array("templatename"=>$this->template_name));
 
         $sEditorLink = "<a
@@ -463,11 +469,19 @@ class TemplateConfiguration extends TemplateConfig
             </a>";
 
 
-        $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
+        if (App()->getController()->action->id == "surveysgroups"){
+            $sButtons = $OptionLink;
+        }else{
+            $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
 
-        if (!$this->isStandard){
-            $sButtons .= '<br><br>'.$sUninstallLink ;
+            if (!$this->isStandard){
+                $sButtons .= '<br><br>'.$sUninstallLink ;
+            }
         }
+
+
+
+
 
         return $sButtons;
     }

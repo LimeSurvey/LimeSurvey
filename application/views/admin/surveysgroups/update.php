@@ -17,7 +17,7 @@
                 )
             )
         )); ?>
-    
+
     <div class="row">
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
             <li class="active"><a href="#surveysInThisGroup"><?php eT('Surveys in this group'); ?></a></li>
@@ -40,7 +40,12 @@
                 <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model)); ?>
             </div>
             <div id="templateSettingsFortThisGroup" class="tab-pane">
-                <?php $this->renderPartial('./templateoptions/update', array('model'=>$templateOptionsModel, 'templateOptionPage'=>$templateOptionPage)); ?>
+                <?php
+                    if (is_a($templateOptionsModel, 'TemplateConfiguration')){
+                    //    $this->renderPartial('./templateoptions/update', array('model'=>$templateOptionsModel, 'templateOptionPage'=>$templateOptionPage));
+                        $this->renderPartial('./templateoptions/index', array('model'=>$templateOptionsModel, 'bFromSurveyGroup'=>true));
+                    }
+                ?>
             </div>
         </div>
     </div>

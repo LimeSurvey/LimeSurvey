@@ -64,29 +64,23 @@ class SurveysGroupsController extends Survey_Common_Action
      */
     public function update($id)
     {
-        $model=$this->loadModel($id);
+        $model = $this->loadModel($id);
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
-        if(isset($_POST['SurveysGroups']))
-        {
+        if(isset($_POST['SurveysGroups'])){
             $model->attributes=$_POST['SurveysGroups'];
             if($model->save())
                 $this->getController()->redirect($this->getController()->createUrl('admin/survey/sa/listsurveys').'#surveygroups');
         }
+
         $aData['model'] = $model;
         $oSurveySearch = new Survey('search');
         $oSurveySearch->gsid = $model->gsid;
         $aData['oSurveySearch'] = $oSurveySearch;
 
-        $oTemplateOptions = TemplateConfiguration::getInstanceFromSurveyGroup($model->gsid);
 
-        $oTemplateOptionsReplacement = TemplateConfiguration::model()->findByPk($oTemplateOptions->id);
-        $templateOptionPage           = $oTemplateOptionsReplacement->optionPage;
-
+        $oTemplateOptions           = new TemplateConfiguration();
+        $oTemplateOptions->scenario = 'surveygroup';
         $aData['templateOptionsModel'] = $oTemplateOptions;
-        $aData['templateOptionPage'] = $templateOptionPage;
 
         $this->_renderWrappedTemplate('surveysgroups', 'update', $aData);
     }

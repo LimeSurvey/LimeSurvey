@@ -6,7 +6,6 @@
 
 
 
-
 <div class="container">
     <div class="row h1"><?php eT('Update TemplateOptions for '); echo '<em>' . $model->template_name . '</em>'; ?></div>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
@@ -53,19 +52,19 @@
                 ?>
             </div>
             <div role="tabpanel" class="tab-pane" id="advanced">
-            <?php 
+            <?php
                 $actionBaseUrl = 'admin/templateoptions/sa/update/';
                 $actionUrlArray = array('id' => $model->id);
-                
+
                 if($model->sid) {
-                    unset($actionUrlArray['id']); 
-                    $actionUrlArray['sid'] = $model->sid; 
+                    unset($actionUrlArray['id']);
+                    $actionUrlArray['sid'] = $model->sid;
                     $actionUrlArray['surveyd'] = $model->sid;
                     $actionUrlArray['gsid'] = $model->gsid;
                     $actionBaseUrl = 'admin/templateoptions/sa/updatesurvey/';
                     }
                 if($model->gsid) {
-                    unset($actionUrlArray['id']); 
+                    unset($actionUrlArray['id']);
                     $actionBaseUrl = 'admin/templateoptions/sa/updatesurveygroup/';
                     $actionUrlArray['gsid'] = $model->gsid;
                 }
@@ -153,7 +152,7 @@ $(document).on('ready pjax:complete', function(e){
     if($('.action_update_options_string_form').length > 0){
         var optionObject = {};
         optionObject = JSON.parse($('#TemplateConfiguration_options').val());
-        
+
         $('.action_update_options_string_form').find('.selector_option_value_field').each(function(i,item){
             var itemValue = optionObject[$(item).attr('name')];
             $(item).val(itemValue);

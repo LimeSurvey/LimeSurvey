@@ -5,18 +5,30 @@
 // TODO: rename to template_list.php
 
 ?>
+
+<?php
+    //$bFromSurveyGroup = (isset($bFromSurveyGroup))?$bFromSurveyGroup:false;
+    $bFromSurveyGroup = ($model->scenario == 'surveygroup')?true:false;
+?>
+
 <div class="col-lg-12 list-surveys">
 
-    <?php $this->renderPartial('super/fullpagebar_view', array(
-        'fullpagebar' => array(
-            'returnbutton'=>array(
-                'url'=>'index',
-                'text'=>gT('Close'),
-            ),
-        )
-    )); ?>
+    <?php
+        if (!$bFromSurveyGroup){
+            $this->renderPartial('super/fullpagebar_view', array(
+            'fullpagebar' => array(
+                'returnbutton'=>array(
+                    'url'=>'index',
+                    'text'=>gT('Close'),
+                    ),
+                )
+            ));
+            echo '<h3>'.gT('Installed templates:').'</h3>';
+        }
 
-    <h3><?php eT('Installed templates:'); ?></h3>
+
+    ?>
+
     <div class="row">
         <div class="col-sm-12 content-right">
 
@@ -75,37 +87,37 @@
         </div>
     </div>
 
-    <?php if (count($model->templatesWithNoDb) > 0):?>
-    <h3><?php eT('Available Templates:'); ?></h3>
-    <div class="row">
-        <div class="col-sm-12 content-right">
+    <?php if (count($model->templatesWithNoDb) > 0 && !$bFromSurveyGroup):?>
+        <h3><?php eT('Available Templates:'); ?></h3>
+        <div class="row">
+            <div class="col-sm-12 content-right">
 
-            <div id="templates_no_db" class="grid-view">
-                <table class="items table">
-                    <thead>
-                        <tr>
-                            <th><?php eT('Preview'); ?></th><th><?php eT('Folder'); ?></th><th><?php eT('Description'); ?></th><th><?php eT('type'); ?></th><th><?php eT('extends'); ?></th><th></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <?php foreach ($model->templatesWithNoDb as $oTemplate):?>
-                            <?php // echo $oTemplate; ?>
-                            <tr class="odd">
-                                <td class="col-md-1"><?php echo $oTemplate->preview; ?></td>
-                                <td class="col-md-2"><?php echo $oTemplate->sTemplateName; ?></td>
-                                <td class="col-md-3"><?php echo $oTemplate->config->metadatas->description; ?></td>
-                                <td class="col-md-2"><?php eT('XML template');?></td>
-                                <td class="col-md-2"><?php echo $oTemplate->config->metadatas->extends; ?></td>
-                                <td class="col-md-1"><?php echo $oTemplate->buttons; ?></td>
+                <div id="templates_no_db" class="grid-view">
+                    <table class="items table">
+                        <thead>
+                            <tr>
+                                <th><?php eT('Preview'); ?></th><th><?php eT('Folder'); ?></th><th><?php eT('Description'); ?></th><th><?php eT('type'); ?></th><th><?php eT('extends'); ?></th><th></th>
                             </tr>
-                        <?php endforeach;?>
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            <?php foreach ($model->templatesWithNoDb as $oTemplate):?>
+                                <?php // echo $oTemplate; ?>
+                                <tr class="odd">
+                                    <td class="col-md-1"><?php echo $oTemplate->preview; ?></td>
+                                    <td class="col-md-2"><?php echo $oTemplate->sTemplateName; ?></td>
+                                    <td class="col-md-3"><?php echo $oTemplate->config->metadatas->description; ?></td>
+                                    <td class="col-md-2"><?php eT('XML template');?></td>
+                                    <td class="col-md-2"><?php echo $oTemplate->config->metadatas->extends; ?></td>
+                                    <td class="col-md-1"><?php echo $oTemplate->buttons; ?></td>
+                                </tr>
+                            <?php endforeach;?>
+                        </tbody>
+                    </table>
+
+                </div>
 
             </div>
-
         </div>
-    </div>
-<?php endif;?>
+    <?php endif;?>
 </div>
