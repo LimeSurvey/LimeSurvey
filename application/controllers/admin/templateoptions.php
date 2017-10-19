@@ -123,8 +123,9 @@ class templateoptions  extends Survey_Common_Action
         if ( Permission::model()->hasGlobalPermission('templates', 'update')){
             $sTemplateName = $id !==null ? TemplateConfiguration::model()->findByPk($id)->template_name : null;
             $model = TemplateConfiguration::getInstance($sTemplateName, $gsid);
-
+            
             if(isset($_POST['TemplateConfiguration'])){
+                $model = TemplateConfiguration::getInstance($_POST['TemplateConfiguration']['template_name'], $gsid);
                 $model->attributes=$_POST['TemplateConfiguration'];
                 if($model->save())
                     $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/",['id'=>$gsid]));
@@ -242,7 +243,7 @@ class templateoptions  extends Survey_Common_Action
             'model'=>$model,
             'templateOptionPage' => $templateOptionPage
         );
-        
+
         if($sid !== null){
             $aData['surveyid'] = $sid;
             $aData['title_bar']['title'] = gT("Survey template options");
