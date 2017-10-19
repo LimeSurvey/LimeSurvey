@@ -34,7 +34,8 @@ const TourLibrary = function () {
                     tourObject.onEnd = () => {
                         _setNoTourActive();
                     };
-
+                    window.debug = window.debug || {};
+                    window.debug.tourObject = tourObject;
                     _actionActiveTour = new Tour(tourObject);
                     _actionActiveTour.init();
 

@@ -241,7 +241,9 @@ class AdminController extends LSYii_Controller
         'pluginhelper'     => 'PluginHelper',
         'notification'     => 'NotificationController',
         'menus'            => 'SurveymenuController',
-        'menuentries'      => 'SurveymenuEntryController'
+        'menuentries'      => 'SurveymenuEntryController',
+        'tutorial'         => 'TutorialsController',
+        'tutorialentries'  => 'TutorialEntryController'
         );
     }
 

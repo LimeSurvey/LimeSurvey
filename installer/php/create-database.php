@@ -11,7 +11,7 @@ function createDatabase($oDB){
     */
 
     ////// Current database version: //////
-    $databaseCurrentVersion = "321";
+    $databaseCurrentVersion = "322";
     ///////////////////////////////////////
 
     Yii::app()->loadHelper('database');
@@ -759,7 +759,29 @@ function createDatabase($oDB){
 
         $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','','','']));
 
+        //tutorials
+        $oDB->createCommand()->createTable(
+            '{{tutorials}}',[
+                'tid' =>  'pk',
+                'name' =>  'string(128)',
+                'description' =>  'text',
+                'active' =>  'int DEFAULT 0',
+                'settings' => 'text DEFAULT ""',
+                'permission' =>  'string(128) NOT NULL',
+                'permission_grade' =>  'string(128) NOT NULL'
+            ]
+        );
 
+        //tutorial entries
+        $oDB->createCommand()->createTable(
+            '{{tutorial_entries}}',[
+                'teid' =>  'pk',
+                'tid' =>  'int NOT NULL',
+                'title' =>  'text',
+                'content' =>  'text DEFAULT ""',
+                'settings' => 'text DEFAULT ""'
+            ]
+        );
 
         //user_in_groups
         $oDB->createCommand()->createTable('{{user_in_groups}}', array(

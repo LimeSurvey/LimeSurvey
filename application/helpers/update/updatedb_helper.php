@@ -605,6 +605,32 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
+    if ($iOldDBVersion < 322) {
+        $oTransaction = $oDB->beginTransaction();
+        $oDB->createCommand()->createTable(
+            '{{tutorials}}',[
+                'tid' =>  'pk',
+                'name' =>  'string(128)',
+                'description' =>  'text',
+                'active' =>  'int DEFAULT 0',
+                'settings' => 'text DEFAULT ""',
+                'permission' =>  'string(128) NOT NULL',
+                'permission_grade' =>  'string(128) NOT NULL'
+            ]
+        );
+        $oDB->createCommand()->createTable(
+            '{{tutorial_entries}}',[
+                'teid' =>  'pk',
+                'tid' =>  'int NOT NULL',
+                'title' =>  'text',
+                'content' =>  'text DEFAULT ""',
+                'settings' => 'text DEFAULT ""'
+            ]
+        );
+        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>321),"stg_name='DBVersion'");
+        $oTransaction->commit();
+    }
+
     }
     catch(Exception $e)
     {

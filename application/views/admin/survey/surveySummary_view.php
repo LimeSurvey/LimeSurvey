@@ -350,7 +350,7 @@ $surveyid = $oSurvey->sid;
                 <!-- List group -->
                 <ul class="list-group">
                     <!-- Base language -->
-                    <li class="list-group-item">
+                    <li class="list-group-item" id="adminpanel__surveysummary--mainLanguageLink">
                         <div class="ls-flex-row col-12">
                             <div class="col-4">
                                 <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>  <?php eT('(Base language)');?>:
