@@ -225,7 +225,11 @@ class templateoptions  extends Survey_Common_Action
 
     public function uninstall($templatename)
     {
-        TemplateConfiguration::uninstall($templatename);
+        if (!Template::hasInheritance($templatename)){
+            TemplateConfiguration::uninstall($templatename);
+        }else{
+            Yii::app()->setFlashMessage(sprintf(gT("You can't uninstall template '%s' because some template inherit from it."), $templatename), 'error');
+        }
         $this->getController()->redirect(array("admin/templateoptions"));
     }
 

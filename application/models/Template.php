@@ -468,7 +468,10 @@ class Template extends LSActiveRecord
     }
 
 
-
+    public static function hasInheritance($sTemplateName)
+    {
+        return self::model()->countByAttributes(array('extends' => $sTemplateName));
+    }
 
     public static function getUploadTemplates()
     {

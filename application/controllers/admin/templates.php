@@ -494,29 +494,34 @@ class templates extends Survey_Common_Action
 
         Yii::app()->loadHelper("admin/template");
 
-        if ( Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename)){
+        if ( Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename) ){
 
-            if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
-                $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
+            if (!Template::hasInheritance($templatename)){
 
-                // The default template could be the same as the one we're trying to remove
-                $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttemplate') == $templatename;
+                if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
+                    $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
 
-                if ($globalDefaultIsGettingDeleted){
-                    setGlobalSetting('defaulttemplate', 'default');
+                    // The default template could be the same as the one we're trying to remove
+                    $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttemplate') == $templatename;
+
+                    if ($globalDefaultIsGettingDeleted){
+                        setGlobalSetting('defaulttemplate', 'default');
+                    }
+
+                    foreach ($surveys as $s){
+                        $s->template = Yii::app()->getConfig('defaulttemplate');
+                        $s->save();
+                    }
+
+                    TemplateConfiguration::uninstall($templatename);
+                    Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
+
+                    Yii::app()->setFlashMessage(sprintf(gT("Template '%s' was successfully deleted."), $templatename));
+                }else{
+                    Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
                 }
-
-                foreach ($surveys as $s){
-                    $s->template = Yii::app()->getConfig('defaulttemplate');
-                    $s->save();
-                }
-
-                TemplateConfiguration::uninstall($templatename);
-                Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
-
-                Yii::app()->setFlashMessage(sprintf(gT("Template '%s' was successfully deleted."), $templatename));
             }else{
-                Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
+                Yii::app()->setFlashMessage(sprintf(gT("You can't delete templates '%s' because some template inherit from it."), $templatename),'error');
             }
 
         }else{
