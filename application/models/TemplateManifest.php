@@ -221,11 +221,11 @@ class TemplateManifest extends TemplateConfiguration
     }
 
     /**
-     * NOTE: a core template will always be in the DB. So this function concerns only uploaded templates
+     *
      */
     public function getTemplateURL()
     {
-        return Yii::app()->getConfig("usertemplaterooturl").'/'.$this->sTemplateName.'/';
+        return Template::getTemplateURL($this->sTemplateName);
     }
 
 
@@ -553,7 +553,7 @@ class TemplateManifest extends TemplateConfiguration
     {
         $this->setBasics($sTemplateName, $iSurveyId);
         $this->setMotherTemplates();                                            // Recursive mother templates configuration
-        @$this->setThisTemplate();                                               // Set the main config values of this template
+        $this->setThisTemplate();                                               // Set the main config values of this template
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
     }

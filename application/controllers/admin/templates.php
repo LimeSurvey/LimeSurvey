@@ -672,16 +672,14 @@ class templates extends Survey_Common_Action
         /* Load this template config, else 'survey-template' package can be outdated */
         $oEditedTemplate = Template::model()->getTemplateConfiguration($templatename, null,null, true);
         $oEditedTemplate->prepareTemplateRendering($templatename);
+
+
         if (!$fnew) {
             $aData['filenotwritten'] = true;
         }else{
             //App()->getClientScript()->reset();
             @fwrite($fnew, getHeader());
 
-            //App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'survey_runtime.js');
-            /* register template package : PS : use asset :) */
-            //Yii::app()->clientScript->registerPackage( 'survey-template-'.$templatename );
-            /* some needed utils script from limesurvey-public package */
             App()->getClientScript()->registerScript("activateActionLink","activateActionLink();",CClientScript::POS_END);/* show the button if needed */
 
             /* Must remove all exitsing scripts / css and js */
