@@ -26,11 +26,12 @@ class templates extends Survey_Common_Action
 
     public function runWithParams($params)
     {
-        if (!Permission::model()->hasGlobalPermission('templates','read')){
-            die('No permission');
+        if (Permission::model()->hasGlobalPermission('templates','read')){
+            parent::runWithParams($params);
+        }else{
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
+            $this->getController()->redirect(array("admin/templateoptions"));
         }
-
-        parent::runWithParams($params);
     }
 
     /**
@@ -44,32 +45,32 @@ class templates extends Survey_Common_Action
     {
         $oEditedTemplate = Template::getInstance($templatename);
 
-        if (!Permission::model()->hasGlobalPermission('templates','export'))
-        {
-            die('No permission');
-        }
+        if (Permission::model()->hasGlobalPermission('templates','export')){
+            $templatedir = $oEditedTemplate->path . DIRECTORY_SEPARATOR;
+            $tempdir = Yii::app()->getConfig('tempdir');
 
-        $templatedir = $oEditedTemplate->path . DIRECTORY_SEPARATOR;
-        $tempdir = Yii::app()->getConfig('tempdir');
+            $zipfile = "$tempdir/$templatename.zip";
+            Yii::app()->loadLibrary('admin.pclzip');
+            $zip = new PclZip($zipfile);
+            $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->path);
 
-        $zipfile = "$tempdir/$templatename.zip";
-        Yii::app()->loadLibrary('admin.pclzip');
-        $zip = new PclZip($zipfile);
-        $zip->create($templatedir, PCLZIP_OPT_REMOVE_PATH, $oEditedTemplate->path);
+            if (is_file($zipfile)) {
+                // Send the file for download!
+                header("Pragma: public");
+                header("Expires: 0");
+                header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+                header("Content-Type: application/force-download");
+                header("Content-Disposition: attachment; filename=$templatename.zip");
+                header("Content-Description: File Transfer");
 
-        if (is_file($zipfile)) {
-            // Send the file for download!
-            header("Pragma: public");
-            header("Expires: 0");
-            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-            header("Content-Type: application/force-download");
-            header("Content-Disposition: attachment; filename=$templatename.zip");
-            header("Content-Description: File Transfer");
+                @readfile($zipfile);
 
-            @readfile($zipfile);
-
-            // Delete the temporary file
-            unlink($zipfile);
+                // Delete the temporary file
+                unlink($zipfile);
+            }
+        }else{
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
+            $this->getController()->redirect(array("admin/templateoptions"));
         }
     }
 
@@ -98,119 +99,103 @@ class templates extends Survey_Common_Action
     */
     public function upload()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','import'))
-        {
-            die('No permission');
-        }
+        if (Permission::model()->hasGlobalPermission('templates','import')){
+            Yii::app()->loadHelper('admin/template');
+            $lid = returnGlobal('lid');
+            $action = returnGlobal('action');
 
-        Yii::app()->loadHelper('admin/template');
-        $lid = returnGlobal('lid');
-        $action = returnGlobal('action');
+            if ($action == 'templateupload'){
+                if (Yii::app()->getConfig('demoMode')){
+                    Yii::app()->user->setFlash('error',gT("Demo mode: Uploading templates is disabled."));
+                    $this->getController()->redirect(array("admin/templates/sa/upload"));
+                }
 
-        if ($action == 'templateupload')
-        {
-            if (Yii::app()->getConfig('demoMode'))
-            {
-                Yii::app()->user->setFlash('error',gT("Demo mode: Uploading templates is disabled."));
-                $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }
+                Yii::app()->loadLibrary('admin.pclzip');
 
-            Yii::app()->loadLibrary('admin.pclzip');
+                if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2){
+                    Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024),'error');
+                    $this->getController()->redirect(array("admin/templates/sa/upload"));
+                }
 
-            if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
-            {
-                Yii::app()->setFlashMessage(sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024),'error');
-                $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }
+                $zip = new PclZip($_FILES['the_file']['tmp_name']);
 
-            $zip = new PclZip($_FILES['the_file']['tmp_name']);
+                $sNewDirectoryName=sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME ));
+                $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
-            $sNewDirectoryName=sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME ));
-            $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
+                if (!is_writeable(dirname($destdir))){
+                    Yii::app()->user->setFlash('error',sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir)));
+                    $this->getController()->redirect(array("admin/templates/sa/upload"));
+                }
 
-            if (!is_writeable(dirname($destdir)))
-            {
-                Yii::app()->user->setFlash('error',sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir)));
-                $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }
+                if (!is_dir($destdir)){
+                    mkdir($destdir);
+                }else{
+                    Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
+                    $this->getController()->redirect(array("admin/templates/sa/upload"));
+                }
 
-            if (!is_dir($destdir))
-                mkdir($destdir);
-            else
-            {
-                Yii::app()->user->setFlash('error', sprintf(gT("Template '%s' does already exist."), $sNewDirectoryName));
-                $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }
+                $aImportedFilesInfo = array();
+                $aErrorFilesInfo = array();
 
-            $aImportedFilesInfo = array();
-            $aErrorFilesInfo = array();
+                if (is_file($_FILES['the_file']['tmp_name'])){
+                    $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
 
-            if (is_file($_FILES['the_file']['tmp_name']))
-            {
-                $aExtractResult=$zip->extract(PCLZIP_OPT_PATH, $destdir, PCLZIP_CB_PRE_EXTRACT, 'templateExtractFilter');
+                    if ($aExtractResult===0){
+                        Yii::app()->user->setFlash('error',gT("This file is not a valid ZIP file archive. Import failed."));
+                        rmdirr($destdir);
+                        $this->getController()->redirect(array("admin/templates/sa/upload"));
+                    }else{
+                        // Successfully unpacked
+                        foreach ($aExtractResult as $sFile){
+                            if ($sFile['status']=='skipped' && !$sFile['folder']){
+                                $aErrorFilesInfo[] = array(
+                                    "filename" => $sFile['stored_filename'],
+                                );
+                            }else{
+                                $aImportedFilesInfo[] = array(
+                                    "filename" => $sFile['stored_filename'],
+                                    "status" => gT("OK"),
+                                    'is_folder' => $sFile['folder']
+                                );
+                            }
+                        }
 
-                if ($aExtractResult===0)
-                {
-                    Yii::app()->user->setFlash('error',gT("This file is not a valid ZIP file archive. Import failed."));
+                        if (!Template::checkIfTemplateExists($sNewDirectoryName)){
+                            Yii::app()->user->setFlash('error',gT("This ZIP archive did not contain a template. Import failed."));
+                            rmdirr($destdir);
+                            $this->getController()->redirect(array("admin/templates/sa/upload"));
+                        }
+                    }
+
+                    if (count($aImportedFilesInfo) == 0){
+                        Yii::app()->user->setFlash('error',gT("This ZIP archive contains no valid template files. Import failed."));
+                        $this->getController()->redirect(array("admin/templates/sa/upload"));
+                    }
+                }else{
+                    Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),'error');
                     rmdirr($destdir);
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
-                else
-                {
-                    // Successfully unpacked
-                    foreach ($aExtractResult as $sFile)
-                    {
-                        if ($sFile['status']=='skipped' && !$sFile['folder'])
-                        {
-                            $aErrorFilesInfo[] = array(
-                                "filename" => $sFile['stored_filename'],
-                            );
-                        }
-                        else
-                        {
-                            $aImportedFilesInfo[] = array(
-                                "filename" => $sFile['stored_filename'],
-                                "status" => gT("OK"),
-                                'is_folder' => $sFile['folder']
-                            );
-                        }
-                    }
-                    if (!Template::checkIfTemplateExists($sNewDirectoryName))
-                    {
-                        Yii::app()->user->setFlash('error',gT("This ZIP archive did not contain a template. Import failed."));
-                        rmdirr($destdir);
-                        $this->getController()->redirect(array("admin/templates/sa/upload"));
-                    }
-                }
 
-                if (count($aImportedFilesInfo) == 0)
-                {
-                    Yii::app()->user->setFlash('error',gT("This ZIP archive contains no valid template files. Import failed."));
-                    $this->getController()->redirect(array("admin/templates/sa/upload"));
-                }
-            }
-            else
-            {
-                Yii::app()->setFlashMessage(gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder."),'error');
-                rmdirr($destdir);
-                $this->getController()->redirect(array("admin/templates/sa/upload"));
+                $aViewUrls = 'importuploaded_view';
+                $aData = array(
+                    'aImportedFilesInfo' => $aImportedFilesInfo,
+                    'aErrorFilesInfo' => $aErrorFilesInfo,
+                    'lid' => $lid,
+                    'newdir' => $sNewDirectoryName,
+                );
+            }else{
+                $aViewUrls = 'importform_view';
+                $aData = array('lid' => $lid);
             }
 
-            $aViewUrls = 'importuploaded_view';
-            $aData = array(
-                'aImportedFilesInfo' => $aImportedFilesInfo,
-                'aErrorFilesInfo' => $aErrorFilesInfo,
-                'lid' => $lid,
-                'newdir' => $sNewDirectoryName,
-            );
-        }
-        else
-        {
-            $aViewUrls = 'importform_view';
-            $aData = array('lid' => $lid);
+            $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
+        }else{
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
+            $this->getController()->redirect(array("admin/templateoptions"));
         }
 
-        $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
+
     }
 
     /**
@@ -221,49 +206,50 @@ class templates extends Survey_Common_Action
     */
     public function uploadfile()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','import')){
-            die('No permission');
-        }
+        if (Permission::model()->hasGlobalPermission('templates','import')){
 
-        $action                 = returnGlobal('action');
-        $editfile               = App()->request->getPost('editfile');
-        $templatename           = returnGlobal('templatename');
-        $oEditedTemplate        = Template::getInstance($templatename);
-        $screenname             = returnGlobal('screenname');
-        $allowedtemplateuploads = Yii::app()->getConfig('allowedtemplateuploads');
-        $filename               = sanitize_filename($_FILES['upload_file']['name'],false,false,false);// Don't force lowercase or alphanumeric
-        $dirfilepath            = $oEditedTemplate->filesPath;
+            $action                 = returnGlobal('action');
+            $editfile               = App()->request->getPost('editfile');
+            $templatename           = returnGlobal('templatename');
+            $oEditedTemplate        = Template::getInstance($templatename);
+            $screenname             = returnGlobal('screenname');
+            $allowedtemplateuploads = Yii::app()->getConfig('allowedtemplateuploads');
+            $filename               = sanitize_filename($_FILES['upload_file']['name'],false,false,false);// Don't force lowercase or alphanumeric
+            $dirfilepath            = $oEditedTemplate->filesPath;
 
-        if (!file_exists($dirfilepath)){
-            if(is_writable($oEditedTemplate->path )){
-                mkdir($dirfilepath, 0777, true);
-            }else{
-                $uploadresult = sprintf(gT("The folder %s doesn't exist and can't be created."),$dirfilepath);
-                Yii::app()->setFlashMessage($uploadresult,'error');
-                $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>$editfile,'screenname'=>$screenname,'templatename'=>$templatename));
-            }
-        }
-
-        $fullfilepath = $dirfilepath . $filename;
-        $status       = 'error';
-
-        if($action=="templateuploadfile"){
-            if(Yii::app()->getConfig('demoMode')){
-                $uploadresult = gT("Demo mode: Uploading template files is disabled.");
-            }elseif($filename!=$_FILES['upload_file']['name']){
-                $uploadresult = gT("This filename is not allowed to be uploaded.");
-            }elseif(!in_array(strtolower(substr(strrchr($filename, '.'),1)),explode ( "," , $allowedtemplateuploads ))){
-                $uploadresult = gT("This file type is not allowed to be uploaded.");
-            }else{
-                //Uploads the file into the appropriate directory
-                if (!@move_uploaded_file($_FILES['upload_file']['tmp_name'], $fullfilepath)) {
-                    $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+            if (!file_exists($dirfilepath)){
+                if(is_writable($oEditedTemplate->path )){
+                    mkdir($dirfilepath, 0777, true);
                 }else{
-                    $uploadresult = sprintf(gT("File %s uploaded"),$filename);
-                    $status='success';
+                    $uploadresult = sprintf(gT("The folder %s doesn't exist and can't be created."),$dirfilepath);
+                    Yii::app()->setFlashMessage($uploadresult,'error');
+                    $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>$editfile,'screenname'=>$screenname,'templatename'=>$templatename));
                 }
             }
-            Yii::app()->setFlashMessage($uploadresult,$status);
+
+            $fullfilepath = $dirfilepath . $filename;
+            $status       = 'error';
+
+            if($action=="templateuploadfile"){
+                if(Yii::app()->getConfig('demoMode')){
+                    $uploadresult = gT("Demo mode: Uploading template files is disabled.");
+                }elseif($filename!=$_FILES['upload_file']['name']){
+                    $uploadresult = gT("This filename is not allowed to be uploaded.");
+                }elseif(!in_array(strtolower(substr(strrchr($filename, '.'),1)),explode ( "," , $allowedtemplateuploads ))){
+                    $uploadresult = gT("This file type is not allowed to be uploaded.");
+                }else{
+                    //Uploads the file into the appropriate directory
+                    if (!@move_uploaded_file($_FILES['upload_file']['tmp_name'], $fullfilepath)) {
+                        $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
+                    }else{
+                        $uploadresult = sprintf(gT("File %s uploaded"),$filename);
+                        $status='success';
+                    }
+                }
+                Yii::app()->setFlashMessage($uploadresult,$status);
+            }
+        }else{
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
         }
         $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>$editfile,'screenname'=>$screenname,'templatename'=>$templatename));
     }
@@ -279,11 +265,11 @@ class templates extends Survey_Common_Action
     */
     protected function _tempdir($dir, $prefix = '', $mode = 0700)
     {
-        if (substr($dir, -1) != '/')
+        if (substr($dir, -1) != '/'){
             $dir .= '/';
+        }
 
-        do
-        {
+        do{
             $path = $dir . $prefix . mt_rand(0, 9999999);
         }
         while (!mkdir($path, $mode));
@@ -363,24 +349,25 @@ class templates extends Survey_Common_Action
     */
     public function templatefiledelete()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','update')){
-            die('No permission');
-        }
+        if (Permission::model()->hasGlobalPermission('templates','update')){
+            $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
+            $oEditedTemplate = Template::getInstance($sTemplateName);
+            $templatedir     = $oEditedTemplate->viewPath;
+            $filesdir        = $oEditedTemplate->filesPath;
+            $sPostedFile     = App()->request->getPost('otherfile');
+            $sFileToDelete   = str_replace($oEditedTemplate->sFilesDirectory, '', $sPostedFile);
+            $sFileToDelete   = sanitize_filename( $sFileToDelete ,false,false);
+            $the_full_file_path = $filesdir . $sFileToDelete;
 
-        $sTemplateName   = Template::templateNameFilter(App()->request->getPost('templatename'));
-        $oEditedTemplate = Template::getInstance($sTemplateName);
-        $templatedir     = $oEditedTemplate->viewPath;
-        $filesdir        = $oEditedTemplate->filesPath;
-        $sPostedFile     = App()->request->getPost('otherfile');
-        $sFileToDelete   = str_replace($oEditedTemplate->sFilesDirectory, '', $sPostedFile);
-        $sFileToDelete   = sanitize_filename( $sFileToDelete ,false,false);
-        $the_full_file_path = $filesdir . $sFileToDelete;
-
-        if (@unlink($the_full_file_path)){
-            Yii::app()->user->setFlash('error', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
+            if (@unlink($the_full_file_path)){
+                Yii::app()->user->setFlash('error', sprintf(gT("The file %s was deleted."), htmlspecialchars($sFileToDelete)));
+            }else{
+                Yii::app()->user->setFlash('error',sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete)));
+            }
         }else{
-            Yii::app()->user->setFlash('error',sprintf(gT("File %s couldn't be deleted. Please check the permissions on the /upload/template folder"), htmlspecialchars($sFileToDelete)));
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
         }
+
         $this->getController()->redirect(array('admin/templates','sa'=>'view', 'editfile'=> App()->request->getPost('editfile'),'screenname'=>App()->request->getPost('screenname'),'templatename'=>$sTemplateName));
     }
 
@@ -392,47 +379,48 @@ class templates extends Survey_Common_Action
     */
     public function templaterename()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','update')){
-            die('No permission');
-        }
+        $sOldName = sanitize_dirname(returnGlobal('copydir'));
 
-        if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
+        if (Permission::model()->hasGlobalPermission('templates','update')){
+            if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
+                $sNewName = sanitize_dirname(returnGlobal('newname'));
+                $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
+                $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
 
-            $sOldName = sanitize_dirname(returnGlobal('copydir'));
-            $sNewName = sanitize_dirname(returnGlobal('newname'));
-            $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
-            $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
+                if (isStandardTemplate(returnGlobal('newname'))){
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("This name is reserved for standard template.", "js"));
 
-            if (isStandardTemplate(returnGlobal('newname'))){
-                Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("This name is reserved for standard template.", "js"));
+                    $this->getController()->redirect(array("admin/templates/sa/upload"));
+                }elseif (file_exists($sNewDirectoryPath)){
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("A template with that name already exists.", "js"));
 
-                $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }elseif (file_exists($sNewDirectoryPath)){
-                Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("A template with that name already exists.", "js"));
+                    $this->getController()->redirect(array("admin/templates/sa/upload"));
+                }elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false){
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js"));
 
-                $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false){
-                Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js"));
+                    $this->getController()->redirect(array("admin/templates/sa/upload"));
+                }else{
 
-                $this->getController()->redirect(array("admin/templates/sa/upload"));
-            }else{
+                    $oTemplate = Template::model()->findByAttributes(array('name' => $sOldName));
 
-                $oTemplate = Template::model()->findByAttributes(array('name' => $sOldName));
+                    if ( is_a($oTemplate, 'Template') ){
+                        $oTemplate->renameTo($sNewName);
+                        if ( getGlobalSetting('defaulttemplate')==$sOldName){
+                            setGlobalSetting('defaulttemplate',$sNewName);
+                        }
 
-                if ( is_a($oTemplate, 'Template') ){
-                    $oTemplate->renameTo($sNewName);
-                    if ( getGlobalSetting('defaulttemplate')==$sOldName){
-                        setGlobalSetting('defaulttemplate',$sNewName);
+                        $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>'layout_first_page.twig','screenname'=>'welcome','templatename'=>$sNewName));
+                    }else{
+                        Yii::app()->user->setFlash('error',sprintf(gT("Template `%s` could not be found.", "js"), $sOldName));
                     }
 
-                    $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>'layout_first_page.twig','screenname'=>'welcome','templatename'=>$sNewName));
-                }else{
-                    Yii::app()->user->setFlash('error',sprintf(gT("Template `%s` could not be found.", "js"), $sOldName));
+                    $this->getController()->redirect(array('admin/templateoptions'));
                 }
-
-                $this->getController()->redirect(array('admin/templateoptions'));
             }
+        }else{
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
         }
+        $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>'layout_first_page.twig','screenname'=>'welcome','templatename'=>$sOldName));
     }
 
 
@@ -444,39 +432,40 @@ class templates extends Survey_Common_Action
     */
     public function templatecopy()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','create')){
-            die('No permission');
-        }
-
-        $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
         $copydir = sanitize_dirname(Yii::app()->request->getPost("copydir"));
+        if (Permission::model()->hasGlobalPermission('templates','create')){
+            $newname = sanitize_dirname(Yii::app()->request->getPost("newname"));
 
-        if ($newname && $copydir) {
-            // Copies all the files from one template directory to a new one
-            Yii::app()->loadHelper('admin/template');
-            $newdirname  = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
-            $copydirname = getTemplatePath($copydir);
-            $oFileHelper = new CFileHelper;
-            $mkdirresult = mkdir_p($newdirname);
+            if ($newname && $copydir) {
+                // Copies all the files from one template directory to a new one
+                Yii::app()->loadHelper('admin/template');
+                $newdirname  = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
+                $copydirname = getTemplatePath($copydir);
+                $oFileHelper = new CFileHelper;
+                $mkdirresult = mkdir_p($newdirname);
 
-            if ($mkdirresult == 1) {
-                // We just copy the while directory structure, but only the xml file
-                $oFileHelper->copyDirectory($copydirname,$newdirname, array('fileTypes' => array('xml', 'png', 'jpg')));
-                //TemplateConfiguration::removeAllNodes($newdirname);
-                TemplateManifest::extendsConfig($copydir, $newname );
-                TemplateConfiguration::importManifest($newname, ['extends' => $copydir]);
-                $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
-            }elseif ($mkdirresult == 2){
-                Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
-                $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$copydir));
+                if ($mkdirresult == 1) {
+                    // We just copy the while directory structure, but only the xml file
+                    $oFileHelper->copyDirectory($copydirname,$newdirname, array('fileTypes' => array('xml', 'png', 'jpg')));
+                    //TemplateConfiguration::removeAllNodes($newdirname);
+                    TemplateManifest::extendsConfig($copydir, $newname );
+                    TemplateConfiguration::importManifest($newname, ['extends' => $copydir]);
+                    $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
+                }elseif ($mkdirresult == 2){
+                    Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
+                    $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$copydir));
+                }else{
+                    Yii::app()->setFlashMessage(sprintf(gT("Unable to create directory `%s`."), $newname),'error');
+                    Yii::app()->setFlashMessage(gT("Please check the directory permissions."));
+                    $this->getController()->redirect(array("admin/templates/sa/view"));
+                }
             }else{
-                Yii::app()->setFlashMessage(sprintf(gT("Unable to create directory `%s`."), $newname),'error');
-                Yii::app()->setFlashMessage(gT("Please check the directory permissions."));
                 $this->getController()->redirect(array("admin/templates/sa/view"));
             }
         }else{
-            $this->getController()->redirect(array("admin/templates/sa/view"));
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
         }
+        $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$copydir));
     }
 
     /**
@@ -488,46 +477,45 @@ class templates extends Survey_Common_Action
     */
     public function delete($templatename)
     {
-        if (!Permission::model()->hasGlobalPermission('templates','delete')){
-            die('No permission');
-        }
+        if (Permission::model()->hasGlobalPermission('templates','delete')){
+            Yii::app()->loadHelper("admin/template");
 
-        Yii::app()->loadHelper("admin/template");
+            if ( Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename) ){
 
-        if ( Template::checkIfTemplateExists($templatename) && !Template::isStandardTemplate($templatename) ){
+                if (!Template::hasInheritance($templatename)){
 
-            if (!Template::hasInheritance($templatename)){
+                    if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
+                        $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
 
-                if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
-                    $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
+                        // The default template could be the same as the one we're trying to remove
+                        $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttemplate') == $templatename;
 
-                    // The default template could be the same as the one we're trying to remove
-                    $globalDefaultIsGettingDeleted = Yii::app()->getConfig('defaulttemplate') == $templatename;
+                        if ($globalDefaultIsGettingDeleted){
+                            setGlobalSetting('defaulttemplate', 'default');
+                        }
 
-                    if ($globalDefaultIsGettingDeleted){
-                        setGlobalSetting('defaulttemplate', 'default');
+                        foreach ($surveys as $s){
+                            $s->template = Yii::app()->getConfig('defaulttemplate');
+                            $s->save();
+                        }
+
+                        TemplateConfiguration::uninstall($templatename);
+                        Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
+
+                        Yii::app()->setFlashMessage(sprintf(gT("Template '%s' was successfully deleted."), $templatename));
+                    }else{
+                        Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
                     }
-
-                    foreach ($surveys as $s){
-                        $s->template = Yii::app()->getConfig('defaulttemplate');
-                        $s->save();
-                    }
-
-                    TemplateConfiguration::uninstall($templatename);
-                    Permission::model()->deleteAllByAttributes(array('permission' => $templatename,'entity' => 'template'));
-
-                    Yii::app()->setFlashMessage(sprintf(gT("Template '%s' was successfully deleted."), $templatename));
                 }else{
-                    Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
+                    Yii::app()->setFlashMessage(sprintf(gT("You can't delete templates '%s' because some template inherit from it."), $templatename),'error');
                 }
+
             }else{
-                Yii::app()->setFlashMessage(sprintf(gT("You can't delete templates '%s' because some template inherit from it."), $templatename),'error');
+                // Throw an error 500 ?
             }
-
         }else{
-            // Throw an error 500 ?
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
         }
-
         // Redirect with default templatename, editfile and screenname
         $this->getController()->redirect(array("admin/templateoptions"));
     }
@@ -540,85 +528,85 @@ class templates extends Survey_Common_Action
     */
     public function templatesavechanges()
     {
+        if (Permission::model()->hasGlobalPermission('templates','update')){
 
-        if (!Permission::model()->hasGlobalPermission('templates','update')){
-            die('No permission');
-        }
+            $changedtext = null;
 
-        $changedtext = null;
-
-        if (returnGlobal('changes')) {
-            $changedtext = returnGlobal('changes');
-            $changedtext = str_replace('<?', '', $changedtext);
-            if (get_magic_quotes_gpc())
-                $changedtext = stripslashes($changedtext);
-        }
-
-        if (returnGlobal('changes_cp')) {
-            $changedtext = returnGlobal('changes_cp');
-            $changedtext = str_replace('<?', '', $changedtext);
-            if (get_magic_quotes_gpc()){
-                $changedtext = stripslashes($changedtext);
+            if (returnGlobal('changes')) {
+                $changedtext = returnGlobal('changes');
+                $changedtext = str_replace('<?', '', $changedtext);
+                if (get_magic_quotes_gpc()){
+                    $changedtext = stripslashes($changedtext);
+                }
             }
-        }
 
-        $action               = returnGlobal('action');
-        $editfile             = returnGlobal('editfile');
-        $relativePathEditfile = returnGlobal('relativePathEditfile');
-        $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
-        $screenname           = returnGlobal('screenname');
-        $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null,null, true);
-        $oEditedTemplate->prepareTemplateRendering($sTemplateName);
-        $aScreenFiles         = $oEditedTemplate->getValidScreenFiles("view");
-        $cssfiles             = $oEditedTemplate->getValidScreenFiles("css");
-        $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
-
-
-        if ($action == "templatesavechanges" && $changedtext){
-            Yii::app()->loadHelper('admin/template');
-            $changedtext = str_replace("\r\n", "\n", $changedtext);
-
-
-            if ($relativePathEditfile){
-                // Check if someone tries to submit a file other than one of the allowed filenames
-                if (
-                in_array($relativePathEditfile,$aScreenFiles)===false &&
-                in_array($relativePathEditfile,$cssfiles)===false &&
-                in_array($relativePathEditfile,$jsfiles)===false
-                ){
-                    Yii::app()->user->setFlash('error',gT('Invalid template name'));
-                    $this->getController()->redirect(array("admin/templates/sa/upload"));
+            if (returnGlobal('changes_cp')) {
+                $changedtext = returnGlobal('changes_cp');
+                $changedtext = str_replace('<?', '', $changedtext);
+                if (get_magic_quotes_gpc()){
+                    $changedtext = stripslashes($changedtext);
                 }
+            }
+
+            $action               = returnGlobal('action');
+            $editfile             = returnGlobal('editfile');
+            $relativePathEditfile = returnGlobal('relativePathEditfile');
+            $sTemplateName        = Template::templateNameFilter(App()->request->getPost('templatename'));
+            $screenname           = returnGlobal('screenname');
+            $oEditedTemplate      = Template::model()->getTemplateConfiguration($sTemplateName, null,null, true);
+            $oEditedTemplate->prepareTemplateRendering($sTemplateName);
+            $aScreenFiles         = $oEditedTemplate->getValidScreenFiles("view");
+            $cssfiles             = $oEditedTemplate->getValidScreenFiles("css");
+            $jsfiles              = $oEditedTemplate->getValidScreenFiles("js");
+
+            if ($action == "templatesavechanges" && $changedtext){
+                Yii::app()->loadHelper('admin/template');
+                $changedtext = str_replace("\r\n", "\n", $changedtext);
 
 
-                //$savefilename = $oEditedTemplate
-                if( !file_exists($oEditedTemplate->path.'/'.$relativePathEditfile) && !file_exists($oEditedTemplate->viewPath.$relativePathEditfile) ){
-                    $oEditedTemplate->extendsFile($relativePathEditfile);
-                }
-
-                $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile);
-
-                if (is_writable($savefilename)){
-
-                    if (!$handle = fopen($savefilename, 'w')){
-                        Yii::app()->user->setFlash('error',gT('Could not open file '). $savefilename);
+                if ($relativePathEditfile){
+                    // Check if someone tries to submit a file other than one of the allowed filenames
+                    if (
+                    in_array($relativePathEditfile,$aScreenFiles)===false &&
+                    in_array($relativePathEditfile,$cssfiles)===false &&
+                    in_array($relativePathEditfile,$jsfiles)===false
+                    ){
+                        Yii::app()->user->setFlash('error',gT('Invalid template name'));
                         $this->getController()->redirect(array("admin/templates/sa/upload"));
                     }
 
-                    if (!fwrite($handle, $changedtext)){
-                        Yii::app()->user->setFlash('error',gT('Could not write file '). $savefilename);
+
+                    //$savefilename = $oEditedTemplate
+                    if( !file_exists($oEditedTemplate->path.'/'.$relativePathEditfile) && !file_exists($oEditedTemplate->viewPath.$relativePathEditfile) ){
+                        $oEditedTemplate->extendsFile($relativePathEditfile);
+                    }
+
+                    $savefilename = $oEditedTemplate->extendsFile($relativePathEditfile);
+
+                    if (is_writable($savefilename)){
+
+                        if (!$handle = fopen($savefilename, 'w')){
+                            Yii::app()->user->setFlash('error',gT('Could not open file '). $savefilename);
+                            $this->getController()->redirect(array("admin/templates/sa/upload"));
+                        }
+
+                        if (!fwrite($handle, $changedtext)){
+                            Yii::app()->user->setFlash('error',gT('Could not write file '). $savefilename);
+                            $this->getController()->redirect(array("admin/templates/sa/upload"));
+                        }
+
+                        $oEditedTemplate->actualizeLastUpdate();
+
+                        fclose($handle);
+                    }else{
+                        Yii::app()->user->setFlash('error',"The file $savefilename is not writable");
                         $this->getController()->redirect(array("admin/templates/sa/upload"));
                     }
 
-                    $oEditedTemplate->actualizeLastUpdate();
-
-                    fclose($handle);
-                }else{
-                    Yii::app()->user->setFlash('error',"The file $savefilename is not writable");
-                    $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }
-
             }
+        }else{
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
         }
 
         $this->getController()->redirect(array('admin/templates/','sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname,'templatename'=>$sTemplateName));
