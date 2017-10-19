@@ -221,33 +221,23 @@ class templates extends Survey_Common_Action
     */
     public function uploadfile()
     {
-        if (!Permission::model()->hasGlobalPermission('templates','import'))
-        {
+        if (!Permission::model()->hasGlobalPermission('templates','import')){
             die('No permission');
         }
 
-        $action = returnGlobal('action');
-        $editfile = App()->request->getPost('editfile');
-        $templatename = returnGlobal('templatename');
-        $oEditedTemplate = Template::getInstance($templatename);
+        $action                 = returnGlobal('action');
+        $editfile               = App()->request->getPost('editfile');
+        $templatename           = returnGlobal('templatename');
+        $oEditedTemplate        = Template::getInstance($templatename);
+        $screenname             = returnGlobal('screenname');
+        $allowedtemplateuploads = Yii::app()->getConfig('allowedtemplateuploads');
+        $filename               = sanitize_filename($_FILES['upload_file']['name'],false,false,false);// Don't force lowercase or alphanumeric
+        $dirfilepath            = $oEditedTemplate->filesPath;
 
-        $templatedir = $oEditedTemplate->viewPath;
-        $screenname = returnGlobal('screenname');
-        $cssfiles = $oEditedTemplate->getValidScreenFiles("css");
-        $basedestdir = Yii::app()->getConfig('usertemplaterootdir');
-        $tempdir = Yii::app()->getConfig('tempdir');
-        $allowedtemplateuploads=Yii::app()->getConfig('allowedtemplateuploads');
-        $filename=sanitize_filename($_FILES['upload_file']['name'],false,false,false);// Don't force lowercase or alphanumeric
-
-        $dirfilepath = $oEditedTemplate->filesPath;
-        if (!file_exists($dirfilepath))
-        {
-            if(is_writable($oEditedTemplate->path ))
-            {
+        if (!file_exists($dirfilepath)){
+            if(is_writable($oEditedTemplate->path )){
                 mkdir($dirfilepath, 0777, true);
-            }
-            else
-            {
+            }else{
                 $uploadresult = sprintf(gT("The folder %s doesn't exist and can't be created."),$dirfilepath);
                 Yii::app()->setFlashMessage($uploadresult,'error');
                 $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>$editfile,'screenname'=>$screenname,'templatename'=>$templatename));
@@ -255,29 +245,20 @@ class templates extends Survey_Common_Action
         }
 
         $fullfilepath = $dirfilepath . $filename;
-        $status='error';
-        if($action=="templateuploadfile")
-        {
-            if(Yii::app()->getConfig('demoMode'))
-            {
+        $status       = 'error';
+
+        if($action=="templateuploadfile"){
+            if(Yii::app()->getConfig('demoMode')){
                 $uploadresult = gT("Demo mode: Uploading template files is disabled.");
-            }
-            elseif($filename!=$_FILES['upload_file']['name'])
-            {
+            }elseif($filename!=$_FILES['upload_file']['name']){
                 $uploadresult = gT("This filename is not allowed to be uploaded.");
-            }
-            elseif(!in_array(strtolower(substr(strrchr($filename, '.'),1)),explode ( "," , $allowedtemplateuploads )))
-            {
+            }elseif(!in_array(strtolower(substr(strrchr($filename, '.'),1)),explode ( "," , $allowedtemplateuploads ))){
                 $uploadresult = gT("This file type is not allowed to be uploaded.");
-            }
-            else
-            {
+            }else{
                 //Uploads the file into the appropriate directory
                 if (!@move_uploaded_file($_FILES['upload_file']['tmp_name'], $fullfilepath)) {
                     $uploadresult = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
-                }
-                else
-                {
+                }else{
                     $uploadresult = sprintf(gT("File %s uploaded"),$filename);
                     $status='success';
                 }
