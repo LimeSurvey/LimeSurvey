@@ -602,7 +602,7 @@ class TemplateConfiguration extends TemplateConfig
     protected function setThisTemplate()
     {
 
-        $this->apiVersion  = (!empty($this->template->api_version))? $this->template->api_version : null; // Mandtory setting in config XML 
+        $this->apiVersion  = (!empty($this->template->api_version))? $this->template->api_version : null; // Mandtory setting in config XML
         $this->viewPath    =  $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
         $this->filesPath   = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR ;
 
@@ -649,8 +649,10 @@ class TemplateConfiguration extends TemplateConfig
     {
         $oOptions = $this->oOptions;
 
-        foreach($oOptions as $sKey => $sOption){
-                $oOptions->$sKey = $this->getOptionKey($sKey);
+        if (!empty($oOptions)){
+            foreach($oOptions as $sKey => $sOption){
+                    $oOptions->$sKey = $this->getOptionKey($sKey);
+            }
         }
     }
 
