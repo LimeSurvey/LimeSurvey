@@ -574,7 +574,7 @@ class InstallerController extends CController {
         }
 
         //checking DB Connection
-        $aErrors = self::_setup_tables(dirname(APPPATH).'/installer/php/create-database.php');
+        $aErrors = self::_setup_tables(dirname(APPPATH).'/installer/create-database.php');
         if ($aErrors === false)
         {
             $model->addError('dblocation', gT('Try again! Connection with database failed. Reason: ').implode(', ', $aErrors));
