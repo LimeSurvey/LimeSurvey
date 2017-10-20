@@ -593,23 +593,22 @@
             <?php endforeach; ?>
 
 
-                <?php if($permission):?>
-                    <!-- List Groups -->
-                        <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
-                        <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
-                            <span class="fa fa-list"></span>
-                            <?php eT("List question groups");?>
-                        </a>
+            <?php if($permission):?>
+                <!-- List Groups -->
+                    <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
+                    <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
+                        <span class="fa fa-list"></span>
+                        <?php eT("List question groups");?>
+                    </a>
 
-                    <!-- List Questions -->
-                        <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
-                            <span class="fa fa-list"></span>
-                            <?php eT("List questions");?>
-                        </a>
-                <?php endif; ?>
+                <!-- List Questions -->
+                    <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
+                        <span class="fa fa-list"></span>
+                        <?php eT("List questions");?>
+                    </a>
+            <?php endif; ?>
 
 
-            <?php endif;?>
             <?php if(isset($surveybar['importquestion'])):?>
                 <a class="btn btn-default" href="<?php echo Yii::App()->createUrl('admin/questions/sa/importview/groupid/'.$groupid.'/surveyid/'.$surveyid);?>" role="button">
                     <span class="icon-import"></span>

@@ -353,13 +353,13 @@ class Permission extends LSActiveRecord
                 }
                 $aBasePermissions=$aFilteredPermissions;
             }
-            elseif (Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->session['loginID']!=1) {
-            elseif (!Permission::model()->hasGlobalPermission('superadmin','create'))
+            elseif (Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->session['loginID']!=1) 
             {
                 unset($aBasePermissions['superadmin']);
             }
         }
-        elseif ($sEntityName=='survey') {
+        elseif ($sEntityName=='survey') 
+        {
             $aBasePermissions=Permission::model()->getSurveyBasePermissions();
         }
 
@@ -552,8 +552,6 @@ class Permission extends LSActiveRecord
         App()->getPluginManager()->dispatchEvent($oEvent);
         $pluginbPermission=$oEvent->get('bPermission');
 
-        if (isset($pluginbPermission)) {
-             return $pluginbPermission;
         if (isset($pluginbPermission)) {
             return $pluginbPermission;
         }

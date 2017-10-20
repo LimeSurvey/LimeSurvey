@@ -291,14 +291,12 @@ class SurveyDynamic extends LSActiveRecord
         // Download icon
         if (hasFileUploadQuestion(self::$sid) && $responseHasFiles)
         {
-            $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
+            if (Response::model(self::$sid)->findByPk($this->id)->getFiles()) {
+                $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><i class="fa fa-download downloadfile text-success" ></i></a>';
+            }
         } else
         {
             $button .= '<a class="btn btn-default btn-xs invisible" href="#" role="button"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
-        if (hasFileUploadQuestion(self::$sid)) {
-            if (Response::model(self::$sid)->findByPk($this->id)->getFiles()) {
-                $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><span class="fa fa-download-alt downloadfile text-success" ></span></a>';
-            }
         }
 
         $aPostDatas = json_encode(
@@ -319,7 +317,7 @@ class SurveyDynamic extends LSActiveRecord
             if (hasFileUploadQuestion(self::$sid) && $responseHasFiles) {
                 $button .= sprintf(
                     "<a class='deleteattachments btn btn-danger btn-xs text-danger' data-ajax-url='%s' data-gridid='responses-grid' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
-                        <span class='glyphicon glyphicon-paperclip'></span>
+                        <span class='fa fa-paperclip'></span>
                         </a>",
                     $sAttachmentDeleteUrl,
                     $aPostDatas,
