@@ -112,7 +112,7 @@ class UpdateDbHelperTest extends TestBaseClass
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
         $inst->connection = \Yii::app()->db;
-        $filename = dirname(APPPATH).'/installer/php/create-database.php';
+        $filename = dirname(APPPATH).'/installer/create-database.php';
         $result = $inst->_setup_tables($filename);
         if ($result) {
             print_r($result);
