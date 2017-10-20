@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-17 08:12:27+00:00\n"
+"POT-Creation-Date: 2017-10-20 11:28:31+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -94,7 +94,7 @@ msgstr ""
 
 #: application/controllers/AdminController.php:82
 #: application/controllers/admin/surveyadmin.php:704
-#: application/controllers/admin/tokens.php:2543
+#: application/controllers/admin/tokens.php:2549
 #: application/views/admin/authentication/forgotpassword.php:52
 #: application/views/admin/dataentry/active_html_view.php:118
 #: application/views/admin/survey/copySurvey_view.php:15
@@ -473,11 +473,11 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1306
 #: application/controllers/admin/tokens.php:1696
 #: application/controllers/admin/tokens.php:1818
-#: application/controllers/admin/tokens.php:2097
-#: application/controllers/admin/tokens.php:2444
-#: application/controllers/admin/tokens.php:2602
-#: application/controllers/admin/tokens.php:2672
-#: application/controllers/admin/tokens.php:2798
+#: application/controllers/admin/tokens.php:2103
+#: application/controllers/admin/tokens.php:2450
+#: application/controllers/admin/tokens.php:2608
+#: application/controllers/admin/tokens.php:2678
+#: application/controllers/admin/tokens.php:2804
 #: application/controllers/admin/translate.php:86
 #: application/helpers/admin/statistics_helper.php:2606
 #: application/helpers/admin/statistics_helper.php:2619
@@ -961,10 +961,10 @@ msgstr ""
 #: application/controllers/admin/tokens.php:1292
 #: application/controllers/admin/tokens.php:1706
 #: application/controllers/admin/tokens.php:1804
-#: application/controllers/admin/tokens.php:2083
-#: application/controllers/admin/tokens.php:2428
-#: application/controllers/admin/tokens.php:2497
-#: application/controllers/admin/tokens.php:2559
+#: application/controllers/admin/tokens.php:2089
+#: application/controllers/admin/tokens.php:2434
+#: application/controllers/admin/tokens.php:2503
+#: application/controllers/admin/tokens.php:2565
 #: application/controllers/admin/useraction.php:57
 #: application/controllers/admin/useraction.php:91
 #: application/controllers/admin/useraction.php:185
@@ -1456,7 +1456,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1042
 #: application/controllers/admin/printablesurvey.php:1058
 #: application/controllers/admin/quotas.php:608
-#: application/controllers/admin/tokens.php:2455
+#: application/controllers/admin/tokens.php:2461
 #: application/core/Survey_Common_Action.php:1216
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:228
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:239
@@ -1614,7 +1614,7 @@ msgstr ""
 #: application/controllers/admin/printablesurvey.php:1044
 #: application/controllers/admin/printablesurvey.php:1060
 #: application/controllers/admin/quotas.php:609
-#: application/controllers/admin/tokens.php:2457
+#: application/controllers/admin/tokens.php:2463
 #: application/core/Survey_Common_Action.php:1212
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:265
 #: application/core/plugins/ExportSTATAxml/STATAxmlWriter.php:276
@@ -2417,7 +2417,7 @@ msgid "This archive contains a PDF file of the survey, the queXML file of the su
 msgstr ""
 
 #: application/controllers/admin/globalsettings.php:162
-#: application/models/Response.php:153
+#: application/models/Response.php:151
 msgid "deleted"
 msgstr ""
 
@@ -2486,7 +2486,7 @@ msgstr ""
 #: application/controllers/admin/questions.php:194
 #: application/controllers/admin/surveyadmin.php:971
 #: application/controllers/admin/templates.php:121
-#: application/controllers/admin/tokens.php:2127
+#: application/controllers/admin/tokens.php:2133
 msgid "Sorry, this file is too large. Only files up to %01.2f MB are allowed."
 msgstr ""
 
@@ -3644,9 +3644,9 @@ msgstr ""
 #: application/controllers/admin/surveypermission.php:425
 #: application/controllers/admin/surveypermission.php:634
 #: application/controllers/admin/surveypermission.php:752
-#: application/controllers/admin/tokens.php:2726
-#: application/controllers/admin/tokens.php:2769
-#: application/controllers/admin/useraction.php:844
+#: application/controllers/admin/tokens.php:2732
+#: application/controllers/admin/tokens.php:2775
+#: application/controllers/admin/useraction.php:856
 #: application/helpers/common_helper.php:4628
 #: application/helpers/common_helper.php:4633
 #: application/helpers/common_helper.php:4638
@@ -4189,7 +4189,7 @@ msgstr ""
 
 #: application/controllers/admin/tokens.php:1204
 #: application/controllers/admin/tokens.php:1679
-#: application/controllers/admin/tokens.php:2526
+#: application/controllers/admin/tokens.php:2532
 #: application/views/admin/conditions/deleteAllConditions.php:21
 #: application/views/admin/conditions/includes/conditions_scenario.php:42
 #: application/views/admin/dataentry/import.php:19
@@ -4277,8 +4277,8 @@ msgid "Some emails were not sent because the server did not accept the email(s) 
 msgstr ""
 
 #: application/controllers/admin/tokens.php:1662
-#: application/controllers/admin/tokens.php:2472
 #: application/controllers/admin/tokens.php:2478
+#: application/controllers/admin/tokens.php:2484
 #: application/extensions/admin/grid/MassiveActionsWidget/views/modals/first-select.php:14
 #: application/views/admin/authentication/error.php:6
 #: application/views/admin/error_view.php:5
@@ -4399,104 +4399,104 @@ msgstr ""
 msgid "Uploading LDAP Query"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2059
-msgid "Can't bind to the LDAP directory"
+#: application/controllers/admin/tokens.php:2065
+msgid "Can't bind to the LDAP directory. Error message: %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2066
+#: application/controllers/admin/tokens.php:2072
 msgid "Can't connect to the LDAP directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2131
+#: application/controllers/admin/tokens.php:2137
 msgid "Only CSV files are allowed."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2135
+#: application/controllers/admin/tokens.php:2141
 msgid "Upload file not found. Check your permissions and path (%s) for the upload directory"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2242
+#: application/controllers/admin/tokens.php:2248
 msgid "Line %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2280
-#: application/controllers/admin/tokens.php:2306
+#: application/controllers/admin/tokens.php:2286
+#: application/controllers/admin/tokens.php:2312
 msgid "Line %s : %s %s (%s)"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2288
+#: application/controllers/admin/tokens.php:2294
 msgid "Line %s : %s %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2316
-#: application/controllers/admin/tokens.php:2323
+#: application/controllers/admin/tokens.php:2322
+#: application/controllers/admin/tokens.php:2329
 msgid "Line %s : %s %s (%s) - token : %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2351
+#: application/controllers/admin/tokens.php:2357
 msgid "Line %s : %s"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2452
-#: application/controllers/admin/tokens.php:2481
+#: application/controllers/admin/tokens.php:2458
+#: application/controllers/admin/tokens.php:2487
 msgid "Create tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2453
+#: application/controllers/admin/tokens.php:2459
 msgid "Clicking 'Yes' will generate tokens for all those in this token list that have not been issued one. Continue?"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2470
+#: application/controllers/admin/tokens.php:2476
 msgid "Only {n} token has been created.|Only {n} tokens have been created."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2471
+#: application/controllers/admin/tokens.php:2477
 msgid "Need {n} token.|Need {n} tokens."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2477
+#: application/controllers/admin/tokens.php:2483
 msgid "{n} token has been created.|{n} tokens have been created."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2520
-#: application/controllers/admin/tokens.php:2539
+#: application/controllers/admin/tokens.php:2526
+#: application/controllers/admin/tokens.php:2545
 msgid "Delete survey participants table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2521
+#: application/controllers/admin/tokens.php:2527
 msgid "If you delete this table tokens will no longer be required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2521
+#: application/controllers/admin/tokens.php:2527
 msgid "A backup of this table will be made if you proceed. Your system administrator will be able to access this table."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2524
+#: application/controllers/admin/tokens.php:2530
 msgid "Delete table"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2540
+#: application/controllers/admin/tokens.php:2546
 msgid "The tokens table has now been removed and tokens are no longer required to access this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2540
+#: application/controllers/admin/tokens.php:2546
 msgid "A backup of this table has been made and can be accessed by your system administrator."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2591
+#: application/controllers/admin/tokens.php:2597
 msgid "Bounce settings have been saved."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2699
+#: application/controllers/admin/tokens.php:2705
 #: application/views/admin/token/tokenwarning.php:7
 msgid "Survey participants have not been initialised for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2707
+#: application/controllers/admin/tokens.php:2713
 msgid "Tokens already exist for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2723
+#: application/controllers/admin/tokens.php:2729
 #: application/core/plugins/QuickMenu/QuickMenu.php:304
 #: application/views/admin/super/sidemenu.php:173
 #: application/views/admin/survey/breadcrumb.php:67
@@ -4506,15 +4506,15 @@ msgstr ""
 msgid "Survey participants"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2724
+#: application/controllers/admin/tokens.php:2730
 msgid "A participant table has been created for this survey."
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2766
+#: application/controllers/admin/tokens.php:2772
 msgid "Import old tokens"
 msgstr ""
 
-#: application/controllers/admin/tokens.php:2767
+#: application/controllers/admin/tokens.php:2773
 msgid "A token table has been created for this survey and the old tokens were imported."
 msgstr ""
 
@@ -4831,6 +4831,10 @@ msgstr ""
 #: application/controllers/admin/useraction.php:715
 #: application/views/admin/participants/importCSV_view.php:45
 msgid "(Autodetect)"
+msgstr ""
+
+#: application/controllers/admin/useraction.php:775
+msgid "Could not save template %s: %s"
 msgstr ""
 
 #: application/controllers/admin/usergroups.php:80
@@ -10404,23 +10408,23 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1631
+#: application/helpers/update/updatedb_helper.php:1635
 msgid "Database update"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1632
+#: application/helpers/update/updatedb_helper.php:1636
 msgid "The database has been updated from version %s to version %s."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2961
+#: application/helpers/update/updatedb_helper.php:2965
 msgid "Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2963
+#: application/helpers/update/updatedb_helper.php:2967
 msgid "Template(s) to be verified :"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2969
+#: application/helpers/update/updatedb_helper.php:2973
 msgid "All %s user templates updated."
 msgstr ""
 
