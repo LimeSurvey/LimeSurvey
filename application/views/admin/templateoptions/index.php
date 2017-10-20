@@ -23,7 +23,7 @@
                     ),
                 )
             ));
-            echo '<h3>'.gT('Installed templates:').'</h3>';
+            echo '<h3>'.gT('Active templates:').'</h3>';
         }
 
 
@@ -44,7 +44,7 @@
                     ),
 
                     array(
-                        'header' => gT('name'),
+                        'header' => gT('Name'),
                         'name' => 'template_name',
                         'value'=>'$data->template_name',
                         'htmlOptions' => array('class' => 'col-md-2'),
@@ -59,7 +59,7 @@
                     ),
 
                     array(
-                        'header' => gT('type'),
+                        'header' => gT('Type'),
                         'name' => 'templates_type',
                         'value'=>'$data->typeIcon',
                         'type' => 'raw',
@@ -67,7 +67,7 @@
                     ),
 
                     array(
-                        'header' => gT('extends'),
+                        'header' => gT('Extends'),
                         'name' => 'templates_extends',
                         'value'=>'$data->template->extends',
                         'htmlOptions' => array('class' => 'col-md-2'),

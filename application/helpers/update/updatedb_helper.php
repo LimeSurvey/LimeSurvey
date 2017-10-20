@@ -773,7 +773,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
             "user_id" =>NULL,
             "ordering" =>1,
             "level" =>0,
-            "title" =>'quickmenue',
+            "title" =>'quickmenu',
             "position" =>'collapsed',
             "description" =>'Quickmenu',
             "changed_at" => date('Y-m-d H:i:s'),
