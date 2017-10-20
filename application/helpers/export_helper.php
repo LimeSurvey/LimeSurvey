@@ -235,6 +235,7 @@ function SPSSExportData ($iSurveyID, $iLength, $na = '', $q='\'', $header=FALSE,
 * @return array or false
 */
 function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
+    $length_vallabel = 120; // Constant ?
     if (!isset($field['LStype']) || empty($field['LStype'])) {
         return false;
     }
@@ -266,8 +267,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
                 foreach ($result as $row) {
                     $answers[] = array(
                         'code'=>$row['code'],
-                        'value'=>mb_substr(stripTagsFull($row["answer"])
-                        )
+                        'value'=>mb_substr(stripTagsFull($row["answer"]),0,$length_vallabel),
                     );
                 }
             }
