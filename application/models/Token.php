@@ -216,7 +216,7 @@ abstract class Token extends Dynamic
     /**
      * Generates a token for all token objects in this survey.
      * Syntax: Token::model(12345)->generateTokens();
-     * @return array
+     * @return integer[]
      * @throws Exception
      */
     public function generateTokens() {

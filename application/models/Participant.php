@@ -720,6 +720,7 @@ class Participant extends LSActiveRecord
      * @param order
      * @param search
      * @param userid
+     * @param string $order
      * @return array
      */
     public function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
@@ -2016,9 +2017,9 @@ class Participant extends LSActiveRecord
 
     /**
      * The purpose of this function is to check for duplicate in participants
-     * @param array $fields
+     * @param string $fields
      * @param string $output
-     * @return mixed
+     * @return string
      */
     public function checkforDuplicate($fields, $output="bool")
     {

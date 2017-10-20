@@ -161,7 +161,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      * Create a LDAP user
      *
      * @param string $new_user
-     * @return null|string New user ID
+     * @return null|integer New user ID
      */
     private function _createNewUser($new_user)
     {

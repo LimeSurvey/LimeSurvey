@@ -296,7 +296,7 @@ class Surveymenu extends LSActiveRecord
      * Method to restore the default surveymenu entries
      * This method will fail if the surveymenus have been tempered, or wrongly set
      *
-     * @return void
+     * @return boolean
      */
     public function restoreDefaults(){
         $oDB = Yii::app()->db;

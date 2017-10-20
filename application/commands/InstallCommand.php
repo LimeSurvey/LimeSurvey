@@ -136,7 +136,7 @@
         /**
          * @param string $sProperty
          * @param string $connectionString
-         * @return null
+         * @return string|null
          */
         function getDBConnectionStringProperty($sProperty, $connectionString = null)
         {

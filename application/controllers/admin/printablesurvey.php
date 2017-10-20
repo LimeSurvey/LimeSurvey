@@ -1612,6 +1612,7 @@ class printablesurvey extends Survey_Common_Action
      *
      * How:
      * @param string $template
+     * @param TemplateConfiguration $oTemplate
      */
     private function _populate_template( $oTemplate, $template , $input  , $line = '')
     {

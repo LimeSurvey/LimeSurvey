@@ -48,6 +48,9 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
 }
 
 
+/**
+ * @param string $sql
+ */
 function dbQueryOrFalse($sql)
 {
     try {

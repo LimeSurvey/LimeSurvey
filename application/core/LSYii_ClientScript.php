@@ -152,6 +152,7 @@ class LSYii_ClientScript extends CClientScript {
     /**
      * Return a list of all the recursive dependencies of a packages
      * eg: If a package A depends on B, and B depends on C, getRecursiveDependencies('A') will return {B,C}
+     * @param string $sPackageName
      */
     public function getRecursiveDependencies($sPackageName)
     {

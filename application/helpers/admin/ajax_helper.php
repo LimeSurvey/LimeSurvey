@@ -82,6 +82,7 @@ class AjaxHelper
     }
 
     /**
+     * @param string $target
      * @return void
      */
     public static function outputHtml($html, $target)

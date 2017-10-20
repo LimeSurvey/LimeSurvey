@@ -100,7 +100,7 @@ class TemplateManifest extends TemplateConfiguration
      * Retreives the absolute path for a file to edit (current template, mother template, etc)
      * Also perform few checks (permission to edit? etc)
      *
-     * @param string $sfile relative path to the file to edit
+     * @param string $sFile relative path to the file to edit
      */
     public function getFilePathForEdition($sFile, $aAllowedFiles=null)
     {
@@ -118,7 +118,6 @@ class TemplateManifest extends TemplateConfiguration
     /**
     * Copy a file from mother template to local directory and edit manifest if needed
     *
-    * @param string $sTemplateName
     * @return string template url
     */
     public function extendsFile($sFile)
@@ -271,7 +270,7 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
-     * @return mixed true on success | exception
+     * @return boolean true on success | exception
      * @throws Exception
      */
     public static function importManifest($sTemplateName, $aDatas=array()  )
@@ -650,7 +649,7 @@ class TemplateManifest extends TemplateConfiguration
      * So, we use it here to have the same interface for TemplateManifest and TemplateConfiguration,
      * So, in the future, we'll can both inherit them from a same object (best would be to extend CModel to create a LSYii_Template)
      *
-     * @param $sPackageName     string   name of the package to edit
+     * @param string $sPackageName     string   name of the package to edit
      * @param $sType            string   the type of settings to change (css or js)
      * @param $aSettings        array    array of local setting
      * @return array
@@ -673,6 +672,10 @@ class TemplateManifest extends TemplateConfiguration
         }
     }
 
+    /**
+     * @param TemplateManifest $oRTemplate
+     * @param string $sPath
+     */
     protected function getTemplateForPath($oRTemplate, $sPath )
     {
         while (empty($oRTemplate->config->xpath($sPath))){
@@ -748,7 +751,6 @@ class TemplateManifest extends TemplateConfiguration
     /**
      * Get the list of file replacement from Engine Framework
      * @param string  $sType            css|js the type of file
-     * @param boolean $bInlcudeRemove   also get the files to remove
      * @return array
      */
     protected function getFrameworkAssetsReplacement( $sType )

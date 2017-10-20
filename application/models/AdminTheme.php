@@ -276,7 +276,7 @@ class AdminTheme extends CFormModel
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public static function getOtherAssets()
     {

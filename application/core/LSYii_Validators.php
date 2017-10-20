@@ -80,7 +80,7 @@ class LSYii_Validators extends CValidator {
      * Did we need to do if user don't use inline HTML editor ?
      *
      * @param string $value
-     * @return mixed|string
+     * @return string
      */
     public function fixCKeditor($value)
     {

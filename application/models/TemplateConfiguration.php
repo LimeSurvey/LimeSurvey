@@ -135,7 +135,6 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Gets an instance of a templateconfiguration by name
      *
-     * @param [String] $sTemplateName
      * @return TemplateConfiguration
      */
     public static function getInstanceFromConfigurationId($iTemplateConfigId){
@@ -327,7 +326,7 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
-     * @return mixed true on success | exception
+     * @return boolean true on success | exception
      * @throws Exception
      */
     public static function importManifest($sTemplateName, $aDatas=array() )
@@ -598,8 +597,8 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Proxy for Yii::app()->clientScript->removeFileFromPackage()
      *
-     * @param $sPackageName     string   name of the package to edit
-     * @param $sType            string   the type of settings to change (css or js)
+     * @param string $sPackageName     string   name of the package to edit
+     * @param string $sType            string   the type of settings to change (css or js)
      * @param $aSettings        array    array of local setting
      * @return array
      */
@@ -628,6 +627,10 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
+    /**
+     * @param TemplateConfiguration $oRTemplate
+     * @param string $sPath
+     */
     protected function getTemplateForPath($oRTemplate, $sPath )
     {
         while (empty($oRTemplate->template->$sPath)){
@@ -761,7 +764,6 @@ class TemplateConfiguration extends TemplateConfig
     /**
      * Get the list of file replacement from Engine Framework
      * @param string  $sType            css|js the type of file
-     * @param boolean $bInlcudeRemove   also get the files to remove
      * @return array
      */
     protected function getFrameworkAssetsReplacement( $sType )

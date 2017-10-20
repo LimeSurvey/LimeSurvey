@@ -474,7 +474,7 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getStandardCols()
     {
