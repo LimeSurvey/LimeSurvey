@@ -1347,6 +1347,7 @@ function upgradeTokenTables181($sMySQLCollation)
 
 /**
 * @param string $sFieldType
+* @param string $sColumn
 */
 function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL') 
 {
@@ -1480,7 +1481,7 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
 /**
 * This function drops a secondary key of an MSSQL database field by using the field name and the table name
 * 
-* @param mixed $sFieldName
+* @param string $sFieldName
 * @param mixed $sTableName
 */
 function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
@@ -1510,7 +1511,7 @@ function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
 /**
 * Drops the primary key of a table
 * 
-* @param mixed $sTablename
+* @param string $sTablename
 */
 function dropPrimaryKey($sTablename)
 {

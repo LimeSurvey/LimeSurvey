@@ -193,7 +193,7 @@ class LSYii_Application extends CWebApplication
     * @access public
     * @param string $name
     * @param boolean|mixed $default Value to return when not found, default is false
-    * @return mixed
+    * @return string
     */
     public function getConfig($name, $default = false)
     {

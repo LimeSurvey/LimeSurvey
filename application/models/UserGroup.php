@@ -97,6 +97,11 @@ class UserGroup extends LSActiveRecord {
     }
 
     // TODO seems to be unused, probably shouldn't be done like that
+
+    /**
+     * @param string[] $fields
+     * @param string $from
+     */
     public function join($fields, $from, $condition=false, $join=false, $order=false)
     {
         $user = Yii::app()->db->createCommand();
@@ -130,7 +135,7 @@ class UserGroup extends LSActiveRecord {
     /**
      * @param string $group_name
      * @param string $group_description
-     * @return int|mixed|string
+     * @return boolean
      * @todo should use save() and afterSave() methods!!
      */
     public function addGroup($group_name, $group_description) {

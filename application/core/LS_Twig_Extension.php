@@ -208,6 +208,9 @@ class LS_Twig_Extension extends Twig_Extension
         ));
     }
 
+    /**
+     * @param string $sRessource
+     */
     public static function assetPublish($sRessource)
     {
         return App()->getAssetManager()->publish($sRessource);
@@ -233,6 +236,9 @@ class LS_Twig_Extension extends Twig_Extension
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
     }
 
+    /**
+     * @param string $sRessource
+     */
     public static function getTemplateForRessource($sRessource)
     {
         $oRTemplate = Template::model()->getInstance();
@@ -265,11 +271,17 @@ class LS_Twig_Extension extends Twig_Extension
         return Yii::app()->request->getQuery($sName, $sDefaultValue);
     }
 
+    /**
+     * @param string $name
+     */
     public static function unregisterPackage($name)
     {
         return Yii::app()->getClientScript()->unregisterPackage($name);
     }
 
+    /**
+     * @param string $name
+     */
     public static function unregisterScriptFile($name)
     {
         return Yii::app()->getClientScript()->unregisterScriptFile($name);

@@ -399,9 +399,9 @@ class Question extends LSActiveRecord
 
     /**
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
-     * @param array $fields
+     * @param string $fields
      * @param mixed $condition
-     * @param string|boolean|array $orderby
+     * @param string $orderby
      * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
@@ -997,7 +997,7 @@ class Question extends LSActiveRecord
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
         Question::model()->deleteAll($criteria);// Must log count of deleted ?
     }
-    /** @return array */
+    /** @return string[] */
     public static function getQuotableTypes(){
         return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!','*');
     }

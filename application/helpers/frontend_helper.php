@@ -1430,6 +1430,7 @@ function resetAllSessionVariables($surveyid)
  * Set totalsteps in session
  * @param int $surveyid
  * @param array $thissurvey
+ * @param integer $totalquestions
  * @return void
  */
 function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
@@ -1477,6 +1478,9 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
     renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath);
 }
 
+/**
+ * @param string $sTemplateViewPath
+ */
 function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
 {
     // Template settings

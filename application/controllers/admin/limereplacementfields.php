@@ -56,6 +56,7 @@ class limereplacementfields extends Survey_Common_Action
     /**
      * @param integer $gid
      * @param integer $qid
+     * @param string $surveyformat
      * @return array
      */
     private function _getQuestionList($action, $gid, $qid, array $fieldmap, $questionType, $surveyformat)

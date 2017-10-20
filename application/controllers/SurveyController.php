@@ -97,7 +97,7 @@ class SurveyController extends LSYii_Controller
     /**
      * Show a message and exit
      * @param string $sType : type of message
-     * @param string[] $aMessage :  array of message line to be shown
+     * @param string[] $aMessages :  array of message line to be shown
      * @param string[]|null : $aUrl : if url can/must be set
      * @param string[]|null $aErrors : array of errors to be shown
      * @return void

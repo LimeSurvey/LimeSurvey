@@ -41,7 +41,7 @@ function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
  * @param string $sTextToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
- * @return mixed|string
+ * @return string
  */
 function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 {
@@ -1106,6 +1106,11 @@ function groupOrderThenQuestionOrder($a, $b)
 
 
 //FIXME insert UestionGroup model to here
+/**
+ * @param integer $sid
+ * @param integer $gid
+ * @param integer $shiftvalue
+ */
 function shiftOrderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortorder for questions
 {
     $sid=sanitize_int($sid);
@@ -1125,6 +1130,8 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
 
 /**
  * @param integer $iSurveyID
+ * @param integer $qid
+ * @param integer $newgid
  */
 function fixMovedQuestionConditions($qid,$oldgid,$newgid, $iSurveyID=NULL) //Function rewrites the cfieldname for a question after group change
 {
@@ -2879,7 +2886,7 @@ function incompleteAnsFilterState()
 * isCaptchaEnabled($screen, $usecaptchamode)
 * @param string $screen - the screen name for which to test captcha activation
 *
-* @return boolean - returns true if captcha must be enabled
+* @return boolean|null - returns true if captcha must be enabled
 **/
 function isCaptchaEnabled($screen, $captchamode='')
 {
@@ -3097,7 +3104,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 /**
  * put your comment there...
  *
- * @param mixed $id
+ * @param integer $id
  * @param string $type
  * @return bool
  */
@@ -4284,7 +4291,7 @@ function switchMSSQLIdentityInsert($table,$state)
  * Retrieves the last Insert ID realiable for cross-DB applications
  *
  * @param string $sTableName Needed for Postgres and MSSQL
- * @return mixed|string
+ * @return string
  */
 function getLastInsertID($sTableName)
 {
@@ -5137,7 +5144,7 @@ function aEncodingsArray()
 *
 * @param    string  $sString        string to ellipsize
 * @param    integer $iMaxLength       max length of string
-* @param    mixed   $fPosition       int (1|0) or float, .5, .2, etc for position to split
+* @param    integer   $fPosition       int (1|0) or float, .5, .2, etc for position to split
 * @param    string  $sEllipsis      ellipsis ; Default '...'
 * @return    string        ellipsized string
 */
@@ -5342,7 +5349,7 @@ function decodeTokenAttributes($oTokenAttributeData){
 
 /**
  * @param string $sSerial
- * @return mixed|null|string
+ * @return string|null
  */
 function getSerialClass($sSerial) {
     $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');

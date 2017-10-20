@@ -252,9 +252,9 @@ class QuestionAttribute extends LSActiveRecord
     }
 
     /**
-     * @param array $fields
+     * @param string $fields
      * @param mixed $condition
-     * @param string|boolean|array $orderby
+     * @param string $orderby
      * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)

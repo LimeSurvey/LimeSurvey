@@ -189,7 +189,7 @@ class TemplateConfig extends CActiveRecord
       *
       * @param   string $sFile relative path to the file
       * @param   string $oTemplate the template where to look for (and its mother templates)
-      * @return bool|string
+      * @return string|false
       */
      protected function getFilePath($sFile, $oTemplate)
      {
@@ -256,7 +256,7 @@ class TemplateConfig extends CActiveRecord
 
 
      /**
-     * @return bool
+     * @return boolean|null
      */
      protected function setIsStandard()
      {
@@ -805,7 +805,7 @@ class TemplateConfig extends CActiveRecord
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
      * @param string $sTemplateName the name of the template to import
      * @param array $aDatas
-     * @return mixed true on success | exception
+     * @return boolean true on success | exception
      * @throws Exception, InvalidArgumentException
      */
     public static function importManifest($sTemplateName, $aDatas)
@@ -855,9 +855,25 @@ class TemplateConfig extends CActiveRecord
     public function addFileReplacement($sFile, $sType){}
 
     protected function getTemplateForPath($oRTemplate, $sPath ) {}
+
+    /**
+     * @param string $sType
+     */
     protected function getFilesToLoad($oTemplate, $sType){}
+
+    /**
+     * @param string $sType
+     */
     protected function changeMotherConfiguration( $sType, $aSettings ){}
+
+    /**
+     * @param string $sType
+     */
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false){}
+
+    /**
+     * @param string $sType
+     */
     protected function getFrameworkAssetsReplacement($sType){}
     protected function removeFileFromPackage( $sPackageName, $sType, $aSettings ){}
     protected function setMotherTemplates(){}

@@ -19,6 +19,9 @@ if (!defined('BASEPATH'))
 class templateoptions  extends Survey_Common_Action
 {
 
+    /**
+     * @param string $controller
+     */
     public function __construct($controller=null, $id=null)
     {
         parent::__construct($controller, $id);
@@ -93,7 +96,7 @@ class templateoptions  extends Survey_Common_Action
     /**
      * Updates a particular model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id the ID of the model to be updated
+     * @param integer $sid the ID of the model to be updated
      */
     public function updatesurvey($sid)
     {

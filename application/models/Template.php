@@ -388,6 +388,7 @@ class Template extends LSActiveRecord
      * @param string $sTemplateName
      * @param int|string $iSurveyId
      * @param int|string $iSurveyGroupId
+     * @param boolean $bForceXML
      * @return TemplateConfiguration
      */
     public static function getInstance($sTemplateName=null, $iSurveyId=null, $iSurveyGroupId=null, $bForceXML=null)

@@ -251,7 +251,7 @@ class QuestionGroup extends LSActiveRecord
 
     /**
      * @param mixed|array $condition
-     * @param mixed|boolean $order
+     * @param string[] $order
      * @return mixed
      */
     function getAllGroups($condition, $order=false)

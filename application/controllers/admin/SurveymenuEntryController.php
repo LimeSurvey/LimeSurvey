@@ -3,7 +3,7 @@
 class SurveymenuEntryController extends Survey_Common_Action
 {
 	/**
-	 * @return array action filters
+	 * @return string[] action filters
 	 */
 	public function filters()
 	{
@@ -270,7 +270,6 @@ class SurveymenuEntryController extends Survey_Common_Action
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
 	 */
 	public function delete()
 	{

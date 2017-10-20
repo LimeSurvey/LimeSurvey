@@ -21,7 +21,7 @@
 * @param string $line Text to search in
 * @param string[] $replacements Array of replacements:  Array( <stringtosearch>=><stringtoreplacewith>
 * @param mixed[] $redata : array of global var used in the function
-* @param void $debugSrc deprecated
+* @param string|null $debugSrc deprecated
 * @param boolean $anonymized Determines if token data is being used or just replaced with blanks
 * @param integer|null $questionNum - needed to support dynamic JavaScript-based tailoring within questions
 * @param void $registerdata - deprecated

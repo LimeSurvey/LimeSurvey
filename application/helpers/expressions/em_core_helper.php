@@ -273,9 +273,9 @@ class ExpressionManager {
 
     /**
      * Get informatin about type mismatch between arguments.
-     * @param array $arg1
-     * @param array $arg2
-     * @return array Like (boolean $bMismatchType, boolean $bBothNumeric, boolean $bBothString)
+     * @param Token $arg1
+     * @param Token $arg2
+     * @return boolean[] Like (boolean $bMismatchType, boolean $bBothNumeric, boolean $bBothString)
      */
     private function getMismatchInformation(array $arg1, array $arg2)
     {
