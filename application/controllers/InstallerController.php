@@ -771,18 +771,18 @@ class InstallerController extends CController {
 
 
         /**
-         * @param string $sDirectory
-         */
+        * @param string $sDirectory
+        */
         function is_writable_recursive($sDirectory)
         {
             $sFolder = opendir($sDirectory);
             while($sFile = readdir( $sFolder ))
                 if($sFile != '.' && $sFile != '..' &&
-                ( !is_writable(  $sDirectory."/".$sFile  ) ||
-                (  is_dir(   $sDirectory."/".$sFile   ) && !is_writable_recursive(   $sDirectory."/".$sFile   )  ) ))
-                {
-                    closedir($sFolder);
-                    return false;
+                    ( !is_writable(  $sDirectory."/".$sFile  ) ||
+                        (  is_dir(   $sDirectory."/".$sFile   ) && !is_writable_recursive(   $sDirectory."/".$sFile   )  ) ))
+                    {
+                        closedir($sFolder);
+                        return false;
                 }
                 closedir($sFolder);
             return true;
@@ -960,8 +960,8 @@ class InstallerController extends CController {
             switch ($sDatabaseType) {
                 case 'mysql':
                 case 'mysqli':
-                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
-                    break;
+                $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($sDatabaseName) ." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
+                break;
             }
         } catch(Exception $e) {
             return array($e->getMessage());
@@ -1050,48 +1050,48 @@ class InstallerController extends CController {
             }
 
             if ($sDatabaseType)
-            $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
-            ."/*"."\n"
-            ."| -------------------------------------------------------------------"."\n"
-            ."| DATABASE CONNECTIVITY SETTINGS"."\n"
-            ."| -------------------------------------------------------------------"."\n"
-            ."| This file will contain the settings needed to access your database."."\n"
-            ."|"."\n"
-            ."| For complete instructions please consult the 'Database Connection'" ."\n"
-            ."| page of the User Guide."."\n"
-            ."|"."\n"
-            ."| -------------------------------------------------------------------"."\n"
-            ."| EXPLANATION OF VARIABLES"."\n"
-            ."| -------------------------------------------------------------------"."\n"
-            ."|"                                                                    ."\n"
-            ."|    'connectionString' Hostname, database, port and database type for " ."\n"
-            ."|     the connection. Driver example: mysql. Currently supported:"       ."\n"
-            ."|                 mysql, pgsql, mssql, sqlite, oci"                      ."\n"
-            ."|    'username' The username used to connect to the database"            ."\n"
-            ."|    'password' The password used to connect to the database"            ."\n"
-            ."|    'tablePrefix' You can add an optional prefix, which will be added"  ."\n"
-            ."|                 to the table name when using the Active Record class"  ."\n"
-            ."|"                                                                    ."\n"
-            ."*/"                                                                   ."\n"
-            . "return array("                             . "\n"
-            /*
-            ."\t"     . "'basePath' => dirname(dirname(__FILE__))," . "\n"
-            ."\t"     . "'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime'," . "\n"
-            ."\t"     . "'name' => 'LimeSurvey',"                   . "\n"
-            ."\t"     . "'defaultController' => 'survey',"          . "\n"
-            ."\t"     . ""                                          . "\n"
+                $sConfig = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');" . "\n"
+                ."/*"."\n"
+                ."| -------------------------------------------------------------------"."\n"
+                ."| DATABASE CONNECTIVITY SETTINGS"."\n"
+                ."| -------------------------------------------------------------------"."\n"
+                ."| This file will contain the settings needed to access your database."."\n"
+                ."|"."\n"
+                ."| For complete instructions please consult the 'Database Connection'" ."\n"
+                ."| page of the User Guide."."\n"
+                ."|"."\n"
+                ."| -------------------------------------------------------------------"."\n"
+                ."| EXPLANATION OF VARIABLES"."\n"
+                ."| -------------------------------------------------------------------"."\n"
+                ."|"                                                                    ."\n"
+                ."|    'connectionString' Hostname, database, port and database type for " ."\n"
+                ."|     the connection. Driver example: mysql. Currently supported:"       ."\n"
+                ."|                 mysql, pgsql, mssql, sqlite, oci"                      ."\n"
+                ."|    'username' The username used to connect to the database"            ."\n"
+                ."|    'password' The password used to connect to the database"            ."\n"
+                ."|    'tablePrefix' You can add an optional prefix, which will be added"  ."\n"
+                ."|                 to the table name when using the Active Record class"  ."\n"
+                ."|"                                                                    ."\n"
+                ."*/"                                                                   ."\n"
+                . "return array("                             . "\n"
+                /*
+                ."\t"     . "'basePath' => dirname(dirname(__FILE__))," . "\n"
+                ."\t"     . "'runtimePath' => dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'tmp'.DIRECTORY_SEPARATOR.'runtime'," . "\n"
+                ."\t"     . "'name' => 'LimeSurvey',"                   . "\n"
+                ."\t"     . "'defaultController' => 'survey',"          . "\n"
+                ."\t"     . ""                                          . "\n"
 
-            ."\t"     . "'import' => array("                        . "\n"
-            ."\t\t"   . "'application.core.*',"                     . "\n"
-            ."\t\t"   . "'application.models.*',"                   . "\n"
-            ."\t\t"   . "'application.controllers.*',"              . "\n"
-            ."\t\t"   . "'application.modules.*',"                  . "\n"
-            ."\t"     . "),"                                        . "\n"
-            ."\t"     . ""                                          . "\n"
-            */
-            ."\t"     . "'components' => array("                    . "\n"
-            ."\t\t"   . "'db' => array("                            . "\n"
-            ."\t\t\t" . "'connectionString' => '$sDsn',"            . "\n";
+                ."\t"     . "'import' => array("                        . "\n"
+                ."\t\t"   . "'application.core.*',"                     . "\n"
+                ."\t\t"   . "'application.models.*',"                   . "\n"
+                ."\t\t"   . "'application.controllers.*',"              . "\n"
+                ."\t\t"   . "'application.modules.*',"                  . "\n"
+                ."\t"     . "),"                                        . "\n"
+                ."\t"     . ""                                          . "\n"
+                */
+                ."\t"     . "'components' => array("                    . "\n"
+                ."\t\t"   . "'db' => array("                            . "\n"
+                ."\t\t\t" . "'connectionString' => '$sDsn',"            . "\n";
             if ($sDatabaseType!='sqlsrv' && $sDatabaseType!='dblib' )
             {
                 $sConfig .="\t\t\t" . "'emulatePrepare' => true,"    . "\n";
@@ -1178,7 +1178,7 @@ class InstallerController extends CController {
         $sResult='';
         for ($i=0;$i<$iTotalChar;$i++)
         {
-           $sResult.=chr(rand(33,126));
+            $sResult.=chr(rand(33,126));
         }
         return $sResult;
     }
@@ -1240,7 +1240,7 @@ class InstallerController extends CController {
     function _getDbPort($sDatabaseType, $sDatabasePort = '')
     {
         if (is_numeric($sDatabasePort))
-            return $sDatabasePort;
+        return $sDatabasePort;
 
         switch ($sDatabaseType) {
             case 'mysql':
@@ -1381,11 +1381,11 @@ class InstallerController extends CController {
     }
 
     /**
-     * Contains a number of extensions that can be expected
-     * to be installed by default, but maybe not on BSD systems etc.
-     * Check them silently and die if they are missing.
-     * @return void
-     */
+    * Contains a number of extensions that can be expected
+    * to be installed by default, but maybe not on BSD systems etc.
+    * Check them silently and die if they are missing.
+    * @return void
+    */
     private function checkDefaultExtensions()
     {
         $extensions = array(
