@@ -20,7 +20,7 @@
     * @author Thomas M. White (TMSWhite)
     * @author Denis Chenu <http://sondages.pro>
     */
-    include_once('em_core_helper.php');
+    Yii::import('application.helpers.expressions.em_core_helper', true);
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
@@ -4931,10 +4931,6 @@
                     {
                         $knownVar = $LEM->knownVars[$LEM->qcode2sgqa[$k]];
                     }
-                    else if (isset($LEM->tempVars[$k]))
-                    {
-                        $knownVar = $LEM->tempVars[$k];
-                    }
                     else
                     {
                         continue;
@@ -5466,12 +5462,6 @@
                             if (trim($val)=='' || $val=="INVALID")// otherwise will already be in yyyy-mm-dd format after ProcessCurrentResponses() (not for default value, GET value, Expression set value etc ... cf todo
                             {
                                 $val=NULL;  // since some databases can't store blanks in date fields
-                            }
-                            break;
-                        case '|': //File upload
-                            // This block can be removed once we require 5.3 or later
-                            if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-                                $val=addslashes($val);
                             }
                             break;
                         case 'N': //NUMERICAL QUESTION TYPE
@@ -8779,13 +8769,13 @@ EOD;
                                     // For an explanation of the exclamation mark, see this thread:
                                     // http://stackoverflow.com/questions/43740037/datetime-converts-wrong-when-system-time-is-30-march
                                     $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
-
                                     if ($dateTime === false) {
                                         $message = sprintf(
                                             'Could not convert date %s to format %s. Please check your date format settings.',
                                             trim($value),
                                             $aDateFormatData['phpdate']
                                         );
+                                        $value = "INVALID"; // This don't disable submitting survey  … ("" neither)
                                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
@@ -8793,7 +8783,7 @@ EOD;
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
-                                            $value = "";// Or $value="INVALID" ? : dropdown is OK with this not default.
+                                            $value = "";// This don't disable submitting survey  … ("INVALID" neither)
                                         }
                                     }
                                 }
@@ -8802,7 +8792,7 @@ EOD;
                                 if (!preg_match('/_filecount$/', $sq))
                                 {
                                     $json = $value;
-                                    $phparray = json_decode(stripslashes($json));
+                                    $phparray = json_decode($json);
 
                                     // if the files have not been saved already,
                                     // move the files from tmp to the files folder
@@ -8869,20 +8859,16 @@ EOD;
         static public function isValidVariable($varName)
         {
             $LEM =& LimeExpressionManager::singleton();
-
-            if (isset($LEM->knownVars[$varName]))
-            {
+            if(isset($LEM->tempVars[$varName])) {
                 return true;
             }
-            else if (isset($LEM->qcode2sgqa[$varName]))
-                {
-                    return true;
-                }
-                else if (isset($LEM->tempVars[$varName]))
-                    {
-                        return true;
-                    }
-                    return false;
+            if(isset($LEM->knownVars[$varName])) {
+                return true;
+            }
+            if(isset($LEM->qcode2sgqa[$varName])) {
+                return true;
+            }
+            return false;
         }
 
         /**
@@ -8906,21 +8892,17 @@ EOD;
             $varName = $args[0];
             $varName = preg_replace("/^(?:INSERTANS:)?(.*?)$/", "$1", $varName);
 
-            if (isset($this->knownVars[$varName]))
-            {
+            if( isset($this->tempVars[$varName]) ) {
+                // Forced value
+                $var = $this->tempVars[$varName];
+            } elseif ( isset($this->knownVars[$varName]) ) {
+                // SGQA from survey (session)
                 $var = $this->knownVars[$varName];
-            }
-            else if (isset($this->qcode2sgqa[$varName]))
-                {
-                    $var = $this->knownVars[$this->qcode2sgqa[$varName]];
-                }
-                else if (isset($this->tempVars[$varName]))
-                    {
-                        $var = $this->tempVars[$varName];
-                    }
-                    else
-                    {
-                        return '{' . $name . '}';
+            } elseif ( isset($this->qcode2sgqa[$varName]) ) {
+                // QCODE from survey (session) or template_replace core value
+                $var = $this->knownVars[$this->qcode2sgqa[$varName]];
+            } else {
+                return '{' . $name . '}';
             }
             $sgqa = isset($var['sgqa']) ? $var['sgqa'] : NULL;
             if (is_null($attr))

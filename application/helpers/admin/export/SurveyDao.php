@@ -96,12 +96,16 @@ class SurveyDao
     * @param int $iMaximum
     * @param string $sFilter An optional filter for the results, i  string or arry of string
     * @param string $completionState all, complete or incomplete
+    * @param string $aFields If empty all, otherwise only select the selected fields from the survey response table
     */
-    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='', $completionState = 'all' )
+    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='', $completionState = 'all', $aFields = array(), $aResponsesId = array() )
     {
 
+        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
         // Get info about the survey
-        $aSelectFields=Yii::app()->db->schema->getTable($survey->responsesTableName)->getColumnNames();
+        if (!empty($aFields)){
+            $aSelectFields=array_intersect($aFields,$aSelectFields);
+        }
         // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField)
            $sField =$survey->responsesTableName.".".$sField;
@@ -132,6 +136,33 @@ class SurveyDao
         );
         $selection = $survey->responsesTableName.'.id >= :min AND ' . $survey->responsesTableName . '.id <= :max';
         $oRecordSet->where($selection, $aParams);
+
+        if (empty($aResponsesId)){
+            $aParams = array(
+                'min'=>$iMinimum,
+                'max'=>$iMaximum
+            );
+            $selection = '{{survey_' . $survey->id . '}}.id >= :min AND {{survey_' . $survey->id . '}}.id <= :max';
+            $oRecordSet->where($selection, $aParams);
+        }else{
+            $aResponsesId = explode(',', $aResponsesId);
+
+            foreach($aResponsesId as $i => $iResponseId){
+
+                $iResponseId = (int) $iResponseId;
+                $selection = '{{survey_' . $survey->id . '}}.id = :id'.$i;
+
+
+                if($i === 0){
+                    $oRecordSet->where($selection, array('id'.$i=>$iResponseId));
+                }else{
+                    $oRecordSet->orWhere($selection, array('id'.$i=>$iResponseId));
+                }
+            }
+        }
+
+
+//var_dump($aParams); die();
 
         if(is_string($sFilter) && $sFilter)
             $oRecordSet->andWhere($sFilter);

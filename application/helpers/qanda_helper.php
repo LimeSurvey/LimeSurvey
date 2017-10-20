@@ -2625,10 +2625,9 @@ function do_file_upload($ia)
             $filecountvalue = $tempval;
         }
     }
-    $value = htmlspecialchars($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],ENT_QUOTES,'utf-8');
-    $fileuploadDatas = array(
+    $fileuploadData = array(
         'fileid' => $ia[1],
-        'value' => $value,
+        'value' => $_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$ia[1]],
         'filecountvalue'=>$filecountvalue,
         'coreClass'=>$coreClass,
         'basename' => $ia[1],
@@ -6388,8 +6387,8 @@ function fillDate($dateString) {
         case 16:
             return $dateString;
             break;
-        // Assume date('c')
-        case 25:
+        case 19:
+        case 25: // Assume date('c')
             $date = new DateTime($dateString);
             if ($date) {
                 return $date->format('Y-m-d H:i');

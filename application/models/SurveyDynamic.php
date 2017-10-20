@@ -262,7 +262,8 @@ class SurveyDynamic extends LSActiveRecord
     }
 
     /**
-     * @return string
+     * Get buttons HTML for response browse view.
+     * @return string HTML
      */
     public function getButtons()
     {
@@ -271,7 +272,7 @@ class SurveyDynamic extends LSActiveRecord
         $sEditUrl     = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
         $sDownloadUrl = App()->createUrl("admin/responses",array("sa"=>"actionDownloadfiles","surveyid"=>self::$sid,"sResponseId"=>$this->id));
         $sDeleteUrl   = App()->createUrl("admin/responses",array("sa"=>"actionDelete","surveyid"=>self::$sid));
-        //$sDeleteUrl   = "#";
+        $sAttachmentDeleteUrl = App()->createUrl("admin/responses",array("sa"=>"actionDeleteAttachments"));
         $button       = "";
 
         // View detail icon
@@ -285,17 +286,46 @@ class SurveyDynamic extends LSActiveRecord
             $button .= '<a class="btn btn-default btn-xs" href="'.$sEditUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Edit this response").'"><span class="fa fa-pencil text-success" ></span></a>';
         }
 
+        $responseHasFiles = Response::model(self::$sid)->findByPk($this->id)->someFileExists();
+
         // Download icon
+        if (hasFileUploadQuestion(self::$sid) && $responseHasFiles)
+        {
+            $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
+        } else
+        {
+            $button .= '<a class="btn btn-default btn-xs invisible" href="#" role="button"><span class="glyphicon glyphicon-download-alt downloadfile text-success" ></span></a>';
         if (hasFileUploadQuestion(self::$sid)) {
             if (Response::model(self::$sid)->findByPk($this->id)->getFiles()) {
                 $button .= '<a class="btn btn-default btn-xs" href="'.$sDownloadUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("Download all files in this response as a zip file").'"><span class="fa fa-download-alt downloadfile text-success" ></span></a>';
             }
         }
 
+        $aPostDatas = json_encode(
+            array(
+                'surveyid' => self::$sid,
+                'sResponseId' => $this->id
+            )
+        );
+
         // Delete icon
         if (Permission::model()->hasSurveyPermission(self::$sid,'responses','delete')) {
             $aPostDatas = json_encode(array('sResponseId'=>$this->id));
             $button .= "<a class='deleteresponse btn btn-default btn-xs' data-ajax-url='".$sDeleteUrl."' data-gridid='responses-grid' role='button' data-toggle='modal' data-post='".$aPostDatas."' data-target='#confirmation-modal' data-tooltip='true' title='". sprintf(gT('Delete response %s'),$this->id)."'><span class='fa fa-trash text-danger' ></span></a>";
+        }
+
+        // Delete all uploaded attachments from one response.
+        if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
+            if (hasFileUploadQuestion(self::$sid) && $responseHasFiles) {
+                $button .= sprintf(
+                    "<a class='deleteattachments btn btn-danger btn-xs text-danger' data-ajax-url='%s' data-gridid='responses-grid' data-toggle='modal' data-post='%s' data-target='#confirmation-modal' data-tooltip='true' title='%s'>
+                        <span class='glyphicon glyphicon-paperclip'></span>
+                        </a>",
+                    $sAttachmentDeleteUrl,
+                    $aPostDatas,
+                    gT('Delete all attachments for this response')
+                );
+            }
         }
 
         return $button;

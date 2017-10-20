@@ -252,6 +252,73 @@ class remotecontrol_handle
     }
 
     /**
+     * RPC Routine to copy a survey.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID_org Id of the source survey
+     * @param string $sNewname name of the new survey
+     * @return On success: new $iSurveyID in array['newsid']. On failure array with error information
+     * */
+    public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname )
+    {
+        $iSurveyID = (int) $iSurveyID_org;
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        $aData['bFailed'] = false; // Put a var for continue
+        if (!$iSurveyID)
+        {
+            $aData['sErrorMessage'] = "No survey ID has been provided. Cannot copy survey";
+            $aData['bFailed'] = true;
+        }
+        elseif(!Survey::model()->findByPk($iSurveyID))
+        {
+            $aData['sErrorMessage'] = "Invalid survey ID";
+            $aData['bFailed'] = true;
+        }
+        elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export'))
+        {
+            $aData['sErrorMessage'] = "You don't have sufficient permissions.";
+            $aData['bFailed'] = true;
+        }
+        else
+        {
+            $aExcludes = array();
+            $sNewSurveyName = $sNewname;
+            $aExcludes['dates'] = true;
+            $btranslinksfields=true;
+            Yii::app()->loadHelper('export');
+            $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+            if($copysurveydata)
+            {
+                Yii::app()->loadHelper('admin/import');
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName,NULL,$btranslinksfields);
+                if (isset($aExcludes['conditions']))
+                {
+                    Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
+                    QuestionGroup::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
+                }
+                if (!isset($aExcludes['permissions']))
+                {
+                    Permission::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
+                }
+            }
+            else
+            {
+                $aData['bFailed']=true;
+            }
+        }
+        if($aData['bFailed'])
+        {
+            return array('status' => 'Copy failed','error'=> $aData['sErrorMessage']);
+        }
+        else
+        {
+            return array('status' => 'OK','newsid'=>$aImportResults['newsid']);
+        }
+    }
+  
+    /**
+    * RPC Routine to get survey properties.
     * Get properties of a survey 
     *
     * All internal properties of a survey are available.
@@ -308,7 +375,6 @@ class remotecontrol_handle
     * Properties available are restricted
     * * Always
     *     * sid
-    *     * owner_id
     *     * active
     *     * language
     *     * additional_languages
@@ -343,7 +409,7 @@ class remotecontrol_handle
             {
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
-                unset($aSurveyData['owner_id']);
+                //unset($aSurveyData['owner_id']);
                 unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
                 unset($aSurveyData['additional_languages']);
@@ -542,6 +608,9 @@ class remotecontrol_handle
         $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        $iSurveyID=(int)$iSurveyID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
         if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
         if (is_null($survey)) return array('status' => 'Error: Invalid survey ID');

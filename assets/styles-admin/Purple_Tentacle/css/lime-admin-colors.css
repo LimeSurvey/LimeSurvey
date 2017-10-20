@@ -1476,7 +1476,7 @@ fieldset[disabled] .btn-link:focus {
   background-color: #ffffff;
   box-shadow: 0 3px 3px rgba(132, 136, 138, 0.1);
   border-radius: 0 !important; }
-  .navbar a:not(.noChangeBorder) {
+  .navbar a {
     border-bottom: 1px solid #ffffff; }
   .navbar .nav-icon-btn.nav-icon-btn-danger .label {
     background: #a15426; }
@@ -1737,37 +1737,6 @@ div.panel.disabled {
   background-color: #cfb0ce; }
 #sideMenu #dropdown #explorer .questiongroupdropdown li > a:hover {
   background-color: #cfb0ce; }
-#sideMenu #dropdown #explorer #fancytree {
-  color: #501050; }
-  #sideMenu #dropdown #explorer #fancytree > ul li:hover {
-    color: #35363f;
-    background-color: rgba(153, 51, 153, 0.3); }
-    #sideMenu #dropdown #explorer #fancytree > ul li:hover > ul {
-      background-color: #ebebeb;
-      color: inherit; }
-  #sideMenu #dropdown #explorer #fancytree > ul li > ul {
-    background-color: #ebebeb;
-    color: inherit; }
-  #sideMenu #dropdown #explorer #fancytree > ul li > span:not(.fancytree-active):hover, #sideMenu #dropdown #explorer #fancytree > ul li > span:not(.fancytree-active):hover span.fancytree-title {
-    background-color: transparent;
-    box-shadow: none; }
-  #sideMenu #dropdown #explorer #fancytree > ul li > span.fancytree-active {
-    background-color: rgba(153, 51, 153, 0.5);
-    color: #ffffff; }
-    #sideMenu #dropdown #explorer #fancytree > ul li > span.fancytree-active:hover, #sideMenu #dropdown #explorer #fancytree > ul li > span.fancytree-active:hover span.fancytree-title {
-      background-color: #501050;
-      color: #ffffff; }
-    #sideMenu #dropdown #explorer #fancytree > ul li > span.fancytree-active span.fancytree-title {
-      background-color: transparent;
-      color: inherit;
-      border: none;
-      outline: none; }
-  #sideMenu #dropdown #explorer #fancytree > ul li > span:hover span.fancytree-expander {
-    color: #ffffff; }
-  #sideMenu #dropdown #explorer #fancytree .fancytree-container .fancytree-icon {
-    color: #993399; }
-  #sideMenu #dropdown #explorer #fancytree .fancytree-container > li > ul .fancytree-icon {
-    color: #74bcfb; }
 #sideMenu .navbar-default .navbar-nav > .active > a {
   background-color: transparent; }
 #sideMenu .side-menu .dropdownlvl1 > a:hover {
@@ -1779,8 +1748,6 @@ div.panel.disabled {
 #sideMenu .sidemenuscontainer li:hover > a {
   color: #ffffff;
   background-color: #501050; }
-#sideMenu ul li {
-  box-shadow: 0 1px 0 #adadad; }
 
 @media (max-width: 768px) {
   .side-menu {

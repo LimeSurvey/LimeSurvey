@@ -292,10 +292,11 @@
                                           </a>
                                     <?php endif; ?>
                                   </li>
+                              <?php endif; ?>
 
-                            <?php if (isset($extraToolsMenuItems)): ?>
-                                <?php foreach ($extraToolsMenuItems as $menuItem): ?>
-                                    <?php if ($menuItem->isDivider()): ?>
+                              <?php if (!empty($extraToolsMenuItems)): ?>
+                                  <?php foreach ($extraToolsMenuItems as $menuItem): ?>
+                                      <?php if ($menuItem->isDivider()): ?>
                                           <li class="divider"></li>
                                     <?php elseif ($menuItem->isSmallText()): ?>
                                           <li class="dropdown-header"><?php echo $menuItem->getLabel();?></li>

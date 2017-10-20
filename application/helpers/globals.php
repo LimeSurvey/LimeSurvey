@@ -17,7 +17,6 @@
         return $app;
     }
 
-
     /**
      * If debug = 2 in application/config.php this will produce output in the console / firebug
      * similar to var_dump. It will also include the filename and line that called this method.
@@ -29,9 +28,8 @@
         $msg = CVarDumper::dumpAsString($variable, $depth, false);
         $fullTrace = debug_backtrace();
         $trace=array_shift($fullTrace);
-        if(isset($trace['file'],$trace['line']) && strpos($trace['file'],YII_PATH)!==0)
-        {
+        if(isset($trace['file'],$trace['line']) && strpos($trace['file'],YII_PATH)!==0) {
             $msg = $trace['file'].' ('.$trace['line']."):\n" . $msg;
         }
-        Yii::trace($msg, 'vardump');
+        Yii::log($msg, 'trace', 'vardump');
     }

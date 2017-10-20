@@ -1425,7 +1425,7 @@ class participantsaction extends Survey_Common_Action
                 }
             }
         }
-        if(is_array($AttributeNameLanguages) &&  $operation === 'edit')
+        if(is_array($AttributeNameLanguages))
         {
             foreach($AttributeNameLanguages as $lnKey => $lnValue)
             {
@@ -2109,7 +2109,7 @@ class participantsaction extends Survey_Common_Action
     public function setSession()
     {
         unset(Yii::app()->session['participantid']);
-        Yii::app()->session['participantid'] = Yii::app()->request->getPost('participantid');
+        Yii::app()->session['participantid'] = Yii::app()->request->getPost('itemsid');
     }
 
     /**

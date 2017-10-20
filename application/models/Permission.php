@@ -234,7 +234,7 @@ class Permission extends LSActiveRecord
         );
         uasort($aPermissions, array(__CLASS__,"comparePermissionTitle"));
         $aPermissions['superadmin'] = array(
-            'create' => false,
+            'create' => true, // Currently : is set/unset tis Permission to other user's
             'update' => false,
             'delete' => false,
             'import' => false,
@@ -354,6 +354,8 @@ class Permission extends LSActiveRecord
                 $aBasePermissions=$aFilteredPermissions;
             }
             elseif (Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->session['loginID']!=1) {
+            elseif (!Permission::model()->hasGlobalPermission('superadmin','create'))
+            {
                 unset($aBasePermissions['superadmin']);
             }
         }
@@ -552,6 +554,8 @@ class Permission extends LSActiveRecord
 
         if (isset($pluginbPermission)) {
              return $pluginbPermission;
+        if (isset($pluginbPermission)) {
+            return $pluginbPermission;
         }
 
         /* Always return true for CConsoleApplication (before or after plugin ? All other seems better after plugin) */
@@ -571,8 +575,7 @@ class Permission extends LSActiveRecord
         // TODO: should not be necessary
         if(!$this->getUserId($iUserID)) {
             return false;
-        }
-        else {
+        } else {
             $iUserID=$this->getUserId($iUserID);
         }
 
@@ -583,19 +586,26 @@ class Permission extends LSActiveRecord
         }
 
         /* Check if superadmin and static it */
-        // TODO: give the rights to superadmin adding line in permissions table, so it will return true with the normal way
         if (!isset($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p'])) {
             $aPermission = $this->findByAttributes(array("entity_id"=>0,'entity'=>'global', "uid"=> $iUserID, "permission"=>'superadmin'));
             $bPermission = is_null($aPermission) ? array() : $aPermission->attributes;
-            if (!isset($bPermission['read_p']) || $bPermission['read_p']==0) {
-                $bPermission=false;
-            }
-            else {
-                $bPermission=true;
-            }
-            $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']= $bPermission;
+            $aPermissionStatic[0]['global'][$iUserID]['superadmin']= array_merge(
+                array(
+                    'create_p'=>false,
+                    'read_p'=>false,
+                    'update_p'=>false,
+                    'delete_p'=>false,
+                    'import_p'=>false,
+                    'export_p'=>false,
+                ),
+                $bPermission
+            );
         }
-        if ($aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']) {
+        /* If it's a superadmin Permission : get and return */
+        if($sPermission == 'superadmin') {
+            return self::isForcedSuperAdmin($iUserID) || $aPermissionStatic[0]['global'][$iUserID][$sPermission][$sCRUD];
+        }
+        if ( self::isForcedSuperAdmin($iUserID) || $aPermissionStatic[0]['global'][$iUserID]['superadmin']['read_p']) {
             return true;
         }
 
@@ -619,6 +629,15 @@ class Permission extends LSActiveRecord
         return $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD];
     }
 
+    /**
+     * Returns true if user is a forced superadmin (can not disable superadmin rights)
+     * @var int
+     * @return boolean
+     */
+    public static function isForcedSuperAdmin($iUserID)
+    {
+        return in_array($iUserID,App()->getConfig('forcedsuperadmin'));
+    }
     /**
     * Returns true if a user has global permission for a certain action.
     * @param string $sPermission string Name of the permission - see function getGlobalPermissions

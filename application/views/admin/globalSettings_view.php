@@ -68,6 +68,12 @@
     <div id="interfaces" class="tab-pane col-md-6 col-md-offset-1">
         <?php $this->renderPartial("./global_settings/_interfaces"); ?>
     </div>
+
+    <div id="storage" class="tab-pane col-md-6 col-md-offset-1">
+        <?php
+            $this->renderPartial("./global_settings/_storage");
+        ?>
+    </div>
 </div>
     <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages); ?>'/>
     <input type='hidden' name='action' value='globalsettingssave'/>
