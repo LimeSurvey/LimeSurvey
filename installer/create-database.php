@@ -26,8 +26,8 @@ function createDatabase($oDB){
             'answer' => 'text',
             'sortorder' => 'integer',
             'assessment_value' => 'integer',
-            'language' => "string(20) DEFAULT 'en'"	,
-            'scale_id' => 'integer DEFAULT 0',
+            'language' => "string(20) NOT NULL DEFAULT 'en'"	,
+            'scale_id' => 'integer NOT NULL DEFAULT 0',
         ));
 
         $oDB->createCommand()->addPrimaryKey('{{answers_pk}}', '{{answers}}', ['qid', 'code', 'language', 'scale_id'], false);
