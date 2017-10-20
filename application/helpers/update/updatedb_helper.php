@@ -286,7 +286,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 296) {
             $oTransaction = $oDB->beginTransaction();
 
-          
+
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>296),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -368,7 +368,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         */
         if ($iOldDBVersion < 309) {
             $oTransaction = $oDB->beginTransaction();
-            
+
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>309),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -523,31 +523,31 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
-    if ($iOldDBVersion < 322) {
-        $oTransaction = $oDB->beginTransaction();
-        $oDB->createCommand()->createTable(
-            '{{tutorials}}',[
-                'tid' =>  'pk',
-                'name' =>  'string(128)',
-                'description' =>  'text',
-                'active' =>  'int DEFAULT 0',
-                'settings' => 'text',
-                'permission' =>  'string(128) NOT NULL',
-                'permission_grade' =>  'string(128) NOT NULL'
-            ]
-        );
-        $oDB->createCommand()->createTable(
-            '{{tutorial_entries}}',[
-                'teid' =>  'pk',
-                'tid' =>  'int NOT NULL',
-                'title' =>  'text',
-                'content' =>  'text',
-                'settings' => 'text'
-            ]
-        );
-        $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>322),"stg_name='DBVersion'");
-        $oTransaction->commit();
-    }
+        if ($iOldDBVersion < 322) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->createTable(
+                '{{tutorials}}',[
+                    'tid' =>  'pk',
+                    'name' =>  'string(128)',
+                    'description' =>  'text',
+                    'active' =>  'int DEFAULT 0',
+                    'settings' => 'text',
+                    'permission' =>  'string(128) NOT NULL',
+                    'permission_grade' =>  'string(128) NOT NULL'
+                ]
+            );
+            $oDB->createCommand()->createTable(
+                '{{tutorial_entries}}',[
+                    'teid' =>  'pk',
+                    'tid' =>  'int NOT NULL',
+                    'title' =>  'text',
+                    'content' =>  'text',
+                    'settings' => 'text'
+                ]
+            );
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>322),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
 
     }
     catch(Exception $e)
