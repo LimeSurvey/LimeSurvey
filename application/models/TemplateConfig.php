@@ -641,6 +641,7 @@ class TemplateConfig extends CActiveRecord
 
         // Question group
         $aClassAndAttributes['class']['groupcontainer'] = ' group-container ';
+        $aClassAndAttributes['class']['groupoutercontainer'] = ' group-outer-container ';
         $aClassAndAttributes['class']['grouptitle']     = ' group-title  ';
         $aClassAndAttributes['class']['groupdesc']      = ' group-description ';
 

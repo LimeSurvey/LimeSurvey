@@ -1,19 +1,20 @@
  {% extends "./subviews/printanswers/printanswers_question.twig" %}
  {% block question_answer %}
 <div class="col-md-8">
-    {% if question.subquestions is empty %}
-            {{question.answervalue}}
-    {% else %}
-            {% for subquestionId, subquestion in question.subquestions %}
-                <div class="row">
+    {% for file in question.fileinfo %}
+        <div class="row">
                     <div class="col-md-4 text-right">
-                        <b>{{subquestion.question}} ({{subquestion.qid}})</b>
+                        <b>{{file.title}}</b></a>
                     </div>
                     <div class="col-md-8 text-left">
-                        {{subquestion.answervalue}}
+                        {{file.comment == '' ? gT('No comment') : file.comment}}
+                    </div>
+                    <div class="col-md-4 text-right">
+                        {{gT("File of Type")}} "{{file.ext}}"
+                    </div>
+                    <div class="col-md-8 text-left">
                     </div>
                 </div>
-            {% endfor %}
-    {% endif %}
+    {% endfor %}
 </div>
 {% endblock %}

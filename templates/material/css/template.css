@@ -18,6 +18,11 @@ body
   }
 }
 
+.space-col {
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
 .group-title-container {
   padding: 1em;
   background:transparent;

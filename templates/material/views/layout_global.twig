@@ -45,7 +45,7 @@
             <###begin###>
         </div>
         {# Ajaxify cannot handle an element that is a direct child of body, so => create simple wrapper section #}
-        <article>
+        <article class="container">
             <div id="{{ aSurveyInfo.id.dynamicreload }}">
             {% block body %}
 
@@ -63,7 +63,7 @@
                 <div class="{{ aSurveyInfo.class.outerframe }}  {% if (aSurveyInfo.options.animatebody == "on") %} animated {{ aSurveyInfo.options.bodyanimation }} {%endif%}" id="{{ aSurveyInfo.id.outerframe }}" {{ aSurveyInfo.attr.outerframe }} >
 
                     <!-- Main Row -->
-                    <div id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }} >
+                    <div class="space-col" id="{{ aSurveyInfo.id.mainrow }}" {{ aSurveyInfo.attr.mainrow }} >
                         <!-- Main Col -->
                         <div class="{{ aSurveyInfo.class.maincol }} " id="{{ aSurveyInfo.id.maincol }}" {{ aSurveyInfo.attr.maincol }}>
 

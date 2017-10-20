@@ -703,6 +703,7 @@ class SurveyDynamic extends LSActiveRecord
      * @return array | boolean
      */
     public function getQuestionArray($oQuestion, $oResponses, $bHonorConditions, $subquestion=false, $getComment=false){
+
         $attributes = QuestionAttribute::model()->getQuestionAttributes($oQuestion->qid);
 
         if (!(LimeExpressionManager::QuestionIsRelevant($oQuestion->qid) || $bHonorConditions==false) && $attributes['hidden'] === 1) {
@@ -748,6 +749,7 @@ class SurveyDynamic extends LSActiveRecord
 
         $fieldname= $oQuestion->basicFieldName;
         
+        //
         if(in_array($oQuestion->type, ["F","A","B","E","C","H","Q","K","T"])){
             $fieldname.=$oQuestion->title;
         }
@@ -774,11 +776,27 @@ class SurveyDynamic extends LSActiveRecord
             $aQuestionAttributes['languageArray'] = $languageArray[ $aQuestionAttributes['answervalue'] ];
         }
         
+        if($aQuestionAttributes['questionclass'] === 'upload-files'){
+            $aQuestionAttributes['fileinfo'] = json_decode($aQuestionAttributes['answervalue'],true);
+        }
+
+        
         if($oQuestion->parent_qid != 0 && $oQuestion->parents['type'] === "1"){
             $tempFieldname = $fieldname.'#0';
             $aQuestionAttributes['answervalues'][0] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;
             $tempFieldname = $fieldname.'#1';
             $aQuestionAttributes['answervalues'][1] = isset($oResponses[$tempFieldname]) ? $oResponses[$tempFieldname] : null;        
+        }
+
+        if($aQuestionAttributes['questionclass'] === 'ranking'){
+            $aQuestionAttributes['answervalues'] = array();
+            $iterator =  1;
+            do {
+                $currentResponse = $oResponses[$fieldname.$iterator];
+                $aQuestionAttributes['answervalues'][] = $currentResponse;
+                $iterator++;
+            } while(isset($oResponses[$fieldname.$iterator]));
+        
         }
         
         if($oQuestion->parent_qid != 0 && in_array($oQuestion->parents['type'], [";", ":"])){
