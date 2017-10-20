@@ -788,31 +788,29 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
         "menu_id" => "integer DEFAULT NULL",
         "user_id" => "integer DEFAULT NULL",
         "ordering" => "integer DEFAULT '0'",
-        "name" => "string(255)  NOT NULL DEFAULT ''",
-        "title" => "string(255)  NOT NULL DEFAULT ''",
-        "menu_title" => "string(255)  NOT NULL DEFAULT ''",
+        "name" => "string(192)  NOT NULL DEFAULT ''",
+        "title" => "string(168)  NOT NULL DEFAULT ''",
+        "menu_title" => "string(168)  NOT NULL DEFAULT ''",
         "menu_description" => "text ",
-        "menu_icon" => "string(255)  NOT NULL DEFAULT ''",
-        "menu_icon_type" => "string(255)  NOT NULL DEFAULT ''",
-        "menu_class" => "string(255)  NOT NULL DEFAULT ''",
-        "menu_link" => "string(255)  NOT NULL DEFAULT ''",
-        "action" => "string(255)  NOT NULL DEFAULT ''",
-        "template" => "string(255)  NOT NULL DEFAULT ''",
-        "partial" => "string(255)  NOT NULL DEFAULT ''",
-        "classes" => "string(255)  NOT NULL DEFAULT ''",
-        "permission" => "string(255)  NOT NULL DEFAULT ''",
-        "permission_grade" => "string(255)  DEFAULT NULL",
+        "menu_icon" => "string(192)  NOT NULL DEFAULT ''",
+        "menu_icon_type" => "string(192)  NOT NULL DEFAULT ''",
+        "menu_class" => "string(192)  NOT NULL DEFAULT ''",
+        "menu_link" => "string(192)  NOT NULL DEFAULT ''",
+        "action" => "string(192)  NOT NULL DEFAULT ''",
+        "template" => "string(192)  NOT NULL DEFAULT ''",
+        "partial" => "string(192)  NOT NULL DEFAULT ''",
+        "classes" => "string(192)  NOT NULL DEFAULT ''",
+        "permission" => "string(192)  NOT NULL DEFAULT ''",
+        "permission_grade" => "string(192)  DEFAULT NULL",
         "data" => "text ",
-        "getdatamethod" => "string(255)  NOT NULL DEFAULT ''",
-        "language" => "string(255)  NOT NULL DEFAULT 'en-GB'",
+        "getdatamethod" => "string(192)  NOT NULL DEFAULT ''",
+        "language" => "string(32)  NOT NULL DEFAULT 'en-GB'",
         "changed_at" => "datetime NULL",
         "changed_by" => "integer NOT NULL DEFAULT '0'",
         "created_at" => "datetime DEFAULT NULL",
         "created_by" => "integer NOT NULL DEFAULT '0'"
     ));
     $oDB->createCommand()->createIndex('{{idx_menu_id}}', '{{surveymenu_entries}}', 'menu_id');
-    $oDB->createCommand()->createIndex('{{idx_ordering_entries}}', '{{surveymenu_entries}}', 'ordering');
-    $oDB->createCommand()->createIndex('{{idx_title_entries}}', '{{surveymenu_entries}}', 'title');
     $oDB->createCommand()->createIndex('{{idx_menu_title}}', '{{surveymenu_entries}}', 'menu_title');
 
     $colsToAdd = array("menu_id","user_id","ordering","name","title","menu_title","menu_description","menu_icon","menu_icon_type","menu_class","menu_link","action","template","partial","classes","permission","permission_grade","data","getdatamethod","language","changed_at","changed_by","created_at","created_by");
