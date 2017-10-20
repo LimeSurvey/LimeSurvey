@@ -765,7 +765,7 @@ function createDatabase($oDB){
                 'name' =>  'string(128)',
                 'description' =>  'text',
                 'active' =>  'int DEFAULT 0',
-                'settings' => 'text DEFAULT ""',
+                'settings' => 'text',
                 'permission' =>  'string(128) NOT NULL',
                 'permission_grade' =>  'string(128) NOT NULL'
             ]
@@ -777,8 +777,8 @@ function createDatabase($oDB){
                 'teid' =>  'pk',
                 'tid' =>  'int NOT NULL',
                 'title' =>  'text',
-                'content' =>  'text DEFAULT ""',
-                'settings' => 'text DEFAULT ""'
+                'content' =>  'text',
+                'settings' => 'text'
             ]
         );
 
