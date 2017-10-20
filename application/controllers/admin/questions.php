@@ -1715,9 +1715,9 @@ class questions extends Survey_Common_Action
         $surveyid           = (int) Yii::app()->request->getParam('sid',0);
         $qid                = (int) Yii::app()->request->getParam('qid',0);
         $type               = Yii::app()->request->getParam('question_type');
-        $thissurvey         = getSurveyInfo($surveyid);
+        $oSurvey         = Survey::model()->findByPk($surveyid);
 
-        if(!$thissurvey) die();
+        if($oSurvey === null ) die();
 
         $aLanguages = array_merge(
             array(Survey::model()->findByPk($surveyid)->language),
@@ -1741,7 +1741,7 @@ class questions extends Survey_Common_Action
                     $aAttributeModified = $aAttribute;
                     $aAttributeModified['name'] = $aAttributeModified['name'] . '_' . $sLanguage;
                     $aAttributeModified['language'] = $sLanguage;
-                    if ($aAttributeModified['readonly'] == true && $thissurvey['active'] == 'N')
+                    if ($aAttributeModified['readonly'] == true && $oSurvey->active == 'N')
                         $aAttributeModified['readonly'] == false;
 
                     if (isset($aAttributeModified[$sLanguage]['value']))
@@ -1753,7 +1753,7 @@ class questions extends Survey_Common_Action
                 }
             }
         }
-        $aData['bIsActive'] = ($thissurvey['active']=='Y');
+        $aData['bIsActive'] = ($oSurvey->active=='Y');
         $aData['attributedata'] = $aAttributesPrepared;
         $aData['aQuestionTemplates'] = \QuestionTemplate::getQuestionTemplateList($type);
 
