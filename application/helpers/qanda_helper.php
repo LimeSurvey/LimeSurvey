@@ -6354,6 +6354,7 @@ function getLabelInputWidth($labelAttributeWidth,$inputAttributeWidth){
         $defaultWidth,
     );
 }
+
 /**
  * Take a date string and fill out missing parts, like day, hour, minutes
  * (not seconds).
@@ -6370,35 +6371,26 @@ function fillDate($dateString) {
         // Only year
         case 4:
             return $dateString . '-01-01 00:00';
-            break;
         // Year and month
         case 7:
             return $dateString . '-01 00:00';
-            break;
         // Year, month and day
         case 10:
             return $dateString . ' 00:00';
-            break;
         // Year, month day and hour
         case 13:
             return $dateString . ':00';
-            break;
         // Complete, return as is.
         case 16:
             return $dateString;
-            break;
         case 19:
         case 25: // Assume date('c')
             $date = new DateTime($dateString);
             if ($date) {
                 return $date->format('Y-m-d H:i');
-            } else {
-                return '';
             }
-            break;
         default:
             return '';
-            break;
     }
 }
 
