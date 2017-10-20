@@ -136,6 +136,9 @@
 .ls-space.margin.bottom-0 {
   margin-bottom: 0px; }
 
+.ls-space.margin.all-0 {
+  margin: 0px; }
+
 .ls-space.margin.left-5 {
   margin-left: 5px; }
 
@@ -147,6 +150,9 @@
 
 .ls-space.margin.bottom-5 {
   margin-bottom: 5px; }
+
+.ls-space.margin.all-5 {
+  margin: 5px; }
 
 .ls-space.margin.left-10 {
   margin-left: 10px; }
@@ -160,6 +166,9 @@
 .ls-space.margin.bottom-10 {
   margin-bottom: 10px; }
 
+.ls-space.margin.all-10 {
+  margin: 10px; }
+
 .ls-space.margin.left-15 {
   margin-left: 15px; }
 
@@ -171,6 +180,9 @@
 
 .ls-space.margin.bottom-15 {
   margin-bottom: 15px; }
+
+.ls-space.margin.all-15 {
+  margin: 15px; }
 
 .ls-space.margin.left-25 {
   margin-left: 25px; }
@@ -184,6 +196,9 @@
 .ls-space.margin.bottom-25 {
   margin-bottom: 25px; }
 
+.ls-space.margin.all-25 {
+  margin: 25px; }
+
 .ls-space.margin.left-30 {
   margin-left: 30px; }
 
@@ -195,6 +210,9 @@
 
 .ls-space.margin.bottom-30 {
   margin-bottom: 30px; }
+
+.ls-space.margin.all-30 {
+  margin: 30px; }
 
 .ls-space.margin.left-35 {
   margin-left: 35px; }
@@ -208,6 +226,9 @@
 .ls-space.margin.bottom-35 {
   margin-bottom: 35px; }
 
+.ls-space.margin.all-35 {
+  margin: 35px; }
+
 .ls-space.margin.left-40 {
   margin-left: 40px; }
 
@@ -219,6 +240,9 @@
 
 .ls-space.margin.bottom-40 {
   margin-bottom: 40px; }
+
+.ls-space.margin.all-40 {
+  margin: 40px; }
 
 .ls-space.margin.left-45 {
   margin-left: 45px; }
@@ -232,6 +256,9 @@
 .ls-space.margin.bottom-45 {
   margin-bottom: 45px; }
 
+.ls-space.margin.all-45 {
+  margin: 45px; }
+
 .ls-space.margin.left-50 {
   margin-left: 50px; }
 
@@ -243,6 +270,9 @@
 
 .ls-space.margin.bottom-50 {
   margin-bottom: 50px; }
+
+.ls-space.margin.all-50 {
+  margin: 50px; }
 
 .ls-space.padding.left-0 {
   padding-left: 0px; }

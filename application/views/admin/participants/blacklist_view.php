@@ -15,6 +15,7 @@
             echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlacklistValues'), 'post', $attribute);
             $options = array('Y' => gT('Yes','unescaped'), 'N' => gT('No','unescaped'));
             ?>
+            <div class="row ls-space margin top-10 bottom-10">
                 <div class="form-group">
                     <label class='control-label col-sm-8'>
                         <?php eT('Blacklist all current surveys for participant once the global field is set:'); ?>
@@ -28,6 +29,8 @@
                         )); ?>
                     </div>
                 </div>
+            </div>
+            <div class="row ls-space margin top-10 bottom-10">
                 <div class="form-group">
                     <label class='control-label col-sm-8'>
                         <?php eT('Blacklist participant for any new added survey once the global field is set:'); ?>
@@ -41,6 +44,8 @@
                         )); ?>
                     </div>
                 </div>
+            </div>
+            <div class="row ls-space margin top-10 bottom-10">
                 <div class="form-group">
                     <label class='control-label col-sm-8'>
                         <?php eT('Allow blacklisted participants to be added to a survey:'); ?>
@@ -54,6 +59,8 @@
                         )); ?>
                     </div>
                 </div>
+            </div>
+            <div class="row ls-space margin top-10 bottom-10">
                 <div class="form-group">
                     <label class='control-label col-sm-8'>
                         <?php eT('Hide blacklisted participants:'); ?>
@@ -67,6 +74,8 @@
                         )); ?>
                     </div>
                 </div>
+            </div>
+            <div class="row ls-space margin top-10 bottom-10">
                 <div class="form-group">
                     <label class='control-label col-sm-8'>
                         <?php eT('Delete globally blacklisted participant from the database:'); ?>
@@ -80,6 +89,8 @@
                         )); ?>
                     </div>
                 </div>
+            </div>
+            <div class="row ls-space margin top-10 bottom-10">
                 <div class="form-group">
                     <label class='control-label col-sm-8'>
                         <?php eT('Allow participant to unblacklist himself/herself:'); ?>
@@ -93,12 +104,15 @@
                         )); ?>
                     </div>
                 </div>
+            </div>
+            <div class="row ls-space margin top-25 bottom-10">
                 <div class="form-group">
-                    <div class='col-sm-8'></div>
-                    <div class='col-sm-3'>
-                        <?php echo CHtml::submitButton('submit', array('value' => gT('Save'), 'class'=>'btn btn-default')); ?>
+                    <div class='col-sm-6'></div>
+                    <div class='col-sm-4'>
+                        <?php echo CHtml::submitButton('submit', array('value' => gT('Save'), 'class'=>'btn btn-default col-sm-12')); ?>
                     </div>
                 </div>
+            </div>
             <?php
             echo CHtml::endForm();
         }

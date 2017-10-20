@@ -98,7 +98,7 @@
                 <!-- Global participant settings -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" role="button">
                     <span class="icon-global text-success"></span>
-                    <?php eT("Settings");?>
+                    <?php eT("Blacklist settings");?>
                 </a>
 
                 <!-- Attribute management -->
