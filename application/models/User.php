@@ -177,7 +177,7 @@ class User extends LSActiveRecord
     {
         $oUser = new self;
         $oUser->users_name = $new_user;
-        $oUser->password = hash('sha256', $new_pass);
+        $oUser->password =  password_hash($new_pass,PASSWORD_DEFAULT);
         $oUser->full_name = $new_full_name;
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
@@ -192,7 +192,8 @@ class User extends LSActiveRecord
     /** @inheritdoc */
     public function beforeSave()
     {
-         // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
+        // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
+        /* Deprecated ? To confirm */
         if (gettype($this->password)=='resource') {
             $this->password=stream_get_contents($this->password,-1,0);
         }
@@ -238,7 +239,8 @@ class User extends LSActiveRecord
     public function updatePassword($iUserID, $sPassword)
     {
         // TODO should be $oUser->updatePassword($password)
-        return $this->updateByPk($iUserID, array('password' => hash('sha256', $sPassword)));
+        // Answer : no : other user can update …
+        return $this->updateByPk($iUserID, array('password' =>  password_hash($sPassword,PASSWORD_DEFAULT)));
     }
 
     /**
