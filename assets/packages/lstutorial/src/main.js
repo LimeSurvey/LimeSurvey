@@ -38,7 +38,9 @@ const TourLibrary = function () {
                     window.debug.tourObject = tourObject;
                     _actionActiveTour = new Tour(tourObject);
                     _actionActiveTour.init();
-
+                    window.addEventListener('resize', ()=>{
+                        _actionActiveTour.redraw();
+                      });
                     resolve(_actionActiveTour);
                 }, console.log);
             });

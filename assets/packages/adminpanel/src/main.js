@@ -1,4 +1,5 @@
 //globals formId
+import _ from 'lodash';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueLocalStorage from 'vue-localstorage';
@@ -34,19 +35,26 @@ if (document.getElementById('vue-app-main-container')) {
       'lspanelparametertable': ParameterTable,
     },
     created() {
-      const
-        menuOffset = $('nav.navbar').outerHeight(),
-        menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
-        footerHeight = $('footer').outerHeight() + 35,
-        documentHeight = screen.availHeight || screen.height,
-        innerMenuHeight = $('#breadcrumb-container').outerHeight(),
-        inSurveyViewHeight = (documentHeight - (menuOffset + menuHeight + footerHeight)),
-        generalContainerHeright = inSurveyViewHeight-(innerMenuHeight + 45);
+      const self = this,
+        controlWindowSize = function(self) {
+        const
+          menuOffset = $('nav.navbar').outerHeight(),
+          menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
+          footerHeight = $('footer').outerHeight(),
+          windowHeight = _.max([screen.availHeight, screen.height]),
+          innerMenuHeight = $('#breadcrumb-container').outerHeight(),
+          inSurveyViewHeight = (windowHeight - (menuOffset + menuHeight + footerHeight)),
+          generalContainerHeight = inSurveyViewHeight-(innerMenuHeight);
         
-        
-      this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
-      this.$store.commit('changeGeneralContainerHeight', generalContainerHeright);
+        self.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
+        self.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
+      }
 
+      controlWindowSize(this);
+      
+      window.addEventListener('resize', ()=>{
+        controlWindowSize(self);
+      });
     },
     mounted() {
       const surveyid = $(this.$el).data('surveyid');
