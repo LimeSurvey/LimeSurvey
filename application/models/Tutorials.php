@@ -34,7 +34,6 @@ class Tutorials extends LSActiveRecord
                     'orphan' => true,
                     'backdrop' => true,
                     'path' => Yii::app()->createUrl('/admin/index'),
-                    'container' => '#in_survey_common_action',
                     'title' => gT('Welcome to LimeSurvey!'),
                     'placement' => 'bottom',
                     'content' => sprintf(
@@ -256,9 +255,7 @@ class Tutorials extends LSActiveRecord
                 ),
                 array( //19
                     'element' => '#cke_question_en',
-                    'path' =>
-                    array(
-                    ),
+                    'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                     'placement' => 'top',
                     'title' => gT('The actual question text'),
                     'content' => gT('The content of this box is the actual question text shown to your participants.

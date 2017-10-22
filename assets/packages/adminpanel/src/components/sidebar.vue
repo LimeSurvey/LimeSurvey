@@ -37,6 +37,7 @@ export default {
             'collapsedmenus': {},
             'topmenus': {},
             'bottommenus': {},
+            'sideBarHeight': '400px'
         };
     },
     computed: {
@@ -53,10 +54,13 @@ export default {
             return (!this.$store.state.isCollapsed && this.$store.state.currentTab == 'questiontree');
         },
         calculateSideBarMenuHeight(){
-            return (this.$store.state.generalContainerHeight-70)+'px';
+            return (this.$store.state.sideBarHeight-70)+'px';
         }
     },
     methods: {
+        calculateHeight(self){
+            self.$store.commit('changeSideBarHeight', $('#in_survey_common').height());
+        },
         controlActiveLink(){
             //get current location
             let currentUrl = window.location.href;
@@ -194,7 +198,11 @@ export default {
     mounted(){
         const self = this;
         $(document).trigger('sidebar:mounted');
-
+        //Calculate the sidebar height and bin it to the resize event
+        self.calculateHeight(self);
+        window.addEventListener('resize', ()=>{
+            self.calculateHeight(self);
+        });
         //retrieve the current menues via ajax
         //questions
         this.get(this.getQuestionsUrl).then( (result) =>{
@@ -251,7 +259,7 @@ export default {
 }
 </script>
 <template>
-    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width fill-height" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
+    <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
         <div class="col-12 fill-height ls-space padding all-0" v-bind:style="{'height': $store.state.inSurveyViewHeight}">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
                 <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;">

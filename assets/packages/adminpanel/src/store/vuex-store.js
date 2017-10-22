@@ -16,6 +16,7 @@ const getAppState = function (userid) {
     maxHeight: 0,
     inSurveyViewHeight: 400,
     generalContainerHeight: 380,
+    sideBarHeight: 400,
     currentUser: userid,
     currentTab: 'settings',
     sidebarwidth: '380px',
@@ -67,6 +68,9 @@ const getAppState = function (userid) {
       },
       changeMaxHeight(state, newHeight) {
         state.maxHeight = newHeight;
+      },
+      changeSideBarHeight(state, newHeight){
+        state.sideBarHeight = newHeight;
       },
       changeInSurveyViewHeight(state, newHeight) {
         state.inSurveyViewHeight = newHeight;
