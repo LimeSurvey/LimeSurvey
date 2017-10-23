@@ -576,6 +576,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     // Force User model to refresh meta data (for updates from very old versions)
     User::model()->refreshMetaData();
+    Survey::model()->refreshMetaData();
 
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
