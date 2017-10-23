@@ -54,7 +54,6 @@ class Tutorials extends LSActiveRecord
                         '<br/>','<p class="alert bg-warning">','</p>'
                     ),
                     'reflex' => '.selector__lstour--createsurvey',
-                    'backdrop' => true,
                     'redirect' => false,
                 ),
                 array( //3
@@ -124,7 +123,6 @@ class Tutorials extends LSActiveRecord
                     'element' => '#sidebar',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
                     'placement' => 'right',
-                    'backdrop' => true,
                     'title' => gT('The sidebar'),
                     'content' => sprintf(
                         gT('This is the sidebar.%s
@@ -142,7 +140,6 @@ class Tutorials extends LSActiveRecord
                 array( //10
                     'element' => '#adminpanel__sidebar--selectorSettingsButton',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
-                    'backdrop' => true,
                     'placement' => 'bottom',
                     'title' => gT('The settings tab with the survey menu'),
                     'content' => gT('This tab shows the survey settings.
@@ -153,7 +150,6 @@ class Tutorials extends LSActiveRecord
                 array( //11
                     'element' => '#surveybarid',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
-                    'backdrop' => true,
                     'placement' => 'bottom',
                     'title' => gT('The top bar'),
                     'content' => sprintf(
@@ -167,7 +163,6 @@ class Tutorials extends LSActiveRecord
                 array( //12
                     'element' => '#adminpanel__sidebar--selectorStructureButton',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
-                    'backdrop' => true,
                     'placement' => 'bottom',
                     'title' => gT('The survey structure'),
                     'content' => gT('This is the structure view of your survey. Here you can see all your question groups and questions.'),
@@ -274,7 +269,6 @@ class Tutorials extends LSActiveRecord
                 array( //21
                     'element' => '#questionTypeContainer',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
-                    'backdrop' => true,
                     'placement' => 'left',
                     'title' => gT('Set your question type.'),
                     'content' => sprintf(
@@ -306,7 +300,6 @@ class Tutorials extends LSActiveRecord
                 array( //23
                     'element' => '#questionbarid',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
-                    'backdrop' => true,
                     'placement' => 'bottom',
                     'title' => gT('The question bar'),
                     'content' => gT('This is the question bar.
@@ -436,7 +429,6 @@ class Tutorials extends LSActiveRecord
                 array( //32
                     'element' => '#breadcrumb-container',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
-                    'backdrop' => true,
                     'placement' => 'bottom',
                     'title' => gT('Easy navigation with the "breadcrumbs"'),
                     'content' => sprintf(
@@ -455,7 +447,6 @@ class Tutorials extends LSActiveRecord
                 array( //33
                     'element' => '#ls-activate-survey',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
-                    'backdrop' => true,
                     'placement' => 'bottom',
                     'title' => gT('Finally, activate your survey'),
                     'content' => sprintf(
@@ -474,7 +465,6 @@ class Tutorials extends LSActiveRecord
                 array( //34
                     'element' => '#activateSurvey__basicSettings--proceed',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}'])],
-                    'backdrop' => false,
                     'placement' => 'bottom',
                     'title' => gT('Activation settings'),
                     'content' => sprintf(
@@ -494,7 +484,6 @@ class Tutorials extends LSActiveRecord
                 array( //35
                     'element' => '#activateTokenTable__selector--no',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/activate', ['surveyid' => '[0-9]{4,25}'])],
-                    'backdrop' => false,
                     'placement' => 'bottom',
                     'title' => ('Activate token table'),
                     'content' => sprintf(
@@ -515,7 +504,6 @@ class Tutorials extends LSActiveRecord
                 array( //36
                     'element' => '#adminpanel__surveysummary--mainLanguageLink',
                     'path' => Yii::app()->createUrl('/'),
-                    'backdrop' => false,
                     'placement' => 'top',
                     'title' => gT('Share this link'),
                     'content' => sprintf(
