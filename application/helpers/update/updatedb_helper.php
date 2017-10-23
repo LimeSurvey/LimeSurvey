@@ -549,18 +549,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 323) {
-            $oTransaction = $oDB->beginTransaction();
-            
-            $table = Yii::app()->db->schema->getTable('{{survey}}');
-            if(!isset($table->columns['gsid'])) {
-                addColumn('{{surveys}}', '{{gsid}}',"integer default 1");
-            }
-
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>323),"stg_name='DBVersion'");
-            $oTransaction->commit();
-        }
-            
     }
     catch(Exception $e)
     {
@@ -588,6 +576,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     // Force User model to refresh meta data (for updates from very old versions)
     User::model()->refreshMetaData();
+    Survey::model()->refreshMetaData();
 
     // Inform  superadmin about update
     $superadmins = User::model()->getSuperAdmins();
