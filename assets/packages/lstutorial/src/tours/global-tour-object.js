@@ -52,9 +52,10 @@ const globalTourObject = function(){
         get : function(tourName){
             return new Promise((res)=>{
                 $.ajax({
-                    url: filterUrl('/tutorial/sa/serveprebuilt', null, true),
+                    url: filterUrl('/tutorial/sa/serveprebuilt', null),
                     data: {tutorialname: tourName},
                     success: (tutorialData)=>{
+                        console.log(tutorialData);
                         const tutorialObject = _prepareMethods(tutorialData.tutorial);
                         res(tutorialObject);
                     }

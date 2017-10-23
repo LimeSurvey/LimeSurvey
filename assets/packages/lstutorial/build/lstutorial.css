@@ -68,3 +68,5 @@
     padding: 1em; }
   .lstutorial__template--mainContainer .popover-navigation.lstutorial__template--navigation {
     padding: 1em 5px; }
+  .lstutorial__template--mainContainer .lstutorial__typography--white {
+    color: white; }
