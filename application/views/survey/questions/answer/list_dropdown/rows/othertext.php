@@ -29,7 +29,7 @@ $(document).on("change","#answer<?php echo $name; ?>",function(){
         $("#<?php echo $name; ?>othertext").val("").trigger("keyup");
     }else{
         $("#<?php echo $name; ?>othertext").show();
-        $("#<?php echo $name; ?>"othertext).focus();
+        $("#<?php echo $name; ?>othertext").focus();
     }
 });
 </script>
