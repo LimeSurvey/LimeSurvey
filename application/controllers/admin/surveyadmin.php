@@ -836,7 +836,7 @@ class SurveyAdmin extends Survey_Common_Action
                 $allowregister = $survey->isAllowRegister;
                 $onclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID));
                 $closedOnclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/tokens/sa/index/surveyid/".$iSurveyID));
-                $noOnclickAction = convertGETtoPOST(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID));
+                $noOnclickAction = "window.location.href='".(Yii::app()->getController()->createUrl("admin/survey/sa/view/surveyid/".$iSurveyID))."'";
 
                 $activationData = array(
                     'iSurveyID'=>$iSurveyID,

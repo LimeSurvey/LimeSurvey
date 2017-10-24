@@ -268,7 +268,7 @@ class Tutorials extends LSActiveRecord
                     'redirect' => false,
                 ),
                 array( //21
-                    'element' => '#questionTypeContainer',
+                    'element' => '#question_type_button',
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                     'placement' => 'left',
                     'title' => gT('Set your question type.'),
@@ -378,7 +378,7 @@ class Tutorials extends LSActiveRecord
                     'content' => sprintf(
                         gT("Now that we've got some subquestions, we have to add answer options as well%s
                         The answer options will define the values that represent your subquestions.
-                        %sClick on the 'Edit subquestions' button.%s"),
+                        %sClick on the 'Edit answer options' button.%s"),
                         '<br/>','<p class="alert bg-warning">','</p>'
                     ),
                     'reflex' => true,
@@ -504,7 +504,7 @@ class Tutorials extends LSActiveRecord
                 ),
                 array( //36
                     'element' => '#adminpanel__surveysummary--mainLanguageLink',
-                    'path' => Yii::app()->createUrl('/'),
+                    'path' => [Yii::app()->createUrl('/').'(index.php)?'],
                     'placement' => 'top',
                     'title' => gT('Share this link'),
                     'content' => sprintf(

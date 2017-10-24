@@ -50,14 +50,16 @@ const globalTourObject = function(){
 
     return {
         get : function(tourName){
-            return new Promise((res)=>{
+            return new Promise((resolve, reject)=>{
                 $.ajax({
                     url: filterUrl('/tutorial/sa/serveprebuilt'),
                     data: {tutorialname: tourName},
                     success: (tutorialData)=>{
-                        console.log(tutorialData);
                         const tutorialObject = _prepareMethods(tutorialData.tutorial);
-                        res(tutorialObject);
+                        resolve(tutorialObject);
+                    },
+                    error: (error)=>{
+                        reject(error);
                     }
                 });
             });
