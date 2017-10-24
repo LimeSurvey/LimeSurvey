@@ -146,7 +146,6 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            //// To diplay one question, all the questions are processed ?
             $upload_file = false;
             foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia){
                 ++$qnumber;
@@ -155,7 +154,13 @@ class SurveyRuntimeHelper {
                 // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
                 if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)){
 
+                    // In question by question mode, we only procceed current question
                     if ($this->sSurveyMode == 'question' && $ia[0] != $this->aStepInfo['qid']){
+                        continue;
+                    }
+
+                    // In group by group mode, we only procceed current group
+                    if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']){
                         continue;
                     }
 
