@@ -134,6 +134,7 @@ class SurveyRuntimeHelper {
         $vpopup     = $fpopup = false;
         $upload_file = null;
 
+        $qanda = array();
         foreach ($_SESSION[$this->LEMsessid]['grouplist'] as $gl){
             $gid     = $gl['gid'];
             $qnumber = 0;
@@ -146,7 +147,6 @@ class SurveyRuntimeHelper {
             }
 
             //// To diplay one question, all the questions are processed ?
-            $qanda = array();
             $upload_file = false;
             foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia){
                 ++$qnumber;
@@ -327,6 +327,8 @@ class SurveyRuntimeHelper {
             // one entry per QID
             foreach ($qanda as $qa) {
 
+                if ($gid == $qa[6]){
+
                 $qid             = $qa[4];
                 $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                 $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
@@ -363,7 +365,7 @@ class SurveyRuntimeHelper {
                 $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
                 $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
                 $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], NULL, false, 3, 1, false, true, false);
-            }
+                }
 
             $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
             $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
@@ -380,10 +382,9 @@ class SurveyRuntimeHelper {
                     $aGroup['lastanswer']         = $lastanswer;
                 }
             }
-
             Yii::app()->setConfig('gid','');
-
             $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
+        }
         }
 
         /**
