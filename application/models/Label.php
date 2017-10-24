@@ -16,7 +16,8 @@
 /**
  * Class Label
  *
- * @property integer $lid Primary Key
+ * @property integer $liid Primary Key
+ * @property integer $lid Related Label Set
  * @property string $code
  * @property string $title
  * @property integer $sortorder
@@ -40,7 +41,7 @@ class Label extends LSActiveRecord
     /** @inheritdoc */
 	public function primaryKey()
 	{
-		return array('lid', 'language');
+		return array('liid');
 	}
     /**
      * @inheritdoc
@@ -70,6 +71,15 @@ class Label extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'labelset' => array(self::HAS_ONE, 'LabelSet', 'lid')
+        );
+    }
 
     /**
      * @param mixed|bool $condition

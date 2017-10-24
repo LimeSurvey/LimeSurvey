@@ -11,7 +11,7 @@ function createDatabase($oDB){
     */
 
     ////// Current database version: //////
-    $databaseCurrentVersion = "322";
+    $databaseCurrentVersion = "323";
     ///////////////////////////////////////
 
     Yii::app()->loadHelper('database');
@@ -136,7 +136,8 @@ function createDatabase($oDB){
 
         // labels
         $oDB->createCommand()->createTable('{{labels}}', array(
-            'lid' =>  "pk",
+            'liid' =>  "pk",
+            'lid' =>  "integer DEFAULT NULL",
             'code' =>  "string(5) NOT NULL default ''",
             'title' =>  "text",
             'sortorder' =>  "integer NOT NULL",
@@ -147,6 +148,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_labels}}', '{{labels}}', 'code', false);
         $oDB->createCommand()->createIndex('{{idx2_labels}}', '{{labels}}', 'sortorder', false);
         $oDB->createCommand()->createIndex('{{idx3_labels}}', '{{labels}}', 'language', false);
+        $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder','language'], false);
 
 
         // labelsets
