@@ -490,7 +490,6 @@ ol.breadcrumb.title-bar-breadcrumb {
     line-height: 24px;
     font-size: 18px; }
     ol.breadcrumb.title-bar-breadcrumb a.animate::after {
-      margin-left: 28px;
       text-align: right;
       content: '';
       display: block;
@@ -499,7 +498,7 @@ ol.breadcrumb.title-bar-breadcrumb {
       background: #fff;
       transition: width .3s; }
     ol.breadcrumb.title-bar-breadcrumb a.animate:hover::after {
-      width: 90%; }
+      width: 100%; }
     ol.breadcrumb.title-bar-breadcrumb a.animate.home-icon:hover::after {
       margin-left: 0;
       width: 100% !important; }
@@ -511,6 +510,8 @@ ol.breadcrumb.title-bar-breadcrumb {
     ol.breadcrumb.title-bar-breadcrumb li.active {
       color: #dfdfdf;
       font-style: italic; }
+    ol.breadcrumb.title-bar-breadcrumb li > div {
+      display: inline-block; }
 
 .breadcrumb-title {
   line-height: 24px;
