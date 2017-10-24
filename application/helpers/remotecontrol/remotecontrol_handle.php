@@ -36,14 +36,14 @@ class remotecontrol_handle
     * @access public
     * @param string $username
     * @param string $password
-    * @param bool $ldap
+    * @param bool $plugin
     * @return string|array
     */
-    public function get_session_key($username, $password, $ldap = false)
+    public function get_session_key($username, $password, $plugin = null)
     {
         $username= (string)$username;
         $password= (string)$password;
-        if ($this->_doLogin($username, $password, $ldap))
+        if ($this->_doLogin($username, $password, $plugin))
         {
             $this->_jumpStartSession($username);
             $sSessionKey = randomChars(32);
@@ -2859,11 +2859,11 @@ class remotecontrol_handle
     * @param string $sPassword password
     * @return bool
     */
-    protected function _doLogin($sUsername, $sPassword, $byLDAP)
+    protected function _doLogin($sUsername, $sPassword, $plugin)
     {
-        if ($byLDAP) {
+        if (in_array($plugin, array('AuthLDAP', 'Authwebserver'))) {
             $identity = new LSUserIdentity(sanitize_user($sUsername), $sPassword);
-            $identity->setPlugin("AuthLDAP");
+            $identity->setPlugin($plugin);
         } else {
             $identity = new UserIdentity(sanitize_user($sUsername), $sPassword);
         }
