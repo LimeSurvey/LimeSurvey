@@ -1255,7 +1255,8 @@ const globalTourObject = function(){
             return new Promise((resolve, reject)=>{
                 $.ajax({
                     url: filterUrl('/tutorial/sa/serveprebuilt'),
-                    data: {tutorialname: tourName},
+                    data: {tutorialname: tourName, ajax: true},
+                    method: 'POST',
                     success: (tutorialData)=>{
                         const tutorialObject = _prepareMethods(tutorialData.tutorial);
                         resolve(tutorialObject);

@@ -56,6 +56,7 @@ class Tutorials extends LSActiveRecord
                     ),
                     'reflex' => '.selector__lstour--createsurvey',
                     'redirect' => false,
+                    'onShow' => "(function(){ $('#welcomeModal').modal('hide'); })"
                 ),
                 array( //3
                     'element' => '#surveyls_title',
