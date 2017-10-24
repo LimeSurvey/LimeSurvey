@@ -332,7 +332,7 @@ class SurveyRuntimeHelper {
             // one entry per QID
             foreach ($qanda as $qa) {
 
-                if ($gid == $qa[6]){
+                
 
                 $qid             = $qa[4];
                 $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
@@ -370,7 +370,7 @@ class SurveyRuntimeHelper {
                 $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
                 $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
                 $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], NULL, false, 3, 1, false, true, false);
-                }
+
 
             $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
             $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
