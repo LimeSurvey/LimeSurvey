@@ -17,8 +17,9 @@ const TourLibrary = function () {
         },
         
         clearActiveTour = () => {
-            if (typeof _actionActiveTour === 'object')
+            if (typeof _actionActiveTour === 'object' && _actionActiveTour !== null) {
                 _actionActiveTour.end();
+            }
 
             _setNoTourActive();
         },
