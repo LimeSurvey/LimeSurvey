@@ -2635,7 +2635,7 @@ function do_file_upload($ia)
         'coreClass'=>$coreClass,
         'basename' => $ia[1],
     );
-    $answer .= doRender('/survey/questions/answer/file_upload/answer', $fileuploadDatas, true);
+    $answer .= doRender('/survey/questions/answer/file_upload/answer', $fileuploadData, true);
 
     $answer .= '<script type="text/javascript">
     var surveyid = '.Yii::app()->getConfig('surveyID').';
