@@ -73,7 +73,7 @@ class SurveyAdmin extends Survey_Common_Action
     }
 
     public function listsurveys()
-    {        
+    {
         Yii::app()->loadHelper('surveytranslator');
         $aData = array();
         $aData['issuperadmin'] = false;
@@ -974,7 +974,7 @@ class SurveyAdmin extends Survey_Common_Action
             $this->getController()->redirect(array('admin/survey','sa'=>'view','surveyid'=>$iSurveyID));
             Yii::app()->end();
         }
-        
+
         $templateData = is_array($menuEntry->data) ? $menuEntry->data : [];
 
         if( !empty($menuEntry->getdatamethod)) {
@@ -1219,13 +1219,11 @@ class SurveyAdmin extends Survey_Common_Action
         $action = Yii::app()->request->getParam('action');
         $iSurveyID = sanitize_int(Yii::app()->request->getParam('sid'));
 
-        if ($action == "importsurvey" || $action == "copysurvey")
-        {
+        if ($action == "importsurvey" || $action == "copysurvey"){
             // Start the HTML
             $sExtension = "";
 
-            if ($action == 'importsurvey')
-            {
+            if ($action == 'importsurvey'){
                 $aData                    = array();
                 $aData['sHeader']         = gT("Import survey data");
                 $aData['sSummaryHeader'] = gT("Survey structure import summary");
@@ -1236,84 +1234,68 @@ class SurveyAdmin extends Survey_Common_Action
                     $sExtension = $aPathInfo['extension'];
                 }
 
-            }
-            elseif ($action == 'copysurvey')
-            {
+            }elseif ($action == 'copysurvey'){
                 $aData                    = array();
                 $aData['sHeader'] = gT("Copy survey");
                 $aData['sSummaryHeader'] = gT("Survey copy summary");
             }
+
             // Start traitment and messagebox
             $aData['bFailed'] = false; // Put a var for continue
             $sFullFilepath = '';
-            if ($action == 'importsurvey')
-            {
+            if ($action == 'importsurvey'){
 
                 $sFullFilepath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(30).'.'.$sExtension;
-                if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2)
-                {
+                if ($_FILES['the_file']['error']==1 || $_FILES['the_file']['error']==2){
                     $aData['sErrorMessage']=sprintf(gT("Sorry, this file is too large. Only files up to %01.2f MB are allowed."), getMaximumFileUploadSize()/1024/1024).'<br>';
                     $aData['bFailed'] = true;
-                }
-                elseif (!in_array(strtolower($sExtension),array('lss','txt','tsv','lsa')))
-                {
+                }elseif (!in_array(strtolower($sExtension),array('lss','txt','tsv','lsa'))){
                     $aData['sErrorMessage'] = sprintf(gT("Import failed. You specified an invalid file type '%s'."), $sExtension);
                     $aData['bFailed'] = true;
-                }
-                elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath))
-                {
+                }elseif ($aData['bFailed'] || !@move_uploaded_file($_FILES['the_file']['tmp_name'], $sFullFilepath)){
                     $aData['sErrorMessage'] = gT("An error occurred uploading your file. This may be caused by incorrect permissions for the application /tmp folder.");
                     $aData['bFailed'] = true;
                 }
-            }
-            elseif ($action == 'copysurvey')
-            {
+            }elseif ($action == 'copysurvey'){
                 $iSurveyID = sanitize_int(Yii::app()->request->getParam('copysurveylist'));
                 $aExcludes = array();
 
                 $sNewSurveyName = Yii::app()->request->getPost('copysurveyname');
 
-                if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1")
-                {
+                if (Yii::app()->request->getPost('copysurveyexcludequotas') == "1"){
                     $aExcludes['quotas'] = true;
                 }
-                if (Yii::app()->request->getPost('copysurveyexcludepermissions') == "1")
-                {
+
+                if (Yii::app()->request->getPost('copysurveyexcludepermissions') == "1"){
                     $aExcludes['permissions'] = true;
                 }
-                if (Yii::app()->request->getPost('copysurveyexcludeanswers') == "1")
-                {
+
+                if (Yii::app()->request->getPost('copysurveyexcludeanswers') == "1"){
                     $aExcludes['answers'] = true;
                 }
-                if (Yii::app()->request->getPost('copysurveyresetconditions') == "1")
-                {
+
+                if (Yii::app()->request->getPost('copysurveyresetconditions') == "1"){
                     $aExcludes['conditions'] = true;
                 }
-                if (Yii::app()->request->getPost('copysurveyresetstartenddate') == "1")
-                {
+
+                if (Yii::app()->request->getPost('copysurveyresetstartenddate') == "1"){
                     $aExcludes['dates'] = true;
                 }
-                if (Yii::app()->request->getPost('copysurveyresetresponsestartid') == "1")
-                {
+
+                if (Yii::app()->request->getPost('copysurveyresetresponsestartid') == "1"){
                     $aExcludes['reset_response_id'] = true;
                 }
-                if (!$iSurveyID)
-                {
+
+                if (!$iSurveyID){
                     $aData['sErrorMessage'] = gT("No survey ID has been provided. Cannot copy survey");
                     $aData['bFailed'] = true;
-                }
-                elseif(!Survey::model()->findByPk($iSurveyID))
-                {
+                }elseif(!Survey::model()->findByPk($iSurveyID)){
                     $aData['sErrorMessage'] = gT("Invalid survey ID");
                     $aData['bFailed'] = true;
-                }
-                elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export'))
-                {
+                }elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export')){
                     $aData['sErrorMessage'] = gT("We are sorry but you don't have permissions to do this.");
                     $aData['bFailed'] = true;
-                }
-                else
-                {
+                }else{
                     Yii::app()->loadHelper('export');
                     $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
                 }
@@ -1322,55 +1304,46 @@ class SurveyAdmin extends Survey_Common_Action
             // Now, we have the survey : start importing
             Yii::app()->loadHelper('admin/import');
 
-            if ($action == 'importsurvey' && !$aData['bFailed'])
-            {
+            if ($action == 'importsurvey' && !$aData['bFailed']){
                 $aImportResults=importSurveyFile($sFullFilepath,(Yii::app()->request->getPost('translinksfields')=='1'));
-                if (is_null($aImportResults))
-                {
+                if (is_null($aImportResults)){
                     $aImportResults=array(
                         'error'=>gT("Unknown error while reading the file, no survey created.")
                     );
                 }
-            }
-            elseif ($action == 'copysurvey' && !$aData['bFailed'])
-            {
+            }elseif ($action == 'copysurvey' && !$aData['bFailed']){
+
                 $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName, sanitize_int(App()->request->getParam('copysurveyid')), (Yii::app()->request->getPost('copysurveytranslinksfields')=='1'));
-                if (isset($aExcludes['conditions']))
-                {
+                if (isset($aExcludes['conditions'])){
                     Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
                     QuestionGroup::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
                 }
-                if (isset($aExcludes['reset_response_id']))
-                {
+
+                if (isset($aExcludes['reset_response_id'])){
                     $oSurvey=Survey::model()->findByPk($aImportResults['newsid']);
                     $oSurvey->autonumber_start=0;
                     $oSurvey->save();
                 }
-                if (!isset($aExcludes['permissions']))
-                {
+
+                if (!isset($aExcludes['permissions'])){
                     Permission::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
                 }
 
-
-            }
-            else
-            {
+            }else{
                 $aData['bFailed'] = true;
             }
-            if ($action == 'importsurvey' && isset($sFullFilepath) && file_exists($sFullFilepath))
-            {
+
+            if ($action == 'importsurvey' && isset($sFullFilepath) && file_exists($sFullFilepath)){
                 unlink($sFullFilepath);
             }
-            if (!$aData['bFailed'])
-            {
+
+            if (!$aData['bFailed']){
                 $aData['aImportResults'] = $aImportResults;
                 $aData['action'] = $action;
-                if(isset($aImportResults['newsid']))
-                {
+                if(isset($aImportResults['newsid'])){
                     $aData['sLink'] = $this->getController()->createUrl('admin/survey/sa/view/surveyid/' . $aImportResults['newsid']);
                 }
             }
-
         }
 
         $this->_renderWrappedTemplate('survey', 'importSurvey_view', $aData);
