@@ -814,25 +814,26 @@ class TemplateConfig extends CActiveRecord
             throw new InvalidArgumentException('$aDatas cannot be empty');
         }
 
-        $oNewTemplate                = new Template;
-        $oNewTemplate->name          = $sTemplateName;
-        $oNewTemplate->folder        = $sTemplateName;
-        $oNewTemplate->title         = $sTemplateName;  // For now, when created via template editor => name == folder == title
-        $oNewTemplate->creation_date = date("Y-m-d H:i:s");
-        $oNewTemplate->author        = Yii::app()->user->name;
-        $oNewTemplate->author_email  = ''; // privacy
-        $oNewTemplate->author_url    = ''; // privacy
-        $oNewTemplate->api_version   = $aDatas['api_version'];
-        $oNewTemplate->view_folder   = $aDatas['view_folder'];
-        $oNewTemplate->files_folder  = $aDatas['files_folder'];
-        $oNewTemplate->owner_id      = Yii::app()->user->id;
-        $oNewTemplate->extends       = $aDatas['extends'];
-
+        $oNewTemplate                   = new Template;
+        $oNewTemplate->name             = $sTemplateName;
+        $oNewTemplate->folder           = $sTemplateName;
+        $oNewTemplate->title            = $sTemplateName;  // For now, when created via template editor => name == folder == title
+        $oNewTemplate->creation_date    = date("Y-m-d H:i:s");
+        $oNewTemplate->author           = Yii::app()->user->name;
+        $oNewTemplate->author_email     = ''; // privacy
+        $oNewTemplate->author_url       = ''; // privacy
+        $oNewTemplate->api_version      = $aDatas['api_version'];
+        $oNewTemplate->view_folder      = $aDatas['view_folder'];
+        $oNewTemplate->files_folder     = $aDatas['files_folder'];
+        $oNewTemplate->owner_id         = Yii::app()->user->id;
+        $oNewTemplate->extends          = $aDatas['extends'];
+        
         if ($oNewTemplate->save()){
             $oNewTemplateConfiguration                   = new TemplateConfiguration;
             $oNewTemplateConfiguration->template_name    = $sTemplateName;
             $oNewTemplateConfiguration->template_name    = $sTemplateName;
             $oNewTemplateConfiguration->options          = json_encode($aDatas['aOptions']);
+            $oNewTemplateConfiguration->packages_to_load = json_encode($aDatas['packages_to_load']);
 
 
             if ($oNewTemplateConfiguration->save()){

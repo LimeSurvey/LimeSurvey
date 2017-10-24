@@ -560,7 +560,7 @@ class TemplateConfiguration extends TemplateConfig
 
 
         if(!empty($jFiles)){
-            $oFiles = json_decode($jFiles);
+            $oFiles = json_decode($jFiles, true);
             foreach($oFiles as $action => $aFileList){
                 if ($action == "add" || $action == "replace"){
 
@@ -573,6 +573,7 @@ class TemplateConfiguration extends TemplateConfig
                     $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                 }
             }
+            
         }
 
 

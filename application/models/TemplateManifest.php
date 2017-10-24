@@ -286,6 +286,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['license']       = (string) $oTemplate->config->metadatas->license;
         $aDatas['view_folder']   = (string) $oTemplate->config->engine->viewdirectory;
         $aDatas['files_folder']  = (string) $oTemplate->config->engine->filesdirectory;
+        $aDatas['packages_to_load']  = !empty($oTemplate->config->engine->packages) ? ((array) $oTemplate->config->engine->packages) : [];
         $aDatas['aOptions']      = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0  )?array():$oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
 
         return parent::importManifest($sTemplateName, $aDatas );
