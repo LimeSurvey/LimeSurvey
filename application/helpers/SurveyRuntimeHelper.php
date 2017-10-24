@@ -817,7 +817,7 @@ class SurveyRuntimeHelper {
 
                 if ($this->aMoveResult['at_start']){
                     $_SESSION[$this->LEMsessid]['step'] = 0;
-                    unset($this->aMoveResult); // so display welcome page again
+                    $this->aMoveResult = false; // so display welcome page again
                 }
             }
 
