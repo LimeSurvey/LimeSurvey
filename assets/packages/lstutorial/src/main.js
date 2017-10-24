@@ -17,7 +17,7 @@ const TourLibrary = function () {
         },
         
         clearActiveTour = () => {
-            if (typeof _actionActiveTour === 'function')
+            if (typeof _actionActiveTour === 'object')
                 _actionActiveTour.end();
 
             _setNoTourActive();
@@ -40,7 +40,7 @@ const TourLibrary = function () {
                     _actionActiveTour.init();
                     window.addEventListener('resize', ()=>{
                         _actionActiveTour.redraw();
-                      });
+                    });
                     resolve(_actionActiveTour);
                 }, console.log);
             });
@@ -55,14 +55,16 @@ const TourLibrary = function () {
 
     return {
         clearActiveTour: clearActiveTour,
-        initTour: initTour
+        initTour: initTour,
+        _actionActiveTour: _actionActiveTour
     };
 };
 
 
 $(document).on('ready pjax:complete', function () {
-    if(typeof window.tourLibrary !== 'object')
+    if(typeof window.tourLibrary === 'undefined'){
         window.tourLibrary = TourLibrary();
+    }
 
     $('#selector__welcome-modal--starttour').on('click', function (e) {
         $(e.currentTarget).closest('.modal').modal('hide');

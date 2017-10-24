@@ -33,9 +33,6 @@
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
 /******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -63,18 +60,25 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(1);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_bootstrap_tour_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_bootstrap_tour_js__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lib_bootstrap_tour_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__lib_bootstrap_tour_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tours_global_tour_object_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tours_global_tour_object_js__ = __webpack_require__(4);
 
 
 
@@ -94,7 +98,7 @@ const TourLibrary = function () {
         },
         
         clearActiveTour = () => {
-            if (typeof _actionActiveTour === 'function')
+            if (typeof _actionActiveTour === 'object')
                 _actionActiveTour.end();
 
             _setNoTourActive();
@@ -117,7 +121,7 @@ const TourLibrary = function () {
                     _actionActiveTour.init();
                     window.addEventListener('resize', ()=>{
                         _actionActiveTour.redraw();
-                      });
+                    });
                     resolve(_actionActiveTour);
                 }, console.log);
             });
@@ -132,14 +136,16 @@ const TourLibrary = function () {
 
     return {
         clearActiveTour: clearActiveTour,
-        initTour: initTour
+        initTour: initTour,
+        _actionActiveTour: _actionActiveTour
     };
 };
 
 
 $(document).on('ready pjax:complete', function () {
-    if(typeof window.tourLibrary !== 'object')
+    if(typeof window.tourLibrary === 'undefined'){
         window.tourLibrary = TourLibrary();
+    }
 
     $('#selector__welcome-modal--starttour').on('click', function (e) {
         $(e.currentTarget).closest('.modal').modal('hide');
@@ -161,7 +167,7 @@ $(document).on('ready pjax:complete', function () {
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* ========================================================================
@@ -189,7 +195,7 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
 
 (function(window, factory) {
   if (true) {
-    return !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(6)], __WEBPACK_AMD_DEFINE_RESULT__ = function(jQuery) {
+    return !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(3)], __WEBPACK_AMD_DEFINE_RESULT__ = function(jQuery) {
       return window.Tour = factory(jQuery);
     }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -1181,7 +1187,91 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
 
 
 /***/ }),
-/* 2 */
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = jQuery;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+
+
+const globalTourObject = function(){
+    const getBasedUrls = (/index\.php\/?\?r=admin/.test(window.location.href)),
+    
+        combineParams = function(params){
+            const getBasedUrls = false;
+            if(params === false) return '';
+
+            const returner = (getBasedUrls ? '?' :'/') + __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.reduce(params, (urlParams, value, key)=>{ 
+                return urlParams + (
+                    getBasedUrls ? 
+                        (urlParams === '' ? '' : '&')+key+'='+value 
+                        : (urlParams === '' ? '' : '/')+key+'/'+value
+                );
+            }, '');
+            return returner;
+        },
+        filterUrl = function(url,params=false, forceGet=false){
+            if(url.charAt(0) == '/')
+                url = url.substring(1);
+            
+            const baseUrl = (getBasedUrls || forceGet) ? '/index.php?r=admin/' : '/admin/';
+            
+            const returnUrl = window.LS.data.baseUrl+baseUrl+url+combineParams(params);
+
+            return returnUrl;
+
+        },
+        _preparePath = function(path){
+            if(typeof path === 'string')
+                return path;
+            
+            return RegExp(path.join());
+        },
+        _prepareMethods = function(tutorialObject){
+            'use strict';
+            tutorialObject.steps = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(tutorialObject.steps, function(step,i){
+                step.path    = _preparePath(step.path);
+                step.onNext  = step.onNext  ? eval(step.onNext)  : undefined;
+                step.onShow  = step.onShow  ? eval(step.onShow)  : undefined;
+                step.onShown = step.onShown ? eval(step.onShown) : undefined;
+                return step;
+            });
+            
+            tutorialObject.onShown = tutorialObject.onShown ? eval(tutorialObject.onShown) : null;
+
+            return tutorialObject;
+        };
+
+    return {
+        get : function(tourName){
+            return new Promise((res)=>{
+                $.ajax({
+                    url: filterUrl('/tutorial/sa/serveprebuilt'),
+                    data: {tutorialname: tourName},
+                    success: (tutorialData)=>{
+                        console.log(tutorialData);
+                        const tutorialObject = _prepareMethods(tutorialData.tutorial);
+                        res(tutorialObject);
+                    }
+                });
+            });
+        }
+    };
+
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (globalTourObject());
+
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -18270,10 +18360,10 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(4)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(7)(module)))
 
 /***/ }),
-/* 3 */
+/* 6 */
 /***/ (function(module, exports) {
 
 var g;
@@ -18300,7 +18390,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 4 */
+/* 7 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -18325,97 +18415,6 @@ module.exports = function(module) {
 	}
 	return module;
 };
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
-
-
-const globalTourObject = function(){
-    const getBasedUrls = (/index\.php\/?\?r=admin/.test(window.location.href)),
-    
-        combineParams = function(params){
-            const getBasedUrls = false;
-            if(params === false) return '';
-
-            const returner = (getBasedUrls ? '?' :'/') + __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.reduce(params, (urlParams, value, key)=>{ 
-                return urlParams + (
-                    getBasedUrls ? 
-                        (urlParams === '' ? '' : '&')+key+'='+value 
-                        : (urlParams === '' ? '' : '/')+key+'/'+value
-                );
-            }, '');
-            return returner;
-        },
-        filterUrl = function(url,params=false, forceGet=false){
-            if(url.charAt(0) == '/')
-                url = url.substring(1);
-            
-            const baseUrl = (getBasedUrls || forceGet) ? '/index.php?r=admin/' : '/admin/';
-            
-            const returnUrl = window.LS.data.baseUrl+baseUrl+url+combineParams(params);
-
-            return returnUrl;
-
-        },
-        _preparePath = function(path){
-            if(typeof path === 'string')
-                return path;
-            
-            return RegExp(path.join());
-        },
-        _prepareMethods = function(tutorialObject){
-            'use strict';
-            tutorialObject.steps = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.map(tutorialObject.steps, function(step,i){
-                step.path    = _preparePath(step.path);
-                step.onNext  = step.onNext  ? eval(step.onNext)  : undefined;
-                step.onShow  = step.onShow  ? eval(step.onShow)  : undefined;
-                step.onShown = step.onShown ? eval(step.onShown) : undefined;
-                return step;
-            });
-            
-            tutorialObject.onShown = tutorialObject.onShown ? eval(tutorialObject.onShown) : null;
-
-            return tutorialObject;
-        };
-
-    return {
-        get : function(tourName){
-            return new Promise((res)=>{
-                $.ajax({
-                    url: filterUrl('/tutorial/sa/serveprebuilt'),
-                    data: {tutorialname: tourName},
-                    success: (tutorialData)=>{
-                        console.log(tutorialData);
-                        const tutorialObject = _prepareMethods(tutorialData.tutorial);
-                        res(tutorialObject);
-                    }
-                });
-            });
-        }
-    };
-
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (globalTourObject());
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-module.exports = jQuery;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(0);
 
 
 /***/ })

@@ -42,6 +42,7 @@ class Tutorials extends LSActiveRecord
                         '<br/>'
                     ),
                     'redirect' => false,
+                    'onShow' => "(function(){ $('#welcomeModal').modal('hide'); })"
                 ),
                 array( //2
                     'element' => '.selector__lstour--mainfunctionboxes',
