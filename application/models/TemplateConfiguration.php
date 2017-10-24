@@ -68,8 +68,11 @@ class TemplateConfiguration extends CFormModel
         $this->iSurveyId     = (int) $iSurveyId;
 
         if ($sTemplateName==''){
+            $this->sTemplateName = Yii::app()->getConfig('defaulttemplate');
             $this->oSurvey       = Survey::model()->findByPk($iSurveyId);
-            $this->sTemplateName = $this->oSurvey->template;
+            if($this->oSurvey) {
+                $this->sTemplateName = $this->oSurvey->template;
+            }
         }
 
         // We check if  it's a CORE template

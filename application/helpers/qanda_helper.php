@@ -6173,8 +6173,8 @@ function fillDate($dateString) {
         case 16:
             return $dateString;
             break;
-        // Assume date('c')
-        case 25:
+        case 19:
+        case 25: // Assume date('c')
             $date = new DateTime($dateString);
             if ($date) {
                 return $date->format('Y-m-d H:i');

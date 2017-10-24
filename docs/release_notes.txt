@@ -35,6 +35,16 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.72.2 (build 171017) to 2.72.3 (build 171020) Oct 20, 2017
+-Fixed issue #12805: Date fields are lost when persistent tokens are re-accessed (Carsten Schmitz)
+-Fixed issue #12806: RemoteControl: wrong datatype shows SQL error (Carsten Schmitz)
+-Fixed issue: Error after update which resolves itself after some time (caching issue) (Carsten Schmitz)
+-Fixed issue: Error message on LDAP token bind too generic (Carsten Schmitz)
+-Updated translation: French (France) by arnaud21
+-Updated translation: Indonesian by radhwaw
+-Updated translation: Dutch by Petra017, Han
+-Updated translation: Thai by tomzt
+-Updated translation: Dutch (Informal) by Petra017, Han
 
 Changes from 2.72.1 (build 171012) to 2.72.2 (build 171017) Oct 17, 2017
 -Fixed issue #12739: File upload question format: Title and comment may be garbled when going back and forth (markusfluer, Carsten Schmitz)
