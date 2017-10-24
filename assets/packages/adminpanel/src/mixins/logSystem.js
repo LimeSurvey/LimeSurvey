@@ -132,7 +132,7 @@ exports.install = function (Vue) {
         debugConsole.error.apply(Vue,['LoggingSystem ERROR:\n', arguments]);
     },
     log : function(){
-      debugConsole.log.apply(Vue,['LoggingSystem ERROR:\n', arguments]);
+      debugConsole.log.apply(Vue,['LoggingSystem LOG:\n', arguments]);
     }
   };
 };

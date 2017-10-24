@@ -270,7 +270,7 @@ class Survey_Common_Action extends CAction
             $this->_titlebar($aData);
             //// TODO : Move this div inside each correct view ASAP !
             echo '<div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
-            echo '<div id="vue-app-main-container" class="ls-flex-row align-items-flex-center align-content-center">';
+            echo '<div id="vue-app-main-container" class="ls-flex-row align-items-flex-center align-content-center" :style="{\'min-height\': $store.state.generalContainerHeight+\'px\'}">';
             //// Each view will call the correct bar as a subview.
             $this->_surveysidemenu($aData);
             //// TODO : Move this div inside each correct view ASAP !

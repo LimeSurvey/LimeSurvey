@@ -115,13 +115,13 @@ const TourLibrary = function () {
                     tourObject.onEnd = () => {
                         _setNoTourActive();
                     };
-                    window.debug = window.debug || {};
-                    window.debug.tourObject = tourObject;
+                    
                     _actionActiveTour = new __WEBPACK_IMPORTED_MODULE_0__lib_bootstrap_tour_js___default.a(tourObject);
                     _actionActiveTour.init();
                     window.addEventListener('resize', ()=>{
                         _actionActiveTour.redraw();
                     });
+                    
                     resolve(_actionActiveTour);
                 }, console.log);
             });
@@ -1251,14 +1251,16 @@ const globalTourObject = function(){
 
     return {
         get : function(tourName){
-            return new Promise((res)=>{
+            return new Promise((resolve, reject)=>{
                 $.ajax({
                     url: filterUrl('/tutorial/sa/serveprebuilt'),
                     data: {tutorialname: tourName},
                     success: (tutorialData)=>{
-                        console.log(tutorialData);
                         const tutorialObject = _prepareMethods(tutorialData.tutorial);
-                        res(tutorialObject);
+                        resolve(tutorialObject);
+                    },
+                    error: (error)=>{
+                        reject(error);
                     }
                 });
             });

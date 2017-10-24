@@ -34,26 +34,26 @@ if (document.getElementById('vue-app-main-container')) {
       'topbar': Topbar,
       'lspanelparametertable': ParameterTable,
     },
-    created() {
-      const self = this,
-        controlWindowSize = function(self) {
+    methods: {
+      controlWindowSize() {
         const
           menuOffset = $('nav.navbar').outerHeight(),
           menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
           footerHeight = $('footer').outerHeight(),
           windowHeight = _.max([screen.availHeight, screen.height]),
           innerMenuHeight = $('#breadcrumb-container').outerHeight(),
-          inSurveyViewHeight = (windowHeight - (menuOffset + menuHeight + footerHeight)),
+          inSurveyViewHeight = (windowHeight - (menuOffset + (2*menuHeight) + (2*footerHeight))),
           generalContainerHeight = inSurveyViewHeight-(innerMenuHeight);
-        
-        self.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
-        self.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
+            
+        this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
+        this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
       }
-
-      controlWindowSize(this);
+    },
+    created() {
+      this.controlWindowSize();
       
       window.addEventListener('resize', ()=>{
-        controlWindowSize(self);
+        this.controlWindowSize();
       });
     },
     mounted() {
