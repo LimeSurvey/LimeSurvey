@@ -1028,11 +1028,11 @@ function upgradeTemplateTables304($oDB)
         'files_css'         => '{"add": ["css/template.css", "css/animate.css"]}',
         'files_js'          => '{"add": ["scripts/template.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',
-        'options'           => '{"ajaxmode":"on","brandlogo":"on", "boxcontainer":"on", "backgroundimage":"on","animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
+        'options'           => '{"ajaxmode":"on","brandlogo":"on", "brandlogofile":"./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
         'cssframework_css'  => '{"replace": [["css/bootstrap.css","css/flatly.css"]]}',
         'cssframework_js'   => '',
-        'packages_to_load'  => 'template-core,',
+        'packages_to_load'  => '["pjax"]',
     ));
 
 
@@ -1046,7 +1046,7 @@ function upgradeTemplateTables304($oDB)
         'cssframework_name' => 'bootstrap',
         'cssframework_css'  => '{}',
         'cssframework_js'   => '',
-        'packages_to_load'  => 'template-core,',
+        'packages_to_load'  => '["pjax"]',
     ));
 
     // Add global configuration for Material Template
@@ -1055,11 +1055,11 @@ function upgradeTemplateTables304($oDB)
         'files_css'         => '{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}',
         'files_js'          => '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}',
         'files_print_css'   => '{"add":"css/print_template.css",}',
-        'options'           => '{"ajaxmode":"on","brandlogo":"on", "animatebody":"on","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
+        'options'           => '{"ajaxmode":"on","brandlogo":"on", "brandlogofile":"./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}',
         'cssframework_name' => 'bootstrap',
         'cssframework_css'  => '{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}',
         'cssframework_js'   => '',
-        'packages_to_load'  => 'template-core,',
+        'packages_to_load'  => '["pjax"]',
     ));
 
 }
