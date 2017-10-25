@@ -136,7 +136,7 @@ function createDatabase($oDB){
 
         // labels
         $oDB->createCommand()->createTable('{{labels}}', array(
-            'liid' =>  "pk",
+            'id' =>  "pk",
             'lid' =>  "integer DEFAULT NULL",
             'code' =>  "string(5) NOT NULL default ''",
             'title' =>  "text",

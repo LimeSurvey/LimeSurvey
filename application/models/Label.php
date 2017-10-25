@@ -16,7 +16,7 @@
 /**
  * Class Label
  *
- * @property integer $liid Primary Key
+ * @property integer $id Primary Key
  * @property integer $lid Related Label Set
  * @property string $code
  * @property string $title
@@ -41,7 +41,7 @@ class Label extends LSActiveRecord
     /** @inheritdoc */
 	public function primaryKey()
 	{
-		return array('liid');
+		return array('id');
 	}
     /**
      * @inheritdoc
