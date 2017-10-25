@@ -44,11 +44,11 @@
 
     <!-- NOTE: Material extends Default, but it doesn't provides the same options (no box container, no background image, no theme switcher) -->
     <options>
-        <ajaxmode>off</ajaxmode>
+        <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
         <boxcontainer>on</boxcontainer>
-        <animatebody>on</animatebody>
+        <animatebody>off</animatebody>
         <bodyanimation>fadeInRight</bodyanimation>
         <animatequestion>off</animatequestion>
         <questionanimation>flipInX</questionanimation>

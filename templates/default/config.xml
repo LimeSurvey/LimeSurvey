@@ -44,12 +44,12 @@
     <!-- eg: Ajaxmode: will be available with aSurveyInfo.options.ajaxmode -->
     <!-- for animations, see https://daneden.github.io/animate.css/ -->
     <options>
-        <ajaxmode>off</ajaxmode>
+        <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
         <boxcontainer>on</boxcontainer>
-        <backgroundimage>on</backgroundimage>
-        <animatebody>on</animatebody>
+        <backgroundimage>off</backgroundimage>
+        <animatebody>off</animatebody>
         <bodyanimation>fadeInRight</bodyanimation>
         <animatequestion>off</animatequestion>
         <questionanimation>flipInX</questionanimation>
