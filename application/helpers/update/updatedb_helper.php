@@ -551,7 +551,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
         if ($iOldDBVersion < 323) {
             $oTransaction = $oDB->beginTransaction();
-            dropPrimaryKey('labels');
+            dropPrimaryKey('{{labels}}');
             $oDB->createCommand()->addColumn( '{{labels}}', 'liid', 'pk');
             $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder','language'], false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>323),"stg_name='DBVersion'");
