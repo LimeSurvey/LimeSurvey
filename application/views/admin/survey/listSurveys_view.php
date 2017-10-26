@@ -10,7 +10,7 @@
 <div class="ls-space margin left-15 right-15 row list-surveys">
     <ul class="nav nav-tabs" id="surveysystem" role="tablist">
         <li class="active"><a href="#surveys"><?php eT('Survey list'); ?></a></li>
-        <li><a href="#surveygroups"><?php eT('Surveys groups'); ?></a></li>
+        <li><a href="#surveygroups"><?php eT('Survey groups'); ?></a></li>
     </ul>
     <div class="tab-content">
         <div id="surveys" class="tab-pane active">

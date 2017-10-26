@@ -111,7 +111,7 @@ class Tutorials extends LSActiveRecord
                 array( //8
                     'element' => '#save-form-button',
                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
-                    'title' => gT('Now save sour survey'),
+                    'title' => gT('Now save your survey'),
                     'placement' => 'bottom',
                     'content' => gT('You may play around with more settings, or edit your survey now. Just click on save.'),
                     'reflex' => true,
@@ -129,9 +129,9 @@ class Tutorials extends LSActiveRecord
                     'content' => sprintf(
                         gT('This is the sidebar.%s
                         All important settings can be reached in this sidebar.%s
-                        You may resize it to fit your screen, or largen it to better control your survey structure.
+                        You may resize it to fit your screen, or enlargen it to better control your survey structure.
                         It may be collapsed to show the quick-menu.
-                        To collapse it either click on the arrow button or resize it to the left.'),
+                        To collapse it either click on the arrow button or minimize it to the left.'),
                         '<br/>','<br/>'
                     ),
                     'redirect' => false,
@@ -145,7 +145,7 @@ class Tutorials extends LSActiveRecord
                     'placement' => 'bottom',
                     'title' => gT('The settings tab with the survey menu'),
                     'content' => gT('This tab shows the survey settings.
-                    Any setting to your survey is accessible in this menu.
+                    Any setting for your survey is accessible from this menu.
                     If you want to know more about the settings, have a look at our manual.'),
                     'redirect' => false,
                 ),
@@ -157,7 +157,7 @@ class Tutorials extends LSActiveRecord
                     'content' => sprintf(
                         gT('This is the top bar.
                         This bar will change as you move through the functionalities.
-                        In this view it contains the most important LimeSurvey functionalities like activating and previewing the survey'),
+                        This view contains the most important LimeSurvey functionalities like activating and previewing the survey'),
                         '<br/>'
                     ),
                     'redirect' => false,
@@ -180,7 +180,7 @@ class Tutorials extends LSActiveRecord
                     'placement' => 'right',
                     'title' => gT("Let's add another question group"),
                     'content' => sprintf(
-                        gT("What good would your survey be without questions?%s
+                        gT("What good would be your survey be questions?%s
                         In LimeSurvey a survey is organized in question groups and questions. To begin creating questions we first need a question group.
                         %sClick on the 'Add question group' button%s"),
                         '<br/>','<p class="alert bg-warning">','</p>'
@@ -198,7 +198,7 @@ class Tutorials extends LSActiveRecord
                     'placement' => 'bottom',
                     'title' => gT('Add the title to your question group'),
                     'content' => gT('The title will be visible to your participants and cannot be empty.
-                    Question groups are important to logically divide your questions, also in the default setting your survey is shown question group-wise.'),
+                    Question groups are important to logically divide your questions, also in the default setting your survey is shown group by group.'),
                     'redirect' => false,
                 ),
                 array( //15
@@ -243,9 +243,9 @@ class Tutorials extends LSActiveRecord
                     'placement' => 'top',
                     'title' => gT('The title of your question'),
                     'content' => sprintf(
-                        gT('This code is normally not shown to your participants, still it is necessary and has to be unique for the survey.%s
+                        gT("This code is normally not shown to your participants, still it is necessary and has to be unique for the survey.%s
                         This code is also the name of the variable that will be exported to SPSS or Excel.
-                        %sPlease type in a code that consists only of letters and numbers, and doesn\'t start with a number.%s'),
+                        %sPlease type in a code that consists only of letters and numbers, and doesn't start with a number.%s"),
                         '<br/>','<p class="alert bg-warning">','</p>'
                     ),
                     'redirect' => false,
@@ -275,7 +275,7 @@ class Tutorials extends LSActiveRecord
                     'title' => gT('Set your question type.'),
                     'content' => sprintf(
                         gT("LimeSurvey offers you a lot of different question types.%s
-                        The example question created for you as well as the default setting is the'Long free text'-type.%s
+                        The example question created for you as well as the default setting is the 'Long free text'-type.%s
                         This type will create a big text input for your participants.
                         %sPlease select the 'Array'-type.%s"),
                         '<br/>','<br/>','<p class="alert bg-warning">','</p>'
@@ -453,7 +453,7 @@ class Tutorials extends LSActiveRecord
                     'title' => gT('Finally, activate your survey'),
                     'content' => sprintf(
                         gT("Now activate this simple survey.%s
-                        You can have as many surveys as you like.
+                        You can create as many surveys as you like.
                         %sClick on 'Activate this survey'%s"),
                         '<br/>','<p class="alert bg-warning">','</p>'
                     ),
