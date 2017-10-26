@@ -8,11 +8,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List TemplateOptions', 'url'=>array('index')),
-	array('label'=>'Create TemplateOptions', 'url'=>array('create')),
-	array('label'=>'Update TemplateOptions', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete TemplateOptions', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage TemplateOptions', 'url'=>array('admin')),
+	array('label'=>'List template options', 'url'=>array('index')),
+	array('label'=>'Create template options', 'url'=>array('create')),
+	array('label'=>'Update template options', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Delete template options', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Manage template options', 'url'=>array('admin')),
 );
 ?>
 

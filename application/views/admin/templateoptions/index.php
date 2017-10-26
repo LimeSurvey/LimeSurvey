@@ -96,7 +96,7 @@
                     <table class="items table">
                         <thead>
                             <tr>
-                                <th><?php eT('Preview'); ?></th><th><?php eT('Folder'); ?></th><th><?php eT('Description'); ?></th><th><?php eT('type'); ?></th><th><?php eT('extends'); ?></th><th></th>
+                                <th><?php eT('Preview'); ?></th><th><?php eT('Folder'); ?></th><th><?php eT('Description'); ?></th><th><?php eT('Type'); ?></th><th><?php eT('Extends'); ?></th><th></th>
                             </tr>
                         </thead>
 

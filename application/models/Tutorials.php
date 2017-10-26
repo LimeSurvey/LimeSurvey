@@ -182,7 +182,7 @@ class Tutorials extends LSActiveRecord
                     'content' => sprintf(
                         gT("What good would your survey be without questions?%s
                         In LimeSurvey a survey is organized in question groups and questions. To begin creating questions we first need a question group.
-                        %sClick on the 'Add questiongroup' button%s"),
+                        %sClick on the 'Add question group' button%s"),
                         '<br/>','<p class="alert bg-warning">','</p>'
                     ),
                     'reflex' => true,

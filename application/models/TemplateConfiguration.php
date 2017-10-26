@@ -431,7 +431,7 @@ class TemplateConfiguration extends TemplateConfig
     public function getTypeIcon()
     {
         if (empty($this->sTypeIcon)){
-            $this->sTypeIcon = (Template::isStandardTemplate($this->template->name))?gT("Core Template"):gT("User Template");
+            $this->sTypeIcon = (Template::isStandardTemplate($this->template->name))?gT("Core template"):gT("User template");
         }
         return $this->sTypeIcon;
     }
