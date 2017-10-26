@@ -164,10 +164,10 @@ class Surveymenu extends LSActiveRecord
 			'title' 		=> gT('Title'),
 			'position' 		=> gT('Position'),
 			'description'	=> gT('Description'),
-			'changed_at'	=> gT('Changed At'),
-			'changed_by'	=> gT('Changed By'),
-			'created_at'	=> gT('Created At'),
-			'created_by'	=> gT('Created By'),
+			'changed_at'	=> gT('Changed on'),
+			'changed_by'	=> gT('Changed by'),
+			'created_at'	=> gT('Created on'),
+			'created_by'	=> gT('Created by'),
 		);
 	}
 	public function getButtons(){
@@ -183,13 +183,13 @@ class Surveymenu extends LSActiveRecord
             $editData = array(
                 'action_surveymenu_editModal',
 				'text-danger',
-				gT("Edit this surveymenu"),
+				gT("Edit this survey menu"),
 				'edit'
 			);
             $deleteData = array(
                 'action_surveymenu_deleteModal',
                 'text-danger',
-                gT("Delete this surveymenu"),
+                gT("Delete this survey menu"),
                 'trash text-danger'
             );
 

@@ -19,7 +19,7 @@ $massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massiv
 	<div class="ls-flex-column ls-space padding left-35 right-35">
 		<div class="ls-flex-row">
 			<div class="col-12 h1">
-				<?php eT('Surveymenus')?> 
+				<?php eT('Survey menus')?> 
 				<a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewmenu" >
                     <i class="fa fa-plus"></i>&nbsp;<?php eT('New menu') ?>
                 </a>	

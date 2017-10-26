@@ -948,7 +948,7 @@ class questionHelper
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'),1=>gT('Yes')),
             'default'=>1, /* before 3.0 : this is the default behaviour */
-            "help"=>gT('When using slider initial value : did this set the value.'),
+            "help"=>gT('When using slider initial value set this value at survey start.'),
             "caption"=>gT('Slider initial value set at start')
         );
 
@@ -1014,7 +1014,7 @@ class questionHelper
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'),1=>gT('Yes')),
             'default'=>0,
-            "help"=>gT('Reverses the slider direction and repositions the min/max text accoringly.'),
+            "help"=>gT('Reverses the slider direction and repositions the min/max text accordingly.'),
             "caption"=>gT('Reverse the slider direction')
         );
 
@@ -1567,7 +1567,7 @@ class questionHelper
             'inputtype'=>'question_template',
             'options'=>array(),
             'default' => "core",
-            "help"=>gT('Use a customed question template for this question'),
+            "help"=>gT('Use a customized question template for this question'),
             "caption"=>gT('Question template')
         );
 
