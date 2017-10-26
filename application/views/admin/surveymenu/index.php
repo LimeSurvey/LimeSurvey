@@ -78,10 +78,10 @@ $massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massiv
   	<div class="modal-dialog modal-lg" role="document">
     	<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><?php eT("Really delete this surveymenu?");?></h4>
+				<h4 class="modal-title"><?php eT("Really delete this survey menu?");?></h4>
 			</div>
 			<div class="modal-body">
-				<?php eT("All menuentries of this menu will also be deleted."); ?>
+				<?php eT("All menu entries of this menu will also be deleted."); ?>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Cancel'); ?></button>
@@ -95,7 +95,7 @@ $massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massiv
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><?php eT("Really restore the default surveymenus?");?></h4>
+          <h4 class="modal-title"><?php eT("Really restore the default survey menus?");?></h4>
         </div>
         <div class="modal-body">
           <p>

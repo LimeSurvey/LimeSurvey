@@ -29,7 +29,7 @@ $massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entrie
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
                 <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
                     <i class="fa fa-refresh"></i>&nbsp;
-                    <?php eT('Reset menu-entries') ?>
+                    <?php eT('Reset menu entries') ?>
                 </a>
             <?php endif; ?>
         </div>
@@ -100,7 +100,7 @@ $massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entrie
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><?php eT("Really restore the default surveymenu entries?");?></h4>
+          <h4 class="modal-title"><?php eT("Really restore the default survey menu entries?");?></h4>
         </div>
         <div class="modal-body">
           <p>

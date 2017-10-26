@@ -88,7 +88,7 @@
     </div>
 
     <?php if (count($model->templatesWithNoDb) > 0 && !$bFromSurveyGroup):?>
-        <h3><?php eT('Available Templates:'); ?></h3>
+        <h3><?php eT('Available templates:'); ?></h3>
         <div class="row">
             <div class="col-sm-12 content-right">
 

@@ -305,8 +305,8 @@ class Surveymenu extends LSActiveRecord
             $oDB->createCommand()->truncateTable('{{surveymenu}}');
 
             $headerArray = ['parent_id','survey_id','user_id','ordering','level','title','position','description','active','changed_at','changed_by','created_at','created_by'];
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'surveymenu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'quickmenu','collapsed','Quick menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'Survey menu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'Quick menu','collapsed','Quick menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
             
             $oTransaction->commit();
         } catch (Exception $e) {

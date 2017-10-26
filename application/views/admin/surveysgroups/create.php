@@ -14,7 +14,7 @@
         )
     )); ?>
 
-    <h3><?php eT('Create SurveysGroups:').$model->title; ?></h3>
+    <h3><?php eT('Create survey groups:').$model->title; ?></h3>
 
     <?php $this->renderPartial('./surveysgroups/_form', array('model'=>$model)); ?>
 

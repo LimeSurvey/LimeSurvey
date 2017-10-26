@@ -16,7 +16,7 @@
 )); ?>
 
 <div class="modal-header">
-	<?php $model->isNewRecord ? eT('Create new surveymenu entry') : eT('Edit surveymenu entry') ?>
+	<?php $model->isNewRecord ? eT('Create new survey menu entry') : eT('Edit survey menu entry') ?>
 </div>
 <div class="modal-body">
 	<div class="container-fluid">

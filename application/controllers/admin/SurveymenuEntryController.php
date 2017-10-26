@@ -218,7 +218,7 @@ class SurveymenuEntryController extends Survey_Common_Action
                         'redirect' => false,
                         'debug' => [$model, $_POST],
                         'debugErrors' => $model->getErrors(),
-                        'message' =>  ($success ? gT("Default survey menu entries restored.") : gT("Something went wrong! Are the surveymenus properly restored?"))
+                        'message' =>  ($success ? gT("Default survey menu entries restored.") : gT("Something went wrong! Are the survey menus properly restored?"))
                     ]
                 ),
                 false,
