@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-26 11:57:23+00:00\n"
+"POT-Creation-Date: 2017-10-26 14:06:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -945,7 +945,7 @@ msgid "Something went wrong! Are the survey menus properly restored?"
 msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:103
-msgid "was deleted."
+msgid "The survey group '%s' was deleted."
 msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:108
@@ -11326,7 +11326,7 @@ msgid ""
 msgstr ""
 
 #: application/models/Tutorials.php:114
-msgid "Now save sour survey"
+msgid "Now save your survey"
 msgstr ""
 
 #: application/models/Tutorials.php:116
@@ -11341,9 +11341,9 @@ msgstr ""
 msgid ""
 "This is the sidebar.%s\n"
 "                        All important settings can be reached in this sidebar.%s\n"
-"                        You may resize it to fit your screen, or largen it to better control your survey structure.\n"
+"                        You may resize it to fit your screen, or enlargen it to better control your survey structure.\n"
 "                        It may be collapsed to show the quick-menu.\n"
-"                        To collapse it either click on the arrow button or resize it to the left."
+"                        To collapse it either click on the arrow button or minimize it to the left."
 msgstr ""
 
 #: application/models/Tutorials.php:146
@@ -11353,7 +11353,7 @@ msgstr ""
 #: application/models/Tutorials.php:147
 msgid ""
 "This tab shows the survey settings.\n"
-"                    Any setting to your survey is accessible in this menu.\n"
+"                    Any setting for your survey is accessible from this menu.\n"
 "                    If you want to know more about the settings, have a look at our manual."
 msgstr ""
 
@@ -11365,7 +11365,7 @@ msgstr ""
 msgid ""
 "This is the top bar.\n"
 "                        This bar will change as you move through the functionalities.\n"
-"                        In this view it contains the most important LimeSurvey functionalities like activating and previewing the survey"
+"                        This view contains the most important LimeSurvey functionalities like activating and previewing the survey"
 msgstr ""
 
 #: application/models/Tutorials.php:169
@@ -11382,7 +11382,7 @@ msgstr ""
 
 #: application/models/Tutorials.php:183
 msgid ""
-"What good would your survey be without questions?%s\n"
+"What good would be your survey be questions?%s\n"
 "                        In LimeSurvey a survey is organized in question groups and questions. To begin creating questions we first need a question group.\n"
 "                        %sClick on the 'Add question group' button%s"
 msgstr ""
@@ -11394,7 +11394,7 @@ msgstr ""
 #: application/models/Tutorials.php:200
 msgid ""
 "The title will be visible to your participants and cannot be empty.\n"
-"                    Question groups are important to logically divide your questions, also in the default setting your survey is shown question group-wise."
+"                    Question groups are important to logically divide your questions, also in the default setting your survey is shown group by group."
 msgstr ""
 
 #: application/models/Tutorials.php:208
@@ -11467,7 +11467,7 @@ msgstr ""
 #: application/models/Tutorials.php:277
 msgid ""
 "LimeSurvey offers you a lot of different question types.%s\n"
-"                        The example question created for you as well as the default setting is the'Long free text'-type.%s\n"
+"                        The example question created for you as well as the default setting is the 'Long free text'-type.%s\n"
 "                        This type will create a big text input for your participants.\n"
 "                        %sPlease select the 'Array'-type.%s"
 msgstr ""
@@ -11584,7 +11584,7 @@ msgstr ""
 #: application/models/Tutorials.php:455
 msgid ""
 "Now activate this simple survey.%s\n"
-"                        You can have as many surveys as you like.\n"
+"                        You can create as many surveys as you like.\n"
 "                        %sClick on 'Activate this survey'%s"
 msgstr ""
 
@@ -16398,15 +16398,12 @@ msgid "Import of survey is completed."
 msgstr ""
 
 #: application/views/admin/survey/listSurveys_view.php:13
-msgid "Surveys groups"
+#: application/views/admin/survey/listSurveys_view.php:43
+msgid "Survey groups"
 msgstr ""
 
 #: application/views/admin/survey/listSurveys_view.php:39
 msgid "Create a new survey group"
-msgstr ""
-
-#: application/views/admin/survey/listSurveys_view.php:43
-msgid "Survey groups"
 msgstr ""
 
 #: application/views/admin/survey/newSurveyBrowserMessage.php:3
@@ -16712,7 +16709,7 @@ msgid "Question id"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:37
-msgid "SubQuestion ID"
+msgid "Subquestion ID"
 msgstr ""
 
 #: application/views/admin/survey/subview/accordion/_integration_panel.php:47
@@ -17466,11 +17463,11 @@ msgstr ""
 
 #: application/views/admin/surveymenu/massive_action/_update_results.php:17
 #: application/views/admin/surveymenu_entries/massive_action/_update_results.php:17
-msgid "Surveymenu entry ID"
+msgid "Survey menu entry ID"
 msgstr ""
 
 #: application/views/admin/surveymenu/shortlist.php:8
-msgid "Surveymenu"
+msgid "Survey menu"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:19
@@ -17508,11 +17505,11 @@ msgid "Reset menu entries"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/index.php:82
-msgid "Really delete this survey menuentry?"
+msgid "Really delete this survey menu entry?"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/index.php:85
-msgid "Please be careful, deleting default entries can result in severly harming productivity."
+msgid "Please be careful - if you delete default entries you may not be able access some parts of the application."
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/index.php:103
@@ -17564,7 +17561,7 @@ msgid "Create survey groups:"
 msgstr ""
 
 #: application/views/admin/surveysgroups/index.php:17
-msgid "Surveys groups:"
+msgid "Survey groups:"
 msgstr ""
 
 #: application/views/admin/surveysgroups/update.php:8
