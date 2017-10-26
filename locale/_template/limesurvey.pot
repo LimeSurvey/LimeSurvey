@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-26 11:42:35+00:00\n"
+"POT-Creation-Date: 2017-10-26 11:57:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -941,7 +941,7 @@ msgid "Default survey menu entries restored."
 msgstr ""
 
 #: application/controllers/admin/SurveymenuEntryController.php:221
-msgid "Something went wrong! Are the surveymenus properly restored?"
+msgid "Something went wrong! Are the survey menus properly restored?"
 msgstr ""
 
 #: application/controllers/admin/SurveysGroupsController.php:103
@@ -11115,11 +11115,11 @@ msgid "Image"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:272
-msgid "Delete this surveymenu entry"
+msgid "Delete this survey menu entry"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:278
-msgid "Edit this surveymenu entry"
+msgid "Edit this survey menu entry"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:394
@@ -17344,11 +17344,11 @@ msgid "Save and new"
 msgstr ""
 
 #: application/views/admin/surveymenu/_form.php:19
-msgid "Create new surveymenu"
+msgid "Create new survey menu"
 msgstr ""
 
 #: application/views/admin/surveymenu/_form.php:19
-msgid "Edit surveymenu"
+msgid "Edit survey menu"
 msgstr ""
 
 #: application/views/admin/surveymenu/_form.php:25
@@ -17380,11 +17380,11 @@ msgid "No customizable entries found."
 msgstr ""
 
 #: application/views/admin/surveymenu/index.php:81
-msgid "Really delete this surveymenu?"
+msgid "Really delete this survey menu?"
 msgstr ""
 
 #: application/views/admin/surveymenu/index.php:84
-msgid "All menuentries of this menu will also be deleted."
+msgid "All menu entries of this menu will also be deleted."
 msgstr ""
 
 #: application/views/admin/surveymenu/index.php:88
@@ -17393,7 +17393,7 @@ msgid "Delete now"
 msgstr ""
 
 #: application/views/admin/surveymenu/index.php:98
-msgid "Really restore the default surveymenus?"
+msgid "Really restore the default survey menus?"
 msgstr ""
 
 #: application/views/admin/surveymenu/index.php:102
@@ -17474,11 +17474,11 @@ msgid "Surveymenu"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:19
-msgid "Create new surveymenu entry"
+msgid "Create new survey menu entry"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:19
-msgid "Edit surveymenu entry"
+msgid "Edit survey menu entry"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:26
@@ -17504,7 +17504,7 @@ msgid "Reorder entries"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/index.php:32
-msgid "Reset menu-entries"
+msgid "Reset menu entries"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/index.php:82
@@ -17516,7 +17516,7 @@ msgid "Please be careful, deleting default entries can result in severly harming
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/index.php:103
-msgid "Really restore the default surveymenu entries?"
+msgid "Really restore the default survey menu entries?"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/index.php:107
@@ -17544,7 +17544,7 @@ msgid "Menu ID?"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/massive_action/_update.php:39
-msgid "Menu Class?"
+msgid "Menu class?"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/massive_action/_update.php:52
@@ -17560,11 +17560,11 @@ msgid "Language?"
 msgstr ""
 
 #: application/views/admin/surveysgroups/create.php:17
-msgid "Create SurveysGroups:"
+msgid "Create survey groups:"
 msgstr ""
 
 #: application/views/admin/surveysgroups/index.php:17
-msgid "Surveys Groups:"
+msgid "Surveys groups:"
 msgstr ""
 
 #: application/views/admin/surveysgroups/update.php:8
@@ -17602,7 +17602,7 @@ msgid "Extends"
 msgstr ""
 
 #: application/views/admin/templateoptions/index.php:91
-msgid "Available Templates:"
+msgid "Available templates:"
 msgstr ""
 
 #: application/views/admin/templateoptions/index.php:99
@@ -17614,7 +17614,7 @@ msgid "XML template"
 msgstr ""
 
 #: application/views/admin/templateoptions/update.php:10
-msgid "Update TemplateOptions for "
+msgid "Update template options for "
 msgstr ""
 
 #: application/views/admin/templateoptions/update.php:15
