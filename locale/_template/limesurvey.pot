@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-26 11:20:25+00:00\n"
+"POT-Creation-Date: 2017-10-26 11:42:35+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11159,11 +11159,11 @@ msgid "no preview available"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:434
-msgid "Core Template"
+msgid "Core template"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:434
-msgid "User Template"
+msgid "User template"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:457
@@ -11384,7 +11384,7 @@ msgstr ""
 msgid ""
 "What good would your survey be without questions?%s\n"
 "                        In LimeSurvey a survey is organized in question groups and questions. To begin creating questions we first need a question group.\n"
-"                        %sClick on the 'Add questiongroup' button%s"
+"                        %sClick on the 'Add question group' button%s"
 msgstr ""
 
 #: application/models/Tutorials.php:199
@@ -15304,7 +15304,8 @@ msgid "Structure"
 msgstr ""
 
 #: application/views/admin/super/sidemenu.php:44
-msgid "Add questiongroup"
+#: application/views/admin/survey/QuestionGroups/addGroup_view.php:14
+msgid "Add question group"
 msgstr ""
 
 #: application/views/admin/super/sidemenu.php:44
@@ -15385,6 +15386,7 @@ msgid "Last visited question:"
 msgstr ""
 
 #: application/views/admin/super/welcome.php:119
+#: application/views/admin/survey/breadcrumb.php:12
 #: application/views/admin/survey/listSurveys_view.php:12
 #: application/views/admin/survey/listSurveys_view.php:25
 msgid "Survey list"
@@ -15903,10 +15905,6 @@ msgstr ""
 msgid "Error: You have to enter a group title for each language."
 msgstr ""
 
-#: application/views/admin/survey/QuestionGroups/addGroup_view.php:14
-msgid "Add question group"
-msgstr ""
-
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:82
 msgid "Save question group"
 msgstr ""
@@ -16123,10 +16121,6 @@ msgstr ""
 
 #: application/views/admin/survey/activateSurvey_view.php:189
 msgid "Save & activate survey"
-msgstr ""
-
-#: application/views/admin/survey/breadcrumb.php:12
-msgid "Survey List"
 msgstr ""
 
 #: application/views/admin/survey/copySurvey_view.php:25
@@ -16553,7 +16547,7 @@ msgid "Reset to default settings"
 msgstr ""
 
 #: application/views/admin/survey/subview/_create_survey_text.php:48
-msgid "Create example question and question group?"
+msgid "Create example question group and question?"
 msgstr ""
 
 #: application/views/admin/survey/subview/_template_carousel.php:16
@@ -17582,11 +17576,11 @@ msgid "Surveys in this group"
 msgstr ""
 
 #: application/views/admin/surveysgroups/update.php:24
-msgid "Settings for this Surveygroup"
+msgid "Settings for this survey group"
 msgstr ""
 
 #: application/views/admin/surveysgroups/update.php:25
-msgid "Template options for this Surveygroup"
+msgid "Template options for this survey group"
 msgstr ""
 
 #: application/views/admin/surveysgroups/update.php:30
@@ -17598,10 +17592,12 @@ msgid "Active templates:"
 msgstr ""
 
 #: application/views/admin/templateoptions/index.php:62
+#: application/views/admin/templateoptions/index.php:99
 msgid "Type"
 msgstr ""
 
 #: application/views/admin/templateoptions/index.php:70
+#: application/views/admin/templateoptions/index.php:99
 msgid "Extends"
 msgstr ""
 
@@ -17611,14 +17607,6 @@ msgstr ""
 
 #: application/views/admin/templateoptions/index.php:99
 msgid "Folder"
-msgstr ""
-
-#: application/views/admin/templateoptions/index.php:99
-msgid "type"
-msgstr ""
-
-#: application/views/admin/templateoptions/index.php:99
-msgid "extends"
 msgstr ""
 
 #: application/views/admin/templateoptions/index.php:110
@@ -17810,11 +17798,11 @@ msgid "Note: This is a standard template."
 msgstr ""
 
 #: application/views/admin/templates/templateeditorbar_view.php:286
-msgid "If you want to edit it %s please extend it first%s."
+msgid "If you want to modify it %s you can extend it%s."
 msgstr ""
 
 #: application/views/admin/templates/templateeditorbar_view.php:286
-msgid "Extend Template"
+msgid "Extend template"
 msgstr ""
 
 #: application/views/admin/templates/templateeditorbar_view.php:296
