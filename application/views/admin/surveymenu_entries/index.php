@@ -79,10 +79,10 @@ $massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entrie
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><?php eT("Really delete this survey menuentry?");?></h4>
+          <h4 class="modal-title"><?php eT("Really delete this survey menu entry?");?></h4>
         </div>
         <div class="modal-body">
-          <?php eT("Please be careful, deleting default entries can result in severly harming productivity."); ?>
+          <?php eT("Please be careful - if you delete default entries you may not be able access some parts of the application."); ?>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">
