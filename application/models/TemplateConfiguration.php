@@ -527,7 +527,7 @@ class TemplateConfiguration extends TemplateConfig
         $aData['brandlogoFileList'] = [];
         foreach($fileList as $file){
             $isImage = $this->_filterImages($file);
-            
+
             if($isImage)
                 $aData['brandlogoFileList'][] = $isImage;
         };
@@ -573,7 +573,7 @@ class TemplateConfiguration extends TemplateConfig
                     $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                 }
             }
-            
+
         }
 
 
@@ -749,7 +749,7 @@ class TemplateConfiguration extends TemplateConfig
         $sFieldName  = 'cssframework_'.$sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
-        if (!empty( $aFieldValue )){
+        if (!empty( $aFieldValue ) && !empty($aFieldValue['replace'])){
             $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'] ;
 
             // Inner field inheritance

@@ -739,7 +739,7 @@ class TemplateManifest extends TemplateConfiguration
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
         $aAssetsToRemove = array();
-        if (!empty($this->cssFramework->$sType)){
+        if (!empty($this->cssFramework->$sType) && !empty($this->cssFramework->$sType->attributes()->replace)){
             $aAssetsToRemove =  (array) $this->cssFramework->$sType->attributes()->replace ;
             if($bInlcudeRemove){
                 $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $this->cssFramework->$sType->attributes()->remove );
