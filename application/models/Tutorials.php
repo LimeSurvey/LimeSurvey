@@ -242,12 +242,10 @@ class Tutorials extends LSActiveRecord
                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                     'placement' => 'top',
                     'title' => gT('The title of your question'),
-                    'content' => sprintf(
-                        gT("This code is normally not shown to your participants, still it is necessary and has to be unique for the survey.%s
-                        This code is also the name of the variable that will be exported to SPSS or Excel.
-                        %sPlease type in a code that consists only of letters and numbers, and doesn't start with a number.%s"),
-                        '<br/>','<p class="alert bg-warning">','</p>'
-                    ),
+                    'content' => 
+                        gT("This code is normally not shown to your participants, still it is necessary and has to be unique for the survey.").'<br>'
+                        .gT("This code is also the name of the variable that will be exported to SPSS or Excel.")
+                        .'<p class="alert bg-warning">'.gT("Please type in a code that consists only of letters and numbers, and doesn't start with a number.").'</p>',
                     'redirect' => false,
                 ),
                 array( //19
