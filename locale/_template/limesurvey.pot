@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-26 21:31:14+00:00\n"
+"POT-Creation-Date: 2017-10-26 21:55:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -9190,7 +9190,7 @@ msgid "Slider starts at the middle position"
 msgstr ""
 
 #: application/helpers/questionHelper.php:951
-msgid "When using slider initial value : did this set the value."
+msgid "When using slider initial value set this value at survey start."
 msgstr ""
 
 #: application/helpers/questionHelper.php:952
@@ -9254,7 +9254,7 @@ msgid "Slider with emoticon"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1017
-msgid "Reverses the slider direction and repositions the min/max text accoringly."
+msgid "Reverses the slider direction and repositions the min/max text accordingly."
 msgstr ""
 
 #: application/helpers/questionHelper.php:1018
@@ -9697,7 +9697,7 @@ msgid "Display type"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1570
-msgid "Use a customed question template for this question"
+msgid "Use a customized question template for this question"
 msgstr ""
 
 #: application/helpers/questionHelper.php:1571
@@ -10258,14 +10258,6 @@ msgstr ""
 
 #: application/libraries/Save.php:307 application/libraries/Save.php:449
 msgid "Your survey was successfully saved."
-msgstr ""
-
-#: application/libraries/Save.php:387
-msgid "Unable to insert record into survey table."
-msgstr ""
-
-#: application/libraries/Save.php:414
-msgid "Unable to insert record into saved_control table."
 msgstr ""
 
 #: application/libraries/admin/quexmlpdf.php:1907
@@ -11071,27 +11063,27 @@ msgid "Description"
 msgstr ""
 
 #: application/models/Surveymenu.php:167
-msgid "Changed At"
+msgid "Changed on"
 msgstr ""
 
 #: application/models/Surveymenu.php:168
-msgid "Changed By"
+msgid "Changed by"
 msgstr ""
 
 #: application/models/Surveymenu.php:169
-msgid "Created At"
+msgid "Created on"
 msgstr ""
 
-#: application/models/Surveymenu.php:170
-msgid "Created By"
+#: application/models/Surveymenu.php:170 application/models/User.php:450
+msgid "Created by"
 msgstr ""
 
 #: application/models/Surveymenu.php:186
-msgid "Edit this surveymenu"
+msgid "Edit this survey menu"
 msgstr ""
 
 #: application/models/Surveymenu.php:192
-msgid "Delete this surveymenu"
+msgid "Delete this survey menu"
 msgstr ""
 
 #: application/models/SurveymenuEntries.php:197
@@ -11655,10 +11647,6 @@ msgstr ""
 
 #: application/models/User.php:444
 msgid "No of surveys"
-msgstr ""
-
-#: application/models/User.php:450
-msgid "Created by"
 msgstr ""
 
 #: application/models/UserGroup.php:264
@@ -17363,7 +17351,7 @@ msgid "Fields with %s are required."
 msgstr ""
 
 #: application/views/admin/surveymenu/index.php:22
-msgid "Surveymenus"
+msgid "Survey menus"
 msgstr ""
 
 #: application/views/admin/surveymenu/index.php:24
@@ -17416,7 +17404,7 @@ msgid "Delete menus"
 msgstr ""
 
 #: application/views/admin/surveymenu/massive_action/_selector.php:28
-msgid "Are you sure you want to delete the selected menus and all concurrent submenus and entries?"
+msgid "Are you sure you want to delete the selected menus and all related submenus and entries?"
 msgstr ""
 
 #: application/views/admin/surveymenu/massive_action/_selector.php:40
