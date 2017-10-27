@@ -291,7 +291,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
         $aDatas['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
 
-        $aDatas['cssframework_name'] = (string) $oTemplate->config->engine->cssframework_name;
+        $aDatas['cssframework_name'] = (string) $oTemplate->config->engine->cssframework->name;
         $aDatas['cssframework_css']  = self::formatArrayFields($oTemplate, 'engine', 'cssframework_css');
         $aDatas['cssframework_js']   = self::formatArrayFields($oTemplate, 'engine', 'cssframework_js');
         $aDatas['packages_to_load']  = self::formatArrayFields($oTemplate, 'engine', 'packages');
