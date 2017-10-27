@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-27 12:14:57+00:00\n"
+"POT-Creation-Date: 2017-10-27 13:27:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3191,12 +3191,12 @@ msgid "Checked"
 msgstr ""
 
 #: application/controllers/admin/questions.php:609
-#: application/models/Tutorials.php:348
+#: application/models/Tutorials.php:342
 msgid "Edit answer options"
 msgstr ""
 
 #: application/controllers/admin/questions.php:850
-#: application/models/Tutorials.php:299
+#: application/models/Tutorials.php:293
 msgid "Edit subquestions"
 msgstr ""
 
@@ -3962,7 +3962,7 @@ msgstr ""
 #: application/controllers/admin/templates.php:445
 #: application/controllers/admin/templates.php:449
 #: application/controllers/admin/templates.php:453
-msgid "Template could not be renamed to `%s`."
+msgid "Template could not be renamed to '%s'."
 msgstr ""
 
 #: application/controllers/admin/templates.php:445
@@ -3978,7 +3978,7 @@ msgid "Maybe you don't have permission."
 msgstr ""
 
 #: application/controllers/admin/templates.php:468
-msgid "Template `%s` could not be found."
+msgid "Template '%s' could not be found."
 msgstr ""
 
 #: application/controllers/admin/templates.php:509
@@ -4002,7 +4002,7 @@ msgid "There was a problem deleting the template '%s'. Please check your directo
 msgstr ""
 
 #: application/controllers/admin/templates.php:564
-msgid "You can't delete templates '%s' because some template inherit from it."
+msgid "You can't delete template '%s' because one or more templates inherit from it."
 msgstr ""
 
 #: application/controllers/admin/templates.php:628
@@ -4584,7 +4584,7 @@ msgstr ""
 
 #: application/controllers/admin/translate.php:279
 #: application/core/Survey_Common_Action.php:785
-#: application/models/Tutorials.php:370
+#: application/models/Tutorials.php:364
 #: application/views/admin/survey/Question/questionbar_view.php:19
 #: application/views/admin/survey/Question/questionbar_view.php:79
 #: application/views/admin/survey/QuestionGroups/questiongroupbar_view.php:22
@@ -11324,410 +11324,419 @@ msgid "The welcome message"
 msgstr ""
 
 #: application/models/Tutorials.php:85
-msgid ""
-"This message is shown directly under the survey description on the welcome page.\n"
-"                                    You may leave this blank and concentrate on a good text for your description, or vice versa."
+msgid "This message is shown directly under the survey description on the welcome page. You may leave this blank and concentrate on a good text for your description, or vice versa."
 msgstr ""
 
-#: application/models/Tutorials.php:92
+#: application/models/Tutorials.php:91
 msgid "The end message"
 msgstr ""
 
-#: application/models/Tutorials.php:94
-msgid ""
-"This message is shown at the end of your survey to every participant.\n"
-"                                    It's a great way to say thank you or give some links or hints where to go next."
+#: application/models/Tutorials.php:93
+msgid "This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next."
 msgstr ""
 
-#: application/models/Tutorials.php:101
+#: application/models/Tutorials.php:99
 msgid "Now save your survey"
 msgstr ""
 
-#: application/models/Tutorials.php:103
+#: application/models/Tutorials.php:101
 msgid "You may play around with more settings, or edit your survey now. Just click on save."
 msgstr ""
 
-#: application/models/Tutorials.php:115
+#: application/models/Tutorials.php:113
 msgid "The sidebar"
 msgstr ""
 
-#: application/models/Tutorials.php:116
+#: application/models/Tutorials.php:114
 msgid "This is the sidebar."
 msgstr ""
 
-#: application/models/Tutorials.php:117
+#: application/models/Tutorials.php:115
 msgid "All important settings can be reached in this sidebar."
 msgstr ""
 
-#: application/models/Tutorials.php:118
-msgid ""
-"You may resize it to fit your screen, or enlargen it to better control your survey structure.\n"
-"                                        It may be collapsed to show the quick-menu.\n"
-"                                        To collapse it either click on the arrow button or minimize it to the left."
+#: application/models/Tutorials.php:116
+msgid "You may resize it to fit your screen, or enlargen it to better control your survey structure."
 msgstr ""
 
-#: application/models/Tutorials.php:130
+#: application/models/Tutorials.php:117
+msgid "It may be collapsed to show the quick-menu."
+msgstr ""
+
+#: application/models/Tutorials.php:118
+msgid "To collapse it either click on the arrow button or minimize it to the left."
+msgstr ""
+
+#: application/models/Tutorials.php:128
 msgid "The settings tab with the survey menu"
 msgstr ""
 
-#: application/models/Tutorials.php:131
-msgid ""
-"This tab shows the survey settings.\n"
-"                                    Any setting for your survey is accessible from this menu.\n"
-"                                    If you want to know more about the settings, have a look at our manual."
+#: application/models/Tutorials.php:129
+msgid "This tab shows the survey settings."
 msgstr ""
 
-#: application/models/Tutorials.php:140
+#: application/models/Tutorials.php:130
+msgid "Any setting for your survey is accessible from this menu."
+msgstr ""
+
+#: application/models/Tutorials.php:131
+msgid "If you want to know more about the settings, have a look at our manual."
+msgstr ""
+
+#: application/models/Tutorials.php:138
 msgid "The top bar"
 msgstr ""
 
-#: application/models/Tutorials.php:141
+#: application/models/Tutorials.php:139
 msgid "This is the top bar."
 msgstr ""
 
-#: application/models/Tutorials.php:142
-msgid ""
-"This bar will change as you move through the functionalities.\n"
-"                                        This view contains the most important LimeSurvey functionalities like activating and previewing the survey"
+#: application/models/Tutorials.php:140
+msgid "This bar will change as you move through the functionalities."
 msgstr ""
 
-#: application/models/Tutorials.php:150
+#: application/models/Tutorials.php:141
+msgid "This view contains the most important LimeSurvey functionalities like activating and previewing the survey."
+msgstr ""
+
+#: application/models/Tutorials.php:148
 msgid "The survey structure"
 msgstr ""
 
-#: application/models/Tutorials.php:151
+#: application/models/Tutorials.php:149
 msgid "This is the structure view of your survey. Here you can see all your question groups and questions."
 msgstr ""
 
-#: application/models/Tutorials.php:162
+#: application/models/Tutorials.php:160
 msgid "Let's add another question group"
 msgstr ""
 
-#: application/models/Tutorials.php:163
-msgid "What good would be your survey be questions?"
+#: application/models/Tutorials.php:161
+msgid "What good would your survey be without questions?"
 msgstr ""
 
-#: application/models/Tutorials.php:164
+#: application/models/Tutorials.php:162
 msgid "In LimeSurvey a survey is organized in question groups and questions. To begin creating questions we first need a question group."
 msgstr ""
 
-#: application/models/Tutorials.php:165
+#: application/models/Tutorials.php:163
 msgid "Click on the 'Add question group' button'"
 msgstr ""
 
-#: application/models/Tutorials.php:177
+#: application/models/Tutorials.php:175
 msgid "Add the title to your question group"
 msgstr ""
 
-#: application/models/Tutorials.php:178
-msgid ""
-"The title will be visible to your participants and cannot be empty.\n"
-"                                    Question groups are important to logically divide your questions, also in the default setting your survey is shown group by group."
+#: application/models/Tutorials.php:176
+msgid "The title will be visible to your participants and cannot be empty."
 msgstr ""
 
-#: application/models/Tutorials.php:186
+#: application/models/Tutorials.php:177
+msgid "Question groups are important to logically divide your questions, also in the default setting your survey is shown group by group."
+msgstr ""
+
+#: application/models/Tutorials.php:184
 msgid "A description for your question group"
 msgstr ""
 
-#: application/models/Tutorials.php:187
-msgid ""
-"This description is also visible to your participants.\n"
-"                                    You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants."
+#: application/models/Tutorials.php:185
+msgid "This description is also visible to your participants. You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants."
 msgstr ""
 
-#: application/models/Tutorials.php:195
+#: application/models/Tutorials.php:192
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:131
 msgid "Advanced settings"
 msgstr ""
 
-#: application/models/Tutorials.php:196
-msgid ""
-"Best to leave them like they are.\n"
-"                                    If you want to know more about randomization and relevance settings, have a look at our manual."
+#: application/models/Tutorials.php:193
+msgid "Best to leave them like they are. If you want to know more about randomization and relevance settings, have a look at our manual."
 msgstr ""
 
-#: application/models/Tutorials.php:204
+#: application/models/Tutorials.php:200
 msgid "Save and add a new question"
 msgstr ""
 
-#: application/models/Tutorials.php:205
+#: application/models/Tutorials.php:201
 msgid "Now when you are finished click on 'Save and add question'."
 msgstr ""
 
-#: application/models/Tutorials.php:206
+#: application/models/Tutorials.php:202
 msgid "This will directly add a question to the current question group."
 msgstr ""
 
-#: application/models/Tutorials.php:207
+#: application/models/Tutorials.php:203
 msgid "Now click on Save and add a new question"
 msgstr ""
 
-#: application/models/Tutorials.php:219
+#: application/models/Tutorials.php:215
 msgid "The title of your question"
 msgstr ""
 
-#: application/models/Tutorials.php:221
+#: application/models/Tutorials.php:217
 msgid "This code is normally not shown to your participants, still it is necessary and has to be unique for the survey."
 msgstr ""
 
-#: application/models/Tutorials.php:222
+#: application/models/Tutorials.php:218
 msgid "This code is also the name of the variable that will be exported to SPSS or Excel."
 msgstr ""
 
-#: application/models/Tutorials.php:223
+#: application/models/Tutorials.php:219
 msgid "Please type in a code that consists only of letters and numbers, and doesn't start with a number."
 msgstr ""
 
-#: application/models/Tutorials.php:230
+#: application/models/Tutorials.php:226
 msgid "The actual question text"
 msgstr ""
 
-#: application/models/Tutorials.php:231
-msgid ""
-"The content of this box is the actual question text shown to your participants.\n"
-"                                    It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine."
+#: application/models/Tutorials.php:227
+msgid "The content of this box is the actual question text shown to your participants."
 msgstr ""
 
-#: application/models/Tutorials.php:239
+#: application/models/Tutorials.php:228
+msgid "It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine."
+msgstr ""
+
+#: application/models/Tutorials.php:235
 msgid "An additional help text for your question"
 msgstr ""
 
-#: application/models/Tutorials.php:240
-msgid ""
-"You can add some additional help text to your question.\n"
-"                                    This may also be empty, then it will not be shown."
+#: application/models/Tutorials.php:236
+msgid "You can add some additional help text to your question. This may also be empty, then it will not be shown."
 msgstr ""
 
-#: application/models/Tutorials.php:248
+#: application/models/Tutorials.php:243
 msgid "Set your question type."
 msgstr ""
 
-#: application/models/Tutorials.php:249
+#: application/models/Tutorials.php:244
 msgid "LimeSurvey offers you a lot of different question types."
 msgstr ""
 
-#: application/models/Tutorials.php:250
+#: application/models/Tutorials.php:245
 msgid "The example question created for you as well as the default setting is the 'Long free text'-type."
 msgstr ""
 
-#: application/models/Tutorials.php:251
+#: application/models/Tutorials.php:246
 msgid "This type will create a big text input for your participants."
 msgstr ""
 
-#: application/models/Tutorials.php:252
+#: application/models/Tutorials.php:247
 msgid "Please select the 'Array'-type."
 msgstr ""
 
-#: application/models/Tutorials.php:259
+#: application/models/Tutorials.php:254
 msgid "Now save the created question"
 msgstr ""
 
-#: application/models/Tutorials.php:260
+#: application/models/Tutorials.php:255
 msgid "Next we will create subquestions and answer options."
 msgstr ""
 
-#: application/models/Tutorials.php:261
+#: application/models/Tutorials.php:256
 msgid "Please be sure the question has a legal title with only letters and numbers starting with a letter."
 msgstr ""
 
-#: application/models/Tutorials.php:273
+#: application/models/Tutorials.php:268
 msgid "The question bar"
 msgstr ""
 
-#: application/models/Tutorials.php:274
-msgid ""
-"This is the question bar.\n"
-"                                    The most important option here is the edit button.\n"
-"                                    Also important are the preview buttons, which we will show in one of the next steps."
+#: application/models/Tutorials.php:269
+msgid "This is the question bar. The most important option here is the edit button."
 msgstr ""
 
-#: application/models/Tutorials.php:283
+#: application/models/Tutorials.php:270
+msgid "Also important are the preview buttons, which we will show in one of the next steps."
+msgstr ""
+
+#: application/models/Tutorials.php:277
 msgid "Add some subquestions to your question"
 msgstr ""
 
-#: application/models/Tutorials.php:284
+#: application/models/Tutorials.php:278
 msgid "The array question is a type that creates a matrix for the participant."
 msgstr ""
 
-#: application/models/Tutorials.php:285
+#: application/models/Tutorials.php:279
 msgid "To fully use it you have to add subquestions as well as answer options."
 msgstr ""
 
-#: application/models/Tutorials.php:286
+#: application/models/Tutorials.php:280
 msgid "Let's start with subquestions."
 msgstr ""
 
-#: application/models/Tutorials.php:287
+#: application/models/Tutorials.php:281
 msgid "Click on the 'Edit subquestions' button."
 msgstr ""
 
-#: application/models/Tutorials.php:300
+#: application/models/Tutorials.php:294
 msgid "Here you may add some subquestions for your question."
 msgstr ""
 
-#: application/models/Tutorials.php:301
-msgid ""
-"Every row is one subquestion. It's best practice to use logical or numerical codes for the subquestions.\n"
-"                                        Your participants cannot see the subquestion code, only the subquestion text itself."
+#: application/models/Tutorials.php:295
+msgid "Every row is one subquestion. It's best practice to use logical or numerical codes for the subquestions."
 msgstr ""
 
-#: application/models/Tutorials.php:303
+#: application/models/Tutorials.php:296
+msgid "Your participants cannot see the subquestion code, only the subquestion text itself."
+msgstr ""
+
+#: application/models/Tutorials.php:297
 msgid "Pro tip: the subquestion may contain HTML code if you are logged in with admin mode."
 msgstr ""
 
-#: application/models/Tutorials.php:310
+#: application/models/Tutorials.php:304
 msgid "Add subquestion row"
 msgstr ""
 
-#: application/models/Tutorials.php:311
+#: application/models/Tutorials.php:305
 msgid "Click on the plus sign to add another subquestion to your question."
 msgstr ""
 
-#: application/models/Tutorials.php:312
+#: application/models/Tutorials.php:306
 msgid "Please add at least two subquestions"
 msgstr ""
 
-#: application/models/Tutorials.php:319
+#: application/models/Tutorials.php:313
 msgid "Now save the subquestions"
 msgstr ""
 
-#: application/models/Tutorials.php:320
+#: application/models/Tutorials.php:314
 msgid "You may save empty subquestions, but that would useless."
 msgstr ""
 
-#: application/models/Tutorials.php:321
+#: application/models/Tutorials.php:315
 msgid "Save now and let's edit the answer options."
 msgstr ""
 
-#: application/models/Tutorials.php:333
+#: application/models/Tutorials.php:327
 msgid "Add some answer options to your question"
 msgstr ""
 
-#: application/models/Tutorials.php:334
+#: application/models/Tutorials.php:328
 msgid "Now that we've got some subquestions, we have to add answer options as well."
 msgstr ""
 
-#: application/models/Tutorials.php:335
-msgid "The answer options will define the values that represent your subquestions."
+#: application/models/Tutorials.php:329
+msgid "The answer options will be shown for each of your subquestions."
 msgstr ""
 
-#: application/models/Tutorials.php:336
+#: application/models/Tutorials.php:330
 msgid "Click on the 'Edit answer options' button."
 msgstr ""
 
-#: application/models/Tutorials.php:349
-msgid "As you can see answer options and subquestions really don't differ much."
+#: application/models/Tutorials.php:343
+msgid "As you can see the editing of answer options and subquestions is really not much different."
 msgstr ""
 
-#: application/models/Tutorials.php:350
+#: application/models/Tutorials.php:344
 msgid "Please add at least two answer options to proceed."
 msgstr ""
 
-#: application/models/Tutorials.php:357
+#: application/models/Tutorials.php:351
 msgid "Now save the answer options"
 msgstr ""
 
-#: application/models/Tutorials.php:358
+#: application/models/Tutorials.php:352
 msgid "Click on save or next to proceed"
 msgstr ""
 
-#: application/models/Tutorials.php:371
+#: application/models/Tutorials.php:365
 msgid "Now is the time to preview your first survey."
 msgstr ""
 
-#: application/models/Tutorials.php:372
+#: application/models/Tutorials.php:366
 msgid "Just click on this button and a new window will open, where you can test run your survey."
 msgstr ""
 
-#: application/models/Tutorials.php:373
+#: application/models/Tutorials.php:367
 msgid "Please be aware that your answers will not be saved, because the survey isn't active yet."
 msgstr ""
 
-#: application/models/Tutorials.php:374
+#: application/models/Tutorials.php:368
 msgid "Click on 'Preview survey' and return to this window when you are done testing."
 msgstr ""
 
-#: application/models/Tutorials.php:381
+#: application/models/Tutorials.php:375
 msgid "Easy navigation with the \"breadcrumbs\""
 msgstr ""
 
-#: application/models/Tutorials.php:382
+#: application/models/Tutorials.php:376
 msgid "In the top bar of the admin interface you see the \"breadcrumbs\"."
 msgstr ""
 
-#: application/models/Tutorials.php:383
+#: application/models/Tutorials.php:377
 msgid "These will always be an easy way to get back to any previous setting."
 msgstr ""
 
-#: application/models/Tutorials.php:384
+#: application/models/Tutorials.php:378
 msgid "Click on the name of your survey to get back to the survey settings overview."
 msgstr ""
 
-#: application/models/Tutorials.php:396
+#: application/models/Tutorials.php:390
 msgid "Finally, activate your survey"
 msgstr ""
 
-#: application/models/Tutorials.php:397
+#: application/models/Tutorials.php:391
 msgid "Now activate this simple survey."
 msgstr ""
 
-#: application/models/Tutorials.php:398
+#: application/models/Tutorials.php:392
 msgid "You can create as many surveys as you like."
 msgstr ""
 
-#: application/models/Tutorials.php:399
+#: application/models/Tutorials.php:393
 msgid "Click on 'Activate this survey'"
 msgstr ""
 
-#: application/models/Tutorials.php:411
+#: application/models/Tutorials.php:405
 msgid "Activation settings"
 msgstr ""
 
-#: application/models/Tutorials.php:412
+#: application/models/Tutorials.php:406
 msgid "These settings cannot be changed once the survey is online."
 msgstr ""
 
-#: application/models/Tutorials.php:413
+#: application/models/Tutorials.php:407
 msgid "For this simple survey the default settings are ok, but read the disclaimer carefully when you activate your own surveys."
 msgstr ""
 
-#: application/models/Tutorials.php:414
-msgid "For more information consult or manual, or our forum."
+#: application/models/Tutorials.php:408
+msgid "For more information consult our manual, or our forums."
 msgstr ""
 
-#: application/models/Tutorials.php:415
+#: application/models/Tutorials.php:409
 msgid "Now click on \"Save & activate survey\""
 msgstr ""
 
-#: application/models/Tutorials.php:428
+#: application/models/Tutorials.php:422
 msgid "Here you can select to start your survey in closed access mode."
 msgstr ""
 
-#: application/models/Tutorials.php:429
+#: application/models/Tutorials.php:423
 msgid "For our simple survey it is better to start in open access mode."
 msgstr ""
 
-#: application/models/Tutorials.php:430
-msgid "The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participant tokens'."
+#: application/models/Tutorials.php:424
+msgid "The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'."
 msgstr ""
 
-#: application/models/Tutorials.php:431
+#: application/models/Tutorials.php:425
 msgid "For more information please consult our manual or our forum."
 msgstr ""
 
-#: application/models/Tutorials.php:432
+#: application/models/Tutorials.php:426
 msgid "Click on 'No, thanks'"
 msgstr ""
 
-#: application/models/Tutorials.php:444
+#: application/models/Tutorials.php:438
 msgid "Share this link"
 msgstr ""
 
-#: application/models/Tutorials.php:445
+#: application/models/Tutorials.php:439
 msgid "Just share this link with some of your friends and of course, test it yourself."
 msgstr ""
 
-#: application/models/Tutorials.php:446
+#: application/models/Tutorials.php:440
 msgid "Thank you for taking the tour!"
 msgstr ""
 
