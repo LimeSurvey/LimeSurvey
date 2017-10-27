@@ -705,13 +705,22 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
-    protected function getOptionKey($key){
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    protected function getOptionKey($key)
+    {
         $aOptions = (array) json_decode($this->options);
-        $value = $aOptions[$key];
-        if($value === 'inherit'){
-            return $this->getParentConfiguration()->getOptionKey($key);
+        if (isset($aOptions[$key])) {
+            $value = $aOptions[$key];
+            if ($value === 'inherit') {
+                return $this->getParentConfiguration()->getOptionKey($key);
+            }
+            return  $value;
+        } else {
+            return null;
         }
-        return  $value;
     }
 
     protected function addMotherTemplatePackage($packages)
