@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-27 14:24:11+00:00\n"
+"POT-Creation-Date: 2017-10-27 14:32:47+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -8872,7 +8872,7 @@ msgid "Always hide this question"
 msgstr ""
 
 #: application/helpers/questionHelper.php:541
-msgid "Add additional CSS class(es) for this question. Use a space between different CSS class names. You can use expression, remind this part was static."
+msgid "Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static."
 msgstr ""
 
 #: application/helpers/questionHelper.php:542
