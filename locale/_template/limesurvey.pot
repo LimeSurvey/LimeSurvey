@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-27 13:58:21+00:00\n"
+"POT-Creation-Date: 2017-10-27 14:22:51+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6165,19 +6165,19 @@ msgstr ""
 msgid "Your must answer to the security question - please try again."
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1690
+#: application/helpers/SurveyRuntimeHelper.php:1689
 msgid "Invalid group number for this survey: "
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1696
+#: application/helpers/SurveyRuntimeHelper.php:1695
 msgid "This group contains no questions.  You must add questions to this group before you can preview it"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1722
+#: application/helpers/SurveyRuntimeHelper.php:1721
 msgid "Submit your answers"
 msgstr ""
 
-#: application/helpers/SurveyRuntimeHelper.php:1723
+#: application/helpers/SurveyRuntimeHelper.php:1722
 msgid "There are no more questions. Please press the <Submit> button to finish this survey."
 msgstr ""
 
