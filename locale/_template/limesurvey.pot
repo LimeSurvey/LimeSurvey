@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-27 18:39:54+00:00\n"
+"POT-Creation-Date: 2017-10-27 18:58:42+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11424,7 +11424,7 @@ msgid "Click on the 'Add question group' button'"
 msgstr ""
 
 #: application/models/Tutorials.php:175
-msgid "Add the title to your question group"
+msgid "Enter a title for your first question group"
 msgstr ""
 
 #: application/models/Tutorials.php:176
@@ -11432,7 +11432,7 @@ msgid "The title will be visible to your participants and cannot be empty."
 msgstr ""
 
 #: application/models/Tutorials.php:177
-msgid "Question groups are important to logically divide your questions, also in the default setting your survey is shown group by group."
+msgid "Question groups are important to logically group your questions. In the default setting each question group (with included questions) is shown on its own page."
 msgstr ""
 
 #: application/models/Tutorials.php:184
@@ -11449,7 +11449,7 @@ msgid "Advanced settings"
 msgstr ""
 
 #: application/models/Tutorials.php:193
-msgid "Best to leave them like they are. If you want to know more about randomization and relevance settings, have a look at our manual."
+msgid "For now it's best to leave these additional settings as they are. If you want to know more about randomization and relevance settings, have a look at our manual."
 msgstr ""
 
 #: application/models/Tutorials.php:200
@@ -11465,7 +11465,7 @@ msgid "This will directly add a question to the current question group."
 msgstr ""
 
 #: application/models/Tutorials.php:203
-msgid "Now click on Save and add a new question"
+msgid "Now click on 'Save and add question'."
 msgstr ""
 
 #: application/models/Tutorials.php:215
