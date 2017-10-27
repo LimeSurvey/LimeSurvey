@@ -814,6 +814,7 @@ class TemplateConfig extends CActiveRecord
             throw new InvalidArgumentException('$aDatas cannot be empty');
         }
 
+
         $oNewTemplate                   = new Template;
         $oNewTemplate->name             = $sTemplateName;
         $oNewTemplate->folder           = $sTemplateName;
@@ -827,11 +828,22 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate->files_folder     = $aDatas['files_folder'];
         $oNewTemplate->owner_id         = Yii::app()->user->id;
         $oNewTemplate->extends          = $aDatas['extends'];
-        
+
         if ($oNewTemplate->save()){
-            $oNewTemplateConfiguration                   = new TemplateConfiguration;
-            $oNewTemplateConfiguration->template_name    = $sTemplateName;
-            $oNewTemplateConfiguration->template_name    = $sTemplateName;
+            $oNewTemplateConfiguration                  = new TemplateConfiguration;
+            $oNewTemplateConfiguration->template_name   = $sTemplateName;
+            $oNewTemplateConfiguration->template_name   = $sTemplateName;
+
+            // Those ones are only filled when importing manifest from upload directory
+
+            $oNewTemplateConfiguration->files_css         = json_encode($aDatas['files_css']);
+            $oNewTemplateConfiguration->files_js          = json_encode($aDatas['files_js']);
+            $oNewTemplateConfiguration->files_print_css   = json_encode($aDatas['files_print_css']);
+
+            $oNewTemplateConfiguration->cssframework_name  = $aDatas['cssframework_name'];
+            $oNewTemplateConfiguration->cssframework_css   = json_encode($aDatas['cssframework_css']);
+            $oNewTemplateConfiguration->cssframework_js    = json_encode($aDatas['cssframework_js']);
+
             $oNewTemplateConfiguration->options          = json_encode($aDatas['aOptions']);
             $oNewTemplateConfiguration->packages_to_load = json_encode($aDatas['packages_to_load']);
 

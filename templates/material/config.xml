@@ -28,17 +28,17 @@
     -->
     <files>
         <css>
-            <filename>css/template.css</filename>
-            <filename>css/bootstrap-material-design.css</filename>
-            <filename>css/ripples.min.css</filename>
+            <add>css/template.css</add>
+            <add>css/bootstrap-material-design.css</add>
+            <add>css/ripples.min.css</add>
         </css>
         <js>
-            <filename>scripts/template.js</filename>
-            <filename>scripts/material.js</filename>
-            <filename>scripts/ripples.min.js</filename>
+            <add>scripts/template.js</add>
+            <add>scripts/material.js</add>
+            <add>scripts/ripples.min.js</add>
         </js>
         <print_css>
-            <filename>css/print_template.css</filename>
+            <add>css/print_template.css</add>
         </print_css>
     </files>
 
