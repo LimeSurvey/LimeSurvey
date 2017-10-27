@@ -834,6 +834,8 @@ class templates extends Survey_Common_Action
         $screens['surveylist']      = gT('Survey List Page','unescaped');
         $screens['error']           = gT('Error','unescaped');
         $screens['assessments']     = gT('Assessments','unescaped');
+        $screens['register']     = gT('Registration','unescaped');
+        $screens['printanswers']     = gT('Participant print answers','unescaped');
 
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
@@ -963,26 +965,26 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'register':
-                $sLayoutFile = ""; // TODO
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                // $sLayoutFile = ""; // TODO
+                // $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
 
-                $aData = array(
-                    'aReplacements' => array_merge($aGlobalReplacements,array(
-                        'SURVEYNAME' => 'Survey name'
-                    ))
-                );
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
+                // $aData = array(
+                //     'aReplacements' => array_merge($aGlobalReplacements,array(
+                //         'SURVEYNAME' => 'Survey name'
+                //     ))
+                // );
+                // $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/survey.pstpl", $aData, $oEditedTemplate));
 
-                $aData['aReplacements'] = array_merge($aGlobalReplacements,array(
-                    'REGISTERERROR' => 'Example error message',
-                    'REGISTERMESSAGE1' => 'Register message 1',
-                    'REGISTERMESSAGE2' => 'Register message 2',
-                    'REGISTERFORM' => $this->getController()->renderPartial('/admin/templates/templateeditor_register_view', array('alt' => true), true),
-                ));
+                // $aData['aReplacements'] = array_merge($aGlobalReplacements,array(
+                //     'REGISTERERROR' => 'Example error message',
+                //     'REGISTERMESSAGE1' => 'Register message 1',
+                //     'REGISTERMESSAGE2' => 'Register message 2',
+                //     'REGISTERFORM' => $this->getController()->renderPartial('/admin/templates/templateeditor_register_view', array('alt' => true), true),
+                // ));
 
-                $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/register.pstpl", $aData, $oEditedTemplate));
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = "\n";
+                // $myoutput = array_merge($myoutput, doreplacement($oEditedTemplate->viewPath . "/register.pstpl", $aData, $oEditedTemplate));
+                // $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                // $myoutput[] = "\n";
                 break;
 
             case 'completed':
@@ -1045,12 +1047,12 @@ class templates extends Survey_Common_Action
                 break;
 
             case 'printanswers':
-                $sLayoutFile = "TODO";
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/printanswers.pstpl"), array('ANSWERTABLE' => $printoutput), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
-                $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                // $sLayoutFile = "TODO";
+                // $myoutput[] = templatereplace(file_get_contents("$templatedir/startpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                // $myoutput[] = templatereplace(file_get_contents("$templatedir/printanswers.pstpl"), array('ANSWERTABLE' => $printoutput), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
+                // $myoutput[] = templatereplace(file_get_contents("$templatedir/endpage.pstpl"), array(), $aData, 'Unspecified', false, NULL, array(), false, $oEditedTemplate);
 
-                $myoutput[] = "\n";
+                // $myoutput[] = "\n";
                 break;
 
             case 'error':
