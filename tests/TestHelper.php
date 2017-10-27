@@ -20,6 +20,7 @@ class TestHelper extends \PHPUnit_Framework_TestCase
         \Yii::import('application.helpers.qanda_helper', true);
         \Yii::import('application.helpers.update.updatedb_helper', true);
         \Yii::import('application.helpers.update.update_helper', true);
+        \Yii::import('application.helpers.SurveyRuntimeHelper', true);
         \Yii::app()->loadHelper('admin/activate');
     }
 
