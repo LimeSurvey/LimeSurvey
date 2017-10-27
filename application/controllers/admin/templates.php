@@ -442,15 +442,15 @@ class templates extends Survey_Common_Action
                 $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
 
                 if (isStandardTemplate(returnGlobal('newname'))){
-                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("This name is reserved for standard template.", "js"));
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
 
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }elseif (file_exists($sNewDirectoryPath)){
-                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("A template with that name already exists.", "js"));
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
 
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false){
-                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js"));
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
 
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }else{
@@ -465,7 +465,7 @@ class templates extends Survey_Common_Action
 
                         $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>'layout_first_page.twig','screenname'=>'welcome','templatename'=>$sNewName));
                     }else{
-                        Yii::app()->user->setFlash('error',sprintf(gT("Template `%s` could not be found.", "js"), $sOldName));
+                        Yii::app()->user->setFlash('error',sprintf(gT("Template '%s' could not be found."), $sOldName));
                     }
 
                     $this->getController()->redirect(array('admin/templateoptions'));
@@ -561,7 +561,7 @@ class templates extends Survey_Common_Action
                         Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
                     }
                 }else{
-                    Yii::app()->setFlashMessage(sprintf(gT("You can't delete templates '%s' because some template inherit from it."), $templatename),'error');
+                    Yii::app()->setFlashMessage(sprintf(gT("You can't delete template '%s' because one or more templates inherit from it."), $templatename),'error');
                 }
 
             }else{

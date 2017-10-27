@@ -332,7 +332,7 @@ class Tutorials extends LSActiveRecord
                                     'placement' => 'bottom',
                                     'title' => gT('Add some answer options to your question'),
                                     'content' => gT("Now that we've got some subquestions, we have to add answer options as well.").'<br/>'
-                                        .gT("The answer options will define the values that represent your subquestions.")
+                                        .gT("The answer options will be shown for each of your subquestions.")
                                         .'<p class="alert bg-warning">'.gT("Click on the 'Edit answer options' button.").'</p>',
                                     'reflex' => true,
                                     'redirect' => false,
@@ -346,7 +346,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')],
                                     'placement' => 'bottom',
                                     'title' => gT('Edit answer options'),
-                                    'content' => gT("As you can see answer options and subquestions really don't differ much.")
+                                    'content' => gT("As you can see the editing of answer options and subquestions is really not much different.")
                                         .'<p class="alert bg-warning">'.gT("Please add at least two answer options to proceed.").'</p>',
                                     'redirect' => false,
                                 ),
@@ -411,7 +411,7 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('Activation settings'),
                                     'content' => gT('These settings cannot be changed once the survey is online.').'<br/>'
                                         .gT("For this simple survey the default settings are ok, but read the disclaimer carefully when you activate your own surveys.").'<br/>'
-                                        .gT("For more information consult or manual, or our forum.")
+                                        .gT("For more information consult our manual, or our forums.")
                                         .'<p class="alert bg-warning">'.gT('Now click on "Save & activate survey"').'</p>',
                                     'reflex' => true,
                                     'redirect' => false,
@@ -427,7 +427,7 @@ class Tutorials extends LSActiveRecord
                                     'title' => ('Activate token table'),
                                     'content' => gT("Here you can select to start your survey in closed access mode.")."<br/>"
                                         .gT("For our simple survey it is better to start in open access mode.")."<br/>"
-                                        .gT("The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participant tokens'.")."<br/>"
+                                        .gT("The closed access mode needs a participant list, which you may create by clicking on the menu entry 'Participants'.")."<br/>"
                                         .gT("For more information please consult our manual or our forum.")
                                         .'<p class="alert bg-warning">'.gT("Click on 'No, thanks'").'</p>',
                                     'reflex' => true,
