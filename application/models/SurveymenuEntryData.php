@@ -37,6 +37,7 @@ class SurveymenuEntryData extends CFormModel {
         if($addQuestionId)
             $dataArray['qid'] = ['question', 'qid'];
 
+        $dataArray = array_merge($dataArray, $this->linkData);
 
         $baseArray = array(
             'link' => array(
@@ -49,7 +50,6 @@ class SurveymenuEntryData extends CFormModel {
         if($this->isActive === true || $this->isActive === false)
             $baseArray['isActive'] = $this->isActive;
 
-        $baseArray = array_merge($baseArray, $this->linkData);
 
         return json_encode(array('render' => $baseArray));
     }
@@ -125,6 +125,7 @@ class SurveymenuEntryData extends CFormModel {
                     $oTypeObject = QuestionGroup::model()->getByPk(((int) $_REQUEST['qid']));
                 }
                 break;
+            break; 
         }
 
         $result = $oTypeObject != null ? $oTypeObject->{$attribute} : null;

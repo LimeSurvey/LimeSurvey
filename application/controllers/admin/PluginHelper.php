@@ -14,7 +14,7 @@ class PluginHelper extends Survey_Common_Action
      * @param string $method Name of the plugin method
      * @return void
      */
-    public function sidebody($surveyId, $plugin, $method)
+    public function sidebody($surveyId=0, $plugin='', $method='')
     {
         $aData = array();
 

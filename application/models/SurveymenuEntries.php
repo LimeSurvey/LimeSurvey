@@ -74,10 +74,11 @@ class SurveymenuEntries extends LSActiveRecord
 		);
 	}
 
-    public static function staticAddMenuEntry($menuEntryArray)
+    public static function staticAddMenuEntry($menuId, $menuEntryArray)
     {
         $oSurveymenuEntries = new SurveymenuEntries();
-
+        
+        $oSurveymenuEntries->menu_id = $menuId;
         
         $oSurveymenuEntries->name = $menuEntryArray['name'];
         $oSurveymenuEntries->title = $menuEntryArray['title'];
@@ -86,15 +87,27 @@ class SurveymenuEntries extends LSActiveRecord
         $oSurveymenuEntries->menu_icon = $menuEntryArray['menu_icon'];
         $oSurveymenuEntries->menu_icon_type = $menuEntryArray['menu_icon_type'];
         $oSurveymenuEntries->menu_link = $menuEntryArray['menu_link'];
+
+        //permissions [optional]
+        $oSurveymenuEntries->permission = isset($menuEntryArray['permission']) ? $menuEntryArray['permission'] : '';
+        $oSurveymenuEntries->permission_grade = isset($menuEntryArray['permission_grade']) ? $menuEntryArray['permission_grade'] : '';
+
+        
         
         //set data
         $oMenuEntryData = new SurveymenuEntryData();
         $oMenuEntryData->linkExternal = $menuEntryArray['linkExternal'];
         $oMenuEntryData->isActive = $menuEntryArray['hideOnSurveyState'] == 'active' ? true : ($menuEntryArray['hideOnSurveyState'] == 'inactive' ? false : null);
         
-        if($menuEntryArray['manualParams'] != '')
-            $oMenuEntryData->linkData = json_parse($menuEntryArray['manualParams']);
-
+        
+        if (is_array($menuEntryArray['manualParams'])) {
+            $oMenuEntryData->linkData = $menuEntryArray['manualParams'];
+        } else if($menuEntryArray['manualParams'] != '') {
+            $oMenuEntryData->linkData = json_decode($menuEntryArray['manualParams'],true);
+        }
+        
+        //pjax optional
+        $oMenuEntryData->pjaxed = isset($menuEntryArray['pjaxed']) ? $menuEntryArray['pjaxed'] : true;
         $oSurveymenuEntries->data = $oMenuEntryData->createOptionJson($menuEntryArray['addSurveyId'], $menuEntryArray['addQuestionGroupId'], $menuEntryArray['addQuestionId']);
 
         $oSurveymenuEntries->changed_at = date('Y-m-d H:i:s');

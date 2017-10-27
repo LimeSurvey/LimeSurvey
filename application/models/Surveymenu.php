@@ -82,6 +82,20 @@ class Surveymenu extends LSActiveRecord
         return $oSurveymenu->getPrimaryKey();
     }
 
+    public static function staticRemoveMenu($menuName, $recursive=false){
+        
+        $oSurveymenu = Surveymenu::model()->find('name=:name', [':name'=>$menuName]);
+        
+        if($recursive !== true){
+            if(count($oSurveymenu->surveymenuEntries)>0)
+                return;
+        }
+        foreach($oSurveymenu->surveymenuEntries as $oSurveymenuEntry){
+            $oSurveymenuEntry->delete();
+        }
+
+        $oSurveymenu->delete();
+    }
 
 	public function getMenuIdOptions (){
 		$oSurveymenus = Surveymenu::model()->findAll();
@@ -405,5 +419,13 @@ class Surveymenu extends LSActiveRecord
         /** @var self $model */
         $model =parent::model($className);
         return $model;
-	}
+    }
+    
+
+    public function delete(){
+        foreach($this->surveymenuEntries as $oSurveymenuEntry){
+            $oSurveymenuEntry->delete();
+        }
+        parent::delete();
+    }
 }

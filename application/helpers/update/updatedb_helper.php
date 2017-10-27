@@ -558,6 +558,36 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction->commit();
         }
 
+        if ($iOldDBVersion < 324) {
+            $oTransaction = $oDB->beginTransaction();
+            
+            $oDB->createCommand()->insert( '{{surveymenu_entries}}', 
+            array(
+                'menu_id' => 1, 
+                'ordering' => 16,
+                'name' => 'plugins', 
+                'title' => 'Plugin settings', 
+                'menu_title' => 'Plugins', 
+                'menu_description' => 'Edit plugin settings', 
+                'menu_icon' => 'plug', 
+                'menu_icon_type' => 'fontawesome', 
+                'action' => 'updatesurveylocalesettings',
+                'template' => 'editLocalSettings_main_view', 
+                'partial' => '/admin/survey/subview/accordion/_plugin_panel', 
+                'permission' => 'surveysettings', 
+                'permission_grade' => 'read',  
+                'data' => '',
+                'getdatamethod' => '_pluginTabSurvey', 
+                'changed_at' => date('Y-m-d H:i:s'), 
+                'changed_by' => 1, 
+                'created_at' => date('Y-m-d H:i:s'), 
+                'created_by' => 1, 
+                'active' => 0
+            ));
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>324),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
     }
     catch(Exception $e)
     {

@@ -1685,7 +1685,17 @@ class SurveyAdmin extends Survey_Common_Action
     private function _generalTabEditSurvey($survey)
     {
         $aData['survey'] = $survey;
-
+        return $aData;
+    }
+    /**
+     * survey::_generalTabEditSurvey()
+     * Load "General" tab of edit survey screen.
+     * @param Survey $survey
+     * @return mixed
+     */
+    private function _pluginTabSurvey($survey)
+    {
+        $aData = array();
         $beforeSurveySettings = new PluginEvent('beforeSurveySettings');
         $beforeSurveySettings->set('survey', $survey->sid);
         App()->getPluginManager()->dispatchEvent($beforeSurveySettings);
