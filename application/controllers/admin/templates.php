@@ -503,7 +503,7 @@ class templates extends Survey_Common_Action
                     $oFileHelper->copyDirectory($copydirname,$newdirname, array('fileTypes' => array('xml', 'png', 'jpg')));
                     //TemplateConfiguration::removeAllNodes($newdirname);
                     TemplateManifest::extendsConfig($copydir, $newname );
-                    TemplateConfiguration::importManifest($newname, ['extends' => $copydir]);
+                    TemplateManifest::importManifest($newname, ['extends' => $copydir]);
                     $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
                 }elseif ($mkdirresult == 2){
                     Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
