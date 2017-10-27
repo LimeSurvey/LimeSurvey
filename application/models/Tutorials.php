@@ -82,7 +82,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('The welcome message'),
                                     'placement' => 'top',
-                                    'content' => gT("This message is shown directly below the survey description on the welcome page. You may leave this blank and focus on a good text for your description, or vice versa."),
+                                    'content' => gT("This message is shown directly below the survey description on the welcome page. You may leave this blank for now but it is a good way to introduce your participants to the survey."),
                                     'redirect' => false,
                                 ),
                                 array( //7
@@ -98,7 +98,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('Now save your survey'),
                                     'placement' => 'bottom',
-                                    'content' => gT('You may play around with more settings, or edit your survey now. Just click on save.'),
+                                    'content' => gT('You may play around with more settings, or start adding questions to your survey now. Just click on save.'),
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
@@ -113,9 +113,9 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('The sidebar'),
                                     'content' => gT('This is the sidebar.').'<br/>'
                                         .gT('All important settings can be reached in this sidebar.').'<br/>'
-                                        .gT('You may resize it to fit your screen, or enlargen it to better control your survey structure.').' '
+                                        .gT('You may resize it to fit your screen, or enlargen it to better navigate your survey structure.').' '
                                         .gT('It may be collapsed to show the quick-menu.').' '
-                                        .gT('To collapse it either click on the arrow button or minimize it to the left.'),
+                                        .gT('To collapse it either click on the arrow button or drag it to the left.'),
                                     'redirect' => false,
                                     'onShow' => "(function(tour){
                                                     return Promise.resolve(tour);
@@ -444,93 +444,93 @@ class Tutorials extends LSActiveRecord
                 'debug' => true,
                 'orphan' => true,
                 'keyboard' => false,
-                'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>« Prev</button>         <button class='btn btn-primary col-xs-6' data-role='next'>Next »</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>End tour</button>     </div> </div></div>",
+                'template' => "<div class='popover tour lstutorial__template--mainContainer'> <div class='arrow'></div> <h3 class='popover-title lstutorial__template--title'></h3> <div class='popover-content lstutorial__template--content'></div> <div class='popover-navigation lstutorial__template--navigation'>     <div class='btn-group col-xs-8' role='group' aria-label='...'>         <button class='btn btn-default col-xs-6' data-role='prev'>".gT('Previous')."</button>         <button class='btn btn-primary col-xs-6' data-role='next'>".gT('Next')."</button>     </div>     <div class='col-xs-4'>         <button class='btn btn-warning' data-role='end'>".gT('End tour')."</button>     </div> </div></div>",
                 'onShown' => "(function(tour){ console.log($('#notif-container').children()); $('#notif-container').children().remove(); })"
             )
         );
     }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{tutorials}}';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{tutorials}}';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('name, description, active, permission, permission_grade', 'required'),
-			array('active', 'numerical', 'integerOnly'=>true),
-			array('name, permission, permission_grade', 'length', 'max'=>128),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('tid, name, description, active, permission, permission_grade', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('name, description, active, permission, permission_grade', 'required'),
+            array('active', 'numerical', 'integerOnly'=>true),
+            array('name, permission, permission_grade', 'length', 'max'=>128),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('tid, name, description, active, permission, permission_grade', 'safe', 'on'=>'search'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'tutorialEntries' => array(self::HAS_MANY, 'TutorialEntry', 'tid'),
-		);
-	}
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'tutorialEntries' => array(self::HAS_MANY, 'TutorialEntry', 'tid'),
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'tid' => 'Tid',
-			'name' => 'Name',
-			'description' => 'Description',
-			'active' => 'Active',
-			'permission' => 'Permission',
-			'permission_grade' => 'Permission Grade',
-		);
-	}
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'tid' => 'Tid',
+            'name' => 'Name',
+            'description' => 'Description',
+            'active' => 'Active',
+            'permission' => 'Permission',
+            'permission_grade' => 'Permission Grade',
+        );
+    }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+        $criteria=new CDbCriteria;
 
-		$criteria->compare('tid',$this->tid);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('active',$this->active);
-		$criteria->compare('permission',$this->permission,true);
-		$criteria->compare('permission_grade',$this->permission_grade,true);
+        $criteria->compare('tid',$this->tid);
+        $criteria->compare('name',$this->name,true);
+        $criteria->compare('description',$this->description,true);
+        $criteria->compare('active',$this->active);
+        $criteria->compare('permission',$this->permission,true);
+        $criteria->compare('permission_grade',$this->permission_grade,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
 
     public function getPrebuilt($prebuiltName){
         if(isset($this->preBuiltPackage[$prebuiltName])){
@@ -539,14 +539,14 @@ class Tutorials extends LSActiveRecord
         return [];
     }
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return Tutorials the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return Tutorials the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
+        return parent::model($className);
+    }
 }
