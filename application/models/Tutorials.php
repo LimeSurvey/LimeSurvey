@@ -35,7 +35,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/index'),
                                     'title' => gT('Welcome to LimeSurvey!'),
                                     'placement' => 'bottom',
-                                    'content' => gT("This tour will help you get a hold of LimeSurvey.")."<br/>"
+                                    'content' => gT("This tour will help you get a basic grasp of LimeSurvey.")."<br/>"
                                         .gt("We would like to help you with a quick tour of the most essential functions and features"),
                                     'redirect' => false,
                                     'onShow' => "(function(){ $('#welcomeModal').modal('hide'); })"
@@ -66,8 +66,8 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('The survey description'),
                                     'placement' => 'top',
                                     'content' => gT("This is the description of the survey.")."<br/>"
-                                        .gT("Your participants will see this at first on their welcome screen.
-                                        Try to describe what your survey is about, but don't ask any question just yet."),
+                                        .gT("Your participants will see this at first on their welcome screen.").' '
+                                        .gT("Try to describe what your survey is about, but don't ask any question just yet."),
                                     'redirect' => false,
                                 ),
                                 array( //5
@@ -82,7 +82,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('The welcome message'),
                                     'placement' => 'top',
-                                    'content' => gT("This message is shown directly under the survey description on the welcome page. You may leave this blank and concentrate on a good text for your description, or vice versa."),
+                                    'content' => gT("This message is shown directly below the survey description on the welcome page. You may leave this blank and focus on a good text for your description, or vice versa."),
                                     'redirect' => false,
                                 ),
                                 array( //7
@@ -349,7 +349,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('admin/questions/sa/answeroptions/surveyid/[0-9]{4,25}/gid/[0-9]{1,25}/qid/[0-9]{4,25}')],
                                     'placement' => 'left',
                                     'title' => gT('Now save the answer options'),
-                                    'content' => gT('Click on save or next to proceed'),
+                                    'content' => gT("Click on 'Save' or 'Next' to proceed."),
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
