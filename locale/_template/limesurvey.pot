@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-27 14:22:51+00:00\n"
+"POT-Creation-Date: 2017-10-27 14:24:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11256,7 +11256,7 @@ msgid "Welcome to LimeSurvey!"
 msgstr ""
 
 #: application/models/Tutorials.php:38
-msgid "This tour will help you get a hold of LimeSurvey."
+msgid "This tour will help you get a basic grasp of LimeSurvey."
 msgstr ""
 
 #: application/models/Tutorials.php:39
@@ -11304,9 +11304,11 @@ msgid "This is the description of the survey."
 msgstr ""
 
 #: application/models/Tutorials.php:69
-msgid ""
-"Your participants will see this at first on their welcome screen.\n"
-"                                        Try to describe what your survey is about, but don't ask any question just yet."
+msgid "Your participants will see this at first on their welcome screen."
+msgstr ""
+
+#: application/models/Tutorials.php:70
+msgid "Try to describe what your survey is about, but don't ask any question just yet."
 msgstr ""
 
 #: application/models/Tutorials.php:76
@@ -11322,7 +11324,7 @@ msgid "The welcome message"
 msgstr ""
 
 #: application/models/Tutorials.php:85
-msgid "This message is shown directly under the survey description on the welcome page. You may leave this blank and concentrate on a good text for your description, or vice versa."
+msgid "This message is shown directly below the survey description on the welcome page. You may leave this blank and focus on a good text for your description, or vice versa."
 msgstr ""
 
 #: application/models/Tutorials.php:91
@@ -11635,7 +11637,7 @@ msgid "Now save the answer options"
 msgstr ""
 
 #: application/models/Tutorials.php:352
-msgid "Click on save or next to proceed"
+msgid "Click on 'Save' or 'Next' to proceed."
 msgstr ""
 
 #: application/models/Tutorials.php:365
@@ -17468,6 +17470,7 @@ msgid "You are editing the main menu!"
 msgstr ""
 
 #: application/views/admin/surveymenu/_form.php:25
+#: application/views/admin/surveymenu_entries/_form.php:26
 msgid "Please be very careful."
 msgstr ""
 
@@ -17598,7 +17601,7 @@ msgid "Edit survey menu entry"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:26
-msgid "You are editing an entry of the main menu! %s Please be very careful."
+msgid "You are editing an entry of the main menu!"
 msgstr ""
 
 #: application/views/admin/surveymenu_entries/_form.php:106
