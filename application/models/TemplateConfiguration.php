@@ -316,7 +316,7 @@ class TemplateConfiguration extends TemplateConfig
                 $previewUrl =  Template::getTemplateURL($this->template->name);
                 $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
             }else{
-                $this->sPreviewImgTag = '<em>'.gT('no preview available').'</em>';
+                $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
             }
 
         }

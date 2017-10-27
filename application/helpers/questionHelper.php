@@ -464,7 +464,7 @@ class questionHelper
             'sortorder'=>102,
             'inputtype'=>'text',
             'default'=>'500',
-            "help"=>gT("Width of the map in pixel (for google map)"),
+            "help"=>gT("Map width in pixel"),
             "caption"=>gT("Map width")
         );
 
@@ -474,7 +474,7 @@ class questionHelper
             'sortorder'=>103,
             'inputtype'=>'text',
             'default'=>'300',
-            "help"=>gT("Height of the map in pixel"),
+            "help"=>gT("Map height in pixel"),
             "caption"=>gT("Map height")
         );
 

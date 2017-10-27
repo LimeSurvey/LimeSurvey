@@ -178,7 +178,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                return $oRTemplate->path.$sOptionFile.gT(' not found!');
+                return sprintf(gT('%s not found!',$oRTemplate->path.$sOptionFile);
                 break;
             }
             $oRTemplate = $oMotherTemplate;
