@@ -835,8 +835,6 @@ class templates extends Survey_Common_Action
         $screens['error']           = gT('Error','unescaped');
         $screens['assessments']     = gT('Assessments','unescaped');
 
-        $file_version = "LimeSurvey template editor " . Yii::app()->getConfig('versionnumber');
-
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
         $templatename = sanitize_dirname($templatename);
