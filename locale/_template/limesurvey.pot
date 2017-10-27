@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-27 17:23:44+00:00\n"
+"POT-Creation-Date: 2017-10-27 18:39:54+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11324,7 +11324,7 @@ msgid "The welcome message"
 msgstr ""
 
 #: application/models/Tutorials.php:85
-msgid "This message is shown directly below the survey description on the welcome page. You may leave this blank and focus on a good text for your description, or vice versa."
+msgid "This message is shown directly below the survey description on the welcome page. You may leave this blank for now but it is a good way to introduce your participants to the survey."
 msgstr ""
 
 #: application/models/Tutorials.php:91
@@ -11340,7 +11340,7 @@ msgid "Now save your survey"
 msgstr ""
 
 #: application/models/Tutorials.php:101
-msgid "You may play around with more settings, or edit your survey now. Just click on save."
+msgid "You may play around with more settings, or start adding questions to your survey now. Just click on save."
 msgstr ""
 
 #: application/models/Tutorials.php:113
@@ -11356,7 +11356,7 @@ msgid "All important settings can be reached in this sidebar."
 msgstr ""
 
 #: application/models/Tutorials.php:116
-msgid "You may resize it to fit your screen, or enlargen it to better control your survey structure."
+msgid "You may resize it to fit your screen, or enlargen it to better navigate your survey structure."
 msgstr ""
 
 #: application/models/Tutorials.php:117
@@ -11364,7 +11364,7 @@ msgid "It may be collapsed to show the quick-menu."
 msgstr ""
 
 #: application/models/Tutorials.php:118
-msgid "To collapse it either click on the arrow button or minimize it to the left."
+msgid "To collapse it either click on the arrow button or drag it to the left."
 msgstr ""
 
 #: application/models/Tutorials.php:128
@@ -11738,6 +11738,32 @@ msgstr ""
 
 #: application/models/Tutorials.php:440
 msgid "Thank you for taking the tour!"
+msgstr ""
+
+#: application/models/Tutorials.php:447
+#: application/views/installer/dbconfig_view.php:63
+#: application/views/installer/dbsettings_view.php:12
+#: application/views/installer/license_view.php:16
+#: application/views/installer/optconfig_view.php:79
+#: application/views/installer/precheck_view.php:147
+#: application/views/survey/system/actionButton/movePrevious.php:11
+msgid "Previous"
+msgstr ""
+
+#: application/models/Tutorials.php:447
+#: application/views/admin/participants/modal_subviews/_addToSurvey.php:48
+#: application/views/admin/quotas/newanswer_view.php:34
+#: application/views/admin/quotas/newanswertwo_view.php:43
+#: application/views/admin/token/browse.php:65
+#: application/views/installer/dbconfig_view.php:68
+#: application/views/installer/optconfig_view.php:83
+#: application/views/installer/precheck_view.php:155
+#: application/views/survey/system/actionButton/moveNext.php:11
+msgid "Next"
+msgstr ""
+
+#: application/models/Tutorials.php:447
+msgid "End tour"
 msgstr ""
 
 #: application/models/User.php:305 application/models/User.php:344
@@ -14429,17 +14455,6 @@ msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_addToSurvey.php:36
 msgid "Display survey tokens after adding?"
-msgstr ""
-
-#: application/views/admin/participants/modal_subviews/_addToSurvey.php:48
-#: application/views/admin/quotas/newanswer_view.php:34
-#: application/views/admin/quotas/newanswertwo_view.php:43
-#: application/views/admin/token/browse.php:65
-#: application/views/installer/dbconfig_view.php:68
-#: application/views/installer/optconfig_view.php:83
-#: application/views/installer/precheck_view.php:155
-#: application/views/survey/system/actionButton/moveNext.php:11
-msgid "Next"
 msgstr ""
 
 #: application/views/admin/participants/modal_subviews/_deleteParticipant.php:3
@@ -19588,15 +19603,6 @@ msgstr ""
 
 #: application/views/installer/dbconfig_view.php:48
 msgid "If your database is shared, recommended prefix is \"lime_\" else you can leave this setting blank."
-msgstr ""
-
-#: application/views/installer/dbconfig_view.php:63
-#: application/views/installer/dbsettings_view.php:12
-#: application/views/installer/license_view.php:16
-#: application/views/installer/optconfig_view.php:79
-#: application/views/installer/precheck_view.php:147
-#: application/views/survey/system/actionButton/movePrevious.php:11
-msgid "Previous"
 msgstr ""
 
 #: application/views/installer/dbsettings_view.php:7
