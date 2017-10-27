@@ -1059,8 +1059,21 @@ class templates extends Survey_Common_Action
                 break;
         }
 
-
-        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array( 'aSurveyInfo'=>$thissurvey), $oEditedTemplate);
+        try {
+            $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array( 'aSurveyInfo'=>$thissurvey), $oEditedTemplate);
+        } catch (Twig_Error_Syntax $ex) {
+            $myoutput = sprintf(
+                gT('No Twig output due to error in Twig template: %s'),
+                $ex->getMessage()
+            );
+            Yii::app()->user->setFlash(
+                'error',
+                sprintf(
+                    gT('Twig syntax error: %s'),
+                    $ex->getMessage()
+                )
+            );
+        }
 
         $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
