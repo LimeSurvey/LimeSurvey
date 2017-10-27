@@ -299,10 +299,15 @@ class LSYii_Application extends CWebApplication
      */
     public function onException($event){
         if(Yii::app() instanceof CWebApplication){
-            if($event->exception->statusCode=='404'){
-                Yii::app()->setComponent('errorHandler',array(
-                    'errorAction'=>'surveys/error',
-                ));
+            if (defined('PHP_ENV') && PHP_ENV == 'test') {
+                // If run from phpunit, die with exception message.
+                die($event->exception->getMessage());
+            } else {
+                if($event->exception->statusCode=='404'){
+                    Yii::app()->setComponent('errorHandler',array(
+                        'errorAction'=>'surveys/error',
+                    ));
+                }
             }
         }
     }
