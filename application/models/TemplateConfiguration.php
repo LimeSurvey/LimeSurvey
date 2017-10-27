@@ -573,7 +573,7 @@ class TemplateConfiguration extends TemplateConfig
                     $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                 }
             }
-
+    
         }
 
 
