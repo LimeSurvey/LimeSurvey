@@ -20,7 +20,7 @@ export default {
         'getMenuUrl' : {type: String},
         'createQuestionGroupLink' : {type: String},
         'createQuestionLink' : {type: String},
-        'updateQuestionGroupOrderLink' : {type: String},
+        'updateOrderLink' : {type: String},
     },
     data: () => {
         return {
@@ -65,10 +65,13 @@ export default {
         changedQuestionGroupOrder(){
             const self = this;
             const onlyGroupsArray = _.map(this.$store.state.questiongroups, (questiongroup, count)=>{
-                return {gid: questiongroup.gid, group_name: questiongroup.group_name, group_order: questiongroup.group_order}
+                const questions = _.map(questiongroup.questions, (question,i)=>{
+                    return {qid: question.qid, question: question.question, gid: question.gid, question_order: question.question_order};
+                });
+                return {gid: questiongroup.gid, group_name: questiongroup.group_name, group_order: questiongroup.group_order, questions: questions}
             });
             this.$log.debug("QuestionGroup order changed");
-            this.post(this.updateQuestionGroupOrderLink, {grouparray: onlyGroupsArray, surveyid: this.$store.surveyid}).then(
+            this.post(this.updateOrderLink, {grouparray: onlyGroupsArray, surveyid: this.$store.surveyid}).then(
                 (result) => {self.$log.debug('questiongroups updated');},
                 (error) => {self.$log.error('questiongroups updating error!');}
             );
@@ -187,10 +190,16 @@ export default {
         mousemove(e,self) {
             if(this.isMouseDown){
                 // prevent to emit unwanted value on dragend
-                if (e.screenX === 0 && e.screenY === 0) return;
-                if(e.clientX > (screen.width/2)) return;
+                if (e.screenX === 0 && e.screenY === 0){ 
+                    return; 
+                };
+                if(e.clientX > (screen.width/2)) {
+                    this.$store.commit('maxSideBarWidth', true);
+                    return
+                };
                 self.sideBarWidth = (e.pageX+8)+'px';
                 this.$store.commit('changeSidebarwidth', this.sideBarWidth);
+                this.$store.commit('maxSideBarWidth', false);
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }
@@ -360,6 +369,7 @@ export default {
             height:100%;
             text-align: left;
             border-radius: 0;
+            background: #fff;
             padding: 0px 7px 0px 4px;
             i{
                 font-size: 12px;

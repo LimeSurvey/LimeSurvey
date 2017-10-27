@@ -17,6 +17,7 @@ export default {
             draggedQuestionGroup: null,
             questionDragging: false,
             draggedQuestion: null,
+            draggedQuestionsGroup: null,
         };
     },
     computed: {
@@ -38,9 +39,6 @@ export default {
             if(this.questiongroupDragging===true)
                 return false;
 
-            if(this.questionDragging===true)
-                return true;
-            
             return result;
         },
         toggleActivation(index){
@@ -84,22 +82,42 @@ export default {
             this.$emit('questiongrouporder');
         },
         dragoverQuestiongroup($event, questiongroupObject){
-            const orderSwap = questiongroupObject.group_order;
-            questiongroupObject.group_order = this.draggedQuestionGroup.group_order;
-            this.draggedQuestionGroup.group_order = orderSwap;
+            if(this.questiongroupDragging){
+                const orderSwap = questiongroupObject.group_order;
+                questiongroupObject.group_order = this.draggedQuestionGroup.group_order;
+                this.draggedQuestionGroup.group_order = orderSwap;
+            } else {
+                this.addActive(questiongroupObject.gid);
+                if(this.draggedQuestion.gid !== questiongroupObject.gid){
+                    const removedFromInital = _.remove(this.draggedQuestionsGroup.questions, (question,i)=>{ return question.qid === this.draggedQuestion.qid; });
+                    if(removedFromInital.length >0){ 
+                        questiongroupObject.questions.push(this.draggedQuestion);
+                        this.draggedQuestion.gid = questiongroupObject.gid;
+                        this.draggedQuestionsGroup = questiongroupObject;
+                    }
+                }
+            }
+
         },
         //dragevents questions
-        startDraggingQuestion($event, questionObject){
-            $event.target.parentElement.parentElement.style.opacity = 0.5;
+        startDraggingQuestion($event, questionObject, questionGroupObject){
+            $event.target.parentElement.style.opacity = 0.5;
             this.$log.log("Dragging started", questionObject);
             this.questionDragging = true;
+            this.draggedQuestion = questionObject;
+            this.draggedQuestionsGroup = questionGroupObject;
         },
         endDraggingQuestion($event, question){
-            $event.target.parentElement.parentElement.style.opacity = 1;            
+            $event.target.parentElement.style.opacity = 1;            
             this.questionDragging = false;
+            this.draggedQuestion = null;
+            this.draggedQuestionsGroup = null;
+            this.$emit('questiongrouporder');
         },
         dragoverQuestion($event, questionObject){
-            
+            const orderSwap = questionObject.question_order;
+            questionObject.question_order = this.draggedQuestion.question_order;
+            this.draggedQuestion.question_order = orderSwap;
         },
     },
     mounted(){
@@ -129,8 +147,8 @@ export default {
                 <transition name="slide-fade-down">
                     <ul class="list-group background-muted padding-left" v-if="isActive(questiongroup.gid)" @drop="dropQuestion($event, question)">
                         <li v-for="question in orderQuestions(questiongroup.questions)" v-bind:key="question.qid" v-bind:class="($store.state.lastQuestionOpen == question.qid ? 'selected' : '')" class="list-group-item ls-flex-row align-itmes-flex-between" @dragenter="dragoverQuestion($event, question)">
-                            <i class="fa fa-bars margin-right bigIcons" draggable="true" @dragend="endDraggingQuestion($event, question)" @dragstart="startDraggingQuestion($event, question)">&nbsp;</i>
-                            <a @click.stop="openQuestion(question)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{question.name_short}} </a>
+                            <i class="fa fa-bars margin-right bigIcons" draggable="true" @dragend="endDraggingQuestion($event, question)" @dragstart="startDraggingQuestion($event, question, questiongroup)">&nbsp;</i>
+                            <a @click.stop="openQuestion(question)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{($store.state.maximalSidebar ? question.question : question.name_short)}} </a>
                         </li>
                     </ul>
                 </transition>

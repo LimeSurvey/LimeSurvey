@@ -20,6 +20,7 @@ const getAppState = function (userid) {
     currentUser: userid,
     currentTab: 'settings',
     sidebarwidth: '380px',
+    maximalSidebar: false,
     isCollapsed: false,
     pjax: null,
     pjaxLoading: false,
@@ -62,6 +63,9 @@ const getAppState = function (userid) {
       },
       changeSidebarwidth(state, value) {
         state.sidebarwidth = value;
+      },
+      maxSideBarWidth(state, value){
+        state.maximalSidebar = value;
       },
       changeIsCollapsed(state, value) {
         state.isCollapsed = value;
