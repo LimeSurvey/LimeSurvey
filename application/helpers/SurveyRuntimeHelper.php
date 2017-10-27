@@ -332,46 +332,44 @@ class SurveyRuntimeHelper {
             // one entry per QID
             foreach ($qanda as $qa) {
 
-                
+                if ($gid == $qa[6]){
+                    $qid             = $qa[4];
+                    $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
+                    $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
+                    $lastgrouparray  = explode("X", $qa[7]);
+                    $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
+                    $lastanswer      = $qa[7];
 
-                $qid             = $qa[4];
-                $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
-                $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
-                $lastgrouparray  = explode("X", $qa[7]);
-                $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
-                $lastanswer      = $qa[7];
+                    if ($qinfo['hidden'] && $qinfo['info']['type'] != '*'){
+                        continue; // skip this one
+                    }
 
-                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*'){
-                    continue; // skip this one
+                    $question     = $qa[0];
+
+                    //===================================================================
+                    // The following four variables offer the templating system the
+                    // capacity to fully control the HTML output for questions making the
+                    // above echo redundant if desired.
+                    $question['sgq']  = $qa[7];
+                    $question['aid']  = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
+                    $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
+                    //===================================================================
+
+                    // easier to understand for survey maker
+                    $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
+                    $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
+                    $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
+                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], NULL, false, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
+                    $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
+                    $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
+                    $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
+                    $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
+                    $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
+                    $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
+                    $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
+                    $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], NULL, false, 3, 1, false, true, false);
                 }
-
-                $question     = $qa[0];
-
-                //===================================================================
-                // The following four variables offer the templating system the
-                // capacity to fully control the HTML output for questions making the
-                // above echo redundant if desired.
-                $question['sgq']  = $qa[7];
-                $question['aid']  = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
-                $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
-                //===================================================================
-
-                // easier to understand for survey maker
-                $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
-                $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
-                $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
-                $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], NULL, false, 3, 1, false, true, false);
-                $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
-                $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
-                $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
-                $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
-                $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
-                $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
-                $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
-                $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
-                $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], NULL, false, 3, 1, false, true, false);
-
-
             $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
             $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
 
@@ -1625,7 +1623,7 @@ class SurveyRuntimeHelper {
 
     private function initTemplate()
     {
-        $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);        
+        $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);
         $this->sTemplateViewPath = $oTemplate->viewPath;
         //$oTemplate->registerAssets();
     }
