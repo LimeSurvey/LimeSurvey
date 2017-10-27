@@ -117,7 +117,6 @@ class DateTimeValidationTest extends TestBaseClass
     public function testBasic()
     {
         /*
-        \Yii::app()->setController(new DummyController('dummyid'));
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('G1Q00005', self::$surveyId);
 
         $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
@@ -146,7 +145,10 @@ class DateTimeValidationTest extends TestBaseClass
         $result = \LimeExpressionManager::ProcessCurrentResponses();
         echo '<pre>'; var_dump($_SESSION); echo '</pre>';
          */
+        \Yii::app()->setController(new DummyController('dummyid'));
 
+        \Yii::app()->setConfig('surveyID', self::$surveyId);
+        global $thissurvey;
         $thissurvey = getSurveyInfo(self::$surveyId);
 
         $runtime = new \SurveyRuntimeHelper();
