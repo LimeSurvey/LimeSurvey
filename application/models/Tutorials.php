@@ -172,9 +172,9 @@ class Tutorials extends LSActiveRecord
                                     'element' => '#group_name_en',
                                     'path' => [Yii::app()->createUrl('/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
-                                    'title' => gT('Add the title to your question group'),
+                                    'title' => gT('Enter a title for your first question group'),
                                     'content' => gT('The title will be visible to your participants and cannot be empty.')
-                                    .gT('Question groups are important to logically divide your questions, also in the default setting your survey is shown group by group.'),
+                                    .gT('Question groups are important to logically group your questions. In the default setting each question group (with included questions) is shown on its own page.'),
                                     'redirect' => false,
                                 ),
                                 array( //15
@@ -190,7 +190,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'left',
                                     'title' => gT('Advanced settings'),
-                                    'content' => gT('Best to leave them like they are. If you want to know more about randomization and relevance settings, have a look at our manual.'),
+                                    'content' => gT("For now it's best to leave these additional settings as they are. If you want to know more about randomization and relevance settings, have a look at our manual."),
                                     'redirect' => false,
                                 ),
                                 array( //17
@@ -200,7 +200,7 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('Save and add a new question'),
                                     'content' => gT("Now when you are finished click on 'Save and add question'.").'<br/>'
                                         .gT('This will directly add a question to the current question group.')
-                                        .'<p class="alert bg-warning">'.gT("Now click on Save and add a new question").'</p>',
+                                        .'<p class="alert bg-warning">'.gT("Now click on 'Save and add question'.").'</p>',
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
