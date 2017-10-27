@@ -891,27 +891,11 @@ class templates extends Survey_Common_Action
         $thissurvey['aNavigator']['show'] = true;
         $thissurvey['aNavigator']['aMoveNext']['show'] = true;
         $thissurvey['aNavigator']['aMovePrev']['show'] = true;
-        $percentcomplete = 0; //makegraph(6, 10);
 
         $groupname = gT("Group 1: The first lot of questions");
         $groupdescription = gT("This group description is fairly vacuous, but quite important.");
 
-        $navigator = $this->getController()->renderPartial('/admin/templates/templateeditor_navigator_view', array(
-            'screenname' => $screenname
-            ), true);
-
-        $completed = $this->getController()->renderPartial('/admin/templates/templateeditor_completed_view', array(), true);
-
-        $assessments = $this->getController()->renderPartial('/admin/templates/templateeditor_assessments_view', array(), true);
-
         $printoutput = $this->getController()->renderPartial('/admin/templates/templateeditor_printoutput_view', array(), true);
-
-        $totalquestions = '10';
-        $surveyformat = 'group';
-        $notanswered = '5';
-        $privacy = '';
-        $surveyid = '1295';
-        $token = 1234567;
 
         $templatedir = $oEditedTemplate->viewPath;
         $templateurl = getTemplateURL($templatename);
