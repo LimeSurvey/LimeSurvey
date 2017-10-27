@@ -637,7 +637,7 @@ class TemplateConfiguration extends TemplateConfig
         while (empty($oRTemplate->template->$sPath)){
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                throw new Exception("can't find a template for '$sPath' path !");
+                throw new Exception("can't find a template for template '{$oRTemplate->template_name}' in path '$sPath'.");
                 break;
             }
             $oRTemplate = $oMotherTemplate;
