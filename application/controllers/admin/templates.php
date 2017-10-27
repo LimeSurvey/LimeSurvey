@@ -367,7 +367,12 @@ class templates extends Survey_Common_Action
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
-        $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
+        try {
+            $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
+        } catch (Exception $ex) {
+            Yii::app()->user->setFlash('error', $ex->getMessage());
+            $this->getController()->redirect(array('admin/templates/sa/view/','templatename'=>'default'));
+        }
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap']=$aBootstrapPackage;

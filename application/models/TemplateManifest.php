@@ -677,13 +677,12 @@ class TemplateManifest extends TemplateConfiguration
      * @param TemplateManifest $oRTemplate
      * @param string $sPath
      */
-    protected function getTemplateForPath($oRTemplate, $sPath )
+    protected function getTemplateForPath($oRTemplate, $sPath)
     {
-        while (empty($oRTemplate->config->xpath($sPath))){
+        while (empty($oRTemplate->config->xpath($sPath))) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
-            if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                throw new Exception("can't find a template for '$sPath' xpath !");
-                break;
+            if (!($oMotherTemplate instanceof TemplateConfiguration)) {
+                throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sPath'.");
             }
             $oRTemplate = $oMotherTemplate;
         }
