@@ -1630,9 +1630,8 @@ class SurveyRuntimeHelper {
 
     private function makeLanguageChanger()
     {
-
         $this->aSurveyInfo['alanguageChanger']['show']  = false;
-        $alanguageChangerDatas                   = getLanguageChangerDatas($this->sLangCode);
+        $alanguageChangerDatas = getLanguageChangerDatas($this->sLangCode);
 
         if ($alanguageChangerDatas){
             $this->aSurveyInfo['alanguageChanger']['show']  = true;
