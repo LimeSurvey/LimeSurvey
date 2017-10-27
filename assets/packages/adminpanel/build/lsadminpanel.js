@@ -29073,6 +29073,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
+        questionItemClasses(question) {
+            let classes = "";
+            classes += this.$store.state.lastQuestionOpen === question.qid ? 'selected' : ' ';
+
+            if (this.draggedQuestion !== null) classes += this.draggedQuestion.qid === question.qid ? ' dragged' : ' ';
+
+            return classes;
+        },
+        questionGroupItemClasses(questionGroup) {
+            let classes = "";
+            classes += this.isActive(questionGroup.gid) ? 'selected' : ' ';
+
+            if (this.draggedQuestionGroup !== null) classes += this.draggedQuestionGroup.gid === questionGroup.gid ? ' dragged' : ' ';
+
+            return classes;
+        },
         orderQuestions(questionList) {
             return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(questionList, a => {
                 return parseInt(a.question_order || 999999);
@@ -29117,12 +29133,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         //dragevents questiongroups
         startDraggingGroup($event, questiongroupObject) {
-            $event.target.parentElement.parentElement.style.opacity = 0.5;
             this.draggedQuestionGroup = questiongroupObject;
             this.questiongroupDragging = true;
         },
         endDraggingGroup($event, questiongroupObject) {
-            $event.target.parentElement.parentElement.style.opacity = 1;
             this.draggedQuestionGroup = null;
             this.questiongroupDragging = false;
             this.$emit('questiongrouporder');
@@ -29148,14 +29162,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         //dragevents questions
         startDraggingQuestion($event, questionObject, questionGroupObject) {
-            $event.target.parentElement.style.opacity = 0.5;
             this.$log.log("Dragging started", questionObject);
             this.questionDragging = true;
             this.draggedQuestion = questionObject;
             this.draggedQuestionsGroup = questionGroupObject;
         },
         endDraggingQuestion($event, question) {
-            $event.target.parentElement.style.opacity = 1;
             this.questionDragging = false;
             this.draggedQuestion = null;
             this.draggedQuestionsGroup = null;
@@ -29212,7 +29224,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     return _c('li', {
       key: questiongroup.gid,
       staticClass: "list-group-item ls-flex-column",
-      class: _vm.isActive(questiongroup.gid) ? 'selected' : '',
+      class: _vm.questionGroupItemClasses(questiongroup),
       on: {
         "dragenter": function($event) {
           _vm.dragoverQuestiongroup($event, questiongroup)
@@ -29221,7 +29233,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('div', {
       staticClass: "col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5"
     }, [_c('i', {
-      staticClass: "fa fa-bars bigIcons",
+      staticClass: "fa fa-bars bigIcons dragPointer",
       attrs: {
         "draggable": "true"
       },
@@ -29270,14 +29282,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       return _c('li', {
         key: question.qid,
         staticClass: "list-group-item ls-flex-row align-itmes-flex-between",
-        class: (_vm.$store.state.lastQuestionOpen == question.qid ? 'selected' : ''),
+        class: _vm.questionItemClasses(question),
         on: {
           "dragenter": function($event) {
             _vm.dragoverQuestion($event, question)
           }
         }
       }, [_c('i', {
-        staticClass: "fa fa-bars margin-right bigIcons",
+        staticClass: "fa fa-bars margin-right bigIcons dragPointer",
         attrs: {
           "draggable": "true"
         },
@@ -30061,10 +30073,9 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('div', {
     staticClass: "col-12 fill-height ls-space padding all-0",
-    style: ({
-      'min-height': _vm.$store.state.inSurveyViewHeight,
-      'height': '100%'
-    })
+    staticStyle: {
+      "height": "100%"
+    }
   }, [_c('div', {
     staticClass: "mainMenu container-fluid col-12 ls-space padding right-0 fill-height"
   }, [_c('div', {

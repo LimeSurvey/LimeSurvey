@@ -544,6 +544,9 @@ ol.breadcrumb.title-bar-breadcrumb {
 #sidebar .fill-height {
   height: 100%; }
 
+#sidebar .dragPointer {
+  cursor: move; }
+
 #sidebar .menu-open {
   animation-name: animate-gradient;
   animation-duration: 450ms;
@@ -556,9 +559,11 @@ ol.breadcrumb.title-bar-breadcrumb {
   transition-duration: .25s;
   transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1); }
 
-#sidebar .dragging {
-  background-color: #efefef;
+#sidebar .dragged {
+  background-color: rgba(50, 134, 55, 0.8) !important;
   opacity: 0.8;
+  padding-top: 18px;
+  padding-bottom: 18px;
   transition-property: all;
   transition-duration: .1s;
   transition-timing-function: ease-in-out; }

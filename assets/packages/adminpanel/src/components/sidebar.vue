@@ -281,7 +281,7 @@ export default {
 </script>
 <template>
     <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
-        <div class="col-12 fill-height ls-space padding all-0" v-bind:style="{'min-height': $store.state.inSurveyViewHeight, 'height': '100%'}">
+        <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
                 <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;">
                     <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 right-10 bottom-0 top-0">
