@@ -82,8 +82,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('The welcome message'),
                                     'placement' => 'top',
-                                    'content' => gT("This message is shown directly under the survey description on the welcome page.
-                                    You may leave this blank and concentrate on a good text for your description, or vice versa."),
+                                    'content' => gT("This message is shown directly under the survey description on the welcome page. You may leave this blank and concentrate on a good text for your description, or vice versa."),
                                     'redirect' => false,
                                 ),
                                 array( //7
@@ -91,8 +90,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('The end message'),
                                     'placement' => 'top',
-                                    'content' => gT("This message is shown at the end of your survey to every participant.
-                                    It's a great way to say thank you or give some links or hints where to go next."),
+                                    'content' => gT("This message is shown at the end of your survey to every participant. It's a great way to say thank you or give some links or hints where to go next."),
                                     'redirect' => false,
                                 ),
                                 array( //8
@@ -115,9 +113,9 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('The sidebar'),
                                     'content' => gT('This is the sidebar.').'<br/>'
                                         .gT('All important settings can be reached in this sidebar.').'<br/>'
-                                        .gT('You may resize it to fit your screen, or enlargen it to better control your survey structure.
-                                        It may be collapsed to show the quick-menu.
-                                        To collapse it either click on the arrow button or minimize it to the left.'),
+                                        .gT('You may resize it to fit your screen, or enlargen it to better control your survey structure.').' '
+                                        .gT('It may be collapsed to show the quick-menu.').' '
+                                        .gT('To collapse it either click on the arrow button or minimize it to the left.'),
                                     'redirect' => false,
                                     'onShow' => "(function(tour){
                                                     return Promise.resolve(tour);
@@ -128,9 +126,9 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
                                     'title' => gT('The settings tab with the survey menu'),
-                                    'content' => gT('This tab shows the survey settings.
-                                    Any setting for your survey is accessible from this menu.
-                                    If you want to know more about the settings, have a look at our manual.'),
+                                    'content' => gT('This tab shows the survey settings.').' '
+                                    .gT('Any setting for your survey is accessible from this menu.').' '
+                                    .gT('If you want to know more about the settings, have a look at our manual.'),
                                     'redirect' => false,
                                 ),
                                 array( //11
@@ -139,8 +137,8 @@ class Tutorials extends LSActiveRecord
                                     'placement' => 'bottom',
                                     'title' => gT('The top bar'),
                                     'content' => gT('This is the top bar.').'<br/>'
-                                        .gT('This bar will change as you move through the functionalities.
-                                        This view contains the most important LimeSurvey functionalities like activating and previewing the survey'),
+                                        .gT('This bar will change as you move through the functionalities.').' '
+                                        .gT('This view contains the most important LimeSurvey functionalities like activating and previewing the survey.'),
                                     'redirect' => false,
                                 ),
                                 array( //12
@@ -160,7 +158,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'right',
                                     'title' => gT("Let's add another question group"),
-                                    'content' => gT("What good would be your survey be questions?")
+                                    'content' => gT("What good would your survey be without questions?").' '
                                         .gT('In LimeSurvey a survey is organized in question groups and questions. To begin creating questions we first need a question group.')
                                         .'<p class="alert bg-warning">'.gT("Click on the 'Add question group' button'").'</p>',
                                     'reflex' => true,
@@ -175,8 +173,8 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
                                     'title' => gT('Add the title to your question group'),
-                                    'content' => gT('The title will be visible to your participants and cannot be empty.
-                                    Question groups are important to logically divide your questions, also in the default setting your survey is shown group by group.'),
+                                    'content' => gT('The title will be visible to your participants and cannot be empty.')
+                                    .gT('Question groups are important to logically divide your questions, also in the default setting your survey is shown group by group.'),
                                     'redirect' => false,
                                 ),
                                 array( //15
@@ -184,8 +182,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'top',
                                     'title' => gT('A description for your question group'),
-                                    'content' => gT('This description is also visible to your participants.
-                                    You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants.'),
+                                    'content' => gT('This description is also visible to your participants. You do not need to add a description to your question group, but sometimes it makes sense to add a little extra information for your participants.'),
                                     'redirect' => false,
                                 ),
                                 array( //16
@@ -193,8 +190,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'left',
                                     'title' => gT('Advanced settings'),
-                                    'content' => gT('Best to leave them like they are.
-                                    If you want to know more about randomization and relevance settings, have a look at our manual.'),
+                                    'content' => gT('Best to leave them like they are. If you want to know more about randomization and relevance settings, have a look at our manual.'),
                                     'redirect' => false,
                                 ),
                                 array( //17
@@ -228,8 +224,8 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                                     'placement' => 'top',
                                     'title' => gT('The actual question text'),
-                                    'content' => gT('The content of this box is the actual question text shown to your participants.
-                                    It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine.'),
+                                    'content' => gT('The content of this box is the actual question text shown to your participants.').' '
+                                    .gT('It may be empty, but that is not recommended. You may use all the power of our WYSIWYG editor to make your question shine.'),
                                     'redirect' => false,
                                 ),
                                 array( //20
@@ -237,8 +233,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                                     'placement' => 'top',
                                     'title' => gT('An additional help text for your question'),
-                                    'content' => gT('You can add some additional help text to your question.
-                                    This may also be empty, then it will not be shown.'),
+                                    'content' => gT('You can add some additional help text to your question. This may also be empty, then it will not be shown.'),
                                     'redirect' => false,
                                 ),
                                 array( //21
@@ -271,9 +266,8 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/survey/sa/view', ['surveyid' => '[0-9]{4,25}', 'gid' => '[0-9]{1,25}', 'qid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
                                     'title' => gT('The question bar'),
-                                    'content' => gT('This is the question bar.
-                                    The most important option here is the edit button.
-                                    Also important are the preview buttons, which we will show in one of the next steps.'),
+                                    'content' => gT('This is the question bar. The most important option here is the edit button.').' '
+                                    .gT('Also important are the preview buttons, which we will show in one of the next steps.'),
                                     'redirect' => false,
                                 ),
                                 array( //24
@@ -298,8 +292,8 @@ class Tutorials extends LSActiveRecord
                                     'placement' => 'bottom',
                                     'title' => gT('Edit subquestions'),
                                     'content' => gT("Here you may add some subquestions for your question.").'<br/>'
-                                        .gT("Every row is one subquestion. It's best practice to use logical or numerical codes for the subquestions.
-                                        Your participants cannot see the subquestion code, only the subquestion text itself.")
+                                        .gT("Every row is one subquestion. It's best practice to use logical or numerical codes for the subquestions.").' '
+                                        .gT("Your participants cannot see the subquestion code, only the subquestion text itself.")
                                         ."<p class='bg-info alert'>".gT("Pro tip: the subquestion may contain HTML code if you are logged in with admin mode.").'</p>',
                                     'redirect' => false,
                                 ),
