@@ -904,7 +904,7 @@ class tokens extends Survey_Common_Action
             // If no tokens table exists
             self::_newtokentable($iSurveyId);
         }
-        $this->getController()->loadHelper("surveytranslator");
+        Yii::app()->loadHelper("surveytranslator");
 
 
         $aData = array();
@@ -2735,7 +2735,7 @@ class tokens extends Survey_Common_Action
         }
         else
         {
-            $this->getController()->loadHelper('database');
+            Yii::app()->loadHelper('database');
             $result = Yii::app()->db->createCommand(dbSelectTablesLike("{{old_tokens_".intval($iSurveyId)."_%}}"))->queryAll();
             $tcount = count($result);
             if ($tcount > 0)
