@@ -474,7 +474,7 @@ class TemplateConfiguration extends TemplateConfig
         $sUninstallLink = "<a
             id='remove_fromdb_link_".$this->template_name."'
             href='".$sUninstallUrl."'
-            class='btn btn-default btn-danger'>
+            class='btn btn-danger'>
                 <span class='icon-trash'></span>
                 ".gT('Uninstall')."
             </a>";
