@@ -538,7 +538,7 @@ class questionHelper
             'sortorder'=>102,
             'inputtype'=>'text',
             'expression'=>1,/* As static */
-            'help'=>gT('Add additional CSS class(es) for this question. Use a space between different CSS class names. You can use expression, remind this part was static.'),
+            'help'=>gT('Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.'),
             'caption'=>gT('CSS class(es)')
         );
 
