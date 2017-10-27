@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-27 13:27:50+00:00\n"
+"POT-Creation-Date: 2017-10-27 13:58:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3080,7 +3080,7 @@ msgstr ""
 #: application/controllers/admin/questiongroups.php:265
 #: application/controllers/admin/questiongroups.php:299
 #: application/controllers/admin/questiongroups.php:443
-#: application/controllers/admin/questiongroups.php:510
+#: application/controllers/admin/questiongroups.php:560
 #: application/controllers/admin/questions.php:420
 #: application/controllers/admin/questions.php:631
 #: application/controllers/admin/questions.php:681
@@ -3159,7 +3159,7 @@ msgstr ""
 msgid "Base language"
 msgstr ""
 
-#: application/controllers/admin/questiongroups.php:501
+#: application/controllers/admin/questiongroups.php:551
 msgid "Question group successfully saved."
 msgstr ""
 
@@ -3901,7 +3901,7 @@ msgid "Demo mode: Uploading logos is disabled."
 msgstr ""
 
 #: application/controllers/admin/templates.php:133
-msgid "This file is not a supported image, please only upload images of jpeg,png or gif type"
+msgid "This file is not a supported image - please only upload JPG,PNG or GIF type images."
 msgstr ""
 
 #: application/controllers/admin/templates.php:148
@@ -4139,7 +4139,7 @@ msgid "LimeSurvey 3.0 template editor"
 msgstr ""
 
 #: application/controllers/admin/templates.php:1136
-msgid "Welcome to the new template editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the <a target=\"_blank\" href=\"%s\">LimeSurvey manual</a>. For further questions and information, feel free to post your questions on the <a target=\"_blank\" href=\"%s\">LimeSurvey forum</a>."
+msgid "Welcome to the new template editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s."
 msgstr ""
 
 #: application/controllers/admin/tokens.php:80
@@ -5848,6 +5848,7 @@ msgstr ""
 #: application/views/admin/survey/deactivateSurvey_view.php:109
 #: application/views/admin/survey/subview/import_ressources_modal.php:29
 #: application/views/admin/survey/subview/tabImport_view.php:61
+#: application/views/admin/surveymenu/_form.php:81
 #: application/views/admin/surveysgroups/create.php:12
 #: application/views/admin/surveysgroups/index.php:12
 #: application/views/admin/surveysgroups/update.php:13
@@ -11043,7 +11044,8 @@ msgid "Parent"
 msgstr ""
 
 #: application/models/Surveymenu.php:176
-msgid "ordering"
+#: application/models/SurveysGroups.php:142
+msgid "Order"
 msgstr ""
 
 #: application/models/Surveymenu.php:177
@@ -11131,10 +11133,6 @@ msgstr ""
 
 #: application/models/SurveysGroups.php:125
 msgid "Parent group"
-msgstr ""
-
-#: application/models/SurveysGroups.php:142
-msgid "Order"
 msgstr ""
 
 #: application/models/SurveysGroups.php:152
@@ -11533,7 +11531,7 @@ msgid "Next we will create subquestions and answer options."
 msgstr ""
 
 #: application/models/Tutorials.php:256
-msgid "Please be sure the question has a legal title with only letters and numbers starting with a letter."
+msgid "Please be sure the question has a valid code with only letters and numbers starting with a letter."
 msgstr ""
 
 #: application/models/Tutorials.php:268
@@ -11581,7 +11579,7 @@ msgid "Your participants cannot see the subquestion code, only the subquestion t
 msgstr ""
 
 #: application/models/Tutorials.php:297
-msgid "Pro tip: the subquestion may contain HTML code if you are logged in with admin mode."
+msgid "Pro tip: The subquestion may even contain HTML code."
 msgstr ""
 
 #: application/models/Tutorials.php:304
@@ -15300,7 +15298,7 @@ msgid "Create/edit user groups"
 msgstr ""
 
 #: application/views/admin/super/_configuration_menu.php:235
-#: application/views/admin/super/sidemenu.php:44
+#: application/views/admin/super/sidemenu.php:48
 msgid "Settings"
 msgstr ""
 
@@ -15416,16 +15414,16 @@ msgstr ""
 msgid "Loading"
 msgstr ""
 
-#: application/views/admin/super/sidemenu.php:44
+#: application/views/admin/super/sidemenu.php:48
 msgid "Structure"
 msgstr ""
 
-#: application/views/admin/super/sidemenu.php:44
+#: application/views/admin/super/sidemenu.php:48
 #: application/views/admin/survey/QuestionGroups/addGroup_view.php:14
 msgid "Add question group"
 msgstr ""
 
-#: application/views/admin/super/sidemenu.php:44
+#: application/views/admin/super/sidemenu.php:48
 #: application/views/admin/survey/Question/editQuestion_view.php:312
 #: application/views/admin/survey/surveySummary_view.php:124
 #: application/views/admin/survey/surveySummary_view.php:172
@@ -17466,7 +17464,11 @@ msgid "Edit survey menu"
 msgstr ""
 
 #: application/views/admin/surveymenu/_form.php:25
-msgid "You are editing the main menu! %s Please be very careful."
+msgid "You are editing the main menu!"
+msgstr ""
+
+#: application/views/admin/surveymenu/_form.php:25
+msgid "Please be very careful."
 msgstr ""
 
 #: application/views/admin/surveymenu/_form.php:28
