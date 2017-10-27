@@ -23,7 +23,7 @@ class ConsoleShim {
   //Start grouping logs
   group (){
     if (typeof console.group === 'function') { 
-      console.group(arguments);
+      console.group.apply(this, arguments);
       return;
     }
     const description = arguments[0] || 'GROUP';
@@ -33,7 +33,7 @@ class ConsoleShim {
   //Stop grouping logs
   groupEnd (){
     if (typeof console.groupEnd === 'function') { 
-      console.groupEnd(arguments);
+      console.groupEnd.apply(this, arguments);
       return;
     }
     this.currentGroupDescription = '';
@@ -44,34 +44,34 @@ class ConsoleShim {
   // Aware of the group shim
   log () {
     if (typeof console.group === 'function') { 
-      console.log(arguments);
+      console.log.apply(this, arguments);
       return;
     }
 
     console.log( ' '.repeat(this.activeGroups*2), arguments);
   }
-  //Trace back the call.
+  //Trace back the apply.
   //Uses either the inbuilt function console trace or opens a shim to trace by calling arguments.callee
   trace(){
     if (typeof console.trace === 'function') { 
-      console.trace(arguments);
+      console.trace.apply(this, arguments);
       return;
     }
     const artificialError = this._generateError();
     if(artificialError.stack){
-      this.log(artificialError.stack);
+      this.log.apply(this,artificialError.stack);
       return;
     }
 
     this.log(arguments);
     if(arguments.callee != undefined){
-      this.trace(arguments.callee);
+      this.trace.apply(this,arguments.callee);
     }
   }
 
   time() {
     if (typeof console.time === 'function') { 
-      console.time(arguments);
+      console.time.apply(this,arguments);
       return;
     }
 
@@ -80,7 +80,7 @@ class ConsoleShim {
 
   timeEnd() {
     if (typeof console.timeEnd === 'function') { 
-      console.timeEnd(arguments);
+      console.timeEnd.apply(this,arguments);
       return;
     }
     const diff = (new Date()) - this.timeHolder;
@@ -90,7 +90,7 @@ class ConsoleShim {
 
   error(){
     if (typeof console.error === 'function') { 
-      console.error(arguments);
+      console.error.apply(arguments);
       return;
     }
 
@@ -100,7 +100,7 @@ class ConsoleShim {
 
   warn(){
     if (typeof console.warn === 'function') { 
-      console.warn(arguments);
+      console.warn.apply(arguments);
       return;
     }
 

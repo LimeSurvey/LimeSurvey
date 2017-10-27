@@ -28601,7 +28601,7 @@ exports = module.exports = __webpack_require__(3)(true);
 
 
 // module
-exports.push([module.i, "\n.tabbutton.btn-primary {\n  outline: none;\n}\n.tabbutton.btn-primary:hover:after, .tabbutton.btn-primary:focus:after, .tabbutton.btn-primary:active:after {\n    color: #246128;\n}\n.tabbutton.btn-primary:after {\n    position: absolute;\n    left: 45%;\n    bottom: -12px;\n    font: normal normal normal 14px/1 FontAwesome;\n    font-size: 28px;\n    text-rendering: auto;\n    -webkit-font-smoothing: antialiased;\n    content: \"\\F078\";\n    color: #328637;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.overflow-auto {\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.resize-handle {\n  position: absolute;\n  right: 14px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 4px;\n  cursor: col-resize;\n}\n.resize-handle button {\n    outline: 0;\n    cursor: col-resize;\n    width: 100%;\n    height: 100%;\n    text-align: left;\n    border-radius: 0;\n    padding: 0px 7px 0px 4px;\n}\n.resize-handle button:focus, .resize-handle button:active, .resize-handle button:hover {\n      outline: 0 !important;\n      background-color: transparent !important;\n}\n.resize-handle button i {\n      font-size: 12px;\n      width: 5px;\n}\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease;\n}\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease;\n}\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0;\n}\n.slide-fade-enter-active {\n  -moz-transition: all 0.3s ease;\n  -webkit-transition: all 0.3s ease;\n  -ms-transition: all 0.3s ease;\n  transition: all 0.3s ease;\n}\n.slide-fade-leave-active {\n  -moz-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/sidebar.vue"],"names":[],"mappings":";AAAA;EACE,cAAc;CAAE;AAChB;IACE,eAAe;CAAE;AACnB;IACE,mBAAmB;IACnB,UAAU;IACV,cAAc;IACd,8CAA8C;IAC9C,gBAAgB;IAChB,qBAAqB;IACrB,oCAAoC;IACpC,iBAAiB;IACjB,eAAe;CAAE;AAErB;EACE,wBAAwB;EACxB,iBAAiB;CAAE;AAErB;EACE,mBAAmB;EACnB,iBAAiB;CAAE;AAErB;EACE,mBAAmB;EACnB,YAAY;EACZ,OAAO;EACP,UAAU;EACV,aAAa;EACb,WAAW;EACX,mBAAmB;CAAE;AACrB;IACE,WAAW;IACX,mBAAmB;IACnB,YAAY;IACZ,aAAa;IACb,iBAAiB;IACjB,iBAAiB;IACjB,yBAAyB;CAAE;AAC3B;MACE,sBAAsB;MACtB,yCAAyC;CAAE;AAC7C;MACE,gBAAgB;MAChB,WAAW;CAAE;AAEnB;EACE,iCAAiC;EACjC,oCAAoC;EACpC,gCAAgC;EAChC,4BAA4B;CAAE;AAEhC;EACE,+BAA+B;EAC/B,kCAAkC;EAClC,8BAA8B;EAC9B,0BAA0B;CAAE;AAE9B;EACE,uDAAuD;EACvD,0DAA0D;EAC1D,sDAAsD;EACtD,kDAAkD;CAAE;AAEtD;EACE,iCAAiC;EACjC,oCAAoC;EACpC,gCAAgC;EAChC,4BAA4B;EAC5B,WAAW;CAAE;AAEf;EACE,+BAA+B;EAC/B,kCAAkC;EAClC,8BAA8B;EAC9B,0BAA0B;CAAE;AAE9B;EACE,uDAAuD;EACvD,0DAA0D;EAC1D,sDAAsD;EACtD,kDAAkD;CAAE;AAEtD;EACE,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,WAAW;CAAE","file":"sidebar.vue","sourcesContent":[".tabbutton.btn-primary {\n  outline: none; }\n  .tabbutton.btn-primary:hover:after, .tabbutton.btn-primary:focus:after, .tabbutton.btn-primary:active:after {\n    color: #246128; }\n  .tabbutton.btn-primary:after {\n    position: absolute;\n    left: 45%;\n    bottom: -12px;\n    font: normal normal normal 14px/1 FontAwesome;\n    font-size: 28px;\n    text-rendering: auto;\n    -webkit-font-smoothing: antialiased;\n    content: \"\\F078\";\n    color: #328637; }\n\n.background.white {\n  background-color: white;\n  box-shadow: none; }\n\n.overflow-auto {\n  overflow-x: hidden;\n  overflow-y: auto; }\n\n.resize-handle {\n  position: absolute;\n  right: 14px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 4px;\n  cursor: col-resize; }\n  .resize-handle button {\n    outline: 0;\n    cursor: col-resize;\n    width: 100%;\n    height: 100%;\n    text-align: left;\n    border-radius: 0;\n    padding: 0px 7px 0px 4px; }\n    .resize-handle button:focus, .resize-handle button:active, .resize-handle button:hover {\n      outline: 0 !important;\n      background-color: transparent !important; }\n    .resize-handle button i {\n      font-size: 12px;\n      width: 5px; }\n\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease; }\n\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease; }\n\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1); }\n\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0; }\n\n.slide-fade-enter-active {\n  -moz-transition: all 0.3s ease;\n  -webkit-transition: all 0.3s ease;\n  -ms-transition: all 0.3s ease;\n  transition: all 0.3s ease; }\n\n.slide-fade-leave-active {\n  -moz-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1); }\n\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0; }\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.tabbutton.btn-primary {\n  outline: none;\n}\n.tabbutton.btn-primary:hover:after, .tabbutton.btn-primary:focus:after, .tabbutton.btn-primary:active:after {\n    color: #246128;\n}\n.tabbutton.btn-primary:after {\n    position: absolute;\n    left: 45%;\n    bottom: -12px;\n    font: normal normal normal 14px/1 FontAwesome;\n    font-size: 28px;\n    text-rendering: auto;\n    -webkit-font-smoothing: antialiased;\n    content: \"\\F078\";\n    color: #328637;\n}\n.background.white {\n  background-color: white;\n  box-shadow: none;\n}\n.overflow-auto {\n  overflow-x: hidden;\n  overflow-y: auto;\n}\n.resize-handle {\n  position: absolute;\n  right: 14px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 4px;\n  cursor: col-resize;\n}\n.resize-handle button {\n    outline: 0;\n    cursor: col-resize;\n    width: 100%;\n    height: 100%;\n    text-align: left;\n    border-radius: 0;\n    padding: 0px 7px 0px 4px;\n}\n.resize-handle button:focus, .resize-handle button:active, .resize-handle button:hover {\n      outline: 0 !important;\n      background-color: transparent !important;\n}\n.resize-handle button i {\n      font-size: 12px;\n      width: 5px;\n}\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease;\n}\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease;\n}\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0;\n}\n.slide-fade-enter-active {\n  -moz-transition: all 0.3s ease;\n  -webkit-transition: all 0.3s ease;\n  -ms-transition: all 0.3s ease;\n  transition: all 0.3s ease;\n}\n.slide-fade-leave-active {\n  -moz-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n}\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0;\n}\n.slide-fade-down-enter-active {\n  -moz-transition: all 0.3s ease;\n  -webkit-transition: all 0.3s ease;\n  -ms-transition: all 0.3s ease;\n  transition: all 0.3s ease;\n}\n.slide-fade-down-leave-active {\n  -moz-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);\n  -webkit-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);\n  -ms-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);\n  transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);\n}\n.slide-fade-down-enter, .slide-fade-down-leave-to {\n  -moz-transform: rotateY(45);\n  -webkit-transform: rotateY(45);\n  -ms-transform: rotateY(45);\n  transform: rotateY(45);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0;\n}\n", "", {"version":3,"sources":["/opt/web/LimeSurvey/assets/packages/adminpanel/src/components/sidebar.vue"],"names":[],"mappings":";AAAA;EACE,cAAc;CAAE;AAChB;IACE,eAAe;CAAE;AACnB;IACE,mBAAmB;IACnB,UAAU;IACV,cAAc;IACd,8CAA8C;IAC9C,gBAAgB;IAChB,qBAAqB;IACrB,oCAAoC;IACpC,iBAAiB;IACjB,eAAe;CAAE;AAErB;EACE,wBAAwB;EACxB,iBAAiB;CAAE;AAErB;EACE,mBAAmB;EACnB,iBAAiB;CAAE;AAErB;EACE,mBAAmB;EACnB,YAAY;EACZ,OAAO;EACP,UAAU;EACV,aAAa;EACb,WAAW;EACX,mBAAmB;CAAE;AACrB;IACE,WAAW;IACX,mBAAmB;IACnB,YAAY;IACZ,aAAa;IACb,iBAAiB;IACjB,iBAAiB;IACjB,yBAAyB;CAAE;AAC3B;MACE,sBAAsB;MACtB,yCAAyC;CAAE;AAC7C;MACE,gBAAgB;MAChB,WAAW;CAAE;AAEnB;EACE,iCAAiC;EACjC,oCAAoC;EACpC,gCAAgC;EAChC,4BAA4B;CAAE;AAEhC;EACE,+BAA+B;EAC/B,kCAAkC;EAClC,8BAA8B;EAC9B,0BAA0B;CAAE;AAE9B;EACE,uDAAuD;EACvD,0DAA0D;EAC1D,sDAAsD;EACtD,kDAAkD;CAAE;AAEtD;EACE,iCAAiC;EACjC,oCAAoC;EACpC,gCAAgC;EAChC,4BAA4B;EAC5B,WAAW;CAAE;AAEf;EACE,+BAA+B;EAC/B,kCAAkC;EAClC,8BAA8B;EAC9B,0BAA0B;CAAE;AAE9B;EACE,uDAAuD;EACvD,0DAA0D;EAC1D,sDAAsD;EACtD,kDAAkD;CAAE;AAEtD;EACE,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,WAAW;CAAE;AAEf;EACE,+BAA+B;EAC/B,kCAAkC;EAClC,8BAA8B;EAC9B,0BAA0B;CAAE;AAE9B;EACE,qDAAqD;EACrD,wDAAwD;EACxD,oDAAoD;EACpD,gDAAgD;CAAE;AAEpD;EACE,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,4BAA4B;EAC5B,+BAA+B;EAC/B,2BAA2B;EAC3B,uBAAuB;EACvB,WAAW;CAAE","file":"sidebar.vue","sourcesContent":[".tabbutton.btn-primary {\n  outline: none; }\n  .tabbutton.btn-primary:hover:after, .tabbutton.btn-primary:focus:after, .tabbutton.btn-primary:active:after {\n    color: #246128; }\n  .tabbutton.btn-primary:after {\n    position: absolute;\n    left: 45%;\n    bottom: -12px;\n    font: normal normal normal 14px/1 FontAwesome;\n    font-size: 28px;\n    text-rendering: auto;\n    -webkit-font-smoothing: antialiased;\n    content: \"\\F078\";\n    color: #328637; }\n\n.background.white {\n  background-color: white;\n  box-shadow: none; }\n\n.overflow-auto {\n  overflow-x: hidden;\n  overflow-y: auto; }\n\n.resize-handle {\n  position: absolute;\n  right: 14px;\n  top: 0;\n  bottom: 0;\n  height: 100%;\n  width: 4px;\n  cursor: col-resize; }\n  .resize-handle button {\n    outline: 0;\n    cursor: col-resize;\n    width: 100%;\n    height: 100%;\n    text-align: left;\n    border-radius: 0;\n    padding: 0px 7px 0px 4px; }\n    .resize-handle button:focus, .resize-handle button:active, .resize-handle button:hover {\n      outline: 0 !important;\n      background-color: transparent !important; }\n    .resize-handle button i {\n      font-size: 12px;\n      width: 5px; }\n\n.transition-animate-width {\n  -moz-transition: width 0.5s ease;\n  -webkit-transition: width 0.5s ease;\n  -ms-transition: width 0.5s ease;\n  transition: width 0.5s ease; }\n\n.fade-enter-active {\n  -moz-transition: all 0.8s ease;\n  -webkit-transition: all 0.8s ease;\n  -ms-transition: all 0.8s ease;\n  transition: all 0.8s ease; }\n\n.fade-leave-active {\n  -moz-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1); }\n\n.fade-enter, .fade-leave-to {\n  -moz-transform: translateY(10px);\n  -webkit-transform: translateY(10px);\n  -ms-transform: translateY(10px);\n  transform: translateY(10px);\n  opacity: 0; }\n\n.slide-fade-enter-active {\n  -moz-transition: all 0.3s ease;\n  -webkit-transition: all 0.3s ease;\n  -ms-transition: all 0.3s ease;\n  transition: all 0.3s ease; }\n\n.slide-fade-leave-active {\n  -moz-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  -webkit-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  -ms-transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);\n  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1); }\n\n.slide-fade-enter, .slide-fade-leave-to {\n  -moz-transform: rotateY(90);\n  -webkit-transform: rotateY(90);\n  -ms-transform: rotateY(90);\n  transform: rotateY(90);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0; }\n\n.slide-fade-down-enter-active {\n  -moz-transition: all 0.3s ease;\n  -webkit-transition: all 0.3s ease;\n  -ms-transition: all 0.3s ease;\n  transition: all 0.3s ease; }\n\n.slide-fade-down-leave-active {\n  -moz-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);\n  -webkit-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);\n  -ms-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1);\n  transition: all 0.2s cubic-bezier(0, 1, 0.5, 1); }\n\n.slide-fade-down-enter, .slide-fade-down-leave-to {\n  -moz-transform: rotateY(45);\n  -webkit-transform: rotateY(45);\n  -ms-transform: rotateY(45);\n  transform: rotateY(45);\n  -moz-transform-origin: left;\n  -webkit-transform-origin: left;\n  -ms-transform-origin: left;\n  transform-origin: left;\n  opacity: 0; }\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -28676,7 +28676,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         'getQuestionsUrl': { type: String },
         'getMenuUrl': { type: String },
         'createQuestionGroupLink': { type: String },
-        'createQuestionLink': ''
+        'createQuestionLink': { type: String },
+        'updateQuestionGroupOrderLink': { type: String }
     },
     data: () => {
         return {
@@ -28719,6 +28720,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         calculateHeight(self) {
             self.$store.commit('changeSideBarHeight', $('#in_survey_common').height());
+        },
+        changedQuestionGroupOrder() {
+            const self = this;
+            const onlyGroupsArray = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.map(this.$store.state.questiongroups, (questiongroup, count) => {
+                return { gid: questiongroup.gid, group_name: questiongroup.group_name, group_order: questiongroup.group_order };
+            });
+            this.$log.debug("QuestionGroup order changed");
+            this.post(this.updateQuestionGroupOrderLink, { grouparray: onlyGroupsArray, surveyid: this.$store.surveyid }).then(result => {
+                self.$log.debug('questiongroups updated');
+            }, error => {
+                self.$log.error('questiongroups updating error!');
+            });
         },
         controlActiveLink() {
             //get current location
@@ -29031,18 +29044,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: () => {
         return {
-            active: []
+            active: [],
+            questiongroupDragging: false,
+            draggedQuestionGroup: null,
+            questionDragging: false,
+            draggedQuestion: null
         };
     },
     computed: {
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
             return containerHeight - 100;
+        },
+        orderedQuestionGroups() {
+            return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(this.$store.state.questiongroups, a => {
+                return parseInt(a.group_order || 999999);
+            }, ['asc']);
         }
     },
     methods: {
+        orderQuestions(questionList) {
+            return __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.orderBy(questionList, a => {
+                return parseInt(a.question_order || 999999);
+            }, ['asc']);
+        },
         isActive(index) {
             const result = __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.indexOf(this.active, index) != -1;
+
+            if (this.questiongroupDragging === true) return false;
+
+            if (this.questionDragging === true) return true;
+
             return result;
         },
         toggleActivation(index) {
@@ -29074,7 +29106,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$store.commit('lastQuestionOpen', question);
             this.$forceUpdate();
             this.updatePjaxLinks();
-        }
+        },
+        //dragevents questiongroups
+        startDraggingGroup($event, questiongroupObject) {
+            $event.target.parentElement.parentElement.style.opacity = 0.5;
+            this.draggedQuestionGroup = questiongroupObject;
+            this.questiongroupDragging = true;
+        },
+        endDraggingGroup($event, questiongroupObject) {
+            $event.target.parentElement.parentElement.style.opacity = 1;
+            this.draggedQuestionGroup = null;
+            this.questiongroupDragging = false;
+            this.$emit('questiongrouporder');
+        },
+        dragoverQuestiongroup($event, questiongroupObject) {
+            const orderSwap = questiongroupObject.group_order;
+            questiongroupObject.group_order = this.draggedQuestionGroup.group_order;
+            this.draggedQuestionGroup.group_order = orderSwap;
+        },
+        //dragevents questions
+        startDraggingQuestion($event, questionObject) {
+            $event.target.parentElement.parentElement.style.opacity = 0.5;
+            this.$log.log("Dragging started", questionObject);
+            this.questionDragging = true;
+        },
+        endDraggingQuestion($event, question) {
+            $event.target.parentElement.parentElement.style.opacity = 1;
+            this.questionDragging = false;
+        },
+        dragoverQuestion($event, questionObject) {}
     },
     mounted() {
         this.active = this.$store.state.questionGroupOpenArray;
@@ -29111,18 +29171,36 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('i', {
     staticClass: "fa fa-plus-circle"
   }), _vm._v(" " + _vm._s(_vm.translate.createQuestion))]) : _vm._e()]), _vm._v(" "), _c('ul', {
-    staticClass: "list-group"
-  }, _vm._l((_vm.$store.state.questiongroups), function(questiongroup) {
+    staticClass: "list-group",
+    on: {
+      "drop": function($event) {
+        _vm.dropQuestionGroup($event, _vm.questiongroup)
+      }
+    }
+  }, _vm._l((_vm.orderedQuestionGroups), function(questiongroup) {
     return _c('li', {
       key: questiongroup.gid,
       staticClass: "list-group-item ls-flex-column",
-      class: _vm.isActive(questiongroup.gid) ? 'selected' : ''
+      class: _vm.isActive(questiongroup.gid) ? 'selected' : '',
+      on: {
+        "dragenter": function($event) {
+          _vm.dragoverQuestiongroup($event, questiongroup)
+        }
+      }
     }, [_c('div', {
       staticClass: "col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5"
     }, [_c('i', {
       staticClass: "fa fa-bars bigIcons",
       attrs: {
         "draggable": "true"
+      },
+      on: {
+        "dragend": function($event) {
+          _vm.endDraggingGroup($event, questiongroup)
+        },
+        "dragstart": function($event) {
+          _vm.startDraggingGroup($event, questiongroup)
+        }
       }
     }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
       staticClass: "col-12 pjax",
@@ -29146,17 +29224,39 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.toggleActivation(questiongroup.gid)
         }
       }
-    }, [_vm._v(" ")])]), _vm._v(" "), (_vm.isActive(questiongroup.gid)) ? _c('ul', {
-      staticClass: "list-group background-muted padding-left"
-    }, _vm._l((questiongroup.questions), function(question) {
+    }, [_vm._v(" ")])]), _vm._v(" "), _c('transition', {
+      attrs: {
+        "name": "slide-fade-down"
+      }
+    }, [(_vm.isActive(questiongroup.gid)) ? _c('ul', {
+      staticClass: "list-group background-muted padding-left",
+      on: {
+        "drop": function($event) {
+          _vm.dropQuestion($event, _vm.question)
+        }
+      }
+    }, _vm._l((_vm.orderQuestions(questiongroup.questions)), function(question) {
       return _c('li', {
         key: question.qid,
         staticClass: "list-group-item ls-flex-row align-itmes-flex-between",
-        class: (_vm.$store.state.lastQuestionOpen == question.qid ? 'selected' : '')
+        class: (_vm.$store.state.lastQuestionOpen == question.qid ? 'selected' : ''),
+        on: {
+          "dragenter": function($event) {
+            _vm.dragoverQuestion($event, question)
+          }
+        }
       }, [_c('i', {
         staticClass: "fa fa-bars margin-right bigIcons",
         attrs: {
           "draggable": "true"
+        },
+        on: {
+          "dragend": function($event) {
+            _vm.endDraggingQuestion($event, question)
+          },
+          "dragstart": function($event) {
+            _vm.startDraggingQuestion($event, question)
+          }
         }
       }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
         staticClass: "pjax",
@@ -29172,7 +29272,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }, [_c('i', [_vm._v("[" + _vm._s(question.title) + "]")]), _vm._v(" " + _vm._s(question.name_short) + " ")])])
-    })) : _vm._e()])
+    })) : _vm._e()])], 1)
   }))])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -29572,47 +29672,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   return _c('ul', {
     staticClass: "list-group subpanel col-12",
     class: 'level-' + (_vm.menu.level)
-  }, [_vm._l((_vm.menu.submenus), function(submenu, index) {
-    return _c('li', {
-      key: submenu.id,
-      staticClass: "list-group-item",
-      class: _vm.checkIsOpen(submenu) ? 'menu-selected' : '',
-      on: {
-        "click": function($event) {
-          $event.stopPropagation();
-          _vm.setActiveMenuIndex(submenu)
-        }
-      }
-    }, [_c('a', {
-      staticClass: "ls-flex-row nowrap align-item-center align-content-center",
-      class: _vm.checkIsOpen(submenu) ? 'ls-space margin bottom-5' : '',
-      attrs: {
-        "href": "#",
-        "title": submenu.description,
-        "data-toggle": "tooltip"
-      }
-    }, [_c('div', {
-      staticClass: "ls-space col-sm-10 padding all-0"
-    }, [_c('menuicon', {
-      attrs: {
-        "icon-type": "fontawesome",
-        "icon": "arrow-right"
-      }
-    }), _vm._v(" "), _c('span', {
-      domProps: {
-        "innerHTML": _vm._s(submenu.title)
-      }
-    })], 1), _vm._v(" "), _c('div', {
-      staticClass: "col-sm-2 text-center ls-space padding all-0",
-      class: (_vm.checkIsOpen(submenu) ? 'menu-open' : '')
-    }, [_c('i', {
-      staticClass: "fa fa-level-down"
-    })])]), _vm._v(" "), (_vm.checkIsOpen(submenu)) ? _c('submenu', {
-      attrs: {
-        "menu": submenu
-      }
-    }) : _vm._e()], 1)
-  }), _vm._v(" "), _vm._l((_vm.sortedMenuEntries), function(menuItem, index) {
+  }, [_vm._l((_vm.sortedMenuEntries), function(menuItem, index) {
     return _c('li', {
       key: menuItem.id,
       staticClass: "list-group-item",
@@ -29620,6 +29680,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       on: {
         "click": function($event) {
           $event.stopPropagation();
+          $event.preventDefault();
           _vm.setActiveMenuItemIndex(menuItem)
         }
       }
@@ -29654,6 +29715,51 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_c('i', {
       staticClass: "fa fa-chevron-right"
     }, [_vm._v(" ")])])])])
+  }), _vm._v(" "), _vm._l((_vm.menu.submenus), function(submenu, index) {
+    return _c('li', {
+      key: submenu.id,
+      staticClass: "list-group-item",
+      class: _vm.checkIsOpen(submenu) ? 'menu-selected' : '',
+      on: {
+        "click": function($event) {
+          $event.stopPropagation();
+          $event.preventDefault();
+          _vm.setActiveMenuIndex(submenu)
+        }
+      }
+    }, [_c('a', {
+      staticClass: "ls-flex-row nowrap align-item-center align-content-center",
+      class: _vm.checkIsOpen(submenu) ? 'ls-space margin bottom-5' : '',
+      attrs: {
+        "href": "#",
+        "title": submenu.description,
+        "data-toggle": "tooltip"
+      }
+    }, [_c('div', {
+      staticClass: "ls-space col-sm-10 padding all-0"
+    }, [_c('menuicon', {
+      attrs: {
+        "icon-type": "fontawesome",
+        "icon": "arrow-right"
+      }
+    }), _vm._v(" "), _c('span', {
+      domProps: {
+        "innerHTML": _vm._s(submenu.title)
+      }
+    })], 1), _vm._v(" "), _c('div', {
+      staticClass: "col-sm-2 text-center ls-space padding all-0",
+      class: (_vm.checkIsOpen(submenu) ? 'menu-open' : '')
+    }, [_c('i', {
+      staticClass: "fa fa-level-down"
+    })])]), _vm._v(" "), _c('transition', {
+      attrs: {
+        "name": "slide-fade-down"
+      }
+    }, [(_vm.checkIsOpen(submenu)) ? _c('submenu', {
+      attrs: {
+        "menu": submenu
+      }
+    }) : _vm._e()], 1)], 1)
   })], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
@@ -29925,7 +30031,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "col-12 fill-height ls-space padding all-0",
     style: ({
-      'height': _vm.$store.state.inSurveyViewHeight
+      'min-height': _vm.$store.state.inSurveyViewHeight,
+      'height': '100%'
     })
   }, [_c('div', {
     staticClass: "mainMenu container-fluid col-12 ls-space padding right-0 fill-height"
@@ -30000,7 +30107,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "showSideMenu"
     }],
     style: ({
-      height: _vm.calculateSideBarMenuHeight
+      'min-height': _vm.calculateSideBarMenuHeight
     })
   })], 1), _vm._v(" "), _c('transition', {
     attrs: {
@@ -30014,7 +30121,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "showQuestionTree"
     }],
     style: ({
-      height: _vm.calculateSideBarMenuHeight
+      'min-height': _vm.calculateSideBarMenuHeight
     }),
     attrs: {
       "create-question-group-link": _vm.createQuestionGroupLink,
@@ -30022,7 +30129,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "translate": _vm.translate
     },
     on: {
-      "openentity": _vm.openEntity
+      "openentity": _vm.openEntity,
+      "questiongrouporder": _vm.changedQuestionGroupOrder
     }
   })], 1), _vm._v(" "), _c('transition', {
     attrs: {
@@ -30036,7 +30144,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       expression: "$store.state.isCollapsed"
     }],
     style: ({
-      height: _vm.calculateSideBarMenuHeight
+      'min-height': _vm.calculateSideBarMenuHeight
     })
   })], 1)], 1)]), _vm._v(" "), _c('div', {
     staticClass: "resize-handle",
@@ -31565,7 +31673,7 @@ class ConsoleShim {
   //Start grouping logs
   group (){
     if (typeof console.group === 'function') { 
-      console.group(arguments);
+      console.group.apply(this, arguments);
       return;
     }
     const description = arguments[0] || 'GROUP';
@@ -31575,7 +31683,7 @@ class ConsoleShim {
   //Stop grouping logs
   groupEnd (){
     if (typeof console.groupEnd === 'function') { 
-      console.groupEnd(arguments);
+      console.groupEnd.apply(this, arguments);
       return;
     }
     this.currentGroupDescription = '';
@@ -31586,34 +31694,34 @@ class ConsoleShim {
   // Aware of the group shim
   log () {
     if (typeof console.group === 'function') { 
-      console.log(arguments);
+      console.log.apply(this, arguments);
       return;
     }
 
     console.log( ' '.repeat(this.activeGroups*2), arguments);
   }
-  //Trace back the call.
+  //Trace back the apply.
   //Uses either the inbuilt function console trace or opens a shim to trace by calling arguments.callee
   trace(){
     if (typeof console.trace === 'function') { 
-      console.trace(arguments);
+      console.trace.apply(this, arguments);
       return;
     }
     const artificialError = this._generateError();
     if(artificialError.stack){
-      this.log(artificialError.stack);
+      this.log.apply(this,artificialError.stack);
       return;
     }
 
     this.log(arguments);
     if(arguments.callee != undefined){
-      this.trace(arguments.callee);
+      this.trace.apply(this,arguments.callee);
     }
   }
 
   time() {
     if (typeof console.time === 'function') { 
-      console.time(arguments);
+      console.time.apply(this,arguments);
       return;
     }
 
@@ -31622,7 +31730,7 @@ class ConsoleShim {
 
   timeEnd() {
     if (typeof console.timeEnd === 'function') { 
-      console.timeEnd(arguments);
+      console.timeEnd.apply(this,arguments);
       return;
     }
     const diff = (new Date()) - this.timeHolder;
@@ -31632,7 +31740,7 @@ class ConsoleShim {
 
   error(){
     if (typeof console.error === 'function') { 
-      console.error(arguments);
+      console.error.apply(arguments);
       return;
     }
 
@@ -31642,7 +31750,7 @@ class ConsoleShim {
 
   warn(){
     if (typeof console.warn === 'function') { 
-      console.warn(arguments);
+      console.warn.apply(arguments);
       return;
     }
 

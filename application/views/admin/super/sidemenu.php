@@ -27,6 +27,9 @@
     else 
         $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid]);
 
+    $updateQuestionGroupOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder", ["surveyid" =>  $surveyid]);
+
+
     if ($activated)
     {
         $createQuestionGroupLink = "";
@@ -41,6 +44,7 @@
     get-menu-url="<?=$getMenuUrl ?>"
     create-question-group-link ="<?=$createQuestionGroupLink?>"
     create-question-link ="<?=$createQuestionLink?>"
+    update-question-group-order-link="<?=$updateQuestionGroupOrderLink?>"
     :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>', createQuestionGroup:'<?php eT("Add question group");?>', createQuestion:'<?php eT("Add question");?>' }"
 ></sidebar>
 
