@@ -138,9 +138,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderTemplateForTemplateEditor($sView, $aDatas, $oEditedTemplate)
     {
         $oTemplate = $this->getTemplateForView($sView, $oEditedTemplate);
-        $line      = file_get_contents($oTemplate->viewPath.$sView);
-        $result    = $this->renderTemplateFromString( $line, $aDatas, $oEditedTemplate, true);
-        return $result;
+        if ($oTemplate) {
+            $line      = file_get_contents($oTemplate->viewPath.$sView);
+            $result    = $this->renderTemplateFromString($line, $aDatas, $oEditedTemplate, true);
+            return $result;
+        } else {
+            return null;
+        }
     }
 
     public function renderTemplateFromFile($sView, $aDatas, $bReturn)

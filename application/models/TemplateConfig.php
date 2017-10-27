@@ -115,7 +115,7 @@ class TemplateConfig extends CActiveRecord
          while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)){
              $oMotherTemplate = $oRTemplate->oMotherTemplate;
              if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                 throw new Exception("no template found for  $sFile! Last template searched: ".$oRTemplate->sTemplateName );
+                 throw new Exception("No template found for $sFile! Last template searched: ".$oRTemplate->sTemplateName );
                  break;
              }
              $oRTemplate = $oMotherTemplate;
