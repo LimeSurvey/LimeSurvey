@@ -22,7 +22,7 @@
 		<div class="container-fluid">
 			<?php //Warn on edition of the main menu, though damaging it can do serious harm ?>
 			<?php if(!$model->isNewRecord && $model->id == '1'):?>
-				<div class="alert alert-danger" role="alert"><?php printf(gT("You are editing the main menu! %s Please be very careful."), '<br/>') ?></div>
+				<div class="alert alert-danger" role="alert"><?php echo gT("You are editing the main menu!").'<br>'.gT("Please be very careful."); ?></div>
 			<?php endif; ?>
 			
 			<p class="note"><?php printf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>
@@ -78,6 +78,6 @@
 	</div>
 	<div class="modal-footer">
 		<?php echo TbHtml::submitButton((empty($model->id) ? 'Create' : 'Save'), array('color' => TbHtml::BUTTON_COLOR_SUCCESS)); ?>
-		<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-danger" data-dismiss="modal"><?php eT('Close');?></button>
 	</div>
 <?php $this->endWidget(); ?>

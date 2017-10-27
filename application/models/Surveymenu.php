@@ -173,7 +173,7 @@ class Surveymenu extends LSActiveRecord
 			'parent_id'		=> gT('Parent'),
 			'survey_id'		=> gT('Survey'),
 			'user_id' 		=> gT('User'),
-			'ordering' 		=> gT('ordering'),
+			'ordering' 		=> gT('Order'),
 			'level' 		=> gT('Level'),
 			'title' 		=> gT('Title'),
 			'position' 		=> gT('Position'),

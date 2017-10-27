@@ -130,7 +130,7 @@ class templates extends Survey_Common_Action
                 $checkImage = getimagesize($_FILES["upload_logo"]["tmp_name"]);
                 $debug[] = $checkImage;
                 if ($checkImage === false ||  !in_array($checkImage[2], [IMAGETYPE_JPEG,IMAGETYPE_PNG,IMAGETYPE_GIF]) ) {
-                    $uploadresult = gT("This file is not a supported image, please only upload images of jpeg,png or gif type");
+                    $uploadresult = gT("This file is not a supported image - please only upload JPG,PNG or GIF type images.");
                     return Yii::app()->getController()->renderPartial(
                         '/admin/super/_renderJson', array('data' => ['success' => $success,'message' => $uploadresult, 'debug' => $debug]),false,false
                     );
@@ -1133,9 +1133,9 @@ class templates extends Survey_Common_Action
             'markAsNew'  => false,
             'importance' => Notification::HIGH_IMPORTANCE,
             'message'    => sprintf(
-                gT('Welcome to the new template editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the <a target="_blank" href="%s">LimeSurvey manual</a>. For further questions and information, feel free to post your questions on the <a target="_blank" href="%s">LimeSurvey forum</a>.', 'unescaped'),
-                'http://manual.limesurvey.org/Templating',
-                'https://www.limesurvey.org/community/forums'
+                gT('Welcome to the new template editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
+                '<a target="_blank" href="http://manual.limesurvey.org/Templating">','</a>',
+                '<a target="_blank" href="https://www.limesurvey.org/community/forums">','</a>'
             )
         ));
         $not->save();

@@ -253,7 +253,7 @@ class Tutorials extends LSActiveRecord
                                     'placement' => 'left',
                                     'title' => gT('Now save the created question'),
                                     'content' => gT('Next we will create subquestions and answer options.').'<br/>'
-                                        .gT('Please be sure the question has a legal title with only letters and numbers starting with a letter.'),
+                                        .gT('Please be sure the question has a valid code with only letters and numbers starting with a letter.'),
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
@@ -294,7 +294,7 @@ class Tutorials extends LSActiveRecord
                                     'content' => gT("Here you may add some subquestions for your question.").'<br/>'
                                         .gT("Every row is one subquestion. It's best practice to use logical or numerical codes for the subquestions.").' '
                                         .gT("Your participants cannot see the subquestion code, only the subquestion text itself.")
-                                        ."<p class='bg-info alert'>".gT("Pro tip: the subquestion may contain HTML code if you are logged in with admin mode.").'</p>',
+                                        ."<p class='bg-info alert'>".gT("Pro tip: The subquestion may even contain HTML code.").'</p>',
                                     'redirect' => false,
                                 ),
                                 array( //26
