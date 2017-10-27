@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-27 14:32:47+00:00\n"
+"POT-Creation-Date: 2017-10-27 17:23:44+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14141,6 +14141,7 @@ msgid "Processing..."
 msgstr ""
 
 #: application/views/admin/participants/attributeMapCSV_view.php:79
+#: application/views/admin/super/header.php:66
 #: application/views/admin/survey/Question/question_subviews/_accordion_container.php:143
 #: application/views/admin/token/browse.php:59
 #: application/views/admin/translate/translatetabs_view.php:10
@@ -15410,10 +15411,6 @@ msgstr ""
 
 #: application/views/admin/super/fullpagebar_view.php:58
 msgid "Manage your key"
-msgstr ""
-
-#: application/views/admin/super/header.php:66
-msgid "Loading"
 msgstr ""
 
 #: application/views/admin/super/sidemenu.php:48
