@@ -98,7 +98,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/survey/sa/newsurvey'),
                                     'title' => gT('Now save your survey'),
                                     'placement' => 'bottom',
-                                    'content' => gT('You may play around with more settings, or start adding questions to your survey now. Just click on save.'),
+                                    'content' => gT("You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'."),
                                     'reflex' => true,
                                     'redirect' => false,
                                     'onNext' => "(function(tour){
@@ -113,7 +113,7 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('The sidebar'),
                                     'content' => gT('This is the sidebar.').'<br/>'
                                         .gT('All important settings can be reached in this sidebar.').'<br/>'
-                                        .gT('You may resize it to fit your screen, or enlargen it to better navigate your survey structure.').' '
+                                        .gT('You may resize it to fit your screen, so you can easier navigate your survey structure.').' '
                                         .gT('It may be collapsed to show the quick-menu.').' '
                                         .gT('To collapse it either click on the arrow button or drag it to the left.'),
                                     'redirect' => false,
@@ -173,7 +173,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => [Yii::app()->createUrl('/admin/questiongroups/sa/add', ['surveyid' => '[0-9]{4,25}'])],
                                     'placement' => 'bottom',
                                     'title' => gT('Enter a title for your first question group'),
-                                    'content' => gT('The title will be visible to your participants and cannot be empty.')
+                                    'content' => gT('The title will be visible to your participants and cannot be empty.').' '
                                     .gT('Question groups are important to logically group your questions. In the default setting each question group (with included questions) is shown on its own page.'),
                                     'redirect' => false,
                                 ),
