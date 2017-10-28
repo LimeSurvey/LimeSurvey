@@ -35,7 +35,7 @@ class Tutorials extends LSActiveRecord
                                     'path' => Yii::app()->createUrl('/admin/index'),
                                     'title' => gT('Welcome to LimeSurvey!'),
                                     'placement' => 'bottom',
-                                    'content' => gT("This tour will help you get a basic grasp of LimeSurvey.")."<br/>"
+                                    'content' => gT("This tour will help you to easily get a basic understanding of LimeSurvey.")."<br/>"
                                         .gt("We would like to help you with a quick tour of the most essential functions and features"),
                                     'redirect' => false,
                                     'onShow' => "(function(){ $('#welcomeModal').modal('hide'); })"
@@ -46,7 +46,7 @@ class Tutorials extends LSActiveRecord
                                     'title' => gT('The basic functions'),
                                     'content' => gT("The three top boxes are the most basic functions of LimeSurvey.")."<br/>"
                                     .gT("From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey.")
-                                    .'<p class="alert bg-warning">'.gT("Click on Create survey or Next in this box").'</p>',
+                                    .'<p class="alert bg-warning">'.gT("Click on the 'Create survey' box - or 'Next' in this tutorial").'</p>',
                                     'reflex' => '.selector__lstour--createsurvey',
                                     'redirect' => false,
                                     'onShow' => "(function(){ $('#welcomeModal').modal('hide'); })"

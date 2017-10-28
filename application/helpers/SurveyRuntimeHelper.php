@@ -1592,7 +1592,7 @@ class SurveyRuntimeHelper {
                     $aEnterErrors['captcha'] = gT("Your answer to the security question was not correct - please try again.");
 
                 } elseif (null!==App()->getRequest()->getPost('loadsecurity')) {
-                    $aEnterErrors['captcha'] = gT("Your must answer to the security question - please try again.");
+                    $aEnterErrors['captcha'] = gT("Your have to answer the security question - please try again.");
                 }
                 $renderCaptcha = 'main';
             }
