@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-28 09:50:48+00:00\n"
+"POT-Creation-Date: 2017-10-28 16:29:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -11340,7 +11340,7 @@ msgid "Now save your survey"
 msgstr ""
 
 #: application/models/Tutorials.php:101
-msgid "You may play around with more settings, or start adding questions to your survey now. Just click on save."
+msgid "You may play around with more settings, but let's save and start adding questions to your survey now. Just click on 'Save'."
 msgstr ""
 
 #: application/models/Tutorials.php:113
@@ -11356,7 +11356,7 @@ msgid "All important settings can be reached in this sidebar."
 msgstr ""
 
 #: application/models/Tutorials.php:116
-msgid "You may resize it to fit your screen, or enlargen it to better navigate your survey structure."
+msgid "You may resize it to fit your screen, so you can easier navigate your survey structure."
 msgstr ""
 
 #: application/models/Tutorials.php:117
