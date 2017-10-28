@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-10-27 18:58:42+00:00\n"
+"POT-Creation-Date: 2017-10-28 09:50:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -6162,7 +6162,7 @@ msgid "One or more uploaded files are not in proper format/size. You cannot proc
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1595
-msgid "Your must answer to the security question - please try again."
+msgid "Your have to answer the security question - please try again."
 msgstr ""
 
 #: application/helpers/SurveyRuntimeHelper.php:1689
@@ -11256,7 +11256,7 @@ msgid "Welcome to LimeSurvey!"
 msgstr ""
 
 #: application/models/Tutorials.php:38
-msgid "This tour will help you get a basic grasp of LimeSurvey."
+msgid "This tour will help you to easily get a basic understanding of LimeSurvey."
 msgstr ""
 
 #: application/models/Tutorials.php:39
@@ -11276,7 +11276,7 @@ msgid "From left to right it should be 'Create survey', 'List surveys' and 'Glob
 msgstr ""
 
 #: application/models/Tutorials.php:49
-msgid "Click on Create survey or Next in this box"
+msgid "Click on the 'Create survey' box - or 'Next' in this tutorial"
 msgstr ""
 
 #: application/models/Tutorials.php:57
