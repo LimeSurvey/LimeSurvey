@@ -247,7 +247,7 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         if (substr($field['code'],-5) == 'other' || substr($field['code'],-7) == 'comment') {
             //We have a comment field, so free text
             return array(
-                'SPSStype' => "F",
+                'SPSStype' => "A",
                 'size' => stringSize($field['sql_name']),
             );
         } else {
