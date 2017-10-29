@@ -21,8 +21,8 @@
     <div class="row">
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
             <li class="active"><a href="#surveysInThisGroup"><?php eT('Surveys in this group'); ?></a></li>
-            <li><a href="#settingsForThisGroup"><?php eT('Settings for this Surveygroup'); ?></a></li>
-            <li><a href="#templateSettingsFortThisGroup"><?php eT('Template options for this Surveygroup'); ?></a></li>
+            <li><a href="#settingsForThisGroup"><?php eT('Settings for this survey group'); ?></a></li>
+            <li><a href="#templateSettingsFortThisGroup"><?php eT('Template options for this survey group'); ?></a></li>
         </ul>
         <div class="tab-content">
             <div id="surveysInThisGroup" class="tab-pane active">

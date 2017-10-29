@@ -34,7 +34,7 @@ $controller = $yii->getController();
         questionColumn : '<?php eT('Target question');?>',
         sidColumn : '<?php eT('Survey id');?>',
         qidColumn : '<?php eT('Question id');?>',
-        sqidColumn : '<?php eT('SubQuestion ID');?>',
+        sqidColumn : '<?php eT('Subquestion ID');?>',
         addParameter : '<?php eT('Add URL parameter');?>'
     },
     popup: {

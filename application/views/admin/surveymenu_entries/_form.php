@@ -16,14 +16,14 @@
 )); ?>
 
 <div class="modal-header">
-	<?php $model->isNewRecord ? eT('Create new surveymenu entry') : eT('Edit surveymenu entry') ?>
+	<?php $model->isNewRecord ? eT('Create new survey menu entry') : eT('Edit survey menu entry') ?>
 </div>
 <div class="modal-body">
 	<div class="container-fluid">
 
 		<?php //Warn on edition of the main menu, though damaging it can do serious harm ?>
 		<?php if(!$model->isNewRecord && $model->menu_id == '1'):?>
-			<div class="alert alert-danger" role="alert"><?php printf(gT("You are editing an entry of the main menu! %s Please be very careful."), '<br/>') ?></div>
+			<div class="alert alert-danger" role="alert"><?php echo gT("You are editing an entry of the main menu!").' '.gT("Please be very careful."); ?></div>
 		<?php endif; ?>
 
 		<p class="note"><?php echo sprintf(gT('Fields with %s are required.'), '<span class="required">*</span>'); ?></p>

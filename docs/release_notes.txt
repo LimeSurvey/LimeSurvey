@@ -34,6 +34,179 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
+Changes from 3.0.0-beta.3 (build 170810) to 3.0.0-RC.1 (build 171025) Sept 14, 2017
+
+-New Feature: Set quotas by equation (#796) (Tõnis Ormisson)
+-New feature: Allow super-admin set by other user's than 1 (#810) (Denis Chenu)
+-New feature: Copy, export and import survey plugin settings (#816) (Denis Chenu)
+-New feature: Copy, export and import survey plugin settings (Denis Chenu)
+-New feature: Allow initial superadmin to login via LDAP (Denis Chenu)
+-New feature: Add massive action to delete uploaded files for multiple responses at once (Olle Haerstedt)
+-New feature: Install/Uninstall templates uploaded via FTP (LouisGac)
+-New feature: Mass edit of tokens, now looking good (markusfluer)
+-New feature: New button to remove uploaded files while keeping the response it self (Olle Haerstedt)
+-New feature: Purge survey files possibly left from erroneous delete (Olle Haerstedt)
+-New feature: Storage data overview in global settings (Olle Haerstedt)
+-New feature: copy survey from remotecontroll (#688) (Stefan Verweij)
+-New feature: mass action to export selected responses (LouisGac)
+-New feature: queXMLPDF export with response data (#807) (Adam Zammit)
+-New feature: queXMLPDF export with response data (#808) (Adam Zammit)
+-New feature: queXMLPDF export with response data (Adam Zammit)
+-New feature: set_quota_properties via RemoteControl API (#835) (Tõnis Ormisson)
+-New feature: toggle Quota status via remoteControl (Tõnis Ormisson)
+-New feature: toggle Quota status via remoteControl 2 (Tõnis Ormisson)
+-New feature: toggle Quota status via remoteControl 3 (Tõnis Ormisson)
+-New feature: token massive edition (LouisGac)
+-New translation: Kirundi - kindly provided by Victorin Luisier (Carsten Schmitz)
+-New feature: Tutorial tour (markusfluer)
+-New fetaure: Template list in survey group, so it's possible to set survey group options for any template (LouisGac)
+
+
+#Updated translation: Arabic by ktharwat
+#Updated translation: Catalan by qualitatuvic
+#Updated translation: Chinese (Simplified) by c_schmitz, yanglaw
+#Updated translation: Chinese (Taiwan) (Traditional) by ChadPeng
+#Updated translation: Czech by c_schmitz, jelen1, VBraun
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch (Informal) by Nickko
+#Updated translation: Dutch by Han
+#Updated translation: Estonian by vipgroup, jeskiv
+#Updated translation: Finnish by jeskiv
+#Updated translation: French (France) by arnaud21
+#Updated translation: Galician by jeskiv, Calidonia
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, gregi
+#Updated translation: German (Informal) by c_schmitz, tuxmaster
+#Updated translation: German by Magnar
+#Updated translation: German by c_schmitz
+#Updated translation: German by c_schmitz, tuxmaster
+#Updated translation: Greek by c_schmitz, kiolalis
+#Updated translation: Hungarian by kkd
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Kirundi by c_schmitz
+#Updated translation: Malay by norazlannorden
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Polish (Informal) by elisa, elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elisa, elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Portuguese (Portugal) by c_schmitz, samarta
+#Updated translation: Slovak by dusanm
+#Updated translation: Spanish (Argentina) (Informal) by cripton
+#Updated translation: Spanish (Chile) by fernandoessv
+#Updated translation: Spanish (Mexican) by eusebiocuke
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Spanish (Spain) by c_schmitz, aesteban, fernandoessv, jeskiv, cripton
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Thai by miracles, adzpire, heartjavac, tomzt
+#Updated translation: Turkish by kayazeren
+#Updated translation: Valencian by joamuran, jeskiv, vbraque
+
+-Dev: SQL -> AR; add UserGroup->hasUser() (#830) (Tõnis Ormisson)
+-Dev: added afterRegister event (see feature request) (Bert Hankes)
+-Dev: change to set_quota_properties() to cover all attributes (Tõnis Ormisson)
+-Dev: fixed survey grid group url (#797) (Tõnis Ormisson)
+-Dev: remotecontrol_handle PHPDOC & add bug TODOs (#834) (Tõnis Ormisson)
+-Fixed issue: label set not working (markusfluer)
+-Fixed issue: All in one mode not working (LouisGac)
+-Fix issue #12452: Conditional routing doesn't work on scale and array questions (#783) (opinioni)
+-Fixed issue #12279 : Unable to upload image when send invitation (Denis Chenu)
+-Fixed issue #12513: "All-in-one" not working (LouisGac)
+-Fixed issue #12551: Untranslated string (Carsten Schmitz)
+-Fixed issue #12552: Some typos (Carsten Schmitz)
+-Fixed issue #12581: Question index and Language Chooser do not work (markusfluer)
+-Fixed issue #12592: No ''Delete this user'' message (markusfluer)
+-Fixed issue #12639: Quota end-url does not allow surrounding EM (#798) (Tõnis Ormisson)
+-Fixed issue #12647: Share participant - CPDB (markusfluer)
+-Fixed issue #12649: Settings should be renamed to something else (markusfluer)
+-Fixed issue #12652: AuditLog plugin reset langage to default when register (#803) (Denis Chenu)
+-Fixed issue #12655: Unable to update lang in Personnal settings (Denis Chenu)
+-Fixed issue #12676: Not getting redirected to the survey group tab (markusfluer)
+-Fixed issue #12678: Save ranking question type can broke survey database (Denis Chenu)
+-Fixed issue #12686: Wrong redirect from the "Expired" button (markusfluer)
+-Fixed issue #12703: rtl css not loaded in Survey listing (LouisGac)
+-Fixed issue #12704: Participants receive wrong tokens after testing (Denis Chenu)
+-Fixed issue #12710: Unable to view survey with debug=2 (LouisGac)
+-Fixed issue #12711: Date with dropdow throw SQL error with pgsql (Denis Chenu)
+-Fixed issue #12719: RTL always loaded (and inverse ;) ) (LouisGac)
+-Fixed issue #12731: When sending mails to an user group, the success message is not translated to German. (Carsten Schmitz)
+-Fixed issue #12736: Incomplete warning for anonymous surveys (Olle Haerstedt)
+-Fixed issue #12739: File upload question format: Title and comment may be  garbled when going back and forth (Carsten Schmitz)
+-Fixed issue #12739: File upload question format: Title and comment may be garbled when going back and forth (markusfluer)
+-Fixed issue #12747: When trying to change password LS complains about wrong old password (Olle Haerstedt)
+-Fixed issue #12762: Consistent position of labels above fields (markusfluer)
+-Fixed issue #12765: When saving survey settings an error is shown. (Carsten Schmitz)
+-Fixed issue #12767: Saving presentation survey settings resets survey languages (Olle Haerstedt)
+-Fixed issue #12767: Saving presentation survey settings resets survey languages (markusfluer)
+-Fixed issue #12768: CPDB mapping (markusfluer)
+-Fixed issue #12773: Error referring to MaraiDB displayed after installing on MySQL (Olle Haerstedt)
+-Fixed issue #12775: The installation command needs to be updated to use PHP instead of create-xxx.sql (Olle Haerstedt)
+-Fixed issue #12784: Unable to install on same DB with another prefix when using Postgres (Carsten Schmitz)
+-Fixed issue #12785: Some placeholders in e-mail templates do not take 'publicurl' setting into account (Carsten Schmitz)
+-Fixed issue #12786: Cannot delete users from user groups unless having Superadministrator permission (Carsten Schmitz)
+-Fixed issue #12788: Quickmenu misspelled as quickmenue in some places (Carsten Schmitz)
+-Fixed issue #12798: Tools menu can be shown but empty (Denis Chenu)
+-Fixed issue #12800: Crash when copy_of_vanilla (LouisGac)
+-Fixed issue #12805: Date fields are lost when persistent tokens are re-accessed (Carsten Schmitz)
+-Fixed issue #12806: RemoteControl: wrong datatype shows SQL error (Carsten Schmitz)
+-Fixed issue #12818: Removed all backdrops. (Markus Flür)
+-Fixed issue #12819: Blank page + json after login (markusfluer)
+-Fixed issue #12820: Blinking tutorial (markusfluer)
+-Fixed issue : login form language are not updated after error. (Denis Chenu)
+-Fixed issue : unable to save plugin settings (Denis Chenu)
+-Fixed issue with em (markusfluer)
+-Fixed issue: CPDB attribute language name didn't save (Olle Haerstedt)
+-Fixed issue: Can't delete file in template editor that contains a blank (Carsten Schmitz)
+-Fixed issue: Cannot install on MSSQL (Carsten Schmitz)
+-Fixed issue: Cannot install on Postgres (Carsten Schmitz)
+-Fixed issue: Database not completely updated if updating from an earlier version than 2.6.x (Carsten Schmitz)
+-Fixed issue: Delete survey folder when using massive action survey delete (Olle Haerstedt)
+-Fixed issue: Don't bind multiple click events on yes/no modal (Olle Haerstedt)
+-Fixed issue: Don't use short-hand array notation (Olle Harstedt)
+-Fixed issue: Error after update which resolves itself after some time (caching issue) (Carsten Schmitz)
+-Fixed issue: Error message after update due to schema caching issues (Carsten Schmitz)
+-Fixed issue: Error message on LDAP token bind too generic (Carsten Schmitz)
+-Fixed issue: Fetch global options when copying template (Olle Haerstedt)
+-Fixed issue: Global user permission changes are not saved anymore (Carsten Schmitz)
+-Fixed issue: Labels neither rendering nor saving in Label sets (Carsten Schmitz)
+-Fixed issue: Labels neither rendering nor saving in Label sets (markusfluer)
+-Fixed issue: Maps not working properly on https + bugfixes (markusfluer)
+-Fixed issue: More issues with postgresql (markusfluer)
+-Fixed issue: Panel integration fully working (markusfluer)
+-Fixed issue: Postgres sql for installer. (#813) (danguyf)
+-Fixed issue: SurveyGroups order -> sortorder in database (markusfluer)
+-Fixed issue: Token editing - couldn't change to attributes tab (markusfluer)
+-Fixed issue: Too man columns error message on response export even if only a few columns were selected (Carsten Schmitz)
+-Fixed issue: Tour couldn't be started anymore (markusfluer)
+-Fixed issue: Typecheck the XML variable from the GroupImport method (#804) (Kevin Broeren)
+-Fixed issue: Unable to update from version 2.x (Carsten Schmitz)
+-Fixed issue: Update from Beta 1 not possible (Carsten Schmitz)
+-Fixed issue: Wrong date conversion at data entry edit/new (Olle Haerstedt)
+-Fixed issue: Wrong primary key on answers table (markusfluer)
+-Fixed issue: can't upload file in template (LouisGac)
+-Fixed issue: column renaming killed surveygroup ordering (markusfluer)
+-Fixed issue: database creation with too many indices (markusfluer)
+-Fixed issue: database field to big to be indexed (markusfluer)
+-Fixed issue: group-title was applied to wrong div (Olle Haerstedt)
+-Fixed issue: inconsistend table field naming (markusfluer)
+-Fixed issue: no templates but the base template was working (markusfluer)
+-Fixed issue: personalsettings unorganized and not well looking (markusfluer)
+-Fixed issue: pjax in admin menu didn't load the select2 correctly (markusfluer)
+-Fixed issue: rtl css not loaded when defining language by url or post (LouisGac)
+-Fixed issue: template-rtl.css not loaded (LouisGac)
+-Fixed issue: uploader could not work with multibyte unicode letters (markusfluer)
+-Fixed issues: Removed critical merge conflicts (markusfluer)
+-Fixed issues: Unable to update from version 2.x (Carsten Schmitz)
+-Fixed issues: Update problems with postgres (markusfluer)
+-Fixed updatedb for mssql & pgsql (markusfluer)
+-dev: add Question & Survey Relations to QuestionAttribute (#807) (Tõnis Ormisson)
+
+
 Changes from 3.0.0-beta.2 (build 170810) to 3.0.0-beta.3 (build 170914) Sept 14, 2017
 -New feature #12563 remote control: process files on add_response() (#793) (Adrián Pardini)
 -New feature #12564 remote control: adds upload_file action (#795) (Adrián Pardini)

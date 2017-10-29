@@ -14,7 +14,7 @@
     <?php unset($aResults['global']); ?>
     <table class="table table-striped">
         <thead>
-            <th><?php eT('Surveymenu entry ID');?></th>
+            <th><?php eT('Survey menu entry ID');?></th>
             <th><?php eT('Status');?></th>
         </thead>
         <tbody>

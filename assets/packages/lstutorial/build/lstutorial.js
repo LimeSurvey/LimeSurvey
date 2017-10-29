@@ -98,8 +98,9 @@ const TourLibrary = function () {
         },
         
         clearActiveTour = () => {
-            if (typeof _actionActiveTour === 'function')
+            if (typeof _actionActiveTour === 'object' && _actionActiveTour !== null) {
                 _actionActiveTour.end();
+            }
 
             _setNoTourActive();
         },
@@ -115,11 +116,13 @@ const TourLibrary = function () {
                     tourObject.onEnd = () => {
                         _setNoTourActive();
                     };
-                    window.debug = window.debug || {};
-                    window.debug.tourObject = tourObject;
+                    
                     _actionActiveTour = new __WEBPACK_IMPORTED_MODULE_0__lib_bootstrap_tour_js___default.a(tourObject);
                     _actionActiveTour.init();
-
+                    window.addEventListener('resize', ()=>{
+                        _actionActiveTour.redraw();
+                    });
+                    
                     resolve(_actionActiveTour);
                 }, console.log);
             });
@@ -134,14 +137,16 @@ const TourLibrary = function () {
 
     return {
         clearActiveTour: clearActiveTour,
-        initTour: initTour
+        initTour: initTour,
+        _actionActiveTour: _actionActiveTour
     };
 };
 
 
 $(document).on('ready pjax:complete', function () {
-    if(typeof window.tourLibrary !== 'object')
+    if(typeof window.tourLibrary === 'undefined'){
         window.tourLibrary = TourLibrary();
+    }
 
     $('#selector__welcome-modal--starttour').on('click', function (e) {
         $(e.currentTarget).closest('.modal').modal('hide');
@@ -1213,13 +1218,13 @@ const globalTourObject = function(){
             }, '');
             return returner;
         },
-        filterUrl = function(url,params=false){
+        filterUrl = function(url,params=false, forceGet=false){
             if(url.charAt(0) == '/')
                 url = url.substring(1);
             
-            const baseUrl = getBasedUrls ? '/index.php?r=admin/' : '/index.php/admin/';
+            const baseUrl = (getBasedUrls || forceGet) ? '/index.php?r=admin/' : '/admin/';
             
-            const returnUrl = baseUrl+url+combineParams(params);
+            const returnUrl = window.LS.data.baseUrl+baseUrl+url+combineParams(params);
 
             return returnUrl;
 
@@ -1247,13 +1252,17 @@ const globalTourObject = function(){
 
     return {
         get : function(tourName){
-            return new Promise((res)=>{
+            return new Promise((resolve, reject)=>{
                 $.ajax({
                     url: filterUrl('/tutorial/sa/serveprebuilt'),
-                    data: {tutorialname: tourName},
+                    data: {tutorialname: tourName, ajax: true},
+                    method: 'POST',
                     success: (tutorialData)=>{
                         const tutorialObject = _prepareMethods(tutorialData.tutorial);
-                        res(tutorialObject);
+                        resolve(tutorialObject);
+                    },
+                    error: (error)=>{
+                        reject(error);
                     }
                 });
             });

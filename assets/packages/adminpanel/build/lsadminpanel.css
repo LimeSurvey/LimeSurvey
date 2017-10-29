@@ -490,7 +490,6 @@ ol.breadcrumb.title-bar-breadcrumb {
     line-height: 24px;
     font-size: 18px; }
     ol.breadcrumb.title-bar-breadcrumb a.animate::after {
-      margin-left: 28px;
       text-align: right;
       content: '';
       display: block;
@@ -499,7 +498,7 @@ ol.breadcrumb.title-bar-breadcrumb {
       background: #fff;
       transition: width .3s; }
     ol.breadcrumb.title-bar-breadcrumb a.animate:hover::after {
-      width: 90%; }
+      width: 100%; }
     ol.breadcrumb.title-bar-breadcrumb a.animate.home-icon:hover::after {
       margin-left: 0;
       width: 100% !important; }
@@ -511,6 +510,8 @@ ol.breadcrumb.title-bar-breadcrumb {
     ol.breadcrumb.title-bar-breadcrumb li.active {
       color: #dfdfdf;
       font-style: italic; }
+    ol.breadcrumb.title-bar-breadcrumb li > div {
+      display: inline-block; }
 
 .breadcrumb-title {
   line-height: 24px;
@@ -543,6 +544,9 @@ ol.breadcrumb.title-bar-breadcrumb {
 #sidebar .fill-height {
   height: 100%; }
 
+#sidebar .dragPointer {
+  cursor: move; }
+
 #sidebar .menu-open {
   animation-name: animate-gradient;
   animation-duration: 450ms;
@@ -550,7 +554,19 @@ ol.breadcrumb.title-bar-breadcrumb {
 
 #sidebar .selected {
   padding-left: 20px;
-  background: linear-gradient(to right, #328637 0px, #328637 13px, white 13px, white 100%); }
+  background: linear-gradient(to right, #328637 0px, #328637 13px, white 13px, white 100%);
+  transition-property: all;
+  transition-duration: .25s;
+  transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1); }
+
+#sidebar .dragged {
+  background-color: rgba(50, 134, 55, 0.8) !important;
+  opacity: 0.8;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  transition-property: all;
+  transition-duration: .1s;
+  transition-timing-function: ease-in-out; }
 
 #sidebar .menu-selected {
   padding-left: 10px;

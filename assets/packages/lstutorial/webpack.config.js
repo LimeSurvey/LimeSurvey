@@ -42,7 +42,6 @@ module.exports = {
                 test: /\.js$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: [
-                    'eslint-loader',
                     'babel'
                 ],
                 options: {
@@ -50,12 +49,6 @@ module.exports = {
                 },
                 query: {
                     presets: ['es2015']
-                }
-            },
-            {
-                loader: 'sass-loader',
-                options: {
-                    data: '$env: ' + process.env.NODE_ENV + ';'
                 }
             }
         ]

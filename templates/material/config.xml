@@ -28,27 +28,27 @@
     -->
     <files>
         <css>
-            <filename>css/template.css</filename>
-            <filename>css/bootstrap-material-design.css</filename>
-            <filename>css/ripples.min.css</filename>
+            <add>css/template.css</add>
+            <add>css/bootstrap-material-design.css</add>
+            <add>css/ripples.min.css</add>
         </css>
         <js>
-            <filename>scripts/template.js</filename>
-            <filename>scripts/material.js</filename>
-            <filename>scripts/ripples.min.js</filename>
+            <add>scripts/template.js</add>
+            <add>scripts/material.js</add>
+            <add>scripts/ripples.min.js</add>
         </js>
         <print_css>
-            <filename>css/print_template.css</filename>
+            <add>css/print_template.css</add>
         </print_css>
     </files>
 
     <!-- NOTE: Material extends Default, but it doesn't provides the same options (no box container, no background image, no theme switcher) -->
     <options>
-        <ajaxmode>off</ajaxmode>
+        <ajaxmode>on</ajaxmode>
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
         <boxcontainer>on</boxcontainer>
-        <animatebody>on</animatebody>
+        <animatebody>off</animatebody>
         <bodyanimation>fadeInRight</bodyanimation>
         <animatequestion>off</animatequestion>
         <questionanimation>flipInX</questionanimation>

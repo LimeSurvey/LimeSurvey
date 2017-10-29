@@ -100,7 +100,7 @@ class SurveysGroupsController extends Survey_Common_Action
 
             // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
             if(!isset($_GET['ajax'])){
-                Yii::app()->setFlashMessage( $sGroupTitle .' '. gT("was deleted."),'success');
+                Yii::app()->setFlashMessage( sprintf(gT("The survey group '%s' was deleted."),$sGroupTitle),'success');
                 $this->getController()->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin/survey/sa/listsurveys '));
             }
 

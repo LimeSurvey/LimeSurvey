@@ -25,7 +25,7 @@
             'modalType'     => 'yes-no',
             'keepopen'      => 'no',
             'sModalTitle'   => gT('Delete menus'),
-            'htmlModalBody' => gT('Are you sure you want to delete the selected menus and all concurrent submenus and entries?'),
+            'htmlModalBody' => gT('Are you sure you want to delete the selected menus and all related submenus and entries?'),
             'aCustomDatas'  => array(),
         );
     }

@@ -130,7 +130,7 @@ class templates extends Survey_Common_Action
                 $checkImage = getimagesize($_FILES["upload_logo"]["tmp_name"]);
                 $debug[] = $checkImage;
                 if ($checkImage === false ||  !in_array($checkImage[2], [IMAGETYPE_JPEG,IMAGETYPE_PNG,IMAGETYPE_GIF]) ) {
-                    $uploadresult = gT("This file is not a supported image, please only upload images of jpeg,png or gif type");
+                    $uploadresult = gT("This file is not a supported image - please only upload JPG,PNG or GIF type images.");
                     return Yii::app()->getController()->renderPartial(
                         '/admin/super/_renderJson', array('data' => ['success' => $success,'message' => $uploadresult, 'debug' => $debug]),false,false
                     );
@@ -367,7 +367,12 @@ class templates extends Survey_Common_Action
         /* Keep Bootstrap Package clean after loading template : because template can update boostrap */
         $aBootstrapPackage = Yii::app()->clientScript->packages['bootstrap-admin'];
 
-        $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
+        try {
+            $aViewUrls = $this->_initialise($templatename, $screenname, $editfile, true, true);
+        } catch (Exception $ex) {
+            Yii::app()->user->setFlash('error', $ex->getMessage());
+            $this->getController()->redirect(array('admin/templates/sa/view/','templatename'=>'default'));
+        }
 
         App()->getClientScript()->reset();
         Yii::app()->clientScript->packages['bootstrap']=$aBootstrapPackage;
@@ -437,15 +442,15 @@ class templates extends Survey_Common_Action
                 $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
 
                 if (isStandardTemplate(returnGlobal('newname'))){
-                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("This name is reserved for standard template.", "js"));
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
 
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }elseif (file_exists($sNewDirectoryPath)){
-                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("A template with that name already exists.", "js"));
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("A template with that name already exists."));
 
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }elseif (rename($sOldDirectoryPath, $sNewDirectoryPath) == false){
-                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to `%s`.", "js"), $sNewName) . " " . gT("Maybe you don't have permission.", "js"));
+                    Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("Maybe you don't have permission."));
 
                     $this->getController()->redirect(array("admin/templates/sa/upload"));
                 }else{
@@ -460,7 +465,7 @@ class templates extends Survey_Common_Action
 
                         $this->getController()->redirect(array('admin/templates','sa'=>'view','editfile'=>'layout_first_page.twig','screenname'=>'welcome','templatename'=>$sNewName));
                     }else{
-                        Yii::app()->user->setFlash('error',sprintf(gT("Template `%s` could not be found.", "js"), $sOldName));
+                        Yii::app()->user->setFlash('error',sprintf(gT("Template '%s' could not be found."), $sOldName));
                     }
 
                     $this->getController()->redirect(array('admin/templateoptions'));
@@ -498,7 +503,7 @@ class templates extends Survey_Common_Action
                     $oFileHelper->copyDirectory($copydirname,$newdirname, array('fileTypes' => array('xml', 'png', 'jpg')));
                     //TemplateConfiguration::removeAllNodes($newdirname);
                     TemplateManifest::extendsConfig($copydir, $newname );
-                    TemplateConfiguration::importManifest($newname, ['extends' => $copydir]);
+                    TemplateManifest::importManifest($newname, ['extends' => $copydir]);
                     $this->getController()->redirect(array("admin/templates/sa/view",'templatename'=>$newname));
                 }elseif ($mkdirresult == 2){
                     Yii::app()->setFlashMessage(sprintf(gT("Directory with the name `%s` already exists - choose another name"), $newname),'error');
@@ -556,7 +561,7 @@ class templates extends Survey_Common_Action
                         Yii::app()->setFlashMessage(sprintf(gT("There was a problem deleting the template '%s'. Please check your directory/file permissions."), $templatename),'error');
                     }
                 }else{
-                    Yii::app()->setFlashMessage(sprintf(gT("You can't delete templates '%s' because some template inherit from it."), $templatename),'error');
+                    Yii::app()->setFlashMessage(sprintf(gT("You can't delete template '%s' because one or more templates inherit from it."), $templatename),'error');
                 }
 
             }else{
@@ -830,8 +835,6 @@ class templates extends Survey_Common_Action
         $screens['error']           = gT('Error','unescaped');
         $screens['assessments']     = gT('Assessments','unescaped');
 
-        $file_version = "LimeSurvey template editor " . Yii::app()->getConfig('versionnumber');
-
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 
         $templatename = sanitize_dirname($templatename);
@@ -888,27 +891,11 @@ class templates extends Survey_Common_Action
         $thissurvey['aNavigator']['show'] = true;
         $thissurvey['aNavigator']['aMoveNext']['show'] = true;
         $thissurvey['aNavigator']['aMovePrev']['show'] = true;
-        $percentcomplete = 0; //makegraph(6, 10);
 
         $groupname = gT("Group 1: The first lot of questions");
         $groupdescription = gT("This group description is fairly vacuous, but quite important.");
 
-        $navigator = $this->getController()->renderPartial('/admin/templates/templateeditor_navigator_view', array(
-            'screenname' => $screenname
-            ), true);
-
-        $completed = $this->getController()->renderPartial('/admin/templates/templateeditor_completed_view', array(), true);
-
-        $assessments = $this->getController()->renderPartial('/admin/templates/templateeditor_assessments_view', array(), true);
-
         $printoutput = $this->getController()->renderPartial('/admin/templates/templateeditor_printoutput_view', array(), true);
-
-        $totalquestions = '10';
-        $surveyformat = 'group';
-        $notanswered = '5';
-        $privacy = '';
-        $surveyid = '1295';
-        $token = 1234567;
 
         $templatedir = $oEditedTemplate->viewPath;
         $templateurl = getTemplateURL($templatename);
@@ -1072,8 +1059,21 @@ class templates extends Survey_Common_Action
                 break;
         }
 
-
-        $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array( 'aSurveyInfo'=>$thissurvey), $oEditedTemplate);
+        try {
+            $myoutput = Yii::app()->twigRenderer->renderTemplateForTemplateEditor( $sLayoutFile,array( 'aSurveyInfo'=>$thissurvey), $oEditedTemplate);
+        } catch (Twig_Error_Syntax $ex) {
+            $myoutput = sprintf(
+                gT('No Twig output due to error in Twig template: %s'),
+                $ex->getMessage()
+            );
+            Yii::app()->user->setFlash(
+                'error',
+                sprintf(
+                    gT('Twig syntax error: %s'),
+                    $ex->getMessage()
+                )
+            );
+        }
 
         $jsfiles        = $oEditedTemplate->getValidScreenFiles("js");
         $aCssAndJsfiles = array_merge($cssfiles,$jsfiles ) ;
@@ -1133,9 +1133,9 @@ class templates extends Survey_Common_Action
             'markAsNew'  => false,
             'importance' => Notification::HIGH_IMPORTANCE,
             'message'    => sprintf(
-                gT('Welcome to the new template editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the <a target="_blank" href="%s">LimeSurvey manual</a>. For further questions and information, feel free to post your questions on the <a target="_blank" href="%s">LimeSurvey forum</a>.', 'unescaped'),
-                'http://manual.limesurvey.org/Templating',
-                'https://www.limesurvey.org/community/forums'
+                gT('Welcome to the new template editor of LimeSurvey 3.0. To get an overview of new functionality and possibilities, please visit the %s LimeSurvey manual %s. For further questions and information, feel free to post your questions on the %s LimeSurvey forums %s.', 'unescaped'),
+                '<a target="_blank" href="http://manual.limesurvey.org/Templating">','</a>',
+                '<a target="_blank" href="https://www.limesurvey.org/community/forums">','</a>'
             )
         ));
         $not->save();

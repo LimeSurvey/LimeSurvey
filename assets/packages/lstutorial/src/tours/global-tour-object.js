@@ -20,9 +20,9 @@ const globalTourObject = function(){
             if(url.charAt(0) == '/')
                 url = url.substring(1);
             
-            const baseUrl = (getBasedUrls || forceGet) ? '/index.php?r=admin/' : '/index.php/admin/';
+            const baseUrl = (getBasedUrls || forceGet) ? '/index.php?r=admin/' : '/admin/';
             
-            const returnUrl = baseUrl+url+combineParams(params);
+            const returnUrl = window.LS.data.baseUrl+baseUrl+url+combineParams(params);
 
             return returnUrl;
 
@@ -50,13 +50,17 @@ const globalTourObject = function(){
 
     return {
         get : function(tourName){
-            return new Promise((res)=>{
+            return new Promise((resolve, reject)=>{
                 $.ajax({
-                    url: filterUrl('/tutorial/sa/serveprebuilt', null, true),
-                    data: {tutorialname: tourName},
+                    url: filterUrl('/tutorial/sa/serveprebuilt'),
+                    data: {tutorialname: tourName, ajax: true},
+                    method: 'POST',
                     success: (tutorialData)=>{
                         const tutorialObject = _prepareMethods(tutorialData.tutorial);
-                        res(tutorialObject);
+                        resolve(tutorialObject);
+                    },
+                    error: (error)=>{
+                        reject(error);
                     }
                 });
             });

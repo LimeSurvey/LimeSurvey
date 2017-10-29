@@ -78,6 +78,14 @@ class ExpressionManagerCoreTest extends TestBaseClass
         }
     }
 
+    public static function teardownAfterClass()
+    {
+        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
+        if (!$result) {
+            die('Fatal error: Could not clean up survey ' . self::$surveyId);
+        }
+    }
+
     /**
      * Some code on how to use tokens manually.
      */

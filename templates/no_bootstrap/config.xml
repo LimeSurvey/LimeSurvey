@@ -27,13 +27,13 @@
     -->
     <files>
         <css>
-            <filename>css/template.css</filename>
+            <add>css/template.css</add>
         </css>
         <js>
-            <filename>scripts/template.js</filename>
+            <add>scripts/template.js</add>
         </js>
         <print_css>
-            <filename>css/print_template.css</filename>
+            <add>css/print_template.css</add>
         </print_css>
     </files>
 

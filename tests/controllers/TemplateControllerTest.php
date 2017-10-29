@@ -39,6 +39,9 @@ class TemplateControllerTest extends TestBaseClass
         $template = \Template::model()->find('name = \'foobartest\'');
         $this->assertNotEmpty($template);
         $this->assertEquals('foobartest', $template->name);
+
+        // Clean up.
+        \Template::model()->deleteAll('name = \'foobartest\'');
     }
 
     /**

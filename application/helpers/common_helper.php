@@ -386,8 +386,8 @@ function convertGETtoPOST($url)
     }
     //    $Paramlist = "[" . implode(",",$arrayParam) . "]";
     //    $Valuelist = "[" . implode(",",$arrayVal) . "]";
-    $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
-    $Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
+    $Paramlist = "[" . implode(",",$arrayParam) . "]";
+    $Valuelist = "[" . implode(",",$arrayVal) . "]";
     $callscript = "sendPost('$calledscript','',$Paramlist,$Valuelist);";
     return $callscript;
 }

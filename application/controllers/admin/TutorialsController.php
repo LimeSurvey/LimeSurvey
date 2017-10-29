@@ -47,6 +47,10 @@ class TutorialsController extends Survey_Common_Action
 
 
     public function serveprebuilt(){
+        $ajax = Yii::app()->request->getParam('ajax',false);
+        if($ajax == false){
+            $this->getController()->redirect(['/admin']);
+        }
         $tutorialname = Yii::app()->request->getParam('tutorialname','');
         $model = Tutorials::model();
         $prebuiltObject = $model->getPrebuilt($tutorialname);

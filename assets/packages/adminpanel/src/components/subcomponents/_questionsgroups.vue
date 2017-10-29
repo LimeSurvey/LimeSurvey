@@ -12,18 +12,51 @@ export default {
     },
     data: () => {
         return {
-            active:[]
+            active:[],
+            questiongroupDragging: false,
+            draggedQuestionGroup: null,
+            questionDragging: false,
+            draggedQuestion: null,
+            draggedQuestionsGroup: null,
         };
     },
     computed: {
         calculatedHeight() {
             let containerHeight = this.$store.state.maxHeight;
             return (containerHeight - 100);
+        },
+        orderedQuestionGroups(){
+            return _.orderBy(this.$store.state.questiongroups,(a)=>{return parseInt((a.group_order || 999999)) }, ['asc']);
         }
     },
     methods: {
+        questionItemClasses(question){
+            let classes = "";
+            classes+=(this.$store.state.lastQuestionOpen === question.qid ? 'selected' : ' ');
+
+            if(this.draggedQuestion !== null)
+                classes+=(this.draggedQuestion.qid === question.qid ? ' dragged' : ' ');
+
+            return classes;
+        },
+        questionGroupItemClasses(questionGroup){
+            let classes = "";
+            classes+=(this.isActive(questionGroup.gid) ? 'selected' : ' ');
+            
+            if(this.draggedQuestionGroup !== null)
+                classes+=(this.draggedQuestionGroup.gid === questionGroup.gid ? ' dragged' : ' ');
+
+            return classes;
+        },
+        orderQuestions(questionList){
+            return _.orderBy(questionList,(a)=>{return parseInt((a.question_order || 999999)) }, ['asc']);
+        },
         isActive(index){
             const result =  (_.indexOf(this.active,index)!=-1);
+            
+            if(this.questiongroupDragging===true)
+                return false;
+
             return result;
         },
         toggleActivation(index){
@@ -53,7 +86,53 @@ export default {
             this.$store.commit('lastQuestionOpen', question);
             this.$forceUpdate();
             this.updatePjaxLinks();
-        }
+        },
+        //dragevents questiongroups
+        startDraggingGroup($event, questiongroupObject){
+            this.draggedQuestionGroup = questiongroupObject;
+            this.questiongroupDragging = true;
+        },
+        endDraggingGroup($event, questiongroupObject){
+            this.draggedQuestionGroup = null;
+            this.questiongroupDragging = false;
+            this.$emit('questiongrouporder');
+        },
+        dragoverQuestiongroup($event, questiongroupObject){
+            if(this.questiongroupDragging){
+                const orderSwap = questiongroupObject.group_order;
+                questiongroupObject.group_order = this.draggedQuestionGroup.group_order;
+                this.draggedQuestionGroup.group_order = orderSwap;
+            } else {
+                this.addActive(questiongroupObject.gid);
+                if(this.draggedQuestion.gid !== questiongroupObject.gid){
+                    const removedFromInital = _.remove(this.draggedQuestionsGroup.questions, (question,i)=>{ return question.qid === this.draggedQuestion.qid; });
+                    if(removedFromInital.length >0){ 
+                        questiongroupObject.questions.push(this.draggedQuestion);
+                        this.draggedQuestion.gid = questiongroupObject.gid;
+                        this.draggedQuestionsGroup = questiongroupObject;
+                    }
+                }
+            }
+
+        },
+        //dragevents questions
+        startDraggingQuestion($event, questionObject, questionGroupObject){
+            this.$log.log("Dragging started", questionObject);
+            this.questionDragging = true;
+            this.draggedQuestion = questionObject;
+            this.draggedQuestionsGroup = questionGroupObject;
+        },
+        endDraggingQuestion($event, question){        
+            this.questionDragging = false;
+            this.draggedQuestion = null;
+            this.draggedQuestionsGroup = null;
+            this.$emit('questiongrouporder');
+        },
+        dragoverQuestion($event, questionObject){
+            const orderSwap = questionObject.question_order;
+            questionObject.question_order = this.draggedQuestion.question_order;
+            this.draggedQuestion.question_order = orderSwap;
+        },
     },
     mounted(){
         this.active = this.$store.state.questionGroupOpenArray;
@@ -69,22 +148,24 @@ export default {
             <a id="adminpanel__sidebar--selectorCreateQuestion" v-if="( createQuestionLink!=undefined && createQuestionLink.length>1 )" :href="createQuestionLink" class="btn btn-small btn-default ls-space margin right-10">
                 <i class="fa fa-plus-circle"></i>&nbsp;{{translate.createQuestion}}</a>
         </div>
-        <ul class="list-group">
-            <li v-for="questiongroup in $store.state.questiongroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="isActive(questiongroup.gid) ? 'selected' : ''" >
+        <ul class="list-group"  @drop="dropQuestionGroup($event, questiongroup)">
+            <li v-for="questiongroup in orderedQuestionGroups" class="list-group-item ls-flex-column" v-bind:key="questiongroup.gid" v-bind:class="questionGroupItemClasses(questiongroup)" @dragenter="dragoverQuestiongroup($event, questiongroup)">
                 <div class="col-12 ls-flex-row nowrap ls-space padding left-5 bottom-5">
-                    <i class="fa fa-bars bigIcons" draggable="true">&nbsp;</i>
+                    <i class="fa fa-bars bigIcons dragPointer" draggable="true" @dragend="endDraggingGroup($event, questiongroup)" @dragstart="startDraggingGroup($event, questiongroup)">&nbsp;</i>
                     <a :href="questiongroup.link" @click.stop="openQuestionGroup(questiongroup)" class="col-12 pjax"> 
                         {{questiongroup.group_name}} 
                         <span class="badge pull-right ls-space margin right-5">{{questiongroup.questions.length}}</span>
                     </a>
                     <i class="fa bigIcons" v-bind:class="isActive(questiongroup.gid) ? 'fa-caret-up' : 'fa-caret-down'" @click.prevent="toggleActivation(questiongroup.gid)">&nbsp;</i>
                 </div>
-                <ul class="list-group background-muted padding-left" v-if="isActive(questiongroup.gid)">
-                    <li v-for="question in questiongroup.questions" v-bind:key="question.qid" v-bind:class="($store.state.lastQuestionOpen == question.qid ? 'selected' : '')" class="list-group-item ls-flex-row align-itmes-flex-between">
-                        <i class="fa fa-bars margin-right bigIcons" draggable="true">&nbsp;</i>
-                        <a @click.stop="openQuestion(question)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{question.name_short}} </a>
-                    </li>
-                </ul>
+                <transition name="slide-fade-down">
+                    <ul class="list-group background-muted padding-left" v-if="isActive(questiongroup.gid)" @drop="dropQuestion($event, question)">
+                        <li v-for="question in orderQuestions(questiongroup.questions)" v-bind:key="question.qid" v-bind:class="questionItemClasses(question)" class="list-group-item ls-flex-row align-itmes-flex-between" @dragenter="dragoverQuestion($event, question)">
+                            <i class="fa fa-bars margin-right bigIcons dragPointer" draggable="true" @dragend="endDraggingQuestion($event, question)" @dragstart="startDraggingQuestion($event, question, questiongroup)">&nbsp;</i>
+                            <a @click.stop="openQuestion(question)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{($store.state.maximalSidebar ? question.question : question.name_short)}} </a>
+                        </li>
+                    </ul>
+                </transition>
             </li>
         </ul>
     </div>

@@ -82,6 +82,20 @@ class Surveymenu extends LSActiveRecord
         return $oSurveymenu->getPrimaryKey();
     }
 
+    public static function staticRemoveMenu($menuName, $recursive=false){
+        
+        $oSurveymenu = Surveymenu::model()->find('name=:name', [':name'=>$menuName]);
+        
+        if($recursive !== true){
+            if(count($oSurveymenu->surveymenuEntries)>0)
+                return;
+        }
+        foreach($oSurveymenu->surveymenuEntries as $oSurveymenuEntry){
+            $oSurveymenuEntry->delete();
+        }
+
+        $oSurveymenu->delete();
+    }
 
 	public function getMenuIdOptions (){
 		$oSurveymenus = Surveymenu::model()->findAll();
@@ -159,15 +173,15 @@ class Surveymenu extends LSActiveRecord
 			'parent_id'		=> gT('Parent'),
 			'survey_id'		=> gT('Survey'),
 			'user_id' 		=> gT('User'),
-			'ordering' 		=> gT('ordering'),
+			'ordering' 		=> gT('Order'),
 			'level' 		=> gT('Level'),
 			'title' 		=> gT('Title'),
 			'position' 		=> gT('Position'),
 			'description'	=> gT('Description'),
-			'changed_at'	=> gT('Changed At'),
-			'changed_by'	=> gT('Changed By'),
-			'created_at'	=> gT('Created At'),
-			'created_by'	=> gT('Created By'),
+			'changed_at'	=> gT('Changed on'),
+			'changed_by'	=> gT('Changed by'),
+			'created_at'	=> gT('Created on'),
+			'created_by'	=> gT('Created by'),
 		);
 	}
 	public function getButtons(){
@@ -183,13 +197,13 @@ class Surveymenu extends LSActiveRecord
             $editData = array(
                 'action_surveymenu_editModal',
 				'text-danger',
-				gT("Edit this surveymenu"),
+				gT("Edit this survey menu"),
 				'edit'
 			);
             $deleteData = array(
                 'action_surveymenu_deleteModal',
                 'text-danger',
-                gT("Delete this surveymenu"),
+                gT("Delete this survey menu"),
                 'trash text-danger'
             );
 
@@ -305,8 +319,8 @@ class Surveymenu extends LSActiveRecord
             $oDB->createCommand()->truncateTable('{{surveymenu}}');
 
             $headerArray = ['parent_id','survey_id','user_id','ordering','level','title','position','description','active','changed_at','changed_by','created_at','created_by'];
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'surveymenu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'quickmenu','collapsed','Quick menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'Survey menu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'Quick menu','collapsed','Quick menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
             
             $oTransaction->commit();
         } catch (Exception $e) {
@@ -405,5 +419,13 @@ class Surveymenu extends LSActiveRecord
         /** @var self $model */
         $model =parent::model($className);
         return $model;
-	}
+    }
+    
+
+    public function delete(){
+        foreach($this->surveymenuEntries as $oSurveymenuEntry){
+            $oSurveymenuEntry->delete();
+        }
+        parent::delete();
+    }
 }

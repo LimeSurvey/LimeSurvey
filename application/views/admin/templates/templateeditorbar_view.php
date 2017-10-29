@@ -283,7 +283,7 @@
                 <?php eT('Note: This is a standard template.');?>
             </strong>
             <?php
-            printf(gT('If you want to edit it %s please extend it first%s.'),"<a href='#' title=\"".gT("Extend Template")."\""
+            printf(gT('If you want to modify it %s you can extend it%s.'),"<a href='#' title=\"".gT("Extend template")."\""
                 ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the new template:")."', '".gT("extends_")."$templatename', '$templatename', 'copy')\">",'</a>');
             ?>
         </div>

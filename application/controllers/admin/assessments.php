@@ -127,7 +127,7 @@ class Assessments extends Survey_Common_Action
                     . gt("If you want to activate it click here:").'<br/>'
                     . '<a type="submit" class="btn btn-primary" href="'
                     . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate','surveyid'=> $iSurveyID])
-                    .'">'.gT('Activate asessements').'</a>', 
+                    .'">'.gT('Activate assessements').'</a>', 
                 'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
         $urls['assessments_view'][]= $aData;

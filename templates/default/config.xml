@@ -27,16 +27,16 @@
     -->
     <files>
         <css>
-            <filename>css/template.css</filename>
-            <filename>css/animate.css</filename>
-            <filename>css/ajaxify.css</filename>
+            <add>css/template.css</add>
+            <add>css/animate.css</add>
+            <add>css/ajaxify.css</add>
         </css>
         <js>
-            <filename>scripts/template.js</filename>
-            <filename>scripts/ajaxify.js</filename>
+            <add>scripts/template.js</add>
+            <add>scripts/ajaxify.js</add>
         </js>
         <print_css>
-            <filename>css/print_template.css</filename>
+            <add>css/print_template.css</add>
         </print_css>
     </files>
 
@@ -48,8 +48,8 @@
         <brandlogo>on</brandlogo>
         <brandlogofile>./files/logo.png</brandlogofile>
         <boxcontainer>on</boxcontainer>
-        <backgroundimage>on</backgroundimage>
-        <animatebody>on</animatebody>
+        <backgroundimage>off</backgroundimage>
+        <animatebody>off</animatebody>
         <bodyanimation>fadeInRight</bodyanimation>
         <animatequestion>off</animatequestion>
         <questionanimation>flipInX</questionanimation>
@@ -73,9 +73,10 @@
 
         <!-- Here, you can publish packages set as third party extensions in application/config/third_party or  application/config/package -->
         <!-- If bootstrap is registered as a css framework, it will be loaded first -->
-        <packages>
-            ["pjax"]
-        </packages>
+        <!-- Example: <packages>moment</packages> -->
+        <packages>pjax</packages>
+
+
 
         <!--
             List of pages/files for tempalte editor

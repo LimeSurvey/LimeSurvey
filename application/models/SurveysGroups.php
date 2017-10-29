@@ -86,7 +86,7 @@ class SurveysGroups extends LSActiveRecord
                 ),
 
                 array(
-                    'header' => gT('Survey Group ID'),
+                    'header' => gT('Survey group ID'),
                     'name' => 'gsid',
                     'type' => 'raw',
                     'value'=>'CHtml::link($data->gsid, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',
@@ -122,7 +122,7 @@ class SurveysGroups extends LSActiveRecord
                 ),
 
                 array(
-                    'header' => gT('Parent Group'),
+                    'header' => gT('Parent group'),
                     'name' => 'parent',
                     'type' => 'raw',
                     'value'=>'CHtml::link( $data->parentTitle, Yii::app()->createUrl("admin/surveysgroups/sa/update/",array("id"=>$data->gsid)))',

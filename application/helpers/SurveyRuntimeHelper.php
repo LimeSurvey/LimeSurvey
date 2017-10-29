@@ -126,7 +126,7 @@ class SurveyRuntimeHelper {
 
         $this->okToShowErrors = $okToShowErrors = (!($this->previewgrp || $this->previewquestion) && ($this->bInvalidLastPage || $_SESSION[$this->LEMsessid]['prevstep'] == $_SESSION[$this->LEMsessid]['step']));
 
-        Yii::app()->getController()->loadHelper('qanda');
+        Yii::app()->loadHelper('qanda');
         setNoAnswerMode($this->aSurveyInfo);
 
         //Iterate through the questions about to be displayed:
@@ -134,6 +134,7 @@ class SurveyRuntimeHelper {
         $vpopup     = $fpopup = false;
         $upload_file = null;
 
+        $qanda = array();
         foreach ($_SESSION[$this->LEMsessid]['grouplist'] as $gl){
             $gid     = $gl['gid'];
             $qnumber = 0;
@@ -145,8 +146,6 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            //// To diplay one question, all the questions are processed ?
-            $qanda = array();
             $upload_file = false;
             foreach ($_SESSION[$this->LEMsessid]['fieldarray'] as $key => $ia){
                 ++$qnumber;
@@ -155,7 +154,13 @@ class SurveyRuntimeHelper {
                 // Make $qanda only for needed question $ia[10] is the randomGroup and $ia[5] the real group
                 if ((isset($ia[10]) && $ia[10] == $gid) || (!isset($ia[10]) && $ia[5] == $gid)){
 
+                    // In question by question mode, we only procceed current question
                     if ($this->sSurveyMode == 'question' && $ia[0] != $this->aStepInfo['qid']){
+                        continue;
+                    }
+
+                    // In group by group mode, we only procceed current group
+                    if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']){
                         continue;
                     }
 
@@ -327,44 +332,44 @@ class SurveyRuntimeHelper {
             // one entry per QID
             foreach ($qanda as $qa) {
 
-                $qid             = $qa[4];
-                $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
-                $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
-                $lastgrouparray  = explode("X", $qa[7]);
-                $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
-                $lastanswer      = $qa[7];
+                if ($gid == $qa[6]){
+                    $qid             = $qa[4];
+                    $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
+                    $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
+                    $lastgrouparray  = explode("X", $qa[7]);
+                    $lastgroup       = $lastgrouparray[0] . "X" . $lastgrouparray[1]; // id of the last group, derived from question id
+                    $lastanswer      = $qa[7];
 
-                if ($qinfo['hidden'] && $qinfo['info']['type'] != '*'){
-                    continue; // skip this one
+                    if ($qinfo['hidden'] && $qinfo['info']['type'] != '*'){
+                        continue; // skip this one
+                    }
+
+                    $question     = $qa[0];
+
+                    //===================================================================
+                    // The following four variables offer the templating system the
+                    // capacity to fully control the HTML output for questions making the
+                    // above echo redundant if desired.
+                    $question['sgq']  = $qa[7];
+                    $question['aid']  = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
+                    $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
+                    //===================================================================
+
+                    // easier to understand for survey maker
+                    $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
+                    $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
+                    $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
+                    $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], NULL, false, 3, 1, false, true, false);
+                    $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
+                    $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
+                    $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
+                    $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
+                    $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
+                    $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
+                    $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
+                    $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
+                    $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], NULL, false, 3, 1, false, true, false);
                 }
-
-                $question     = $qa[0];
-
-                //===================================================================
-                // The following four variables offer the templating system the
-                // capacity to fully control the HTML output for questions making the
-                // above echo redundant if desired.
-                $question['sgq']  = $qa[7];
-                $question['aid']  = !empty($qinfo['info']['aid']) ? $qinfo['info']['aid'] : 0;
-                $question['sqid'] = !empty($qinfo['info']['sqid']) ? $qinfo['info']['sqid'] : 0;
-                //===================================================================
-
-                // easier to understand for survey maker
-                $aGroup['aQuestions'][$qid]['qid']                  = $qa[4];
-                $aGroup['aQuestions'][$qid]['code']                 = $qa[5];
-                $aGroup['aQuestions'][$qid]['number']               = $qa[0]['number'];
-                $aGroup['aQuestions'][$qid]['text']                 = LimeExpressionManager::ProcessString($qa[0]['text'], $qa[4], NULL, false, 3, 1, false, true, false);
-                $aGroup['aQuestions'][$qid]['SGQ']                  = $qa[7];
-                $aGroup['aQuestions'][$qid]['mandatory']            = $qa[0]['mandatory'];
-                $aGroup['aQuestions'][$qid]['input_error_class']    = $qa[0]['input_error_class'];
-                $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
-                $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
-                $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
-                $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
-                $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
-                $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], NULL, false, 3, 1, false, true, false);
-            }
-
             $aGroup['show_last_group']   = $aGroup['show_last_answer']  = false;
             $aGroup['lastgroup']         = $aGroup['lastanswer']        = '';
 
@@ -380,10 +385,9 @@ class SurveyRuntimeHelper {
                     $aGroup['lastanswer']         = $lastanswer;
                 }
             }
-
             Yii::app()->setConfig('gid','');
-
             $this->aSurveyInfo['aGroups'][$gid] = $aGroup;
+        }
         }
 
         /**
@@ -811,7 +815,7 @@ class SurveyRuntimeHelper {
 
                 if ($this->aMoveResult['at_start']){
                     $_SESSION[$this->LEMsessid]['step'] = 0;
-                    unset($this->aMoveResult); // so display welcome page again
+                    $this->aMoveResult = false; // so display welcome page again
                 }
             }
 
@@ -1588,7 +1592,7 @@ class SurveyRuntimeHelper {
                     $aEnterErrors['captcha'] = gT("Your answer to the security question was not correct - please try again.");
 
                 } elseif (null!==App()->getRequest()->getPost('loadsecurity')) {
-                    $aEnterErrors['captcha'] = gT("Your must answer to the security question - please try again.");
+                    $aEnterErrors['captcha'] = gT("Your have to answer the security question - please try again.");
                 }
                 $renderCaptcha = 'main';
             }
@@ -1619,16 +1623,15 @@ class SurveyRuntimeHelper {
 
     private function initTemplate()
     {
-        $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);        
+        $oTemplate         = $this->oTemplate          = Template::model()->getInstance('', $this->iSurveyid);
         $this->sTemplateViewPath = $oTemplate->viewPath;
         //$oTemplate->registerAssets();
     }
 
     private function makeLanguageChanger()
     {
-
         $this->aSurveyInfo['alanguageChanger']['show']  = false;
-        $alanguageChangerDatas                   = getLanguageChangerDatas($this->sLangCode);
+        $alanguageChangerDatas = getLanguageChangerDatas($this->sLangCode);
 
         if ($alanguageChangerDatas){
             $this->aSurveyInfo['alanguageChanger']['show']  = true;

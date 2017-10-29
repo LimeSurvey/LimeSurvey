@@ -66,7 +66,6 @@ ol.breadcrumb.title-bar-breadcrumb {
         line-height: 24px;
         font-size: 18px;
         &.animate::after {
-            margin-left: 28px;
             text-align: right;
             content: '';
             display: block;
@@ -76,7 +75,7 @@ ol.breadcrumb.title-bar-breadcrumb {
             transition: width .3s;
         }
         &.animate:hover::after {
-            width: 90%;
+            width: 100%;
         }
         &.animate.home-icon:hover::after {
             margin-left: 0;
@@ -91,6 +90,9 @@ ol.breadcrumb.title-bar-breadcrumb {
         &.active {
             color: #dfdfdf;
             font-style: italic
+        }
+        >div{
+            display: inline-block;
         }
     }
 }
@@ -130,6 +132,9 @@ ol.breadcrumb.title-bar-breadcrumb {
     .fill-height {
         height: 100%
     }
+    .dragPointer{
+        cursor: move;
+    }
     .menu-open {
         animation-name: animate-gradient;
         animation-duration: 450ms;
@@ -138,6 +143,18 @@ ol.breadcrumb.title-bar-breadcrumb {
     .selected {
         padding-left: 20px;
         background: linear-gradient(to right, rgb(50, 134, 55) 0px, rgb(50, 134, 55) 13px, white 13px, white 100%);
+        transition-property: all;
+        transition-duration: .25s;
+        transition-timing-function: cubic-bezier(1, 0.5, 0.5, 1);
+    }
+    .dragged {
+        background-color: rgba(50, 134, 55,0.8) !important;
+        opacity: 0.8;
+        padding-top: 18px;
+        padding-bottom: 18px;
+        transition-property: all;
+        transition-duration: .1s;
+        transition-timing-function: ease-in-out;
     }
     .menu-selected {
         padding-left: 10px;

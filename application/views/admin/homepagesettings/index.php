@@ -57,7 +57,7 @@
     </div>
 
     <div class="row">
-        <label class="col-sm-2 control-label"><?php eT("Wrap container around Boxes");?> </label>
+        <label class="col-sm-2 control-label"><?php eT("Wrap container around boxes");?> </label>
         <div class="col-sm-2">
             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'boxes_in_container', 'id'=>'boxes_in_container', 'value'=>$bBoxesInContainer, 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
             <input type="hidden" id="boxes_in_container-url" data-url="<?php echo App()->createUrl('admin/homepagesettings/sa/changeBoxesInContainer');?>" />

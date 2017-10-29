@@ -316,7 +316,7 @@ class TemplateConfiguration extends TemplateConfig
                 $previewUrl =  Template::getTemplateURL($this->template->name);
                 $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
             }else{
-                $this->sPreviewImgTag = '<em>'.gT('no preview available').'</em>';
+                $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
             }
 
         }
@@ -431,7 +431,7 @@ class TemplateConfiguration extends TemplateConfig
     public function getTypeIcon()
     {
         if (empty($this->sTypeIcon)){
-            $this->sTypeIcon = (Template::isStandardTemplate($this->template->name))?gT("Core Template"):gT("User Template");
+            $this->sTypeIcon = (Template::isStandardTemplate($this->template->name))?gT("Core template"):gT("User template");
         }
         return $this->sTypeIcon;
     }
@@ -474,7 +474,7 @@ class TemplateConfiguration extends TemplateConfig
         $sUninstallLink = "<a
             id='remove_fromdb_link_".$this->template_name."'
             href='".$sUninstallUrl."'
-            class='btn btn-default btn-danger'>
+            class='btn btn-danger'>
                 <span class='icon-trash'></span>
                 ".gT('Uninstall')."
             </a>";
@@ -527,7 +527,7 @@ class TemplateConfiguration extends TemplateConfig
         $aData['brandlogoFileList'] = [];
         foreach($fileList as $file){
             $isImage = $this->_filterImages($file);
-            
+
             if($isImage)
                 $aData['brandlogoFileList'][] = $isImage;
         };
@@ -560,7 +560,7 @@ class TemplateConfiguration extends TemplateConfig
 
 
         if(!empty($jFiles)){
-            $oFiles = json_decode($jFiles);
+            $oFiles = json_decode($jFiles, true);
             foreach($oFiles as $action => $aFileList){
                 if ($action == "add" || $action == "replace"){
 
@@ -573,6 +573,7 @@ class TemplateConfiguration extends TemplateConfig
                     $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                 }
             }
+    
         }
 
 
@@ -636,7 +637,7 @@ class TemplateConfiguration extends TemplateConfig
         while (empty($oRTemplate->template->$sPath)){
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                throw new Exception("can't find a template for '$sPath' path !");
+                throw new Exception("can't find a template for template '{$oRTemplate->template_name}' in path '$sPath'.");
                 break;
             }
             $oRTemplate = $oMotherTemplate;
@@ -704,13 +705,22 @@ class TemplateConfiguration extends TemplateConfig
         }
     }
 
-    protected function getOptionKey($key){
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    protected function getOptionKey($key)
+    {
         $aOptions = (array) json_decode($this->options);
-        $value = $aOptions[$key];
-        if($value === 'inherit'){
-            return $this->getParentConfiguration()->getOptionKey($key);
+        if (isset($aOptions[$key])) {
+            $value = $aOptions[$key];
+            if ($value === 'inherit') {
+                return $this->getParentConfiguration()->getOptionKey($key);
+            }
+            return  $value;
+        } else {
+            return null;
         }
-        return  $value;
     }
 
     protected function addMotherTemplatePackage($packages)
@@ -739,7 +749,7 @@ class TemplateConfiguration extends TemplateConfig
         $sFieldName  = 'cssframework_'.$sType;
         $aFieldValue = (array) json_decode($this->$sFieldName);
 
-        if (!empty( $aFieldValue )){
+        if (!empty( $aFieldValue ) && !empty($aFieldValue['replace'])){
             $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'] ;
 
             // Inner field inheritance

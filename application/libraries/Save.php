@@ -384,7 +384,7 @@ class Save
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }else{
                     // TODO: $this->aSaveErrors
-                    $this->aSaveErrors[] = gT("Unable to insert record into survey table.");
+                    $this->aSaveErrors[] = "Unable to insert record into survey table.";
                 }
             }
 
@@ -411,7 +411,7 @@ class Save
                 $_SESSION['survey_'.$surveyid]['scid'] = $scid;
             }else{
                 // TODO: $this->aSaveErrors
-                $this->aSaveErrors[] = gT("Unable to insert record into saved_control table.");
+                $this->aSaveErrors[] = "Unable to insert record into saved_control table.";
             }
 
             $_SESSION['survey_'.$surveyid]['holdname'] = $_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output

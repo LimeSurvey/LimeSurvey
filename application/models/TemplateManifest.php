@@ -277,18 +277,42 @@ class TemplateManifest extends TemplateConfiguration
     {
         $oTemplate             = Template::getTemplateConfiguration($sTemplateName, null, null, true);
 
-        $aDatas['api_version']   = (string) $oTemplate->config->metadatas->apiVersion;
-        $aDatas['extends']       = (string) $oTemplate->config->metadatas->extends;
-        $aDatas['author_email']  = (string) $oTemplate->config->metadatas->authorEmail;
-        $aDatas['author_url']    = (string) $oTemplate->config->metadatas->authorUrl;
-        $aDatas['copyright']     = (string) $oTemplate->config->metadatas->copyright;
-        $aDatas['version']       = (string) $oTemplate->config->metadatas->version;
-        $aDatas['license']       = (string) $oTemplate->config->metadatas->license;
-        $aDatas['view_folder']   = (string) $oTemplate->config->engine->viewdirectory;
-        $aDatas['files_folder']  = (string) $oTemplate->config->engine->filesdirectory;
-        $aDatas['aOptions']      = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0  )?array():$oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
+        $aDatas['api_version']       = (string) $oTemplate->config->metadatas->apiVersion;
+        $aDatas['extends']           = (string) $oTemplate->config->metadatas->extends;
+        $aDatas['author_email']      = (string) $oTemplate->config->metadatas->authorEmail;
+        $aDatas['author_url']        = (string) $oTemplate->config->metadatas->authorUrl;
+        $aDatas['copyright']         = (string) $oTemplate->config->metadatas->copyright;
+        $aDatas['version']           = (string) $oTemplate->config->metadatas->version;
+        $aDatas['license']           = (string) $oTemplate->config->metadatas->license;
+        $aDatas['view_folder']       = (string) $oTemplate->config->engine->viewdirectory;
+        $aDatas['files_folder']      = (string) $oTemplate->config->engine->filesdirectory;
+
+        $aDatas['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
+        $aDatas['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
+        $aDatas['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
+
+        $aDatas['cssframework_name'] = (string) $oTemplate->config->engine->cssframework->name;
+        $aDatas['cssframework_css']  = self::formatArrayFields($oTemplate, 'engine', 'cssframework_css');
+        $aDatas['cssframework_js']   = self::formatArrayFields($oTemplate, 'engine', 'cssframework_js');
+        $aDatas['packages_to_load']  = self::formatArrayFields($oTemplate, 'engine', 'packages');
+
+        $aDatas['aOptions']          = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0  )?array():$oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
 
         return parent::importManifest($sTemplateName, $aDatas );
+    }
+
+    /**
+     * This will prepare an array for the field, so the json_encode will create
+     * If a field is empty, its value should not be null, but an empty array for the json encoding in DB
+     *
+     * @param TemplateManifest $oTemplate
+     * @param string $sFieldPath path to the field (under config)
+     * @param string $sFieldName name of the field
+     * @return array field value | empty array
+     */
+    public static function formatArrayFields($oTemplate, $sFieldPath, $sFieldName)
+    {
+        return !empty($oTemplate->config->$sFieldPath->$sFieldName) ? ((array) $oTemplate->config->$sFieldPath->$sFieldName) : array();
     }
 
     /**
@@ -676,13 +700,12 @@ class TemplateManifest extends TemplateConfiguration
      * @param TemplateManifest $oRTemplate
      * @param string $sPath
      */
-    protected function getTemplateForPath($oRTemplate, $sPath )
+    protected function getTemplateForPath($oRTemplate, $sPath)
     {
-        while (empty($oRTemplate->config->xpath($sPath))){
+        while (empty($oRTemplate->config->xpath($sPath))) {
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
-            if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                throw new Exception("can't find a template for '$sPath' xpath !");
-                break;
+            if (!($oMotherTemplate instanceof TemplateConfiguration)) {
+                throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sPath'.");
             }
             $oRTemplate = $oMotherTemplate;
         }
@@ -739,7 +762,7 @@ class TemplateManifest extends TemplateConfiguration
     protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
         $aAssetsToRemove = array();
-        if (!empty($this->cssFramework->$sType)){
+        if (!empty($this->cssFramework->$sType) && !empty($this->cssFramework->$sType->attributes()->replace)){
             $aAssetsToRemove =  (array) $this->cssFramework->$sType->attributes()->replace ;
             if($bInlcudeRemove){
                 $aAssetsToRemove = array_merge($aAssetsToRemove, (array) $this->cssFramework->$sType->attributes()->remove );

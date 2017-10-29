@@ -19,7 +19,8 @@ export default {
         'getQuestionsUrl' : {type: String},
         'getMenuUrl' : {type: String},
         'createQuestionGroupLink' : {type: String},
-        'createQuestionLink' : ''
+        'createQuestionLink' : {type: String},
+        'updateOrderLink' : {type: String},
     },
     data: () => {
         return {
@@ -60,6 +61,20 @@ export default {
     methods: {
         calculateHeight(self){
             self.$store.commit('changeSideBarHeight', $('#in_survey_common').height());
+        },
+        changedQuestionGroupOrder(){
+            const self = this;
+            const onlyGroupsArray = _.map(this.$store.state.questiongroups, (questiongroup, count)=>{
+                const questions = _.map(questiongroup.questions, (question,i)=>{
+                    return {qid: question.qid, question: question.question, gid: question.gid, question_order: question.question_order};
+                });
+                return {gid: questiongroup.gid, group_name: questiongroup.group_name, group_order: questiongroup.group_order, questions: questions}
+            });
+            this.$log.debug("QuestionGroup order changed");
+            this.post(this.updateOrderLink, {grouparray: onlyGroupsArray, surveyid: this.$store.surveyid}).then(
+                (result) => {self.$log.debug('questiongroups updated');},
+                (error) => {self.$log.error('questiongroups updating error!');}
+            );
         },
         controlActiveLink(){
             //get current location
@@ -175,10 +190,16 @@ export default {
         mousemove(e,self) {
             if(this.isMouseDown){
                 // prevent to emit unwanted value on dragend
-                if (e.screenX === 0 && e.screenY === 0) return;
-                if(e.clientX > (screen.width/2)) return;
+                if (e.screenX === 0 && e.screenY === 0){ 
+                    return; 
+                };
+                if(e.clientX > (screen.width/2)) {
+                    this.$store.commit('maxSideBarWidth', true);
+                    return
+                };
                 self.sideBarWidth = (e.pageX+8)+'px';
                 this.$store.commit('changeSidebarwidth', this.sideBarWidth);
+                this.$store.commit('maxSideBarWidth', false);
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }
@@ -260,7 +281,7 @@ export default {
 </script>
 <template>
     <div id="sidebar" class="ls-flex ls-ba ls-space padding left-0 col-md-4 hidden-xs nofloat transition-animate-width" :style="{width : sideBarWidth}" @mouseleave="mouseleave" @mouseup="mouseup">
-        <div class="col-12 fill-height ls-space padding all-0" v-bind:style="{'height': $store.state.inSurveyViewHeight}">
+        <div class="col-12 fill-height ls-space padding all-0" style="height: 100%">
             <div class="mainMenu container-fluid col-12 ls-space padding right-0 fill-height">
                 <div class="ls-space margin bottom-15 top-5 col-12" style="height: 40px;">
                     <div class="ls-flex-row align-content-space-between align-items-flex-end ls-space padding left-0 right-10 bottom-0 top-0">
@@ -285,13 +306,13 @@ export default {
                     </div>
                 </div>
                 <transition name="slide-fade">
-                    <sidemenu :style="{height: calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>
+                    <sidemenu :style="{'min-height': calculateSideBarMenuHeight}" v-show="showSideMenu"></sidemenu>
                 </transition>
                 <transition name="slide-fade">
-                    <questionexplorer :style="{height: calculateSideBarMenuHeight}" v-show="showQuestionTree" :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" ></questionexplorer>
+                    <questionexplorer :style="{'min-height': calculateSideBarMenuHeight}" v-show="showQuestionTree" :create-question-group-link="createQuestionGroupLink" :create-question-link="createQuestionLink" :translate="translate" v-on:openentity="openEntity" v-on:questiongrouporder="changedQuestionGroupOrder"></questionexplorer>
                 </transition>
                 <transition name="slide-fade">
-                    <quickmenu :style="{height: calculateSideBarMenuHeight}" v-show="$store.state.isCollapsed"></quickmenu>
+                    <quickmenu :style="{'min-height': calculateSideBarMenuHeight}" v-show="$store.state.isCollapsed"></quickmenu>
                 </transition>
             </div>
         </div>
@@ -348,6 +369,7 @@ export default {
             height:100%;
             text-align: left;
             border-radius: 0;
+            background: #fff;
             padding: 0px 7px 0px 4px;
             i{
                 font-size: 12px;
@@ -399,6 +421,29 @@ export default {
         -webkit-transform: rotateY(90);
         -ms-transform: rotateY(90);
         transform: rotateY(90);
+        -moz-transform-origin: left;
+        -webkit-transform-origin: left;
+        -ms-transform-origin: left;
+        transform-origin: left;
+        opacity: 0;
+    }
+    .slide-fade-down-enter-active {
+        -moz-transition: all 0.3s ease;
+        -webkit-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+    .slide-fade-down-leave-active {
+        -moz-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1.0);
+        -webkit-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1.0);
+        -ms-transition: all 0.2s cubic-bezier(0, 1, 0.5, 1.0);
+        transition: all 0.2s cubic-bezier(0, 1, 0.5, 1.0);
+    }
+    .slide-fade-down-enter, .slide-fade-down-leave-to {
+        -moz-transform: rotateY(45);
+        -webkit-transform: rotateY(45);
+        -ms-transform: rotateY(45);
+        transform: rotateY(45);
         -moz-transform-origin: left;
         -webkit-transform-origin: left;
         -ms-transform-origin: left;
