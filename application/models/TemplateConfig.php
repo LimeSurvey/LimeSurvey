@@ -590,7 +590,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['nojs']  = ' ';
 
         // NavBar
-        $aClassAndAttributes['id']['navbar']            = ' navbar';
+        $aClassAndAttributes['id']['navbar']            = 'navbar';
         $aClassAndAttributes['class']['navbar']         = ' navbar navbar-default';
         $aClassAndAttributes['class']['navbarheader']   = ' navbar-header ';
         $aClassAndAttributes['class']['navbartoggle']   = ' navbar-toggle collapsed ';
