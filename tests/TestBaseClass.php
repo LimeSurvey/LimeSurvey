@@ -4,7 +4,7 @@ namespace ls\tests;
 
 use PHPUnit\Framework\TestCase;
 
-class TestBaseClass extends \PHPUnit_Framework_TestCase
+class TestBaseClass extends TestCase
 {
     /**
      * @var TestHelper

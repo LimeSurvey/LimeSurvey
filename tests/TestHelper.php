@@ -2,7 +2,9 @@
 
 namespace ls\tests;
 
-class TestHelper extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class TestHelper extends TestCase
 {
 
     /**
