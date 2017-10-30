@@ -65,7 +65,7 @@
 
                     $this->connection->createCommand()->insert($this->connection->tablePrefix.'users', array(
                         'users_name'=>$sArgument[0],
-                        'password'=>hash('sha256',$sArgument[1]),
+                        'password'=>password_hash($sArgument[1],PASSWORD_DEFAULT),
                         'full_name'=>$sArgument[2],
                         'parent_id'=>0,
                         'lang'=>'auto',
