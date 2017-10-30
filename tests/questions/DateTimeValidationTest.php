@@ -2,8 +2,9 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
-
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use \Facebook\WebDriver\WebDriverExpectedCondition;
 /**
  * @since 2017-10-27
  * @group datevalidation
@@ -14,6 +15,11 @@ class DateTimeValidationTest extends TestBaseClass
      * @var int
      */
     public static $surveyId = null;
+
+    /**
+     * @var int
+     */
+    public static $oldSetting = null;
 
     /**
      * Import survey in tests/surveys/.
@@ -40,6 +46,36 @@ class DateTimeValidationTest extends TestBaseClass
         } else {
             die('Fatal error: Could not import survey');
         }
+
+        // Make sure we can preview without being logged in.
+        self::$oldSetting = \SettingGlobal::model()->findByPk('surveyPreview_require_Auth');
+        \SettingGlobal::model()->updateByPk('surveyPreview_require_Auth', ['stg_value' => 0]);
+    }
+
+    /**
+     * Selenium setup.
+     */
+    public function setUp()
+    {
+        if (empty(getenv('URL'))) {
+            $this->markTestSkipped('Must specify URL environment variable to run this test');
+        }
+
+        $capabilities = DesiredCapabilities::firefox();
+        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/wd/hub', $capabilities);
+
+        /*
+        $this->setHost('localhost');
+        $this->setPort(4444);
+        $this->setBrowserUrl(
+            sprintf(
+                'http://localhost/%s/index.php/%d?newtest=Y&lang=pt',
+                getenv('URL'),
+                self::$surveyId
+            )
+        );
+        $this->setBrowser('firefox');
+         */
     }
 
     /**
@@ -47,10 +83,26 @@ class DateTimeValidationTest extends TestBaseClass
      */
     public static function teardownAfterClass()
     {
+        if (self::$oldSetting) {
+            \SettingGlobal::model()->updateByPk(
+                'surveyPreview_require_Auth',
+                ['stg_value' => self::$oldSetting->stg_value]
+            );
+        }
+
         $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
         if (!$result) {
             die('Fatal error: Could not clean up survey ' . self::$surveyId);
         }
+    }
+
+    /**
+     * Tear down fixture.
+     */
+    public function tearDown()
+    {
+        // Close Firefox.
+        $this->webDriver->quit();
     }
 
     /**
@@ -145,6 +197,8 @@ class DateTimeValidationTest extends TestBaseClass
         $result = \LimeExpressionManager::ProcessCurrentResponses();
         echo '<pre>'; var_dump($_SESSION); echo '</pre>';
          */
+
+        /*
         \Yii::app()->setController(new DummyController('dummyid'));
 
         \Yii::app()->setConfig('surveyID', self::$surveyId);
@@ -160,5 +214,29 @@ class DateTimeValidationTest extends TestBaseClass
                 'param'      => []
             ]
         );
+         */
+
+        $this->webDriver->get('http://localhost/lime25/limesurvey/index.php/118355?newtest=Y&lang=pt');
+        $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
+        $this->assertNotEmpty($submit);
+        $this->webDriver->wait(10, 1000)->until(
+            WebDriverExpectedCondition::visibilityOf($submit)
+        );
+        $submit->click();
+        $div = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::className('completed-text'));
+        $this->assertNotEmpty($div);
+        $this->webDriver->wait(10, 1000)->until(
+            WebDriverExpectedCondition::visibilityOf($div)
+        );
+
+        /*
+        $this->url('/');
+        $content = $this->byTag('body')->text();
+        //$this->byId('limesurvey')->submit();
+        $move = $this->byId('ls-button-submit');
+        $move->click(null);
+        $content = $this->byTag('body')->text();
+        var_dump($content);
+         */
     }
 }
