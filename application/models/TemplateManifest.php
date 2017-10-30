@@ -210,15 +210,6 @@ class TemplateManifest extends TemplateConfiguration
     }
 
 
-    public function getPreview()
-    {
-        if (empty($this->sPreviewImgTag)){
-            $previewUrl =  $this->getTemplateURL();// $this->getTemplateURL();//Template::getTemplateURL($this->template->name);
-            $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
-        }
-        return $this->sPreviewImgTag;
-    }
-
     /**
      *
      */
@@ -556,7 +547,7 @@ class TemplateManifest extends TemplateConfiguration
             } else {
                 $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttemplate','default'));
             }
-        }        
+        }
     }
 
 

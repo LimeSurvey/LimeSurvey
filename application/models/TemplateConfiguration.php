@@ -303,23 +303,6 @@ class TemplateConfiguration extends TemplateConfig
         return $model;
     }
 
-    // For list, so no "setConfiguration" before
-    public function getPreview()
-    {
-        if (empty($this->sPreviewImgTag)){
-
-            $previewPath =  Template::getTemplatePath($this->template->name);
-
-            if (file_exists($previewPath.'/preview.png')){
-                $previewUrl =  Template::getTemplateURL($this->template->name);
-                $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
-            }else{
-                $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
-            }
-
-        }
-        return $this->sPreviewImgTag;
-    }
 
     /**
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
