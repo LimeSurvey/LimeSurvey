@@ -209,6 +209,12 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
      */
     if(bFixNumAuto && (newval != ""))
     {
+
+        if(window.correctNumberField!=null) {
+            clearTimeout(window.correctNumberField);
+            window.correctNumberField = null;
+        }
+
         var addition = "";
         if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
             addition = cleansedValue.split("").pop();
@@ -262,7 +268,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
 
             if($('#answer'+name).val() != newval){
-                $('#answer'+name).val(newval);
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval);}, 400);
             }
         }
     }
