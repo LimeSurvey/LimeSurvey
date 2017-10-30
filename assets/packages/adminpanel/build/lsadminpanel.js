@@ -29153,8 +29153,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         return question.qid === this.draggedQuestion.qid;
                     });
                     if (removedFromInital.length > 0) {
+                        this.draggedQuestion.question_order = null;
                         questiongroupObject.questions.push(this.draggedQuestion);
                         this.draggedQuestion.gid = questiongroupObject.gid;
+
+                        if (questiongroupObject.group_order > this.draggedQuestionsGroup.group_order) {
+                            this.draggedQuestion.question_order = 0;
+                            __WEBPACK_IMPORTED_MODULE_1_lodash___default.a.each(questiongroupObject.questions, (question, i) => {
+                                question.question_order = parseInt(question.question_order) + 1;
+                            });
+                        } else {
+                            this.draggedQuestion.question_order = this.draggedQuestionsGroup.questions.length + 1;
+                        }
+
                         this.draggedQuestionsGroup = questiongroupObject;
                     }
                 }
@@ -29173,8 +29184,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.draggedQuestionsGroup = null;
             this.$emit('questiongrouporder');
         },
-        dragoverQuestion($event, questionObject) {
-            const orderSwap = questionObject.question_order;
+        dragoverQuestion($event, questionObject, questionGroupObject) {
+            let orderSwap = questionObject.question_order;
             questionObject.question_order = this.draggedQuestion.question_order;
             this.draggedQuestion.question_order = orderSwap;
         }
@@ -29285,7 +29296,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         class: _vm.questionItemClasses(question),
         on: {
           "dragenter": function($event) {
-            _vm.dragoverQuestion($event, question)
+            _vm.dragoverQuestion($event, question, questiongroup)
           }
         }
       }, [_c('i', {

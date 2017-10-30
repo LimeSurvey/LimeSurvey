@@ -431,7 +431,8 @@
     .ls-ba .list-group > .list-group-item .list-group {
       margin-bottom: 0; }
       .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {
-        border-bottom: 0; }
+        border-bottom: 1px solid #dadada;
+        margin-bottom: 10px; }
 
 .ls-ba .breadcrumb > li + li:before {
   padding: 0 5px;

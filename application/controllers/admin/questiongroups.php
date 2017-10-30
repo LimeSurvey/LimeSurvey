@@ -474,6 +474,7 @@ class questiongroups extends Survey_Common_Action
                     $oQuestion->save();
                 }, $oQuestions);
             }
+            Question::updateSortOrder( $aQuestiongroup['gid'], $surveyid);
         }
     }
 
