@@ -63,19 +63,6 @@ class DateTimeValidationTest extends TestBaseClass
 
         $capabilities = DesiredCapabilities::firefox();
         $this->webDriver = RemoteWebDriver::create('http://localhost:4444/wd/hub', $capabilities);
-
-        /*
-        $this->setHost('localhost');
-        $this->setPort(4444);
-        $this->setBrowserUrl(
-            sprintf(
-                'http://localhost/%s/index.php/%d?newtest=Y&lang=pt',
-                getenv('URL'),
-                self::$surveyId
-            )
-        );
-        $this->setBrowser('firefox');
-         */
     }
 
     /**
@@ -106,116 +93,10 @@ class DateTimeValidationTest extends TestBaseClass
     }
 
     /**
-     * "currentQset" in EM.
-     */
-    protected function getQuestionSetForQ2(\Question $question, \QuestionGroup $group, $sgqa)
-    {
-        $qset = array($question->qid => array
-            (
-                'info' => array
-                (
-                    'relevance' => '1',
-                    'grelevance' => '',
-                    'qid' => $question->qid,
-                    'qseq' => 1,
-                    'gseq' => 0,
-                    'jsResultVar_on' => 'answer' . $sgqa,
-                    'jsResultVar' => 'java' . $sgqa,
-                    'type' => $question->type,
-                    'hidden' => false,
-                    'gid' => $group->gid,
-                    'mandatory' => $question->mandatory,
-                    'eqn' => '',
-                    'help' => '',
-                    'qtext' => '',
-                    'code' => $question->title,
-                    'other' => 'N',
-                    'default' => null,
-                    'rootVarName' => $question->title,
-                    'rowdivid' => '',
-                    'aid' => '',
-                    'sqid' => '',
-                ),
-                'relevant' => true,
-                'hidden' => false,
-                'relEqn' => '',
-                'sgqa' => $sgqa,
-                'unansweredSQs' => $sgqa,
-                'valid' => true,
-                'validEqn' => '',
-                'prettyValidEqn' => '',
-                'validTip' => '',
-                'prettyValidTip' => '',
-                'validJS' => '',
-                'invalidSQs' => '',
-                'relevantSQs' => $sgqa,
-                'irrelevantSQs' => '',
-                'subQrelEqn' => '',
-                'mandViolation' => false,
-                'anyUnanswered' => true,
-                'mandTip' => '',
-                'message' => '',
-                'updatedValues' => array(),
-                'sumEqn' => '',
-                'sumRemainingEqn' => ''
-            )
-        );
-        return $qset;
-    }
-
-    /**
      * 
      */
     public function testBasic()
     {
-        /*
-        list($question, $group, $sgqa) = self::$testHelper->getSgqa('G1Q00005', self::$surveyId);
-
-        $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
-
-        $em = \LimeExpressionManager::singleton();
-        $em->setCurrentQset($qset);
-
-        $surveyMode = 'group';
-        $LEMdebugLevel = 0;
-        $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
-        \LimeExpressionManager::StartSurvey(
-            self::$surveyId,
-            $surveyMode,
-            $surveyOptions,
-            false,
-            $LEMdebugLevel
-        );
-
-        $qid = $question->qid;
-        $gseq = 0;
-        $_POST['relevance' . $qid] = 1;
-        $_POST['relevanceG' . $gseq] = 1;
-        $_POST[$sgqa] = '27/10/2017';
-
-        //$moveResult = \LimeExpressionManager::NavigateForwards();
-        $result = \LimeExpressionManager::ProcessCurrentResponses();
-        echo '<pre>'; var_dump($_SESSION); echo '</pre>';
-         */
-
-        /*
-        \Yii::app()->setController(new DummyController('dummyid'));
-
-        \Yii::app()->setConfig('surveyID', self::$surveyId);
-        global $thissurvey;
-        $thissurvey = getSurveyInfo(self::$surveyId);
-
-        $runtime = new \SurveyRuntimeHelper();
-        $runtime->run(
-            self::$surveyId,
-            [
-                'surveyid'   => self::$surveyId,
-                'thissurvey' => $thissurvey,
-                'param'      => []
-            ]
-        );
-         */
-
         $this->webDriver->get('http://localhost/lime25/limesurvey/index.php/118355?newtest=Y&lang=pt');
         $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
         $this->assertNotEmpty($submit);
@@ -223,20 +104,12 @@ class DateTimeValidationTest extends TestBaseClass
             WebDriverExpectedCondition::visibilityOf($submit)
         );
         $submit->click();
+
+        // After submit we should see the complete page.
         $div = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::className('completed-text'));
         $this->assertNotEmpty($div);
         $this->webDriver->wait(10, 1000)->until(
             WebDriverExpectedCondition::visibilityOf($div)
         );
-
-        /*
-        $this->url('/');
-        $content = $this->byTag('body')->text();
-        //$this->byId('limesurvey')->submit();
-        $move = $this->byId('ls-button-submit');
-        $move->click(null);
-        $content = $this->byTag('body')->text();
-        var_dump($content);
-         */
     }
 }
