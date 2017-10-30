@@ -297,7 +297,7 @@ class User extends LSActiveRecord
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setusertemplates');
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('admin/user/sa/setasadminchild');
 
-        $oUser = $this->getName($this->uid);
+        $oUser = User::model()->findByPk($this->uid);
         if($this->uid == Yii::app()->user->getId()) {
             // Edit self
             $editUser = "<button
