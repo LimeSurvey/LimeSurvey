@@ -164,12 +164,10 @@ class Authdb extends AuthPluginBase
             return;
         }
 
-        if ($sStoredPassword !== hash('sha256', $password))
-        {
+        if(!$user->checkPassword($password)) {
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
             return;
         }
-
         $this->setAuthSuccess($user);
     }
 

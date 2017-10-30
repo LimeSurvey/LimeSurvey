@@ -653,7 +653,6 @@ class InstallerController extends CController {
 
                 //checking DB Connection
                 if ($this->connection->getActive() == true) {
-                    $sPasswordHash=hash('sha256', $sAdminPassword);
                     try {
 
                         if (User::model()->count()>0){
@@ -666,7 +665,7 @@ class InstallerController extends CController {
                             $user->uid=1;
                         }
                         $user->users_name=$sAdminUserName;
-                        $user->password=$sPasswordHash;
+                        $user->setPassword($sAdminPassword);
                         $user->full_name=$sAdminRealName;
                         $user->parent_id=0;
                         $user->lang=$sSiteLanguage;
