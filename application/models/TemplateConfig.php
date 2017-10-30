@@ -264,7 +264,7 @@ class TemplateConfig extends CActiveRecord
 
              if (file_exists($previewPath.'/preview.png')){
                  $previewUrl =  Template::getTemplateURL($this->template->name);
-                 $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
+                 $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
              }else{
                  $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
              }
