@@ -7,11 +7,11 @@ function createDatabase($oDB){
     * - Never use foreign keys
     * - Do not use fancy database field types (like mediumtext, timestamp, etc) - only use the ones provided by Yii
     * - If you want to use database functions make sure they exist on all three supported database types
-    * - Always prefix key/index names by using curly brackets {{ }}* 
+    * - Always prefix key/index names by using curly brackets {{ }}*
     */
 
     ////// Current database version: //////
-    $databaseCurrentVersion = "323";
+    $databaseCurrentVersion = "324";
     ///////////////////////////////////////
 
     Yii::app()->loadHelper('database');
@@ -722,12 +722,9 @@ function createDatabase($oDB){
         $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder','description','last_update','owner_id','extends'];
         $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '']));
 
-        $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['vanilla', 'vanilla', 'Vanilla Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Bootsrtap Vanilla Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '']));
-
-        $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['no_bootstrap', 'no_bootstrap', 'No Bootstrap Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Bootsrtap Vanilla Template</strong><br>A clean and simple base that can be used by developers to create their own solution.', NULL, 1, '']));
-
-
         $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', NULL, 1, 'default']));
+
+        $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['monochrome', 'monochrome', 'Monochrome Templates', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Monochrome Templates</strong><br>A template with monochrome colors for easy customization.', NULL, 1, '']));
 
 
         // template_configuration
@@ -756,10 +753,10 @@ function createDatabase($oDB){
 
         $headerArray = ['template_name','sid','gsid','uid','files_css','files_js','files_print_css','options','cssframework_name','cssframework_css','cssframework_js','packages_to_load','packages_ltr','packages_rtl'];
         $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['default',NULL,NULL,NULL,'{"add": ["css/template.css", "css/animate.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','["pjax"]','','']));
-        $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['vanilla',NULL,NULL,NULL,'{"add": ["css/template.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','{}','bootstrap','{}','','','','']));
-        $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['no_bootstrap',NULL,NULL,NULL,'{"add": ["css/template.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css",}','','','{}','','','','']));
 
         $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/template.css", "css/bootstrap-material-design.css", "css/ripples.min.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','["pjax"]','','']));
+
+        $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['monochrome',NULL,NULL,NULL,'{"add":["css/template.css","css/animate.css","css/ajaxify.css","css/sea_green.css"]}','{"add":["scripts/template.js","scripts/ajaxify.js"]}','{"add":"css/print_template.css",}','{"ajaxmode":"off","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{}','','["pjax"]','','']));        
 
         //tutorials
         $oDB->createCommand()->createTable(
