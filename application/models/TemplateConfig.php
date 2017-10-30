@@ -259,10 +259,9 @@ class TemplateConfig extends CActiveRecord
      public function getPreview()
      {
          if (empty($this->sPreviewImgTag)){
+             $previewPath =  (is_a($this->template, 'Template'))?Template::getTemplatePath($this->template->name):false;
 
-             $previewPath =  Template::getTemplatePath($this->template->name);
-
-             if (file_exists($previewPath.'/preview.png')){
+             if ( $previewPath && file_exists($previewPath.'/preview.png')){
                  $previewUrl =  Template::getTemplateURL($this->template->name);
                  $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
              }else{
