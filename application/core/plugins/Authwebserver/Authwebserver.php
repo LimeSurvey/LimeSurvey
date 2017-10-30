@@ -111,7 +111,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         { // user doesn't exist but auto-create user is set
             $oUser=new User;
             $oUser->users_name=$sUser;
-            $oUser->password=hash('sha256', createPassword());
+            $oUser->setPassword(createPassword());// needed ? 
             $oUser->full_name=$aUserProfile['full_name'];
             $oUser->parent_id=1;
             $oUser->lang=$aUserProfile['lang'];

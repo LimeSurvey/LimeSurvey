@@ -147,7 +147,7 @@ class Authentication extends Survey_Common_Action
             App()->getPluginManager()->dispatchEvent($newLoginForm);            // inject the HTML of the form inside the private varibale "_content" of the plugin
             $aData['summary'] = self::getSummary('logout');
             $aData['pluginContent'] = $newLoginForm->getAllContent();           // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
-        }else{
+        } else {
             // The form has been submited, or the plugin has been stoped (so normally, the value of login/password are available)
 
              // Handle getting the post and populating the identity there
@@ -291,7 +291,7 @@ class Authentication extends Survey_Common_Action
 
         if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce))
         {
-            User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
+            User::updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
             $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you');
         }
