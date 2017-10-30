@@ -3244,7 +3244,7 @@ function do_multiplenumeric($ia)
         $sliderTranslation=array(
             'help'=>gT('Please click and drag the slider handles to enter your answer.')
         );
-        App()->getClientScript()->registerScript("sliderTranslation","var sliderTranslation=".json_encode($sliderTranslation).";\n",CClientScript::POS_HEAD);
+        App()->getClientScript()->registerScript("sliderTranslation","var sliderTranslation=".json_encode($sliderTranslation).";\n",CClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage("question-numeric-slider");
         if($slider_handle == 'custom'){/* unsure we still need it : in aJsonOptions : must choose the best */
             App()->getClientScript()->registerCss("cssNumericSlider{$ia[0]}","#question{$ia[0]} .slider-handle.custom::before{ content: '\\{$slider_custom_handle}'};");
