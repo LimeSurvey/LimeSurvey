@@ -28,9 +28,9 @@
     -->
     <files>
         <css>
-            <add>css/template.css</add>
             <add>css/bootstrap-material-design.css</add>
             <add>css/ripples.min.css</add>
+            <add>css/template.css</add>            
         </css>
         <js>
             <add>scripts/template.js</add>

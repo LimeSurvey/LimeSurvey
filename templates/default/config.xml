@@ -27,9 +27,9 @@
     -->
     <files>
         <css>
-            <add>css/template.css</add>
             <add>css/animate.css</add>
             <add>css/ajaxify.css</add>
+            <add>css/template.css</add>            
         </css>
         <js>
             <add>scripts/template.js</add>
