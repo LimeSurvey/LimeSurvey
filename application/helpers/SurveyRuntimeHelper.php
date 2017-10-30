@@ -243,7 +243,7 @@ class SurveyRuntimeHelper {
                 }
             }
 
-            if ( count($this->aSurveyInfo['aQuestionIndex']['items']) > 0){
+            if ( isset($this->aSurveyInfo['aQuestionIndex']['items']) && count($this->aSurveyInfo['aQuestionIndex']['items']) > 0){
                 $this->aSurveyInfo['aQuestionIndex']['bShow'] = true;
             }
         }
