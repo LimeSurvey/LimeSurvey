@@ -54,8 +54,6 @@ class TemplateConfiguration extends TemplateConfig
 
     // Caches
 
-    public $allDbTemplateFolders = null;
-
     /** @var string $sPreviewImgTag the template preview image tag for the template list*/
     public $sPreviewImgTag;
 
@@ -573,7 +571,7 @@ class TemplateConfiguration extends TemplateConfig
                     $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                 }
             }
-    
+
         }
 
 
@@ -833,21 +831,6 @@ class TemplateConfiguration extends TemplateConfig
     }
 
 
-    public function getTemplatesWithNoDb()
-    {
-        $aTemplatesInUpload   =  Template::getUploadTemplates();
-        $aTemplatesInDb       =  $this->getAllDbTemplateFolders();
-        $aTemplatesWithoutDB  = array();
-
-        foreach ($aTemplatesInUpload as $sName => $sPath) {
-            if (! in_array($sName, $aTemplatesInDb) ){
-                $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);    // Get the manifest
-            }
-        }
-
-        return $aTemplatesWithoutDB;
-    }
-
     /**
      * Change the template name inside the configuration entries (called from template editor)
      * NOTE: all tests (like template exist, etc) are done from template controller.
@@ -860,24 +843,6 @@ class TemplateConfiguration extends TemplateConfig
         self::model()->updateAll(array( 'template_name' => $sNewName  ), "template_name = :oldname", array(':oldname'=>$sOldName));
     }
 
-    public function getAllDbTemplateFolders()
-    {
-        if (empty($this->allDbTemplateFolders)){
-
-            $oCriteria = new CDbCriteria;
-            $oCriteria->select = 'folder';
-            $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
-
-            $aAllDbTemplateFolders = array();
-            foreach ($oAllDbTemplateFolders as $oAllDbTemplateFolders){
-                $aAllDbTemplateFolders[] = $oAllDbTemplateFolders->folder;
-            }
-
-            $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
-        }
-
-        return $this->allDbTemplateFolders;
-    }
 
     /**
      * Proxy for the AR method to manage the inheritance

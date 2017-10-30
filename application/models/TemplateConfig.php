@@ -77,7 +77,9 @@ class TemplateConfig extends CActiveRecord
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
     protected $xmlFile;
 
+    public $allDbTemplateFolders = null;
 
+    public static $aTemplatesWithoutDB = null;
 
      /**
       * get the template API version
@@ -857,6 +859,45 @@ class TemplateConfig extends CActiveRecord
             throw new Exception($oNewTemplate->getErrors());
         }
     }
+
+    public function getAllDbTemplateFolders()
+    {
+        if (empty($this->allDbTemplateFolders)){
+
+            $oCriteria = new CDbCriteria;
+            $oCriteria->select = 'folder';
+            $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
+
+            $aAllDbTemplateFolders = array();
+            foreach ($oAllDbTemplateFolders as $oAllDbTemplateFolders){
+                $aAllDbTemplateFolders[] = $oAllDbTemplateFolders->folder;
+            }
+
+            $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
+        }
+
+        return $this->allDbTemplateFolders;
+    }
+
+
+    public function getTemplatesWithNoDb()
+    {
+        if (empty(self::$aTemplatesWithoutDB)){
+            $aTemplatesDirectories = Template::getAllTemplatesDirectories();
+            $aTemplatesInDb        = $this->getAllDbTemplateFolders();
+            $aTemplatesWithoutDB   = array();
+
+            foreach ($aTemplatesDirectories as $sName => $sPath) {
+                if (! in_array($sName, $aTemplatesInDb) ){
+                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);    // Get the manifest
+                }
+            }
+            self::$aTemplatesWithoutDB = $aTemplatesWithoutDB;
+        }
+
+        return self::$aTemplatesWithoutDB;
+    }
+
 
     // TODO: try to refactore most of those methods in TemplateConfiguration and TemplateManifest so we can define their body here.
     // It will consist in adding private methods to get the values of variables... See what has been done for createTemplatePackage
