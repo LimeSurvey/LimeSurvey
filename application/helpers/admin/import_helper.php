@@ -843,7 +843,7 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         }
         $newSurvey = Survey::model()->insertNewSurvey($insertdata);
         if($newSurvey->sid) {
-            $iNewSID = $results['newsid'];
+            $iNewSID = $results['newsid'] = $newSurvey->sid;
             $results['surveys']++;
         } else {
             $results['error'] = gT("Unable to import survey.");
