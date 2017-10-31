@@ -366,11 +366,6 @@ function SPSSGetValues ($field = array(), $qidattributes = null, $language ) {
         $answers['SPSStype'] = $spsstype;
         $answers['size'] = $size;
         return $answers;
-    } else {
-        /* Not managed (currently): url, IP, … */
-        return array(
-            'size' => stringSize($field['sql_name']),
-        );
     }
 }
 
