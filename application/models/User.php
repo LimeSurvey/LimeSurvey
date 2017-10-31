@@ -261,8 +261,8 @@ class User extends LSActiveRecord
             return true;
         }
         // It can be an old password
-        if ($this->password == hash('sha256', $password)) {
-            $this->setPassword($password,true);
+        if ($this->password == hash('sha256', $sPassword)) {
+            $this->setPassword($sPassword,true);
             return true;
         }
         return false;

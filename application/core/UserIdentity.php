@@ -29,13 +29,7 @@ class UserIdentity extends CUserIdentity
     {
         if (Yii::app()->getConfig("auth_webserver")==false || $this->username != "") {
             $user = User::model()->findByAttributes(array('users_name' => $this->username));
-            if ($user !== null) {
-                if (gettype($user->password)=='resource') {
-                    $sStoredPassword=stream_get_contents($user->password,-1,0);  // Postgres delivers bytea fields as streams :-o
-                } else {
-                    $sStoredPassword=$user->password;
-                }
-            } else {
+            if ($user === null) {
                 $this->errorCode = self::ERROR_USERNAME_INVALID;
                 return !$this->errorCode;
             }

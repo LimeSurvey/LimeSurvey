@@ -126,9 +126,8 @@ class Authdb extends AuthPluginBase
 
         $user = $this->api->getUserByName($username);
 
-        if ($user == null){
+        if ($user === null){
           $user = $this->api->getUserByEmail($username);
-          
           if (is_object($user)){
               $this->setUsername($user->users_name);
           }
@@ -139,22 +138,13 @@ class Authdb extends AuthPluginBase
             $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed for this user'));
             return;
         }
-        if ($user !== null and ($username==$user->users_name || $username==$user->email)) // Control of equality for uppercase/lowercase with mysql
-        {
-            if (gettype($user->password)=='resource')
-            {
-                $sStoredPassword=stream_get_contents($user->password,-1,0);  // Postgres delivers bytea fields as streams :-o
-            }
-            else
-            {
-                $sStoredPassword=$user->password;
-            }
-        }
-        else
+        
+        if ($user !== null && ($username!=$user->users_name && $username!=$user->email)) // Control of equality for uppercase/lowercase with mysql
         {
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
+
 
         if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && md5($onepass) == $user->one_time_pw)
         {
