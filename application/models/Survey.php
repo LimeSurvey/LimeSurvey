@@ -730,10 +730,10 @@ class Survey extends LSActiveRecord
     }
 
     /**
-     * Creates a new survey - does some basic checks of the suppplied data
+     * Creates a new survey - with a random sid
      *
      * @param array $aData Array with fieldname=>fieldcontents data
-     * @return integer The new survey id
+     * @return \Survey
      */
     public function insertNewSurvey($aData)
     {
@@ -746,22 +746,20 @@ class Survey extends LSActiveRecord
             else{
                 $aData['sid'] = randomChars(6, '123456789');
             }
-
             $isresult = self::model()->findByPk($aData['sid']);
         }
         while (!is_null($isresult));
 
         $survey = new self;
-        foreach ($aData as $k => $v)
+        foreach ($aData as $k => $v) {
             $survey->$k = $v;
+        }
         $sResult= $survey->save();
 
         if (!$sResult) {
-            tracevar($survey->getErrors());
-            tracevar($aData);
-            return false;
+            $survey->sid=null;
         }
-        else return $aData['sid'];
+        return $survey;
     }
 
     /**

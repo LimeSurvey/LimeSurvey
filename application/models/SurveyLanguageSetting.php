@@ -150,7 +150,7 @@ class SurveyLanguageSetting extends LSActiveRecord
             $aDefaultTextData['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
         }
 
-         if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
+        if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
     }
 
 
@@ -216,6 +216,7 @@ class SurveyLanguageSetting extends LSActiveRecord
 
     /**
      * @param array $data
+     * @todo : rename and fix this
      * @return bool
      */
     public function insertNewSurvey($data)
@@ -250,8 +251,9 @@ class SurveyLanguageSetting extends LSActiveRecord
     function insertSomeRecords($data)
     {
         $lang = new self;
-        foreach ($data as $k => $v)
+        foreach ($data as $k => $v) {
             $lang->$k = $v;
+        }
         return $lang->save();
     }
 }

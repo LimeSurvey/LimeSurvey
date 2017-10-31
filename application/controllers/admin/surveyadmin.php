@@ -2061,10 +2061,11 @@ class SurveyAdmin extends Survey_Common_Action
                 $aInsertData['wishSID'] = $iSurveyID;
             }
 
-            $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
-            if (!$iNewSurveyid){
-                die('Survey could not be created.');
+            $newSurvey = Survey::model()->insertNewSurvey($aInsertData);
+            if (!$newSurvey->sid){
+                die('Survey could not be created.'); // No error management ?
             }
+            $iNewSurveyId = $NewSurveyid->sid;
             // Prepare locale data for surveys_language_settings table
             $sTitle          = Yii::app()->request->getPost('surveyls_title');
             $sDescription    = Yii::app()->request->getPost('description');

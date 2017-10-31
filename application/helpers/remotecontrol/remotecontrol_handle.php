@@ -147,9 +147,11 @@ class remotecontrol_handle
 
                 try
                 {
-                    $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
-                    if (!$iNewSurveyid)
-                        return array('status' => 'Creation Failed');
+                    $newSurvey = Survey::model()->insertNewSurvey($aInsertData);
+                    if (!$newSurvey->sid) {
+                        return array('status' => 'Creation Failed'); // status are a string, another way to send errors ?
+                    }
+                    $iNewSurveyid = $newSurvey->sid;
 
                     $sTitle = html_entity_decode($sSurveyTitle, ENT_QUOTES, "UTF-8");
 
