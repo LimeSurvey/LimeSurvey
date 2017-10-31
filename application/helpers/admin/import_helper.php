@@ -2064,11 +2064,11 @@ function TSVImportSurvey($sFullFilePath)
     $newSurvey = Survey::model()->insertNewSurvey($surveyinfo) ; //or safeDie(gT("Error").": Failed to insert survey<br />");
 
     if (!$newSurvey->sid){
-        $results['error'] = CHtml::errorSummary($oSurvey,gT("Error(s) when try to create survey"));
+        $results['error'] = CHtml::errorSummary($newSurvey,gT("Error(s) when try to create survey"));
         $results['bFailed'] = true;
         return $results;
     }
-    $iNewSid = $newSurvey->sid;
+    $iNewSID = $newSurvey->sid;
     $surveyinfo['sid']=$iNewSID;
     $results['surveys']++;
     $results['newsid']=$iNewSID;
