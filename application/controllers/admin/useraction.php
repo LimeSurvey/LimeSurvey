@@ -382,15 +382,13 @@ class UserAction extends Survey_Common_Action
         $newUserFullName = empty($postUser['full_name']) ? null : $postUser['full_name'];
         $newPassword = empty($postUser['password']) ? null : $postUser['password'];
         $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-        $addsummary = '';
         $aViewUrls = array();
-
         if ( (
                 Permission::model()->hasGlobalPermission('superadmin','read') // superadmin have this right
                 || $user_uid == Yii::app()->session['loginID'] // always allow update himself
                 || ($oUser->parent_id == Yii::app()->session['loginID'] && Permission::model()->hasGlobalPermission('users','update')) // Allow to updated created user
             )
-            && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)// Disallow update password in demo mode
+            && !(Yii::app()->getConfig("demoMode") == true && $user_uid == 1)// Disallow update password in demo mode
             ) {
 
             $email = html_entity_decode($newUsermail, ENT_QUOTES, 'UTF-8');
@@ -398,7 +396,7 @@ class UserAction extends Survey_Common_Action
             $full_name = html_entity_decode($newUserFullName, ENT_QUOTES, 'UTF-8');
             if (!validateEmailAddress($email)) {
                 Yii::app()->setFlashMessage( gT("Could not modify user data."). ' '. gT("Email address is not valid."),'error');
-                $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
+                $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$user_uid));
             } else {
                 $oUser->email= $email;
                 $oUser->full_name= $full_name;
@@ -409,7 +407,7 @@ class UserAction extends Survey_Common_Action
 
                 if (empty($sPassword)) {
                     Yii::app()->setFlashMessage( gT("Success!") .' <br/> '.gT("Password") . ": (" . gT("Unchanged") . ")", 'success');
-                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$user_uid));
 
                 } elseif ($uresult && !empty($sPassword)) {
                     // When saved successfully
@@ -700,6 +698,7 @@ class UserAction extends Survey_Common_Action
         {
            $aLanguageData[$langkey]=html_entity_decode($languagekind['nativedescription'].' - '.$languagekind['description'],ENT_COMPAT,'utf-8');
         }
+        $aData = array();
         $aData['aLanguageData'] = $aLanguageData;
         $aData['sSavedLanguage'] = $oUser->lang;
         $aData['sUsername'] = $oUser->users_name;
