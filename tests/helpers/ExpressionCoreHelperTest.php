@@ -2,8 +2,6 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * Test expression evaluation in PHP vs JS.
  * @since 2017-06-16
