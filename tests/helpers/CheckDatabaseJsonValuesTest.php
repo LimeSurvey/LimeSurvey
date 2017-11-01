@@ -3,8 +3,8 @@
 namespace ls\tests;
 
 /**
- * Test expression evaluation in PHP vs JS.
- * @since 2017-06-16
+ * Check the JSON saved in database.
+ * @since 2017-11-01
  * @group json
  */
 class CheckDatabaseJsonValuesTest extends TestBaseClass
