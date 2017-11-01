@@ -271,7 +271,7 @@ class TemplateConfiguration extends TemplateConfig
         $criteria=new CDbCriteria;
 
         //Don't show surveyspecifi settings on the overview
-        //$criteria->addCondition('sid IS NULL');
+        $criteria->addCondition('sid IS NULL');
         $criteria->addCondition('gsid IS NULL');
 
         $criteria->compare('id',$this->id);
