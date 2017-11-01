@@ -47,7 +47,9 @@ class TemplateControllerTest extends TestBaseClass
     /**
      * @todo Copy template folder that does not exist.
      */
+    /*
     public function testCopyWrongFolder()
     {
     }
+     */
 }
