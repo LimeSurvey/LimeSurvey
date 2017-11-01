@@ -187,4 +187,37 @@ class TestHelper extends TestCase
         \Yii::app()->setComponent('db', $newConfig['components']['db'], false);
         return true;
     }
+
+    /**
+     * @param int $version
+     * @return void
+     */
+    public function updateDbFromVersion($version)
+    {
+        $result = $this->connectToNewDatabase('__test_update_helper_' . $version);
+        $this->assertTrue($result, 'Could connect to new database');
+
+        // Get InstallerController.
+        $inst = new \InstallerController('foobar');
+        $inst->connection = \Yii::app()->db;
+
+        // Check SQL file.
+        $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
+        $this->assertFileExists($file);
+
+        // Run SQL install file.
+        $result = $inst->_executeSQLFile($file, 'lime_');
+        $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
+
+        // Run upgrade.
+        $result = \db_upgrade_all($version);
+
+        // Check error messages.
+        $flashes = \Yii::app()->user->getFlashes();
+        if ($flashes) {
+            print_r($flashes);
+        }
+        $this->assertEmpty($flashes, 'No flash error messages');
+        $this->assertTrue($result, 'Upgrade successful');
+    }
 }
