@@ -57,8 +57,8 @@ class DateTimeValidationTest extends TestBaseClass
      */
     public function setUp()
     {
-        if (empty(getenv('SUBDOMAIN'))) {
-            $this->markTestSkipped('Must specify SUBDOMAIN environment variable to run this test');
+        if (empty(getenv('DOMAIN'))) {
+            die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
 
         $capabilities = DesiredCapabilities::firefox();
@@ -97,15 +97,15 @@ class DateTimeValidationTest extends TestBaseClass
      */
     public function testBasic()
     {
-        $subdomain = getenv('SUBDOMAIN');
-        if (empty($subdomain)) {
-            $subdomain = '';
+        $domain = getenv('DOMAIN');
+        if (empty($domain)) {
+            $domain = '';
         }
 
         $this->webDriver->get(
             sprintf(
-                'http://localhost/%s/index.php/%d?newtest=Y&lang=pt',
-                $subdomain,
+                'http://%s/index.php/%d?newtest=Y&lang=pt',
+                $domain,
                 self::$surveyId
             )
         );
