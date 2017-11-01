@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @since 2017-06-13
+ * @group dateforward
  */
 class DateTimeForwardBackTest extends TestBaseClass
 {
@@ -19,6 +20,9 @@ class DateTimeForwardBackTest extends TestBaseClass
      */
     public static function setupBeforeClass()
     {
+        $_POST = [];
+        $_SESSION = [];
+
         \Yii::app()->session['loginID'] = 1;
 
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_917744.lss';

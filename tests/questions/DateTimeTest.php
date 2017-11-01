@@ -20,6 +20,9 @@ class DateTimeTest extends TestBaseClass
      */
     public static function setupBeforeClass()
     {
+        $_POST = [];
+        $_SESSION = [];
+
         \Yii::app()->session['loginID'] = 1;
 
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_975622.lss';
@@ -113,9 +116,13 @@ class DateTimeTest extends TestBaseClass
 
     /**
      * Test wrong date input and error message.
+     * @group datewronginput
      */
     public function testWrongInput()
     {
+        $contr = new DummyController('dummyid');
+        \Yii::app()->setController($contr);
+
         list($question, $group, $sgqa) = self::$testHelper->getSgqa('q2', self::$surveyId);
 
         $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
