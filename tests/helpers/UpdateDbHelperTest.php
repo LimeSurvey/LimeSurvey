@@ -48,56 +48,6 @@ class UpdateDbHelperTest extends TestBaseClass
     }
 
     /**
-     * Test the SQL install script.
-     * Not used.
-     */
-    public function testInstallSql()
-    {
-        // SQL not used anymore, see the PHP file.
-        $this->markTestSkipped();
-
-        $db = \Yii::app()->getDb();
-
-        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        $result = self::$testHelper->connectToNewDatabase('__test_install_script');
-        $this->assertTrue($result, 'Could connect to new database');
-
-        // Get InstallerController.
-        $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
-
-        // Check SQL file.
-        $file = \Yii::app()->basePath . '/../installer/sql/create-mysql.sql';
-        $this->assertFileExists($file);
-
-        // Run SQL install file.
-        $result = $inst->_executeSQLFile($file, 'lime_');
-        if ($result) {
-            print_r($result);
-        }
-        $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
-
-        // Dump database to file.
-        /*
-        $output = array();
-        $result = exec(
-            sprintf(
-                'mysqldump -u %s -p%s __test_install_script > tests/data/tmp/__test_install_script-dump.sql',
-                $config['components']['db']['username'],
-                $config['components']['db']['password']
-            ),
-            $output
-        );
-        $this->assertEmpty($output, 'No output from mysqldump');
-        $this->assertEmpty($result, 'No last line output from mysqldump');
-         */
-
-        // Connect to old database.
-        \Yii::app()->setComponent('db', $config['components']['db'], false);
-        $db->setActive(true);
-    }
-
-    /**
      * Run the database PHP install script.
      * @group install
      */
