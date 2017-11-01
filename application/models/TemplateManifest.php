@@ -266,30 +266,53 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function importManifest($sTemplateName, $aDatas=array()  )
     {
-        $oTemplate             = Template::getTemplateConfiguration($sTemplateName, null, null, true);
+        $oTemplate                  = Template::getTemplateConfiguration($sTemplateName, null, null, true);
+        $aDatas['extends']          = $bExtends = (string) $oTemplate->config->metadatas->extends;
 
-        $aDatas['api_version']       = (string) $oTemplate->config->metadatas->apiVersion;
-        $aDatas['extends']           = (string) $oTemplate->config->metadatas->extends;
-        $aDatas['author_email']      = (string) $oTemplate->config->metadatas->authorEmail;
-        $aDatas['author_url']        = (string) $oTemplate->config->metadatas->authorUrl;
-        $aDatas['copyright']         = (string) $oTemplate->config->metadatas->copyright;
-        $aDatas['version']           = (string) $oTemplate->config->metadatas->version;
-        $aDatas['license']           = (string) $oTemplate->config->metadatas->license;
-        $aDatas['view_folder']       = (string) $oTemplate->config->engine->viewdirectory;
-        $aDatas['files_folder']      = (string) $oTemplate->config->engine->filesdirectory;
+        // Metadas is never inherited
+        $aDatas['api_version']      = (string) $oTemplate->config->metadatas->apiVersion;
+        $aDatas['author_email']     = (string) $oTemplate->config->metadatas->authorEmail;
+        $aDatas['author_url']       = (string) $oTemplate->config->metadatas->authorUrl;
+        $aDatas['copyright']        = (string) $oTemplate->config->metadatas->copyright;
+        $aDatas['version']          = (string) $oTemplate->config->metadatas->version;
+        $aDatas['license']          = (string) $oTemplate->config->metadatas->license;
 
-        $aDatas['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
-        $aDatas['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
-        $aDatas['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
+        // Engine, files, and options can be inherited from a moter template
+        // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)
+        $oREngineTemplate = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'engine' )  : $oTemplate;
+        $oRFilesTemplate  = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'files' )   : $oTemplate;
+        $oROptionTemplate = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'options' ) : $oTemplate;
 
-        $aDatas['cssframework_name'] = (string) $oTemplate->config->engine->cssframework->name;
-        $aDatas['cssframework_css']  = self::formatArrayFields($oTemplate, 'engine', 'cssframework_css');
-        $aDatas['cssframework_js']   = self::formatArrayFields($oTemplate, 'engine', 'cssframework_js');
-        $aDatas['packages_to_load']  = self::formatArrayFields($oTemplate, 'engine', 'packages');
-
-        $aDatas['aOptions']          = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0  )?array():$oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
+        $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
+        $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
+        $aDatas['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
+        $aDatas['cssframework_css']  = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
+        $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
+        $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
+        $aDatas['files_css']         = self::formatArrayFields($oRFilesTemplate, 'files', 'css');
+        $aDatas['files_js']          = self::formatArrayFields($oRFilesTemplate, 'files', 'js');
+        $aDatas['files_print_css']   = self::formatArrayFields($oRFilesTemplate, 'files', 'print_css');
+        $aDatas['aOptions']          = (!empty($oROptionTemplate->config->options[0]) && count($oROptionTemplate->config->options[0]) == 0  )?array():$oROptionTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
 
         return parent::importManifest($sTemplateName, $aDatas );
+    }
+
+    public static function getTemplateForXPath($oTemplate, $sFieldPath)
+    {
+        $oRTemplate = $oTemplate;
+        while (!is_object($oRTemplate->config->$sFieldPath) || empty($oRTemplate->config->$sFieldPath)) {
+            $sRTemplateName = (string) $oTemplate->config->metadatas->extends;
+            if (!empty($sRTemplateName)){
+                $oRTemplate = Template::getTemplateConfiguration($sRTemplateName, null, null, true);
+                if (!is_a($oRTemplate, 'TemplateManifest')){
+                    // Think about what to do..
+                    throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sFieldPath'.");
+
+                }
+            }
+        }
+
+        return $oRTemplate;
     }
 
     /**
