@@ -57,8 +57,8 @@ class DateTimeValidationTest extends TestBaseClass
      */
     public function setUp()
     {
-        if (empty(getenv('URL'))) {
-            $this->markTestSkipped('Must specify URL environment variable to run this test');
+        if (empty(getenv('SUBDOMAIN'))) {
+            $this->markTestSkipped('Must specify SUBDOMAIN environment variable to run this test');
         }
 
         $capabilities = DesiredCapabilities::firefox();
@@ -97,7 +97,18 @@ class DateTimeValidationTest extends TestBaseClass
      */
     public function testBasic()
     {
-        $this->webDriver->get('http://localhost/lime25/limesurvey/index.php/118355?newtest=Y&lang=pt');
+        $subdomain = getenv('SUBDOMAIN');
+        if (empty($subdomain)) {
+            $subdomain = '';
+        }
+
+        $this->webDriver->get(
+            sprintf(
+                'http://localhost/%s/index.php/%d?newtest=Y&lang=pt',
+                $subdomain,
+                self::$surveyId
+            )
+        );
         $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
         $this->assertNotEmpty($submit);
         $this->webDriver->wait(10, 1000)->until(
