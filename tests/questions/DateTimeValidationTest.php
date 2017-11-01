@@ -106,10 +106,11 @@ class DateTimeValidationTest extends TestBaseClass
         $submit->click();
 
         // After submit we should see the complete page.
-        $div = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::className('completed-text'));
-        $this->assertNotEmpty($div);
-        $this->webDriver->wait(10, 1000)->until(
-            WebDriverExpectedCondition::visibilityOf($div)
-        );
+        try {
+            $div = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::className('completed-text'));
+            $this->assertNotEmpty($div);
+        } catch (Facebook\WebDriver\Exception\NoSuchElementException $ex) {
+            $this->assertTrue(false, $ex->getMessage());
+        }
     }
 }
