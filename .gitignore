@@ -50,6 +50,7 @@ third_party/**/gulpfile.js
 third_party/**/doctrine
 third_party/**/facebook
 third_party/**/bin
+third_party/**/myclabs
 third_party/**/phar-io
 third_party/**/phpdocumentor
 third_party/**/phpspec
