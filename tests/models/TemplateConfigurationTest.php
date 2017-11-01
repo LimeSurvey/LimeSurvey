@@ -15,11 +15,12 @@ class TemplateConfigurationTest extends TestBaseClass
     /**
      * Issue #12795.
      */
-    /*
     public function testCopyMinimalTemplate()
     {
         $tempConf = \TemplateConfiguration::getInstanceFromTemplateName('default');
         $tempConf->prepareTemplateRendering('default');
+
+        // No PHP notices.
+        $this->assertTrue(true);
     }
-     */
 }

@@ -49,14 +49,14 @@ class DateTimeValidationTest extends TestBaseClass
 
         // Make sure we can preview without being logged in.
         self::$oldSetting = \SettingGlobal::model()->findByPk('surveyPreview_require_Auth');
-        $result = \SettingGlobal::model()->updateByPk('surveyPreview_require_Auth', ['stg_value' => 0]);
+        \SettingGlobal::model()->updateByPk('surveyPreview_require_Auth', ['stg_value' => 0]);
 
         // Possibly this setting does not exist yet.
-        if (!$result) {
+        if (empty(self::$oldSetting)) {
             $setting = new \SettingGlobal();
             $setting->stg_name = 'surveyPreview_require_Auth';
             $setting->stg_value = 0;
-            $result = $setting->save();
+            $setting->save();
         }
     }
 
