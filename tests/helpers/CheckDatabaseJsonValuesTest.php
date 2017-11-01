@@ -22,12 +22,28 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
             // Only this error is OK.
             self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
         }
+
+        try {
+            $dbo->createCommand('DROP DATABASE __test_update_helper_258')->execute();
+        } catch (\CDbException $ex) {
+            $msg = $ex->getMessage();
+            // Only this error is OK.
+            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
+        }
+
+        try {
+            $dbo->createCommand('DROP DATABASE __test_update_helper_315')->execute();
+        } catch (\CDbException $ex) {
+            $msg = $ex->getMessage();
+            // Only this error is OK.
+            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
+        }
     }
 
     /**
      * 
      */
-    public function testBasic()
+    public function testCreate()
     {
         $db = \Yii::app()->getDb();
 
@@ -49,6 +65,43 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
         $this->checkTemplateConfigurationJson($inst->connection);
 
         // Connect to old database.
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $db->setActive(true);
+    }
+
+    /**
+     * 
+     */
+    public function testUpdateFrom258()
+    {
+        $connection = self::$testHelper->updateDbFromVersion(258);
+
+        // Check JSON.
+        $this->checkMenuEntriesJson($connection);
+        $this->checkTemplateConfigurationJson($connection);
+
+        $db = \Yii::app()->getDb();
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $db->setActive(true);
+    }
+
+    /**
+     * 
+     */
+    public function testUpdateFrom315()
+    {
+        // TODO: Need to fix updatedb_helper to fix broken JSON.
+        $this->markTestSkipped();
+
+        $connection = self::$testHelper->updateDbFromVersion(315);
+
+        // Check JSON.
+        $this->checkMenuEntriesJson($connection);
+        $this->checkTemplateConfigurationJson($connection);
+
+        $db = \Yii::app()->getDb();
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
     }
@@ -90,10 +143,10 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
             {{template_configuration}}'
         )->query();
         foreach ($data as $row) {
-            foreach ($row as $jsonString) {
+            foreach ($row as $field => $jsonString) {
                 if (!empty($jsonString)) {
                     $json = json_decode($jsonString);
-                    $this->assertNotNull($json, print_r($row, true));
+                    $this->assertNotNull($json, $field . ': ' . print_r($row, true));
                 } else {
                     // Nothing to check.
                 }

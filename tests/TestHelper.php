@@ -163,6 +163,14 @@ class TestHelper extends TestCase
         $oldDatabase = $matches[1];
 
         try {
+            $db->createCommand('DROP DATABASE ' . $databaseName)->execute();
+        } catch (\CDbException $ex) {
+            $msg = $ex->getMessage();
+            // Only this error is OK.
+            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
+        }
+
+        try {
             $result = $db->createCommand(
                 sprintf(
                     'CREATE DATABASE %s DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
@@ -190,7 +198,7 @@ class TestHelper extends TestCase
 
     /**
      * @param int $version
-     * @return void
+     * @return CDbConnection
      */
     public function updateDbFromVersion($version)
     {
@@ -207,7 +215,7 @@ class TestHelper extends TestCase
 
         // Run SQL install file.
         $result = $inst->_executeSQLFile($file, 'lime_');
-        $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
+        $this->assertEquals([], $result, 'No error messages from _executeSQLFile' . print_r($result, true));
 
         // Run upgrade.
         $result = \db_upgrade_all($version);
@@ -219,5 +227,7 @@ class TestHelper extends TestCase
         }
         $this->assertEmpty($flashes, 'No flash error messages');
         $this->assertTrue($result, 'Upgrade successful');
+
+        return $inst->connection;
     }
 }

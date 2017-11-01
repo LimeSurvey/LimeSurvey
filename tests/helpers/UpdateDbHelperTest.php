@@ -101,7 +101,7 @@ class UpdateDbHelperTest extends TestBaseClass
      * Run the database PHP install script.
      * @group install
      */
-    public function testInstallPHP()
+    public function testInstallPhp()
     {
         $db = \Yii::app()->getDb();
 
@@ -179,5 +179,11 @@ class UpdateDbHelperTest extends TestBaseClass
     {
         self::$testHelper->updateDbFromVersion(315);
 
+        $db = \Yii::app()->getDb();
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+
+        // Connect to old database.
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $db->setActive(true);
     }
 }
