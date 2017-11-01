@@ -301,14 +301,16 @@ class TemplateManifest extends TemplateConfiguration
     {
         $oRTemplate = $oTemplate;
         while (!is_object($oRTemplate->config->$sFieldPath) || empty($oRTemplate->config->$sFieldPath)) {
-            $sRTemplateName = (string) $oTemplate->config->metadatas->extends;
+            $sRTemplateName = (string) $oRTemplate->config->metadatas->extends;
+
             if (!empty($sRTemplateName)){
                 $oRTemplate = Template::getTemplateConfiguration($sRTemplateName, null, null, true);
                 if (!is_a($oRTemplate, 'TemplateManifest')){
                     // Think about what to do..
                     throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sFieldPath'.");
-
                 }
+            }else{
+                throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sFieldPath'.");
             }
         }
 
