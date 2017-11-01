@@ -280,8 +280,7 @@ class TemplateManifest extends TemplateConfiguration
         // Engine, files, and options can be inherited from a moter template
         // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)
         $oREngineTemplate = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'engine' )  : $oTemplate;
-        $oRFilesTemplate  = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'files' )   : $oTemplate;
-        $oROptionTemplate = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'options' ) : $oTemplate;
+
 
         $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
         $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
@@ -289,10 +288,18 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['cssframework_css']  = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
         $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
         $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
-        $aDatas['files_css']         = self::formatArrayFields($oRFilesTemplate, 'files', 'css');
-        $aDatas['files_js']          = self::formatArrayFields($oRFilesTemplate, 'files', 'js');
-        $aDatas['files_print_css']   = self::formatArrayFields($oRFilesTemplate, 'files', 'print_css');
-        $aDatas['aOptions']          = (!empty($oROptionTemplate->config->options[0]) && count($oROptionTemplate->config->options[0]) == 0  )?array():$oROptionTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
+
+
+        // If empty in manifest, it should be the field in db, so the Mother Template css/js files will be used...
+        if (is_object($oTemplate->config->files)){
+            $aDatas['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
+            $aDatas['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
+            $aDatas['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
+        }else{
+            $aDatas['files_css'] = $aDatas['files_js'] = $aDatas['files_print_css'] = null;
+        }
+
+        $aDatas['aOptions']          = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0  )?array():$oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
 
         return parent::importManifest($sTemplateName, $aDatas );
     }
