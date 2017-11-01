@@ -46,6 +46,7 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
 
         // Check JSON.
         $this->checkMenuEntriesJson($inst->connection);
+        $this->checkTemplateConfigurationJson($inst->connection);
 
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
@@ -53,9 +54,10 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     }
 
     /**
-     * 
+     * @param CDbConnection $connection
+     * @return void
      */
-    protected function checkMenuEntriesJson($connection)
+    protected function checkMenuEntriesJson(\CDbConnection $connection)
     {
         $data = $connection->createCommand('SELECT data from {{surveymenu_entries}}')->query();
         foreach ($data as $row) {
@@ -65,6 +67,37 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
                 $this->assertNotNull($json, print_r($row, true));
             } else {
                 // Nothing to check.
+            }
+        }
+    }
+
+    /**
+     * @param CDbConnection $connection
+     * @return void
+     */
+    protected function checkTemplateConfigurationJson(\CDbConnection $connection)
+    {
+        $data = $connection->createCommand(
+            'SELECT
+                files_css,
+                files_js,
+                files_print_css,
+                options,
+                cssframework_css,
+                cssframework_js ,
+                packages_to_load
+            FROM
+            {{template_configuration}}'
+        )->query();
+        foreach ($data as $row) {
+            foreach ($row as $jsonString) {
+                if (!empty($jsonString)) {
+                    $json = json_decode($jsonString);
+                    $this->assertNotNull($json, print_r($row, true));
+                } else {
+                    // Nothing to check.
+                }
+
             }
         }
     }
