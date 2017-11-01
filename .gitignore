@@ -99,7 +99,7 @@ enabletests
 
 ## Ignore test tmp files
 /tests/data/tmp/**
-
+/vendor/**
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
