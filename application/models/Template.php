@@ -332,40 +332,17 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateListWithPreviews()
     {
-        $sUserTemplateRootDir     = Yii::app()->getConfig("usertemplaterootdir");
-        $standardtemplaterootdir = Yii::app()->getConfig("standardtemplaterootdir");
-        $usertemplaterooturl     = Yii::app()->getConfig("usertemplaterooturl");
-        $standardtemplaterooturl = Yii::app()->getConfig("standardtemplaterooturl");
 
         $aTemplateList = array();
-        $aStandardTemplates = self::getStandardTemplateList();
 
-        foreach ($aStandardTemplates as $sTemplateName){
-            $oTemplate  = self::model()->findByPk($sTemplateName);
+        $model         = new TemplateConfiguration();
+        $oTemplateList =  TemplateConfiguration::model()->search();
+        $oTemplateList->setPagination(false);
 
-            if (is_object($oTemplate)) {
-                $aTemplateList[$sTemplateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$oTemplate->folder;
-                $aTemplateList[$sTemplateName]['preview']   = $standardtemplaterooturl.'/'.$oTemplate->folder.'/preview.png';
-            }
+        foreach ($oTemplateList->getData() as $oTemplate){
+            $aTemplateList[$oTemplate->template->name]['preview']   = $oTemplate->preview;
+
         }
-
-        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)) {
-            while (false !== ($sTemplatePath = readdir($handle))) {
-                // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sUserTemplateRootDir/$sTemplatePath") && $sTemplatePath != "." && $sTemplatePath != ".." && $sTemplatePath!=".svn") {
-
-
-                    $oTemplate  = self::model()->find('folder=:folder', array(':folder'=>$sTemplatePath));
-
-                    if (is_object($oTemplate)){
-                        $aTemplateList[$oTemplate->name]['directory'] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
-                        $aTemplateList[$oTemplate->name]['preview'] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath.'/'.'preview.png';
-                    }
-                }
-            }
-            closedir($handle);
-        }
-        ksort($aTemplateList);
 
         return $aTemplateList;
     }

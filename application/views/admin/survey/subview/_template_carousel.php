@@ -17,8 +17,8 @@
 
                 <?php foreach($templates as $key=>$template):?>
                     <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $oSurvey->template==htmlspecialchars($key) ): ?>
-                    <div class="item text-center <?php if($key==$oSurvey->template){echo ' active ';}else{echo ' inactive ';}?>" id="template-big-<?php echo $key;?>">
-                        <img class="img-responsive imgSelectTemplate" src="<?php echo $template['preview']; ?>" alt="<?php echo $key;?>">
+                    <div class="item text-center <?php if($key==$oSurvey->template){echo ' active ';}else{echo ' inactive ';}?>" id="template-big-<?php echo $key;?>">                        
+                        <?php echo $template['preview']; ?>
                             <?php if($key==$oSurvey->template):?>
                                 <button
                                     class="selectTemplate btn btn-default btn-success btn-xs disabled"
@@ -49,7 +49,7 @@
                             <?php foreach($templates as $key=>$template):?>
                                 <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $oSurvey->template==htmlspecialchars($key) ): ?>
                                 <li class="template-miniature <?php if($key==$oSurvey->template){echo ' active';}?>" data-big="#template-big-<?php echo $key;?>">
-                                    <img src="<?php echo $template['preview']; ?>" alt="<?php echo $key;?>"  >
+                                    <?php echo $template['preview']; ?>
                                 </li>
                             <?php endif; ?>
                             <?php endforeach;?>
