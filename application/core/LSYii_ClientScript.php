@@ -167,7 +167,7 @@ class LSYii_ClientScript extends CClientScript {
      * @param string $name
      * @return void|static
      */
-    public function registerPackage($name, $position = LSYii_ClientScript::POS_HEAD)
+    public function registerPackage($name)
     {
         if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
             parent::registerPackage( $name );
