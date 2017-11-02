@@ -59,7 +59,6 @@ third_party/**/sebastian
 third_party/**/symfony
 third_party/**/theseer
 third_party/**/webmozart
-third_party/**/composer
 selenium-server-standalone*
 geckodriver
 

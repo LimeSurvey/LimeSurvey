@@ -113,8 +113,7 @@ return array(
             'ckeditor.js',
         ),
         'depends' => array(
-            'jquery',
-            'bootstrap'
+            'adminbasics',
         ),
     ),
     'ckeditoradditions' => array(
@@ -137,10 +136,6 @@ return array(
     'adminpanel' => array(
         'devBaseUrl' => 'assets/packages/adminpanel/',
         'basePath' => 'core.adminpanel',
-        'coreScriptPosition'=>CClientScript::POS_END,
-        'defaultScriptFilePosition' =>CClientScript::POS_END,
-        'defaultScriptPosition' =>CClientScript::POS_END,
-        'position' =>CClientScript::POS_END,
         'js' => array(
             'build/lsadminpanel'.$minVersion.'.js',
             'lib/surveysettings.js'
@@ -149,16 +144,12 @@ return array(
             'build/lsadminpanel.css'
         ),
         'depends' => array(
-            'pjax',
-            'jquery'
+            'adminbasics'
         )
     ),
     'lstutorial' => array(
         'devBaseUrl' => 'assets/packages/lstutorial/',
         'basePath' => 'core.lstutorial',
-        'coreScriptPosition'=>CClientScript::POS_END,
-        'defaultScriptFilePosition' =>CClientScript::POS_END,
-        'defaultScriptPosition' =>CClientScript::POS_END,
         'position' =>CClientScript::POS_END,
         'js' => array(
             'build/lstutorial'.$minVersion.'.js',
@@ -167,8 +158,7 @@ return array(
             'build/lstutorial.css'
         ),
         'depends' => array(
-            'pjax',
-            'jquery'
+            'adminbasics',
         )
     ),
     'adminbasics' => array(
@@ -181,7 +171,6 @@ return array(
         'depends' => array(
             'pjax',
             'jquery',
-            'adminpanel'
         )
     ),
     'surveymenufunctions' => array(
@@ -191,8 +180,7 @@ return array(
             'surveymenufunctionswrapper'.$minVersion.'.js',
         ),
         'depends' => array(
-            'pjax',
-            'jquery'
+            'adminbasics',
         )
     ),
     

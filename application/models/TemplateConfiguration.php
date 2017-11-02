@@ -581,8 +581,9 @@ class TemplateConfiguration extends TemplateConfig
                 if (file_exists($this->path.$sFileName)){
                     Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFile );
                 }else{
-                    if (!Yii::app()->clientScript->IsFileInPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName)){
-                        Yii::app()->clientScript->addFileToPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
+                    $oTemplate = $this->getTemplateForFile($sFileName, $this);
+                    if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)){
+                        Yii::app()->clientScript->addFileToPackage($oTemplate->sPackageName, $sType, $sFileName);
                         unset($aSettings[$key]);
                     }
                 }

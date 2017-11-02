@@ -330,13 +330,16 @@ function validatefilename (form, strmessage )
 
 function doToolTip()
 {
+    $('.btntooltip').tooltip('destroy');
     $('.btntooltip').tooltip();
 
     // Since you can only have one option per data-toggle,
     // we need this to enable both modal and toggle on one
     // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
+    $('[data-tooltip="true"]').tooltip('destroy');
     $('[data-tooltip="true"]').tooltip();
 
+    $('[data-toggle="tooltip"]').tooltip('destroy')
     $('[data-toggle="tooltip"]').tooltip()
 
     // ToolTip on menu
@@ -702,7 +705,7 @@ function linksInDialog()
 {
     $(function () {
         var iframe = $('<iframe id="dialog" title='+$(this).attr("title")+' allowfullscreen></iframe>');
-        var dialog = $("<div></div>").append(iframe).appendTo("body").dialog({
+        var dialog = $("<div></div>").append(iframe).appendTo("#pjax-content").dialog({
             autoOpen: false,
             modal: false,
             resizable: true,
