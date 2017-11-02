@@ -36,6 +36,7 @@
             <add>scripts/template.js</add>
             <add>scripts/material.js</add>
             <add>scripts/ripples.min.js</add>
+            <add>scripts/ajaxify.js</add>
         </js>
         <print_css>
             <add>css/print_template.css</add>

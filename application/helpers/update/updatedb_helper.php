@@ -488,7 +488,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 319) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->update('{{surveymenu_entries}}',array('data'=>'{"render": {"link": { "pjaxed": true}}}'),"name='panelintegration'");
+            $oDB->createCommand()->update('{{surveymenu_entries}}',array('data'=>'{"render": {"link": { "pjaxed": false}}}'),"name='panelintegration'");
 
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>319),"stg_name='DBVersion'");
 
@@ -653,12 +653,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
 
             $headerArray = ['template_name','sid','gsid','uid','files_css','files_js','files_print_css','options','cssframework_name','cssframework_css','cssframework_js','packages_to_load','packages_ltr','packages_rtl'];
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['default',NULL,NULL,NULL,'{"add": ["css/animate.css","css/template.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','["pjax"]','','']));
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['default',NULL,NULL,NULL,'{"add": ["css/animate.css","css/template.css"]}','{"add": ["scripts/template.js", "scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','["pjax"]','','']));
 
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','["pjax"]','','']));
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','["pjax"]','','']));
 
             $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['monochrome',NULL,NULL,NULL,'{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}','{"add":["scripts/template.js","scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{}','','["pjax"]','','']));            
 
+            $oDB->createCommand()->update('{{surveymenu_entries}}',array('data'=>'{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'),"name='template_options'");
+                
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>325),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
