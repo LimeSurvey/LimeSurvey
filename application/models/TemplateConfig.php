@@ -181,7 +181,6 @@ class TemplateConfig extends CActiveRecord
              'css'         => $aCssFiles,
              'js'          => $aJsFiles,
              'depends'     => $aDepends,
-             'position'    => LSYii_ClientScript::POS_BEGIN
          ) );
      }
 
