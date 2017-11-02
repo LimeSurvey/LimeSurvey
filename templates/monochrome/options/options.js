@@ -3,6 +3,7 @@ var prepare = function(){
     var deferred = $.Deferred();
     //activate the bootstrap switch for checkboxes
     $('.action_activate_bootstrapswitch').bootstrapSwitch();
+
     //get option Object from Template configuration options
     var optionObject = {"general_inherit" : 1}
     var generalInherit = function(){return $('#TemplateConfiguration_options').val() === 'inherit'; };
@@ -15,6 +16,7 @@ var prepare = function(){
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
     };
+
     if(generalInherit()){
         $('#general_inherit_on').prop('checked',true).trigger('change').closest('label').addClass('active');
         $('.action_hide_on_inherit').addClass('hidden');
@@ -90,6 +92,7 @@ var prepare = function(){
             $('.action_hide_on_inherit').removeClass('hidden');
             updateFieldSettings();
         });
+
         //hotswapping the fields
         $('.action_update_options_string_form').find('.selector_option_value_field').on('change', function(evt){
             optionObject[$(this).attr('name')] = $(this).val();
@@ -98,6 +101,7 @@ var prepare = function(){
             }
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
+
         //hotswapping the radio fields
         $('.action_update_options_string_form').find('.selector_option_radio_field').on('change', function(evt){
             $(this).prop('checked',true);
@@ -110,12 +114,13 @@ var prepare = function(){
         if($('#simple_edit_add_css').length>0){
             var currentThemeObject = 'inherit';
             if($('#TemplateConfiguration_files_css').val() !== 'inherit'){
+
+                currentThemeObject = {"add" : ['css/animate.css','css/ajaxify.css', 'css/sea_green.css', 'css/template.css']};
                 try{
                     currentThemeObject = JSON.parse($('#TemplateConfiguration_files_css').val());
                 } catch(e){ console.error('No valid monochrom theme field!'); }
 
-                currentThemeObject = {"add" : ['css/animate.css','css/ajaxify.css', 'css/template.css', '']};
-                $('#simple_edit_add_css').val(currentThemeObject.add[0][1]);
+                $('#simple_edit_add_css').val(currentThemeObject.add[2]);
             }
 
 
