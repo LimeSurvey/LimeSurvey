@@ -340,11 +340,7 @@ class Template extends LSActiveRecord
         $oTemplateList->setPagination(false);
 
         foreach ($oTemplateList->getData() as $oTemplate){
-            if ($oTemplate->template) {
-                $aTemplateList[$oTemplate->template->name]['preview']   = $oTemplate->preview;
-            } else {
-                // TODO: Why is template not defined?
-            }
+            $aTemplateList[$oTemplate->template_name]['preview']   = $oTemplate->preview;
         }
 
         return $aTemplateList;
