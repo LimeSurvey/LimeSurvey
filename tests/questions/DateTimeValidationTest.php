@@ -4,7 +4,7 @@ namespace ls\tests;
 
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
-use \Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @since 2017-10-27
@@ -55,8 +55,8 @@ class DateTimeValidationTest extends TestBaseClass
             die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
 
-        $capabilities = DesiredCapabilities::firefox();
-        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/wd/hub', $capabilities);
+        $capabilities = DesiredCapabilities::phantomjs();
+        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/', $capabilities);
     }
 
     /**
