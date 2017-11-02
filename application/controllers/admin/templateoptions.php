@@ -241,7 +241,7 @@ class templateoptions  extends Survey_Common_Action
         $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
         $templateOptionPage           = $oModelWithInheritReplacement->optionPage;
 
-        yii::app()->clientScript->registerPackage('bootstrap-switch');
+        Yii::app()->clientScript->registerPackage('bootstrap-switch', LSYii_ClientScript::POS_BEGIN);
         $aData = array(
             'model'=>$model,
             'templateOptionPage' => $templateOptionPage

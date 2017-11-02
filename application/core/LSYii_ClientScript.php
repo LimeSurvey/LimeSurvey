@@ -167,7 +167,7 @@ class LSYii_ClientScript extends CClientScript {
      * @param string $name
      * @return void|static
      */
-    public function registerPackage($name)
+    public function registerPackage($name, $position = LSYii_ClientScript::POS_HEAD)
     {
         if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')){
             parent::registerPackage( $name );
@@ -273,7 +273,53 @@ class LSYii_ClientScript extends CClientScript {
         return array('toPublish'=>($sType=='toPublish'), 'sPathToFile' => $sPath );
     }
 
+	/**
+	 * Registers a script package that is listed in {@link packages}.
+	 * @param string $name the name of the script package.
+	 * @return static the CClientScript object itself (to support method chaining, available since version 1.1.5).
+	 * @see renderCoreScript
+	 * @throws CException
+	 */
+	public function registerPackageScriptOnPosition($name, $position)
+	{
+		if(isset($this->coreScripts[$name])){
+            $this->coreScripts[$name]['position'] = $position;
+            return $this;
+        }
 
+		if(isset($this->packages[$name]))
+			$package=$this->packages[$name];
+		else
+		{
+			if($this->corePackages===null)
+				$this->corePackages=require(YII_PATH.'/web/js/packages.php');
+			if(isset($this->corePackages[$name]))
+				$package=$this->corePackages[$name];
+        }
+        
+		if(isset($package))
+		{
+            $package['position'] = $position;
+
+            if(!empty($package['depends']))
+			{
+				foreach($package['depends'] as $p)
+					$this->registerCoreScript($p, $position);
+            }
+            
+			$this->coreScripts[$name]=$package;
+			$this->hasScripts=true;
+			$params=func_get_args();
+			$this->recordCachingAction('clientScript','registerCoreScript',$params);
+		}
+		elseif(YII_DEBUG)
+			throw new CException('There is no LSYii_ClientScript package: '.$name);
+		else
+			Yii::log('There is no LSYii_ClientScript package: '.$name,CLogger::LEVEL_WARNING,'system.web.LSYii_ClientScript');
+
+		return $this;
+    }
+    
     /**
      * Renders the specified core javascript library.
      */
@@ -411,7 +457,7 @@ class LSYii_ClientScript extends CClientScript {
             }
             if($count)
             {
-                $output=str_replace('<###begin###>',$html,$output);
+                $output=str_replace('<###begin###>',$html, $output);
             }
             else
             {
