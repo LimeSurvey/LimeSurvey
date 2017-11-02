@@ -581,7 +581,7 @@ class TemplateConfiguration extends TemplateConfig
                 if (file_exists($this->path.$sFileName)){
                     Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFile );
                 }else{
-                    $oTemplate = $this->getTemplateForFile($this, $sFileName);
+                    $oTemplate = $this->getTemplateForFile($sFileName, $this);
                     if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)){
                         Yii::app()->clientScript->addFileToPackage($oTemplate->sPackageName, $sType, $sFileName);
                         unset($aSettings[$key]);
@@ -591,27 +591,6 @@ class TemplateConfiguration extends TemplateConfig
         }
 
         return $aSettings;
-    }
-
-    /**
-     * Find which of the mother templates host the file.
-     * @param $oTemplate the template where to start to look
-     * @param $sFileName the file name (can cointain relative path)
-     * @return TemplateConfiguration the template hosting the file
-     */
-    public function getTemplateForFile($oTemplate, $sFileName)
-    {
-        while (!file_exists($oTemplate->path.'/'.$sFileName)){
-
-            $oMotherTemplate = $oTemplate->oMotherTemplate;
-            if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                throw new Exception("can't find a template for file '$sFileName' in path '$oTemplate->path'.");
-                break;
-            }
-            $oTemplate = $oMotherTemplate;
-        }
-
-        return $oTemplate;
     }
 
     /**
