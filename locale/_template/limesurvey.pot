@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-11-02 18:41:47+00:00\n"
+"POT-Creation-Date: 2017-11-02 18:48:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -114,6 +114,7 @@ msgid "Version"
 msgstr ""
 
 #: application/controllers/InstallerController.php:137
+#: application/controllers/admin/templates.php:828
 #: application/views/admin/update/updater/_progress.php:11
 #: application/views/installer/sidebar_view.php:13
 msgid "Welcome"
@@ -1391,6 +1392,7 @@ msgstr ""
 #: application/controllers/admin/conditionsaction.php:669
 #: application/controllers/admin/conditionsaction.php:672
 #: application/controllers/admin/responses.php:840
+#: application/controllers/admin/templates.php:829
 #: application/helpers/admin/statistics_helper.php:4674
 #: application/views/admin/conditions/includes/form_editconditions_header.php:45
 #: application/views/admin/conditions/includes/quickAddConditionForm.php:21
@@ -2188,6 +2190,7 @@ msgstr ""
 #: application/controllers/admin/quotas.php:266
 #: application/controllers/admin/responses.php:204
 #: application/controllers/admin/responses.php:205
+#: application/controllers/admin/templates.php:830
 #: application/controllers/admin/tokens.php:1715
 #: application/models/Token.php:75
 #: application/views/admin/quotas/viewquotas_view.php:83
@@ -2254,6 +2257,7 @@ msgstr ""
 
 #: application/controllers/admin/dataentry.php:1349
 #: application/controllers/admin/labels.php:229
+#: application/controllers/admin/templates.php:833
 #: application/controllers/admin/usergroups.php:201
 #: application/helpers/admin/label_helper.php:119
 #: application/views/admin/assessments_view.php:249
@@ -4016,32 +4020,20 @@ msgstr ""
 msgid "Could not write file "
 msgstr ""
 
-#: application/controllers/admin/templates.php:828
-msgid "Welcome Page"
-msgstr ""
-
-#: application/controllers/admin/templates.php:829
-msgid "Question Page"
-msgstr ""
-
-#: application/controllers/admin/templates.php:830
-msgid "Completed Page"
-msgstr ""
-
 #: application/controllers/admin/templates.php:831
-msgid "Clear All Page"
+msgid "Clear all"
 msgstr ""
 
 #: application/controllers/admin/templates.php:832
-msgid "Load Page"
-msgstr ""
-
-#: application/controllers/admin/templates.php:833
-msgid "Save Page"
+msgid "Load"
 msgstr ""
 
 #: application/controllers/admin/templates.php:834
-msgid "Survey List Page"
+#: application/views/admin/super/welcome.php:119
+#: application/views/admin/survey/breadcrumb.php:12
+#: application/views/admin/survey/listSurveys_view.php:12
+#: application/views/admin/survey/listSurveys_view.php:25
+msgid "Survey list"
 msgstr ""
 
 #: application/controllers/admin/templates.php:837
@@ -4050,7 +4042,7 @@ msgid "Registration"
 msgstr ""
 
 #: application/controllers/admin/templates.php:838
-msgid "Participant print answers"
+msgid "Print answers"
 msgstr ""
 
 #: application/controllers/admin/templates.php:846
@@ -4897,7 +4889,7 @@ msgid "Your personal settings were successfully saved."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:681
-msgid "There are error when save your personal settings"
+msgid "There was an error when saving your personal settings."
 msgstr ""
 
 #: application/controllers/admin/useraction.php:696
@@ -15528,13 +15520,6 @@ msgstr ""
 #: application/views/admin/super/welcome.php:98
 #: application/views/admin/survey/surveySummary_view.php:326
 msgid "Last visited question:"
-msgstr ""
-
-#: application/views/admin/super/welcome.php:119
-#: application/views/admin/survey/breadcrumb.php:12
-#: application/views/admin/survey/listSurveys_view.php:12
-#: application/views/admin/survey/listSurveys_view.php:25
-msgid "Survey list"
 msgstr ""
 
 #: application/views/admin/survey/Question/_subQuestionsAndAnwsersJsVariables.php:11
