@@ -551,7 +551,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
         if ($iOldDBVersion < 323) {
             $oTransaction = $oDB->beginTransaction();
-            dropPrimaryKey('labels');
+            dropPrimaryKey('labels', 'lid');
             $oDB->createCommand()->addColumn( '{{labels}}', 'id', 'pk');
             $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder','language'], false);
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>323),"stg_name='DBVersion'");
@@ -1628,12 +1628,14 @@ function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
 *
 * @param string $sTablename
 */
-function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn)
+function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 {
     switch (Yii::app()->db->driverName) {
         case 'mysql':
+        if($oldPrimaryKeyColumn !== null){
             $sQuery="ALTER TABLE {{".$sTablename."}} MODIFY {$oldPrimaryKeyColumn} INT NOT NULL";
             Yii::app()->db->createCommand($sQuery)->execute();
+        }
             $sQuery="ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY";
             Yii::app()->db->createCommand($sQuery)->execute();
             break;
