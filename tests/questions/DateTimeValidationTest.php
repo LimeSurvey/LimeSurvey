@@ -5,6 +5,7 @@ namespace ls\tests;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use \Facebook\WebDriver\WebDriverExpectedCondition;
+
 /**
  * @since 2017-10-27
  * @group datevalidation
@@ -15,11 +16,6 @@ class DateTimeValidationTest extends TestBaseClass
      * @var int
      */
     public static $surveyId = null;
-
-    /**
-     * @var int
-     */
-    public static $oldSetting = null;
 
     /**
      * Import survey in tests/surveys/.
@@ -47,17 +43,7 @@ class DateTimeValidationTest extends TestBaseClass
             die('Fatal error: Could not import survey');
         }
 
-        // Make sure we can preview without being logged in.
-        self::$oldSetting = \SettingGlobal::model()->findByPk('surveyPreview_require_Auth');
-        \SettingGlobal::model()->updateByPk('surveyPreview_require_Auth', ['stg_value' => 0]);
-
-        // Possibly this setting does not exist yet.
-        if (empty(self::$oldSetting)) {
-            $setting = new \SettingGlobal();
-            $setting->stg_name = 'surveyPreview_require_Auth';
-            $setting->stg_value = 0;
-            $setting->save();
-        }
+        self::$testHelper->enablePreview();
     }
 
     /**
@@ -78,13 +64,6 @@ class DateTimeValidationTest extends TestBaseClass
      */
     public static function teardownAfterClass()
     {
-        if (self::$oldSetting) {
-            \SettingGlobal::model()->updateByPk(
-                'surveyPreview_require_Auth',
-                ['stg_value' => self::$oldSetting->stg_value]
-            );
-        }
-
         $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
         if (!$result) {
             die('Fatal error: Could not clean up survey ' . self::$surveyId);

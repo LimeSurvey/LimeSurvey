@@ -197,6 +197,17 @@ class TestHelper extends TestCase
     }
 
     /**
+     * @return void
+     */
+    public function connectToOriginalDatabase()
+    {
+        $db = \Yii::app()->getDb();
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $db->setActive(true);
+    }
+
+    /**
      * @param int $version
      * @return CDbConnection
      */
@@ -229,5 +240,27 @@ class TestHelper extends TestCase
         $this->assertTrue($result, 'Upgrade successful');
 
         return $inst->connection;
+    }
+
+    /**
+     * Make sure Selenium can preview surveys without
+     * being logged in.
+     * @return void
+     */
+    public function enablePreview()
+    {
+        // Make sure we can preview without being logged in.
+        $setting = \SettingGlobal::model()->findByPk('surveyPreview_require_Auth');
+
+        // Possibly this setting does not exist yet.
+        if (empty($setting)) {
+            $setting = new \SettingGlobal();
+            $setting->stg_name = 'surveyPreview_require_Auth';
+            $setting->stg_value = 0;
+            $setting->save();
+        } else {
+            $setting->stg_value = 0;
+            $setting->save();
+        }
     }
 }
