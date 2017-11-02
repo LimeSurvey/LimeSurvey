@@ -570,7 +570,23 @@ class TemplateConfiguration extends TemplateConfig
     protected function changeMotherConfiguration( $sType, $aSettings )
     {
         if (is_a($this->oMotherTemplate, 'TemplateConfiguration')){
-            $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSettings);
+
+
+            // Check if each file exist in this template path
+            // If the file exists in local template, we can remove it from mother template package.
+            // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
+            // (and leave it in moter template definition if it already exists.)
+            $aToRemove = array();
+            foreach ($aSettings as $key => $sFileName){
+                if (file_exists($this->path.$sFileName)){
+                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFile );
+                }else{
+                    if (!Yii::app()->clientScript->IsFileInPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName)){
+                        Yii::app()->clientScript->addFileToPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName);
+                        unset($aSettings[$key]);
+                    }
+                }
+            }
         }
 
         return $aSettings;

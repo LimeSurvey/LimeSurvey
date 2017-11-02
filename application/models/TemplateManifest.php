@@ -407,13 +407,13 @@ class TemplateManifest extends TemplateConfiguration
      *
      * @param DOMDocument   $oNewManifest  The DOMDOcument of the manifest
      */
-    public static function deleteFilesAndEngineInDom($oNewManifest)
+    public static function deleteEngineInDom($oNewManifest)
     {
         $oConfig            = $oNewManifest->getElementsByTagName('config')->item(0);
 
         // Then we delete the nodes that should be inherit
         $aNodesToDelete     = array();
-        $aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
+        //$aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
         $aNodesToDelete[]   = $oConfig->getElementsByTagName('engine')->item(0);
 
         foreach($aNodesToDelete as $node){
@@ -497,7 +497,7 @@ class TemplateManifest extends TemplateConfiguration
         libxml_disable_entity_loader(false);
         $oNewManifest = self::getManifestDOM($sConfigPath);
 
-        self::deleteFilesAndEngineInDom($oNewManifest);
+        self::deleteEngineInDom($oNewManifest);
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         self::changeAuthorInDom($oNewManifest);

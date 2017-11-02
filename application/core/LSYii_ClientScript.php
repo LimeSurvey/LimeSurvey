@@ -72,6 +72,43 @@ class LSYii_ClientScript extends CClientScript {
     }
 
     /**
+     * Check if a file is in a given package
+     * @var $sPackageName   string  name of the package
+     * @var $sType          string  css/js
+     * @var $sFileName      string name of the file to remove
+     * @return boolean
+     */
+    public function IsFileInPackage($sPackageName, $sType, $sFileName)
+    {
+        if (!empty(Yii::app()->clientScript->packages[$sPackageName])){
+            if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])){
+                $key = array_search( $sFileName,Yii::app()->clientScript->packages[$sPackageName][$sType]);
+                return $key !== false;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Add a file to a given package
+     *
+     * @var $sPackageName   string  name of the package
+     * @var $sType          string  css/js
+     * @var $sFileName      string name of the file to add
+     */
+    public function addFileToPackage($sPackageName, $sType, $sFileName )
+    {
+        if (!empty(Yii::app()->clientScript->packages[$sPackageName])){
+            if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])){
+                Yii::app()->clientScript->packages[$sPackageName][$sType][] = $sFileName;
+            }
+        }
+    }
+
+
+
+    /**
      * Remove a file from a given package
      *
      * @var $sPackageName   string  name of the package
