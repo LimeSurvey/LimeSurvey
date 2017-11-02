@@ -34,7 +34,147 @@ Thank you to everyone who helped with this new release!
 
 CHANGE LOG
 ------------------------------------------------------
-Changes from 3.0.0-beta.3 (build 170810) to 3.0.0-RC.1 (build 171025) Sept 14, 2017
+Changes from 3.0.0-RC.1 (build 171025) to 3.0.0-RC.2 (build 171102) Nov 02, 2017
+-New feature: offer core templates to install manually. (LouisGac)
+-Dev: updated ckeditor (markusfluer)
+-Fixed issue #12512: Wrong validation of date question (Olle Haerstedt)
+-Fixed issue #12593: Cannot change admin template (LouisGac)
+-Fixed issue #12694: Import badly set survey show success even if error (Denis Chenu)
+-Fixed issue #12697: SPSS Export - responses truncated for incomplete answers (Denis Chenu)
+-Fixed issue #12734: SPSS : exporting complete or uncomplete make different syntax (Denis Chenu)
+-Fixed issue #12823: Your account or My account (LouisGac)
+-Fixed issue #12831: All-in-one is broken for this survey (LouisGac)
+-Fixed issue #12850:  error when accessing configuration -> Manage survey administrators (markusfluer)
+-Fixed issue #12851: Regex for trailing zeroes in numeric input matches only zeroes immediately after decimal sign (markusfluer)
+-Fixed issue #12859: Crash when using material or minimal template (LouisGac)
+-Fixed issue #12861: Some stuff in the menu not working (markusfluer)
+-Fixed issue #9567: no salt used for password hashing. (Denis Chenu)
+-Fixed issue : Unable to update user on User management (Denis Chenu)
+-Fixed issue : unsave user params show as success (Denis Chenu)
+-Fixed issue:  notice template list (LouisGac)
+-Fixed issue: Frontend rendering not working correctly (markusfluer)
+-Fixed issue: Manifest Templates have no preview alternative (LouisGac)
+-Fixed issue: ajaxify not loading properly on template load (markusfluer)
+-Fixed issue: can't extend template anymore (LouisGac)
+-Fixed issue: can't set css/js files of uploaded templates (LouisGac)
+-Fixed issue: cannot post question help text (markusfluer)
+-Fixed issue: extended template can't manage added CSS files (LouisGac)
+-Fixed issue: infinite template extension broken (LouisGac)
+-Fixed issue: js/css not loaded for extended template (LouisGac)
+-Fixed issue: monochrome theme not preselected (LouisGac)
+-Fixed issue: navbar id contains a space (LouisGac)
+-Fixed issue: no background css file for monochrome (LouisGac)
+-Fixed issue: no preview in template carroussel for uploaded templates (LouisGac)
+-Fixed issue: notice on template list (LouisGac)
+-Fixed issue: template preview broken in template editor (LouisGac)
+-Fixed issue: template.css not loaded after all other template styles (LouisGac)
+-Fixed issue: unignored composer files necessary (markusfluer)
+#Updated translation: Afrikaans by c_schmitz, claudiog, geebee100
+#Updated translation: Albanian by c_schmitz, acanga, florianika, lulzimavdiu, Dorina1988, Helda, eunacal, iebner, amirbuzo
+#Updated translation: Amharic by c_schmitz, addis_1001, Dereje, hizkiel
+#Updated translation: Arabic by c_schmitz, ysaad, mdchaara, ahmedsherpiny, Rawand, samiubuntu, fadimhanna, safi00972, sessid, malkadi, malbariqi, AmalHanna, tamimaleter, DeveloperChris, noway, ktharwat, Macropsyco, Macropsy
+#Updated translation: Armenian by c_schmitz, Satenik, bagrig
+#Updated translation: Basque by c_schmitz, josegovia, oabad, artasom, losimo, ikt, zubiegi, santises
+#Updated translation: Belarusian by c_schmitz
+#Updated translation: Bengali by khadijaashraf
+#Updated translation: Bosnian by RebeccaAwdry
+#Updated translation: Bosnian by c_schmitz, dichteros
+#Updated translation: Bulgarian by c_schmitz, klaster, tnovakova, DCLXVI, simid, YanaTsoneva, jmlorenzo
+#Updated translation: Catalan by c_schmitz, valdomir, jmontane, qualitatuvic, Ben_V
+#Updated translation: Chinese (Hong Kong) (Traditional) by c_schmitz, cmj, superleo888, achan, alviniun, wksosam, aqualam, oc25
+#Updated translation: Chinese (Simplified) by c_schmitz, yooyooh, jun9, yanglaw, siyang1982, xsb, aifie, limecat, sothmch, rachelfeiya, zhoubin86282972, popcorner, liudidi, leadingsoci, mapleshadow, Bobo001
+#Updated translation: Chinese (Taiwan) (Traditional) by c_schmitz, pochuenw, hinghang, katy50306, chungyi, drawinglee, m27387, hsyin, asakous, linuslin, terrywei, jayhsu21, joyce, ChadPeng
+#Updated translation: Croatian by c_schmitz, rovinj, daniflo, rsedak, eraser, rambo, doklb, Apach3, buzadovec, netcom, pstrbenac, nmisic, kmilojev
+#Updated translation: Czech (Informal) by slansky
+#Updated translation: Czech by c_schmitz, slansky, pavelwil, sedlacev, kubaj, Artaud, VBraun, jelen1, dusanm
+#Updated translation: Danish by c_schmitz, nielsb, docl, marvindk, robin_sharp, stefangranholm, overfrakken, lovepade, Vasilij, Tobm, SigneT, antispam, statman13
+#Updated translation: Dutch (Informal) by c_schmitz, Han, Nickko, bramr, atvoogt, coeneisma, tammo, DonMul, zfocuz, Petra017
+#Updated translation: Dutch by c_schmitz, MrP, tammo, mdekker, kris, Han, coeneisma, hclaus, Nickko, Sybren, kpadm, theej, L191, cookiemonster, Geert1969, DonMul, zfocuz, Petra017
+#Updated translation: English by c_schmitz, quaint, pfpDave, akeyser, cedac
+#Updated translation: Esperanto by Fabricio, sudastelaro, c_schmitz
+#Updated translation: Estonian by c_schmitz, LimAlf, Erhi, klaster, aivokoger, mariliis, t6nnp6nn, toomasuba, rogeriff, vipgroup, jeskiv
+#Updated translation: Finnish by c_schmitz, klaster, hirvojo1, shrike, tigger, kirsikka, Matti, morbid, hannikkala, jhnrk, Tuomo, jeskiv, Ramiky
+#Updated translation: French (France) by arnaud21
+#Updated translation: French (France) by c_schmitz, ulysse68, BenoitBouvarel, DenisChenu, titoun31, Qat, olcell, riqcles, kharec, Zeste, emmanuh, arnaud21, Gemelos, Brunotwm, JMI, karld, FabienC, jkurz, ipwnin3D, MVT, odarteve, tendanceh, cestmoimeme
+#Updated translation: Fula by c_schmitz
+#Updated translation: Galician by c_schmitz, dariogomez, Calidonia, cegar, monfero, jeskiv
+#Updated translation: Georgian by giorgi, c_schmitz, larisa, Davitus
+#Updated translation: German (Informal) by c_schmitz
+#Updated translation: German (Informal) by c_schmitz, groetzner, tomscher, PDrews, Basil, actxcellence, mfaber, Akaer, senden9, metaworx, DLange, Liam, jweberhofer, plusQ, cbloecher, HonkXL, hermann, ecoplan, holch, manselmo, Rolime, fwittmann, gregi, tuxmaster
+#Updated translation: German by c_schmitz
+#Updated translation: German by c_schmitz, debianese, tomscher, macwig, Ebenezer_Arvigenius, PDrews, actxcellence, woelfchen, rado, ResearchOnBlogs, finnnns, mfaber, Mazi, hermann, metaworx, DLange, pseitz, Liam, madflow, jweberhofer, jankal, AnnaHerwig, bardts, cookiemonster, holch, HonkXL, surveyunihi, rnck, ecoplan, Joffm, hokehl, Thomas218, Magnar, tuxmaster
+#Updated translation: Greek by c_schmitz, kiolalis, mele_lime, MikeConom, christof75, theseek3r, nasprok, lenasterg, korina
+#Updated translation: Gujarati by c_schmitz, gautamarya
+#Updated translation: Hebrew by c_schmitz, tabakman, yavin, gadeynebram, devbyu, aviv
+#Updated translation: Hindi by c_schmitz, gautamgupta, ajparag
+#Updated translation: Hungarian by c_schmitz, hunkissleslie, EnDaN, anikoken, debugz, johnyh, jgege, MTamas, lukacs, cxi, Zoltan, erik_gerhardt, drcrazy, intavg, Kengo06, tdombos, pszilard, kkd, kutigeza, fcsanyi
+#Updated translation: Icelandic by c_schmitz, Bragi_H, svelgur
+#Updated translation: Indonesian by c_schmitz, sys_sby, budiain, hendrikots, sancaka, ysulistya, wisnu, ganiutomo, radhwaw
+#Updated translation: Irish by c_schmitz
+#Updated translation: Italian (Informal) by c_schmitz, lfanfoni, gifino, alesarrett, mike73rn, lpittalis, murya, filipguttman, myliserta, olif, mzzvtr, metaworx
+#Updated translation: Italian by c_schmitz, lfanfoni, lfortunato, sischi, floccs, miguelsanchez, cubeAtWork, myliserta, metaworx, Zeos, tebala, emp, ritapas, arioli, NdK, darpao
+#Updated translation: Japanese by c_schmitz, nomoto, inaba, ifjapon, yamatt, ngyuki, panrex
+#Updated translation: Japanese by nomoto
+#Updated translation: Kirundi by c_schmitz, Vicks
+#Updated translation: Korean by c_schmitz, cnsla, cloudgarden, kswcfe, spn
+#Updated translation: Kurdish (Sorani) by havalabdulkarim, c_schmitz, bryar1991, Daban88, Ayeneh, AhamdSaber, Qat, Rawand, Rebaz, nabaz, rahand, RastiK5
+#Updated translation: Kyrgyz by esen, kmaksat
+#Updated translation: Latvian (Informal) by marcic
+#Updated translation: Latvian by c_schmitz, vipgroup, klaster, marcic, zemnieks
+#Updated translation: Lithuanian by c_schmitz, simasj, serzas, justasg, apklausos, vipgroup, liudas
+#Updated translation: Luxembourgish by sim0nx
+#Updated translation: Macedonian by c_schmitz, acikabt
+#Updated translation: Malay by c_schmitz, addaashar, xbonize, ayahanda, asklinux, irah, sintiches, apisznasdin, kayrooldeen, betakerotin, astrasia, qfirdaus, norazlannorden
+#Updated translation: Malayalam by nikhildascl
+#Updated translation: Maltese by c_schmitz
+#Updated translation: Marathi by c_schmitz
+#Updated translation: Mongolian by Erdenebayar, erka, c_schmitz, baatar, samsharav
+#Updated translation: Norwegian (Bokmål) by c_schmitz, pmonstad, peterhol, finni
+#Updated translation: Norwegian (Bokmål) by pmonstad
+#Updated translation: Norwegian (Nynorsk) by c_schmitz, pmonstad
+#Updated translation: Norwegian (Nynorsk) by pmonstad
+#Updated translation: Occitan by c_schmitz, Cedric31
+#Updated translation: Papiamento (Aruba) by c_schmitz
+#Updated translation: Papiamento (Curaçao and Bonaire) by indigoblueconsult, c_schmitz
+#Updated translation: Pashto by c_schmitz
+#Updated translation: Persian (Afghanistan) - Dari by c_schmitz, toxindoom
+#Updated translation: Persian by c_schmitz, moohebat, ardalan, blackeve, ehsan, KingAsghar, delarammahdaviii, ahadzadeh
+#Updated translation: Polish (Informal) by c_schmitz, elisa, elissa
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by c_schmitz, elisa, zozlak, borluuk, elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by c_schmitz, gchehab, mauriciofurtado, wagner, marciojv, arthurassuncao, oberdan, tagosc, hugomusetti, amcorreia, santanabeto, andreass, tpazos, nfuria, fboaventura, gabrielcavalari, fabiomachado, dariodallago, rhnascimento, holch, andrepacheco, samirfor, rubensqueiroz, paulohpmoraes, valins, victorgoncalves, thiagosmartins, alantygel, flaviove, Davinch, femariso
+#Updated translation: Portuguese (Portugal) by c_schmitz, jtrigo, ecoutinho, samarta, taborda, jginga, nostradumusfdx, algarvio, hmlc, nery, cmcsilvaster, PauloJFMartins, jweberhofer, efialho, sazevedo, valins, devUSIT, anticorpo, susete, holch, thiagosmartins, mauriciofurtado
+#Updated translation: Punjabi by c_schmitz
+#Updated translation: Romanian by c_schmitz, izbieta, filipguttman, oroles, ataylder, vundicind, ionicat, christianC, c_ionut2002, Borgie
+#Updated translation: Russian by c_schmitz, Fencer, vipgroup, ldemeschew, Dominik, Dangar, JNNSoftSign, roomian, ddrmoscow, severt, nickdsl, ilgizy, kmaksat, t6nnp6nn, winterheart, c0der
+#Updated translation: Russian by ddrmoscow, winterheart
+#Updated translation: Serbian (Latin script) by OnSpot, YLotus
+#Updated translation: Serbian by MilaVeljovic, OnSpot, zlukovic
+#Updated translation: Sinhala by c_schmitz
+#Updated translation: Slovak by c_schmitz, jmi239, wargo, Union, rundmg, sweetakasha, gadeynebram, gmambro, dusanm
+#Updated translation: Slovenian by c_schmitz, Aambro, kaysersoze, doklb, AndrejL, gregy1403, dusan, tejac, lado
+#Updated translation: Spanish (Argentina) (Informal) by Eescudero, miguelsanchez, Ayelen, gap1981, feippe, grudolf, cripton
+#Updated translation: Spanish (Argentina) by pomiagos, topiim, fvergniaud
+#Updated translation: Spanish (Chile) by c_schmitz, masterbip, SirCrovax, jcarcamo, jrojas, gabrieljenik, fernandoessv
+#Updated translation: Spanish (Mexican) by c_schmitz, pedrogk, k001, miguelsanchez, rhernandez, emphasis034, javoguadas, fernandoestrada, fernandoessv, eusebiocuke
+#Updated translation: Spanish (Spain) by c_schmitz, pavelwil, Nodens, jbermudezperez, larjona, xtingray, jaimealvarezv, valdomir, kadejo, aesteban, atavei, fercavero, jigal, artasom, elkinjosetm, asntcrz, pnueda, cbrito, titanio256, grudolf, dgimeno, jmlorenzo, ecocitizen, fernandoessv, jeskiv, cripton
+#Updated translation: Swahili by c_schmitz, jmbaria
+#Updated translation: Swedish by c_schmitz, klaster, Basse, mr2jswe, seniorcoach, gogl, Mazi, khan, maxzomborszki, PeanutButter9000, ipwnin3D, sofve, bardts
+#Updated translation: Tagalog by lolskidoodles, avevengers, arriz08
+#Updated translation: Tamil by seesiva, c_schmitz, apmuthu
+#Updated translation: Thai by c_schmitz, miracles, sismiracles, adzpire, heartjavac, bordin, vinate, naphatthakorn, tomzt
+#Updated translation: Turkish by c_schmitz, kayazeren, bulent
+#Updated translation: Ukrainian by c_schmitz, myksyd, skipenko, TatyAly, JNNSoftSign, uszername, Rusya, kuzenka167, bkrupinski, exlibris69, NPO, zvorchik
+#Updated translation: Urdu by c_schmitz
+#Updated translation: Valencian by valdomir, c_schmitz, vbraque, joamuran, jeskiv
+#Updated translation: Vietnamese by c_schmitz, rinodung, cuongestih, thanhthao, vouhieuso1, votsdb, bdthuy, manhvs, vietguitar, quangndcet
+#Updated translation: Welsh by c_schmitz, NortonT
+#Updated translation: Zulu by cmkeet, Tanita93
+
+
+
+Changes from 3.0.0-beta.3 (build 170810) to 3.0.0-RC.1 (build 171025) Oct 25, 2017
 
 -New Feature: Set quotas by equation (#796) (Tõnis Ormisson)
 -New feature: Allow super-admin set by other user's than 1 (#810) (Denis Chenu)
