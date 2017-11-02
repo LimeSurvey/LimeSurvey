@@ -825,17 +825,17 @@ class templates extends Survey_Common_Action
         $screens=array();
 
 
-        $screens['welcome']         = gT('Welcome Page','unescaped');       // first page*
-        $screens['question']        = gT('Question Page','unescaped');      // main
-        $screens['completed']       = gT('Completed Page','unescaped');     // submit?
-        $screens['clearall']        = gT('Clear All Page','unescaped');
-        $screens['load']            = gT('Load Page','unescaped');
-        $screens['save']            = gT('Save Page','unescaped');
-        $screens['surveylist']      = gT('Survey List Page','unescaped');
+        $screens['welcome']         = gT('Welcome','unescaped');       // first  page*
+        $screens['question']        = gT('Question','unescaped');      // main
+        $screens['completed']       = gT('Completed','unescaped');     // submit?
+        $screens['clearall']        = gT('Clear all','unescaped');
+        $screens['load']            = gT('Load','unescaped');
+        $screens['save']            = gT('Save','unescaped');
+        $screens['surveylist']      = gT('Survey list','unescaped');
         $screens['error']           = gT('Error','unescaped');
         $screens['assessments']     = gT('Assessments','unescaped');
-        $screens['register']     = gT('Registration','unescaped');
-        $screens['printanswers']     = gT('Participant print answers','unescaped');
+        $screens['register']        = gT('Registration','unescaped');
+        $screens['printanswers']    = gT('Print answers','unescaped');
 
         Yii::app()->session['s_lang'] = Yii::app()->session['adminlang'];
 

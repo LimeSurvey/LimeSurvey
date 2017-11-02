@@ -678,7 +678,7 @@ class UserAction extends Survey_Common_Action
                 Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             } else {
                 // Show list of error if needed
-                Yii::app()->setFlashMessage(CHtml::errorSummary($oUserModel,gT("There are error when save your personal settings")),'error');
+                Yii::app()->setFlashMessage(CHtml::errorSummary($oUserModel,gT("There was an error when saving your personal settings.")),'error');
             }
 
             if (Yii::app()->request->getPost("saveandclose")) {
