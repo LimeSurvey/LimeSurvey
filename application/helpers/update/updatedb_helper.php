@@ -57,7 +57,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     try{
         // LS 2.5 table start at 250
-        if ($iOldDBVersion < 250) {       
+        if ($iOldDBVersion < 250) {
             $oTransaction = $oDB->beginTransaction();
             createBoxes250();
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>250),"stg_name='DBVersion'");
@@ -401,8 +401,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 312) {
             $oTransaction = $oDB->beginTransaction();
             // Already added in beta 2 but with wrong type
-            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_ltr'); } catch(Exception $e) { rollBackToTransactionBookmark();}            
-            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_rtl'); } catch(Exception $e) { rollBackToTransactionBookmark();}            
+            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_ltr'); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_rtl'); } catch(Exception $e) { rollBackToTransactionBookmark();}
 
             addColumn('{{template_configuration}}','packages_ltr', "text");
             addColumn('{{template_configuration}}','packages_rtl', "text");
@@ -443,7 +443,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 315) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->update('{{template_configuration}}', 
+            $oDB->createCommand()->update('{{template_configuration}}',
                 array('packages_to_load'=>'["pjax"]'),
                 "templates_name='default' OR templates_name='material'"
             );
@@ -560,31 +560,106 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
         if ($iOldDBVersion < 324) {
             $oTransaction = $oDB->beginTransaction();
-            
-            $oDB->createCommand()->insert( '{{surveymenu_entries}}', 
+
+            $oDB->createCommand()->insert( '{{surveymenu_entries}}',
             array(
-                'menu_id' => 1, 
+                'menu_id' => 1,
                 'ordering' => 16,
-                'name' => 'plugins', 
-                'title' => 'Plugin settings', 
-                'menu_title' => 'Plugins', 
-                'menu_description' => 'Edit plugin settings', 
-                'menu_icon' => 'plug', 
-                'menu_icon_type' => 'fontawesome', 
+                'name' => 'plugins',
+                'title' => 'Plugin settings',
+                'menu_title' => 'Plugins',
+                'menu_description' => 'Edit plugin settings',
+                'menu_icon' => 'plug',
+                'menu_icon_type' => 'fontawesome',
                 'action' => 'updatesurveylocalesettings',
-                'template' => 'editLocalSettings_main_view', 
-                'partial' => '/admin/survey/subview/accordion/_plugin_panel', 
-                'permission' => 'surveysettings', 
-                'permission_grade' => 'read',  
+                'template' => 'editLocalSettings_main_view',
+                'partial' => '/admin/survey/subview/accordion/_plugin_panel',
+                'permission' => 'surveysettings',
+                'permission_grade' => 'read',
                 'data' => '',
-                'getdatamethod' => '_pluginTabSurvey', 
-                'changed_at' => date('Y-m-d H:i:s'), 
-                'changed_by' => 1, 
-                'created_at' => date('Y-m-d H:i:s'), 
-                'created_by' => 1, 
+                'getdatamethod' => '_pluginTabSurvey',
+                'changed_at' => date('Y-m-d H:i:s'),
+                'changed_by' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+                'created_by' => 1,
                 'active' => 0
             ));
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>324),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 325) {
+            $oTransaction = $oDB->beginTransaction();
+            $oDB->createCommand()->dropTable('{{templates}}');
+            $oDB->createCommand()->dropTable('{{template_configuration}}');
+
+            // templates
+            $oDB->createCommand()->createTable('{{templates}}', array(
+                'id' =>  "pk",
+                'name' =>  "string(150) NOT NULL",
+                'folder' =>  "string(45) NULL",
+                'title' =>  "string(100) NOT NULL",
+                'creation_date' =>  "datetime NULL",
+                'author' =>  "string(150) NULL",
+                'author_email' =>  "string(255) NULL",
+                'author_url' =>  "string(255) NULL",
+                'copyright' =>  "text ",
+                'license' =>  "text ",
+                'version' =>  "string(45) NULL",
+                'api_version' =>  "string(45) NOT NULL",
+                'view_folder' =>  "string(45) NOT NULL",
+                'files_folder' =>  "string(45) NOT NULL",
+                'description' =>  "text ",
+                'last_update' =>  "datetime NULL",
+                'owner_id' =>  "integer NULL",
+                'extends' =>  "string(150)  NULL",
+            ));
+
+            $oDB->createCommand()->createIndex('{{idx1_templates}}', '{{templates}}', 'name', false);
+            $oDB->createCommand()->createIndex('{{idx2_templates}}', '{{templates}}', 'title', false);
+            $oDB->createCommand()->createIndex('{{idx3_templates}}', '{{templates}}', 'owner_id', false);
+            $oDB->createCommand()->createIndex('{{idx4_templates}}', '{{templates}}', 'extends', false);
+
+            $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder','description','last_update','owner_id','extends'];
+            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '']));
+
+            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', NULL, 1, 'default']));
+
+            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['monochrome', 'monochrome', 'Monochrome Templates', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Monochrome Templates</strong><br>A template with monochrome colors for easy customization.', NULL, 1, '']));
+
+
+            // template_configuration
+            $oDB->createCommand()->createTable('{{template_configuration}}', array(
+                'id' => "pk",
+                'template_name' => "string(150)  NOT NULL",
+                'sid' => "integer NULL",
+                'gsid' => "integer NULL",
+                'uid' => "integer NULL",
+                'files_css' => "text",
+                'files_js' => "text",
+                'files_print_css' => "text",
+                'options' => "text ",
+                'cssframework_name' => "string(45) NULL",
+                'cssframework_css' => "text",
+                'cssframework_js' => "text",
+                'packages_to_load' => "text",
+                'packages_ltr' => "text",
+                'packages_rtl' => "text",
+            ));
+
+            $oDB->createCommand()->createIndex('{{idx1_template_configuration}}', '{{template_configuration}}', 'template_name', false);
+            $oDB->createCommand()->createIndex('{{idx2_template_configuration}}', '{{template_configuration}}', 'sid', false);
+            $oDB->createCommand()->createIndex('{{idx3_template_configuration}}', '{{template_configuration}}', 'gsid', false);
+            $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
+
+            $headerArray = ['template_name','sid','gsid','uid','files_css','files_js','files_print_css','options','cssframework_name','cssframework_css','cssframework_js','packages_to_load','packages_ltr','packages_rtl'];
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['default',NULL,NULL,NULL,'{"add": ["css/animate.css","css/template.css"]}','{"add": ["scripts/template.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','["pjax"]','','']));
+
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','["pjax"]','','']));
+
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['monochrome',NULL,NULL,NULL,'{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}','{"add":["scripts/template.js","scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{}','','["pjax"]','','']));            
+
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>325),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -654,7 +729,7 @@ function transferPasswordFieldToText($oDB){
         case 'sqlsrv':
         case 'dblib':
         case 'mssql':
-        default: 
+        default:
             break;
     }
 }
@@ -767,7 +842,7 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     }
 
     // Drop the old surveymenu table.
-    if (tableExists('{surveymenu}')) {                               
+    if (tableExists('{surveymenu}')) {
         $oDB->createCommand()->dropTable('{{surveymenu}}');
     }
 
@@ -1128,7 +1203,7 @@ function upgradeSurveyTables255()
     // We delete all the old boxes, and reinsert new ones
     Yii::app()->getDb()->createCommand(
         "DELETE FROM {{boxes}}"
-    )->execute();    
+    )->execute();
 
     // Then we recreate them
     $oDB = Yii::app()->db;
@@ -1387,7 +1462,7 @@ function upgradeTokenTables181($sMySQLCollation)
 * @param string $sFieldType
 * @param string $sColumn
 */
-function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL') 
+function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL')
 {
     $oDB = Yii::app()->db;
     switch (Yii::app()->db->driverName){
@@ -1456,7 +1531,7 @@ function addColumn($sTableName, $sColumn, $sType) {
 
 /**
 * Set a transaction bookmark - this is critical for Postgres because a transaction in Postgres cannot be continued unless you roll back to the transaction bookmark first
-* 
+*
 * @param mixed $sBookmark  Name of the bookmark
 */
 function setTransactionBookmark($sBookmark='limesurvey') {
@@ -1467,7 +1542,7 @@ function setTransactionBookmark($sBookmark='limesurvey') {
 
 /**
 * Roll back to a transaction bookmark
-* 
+*
 * @param mixed $sBookmark   Name of the bookmark
 */
 function rollBackToTransactionBookmark($sBookmark='limesurvey')
@@ -1477,9 +1552,9 @@ function rollBackToTransactionBookmark($sBookmark='limesurvey')
     }
 }
 
-/** 
+/**
 * Drop a default value in MSSQL
-* 
+*
 * @param mixed $fieldname
 * @param mixed $tablename
 */
@@ -1518,7 +1593,7 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
 
 /**
 * This function drops a secondary key of an MSSQL database field by using the field name and the table name
-* 
+*
 * @param string $sFieldName
 * @param mixed $sTableName
 */
@@ -1548,7 +1623,7 @@ function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
 
 /**
 * Drops the primary key of a table
-* 
+*
 * @param string $sTablename
 */
 function dropPrimaryKey($sTablename)
@@ -1581,7 +1656,7 @@ function dropPrimaryKey($sTablename)
 /**
 * @param string $sTablename
 */
-function addPrimaryKey($sTablename, $aColumns) 
+function addPrimaryKey($sTablename, $aColumns)
 {
     return Yii::app()->db->createCommand()->addPrimaryKey('PK_'.$sTablename.'_'.randomChars(12,'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{'.$sTablename.'}}', $aColumns);
 }
@@ -1592,7 +1667,7 @@ function addPrimaryKey($sTablename, $aColumns)
 * @param string $sTablename The table name
 * @param string[] $aColumns Column names to be in the new key
 */
-function modifyPrimaryKey($sTablename, $aColumns) 
+function modifyPrimaryKey($sTablename, $aColumns)
 {
     Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
 }
@@ -1603,7 +1678,7 @@ function modifyPrimaryKey($sTablename, $aColumns)
 * @param string $sEncoding
 * @param string $sCollation
 */
-function fixMySQLCollations($sEncoding, $sCollation) 
+function fixMySQLCollations($sEncoding, $sCollation)
 {
     $surveyidresult = dbGetTablesLike("%");
     foreach ( $surveyidresult as $sTableName ) {
