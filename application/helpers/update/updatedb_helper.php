@@ -1628,10 +1628,12 @@ function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
 *
 * @param string $sTablename
 */
-function dropPrimaryKey($sTablename)
+function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn)
 {
     switch (Yii::app()->db->driverName) {
         case 'mysql':
+            $sQuery="ALTER TABLE {{".$sTablename."}} MODIFY {$oldPrimaryKeyColumn} INT NOT NULL";
+            Yii::app()->db->createCommand($sQuery)->execute();
             $sQuery="ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY";
             Yii::app()->db->createCommand($sQuery)->execute();
             break;
