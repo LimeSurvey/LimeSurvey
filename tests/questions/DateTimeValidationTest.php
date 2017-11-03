@@ -5,6 +5,7 @@ namespace ls\tests;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
  * @since 2017-10-27
@@ -96,7 +97,18 @@ class DateTimeValidationTest extends TestBaseClass
                 self::$surveyId
             )
         );
-        $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
+
+        try {
+            $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
+        } catch (NoSuchElementException $ex) {
+            $screenshot = $this->webDriver->takeScreenshot();
+            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+            $this->assertFalse(
+                true,
+                'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
+            );
+        }
+
         $this->assertNotEmpty($submit);
         $this->webDriver->wait(10, 1000)->until(
             WebDriverExpectedCondition::visibilityOf($submit)
