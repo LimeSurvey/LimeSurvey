@@ -579,7 +579,7 @@ class TemplateConfiguration extends TemplateConfig
             $aToRemove = array();
             foreach ($aSettings as $key => $sFileName){
                 if (file_exists($this->path.$sFileName)){
-                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFile );
+                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName );
                 }else{
                     $oTemplate = $this->getTemplateForFile($sFileName, $this);
                     if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)){
