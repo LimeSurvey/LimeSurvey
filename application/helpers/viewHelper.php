@@ -313,6 +313,6 @@ class viewHelper
      * @return string
      */
      public static function getViewTestTag($name){
-         return CHtml::tag('div',['id'=>'action::'.$name],'sdaf');
+         return CHtml::tag('div',['id'=>'action::'.$name,'style'=>'']);
      }
 }

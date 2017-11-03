@@ -9,5 +9,8 @@ return [
     'createSurvey' =>[
         'route'=>'survey/sa/newsurvey',
     ],
+    'listSurveys' =>[
+        'route'=>'survey/sa/listsurvey',
+    ],
 
 ];

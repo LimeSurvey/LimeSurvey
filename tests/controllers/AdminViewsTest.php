@@ -13,7 +13,6 @@
 
 namespace ls\tests;
 use Facebook\WebDriver\WebDriverBy;
-use PHPUnit\Runner\Exception;
 
 /**
  * Class AdminViewsTest
@@ -40,7 +39,7 @@ class AdminViewsTest extends TestBaseClassWeb
 
                 //throw new Exception($e->getMessage());
             }
-            $this->assertNotEmpty($element);
+            $this->assertNotEmpty($element,sprintf('FAILED viewing %s',$name));
         }
     }
 
