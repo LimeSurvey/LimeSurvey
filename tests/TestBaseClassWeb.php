@@ -15,6 +15,7 @@ namespace ls\tests;
 
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriver;
 
 /**
  * Class TestBaseClassWeb
@@ -25,8 +26,19 @@ class TestBaseClassWeb extends TestBaseClass
 {
     /**
      * @var int web server port
+     * TODO this should be in configuration somewhere
      */
-    public $webPort = 4444;
+    protected $webPort = 4444;
+
+    /**
+     * @var array
+     */
+    protected $adminViews;
+
+    /**
+     * @var WebDriver $webDriver
+     */
+    protected $webDriver;
 
     public function setUp()
     {
@@ -37,6 +49,7 @@ class TestBaseClassWeb extends TestBaseClass
 
         $capabilities = DesiredCapabilities::phantomjs();
         $this->webDriver = RemoteWebDriver::create("http://localhost:{$this->webPort}/", $capabilities);
+        $this->adminViews = require __DIR__."/data/adminViews.php";
 
     }
 
@@ -47,6 +60,23 @@ class TestBaseClassWeb extends TestBaseClass
     {
         // Close Firefox.
         $this->webDriver->quit();
+    }
+
+    /**
+     * @param array $view
+     * @return WebDriver
+     */
+    public function openView($view){
+        $domain = getenv('DOMAIN');
+        if (empty($domain)) {
+            $domain = '';
+        }
+        $url = "http://{$domain}/index.php/admin/".$view['route'];
+        return $this->webDriver->get($url);
+    }
+
+    public function adminLogin($userName,$passWord){
+        $this->openView($this->adminViews['login']);
     }
 
 }
