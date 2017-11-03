@@ -24,5 +24,11 @@ return [
     'viewLabelSets' =>[
         'route'=>'labels/sa/view',
     ],
+    'createLabelSets' =>[
+        'route'=>'labels/sa/newlabelset',
+    ],
+    'templateOptions' =>[
+        'route'=>'templateoptions',
+    ],
 
 ];

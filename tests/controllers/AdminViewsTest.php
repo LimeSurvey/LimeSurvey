@@ -39,7 +39,7 @@ class AdminViewsTest extends TestBaseClassWeb
 
                 //throw new Exception($e->getMessage());
             }
-            $this->assertNotEmpty($element,sprintf('FAILED viewing %s on route admin/%s',$name,$view['route']));
+            $this->assertNotEmpty($element,sprintf('FAILED viewing %s on route %s',$name,$view['route']));
         }
     }
 
