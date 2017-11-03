@@ -103,7 +103,10 @@ class DateTimeValidationTest extends TestBaseClass
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
             file_put_contents(__DIR__ . '/tmp.png', $screenshot);
-            $this->assertFalse(true, $ex->getMessage());
+            $this->assertFalse(
+                true,
+                'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
+            );
         }
 
         $this->assertNotEmpty($submit);
