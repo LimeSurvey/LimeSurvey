@@ -119,8 +119,13 @@ class DateTimeValidationTest extends TestBaseClass
         try {
             $div = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::className('completed-text'));
             $this->assertNotEmpty($div);
-        } catch (Facebook\WebDriver\Exception\NoSuchElementException $ex) {
-            $this->assertTrue(false, $ex->getMessage());
+        } catch (NoSuchElementException $ex) {
+            $screenshot = $this->webDriver->takeScreenshot();
+            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+            $this->assertFalse(
+                true,
+                'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
+            );
         }
     }
 }
