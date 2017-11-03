@@ -144,8 +144,6 @@ class TemplateConfig extends CActiveRecord
          Yii::setPathOfAlias($sPathName, $oTemplate->path);
          Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-         $aCssFiles  = $aJsFiles = array();
-
          // First we add the framework replacement (bootstrap.css must be loaded before template.css)
          $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
          $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
@@ -156,8 +154,6 @@ class TemplateConfig extends CActiveRecord
 
          $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
          $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
-
-         $dir        = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
          // Remove/Replace mother template files
          $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);

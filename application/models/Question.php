@@ -76,7 +76,6 @@ class Question extends LSActiveRecord
     /** @inheritdoc */
     public function relations()
     {
-        $alias = $this->getTableAlias();
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
             'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
