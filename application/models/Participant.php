@@ -1881,6 +1881,7 @@ class Participant extends LSActiveRecord
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         /* Grab all the existing attribute field names from the tokens table */
+        // FIXME is this needed? this is currently not used here!
         $arr = Yii::app()->db->createCommand()->select('*')->from("{{tokens_$surveyid}}")->queryRow();
         if (is_array($arr)) {
             $tokenfieldnames = array_keys($arr);
