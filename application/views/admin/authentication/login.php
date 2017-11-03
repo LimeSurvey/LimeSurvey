@@ -2,6 +2,10 @@
 /**
  * Login Form
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('login');
+
 ?>
 <noscript>If you see this you have probably JavaScript deactivated. LimeSurvey does not work without Javascript being activated in the browser!</noscript>
 <div class="container-fluid welcome">

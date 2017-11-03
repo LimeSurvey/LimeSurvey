@@ -25,23 +25,25 @@ class AdminViewsTest extends TestBaseClassWeb
 {
 
     public function testAdminViews(){
+        $this->adminLogin('admin','password');
         foreach ($this->adminViews as $name => $view){
+            if($name=='login'){
+                continue;
+            }
             $this->openView($view);
-            sleep(2);
             $element = null;
-            $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
             try{
-                $element = $this->webDriver->findElement(WebDriverBy::id($view['find_id']));
+                $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
             } catch (\Exception $e){
                 $screenshot = $this->webDriver->takeScreenshot();
                 file_put_contents(__DIR__ . '/tmp.png', $screenshot);
 
-                throw new Exception($e->getMessage());
+                //throw new Exception($e->getMessage());
             }
             $this->assertNotEmpty($element);
         }
     }
+
 
 
 }

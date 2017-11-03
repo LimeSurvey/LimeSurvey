@@ -307,4 +307,12 @@ class viewHelper
          Yii::app()->loadHelper("surveytranslator");
          return getLanguageData($bOrderByNative, $sLanguageCode );
      }
+
+    /**
+     * @param string $name unique view name
+     * @return string
+     */
+     public static function getViewTestTag($name){
+         return CHtml::tag('div',['id'=>'action::'.$name],'sdaf');
+     }
 }

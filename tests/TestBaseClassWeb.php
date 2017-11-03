@@ -16,6 +16,8 @@ namespace ls\tests;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriver;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * Class TestBaseClassWeb
@@ -77,6 +79,16 @@ class TestBaseClassWeb extends TestBaseClass
 
     public function adminLogin($userName,$passWord){
         $this->openView($this->adminViews['login']);
+        $userNameField = $this->webDriver->findElement(WebDriverBy::id("user"));
+        $userNameField->clear()->sendKeys($userName);
+        $passWordField = $this->webDriver->findElement(WebDriverBy::id("password"));
+        $passWordField->clear()->sendKeys($passWord);
+
+        $submit = $this->webDriver->findElement(WebDriverBy::name('login_submit'));
+        $submit->click();
+        return $this->webDriver->wait(10, 1000)->until(
+            WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('welcome-jumbotron'))
+        );
     }
 
 }
