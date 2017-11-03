@@ -1,0 +1,14 @@
+{
+  "name": "surveymenufunctions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "surveymenufunctionswrapper.js",
+  "scripts": {
+    "compile": "uglify -s ./surveymenufunctionswrapper.js -o surveymenufunctionswrapper.min.js"
+  },
+  "author": "Markus Flür <markus.fluer@limesurvey.org>",
+  "license": "GPL2.0",
+  "devDependencies": {
+    "uglify-js": "^3.1.6"
+  }
+}
