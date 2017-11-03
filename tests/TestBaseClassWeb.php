@@ -51,7 +51,7 @@ class TestBaseClassWeb extends TestBaseClass
 
         $capabilities = DesiredCapabilities::phantomjs();
         $this->webDriver = RemoteWebDriver::create("http://localhost:{$this->webPort}/", $capabilities);
-        $this->adminViews = require __DIR__."/data/adminViews.php";
+        $this->adminViews = require __DIR__."/data/views/adminViews.php";
 
     }
 
