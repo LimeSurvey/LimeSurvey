@@ -1964,8 +1964,8 @@ class Participant extends LSActiveRecord
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {
-                        foreach ($aAttributesToBeCreated as $key => $value) {
-                            Participant::model()->updateAttributeValueToken($surveyid, $pid, $attid[$key], $key);
+                        foreach ($aAttributesToBeCreated as $key2 => $value) {
+                            Participant::model()->updateAttributeValueToken($surveyid, $pid, $attid[$key2], $key2);
                         }
                     }
                     /* Now add mapped attribute values */
