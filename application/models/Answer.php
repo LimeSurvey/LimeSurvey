@@ -22,8 +22,8 @@
  * @property string $language Language code
  * @property integer $scale_id
  *
- * @property Question $questions
- * @property Question $groups
+ * @property Question $question
+ * @property QuestionGroup $group
  */
 class Answer extends LSActiveRecord
 {
@@ -55,13 +55,8 @@ class Answer extends LSActiveRecord
     {
         $alias = $this->getTableAlias();
         return array(
-            // TODO HAS_ONE relation should be in singular, not plural $answer->group, $answer->question
-            'questions' => array(self::HAS_ONE, 'Question', '',
-                'on' => "$alias.qid = questions.qid",
-            ),
-            'groups' => array(self::HAS_ONE, 'QuestionGroup', '', 'through' => 'questions',
-                'on' => 'questions.gid = groups.gid'
-            ),
+            'question' => [self::HAS_ONE, 'Question', ['qid' => 'qid','language'=>'language'] ],
+            'group' => [self::HAS_ONE, 'QuestionGroup', ['gid' => 'gid','language'=>'language'], 'through' => 'question'],
         );
     }
 
