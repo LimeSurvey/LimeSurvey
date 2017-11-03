@@ -53,7 +53,6 @@ class Answer extends LSActiveRecord
     /** @inheritdoc */
     public function relations()
     {
-        $alias = $this->getTableAlias();
         return array(
             'question' => [self::HAS_ONE, 'Question', ['qid' => 'qid','language'=>'language'] ],
             'group' => [self::HAS_ONE, 'QuestionGroup', ['gid' => 'gid','language'=>'language'], 'through' => 'question'],
