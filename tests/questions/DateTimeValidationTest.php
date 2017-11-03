@@ -2,8 +2,6 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 
@@ -11,7 +9,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
  * @since 2017-10-27
  * @group datevalidation
  */
-class DateTimeValidationTest extends TestBaseClass
+class DateTimeValidationTest extends TestBaseClassWeb
 {
     /**
      * @var int
@@ -48,19 +46,6 @@ class DateTimeValidationTest extends TestBaseClass
     }
 
     /**
-     * Selenium setup.
-     */
-    public function setUp()
-    {
-        if (empty(getenv('DOMAIN'))) {
-            die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
-        }
-
-        $capabilities = DesiredCapabilities::phantomjs();
-        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/', $capabilities);
-    }
-
-    /**
      * Destroy what had been imported.
      */
     public static function teardownAfterClass()
@@ -71,14 +56,6 @@ class DateTimeValidationTest extends TestBaseClass
         }
     }
 
-    /**
-     * Tear down fixture.
-     */
-    public function tearDown()
-    {
-        // Close Firefox.
-        $this->webDriver->quit();
-    }
 
     /**
      * 
