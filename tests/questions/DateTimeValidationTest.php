@@ -96,7 +96,15 @@ class DateTimeValidationTest extends TestBaseClass
                 self::$surveyId
             )
         );
-        $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
+
+        try {
+            $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
+        } catch (\Facebook\WebDriver\Exception\NoSuchElementException $ex) {
+            $screenshot = $this->webDriver->takeScreenshot();
+            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+            die($ex->getMessage());
+        }
+
         $this->assertNotEmpty($submit);
         $this->webDriver->wait(10, 1000)->until(
             WebDriverExpectedCondition::visibilityOf($submit)
