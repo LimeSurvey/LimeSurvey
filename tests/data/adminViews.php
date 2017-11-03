@@ -12,5 +12,11 @@ return [
     'listSurveys' =>[
         'route'=>'survey/sa/listsurvey',
     ],
+    'createSurveyGroups' =>[
+        'route'=>'surveysgroups/sa/create',
+    ],
+    'globalsettings' =>[
+        'route'=>'globalsettings',
+    ],
 
 ];
