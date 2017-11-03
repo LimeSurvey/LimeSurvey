@@ -171,14 +171,7 @@
                                                     'first'             => $first,
                                                     'assessmentvisible' => $assessmentvisible,
                                                     'scale_id'          => $scale_id,
-                                                    'title'             => $row->code,
-                                                    'surveyid'          => $surveyid,
-                                                    'gid'               => $gid,
-                                                    'qid'               => $qid,
-                                                    'language'          => $row->language,
-                                                    'assessment_value'  => $row->assessment_value,
-                                                    'sortorder'         => $row->sortorder,
-                                                    'answer'            => $row->answer,
+                                                    'oAnswer'            => $row,
                                                     'oldCode'   => true,
                                                 ));?>
 

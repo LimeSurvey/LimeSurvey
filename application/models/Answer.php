@@ -24,6 +24,7 @@
  *
  * @property Question $question
  * @property QuestionGroup $group
+ * @property Survey $survey
  */
 class Answer extends LSActiveRecord
 {
@@ -56,6 +57,7 @@ class Answer extends LSActiveRecord
         return array(
             'question' => [self::HAS_ONE, 'Question', ['qid' => 'qid','language'=>'language'] ],
             'group' => [self::HAS_ONE, 'QuestionGroup', ['gid' => 'gid','language'=>'language'], 'through' => 'question'],
+            'survey' => [self::HAS_ONE, 'Survey', ['sid' => 'sid'], 'through' => 'question'],
         );
     }
 
