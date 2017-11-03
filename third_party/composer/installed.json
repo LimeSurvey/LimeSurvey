@@ -57,12 +57,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/facebook/php-webdriver.git",
-            "reference": "5522ce16dbcd46869278c030687758840b30e193"
+            "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/5522ce16dbcd46869278c030687758840b30e193",
-            "reference": "5522ce16dbcd46869278c030687758840b30e193",
+            "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
+            "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
             "shasum": ""
         },
         "require": {
@@ -81,7 +81,7 @@
             "squizlabs/php_codesniffer": "^2.6",
             "symfony/var-dumper": "^3.3"
         },
-        "time": "2017-10-26 14:08:12",
+        "time": "2017-11-02 21:00:08",
         "type": "library",
         "extra": {
             "branch-alias": {
