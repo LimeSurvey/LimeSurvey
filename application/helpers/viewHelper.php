@@ -309,6 +309,7 @@ class viewHelper
      }
 
     /**
+     * Get a tag to help automated tests identify pages
      * @param string $name unique view name
      * @return string
      */
