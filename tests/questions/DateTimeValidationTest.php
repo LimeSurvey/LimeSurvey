@@ -5,6 +5,7 @@ namespace ls\tests;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
  * @since 2017-10-27
@@ -99,10 +100,10 @@ class DateTimeValidationTest extends TestBaseClass
 
         try {
             $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
-        } catch (\Facebook\WebDriver\Exception\NoSuchElementException $ex) {
+        } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
             file_put_contents(__DIR__ . '/tmp.png', $screenshot);
-            die($ex->getMessage());
+            $this->assertFalse(true, $ex->getMessage());
         }
 
         $this->assertNotEmpty($submit);
