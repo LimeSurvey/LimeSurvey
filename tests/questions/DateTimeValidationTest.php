@@ -4,6 +4,8 @@ namespace ls\tests;
 
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriver;
+use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 
@@ -99,7 +101,7 @@ class DateTimeValidationTest extends TestBaseClass
         );
 
         try {
-            $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
+            $submit = $this->webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
             file_put_contents(__DIR__ . '/tmp.png', $screenshot);
@@ -117,7 +119,10 @@ class DateTimeValidationTest extends TestBaseClass
 
         // After submit we should see the complete page.
         try {
-            $div = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::className('completed-text'));
+            $div = WebDriverBy::className('completed-text');
+            $this->webDriver->wait(10,1000)->until(
+                WebDriverExpectedCondition::visibilityOfElementLocated($div)
+            );
             $this->assertNotEmpty($div);
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
