@@ -1,4 +1,9 @@
 <?php
 return [
-    'login'=>'authentication/sa/login',
+    'login' =>[
+        'name'=>'login',
+        'route'=>'authentication/sa/login',
+        'find_id'=>'login-panel',
+    ],
+
 ];
