@@ -190,7 +190,7 @@ class TemplateConfig extends CActiveRecord
       * It will search for current template and mother templates
       *
       * @param   string $sFile relative path to the file
-      * @param   string $oTemplate the template where to look for (and its mother templates)
+      * @param   TemplateConfig $oTemplate the template where to look for (and its mother templates)
       * @return string|false
       */
      protected function getFilePath($sFile, $oTemplate)
