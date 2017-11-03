@@ -1,6 +1,6 @@
 <?php
 /**
- * @var AdminController
+ * @var $tgis AdminController
  */
 
 // DO NOT REMOVE This is for automated testing to validate we see that page

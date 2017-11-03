@@ -18,5 +18,11 @@ return [
     'globalsettings' =>[
         'route'=>'globalsettings',
     ],
+    'update' =>[
+        'route'=>'update',
+    ],
+    'viewLabelSets' =>[
+        'route'=>'labels/sa/view',
+    ],
 
 ];
