@@ -46,22 +46,6 @@ third_party/**/*.sh
 third_party/**/*.md
 third_party/**/gulpfile.js
 
-# Ignore stuff used by PHPUnit.
-third_party/**/doctrine
-third_party/**/facebook
-third_party/**/bin
-third_party/**/myclabs
-third_party/**/phar-io
-third_party/**/phpdocumentor
-third_party/**/phpspec
-third_party/**/phpunit
-third_party/**/sebastian
-third_party/**/symfony
-third_party/**/theseer
-third_party/**/webmozart
-selenium-server-standalone*
-geckodriver
-
 # RFC and commons directory and files
 /.well-known/
 /sitemap.xml
