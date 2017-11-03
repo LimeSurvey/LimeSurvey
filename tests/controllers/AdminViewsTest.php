@@ -12,6 +12,8 @@
  */
 
 namespace ls\tests;
+use Facebook\WebDriver\WebDriverBy;
+use PHPUnit\Runner\Exception;
 
 /**
  * Class AdminViewsTest
@@ -19,12 +21,27 @@ namespace ls\tests;
  *
  * @package ls\tests
  */
-class AdminViewsTest extends TestBaseClass
+class AdminViewsTest extends TestBaseClassWeb
 {
-    public function setUp()
-    {
-        parent::setUp();
 
+    public function testAdminViews(){
+        foreach ($this->adminViews as $name => $view){
+            $this->openView($view);
+            sleep(2);
+            $element = null;
+            $screenshot = $this->webDriver->takeScreenshot();
+            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+            try{
+                $element = $this->webDriver->findElement(WebDriverBy::id($view['find_id']));
+            } catch (\Exception $e){
+                $screenshot = $this->webDriver->takeScreenshot();
+                file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+
+                throw new Exception($e->getMessage());
+            }
+            $this->assertNotEmpty($element);
+        }
     }
+
 
 }
