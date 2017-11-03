@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-11-03 10:35:47+00:00\n"
+"POT-Creation-Date: 2017-11-03 13:34:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -5309,32 +5309,32 @@ msgstr ""
 msgid "Core plugin can not be disabled."
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:138
+#: application/core/plugins/Authdb/Authdb.php:137
 msgid "Internal database authentication method is not allowed for this user"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:186
+#: application/core/plugins/Authdb/Authdb.php:188
 msgid "CSV"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:190
+#: application/core/plugins/Authdb/Authdb.php:192
 msgid "Microsoft Excel"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:192
+#: application/core/plugins/Authdb/Authdb.php:194
 msgid "(Iconv Library not installed)"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:197
+#: application/core/plugins/Authdb/Authdb.php:199
 msgid "Microsoft Word"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:201
+#: application/core/plugins/Authdb/Authdb.php:203
 #: application/views/admin/export/statistics_subviews/_outputformat.php:11
 msgid "PDF"
 msgstr ""
 
-#: application/core/plugins/Authdb/Authdb.php:204
+#: application/core/plugins/Authdb/Authdb.php:206
 #: application/views/admin/export/statistics_subviews/_outputformat.php:8
 msgid "HTML"
 msgstr ""
