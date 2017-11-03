@@ -885,8 +885,8 @@ class TemplateConfig extends CActiveRecord
             $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
 
             $aAllDbTemplateFolders = array();
-            foreach ($oAllDbTemplateFolders as $oAllDbTemplateFolders){
-                $aAllDbTemplateFolders[] = $oAllDbTemplateFolders->folder;
+            foreach ($oAllDbTemplateFolders as $oAllDbTemplateFolder){
+                $aAllDbTemplateFolders[] = $oAllDbTemplateFolder->folder;
             }
 
             $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
