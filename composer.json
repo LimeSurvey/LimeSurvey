@@ -34,5 +34,8 @@
     "config": {
         "vendor-dir": "third_party",
         "bin-dir": "third_party/bin"
-    }
+    },
+	"require-dev": {
+		"phpunit/phpunit": "^6.4"
+	}
 }
