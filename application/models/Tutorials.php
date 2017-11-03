@@ -547,6 +547,8 @@ class Tutorials extends LSActiveRecord
      */
     public static function model($className=__CLASS__)
     {
-        return parent::model($className);
+        /** @var Tutorials $model */
+        $model = parent::model($className);
+        return $model;
     }
 }

@@ -335,7 +335,6 @@ class Template extends LSActiveRecord
 
         $aTemplateList = array();
 
-        $model         = new TemplateConfiguration();
         $oTemplateList =  TemplateConfiguration::model()->search();
         $oTemplateList->setPagination(false);
 

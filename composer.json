@@ -28,10 +28,6 @@
 			"LimeSurvey\\Helpers\\": "application/helpers"
 		}
 	},
-	"require-dev": {
-		"phpunit/phpunit": "^6.4",
-		"phpunit/phpunit-selenium": "^4.1"
-	},
 	"require": {
 		"facebook/webdriver": "^1.4"
 	},

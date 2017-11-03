@@ -746,7 +746,6 @@ class SurveyDynamic extends LSActiveRecord
                 //dont collect scale_id > 0
                 if($oSubquestion->scale_id > 0) continue; 
 
-                $subQuestionArray = array();
                 $subQuestionArray = $this->getQuestionArray($oSubquestion,$oResponses,$bHonorConditions,true);
                 if($oQuestion->type == "P"){
                     $subQuestionArray['comment'] = $this->getQuestionArray($oSubquestion,$oResponses,$bHonorConditions,true, true);

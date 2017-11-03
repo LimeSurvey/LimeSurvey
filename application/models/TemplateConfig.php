@@ -144,8 +144,6 @@ class TemplateConfig extends CActiveRecord
          Yii::setPathOfAlias($sPathName, $oTemplate->path);
          Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-         $aCssFiles  = $aJsFiles = array();
-
          // First we add the framework replacement (bootstrap.css must be loaded before template.css)
          $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
          $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
@@ -156,8 +154,6 @@ class TemplateConfig extends CActiveRecord
 
          $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
          $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
-
-         $dir        = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
          // Remove/Replace mother template files
          $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
@@ -190,7 +186,7 @@ class TemplateConfig extends CActiveRecord
       * It will search for current template and mother templates
       *
       * @param   string $sFile relative path to the file
-      * @param   string $oTemplate the template where to look for (and its mother templates)
+      * @param   TemplateConfig $oTemplate the template where to look for (and its mother templates)
       * @return string|false
       */
      protected function getFilePath($sFile, $oTemplate)
@@ -885,8 +881,8 @@ class TemplateConfig extends CActiveRecord
             $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
 
             $aAllDbTemplateFolders = array();
-            foreach ($oAllDbTemplateFolders as $oAllDbTemplateFolders){
-                $aAllDbTemplateFolders[] = $oAllDbTemplateFolders->folder;
+            foreach ($oAllDbTemplateFolders as $oAllDbTemplateFolder){
+                $aAllDbTemplateFolders[] = $oAllDbTemplateFolder->folder;
             }
 
             $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);

@@ -5,12 +5,13 @@ namespace ls\tests;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\WebDriverBy;
 
 /**
- * @since 2017-10-27
- * @group datevalidation
+ * @since 2017-11-02
+ * @group rand
  */
-class DateTimeValidationTest extends TestBaseClass
+class GroupRandomizationTest extends TestBaseClass
 {
     /**
      * @var int
@@ -18,13 +19,14 @@ class DateTimeValidationTest extends TestBaseClass
     public static $surveyId = null;
 
     /**
-     * Import survey in tests/surveys/.
      */
     public static function setupBeforeClass()
     {
+        self::$testHelper->connectToOriginalDatabase();
+
         \Yii::app()->session['loginID'] = 1;
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_834477.lss';
+        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_88881.lss';
         if (!file_exists($surveyFile)) {
             die('Fatal error: found no survey file');
         }
@@ -42,8 +44,6 @@ class DateTimeValidationTest extends TestBaseClass
         } else {
             die('Fatal error: Could not import survey');
         }
-
-        self::$testHelper->enablePreview();
     }
 
     /**
@@ -60,7 +60,7 @@ class DateTimeValidationTest extends TestBaseClass
     }
 
     /**
-     * Destroy what had been imported.
+     * 
      */
     public static function teardownAfterClass()
     {
@@ -79,11 +79,14 @@ class DateTimeValidationTest extends TestBaseClass
         $this->webDriver->quit();
     }
 
+
     /**
      * 
      */
-    public function testBasic()
+    public function testRunSurvey()
     {
+        self::$testHelper->activateSurvey(self::$surveyId);
+
         $domain = getenv('DOMAIN');
         if (empty($domain)) {
             $domain = '';
@@ -96,19 +99,30 @@ class DateTimeValidationTest extends TestBaseClass
                 self::$surveyId
             )
         );
-        $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
+        $submit = $this->webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         $this->assertNotEmpty($submit);
         $this->webDriver->wait(10, 1000)->until(
             WebDriverExpectedCondition::visibilityOf($submit)
         );
         $submit->click();
 
-        // After submit we should see the complete page.
-        try {
-            $div = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::className('completed-text'));
-            $this->assertNotEmpty($div);
-        } catch (Facebook\WebDriver\Exception\NoSuchElementException $ex) {
-            $this->assertTrue(false, $ex->getMessage());
+        $body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
+        $text = $body->getText();
+
+        if (strpos($text, 'PHP notice') === false) {
+            echo 'No PHP notice';
+            exit(0);
+        } else {
+            echo 'PHP notice!';
+            exit(1);
         }
+
+        // There should be no PHP notice.
+        //$this->assertTrue(strpos($text, 'PHP notice') === false, $text);
+
+        //$screenshot = $this->webDriver->takeScreenshot();
+        //file_put_contents(__DIR__ . '/screenshot.png', $screenshot);
+
+        self::$testHelper->deactivateSurvey(self::$surveyId);
     }
 }
