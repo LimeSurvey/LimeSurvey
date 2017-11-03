@@ -1,5 +1,5 @@
 <?php
-/* @var $this TemplateOptionsController */
+/* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
 // TODO: rename to template_list.php
