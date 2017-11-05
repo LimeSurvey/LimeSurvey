@@ -47,27 +47,41 @@
             <div class="modal-body">
                 <div class="row">
                  <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>'form-horizontal'));?>
-                    <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
-                        echo "<div class=\"form-group\">";
-                          echo "<label  class='col-md-4 control-label'>";
-                            eT("Central database");
-                          echo "</label>";
-                          echo "<div class='col-md-8'>";
-                            echo CHtml::dropDownList('user_type',
-                                'DB',
-                                array(
-                                'DB' => gT("Internal database authentication",'unescaped'),
-                                'LDAP' => gT("LDAP authentication",'unescaped')
-                                ),
-                                array(
-                                    'class' => ""
-                                )
-                            );
-                          echo "</div>";
-                        echo "</div>";
-                      } else {
-                          echo "<input type='hidden' id='user_type' name='user_type' value='DB'/>";
-                      }
+                    <?php 
+                        // get the array with the installed plugin list
+                        $pluginlist=App()->getPluginManager()->getInstalledPlugins();
+                        //we will search for the first active plugin contraining a specific substring in name (should this string go into a global constant ???)
+                        $pstrname='AuthLDAP';
+                        // looping array to get a plugin having a substring  match in name AND having active status
+                        function matchInstalledAndActive($needle,$haystack){
+                        	foreach ($haystack as $item){
+                                         if ((strpos($item[name], $needle) !== false) && (($item[active]==1))) {
+                                                return true;
+                                         }
+                                 }
+                                 return false;
+                        }
+                        if (matchInstalledAndActive($pstrname, $pluginlist)){
+                                   echo "<div class=\"form-group\">";
+                                   echo "<label  class='col-md-4 control-label'>";
+                                   eT("Central database");
+                                   echo "</label>";
+                                   echo "<div class='col-md-8'>";
+                                   echo CHtml::dropDownList('user_type',
+                                         'DB',
+                                          array(
+                                           'DB' => gT("Internal database authentication",'unescaped'),
+                                           'LDAP' => gT("LDAP authentication",'unescaped')
+                                          ),
+                                          array(
+                                           'class' => ""
+                                          )
+                                         );
+                                   echo "</div>";
+                                   echo "</div>";
+                        } else {
+                                   echo "<input type='hidden' id='user_type' name='user_type' value='DB'/>";
+                        }
                     ?>
 
                     <div class="form-group">
