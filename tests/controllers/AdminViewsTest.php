@@ -59,7 +59,7 @@ class AdminViewsTest extends TestBaseClassWeb
             $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
         } catch (\Exception $e){
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+            file_put_contents(__DIR__ . '/../_output/'.$name.'.png', $screenshot);
 
             //throw new Exception($e->getMessage());
         }
