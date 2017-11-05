@@ -10,6 +10,8 @@ return [
     'surveyGeneralSettings' =>['route'=>'survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/{SID}'],
     'surveyTexts' =>['route'=>'survey/sa/rendersidemenulink/subaction/surveytexts/surveyid/{SID}'],
     'surveyTemplateOptionsUpdate' =>['route'=>'templateoptions/sa/updatesurvey/surveyid/{SID}/gsid/1'],
-    'surveyParticipantsIndex' =>['route'=>'tokens/sa/index/surveyid/{SID}'],
-    //'surveyPresentationOptions' =>['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}'],
+    'surveyPresentationOptions' =>['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}'],
+    //'surveyParticipantsIndex' =>['route'=>'tokens/sa/index/surveyid/{SID}'],
+    //'surveyPublicationOptions' =>['route'=>'rendersidemenulink/subaction/publication/surveyid/{SID}'],
+    'surveyPermissions' =>['route'=>'surveypermission/sa/view/surveyid/{SID}'],
 ];

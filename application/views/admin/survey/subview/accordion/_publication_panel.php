@@ -5,6 +5,8 @@
  * @var Survey $oSurvey
  * @var array $dateformatdetails
  */
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyPublicationOptions');
 ?>
 <script type="text/javascript">
     var jsonUrl = '';
