@@ -7,6 +7,4 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
-    'Codeception\\' => array($vendorDir . '/codeception/specify/src'),
-    'Behat\\Gherkin' => array($vendorDir . '/behat/gherkin/src'),
 );
