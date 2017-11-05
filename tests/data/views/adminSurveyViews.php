@@ -22,5 +22,6 @@ return [
     'surveyAssessments' =>['route'=>'assessments/sa/index/surveyid/{SID}'],
     'surveyNotificationOptions' =>['route'=>'survey/sa/rendersidemenulink/subaction/notification/surveyid/{SID}'],
     'surveyEmailTemplates' =>['route'=>'emailtemplates/sa/index/surveyid/{SID}'],
+    'surveyPanelIntegration' =>['route'=>'survey/sa/rendersidemenulink/subaction/panelintegration/surveyid/{SID}'],
 
 ];
