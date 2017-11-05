@@ -22,6 +22,7 @@ use Facebook\WebDriver\WebDriverBy;
  */
 class AdminViewsTest extends TestBaseClassWeb
 {
+    private static $importId;
 
     public function testAdminViews(){
         $this->adminLogin('admin','password');
@@ -29,20 +30,42 @@ class AdminViewsTest extends TestBaseClassWeb
             if($name=='login'){
                 continue;
             }
-            $this->openView($view);
-            $element = null;
-            try{
-                $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
-            } catch (\Exception $e){
-                $screenshot = $this->webDriver->takeScreenshot();
-                file_put_contents(__DIR__ . '/tmp.png', $screenshot);
-
-                //throw new Exception($e->getMessage());
-            }
-            $this->assertNotEmpty($element,sprintf('FAILED viewing %s on route %s',$name,$view['route']));
+            $this->findViewTag($name,$view);
         }
     }
 
+    public function testAdminSurveyViews(){
+        $this->adminLogin('admin','password');
+        foreach ($this->adminSurveyViews as $name => $view){
+            // import a survey to test with if the import is set
+            if(isset($view['import_id'])){
+                $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_'.$view['import_id'].'.lss';
+                self::importSurvey($surveyFile);
+            }
+            $view['route'] = ReplaceFields($view['route'],['{SID}'=>self::$surveyId]);
+            $this->findViewTag($name,$view);
+        }
+    }
+
+
+    /**
+     * @param string $name
+     * @param array $view
+     */
+    private function findViewTag($name,$view){
+        $this->openView($view);
+        $element = null;
+        try{
+            $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
+        } catch (\Exception $e){
+            $screenshot = $this->webDriver->takeScreenshot();
+            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+
+            //throw new Exception($e->getMessage());
+        }
+        $this->assertNotEmpty($element,sprintf('FAILED viewing %s on route %s',$name,$view['route']));
+
+    }
 
 
 }

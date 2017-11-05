@@ -38,6 +38,11 @@ class TestBaseClassWeb extends TestBaseClass
     protected $adminViews;
 
     /**
+     * @var array
+     */
+    protected $adminSurveyViews;
+
+    /**
      * @var WebDriver $webDriver
      */
     protected $webDriver;
@@ -52,6 +57,7 @@ class TestBaseClassWeb extends TestBaseClass
         $capabilities = DesiredCapabilities::phantomjs();
         $this->webDriver = RemoteWebDriver::create("http://localhost:{$this->webPort}/", $capabilities);
         $this->adminViews = require __DIR__."/data/views/adminViews.php";
+        $this->adminSurveyViews = require __DIR__."/data/views/adminSurveyViews.php";
 
     }
 

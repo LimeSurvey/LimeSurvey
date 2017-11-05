@@ -7,8 +7,11 @@
  */
 
 $templateData['oSurvey'] = $oSurvey;
-?>
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyGeneralSettings');
+
+?>
 <script type="text/javascript">
     var formId = '<?=$entryData['name']?>';
 </script>

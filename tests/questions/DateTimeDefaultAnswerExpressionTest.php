@@ -10,36 +10,14 @@ use PHPUnit\Framework\TestCase;
  */
 class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
 
     /**
      * Import survey in tests/surveys/.
      */
     public static function setupBeforeClass()
     {
-        \Yii::app()->session['loginID'] = 1;
-
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_454287.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
-
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
+        self::importSurvey($surveyFile);
     }
 
     /**
