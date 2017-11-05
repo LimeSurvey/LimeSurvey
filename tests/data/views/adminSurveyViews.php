@@ -20,4 +20,6 @@ return [
     'surveyParticipantTokenOptions' =>['route'=>'survey/sa/rendersidemenulink/subaction/tokens/surveyid/{SID}'],
     'surveyQuotas' =>['route'=>'quotas/sa/index/surveyid/{SID}'],
     'surveyAssessments' =>['route'=>'assessments/sa/index/surveyid/{SID}'],
+    'surveyNotificationOptions' =>['route'=>'survey/sa/rendersidemenulink/subaction/notification/surveyid/{SID}'],
+
 ];
