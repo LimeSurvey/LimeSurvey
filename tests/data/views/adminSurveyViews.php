@@ -18,4 +18,5 @@ return [
 
     'surveyPermissions' =>['route'=>'surveypermission/sa/view/surveyid/{SID}'],
     'surveyParticipantTokenOptions' =>['route'=>'survey/sa/rendersidemenulink/subaction/tokens/surveyid/{SID}'],
+    'surveyQuotas' =>['route'=>'quotas/sa/index/surveyid/{SID}'],
 ];

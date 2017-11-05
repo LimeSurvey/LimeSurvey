@@ -108,7 +108,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-24T14:12:06+00:00"
+            "time": "2017-10-24 14:12:06"
         }
     ],
     "packages-dev": [
