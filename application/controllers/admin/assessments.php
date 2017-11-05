@@ -116,7 +116,9 @@ class Assessments extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
 
+        // FIXME this must be in VIEWS!
         $urls['output'] = '<div class="side-body ' . getSideBodyClass(false) . '">';
+        $urls['output'] .=viewHelper::getViewTestTag('surveyAssessments');
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
         $aData['asessementNotActivated'] = false;
         if ($oSurvey->assessments!='Y')
