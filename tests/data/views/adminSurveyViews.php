@@ -9,4 +9,5 @@ return [
     'surveySummary' =>['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'454287'],
     'surveyGeneralSettings' =>['route'=>'survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/{SID}'],
     'surveyTexts' =>['route'=>'survey/sa/rendersidemenulink/subaction/surveytexts/surveyid/{SID}'],
+    'surveyTemplateOptionsUpdate' =>['route'=>'templateoptions/sa/updatesurvey/surveyid/{SID}/gsid/1'],
 ];
