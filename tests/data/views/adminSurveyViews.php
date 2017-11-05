@@ -10,4 +10,5 @@ return [
     'surveyGeneralSettings' =>['route'=>'survey/sa/rendersidemenulink/subaction/generalsettings/surveyid/{SID}'],
     'surveyTexts' =>['route'=>'survey/sa/rendersidemenulink/subaction/surveytexts/surveyid/{SID}'],
     'surveyTemplateOptionsUpdate' =>['route'=>'templateoptions/sa/updatesurvey/surveyid/{SID}/gsid/1'],
+    'surveyParticipantsIndex' =>['route'=>'tokens/sa/index/surveyid/{SID}'],
 ];
