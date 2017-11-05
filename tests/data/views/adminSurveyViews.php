@@ -11,7 +11,11 @@ return [
     'surveyTexts' =>['route'=>'survey/sa/rendersidemenulink/subaction/surveytexts/surveyid/{SID}'],
     'surveyTemplateOptionsUpdate' =>['route'=>'templateoptions/sa/updatesurvey/surveyid/{SID}/gsid/1'],
     'surveyPresentationOptions' =>['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}'],
+
+    // FIXME these FAIL !!
     //'surveyParticipantsIndex' =>['route'=>'tokens/sa/index/surveyid/{SID}'],
     //'surveyPublicationOptions' =>['route'=>'rendersidemenulink/subaction/publication/surveyid/{SID}'],
+
     'surveyPermissions' =>['route'=>'surveypermission/sa/view/surveyid/{SID}'],
+    'surveyParticipantTokenOptions' =>['route'=>'survey/sa/rendersidemenulink/subaction/tokens/surveyid/{SID}'],
 ];
