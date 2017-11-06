@@ -18,14 +18,16 @@ class DateTimeTest extends TestBaseClass
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public function setUp()
     {
+        parent::setUp();
+
         $_POST = [];
         $_SESSION = [];
 
         \Yii::app()->session['loginID'] = 1;
+        $surveyFile = $this->surveysFolder.'/limesurvey_survey_975622.lss';
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_975622.lss';
         if (!file_exists($surveyFile)) {
             die('Fatal error: found no survey file');
         }
@@ -48,8 +50,9 @@ class DateTimeTest extends TestBaseClass
     /**
      * Destroy what had been imported.
      */
-    public static function teardownAfterClass()
+    public function tearDown()
     {
+        parent::tearDown();
         $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
         if (!$result) {
             die('Fatal error: Could not clean up survey ' . self::$surveyId);

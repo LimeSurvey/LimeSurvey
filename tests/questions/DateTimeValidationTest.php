@@ -20,11 +20,12 @@ class DateTimeValidationTest extends TestBaseClassWeb
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public function setUp()
     {
+        parent::setUp();
         \Yii::app()->session['loginID'] = 1;
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_834477.lss';
+        $surveyFile = $this->surveysFolder.'/limesurvey_survey_834477.lss';
         if (!file_exists($surveyFile)) {
             die('Fatal error: found no survey file');
         }
