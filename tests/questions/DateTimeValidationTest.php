@@ -98,7 +98,8 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $div = WebDriverBy::className('completed-text');
             $this->webDriver->wait(10,1000)->until(
                             WebDriverExpectedCondition::visibilityOfElementLocated($div)
-            );            $this->assertNotEmpty($div);
+            );
+            $this->assertNotEmpty($div);
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
             file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);

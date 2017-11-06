@@ -24,13 +24,16 @@ use ls\tests\TestBaseClassView;
 class AdminViewsTest extends TestBaseClassView
 {
 
-    public function addDataProvider(){
+    public function addBaseViews(){
         return require __DIR__."/../data/views/adminViews.php";
+    }
 
+    public function addSurveyViews(){
+        return require __DIR__."/../data/views/adminSurveyViews.php";
     }
 
     /**
-     * @dataProvider addDataProvider
+     * @dataProvider addBaseViews
      */
     public function testAdminViews($name,$view){
         if($name=='login'){
@@ -38,6 +41,18 @@ class AdminViewsTest extends TestBaseClassView
             $this->assertTrue(true);
             return;
         }
+        $this->findViewTag($name,$view);
+    }
+
+    /**
+     * @dataProvider addSurveyViews
+     */
+    public function testAdminSurveyViews($name,$view){
+        if(isset($view['import_id'])){
+            $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_'.$view['import_id'].'.lss';
+            self::importSurvey($surveyFile);
+        }
+        $view['route'] = ReplaceFields($view['route'],['{SID}'=>self::$surveyId]);
         $this->findViewTag($name,$view);
     }
 
