@@ -10,41 +10,18 @@ use PHPUnit\Framework\TestCase;
  */
 class DateTimeForwardBackTest extends TestBaseClass
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
 
     /**
      * Import survey in tests/surveys/.
      */
     public static function setUpBeforeClass()
     {
-        parent::setUp();
-
+        parent::setUpBeforeClass();
         $_POST = [];
         $_SESSION = [];
 
-        \Yii::app()->session['loginID'] = 1;
-
         $surveyFile = self::$surveysFolder.'/limesurvey_survey_917744.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
-
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
+        self::importSurvey($surveyFile);
     }
 
     /**
