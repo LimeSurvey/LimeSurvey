@@ -5,6 +5,9 @@
  * @var Survey $oSurvey
  */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyLogicFile');
+
 $fullPage = (isset($surveyid))?false:true;
 ?>
 
@@ -16,7 +19,6 @@ $fullPage = (isset($surveyid))?false:true;
 
     <div class="row">
         <div class="col-lg-12 content-right">
-
 
 
 <?php

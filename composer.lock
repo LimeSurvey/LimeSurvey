@@ -67,12 +67,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46"
+                "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
-                "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
+                "url": "https://api.github.com/repos/symfony/process/zipball/dce0aaed6962844b680b9a98a163e2f5f768752b",
+                "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b",
                 "shasum": ""
             },
             "require": {
@@ -108,7 +108,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-24 14:12:06"
+            "time": "2017-11-05 16:10:10"
         }
     ],
     "packages-dev": [
@@ -1562,7 +1562,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-11-23T20:04:41+00:00"
+            "time": "2016-11-23 20:04:41"
         }
     ],
     "aliases": [],
