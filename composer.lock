@@ -4,6 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+    "hash": "23cce6c253b0306ac4de5d917c282493",
     "content-hash": "1a736206d879c1e8def20695cf3b75b9",
     "packages": [
         {
@@ -12,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "d59d2c183ff6a6fde8804b291f5981233df25d6b"
+                "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/d59d2c183ff6a6fde8804b291f5981233df25d6b",
-                "reference": "d59d2c183ff6a6fde8804b291f5981233df25d6b",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
+                "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
                 "shasum": ""
             },
             "require": {
@@ -59,7 +60,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2017-11-03 19:59:27"
+            "time": "2017-11-02 21:00:08"
         },
         {
             "name": "symfony/process",
@@ -67,12 +68,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b"
+                "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/dce0aaed6962844b680b9a98a163e2f5f768752b",
-                "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b",
+                "url": "https://api.github.com/repos/symfony/process/zipball/ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
+                "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
                 "shasum": ""
             },
             "require": {
@@ -108,38 +109,36 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-05 16:10:10"
+            "time": "2017-10-24 14:12:06"
         }
     ],
     "packages-dev": [
         {
             "name": "doctrine/instantiator",
-            "version": "1.0.x-dev",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/instantiator.git",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+                "reference": "7af8066e48b8a4cbd90849bbe9234ab444057968"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/8e884e78f9f0eb1329e445619e04456e64d8051d",
-                "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
+                "url": "https://api.github.com/repos/doctrine/instantiator/zipball/7af8066e48b8a4cbd90849bbe9234ab444057968",
+                "reference": "7af8066e48b8a4cbd90849bbe9234ab444057968",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3,<8.0-DEV"
+                "php": "^7.1"
             },
             "require-dev": {
-                "athletic/athletic": "~0.1.8",
                 "ext-pdo": "*",
                 "ext-phar": "*",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~2.0"
+                "phpunit/phpunit": "^6.2.3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
@@ -164,7 +163,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2017-09-19 12:41:22"
         },
         {
             "name": "myclabs/deep-copy",
@@ -209,7 +208,7 @@
                 "object",
                 "object graph"
             ],
-            "time": "2017-10-19T19:58:43+00:00"
+            "time": "2017-10-19 19:58:43"
         },
         {
             "name": "phar-io/manifest",
@@ -311,7 +310,7 @@
                 }
             ],
             "description": "Library for handling version information and constraints",
-            "time": "2017-03-05T17:38:23+00:00"
+            "time": "2017-03-05 17:38:23"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -365,7 +364,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2017-09-11T18:02:19+00:00"
+            "time": "2017-09-11 18:02:19"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -410,7 +409,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2017-08-30T18:51:59+00:00"
+            "time": "2017-08-30 18:51:59"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -457,7 +456,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2017-07-14T14:27:02+00:00"
+            "time": "2017-07-14 14:27:02"
         },
         {
             "name": "phpspec/prophecy",
@@ -520,7 +519,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-09-04T11:05:03+00:00"
+            "time": "2017-09-04 11:05:03"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -528,12 +527,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "11740267caeac2b4de90e4d895d0bcc361a3ba55"
+                "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/11740267caeac2b4de90e4d895d0bcc361a3ba55",
-                "reference": "11740267caeac2b4de90e4d895d0bcc361a3ba55",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d",
+                "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d",
                 "shasum": ""
             },
             "require": {
@@ -584,7 +583,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-11-03 13:55:28"
+            "time": "2017-11-03 13:47:33"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -672,7 +671,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21T13:50:34+00:00"
+            "time": "2015-06-21 13:50:34"
         },
         {
             "name": "phpunit/php-timer",
@@ -862,12 +861,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "a9a136bf77a096c9b396cc81db555db8acabb753"
+                "reference": "fb77027d3cdb1a1bff05b4b805d3c01f089e0152"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/a9a136bf77a096c9b396cc81db555db8acabb753",
-                "reference": "a9a136bf77a096c9b396cc81db555db8acabb753",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/fb77027d3cdb1a1bff05b4b805d3c01f089e0152",
+                "reference": "fb77027d3cdb1a1bff05b4b805d3c01f089e0152",
                 "shasum": ""
             },
             "require": {
@@ -913,7 +912,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2017-11-04 09:37:34"
+            "time": "2017-11-02 14:48:53"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1512,7 +1511,7 @@
                 }
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
-            "time": "2017-04-07T12:08:54+00:00"
+            "time": "2017-04-07 12:08:54"
         },
         {
             "name": "webmozart/assert",
