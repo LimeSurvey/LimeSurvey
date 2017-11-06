@@ -2,4 +2,7 @@ language: php
 php:
     - '7.1'
       #- '5.6'
-script: ./third_party/bin/phpunit
+script:
+    - pwd
+    - ls
+    - third_party/bin/phpunit
