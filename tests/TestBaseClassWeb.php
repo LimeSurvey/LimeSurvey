@@ -62,7 +62,8 @@ class TestBaseClassWeb extends TestBaseClass
      * @param array $view
      * @return WebDriver
      */
-    public function openView($view){
+    public function openView($view)
+    {
         $domain = getenv('DOMAIN');
         if (empty($domain)) {
             $domain = '';
@@ -71,7 +72,8 @@ class TestBaseClassWeb extends TestBaseClass
         return $this->webDriver->get($url);
     }
 
-    public function adminLogin($userName,$passWord){
+    public function adminLogin($userName, $passWord)
+    {
         $this->openView(['route'=>'authentication/sa/login']);
         $userNameField = $this->webDriver->findElement(WebDriverBy::id("user"));
         $userNameField->clear()->sendKeys($userName);
@@ -84,6 +86,4 @@ class TestBaseClassWeb extends TestBaseClass
             WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('welcome-jumbotron'))
         );
     }
-
-
 }

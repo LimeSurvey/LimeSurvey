@@ -22,32 +22,28 @@ use Facebook\WebDriver\WebDriverBy;
  */
 class TestBaseClassView extends TestBaseClassWeb
 {
-    private static $importId;
-
     public function setUp()
     {
         parent::setUp();
-        $this->adminLogin('admin','password');
+        $this->adminLogin('admin', 'password');
     }
 
     /**
      * @param string $name
      * @param array $view
      */
-    protected function findViewTag($name,$view){
+    protected function findViewTag($name, $view)
+    {
         $this->openView($view);
         $element = null;
 
         $screenshot = $this->webDriver->takeScreenshot();
         file_put_contents(__DIR__ . '/_output/'.$name.'.png', $screenshot);
-        try{
+        try {
             $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
         }
-        $this->assertNotEmpty($element,sprintf('FAILED viewing %s on route %s',$name,$view['route']));
-
-
+        $this->assertNotEmpty($element, sprintf('FAILED viewing %s on route %s', $name, $view['route']));
     }
-
 }

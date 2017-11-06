@@ -20,23 +20,28 @@ use ls\tests\TestBaseClassView;
  * This test loops through all basic admin view pages and cheks if they open withour errors
  *
  * @package ls\tests
+ * @group adminviews
  */
 class AdminViewsTest extends TestBaseClassView
 {
 
-    public function addBaseViews(){
+    public function addBaseViews()
+    {
         return require __DIR__."/../data/views/adminBaseViews.php";
     }
 
-    public function addSurveyViews(){
+    public function addSurveyViews()
+    {
         return require __DIR__."/../data/views/adminSurveyViews.php";
     }
 
-    public function addSettingsViews(){
+    public function addSettingsViews()
+    {
         return require __DIR__."/../data/views/adminSettingsViews.php";
     }
 
-    public function addUsersViews(){
+    public function addUsersViews()
+    {
         return require __DIR__."/../data/views/adminUsersViews.php";
     }
 
@@ -45,13 +50,14 @@ class AdminViewsTest extends TestBaseClassView
      * @param array$view
      * @dataProvider addBaseViews
      */
-    public function testAdminViews($name,$view){
-        if($name=='login'){
+    public function testAdminViews($name, $view)
+    {
+        if ($name=='login') {
             // skip login
             $this->assertTrue(true);
             return;
         }
-        $this->findViewTag($name,$view);
+        $this->findViewTag($name, $view);
     }
 
     /**
@@ -59,13 +65,14 @@ class AdminViewsTest extends TestBaseClassView
      * @param array$view
      * @dataProvider addSurveyViews
      */
-    public function testAdminSurveyViews($name,$view){
-        if(isset($view['import_id'])){
+    public function testAdminSurveyViews($name, $view)
+    {
+        if (isset($view['import_id'])) {
             $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_'.$view['import_id'].'.lss';
             self::importSurvey($surveyFile);
         }
-        $view['route'] = ReplaceFields($view['route'],['{SID}'=>self::$surveyId]);
-        $this->findViewTag($name,$view);
+        $view['route'] = ReplaceFields($view['route'], ['{SID}'=>self::$surveyId]);
+        $this->findViewTag($name, $view);
     }
 
     /**
@@ -73,8 +80,9 @@ class AdminViewsTest extends TestBaseClassView
      * @param array$view
      * @dataProvider addSettingsViews
      */
-    public function testSettingsViews($name,$view){
-        $this->findViewTag($name,$view);
+    public function testSettingsViews($name, $view)
+    {
+        $this->findViewTag($name, $view);
     }
 
     /**
@@ -83,9 +91,8 @@ class AdminViewsTest extends TestBaseClassView
      * @dataProvider addUsersViews
      */
     public function testUsersViews($name,$view){
-        $this->findViewTag($name,$view);
         // use Admin user
         $view['route'] = ReplaceFields($view['route'],['{UID}'=>1]);
+        $this->findViewTag($name, $view);
     }
-
 }
