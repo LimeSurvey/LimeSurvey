@@ -5,16 +5,6 @@
  */
 return [
 
-    // GENERAL OPTIONS ---------------------------------------
-    // --------------------------------------------------
-
-    ['expressionsTest', ['route'=>'expressions']],
-    ['expressionsFunctions',['route'=>'expressions/sa/functions']],
-    ['expressionsStrings',['route'=>'expressions/sa/strings_with_expressions']],
-    ['expressionsRelevance',['route'=>'expressions/sa/relevance']],
-    ['expressionsConditions2Relevance',['route'=>'expressions/sa/conditions2relevance']],
-    ['expressionsNavigationTest',['route'=>'expressions/sa/navigation_test']],
-
 
     // Survey general stuff -------------------------------------
     // --------------------------------------------------

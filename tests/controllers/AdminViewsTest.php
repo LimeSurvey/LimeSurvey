@@ -25,14 +25,20 @@ class AdminViewsTest extends TestBaseClassView
 {
 
     public function addBaseViews(){
-        return require __DIR__."/../data/views/adminViews.php";
+        return require __DIR__."/../data/views/adminBaseViews.php";
     }
 
     public function addSurveyViews(){
         return require __DIR__."/../data/views/adminSurveyViews.php";
     }
 
+    public function addSettingsViews(){
+        return require __DIR__."/../data/views/adminSettingsViews.php";
+    }
+
     /**
+     * @param string $name
+     * @param array$view
      * @dataProvider addBaseViews
      */
     public function testAdminViews($name,$view){
@@ -45,6 +51,8 @@ class AdminViewsTest extends TestBaseClassView
     }
 
     /**
+     * @param string $name
+     * @param array$view
      * @dataProvider addSurveyViews
      */
     public function testAdminSurveyViews($name,$view){
@@ -53,6 +61,15 @@ class AdminViewsTest extends TestBaseClassView
             self::importSurvey($surveyFile);
         }
         $view['route'] = ReplaceFields($view['route'],['{SID}'=>self::$surveyId]);
+        $this->findViewTag($name,$view);
+    }
+
+    /**
+     * @param string $name
+     * @param array$view
+     * @dataProvider addSettingsViews
+     */
+    public function testSettingsViews($name,$view){
         $this->findViewTag($name,$view);
     }
 
