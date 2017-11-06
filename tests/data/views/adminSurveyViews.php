@@ -40,6 +40,7 @@ return [
     //'surveyResponsesBrowse' =>['route'=>'responses/sa/browse/surveyid/{SID}'],
     'dataEntryView' =>['route'=>'dataentry/sa/view/surveyid/{SID}'],
     'statisticsIndex' =>['route'=>'statistics/sa/index/surveyid/{SID}'],
+    'exportResults' =>['route'=>'admin/export/sa/exportresults/surveyid/{SID}'],
 
 
 
