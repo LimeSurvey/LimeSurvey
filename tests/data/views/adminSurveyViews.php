@@ -38,6 +38,8 @@ return [
     // FIXME these FAIL !!
     //'surveyResponsesIndex' =>['route'=>'responses/sa/index/surveyid/{SID}'],
     //'surveyResponsesBrowse' =>['route'=>'responses/sa/browse/surveyid/{SID}'],
+
+    // this seems to be a special case, opens in another tab
     //'printableSurvey' =>['route'=>'printablesurvey/sa/index/surveyid/{SID}'],
 
     // FIXME these views need an activated survey
@@ -51,6 +53,7 @@ return [
     // question views
     'addQuestion' =>['route'=>'questions/sa/newquestion/surveyid/{SID}'],
     'addQuestionGroup' =>['route'=>'questiongroups/sa/add/surveyid/{SID}'],
+    'importQuestionGroup' =>['route'=>'questiongroups/sa/importview/surveyid/{SID}'],
 
 
 
