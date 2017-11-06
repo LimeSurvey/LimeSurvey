@@ -1,68 +1,17 @@
 [
     {
-        "name": "symfony/process",
-        "version": "3.4.x-dev",
-        "version_normalized": "3.4.9999999.9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/process.git",
-            "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
-            "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.5.9|>=7.0.8"
-        },
-        "time": "2017-10-24 14:12:06",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.4-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Process\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Process Component",
-        "homepage": "https://symfony.com"
-    },
-    {
         "name": "facebook/webdriver",
         "version": "dev-community",
         "version_normalized": "dev-community",
         "source": {
             "type": "git",
             "url": "https://github.com/facebook/php-webdriver.git",
-            "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8"
+            "reference": "d59d2c183ff6a6fde8804b291f5981233df25d6b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
-            "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
+            "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/d59d2c183ff6a6fde8804b291f5981233df25d6b",
+            "reference": "d59d2c183ff6a6fde8804b291f5981233df25d6b",
             "shasum": ""
         },
         "require": {
@@ -81,7 +30,7 @@
             "squizlabs/php_codesniffer": "^2.6",
             "symfony/var-dumper": "^3.3"
         },
-        "time": "2017-11-02 21:00:08",
+        "time": "2017-11-03T19:59:27+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -108,6 +57,331 @@
         ]
     },
     {
+        "name": "webmozart/assert",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/webmozart/assert.git",
+            "reference": "4a8bf11547e139e77b651365113fc12850c43d9a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/webmozart/assert/zipball/4a8bf11547e139e77b651365113fc12850c43d9a",
+            "reference": "4a8bf11547e139e77b651365113fc12850c43d9a",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.3.3 || ^7.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.6",
+            "sebastian/version": "^1.0.1"
+        },
+        "time": "2016-11-23T20:04:41+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.3-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Webmozart\\Assert\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Bernhard Schussek",
+                "email": "bschussek@gmail.com"
+            }
+        ],
+        "description": "Assertions to validate method input/output with nice error messages.",
+        "keywords": [
+            "assert",
+            "check",
+            "validate"
+        ]
+    },
+    {
+        "name": "phpdocumentor/reflection-common",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
+            "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
+            "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.6"
+        },
+        "time": "2017-09-11T18:02:19+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "phpDocumentor\\Reflection\\": [
+                    "src"
+                ]
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jaap van Otterdijk",
+                "email": "opensource@ijaap.nl"
+            }
+        ],
+        "description": "Common reflection classes used by phpdocumentor to reflect the code structure",
+        "homepage": "http://www.phpdoc.org",
+        "keywords": [
+            "FQSEN",
+            "phpDocumentor",
+            "phpdoc",
+            "reflection",
+            "static analysis"
+        ]
+    },
+    {
+        "name": "phpdocumentor/type-resolver",
+        "version": "0.4.0",
+        "version_normalized": "0.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phpDocumentor/TypeResolver.git",
+            "reference": "9c977708995954784726e25d0cd1dddf4e65b0f7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/9c977708995954784726e25d0cd1dddf4e65b0f7",
+            "reference": "9c977708995954784726e25d0cd1dddf4e65b0f7",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5 || ^7.0",
+            "phpdocumentor/reflection-common": "^1.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "^0.9.4",
+            "phpunit/phpunit": "^5.2||^4.8.24"
+        },
+        "time": "2017-07-14T14:27:02+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "phpDocumentor\\Reflection\\": [
+                    "src/"
+                ]
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mike van Riel",
+                "email": "me@mikevanriel.com"
+            }
+        ]
+    },
+    {
+        "name": "phpdocumentor/reflection-docblock",
+        "version": "4.1.1",
+        "version_normalized": "4.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
+            "reference": "2d3d238c433cf69caeb4842e97a3223a116f94b2"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/2d3d238c433cf69caeb4842e97a3223a116f94b2",
+            "reference": "2d3d238c433cf69caeb4842e97a3223a116f94b2",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.0",
+            "phpdocumentor/reflection-common": "^1.0@dev",
+            "phpdocumentor/type-resolver": "^0.4.0",
+            "webmozart/assert": "^1.0"
+        },
+        "require-dev": {
+            "mockery/mockery": "^0.9.4",
+            "phpunit/phpunit": "^4.4"
+        },
+        "time": "2017-08-30T18:51:59+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "phpDocumentor\\Reflection\\": [
+                    "src/"
+                ]
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Mike van Riel",
+                "email": "me@mikevanriel.com"
+            }
+        ],
+        "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock."
+    },
+    {
+        "name": "phpspec/prophecy",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phpspec/prophecy.git",
+            "reference": "c9b8c6088acd19d769d4cc0ffa60a9fe34344bd6"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phpspec/prophecy/zipball/c9b8c6088acd19d769d4cc0ffa60a9fe34344bd6",
+            "reference": "c9b8c6088acd19d769d4cc0ffa60a9fe34344bd6",
+            "shasum": ""
+        },
+        "require": {
+            "doctrine/instantiator": "^1.0.2",
+            "php": "^5.3|^7.0",
+            "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0",
+            "sebastian/comparator": "^1.1|^2.0",
+            "sebastian/recursion-context": "^1.0|^2.0|^3.0"
+        },
+        "require-dev": {
+            "phpspec/phpspec": "^2.5|^3.2",
+            "phpunit/phpunit": "^4.8 || ^5.6.5"
+        },
+        "time": "2017-09-04T11:05:03+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.7.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "Prophecy\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Konstantin Kudryashov",
+                "email": "ever.zet@gmail.com",
+                "homepage": "http://everzet.com"
+            },
+            {
+                "name": "Marcello Duarte",
+                "email": "marcello.duarte@gmail.com"
+            }
+        ],
+        "description": "Highly opinionated mocking framework for PHP 5.3+",
+        "homepage": "https://github.com/phpspec/prophecy",
+        "keywords": [
+            "Double",
+            "Dummy",
+            "fake",
+            "mock",
+            "spy",
+            "stub"
+        ]
+    },
+    {
+        "name": "doctrine/instantiator",
+        "version": "1.0.x-dev",
+        "version_normalized": "1.0.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/doctrine/instantiator.git",
+            "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/doctrine/instantiator/zipball/8e884e78f9f0eb1329e445619e04456e64d8051d",
+            "reference": "8e884e78f9f0eb1329e445619e04456e64d8051d",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3,<8.0-DEV"
+        },
+        "require-dev": {
+            "athletic/athletic": "~0.1.8",
+            "ext-pdo": "*",
+            "ext-phar": "*",
+            "phpunit/phpunit": "~4.0",
+            "squizlabs/php_codesniffer": "~2.0"
+        },
+        "time": "2015-06-14T21:17:01+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Marco Pivetta",
+                "email": "ocramius@gmail.com",
+                "homepage": "http://ocramius.github.com/"
+            }
+        ],
+        "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
+        "homepage": "https://github.com/doctrine/instantiator",
+        "keywords": [
+            "constructor",
+            "instantiate"
+        ]
+    },
+    {
         "name": "sebastian/version",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -125,7 +399,7 @@
         "require": {
             "php": ">=5.6"
         },
-        "time": "2016-10-03 07:35:21",
+        "time": "2016-10-03T07:35:21+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -170,7 +444,7 @@
         "require": {
             "php": ">=5.6.0"
         },
-        "time": "2016-10-03 07:43:09",
+        "time": "2016-10-03T07:43:09+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -197,6 +471,53 @@
         "homepage": "https://www.github.com/sebastianbergmann/resource-operations"
     },
     {
+        "name": "sebastian/object-reflector",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/object-reflector.git",
+            "reference": "773f97c67f28de00d397be301821b06708fca0be"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/object-reflector/zipball/773f97c67f28de00d397be301821b06708fca0be",
+            "reference": "773f97c67f28de00d397be301821b06708fca0be",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^6.0"
+        },
+        "time": "2017-03-29T09:07:27+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.1-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de"
+            }
+        ],
+        "description": "Allows reflection of object attributes, including inherited and non-public ones",
+        "homepage": "https://github.com/sebastianbergmann/object-reflector/"
+    },
+    {
         "name": "sebastian/recursion-context",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -217,7 +538,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-03-07 15:09:59",
+        "time": "2017-03-07T15:09:59+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -252,53 +573,6 @@
         "homepage": "http://www.github.com/sebastianbergmann/recursion-context"
     },
     {
-        "name": "sebastian/object-reflector",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/object-reflector.git",
-            "reference": "773f97c67f28de00d397be301821b06708fca0be"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/object-reflector/zipball/773f97c67f28de00d397be301821b06708fca0be",
-            "reference": "773f97c67f28de00d397be301821b06708fca0be",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^6.0"
-        },
-        "time": "2017-03-29 09:07:27",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.1-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de"
-            }
-        ],
-        "description": "Allows reflection of object attributes, including inherited and non-public ones",
-        "homepage": "https://github.com/sebastianbergmann/object-reflector/"
-    },
-    {
         "name": "sebastian/object-enumerator",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -321,7 +595,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-08-03 12:35:26",
+        "time": "2017-08-03T12:35:26+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -371,7 +645,7 @@
         "suggest": {
             "ext-uopz": "*"
         },
-        "time": "2017-04-27 15:39:26",
+        "time": "2017-04-27T15:39:26+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -423,7 +697,7 @@
             "ext-mbstring": "*",
             "phpunit/phpunit": "^6.0"
         },
-        "time": "2017-04-03 13:19:02",
+        "time": "2017-04-03T13:19:02+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -490,7 +764,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.1"
         },
-        "time": "2017-07-01 08:51:00",
+        "time": "2017-07-01T08:51:00+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -542,7 +816,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.2"
         },
-        "time": "2017-10-05 13:24:46",
+        "time": "2017-10-05T13:24:46+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -598,7 +872,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.4"
         },
-        "time": "2017-11-03 07:16:52",
+        "time": "2017-11-03T07:16:52+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -659,7 +933,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2015-06-21 13:50:34",
+        "time": "2015-06-21T13:50:34+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -685,72 +959,18 @@
         ]
     },
     {
-        "name": "doctrine/instantiator",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/doctrine/instantiator.git",
-            "reference": "7af8066e48b8a4cbd90849bbe9234ab444057968"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/instantiator/zipball/7af8066e48b8a4cbd90849bbe9234ab444057968",
-            "reference": "7af8066e48b8a4cbd90849bbe9234ab444057968",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.1"
-        },
-        "require-dev": {
-            "ext-pdo": "*",
-            "ext-phar": "*",
-            "phpunit/phpunit": "^6.2.3"
-        },
-        "time": "2017-09-19 12:41:22",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.2.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "Doctrine\\Instantiator\\": "src/Doctrine/Instantiator/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Marco Pivetta",
-                "email": "ocramius@gmail.com",
-                "homepage": "http://ocramius.github.com/"
-            }
-        ],
-        "description": "A small, lightweight utility to instantiate objects in PHP without invoking their constructors",
-        "homepage": "https://github.com/doctrine/instantiator",
-        "keywords": [
-            "constructor",
-            "instantiate"
-        ]
-    },
-    {
         "name": "phpunit/phpunit-mock-objects",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-            "reference": "fb77027d3cdb1a1bff05b4b805d3c01f089e0152"
+            "reference": "a9a136bf77a096c9b396cc81db555db8acabb753"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/fb77027d3cdb1a1bff05b4b805d3c01f089e0152",
-            "reference": "fb77027d3cdb1a1bff05b4b805d3c01f089e0152",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/a9a136bf77a096c9b396cc81db555db8acabb753",
+            "reference": "a9a136bf77a096c9b396cc81db555db8acabb753",
             "shasum": ""
         },
         "require": {
@@ -768,7 +988,7 @@
         "suggest": {
             "ext-soap": "*"
         },
-        "time": "2017-11-02 14:48:53",
+        "time": "2017-11-04T09:37:34+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -820,7 +1040,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
         },
-        "time": "2017-03-07 15:42:04",
+        "time": "2017-03-07T15:42:04+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -868,7 +1088,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2017-10-30 04:21:02",
+        "time": "2017-10-30T04:21:02+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -900,48 +1120,6 @@
         ]
     },
     {
-        "name": "theseer/tokenizer",
-        "version": "1.1.0",
-        "version_normalized": "1.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/theseer/tokenizer.git",
-            "reference": "cb2f008f3f05af2893a87208fe6a6c4985483f8b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/theseer/tokenizer/zipball/cb2f008f3f05af2893a87208fe6a6c4985483f8b",
-            "reference": "cb2f008f3f05af2893a87208fe6a6c4985483f8b",
-            "shasum": ""
-        },
-        "require": {
-            "ext-dom": "*",
-            "ext-tokenizer": "*",
-            "ext-xmlwriter": "*",
-            "php": "^7.0"
-        },
-        "time": "2017-04-07 12:08:54",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Arne Blankerts",
-                "email": "arne@blankerts.de",
-                "role": "Developer"
-            }
-        ],
-        "description": "A small library for converting tokenized PHP source code into XML and potentially other formats"
-    },
-    {
         "name": "sebastian/code-unit-reverse-lookup",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -962,7 +1140,7 @@
         "require-dev": {
             "phpunit/phpunit": "^5.7 || ^6.0"
         },
-        "time": "2017-03-04 10:23:55",
+        "time": "2017-03-04T10:23:55+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1010,7 +1188,7 @@
         "require-dev": {
             "phpunit/phpunit": "^6.2.4"
         },
-        "time": "2017-08-20 05:47:52",
+        "time": "2017-08-20T05:47:52+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1046,12 +1224,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-            "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d"
+            "reference": "11740267caeac2b4de90e4d895d0bcc361a3ba55"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d",
-            "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/11740267caeac2b4de90e4d895d0bcc361a3ba55",
+            "reference": "11740267caeac2b4de90e4d895d0bcc361a3ba55",
             "shasum": ""
         },
         "require": {
@@ -1073,7 +1251,7 @@
         "suggest": {
             "ext-xdebug": "^2.5.5"
         },
-        "time": "2017-11-03 13:47:33",
+        "time": "2017-11-03T13:55:28+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1103,428 +1281,6 @@
             "coverage",
             "testing",
             "xunit"
-        ]
-    },
-    {
-        "name": "webmozart/assert",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/webmozart/assert.git",
-            "reference": "4a8bf11547e139e77b651365113fc12850c43d9a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/webmozart/assert/zipball/4a8bf11547e139e77b651365113fc12850c43d9a",
-            "reference": "4a8bf11547e139e77b651365113fc12850c43d9a",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.3.3 || ^7.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.6",
-            "sebastian/version": "^1.0.1"
-        },
-        "time": "2016-11-23 20:04:41",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.3-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "Webmozart\\Assert\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Bernhard Schussek",
-                "email": "bschussek@gmail.com"
-            }
-        ],
-        "description": "Assertions to validate method input/output with nice error messages.",
-        "keywords": [
-            "assert",
-            "check",
-            "validate"
-        ]
-    },
-    {
-        "name": "phpdocumentor/reflection-common",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phpDocumentor/ReflectionCommon.git",
-            "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phpDocumentor/ReflectionCommon/zipball/21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
-            "reference": "21bdeb5f65d7ebf9f43b1b25d404f87deab5bfb6",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.6"
-        },
-        "time": "2017-09-11 18:02:19",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "phpDocumentor\\Reflection\\": [
-                    "src"
-                ]
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Jaap van Otterdijk",
-                "email": "opensource@ijaap.nl"
-            }
-        ],
-        "description": "Common reflection classes used by phpdocumentor to reflect the code structure",
-        "homepage": "http://www.phpdoc.org",
-        "keywords": [
-            "FQSEN",
-            "phpDocumentor",
-            "phpdoc",
-            "reflection",
-            "static analysis"
-        ]
-    },
-    {
-        "name": "phpdocumentor/type-resolver",
-        "version": "0.4.0",
-        "version_normalized": "0.4.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phpDocumentor/TypeResolver.git",
-            "reference": "9c977708995954784726e25d0cd1dddf4e65b0f7"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/9c977708995954784726e25d0cd1dddf4e65b0f7",
-            "reference": "9c977708995954784726e25d0cd1dddf4e65b0f7",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.5 || ^7.0",
-            "phpdocumentor/reflection-common": "^1.0"
-        },
-        "require-dev": {
-            "mockery/mockery": "^0.9.4",
-            "phpunit/phpunit": "^5.2||^4.8.24"
-        },
-        "time": "2017-07-14 14:27:02",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "phpDocumentor\\Reflection\\": [
-                    "src/"
-                ]
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Mike van Riel",
-                "email": "me@mikevanriel.com"
-            }
-        ]
-    },
-    {
-        "name": "phpdocumentor/reflection-docblock",
-        "version": "4.1.1",
-        "version_normalized": "4.1.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-            "reference": "2d3d238c433cf69caeb4842e97a3223a116f94b2"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/2d3d238c433cf69caeb4842e97a3223a116f94b2",
-            "reference": "2d3d238c433cf69caeb4842e97a3223a116f94b2",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^7.0",
-            "phpdocumentor/reflection-common": "^1.0@dev",
-            "phpdocumentor/type-resolver": "^0.4.0",
-            "webmozart/assert": "^1.0"
-        },
-        "require-dev": {
-            "mockery/mockery": "^0.9.4",
-            "phpunit/phpunit": "^4.4"
-        },
-        "time": "2017-08-30 18:51:59",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "phpDocumentor\\Reflection\\": [
-                    "src/"
-                ]
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Mike van Riel",
-                "email": "me@mikevanriel.com"
-            }
-        ],
-        "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock."
-    },
-    {
-        "name": "phpspec/prophecy",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phpspec/prophecy.git",
-            "reference": "c9b8c6088acd19d769d4cc0ffa60a9fe34344bd6"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phpspec/prophecy/zipball/c9b8c6088acd19d769d4cc0ffa60a9fe34344bd6",
-            "reference": "c9b8c6088acd19d769d4cc0ffa60a9fe34344bd6",
-            "shasum": ""
-        },
-        "require": {
-            "doctrine/instantiator": "^1.0.2",
-            "php": "^5.3|^7.0",
-            "phpdocumentor/reflection-docblock": "^2.0|^3.0.2|^4.0",
-            "sebastian/comparator": "^1.1|^2.0",
-            "sebastian/recursion-context": "^1.0|^2.0|^3.0"
-        },
-        "require-dev": {
-            "phpspec/phpspec": "^2.5|^3.2",
-            "phpunit/phpunit": "^4.8 || ^5.6.5"
-        },
-        "time": "2017-09-04 11:05:03",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.7.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "Prophecy\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Konstantin Kudryashov",
-                "email": "ever.zet@gmail.com",
-                "homepage": "http://everzet.com"
-            },
-            {
-                "name": "Marcello Duarte",
-                "email": "marcello.duarte@gmail.com"
-            }
-        ],
-        "description": "Highly opinionated mocking framework for PHP 5.3+",
-        "homepage": "https://github.com/phpspec/prophecy",
-        "keywords": [
-            "Double",
-            "Dummy",
-            "fake",
-            "mock",
-            "spy",
-            "stub"
-        ]
-    },
-    {
-        "name": "phar-io/version",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phar-io/version.git",
-            "reference": "a70c0ced4be299a63d32fa96d9281d03e94041df"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phar-io/version/zipball/a70c0ced4be299a63d32fa96d9281d03e94041df",
-            "reference": "a70c0ced4be299a63d32fa96d9281d03e94041df",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.6 || ^7.0"
-        },
-        "time": "2017-03-05 17:38:23",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Arne Blankerts",
-                "email": "arne@blankerts.de",
-                "role": "Developer"
-            },
-            {
-                "name": "Sebastian Heuer",
-                "email": "sebastian@phpeople.de",
-                "role": "Developer"
-            },
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de",
-                "role": "Developer"
-            }
-        ],
-        "description": "Library for handling version information and constraints"
-    },
-    {
-        "name": "phar-io/manifest",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phar-io/manifest.git",
-            "reference": "014feadb268809af7c8e2f7ccd396b8494901f58"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phar-io/manifest/zipball/014feadb268809af7c8e2f7ccd396b8494901f58",
-            "reference": "014feadb268809af7c8e2f7ccd396b8494901f58",
-            "shasum": ""
-        },
-        "require": {
-            "ext-dom": "*",
-            "ext-phar": "*",
-            "phar-io/version": "^1.0.1",
-            "php": "^5.6 || ^7.0"
-        },
-        "time": "2017-04-07 07:07:10",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Arne Blankerts",
-                "email": "arne@blankerts.de",
-                "role": "Developer"
-            },
-            {
-                "name": "Sebastian Heuer",
-                "email": "sebastian@phpeople.de",
-                "role": "Developer"
-            },
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de",
-                "role": "Developer"
-            }
-        ],
-        "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)"
-    },
-    {
-        "name": "myclabs/deep-copy",
-        "version": "1.7.0",
-        "version_normalized": "1.7.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/myclabs/DeepCopy.git",
-            "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
-            "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.6 || ^7.0"
-        },
-        "require-dev": {
-            "doctrine/collections": "^1.0",
-            "doctrine/common": "^2.6",
-            "phpunit/phpunit": "^4.1"
-        },
-        "time": "2017-10-19 19:58:43",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "DeepCopy\\": "src/DeepCopy/"
-            },
-            "files": [
-                "src/DeepCopy/deep_copy.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "Create deep copies (clones) of your objects",
-        "keywords": [
-            "clone",
-            "copy",
-            "duplicate",
-            "object",
-            "object graph"
         ]
     },
     {
@@ -1578,7 +1334,7 @@
             "ext-xdebug": "*",
             "phpunit/php-invoker": "^1.1"
         },
-        "time": "2017-11-01 08:34:48",
+        "time": "2017-11-01T08:34:48+00:00",
         "bin": [
             "phpunit"
         ],
@@ -1611,6 +1367,252 @@
             "phpunit",
             "testing",
             "xunit"
+        ]
+    },
+    {
+        "name": "symfony/process",
+        "version": "3.4.x-dev",
+        "version_normalized": "3.4.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/process.git",
+            "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/process/zipball/ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
+            "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8"
+        },
+        "time": "2017-10-24T14:12:06+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.4-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Process\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Process Component",
+        "homepage": "https://symfony.com"
+    },
+    {
+        "name": "phar-io/version",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phar-io/version.git",
+            "reference": "a70c0ced4be299a63d32fa96d9281d03e94041df"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phar-io/version/zipball/a70c0ced4be299a63d32fa96d9281d03e94041df",
+            "reference": "a70c0ced4be299a63d32fa96d9281d03e94041df",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6 || ^7.0"
+        },
+        "time": "2017-03-05T17:38:23+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Arne Blankerts",
+                "email": "arne@blankerts.de",
+                "role": "Developer"
+            },
+            {
+                "name": "Sebastian Heuer",
+                "email": "sebastian@phpeople.de",
+                "role": "Developer"
+            },
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "Developer"
+            }
+        ],
+        "description": "Library for handling version information and constraints"
+    },
+    {
+        "name": "phar-io/manifest",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phar-io/manifest.git",
+            "reference": "014feadb268809af7c8e2f7ccd396b8494901f58"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phar-io/manifest/zipball/014feadb268809af7c8e2f7ccd396b8494901f58",
+            "reference": "014feadb268809af7c8e2f7ccd396b8494901f58",
+            "shasum": ""
+        },
+        "require": {
+            "ext-dom": "*",
+            "ext-phar": "*",
+            "phar-io/version": "^1.0.1",
+            "php": "^5.6 || ^7.0"
+        },
+        "time": "2017-04-07T07:07:10+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Arne Blankerts",
+                "email": "arne@blankerts.de",
+                "role": "Developer"
+            },
+            {
+                "name": "Sebastian Heuer",
+                "email": "sebastian@phpeople.de",
+                "role": "Developer"
+            },
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "Developer"
+            }
+        ],
+        "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)"
+    },
+    {
+        "name": "theseer/tokenizer",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/theseer/tokenizer.git",
+            "reference": "cb2f008f3f05af2893a87208fe6a6c4985483f8b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/theseer/tokenizer/zipball/cb2f008f3f05af2893a87208fe6a6c4985483f8b",
+            "reference": "cb2f008f3f05af2893a87208fe6a6c4985483f8b",
+            "shasum": ""
+        },
+        "require": {
+            "ext-dom": "*",
+            "ext-tokenizer": "*",
+            "ext-xmlwriter": "*",
+            "php": "^7.0"
+        },
+        "time": "2017-04-07T12:08:54+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Arne Blankerts",
+                "email": "arne@blankerts.de",
+                "role": "Developer"
+            }
+        ],
+        "description": "A small library for converting tokenized PHP source code into XML and potentially other formats"
+    },
+    {
+        "name": "myclabs/deep-copy",
+        "version": "1.7.0",
+        "version_normalized": "1.7.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/myclabs/DeepCopy.git",
+            "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/myclabs/DeepCopy/zipball/3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
+            "reference": "3b8a3a99ba1f6a3952ac2747d989303cbd6b7a3e",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.6 || ^7.0"
+        },
+        "require-dev": {
+            "doctrine/collections": "^1.0",
+            "doctrine/common": "^2.6",
+            "phpunit/phpunit": "^4.1"
+        },
+        "time": "2017-10-19T19:58:43+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "DeepCopy\\": "src/DeepCopy/"
+            },
+            "files": [
+                "src/DeepCopy/deep_copy.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Create deep copies (clones) of your objects",
+        "keywords": [
+            "clone",
+            "copy",
+            "duplicate",
+            "object",
+            "object graph"
         ]
     }
 ]
