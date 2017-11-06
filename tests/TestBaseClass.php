@@ -11,6 +11,12 @@ class TestBaseClass extends TestCase
      */
     protected static $testHelper = null;
 
+    /** @var  string $tempFolder*/
+    protected $tempFolder;
+
+    /** @var  string $screenshotsFolder */
+    protected $screenshotsFolder;
+
 
     /**
      * @var int
@@ -21,6 +27,9 @@ class TestBaseClass extends TestCase
     {
         parent::setUp();
         self::$testHelper = new TestHelper();
+
+        $this->tempFolder = __DIR__.'/tmp';
+        $this->screenshotsFolder = $this->tempFolder.'/screenshots';
 
         self::$testHelper->importAll();
 
