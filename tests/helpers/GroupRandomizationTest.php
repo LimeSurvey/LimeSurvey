@@ -109,17 +109,10 @@ class GroupRandomizationTest extends TestBaseClass
         $body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
         $text = $body->getText();
 
-        if (strpos($text, 'PHP notice') === false) {
-            echo 'No PHP notice';
-            exit(0);
-        } else {
-            echo 'PHP notice!';
-            exit(1);
-        }
-
         // There should be no PHP notice.
-        //$this->assertTrue(strpos($text, 'PHP notice') === false, $text);
+        $this->assertTrue(strpos($text, 'PHP notice') === false, $text);
 
+        // NB: This is how to take a screenshot, if necessary.
         //$screenshot = $this->webDriver->takeScreenshot();
         //file_put_contents(__DIR__ . '/screenshot.png', $screenshot);
 
