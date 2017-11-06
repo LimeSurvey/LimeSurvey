@@ -38,10 +38,12 @@ return [
     // FIXME these FAIL !!
     //'surveyResponsesIndex' =>['route'=>'responses/sa/index/surveyid/{SID}'],
     //'surveyResponsesBrowse' =>['route'=>'responses/sa/browse/surveyid/{SID}'],
+
+    // FIXME these views need an activated survey
     'dataEntryView' =>['route'=>'dataentry/sa/view/surveyid/{SID}'],
     'statisticsIndex' =>['route'=>'statistics/sa/index/surveyid/{SID}'],
-    'exportResults' =>['route'=>'export/sa/exportresults/sid/{SID}'],
-    'exportSpss' =>['route'=>'export/sa/exportspss/sid/{SID}'],
+    //'exportResults' =>['route'=>'export/sa/exportresults/surveyid/{SID}'],
+    //'exportSpss' =>['route'=>'export/sa/exportspss/sid/{SID}'],
 
 
 

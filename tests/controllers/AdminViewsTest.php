@@ -55,6 +55,9 @@ class AdminViewsTest extends TestBaseClassWeb
     private function findViewTag($name,$view){
         $this->openView($view);
         $element = null;
+
+        $screenshot = $this->webDriver->takeScreenshot();
+        file_put_contents(__DIR__ . '/../_output/'.$name.'.png', $screenshot);
         try{
             $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
         } catch (\Exception $e){
@@ -62,8 +65,6 @@ class AdminViewsTest extends TestBaseClassWeb
         }
         $this->assertNotEmpty($element,sprintf('FAILED viewing %s on route %s',$name,$view['route']));
 
-        $screenshot = $this->webDriver->takeScreenshot();
-        file_put_contents(__DIR__ . '/../_output/'.$name.'.png', $screenshot);
 
     }
 
