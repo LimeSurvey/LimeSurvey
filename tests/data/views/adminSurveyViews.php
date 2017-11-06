@@ -36,6 +36,10 @@ return [
     //'surveyResponsesIndex' =>['route'=>'responses/sa/index/surveyid/{SID}'],
     //'surveyResponsesBrowse' =>['route'=>'responses/sa/browse/surveyid/{SID}'],
 
+    'dataEntryView' =>['route'=>'dataentry/sa/view/surveyid/{SID}'],
+
+
+
 
 
 ];

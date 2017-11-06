@@ -58,11 +58,12 @@ class AdminViewsTest extends TestBaseClassWeb
         try{
             $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
         } catch (\Exception $e){
-            $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/../_output/'.$name.'.png', $screenshot);
             //throw new Exception($e->getMessage());
         }
         $this->assertNotEmpty($element,sprintf('FAILED viewing %s on route %s',$name,$view['route']));
+
+        $screenshot = $this->webDriver->takeScreenshot();
+        file_put_contents(__DIR__ . '/../_output/'.$name.'.png', $screenshot);
 
     }
 
