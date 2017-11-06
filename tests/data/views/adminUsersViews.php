@@ -12,6 +12,6 @@ return [
     ['modifyUser', ['route'=>'user/sa/modifyuser/uid/{UID}']],
 
     // needs POST implementation
-    //['modifyUser', ['route'=>'user/sa/setuserpermissions/uid/']],
-    setusertemplates
+    ['setUserPermissions', ['route'=>'user/sa/setuserpermissions/uid/{UID}']],
+    ['setUserTemplates', ['route'=>'user/sa/setusertemplates/uid/{UID}']],
 ];
