@@ -10,8 +10,6 @@ return [
 
     ['usersIndex', ['route'=>'user/sa/index']],
     ['modifyUser', ['route'=>'user/sa/modifyuser/uid/{UID}']],
-
-    // needs POST implementation
     ['setUserPermissions', ['route'=>'user/sa/setuserpermissions/uid/{UID}']],
     ['setUserTemplates', ['route'=>'user/sa/setusertemplates/uid/{UID}']],
 ];
