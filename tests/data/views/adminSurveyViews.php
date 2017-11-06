@@ -5,6 +5,21 @@
  */
 
 return [
+
+    // GENERAL OPTIONS ---------------------------------------
+    // --------------------------------------------------
+
+    'expressionsTest' =>['route'=>'expressions'],
+    'expressionsFunctions' =>['route'=>'expressions/sa/functions'],
+    'expressionsStrings' =>['route'=>'expressions/sa/strings_with_expressions'],
+    'expressionsRelevance' =>['route'=>'expressions/sa/relevance'],
+    'expressionsConditions2Relevance' =>['route'=>'expressions/sa/conditions2relevance'],
+    'expressionsNavigationTest' =>['route'=>'expressions/sa/navigation_test'],
+
+
+    // Survey general stuff -------------------------------------
+    // --------------------------------------------------
+
     // NB the import_id is needed only for the first item OR if you need to change the survey you want to work with
     'surveySummary' =>['route'=>'survey/sa/view/surveyid/{SID}','import_id'=>'454287'],
 
@@ -18,8 +33,8 @@ return [
     // FIXME these FAIL !!
     //'surveyParticipantsIndex' =>['route'=>'tokens/sa/index/surveyid/{SID}'],
     //'surveyPublicationOptions' =>['route'=>'rendersidemenulink/subaction/publication/surveyid/{SID}'],
-    // 'surveyResources' =>['route'=>'survey/sa/rendersidemenulink/subaction/resources/surveyid/{SID}'],
 
+    'surveyResources' =>['route'=>'survey/sa/rendersidemenulink/subaction/resources/surveyid/{SID}'],
     'surveyPermissions' =>['route'=>'surveypermission/sa/view/surveyid/{SID}'],
     'surveyParticipantTokenOptions' =>['route'=>'survey/sa/rendersidemenulink/subaction/tokens/surveyid/{SID}'],
     'surveyQuotas' =>['route'=>'quotas/sa/index/surveyid/{SID}'],
