@@ -22,6 +22,8 @@ class GroupRandomizationTest extends TestBaseClass
      */
     public static function setupBeforeClass()
     {
+        self::markTestSkipped();
+
         self::$testHelper->connectToOriginalDatabase();
 
         \Yii::app()->session['loginID'] = 1;
