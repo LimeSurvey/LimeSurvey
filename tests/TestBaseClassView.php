@@ -22,8 +22,6 @@ use Facebook\WebDriver\WebDriverBy;
  */
 class TestBaseClassView extends TestBaseClassWeb
 {
-    private static $importId;
-
     public function setUp()
     {
         parent::setUp();
