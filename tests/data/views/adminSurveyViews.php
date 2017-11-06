@@ -48,6 +48,7 @@ return [
 
     // question views
     'addQuestion' =>['route'=>'questions/sa/newquestion/surveyid/{SID}'],
+    'addQuestionGroup' =>['route'=>'questiongroups/sa/add/surveyid/{SID}'],
 
 
 
