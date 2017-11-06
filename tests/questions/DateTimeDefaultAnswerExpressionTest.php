@@ -13,21 +13,12 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     public function setUp()
     {
         parent::setUp();
-        $surveyFile = $this->surveysFolder . '/limesurvey_survey_454287.lss';
-        self::importSurvey($surveyFile);
+        $fileName = $this->surveysFolder . '/limesurvey_survey_454287.lss';
+        $this->importSurvey($fileName);
     }
 
 
-    /**
-     * Destroy what had been imported.
-     */
-    public function tearDown()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
-    }
+
 
     /**
      * Test the question with lacking default answer expression,

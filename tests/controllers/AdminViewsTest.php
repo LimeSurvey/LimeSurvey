@@ -68,10 +68,14 @@ class AdminViewsTest extends TestBaseClassView
     public function testAdminSurveyViews($name, $view)
     {
         if (isset($view['import_id'])) {
-            $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_'.$view['import_id'].'.lss';
-            self::importSurvey($surveyFile);
+            // we'll change the survey in the middle of test
+            if(self::$testSurvey){
+                self::$testSurvey->delete();
+            }
+            $surveyFile = self::$surveysFolder . '/limesurvey_survey_'.$view['import_id'].'.lss';
+            $this->importSurvey($surveyFile);
         }
-        $view['route'] = ReplaceFields($view['route'], ['{SID}'=>self::$surveyId]);
+        $view['route'] = ReplaceFields($view['route'], ['{SID}'=> self::$testSurvey->primaryKey]);
         $this->findViewTag($name, $view);
     }
 

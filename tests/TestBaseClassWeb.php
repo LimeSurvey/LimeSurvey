@@ -35,7 +35,7 @@ class TestBaseClassWeb extends TestBaseClass
     /**
      * @var WebDriver $webDriver
      */
-    protected $webDriver;
+    protected static $webDriver;
 
     public function setUp()
     {
@@ -45,17 +45,14 @@ class TestBaseClassWeb extends TestBaseClass
         }
 
         $capabilities = DesiredCapabilities::phantomjs();
-        $this->webDriver = RemoteWebDriver::create("http://localhost:{$this->webPort}/", $capabilities);
+        self::$webDriver = RemoteWebDriver::create("http://localhost:{$this->webPort}/", $capabilities);
 
     }
 
-    /**
-     * Tear down fixture.
-     */
     public function tearDown()
     {
-        // Close Firefox.
-        $this->webDriver->quit();
+        parent::tearDown();
+        self::$webDriver->quit();
     }
 
     /**
@@ -69,20 +66,20 @@ class TestBaseClassWeb extends TestBaseClass
             $domain = '';
         }
         $url = "http://{$domain}/index.php/admin/".$view['route'];
-        return $this->webDriver->get($url);
+        return self::$webDriver->get($url);
     }
 
     public function adminLogin($userName, $passWord)
     {
         $this->openView(['route'=>'authentication/sa/login']);
-        $userNameField = $this->webDriver->findElement(WebDriverBy::id("user"));
+        $userNameField = self::$webDriver->findElement(WebDriverBy::id("user"));
         $userNameField->clear()->sendKeys($userName);
-        $passWordField = $this->webDriver->findElement(WebDriverBy::id("password"));
+        $passWordField = self::$webDriver->findElement(WebDriverBy::id("password"));
         $passWordField->clear()->sendKeys($passWord);
 
-        $submit = $this->webDriver->findElement(WebDriverBy::name('login_submit'));
+        $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
-        return $this->webDriver->wait(10, 1000)->until(
+        return self::$webDriver->wait(10, 1000)->until(
             WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('welcome-jumbotron'))
         );
     }

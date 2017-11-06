@@ -37,10 +37,10 @@ class TestBaseClassView extends TestBaseClassWeb
         $this->openView($view);
         $element = null;
 
-        $screenshot = $this->webDriver->takeScreenshot();
-        file_put_contents($this->screenshotsFolder. '/'.$name.'.png', $screenshot);
+        $screenshot = self::$webDriver->takeScreenshot();
+        file_put_contents(self::$screenshotsFolder. '/'.$name.'.png', $screenshot);
         try {
-            $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
+            $element = self::$webDriver->findElement(WebDriverBy::id('action::'.$name));
         } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
         }
