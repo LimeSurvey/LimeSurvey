@@ -3,6 +3,7 @@
 namespace ls\tests\controllers;
 
 use ls\tests\TestBaseClass;
+use ls\tests\DummyController;
 
 /**
  * @since 2017-10-15
