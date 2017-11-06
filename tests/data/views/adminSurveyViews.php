@@ -30,13 +30,18 @@ return [
     'surveyPlugins' =>['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}'],
 
 
-    // going deeper
+
+    // going deeper -------------------------------------
+    // --------------------------------------------------
+
     'surveyLogicFile' =>['route'=>'expressions/sa/survey_logic_file/sid/{SID}'],
     // FIXME these FAIL !!
     //'surveyResponsesIndex' =>['route'=>'responses/sa/index/surveyid/{SID}'],
     //'surveyResponsesBrowse' =>['route'=>'responses/sa/browse/surveyid/{SID}'],
-
     'dataEntryView' =>['route'=>'dataentry/sa/view/surveyid/{SID}'],
+    'statisticsIndex' =>['route'=>'statistics/sa/index/surveyid/{SID}'],
+
+
 
 
 
