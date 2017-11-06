@@ -84,6 +84,8 @@ class AdminViewsTest extends TestBaseClassView
      */
     public function testUsersViews($name,$view){
         $this->findViewTag($name,$view);
+        // use Admin user
+        $view['route'] = ReplaceFields($view['route'],['{UID}'=>1]);
     }
 
 }

@@ -2,6 +2,8 @@
 /**
 * @var User $oUser
 */
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('usersIndex');
 ?>
 
 <div class="pagetitle h3">

@@ -9,5 +9,5 @@ return [
     // --------------------------------------------------
 
     ['usersIndex', ['route'=>'user/sa/index']],
-
+    ['modifyUser', ['route'=>'user/sa/modifyuser/uid/{UID}']],
 ];
