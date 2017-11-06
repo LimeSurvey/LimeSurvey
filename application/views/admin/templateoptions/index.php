@@ -1,8 +1,11 @@
 <?php
-/* @var $this TemplateOptionsController */
+/* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
 // TODO: rename to template_list.php
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('templateOptions');
 
 ?>
 

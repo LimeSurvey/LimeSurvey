@@ -175,7 +175,7 @@ class export extends Survey_Common_Action {
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
             if ($survey->isSaveTimings) {
                 //Append survey timings to the fieldmap array
-                $aFieldMap = createTimingsFieldMap($iSurveyID, 'full',false,false,$oSurvey->language);
+                $aFieldMap = createTimingsFieldMap($iSurveyID, 'full',false,false,$survey->language);
             }
             $iFieldCount = count($aFieldMap);
 

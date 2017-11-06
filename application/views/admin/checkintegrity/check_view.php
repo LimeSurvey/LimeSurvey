@@ -1,3 +1,10 @@
+<?php
+/* @var $dataProvider CActiveDataProvider */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('checkIntegrity');
+
+?>
 <div class="pagetitle h3"><?php eT("Check data integrity");?></div>
 
 <div class="row" style="margin-bottom: 100px">

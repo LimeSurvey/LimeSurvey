@@ -3,6 +3,9 @@
  * The welcome page is the home page
  * TODO : make a recursive function, taking any number of box in the database, calculating how much rows are needed.
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('index');
 ?>
 
 <?php

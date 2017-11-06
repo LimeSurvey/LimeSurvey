@@ -2,8 +2,7 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\Exception\NoSuchElementException;
@@ -12,7 +11,7 @@ use Facebook\WebDriver\Exception\NoSuchElementException;
  * @since 2017-10-27
  * @group datevalidation
  */
-class DateTimeValidationTest extends TestBaseClass
+class DateTimeValidationTest extends TestBaseClassWeb
 {
     /**
      * @var int
@@ -49,19 +48,6 @@ class DateTimeValidationTest extends TestBaseClass
     }
 
     /**
-     * Selenium setup.
-     */
-    public function setUp()
-    {
-        if (empty(getenv('DOMAIN'))) {
-            die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
-        }
-
-        $capabilities = DesiredCapabilities::phantomjs();
-        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/', $capabilities);
-    }
-
-    /**
      * Destroy what had been imported.
      */
     public static function teardownAfterClass()
@@ -72,14 +58,6 @@ class DateTimeValidationTest extends TestBaseClass
         }
     }
 
-    /**
-     * Tear down fixture.
-     */
-    public function tearDown()
-    {
-        // Close Firefox.
-        $this->webDriver->quit();
-    }
 
     /**
      * 
@@ -103,7 +81,7 @@ class DateTimeValidationTest extends TestBaseClass
             $submit = $this->webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+            file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);
             $this->assertFalse(
                 true,
                 'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
@@ -128,7 +106,7 @@ class DateTimeValidationTest extends TestBaseClass
             $this->assertNotEmpty($div);
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+            file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);
             $this->assertFalse(
                 true,
                 'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()

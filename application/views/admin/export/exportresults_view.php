@@ -1,7 +1,12 @@
 <?php
 /**
  * Export result view
+ * @var AdminController $this
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('exportResults');
+
 ?>
 <script type="text/javascript">
     var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';

@@ -50,8 +50,10 @@ class surveypermission extends Survey_Common_Action {
         $userList=getUserList('onlyuidarray'); // Limit the user list for the samegrouppolicy
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'surveypermissions.js');
-
+        // FIXME this HTML stuff MUST BE IN VIEWS!!
         $surveysecurity = "<div id='edit-permission' class='side-body " . getSideBodyClass(false) . "'>";
+        $surveysecurity.= viewHelper::getViewTestTag('surveyPermissions');
+
         $surveysecurity .="<h3>".gT("Survey permissions")."</h3>\n";
         $surveysecurity .= '<div class="row"><div class="col-lg-12 content-right">';
         $result2 = Permission::model()->getUserDetails($iSurveyID);

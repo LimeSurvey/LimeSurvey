@@ -1,8 +1,8 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\controllers;
 
-use PHPUnit\Framework\TestCase;
+use ls\tests\TestBaseClass;
 
 /**
  * @since 2017-10-15
