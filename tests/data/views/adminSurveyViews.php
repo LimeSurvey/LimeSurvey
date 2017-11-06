@@ -50,10 +50,13 @@ return [
 
 
 
-    // question views
+    // adding elements to survey
     'addQuestion' =>['route'=>'questions/sa/newquestion/surveyid/{SID}'],
     'addQuestionGroup' =>['route'=>'questiongroups/sa/add/surveyid/{SID}'],
     'importQuestionGroup' =>['route'=>'questiongroups/sa/importview/surveyid/{SID}'],
+    'addQuota' =>['route'=>'quotas/sa/newquota/surveyid/{SID}'],
+
+
 
 
 
