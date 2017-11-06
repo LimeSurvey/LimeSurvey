@@ -11,21 +11,20 @@ class TestBaseClass extends TestCase
      */
     protected static $testHelper = null;
 
+
     /**
      * @var int
      */
     public static $surveyId = null;
 
-
-    public function __construct()
+    public function setUp()
     {
+        parent::setUp();
         self::$testHelper = new TestHelper();
 
         self::$testHelper->importAll();
 
-        parent::__construct();
     }
-
 
 
     protected static function importSurvey($fileName){
@@ -37,7 +36,7 @@ class TestBaseClass extends TestCase
 
         $translateLinksFields = false;
         $newSurveyName = null;
-        $result = importSurveyFile(
+        $result = \importSurveyFile(
             $surveyFile,
             $translateLinksFields,
             $newSurveyName,

@@ -2,6 +2,7 @@
 
 namespace ls\tests;
 
+use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 
@@ -79,7 +80,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+            file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);
             $this->assertFalse(
                 true,
                 'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
@@ -94,11 +95,13 @@ class DateTimeValidationTest extends TestBaseClassWeb
 
         // After submit we should see the complete page.
         try {
-            $div = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::className('completed-text'));
-            $this->assertNotEmpty($div);
+            $div = WebDriverBy::className('completed-text');
+            $this->webDriver->wait(10,1000)->until(
+                            WebDriverExpectedCondition::visibilityOfElementLocated($div)
+            );            $this->assertNotEmpty($div);
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/tmp.png', $screenshot);
+            file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);
             $this->assertFalse(
                 true,
                 'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()

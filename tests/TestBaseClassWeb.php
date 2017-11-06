@@ -35,6 +35,11 @@ class TestBaseClassWeb extends TestBaseClass
     /**
      * @var array
      */
+    protected $views;
+
+    /**
+     * @var array
+     */
     protected $adminViews;
 
     /**
@@ -84,7 +89,7 @@ class TestBaseClassWeb extends TestBaseClass
     }
 
     public function adminLogin($userName,$passWord){
-        $this->openView($this->adminViews['login']);
+        $this->openView(['route'=>'authentication/sa/login']);
         $userNameField = $this->webDriver->findElement(WebDriverBy::id("user"));
         $userNameField->clear()->sendKeys($userName);
         $passWordField = $this->webDriver->findElement(WebDriverBy::id("password"));

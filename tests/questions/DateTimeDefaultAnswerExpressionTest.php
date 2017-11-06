@@ -10,15 +10,13 @@ use PHPUnit\Framework\TestCase;
  */
 class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 {
-
-    /**
-     * Import survey in tests/surveys/.
-     */
-    public static function setupBeforeClass()
+    public function setUp()
     {
+        parent::setUp();
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_454287.lss';
         self::importSurvey($surveyFile);
     }
+
 
     /**
      * Destroy what had been imported.

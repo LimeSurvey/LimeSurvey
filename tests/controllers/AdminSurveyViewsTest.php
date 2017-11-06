@@ -21,24 +21,28 @@ use ls\tests\TestBaseClassView;
  *
  * @package ls\tests
  */
-class AdminViewsTest extends TestBaseClassView
+class AdminSurveyViewsTest extends TestBaseClassView
 {
 
     public function addDataProvider(){
-        return require __DIR__."/../data/views/adminViews.php";
+        return require __DIR__."/../data/views/adminSurveyViews.php";
 
     }
 
     /**
      * @dataProvider addDataProvider
      */
-    public function testAdminViews($name,$view){
-        if($name=='login'){
-            // skip login
-            $this->assertTrue(true);
-            return;
+    public function testAdminSurveyViews($name,$view){
+        if(isset($view['import_id'])){
+            $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_'.$view['import_id'].'.lss';
+            self::importSurvey($surveyFile);
         }
+        $view['route'] = ReplaceFields($view['route'],['{SID}'=>self::$surveyId]);
         $this->findViewTag($name,$view);
     }
+
+
+
+
 
 }
