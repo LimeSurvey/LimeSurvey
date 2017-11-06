@@ -20,11 +20,12 @@ class DateTimeValidationTest extends TestBaseClassWeb
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public function setUp()
     {
+        parent::setUp();
         \Yii::app()->session['loginID'] = 1;
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_834477.lss';
+        $surveyFile = $this->surveysFolder.'/limesurvey_survey_834477.lss';
         if (!file_exists($surveyFile)) {
             die('Fatal error: found no survey file');
         }
@@ -80,10 +81,10 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $submit = $this->webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);
+            file_put_contents($this->screenshotsFolder . '/tmp.png', $screenshot);
             $this->assertFalse(
                 true,
-                'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
+                'Screenshot in ' . $this->screenshotsFolder . '/tmp.png' . PHP_EOL . $ex->getMessage()
             );
         }
 
@@ -105,10 +106,10 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $this->assertNotEmpty($div);
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);
+            file_put_contents($this->screenshotsFolder . '/tmp.png', $screenshot);
             $this->assertFalse(
                 true,
-                'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
+                'Screenshot in ' . $this->screenshotsFolder . '/tmp.png' . PHP_EOL . $ex->getMessage()
             );
         }
     }

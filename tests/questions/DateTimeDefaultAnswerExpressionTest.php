@@ -13,7 +13,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     public function setUp()
     {
         parent::setUp();
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_454287.lss';
+        $surveyFile = $this->surveysFolder . '/limesurvey_survey_454287.lss';
         self::importSurvey($surveyFile);
     }
 
@@ -21,7 +21,7 @@ class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
     /**
      * Destroy what had been imported.
      */
-    public static function teardownAfterClass()
+    public function tearDown()
     {
         $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
         if (!$result) {

@@ -18,14 +18,16 @@ class DateTimeForwardBackTest extends TestBaseClass
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public function setUp()
     {
+        parent::setUp();
+
         $_POST = [];
         $_SESSION = [];
 
         \Yii::app()->session['loginID'] = 1;
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_917744.lss';
+        $surveyFile = $this->surveysFolder.'/limesurvey_survey_917744.lss';
         if (!file_exists($surveyFile)) {
             die('Fatal error: found no survey file');
         }
@@ -48,7 +50,7 @@ class DateTimeForwardBackTest extends TestBaseClass
     /**
      * Destroy what had been imported.
      */
-    public static function teardownAfterClass()
+    public function tearDown()
     {
         $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
         if (!$result) {
