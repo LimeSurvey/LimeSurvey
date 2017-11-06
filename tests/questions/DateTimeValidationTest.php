@@ -22,6 +22,8 @@ class DateTimeValidationTest extends TestBaseClassWeb
      */
     public static function setupBeforeClass()
     {
+        parent::setupBeforeClass();
+
         \Yii::app()->session['loginID'] = 1;
 
         $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_834477.lss';
@@ -31,7 +33,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
 
         $translateLinksFields = false;
         $newSurveyName = null;
-        $result = importSurveyFile(
+        $result = \importSurveyFile(
             $surveyFile,
             $translateLinksFields,
             $newSurveyName,

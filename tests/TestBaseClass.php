@@ -11,23 +11,28 @@ class TestBaseClass extends TestCase
      */
     protected static $testHelper = null;
 
-
     /**
      * @var int
      */
     public static $surveyId = null;
 
+    public static function setupBeforeClass()
+    {
+        self::$testHelper = new TestHelper();
+        self::$testHelper->importAll();
+    }
+
     public function setUp()
     {
         parent::setUp();
-        self::$testHelper = new TestHelper();
-
-        self::$testHelper->importAll();
-
     }
 
-
-    protected static function importSurvey($fileName){
+    /**
+     * @param string $fileName
+     * @return void
+     */
+    protected static function importSurvey($fileName)
+    {
         \Yii::app()->session['loginID'] = 1;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {

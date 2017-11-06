@@ -18,6 +18,7 @@ use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Exception\TimeOutException;
 
 /**
  * Class TestBaseClassWeb
@@ -40,13 +41,14 @@ class TestBaseClassWeb extends TestBaseClass
     public function setUp()
     {
         parent::setUp();
+
         if (empty(getenv('DOMAIN'))) {
             die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
 
         $capabilities = DesiredCapabilities::phantomjs();
         $this->webDriver = RemoteWebDriver::create("http://localhost:{$this->webPort}/", $capabilities);
-
+        $this->webDriver->manage()->window()->maximize();
     }
 
     /**
@@ -62,28 +64,75 @@ class TestBaseClassWeb extends TestBaseClass
      * @param array $view
      * @return WebDriver
      */
-    public function openView($view)
+    public function openView($url)
+    {
+        if (!is_string($url)) {
+            throw new \Exception('$url must be a string, is ' . json_encode($url));
+        }
+        return $this->webDriver->get($url);
+    }
+
+    /**
+     * @param array $view
+     */
+    public function getUrl(array $view)
     {
         $domain = getenv('DOMAIN');
         if (empty($domain)) {
             $domain = '';
         }
-        $url = "http://{$domain}/index.php/admin/".$view['route'];
-        return $this->webDriver->get($url);
+        return "http://{$domain}/index.php/admin/".$view['route'];
     }
 
-    public function adminLogin($userName, $passWord)
+    /**
+     * @param string $userName
+     * @param string $password
+     * @return void
+     */
+    public function adminLogin($userName, $password)
     {
-        $this->openView(['route'=>'authentication/sa/login']);
+        $url = $this->getUrl(['route'=>'authentication/sa/login']);
+        $this->openView($url);
+
+        try {
+            $this->webDriver->wait(2)->until(
+                WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
+                    WebDriverBy::id('user')
+                )
+            );
+        } catch (TimeOutException $ex) {
+            //$name =__DIR__ . '/_output/loginfailed.png';
+            $screenshot = $this->webDriver->takeScreenshot();
+            file_put_contents(__DIR__ .'/tmp.png', $screenshot);
+            $this->assertTrue(
+                false,
+                sprintf(
+                    'Could not login on url %s: Could not find element with id "user".',
+                    $url
+                )
+            );
+        }
+
         $userNameField = $this->webDriver->findElement(WebDriverBy::id("user"));
         $userNameField->clear()->sendKeys($userName);
         $passWordField = $this->webDriver->findElement(WebDriverBy::id("password"));
-        $passWordField->clear()->sendKeys($passWord);
+        $passWordField->clear()->sendKeys($password);
 
         $submit = $this->webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
-        return $this->webDriver->wait(10, 1000)->until(
-            WebDriverExpectedCondition::visibilityOfElementLocated(WebDriverBy::id('welcome-jumbotron'))
-        );
+        try {
+            $this->webDriver->wait(2)->until(
+                WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
+                    WebDriverBy::id('welcome-jumbotron')
+                )
+            );
+        } catch (TimeOutException $ex) {
+            $screenshot = $this->webDriver->takeScreenshot();
+            file_put_contents(__DIR__ .'/tmp.png', $screenshot);
+            $this->assertTrue(
+                false,
+                'Found no welcome jumbotron after login.'
+            );
+        }
     }
 }
