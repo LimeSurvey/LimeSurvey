@@ -46,6 +46,8 @@ return [
     //'exportSpss' =>['route'=>'export/sa/exportspss/sid/{SID}'],
 
 
+    // question views
+    'addQuestion' =>['route'=>'questions/sa/newquestion/surveyid/{SID}'],
 
 
 
