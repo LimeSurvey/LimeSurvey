@@ -5,8 +5,10 @@
  */
 return [
 
-    // GENERAL OPTIONS ---------------------------------------
+    // General stuff ---------------------------------------
     // --------------------------------------------------
+
+    // Expression Manager
 
     ['expressionsTest', ['route'=>'expressions']],
     ['expressionsFunctions',['route'=>'expressions/sa/functions']],
@@ -15,5 +17,8 @@ return [
     ['expressionsConditions2Relevance',['route'=>'expressions/sa/conditions2relevance']],
     ['expressionsNavigationTest',['route'=>'expressions/sa/navigation_test']],
 
+    // Advanced
+
+    ['checkIntegrity', ['route'=>'checkintegrity']],
 
 ];
