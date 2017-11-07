@@ -91,47 +91,6 @@ class InstallCommand extends CConsoleCommand
     }
 
     /**
-     * @param string $sFileName
-     * @return array|boolean
-     */
-    public function _executeSQLFile($sFileName)
-    {
-        echo   $sFileName;
-        $aMessages = array();
-        $sCommand = '';
-
-        if (!is_readable($sFileName)) {
-            return false;
-        } else {
-            $aLines = file($sFileName);
-        }
-        foreach ($aLines as $sLine) {
-            $sLine = rtrim($sLine);
-            $iLineLength = strlen($sLine);
-
-            if ($iLineLength && $sLine[0] != '#' && substr($sLine, 0, 2) != '--') {
-                if (substr($sLine, $iLineLength-1, 1) == ';') {
-                    $sCommand .= $sLine;
-                    $sCommand = str_replace('prefix_', $this->connection->tablePrefix, $sCommand); // Table prefixes
-
-                    try {
-                        $this->connection->createCommand($sCommand)->execute();
-                    } catch (Exception $e) {
-                        $aMessages[] = "Executing: ".$sCommand." failed! Reason: ".$e;
-                    }
-
-                    $sCommand = '';
-                } else {
-                    $sCommand .= $sLine;
-                }
-            }
-        }
-        return $aMessages;
-
-
-    }
-
-    /**
      * @param string $sProperty
      * @param string $connectionString
      * @return string|null
