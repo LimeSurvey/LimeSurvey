@@ -7,7 +7,7 @@ before_script:
     - touch enabletests
       #- rm composer.lock
       #- rm -r third_party
-      #- composer update
+    - composer update
       #- composer install
     - chmod -R 776 tmp
     - chmod -R 776 tmp/runtime
