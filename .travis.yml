@@ -1,7 +1,7 @@
 language: php
 php:
-    #- '7.1'
-    - '5.6'
+    - '7.1'
+      #- '5.6'
 before_script:
     - phpunit --version
     - touch enabletests
@@ -28,8 +28,7 @@ before_script:
     - ls -l ~/.phpenv/versions/5.6/etc
     - ls -l ~/.phpenv/versions/5.6/etc/conf.d
     - ls -l ~/.phpenv/versions/5.6/etc/php-fpm.conf
-    - find ~/.phpenv/versions/5.6/etc
-    - find ~/.phpenv/versions/7.1/etc
+    - find ~/.phpenv/versions/
     - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
     - sudo a2enmod rewrite actions fastcgi alias
     - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
