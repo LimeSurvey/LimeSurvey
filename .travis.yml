@@ -24,10 +24,10 @@ before_script:
     - sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs
     - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
     - ls ~/.phpenv/versions
-    - ls -l ~/.phpenv/versions/5.6
-    - ls -l ~/.phpenv/versions/5.6/etc
-    - ls -l ~/.phpenv/versions/5.6/etc/conf.d
-    - ls -l ~/.phpenv/versions/5.6/etc/php-fpm.conf
+      #- ls -l ~/.phpenv/versions/5.6
+      #- ls -l ~/.phpenv/versions/5.6/etc
+      #- ls -l ~/.phpenv/versions/5.6/etc/conf.d
+      #- ls -l ~/.phpenv/versions/5.6/etc/php-fpm.conf
     - find ~/.phpenv/versions/
     - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
     - sudo a2enmod rewrite actions fastcgi alias
