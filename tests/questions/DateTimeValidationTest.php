@@ -70,22 +70,26 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $domain = '';
         }
 
-        $this->webDriver->get(
-            sprintf(
-                'http://%s/index.php/%d?newtest=Y&lang=pt',
-                $domain,
-                self::$surveyId
-            )
+        $url = sprintf(
+            'http://%s/index.php/%d?newtest=Y&lang=pt',
+            $domain,
+            self::$surveyId
         );
+
+        $this->webDriver->get($url);
 
         try {
             $submit = $this->webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);
+            $filename = \Yii::app()->basePath . '/../tests/tmp/screenshots/DateTimeValidationTest.png';
+            file_put_contents(
+                $filename,
+                $screenshot
+            );
             $this->assertFalse(
                 true,
-                'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
+                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
         }
 
