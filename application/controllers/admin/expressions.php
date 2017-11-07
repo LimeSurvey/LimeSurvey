@@ -80,7 +80,7 @@ class Expressions extends Survey_Common_Action {
         $qid = Yii::app()->request->getParam('qid', NULL);
         
         
-        $surveyinfo = Survey::model()->findByPk($sid)->surveyinfo;
+        $oSurvey = Survey::model()->findByPk($sid);
 
         $language = Yii::app()->request->getParam('lang',NULL); 
         
@@ -89,7 +89,7 @@ class Expressions extends Survey_Common_Action {
 
         $aData['sid'] = $sid;
         $aData['sidemenu']['state'] = false;
-        $aData['survey'] = $surveyinfo;
+        $aData['survey'] = $oSurvey;
         
         $LEM_DEBUG_TIMING = Yii::app()->request->getParam('LEM_DEBUG_TIMING', LEM_DEBUG_TIMING);
         $LEM_DEBUG_VALIDATION_SUMMARY = Yii::app()->request->getParam('LEM_DEBUG_VALIDATION_SUMMARY', LEM_DEBUG_VALIDATION_SUMMARY);
@@ -103,10 +103,10 @@ class Expressions extends Survey_Common_Action {
             ((int) $LEM_PRETTY_PRINT_ALL_SYNTAX)
         );
         
-        $assessments = Yii::app()->request->getParam('assessments', $surveyinfo['assessments']) == 'Y';
+        $assessments = Yii::app()->request->getParam('assessments', $oSurvey->getIsAssessments()) == 'Y';
 
 
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$sid.")";
+        $aData['title_bar']['title'] = $oSurvey->getLocalizedTitle()." (".gT("ID").":".$sid.")";
 
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$sid;
 
@@ -127,9 +127,7 @@ class Expressions extends Survey_Common_Action {
         App()->getClientScript()->registerPackage('decimal');
         App()->getClientScript()->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
         App()->getClientScript()->registerScriptFile( 'SCRIPT_PATH', '/expressions/em_javascript.js');
-
-        $oAdminTheme = AdminTheme::getInstance();
-        $oAdminTheme->registerCssFile( 'PUBLIC', 'expressionlogicfile.css' );
+        App()->getClientScript()->registerCssFile( Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css' );
 
         SetSurveyLanguage($sid, $language);
 
@@ -142,13 +140,17 @@ class Expressions extends Survey_Common_Action {
         if(Yii::app()->request->getParam('printable', 0) == 1){
            $html = "<html><body>";
            $html .= "<style>
-            @media print and (orientation:landscape) { }
-            @page { 
-                size: landscape;
+           @page { 
+               size: landscape;
+           }
+            @media print { 
+                html {width: 670px; white-space: pre-wrap; overflow: visible;}
+                body {width: 100%; white-space: pre-wrap; overflow: visible; font-size: 12pt;}
+                table { overflow: visible !important; }
+                div { overflow: visible !important; }
+                * { overflow: visible !important; }
+                
             }
-            html {width: 100%;}
-            body {width: 100%;}
-            body table {width: 100%;}
            </style>";
            $html .= $aData['result']['html'];
            $html .= "</body></html>"; 
