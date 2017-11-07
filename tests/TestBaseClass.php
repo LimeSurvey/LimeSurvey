@@ -26,11 +26,6 @@ class TestBaseClass extends TestCase
     /** @var  \Survey */
     protected static $testSurvey;
 
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
-
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -40,13 +35,16 @@ class TestBaseClass extends TestCase
         self::$surveysFolder = self::$dataFolder.'/surveys';
         self::$tempFolder = __DIR__.'/tmp';
         self::$screenshotsFolder = self::$tempFolder.'/screenshots';
-
         self::$testHelper->importAll();
-
     }
 
 
-    protected static function importSurvey($fileName){
+    /**
+     * @param string $fileName
+     * @return void
+     */
+    protected static function importSurvey($fileName)
+    {
         \Yii::app()->session['loginID'] = 1;
         $surveyFile = $fileName;
         if (!file_exists($surveyFile)) {

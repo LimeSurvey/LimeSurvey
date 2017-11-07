@@ -16,16 +16,34 @@ namespace ls\tests;
 use Facebook\WebDriver\WebDriverBy;
 
 /**
- * Class TestBaseClassWeb
- * this is the base class for functional tests that need browser simulation
  * @package ls\tests
  */
 class TestBaseClassView extends TestBaseClassWeb
 {
+
+    /**
+     * 
+     */
+    public static function setupBeforeClass()
+    {
+        parent::setupBeforeClass();
+    }
+
     public function setUp()
     {
         parent::setUp();
-        $this->adminLogin('admin', 'password');
+
+        $username = getenv('USERNAME');
+        if (empty($username)) {
+            $username = 'admin';
+        }
+
+        $password = getenv('PASSWORD');
+        if (empty($password)) {
+            $password = 'password';
+        }
+
+        $this->adminLogin($username, $password);
     }
 
     /**
@@ -34,7 +52,8 @@ class TestBaseClassView extends TestBaseClassWeb
      */
     protected function findViewTag($name, $view)
     {
-        $this->openView($view);
+        $url = $this->getUrl($view);
+        $this->openView($url);
         $element = null;
 
         $screenshot = self::$webDriver->takeScreenshot();
@@ -42,8 +61,18 @@ class TestBaseClassView extends TestBaseClassWeb
         try {
             $element = self::$webDriver->findElement(WebDriverBy::id('action::'.$name));
         } catch (\Exception $e) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            file_put_contents(__DIR__ . '/_output/'.$name.'.png', $screenshot);
             //throw new Exception($e->getMessage());
         }
-        $this->assertNotEmpty($element, sprintf('FAILED viewing %s on route %s', $name, $view['route']));
+        $this->assertNotEmpty(
+            $element,
+            sprintf(
+                'FAILED viewing %s on route %s, full url %s',
+                $name,
+                $view['route'],
+                $url
+            )
+        );
     }
 }
