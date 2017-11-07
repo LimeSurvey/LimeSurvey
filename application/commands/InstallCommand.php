@@ -59,7 +59,7 @@
                         throw new Exception(sprintf('Unknown database type "%s".', $this->connection->driverName));
                     }
 
-                    $sFileName = dirname(APPPATH).'/installer/php/create-database.php';
+                    $sFileName = dirname(APPPATH).'/installer/create-database.php';
                     require_once($sFileName);
                     createDatabase($this->connection);
 
