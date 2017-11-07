@@ -5,6 +5,8 @@ php:
 before_script:
     - phpunit --version
     - touch enabletests
+    - composer update
+    - composer install
 
     # Install Apache
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
