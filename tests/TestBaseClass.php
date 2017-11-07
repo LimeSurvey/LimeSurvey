@@ -26,6 +26,9 @@ class TestBaseClass extends TestCase
     /** @var  \Survey */
     protected static $testSurvey;
 
+    /** @var  integer */
+    protected static $surveyId;
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();

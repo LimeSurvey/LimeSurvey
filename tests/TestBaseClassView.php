@@ -34,12 +34,12 @@ class TestBaseClassView extends TestBaseClassWeb
         parent::setUp();
 
         $username = getenv('USERNAME');
-        if (empty($username)) {
+        if (!$username) {
             $username = 'admin';
         }
 
         $password = getenv('PASSWORD');
-        if (empty($password)) {
+        if (!$password) {
             $password = 'password';
         }
 
@@ -61,8 +61,6 @@ class TestBaseClassView extends TestBaseClassWeb
         try {
             $element = self::$webDriver->findElement(WebDriverBy::id('action::'.$name));
         } catch (\Exception $e) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/_output/'.$name.'.png', $screenshot);
             //throw new Exception($e->getMessage());
         }
         $this->assertNotEmpty(

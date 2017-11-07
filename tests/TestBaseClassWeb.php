@@ -80,8 +80,7 @@ class TestBaseClassWeb extends TestBaseClass
         if (empty($domain)) {
             $domain = '';
         }
-        $url = "http://{$domain}/index.php/admin/".$view['route'];
-        return self::$webDriver->get($url);
+        return "http://{$domain}/index.php/admin/".$view['route'];
     }
 
     /**
@@ -91,7 +90,9 @@ class TestBaseClassWeb extends TestBaseClass
      */
     public function adminLogin($userName, $password)
     {
-        $url = $this->getUrl(['route'=>'authentication/sa/login']);
+
+
+        $url = $this->getUrl(['login', 'route'=>'authentication/sa/login']);
         $this->openView($url);
         try {
             self::$webDriver->wait(2)->until(
@@ -115,6 +116,7 @@ class TestBaseClassWeb extends TestBaseClass
         $userNameField->clear()->sendKeys($userName);
         $passWordField = self::$webDriver->findElement(WebDriverBy::id("password"));
         $passWordField->clear()->sendKeys($password);
+
         $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
         try {
@@ -124,7 +126,7 @@ class TestBaseClassWeb extends TestBaseClass
                 )
             );
         } catch (TimeOutException $ex) {
-            $screenshot = $this->webDriver->takeScreenshot();
+            $screenshot = self::$webDriver->takeScreenshot();
             file_put_contents(self::$screenshotsFolder .'/tmp.png', $screenshot);
             $this->assertTrue(
                 false,
