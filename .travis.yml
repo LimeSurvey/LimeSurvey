@@ -12,6 +12,8 @@ before_script:
     - chmod -R 777 tmp
     - chmod -R 777 tmp/runtime
     - chmod -R 777 upload
+    - chmod -R 777 tests/tmp
+    - chmod -R 777 tests/tmp/runtime
     - php application/commands/console.php install admin password TravisLS no@email.com
 
     # Install Apache
