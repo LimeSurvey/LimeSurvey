@@ -9,6 +9,8 @@ before_script:
     - rm -r third_party
     - composer update
     - composer install
+    - chmod -R 777 tmp
+    - chmod -R 777 upload
 
     # Install Apache
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
@@ -25,6 +27,7 @@ before_script:
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
 
+    # Phantomjs setup.
     - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
     - tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
     - ./phantomjs-2.1.1-linux-x86_64/bin/phantomjs  --webdriver=127.0.0.1:4444 &
