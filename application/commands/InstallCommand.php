@@ -14,21 +14,37 @@
  */
 class InstallCommand extends CConsoleCommand
 {
+
+    /**
+     * If true, output trace.
+     * @var boolean
+     */
+    public $noisy = false;
+
     /**
      *
      * @var CDbConnection
      */
     public $connection;
 
-    public function run($sArgument)
+    /**
+     * @param array $aArguments
+     * @return int
+     */
+    public function run($aArguments)
     {
-        if (isset($sArgument) && isset($sArgument[0]) && isset($sArgument[1]) && isset($sArgument[2]) && isset($sArgument[3])) {
+        if (isset($aArguments) && isset($aArguments[0]) && isset($aArguments[1]) && isset($aArguments[2]) && isset($aArguments[3])) {
             Yii::import('application.helpers.common_helper', true);
 
+            $this->setNoisy($aArguments);
+
             try {
+                $this->output('Connecting to database...');
                 $this->connection = App()->getDb();
                 $this->connection->active=true;
+                $this->output('Using connection string ' . $this->connection->connectionString);
             } catch (CDbException $e) {
+                $this->output('Could not connect to database: ' . $e->getMessage());
                 $this->createDatabase();
             };
 
@@ -56,17 +72,24 @@ class InstallCommand extends CConsoleCommand
 
             $sFileName = dirname(APPPATH).'/installer/create-database.php';
             require_once($sFileName);
-            createDatabase($this->connection);
+            try {
+                $this->output('Creating tables...');
+                createDatabase($this->connection);
+            } catch (Exception $e) {
+                $this->output('Could not create LimeSurvey tables: ' . $e->getMessage());
+                return 1;
+            }
 
+            $this->output('Creating admin user...');
             $this->connection->createCommand()->insert(
                 $this->connection->tablePrefix.'users',
                 array(
-                    'users_name'=>$sArgument[0],
-                    'password'=>password_hash($sArgument[1], PASSWORD_DEFAULT),
-                    'full_name'=>$sArgument[2],
+                    'users_name'=>$aArguments[0],
+                    'password'=>password_hash($aArguments[1], PASSWORD_DEFAULT),
+                    'full_name'=>$aArguments[2],
                     'parent_id'=>0,
                     'lang'=>'auto',
-                    'email'=>$sArgument[3]
+                    'email'=>$aArguments[3]
                 )
             );
             $this->connection->createCommand()->insert(
@@ -84,9 +107,12 @@ class InstallCommand extends CConsoleCommand
                     'export_p'=>0
                 )
             );
+            $this->output('All done!');
+            return 0;
         } else {
             // TODO: a valid error process
-            echo "You have to set admin/password/full name and email address on the command line like this: php console.php adminname mypassword fullname emailaddress\n";
+            echo "You have to set admin/password/full name and email address on the command line like this: php console.php install adminname mypassword fullname emailaddress [verbose]\n";
+            return 1;
         }
     }
 
@@ -113,10 +139,12 @@ class InstallCommand extends CConsoleCommand
      */
     protected function createDatabase()
     {
+        $this->output('Creating database...');
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>false))));
         $this->connection=App()->db;
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>true))));
         $connectionString = $this->connection->connectionString;
+        $this->output($connectionString);
         $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', $connectionString);
         try {
             $this->connection->active=true;
@@ -150,5 +178,28 @@ class InstallCommand extends CConsoleCommand
         $this->connection->active = false;
         $this->connection->connectionString = $connectionString;
         $this->connection->active = true;
+    }
+
+    /**
+     * @param string $msg
+     * @return void
+     */
+    public function output($msg)
+    {
+        if ($this->noisy) {
+            echo $msg . PHP_EOL;
+        }
+    }
+
+    /**
+     * Set noisy = true if fifth argument is given.
+     * @param array $args
+     * @return void
+     */
+    protected function setNoisy(array $args)
+    {
+        if (isset($args[4]) && $args[4]) {
+            $this->noisy = true;
+        }
     }
 }
