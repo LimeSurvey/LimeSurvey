@@ -1,68 +1,17 @@
 [
     {
-        "name": "symfony/process",
-        "version": "3.4.x-dev",
-        "version_normalized": "3.4.9999999.9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/process.git",
-            "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
-            "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.5.9|>=7.0.8"
-        },
-        "time": "2017-10-24 14:12:06",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.4-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Component\\Process\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Process Component",
-        "homepage": "https://symfony.com"
-    },
-    {
         "name": "facebook/webdriver",
         "version": "dev-community",
         "version_normalized": "dev-community",
         "source": {
             "type": "git",
             "url": "https://github.com/facebook/php-webdriver.git",
-            "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8"
+            "reference": "d59d2c183ff6a6fde8804b291f5981233df25d6b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
-            "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
+            "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/d59d2c183ff6a6fde8804b291f5981233df25d6b",
+            "reference": "d59d2c183ff6a6fde8804b291f5981233df25d6b",
             "shasum": ""
         },
         "require": {
@@ -81,7 +30,7 @@
             "squizlabs/php_codesniffer": "^2.6",
             "symfony/var-dumper": "^3.3"
         },
-        "time": "2017-11-02 21:00:08",
+        "time": "2017-11-03 19:59:27",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -745,12 +694,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
-            "reference": "fb77027d3cdb1a1bff05b4b805d3c01f089e0152"
+            "reference": "0a279d180253b7144b47b4d5be21c769f799d002"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/fb77027d3cdb1a1bff05b4b805d3c01f089e0152",
-            "reference": "fb77027d3cdb1a1bff05b4b805d3c01f089e0152",
+            "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/0a279d180253b7144b47b4d5be21c769f799d002",
+            "reference": "0a279d180253b7144b47b4d5be21c769f799d002",
             "shasum": ""
         },
         "require": {
@@ -768,7 +717,7 @@
         "suggest": {
             "ext-soap": "*"
         },
-        "time": "2017-11-02 14:48:53",
+        "time": "2017-11-06 08:21:34",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1046,12 +995,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-            "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d"
+            "reference": "11740267caeac2b4de90e4d895d0bcc361a3ba55"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d",
-            "reference": "8e1d2397d8adf59a3f12b2878a3aaa66d1ab189d",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/11740267caeac2b4de90e4d895d0bcc361a3ba55",
+            "reference": "11740267caeac2b4de90e4d895d0bcc361a3ba55",
             "shasum": ""
         },
         "require": {
@@ -1073,7 +1022,7 @@
         "suggest": {
             "ext-xdebug": "^2.5.5"
         },
-        "time": "2017-11-03 13:47:33",
+        "time": "2017-11-03 13:55:28",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1612,5 +1561,56 @@
             "testing",
             "xunit"
         ]
+    },
+    {
+        "name": "symfony/process",
+        "version": "3.4.x-dev",
+        "version_normalized": "3.4.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/process.git",
+            "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/process/zipball/dce0aaed6962844b680b9a98a163e2f5f768752b",
+            "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8"
+        },
+        "time": "2017-11-05 16:10:10",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.4-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Component\\Process\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Process Component",
+        "homepage": "https://symfony.com"
     }
 ]

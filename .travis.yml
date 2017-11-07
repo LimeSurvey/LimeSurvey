@@ -5,6 +5,8 @@ php:
 before_script:
     - phpunit --version
     - touch enabletests
+    - rm composer.lock
+    - rm -r third_party
     - composer update
     - composer install
 
