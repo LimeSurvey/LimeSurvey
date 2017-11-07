@@ -236,7 +236,7 @@
                                         <!-- Languages -->
 
                                         <li>
-                                            <a  href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/lang/$tmp_lang");?>'>
+                                            <a  href='<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/$surveyid/language/$tmp_lang");?>'>
                                                    <span class="icon-expressionmanagercheck" ></span>
                                                    <?php echo getLanguageNameFromCode($tmp_lang,false);?>
                                                </a>
