@@ -33,7 +33,7 @@ class TestBaseClassView extends TestBaseClassWeb
     {
         parent::setUp();
 
-        $username = getenv('USERNAME');
+        $username = getenv('ADMINUSERNAME');
         if (empty($username)) {
             $username = 'admin';
         }
