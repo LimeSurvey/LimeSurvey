@@ -10,7 +10,9 @@ before_script:
     - composer update
     - composer install
     - chmod -R 777 tmp
+    - chmod -R 777 tmp/runtime
     - chmod -R 777 upload
+    - php application/commands/console.php install admin password TravisLS no@email.com
 
     # Install Apache
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
