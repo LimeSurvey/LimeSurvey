@@ -39,4 +39,4 @@ before_script:
     - ./phantomjs-2.1.1-linux-x86_64/bin/phantomjs  --webdriver=127.0.0.1:4444 &
 
 script:
-    - phpunit
+    - DOMAIN=localhost phpunit
