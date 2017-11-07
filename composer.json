@@ -29,9 +29,7 @@
 		}
 	},
 	"require": {
-		"facebook/webdriver": "^1.4",
-		"myclabs/deep-copy": "^1.7",
-		"phpunit/phpunit": "^6.4"
+		"facebook/webdriver": "^1.4"
 	},
     "config": {
         "vendor-dir": "third_party",
