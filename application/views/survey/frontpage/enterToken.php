@@ -33,6 +33,13 @@
                 ?>
             <div class="col-sm-12 col-md-6">
 
+                <?php
+                    // We use the token string in URL to prefill the form
+                    if (Yii::app()->request->getParam('token', false)){
+                        $token = $visibleToken = trim(Yii::app()->request->getParam('token'));
+                    }
+                ?>
+
                 <?php if(!isset($token)): ?>
                     <?php echo CHtml::passwordField('token', '', array(
                         'class' => 'text input-sm form-control '.$sKpClass,
