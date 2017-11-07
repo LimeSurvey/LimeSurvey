@@ -9,14 +9,14 @@ before_script:
       #- rm -r third_party
       #- composer update
       #- composer install
-    - composer require myclabs/deep-copy
-    - chmod -R 777 tmp
-    - chmod -R 777 tmp/runtime
-    - chmod -R 777 upload
+    - chmod -R 776 tmp
+    - chmod -R 776 tmp/runtime
+    - chmod -R 776 upload
     - mkdir -p tests/tmp/runtime
-    - chmod -R 777 tests/tmp
-    - chmod -R 777 tests/tmp/runtime
+    - chmod -R 776 tests/tmp
+    - chmod -R 776 tests/tmp/runtime
     - php application/commands/console.php install admin password TravisLS no@email.com
+    - cp application/config/config-sample-mysql.php application/config/config.php
 
     # Install Apache
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
