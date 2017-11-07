@@ -5,10 +5,10 @@ php:
 before_script:
     - phpunit --version
     - touch enabletests
-    - rm composer.lock
-    - rm -r third_party
-    - composer update
-    - composer install
+      #- rm composer.lock
+      #- rm -r third_party
+      #- composer update
+      #- composer install
     - chmod -R 777 tmp
     - chmod -R 777 tmp/runtime
     - chmod -R 777 upload
