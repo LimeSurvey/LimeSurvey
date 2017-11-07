@@ -4,11 +4,13 @@ php:
       #- '5.6'
 before_script:
     - phpunit --version
+    - ls third_party/myclabs/deep-copy/src/DeepCopy
     - touch enabletests
       #- rm composer.lock
       #- rm -r third_party
       #- composer update
       #- composer install
+    - composer require myclabs/deep-copy
     - chmod -R 777 tmp
     - chmod -R 777 tmp/runtime
     - chmod -R 777 upload

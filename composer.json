@@ -29,7 +29,8 @@
 		}
 	},
 	"require": {
-		"facebook/webdriver": "^1.4"
+		"facebook/webdriver": "^1.4",
+		"myclabs/deep-copy": "^1.7"
 	},
     "config": {
         "vendor-dir": "third_party",
