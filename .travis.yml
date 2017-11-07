@@ -1,7 +1,7 @@
 language: php
 php:
-    - '7.1'
-      #- '5.6'
+    #- '7.1'
+    - '5.6'
 before_script:
     - phpunit --version
     - touch enabletests
