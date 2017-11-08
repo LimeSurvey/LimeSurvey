@@ -47,4 +47,4 @@ before_script:
 
 script:
     - DOMAIN=localhost phpunit
-    - tail -n= 200 phantomjs.log
+    - tail -n200 phantomjs.log
