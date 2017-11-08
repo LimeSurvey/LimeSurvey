@@ -15,5 +15,7 @@ return [
     ['update' ,['route'=>'update']],
     ['viewLabelSets' ,['route'=>'labels/sa/view']],
     ['createLabelSets' ,['route'=>'labels/sa/newlabelset']],
-    ['templateOptions' ,['route'=>'templateoptions']],
+
+    // FIXME this is broken
+    //['templateOptions' ,['route'=>'templateoptions']],
 ];

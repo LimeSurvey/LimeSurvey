@@ -9,7 +9,12 @@ return [
     // --------------------------------------------------
 
     ['usersIndex', ['route'=>'user/sa/index']],
-    ['modifyUser', ['route'=>'user/sa/modifyuser/uid/{UID}']],
     ['setUserPermissions', ['route'=>'user/sa/setuserpermissions/uid/{UID}']],
-    ['setUserTemplates', ['route'=>'user/sa/setusertemplates/uid/{UID}']],
+
+    // FIXME issue #12870
+    //['modifyUser', ['route'=>'user/sa/modifyuser/uid/{UID}']],
+
+    // FIXME bug
+    //['setUserTemplates', ['route'=>'user/sa/setusertemplates/uid/{UID}']],
+
 ];
