@@ -12,7 +12,7 @@ return [
     ['listSurveys' ,['route'=>'survey/sa/listsurvey']],
     ['createSurveyGroups' ,['route'=>'surveysgroups/sa/create']],
     ['globalsettings' ,['route'=>'globalsettings']],
-    ['update' ,['route'=>'update']],
+    //['update' ,['route'=>'update']],
     ['viewLabelSets' ,['route'=>'labels/sa/view']],
     ['createLabelSets' ,['route'=>'labels/sa/newlabelset']],
 
