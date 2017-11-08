@@ -31,14 +31,14 @@ return [
     ['surveyNotificationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/notification/surveyid/{SID}']],
     ['surveyEmailTemplates', ['route'=>'emailtemplates/sa/index/surveyid/{SID}']],
     ['surveyPanelIntegration', ['route'=>'survey/sa/rendersidemenulink/subaction/panelintegration/surveyid/{SID}']],
-    ['surveyPlugins', ['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}']],
+    //['surveyPlugins', ['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}']],  // TODO
 
 
 
     // going deeper -------------------------------------
     // --------------------------------------------------
 
-    ['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],
+    //['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],  // TODO
 
     // FIXME these FAIL !!
     //['surveyResponsesIndex', ['route'=>'responses/sa/index/surveyid/{SID}']],

@@ -70,6 +70,11 @@ class AdminViewsTest extends TestBaseClassView
         if (isset($view['import_id'])) {
             $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_'.$view['import_id'].'.lss';
             self::importSurvey($surveyFile);
+        } elseif (empty(self::$surveyId)) {
+            // This situation can happen if we test only one data entry,
+            // using --filter="testAdminSurveyViews#13" (for data entry 13).
+            $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_454287.lss';
+            self::importSurvey($surveyFile);
         }
         $view['route'] = ReplaceFields($view['route'], ['{SID}'=>self::$surveyId]);
         $this->findViewTag($name, $view);

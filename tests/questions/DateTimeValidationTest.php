@@ -112,7 +112,8 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $this->assertNotEmpty($div);
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);
+            $filename = \Yii::app()->basePath . '/../tests/tmp/screenshots/DateTimeValidationTest.png';
+            file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
                 'Url: ' . $url . PHP_EOL .

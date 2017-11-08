@@ -60,8 +60,8 @@ class TestBaseClassView extends TestBaseClassWeb
             $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
         } catch (\Exception $e) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ . '/_output/'.$name.'.png', $screenshot);
-            //throw new Exception($e->getMessage());
+            $filename = \Yii::app()->basePath . "/../tests/tmp/screenshots/$name.png";
+            file_put_contents($filename, $screenshot);
         }
         $this->assertNotEmpty(
             $element,
