@@ -823,7 +823,7 @@ class tokens extends Survey_Common_Action
                 foreach ($attrfieldnames as $attr_name => $desc) {
                     $value = $request->getPost($attr_name);
                     if ($desc['mandatory'] == 'Y' && trim($value) == '') {
-                        $sOutput.=sprintf(gT("Notice: Field '%s' was left empty, eventhough it is a mandatory attribute."), $desc['description']).'<br>';
+                        $sOutput.=sprintf(gT("Notice: Field '%s' was left empty, even though it is a mandatory attribute."), $desc['description']).'<br>';
                     }
                     $aTokenData[$attr_name] = $request->getPost($attr_name);
                 }
