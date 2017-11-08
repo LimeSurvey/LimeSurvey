@@ -73,7 +73,9 @@ class TestBaseClassWeb extends TestBaseClass
     }
 
     /**
+     * Get URL to admin view.
      * @param array $view
+     * @return string
      */
     public function getUrl(array $view)
     {
@@ -81,7 +83,11 @@ class TestBaseClassWeb extends TestBaseClass
         if (empty($domain)) {
             $domain = '';
         }
-        return "http://{$domain}/index.php/admin/".$view['route'];
+
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $url = $urlMan->createUrl('admin/' . $view['route']);
+        return $url;
     }
 
     /**

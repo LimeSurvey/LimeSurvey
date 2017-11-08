@@ -100,13 +100,18 @@ class GroupRandomizationTest extends TestBaseClass
             $domain = '';
         }
 
-        $this->webDriver->get(
-            sprintf(
-                'http://%s/index.php/%d?newtest=Y&lang=pt',
-                $domain,
-                self::$surveyId
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'survey/index',
+            array(
+                'sid' => self::$surveyId,
+                'newtest' => 'Y',
+                'lang' => 'pt'
             )
         );
+
+        $this->webDriver->get($url);
         $submit = $this->webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         $this->assertNotEmpty($submit);
         $this->webDriver->wait(10, 1000)->until(
