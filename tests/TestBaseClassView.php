@@ -14,6 +14,7 @@
 namespace ls\tests;
 
 use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 
 /**
  * @package ls\tests
@@ -57,12 +58,18 @@ class TestBaseClassView extends TestBaseClassWeb
         $element = null;
 
         try {
-            $element = $this->webDriver->findElement(WebDriverBy::id('action::'.$name));
+            $this->webDriver->wait(2)->until(
+                WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
+                    WebDriverBy::id('action::' . $name)
+                )
+            );
         } catch (\Exception $e) {
             $screenshot = $this->webDriver->takeScreenshot();
             $filename = \Yii::app()->basePath . "/../tests/tmp/screenshots/$name.png";
             file_put_contents($filename, $screenshot);
         }
+        //$body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
+        //var_dump($body->getText());
         $this->assertNotEmpty(
             $element,
             sprintf(
