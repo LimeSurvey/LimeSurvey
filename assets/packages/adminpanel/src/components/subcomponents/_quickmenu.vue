@@ -84,7 +84,4 @@ export default {
     </div>
 </template>
 <style lang="scss">
-    .quickmenuIcon{
-        font-size:"28px";
-    }
 </style>
