@@ -124,7 +124,13 @@ class TemplateConfiguration extends CFormModel
 
         // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
         // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
-        $this->config  = json_decode( json_encode ( ( array ) simplexml_load_string($sXMLConfigFile), 1));
+        $oXMLConfig = simplexml_load_string($sXMLConfigFile);
+
+        foreach($oXMLConfig->config->xpath("//filename") as $oFileName){
+            $oFileName[0] = get_absolute_path( $oFileName[0]);
+        }
+
+        $this->config  = json_decode( json_encode ( ( array ) $oXMLConfig, 1));
         // Template configuration
         // Ternary operators test if configuration entry exists in the config file (to avoid PHP notice in user custom templates)
         $this->viewPath                 = (isset($this->config->engine->pstpldirectory))           ? $this->path.DIRECTORY_SEPARATOR.$this->config->engine->pstpldirectory.DIRECTORY_SEPARATOR                            : $this->path;
