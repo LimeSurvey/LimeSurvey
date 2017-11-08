@@ -218,6 +218,11 @@ class Save
             $this->aSaveErrors[]=gT("This name has already been used for this survey. You must use a unique save name.");
             return;
         }
+        elseif (!empty($_POST['saveemail']) && !validateEmailAddress($_POST['saveemail']))  // Check if the email address is valid
+        {
+            $errormsg .= gT("This is not a valid email address. Please provide a valid email address or leave it empty.")."<br />\n";
+            return;
+        }
         else
         {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist
@@ -384,7 +389,7 @@ class Save
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }else{
                     // TODO: $this->aSaveErrors
-                    $this->aSaveErrors[] = gT("Unable to insert record into survey table.");
+                    $this->aSaveErrors[] = "Unable to insert record into survey table.";
                 }
             }
 
@@ -411,7 +416,7 @@ class Save
                 $_SESSION['survey_'.$surveyid]['scid'] = $scid;
             }else{
                 // TODO: $this->aSaveErrors
-                $this->aSaveErrors[] = gT("Unable to insert record into saved_control table.");
+                $this->aSaveErrors[] = "Unable to insert record into saved_control table.";
             }
 
             $_SESSION['survey_'.$surveyid]['holdname'] = $_POST['savename']; //Session variable used to load answers every page. Unsafe - so it has to be taken care of on output

@@ -483,7 +483,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             $aTimingTableDefinition[$field] = 'FLOAT';
         }
 
-        $sTableName = $oSurvey->hasTimingsTable;
+        $sTableName = "{{survey_{$iSurveyID}_timings}}";
         try
         {
             Yii::app()->db->createCommand()->createTable($sTableName,$aTimingTableDefinition);

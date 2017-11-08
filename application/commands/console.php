@@ -17,14 +17,7 @@
     */
   if (!isset($argv[0])) die();
   define('BASEPATH','.');
-    /**
-     * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
-     */
-    require_once __DIR__ . '/../Psr4AutoloaderClass.php';
-    $loader = new Psr4AutoloaderClass();
-    $loader->register();
-    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../libraries/PluginManager');
-    $loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../libraries/PluginManager/Storage');
+    require_once __DIR__ . '/../../third_party/autoload.php';
     require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
     // Load configuration.
     $sCurrentDir=dirname(__FILE__);

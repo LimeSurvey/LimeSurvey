@@ -98,7 +98,7 @@
                 <!-- Global participant settings -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" role="button">
                     <span class="icon-global text-success"></span>
-                    <?php eT("Settings");?>
+                    <?php eT("Blacklist settings");?>
                 </a>
 
                 <!-- Attribute management -->
@@ -177,7 +177,7 @@
                 <h4 class="modal-title"><?php eT("Export participants"); ?> </h4>
             </div>
             <div class="modal-body">
-                <div class="form form-horizontal">
+                <div class="form ">
                     <div class='form-group'>
                         <label class='control-label col-sm-4' for='attributes'><?php eT('Attributes to export:');?></label>
                         <div class='col-sm-8'>

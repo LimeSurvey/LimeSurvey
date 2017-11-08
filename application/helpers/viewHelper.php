@@ -213,7 +213,7 @@ class viewHelper
      * @param boolean $bFlat : flattenText or not : completely flat (not like flattenText from common_helper)
      * @param integer $iAbbreviated : max string text (if true : allways flat), 0 or false : don't abbreviated
      * @param string $sEllipsis if abbreviated : the char to put at end (or middle)
-     * @param mixed $fPosition if abbreviated position to split (in % : 0 to 1)
+     * @param integer $fPosition if abbreviated position to split (in % : 0 to 1)
      *
      * @return string
      */
@@ -306,5 +306,14 @@ class viewHelper
      {
          Yii::app()->loadHelper("surveytranslator");
          return getLanguageData($bOrderByNative, $sLanguageCode );
+     }
+
+    /**
+     * Get a tag to help automated tests identify pages
+     * @param string $name unique view name
+     * @return string
+     */
+     public static function getViewTestTag($name){
+         return CHtml::tag('div',['id'=>'action::'.$name,'style'=>'']);
      }
 }

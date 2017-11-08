@@ -35,7 +35,9 @@ class UserGroup extends LSActiveRecord {
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -95,6 +97,11 @@ class UserGroup extends LSActiveRecord {
     }
 
     // TODO seems to be unused, probably shouldn't be done like that
+
+    /**
+     * @param string[] $fields
+     * @param string $from
+     */
     public function join($fields, $from, $condition=false, $join=false, $order=false)
     {
         $user = Yii::app()->db->createCommand();
@@ -128,7 +135,8 @@ class UserGroup extends LSActiveRecord {
     /**
      * @param string $group_name
      * @param string $group_description
-     * @return int|mixed|string
+     * @return boolean
+     * @todo should use save() and afterSave() methods!!
      */
     public function addGroup($group_name, $group_description) {
         $iLoginID=intval(Yii::app()->session['loginID']);
@@ -242,8 +250,7 @@ class UserGroup extends LSActiveRecord {
      */
     public function getCountUsers()
     {
-        // TODO get count without getting all user rows?
-        return count($this->users);
+        return (int) UserInGroup::model()->countByAttributes(['ugid'=>$this->ugid]);
     }
 
     /**
@@ -346,6 +353,24 @@ class UserGroup extends LSActiveRecord {
         ));
 
         return $dataProvider;
+    }
+
+
+    /**
+     * Checks whether the specified UID is part of that group
+     * @param integer $uid
+     * @return bool
+     */
+    public function hasUser($uid){
+        // superadmin is part of all groups
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+            return true;
+        }
+        $userInGroup = UserInGroup::model()->findByAttributes(['ugid'=>$this->ugid],'uid=:uid',[':uid'=>$uid]);
+        if($userInGroup){
+            return true;
+        }
+        return false;
     }
       
 }

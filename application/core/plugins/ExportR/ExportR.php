@@ -1,5 +1,5 @@
 <?php
-class ExportR extends \ls\pluginmanager\PluginBase {
+class ExportR extends \LimeSurvey\PluginManager\PluginBase {
     
     protected $storage = 'DbStorage';
        

@@ -14,7 +14,7 @@
 // TODO: Why needed?
 require_once(Yii::app()->basePath . '/libraries/MersenneTwister.php');
 
-use \ls\pluginmanager\PluginEvent;
+use \LimeSurvey\PluginManager\PluginEvent;
 
 function loadanswers()
 {
@@ -464,7 +464,7 @@ function submittokens($quotaexit=false)
                 $aReplacementVars["TOKEN"]=$token->token;
                 $aReplacementVars["EMAIL"]=$token->email;
                 // added survey url in replacement vars
-                $surveylink = Yii::app()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$token->token));
+                $surveylink = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$token->token));
                 $aReplacementVars['SURVEYURL'] = $surveylink;
 
                 $attrfieldnames=getAttributeFieldNames($surveyid);
@@ -564,7 +564,7 @@ function sendSubmitNotifications($surveyid)
         return;
     }
 
-    $homeurl=Yii::app()->createAbsoluteUrl('/admin');
+    $homeurl=Yii::app()->getController()->createAbsoluteUrl('/admin');
 
     $sitename = Yii::app()->getConfig("sitename");
 
@@ -593,9 +593,9 @@ function sendSubmitNotifications($surveyid)
         $srid = $_SESSION['survey_'.$surveyid]['srid'];
     $aReplacementVars['ADMINNAME'] = $thissurvey['adminname'];
     $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
-    $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
-    $aReplacementVars['EDITRESPONSEURL']=Yii::app()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
-    $aReplacementVars['STATISTICSURL']=Yii::app()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
+    $aReplacementVars['VIEWRESPONSEURL']=Yii::app()->getController()->createAbsoluteUrl("/admin/responses/sa/view/surveyid/{$surveyid}/id/{$srid}");
+    $aReplacementVars['EDITRESPONSEURL']=Yii::app()->getController()->createAbsoluteUrl("/admin/dataentry/sa/editdata/subaction/edit/surveyid/{$surveyid}/id/{$srid}");
+    $aReplacementVars['STATISTICSURL']=Yii::app()->getController()->createAbsoluteUrl("/admin/statistics/sa/index/surveyid/{$surveyid}");
     if ($bIsHTML)
     {
         $aReplacementVars['VIEWRESPONSEURL']="<a href='{$aReplacementVars['VIEWRESPONSEURL']}'>{$aReplacementVars['VIEWRESPONSEURL']}</a>";
@@ -852,11 +852,10 @@ function buildsurveysession($surveyid,$preview=false)
     SetSurveyLanguage ($surveyid, $language_to_set);
     UpdateGroupList ($surveyid, $_SESSION['survey_'.$surveyid]['s_lang']);
 
-    $totalquestions               = Question::model()->getTotalQuestions($surveyid);
+    $totalquestions               = $survey->countTotalQuestions;
     $iTotalGroupsWithoutQuestions = QuestionGroup::model()->getTotalGroupsWithoutQuestions($surveyid);
-    $iNumberofQuestions           = Question::model()->getNumberOfQuestions($surveyid);                     // Fix totalquestions by substracting Test Display questions
 
-    $_SESSION['survey_'.$surveyid]['totalquestions'] = $totalquestions - (int) reset($iNumberofQuestions);
+    $_SESSION['survey_'.$surveyid]['totalquestions'] = $survey->countInputQuestions;
 
     // 2. SESSION VARIABLE: totalsteps
     setTotalSteps($surveyid, $thissurvey, $totalquestions);
@@ -1393,7 +1392,7 @@ function renderRenderWayForm($renderWay, array $scenarios, $sTemplateViewPath, $
             $thissurvey["aForm"]            = $aForm;
             $thissurvey['surveyUrl']        = App()->createUrl("/survey/index",array("sid"=>$surveyid));
 
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_user_forms.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid),'aSurveyInfo'=>$thissurvey), false);
             break;
 
         case "register": //Register new user
@@ -1431,6 +1430,7 @@ function resetAllSessionVariables($surveyid)
  * Set totalsteps in session
  * @param int $surveyid
  * @param array $thissurvey
+ * @param integer $totalquestions
  * @return void
  */
 function setTotalSteps($surveyid, array $thissurvey, $totalquestions)
@@ -1478,10 +1478,13 @@ function breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWith
     renderError($sTitle, $sMessage, $thissurvey, $sTemplateViewPath);
 }
 
+/**
+ * @param string $sTemplateViewPath
+ */
 function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
 {
     // Template settings
-    //$surveyid          = $thissurvey['sid'];
+    $surveyid          = $thissurvey['sid'];
     //$oTemplate         = Template::model()->getInstance('', $surveyid);
     //$oTemplate->registerAssets();
 
@@ -1490,7 +1493,7 @@ function renderError($sTitle='', $sMessage, $thissurvey, $sTemplateViewPath )
     $aError['message']    = $sMessage;
     $thissurvey['aError'] = $aError;
 
-    Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid),'aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -1985,6 +1988,16 @@ function checkCompletedQuota($surveyid,$return=false)
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
 
+    $thissurvey['aQuotas']['hiddeninputs']      = '<input type="hidden" name="sid"      value="'.$thissurvey['sid'].'" />
+                                                   <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />
+                                                   <input type="hidden" name="thisstep" value="'.$thissurvey['aQuotas']['sQuotaStep'].'" />';
+
+   foreach($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post){
+       $thissurvey['aQuotas']['hiddeninputs']      .= '<input type="hidden" name="'.$field.'"   value="'.$post.'" />';
+   }
+
+    //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
+
     if ($closeSurvey){
         killSurveySession($surveyid);
 
@@ -1992,7 +2005,7 @@ function checkCompletedQuota($surveyid,$return=false)
             header("Location: ".$sUrl);
         }
     }
-    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid),'aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -2059,9 +2072,11 @@ function getReferringUrl()
 /**
 * Shows the welcome page, used in group by group and question by question mode
 */
-function display_first_page($thissurvey) {
+function display_first_page($thissurvey, $aSurveyInfo)
+{
     global $token, $surveyid;
 
+    $thissurvey                 = $aSurveyInfo;
     $thissurvey['aNavigator']   = getNavigatorDatas();
 
     LimeExpressionManager::StartProcessingPage();
@@ -2091,8 +2106,9 @@ function display_first_page($thissurvey) {
     LimeExpressionManager::FinishProcessingPage();
 
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
+    $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] =  '';
 
-    Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }
 
 /**

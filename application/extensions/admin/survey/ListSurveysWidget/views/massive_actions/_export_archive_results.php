@@ -24,7 +24,7 @@
                 </td>
                 <?php if ($result['result']):?>
                     <td class="text-success">
-                        <?php echo 'Exported' ; ?>
+                        <?php eT('Exported'); ?>
                     </td>
                 <?php else: ?>
                     <td class="text-warning">

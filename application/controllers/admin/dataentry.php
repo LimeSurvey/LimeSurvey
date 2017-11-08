@@ -1485,9 +1485,14 @@ class dataentry extends Survey_Common_Action
                         $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
 
                         $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $thisvalue);
+                        if ($datetimeobj) {
+                            $dateoutput  = $datetimeobj->format('Y-m-d H:i');
+                        } else {
+                            $dateoutput = '';
+                        }
                         //need to check if library get initialized with new value of constructor or not.
 
-                        $updateqr .= dbQuoteID($fieldname)." = '{$datetimeobj->format("Y-m-d H:i:s")}', \n";
+                        $updateqr .= dbQuoteID($fieldname)." = '{$dateoutput}', \n";
                     }
                 }
                 elseif (($irow['type'] == 'N' || $irow['type'] == 'K') && $thisvalue == "")
@@ -1742,7 +1747,12 @@ class dataentry extends Survey_Common_Action
                             $qidattributes = QuestionAttribute::model()->getQuestionAttributes($irow['qid']);
                             $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                             $datetimeobj = DateTime::createFromFormat('!' . $dateformatdetails['phpdate'], $_POST[$fieldname]);
-                            $insert_data[$fieldname] = $datetimeobj->format("Y-m-d H:i:s");
+                            if($datetimeobj) {
+                                $dateoutput = $datetimeobj->format('Y-m-d H:i');
+                            } else {
+                                $dateoutput = '';
+                            }
+                            $insert_data[$fieldname] = $dateoutput;
                         }
                         else
                         {
@@ -2431,7 +2441,7 @@ class dataentry extends Survey_Common_Action
         {
 
             /** @var Question $question */
-            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filte'], 'language' => $surveyprintlang, 'sid' => $surveyid));
+            $question = Question::model()->findByAttributes(array('title' => $qidattributes['array_filter'], 'language' => $surveyprintlang, 'sid' => $surveyid));
             if($question) {
                 $output .= "\n<p class='extrahelp'>
                 ".sprintf(gT("Only answer this question for the items you selected in question %s ('%s')"),$qidattributes['array_filter'], flattenText(breakToNewline($question->question)))."

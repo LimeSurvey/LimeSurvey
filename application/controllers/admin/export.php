@@ -1,7 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
 * LimeSurvey
-* Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
+* Copyright (C) 2007-2017 The LimeSurvey Project Team / Carsten Schmitz
 * All rights reserved.
 * License: GNU/GPL License v2 or later, see LICENSE.php
 * LimeSurvey is free software. This version may have been modified pursuant
@@ -171,10 +171,11 @@ class export extends Survey_Common_Action {
 
         if ( ! $sExportType )
         {
+            $aFieldMap = array();
             //FIND OUT HOW MANY FIELDS WILL BE NEEDED - FOR 255 COLUMN LIMIT
             if ($survey->isSaveTimings) {
                 //Append survey timings to the fieldmap array
-                $aFieldMap = $aFieldMap + createTimingsFieldMap($iSurveyID, 'full',false,false,$oSurvey->language);
+                $aFieldMap = createTimingsFieldMap($iSurveyID, 'full',false,false,$survey->language);
             }
             $iFieldCount = count($aFieldMap);
 
@@ -195,6 +196,7 @@ class export extends Survey_Common_Action {
             }
 
             $aFields=array();
+            $aFieldsOptions=array();
             foreach($aFieldMap as $sFieldName=>$fieldinfo)
             {
                 $sCode=viewHelper::getFieldCode($fieldinfo);
@@ -258,6 +260,8 @@ class export extends Survey_Common_Action {
 
             $data['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $data['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
+            $data['title_bar']['subaction'] = gT('Export results');
+            $data['subaction'] = gT('Export results');
 
             $this->_renderWrappedTemplate('export', 'exportresults_view', $data);
 
@@ -277,6 +281,7 @@ class export extends Survey_Common_Action {
         $options->selectedColumns = Yii::app()->request->getPost('colselect');
         $options->responseMinRecord = sanitize_int(Yii::app()->request->getPost('export_from'));
         $options->responseMaxRecord = sanitize_int(Yii::app()->request->getPost('export_to'));
+        $options->aResponses = nice_addslashes(Yii::app()->request->getPost('responses_id'));
         $options->answerFormat = $sAnswerFormat;
         $options->convertY = $bConvertY;
         $options->yValue = ($bConvertY)?$sYValue:null;
@@ -356,41 +361,32 @@ class export extends Survey_Common_Action {
         //        $typeMap = $this->_getTypeMap();
 
         $filterstate = incompleteAnsFilterState();
-        $spssver = returnGlobal('spssver');
-
-        if ( is_null($spssver) )
-        {
-            if ( ! Yii::app()->session['spssversion'] )
-            {
-                Yii::app()->session['spssversion'] = 2;    //Set default to 2, version 16 or up
-            }
-
-            $spssver = Yii::app()->session['spssversion'];
+        if(!Yii::app()->session['spssversion']) { // Default to 2 (16 and up)
+            Yii::app()->session['spssversion'] = 2;
         }
-        else
-        {
-            Yii::app()->session['spssversion'] = $spssver;
-        }
+        $spssver = Yii::app()->request->getParam('spssver',Yii::app()->session['spssversion']); 
+        Yii::app()->session['spssversion'] = $spssver;
 
         $length_varlabel = '231'; // Set the max text length of Variable Labels
         $length_vallabel = '120'; // Set the max text length of Value Labels
 
-        switch ( $spssver )
-        {
+        switch ( $spssver ) {
             case 1:    //<16
                 $iLength     = '255'; // Set the max text length of the Value
                 break;
             case 2:    //>=16
-                $iLength     = '16384'; // Set the max text length of the Value
-                break;
             default:
                 $iLength     = '16384'; // Set the max text length of the Value
         }
 
         $headerComment = '*$Rev: 121017 $' . " $filterstate $spssver.\n";
 
-        if ( isset($_POST['dldata']) ) $subaction = "dldata";
-        if ( isset($_POST['dlstructure']) ) $subaction = "dlstructure";
+        if ( Yii::app()->request->getPost('dldata') ) {
+            $subaction = "dldata";
+        }
+        if ( Yii::app()->request->getPost('dlstructure') ) {
+            $subaction = "dlstructure";
+        }
 
         if  ( ! isset($subaction) )
         {
@@ -449,8 +445,7 @@ class export extends Survey_Common_Action {
         Yii::app()->loadHelper("admin/exportresults");
         viewHelper::disableHtmlLogging();
 
-        if ( $subaction == 'dldata' )
-        {
+        if ( $subaction == 'dldata' ) {
             header("Content-Disposition: attachment; filename=survey_" . $iSurveyID . "_SPSS_data_file.dat");
             header("Content-type: text/comma-separated-values; charset=UTF-8");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -464,60 +459,19 @@ class export extends Survey_Common_Action {
             $sNoAnswerValue = (isset($_POST['noanswervalue']) && $_POST['noanswervalue'] != '' )?'\''.$_POST['noanswervalue'].'\'':'';
             SPSSExportData($iSurveyID, $iLength, $sNoAnswerValue,'\'',false, $sLanguage);
 
-            exit;
+            App()->end();
         }
 
-        if ( $subaction == 'dlstructure' )
-        {
+        if ( $subaction == 'dlstructure' ) {
             header("Content-Disposition: attachment; filename=survey_" . $iSurveyID . "_SPSS_syntax_file.sps");
             header("Content-type: application/download; charset=UTF-8");
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Pragma: public");
-
-            // Build array that has to be returned
             $fields = SPSSFieldMap($iSurveyID, 'V', $sLanguage);
 
-            //Now get the query string with all fields to export
-            $query = SPSSGetQuery($iSurveyID, 500, 0);  // Sample first 500 responses for adjusting fieldmap
-            $result = $query->queryAll();
-
-            $num_fields = 0;
-            //Now we check if we need to adjust the size of the field or the type of the field
-            foreach ( $result as $row )
-            {
-
-                foreach ( $fields as $iIndex=>$aField )
-                {
-                    //Performance improvement, don't recheck fields that have valuelabels
-                    if ( ! isset($aField['answers']) )
-                    {
-                        $strTmp = mb_substr(stripTagsFull($row[$aField['sql_name']]), 0, $iLength);
-                        $len = mb_strlen($strTmp);
-
-                        if ( $len > $fields[$iIndex]['size'] ) $fields[$iIndex]['size'] = $len;
-
-                        if ( trim($strTmp) != '' )
-                        {
-                            if ( $fields[$iIndex]['SPSStype'] == 'F' && (isNumericExtended($strTmp) === FALSE || $fields[$iIndex]['size'] > 16) )
-                            {
-                                $fields[$iIndex]['SPSStype'] = 'A';
-                            }
-                        }
-                    }
-                }
-            }
-
-            /**
-            * End of DATA print out
-            *
-            * Now $fields contains accurate length data, and the DATA LIST can be rendered -- then the contents of the temp file can
-            * be sent to the client.
-            */
-            if ( $spssver == 2 )
-            {
+            if ( $spssver == 2 ) {
                 echo "\xEF\xBB\xBF";
             }
-
             echo $headerComment;
 
             if  ($spssver == 2 )
@@ -542,14 +496,12 @@ class export extends Survey_Common_Action {
 
             foreach ( $fields as $field )
             {
-                if( $field['SPSStype'] == 'DATETIME23.2' ) $field['size'] = '';
-
-                if($field['SPSStype'] == 'F' && ($field['LStype'] == 'N' || $field['LStype'] == 'K'))
-                {
-                    $field['size'] .= '.' . ($field['size']-1);
+                if( $field['SPSStype'] == 'DATETIME23.2' ) {
+                    $field['size'] = '';
                 }
-
-                if ( !$field['hide'] ) echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
+                if ( !$field['hide'] ) {
+                    echo "\n {$field['id']} {$field['SPSStype']}{$field['size']}";
+                }
             }
 
             echo ".\nCACHE.\n"
@@ -650,7 +602,7 @@ class export extends Survey_Common_Action {
                 }
             }
             echo "RESTORE LOCALE.\n";
-            exit;
+            App()->end();
         }
     }
 
@@ -689,6 +641,8 @@ class export extends Survey_Common_Action {
 
             $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
             $aData['title_bar']['title'] = gT('Browse responses').': '.$survey->currentLanguageSettings->surveyls_title;
+            $aData['title_bar']['subaction'] = gt('Export a VV survey file');
+            $aData['subaction'] = gt('Export a VV survey file');
 
             $aData['sidemenu']['state'] = false;
             $aData['menu']['edition'] = true;
@@ -1080,7 +1034,7 @@ class export extends Survey_Common_Action {
             unlink($sLSTFileName);
         }
 
-        if ( $survey->hasTimingsTable ) {
+        if ( isset($survey->hasTimingsTable ) ) {
             getXMLDataSingleTable($iSurveyID, 'survey_' . $iSurveyID . '_timings', 'Timings', 'timings', $sLSIFileName);
             $this->_addToZip($zip, $sLSIFileName, 'survey_' . $iSurveyID . '_timings.lsi');
             unlink($sLSIFileName);
@@ -1246,6 +1200,8 @@ class export extends Survey_Common_Action {
         $aData['baselang'] = Survey::model()->findByPk($iSurveyID)->language;
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID;  // Close button
         $aData['sidemenu']['state'] = false;
+        $aData['title_bar']['subaction'] = gt('queXML PDF export');
+        $aData['subaction'] = gt('queXML PDF export');
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
         array_unshift($aData['slangs'],$aData['baselang']);

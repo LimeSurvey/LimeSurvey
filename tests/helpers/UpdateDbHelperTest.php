@@ -6,6 +6,8 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @since 2017-06-16
+ * @group dbhelper
+ * @group db
  */
 class UpdateDbHelperTest extends TestBaseClass
 {
@@ -16,7 +18,15 @@ class UpdateDbHelperTest extends TestBaseClass
     {
         $dbo = \Yii::app()->getDb();
         try {
-            $dbo->createCommand('DROP DATABASE __test_update_helper')->execute();
+            $dbo->createCommand('DROP DATABASE __test_update_helper_258')->execute();
+        } catch (\CDbException $ex) {
+            $msg = $ex->getMessage();
+            // Only this error is OK.
+            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
+        }
+
+        try {
+            $dbo->createCommand('DROP DATABASE __test_update_helper_315')->execute();
         } catch (\CDbException $ex) {
             $msg = $ex->getMessage();
             // Only this error is OK.
@@ -30,12 +40,18 @@ class UpdateDbHelperTest extends TestBaseClass
             // Only this error is OK.
             self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
         }
+
+        $dbo->setActive(false);
+        unset($dbo);
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
     }
 
     /**
-     * Test the SQL install script.
+     * Run the database PHP install script.
+     * @group install
      */
-    public function testInstallSql()
+    public function testInstallPhp()
     {
         $db = \Yii::app()->getDb();
 
@@ -46,19 +62,14 @@ class UpdateDbHelperTest extends TestBaseClass
         // Get InstallerController.
         $inst = new \InstallerController('foobar');
         $inst->connection = \Yii::app()->db;
-
-        // Check SQL file.
-        $file = \Yii::app()->basePath . '/../installer/sql/create-mysql.sql';
-        $this->assertFileExists($file);
-
-        // Run SQL install file.
-        $result = $inst->_executeSQLFile($file, 'lime_');
+        $filename = dirname(APPPATH).'/installer/create-database.php';
+        $result = $inst->_setup_tables($filename);
         if ($result) {
             print_r($result);
         }
-        $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
 
         // Dump database to file.
+        /*
         $output = array();
         $result = exec(
             sprintf(
@@ -70,6 +81,7 @@ class UpdateDbHelperTest extends TestBaseClass
         );
         $this->assertEmpty($output, 'No output from mysqldump');
         $this->assertEmpty($result, 'No last line output from mysqldump');
+         */
 
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
@@ -77,46 +89,23 @@ class UpdateDbHelperTest extends TestBaseClass
     }
 
     /**
-     * Run db_upgrade_all() from dbversion 153, to make sure
+     * Run db_upgrade_all() from dbversion 258, to make sure
      * there are no conflicts or syntax errors.
      * @group upgradeall
      */
-    public function testDbUpgradeAll()
+    public function testDbUpgradeFrom258()
     {
+        self::$testHelper->updateDbFromVersion(258);
+
         $db = \Yii::app()->getDb();
-
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        $result = self::$testHelper->connectToNewDatabase('__test_update_helper');
-        $this->assertTrue($result, 'Could connect to new database');
-
-        // Get InstallerController.
-        $inst = new \InstallerController('foobar');
-        $inst->connection = \Yii::app()->db;
-
-        // Check SQL file.
-        $file = __DIR__ . '/../data/sql/create-mysql.153.sql';
-        $this->assertFileExists($file);
-
-        // Run SQL install file.
-        $result = $inst->_executeSQLFile($file, 'lime_');
-        $this->assertEquals([], $result, 'No error messages from _executeSQLFile');
-
-        // Run upgrade.
-        $result = \db_upgrade_all(153);
-
-        // Check error messages.
-        $flashes = \Yii::app()->user->getFlashes();
-        if ($flashes) {
-            print_r($flashes);
-        }
-        $this->assertEmpty($flashes, 'No flash error messages');
-        $this->assertTrue($result, 'Upgrade successful');
 
         // Dump database to file.
+        /*
         $output = array();
         $result = exec(
             sprintf(
-                'mysqldump -u %s -p%s __test_update_helper > tests/data/tmp/__test_update_helper-dump.sql',
+                'mysqldump -u %s -p%s __test_update_helper_258 > tests/data/tmp/__test_update_helper_258-dump.sql',
                 $config['components']['db']['username'],
                 $config['components']['db']['password']
             ),
@@ -124,11 +113,27 @@ class UpdateDbHelperTest extends TestBaseClass
         );
         $this->assertEmpty($output, 'No output from mysqldump');
         $this->assertEmpty($result, 'No last line output from mysqldump');
+         */
 
         // Connect to old database.
         \Yii::app()->setComponent('db', $config['components']['db'], false);
         $db->setActive(true);
 
         // Database is deleted in teardownAfterClass().
+    }
+
+    /**
+     * @group from315
+     */
+    public function testDbUpgradeFrom315()
+    {
+        self::$testHelper->updateDbFromVersion(315);
+
+        $db = \Yii::app()->getDb();
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+
+        // Connect to old database.
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $db->setActive(true);
     }
 }

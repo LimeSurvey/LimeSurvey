@@ -23,11 +23,12 @@
             array(
                 'id' => 'edittxtele' . $language,
                 'class' => 'tab-pane fade in' . ($language == $oQuota->survey->language ? ' active ' : ''),
-            ),$this->renderPartial('/admin/quotas/_form_langsetting',
+            ),
+            $this->renderPartial('/admin/quotas/_form_langsetting',
             array(
                 'form'=>$form,
                 'oQuota'=>$oQuota,
-                'oQuotaLanguageSetting' =>$aQuotaLanguageSettings[$language],
+                'oQuotaLanguageSetting' => (isset($aQuotaLanguageSettings[$language]) ? $aQuotaLanguageSettings[$language] : new QuotaLanguageSetting),
                 'language' =>$language,
             ),true)
         );

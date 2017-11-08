@@ -2,6 +2,11 @@
  * This javascript show or hide the googleanalytics parameters in function of the Notification settings to be used
  * (None, use setting below, use global settings )
  */
+var LS = LS || {
+    onDocumentReady: {}
+};
+
+
 function updateParameters()
 {
 if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
@@ -33,7 +38,7 @@ if ($('#googleanalyticsapikeysetting input:radio:checked').val()=='Y'){
     }
 }
 
-$(document).ready(function(){
+$(document).on('ready  pjax:complete', function(){
     updateParameters();
     $("input:radio[id^='googleanalyticsapikeysetting']").on('change',function(){
         updateParameters();

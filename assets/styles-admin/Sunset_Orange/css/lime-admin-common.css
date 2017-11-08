@@ -234,7 +234,8 @@ html {
 .surveymanagerbar {
   margin-top: -20px;
   padding-top: 5px; }
-  .surveymanagerbar h3 {
+
+.surveymanagerbar .h3 {
     margin-top: 5px;
     font-weight: 300;
     font-size: 1.5em; }
@@ -748,7 +749,6 @@ div.panel.disabled {
 
 .side-body {
   min-height: 800px;
-  margin-left: 320px;
 }
 
 .side-body-margin {
@@ -1492,6 +1492,16 @@ h3 .glyphicon-chevron-up, h3 .glyphicon-chevron-down, h3 .glyphicon-chevron-righ
 #systemoverview {
   margin: 1em 0 1em 0; }
 
+#systemoverview .info div {
+	font-size: 14px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-weight: 500;
+	line-height: 1.1;
+	color: inherit;
+	text-align: center;
+}
+
 /**
  * Ajax loader
  * from : http://codepen.io/weaintplastic/pen/qEMZbx
@@ -1793,8 +1803,9 @@ iframe#dialog {
 .question-filter-container {
     border : 1px solid #efefef;
     padding: 2em;
-    margin: 0.2em;
-    width: 33%;
+    margin: 0;
+    min-width:33%;
+    max-width:100%;
 }
 
 /* Subquestion */
@@ -2207,7 +2218,6 @@ table#responsedetail tr td{
 
 .welcome .panel {
     height: 110%;
-    min-width: 200px;
 }
 
 .welcome .panel-body {
@@ -2219,6 +2229,10 @@ table#responsedetail tr td{
     display:flex;
      align-items: center;
      justify-content: center;
+}
+
+.welcome .panel-title {
+	font-weight: 500;
 }
 
 .welcome .panel-body {

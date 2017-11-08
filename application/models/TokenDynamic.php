@@ -59,6 +59,7 @@ class TokenDynamic extends LSActiveRecord
             $refresh = true;
         }
 
+        /** @var self $model */
         $model = parent::model(__CLASS__);
 
         //We need to refresh if we changed sid
@@ -473,7 +474,7 @@ class TokenDynamic extends LSActiveRecord
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getStandardCols()
     {

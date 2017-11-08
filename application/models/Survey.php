@@ -15,13 +15,14 @@ if (!defined('BASEPATH'))
 *
 */
 
-use \ls\pluginmanager\PluginEvent;
+use \LimeSurvey\PluginManager\PluginEvent;
 
 /**
  * Class Survey
  *
  * @property integer $sid Survey ID
  * @property integer $owner_id
+ * @property integer $gsid Survey ID
  * @property string $admin Survey Admin's full name
  * @property string $active Whether survey is acive or not (Y/N)
  * @property string $expires Expiry date (YYYY-MM-DD hh:mm:ss)
@@ -103,10 +104,13 @@ use \ls\pluginmanager\PluginEvent;
  * @property string $tokensTableName Name of survey tokens table
  * @property string $responsesTableName Name of survey resonses table
  * @property string $timingsTableName Name of survey timings table
- * @property string $hasTokensTable Whether survey has a tokens table or not
- * @property string $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
- * @property string $hasTimingsTable Wheteher the survey timings table exists in DB
+ * @property boolean $hasTokensTable Whether survey has a tokens table or not
+ * @property boolean $hasResponsesTable Wheteher the survey reponses (data) table exists in DB
+ * @property boolean $hasTimingsTable Wheteher the survey timings table exists in DB
  * @property string $googleanalyticsapikeysetting Returns the value for the SurveyEdit GoogleAnalytics API-Key UseGlobal Setting
+ * @property integer $countTotalQuestions Count of questions (in that language, without subquestions)
+ * @property integer $countInputQuestions Count of questions that need input (skipping text-display etc.)
+ * @property integer $countNoInputQuestions Count of questions that DO NOT need input (skipping text-display etc.)
  *
  * All Y/N columns in the model can be accessed as boolean values:
  * @property bool $isActive Whether Survey is active
@@ -167,6 +171,14 @@ class Survey extends LSActiveRecord
         $this->htmlemail = 'Y';
         $this->format = 'G';
 
+        // Default setting is to use the global Google Analytics key If one exists
+        Yii::import('application.helpers.globalsettings_helper', true);
+        $globalKey = getGlobalSetting('googleanalyticsapikey');
+        if($globalKey != ""){
+            $this->googleanalyticsapikey = "9999useGlobal9999";
+            $this->googleanalyticsapikeysetting = "G";
+        }
+
 
         $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
         $validator= new LSYii_Validators;
@@ -181,6 +193,12 @@ class Survey extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc */
+    public function delete()
+    {
+        return $this->deleteSurvey($this->sid);
+    }
+
 
     /**
      * The Survey languagesettings in currently active language. Falls back to the surveys' default language if the current language is not available.
@@ -193,6 +211,32 @@ class Survey extends LSActiveRecord
         } else {
             return $this->languagesettings[$this->language];
         }
+    }
+
+    /**
+     * Return the language of the current survey
+     * It can be:
+     *  - the selected language by user via the language selector (POST then Session)
+     *  - the selected language via URL (GET then Session)
+     *  - the survey default language
+     *
+     * @return string the correct language 
+     */
+    public function getLanguageForSurveyTaking()
+    {
+        // Default: the survey language
+        $sLang =  $this->language;
+
+        if (Yii::app()->request->getParam('lang', null) !== null){
+            // POST or GET
+            $sLang = Yii::app()->request->getParam('lang');
+        }else{
+            // SESSION
+            if (isset(Yii::app()->session['survey_'.$this->sid]['s_lang'])){
+                $sLang = Yii::app()->session['survey_'.$this->sid]['s_lang'] ;
+            }
+        }
+        return $sLang;
     }
 
     /**
@@ -246,9 +290,11 @@ class Survey extends LSActiveRecord
             'defaultlanguage' => array(self::BELONGS_TO, 'SurveyLanguageSetting', array('language' => 'surveyls_language', 'sid' => 'surveyls_survey_id'), 'together' => true),
             'correct_relation_defaultlanguage' => array(self::HAS_ONE, 'SurveyLanguageSetting', array('surveyls_language' => 'language', 'surveyls_survey_id' => 'sid'), 'together' => true),
             'owner' => array(self::BELONGS_TO, 'User', 'owner_id', 'together' => true),
-            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true),
+            'groups' => array(self::HAS_MANY, 'QuestionGroup', 'sid', 'together' => true, 'order'=>'group_order ASC'),
             'quotas' => array(self::HAS_MANY, 'Quota', 'sid','order'=>'name ASC'),
             'surveymenus' => array(self::HAS_MANY, 'Surveymenu', array('survey_id' => 'sid')),
+            'surveygroup' => array(self::BELONGS_TO, 'SurveysGroups', array('gsid' => 'gsid'), 'together' => true),
+            'templateModel' => array(self::HAS_ONE, 'Template', array('name' => 'template') )
         );
     }
 
@@ -274,6 +320,7 @@ class Survey extends LSActiveRecord
     public function rules()
     {
         return array(
+            array('gsid', 'numerical', 'integerOnly'=>true),
             array('datecreated', 'default','value'=>date("Y-m-d")),
             array('startdate', 'default','value'=>NULL),
             array('expires', 'default','value'=>NULL),
@@ -376,6 +423,7 @@ class Survey extends LSActiveRecord
         return Template::templateNameFilter($sTemplateName);
     }
 
+
     /**
      * permission scope for this model
      * Actually only test if user have minimal access to survey (read)
@@ -383,7 +431,6 @@ class Survey extends LSActiveRecord
      * @param int $loginID
      * @return CActiveRecord
      *
-     * TODO: replace this by a correct relation
      */
     public function permission($loginID)
     {
@@ -542,7 +589,7 @@ class Survey extends LSActiveRecord
      * Wheteher the survey reponses timings exists in DB
      * @return boolean
      */
-    public function getHasTimigsTable() {
+    public function getHasTimingsTable() {
         // Make sure common_helper is loaded
         Yii::import('application.helpers.common_helper', true);
         return tableExists($this->timingsTableName);
@@ -585,33 +632,87 @@ class Survey extends LSActiveRecord
         }
     }
 
+    public function getSurveyTemplateConfiguration(){
+        return TemplateConfiguration::getInstance(null, null, $this->sid);
+    }
 
-    private function _getDefaultSurveyMenu(){
-        $oDefaultMenu = Surveymenu::model()->findByPk(1);
+    private function _createSurveymenuArray($oSurveyMenuObjects)
+    {
         //Posibility to add more languages to the database is given, so it is possible to add a call by language
         //Also for peripheral menues we may add submenus someday.
+        $aResultCollected = [];
+        foreach($oSurveyMenuObjects as $oSurveyMenuObject){
+            $entries = [];
+            $aMenuEntries = $oSurveyMenuObject->surveymenuEntries;
+            $submenus = $this->_getSurveymenuSubmenus($oSurveyMenuObject);
+            foreach($aMenuEntries as $menuEntry){
+                $aEntry = $menuEntry->attributes;
+                //Skip menu if no permission
+                if(
+                    (!empty($entry['permission']) && !empty($entry['permission_grade']) 
+                    && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade']))
+                ) {continue;}
+                //parse the render part of the data attribute
+                $oDataAttribute = new SurveymenuEntryData();
+                $oDataAttribute->apply($menuEntry, $this->sid);
+               
+                if($oDataAttribute->isActive !== null){
+                    if(($oDataAttribute->isActive==true && $this->active == 'N') || ($oDataAttribute->isActive==false && $this->active == 'Y')){
+                        continue;
+                    }
+                }
 
-        $entries = [];
-        $defaultMenuEntries = $oDefaultMenu->surveymenuEntries;
-        foreach($defaultMenuEntries as $menuEntry){
-            $aEntry = $menuEntry->attributes;
-            if((!empty($entry['permission']) && !empty($entry['permission_grade']) && !Permission::model()->hasSurveyPermission($this->sid,$entry['permission'],$entry['permission_grade'])))
-                continue;
-
-
-            $aEntry['link'] = $aEntry['menu_link']
-                        ?  App()->getController()->createUrl($aEntry['menu_link'],['surveyid' => $this->sid])
-                        : App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
-            $entries[] = $aEntry;
+                $aEntry['link'] = $oDataAttribute->linkCreator();
+                $aEntry['link_external'] = $oDataAttribute->linkExternal;
+                $aEntry['debugData'] = $oDataAttribute->attributes;
+                $aEntry['pjax'] = $oDataAttribute->pjaxed;
+                $entries[$aEntry['id']] = $aEntry;
+            }
+            $aResultCollected[$oSurveyMenuObject->id] = [
+                "id" => $oSurveyMenuObject->id,
+                "title" => $oSurveyMenuObject->title,
+                "ordering" => $oSurveyMenuObject->ordering,
+                "level" => $oSurveyMenuObject->level,
+                "description" => $oSurveyMenuObject->description,
+                "entries" => $entries,
+                "submenus" => $submenus
+            ];
         }
+        return $aResultCollected;
+    }
 
-        $aResult = [
-            "title" => $oDefaultMenu->title,
-            "description" => $oDefaultMenu->description,
-            "entries" => $entries
+    private function _getSurveymenuSubmenus($oParentSurveymenu){
+        $criteria=new CDbCriteria;
+        $criteria->addCondition('survey_id=:surveyid OR survey_id IS NULL');
+        $criteria->addCondition('parent_id=:parentid');
+        $criteria->addCondition('level=:level');
+        $criteria->params = [
+            ':surveyid' => $oParentSurveymenu->survey_id,
+            ':parentid' =>  $oParentSurveymenu->id,
+            ':level'=> ($oParentSurveymenu->level+1)
         ];
 
-        return $aResult;
+        $oMenus = Surveymenu::model()->findAll($criteria);
+
+        $aResultCollected = $this->_createSurveymenuArray($oMenus);
+        return $aResultCollected;
+    }
+
+    private function _getDefaultSurveyMenus($position='')
+    {
+        $criteria=new CDbCriteria;
+        $criteria->condition='survey_id IS NULL AND parent_id IS NULL';
+
+        if($position != '')
+        {
+            $criteria->condition.=' AND position=:position';
+            $criteria->params=array(':position'=>$position);
+        }
+
+        $oDefaultMenus = Surveymenu::model()->findAll($criteria);
+        $aResultCollected = $this->_createSurveymenuArray($oDefaultMenus);
+
+        return $aResultCollected;
     }
 
 
@@ -619,39 +720,26 @@ class Survey extends LSActiveRecord
      * Get surveymenu configuration
      * This will be made bigger in future releases, but right now it only collects the default menu-entries
      */
-    public function getSurveyMenus(){
+    public function getSurveyMenus($position=''){
 
-        $aSurveyMenus = [];
-
-        //Get the default menu
-        $aSurveyMenus[] = $this->_getDefaultSurveyMenu();
-
+        //Get the default menus
+        $aDefaultSurveyMenus = $this->_getDefaultSurveyMenus($position);
         //get all survey specific menus
-        foreach($this->surveymenus as $menu){
-            $aMenuResult = [
-                "title" => $menu->title,
-                "description" => $menu->description,
-                "entries" => []
-            ];
-
-            foreach($menu->surveymenuEntries as $menuEntry){
-                $aEntry = $menuEntry->attributes;
-                $aEntry['link'] = App()->getController()->createUrl("admin/survey/sa/rendersidemenulink",['surveyid' => $this->sid, 'subaction' => $aEntry['name'] ]);
-                $aMenuResult["entries"][] = $aEntry;
-            }
-            $aSurveyMenus[] = $aMenuResult;
-        }
-
+        $aThisSurveyMenues = $this->_createSurveymenuArray($this->surveymenus);
+        //merge them
+        $aSurveyMenus = $aDefaultSurveyMenus + $aThisSurveyMenues;
+        // var_dump($aDefaultSurveyMenus);
+        // var_dump($aThisSurveyMenues);
         //soon to come => Event to add menus for plugins
 
         return $aSurveyMenus;
     }
 
     /**
-     * Creates a new survey - does some basic checks of the suppplied data
+     * Creates a new survey - with a random sid
      *
      * @param array $aData Array with fieldname=>fieldcontents data
-     * @return integer The new survey id
+     * @return \Survey
      */
     public function insertNewSurvey($aData)
     {
@@ -664,49 +752,46 @@ class Survey extends LSActiveRecord
             else{
                 $aData['sid'] = randomChars(6, '123456789');
             }
-
             $isresult = self::model()->findByPk($aData['sid']);
         }
         while (!is_null($isresult));
 
         $survey = new self;
-        foreach ($aData as $k => $v)
+        foreach ($aData as $k => $v) {
             $survey->$k = $v;
+        }
         $sResult= $survey->save();
 
         if (!$sResult) {
-            tracevar($survey->getErrors());
-            tracevar($aData);
-            return false;
+            $survey->sid=null;
         }
-        else return $aData['sid'];
+        return $survey;
     }
 
     /**
-     * Deletes a survey and all its data
-     *
-     * @access public
-     * @param int $iSurveyID
-     * @param bool @recursive
-     * @return boolean
-     */
+    * Deletes a survey and all its data
+    *
+    * @access public
+    * @param int $iSurveyID
+    * @param bool $recursive
+    * @return boolean
+    */
     public function deleteSurvey($iSurveyID, $recursive=true)
     {
-
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
             if ( Survey::model()->deleteByPk($iSurveyID) ) {
                 if ($recursive == true) {
                     //delete the survey_$iSurveyID table
-                    if ($this->hasResponsesTable) {
-                        Yii::app()->db->createCommand()->dropTable($this->responsesTableName);
+                    if (tableExists("{{survey_".intval($iSurveyID)."}}")) {
+                        Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."}}");
                     }
                     //delete the survey_$iSurveyID_timings table
-                    if ($this->hasTimingsTable) {
-                        Yii::app()->db->createCommand()->dropTable($this->timingsTableName);
+                    if (tableExists("{{survey_".intval($iSurveyID)."_timings}}")) {
+                        Yii::app()->db->createCommand()->dropTable("{{survey_".intval($iSurveyID)."_timings}}");
                     }
                     //delete the tokens_$iSurveyID table
-                    if ($this->hasTokensTable) {
-                        Yii::app()->db->createCommand()->dropTable($this->tokensTableName);
+                    if (tableExists("{{tokens_".intval($iSurveyID)."}}")) {
+                        Yii::app()->db->createCommand()->dropTable("{{tokens_".intval($iSurveyID)."}}");
                     }
 
                     /* Remove User/global settings part : need Question and QuestionGroup*/
@@ -761,6 +846,9 @@ class Survey extends LSActiveRecord
                     //Remove any survey_links to the CPDB
                     SurveyLink::model()->deleteLinksBySurvey($iSurveyID);
                     Quota::model()->deleteQuota(array('sid' => $iSurveyID), true);
+
+                    // Delete all uploaded files.
+                    rmdirr(Yii::app()->getConfig('uploaddir') . '/surveys/' . $iSurveyID);
                 }
                 return true;
             }
@@ -1276,7 +1364,7 @@ class Survey extends LSActiveRecord
         }
 
         if(Permission::model()->hasSurveyPermission($this->sid, 'statistics', 'read') && $this->active=='Y' ) {
-            $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="fa fa-stats text-success" ></span><span class="sr-only">'.gT('Statistics').'</span></a>';
+            $button .= '<a class="btn btn-default" href="'.$sStatUrl.'" role="button" data-toggle="tooltip" title="'.gT('Statistics').'"><span class="fa fa-bar-chart text-success" ></span><span class="sr-only">'.gT('Statistics').'</span></a>';
         }
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'survey', 'create')) {
@@ -1335,6 +1423,11 @@ class Survey extends LSActiveRecord
                 'desc'=>'t.active desc, t.expires desc',
             ),
 
+            'group'=>array(
+                'asc'  => 'surveygroup.title asc',
+                'desc' => 'surveygroup.title desc',
+            ),
+
         );
         $sort->defaultOrder = array('creation_date' => CSort::SORT_DESC);
 
@@ -1344,11 +1437,15 @@ class Survey extends LSActiveRecord
         // Search filter
         $sid_reference = (Yii::app()->db->getDriverName() == 'pgsql' ?' t.sid::varchar' : 't.sid');
         $aWithRelations[] = 'owner';
+        $aWithRelations[] = 'surveygroup';
         $criteria->compare($sid_reference, $this->searched_value, true);
         $criteria->compare('t.admin', $this->searched_value, true, 'OR');
         $criteria->compare('owner.users_name', $this->searched_value, true, 'OR');
         $criteria->compare('correct_relation_defaultlanguage.surveyls_title', $this->searched_value, true, 'OR');
-
+        $criteria->compare('surveygroup.title', $this->searched_value, true, 'OR');
+        
+        
+        $criteria->compare('t.gsid',[$this->gsid], false, 'AND');
 
 
         // Active filter
@@ -1430,9 +1527,55 @@ class Survey extends LSActiveRecord
      * @todo Should really be saved as three fields in the database!
      */
     public static function transcribeCaptchaOptions() {
+        // TODO POST handling should be done in controller!
         $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess');
         $registration = App()->request->getPost('usecaptcha_registration');
         $saveandload = App()->request->getPost('usecaptcha_saveandload');
+
+        if ($surveyaccess && $registration && $saveandload) {
+            return 'A';
+        } elseif ($surveyaccess && $registration) {
+            return 'B';
+        } elseif ($surveyaccess && $saveandload) {
+            return 'C';
+        } elseif ($registration && $saveandload) {
+            return 'D';
+        } elseif ($surveyaccess) {
+            return 'X';
+        } elseif ($registration) {
+            return 'R';
+        } elseif ($saveandload) {
+            return 'S';
+        }
+
+        return 'N';
+    }
+
+    /**
+     * Transcribe from 3 checkboxes to 1 char for captcha usages
+     * Uses variables from $_POST and transferred Surveyobject
+     *
+     * 'A' = All three captcha enabled
+     * 'B' = All but save and load
+     * 'C' = All but registration
+     * 'D' = All but survey access
+     * 'X' = Only survey access
+     * 'R' = Only registration
+     * 'S' = Only save and load
+     * 'N' = None
+     *
+     * @return string One character that corresponds to captcha usage
+     * @todo Should really be saved as three fields in the database!
+     */
+    public static function saveTranscribeCaptchaOptions(Survey $oSurvey) {
+        // TODO POST handling should be done in controller!
+        $surveyaccess = App()->request->getPost('usecaptcha_surveyaccess', null);
+        $registration = App()->request->getPost('usecaptcha_registration', null);
+        $saveandload = App()->request->getPost('usecaptcha_saveandload', null);
+
+        if($surveyaccess === null && $registration === null && $saveandload === null){
+            return $oSurvey->usecaptcha;
+        }
 
         if ($surveyaccess && $registration && $saveandload) {
             return 'A';
@@ -1583,4 +1726,69 @@ class Survey extends LSActiveRecord
         return $sumresult3 ;
     }
 
+    /**
+     * @return integer
+     */
+    public function getCountTotalQuestions(){
+        $condn = array('sid'=>$this->sid,'language'=>$this->language,'parent_qid'=>0);
+        $sumresult = Question::model()->countByAttributes($condn);
+        return (int) $sumresult;
+    }
+
+    /**
+     * Get the coutn of questions that do not need input (skipping text-display etc.)
+     * @return integer
+     */
+    public function getCountNoInputQuestions(){
+        $condn = array(
+            'sid'=>$this->sid,
+            'language'=>$this->language,
+            'parent_qid'=>0,
+            'type'=>['X','*'],
+        );
+        $sumresult = Question::model()->countByAttributes($condn);
+        return (int) $sumresult;
+    }
+
+    /**
+     * Get the coutn of questions that need input (skipping text-display etc.)
+     * @return integer
+     */
+    public function getCountInputQuestions(){
+        return $this->countTotalQuestions - $this->countNoInputQuestions;
+    }
+
+
+    /**
+     * Returns true if this survey has any question of type $type.
+     * @param char $type Question type, like 'L', 'T', etc.
+     * @param boolean $includeSubquestions If true, will also check the types of subquestions.
+     * @return boolean
+     */
+    public function hasQuestionType($type, $includeSubquestions = false)
+    {
+        if (!is_string($type) || strlen($type) !== 1) {
+            throw new InvalidArgumentException('$type must be a string of length 1');
+        }
+
+        if ($includeSubquestions) {
+            $joinCondition =
+                '{{questions.sid}} = {{surveys.sid}} AND {{questions.type}} = :type';
+        } else {
+            $joinCondition =
+                '{{questions.sid}} = {{surveys.sid}} AND {{questions.parent_qid}} = 0 AND {{questions.type}} = :type';
+        }
+
+        $result = Yii::app()->db->createCommand()
+            ->select('{{surveys.sid}}')
+            ->from('{{surveys}}')
+            ->join(
+                '{{questions}}',
+                $joinCondition,
+                array(':type' => $type)
+            )
+            ->where('{{surveys.sid}} = :sid', array(':sid' => $this->sid))
+            ->queryRow();
+        return $result !== false;
+    }
 }

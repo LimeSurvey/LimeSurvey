@@ -72,6 +72,43 @@ class LSYii_ClientScript extends CClientScript {
     }
 
     /**
+     * Check if a file is in a given package
+     * @var $sPackageName   string  name of the package
+     * @var $sType          string  css/js
+     * @var $sFileName      string name of the file to remove
+     * @return boolean
+     */
+    public function IsFileInPackage($sPackageName, $sType, $sFileName)
+    {
+        if (!empty(Yii::app()->clientScript->packages[$sPackageName])){
+            if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])){
+                $key = array_search( $sFileName,Yii::app()->clientScript->packages[$sPackageName][$sType]);
+                return $key !== false;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * Add a file to a given package
+     *
+     * @var $sPackageName   string  name of the package
+     * @var $sType          string  css/js
+     * @var $sFileName      string name of the file to add
+     */
+    public function addFileToPackage($sPackageName, $sType, $sFileName )
+    {
+        if (!empty(Yii::app()->clientScript->packages[$sPackageName])){
+            if (!empty(Yii::app()->clientScript->packages[$sPackageName][$sType])){
+                Yii::app()->clientScript->packages[$sPackageName][$sType][] = $sFileName;
+            }
+        }
+    }
+
+
+
+    /**
      * Remove a file from a given package
      *
      * @var $sPackageName   string  name of the package
@@ -152,6 +189,7 @@ class LSYii_ClientScript extends CClientScript {
     /**
      * Return a list of all the recursive dependencies of a packages
      * eg: If a package A depends on B, and B depends on C, getRecursiveDependencies('A') will return {B,C}
+     * @param string $sPackageName
      */
     public function getRecursiveDependencies($sPackageName)
     {
@@ -185,7 +223,7 @@ class LSYii_ClientScript extends CClientScript {
         $aOldPackageDefinition = Yii::app()->clientScript->packages[$package];
 
         // If it has an entry 'devBaseUrl', we use it to replace basePath (it will turn off asset manager for this package)
-        if( array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
+        if( is_array($aOldPackageDefinition) && array_key_exists('devBaseUrl', $aOldPackageDefinition ) ){
 
             $aNewPackageDefinition = array();
 
@@ -235,60 +273,292 @@ class LSYii_ClientScript extends CClientScript {
         return array('toPublish'=>($sType=='toPublish'), 'sPathToFile' => $sPath );
     }
 
-
 	/**
-	 * Renders the specified core javascript library.
+	 * Registers a script package that is listed in {@link packages}.
+	 * @param string $name the name of the script package.
+	 * @return static the CClientScript object itself (to support method chaining, available since version 1.1.5).
+	 * @see renderCoreScript
+	 * @throws CException
 	 */
-	public function renderCoreScripts()
+	public function registerPackageScriptOnPosition($name, $position)
 	{
-		if($this->coreScripts===null)
-			return;
-		$cssFiles=array();
-		$jsFiles=array();
-		$jsFilesPositioned=array();
-		foreach($this->coreScripts as $name=>$package)
+		if(isset($this->coreScripts[$name])){
+            $this->coreScripts[$name]['position'] = $position;
+            return $this;
+        }
+
+		if(isset($this->packages[$name]))
+			$package=$this->packages[$name];
+		else
 		{
-			$baseUrl=$this->getPackageBaseUrl($name);
-			if(!empty($package['js']))
+			if($this->corePackages===null)
+				$this->corePackages=require(YII_PATH.'/web/js/packages.php');
+			if(isset($this->corePackages[$name]))
+				$package=$this->corePackages[$name];
+        }
+        
+		if(isset($package))
+		{
+            $package['position'] = $position;
+
+            if(!empty($package['depends']))
 			{
-				foreach($package['js'] as $js){
-					if(isset($package['position'])){
+				foreach($package['depends'] as $p)
+					$this->registerCoreScript($p, $position);
+            }
+            
+			$this->coreScripts[$name]=$package;
+			$this->hasScripts=true;
+			$params=func_get_args();
+			$this->recordCachingAction('clientScript','registerCoreScript',$params);
+		}
+		elseif(YII_DEBUG)
+			throw new CException('There is no LSYii_ClientScript package: '.$name);
+		else
+			Yii::log('There is no LSYii_ClientScript package: '.$name,CLogger::LEVEL_WARNING,'system.web.LSYii_ClientScript');
+
+		return $this;
+    }
+    
+    /**
+     * Renders the specified core javascript library.
+     */
+    public function renderCoreScripts()
+    {
+        if($this->coreScripts===null)
+            return;
+        $cssFiles=array();
+        $jsFiles=array();
+        $jsFilesPositioned=array();
+        foreach($this->coreScripts as $name=>$package)
+        {
+            $baseUrl=$this->getPackageBaseUrl($name);
+            if(!empty($package['js']))
+            {
+                foreach($package['js'] as $js){
+                    if(isset($package['position'])){
                         $jsFilesPositioned[$package['position']][$baseUrl.'/'.$js]=$baseUrl.'/'.$js;
                     } else {
                         $jsFiles[$baseUrl.'/'.$js]=$baseUrl.'/'.$js;
                     }
                 }
-			}
-			if(!empty($package['css']))
-			{
-				foreach($package['css'] as $css)
-					$cssFiles[$baseUrl.'/'.$css]='';
-			}
-		}
-		// merge in place
-		if($cssFiles!==array())
-		{
-			foreach($this->cssFiles as $cssFile=>$media)
-				$cssFiles[$cssFile]=$media;
-			$this->cssFiles=$cssFiles;
-		}
-		if($jsFiles!==array())
-		{
-			if(isset($this->scriptFiles[$this->coreScriptPosition]))
-			{
-				foreach($this->scriptFiles[$this->coreScriptPosition] as $url => $value)
-					$jsFiles[$url]=$value;
-			}
-			$this->scriptFiles[$this->coreScriptPosition]=$jsFiles;
-		}
-		if($jsFilesPositioned!==array())
-		{
-            foreach($jsFilesPositioned as $position=>$fileArray){
-    			if(isset($this->scriptFiles[$position]))
-                    foreach($this->scriptFiles[$position] as $url => $value)
-					    $fileArray[$url]=$value;
-			    $this->scriptFiles[$position]=$fileArray;
             }
-		}
-	}
+            if(!empty($package['css']))
+            {
+                foreach($package['css'] as $css)
+                    $cssFiles[$baseUrl.'/'.$css]='';
+            }
+        }
+        // merge in place
+        if($cssFiles!==array())
+        {
+            foreach($this->cssFiles as $cssFile=>$media)
+                $cssFiles[$cssFile]=$media;
+            $this->cssFiles=$cssFiles;
+        }
+        if($jsFiles!==array())
+        {
+            if(isset($this->scriptFiles[$this->coreScriptPosition]))
+            {
+                foreach($this->scriptFiles[$this->coreScriptPosition] as $url => $value)
+                    $jsFiles[$url]=$value;
+            }
+            $this->scriptFiles[$this->coreScriptPosition]=$jsFiles;
+        }
+        if($jsFilesPositioned!==array())
+        {
+            foreach($jsFilesPositioned as $position=>$fileArray){
+                if(isset($this->scriptFiles[$position]))
+                    foreach($this->scriptFiles[$position] as $url => $value)
+                        $fileArray[$url]=$value;
+                $this->scriptFiles[$position]=$fileArray;
+            }
+        }
+    }
+
+    /**
+     * Inserts the scripts in the head section.
+     * @param string $output the output to be inserted with scripts.
+     */
+    public function renderHead(&$output)
+    {
+        $html='';
+        foreach($this->metaTags as $meta)
+            $html.=CHtml::metaTag($meta['content'],null,null,$meta)."\n";
+        foreach($this->linkTags as $link)
+            $html.=CHtml::linkTag(null,null,null,null,$link)."\n";
+        foreach($this->cssFiles as $url=>$media)
+            $html.=CHtml::cssFile($url,$media)."\n";
+        foreach($this->css as $css)
+            $html.=CHtml::css($css[0],$css[1])."\n";
+        if($this->enableJavaScript)
+        {
+            if(isset($this->scriptFiles[self::POS_HEAD]))
+            {
+                foreach($this->scriptFiles[self::POS_HEAD] as $scriptFileValueUrl=>$scriptFileValue)
+                {
+                    if(is_array($scriptFileValue))
+                    {
+                        $scriptFileValue['class'] = isset($scriptFileValue['class']) ? $scriptFileValue['class']." headScriptTag" : "headScriptTag";
+                        $html.=CHtml::scriptFile($scriptFileValueUrl,$scriptFileValue)."\n";
+                    }
+                    else
+                    {
+                        $html.=CHtml::scriptFile($scriptFileValueUrl, array('class' => 'headScriptTag'))."\n";
+                    }
+                }
+            }
+
+            if(isset($this->scripts[self::POS_HEAD]))
+                $html.=$this->renderScriptBatch($this->scripts[self::POS_HEAD]);
+        }
+
+        if($html!=='')
+        {
+            $count=0;
+            $output=preg_replace('/(<title\b[^>]*>|<\\/head\s*>)/is','<###head###>$1',$output,1,$count);
+            if($count)
+                $output=str_replace('<###head###>',$html,$output);
+            else
+                $output=$html.$output;
+        }
+    }
+
+    /**
+     * Inserts the scripts at the beginning of the body section.
+     * This is overwriting the core method and is exactly the same except the marked parts
+     * @param string $output the output to be inserted with scripts.
+     */
+    public function renderBodyBegin(&$output)
+    {
+        $html='';
+        if(isset($this->scriptFiles[self::POS_BEGIN]))
+        {
+            foreach($this->scriptFiles[self::POS_BEGIN] as $scriptFileUrl=>$scriptFileValue)
+            {
+                if(is_array($scriptFileValue))
+                    $html.=CHtml::scriptFile($scriptFileUrl,$scriptFileValue)."\n";
+                else
+                    $html.=CHtml::scriptFile($scriptFileUrl)."\n";
+            }
+        }
+        if(isset($this->scripts[self::POS_BEGIN]))
+        {
+            $html.=$this->renderScriptBatch($this->scripts[self::POS_BEGIN]);
+        }
+
+        if($html!=='')
+        {
+            $count=0;
+            if(preg_match('/<###begin###>/', $output)){
+                $count=1;
+            } else {
+                $output=preg_replace('/(<body\b[^>]*>)/is','$1<###begin###>',$output,1,$count);
+            }
+            if($count)
+            {
+                $output=str_replace('<###begin###>',$html, $output);
+            }
+            else
+            {
+                $output=$html.$output;
+            }
+        }
+        else
+        {
+            $output = preg_replace('/<###begin###>/','',$output,1);
+        }
+    }
+
+    /**
+     * Inserts the scripts at the end of the body section.
+     * This is overwriting the core method and is exactly the same except the marked parts
+     * @param string $output the output to be inserted with scripts.
+     */
+    public function renderBodyEnd(&$output)
+    {
+        if(!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END])
+            && !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]))
+        {
+            str_replace('<###end###>','',$output);
+            return;
+        }
+
+        $fullPage=0;
+        if(preg_match('/<###end###>/', $output))
+            $fullPage=1;
+        else
+            $output=preg_replace('/(<\\/body\s*>)/is','<###end###>$1',$output,1,$fullPage);
+
+        $html='';
+        if(isset($this->scriptFiles[self::POS_END]))
+        {
+            foreach($this->scriptFiles[self::POS_END] as $scriptFileUrl=>$scriptFileValue)
+            {
+                if(is_array($scriptFileValue))
+                    $html.=CHtml::scriptFile($scriptFileUrl,$scriptFileValue)."\n";
+                else
+                    $html.=CHtml::scriptFile($scriptFileUrl)."\n";
+            }
+        }
+        $scripts=isset($this->scripts[self::POS_END]) ? $this->scripts[self::POS_END] : array();
+
+        if(isset($this->scripts[self::POS_READY]))
+        {
+            if($fullPage)
+                $scripts[]="jQuery(function($) {\n".implode("\n",$this->scripts[self::POS_READY])."\n});";
+            else
+                $scripts[]=implode("\n",$this->scripts[self::POS_READY]);
+        }
+        if(isset($this->scripts[self::POS_LOAD]))
+        {
+            if($fullPage) //This part is different to reflect the changes needed in the backend by the pjax loading of pages
+                $scripts[]="jQuery(document).on('load pjax:complete',function() {\n".implode("\n",$this->scripts[self::POS_LOAD])."\n});";
+            else
+                $scripts[]=implode("\n",$this->scripts[self::POS_LOAD]);
+        }
+
+        //All scripts are wrapped into a section to be able to reload them accordingly
+        if(!empty($scripts))
+        {
+            $html.=$this->renderScriptBatch($scripts);
+        }
+
+
+        if($fullPage)
+        {
+            $output=str_replace('<###end###>',$html,$output);
+        }
+        else
+        {
+            $output=$output.$html;
+        }
+    }
+
+    /**
+     * Renders the registered scripts.
+     * This method is called in {@link CController::render} when it finishes
+     * rendering content. CClientScript thus gets a chance to insert script tags
+     * at <code>head</code> and <code>body</code> sections in the HTML output.
+     * @param string $output the existing output that needs to be inserted with script tags
+     */
+    public function render(&$output)
+    {
+        if(!$this->hasScripts)
+            return;
+
+        $this->renderCoreScripts();
+
+        if(!empty($this->scriptMap))
+            $this->remapScripts();
+
+        $this->unifyScripts();
+
+        $this->renderHead($output);
+        if($this->enableJavaScript)
+        {
+            $this->renderBodyBegin($output);
+            $this->renderBodyEnd($output);
+        }
+    }
 }

@@ -43,7 +43,7 @@
         case 'update_disable':
             $sTile = gT('Error!');
             $sHeader = gT('Not updatable!');
-            $sMessage = gT('comfortUpdate is disabled in your LimeSurvey configuration. Please contact your administrator for more informations.');
+            $sMessage = gT('ComfortUpdate is disabled in your LimeSurvey configuration. Please contact your administrator for more information.');
             break;
 
         case 'no_build':

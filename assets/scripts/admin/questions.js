@@ -9,9 +9,11 @@
 * other free or open source software licenses.
 * See COPYRIGHT.php for copyright notices and details.
 */
+var LS = LS || {
+    onDocumentReady: {}
+};
 
-// Collapse in editarticle
-$(document).ready(function(){
+$(document).on('ready  pjax:complete', function(){
     $('#questionTypeContainer').css("overflow","visible");
     $('#collapseOne').on('shown.bs.collapse', function () {
         $('#questionTypeContainer').css("overflow","visible");
@@ -121,28 +123,36 @@ function updatequestionattributes()
     $('.panel-advancedquestionsettings').remove();
     var selected_value = qDescToCode[''+$("#question_type_child .selected").text()];
     if (selected_value==undefined) selected_value = $("#question_type").val();
-    $.post(attr_url,{
-            'qid':$('#qid').val(),
-            'question_type':selected_value,
-            'sid':$('#sid').val()
-        }, function(data) {
-        $('.loader-advancedquestionsettings').before(data);
-        $('.loader-advancedquestionsettings').addClass("hidden");
-        $('label[title]').qtip({
-            style: {name: 'cream',
-                tip: true,
-                color:'#111111',
-                border: {
-                    width: 1,
-                    radius: 5,
-                    color: '#EADF95'}
-            },
-            position: {adjust: {
-                    screen: true, scroll:true},
-                corner: {
-                    target: 'bottomRight'}
-            },
-            show: {effect: {length:50}}
-        });
+
+    var postData = {
+        'qid':$('#qid').val(),
+        'question_type':selected_value,
+        'sid':$('input[name=sid]').val()
+    };
+
+    $.ajax({
+        url: attr_url,
+        data : postData, 
+        method: 'POST',
+        success: function(data) {
+            $('.loader-advancedquestionsettings').before(data);
+            $('.loader-advancedquestionsettings').addClass("hidden");
+            $('label[title]').qtip({
+                style: {name: 'cream',
+                    tip: true,
+                    color:'#111111',
+                    border: {
+                        width: 1,
+                        radius: 5,
+                        color: '#EADF95'}
+                },
+                position: {adjust: {
+                        screen: true, scroll:true},
+                    corner: {
+                        target: 'bottomRight'}
+                },
+                show: {effect: {length:50}}
+            });
+        }
     });
 }

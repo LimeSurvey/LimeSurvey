@@ -23,13 +23,16 @@ class CPDBException extends Exception {}
  * This is the model class for table "{{participants}}".
  *
  * The followings are the available columns in table '{{participants}}':
- * @property string $participant_id
+ * @property string $participant_id Primary Key
  * @property string $firstname
  * @property string $lastname
  * @property string $email
  * @property string $language
- * @property string $blacklisted
+ * @property integer $blacklisted
  * @property integer $owner_uid
+ * @property integer $created_by
+ * @property string $created Date-time of creation
+ * @property string $modified Date-time of modification
  *
  * @property User $owner
  * @property SurveyLink[] $surveylinks
@@ -56,7 +59,9 @@ class Participant extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -111,7 +116,7 @@ class Participant extends LSActiveRecord
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
-            . "<span class='fa fa-%s' ></span>" //icon class
+            . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
         if ($this->userHasPermissionToEdit()) {
@@ -251,6 +256,7 @@ class Participant extends LSActiveRecord
 
     /**
      * Get options for a drop-down attribute
+     * @param string $attribute_id
      * @return array
      */
     public function getOptionsForAttribute($attribute_id) {
@@ -284,7 +290,7 @@ class Participant extends LSActiveRecord
     /**
      * @param string $attributeTextId E.g. ea_145
      * @param mixed $attribute_id
-     * @return
+     * @return string
      */
     public function getParticipantAttribute($attributeTextId, $attribute_id=false)
     {
@@ -497,9 +503,11 @@ class Participant extends LSActiveRecord
         $sqlCountActiveSurveys = "(SELECT COUNT(*) FROM ".$DBCountActiveSurveys." cas WHERE cas.participant_id = t.participant_id )";
 
         $criteria->select = array(
-            '*',
+            't.*',
+            'shares.share_uid',
+            'shares.date_added',
+            'shares.can_edit',
             $sqlCountActiveSurveys . ' AS countActiveSurveys',
-            't.participant_id',
             't.participant_id AS id',   // This is need to avoid confusion between t.participant_id and shares.participant_id
         );
         if($this->extraCondition) {
@@ -658,6 +666,7 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * @param integer $userid
      * @return int
      */
     public function getParticipantsOwnerCount($userid)
@@ -711,6 +720,7 @@ class Participant extends LSActiveRecord
      * @param order
      * @param search
      * @param userid
+     * @param string $order
      * @return array
      */
     public function getParticipants($page, $limit,$attid, $order = null, $search = null, $userid = null)
@@ -737,8 +747,13 @@ class Participant extends LSActiveRecord
     }
 
     /**
+     * @param bool $count
+     * @param array $attid
+     * @param CDbCriteria $search
+     * @param integer $userid
      * @param integer $page
      * @param integer $limit
+     * @param null $order
      * @return CDbCommand
      */
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
@@ -793,7 +808,6 @@ class Participant extends LSActiveRecord
         $data->setJoin($joinValue);
 
         if (!empty($search)) {
-            /* @var $search CDbCriteria */
              $aSearch = $search->toArray();
              $aConditions[] = $aSearch['condition'];
              $aParams = $aSearch['params'];
@@ -850,8 +864,9 @@ class Participant extends LSActiveRecord
      * references in the survey_links table (but not in matching tokens tables)
      * and then all the participants attributes.
      * @param string $rows Participants ID separated by comma
+     * @param bool $bFilter
      * @return int number of deleted participants
-     **/
+     */
     public function deleteParticipants($rows, $bFilter=true)
     {
         // Converting the comma separated IDs to an array and assign chunks of 100 entries to have a reasonable query size
@@ -1866,6 +1881,7 @@ class Participant extends LSActiveRecord
         $attid = array(); //Will store the CPDB attribute_id of new or existing attributes keyed by CPDB at
 
         /* Grab all the existing attribute field names from the tokens table */
+        // FIXME is this needed? this is currently not used here!
         $arr = Yii::app()->db->createCommand()->select('*')->from("{{tokens_$surveyid}}")->queryRow();
         if (is_array($arr)) {
             $tokenfieldnames = array_keys($arr);
@@ -1949,8 +1965,8 @@ class Participant extends LSActiveRecord
 
                     /* Now add any new attribute values */
                     if (!empty($aAttributesToBeCreated)) {
-                        foreach ($aAttributesToBeCreated as $key => $value) {
-                            Participant::model()->updateAttributeValueToken($surveyid, $pid, $attid[$key], $key);
+                        foreach ($aAttributesToBeCreated as $key2 => $value) {
+                            Participant::model()->updateAttributeValueToken($surveyid, $pid, $attid[$key2], $key2);
                         }
                     }
                     /* Now add mapped attribute values */
@@ -2002,9 +2018,9 @@ class Participant extends LSActiveRecord
 
     /**
      * The purpose of this function is to check for duplicate in participants
-     * @param array $fields
+     * @param string $fields
      * @param string $output
-     * @return mixed
+     * @return string
      */
     public function checkforDuplicate($fields, $output="bool")
     {

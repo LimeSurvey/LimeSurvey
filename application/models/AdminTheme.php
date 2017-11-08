@@ -138,11 +138,20 @@ class AdminTheme extends CFormModel
         if (!Yii::app()->request->getQuery('isAjax', false)) {
             Yii::app()->getClientScript()->registerMetaTag('width=device-width, initial-scale=1.0', 'viewport'); // See: https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l108-l115
             App()->bootstrap->registerTooltipAndPopover();                                                               // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
-
+            App()->getClientScript()->registerScript('coreuser', '
+           LS.globalUserId = "'.Yii::app()->user->id.'";', CClientScript::POS_HEAD);
+            App()->getClientScript()->registerPackage('jquery');      // jqueryui
             App()->getClientScript()->registerPackage('jqueryui');      // jqueryui
             App()->getClientScript()->registerPackage('js-cookie');     // js-cookie
-            App()->getClientScript()->registerPackage('fontawesome');   // fontawesome      ??? TODO: check if neede
-            App()->getClientScript()->registerPackage('adminpanel');    // Combined scripts and style for the new admin panel
+            App()->getClientScript()->registerPackage('fontawesome');   // fontawesome
+            App()->getClientScript()->registerPackage('bootstrap-switch');
+            App()->getClientScript()->registerPackage('bootstrap-select2');
+            App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
+            App()->getClientScript()->registerPackage('adminbasics');    // Combined scripts and style 
+            App()->getClientScript()->registerPackage('adminpanel');    // The new admin panel
+            App()->getClientScript()->registerPackage('lstutorial');    // Tutorial scripts
+            App()->getClientScript()->registerPackage('ckeditor');           //
+            App()->getClientScript()->registerPackage('ckeditoradditions');   // CKEDITOR in a global sope
         }
 
         $aCssFiles = array();
@@ -268,7 +277,7 @@ class AdminTheme extends CFormModel
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public static function getOtherAssets()
     {
@@ -350,8 +359,10 @@ class AdminTheme extends CFormModel
         // Define images url
         if (!YII_DEBUG || self::$use_asset_manager ||  Yii::app()->getConfig('use_asset_manager')) {
             define('LOGO_URL', App()->getAssetManager()->publish( $this->path . '/images/logo.png'));
+            define('LOGO_ICON_URL', App()->getAssetManager()->publish( $this->path . '/images/logo_icon.png'));
         } else {
             define('LOGO_URL', $this->sTemplateUrl.'/images/logo.png');
+            define('LOGO_ICON_URL', $this->sTemplateUrl.'/images/logo_icon.png');
         }
 
         // Define presentation text on welcome page

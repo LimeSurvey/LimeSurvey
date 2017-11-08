@@ -2463,7 +2463,9 @@ class quexmlpdf extends pdf {
           case 'number':
             $bgtype = 4;
           case 'currency':
+          case 'longtext':
           case 'text':
+            if ($type == 'longtext') { $bgtype = 6; }
             if (isset($response['rotate']))
               $this->drawMatrixTextHorizontal($subquestions,$response['width'],$text,$bgtype,$response['text']);
             else
@@ -2624,7 +2626,11 @@ class quexmlpdf extends pdf {
       if (isset($s['defaultvalue']))
         $defaultvalue = $s['defaultvalue'];
 
-      $this->drawText($s['text'],$width,$defaultvalue);
+	  if ($bgtype != 6) {
+	      $this->drawText($s['text'],$width,$defaultvalue);
+	  } else {
+        $this->drawLongText($width,$defaultvalue,$s['text']);
+    }
 
       $currentY = $this->GetY();
 
@@ -2826,7 +2832,7 @@ class quexmlpdf extends pdf {
     $border = array('LTRB' => array('width' => $this->textResponseBorder, 'dash' => 0));
     //Align to skip column on right
     $this->SetX((($this->getColumnWidth() + $this->getColumnX()) - $this->skipColumnWidth - $rwidth),false);
-    //Add to pay layout
+    //Add to page layout
     $this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $rwidth, $this->GetY() + $height);
     $this->SetDrawColor($this->lineColour[0]);
 
@@ -2834,8 +2840,9 @@ class quexmlpdf extends pdf {
     if ($defaultvalue !== false)
       $text = $defaultvalue;
 
-    $this->Cell($rwidth,$height,$text,$border,0,'',true,'',0,false,'T','T');
-    $currentY = $currentY + $height;
+    $this->MultiCell($rwidth,$height,$text,$border,'L',true,1,$this->GetX(),$currentY,true,0,false,true,$height,'T',true);
+    
+	$currentY = $currentY + $height;
     $this->SetY($currentY,false);
   }
 
@@ -3108,12 +3115,21 @@ class quexmlpdf extends pdf {
       else
         $this->addBoxGroup($bgtype,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text']);
 
-      $string = false;
-      if (isset($s['defaultvalue']))
-        $string = substr($defaultvalue,0,$width);
-
-      //Draw the cells
-      $this->drawCells($width,$string);
+	  if ($bgtype != 6) {
+	      $string = false;
+	      if (isset($s['defaultvalue']))
+	        $string = substr($s['defaultvalue'],0,$width);
+	
+	      //Draw the cells
+	      $this->drawCells($width,$string);
+	  } else {
+		  $this->setBackground('empty');
+          $border = array('LTRB' => array('width' => $this->textResponseBorder, 'dash' => 0));
+          //Add to page layout
+          $this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $rwidth, $this->GetY() + $height);
+          $this->SetDrawColor($this->lineColour[0]);
+          $this->MultiCell($rwidth,$this->singleResponseAreaHeight,$s['defaultvalue'],$border,'L',true,1,$this->GetX(),$currentY,true,0,false,true,$height,'T',true);
+      }
 
       //Move X for a gap
       $this->SetX($this->GetX() + $this->textResponseLineSpacing,false);
@@ -3602,10 +3618,10 @@ class quexmlpdf extends pdf {
     if (isset($other['defaultvalue']) && $other['defaultvalue'] !== false)
       $defaultvalue = $other['defaultvalue'];
 
-    if ($btid == 3)
+    if ($btid != 6)
       $this->drawText($other['text'],$other['width'],$defaultvalue);
     else
-      $this->drawLongText($other['width'],$defaultValue,$other['text']);
+      $this->drawLongText($other['width'],$defaultvalue,$other['text']);
 
     //Insert a gap here
     $this->Rect($this->getColumnX(),$this->GetY(),$this->getColumnWidth(),$this->subQuestionLineSpacing,'F',array(),$this->backgroundColourQuestion);

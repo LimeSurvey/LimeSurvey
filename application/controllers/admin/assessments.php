@@ -116,8 +116,9 @@ class Assessments extends Survey_Common_Action
 
         Yii::app()->loadHelper('admin/htmleditor');
 
+        // FIXME this must be in VIEWS!
         $urls['output'] = '<div class="side-body ' . getSideBodyClass(false) . '">';
-        //$urls['output'] .= App()->getController()->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>gT("Assessments")), true, false);
+        $urls['output'] .=viewHelper::getViewTestTag('surveyAssessments');
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
         $aData['asessementNotActivated'] = false;
         if ($oSurvey->assessments!='Y')
@@ -128,7 +129,7 @@ class Assessments extends Survey_Common_Action
                     . gt("If you want to activate it click here:").'<br/>'
                     . '<a type="submit" class="btn btn-primary" href="'
                     . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate','surveyid'=> $iSurveyID])
-                    .'">'.gT('Activate asessements').'</a>', 
+                    .'">'.gT('Activate assessements').'</a>', 
                 'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
         $urls['assessments_view'][]= $aData;

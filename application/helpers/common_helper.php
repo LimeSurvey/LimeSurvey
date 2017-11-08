@@ -41,7 +41,7 @@ function eT($sToTranslate, $sEscapeMode = 'html', $sLanguage = NULL)
  * @param string $sTextToTranslate
  * @param integer $iCount
  * @param string $sEscapeMode
- * @return mixed|string
+ * @return string
  */
 function ngT($sTextToTranslate, $iCount, $sEscapeMode = 'html')
 {
@@ -184,9 +184,7 @@ function getSurveyList($returnarray=false, $surveyid=false)
     if(is_null($cached)) {
         $surveyidresult = Survey::model()
             ->permission(Yii::app()->user->getId())
-            ->with('defaultlanguage')
-            ->findAll(array('order'=>'surveyls_title'));
-
+            ->findAll();
         $surveynames = array();
         foreach ($surveyidresult as $result)
         {
@@ -203,7 +201,10 @@ function getSurveyList($returnarray=false, $surveyid=false)
                     'error');
             }
         }
-
+        
+        usort($surveynames, function($a, $b){
+                return strcmp($a['surveyls_title'], $b['surveyls_title']);
+        });
         $cached = $surveynames;
     } else {
         $surveynames = $cached;
@@ -385,8 +386,8 @@ function convertGETtoPOST($url)
     }
     //    $Paramlist = "[" . implode(",",$arrayParam) . "]";
     //    $Valuelist = "[" . implode(",",$arrayVal) . "]";
-    $Paramlist = "new Array(" . implode(",",$arrayParam) . ")";
-    $Valuelist = "new Array(" . implode(",",$arrayVal) . ")";
+    $Paramlist = "[" . implode(",",$arrayParam) . "]";
+    $Valuelist = "[" . implode(",",$arrayVal) . "]";
     $callscript = "sendPost('$calledscript','',$Paramlist,$Valuelist);";
     return $callscript;
 }
@@ -1105,6 +1106,11 @@ function groupOrderThenQuestionOrder($a, $b)
 
 
 //FIXME insert UestionGroup model to here
+/**
+ * @param integer $sid
+ * @param integer $gid
+ * @param integer $shiftvalue
+ */
 function shiftOrderQuestions($sid,$gid,$shiftvalue) //Function shifts the sortorder for questions
 {
     $sid=sanitize_int($sid);
@@ -1124,6 +1130,8 @@ function fixSortOrderGroups($surveyid) //Function rewrites the sortorder for gro
 
 /**
  * @param integer $iSurveyID
+ * @param integer $qid
+ * @param integer $newgid
  */
 function fixMovedQuestionConditions($qid,$oldgid,$newgid, $iSurveyID=NULL) //Function rewrites the cfieldname for a question after group change
 {
@@ -1785,7 +1793,9 @@ function createFieldMap($survey, $style='short', $force_refresh=false, $question
         if ($qtypes[$arow['type']]['subquestions']==0  && $arow['type'] != "R" && $arow['type'] != "|")
         {
             if (isset($fieldmap[$fieldname])) $aDuplicateQIDs[$arow['qid']]=array('fieldname'=>$fieldname,'question'=>$arow['question'],'gid'=>$arow['gid']);
+
             $fieldmap[$fieldname]=array("fieldname"=>$fieldname, 'type'=>"{$arow['type']}", 'sid'=>$surveyid, "gid"=>$arow['gid'], "qid"=>$arow['qid'], "aid"=>"");
+            
             if ($style == "full")
             {
                 $fieldmap[$fieldname]['title']=$arow['title'];
@@ -2876,7 +2886,7 @@ function incompleteAnsFilterState()
 * isCaptchaEnabled($screen, $usecaptchamode)
 * @param string $screen - the screen name for which to test captcha activation
 *
-* @return boolean - returns true if captcha must be enabled
+* @return boolean|null - returns true if captcha must be enabled
 **/
 function isCaptchaEnabled($screen, $captchamode='')
 {
@@ -3094,7 +3104,7 @@ function reverseTranslateFieldNames($iOldSID,$iNewSID,$aGIDReplacements,$aQIDRep
 /**
  * put your comment there...
  *
- * @param mixed $id
+ * @param integer $id
  * @param string $type
  * @return bool
  */
@@ -3191,6 +3201,9 @@ function safeDie($text)
     die(implode( '<br />',$textarray));
 }
 
+/**
+ * @param string $str
+ */
 function fixCKeditorText($str)
 {
     $str = str_replace('<br type="_moz" />','',$str);
@@ -4278,7 +4291,7 @@ function switchMSSQLIdentityInsert($table,$state)
  * Retrieves the last Insert ID realiable for cross-DB applications
  *
  * @param string $sTableName Needed for Postgres and MSSQL
- * @return mixed|string
+ * @return string
  */
 function getLastInsertID($sTableName)
 {
@@ -5131,7 +5144,7 @@ function aEncodingsArray()
 *
 * @param    string  $sString        string to ellipsize
 * @param    integer $iMaxLength       max length of string
-* @param    mixed   $fPosition       int (1|0) or float, .5, .2, etc for position to split
+* @param    integer   $fPosition       int (1|0) or float, .5, .2, etc for position to split
 * @param    string  $sEllipsis      ellipsis ; Default '...'
 * @return    string        ellipsized string
 */
@@ -5233,6 +5246,48 @@ function array_diff_assoc_recursive($array1, $array2) {
     return $difference;
 }
 
+/**
+ * Calculate folder size
+ * NB: If this function is changed, please notify LimeSurvey GmbH.
+ *     An exact copy of this function is used to calculate storage
+ *     limit on LimeSurvey Pro hosting.
+ * @param string $dir Folder
+ * @return integer Size in bytes.
+ */
+function folderSize($dir)
+{
+    $size = 0;
+    foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+        if (is_file($each)) {
+            // NB: stat() can be used to calculate disk usage (instead
+            // of file size - it's not the same thing).
+            //$stat = stat($each);
+            //$tmpsize = $stat[11] * $stat[12] / 8;
+            //$size += $tmpsize;
+            $size += filesize($each);
+        } else {
+            $size += folderSize($each);
+        }
+    }
+    return $size;
+}
+
+/**
+ * Format size in human readable format.
+ * @param int $bytes
+ * @param int $decimals
+ * @return string
+ */
+function humanFilesize($bytes, $decimals = 2)
+{
+    $sz = 'BKMGTP';
+    //$factor = floor((strlen($bytes) - 1) / 3);
+    $factor = 2;
+    $string = sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+    $aLangData = getLanguageData();
+    $radix = getRadixPointData($aLangData[Yii::app()->session['adminlang']]['radixpoint']);
+    return str_replace('.', $radix['separator'], $string);
+}
 
 /**
  * @param string $sSize
@@ -5294,7 +5349,7 @@ function decodeTokenAttributes($oTokenAttributeData){
 
 /**
  * @param string $sSerial
- * @return mixed|null|string
+ * @return string|null
  */
 function getSerialClass($sSerial) {
     $aTypes = array('s' => 'string', 'a' => 'array', 'b' => 'bool', 'i' => 'int', 'd' => 'float', 'N;' => 'NULL');

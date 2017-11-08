@@ -10,12 +10,11 @@ class remotecontrol_handle
     protected $controller;
 
     /**
-    * Constructor, stores the action instance into this handle class
-    *
-    * @access public
-    * @param AdminController $controller
-    * @return void
-    */
+     * Constructor, stores the action instance into this handle class
+     *
+     * @access public
+     * @param AdminController $controller
+     */
     public function __construct(AdminController $controller)
     {
         $this->controller = $controller;
@@ -40,19 +39,16 @@ class remotecontrol_handle
     */
     public function get_session_key($username, $password)
     {
+        $username= (string)$username;
+        $password= (string)$password;
         if ($this->_doLogin($username, $password))
         {
             $this->_jumpStartSession($username);
             $sSessionKey = randomChars(32);
             $sDatabasetype = Yii::app()->db->getDriverName();
-
             $session = new Session;
             $session->id = $sSessionKey;
             $session->expire = time() + Yii::app()->getConfig('iSessionExpirationTime');
-            if($sDatabasetype=='pgsql')
-                $username=new CDbExpression(Yii::app()->db->quoteValueExtended($username, PDO::PARAM_LOB)."::bytea");
-            if($sDatabasetype=='sqlsrv' || $sDatabasetype=='mssql' || $sDatabasetype=='dblib')
-                $username=new CDbExpression('CONVERT(VARBINARY(MAX), '.Yii::app()->db->quoteValue($username).')');
             $session->data = $username;
             $session->save();
             return $sSessionKey;
@@ -72,6 +68,7 @@ class remotecontrol_handle
     */
     public function release_session_key($sSessionKey)
     {
+        $sSessionKey=(string)$sSessionKey;
         Session::model()->deleteAllByAttributes(array('id' => $sSessionKey));
         $criteria = new CDbCriteria;
         $criteria->condition = 'expire < ' . time();
@@ -93,6 +90,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey)) {
             if(Permission::model()->hasGlobalPermission('superadmin','read')) {
+                $sSetttingName=(string)$sSetttingName;
                 if (Yii::app()->getConfig($sSetttingName) !== false) {
                     return Yii::app()->getConfig($sSetttingName);
                 } else {
@@ -126,6 +124,9 @@ class remotecontrol_handle
     */
     public function add_survey($sSessionKey, $iSurveyID, $sSurveyTitle, $sSurveyLanguage, $sformat = 'G')
     {
+        $iSurveyID=(int)$iSurveyID;
+        $sSurveyTitle=(string)$sSurveyTitle;
+        $sSurveyLanguage=(string)$sSurveyLanguage;
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -146,9 +147,11 @@ class remotecontrol_handle
 
                 try
                 {
-                    $iNewSurveyid = Survey::model()->insertNewSurvey($aInsertData);
-                    if (!$iNewSurveyid)
-                        return array('status' => 'Creation Failed');
+                    $newSurvey = Survey::model()->insertNewSurvey($aInsertData);
+                    if (!$newSurvey->sid) {
+                        return array('status' => 'Creation Failed'); // status are a string, another way to send errors ?
+                    }
+                    $iNewSurveyid = $newSurvey->sid;
 
                     $sTitle = html_entity_decode($sSurveyTitle, ENT_QUOTES, "UTF-8");
 
@@ -188,6 +191,7 @@ class remotecontrol_handle
     */
     public function delete_survey($sSessionKey, $iSurveyID)
     {
+        $iSurveyID=(int)$iSurveyID;
         if ($this->_checkSessionKey($sSessionKey))
         {
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete'))
@@ -219,6 +223,12 @@ class remotecontrol_handle
     */
     public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName=NULL, $DestSurveyID=NULL)
     {
+        $sImportData=(string)$sImportData;
+        $sNewSurveyName=(string)$sNewSurveyName;
+        if (!is_null($DestSurveyID)) 
+        {
+            $DestSurveyID=(int)$DestSurveyID;
+        }
         if ($this->_checkSessionKey($sSessionKey))
         {
             if (Permission::model()->hasGlobalPermission('surveys','create'))
@@ -244,6 +254,73 @@ class remotecontrol_handle
     }
 
     /**
+     * RPC Routine to copy a survey.
+     *
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param int $iSurveyID_org Id of the source survey
+     * @param string $sNewname name of the new survey
+     * @return On success: new $iSurveyID in array['newsid']. On failure array with error information
+     * */
+    public function copy_survey($sSessionKey, $iSurveyID_org, $sNewname )
+    {
+        $iSurveyID = (int) $iSurveyID_org;
+        if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        $aData['bFailed'] = false; // Put a var for continue
+        if (!$iSurveyID)
+        {
+            $aData['sErrorMessage'] = "No survey ID has been provided. Cannot copy survey";
+            $aData['bFailed'] = true;
+        }
+        elseif(!Survey::model()->findByPk($iSurveyID))
+        {
+            $aData['sErrorMessage'] = "Invalid survey ID";
+            $aData['bFailed'] = true;
+        }
+        elseif (!Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export') && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'export'))
+        {
+            $aData['sErrorMessage'] = "You don't have sufficient permissions.";
+            $aData['bFailed'] = true;
+        }
+        else
+        {
+            $aExcludes = array();
+            $sNewSurveyName = $sNewname;
+            $aExcludes['dates'] = true;
+            $btranslinksfields=true;
+            Yii::app()->loadHelper('export');
+            $copysurveydata = surveyGetXMLData($iSurveyID, $aExcludes);
+            if($copysurveydata)
+            {
+                Yii::app()->loadHelper('admin/import');
+                $aImportResults = XMLImportSurvey('', $copysurveydata, $sNewSurveyName,NULL,$btranslinksfields);
+                if (isset($aExcludes['conditions']))
+                {
+                    Question::model()->updateAll(array('relevance'=>'1'),'sid='.$aImportResults['newsid']);
+                    QuestionGroup::model()->updateAll(array('grelevance'=>'1'),'sid='.$aImportResults['newsid']);
+                }
+                if (!isset($aExcludes['permissions']))
+                {
+                    Permission::model()->copySurveyPermissions($iSurveyID,$aImportResults['newsid']);
+                }
+            }
+            else
+            {
+                $aData['bFailed']=true;
+            }
+        }
+        if($aData['bFailed'])
+        {
+            return array('status' => 'Copy failed','error'=> $aData['sErrorMessage']);
+        }
+        else
+        {
+            return array('status' => 'OK','newsid'=>$aImportResults['newsid']);
+        }
+    }
+  
+    /**
+    * RPC Routine to get survey properties.
     * Get properties of a survey 
     *
     * All internal properties of a survey are available.
@@ -262,6 +339,7 @@ class remotecontrol_handle
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
             {
@@ -299,7 +377,6 @@ class remotecontrol_handle
     * Properties available are restricted
     * * Always
     *     * sid
-    *     * owner_id
     *     * active
     *     * language
     *     * additional_languages
@@ -324,6 +401,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
             $oSurvey=Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))
             {
@@ -333,7 +411,7 @@ class remotecontrol_handle
             {
                 // Remove fields that may not be modified
                 unset($aSurveyData['sid']);
-                unset($aSurveyData['owner_id']);
+                //unset($aSurveyData['owner_id']);
                 unset($aSurveyData['active']);
                 unset($aSurveyData['language']);
                 unset($aSurveyData['additional_languages']);
@@ -399,6 +477,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
             $oSurvey=Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey)) {
                 return array('status' => 'Error: Invalid survey ID');
@@ -432,14 +511,14 @@ class remotecontrol_handle
     * @param string $sLanguage (optional) language of the survey to use (default from Survey)
     * @param string $graph (optional) Create graph option (default : no)
     * @param int|array $groupIDs (optional) array or integer containing the groups we choose to generate statistics from
-    * @return string in case of success : Base64 encoded string with the statistics file
+    * @return string|array in case of success : Base64 encoded string with the statistics file
     */
     public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0', $groupIDs=null)
     {
         Yii::app()->loadHelper('admin/statistics');
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-
+        $iSurveyID=(int)$iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey))
             return array('status' => 'Error: Invalid survey ID');;
@@ -527,9 +606,13 @@ class remotecontrol_handle
     * */
     public function export_timeline($sSessionKey, $iSurveyID, $sType, $dStart, $dEnd)
     {
+        $iSurveyID=(int)$iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        $iSurveyID=(int)$iSurveyID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (is_null($oSurvey)) return array('status' => 'Error: Invalid survey ID');
         if (!in_array($sType, array('day','hour'))) return array('status' => 'Invalid Period');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
         if (is_null($survey)) return array('status' => 'Error: Invalid survey ID');
@@ -587,6 +670,7 @@ class remotecontrol_handle
             );
             $aPermittedStats = array_merge($aPermittedSurveyStats, $aPermittedTokenStats, array('all'));
             // Check if survey exists
+            $iSurveyID=(int)$iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Invalid surveyid');
@@ -656,6 +740,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
             $oSurvey=Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))
             {
@@ -706,6 +791,7 @@ class remotecontrol_handle
             else
                 return array('status' => 'No permission');
         }
+        return null;
     }
 
     /**
@@ -721,6 +807,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
             $oSurvey=Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))
             {
@@ -761,6 +848,7 @@ class remotecontrol_handle
             else
                 return array('status' => 'No permission');
         }
+        return null;
     }
 
 
@@ -781,6 +869,7 @@ class remotecontrol_handle
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
             {
@@ -840,6 +929,7 @@ class remotecontrol_handle
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
             $oSurvey=Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))
             {
@@ -919,6 +1009,7 @@ class remotecontrol_handle
         {
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
+                $iSurveyID=(int)$iSurveyID;
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if (!isset($oSurvey))
                     return array('status' => 'Error: Invalid survey ID');
@@ -958,8 +1049,8 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID = sanitize_int($iSurveyID);
-            $iGroupID = sanitize_int($iGroupID);
+            $iSurveyID = (int)$iSurveyID;
+            $iGroupID = (int)$iGroupID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1010,6 +1101,8 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
+            $sImportData=(string)$sImportData;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1055,9 +1148,9 @@ class remotecontrol_handle
 
                     $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iNewgid));
                     if($sNewGroupName!='')
-                        $oGroup->setAttribute('group_name',$sNewGroupName);
+                        $oGroup->setAttribute('group_name',(string)$sNewGroupName);
                     if($sNewGroupDescription!='')
-                    $oGroup->setAttribute('description',$sNewGroupDescription);
+                    $oGroup->setAttribute('description',(string)$sNewGroupDescription);
                     try
                     {
                         $oGroup->save();
@@ -1078,15 +1171,17 @@ class remotecontrol_handle
     }
 
     /**
-    * Find response IDs given a survey ID and a token.
-    * @param string $sSessionKey
-    * @param int $iSurveyID
-    * @param string $sToken
-    */
+     * Find response IDs given a survey ID and a token.
+     * @param string $sSessionKey
+     * @param int $iSurveyID
+     * @param string $sToken
+     * @return array
+     */
     public function get_response_ids($sSessionKey, $iSurveyID, $sToken)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
             $responses = SurveyDynamic::model($iSurveyID)->findAllByAttributes(array('token' => $sToken));
             $result = array();
             foreach ($responses as $response)
@@ -1118,6 +1213,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iGroupID=(int)$iGroupID;
             $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup))
                 return array('status' => 'Error: Invalid group ID');
@@ -1167,6 +1263,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iGroupID=(int)$iGroupID;
             $oGroup=QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
             if (is_null($oGroup))
             {
@@ -1241,6 +1338,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iQuestionID=(int)$iQuestionID;
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion))
                 return array('status' => 'Error: Invalid question ID');
@@ -1312,6 +1410,8 @@ class remotecontrol_handle
         $bOldEntityLoaderState = null;
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID=(int)$iSurveyID;
+            $iGroupID=(int)$iGroupID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1419,6 +1519,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iQuestionID=(int)$iQuestionID;
             Yii::app()->loadHelper("surveytranslator");
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion))
@@ -1570,6 +1671,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey))
         {
             Yii::app()->loadHelper("surveytranslator");
+            $iQuestionID=(int)$iQuestionID;
             $oQuestion=Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion))
                 return array('status' => 'Error: Invalid group ID');
@@ -1668,6 +1770,7 @@ class remotecontrol_handle
     public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken=true)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
+        $iSurveyID=(int)$iSurveyID;
         $oSurvey=Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) {
             return array('status' => 'Error: Invalid survey ID');
@@ -1709,8 +1812,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID = sanitize_int($iSurveyID);
-
+            $iSurveyID = (int)$iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1723,6 +1825,7 @@ class remotecontrol_handle
                 $aResult=array();
                 foreach($aTokenIDs as $iTokenID)
                 {
+                    $iTokenID=(int)$iTokenID;
                     $token = Token::model($iSurveyID)->findByPk($iTokenID);
                     if (!isset($token))
                         $aResult[$iTokenID]='Invalid token ID';
@@ -1757,6 +1860,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID = (int)$iSurveyID;
             $surveyidExists = Survey::model()->findByPk($iSurveyID);
             if (!isset($surveyidExists))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1808,7 +1912,7 @@ class remotecontrol_handle
     * @access public
     * @param string $sSessionKey Auth credentials
     * @param int $iSurveyID Id of the Survey that participants belong
-    * @param array|int Array $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
+    * @param array|int $aTokenQueryProperties of participant properties used to query the participant, or the token id as an integer
     * @param array $aTokenData Data to change
     * @return array Result of the change action
     */
@@ -1816,6 +1920,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID = (int)$iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1876,6 +1981,7 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID = (int)$iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1925,6 +2031,9 @@ class remotecontrol_handle
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
+            $iSurveyID = (int)$iSurveyID;
+            $iStart = (int)$iStart;
+            $iLimit = (int)$iLimit;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -1997,6 +2106,7 @@ class remotecontrol_handle
         if ($this->_checkSessionKey($sSessionKey))
         {
             Yii::app()->loadHelper("surveytranslator");
+            $iSurveyID = (int)$iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -2011,6 +2121,7 @@ class remotecontrol_handle
 
                 if($iGroupID!=NULL)
                 {
+                    $iGroupID=(int)$iGroupID;
                     $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
                     $sGroupSurveyID = $oGroup['sid'];
 
@@ -2036,6 +2147,52 @@ class remotecontrol_handle
         }
         else
             return array('status' => 'Invalid session key');
+    }
+
+    /**
+     * Set Quota Attributes
+     * Retuns an array containing the boolean 'success' and 'message' with either errors or Quota attributes (on success)
+     * @access public
+     * @param string $sSessionKey Auth credentials
+     * @param integer $iQuotaId Quota ID
+     * @param array $aQuotaData Quota attributes as array eg ['active'=>1,'limit'=>100]
+     * @return array ['success'=>bool, 'message'=>string]
+     */
+    public function set_quota_properties($sSessionKey, $iQuotaId, $aQuotaData)
+    {
+        if ($this->_checkSessionKey($sSessionKey)) {
+            /** @var Quota $oQuota */
+            $iQuotaId=(int)$iQuotaId;
+            $oQuota = Quota::model()->findByPk($iQuotaId);
+            if (!$oQuota){
+                return [
+                    'success' => false,
+                    'message' => 'Error: Invalid quota ID'
+                ];
+            }
+            $oSurvey = $oQuota->survey;
+            if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'quotas', 'update')) {
+
+                // don't accept id & sid
+                if (isset($aQuotaData['id'])) { unset($aQuotaData['id']);};
+                if (isset($aQuotaData['sid'])) { unset($aQuotaData['sid']);};
+
+                // accept boolean input also
+                isset($aQuotaData['active']) ? $aQuotaData['active'] = (int) $aQuotaData['active']:null;
+                isset($aQuotaData['autoload_url']) ? $aQuotaData['autoload_url'] = (int) $aQuotaData['autoload_url']:null;
+
+                $oQuota->attributes = $aQuotaData;
+                if(!$oQuota->save()){
+                    return ['success' => false, 'message' => $oQuota->errors];
+                } else {
+                    return ['success' => true,'message'=>$oQuota->attributes];
+                }
+            } else {
+                return ['success' => false, 'message' =>'Denied!'];
+            }
+        } else {
+            return ['success' => false, 'message' =>'Invalid session key'];
+        }
     }
 
     /**
@@ -2067,7 +2224,7 @@ class remotecontrol_handle
             }
             elseif ($sUsername!=null)
             {
-                $aUserData = User::model()->findByAttributes(array('users_name' => $sUsername));
+                $aUserData = User::model()->findByAttributes(array('users_name' => (string)$sUsername));
                 if (!isset($aUserData))
                     return array('status' => 'Invalid user');
                 else
@@ -2105,7 +2262,7 @@ class remotecontrol_handle
     * @param int $uid Optional parameter user id.
     * @return array The list of users in case of success
     */
-    public function list_users($sSessionKey = null, $uid = FALSE)
+    public function list_users($sSessionKey = null, $uid = null)
     {    
         if ($this->_checkSessionKey($sSessionKey))
         {
@@ -2114,6 +2271,7 @@ class remotecontrol_handle
                 $users = null;
                 if ($uid)
                 {
+                        $uid=(int)$uid;
                         $user = User::model()->findByPk($uid);
                         if (!$user)
                            return array('status' => 'Invalid user id');
@@ -2165,6 +2323,7 @@ class remotecontrol_handle
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (Permission::model()->hasGlobalPermission('surveys','create'))
         {
+            $iSurveyID=(int)$iSurveyID;
             $oSurvey=Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))
             {
@@ -2218,7 +2377,7 @@ class remotecontrol_handle
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
             return array('status' => 'Invalid session key');
-
+        $iSurveyID=(int)$iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey))
             return array('status' => 'Error: Invalid survey ID');
@@ -2299,12 +2458,12 @@ class remotecontrol_handle
     * @param bool $bEmail Send only pending invites (TRUE) or resend invites only (FALSE)
     * @return array Result of the action
     */
-    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = false, $bEmail = true )
+    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true )
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
             return array('status' => 'Invalid session key');
-
+        $iSurveyID=(int)$iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey))
             return array('status' => 'Error: Invalid survey ID');
@@ -2366,7 +2525,7 @@ class remotecontrol_handle
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
             return array('status' => 'Invalid session key');
-
+        $iSurveyID=(int)$iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey))
             return array('status' => 'Error: Invalid survey ID');
@@ -2385,12 +2544,15 @@ class remotecontrol_handle
 
             if(!is_null($iMinDaysBetween))
             {
+                $iMinDaysBetween=(int)$iMinDaysBetween;
                 $compareddate = dateShift(date("Y-m-d H:i:s", time() - 86400 * $iMinDaysBetween), "Y-m-d H:i", $timeadjust);
                 $SQLreminderdelaycondition = " ((remindersent = 'N' AND sent < '" . $compareddate . "')  OR  (remindersent < '" . $compareddate . "'))";
             }
 
-            if(!is_null($iMaxReminders))
+            if(!is_null($iMaxReminders)) {
+                $iMaxReminders=(int)$iMaxReminders;
                 $SQLremindercountcondition = "remindercount < " . $iMaxReminders;
+            }
 
             $oTokens = TokenDynamic::model($iSurveyID);
             $aAllTokens = $oTokens->findUninvitedIDs(false, 0, false, $SQLemailstatuscondition, $SQLremindercountcondition, $SQLreminderdelaycondition);
@@ -2430,7 +2592,7 @@ class remotecontrol_handle
     public function add_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-
+        $iSurveyID=(int)$iSurveyID;
         $oSurvey=Survey::model()->findByPk($iSurveyID);
 
         if (is_null($oSurvey)) {
@@ -2451,7 +2613,7 @@ class remotecontrol_handle
                 if (!isset($aResponseData['startlanguage']))
                 $aResponseData['startlanguage'] = $oSurvey->language;
 
-            if ($oSurvey->datestamp=='Y') {
+            if ($oSurvey->isDateStamp) {
                 if (array_key_exists('datestamp', $aResponseData) && empty($aResponseData['datestamp']))
                     unset($aResponseData['datestamp']);
                 else if (!isset($aResponseData['datestamp']))
@@ -2468,10 +2630,31 @@ class remotecontrol_handle
             $aResponseData=array_intersect_key($aResponseData, array_flip($aBasicDestinationFields));
             $result_id = $survey_dynamic->insertRecords($aResponseData);
 
-            if ($result_id)
+            if ($result_id) {
+                // FIXME $sToken is undefined!!
+                $oResponse = Response::model($iSurveyID)->findByAttributes(array('token' => $sToken, 'id' => $result_id));
+                foreach ($oResponse->getFiles() as $aFile) {
+                    $sUploadPath = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/";
+                    $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyID . "/files/" . $aFile['filename'];
+                    $sFileTempName = Yii::app()->getConfig('tempdir') . "/upload/" . $aFile['filename'];
+
+                    if (!file_exists($sFileRealName)) {
+                        if (!is_dir($sUploadPath)) {
+                            mkdir($sUploadPath, 0777, true);
+                        }
+
+                        if (!rename($sFileTempName, $sFileRealName)) {
+                            return array('status' => 'Unable to move files ' . $sFileTempName . ' ' . $sFileRealName);
+                        }
+                    }
+
+                }
+
                 return $result_id;
-            else
+            }
+            else {
                 return array('status' => 'Unable to add response');
+            }
         }
         else
             return array('status' => 'No permission');
@@ -2493,6 +2676,7 @@ class remotecontrol_handle
     public function update_response($sSessionKey, $iSurveyID, $aResponseData)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return 'Invalid session key';
+        $iSurveyID=(int)$iSurveyID;
         $oSurvey=Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey))
         {
@@ -2519,7 +2703,7 @@ class remotecontrol_handle
             $oSurveyDynamic = new SurveyDynamic;
 
             if (isset($aResponseData['id'])) {
-                $aResponses = $oSurveyDynamic->findAllByPk($aResponseData['id']);
+                $aResponses = $oSurveyDynamic->findAllByPk((int)$aResponseData['id']);
             } else {
                 $aResponses = $oSurveyDynamic->findAllByAttributes(array('token' => $aResponseData['token']));
             }
@@ -2553,6 +2737,100 @@ class remotecontrol_handle
     }
 
     /**
+    * Uploads one file to be used later.
+    * Returns the metadata on success.
+    *
+    * @access public
+    * @param string $sSessionKey Auth credentials
+    * @param int $iSurveyID ID of the Survey to insert file
+    * @param string $sFieldName the Field to upload file
+    * @param string $sFileName the uploaded file name
+    * @param string $sFileContent the uploaded file content encoded as BASE64
+    * @return array The file metadata with final upload path or error description
+    */
+    public function upload_file($sSessionKey, $iSurveyID, $sFieldName, $sFileName, $sFileContent)
+    {
+        if (!$this->_checkSessionKey($sSessionKey)) {
+            return array('status' => 'Invalid session key');
+        }
+        $iSurveyID=(int)$iSurveyID;
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
+
+        if (is_null($oSurvey)) {
+            return array('status' => 'Error: Invalid survey ID');
+        }
+
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'create')) {
+            if (!Yii::app()->db->schema->getTable('{{survey_' . $iSurveyID . '}}')) {
+                return array('status' => 'No survey response table');
+            }
+        }
+        else {
+            return array('status' => 'No permission');
+        }
+
+        $tempdir = Yii::app()->getConfig("tempdir");
+
+        $sTempUploadDir = $tempdir.'/upload/';
+        if (!file_exists($sTempUploadDir)) {
+            if (!mkdir($sTempUploadDir)) {
+                return array('status' => 'Can not make temporary upload directory');
+            }
+        }
+
+        $aFieldMap = createFieldMap($iSurveyID, 'short', false, false, Yii::app()->getConfig('defaultlang'));
+        if (!isset($aFieldMap[$sFieldName])) {
+            return array('status' => 'Can not obtain field map');
+        }
+        //FIXME undefined function getQuestionAttributeValues()
+        $aAttributes = getQuestionAttributeValues($aFieldMap[$sFieldName]['qid']);
+
+        $iFileUploadTotalSpaceMB = Yii::app()->getConfig('iFileUploadTotalSpaceMB');
+
+        $maxfilesize = (int) $aAttributes['max_filesize'];
+        $allowed_filetypes = $aAttributes['allowed_filetypes'];
+        $valid_extensions_array = explode(",", $allowed_filetypes);
+        $valid_extensions_array = array_map('trim', $valid_extensions_array);
+
+        $pathinfo = pathinfo($sFileName);
+        $ext = strtolower($pathinfo['extension']);
+
+        // check to see that this file type is allowed
+        if (!in_array($ext, $valid_extensions_array)) {
+            return array('status' => 'The extension ' . $ext . ' is not valid. Valid extensions are: ' . $allowed_filetypes);
+        }
+
+        // This also accounts for BASE64 overhead
+        $size = (0.001 * 3 * strlen($sFileContent)) / 4;
+
+        $randfilename = 'futmp_'.randomChars(15).'_'.$pathinfo['extension'];
+        $randfileloc = $sTempUploadDir . $randfilename;
+
+        if ($size > $maxfilesize) {
+            return array('status' => sprintf('Sorry, this file is too large. Only files up to %s KB are allowed.', $maxfilesize));
+        }
+
+        if ($iFileUploadTotalSpaceMB>0 && ((calculateTotalFileUploadUsage()+($size/1024/1024))>$iFileUploadTotalSpaceMB)) {
+            return array('status' => 'Not enough free space available');
+        }
+
+        $uploaded = file_put_contents($randfileloc, base64_decode($sFileContent));
+        if ($uploaded === FALSE) {
+            return array('status' => 'Unable to write file');
+        }
+
+        return array(
+            "success"   => true,
+            "size"      => $size,
+            //FIXME $filename not defined!!!
+            "name"      => rawurlencode(basename($filename)),
+            "ext"       => $ext,
+            "filename"  => $randfilename,
+            "msg"       => gT("The file has been successfully uploaded.")
+        );
+    }
+
+    /**
     * Export responses in base64 encoded string
     *
     * @access public
@@ -2570,6 +2848,7 @@ class remotecontrol_handle
     * */
     public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
     {
+        $iSurveyID=(int)$iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
@@ -2588,12 +2867,12 @@ class remotecontrol_handle
         $oFormattingOptions=new FormattingOptions();
 
         if($iFromResponseID !=null)
-            $oFormattingOptions->responseMinRecord=$iFromResponseID;
+            $oFormattingOptions->responseMinRecord=(int)$iFromResponseID;
         else
             $oFormattingOptions->responseMinRecord=1;
 
         if($iToResponseID !=null)
-            $oFormattingOptions->responseMaxRecord=$iToResponseID;
+            $oFormattingOptions->responseMaxRecord=(int)$iToResponseID;
         else
             $oFormattingOptions->responseMaxRecord = $maxId;
 
@@ -2627,6 +2906,7 @@ class remotecontrol_handle
     */
     public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $aFields=null)
     {
+        $iSurveyID=(int)$iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
@@ -2639,10 +2919,7 @@ class remotecontrol_handle
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         if (empty($sLanguageCode)) $sLanguageCode=$survey->language;
         if (is_null($aFields)) $aFields=array_keys(createFieldMap($survey,'full',true,false,$sLanguageCode));
-        if($sDocumentType=='xls'){
-            // Cut down to the first 255 fields
-            $aFields=array_slice($aFields,0,255);
-        }
+
         $oFormattingOptions=new FormattingOptions();
         $oFormattingOptions->responseMinRecord=1;
         $oFormattingOptions->responseMaxRecord = $maxId;
@@ -2657,7 +2934,7 @@ class remotecontrol_handle
 
         $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
 
-        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFormattingOptions, "$sTableName.token='$sToken'");
+        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFormattingOptions, "{$sTableName}.token=".dbQuoteAll('$sToken'));
         return new BigFile($sTempFile, true, 'base64');
 
     }
@@ -2677,10 +2954,11 @@ class remotecontrol_handle
     */
     public function get_uploaded_files($sSessionKey, $iSurveyID, $sToken)
     {
-        $survey = Survey::model()->findByPk($iSurveyID);
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
 
-        if (!$survey->hasResponsesTable) return array('status' => 'No Data, survey table does not exist.');
+        $iSurveyID=(int)$iSurveyID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        if (!$oSurvey->hasResponsesTable) return array('status' => 'No Data, survey table does not exist.');
 
         if(!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read')) return array('status' => 'No permission');
 
@@ -2736,7 +3014,7 @@ class remotecontrol_handle
     */
     protected function _jumpStartSession($username)
     {
-        $aUserData = User::model()->findByAttributes(array('users_name' => $username))->attributes;
+        $aUserData = User::model()->findByAttributes(array('users_name' => (string)$username))->attributes;
 
         $session = array(
             'loginID' => intval($aUserData['uid']),
@@ -2765,6 +3043,7 @@ class remotecontrol_handle
     */
     protected function _checkSessionKey($sSessionKey)
     {
+        $sSessionKey=(string)$sSessionKey;
         $criteria = new CDbCriteria;
         $criteria->condition = 'expire < ' . time();
         Session::model()->deleteAll($criteria);

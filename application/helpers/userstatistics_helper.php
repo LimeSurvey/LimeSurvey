@@ -1585,9 +1585,9 @@ class userstatistics_helper {
         if ($usegraph==1)
         {
             //for creating graphs we need some more scripts which are included here
-            require_once(APPPATH.'/third_party/pchart/pchart/pChart.class');
-            require_once(APPPATH.'/third_party/pchart/pchart/pData.class');
-            require_once(APPPATH.'/third_party/pchart/pchart/pCache.class');
+            require_once(APPPATH.'/third_party/pchart/pChart.class.php');
+            require_once(APPPATH.'/third_party/pchart/pData.class.php');
+            require_once(APPPATH.'/third_party/pchart/pCache.class.php');
             $MyCache = new pCache($tempdir.'/');
         }
 
@@ -2022,7 +2022,15 @@ class userstatistics_helper {
             }
             else
             {
-                $lbl[wordwrap(FlattenText("$al[1]"), 25, "\n")] = $row;
+                // Duplicate labels can exist.
+                // TODO: Support three or more duplicates.
+                $flatLabel = wordwrap(FlattenText("$al[1]"), 25, "\n");
+                if (isset($lbl[$flatLabel])) {
+                    $lbl[$flatLabel . ' (2)'] = $row;
+                } else {
+                    $lbl[$flatLabel] = $row;
+                }
+
             }
 
 

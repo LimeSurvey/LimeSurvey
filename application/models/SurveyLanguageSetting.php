@@ -64,7 +64,9 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -148,7 +150,7 @@ class SurveyLanguageSetting extends LSActiveRecord
             $aDefaultTextData['admin_detailed_notification']=$aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
         }
 
-         if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
+        if (empty($this->$attribute)) $this->$attribute=$aDefaultTextData[$attribute];
     }
 
 
@@ -211,20 +213,10 @@ class SurveyLanguageSetting extends LSActiveRecord
         return $this->db->get();
     }
 
-    /**
-     * @param integer $sid Survey ID
-     * @param string $lcode Language code
-     * @return mixed
-     */
-    public function getAllData($sid, $lcode)
-    {
-        $query = 'SELECT * FROM {{surveys}}, {{surveys_languagesettings}} WHERE sid=? AND surveyls_survey_id=? AND surveyls_language=?';
-        // FIXME there is no $this->db, is this unused?
-        return $this->db->query($query, array($sid, $sid, $lcode));
-    }
 
     /**
      * @param array $data
+     * @todo : rename and fix this
      * @return bool
      */
     public function insertNewSurvey($data)
@@ -259,8 +251,9 @@ class SurveyLanguageSetting extends LSActiveRecord
     function insertSomeRecords($data)
     {
         $lang = new self;
-        foreach ($data as $k => $v)
+        foreach ($data as $k => $v) {
             $lang->$k = $v;
+        }
         return $lang->save();
     }
 }

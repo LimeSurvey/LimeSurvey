@@ -40,7 +40,9 @@ class LabelSet extends LSActiveRecord
 	 */
 	public static function model($class = __CLASS__)
 	{
-		return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
 	}
 
     /** @inheritdoc */
@@ -55,6 +57,15 @@ class LabelSet extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'labels' => array(self::HAS_MANY, 'Label', 'lid', 'order'=>'language ASC, sortorder ASC')
+        );
+    }
 
     /**
      * @param mixed|bool $condition

@@ -2,7 +2,9 @@
 
 namespace ls\tests;
 
-class TestHelper extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class TestHelper extends TestCase
 {
 
     /**
@@ -20,6 +22,7 @@ class TestHelper extends \PHPUnit_Framework_TestCase
         \Yii::import('application.helpers.qanda_helper', true);
         \Yii::import('application.helpers.update.updatedb_helper', true);
         \Yii::import('application.helpers.update.update_helper', true);
+        \Yii::import('application.helpers.SurveyRuntimeHelper', true);
         \Yii::app()->loadHelper('admin/activate');
     }
 
@@ -108,7 +111,7 @@ class TestHelper extends \PHPUnit_Framework_TestCase
         \Survey::model()->resetCache();  // Make sure the saved values will be picked up
 
         $result = \activateSurvey($surveyId);
-        $this->assertEquals(['status' => 'OK'], $result, 'Activate survey is OK');
+        $this->assertEquals(['status' => 'OK', 'pluginFeedback' => null], $result, 'Activate survey is OK');
     }
 
     /**
@@ -160,6 +163,14 @@ class TestHelper extends \PHPUnit_Framework_TestCase
         $oldDatabase = $matches[1];
 
         try {
+            $db->createCommand('DROP DATABASE ' . $databaseName)->execute();
+        } catch (\CDbException $ex) {
+            $msg = $ex->getMessage();
+            // Only this error is OK.
+            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
+        }
+
+        try {
             $result = $db->createCommand(
                 sprintf(
                     'CREATE DATABASE %s DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
@@ -183,5 +194,75 @@ class TestHelper extends \PHPUnit_Framework_TestCase
         );
         \Yii::app()->setComponent('db', $newConfig['components']['db'], false);
         return true;
+    }
+
+    /**
+     * @return void
+     */
+    public function connectToOriginalDatabase()
+    {
+        \Yii::app()->db->setActive(false);
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        \Yii::app()->db->setActive(true);
+        \Yii::app()->db->schema->getTables();
+        \Yii::app()->db->schema->refresh();
+    }
+
+    /**
+     * @param int $version
+     * @return CDbConnection
+     */
+    public function updateDbFromVersion($version)
+    {
+        $result = $this->connectToNewDatabase('__test_update_helper_' . $version);
+        $this->assertTrue($result, 'Could connect to new database');
+
+        // Get InstallerController.
+        $inst = new \InstallerController('foobar');
+        $inst->connection = \Yii::app()->db;
+
+        // Check SQL file.
+        $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
+        $this->assertFileExists($file);
+
+        // Run SQL install file.
+        $result = $inst->_executeSQLFile($file, 'lime_');
+        $this->assertEquals([], $result, 'No error messages from _executeSQLFile' . print_r($result, true));
+
+        // Run upgrade.
+        $result = \db_upgrade_all($version);
+
+        // Check error messages.
+        $flashes = \Yii::app()->user->getFlashes();
+        if ($flashes) {
+            print_r($flashes);
+        }
+        $this->assertEmpty($flashes, 'No flash error messages');
+        $this->assertTrue($result, 'Upgrade successful');
+
+        return $inst->connection;
+    }
+
+    /**
+     * Make sure Selenium can preview surveys without
+     * being logged in.
+     * @return void
+     */
+    public function enablePreview()
+    {
+        // Make sure we can preview without being logged in.
+        $setting = \SettingGlobal::model()->findByPk('surveyPreview_require_Auth');
+
+        // Possibly this setting does not exist yet.
+        if (empty($setting)) {
+            $setting = new \SettingGlobal();
+            $setting->stg_name = 'surveyPreview_require_Auth';
+            $setting->stg_value = 0;
+            $setting->save();
+        } else {
+            $setting->stg_value = 0;
+            $setting->save();
+        }
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace ls\pluginmanager;
+namespace LimeSurvey\PluginManager;
 abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlugin {
            
     public function registerEvents() 

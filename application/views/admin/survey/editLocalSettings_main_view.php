@@ -7,11 +7,12 @@
  */
 
 $templateData['oSurvey'] = $oSurvey;
-?>
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyGeneralSettings');
+
+?>
 <script type="text/javascript">
-    var standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
-    var templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
     var formId = '<?=$entryData['name']?>';
 </script>
 
@@ -22,15 +23,13 @@ if(isset($scripts))
 ?>
 
 <div class="row col-12">
-    <?php
-    // $this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey, 'active'=>$entryData['title'])); ?>
     <h3 class="pagetitle"><?php echo $entryData['title']; ?></h3>
 
     <!-- Edition container -->
 
     <!-- Form -->
     <div class="col-xs-12">
-        <?php echo CHtml::form(array("admin/database/index/".$entryData['action']), 'post', array('id'=>$entryData['name'],'name'=>$entryData['name'],'class'=>'form-horizontal form30')); ?>
+        <?php echo CHtml::form(array("admin/database/index/".$entryData['action']), 'post', array('id'=>$entryData['name'],'name'=>$entryData['name'],'class'=>' form30')); ?>
 
         <div class="row">
             <div class="<?=$entryData['classes']?>">
@@ -47,9 +46,39 @@ if(isset($scripts))
         -->
         <input type="hidden" name="action" value="<?=$entryData['action']?>" />
         <input type="hidden" name="sid" value="<?php echo $surveyid; ?>" />
+        <input type="hidden" name="surveyid" value="<?php echo $surveyid; ?>" />
         <input type="hidden" name="language" value="<?php echo $surveyls_language; ?>" />
         <input type="hidden" name="responsejson" value="1" />
         <input type='submit' class="hide" id="globalsetting_submit" />
         </form>
     </div>
 </div>
+<script type="text/javascript">
+$(document).on('ready pjax:complete', function(){
+
+    $('#<?=$entryData['name']?>').off('submit');
+
+    $('#<?=$entryData['name']?>').on('submit', function(e){
+      e.preventDefault();
+      var data = $(this).serializeArray();
+      var uri = $(this).attr('action');
+      $.ajax({
+        url: uri,
+        method:'POST',
+        data: data,
+        success: function(result){
+            console.log({result: result});
+          if(result.redirecturl != undefined ){
+            window.location.href=result.redirecturl;
+          } else {
+            window.location.reload();
+          }
+        },
+        error: function(result){
+          console.log({result: result});
+        }
+      });
+      return false;
+    });
+});
+</script>

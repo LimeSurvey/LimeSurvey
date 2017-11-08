@@ -36,7 +36,9 @@ class Condition extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /**
@@ -156,10 +158,10 @@ class Condition extends LSActiveRecord
      */
     public function getScenarios($qid)
     {
-
-        $scenarioquery = "SELECT DISTINCT scenario FROM ".$this->tableName()." WHERE qid=".$qid." ORDER BY scenario";
-
-        return Yii::app()->db->createCommand($scenarioquery)->query();
+        $query = "SELECT DISTINCT scenario FROM ".$this->tableName()." WHERE qid=:qid ORDER BY scenario";
+        $command =Yii::app()->db->createCommand($query);
+        $command->params = [':qid'=>$qid];
+        return $command->query();
     }
 
     /**
@@ -220,6 +222,7 @@ class Condition extends LSActiveRecord
 
     /**
      * @param int $qid
+     * @param string $language
      * @param Condition $scenarionr
      * @return int
      */
@@ -246,6 +249,7 @@ class Condition extends LSActiveRecord
 
     /**
      * @param int $qid
+     * @param $language
      * @param Condition $scenarionr
      * @return array
      */
@@ -300,7 +304,7 @@ class Condition extends LSActiveRecord
     /**
      * @param int $qid
      * @param Condition $scenarionr
-     * @return array
+     * @return CDbDataReader
      */
     public function getConditionsToken($qid, Condition $scenarionr)
     {

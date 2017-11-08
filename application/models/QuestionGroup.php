@@ -37,7 +37,9 @@ class QuestionGroup extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -249,7 +251,7 @@ class QuestionGroup extends LSActiveRecord
 
     /**
      * @param mixed|array $condition
-     * @param mixed|boolean $order
+     * @param string[] $order
      * @return mixed
      */
     function getAllGroups($condition, $order=false)

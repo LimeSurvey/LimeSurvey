@@ -27,11 +27,11 @@ PrepareEditorScript(false, $this);
 
 </script>
 <!-- Form submited by save button menu bar -->
-<?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'form-horizontal')); ?>
+<?php echo CHtml::form(array('admin/survey/sa/insert'), 'post', array('id'=>'addnewsurvey', 'name'=>'addnewsurvey', 'class'=>'')); ?>
     <div class="ls-flex-row align-items-center align-content-center">
         <div class="grow-1 ls-flex-column fill align-items-center align content-center">
             <!-- Previous pane button -->
-            <button class="btn" name="navigation_back" id="navigation_back" value="navigation_back"><i class="fa fa-chevron-left" style="font-size:82;"></i></button>
+            <button class="btn btn-default" name="navigation_back" id="navigation_back" value="navigation_back"><i class="fa fa-chevron-left" style="font-size:82;"></i></button>
         </div>
         <div class="grow-10 ls-space padding left-10 right-10">
             <ul class="nav nav-tabs" role="tablist" id="create_survey_tablist">
@@ -73,45 +73,66 @@ PrepareEditorScript(false, $this);
         </div>
     </div>
     <div class="row">
+            <input type="hidden" name="saveandclose" id="submitaddnesurvey" value="1" />
             <!-- Submit button -->
             <button class="btn btn-primary btn-success hide" type="submit" name="save" id="create_survey_save_and_send"   value='insertsurvey'><?php eT("Finish & save"); ?></button>
     </div>
 </form>
 
 <script>
-    $(document).ready(function(){
+    var updateCKfields = function(){
+        $('textarea').each(function () {
+            var $textarea = $(this);
+            $textarea.val(CKEDITOR.instances[$textarea.attr('name')].getData());
+        });
+    }
+    $(document).on('ready pjax:complete', function(){
         sessionStorage.setItem('maxtabs', 1);
-
-        $('#save-form-button').addClass('disabled');
-        $('#save-and-close-form-button').addClass('disabled');
 
         $('#navigation_back').on('click', function(e){
             e.preventDefault();
+            updateCKfields();
             $('#create_survey_tablist').find('.active').prev('li').find('a').trigger('click');
         })
         $('#navigation_next').on('click', function(e){
             e.preventDefault();
+            updateCKfields();
             $('#create_survey_tablist').find('.active').next('li').find('a').trigger('click');
         })
+
         $('a.create_survey_wizard_tabs').on('shown.bs.tab', function (e) {
             var count = $(e.target).data('count'); 
             var sessionStorageValue = sessionStorage.getItem('maxtabs') || 1;
-            console.log(count, sessionStorageValue);
+            //console.log(count, sessionStorageValue);
             if(count>3 || sessionStorageValue>3){
                 $('#save-form-button').removeClass('disabled');
                 $('#save-and-close-form-button').removeClass('disabled');
             }
         });
-        $('#addnewsurvey').on('submit', function(ev){
-            ev.preventDefault();
-            ev.stopPropagation();
+        $('#addnewsurvey').on('submit',  function(event){
+            event.preventDefault();
+            var form = this;
+
+            updateCKfields();
+            var data = $(form).serializeArray();
+            var uri = $(form).attr('action');
             $.ajax({
-                url: $('#addnewsurvey').attr('action'),
-                data: $('#addnewsurvey').serializeArray(),
-                method: 'POST',
-                success: function(){console.log(arguments);},
-                error: function(){console.log(arguments)},
+                url: uri,
+                method:'POST',
+                data: data,
+                success: function(result){
+                if(result.redirecturl != undefined ){
+                    window.location.href=result.redirecturl;
+                } else {
+                    window.location.reload();
+                }
+                },
+                error: function(result){
+                console.log({result: result});
+                }
             });
-        })
+            return false;
+        });
     });
+
 </script>

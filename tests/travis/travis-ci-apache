@@ -1,0 +1,25 @@
+<VirtualHost *:80>
+  # [...]
+
+  DocumentRoot %TRAVIS_BUILD_DIR%
+
+  <Directory "%TRAVIS_BUILD_DIR%/">
+    Options FollowSymLinks MultiViews ExecCGI
+    AllowOverride All
+    Require all granted
+  </Directory>
+
+  # Wire up Apache to use Travis CI's php-fpm.
+  <IfModule mod_fastcgi.c>
+    AddHandler php7.1-fcgi .php
+    Action php7.1-fcgi /php7.1-fcgi
+    Alias /php7.1-fcgi /usr/lib/cgi-bin/php7.1-fcgi
+    FastCgiExternalServer /usr/lib/cgi-bin/php7.1-fcgi -host 127.0.0.1:9000 -pass-header Authorization
+    
+    <Directory /usr/lib/cgi-bin>
+        Require all granted
+    </Directory>
+  </IfModule>
+
+  # [...]
+</VirtualHost>

@@ -244,7 +244,10 @@ class index extends CAction {
             $event->set('reason', 'surveyDoesNotExist');
             App()->getPluginManager()->dispatchEvent($event);
 
-            throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
+            $aError['title'] = "Not Found!";
+            $aError['message'] = "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.";
+
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array( 'aSurveyInfo' => array('aError' => $aError, 'adminemail' => Yii::app()->getConfig('siteadminemail') )), false);
         }
 
         // Get token
@@ -412,7 +415,7 @@ class index extends CAction {
             $aLoadForm['aErrors']    = empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
             $thissurvey['aLoadForm'] = $aLoadForm;
             //$oTemplate->registerAssets();
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_load.twig", array('aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_load.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
         }
 
 

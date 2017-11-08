@@ -64,12 +64,16 @@ class LS_Twig_Extension extends Twig_Extension
      */
     public static function registerTemplateCssFile($sTemplateCssFileName)
     {
-        $oTemplate = self::getTemplateForRessource($sTemplateCssFileName);
+        /*
+            CSS added from template could require some files from the template folder file...  (eg: background.css)
+            So, if we want the statements like :
+              url("../files/myfile.jpg)
+             to point to an existing file, the css file must be published in the same tmp directory than the template files
+             in other words, the css file must be added to the template package.
+        */
 
-        Yii::app()->getClientScript()->registerCssFile(
-            $oTemplate->getTemplateURL() .
-            $sTemplateCssFileName
-        );
+        $oTemplate = self::getTemplateForRessource($sTemplateCssFileName);
+        Yii::app()->getClientScript()->packages[$oTemplate->sPackageName]['css'][]=$sTemplateCssFileName;
     }
 
     /**
@@ -100,13 +104,7 @@ class LS_Twig_Extension extends Twig_Extension
     public static function registerTemplateScript($sTemplateScriptFileName, $position=null, array $htmlOptions=array())
     {
         $oTemplate = self::getTemplateForRessource($sTemplateScriptFileName);
-        $position = self::getPosition($position);
-        Yii::app()->getClientScript()->registerScriptFile(
-            $oTemplate->sTemplateUrl .
-            $sTemplateScriptFileName,
-            $position,
-            $htmlOptions
-        );
+        Yii::app()->getClientScript()->packages[$oTemplate->sPackageName]['js'][]=$sTemplateScriptFileName;
     }
 
     /**
@@ -210,6 +208,9 @@ class LS_Twig_Extension extends Twig_Extension
         ));
     }
 
+    /**
+     * @param string $sRessource
+     */
     public static function assetPublish($sRessource)
     {
         return App()->getAssetManager()->publish($sRessource);
@@ -235,6 +236,9 @@ class LS_Twig_Extension extends Twig_Extension
         return CHtml::image($sUrlImgAsset, $alt, $htmlOptions);
     }
 
+    /**
+     * @param string $sRessource
+     */
     public static function getTemplateForRessource($sRessource)
     {
         $oRTemplate = Template::model()->getInstance();
@@ -267,11 +271,17 @@ class LS_Twig_Extension extends Twig_Extension
         return Yii::app()->request->getQuery($sName, $sDefaultValue);
     }
 
+    /**
+     * @param string $name
+     */
     public static function unregisterPackage($name)
     {
         return Yii::app()->getClientScript()->unregisterPackage($name);
     }
 
+    /**
+     * @param string $name
+     */
     public static function unregisterScriptFile($name)
     {
         return Yii::app()->getClientScript()->unregisterScriptFile($name);
@@ -291,7 +301,6 @@ class LS_Twig_Extension extends Twig_Extension
         self::unregisterPackage('bootstrap-template');
         self::unregisterPackage('fontawesome');
         self::unregisterPackage('template-default-ltr');
-        self::unregisterPackage('survey-template-default');
         self::unregisterPackage('decimal');
         self::unregisterScriptFile('/assets/scripts/survey_runtime.js');
         self::unregisterScriptFile('/assets/scripts/admin/expression.js');

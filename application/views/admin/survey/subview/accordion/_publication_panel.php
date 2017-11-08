@@ -5,6 +5,8 @@
  * @var Survey $oSurvey
  * @var array $dateformatdetails
  */
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyPublicationOptions');
 ?>
 <script type="text/javascript">
     var jsonUrl = '';
@@ -23,12 +25,12 @@
 
             <!-- Start date/time -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
-                <div class="col-sm-6 has-feedback">
+                <label class=" control-label" for='startdate'><?php  eT("Start date/time:"); ?></label>
+                <div class=" has-feedback">
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => $oSurvey->startdate,
+                            'value' => date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->startdate)),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
@@ -56,12 +58,12 @@
 
             <!-- Expiry date/time -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
-                <div class="col-sm-6 has-feedback">
+                <label class=" control-label" for='expires'><?php  eT("Expiry date/time:"); ?></label>
+                <div class=" has-feedback">
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "expires",
                             'id' => 'expires',
-                            'value' => $oSurvey->expires,
+                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->expires)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
@@ -90,8 +92,8 @@
         <div class="col-sm-12 col-md-6">
             <!-- List survey publicly -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='listpublic'><?php  eT("List survey publicly:");?></label>
-                <div class="col-sm-6">
+                <label class=" control-label" for='listpublic'><?php  eT("List survey publicly:");?></label>
+                <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'listpublic',
                         'value'=> $oSurvey->isListPublic,
@@ -103,8 +105,8 @@
             </div>
             <!-- Set cookie to prevent repeated participation -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='usecookie'><?php  eT("Set cookie to prevent repeated participation:"); ?></label>
-                <div class="col-sm-6">
+                <label class=" control-label" for='usecookie'><?php  eT("Set cookie to prevent repeated participation:"); ?></label>
+                <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'usecookie',
                         'value'=> $oSurvey->isUseCookie,
@@ -118,8 +120,8 @@
             <!-- Use CAPTCHA for survey access -->
             <?php $usecap = $oSurvey->usecaptcha; // Just a short-hand ?>
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
-                <div class="col-sm-6">
+                <label class=" control-label" for='usecaptcha_surveyaccess'><?php  eT("Use CAPTCHA for survey access:"); ?></label>
+                <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'usecaptcha_surveyaccess',
                         'value'=> $usecap === 'A' || $usecap === 'B' || $usecap === 'C' || $usecap === 'X',
@@ -130,8 +132,8 @@
 
             <!-- Use CAPTCHA for registration -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='usecaptcha_registration'><?php  eT("Use CAPTCHA for registration:"); ?></label>
-                <div class="col-sm-6">
+                <label class=" control-label" for='usecaptcha_registration'><?php  eT("Use CAPTCHA for registration:"); ?></label>
+                <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'usecaptcha_registration',
                         'value'=> $usecap === 'A' || $usecap === 'B' || $usecap === 'D' || $usecap === 'R',
@@ -143,8 +145,8 @@
 
             <!-- Use CAPTCHA for save and load -->
             <div class="form-group">
-                <label class="col-sm-6 control-label" for='usecaptcha_saveandload'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
-                <div class="col-sm-6">
+                <label class=" control-label" for='usecaptcha_saveandload'><?php  eT("Use CAPTCHA for save and load:"); ?></label>
+                <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'usecaptcha_saveandload',
                         'value'=> $usecap === 'A' || $usecap === 'C' || $usecap === 'D' || $usecap === 'S',

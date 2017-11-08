@@ -1,15 +1,15 @@
 /**
  * Side Menu
  */
-$(document).ready(function(){
-    var close = $('#chevronClose');
+$(document).on('ready pjax:complete', function(){
+       var close = $('#chevronClose');
     var stretch = $('#chevronStretch');
-    var sideBody = $('.side-body');
-    var sideMenu = $('#sideMenu');
-    var absoluteWrapper = $('.absolute-wrapper');
-    var sidemenusContainer = $('.sidemenuscontainer');
-    var accordionContainer = $('#accordion-container');
-    var quickmenuContainer = $('#quick-menu-container');
+    var sideBody = $('.side-body-dont-changeme');
+    var sideMenu = $('#sideMenu-dontchangeme');
+    var absoluteWrapper = $('.absolute-wrapper-dontchangeme');
+    var sidemenusContainer = $('.sidemenuscontainer-dontchangeme');
+    var accordionContainer = $('#accordion-container-dontchangeme');
+    var quickmenuContainer = $('#quick-menu-container-dontchangeme');
 
     // Check if we have a right-to-left language
     var rtl = $("html").attr('dir') === "rtl";

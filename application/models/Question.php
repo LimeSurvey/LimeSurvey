@@ -40,6 +40,7 @@ if (!defined('BASEPATH'))
  * @property QuestionGroup $groups  //TODO should be singular
  * @property Question $parents      //TODO should be singular
  * @property Question[] $subquestions
+ * @property QuestionAttribute[] $questionAttributes NB! returns all QuestionArrtibute Models fot this QID regardless of the specified language
  * @property string[] $quotableTypes Question types that can be used for quotas
  */
 class Question extends LSActiveRecord
@@ -55,7 +56,9 @@ class Question extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -73,12 +76,12 @@ class Question extends LSActiveRecord
     /** @inheritdoc */
     public function relations()
     {
-        $alias = $this->getTableAlias();
         return array(
             'survey' => array(self::BELONGS_TO, 'Survey', 'sid'),
             'groups' => array(self::BELONGS_TO, 'QuestionGroup', 'gid, language', 'together' => true),
-            'parents' => array(self::HAS_ONE, 'Question', '', 'on' => "$alias.parent_qid = parents.qid"),
-            'subquestions' => array(self::HAS_MANY, 'Question', 'parent_qid', 'on' => "$alias.language = subquestions.language")
+            'parents' => array(self::HAS_ONE, 'Question', array( "qid" => "parent_qid")),
+            'questionAttributes' => array(self::HAS_MANY, 'QuestionAttribute', 'qid'),
+            'subquestions' => array(self::HAS_MANY, 'Question', array('parent_qid'=>'qid', "language" => "language"))
         );
     }
 
@@ -91,7 +94,7 @@ class Question extends LSActiveRecord
         $aRules= array(
                     array('title','required','on' => 'update, insert','message'=>gT('Question code may not be empty.','unescaped')),
                     array('title','length', 'min' => 1, 'max'=>20,'on' => 'update, insert'),
-                    array('qid', 'numerical','integerOnly'=>true),
+                    array('qid,sid,gid,parent_qid', 'numerical','integerOnly'=>true),
                     array('qid', 'unique', 'criteria'=>array(
                                     'condition'=>'language=:language',
                                     'params'=>array(':language'=>$this->language)
@@ -104,6 +107,9 @@ class Question extends LSActiveRecord
                     array('question_order','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                     array('scale_id','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
                     array('same_default','numerical', 'integerOnly'=>true,'allowEmpty'=>true),
+                    array('type','length', 'min' => 1, 'max'=>1),
+                    array('preg,relevance','safe'),
+                    array('modulename','length','max'=>255),
                 );
         // Always enforce unicity on Sub question code (DB issue).
         if($this->parent_qid) {
@@ -230,7 +236,7 @@ class Question extends LSActiveRecord
         }
         $aAttributeValues=QuestionAttribute::model()->getQuestionAttributes($iQuestionID,$sLanguage);
         // TODO: move getQuestionAttributesSettings() to QuestionAttribute model to avoid code duplication
-        $aAttributeNames = \ls\helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
+        $aAttributeNames = \LimeSurvey\Helpers\questionHelper::getQuestionAttributesSettings($sQuestionType);
 
         // If the question has a custom template, we first check if it provides custom attributes
 
@@ -301,6 +307,10 @@ class Question extends LSActiveRecord
         return $aAttributeNames;
     }
 
+    public function getTypeGroup(){
+        
+    }
+
     /**
      * TODO: replace this function call by $oSurvey->questions defining a relation in SurveyModel
      * @param integer $sid
@@ -348,29 +358,7 @@ class Question extends LSActiveRecord
         return $command->query()->readAll();
     }
 
-    /**
-     * Insert an array into the questions table
-     * Returns null if insertion fails, otherwise the new QID
-     *
-     * This function is called from database.php and import_helper.php
-     * TODO: as said by Shnoulle, it must be replace by using validate and save from controller.
-     *
-     * @param array $data
-     * @return int
-     */
-    function insertRecords($data)
-    {
-        // This function must be deprecated : don't find a way to have getErrors after (Shnoulle on 131206)
-        $oRecord = new self;
-        foreach ($data as $k => $v){
-            $oRecord->$k = $v;
-        }
-        if($oRecord->validate()) {
-            $oRecord->save();
-            return $oRecord->qid;
-        }
-        tracevar($oRecord->getErrors());
-    }
+
 
     /**
      * Delete a bunch of questions in one go
@@ -410,9 +398,9 @@ class Question extends LSActiveRecord
 
     /**
      * TODO: replace it everywhere by Answer::model()->findAll([Critieria Object])
-     * @param array $fields
+     * @param string $fields
      * @param mixed $condition
-     * @param string|boolean|array $orderby
+     * @param string $orderby
      * @return array
      */
     public function getQuestionsForStatistics($fields, $condition, $orderby=FALSE)
@@ -754,7 +742,7 @@ class Question extends LSActiveRecord
         $previewUrl  = Yii::app()->createUrl("survey/index/action/previewquestion/sid/");
         $previewUrl .= '/'.$this->sid.'/gid/'.$this->gid.'/qid/'.$this->qid;
         $editurl     = Yii::app()->createUrl("admin/questions/sa/editquestion/surveyid/$this->sid/gid/$this->gid/qid/$this->qid");
-        $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="# role="button" ><span class="fa fa-eye-open"  ></span></a> ';
+        $button      = '<a class="btn btn-default open-preview"  data-toggle="tooltip" title="'.gT("Question preview").'"  aria-data-url="'.$previewUrl.'" aria-data-sid="'.$this->sid.'" aria-data-gid="'.$this->gid.'" aria-data-qid="'.$this->qid.'" aria-data-language="'.$this->language.'" href="#" role="button" ><span class="fa fa-eye-open"  ></span></a> ';
 
         if (Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
         {
@@ -801,20 +789,20 @@ class Question extends LSActiveRecord
     }
 
     /**
-    * get subquestions fort the current question object in the right order
-    */
+     * get subquestions fort the current question object in the right order
+     * @param int $random
+     * @param string $exclude_all_others
+     * @return array
+     */
     public function getOrderedSubQuestions($random=0, $exclude_all_others='')
     {
-        if ($random==1) {
-            // TODO : USE AR PATTERN
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY ".dbRandom();
-        }
-        else {
-            // TODO : USE AR PATTERN
-            $ansquery = "SELECT * FROM {{questions}} WHERE parent_qid='$this->qid' AND scale_id=0 AND language='$this->language' ORDER BY question_order";
-        }
-
-        $ansresult = dbExecuteAssoc($ansquery)->readAll();  //Checked
+        $criteria = (new CDbCriteria());
+        $criteria->addCondition('t.parent_qid=:qid');
+        $criteria->addCondition('t.scale_id=0');
+        $criteria->addCondition('t.language=:language');
+        $criteria->params = [':qid'=>$this->qid,':language'=>$this->language];
+        $criteria->order= ($random ==1 ? (new CDbExpression('RAND()')):'question_order ASC');
+        $ansresult = Question::model()->findAll($criteria);
 
         //if  exclude_all_others is set then the related answer should keep its position at all times
         //thats why we have to re-position it if it has been randomized
@@ -830,7 +818,6 @@ class Question extends LSActiveRecord
                 $position++;
             }
         }
-
         return $ansresult;
     }
 
@@ -979,38 +966,6 @@ class Question extends LSActiveRecord
         }
     }
 
-    /**
-     * Used in frontend helper, buildsurveysession.
-     * @param int $surveyid
-     * @return int
-     */
-    public static function getTotalQuestions($surveyid)
-    {
-        $sQuery = "SELECT count(*)\n"
-            ." FROM {{groups}} INNER JOIN {{questions}} ON {{groups}}.gid = {{questions}}.gid\n"
-            ." WHERE {{questions}}.sid=".$surveyid."\n"
-            ." AND {{groups}}.language='".App()->getLanguage()."'\n"
-            ." AND {{questions}}.language='".App()->getLanguage()."'\n"
-            ." AND {{questions}}.parent_qid=0\n";
-        return Yii::app()->db->createCommand($sQuery)->queryScalar();
-    }
-
-    /**
-     * Used in frontend helper, buildsurveysession.
-     * @todo Rename
-     * @param int $surveyid
-     * @return array|false??? Return from CDbDataReader::read()
-     */
-    public static function getNumberOfQuestions($surveyid)
-    {
-        return dbExecuteAssoc("SELECT count(*)\n"
-            ." FROM {{questions}}"
-            ." WHERE type in ('X','*')\n"
-            ." AND sid={$surveyid}"
-            ." AND language='".$_SESSION['survey_'.$surveyid]['s_lang']."'"
-            ." AND parent_qid=0")
-            ->read();
-    }
 
     /**
      * Fix sub question of a parent question
@@ -1041,9 +996,28 @@ class Question extends LSActiveRecord
         $criteria->addNotInCondition('title', CHtml::listData($validSubQuestion,'title','title'));
         Question::model()->deleteAll($criteria);// Must log count of deleted ?
     }
-    /** @return array */
+    /** @return string[] */
     public static function getQuotableTypes(){
-        return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!');
+        return array('G', 'M', 'Y', 'A', 'B', 'I', 'L', 'O', '!','*');
+    }
+
+
+    public function getBasicFieldName(){
+        if($this->parent_qid != 0){
+            return "{$this->sid}X{$this->gid}X{$this->parent_qid}";
+        } else {
+            return "{$this->sid}X{$this->gid}X{$this->qid}";
+        }
+    }
+
+    /**
+     * @return QuestionAttribute[]
+     */
+    public function getQuestionAttributes(){
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('qid=:qid');
+        $criteria->params = [':qid'=>$this->qid];
+        return QuestionAttribute::model()->findAll($criteria);
     }
 
 }

@@ -20,7 +20,7 @@
     * @author Thomas M. White (TMSWhite)
     * @author Denis Chenu <http://sondages.pro>
     */
-    include_once('em_core_helper.php');
+    Yii::import('application.helpers.expressions.em_core_helper', true);
     Yii::app()->loadHelper('database');
     Yii::app()->loadHelper('frontend');
     Yii::app()->loadHelper('surveytranslator');
@@ -104,6 +104,7 @@
         * @var array
         */
         private $knownVars;
+
         /**
         * maps qcode varname to SGQA code
         *
@@ -111,6 +112,7 @@
         * @var array
         */
         private $qcode2sgqa;
+
         /**
         * variables temporarily set for substitution purposes
         *
@@ -125,6 +127,7 @@
         * @var array
         */
         private $tempVars;
+
         /**
         * Array of relevance information for each page (gseq), indexed by gseq.
         * Within a page, it contains a sequential list of the results of each relevance equation processed
@@ -143,6 +146,7 @@
         * @var array
         */
         private $pageRelevanceInfo;
+
         /**
         *
         * @var array
@@ -2639,7 +2643,6 @@
                             {
                                 case 'K': //MULTI NUMERICAL QUESTION TYPE (Need a attribute, not set in 131014)
                                     $subqValidSelector = $sq['jsVarName_on'];
-                                    break;
                                 case 'N': //NUMERICAL QUESTION TYPE
                                     $sq_name = ($this->sgqaNaming)?$sq['rowdivid'].".NAOK":$sq['varName'].".NAOK";
                                     $sq_eqn = '( is_int('.$sq_name.') || is_empty('.$sq_name.') )';
@@ -3510,12 +3513,13 @@
                     'subqValidEqn' => implode(' && ', $csq['subqValidEqns']),
                     );
                 }
+
+                $veqns = array();
                 // now combine all classes of validation equations
                 foreach ($parts as $vclass=>$eqns)
                 {
                     $veqns[$vclass] = '(' . implode(' and ', $eqns) . ')';
                 }
-                $veqns = array();
 
 
                 $this->qid2validationEqn[$qid] = array(
@@ -3584,7 +3588,7 @@
         * @param boolean $allOnOnePage - if true (like for survey_format), uses certain optimizations
         * @return boolean - true if $fieldmap had been re-created, so ExpressionManager variables need to be re-set
         */
-        private function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
+        public function setVariableAndTokenMappingsForExpressionManager($surveyid,$forceRefresh=false,$anonymized=false,$allOnOnePage=false)
         {
             if (isset($_SESSION['LEMforceRefresh'])) {
                 unset($_SESSION['LEMforceRefresh']);
@@ -4869,11 +4873,11 @@
             if (is_null($aSurveyOptions)) {
                 $aSurveyOptions = array();
             }
-            $LEM->surveyOptions['active'] = $survey->isActive;
-            $LEM->surveyOptions['allowsave'] = $survey->isAllowSave;
-            $LEM->surveyOptions['anonymized'] = $survey->isAnonymized;
-            $LEM->surveyOptions['assessments'] = $survey->isAssessments;
-            $LEM->surveyOptions['datestamp'] = $survey->isDateStamp;
+            $LEM->surveyOptions['active'] = (isset($aSurveyOptions['active']) ? $aSurveyOptions['active'] : false);
+            $LEM->surveyOptions['allowsave'] = (isset($aSurveyOptions['allowsave']) ? $aSurveyOptions['allowsave'] : false);
+            $LEM->surveyOptions['anonymized'] = (isset($aSurveyOptions['anonymized']) ? $aSurveyOptions['anonymized'] : false);
+            $LEM->surveyOptions['assessments'] = (isset($aSurveyOptions['assessments']) ? $aSurveyOptions['assessments'] : false);
+            $LEM->surveyOptions['datestamp'] = (isset($aSurveyOptions['datestamp']) ? $aSurveyOptions['datestamp'] : false);
             $LEM->surveyOptions['deletenonvalues'] = (isset($aSurveyOptions['deletenonvalues']) ? ($aSurveyOptions['deletenonvalues']=='1') : true);
             $LEM->surveyOptions['hyperlinkSyntaxHighlighting'] = (isset($aSurveyOptions['hyperlinkSyntaxHighlighting']) ? $aSurveyOptions['hyperlinkSyntaxHighlighting'] : false);
             $LEM->surveyOptions['ipaddr'] = $survey->isIpAddr;
@@ -4926,10 +4930,6 @@
                     else if (isset($LEM->qcode2sgqa[$k]))
                     {
                         $knownVar = $LEM->knownVars[$LEM->qcode2sgqa[$k]];
-                    }
-                    else if (isset($LEM->tempVars[$k]))
-                    {
-                        $knownVar = $LEM->tempVars[$k];
                     }
                     else
                     {
@@ -5464,12 +5464,6 @@
                                 $val=NULL;  // since some databases can't store blanks in date fields
                             }
                             break;
-                        case '|': //File upload
-                            // This block can be removed once we require 5.3 or later
-                            if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
-                                $val=addslashes($val);
-                            }
-                            break;
                         case 'N': //NUMERICAL QUESTION TYPE
                         case 'K': //MULTIPLE NUMERICAL QUESTION
                             if (trim($val)=='' || !is_numeric($val)) // is_numeric error is done by EM : then show an error and same page again
@@ -5521,11 +5515,17 @@
                         $cSave->set_answer_time();
                     }
 
-                    if ($finished)
-                    {
+                    if ($finished) {
                         // Delete the save control record if successfully finalize the submission
-                        $query = "DELETE FROM {{saved_control}} where srid=".$_SESSION[$this->sessid]['srid'].' and sid='.$this->sid;
-                        Yii::app()->db->createCommand($query)->execute();
+                        $criteria = new CDbCriteria;
+                        $criteria->addCondition('srid=:srid');
+                        $criteria->addCondition('sid=:sid');
+                        $criteria->params = [':srid'=>$_SESSION[$this->sessid]['srid'],':sid'=>$this->sid];
+                        $savedControl = SavedControl::model()->findAll($criteria);
+
+                        if($savedControl){
+                            $savedControl->delete();
+                        }
 
                         if (($this->debugLevel & LEM_DEBUG_VALIDATION_SUMMARY) == LEM_DEBUG_VALIDATION_SUMMARY) {
                             $message .= ';<br />'.$query;
@@ -6292,7 +6292,6 @@
                                         $_SESSION[$LEM->sessid]['relevanceStatus'][$sq['rowdivid']]=false;
                                     }
                                 }
-                                break;
                             case 'A': //ARRAY (5 POINT CHOICE) radio-buttons
                             case 'B': //ARRAY (10 POINT CHOICE) radio-buttons
                             case 'C': //ARRAY (YES/UNCERTAIN/NO) radio-buttons
@@ -7134,7 +7133,7 @@
         * Also create list of variables that need to be declared
         * @return string : line to be added to content Javacript line + hidden input (can't use register script...)
         */
-        static function GetRelevanceAndTailoringJavaScript()
+        static function GetRelevanceAndTailoringJavaScript($bReturnArray=false)
         {
             $aQuestionsWithDependencies = array();
             $now = microtime(true);
@@ -7144,11 +7143,15 @@
             $allJsVarsUsed=array();
             $rowdividList=array();   // list of subquestions needing relevance entries
             /* All function for expression manager */
+            
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js" );
             /* Call the function when trigerring event */
-            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END,  array("class"=>"toRemoveOnAjax"));
+            App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
 
-            $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+            if (!$bReturnArray) {
+                $jsParts[] = "\n<script type='text/javascript'>\n<!--\n";
+            }
+
             $jsParts[] = "var LEMmode='" . $LEM->surveyMode . "';\n";
             if ($LEM->surveyMode == 'group')
             {
@@ -7293,9 +7296,27 @@
                      * $afHide - if true, then use jQuery.relevanceOn().  If false, then disable/enable the row
                      */
                     $afHide = (isset($LEM->qattr[$arg['qid']]['array_filter_style']) ? ($LEM->qattr[$arg['qid']]['array_filter_style'] == '0') : true);
-                    foreach ($subqParts as $sq) {
+                    $inputSelector = (($arg['type'] == 'R') ? '' :  ' :input:not(:hidden)');
+                    $updateColors = false;
+                    $updateHeadings = false;
+                    foreach ($subqParts as $sq)
+                    {
                         $rowdividList[$sq['rowdivid']] = $sq['result'];
-
+                        // make sure to update headings and colors for filtered questions (array filter and individual SQ relevance)
+                        if( ! empty($sq['type'])) {
+                            $updateColors = true;
+                            // js to fix colors
+                            // js to fix headings
+                            $repeatheadings = Yii::app()->getConfig("repeatheadings");
+                            if(isset($LEM->qattr[$arg['qid']]['repeat_headings']) && $LEM->qattr[$arg['qid']]['repeat_headings'] !== "") {
+                                $repeatheadings = $LEM->qattr[$arg['qid']]['repeat_headings'];
+                            }
+                            if($repeatheadings > 0)
+                            {
+                                $updateHeadings = true;
+                            }
+                        }
+                        // end
                         //this change is optional....changes to array should prevent "if( )"
                         $relParts[] = "  if ( " . (empty($sq['relevancejs'])?'1':$sq['relevancejs']) . " ) {\n";
                         if ($afHide) {
@@ -7385,6 +7406,14 @@
                             $allJsVarsUsed = array_merge($allJsVarsUsed,$sqvars);
                             $relJsVarsUsed = array_merge($relJsVarsUsed,$sqvars);
                         }
+                    }
+
+                    if ($updateColors) {
+                        $relParts[] = "updateColors('question".$arg['qid']."');\n";
+                    }
+
+                    if ($updateHeadings) {
+                        $relParts[] = "updateHeadings('question".$arg['qid']."', " .$repeatheadings.");\n";
                     }
 
                     // Do all tailoring
@@ -7822,7 +7851,10 @@
                 }
             }
 
-            $jsParts[] = "//-->\n</script>\n";
+            if (!$bReturnArray){
+                $jsParts[] = "//-->\n</script>\n";
+            }
+
 
             // Now figure out which variables have not been declared (those not on the current page)
             $undeclaredJsVars = array();
@@ -7868,7 +7900,13 @@
                 {
                     // TODO - is different type needed for text?  Or process value to striphtml?
                     if ($jsVar == '') continue;
-                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                    $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . substr($jsVar,4) .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+
+                    if ($bReturnArray){
+                        $inputParts[] = $sInput;
+                    }else{
+                        $jsParts[] = $sInput;
+                    }
                 }
             }
             else
@@ -7896,7 +7934,12 @@
                 foreach ($undeclaredJsVars as $jsVar)
                 {
                     if ($jsVar == '') continue;
-                    $jsParts[] = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                    $sInput = "<input type='hidden' id='" . $jsVar . "' name='" . $jsVar .  "' value='" . htmlspecialchars($undeclaredVal[$jsVar],ENT_QUOTES) . "'/>\n";
+                    if ($bReturnArray){
+                        $inputParts[] = $sInput;
+                    }else{
+                        $jsParts[] = $sInput;
+                    }
                 }
             }
             foreach ($qidList as $qid)
@@ -7907,7 +7950,12 @@
                 else {
                     $relStatus = 1;
                 }
-                $jsParts[] = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
+                $sInput = "<input type='hidden' id='relevance" . $qid . "' name='relevance" . $qid .  "' value='" . $relStatus . "'/>\n";
+                if ($bReturnArray){
+                    $inputParts[] = $sInput;
+                }else{
+                    $jsParts[] = $sInput;
+                }
             }
 
             foreach ($gseqList as $gseq)
@@ -7918,18 +7966,39 @@
                 else {
                     $relStatus = 1;
                 }
-                $jsParts[] = "<input type='hidden' id='relevanceG" . $gseq . "' name='relevanceG" . $gseq .  "' value='" . $relStatus . "'/>\n";
+                $sInput = "<input type='hidden' id='relevanceG" . $gseq . "' name='relevanceG" . $gseq .  "' value='" . $relStatus . "'/>\n";
+                if ($bReturnArray){
+                    $inputParts[] = $sInput;
+                }else{
+                    $jsParts[] = $sInput;
+                }
             }
             foreach ($rowdividList as $key=>$val)
             {
-                $jsParts[] = "<input type='hidden' id='relevance" . $key . "' name='relevance" . $key .  "' value='" . $val . "'/>\n";
+                $sInput = "<input type='hidden' id='relevance" . $key . "' name='relevance" . $key .  "' value='" . $val . "'/>\n";
+                if ($bReturnArray){
+                    $inputParts[] = $sInput;
+                }else{
+                    $jsParts[] = $sInput;
+                }
+
             }
             $LEM->runtimeTimings[] = array(__METHOD__,(microtime(true) - $now));
 
 
-            $jsParts[]="<input type='hidden' id='aQuestionsWithDependencies' data-qids='".json_encode($aQuestionsWithDependencies)."' />";
+            $sInput="<input type='hidden' id='aQuestionsWithDependencies' data-qids='".json_encode($aQuestionsWithDependencies)."' />";
+            if ($bReturnArray){
+                $inputParts[] = $sInput;
+            }else{
+                $jsParts[] = $sInput;
+            }
 
-            return implode('',$jsParts);
+            if ($bReturnArray){
+                return array( "scripts" => $jsParts, "inputs" => $inputParts);
+            }else{
+                return implode('',$jsParts);
+            }
+
         }
 
         static function setTempVars($vars)
@@ -8700,13 +8769,13 @@ EOD;
                                     // For an explanation of the exclamation mark, see this thread:
                                     // http://stackoverflow.com/questions/43740037/datetime-converts-wrong-when-system-time-is-30-march
                                     $dateTime = DateTime::createFromFormat('!' . $aDateFormatData['phpdate'], trim($value));
-
                                     if ($dateTime === false) {
                                         $message = sprintf(
                                             'Could not convert date %s to format %s. Please check your date format settings.',
                                             trim($value),
                                             $aDateFormatData['phpdate']
                                         );
+                                        $value = "INVALID"; // This don't disable submitting survey  … ("" neither)
                                         LimeExpressionManager::addFrontendFlashMessage('error', $message, $LEM->sid);
                                     } else {
                                         $newValue = $dateTime->format("Y-m-d H:i");
@@ -8714,7 +8783,7 @@ EOD;
                                         if($value == $newDateTime->format($aDateFormatData['phpdate'])) { // control if inverse function original value
                                             $value = $newValue;
                                         } else {
-                                            $value = "";// Or $value="INVALID" ? : dropdown is OK with this not default.
+                                            $value = "";// This don't disable submitting survey  … ("INVALID" neither)
                                         }
                                     }
                                 }
@@ -8723,7 +8792,7 @@ EOD;
                                 if (!preg_match('/_filecount$/', $sq))
                                 {
                                     $json = $value;
-                                    $phparray = json_decode(stripslashes($json));
+                                    $phparray = json_decode($json);
 
                                     // if the files have not been saved already,
                                     // move the files from tmp to the files folder
@@ -8790,20 +8859,16 @@ EOD;
         static public function isValidVariable($varName)
         {
             $LEM =& LimeExpressionManager::singleton();
-
-            if (isset($LEM->knownVars[$varName]))
-            {
+            if(isset($LEM->tempVars[$varName])) {
                 return true;
             }
-            else if (isset($LEM->qcode2sgqa[$varName]))
-                {
-                    return true;
-                }
-                else if (isset($LEM->tempVars[$varName]))
-                    {
-                        return true;
-                    }
-                    return false;
+            if(isset($LEM->knownVars[$varName])) {
+                return true;
+            }
+            if(isset($LEM->qcode2sgqa[$varName])) {
+                return true;
+            }
+            return false;
         }
 
         /**
@@ -8827,21 +8892,17 @@ EOD;
             $varName = $args[0];
             $varName = preg_replace("/^(?:INSERTANS:)?(.*?)$/", "$1", $varName);
 
-            if (isset($this->knownVars[$varName]))
-            {
+            if( isset($this->tempVars[$varName]) ) {
+                // Forced value
+                $var = $this->tempVars[$varName];
+            } elseif ( isset($this->knownVars[$varName]) ) {
+                // SGQA from survey (session)
                 $var = $this->knownVars[$varName];
-            }
-            else if (isset($this->qcode2sgqa[$varName]))
-                {
-                    $var = $this->knownVars[$this->qcode2sgqa[$varName]];
-                }
-                else if (isset($this->tempVars[$varName]))
-                    {
-                        $var = $this->tempVars[$varName];
-                    }
-                    else
-                    {
-                        return '{' . $name . '}';
+            } elseif ( isset($this->qcode2sgqa[$varName]) ) {
+                // QCODE from survey (session) or template_replace core value
+                $var = $this->knownVars[$this->qcode2sgqa[$varName]];
+            } else {
+                return '{' . $name . '}';
             }
             $sgqa = isset($var['sgqa']) ? $var['sgqa'] : NULL;
             if (is_null($attr))
@@ -8863,6 +8924,7 @@ EOD;
                     return '';
                 }
             }
+
             switch ($attr)
             {
                 case 'varName':
@@ -9228,7 +9290,7 @@ EOD;
         * @param boolean|null $assessments
         * @return array
         */
-        static public function ShowSurveyLogicFile($sid, $gid=NULL, $qid=NULL,$LEMdebugLevel=0,$assessments=false)
+        static public function ShowSurveyLogicFile($sid, $gid=NULL, $qid=NULL,$LEMdebugLevel=0,$assessments=NULL)
         {
             // Title
             // Welcome
@@ -9241,14 +9303,14 @@ EOD;
             $LEM =& LimeExpressionManager::singleton();
             $LEM->sPreviewMode='logic';
             $aSurveyInfo=getSurveyInfo($sid,$_SESSION['LEMlang']);
-            $aAttributesDefinitions=\ls\helpers\questionHelper::getAttributesDefinitions();
+            $aAttributesDefinitions=\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions();
             /* All final survey string must be shown in survey language #12208 */
             Yii::app()->setLanguage(Yii::app()->session['LEMlang']);
             $allErrors = array();
             $warnings = 0;
 
             $surveyOptions = array(
-            'assessments'=>($aSurveyInfo['assessments']=='Y'),
+            'assessments'=> $assessments===NULL ? ($aSurveyInfo['assessments']=='Y') : $assessments,
             'hyperlinkSyntaxHighlighting'=>true,
             );
 
@@ -9296,32 +9358,37 @@ EOD;
                     $LEM->ProcessString($aSurveyInfo['surveyls_description'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Description:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("Description:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_welcometext'] != '')
                 {
                     $LEM->ProcessString($aSurveyInfo['surveyls_welcometext'],0);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("Welcome:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td >" . $LEM->gT("Welcome:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_endtext'] != '')
                 {
                     $LEM->ProcessString($aSurveyInfo['surveyls_endtext']);
                     $sPrint= viewHelper::purified(viewHelper::filterScript($LEM->GetLastPrettyPrintExpression()));
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End message:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("End message:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
                 if ($aSurveyInfo['surveyls_url'] != '')
                 {
                     $LEM->ProcessString($aSurveyInfo['surveyls_urldescription']." - ".$aSurveyInfo['surveyls_url']);
                     $sPrint= viewHelper::purified($LEM->GetLastPrettyPrintExpression());
                     $errClass = ($LEM->em->HasErrors() ? 'danger' : '');
-                    $out .= "<tr class='LEMgroup $errClass'><td colspan=2>" . $LEM->gT("End URL:") . "</td><td colspan=2>" . $sPrint . "</td></tr>";
+                    $out .= "<tr class='LEMgroup $errClass'><td>" . $LEM->gT("End URL:") . "</td><td colspan=\"3\">" . $sPrint . "</td></tr>";
                 }
             }
 
-            $out .= "<tr><th>#</th><th>".$LEM->gT('Name [ID]')."</th><th>".$LEM->gT('Relevance [Validation] (Default value)')."</th><th>".$LEM->gT('Text [Help] (Tip)')."</th></tr>\n";
+            $out .= "<tr>
+            <th class=\"column-0\">#</th>
+            <th class=\"column-1\">".$LEM->gT('Name [ID]')."</th>
+            <th class=\"column-2\">".$LEM->gT('Relevance [Validation] (Default value)')."</th>
+            <th class=\"column-3\">".$LEM->gT('Text [Help] (Tip)')."</th>
+            </tr>\n";
 
             $_gseq=-1;
             foreach ($LEM->currentQset as $q) {
@@ -9403,9 +9470,9 @@ EOD;
                     {
                         ++$errorCount;
                     }
-                    $sQuestionHelp = '<hr/>[' . $LEM->gT("Help:") . ' ' . $sQuestionHelp . ']';
+                    $sQuestionHelp = '<hr />[' . $LEM->gT("Help:") . ' ' . $sQuestionHelp . ']';
                 }
-                $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr/>(' . $LEM->gT("Tip:") . ' ' . viewHelper::stripTagsEM($q['prettyValidTip']) . ')');// Unsure need to filter
+                $prettyValidTip = (($q['prettyValidTip'] == '') ? '' : '<hr />(' . $LEM->gT("Tip:") . ' ' . viewHelper::stripTagsEM($q['prettyValidTip']) . ')');// Unsure need to filter
 
                 //////
                 // SHOW QUESTION ATTRIBUTES THAT ARE PROCESSED BY EM
@@ -9566,7 +9633,7 @@ EOD;
                         'hasErrors' => $hasErrors,
                         );
                     }
-                    $prettyValidEqn = '<hr/>(VALIDATION: ' . $LEM->ParseResultCache[$validationEqn]['prettyprint'] . ')';
+                    $prettyValidEqn = '<hr />(VALIDATION: ' . $LEM->ParseResultCache[$validationEqn]['prettyprint'] . ')';
                     if ($LEM->ParseResultCache[$validationEqn]['hasErrors']) {
                         ++$errorCount;
                     }
@@ -9845,7 +9912,7 @@ EOD;
             );
 
             // Advanced question attributes : @todo get used question attribute by question in survey ?
-            $aQuestionAttributes=array_keys(\ls\helpers\questionHelper::getAttributesDefinitions());
+            $aQuestionAttributes=array_keys(\LimeSurvey\Helpers\questionHelper::getAttributesDefinitions());
             sort($aQuestionAttributes);
             $fields=array_merge($aBaseFields,$aQuestionAttributes);
 
@@ -10495,6 +10562,25 @@ EOD;
         public function setCurrentQset(array $val)
         {
             $this->currentQset = $val;
+        }
+
+        /**
+         * Used for unit tests.
+         * @param mixed $val
+         * @return void
+         */
+        public function setKnownVars($val) {
+            $this->knownVars = $val;
+        }
+
+        /**
+         * Used for unit tests.
+         * @param mixed $info
+         * @return void
+         */
+        public function setPageRelevanceInfo($info)
+        {
+            $this->pageRelevanceInfo = $info;
         }
 
     }

@@ -248,7 +248,6 @@ class Survey_Common_Action extends CAction
         if (!empty($sAction))
             $sViewPath .= $sAction . '/';
 
-
         ob_start(); //// That was used before the MVC pattern, in procedural code. Will not be used anymore.
 
         $this->_showHeaders($aData); //// THe headers will be called from the layout
@@ -270,11 +269,12 @@ class Survey_Common_Action extends CAction
             $aData['debug'] = $aData;
             $this->_titlebar($aData);
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="ls-flex-row align-items-flex-center align-content-center">';
+            echo '<div id="pjax-file-load-container" class="ls-flex-row col-12"><div style="height:2px;width:0px;"></div></div>';
+            echo '<div id="vue-app-main-container" class="ls-flex-row align-items-flex-center align-content-center" :style="{\'min-height\': $store.state.generalContainerHeight+\'px\'}">';
             //// Each view will call the correct bar as a subview.
             $this->_surveysidemenu($aData);
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-12">';
+            echo '<div class="ls-flex-column align-items-flex-start align-content-center col-11 ls-flex-item transition-animate-width" v-bind:style="\'max-width:\'+$store.getters.substractContainer" id="pjax-content">';
             $this->_surveybar($aData);
             $this->_nquestiongroupbar($aData);
             $this->_questionbar($aData);
@@ -283,7 +283,7 @@ class Survey_Common_Action extends CAction
             $this->_organizequestionbar($aData);
 
             //// TODO : Move this div inside each correct view ASAP !
-            echo '<div class="container-fluid ls-flex-column fill col-12" id="in_survey_common">';
+            echo '<div class="container-fluid ls-flex-column fill col-12 overflow-enabled" id="in_survey_common">';
 
             $this->_updatenotification();
             $this->_notifications();
@@ -310,7 +310,6 @@ class Survey_Common_Action extends CAction
         //// Here the rendering of all the subviews process. Will not be use anymore, because each subview will be directly called from her parent view.
 
         ////  TODO : while refactoring, we must replace the use of $aViewUrls by $aData[.. conditions ..], and then call to function such as $this->_nsurveysummary($aData);
-
         // Load views
         foreach ($aViewUrls as $sViewKey => $viewUrl)
         {
@@ -362,11 +361,12 @@ class Survey_Common_Action extends CAction
 
         //// TODO : Move this divs inside each correct view ASAP !
         echo '</div>' ;
-        echo '</div>' ;
-        echo '</div>' ;
 
         if (!empty($aData['surveyid']))
         {
+            echo '</div>' ;
+            echo '</div>' ;
+            echo '</div>' ;
             echo '</div>' ;
         }
 
@@ -638,10 +638,9 @@ class Survey_Common_Action extends CAction
                 // Check if other questions in the Survey are dependent upon this question
                 $condarray = getQuestDepsForConditions($iSurveyID, "all", "all", $qid, "by-targqid", "outsidegroup");
 
-                $surveyinfo = $oSurvey->attributes;
-
-                $surveyinfo = array_map('flattenText', $surveyinfo);
-                $aData['activated'] = $surveyinfo['active'];
+                // $surveyinfo = $oSurvey->attributes;
+                // $surveyinfo = array_map('flattenText', $surveyinfo);
+                $aData['activated'] =  $oSurvey->active;
 
                 $qrrow = $qrrow->attributes;
                 $aData['languagelist'] = $oSurvey->getAllLanguages();
@@ -718,11 +717,11 @@ class Survey_Common_Action extends CAction
             $sumresult1 = Survey::model()->with(array(
                 'languagesettings' => array('condition' => 'surveyls_language=language'))
                 )->findByPk($surveyid); //$sumquery1, 1) ; //Checked //  if surveyid is invalid then die to prevent errors at a later time
-            $surveyinfo = $sumresult1->attributes;
-            $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-            $surveyinfo = array_map('flattenText', $surveyinfo);
+            // $surveyinfo = $sumresult1->attributes;
+            // $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
+            // $surveyinfo = array_map('flattenText', $surveyinfo);
             //$surveyinfo = array_map('htmlspecialchars', $surveyinfo);
-            $aData['activated'] = $activated = $surveyinfo['active'];
+            $aData['activated'] = $activated = $sumresult1->active;
 
             $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
             $aData['condarray'] = $condarray;
@@ -912,8 +911,8 @@ class Survey_Common_Action extends CAction
      */
     function _surveysidemenu($aData)
     {
-
         $iSurveyID = $aData['surveyid'];
+
         $survey=Survey::model()->findByPk($iSurveyID);
         // TODO : create subfunctions
         $sumresult1 = Survey::model()->with(array(
@@ -932,9 +931,9 @@ class Survey_Common_Action extends CAction
         }
 
         if (!is_null($sumresult1)) {
-            $surveyinfo = $sumresult1->attributes;
-            $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
-            $surveyinfo = array_map('flattenText', $surveyinfo);
+            // $surveyinfo = $sumresult1->attributes;
+            // $surveyinfo = array_merge($surveyinfo, $sumresult1->defaultlanguage->attributes);
+            // $surveyinfo = array_map('flattenText', $surveyinfo);
             $aData['activated'] = $survey->isActive;
 
             // Tokens
@@ -968,6 +967,7 @@ class Survey_Common_Action extends CAction
                     }
                 }
             }
+
             $aData['quickmenu'] = $this->renderQuickmenu($aData);
             $aData['beforeSideMenuRender'] = $this->beforeSideMenuRender($aData);
             $aData['aGroups'] = $aGroups;
@@ -1283,40 +1283,23 @@ class Survey_Common_Action extends CAction
     public function _userGroupBar(array $aData)
     {
         $ugid = (isset($aData['ugid'])) ? $aData['ugid'] : 0 ;
-        if (!empty($aData['display']['menu_bars']['user_group']))
-        {
+        if (!empty($aData['display']['menu_bars']['user_group'])) {
             $data = $aData;
             Yii::app()->loadHelper('database');
 
             if (!empty($ugid)) {
-                $sQuery = "SELECT gp.* FROM {{user_groups}} AS gp, {{user_in_groups}} AS gu WHERE gp.ugid=gu.ugid AND gp.ugid = {$ugid}";
-                if (!Permission::model()->hasGlobalPermission('superadmin','read'))
-                {
-                    $sQuery .=" AND gu.uid = ".Yii::app()->session['loginID'];
+                $userGroup = UserGroup::model()->findByPk($ugid);
+                $uid = Yii::app()->session['loginID'];
+                if($userGroup && $userGroup->hasUser($uid)){
+                    $data['userGroup'] = $userGroup;
+                }else{
+                    $data['userGroup'] = null;
                 }
-
-                $grpresult = Yii::app()->db->createCommand($sQuery)->queryRow();  //Checked
-
-                if ($grpresult) {
-                    $grpresultcount=1;
-                    $grow = array_map('htmlspecialchars', $grpresult);
-                }
-                else
-                {
-                    $grpresultcount=0;
-                    $grow = false;
-                }
-
-                $data['grow'] = $grow;
-                $data['grpresultcount'] = $grpresultcount;
-
             }
 
-            $data['ugid'] = $ugid;
             $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
 
-            if(isset($aData['usergroupbar']['closebutton']['url']))
-            {
+            if(isset($aData['usergroupbar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
                 $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
             }

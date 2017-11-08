@@ -105,7 +105,7 @@ class conditionsaction extends Survey_Common_Action {
         Yii::app()->loadHelper("database");
 
         $aData['sidemenu']['state'] = false;
-        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = gT("Conditions designer");
 
         $aData['subaction'] = gT("Conditions designer");
         $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;  // Close button
@@ -348,7 +348,7 @@ class conditionsaction extends Survey_Common_Action {
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
             $aData['sCurrentQuestionText'] = $questiontitle .': '.viewHelper::flatEllipsizeText($sCurrentFullQuestionText,true,'120');
-            $aData['subaction'] = $subaction;
+            //$aData['subaction'] = $subaction;
             $aData['scenariocount'] = $scenariocount;
             $aViewUrls['conditionslist_view'][] = $aData;
 

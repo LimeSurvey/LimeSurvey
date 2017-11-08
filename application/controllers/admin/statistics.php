@@ -549,11 +549,10 @@ class statistics extends Survey_Common_Action {
         Yii::app()->loadHelper("surveytranslator");
 
         // Initialise PCHART
-        require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pChart.class');
-        require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pData.class');
-        require_once(Yii::app()->basePath . '/third_party/pchart/pchart/pCache.class');
-
-
+        require_once(Yii::app()->basePath . '/third_party/pchart/pChart.class.php');
+        require_once(Yii::app()->basePath . '/third_party/pchart/pData.class.php');
+        require_once(Yii::app()->basePath . '/third_party/pchart/pCache.class.php');
+                                                             
         Yii::import('application.third_party.ar-php.Arabic', true);
 
         $tempdir = Yii::app()->getConfig("tempdir");
@@ -843,6 +842,8 @@ class statistics extends Survey_Common_Action {
         $aData['sidemenu']['state'] = false;
         $iSurveyId = $aData['surveyid'];
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
+        $aData['title_bar']['subaction'] = gT('Statistics');
+        $aData['subaction'] = gT('Statistics');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

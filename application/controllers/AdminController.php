@@ -44,8 +44,8 @@ class AdminController extends LSYii_Controller
         // This line is needed for template editor to work
         $oAdminTheme = AdminTheme::getInstance();
 
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') .  'admin_core.js');
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'notifications.js' );
+        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') .  'admin_core.js');
+        // App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('adminscripts') . 'notifications.js' );
     }
 
     /**
@@ -102,24 +102,21 @@ class AdminController extends LSYii_Controller
     {
         // From personal settings
         if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
-            if (Yii::app()->request->getPost('lang')=='auto')
-            {
+            if (Yii::app()->request->getPost('lang')=='auto') {
                 $sLanguage= getBrowserLanguage();
-            }
-            else
-            {
+            } else {
                 $sLanguage=sanitize_languagecode(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
-
-        if (empty(Yii::app()->session['adminlang']))
+        if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-
+        }
         Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
 
-        if (!empty($this->user_id))
+        if (!empty($this->user_id)) {
             $this->_GetSessionUserRights($this->user_id);
+        }
     }
 
     /**
@@ -214,7 +211,9 @@ class AdminController extends LSYii_Controller
         'validate'         => 'ExpressionValidate',
         'globalsettings'   => 'globalsettings',
         'htmleditor_pop'   => 'htmleditor_pop',
-        'homepagesettings'   => 'homepagesettings',
+        'homepagesettings' => 'homepagesettings',
+        'templateoptions'  => 'templateoptions',
+        'surveysgroups'    => 'SurveysGroupsController',
         'limereplacementfields' => 'limereplacementfields',
         'index'            => 'index',
         'labels'           => 'labels',
@@ -237,7 +236,11 @@ class AdminController extends LSYii_Controller
         'translate'        => 'translate',
         'update'           => 'update',
         'pluginhelper'     => 'PluginHelper',
-        'notification'     => 'NotificationController'
+        'notification'     => 'NotificationController',
+        'menus'            => 'SurveymenuController',
+        'menuentries'      => 'SurveymenuEntryController',
+        'tutorial'         => 'TutorialsController',
+        'tutorialentries'  => 'TutorialEntryController'
         );
     }
 
@@ -276,8 +279,9 @@ class AdminController extends LSYii_Controller
     */
     public function _getAdminHeader($meta = false, $return = false)
     {
-        if (empty(Yii::app()->session['adminlang']))
+        if (empty(Yii::app()->session['adminlang'])) {
             Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
+        }
 
         $aData = array();
         $aData['adminlang'] = Yii::app()->language;

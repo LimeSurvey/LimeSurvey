@@ -15,11 +15,14 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * This is the model class for table "{{template_configuration}}".
  *
+ * NOTE: if you only need to access to the table, you don't need to call prepareTemplateRendering
+ *
  * The followings are the available columns in table '{{template_configuration}}':
- * @property string $id
- * @property string $templates_name
- * @property string $gsid
- * @property string $sid
+ * @property integer $id Primary key
+ * @property string $template_name
+ * @property integer $sid Survey ID
+ * @property integer $gsid
+ * @property integer $uid user ID
  * @property string $files_css
  * @property string $files_js
  * @property string $files_print_css
@@ -27,68 +30,49 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  * @property string $cssframework_name
  * @property string $cssframework_css
  * @property string $cssframework_js
- * @property string $viewdirectory
- * @property string $filesdirectory
  * @property string $packages_to_load
+ * @property string $packages_ltr
  * @property string $packages_rtl
- *
+ * @property string $packages_rtl
  *
  * @package       LimeSurvey
  * @subpackage    Backend
  */
-class TemplateConfiguration extends CActiveRecord
+class TemplateConfiguration extends TemplateConfig
 {
-    /** @var string $sTemplateName The template name */
-    public $sTemplateName='';
 
-    /** @var string $sPackageName Name of the asset package of this template*/
-    public $sPackageName;
+    /**
+     * @var TemplateConfiguration $oParentTemplate The parent template name
+     * A template configuration, in the database, can inherit from another one.
+     * This used to manage the different configuration levels for a very same template: global, survey group, survey
+     * This is not related to motherTemplate (inheritance between two different templates)
+     */
+    public $oParentTemplate;
 
-    /** @var  string $path Path of this template */
-    public $path;
+    /**@var boolean Should the magic getters automatically retreives the parent value when field is set to inherit. Only turn to on for template rendering  */
+    public $bUseMagicInherit = false;
 
-    /** @var string[] $sTemplateurl Url to reach the framework */
-    public $sTemplateurl;
+    // Caches
 
-    /** @var  string $viewPath Path of the views files (twig template) */
-    public $viewPath;
+    /** @var string $sPreviewImgTag the template preview image tag for the template list*/
+    public $sPreviewImgTag;
 
-    /** @var  string $filesPath Path of the tmeplate's files */
-    public $filesPath;
+    /** @var boolean $bTemplateCheckResult is the template valid?*/
+    private $bTemplateCheckResult;
 
-    /** @var string[] $cssFramework What framework css is used */
-    public $cssFramework;
+    /** @var string $sTypeIcon the type of template for icon (core vs user)*/
+    private $sTypeIcon;
 
-    /** @var boolean $isStandard Is this template a core one? */
-    public $isStandard;
+    /** @var array $aFilesToLoad cache for the method getFilesToLoad()*/
+    private $aFilesToLoad;
 
-    /** @var SimpleXMLElement $config Will contain the config.xml */
-    public $config;
+    /** @var array $aFrameworkAssetsToReplace cache for the method getFrameworkAssetsToReplace()*/
+    private $aFrameworkAssetsToReplace;
 
-    /** @var TemplateConfiguration $oMotherTemplate The template name */
-    public $oMotherTemplate;
-
-    /** @var SimpleXMLElement $oOptions The template options */
-    public $oOptions;
+    /** @var array $aReplacements cache for the method getFrameworkAssetsReplacement */
+    private $aReplacements;
 
 
-    /** @var string $iSurveyId The current Survey Id. It can be void. It's use only to retreive the current template of a given survey */
-    private $iSurveyId='';
-
-    /** @var string $hasConfigFile Does it has a config.xml file? */
-    private $hasConfigFile='';//
-
-    /** @var stdClass[] $packages Array of package dependencies defined in config.xml*/
-    private $packages;
-
-    /** @var string[] $depends List of all dependencies (could be more that just the config.xml packages) */
-    private $depends = array();
-
-    /** @var string $xmlFile What xml config file does it use? (config/minimal) */
-    private $xmlFile;
-
-    /**  @var integer $apiVersion: Version of the LS API when created. Must be private : disallow update */
-    private $apiVersion;
     /**
      * @return string the associated database table name
      */
@@ -105,14 +89,13 @@ class TemplateConfiguration extends CActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('templates_name', 'required'),
+            array('template_name', 'required'),
             array('id, sid, gsid', 'numerical', 'integerOnly'=>true),
-            array('templates_name', 'length', 'max'=>150),
+            array('template_name', 'length', 'max'=>150),
             array('cssframework_name', 'length', 'max'=>45),
             array('files_css, files_js, files_print_css, options, cssframework_css, cssframework_js, packages_to_load', 'safe'),
             // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
-            array('id, templates_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on'=>'search'),
+            array('id, template_name, sid, gsid, files_css, files_js, files_print_css, options, cssframework_name, cssframework_css, cssframework_js, packages_to_load', 'safe', 'on'=>'search'),
         );
     }
 
@@ -122,7 +105,7 @@ class TemplateConfiguration extends CActiveRecord
     public function relations()
     {
         return array(
-            'template' => array(self::HAS_ONE, 'Template', array('name' => 'templates_name')),
+            'template' => array(self::HAS_ONE, 'Template', array('name' => 'template_name'), 'together' => true),
         );
     }
 
@@ -133,7 +116,7 @@ class TemplateConfiguration extends CActiveRecord
     {
         return array(
             'id' => 'ID',
-            'templates_name' => 'Templates Name',
+            'template_name' => 'Templates Name',
             'sid' => 'Sid',
             'gsid' => 'Gsid',
             'files_css' => 'Files Css',
@@ -146,6 +129,128 @@ class TemplateConfiguration extends CActiveRecord
             'packages_to_load' => 'Packages To Load',
         );
     }
+
+    /**
+     * Gets an instance of a templateconfiguration by name
+     *
+     * @return TemplateConfiguration
+     */
+    public static function getInstanceFromConfigurationId($iTemplateConfigId){
+        $oTemplateConfiguration = self::model()->findByPk($iTemplateConfigId);
+        $oTemplateConfiguration->setThisTemplate();
+        return $oTemplateConfiguration;
+    }
+
+    /**
+     * Gets an instance of a templateconfiguration by name
+     *
+     * @param [String] $sTemplateName
+     * @return TemplateConfiguration
+     */
+    public static function getInstanceFromTemplateName($sTemplateName){
+        return  self::model()->find(
+            'template_name=:template_name AND sid IS NULL AND gsid IS NULL',
+            array(':template_name'=>$sTemplateName)
+        );
+    }
+
+    /**
+     * Returns a TemplateConfiguration Object based on a surveygroup ID
+     * If no instance is existing, it will create one.
+     *
+     * @param [Integer] $iSurveyGroupId
+     * @param [String] $sTemplateName
+     * @return TemplateConfiguration
+     */
+    public static function getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName=null){
+
+        //if a template name is given also check against that
+        $sTemplateName = $sTemplateName != null ? $sTemplateName : SurveysGroups::model()->findByPk($iSurveyGroupId)->template;
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('gsid=:gsid');
+        $criteria->addCondition('template_name=:template_name');
+        $criteria->params = array('gsid' => $iSurveyGroupId, 'template_name' => $sTemplateName);
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+
+        // No specific template configuration for this surveygroup => create one
+        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
+        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration') && $sTemplateName != null){
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->id = null;
+            $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->gsid = $iSurveyGroupId;
+            $oTemplateConfigurationModel->setToInherit();
+            $oTemplateConfigurationModel->save();
+        }
+
+        return $oTemplateConfigurationModel;
+
+    }
+
+    /**
+     * Returns a TemplateConfiguration Object based on a surveyID
+     * If no instance is existing, it will create one.
+     *
+     * @param [Integer] $iSurveyId
+     * @param [String] $sTemplateName
+     * @return TemplateConfiguration
+     */
+    public static function getInstanceFromSurveyId($iSurveyId, $sTemplateName=null){
+
+        //if a template name is given also check against that
+        $sTemplateName = $sTemplateName!=null ? $sTemplateName : Survey::model()->findByPk($iSurveyId)->template;
+
+        $criteria = new CDbCriteria();
+        $criteria->addCondition('sid=:sid');
+        $criteria->addCondition('template_name=:template_name');
+        $criteria->params = array('sid' => $iSurveyId, 'template_name' => $sTemplateName);
+
+        $oTemplateConfigurationModel = TemplateConfiguration::model()->find($criteria);
+
+
+        // No specific template configuration for this surveygroup => create one
+        // TODO: Move to SurveyGroup creation, right now the 'lazy loading' approach is ok.
+        if (!is_a($oTemplateConfigurationModel, 'TemplateConfiguration')  && $sTemplateName != null){
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+            $oTemplateConfigurationModel->id = null;
+            $oTemplateConfigurationModel->isNewRecord = true;
+            $oTemplateConfigurationModel->sid = $iSurveyId;
+            $oTemplateConfigurationModel->setToInherit();
+            $oTemplateConfigurationModel->save();
+        }
+
+        return $oTemplateConfigurationModel;
+    }
+
+    /**
+     * Get an instance of a fitting TemplateConfiguration
+     *
+     * @param [String] $sTemplateName
+     * @param [Integer] $iSurveyGroupId
+     * @param [Integer] $iSurveyId
+     * @return TemplateConfiguration
+     */
+    public static function getInstance($sTemplateName=null, $iSurveyGroupId=null, $iSurveyId=null){
+
+        $oTemplateConfigurationModel = new TemplateConfiguration();
+
+        if ($sTemplateName!=null){
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromTemplateName($sTemplateName);
+        }
+
+        if($iSurveyGroupId!=null && $iSurveyId==null) {
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyGroup($iSurveyGroupId, $sTemplateName);
+        }
+
+        if($iSurveyId!=null) {
+            $oTemplateConfigurationModel = TemplateConfiguration::getInstanceFromSurveyId($iSurveyId, $sTemplateName);
+        }
+
+        return $oTemplateConfigurationModel;
+
+    }
+
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.
@@ -165,10 +270,12 @@ class TemplateConfiguration extends CActiveRecord
 
         $criteria=new CDbCriteria;
 
+        //Don't show surveyspecifi settings on the overview
+        $criteria->addCondition('sid IS NULL');
+        $criteria->addCondition('gsid IS NULL');
+
         $criteria->compare('id',$this->id);
-        $criteria->compare('templates_name',$this->templates_name,true);
-        $criteria->compare('sid',$this->sid);
-        $criteria->compare('gsid',$this->gsid);
+        $criteria->compare('template_name',$this->template_name,true);
         $criteria->compare('files_css',$this->files_css,true);
         $criteria->compare('files_js',$this->files_js,true);
         $criteria->compare('files_print_css',$this->files_print_css,true);
@@ -183,186 +290,275 @@ class TemplateConfiguration extends CActiveRecord
         ));
     }
 
-
-
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return TemplateConfigurationDB the static model class
+     * @return TemplateConfiguration the static model class
      */
     public static function model($className=__CLASS__)
     {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 
+
     /**
-     * Create a new entry in {{templates}} table using a xml file
+     * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
+     * @param string $sTemplateName the name of the template to import
+     * @return boolean true on success | exception
+     * @throws Exception
      */
-    public static function importXML($sTemplateName)
+    public static function importManifest($sTemplateName, $aDatas=array() )
     {
-        $oEditedTemplate                      = Template::model()->getTemplateConfiguration($sTemplateName, '', false);
-        $oEditTemplateDb                      = Template::model()->findByPk($oEditedTemplate->oMotherTemplate->sTemplateName);
-        $oNewTemplate                         = new Template;
-        $oNewTemplate->name                   = $oEditedTemplate->sTemplateName;
-        $oNewTemplate->folder                 = $oEditedTemplate->sTemplateName;
-        $oNewTemplate->title                  = $oEditedTemplate->sTemplateName;  // For now, when created via template editor => name == folder == title
-        $oNewTemplate->creation_date          = date("Y-m-d H:i:s");
-        $oNewTemplate->author                 = Yii::app()->user->name;
-        $oNewTemplate->author_email           = ''; // privacy
-        $oNewTemplate->author_url             = ''; // privacy
-        $oNewTemplate->api_version            = $oEditTemplateDb->api_version;
-        $oNewTemplate->view_folder            = $oEditTemplateDb->view_folder;
-        $oNewTemplate->files_folder           = $oEditTemplateDb->files_folder;
-        //$oNewTemplate->description           TODO: a more complex modal whith email, author, url, licence, desc, etc
-        $oNewTemplate->owner_id               = Yii::app()->user->id;
-        $oNewTemplate->extends_templates_name = $oEditedTemplate->oMotherTemplate->sTemplateName;
+        if ( !empty($aDatas['extends'])  ){
 
-        if ($oNewTemplate->save()){
-            $oNewTemplateConfiguration                    = new TemplateConfiguration;
-            $oNewTemplateConfiguration->templates_name    = $oEditedTemplate->sTemplateName;
-            if ($oNewTemplateConfiguration->save()){
-                return true;
-            }else{
-                throw new Exception($oNewTemplateConfiguration->getErrors());
+            $oMotherTemplate = self::getInstanceFromTemplateName($aDatas['extends']);
+            if (is_a($oMotherTemplate, 'TemplateConfiguration')) {
+                $aDatas['api_version']     = $oMotherTemplate->template->api_version;
+                $aDatas['view_folder']     = $oMotherTemplate->template->view_folder;
+                $aDatas['author_email']    = $oMotherTemplate->template->author_email;
+                $aDatas['author_url']      = $oMotherTemplate->template->author_url;
+                $aDatas['copyright']       = $oMotherTemplate->template->copyright;
+                $aDatas['version']         = $oMotherTemplate->template->version;
+                $aDatas['license']         = $oMotherTemplate->template->license;
+                $aDatas['files_folder']    = $oMotherTemplate->template->files_folder;
+                $aDatas['aOptions']        =  json_decode($oMotherTemplate->options);
             }
-        }else{
-            throw new Exception($oNewTemplate->getErrors());
         }
+
+        return parent::importManifest($sTemplateName, $aDatas );
+    }
+
+    public function setToInherit(){
+        $this->files_css         = 'inherit';
+        $this->files_js          = 'inherit';
+        $this->files_print_css   = 'inherit';
+        $this->options           = 'inherit';
+        $this->cssframework_name = 'inherit';
+        $this->cssframework_css  = 'inherit';
+        $this->cssframework_js   = 'inherit';
+        $this->packages_to_load  = 'inherit';
+    }
+
+    public function checkTemplate()
+    {
+        if (empty($this->bTemplateCheckResult)){
+            $this->bTemplateCheckResult = true;
+            if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)&& !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
+                $this->bTemplateCheckResult = false;
+            }
+        }
+        return $this->bTemplateCheckResult;
     }
 
     /**
-     * Constructs a template configuration object
+     * Prepare all the needed datas to render the temple
      * If any problem (like template doesn't exist), it will load the default template configuration
+     * NOTE 1: This function will create/update all the packages needed to render the template, which imply to do the same for all mother templates
+     * NOTE 2: So if you just want to access the TemplateConfiguration AR Object, you don't need to call it. Call it only before rendering anything related to the template.
      *
      * @param  string $sTemplateName the name of the template to load. The string comes from the template selector in survey settings
      * @param  string $iSurveyId the id of the survey. If
+     * @param bool $bUseMagicInherit
      * @return $this
      */
-    public function setTemplateConfiguration($sTemplateName='', $iSurveyId='')
+    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true)
     {
-        $this->sTemplateName = $this->template->name;
-        $this->setIsStandard();                                                 // Check if  it is a CORE template
-        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
+        $this->bUseMagicInherit = $bUseMagicInherit;
+        $this->setBasics($sTemplateName, $iSurveyId);
         $this->setMotherTemplates();                                            // Recursive mother templates configuration
         $this->setThisTemplate();                                               // Set the main config values of this template
         $this->createTemplatePackage($this);                                    // Create an asset package ready to be loaded
         return $this;
     }
 
+    public function setBasics($sTemplateName='', $iSurveyId='')
+    {
+        $this->sTemplateName = $this->template->name;
+        $this->setIsStandard();                                                 // Check if  it is a CORE template
+        $this->path = ($this->isStandard)
+            ? Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder
+            : Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
+    }
+
     /**
-     * get the template API version
-     * @return integer
+     * Add a file replacement in the field `file_{css|js|print_css}` in table {{template_configuration}},
+     * eg: {"replace": [ {original files to replace here...}, "css/template.css",]}
+     * In general, should be called from TemplateManifest, after adding a file replacement inside the manifest.
+     *
+     * @param string $sFile the file to replace
+     * @param string $sType css|js
+     * @return bool|void
+     * @throws Exception
      */
-    public function getApiVersion()
+    public function addFileReplacement($sFile, $sType)
     {
-        return $this->apiVersion;
-    }
+        $sField = 'files_'.$sType;
+        $oFiles = (array) json_decode($this->$sField);
 
-    /**
-    * Returns the complete URL path to a given template name
-    *
-    * @param string $sTemplateName
-    * @return string template url
-    */
-    public function getTemplateURL()
-    {
-        if(!isset($this->sTemplateurl)){
-            $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
+        $oFiles['replace'][] = $sFile;
+
+        $this->$sField = json_encode($oFiles);
+
+        if ($this->save()){
+            return true;
+        }else{
+            throw new Exception("could not add $sFile to  $sField replacements! ".$this->getErrors());
         }
-        return $this->sTemplateurl;
     }
 
-    public function addFileReplacementInDB($sFile, $sType)
+    public function getTypeIcon()
     {
-        $sField = 'file_'.$sType;
-        $oFiles = json_decode($this->$sField);
+        if (empty($this->sTypeIcon)){
+            $this->sTypeIcon = (Template::isStandardTemplate($this->template->name))?gT("Core template"):gT("User template");
+        }
+        return $this->sTypeIcon;
+    }
 
-        if (is_null($oFiles)){
-            $oFiles    = new \stdClass();
 
-
+    public function getButtons()
+    {
+        $sEditorUrl    = Yii::app()->getController()->createUrl('admin/templates/sa/view', array("templatename"=>$this->template_name));
+        if (App()->getController()->action->id == "surveysgroups"){
+            $gisd = Yii::app()->request->getQuery('id', null);
+            $sOptionUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/updatesurveygroup', array("id"=>$this->id, "gsid"=>$gisd));
+        }else{
+            $sOptionUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/update', array("id"=>$this->id));
         }
 
+        $sUninstallUrl = Yii::app()->getController()->createUrl('admin/templateoptions/sa/uninstall/', array("templatename"=>$this->template_name));
+
+        $sEditorLink = "<a
+            id='template_editor_link_".$this->template_name."'
+            href='".$sEditorUrl."'
+            class='btn btn-default'>
+                <span class='icon-templates'></span>
+                ".gT('Template editor')."
+            </a>";
+
+            //
+
+        $OptionLink = '';
+
+        if ($this->hasOptionPage){
+            $OptionLink .=  "<a
+                id='template_options_link_".$this->template_name."'
+                href='".$sOptionUrl."'
+                class='btn btn-default'>
+                    <span class='fa fa-tachometer'></span>
+                    ".gT('Template options')."
+                </a>";
+        }
+
+        $sUninstallLink = "<a
+            id='remove_fromdb_link_".$this->template_name."'
+            href='".$sUninstallUrl."'
+            class='btn btn-danger'>
+                <span class='icon-trash'></span>
+                ".gT('Uninstall')."
+            </a>";
+
+
+        if (App()->getController()->action->id == "surveysgroups"){
+            $sButtons = $OptionLink;
+        }else{
+            $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
+
+            if (!$this->isStandard){
+                $sButtons .= '<br><br>'.$sUninstallLink ;
+            }
+        }
+
+
+
+
+
+        return $sButtons;
     }
 
-    public function getTemplateForFile($sFile, $oRTemplate)
+    public function getHasOptionPage()
     {
-        while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile)){
+        $this->prepareTemplateRendering();
+        $oRTemplate = $this;
+        $sOptionFile = '/options/options.twig';
+        while (!file_exists($oRTemplate->path.$sOptionFile)){
+
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
                 return false;
                 break;
             }
+            $oMotherTemplate->prepareTemplateRendering();
             $oRTemplate = $oMotherTemplate;
         }
-
-        return $oRTemplate;
+        return true;
     }
 
+    private function _filterImages($file){
+        $checkImage = getimagesize($this->filesPath.$file['name']);
+        if (!($checkImage === false ||  !in_array($checkImage[2], [IMAGETYPE_JPEG,IMAGETYPE_PNG,IMAGETYPE_GIF])))
+            return ['filepath' => './files/'.$file['name'], 'filename'=>$file['name']];
+    }
 
-    /**
-     * Create a package for the asset manager.
-     * The asset manager will push to tmp/assets/xyxyxy/ the whole template directory (with css, js, files, etc.)
-     * And it will publish the CSS and the JS defined in config.xml. So CSS can use relative path for pictures.
-     * The publication of the package itself is in LSETwigViewRenderer::renderTemplateFromString()
-     *
-     */
-    private function createTemplatePackage($oTemplate)
+    protected function getOptionPageAttributes(){
+        $aData = $this->attributes;
+        $fileList = Template::getOtherFiles($this->filesPath);
+        $aData['brandlogoFileList'] = [];
+        foreach($fileList as $file){
+            $isImage = $this->_filterImages($file);
+
+            if($isImage)
+                $aData['brandlogoFileList'][] = $isImage;
+        };
+        return $aData;
+    }
+
+    public function getOptionPage()
     {
-        // Each template in the inheritance tree needs a specific alias
-        $sPathName  = 'survey.template-'.$oTemplate->sTemplateName.'.path';
-        $sViewName  = 'survey.template-'.$oTemplate->sTemplateName.'.viewpath';
-
-        Yii::setPathOfAlias($sPathName, $oTemplate->path);
-        Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
-
-        $dir       = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-
-        // Get array of files definition from DB
-        $aCssFiles = $this->getFilesFromJson($this->files_css);
-        $aJsFiles  = $this->getFilesFromJson($this->files_js);
-
-        // Remove/Replace mother files
-        $this->changeMotherConfiguration('css', $aCssFiles);
-        $this->changeMotherConfiguration('js',  $aJsFiles);
-
-        // Get the list of files to add to package
-        $aCssFiles = $this->getFilesToAdd($aCssFiles);
-        $aJsFiles  = $this->getFilesToAdd($aJsFiles);
-
-        $this->sPackageName = 'survey-template-'.$this->sTemplateName;
-        $sTemplateurl       = $oTemplate->getTemplateURL();
-
-        // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
-        // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
-        // Depending on settings, it will create the asset directory, and publish the css and js files
-        Yii::app()->clientScript->addPackage( $this->sPackageName, array(
-            'devBaseUrl'  => $sTemplateurl,                                     // Used when asset manager is off
-            'basePath'    => $sPathName,                                        // Used when asset manager is on
-            'css'         => $aCssFiles,
-            'js'          => $aJsFiles,
-            'depends'     => $oTemplate->depends,
-        ) );
+        $this->prepareTemplateRendering();
+        return Yii::app()->twigRenderer->renderOptionPage($this, array('templateConfiguration' => $this->getOptionPageAttributes()));
     }
 
     /**
-     * From a list of json files in db it will generate a PHP array ready to use by editPackage()
+     * From a list of json files in db it will generate a PHP array ready to use by removeFileFromPackage()
      *
-     * @var $jFiles string json
+     * @param TemplateConfiguration $oTemplate
+     * @param string $sType
      * @return array
+     * @internal param string $jFiles json
      */
-    private function getFilesFromJson($jFiles)
+    protected function getFilesToLoad($oTemplate, $sType)
     {
-       $aFiles = array();
-       if(!empty($jFiles)){
-           $oFiles = json_decode($jFiles);
-           foreach($oFiles as $action => $aFileList){
-               $aFiles[$action] = $aFileList;
-           }
-       }
+        if (empty($this->aFilesToLoad)){
+            $this->aFilesToLoad = array();
+        }
 
-       return $aFiles;
+        $sField = 'files_'.$sType;
+        $jFiles = $oTemplate->$sField;
+        $this->aFilesToLoad[$sType] = array();
+
+
+        if(!empty($jFiles)){
+            $oFiles = json_decode($jFiles, true);
+            foreach($oFiles as $action => $aFileList){
+                if ($action == "add" || $action == "replace"){
+
+                    // Specific inheritance of one of the value of the json array
+                    if ($aFileList[0] == 'inherit'){
+                        $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                        $aFileList = $aParentjFiles[$action];
+                    }
+
+                    $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
+                }
+            }
+
+        }
+
+
+        return $this->aFilesToLoad[$sType];
     }
 
     /**
@@ -371,85 +567,109 @@ class TemplateConfiguration extends CActiveRecord
      * @var $aSettings array    array of local setting
      * @return array
      */
-    private function changeMotherConfiguration( $sType, $aSettings )
+    protected function changeMotherConfiguration( $sType, $aSettings )
     {
         if (is_a($this->oMotherTemplate, 'TemplateConfiguration')){
-            $this->editPackage($this->oMotherTemplate->sPackageName, $sType, $aSettings);
-        }
-    }
 
-    private function editPackage( $sPackageName, $sType, $aSettings )
-    {
-        foreach( $aSettings as $key => $aFiles){
 
-            if ($key == "replace" || $key = "remove"){
-                foreach($aFiles as $sFile)
-                    Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFile );
-            }
-        }
-    }
-
-    private function getFilesToAdd($aSettings)
-    {
-        $aSettingsToAdd = array();
-
-        foreach( $aSettings as $key => $aFiles){
-            if ($key == "add" || $key == "replace"){
-                foreach($aFiles as $sFile)
-                    $aSettingsToAdd[] = $sFile;
+            // Check if each file exist in this template path
+            // If the file exists in local template, we can remove it from mother template package.
+            // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
+            // (and leave it in moter template definition if it already exists.)
+            foreach ($aSettings as $key => $sFileName){
+                if (file_exists($this->path.$sFileName)){
+                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName );
+                }else{
+                    $oTemplate = $this->getTemplateForFile($sFileName, $this);
+                    if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)){
+                        Yii::app()->clientScript->addFileToPackage($oTemplate->sPackageName, $sType, $sFileName);
+                        unset($aSettings[$key]);
+                    }
+                }
             }
         }
 
-        return $aSettingsToAdd;
+        return $aSettings;
+    }
+
+    /**
+     * Proxy for Yii::app()->clientScript->removeFileFromPackage()
+     *
+     * @param string $sPackageName     string   name of the package to edit
+     * @param string $sType            string   the type of settings to change (css or js)
+     * @param $aSettings        array    array of local setting
+     * @return array
+     */
+    protected function removeFileFromPackage( $sPackageName, $sType, $aSettings )
+    {
+        foreach( $aSettings as $sFile){
+            Yii::app()->clientScript->removeFileFromPackage($sPackageName, $sType, $sFile );
+        }
     }
 
     /**
      * Configure the mother template (and its mother templates)
-     * This is an object recursive call to TemplateConfiguration::setTemplateConfiguration()
+     * This is an object recursive call to TemplateConfiguration::prepareTemplateRendering()
      */
-    private function setMotherTemplates()
+    protected function setMotherTemplates()
     {
-        if(!empty($this->template->extends_templates_name)){
-            $sMotherTemplateName   = $this->template->extends_templates_name;
-            $this->oMotherTemplate = Template::getTemplateConfiguration($sMotherTemplateName);
-
+        if(!empty($this->template->extends)){
+            $sMotherTemplateName   = $this->template->extends;
+            $this->oMotherTemplate = TemplateConfiguration::getInstanceFromTemplateName($sMotherTemplateName);
+            $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null);
             if ($this->oMotherTemplate->checkTemplate()){
-                $this->oMotherTemplate->setTemplateConfiguration($sMotherTemplateName); // Object Recursion
+                $this->oMotherTemplate->prepareTemplateRendering($sMotherTemplateName, null); // Object Recursion
             }else{
                 // Throw exception? Set to default template?
             }
         }
     }
 
-    public function checkTemplate()
+    /**
+     * @param TemplateConfiguration $oRTemplate
+     * @param string $sPath
+     */
+    protected function getTemplateForPath($oRTemplate, $sPath )
     {
-        if (is_object($this->template) && !is_dir(Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)&& !is_dir(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder)){
-            return false;
+        while (empty($oRTemplate->template->$sPath)){
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                throw new Exception("can't find a template for template '{$oRTemplate->template_name}' in path '$sPath'.");
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
         }
-        return true;
+        return $oRTemplate;
     }
 
     /**
      * Set the default configuration values for the template, and use the motherTemplate value if needed
      */
-    private function setThisTemplate()
+    protected function setThisTemplate()
     {
-        // Mandtory setting in config XML (can be not set in inheritance tree, but must be set in mother template (void value is still a setting))
-        $this->apiVersion               = (!empty($this->template->api_version))? $this->template->api_version : $this->oMotherTemplate->apiVersion;
-        $this->viewPath                 = (!empty($this->template->view_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->view_folder.DIRECTORY_SEPARATOR : $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->view_folder.DIRECTORY_SEPARATOR;
-        $this->filesPath                = (!empty($this->template->files_folder))  ? $this->path.DIRECTORY_SEPARATOR.$this->template->files_folder.DIRECTORY_SEPARATOR   :  $this->path.DIRECTORY_SEPARATOR.$this->oMotherTemplate->file_folder.DIRECTORY_SEPARATOR;
 
+        $this->apiVersion  = (!empty($this->template->api_version))? $this->template->api_version : null; // Mandtory setting in config XML
+        $this->viewPath    =  $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
+        $this->filesPath   = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR ;
 
         // Options are optional
-        // TODO: twig getOption should return mother template option when option = inherit
-        $this->oOptions = array();
-        if (!empty($this->options)){
-            $this->oOptions[] = (array) json_decode($this->options);
-        }elseif(!empty($this->oMotherTemplate->oOptions)){
-            $this->oOptions[] = $this->oMotherTemplate->oOptions;
-        }
+        $this->setOptions();
 
         // Not mandatory (use package dependances)
+        $this->setCssFramework();
+        $this->packages = $this->getDependsPackages($this);
+        if (!empty($this->packages_to_load)){
+            $templateToLoadPackages = json_decode($this->packages_to_load);
+            if(is_array($templateToLoadPackages))
+                $this->packages =  array_merge( $templateToLoadPackages, $this->getDependsPackages($this));
+        }
+
+        // Add depend package according to packages
+        $this->depends   =  array_merge($this->depends, $this->packages);
+    }
+
+    private function setCssFramework()
+    {
         if (!empty($this->cssframework_name)){
             $this->cssFramework = new \stdClass();
             $this->cssFramework->name = $this->cssframework_name;
@@ -459,198 +679,194 @@ class TemplateConfiguration extends CActiveRecord
         }else{
             $this->cssFramework = '';
         }
+    }
 
-        if (!empty($this->packages_to_load)){
-            $this->packages = json_decode($this->packages_to_load);
+    protected function setOptions()
+    {
+        $this->oOptions = array();
+        if (!empty($this->options)){
+            $this->oOptions = json_decode($this->options);
         }
 
-        // Add depend package according to packages
-        $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));
+        $this->setOptionInheritance();
     }
 
-
-    /**
-     * @return bool
-     */
-    private function setIsStandard()
+    protected function setOptionInheritance()
     {
-        $this->isStandard = Template::isStandardTemplate($this->sTemplateName);
+        $oOptions = $this->oOptions;
+
+        if (!empty($oOptions)){
+            foreach($oOptions as $sKey => $sOption){
+                    $oOptions->$sKey = $this->getOptionKey($sKey);
+            }
+        }
     }
 
-
     /**
-     * Get the depends package
-     * @uses self::@package
-     * @return string[]
+     * @param string $key
+     * @return mixed
      */
-    private function getDependsPackages($oTemplate)
+    protected function getOptionKey($key)
     {
-
-        /* Start by adding cssFramework package */
-        $packages = $this->getFrameworkPackages($oTemplate);
-
-        if (!getLanguageRTL(App()->getLanguage())) {
-            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'ltr'));
+        $aOptions = (array) json_decode($this->options);
+        if (isset($aOptions[$key])) {
+            $value = $aOptions[$key];
+            if ($value === 'inherit') {
+                return $this->getParentConfiguration()->getOptionKey($key);
+            }
+            return  $value;
         } else {
-            $packages = array_merge ($packages, $this->getFrameworkPackages($oTemplate, 'rtl'));
+            return null;
         }
+    }
 
-        /* Core package */
-        $packages[]='limesurvey-public';
-
-        /* template packages */
-        if (!empty($this->packages->package)) {
-            $packages = array_merge ($packages, (array)$this->packages->package);
-        }
-
-        /* Adding rtl/tl specific package (see https://bugs.limesurvey.org/view.php?id=11970#c42317 ) */
-        $dir = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
-
-        if (!empty($this->packages->$dir->package)) {
-            $packages = array_merge ($packages, (array)$this->packages->$dir->package);
-        }
-
-        if (!empty($this->template->extends_templates_name)){
-            $sMotherTemplateName = (string) $this->template->extends_templates_name;
+    protected function addMotherTemplatePackage($packages)
+    {
+        if (!empty($this->template->extends)){
+            $sMotherTemplateName = (string) $this->template->extends;
             $packages[]          = 'survey-template-'.$sMotherTemplateName;
         }
-
         return $packages;
     }
 
     /**
-     * Set the framework package
-     * @param string $dir (rtl|ltr|)
-     * @use self::@cssFramework
-     * @return string[] depends for framework
+     * Get the list of file replacement from Engine Framework
+     * @param string  $sType            css|js the type of file
+     * @param boolean $bInlcudeRemove   also get the files to remove
+     * @return array
      */
-    private function getFrameworkPackages($oTemplate, $dir="")
+    protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false)
     {
-        // If current template doesn't have a name for the framework package, we use the mother's one
+        if (empty($this->aFrameworkAssetsToReplace)){
+            $this->aFrameworkAssetsToReplace = array();
+        }
 
-        $framework =isset($oTemplate->cssFramework->name) ? (string) $oTemplate->cssFramework->name : (string) $oTemplate->oMotherTemplate->cssFramework->name;
-        $framework = $dir ? $framework."-".$dir : $framework;
+        $this->aFrameworkAssetsToReplace[$sType] = array();
 
-        if  ( isset(Yii::app()->clientScript->packages[$framework]) ) {
+        $sFieldName  = 'cssframework_'.$sType;
+        $aFieldValue = (array) json_decode($this->$sFieldName);
 
-            $frameworkPackages = array();
+        if (!empty( $aFieldValue ) && !empty($aFieldValue['replace'])){
+            $this->aFrameworkAssetsToReplace[$sType] = (array) $aFieldValue['replace'] ;
 
-            /* Theming */
-            if ($dir) {
-                $cssFrameworkCsss = isset ( $oTemplate->cssFramework->$dir->css ) ? $oTemplate->cssFramework->$dir->css : array();
-                $cssFrameworkJss  = isset ( $oTemplate->cssFramework->$dir->js  ) ? $oTemplate->cssFramework->$dir->js  : array();
-            } else {
-
-                $cssFrameworkCsss =  ! empty ( $oTemplate->cssframework_css       ) ? json_decode($oTemplate->cssframework_css)       : array();
-                $cssFrameworkJss  =  ! empty ( $oTemplate->cssframework_js        ) ? json_decode($oTemplate->cssframework_js)        : array();
+            // Inner field inheritance
+            foreach ($this->aFrameworkAssetsToReplace[$sType] as $key => $aFiles){
+                foreach($aFiles as $sReplacement){
+                    if ( $sReplacement == "inherit"){
+                        $aParentReplacement = $this->getParentConfiguration()->getFrameworkAssetsToReplace($sType);
+                        $this->aFrameworkAssetsToReplace[$sType][$key][1] = $aParentReplacement[$key][1];
+                    }
+                }
             }
 
-            if (empty($cssFrameworkCsss) && empty($cssFrameworkJss)) {
-                $frameworkPackages[] = $framework;
-            } else {
-
-                $cssFrameworkPackage = Yii::app()->clientScript->packages[$framework];     // Need to create an adapted core framework
-                $packageCss          = array();                                            // Need to create an adapted template/theme framework */
-                $packageJs           = array();                                            // css file to replace from default package */
-                $cssDelete           = array();
-
-                // foreach($cssFrameworkCsss as $cssFrameworkCss) {
-                foreach($cssFrameworkCsss as $action => $aFiles) {
-                    // if(isset($cssFrameworkCss['replace'])) {
-                    if($action == 'replace') {
-                        foreach($aFiles as $aFile)
-                            $cssDelete[] = $aFile;
-                    }
-                }
-
-                if(isset($cssFrameworkPackage['css'])) {
-                    $cssFrameworkPackage['css']=array_diff($cssFrameworkPackage['css'],$cssDelete);
-                }
-
-                $jsDelete=array();
-                foreach($cssFrameworkJss as $cssFrameworkJs) {
-                    if(isset($cssFrameworkJs['replace'])) {
-                        $jsDelete[] = $cssFrameworkJs['replace'];
-                    }
-                    if((string)$cssFrameworkJs) {
-                        $packageJs[] = (string)$cssFrameworkJs;
-                    }
-                }
-                if(isset($cssFrameworkPackage['js'])) {
-                    $cssFrameworkPackage['js'] = array_diff($cssFrameworkPackage['js'],$cssDelete);
-                }
-
-                /* And now : we add : core package fixed + template/theme package */
-                Yii::app()->clientScript->packages[$framework] = $cssFrameworkPackage; /* @todo : test if empty css and js : just add depends if yes */
-                $aDepends=array(
-                    $framework,
-                );
-
-                // Remove CSS
-                foreach($cssFrameworkCsss as $action => $aFiles) {
-                    if($action == 'replace' || $key = "remove") {
-                        foreach($aFiles as $sFile)
-                            unset($packageCss[$sFile]);
-                    }
-                }
-
-                // Add CSS
-                foreach($cssFrameworkCsss as $action => $aFiles) {
-                    if($action == 'add' || $key = "replace") {
-                        foreach($aFiles as $sFile)
-                            $packageCss[] = $sFile;
-                    }
-                }
-
-                // TODO: refactorize remove/add CSS (see changeMotherConfiguration) + add JS
-
-                $sTemplateurl = $oTemplate->getTemplateURL();
-                $sPathName    = 'survey.template-'.$oTemplate->sTemplateName.'.path';
-
-                Yii::app()->clientScript->addPackage(
-                    $framework.'-template', array(
-                        'devBaseUrl'  => $sTemplateurl,                        // Don't use asset manager
-                        'basePath'    => $sPathName,                            // basePath: the asset manager will be used
-                        'css'         => $packageCss,
-                        'js'          => $packageJs,
-                        'depends'     => $aDepends,
-                    )
-                );
-                $frameworkPackages[]=$framework.'-template';
-
+            if($bInlcudeRemove && isset($aFieldValue['remove'])){
+                $this->aFrameworkAssetsToReplace[$sType] = array_merge($this->aFrameworkAssetsToReplace, (array) $aFieldValue['remove'] );
             }
-            return $frameworkPackages;
-        }/*elseif($framework){
-            throw error ? Only for admin template editor ? disable and reset to default ?
-        }*/
-        return array();
+        }
+
+
+        return $this->aFrameworkAssetsToReplace[$sType];
     }
 
     /**
-     * Get the file path for a given template.
-     * It will check if css/js (relative to path), or view (view path)
-     * It will search for current template and mother templates
-     *
-     * @param   string  $sFile          relative path to the file
-     * @param   string  $oTemplate      the template where to look for (and its mother templates)
+     * Get the list of file replacement from Engine Framework
+     * @param string  $sType            css|js the type of file
+     * @return array
      */
-    private function getFilePath($sFile, $oTemplate)
+    protected function getFrameworkAssetsReplacement( $sType )
     {
-        // Remove relative path
-        $sFile = trim($sFile, '.');
-        $sFile = trim($sFile, '/');
-
-        // Retreive the correct template for this file (can be a mother template)
-        $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
-
-        if($oTemplate instanceof TemplateConfiguration){
-            if(file_exists($oTemplate->path.'/'.$sFile)){
-                return $oTemplate->path.'/'.$sFile;
-            }elseif(file_exists($oTemplate->viewPath.$sFile)){
-                return $oTemplate->viewPath.$sFile;
-            }
+        if (empty($this->aReplacements)){
+            $this->aReplacements = array();
         }
-        return false;
+        $this->aReplacements[$sType] = array();
+
+        $aFrameworkAssetsToReplace = $this->getFrameworkAssetsToReplace($sType);
+
+        foreach($aFrameworkAssetsToReplace as $key => $aAsset ){
+            $aReplace = $aAsset[1];
+            $this->aReplacements[$sType][] = $aReplace;
+        }
+
+
+        return $this->aReplacements[$sType];
+    }
+
+
+    public function getParentConfiguration(){
+        if (empty($this->oParentTemplate)){
+
+            //check for surveygroup id if a survey is given
+            if($this->sid != null ){
+                $oSurvey = Survey::model()->findByPk($this->sid);
+                $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName,null,$oSurvey->gsid);
+                if (is_a($oParentTemplate, 'TemplateConfiguration')){
+                    $this->oParentTemplate = $oParentTemplate;
+                    $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
+                    return $this->oParentTemplate;
+                }
+            }
+
+            //check for surveygroup id if a surveygroup is given
+            if($this->sid == null && $this->gsid != null ){
+                $oSurveyGroup = SurveysGroups::model()->findByPk($this->gsid);
+                //Switch if the surveygroup inherits from a parent surveygroup
+                if($oSurveyGroup != null && $oSurveyGroup->parent_id != 0) {
+                    $oParentTemplate = Template::getTemplateConfiguration($this->sTemplateName,null,$oSurveyGroup->parent_id);
+                    if (is_a($oParentTemplate, 'TemplateConfiguration')){
+                        $this->oParentTemplate = $oParentTemplate;
+                        $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
+                        return $this->oParentTemplate;
+                    }
+
+                }
+            }
+
+            //in the endcheck for general global template
+            $this->oParentTemplate = Template::getTemplateConfiguration($this->template_name, null, null);
+            $this->oParentTemplate->bUseMagicInherit = $this->bUseMagicInherit;
+            return $this->oParentTemplate;
+        }
+        return $this->oParentTemplate;
+    }
+
+
+    /**
+     * Change the template name inside the configuration entries (called from template editor)
+     * NOTE: all tests (like template exist, etc) are done from template controller.
+     *
+     * @param string $sOldName The old name of the template
+     * @param string $sNewName The newname of the template
+     */
+    public static function rename($sOldName,$sNewName)
+    {
+        self::model()->updateAll(array( 'template_name' => $sNewName  ), "template_name = :oldname", array(':oldname'=>$sOldName));
+    }
+
+
+    /**
+     * Proxy for the AR method to manage the inheritance
+     * If one of the field that can be inherited is set to "inherit", then it will return the value of its parent
+     * NOTE: this is recursive, if the parent field itself is set to inherit, then it will the value of the parent of the parent, etc
+     *
+     * @param string $name the name of the attribute
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        $aAttributesThatCanBeInherited = array('files_css', 'files_js', 'options', 'cssframework_name', 'cssframework_css', 'cssframework_js', 'packages_to_load');
+
+        if (in_array($name, $aAttributesThatCanBeInherited) && $this->bUseMagicInherit){
+            // Full inheritance of the whole field
+            $sAttribute = parent::__get($name);
+            if($sAttribute === 'inherit'){
+                // NOTE: this is object recursive (if parent configuration field is set to inherit, then it will lead to this method again.)
+                $sAttribute = $this->getParentConfiguration()->$name;
+            }
+        }else{
+            $sAttribute = parent::__get($name);
+        }
+
+        return $sAttribute;
     }
 
 }

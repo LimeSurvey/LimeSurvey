@@ -37,7 +37,9 @@ class ParticipantAttributeName extends LSActiveRecord
      * @return ParticipantAttributeName
      */
     public static function model($class = __CLASS__) {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -421,20 +423,20 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
      * this is a very specific function used to get the attributes that are
      * not present for the participant
-     * @param integer $attributeid
+     * @param array $attributeIds
      * @return array
      */
-    function getNotAddedAttributes($attributeid)
+    function getNotAddedAttributes($attributeIds)
     {
         $output = array();
         $notin=array();
-        foreach($attributeid as $row) {
+        foreach($attributeIds as $row) {
             $notin[] = $row;
         }
 
         $criteria = new CDbCriteria();
         $alias = $this->getTableAlias();
-        $criteria->addNotInCondition("$alias.attribute_id", $attributeid);
+        $criteria->addNotInCondition("$alias.attribute_id", $attributeIds);
         $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang')->findAll($criteria);
         foreach($records as $row) { //Iterate through each attribute
             $thisname="";
@@ -601,6 +603,7 @@ class ParticipantAttributeName extends LSActiveRecord
 
     /**
      * @todo Doc
+     * @param array $data
      */
     function saveAttributeLanguages($data)
     {
@@ -713,7 +716,7 @@ class ParticipantAttributeName extends LSActiveRecord
         $query = Yii::app()->db->createCommand()
             ->select('attribute_id')
             ->from('{{participant_attribute_names}}')
-            ->order('attribute_id','desc')
+            ->order('attribute_id DESC')
             ->queryAll();
         return $query;
     }

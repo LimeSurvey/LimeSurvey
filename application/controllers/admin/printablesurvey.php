@@ -24,6 +24,7 @@ class printablesurvey extends Survey_Common_Action
 {
     /**
      * Show printable survey
+     * @param string $lang
      */
     function index($surveyid, $lang = null)
     {
@@ -1611,6 +1612,7 @@ class printablesurvey extends Survey_Common_Action
      *
      * How:
      * @param string $template
+     * @param TemplateConfiguration $oTemplate
      */
     private function _populate_template( $oTemplate, $template , $input  , $line = '')
     {

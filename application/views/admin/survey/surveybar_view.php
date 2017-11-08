@@ -6,8 +6,11 @@
  * @var Survey $oSurvey
  */
 ?>
-
-
+<?php
+/*
+<topbar></topbar>
+*/ 
+?>
 <div class='menubar surveybar' id="surveybarid">
     <div class='row container-fluid row-button-margin-bottom'>
 
@@ -95,7 +98,7 @@
                     <!-- activate expired survey -->
                     <?php if($expired) : ?>
                         <span class="btntooltip" style="display: inline-block" data-toggle="tooltip" data-placement="bottom" data-html="true" title="<?php eT('This survey is active but expired.'); ?><br><?php eT('Click to adjust.'); ?>">
-                            <a href='<?php echo $this->createUrl("admin/survey/editlocalsettings/surveyid/$surveyid#publicationoptions");?>'class="btn btn-success btntooltip" >
+                            <a href='<?php echo $this->createUrl("admin/survey/sa/rendersidemenulink/subaction/publication", ['surveyid' => $surveyid]);?>'class="btn btn-success btntooltip" >
                                 <span class="fa fa-ban">&nbsp;</span>
                                 <?php eT("Expired");?>
                             </a>
@@ -142,7 +145,7 @@
 
                     <!-- uniq language -->
                     <?php else: ?>
-                        <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$baselang)); ?>" role="button"  accesskey='d' target='_blank'>
+                        <a class="btn btn-default  btntooltip" href="<?php echo $this->createUrl("survey/index",array('sid'=>$surveyid,'newtest'=>"Y",'lang'=>$oSurvey->language)); ?>" role="button"  accesskey='d' target='_blank'>
                             <span class="icon-do" ></span>
                             <?php echo $icontext;?>
                         </a>
@@ -289,10 +292,11 @@
                                           </a>
                                     <?php endif; ?>
                                   </li>
+                              <?php endif; ?>
 
-                            <?php if (isset($extraToolsMenuItems)): ?>
-                                <?php foreach ($extraToolsMenuItems as $menuItem): ?>
-                                    <?php if ($menuItem->isDivider()): ?>
+                              <?php if (!empty($extraToolsMenuItems)): ?>
+                                  <?php foreach ($extraToolsMenuItems as $menuItem): ?>
+                                      <?php if ($menuItem->isDivider()): ?>
                                           <li class="divider"></li>
                                     <?php elseif ($menuItem->isSmallText()): ?>
                                           <li class="dropdown-header"><?php echo $menuItem->getLabel();?></li>
@@ -589,23 +593,22 @@
             <?php endforeach; ?>
 
 
-                <?php if($permission):?>
-                    <!-- List Groups -->
-                        <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
-                        <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
-                            <span class="fa fa-list"></span>
-                            <?php eT("List question groups");?>
-                        </a>
+            <?php if($permission):?>
+                <!-- List Groups -->
+                    <!-- admin/survey/sa/view/surveyid/838454 listquestiongroups($iSurveyID)-->
+                    <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestiongroups/surveyid/$surveyid"); ?>">
+                        <span class="fa fa-list"></span>
+                        <?php eT("List question groups");?>
+                    </a>
 
-                    <!-- List Questions -->
-                        <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
-                            <span class="fa fa-list"></span>
-                            <?php eT("List questions");?>
-                        </a>
-                <?php endif; ?>
+                <!-- List Questions -->
+                    <a class="btn btn-default hidden-sm  hidden-md hidden-lg" href="<?php echo $this->createUrl("admin/survey/sa/listquestions/surveyid/$surveyid"); ?>">
+                        <span class="fa fa-list"></span>
+                        <?php eT("List questions");?>
+                    </a>
+            <?php endif; ?>
 
 
-            <?php endif;?>
             <?php if(isset($surveybar['importquestion'])):?>
                 <a class="btn btn-default" href="<?php echo Yii::App()->createUrl('admin/questions/sa/importview/groupid/'.$groupid.'/surveyid/'.$surveyid);?>" role="button">
                     <span class="icon-import"></span>
@@ -636,7 +639,42 @@
                         eT("Save");
                     }?>
                 </a>
-            
+                <?php if(isset($surveybar['importquestiongroup'])):?>
+                    <?php
+                        //Save and new button
+                        $paramArray = array();
+                        $paramArray["surveyid"] = $surveyid;
+                        $saveAndNewLink = $this->createUrl("admin/questiongroups/sa/add/", $paramArray);
+                        $saveAndAddQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
+                    ?>
+
+                    <a class="btn btn-success" id='save-and-new-question-button' href="<?php echo $saveAndAddQuestionLink ?>" role="button">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php eT("Save and add question");?>
+                    </a>
+
+                    <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php eT("Save and new group");?>
+                    </a>
+                <?php endif;?>
+                <?php if(isset($surveybar['importquestion'])):?>
+                    <?php
+                        //Save and new button
+                        $paramArray = array();
+                        $paramArray["surveyid"] = $surveyid;
+
+                        if(isset($gid) && !empty($gid)) 
+                            $paramArray["gid"] = $gid;
+
+                        $saveAndNewLink = $this->createUrl("admin/questions/sa/newquestion/", $paramArray);
+                    ?>
+
+                    <a class="btn btn-success" id='save-and-new-button' href="<?php echo $saveAndNewLink ?>" role="button">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php eT("Save and new");?>
+                    </a>
+                <?php endif;?>
             <?php endif;?>
                 <?php /*
                 <!-- Save and close -->
@@ -657,6 +695,7 @@
                 </a>
             <?php endif;?>
             */ ?>
+
         </div>
     </div>
 </div>

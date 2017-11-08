@@ -1,7 +1,12 @@
 <?php
 /**
+ * @var $this AdminController
  * Set user permissions
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('setUserPermissions');
+
 ?>
 
 <!-- set user permissions -->

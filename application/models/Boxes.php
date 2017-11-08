@@ -4,11 +4,11 @@
  * This is the model class for table "{{boxes}}".
  *
  * The followings are the available columns in table '{{boxes}}':
- * @property integer $id
+ * @property integer $id Primary key
  * @property integer $position
  * @property string $url
  * @property string $title
- * @property string $desc
+ * @property string $desc Description
  * @property string $page
  * @property integer $usergroup UserGroup ID
  */
@@ -221,6 +221,8 @@ class Boxes extends CActiveRecord
      */
     public static function model($className=__CLASS__)
     {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 }

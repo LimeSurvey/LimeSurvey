@@ -6,6 +6,9 @@
  */
  $count= 0;
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveySummary');
+
 //TODO : move to controller
 $templates = Template::getTemplateListWithPreviews();
 //print_r($templates);
@@ -22,7 +25,6 @@ $surveyid = $oSurvey->sid;
 
 
 ?>
-    <?php //$this->renderPartial('/admin/survey/breadcrumb', array('oSurvey'=>$oSurvey)); ?>
     <!-- Quick Actions -->
     <div id="survey-action-title" class="h3 pagetitle">
     <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">
@@ -32,11 +34,9 @@ $surveyid = $oSurvey->sid;
     </div>
         <div class="row welcome survey-action" id="survey-action-container" style="<?php if($quickactionstate==0){echo 'display:none';}?>">
             <div class="col-sm-12 content-right">
-
                 <!-- Alerts, infos... -->
                 <div class="row">
                     <div class="col-sm-12">
-
                         <!-- While survey is activated, you can't add or remove group or question -->
                         <?php if ($oSurvey->isActive): ?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
@@ -60,12 +60,13 @@ $surveyid = $oSurvey->sid;
                             </div>
                         <?php endif;?>
 
-                        <?php if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
+                        <?php /* Commented out for the moment because it is not properly working
+                        if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
                             <div class="alert alert-warning alert-dismissible" role="alert">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
                                 <strong><?php eT('This template is out of date.');?></strong> <?php eT('We can not guarantee optimum operation. It would be preferable to use a new template.');?>
                             </div>
-                        <?php endif;?>
+                        <?php endif; */ ?>
                     </div>
                 </div>
 
@@ -80,7 +81,6 @@ $surveyid = $oSurvey->sid;
                         <?php if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
                             <div class="row">
                                 <div class="col-sm-12">
-
                                     <label for="switch"><?php eT('Format:');?></label>
                                     <div id='switchchangeformat' class="btn-group" role="group">
                                       <button id='switch' type="button" data-value='S' class="btn btn-default <?php if($oSurvey->format=='S'){echo 'active';}?>"><?php eT('Question by question');?></button>
@@ -270,7 +270,7 @@ $surveyid = $oSurvey->sid;
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="<?php echo $this->createUrl("admin/statistics/sa/simpleStatistics/surveyid/".$oSurvey->sid); ?>" >
-                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-bar-chart text-success"  style="font-size: 3em;"></span>
 						    <span class="sr-only"><?php eT("Statistics");?></span>
                                                 </a>
                                             </div>
@@ -293,7 +293,7 @@ $surveyid = $oSurvey->sid;
                                         <div class="panel-body">
                                             <div class="panel-body-ico">
                                                 <a  href="#" >
-                                                    <span class="fa fa-stats text-success"  style="font-size: 3em;"></span>
+                                                    <span class="fa fa-bar-chart text-success"  style="font-size: 3em;"></span>
 						    <span class="sr-only"><?php eT("Responses & statistics");?></span>
                                                 </a>
                                             </div>
@@ -353,7 +353,7 @@ $surveyid = $oSurvey->sid;
                 <!-- List group -->
                 <ul class="list-group">
                     <!-- Base language -->
-                    <li class="list-group-item">
+                    <li class="list-group-item" id="adminpanel__surveysummary--mainLanguageLink">
                         <div class="ls-flex-row col-12">
                             <div class="col-4">
                                 <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>  <?php eT('(Base language)');?>:
@@ -432,7 +432,7 @@ $surveyid = $oSurvey->sid;
                             </div>
                         </div>
                     </li>
-                    
+
                     <!-- End message -->
                     <li class="list-group-item">
                         <div class="ls-flex-row col-12">
@@ -451,7 +451,7 @@ $surveyid = $oSurvey->sid;
             </div>
         </div>
     </div>
-    <div class="row">    
+    <div class="row">
         <div class="col-md-12 col-lg-6">
             <ul class="list-group">
                     <!-- Administrator -->
@@ -476,7 +476,7 @@ $surveyid = $oSurvey->sid;
                         </div>
                     </div>
                 </li>
-                
+
                 <!-- Number of questions/groups -->
                 <li class="list-group-item">
                     <div class="ls-flex-row col-12">
@@ -515,7 +515,7 @@ $surveyid = $oSurvey->sid;
                         </div>
                     </div>
                 </li>
-                
+
                 <!-- Template -->
                 <li class="list-group-item">
                     <div class="ls-flex-row col-12">
@@ -526,8 +526,13 @@ $surveyid = $oSurvey->sid;
                             <?php $templatename = $oSurvey->template;
                             if (Permission::model()->hasGlobalPermission('templates','read'))
                             {
-                                $templateurl_url = $this->createAbsoluteUrl("admin/templates/sa/view/editfile/startpage.pstpl/screenname/welcome",array('templatename'=>$templatename)); ?>
-                                <a href='<?php echo $templateurl_url?>' target='_blank'><?php echo $templatename; ?></a>
+                                $sTemplateOptionsUrl = $this->createUrl("admin/templateoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid)); 
+                                $sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('templatename' => $oSurvey->template)); 
+                                //$sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template)); 
+                                ?>
+                                <?php echo $templatename; ?>
+                                <a href='<?=$sTemplateOptionsUrl?>' title="<?php eT("Open template options"); ?>" class="btn btn-default btn-xs"><i class="fa fa-paint-brush"></i></a>
+                                <a href='<?=$sTemplateEditorUrl?>' title="<?php eT("Open template editor in new window"); ?>" target="_blank" class="btn btn-default btn-xs"><i class="fa fa-object-group"></i></a>
                                 <?php
                             }
                             else
@@ -565,7 +570,7 @@ $surveyid = $oSurvey->sid;
                                 <strong><?php eT("Table column usage");?>: </strong>
                         </div>
                         <div class="col-8">
-                                <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> 
+                                <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div>
                         </div>
                     </div>
                     <div class="ls-flex-row col-12">
@@ -585,12 +590,12 @@ $surveyid = $oSurvey->sid;
                         </div>
                         <div class="col-8">
                             <strong><?php echo $column_usage;?>%</strong>
-                            <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div> 
+                            <div class='progressbar' style='width:20%; height:15px;' name='<?php echo $column_usage;?>'></div>
                         </div>
                     </div>
                 <?php }
             } ?>
-            </div>      
+            </div>
         </div>
     </div>
 </div>

@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var $this AdminController
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('dataEntryView');
+
+?>
+
 <!-- content_view.php -->
 
 <!-- explanation -->
@@ -216,6 +226,10 @@
             <?php eT("Comment"); ?>:<br />
             <textarea cols='40' rows='5' name='<?php echo $fieldname; ?>comment'></textarea>
         </div>
+        <?php break;?>
+
+        <?php case "*":?>
+            <input type="text" name="<?php echo $fieldname; ?>" value="">
         <?php break;
 
 

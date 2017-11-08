@@ -1,5 +1,9 @@
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
 var labelcache=[];
-$(document).ready(function(){
+$(document).on('ready  pjax:complete', function(){
 
     $('.tab-page:first .answertable tbody').sortable({   containment:'parent',
         update:aftermove,
@@ -39,7 +43,6 @@ $(document).ready(function(){
     $(document).on("click", '.btndelanswer', deleteinput);
     $(document).on("click", '.btnlsbrowser', lsbrowser );
 });
-
 
 function deleteinput()
 {
