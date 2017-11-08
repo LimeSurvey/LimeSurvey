@@ -133,7 +133,6 @@ class TemplateConfiguration extends CFormModel
         $this->cssFramework             = (isset($this->config->engine->cssframework))             ? $this->config->engine->cssframework                                                                                  : '';
         $this->packages                 = (isset($this->config->engine->packages->package))        ? $this->config->engine->packages->package                                                                             : array();
 
-        debugbreak();
         foreach(@$this->config->files->css->filename as $name){
             $name=get_absolute_path($name);
         }
