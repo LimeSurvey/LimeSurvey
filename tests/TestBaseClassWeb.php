@@ -101,17 +101,19 @@ class TestBaseClassWeb extends TestBaseClass
         $this->openView($url);
 
         try {
-            $this->webDriver->wait(2)->until(
+            $this->webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('user')
                 )
             );
         } catch (TimeOutException $ex) {
-            //$name =__DIR__ . '/_output/loginfailed.png';
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ .'/tmp.png', $screenshot);
+            $filename = \Yii::app()->basePath . '/../tests/tmp/screenshots/FailedLogin.png';
+            file_put_contents($filename, $screenshot);
+
             $this->assertTrue(
                 false,
+                ' Screenshot in ' . $filename . PHP_EOL .
                 sprintf(
                     'Could not login on url %s: Could not find element with id "user".',
                     $url
