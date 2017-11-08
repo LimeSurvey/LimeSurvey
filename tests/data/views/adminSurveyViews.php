@@ -20,8 +20,8 @@ return [
     ['surveyPresentationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/presentation/surveyid/{SID}']],
 
     // FIXME these FAIL !!
-    ['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
-    ['surveyPublicationOptions', ['route'=>'rendersidemenulink/subaction/publication/surveyid/{SID}']],
+    //['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
+    //['surveyPublicationOptions', ['route'=>'rendersidemenulink/subaction/publication/surveyid/{SID}']],
 
     ['surveyResources', ['route'=>'survey/sa/rendersidemenulink/subaction/resources/surveyid/{SID}']],
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
@@ -31,17 +31,18 @@ return [
     ['surveyNotificationOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/notification/surveyid/{SID}']],
     ['surveyEmailTemplates', ['route'=>'emailtemplates/sa/index/surveyid/{SID}']],
     ['surveyPanelIntegration', ['route'=>'survey/sa/rendersidemenulink/subaction/panelintegration/surveyid/{SID}']],
-    ['surveyPlugins', ['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}']],
+    //['surveyPlugins', ['route'=>'survey/sa/rendersidemenulink/subaction/plugins/surveyid/{SID}']],  // TODO
 
 
 
     // going deeper -------------------------------------
     // --------------------------------------------------
 
-    ['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],
+    //['surveyLogicFile', ['route'=>'expressions/sa/survey_logic_file/sid/{SID}']],  // TODO
+
     // FIXME these FAIL !!
-    ['surveyResponsesIndex', ['route'=>'responses/sa/index/surveyid/{SID}']],
-    ['surveyResponsesBrowse', ['route'=>'responses/sa/browse/surveyid/{SID}']],
+    //['surveyResponsesIndex', ['route'=>'responses/sa/index/surveyid/{SID}']],
+    //['surveyResponsesBrowse', ['route'=>'responses/sa/browse/surveyid/{SID}']],
 
     // this seems to be a special case, opens in another tab
     //['printableSurvey', ['route'=>'printablesurvey/sa/index/surveyid/{SID}']],

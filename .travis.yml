@@ -5,12 +5,30 @@ php:
 before_script:
     - phpunit --version
     - touch enabletests
+      #- rm composer.lock
+      #- rm -r third_party
+    - composer update
+      #- composer install
+    - chmod -R 776 tmp
+    - chmod -R 776 tmp/runtime
+    - chmod -R 776 upload
+    - mkdir -p tests/tmp/runtime
+    - chmod -R 776 tests/tmp
+    - chmod -R 776 tests/tmp/runtime
+    - php application/commands/console.php install admin password TravisLS no@email.com
+    - cp application/config/config-sample-mysql.php application/config/config.php
 
     # Install Apache
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
     - sudo apt-get update > /dev/null
     - sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs
     - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+    - ls ~/.phpenv/versions
+      #- ls -l ~/.phpenv/versions/5.6
+      #- ls -l ~/.phpenv/versions/5.6/etc
+      #- ls -l ~/.phpenv/versions/5.6/etc/conf.d
+      #- ls -l ~/.phpenv/versions/5.6/etc/php-fpm.conf
+    - find ~/.phpenv/versions/
     - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
     - sudo a2enmod rewrite actions fastcgi alias
     - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
@@ -20,10 +38,14 @@ before_script:
     - sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-default.conf
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
+    # Test server
+    - wget localhost
+    - more localhost
 
+    # Phantomjs setup.
     - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
     - tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
-    - ./phantomjs-2.1.1-linux-x86_64/bin/phantomjs  --webdriver=127.0.0.1:4444 &
+    - ./phantomjs-2.1.1-linux-x86_64/bin/phantomjs  --webdriver=127.0.0.1:4444 > /dev/null &
 
 script:
-    - phpunit
+    - DOMAIN=localhost phpunit

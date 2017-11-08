@@ -68,12 +68,21 @@ class AdminViewsTest extends TestBaseClassView
     public function testAdminSurveyViews($name, $view)
     {
         if (isset($view['import_id'])) {
+
             // we'll change the survey in the middle of test
             if(self::$testSurvey){
                 self::$testSurvey->delete();
             }
             $surveyFile = self::$surveysFolder . '/limesurvey_survey_'.$view['import_id'].'.lss';
-            $this->importSurvey($surveyFile);
+            self::importSurvey($surveyFile);
+
+
+        } elseif (empty(self::$surveyId)) {
+            // This situation can happen if we test only one data entry,
+            // using --filter="testAdminSurveyViews#13" (for data entry 13).
+            $surveyFile = self::$surveysFolder . '/../data/surveys/limesurvey_survey_454287.lss';
+            self::importSurvey($surveyFile);
+
         }
         $view['route'] = ReplaceFields($view['route'], ['{SID}'=> self::$testSurvey->primaryKey]);
         $this->findViewTag($name, $view);

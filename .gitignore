@@ -36,7 +36,6 @@
 .eslintrc
 .eslintignore
 node_modules/
-third_party/**/src/
 third_party/**/docs/
 third_party/**/scripts/
 third_party/**/tests/

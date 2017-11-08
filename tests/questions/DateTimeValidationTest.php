@@ -35,22 +35,27 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $domain = '';
         }
 
-        self::$webDriver->get(
-            sprintf(
-                'http://%s/index.php/%d?newtest=Y&lang=pt',
-                $domain,
-                self::$surveyId
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $url = $urlMan->createUrl('survey/index', array(
+            'sid' => self::$surveyId,
+            'newtest' => 'Y',
+            'lang' => 'pt'
             )
         );
+
+        $this->webDriver->get($url);
 
         try {
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         } catch (NoSuchElementException $ex) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents($this->screenshotsFolder . '/tmp.png', $screenshot);
+            $screenshot = $this->webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
+            file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
-                'Screenshot in ' . $this->screenshotsFolder . '/tmp.png' . PHP_EOL . $ex->getMessage()
+                'Url: ' . $url . PHP_EOL .
+                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
         }
 
@@ -71,11 +76,13 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $div = self::$webDriver->findElement(WebDriverBy::className('completed-text'));
             $this->assertNotEmpty($div);
         } catch (NoSuchElementException $ex) {
-            $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents($this->screenshotsFolder . '/tmp.png', $screenshot);
+            $screenshot = $this->webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder'/DateTimeValidationTest.png';
+            file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
-                'Screenshot in ' . $this->screenshotsFolder . '/tmp.png' . PHP_EOL . $ex->getMessage()
+                'Url: ' . $url . PHP_EOL .
+                'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
             );
         }
     }

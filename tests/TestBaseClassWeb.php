@@ -72,7 +72,9 @@ class TestBaseClassWeb extends TestBaseClass
     }
 
     /**
+     * Get URL to admin view.
      * @param array $view
+     * @return string
      */
     public function getUrl(array $view)
     {
@@ -80,7 +82,11 @@ class TestBaseClassWeb extends TestBaseClass
         if (empty($domain)) {
             $domain = '';
         }
-        return "http://{$domain}/index.php/admin/".$view['route'];
+
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $url = $urlMan->createUrl('admin/' . $view['route']);
+        return $url;
     }
 
     /**
@@ -95,7 +101,7 @@ class TestBaseClassWeb extends TestBaseClass
         $url = $this->getUrl(['login', 'route'=>'authentication/sa/login']);
         $this->openView($url);
         try {
-            self::$webDriver->wait(2)->until(
+            self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('user')
                 )
@@ -103,9 +109,11 @@ class TestBaseClassWeb extends TestBaseClass
         } catch (TimeOutException $ex) {
             //$name =__DIR__ . '/_output/loginfailed.png';
             $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents(self::$screenshotsFolder .'/tmp.png', $screenshot);
+            $filename = self::$screenshotsFolder .'/FailedLogin.png';
+            file_put_contents($filename, $screenshot);
             $this->assertTrue(
                 false,
+                ' Screenshot in ' . $filename . PHP_EOL .
                 sprintf(
                     'Could not login on url %s: Could not find element with id "user".',
                     $url

@@ -56,12 +56,12 @@ class TestBaseClassView extends TestBaseClassWeb
         $this->openView($url);
         $element = null;
 
-        $screenshot = self::$webDriver->takeScreenshot();
-        file_put_contents(self::$screenshotsFolder. '/'.$name.'.png', $screenshot);
         try {
             $element = self::$webDriver->findElement(WebDriverBy::id('action::'.$name));
         } catch (\Exception $e) {
             //throw new Exception($e->getMessage());
+            $screenshot = self::$webDriver->takeScreenshot();
+            file_put_contents(self::$screenshotsFolder. '/'.$name.'.png', $screenshot);
         }
         $this->assertNotEmpty(
             $element,

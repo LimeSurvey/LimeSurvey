@@ -33,12 +33,20 @@ class GroupRandomizationTest extends TestBaseClass
 
         $translateLinksFields = false;
         $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
+        try {
+            $result = importSurveyFile(
+                $surveyFile,
+                $translateLinksFields,
+                $newSurveyName,
+                null
+            );
+        } catch (\CDbException $ex) {
+            self::assertTrue(
+                false,
+                'Could not import survey limesurvey_survey_88881.lss: ' . $ex->getMessage()
+            );
+        }
+
         if ($result) {
             self::$surveyId = $result['newsid'];
         } else {
@@ -92,13 +100,18 @@ class GroupRandomizationTest extends TestBaseClass
             $domain = '';
         }
 
-        $this->webDriver->get(
-            sprintf(
-                'http://%s/index.php/%d?newtest=Y&lang=pt',
-                $domain,
-                self::$surveyId
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'survey/index',
+            array(
+                'sid' => self::$surveyId,
+                'newtest' => 'Y',
+                'lang' => 'pt'
             )
         );
+
+        $this->webDriver->get($url);
         $submit = $this->webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         $this->assertNotEmpty($submit);
         $this->webDriver->wait(10, 1000)->until(
