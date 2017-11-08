@@ -82,7 +82,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $this->assertFalse(
                 true,
                 'Url: ' . $url . PHP_EOL .
-                'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
+                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
         }
     }
