@@ -119,6 +119,59 @@ function createDatabase($oDB){
 
 
         // groups
+        if (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqli') {
+            $query = "
+                CREATE TABLE `prefix_groups` (
+                  `gid` int(11) NOT NULL auto_increment,
+                  `sid` int(11) NOT NULL default '0',
+                  `group_name` varchar(100) NOT NULL default '',
+                  `group_order` int(11) NOT NULL default '0',
+                  `description` text,
+                  `language` varchar(20) default 'en',
+                  `randomization_group` varchar(20) NOT NULL default '',
+                  `grelevance` text DEFAULT NULL,
+                  PRIMARY KEY (`gid`,`language`)
+                ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                ";
+        } elseif (Yii::app()->db->driverName=='sqlsrv'
+            || Yii::app()->db->driverName=='dblib'
+            || Yii::app()->db->driverName=='mssql') {
+            $query = "
+                CREATE TABLE [prefix_groups] (
+                    [gid] int NOT NULL IDENTITY (1,1),
+                    [sid] int NOT NULL default 0,
+                    [group_name] nvarchar(100) NOT NULL default '',
+                    [group_order] int NOT NULL default 0,
+                    [description] nvarchar(max) NULL,
+                    [language] nvarchar(20) NOT NULL default 'en',
+                    [randomization_group] nvarchar(20) NOT NULL default '',
+                    [grelevance] nvarchar(max) NULL,
+                    PRIMARY KEY  ([gid],[language])
+                );
+            ";
+        } elseif (Yii::app()->db->getDriverName() == 'pgsql') {
+            $query = "
+                CREATE TABLE prefix_groups (
+                    \"gid\" serial NOT NULL,
+                    \"sid\" integer DEFAULT 0 NOT NULL,
+                    \"group_name\" character varying(100) DEFAULT '' NOT NULL,
+                    \"group_order\" integer DEFAULT 0 NOT NULL,
+                    \"description\" text,
+                    \"language\" character varying(20) DEFAULT 'en',
+                    \"randomization_group\" character varying(20) DEFAULT '' NOT NULL,
+                    \"grelevance\" text DEFAULT NULL,
+                    CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, \"language\")
+                );
+            ";
+        }
+        $prefix = Yii::app()->getDb()->tablePrefix;
+        $query = str_replace('prefix_', $prefix, $query);
+        $oDB->createCommand($query)->execute();
+        $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
+        $oDB->createCommand()->createIndex('{{idx2_groups}}', '{{groups}}', 'group_name', false);
+        $oDB->createCommand()->createIndex('{{idx3_groups}}', '{{groups}}', 'language', false);
+
+        /*
         $oDB->createCommand()->createTable('{{groups}}', array(
             'gid' =>  "pk",
             'sid' =>  "integer NOT NULL default '0'",
@@ -129,10 +182,7 @@ function createDatabase($oDB){
             'randomization_group' =>  "string(20) NOT NULL default ''",
             'grelevance' =>  "text NULL"
         ));
-        $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
-        $oDB->createCommand()->createIndex('{{idx2_groups}}', '{{groups}}', 'group_name', false);
-        $oDB->createCommand()->createIndex('{{idx3_groups}}', '{{groups}}', 'language', false);
-
+         */
 
         // labels
         $oDB->createCommand()->createTable('{{labels}}', array(
