@@ -47,4 +47,5 @@ before_script:
 
 script:
     - DOMAIN=localhost phpunit
+after_failure:
     - tail -n200 phantomjs.log
