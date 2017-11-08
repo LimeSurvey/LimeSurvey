@@ -94,7 +94,7 @@ class AdminViewsTest extends TestBaseClassView
      * @param array$view
      * @dataProvider addUsersViews
      */
-    public function testUsersViews($name,$view){
+    public function testUserViews($name,$view){
         // use Admin user
         $uid = 1;
         // non-adminuser for some views
