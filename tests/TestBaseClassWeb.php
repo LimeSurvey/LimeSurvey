@@ -136,9 +136,11 @@ class TestBaseClassWeb extends TestBaseClass
             );
         } catch (TimeOutException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            file_put_contents(__DIR__ .'/tmp.png', $screenshot);
+            $filename = \Yii::app()->basePath . '/../tests/tmp/screenshots/FailedLogin.png';
+            file_put_contents($filename, $screenshot);
             $this->assertTrue(
                 false,
+                ' Screenshot in ' . $filename . PHP_EOL .
                 'Found no welcome jumbotron after login.'
             );
         }

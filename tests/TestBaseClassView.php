@@ -56,9 +56,10 @@ class TestBaseClassView extends TestBaseClassWeb
         $url = $this->getUrl($view);
         $this->openView($url);
         $element = null;
+        $filename = null;
 
         try {
-            $this->webDriver->wait(2)->until(
+            $element = $this->webDriver->wait(2)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('action::' . $name)
                 )
@@ -72,6 +73,7 @@ class TestBaseClassView extends TestBaseClassWeb
         //var_dump($body->getText());
         $this->assertNotEmpty(
             $element,
+            'Possible screenshot at ' . $filename . PHP_EOL .
             sprintf(
                 'FAILED viewing %s on route %s, full url %s',
                 $name,

@@ -3,6 +3,8 @@ php:
     - '7.1'
       #- '5.6'
 before_script:
+
+    # Install LimeSurvey.
     - phpunit --version
     - touch enabletests
       #- rm composer.lock
@@ -12,13 +14,14 @@ before_script:
     - chmod -R 776 tmp
     - chmod -R 776 tmp/runtime
     - chmod -R 776 upload
+    - chmod -R 776 templates
     - mkdir -p tests/tmp/runtime
     - chmod -R 776 tests/tmp
     - chmod -R 776 tests/tmp/runtime
     - php application/commands/console.php install admin password TravisLS no@email.com
     - cp application/config/config-sample-mysql.php application/config/config.php
 
-    # Install Apache
+    # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
     - sudo apt-get update > /dev/null
     - sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs
@@ -28,7 +31,7 @@ before_script:
       #- ls -l ~/.phpenv/versions/5.6/etc
       #- ls -l ~/.phpenv/versions/5.6/etc/conf.d
       #- ls -l ~/.phpenv/versions/5.6/etc/php-fpm.conf
-    - find ~/.phpenv/versions/
+      #- find ~/.phpenv/versions/
     - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
     - sudo a2enmod rewrite actions fastcgi alias
     - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
@@ -38,7 +41,8 @@ before_script:
     - sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-default.conf
     - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
     - sudo service apache2 restart
-    # Test server
+
+    # Test server.
     - wget localhost
     - more localhost
 
