@@ -44,12 +44,12 @@ class DateTimeValidationTest extends TestBaseClassWeb
             )
         );
 
-        $this->webDriver->get($url);
+        self::$webDriver->get($url);
 
         try {
             $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         } catch (NoSuchElementException $ex) {
-            $screenshot = $this->webDriver->takeScreenshot();
+            $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
@@ -77,7 +77,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $this->assertNotEmpty($div);
         } catch (NoSuchElementException $ex) {
             $screenshot = $this->webDriver->takeScreenshot();
-            $filename = self::$screenshotsFolder'/DateTimeValidationTest.png';
+            $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
             file_put_contents($filename, $screenshot);
             $this->assertFalse(
                 true,
