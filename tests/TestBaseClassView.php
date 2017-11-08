@@ -53,7 +53,6 @@ class TestBaseClassView extends TestBaseClassWeb
         $this->openView($url);
         $element = null;
         $filename = null;
-        usleep(100);
 
         try {
             $element = self::$webDriver->wait(2)->until(
