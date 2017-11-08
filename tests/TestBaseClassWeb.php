@@ -135,9 +135,10 @@ class TestBaseClassWeb extends TestBaseClass
             );
         } catch (TimeOutException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents(self::$screenshotsFolder .'/tmp.png', $screenshot);
+            file_put_contents(self::$screenshotsFolder .'/FailedLogin.png', $screenshot);
             $this->assertTrue(
                 false,
+                ' Screenshot in ' . $filename . PHP_EOL .
                 'Found no welcome jumbotron after login.'
             );
         }
