@@ -28,12 +28,6 @@ class TestBaseClassView extends TestBaseClassWeb
     public static function setupBeforeClass()
     {
         parent::setupBeforeClass();
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-
         $username = getenv('ADMINUSERNAME');
         if (!$username) {
             $username = 'admin';
@@ -44,8 +38,10 @@ class TestBaseClassView extends TestBaseClassWeb
             $password = 'password';
         }
 
-        $this->adminLogin($username, $password);
+        self::adminLogin($username, $password);
+
     }
+
 
     /**
      * @param string $name

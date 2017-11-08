@@ -31,29 +31,30 @@ class TestBaseClassWeb extends TestBaseClass
      * @var int web server port
      * TODO this should be in configuration somewhere
      */
-    protected $webPort = 4444;
+    protected static $webPort = 4444;
 
     /**
      * @var WebDriver $webDriver
      */
     protected static $webDriver;
 
-    public function setUp()
+    public static function setUpBeforeClass()
     {
-        parent::setUp();
+        parent::setUpBeforeClass();
 
         if (empty(getenv('DOMAIN'))) {
             die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
 
         $capabilities = DesiredCapabilities::phantomjs();
-        self::$webDriver = RemoteWebDriver::create("http://localhost:{$this->webPort}/", $capabilities);
+        $port = self::$webPort;
+        self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
         self::$webDriver->manage()->window()->maximize();
     }
 
-    public function tearDown()
+    public static function tearDownAfterClass()
     {
-        parent::tearDown();
+        parent::tearDownAfterClass();
         self::$webDriver->quit();
     }
 
@@ -63,7 +64,7 @@ class TestBaseClassWeb extends TestBaseClass
      * @throws \Exception
      * @internal param array $view
      */
-    public function openView($url)
+    public static function openView($url)
     {
         if (!is_string($url)) {
             throw new \Exception('$url must be a string, is ' . json_encode($url));
@@ -76,7 +77,7 @@ class TestBaseClassWeb extends TestBaseClass
      * @param array $view
      * @return string
      */
-    public function getUrl(array $view)
+    public static function getUrl(array $view)
     {
         $domain = getenv('DOMAIN');
         if (empty($domain)) {
@@ -94,12 +95,12 @@ class TestBaseClassWeb extends TestBaseClass
      * @param string $password
      * @return void
      */
-    public function adminLogin($userName, $password)
+    public static function adminLogin($userName, $password)
     {
 
 
-        $url = $this->getUrl(['login', 'route'=>'authentication/sa/login']);
-        $this->openView($url);
+        $url = self::getUrl(['login', 'route'=>'authentication/sa/login']);
+        self::openView($url);
         try {
             self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
@@ -111,7 +112,7 @@ class TestBaseClassWeb extends TestBaseClass
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder .'/FailedLogin.png';
             file_put_contents($filename, $screenshot);
-            $this->assertTrue(
+            self::assertTrue(
                 false,
                 ' Screenshot in ' . $filename . PHP_EOL .
                 sprintf(
@@ -136,7 +137,7 @@ class TestBaseClassWeb extends TestBaseClass
         } catch (TimeOutException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             file_put_contents(self::$screenshotsFolder .'/FailedLogin.png', $screenshot);
-            $this->assertTrue(
+            self::assertTrue(
                 false,
                 ' Screenshot in ' . $filename . PHP_EOL .
                 'Found no welcome jumbotron after login.'
