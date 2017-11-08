@@ -148,6 +148,11 @@ class Save {
             $errormsg .= gT("This name has already been used for this survey. You must use a unique save name.")."<br />\n";
             return;
         }
+        elseif (!empty($_POST['saveemail']) && !validateEmailAddress($_POST['saveemail']))  // Check if the email address is valid
+        {
+            $errormsg .= gT("This is not a valid email address. Please provide a valid email address or leave it empty.")."<br />\n";
+            return;
+        }
         else
         {
             //INSERT BLANK RECORD INTO "survey_x" if one doesn't already exist

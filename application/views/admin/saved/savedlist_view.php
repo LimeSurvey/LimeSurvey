@@ -31,14 +31,15 @@
 
                     </td>
 
-                    <td><?php echo $oResult->identifier; ?></td>
-                    <td><?php echo $oResult->ip; ?></td>
-                    <td><?php echo $oResult->saved_date; ?></td>
-                    <td><a href='mailto: <?php echo $oResult->email; ?>'> <?php echo $oResult->email; ?></td>
+                                    <td><?php echo htmlspecialchars($oResult->identifier); ?></td>
+                                    <td><?php echo $oResult->ip; ?></td>
+                                    <td><?php echo $oResult->saved_date; ?></td>
+                                    <td><?php echo CHtml::link(htmlspecialchars($oResult->email),'mailto:'.htmlspecialchars($oResult->email)); ?></td>
 
-                </tr>
-                <?php } ?>
-        </tbody>
-    </table>
-    <br />&nbsp;
-</p>
+                                </tr>
+                                <?php } ?>
+                        </tbody>
+                    </table>
+                    <br />&nbsp;
+                </p>
+</div></div></div>
