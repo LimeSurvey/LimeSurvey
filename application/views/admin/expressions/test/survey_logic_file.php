@@ -18,7 +18,7 @@
                 
                 <input name="printable" type="hidden" value="1" />
                 <div class="form-group">
-                    <input type="submit" name="printablesubmit" value="<?=gT("Open Printable")?>" class="btn btn-default" />
+                    <input type="submit" name="printablesubmit" value="<?=gT("Open printable view")?>" class="btn btn-default" />
                 </div>
             </form>
         </div>
