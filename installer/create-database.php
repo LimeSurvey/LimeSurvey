@@ -15,6 +15,7 @@ function createDatabase($oDB){
     ///////////////////////////////////////
 
     Yii::app()->loadHelper('database');
+    Yii::app()->loadHelper('update.updatedb');
     // $oDB                        = Yii::app()->getDb();
 
     $oTransaction = $oDB->beginTransaction();
@@ -35,7 +36,7 @@ function createDatabase($oDB){
 
         // assessements
         $oDB->createCommand()->createTable('{{assessments}}', array(
-            'id' =>         'pk',
+            'id' =>         'autoincrement',
             'sid' =>        'integer DEFAULT 0',
             'scope' =>      'string(5)'	,
             'gid' =>        'integer DEFAULT 0',
@@ -43,7 +44,8 @@ function createDatabase($oDB){
             'minimum' =>    'string(50)',
             'maximum' =>    'string(50)',
             'message' =>    'text',
-            'language' =>   "string(20) DEFAULT 'en'"
+            'language' =>   "string(20) DEFAULT 'en'",
+            'composite_pk' => array('id', 'language')
         ));
         $oDB->createCommand()->createIndex('{{assessments_idx2}}', '{{assessments}}', 'sid', false);
         $oDB->createCommand()->createIndex('{{assessments_idx3}}', '{{assessments}}', 'gid', false);
@@ -108,7 +110,6 @@ function createDatabase($oDB){
             'prettyprint' =>  "text",
         ));
 
-
         // failed_login_attempts
         $oDB->createCommand()->createTable('{{failed_login_attempts}}', array(
             'id' =>  "pk",
@@ -118,71 +119,20 @@ function createDatabase($oDB){
         ));
 
 
-        // groups
-        if (Yii::app()->db->driverName=='mysql' || Yii::app()->db->driverName=='mysqli') {
-            $query = "
-                CREATE TABLE `prefix_groups` (
-                  `gid` int(11) NOT NULL auto_increment,
-                  `sid` int(11) NOT NULL default '0',
-                  `group_name` varchar(100) NOT NULL default '',
-                  `group_order` int(11) NOT NULL default '0',
-                  `description` text,
-                  `language` varchar(20) default 'en',
-                  `randomization_group` varchar(20) NOT NULL default '',
-                  `grelevance` text DEFAULT NULL,
-                  PRIMARY KEY (`gid`,`language`)
-                ) ENGINE=MYISAM CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-                ";
-        } elseif (Yii::app()->db->driverName=='sqlsrv'
-            || Yii::app()->db->driverName=='dblib'
-            || Yii::app()->db->driverName=='mssql') {
-            $query = "
-                CREATE TABLE [prefix_groups] (
-                    [gid] int NOT NULL IDENTITY (1,1),
-                    [sid] int NOT NULL default 0,
-                    [group_name] nvarchar(100) NOT NULL default '',
-                    [group_order] int NOT NULL default 0,
-                    [description] nvarchar(max) NULL,
-                    [language] nvarchar(20) NOT NULL default 'en',
-                    [randomization_group] nvarchar(20) NOT NULL default '',
-                    [grelevance] nvarchar(max) NULL,
-                    PRIMARY KEY  ([gid],[language])
-                );
-            ";
-        } elseif (Yii::app()->db->getDriverName() == 'pgsql') {
-            $query = "
-                CREATE TABLE prefix_groups (
-                    \"gid\" serial NOT NULL,
-                    \"sid\" integer DEFAULT 0 NOT NULL,
-                    \"group_name\" character varying(100) DEFAULT '' NOT NULL,
-                    \"group_order\" integer DEFAULT 0 NOT NULL,
-                    \"description\" text,
-                    \"language\" character varying(20) DEFAULT 'en',
-                    \"randomization_group\" character varying(20) DEFAULT '' NOT NULL,
-                    \"grelevance\" text DEFAULT NULL,
-                    CONSTRAINT prefix_groups_pkey PRIMARY KEY (gid, \"language\")
-                );
-            ";
-        }
-        $prefix = Yii::app()->getDb()->tablePrefix;
-        $query = str_replace('prefix_', $prefix, $query);
-        $oDB->createCommand($query)->execute();
-        $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
-        $oDB->createCommand()->createIndex('{{idx2_groups}}', '{{groups}}', 'group_name', false);
-        $oDB->createCommand()->createIndex('{{idx3_groups}}', '{{groups}}', 'language', false);
-
-        /*
         $oDB->createCommand()->createTable('{{groups}}', array(
-            'gid' =>  "pk",
+            'gid' =>  "autoincrement",
             'sid' =>  "integer NOT NULL default '0'",
             'group_name' =>  "string(100) NOT NULL default ''",
             'group_order' =>  "integer NOT NULL default '0'",
             'description' =>  "text",
             'language' =>  "string(20) default 'en'",
             'randomization_group' =>  "string(20) NOT NULL default ''",
-            'grelevance' =>  "text NULL"
+            'grelevance' =>  "text NULL",
+            'composite_pk' => array('gid', 'language')
         ));
-         */
+        $oDB->createCommand()->createIndex('{{idx1_groups}}', '{{groups}}', 'sid', false);
+        $oDB->createCommand()->createIndex('{{idx2_groups}}', '{{groups}}', 'group_name', false);
+        $oDB->createCommand()->createIndex('{{idx3_groups}}', '{{groups}}', 'language', false);
 
         // labels
         $oDB->createCommand()->createTable('{{labels}}', array(
@@ -271,10 +221,11 @@ function createDatabase($oDB){
 
         // participant_attribute_names
         $oDB->createCommand()->createTable('{{participant_attribute_names}}', array(
-            'attribute_id' =>  "pk",
+            'attribute_id' =>  "autoincrement",
             'attribute_type' =>  "string(4) NOT NULL",
             'defaultname' =>  "string(255) NOT NULL",
             'visible' =>  "string(5) NOT NULL",
+            'composite_pk' => array('attribute_id', 'attribute_type')
         ));
 
         $oDB->createCommand()->createIndex('{{idx_participant_attribute_names}}', '{{participant_attribute_names}}', ['attribute_id', 'attribute_type']);
@@ -340,7 +291,7 @@ function createDatabase($oDB){
 
         // questions
         $oDB->createCommand()->createTable('{{questions}}', array(
-            'qid' =>  "pk",
+            'qid' =>  "autoincrement",
             'parent_qid' =>  "integer NOT NULL default '0'",
             'sid' =>  "integer NOT NULL default '0'",
             'gid' =>  "integer NOT NULL default '0'",
@@ -357,6 +308,7 @@ function createDatabase($oDB){
             'same_default' =>  "integer NOT NULL default '0'",
             'relevance' =>  "text",
             'modulename' =>  "string(255) NULL",
+            'composite_pk' => array('qid', 'language')
         ));
 
         $oDB->createCommand()->createIndex('{{idx1_questions}}', '{{questions}}', 'sid', false);
