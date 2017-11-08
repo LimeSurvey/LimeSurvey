@@ -70,10 +70,13 @@ class DateTimeValidationTest extends TestBaseClassWeb
             $domain = '';
         }
 
-        $url = sprintf(
-            'http://%s/index.php/%d?newtest=Y&lang=pt',
-            $domain,
-            self::$surveyId
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $url = $urlMan->createUrl('survey/index', array(
+            'sid' => self::$surveyId,
+            'newtest' => 'Y',
+            'lang' => 'pt'
+            )
         );
 
         $this->webDriver->get($url);
@@ -89,6 +92,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
             );
             $this->assertFalse(
                 true,
+                'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
             );
         }
@@ -114,6 +118,7 @@ class DateTimeValidationTest extends TestBaseClassWeb
             file_put_contents(__DIR__ . '/../_output/tmp.png', $screenshot);
             $this->assertFalse(
                 true,
+                'Url: ' . $url . PHP_EOL .
                 'Screenshot in ' . __DIR__ . '/tmp.png' . PHP_EOL . $ex->getMessage()
             );
         }
