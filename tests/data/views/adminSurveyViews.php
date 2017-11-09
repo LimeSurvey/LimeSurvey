@@ -23,7 +23,7 @@ return [
     //['surveyParticipantsIndex', ['route'=>'tokens/sa/index/surveyid/{SID}']],
     //['surveyPublicationOptions', ['route'=>'rendersidemenulink/subaction/publication/surveyid/{SID}']],
 
-    ['surveyResources', ['route'=>'survey/sa/rendersidemenulink/subaction/resources/surveyid/{SID}']],
+    //['surveyResources', ['route'=>'survey/sa/rendersidemenulink/subaction/resources/surveyid/{SID}']],
     ['surveyPermissions', ['route'=>'surveypermission/sa/view/surveyid/{SID}']],
     ['surveyParticipantTokenOptions', ['route'=>'survey/sa/rendersidemenulink/subaction/tokens/surveyid/{SID}']],
     ['surveyQuotas', ['route'=>'quotas/sa/index/surveyid/{SID}']],
