@@ -28,9 +28,7 @@ class TemplateControllerTest extends TestBaseClass
         // Remove folder from last test.
         $newname = 'foobartest';
         $newdirname  = \Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
-        if(file_exists($newdirname)){
-            @exec('rm -r ' . $newdirname);
-        }
+        @exec('rm -r ' . $newdirname);
 
         // Simulate a POST.
         $_POST['newname'] = $newname;
