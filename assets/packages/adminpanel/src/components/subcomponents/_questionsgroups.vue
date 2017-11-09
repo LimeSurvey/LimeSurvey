@@ -183,16 +183,6 @@ export default {
 </template>
 
 <style lang="scss">
-    .bigIcons {
-        font-size: 18px;
-        line-height: 21px;
-    }
-    .border-bottom{
-        border-bottom: 1px solid transparent;
-    }
-    .margin-bottom{
-        padding-bottom: 5px;
-    }
     #questionexplorer{
         overflow: auto;
     }

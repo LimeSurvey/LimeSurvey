@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "13eb275080e9f2870dbb12e4f662984c",
-    "content-hash": "e4c5ae748b238ccf295cf19801823ae0",
+    "content-hash": "9ce6213ad3d73ec792b3af5ba199b9d6",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -13,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "5522ce16dbcd46869278c030687758840b30e193"
+                "reference": "f049e6756ecb8a69282b88e0114a63866d3747d2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/5522ce16dbcd46869278c030687758840b30e193",
-                "reference": "5522ce16dbcd46869278c030687758840b30e193",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/f049e6756ecb8a69282b88e0114a63866d3747d2",
+                "reference": "f049e6756ecb8a69282b88e0114a63866d3747d2",
                 "shasum": ""
             },
             "require": {
@@ -32,7 +31,7 @@
                 "guzzle/guzzle": "^3.4.1",
                 "php-coveralls/php-coveralls": "^1.0.2",
                 "php-mock/php-mock-phpunit": "^1.1",
-                "phpunit/phpunit": "^5.4",
+                "phpunit/phpunit": "^5.7",
                 "sebastian/environment": "^1.3.4 || ^2.0 || ^3.0",
                 "squizlabs/php_codesniffer": "^2.6",
                 "symfony/var-dumper": "^3.3"
@@ -60,7 +59,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2017-10-26 14:08:12"
+            "time": "2017-11-08 14:31:23"
         },
         {
             "name": "symfony/process",
@@ -68,12 +67,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46"
+                "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
-                "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
+                "url": "https://api.github.com/repos/symfony/process/zipball/dce0aaed6962844b680b9a98a163e2f5f768752b",
+                "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b",
                 "shasum": ""
             },
             "require": {
@@ -109,10 +108,10 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-24 14:12:06"
+            "time": "2017-11-05 16:10:10"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": [],

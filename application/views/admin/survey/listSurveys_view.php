@@ -5,6 +5,10 @@
 *
 * @var $model  obj    the QuestionGroup model
 */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('listSurveys');
+
 ?>
 <?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
 <div class="ls-space margin left-15 right-15 row list-surveys">

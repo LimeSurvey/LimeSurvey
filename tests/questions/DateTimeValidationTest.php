@@ -2,82 +2,28 @@
 
 namespace ls\tests;
 
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
-use \Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
  * @since 2017-10-27
  * @group datevalidation
  */
-class DateTimeValidationTest extends TestBaseClass
+class DateTimeValidationTest extends TestBaseClassWeb
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
-
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass()
     {
-        \Yii::app()->session['loginID'] = 1;
+        parent::setUpBeforeClass();
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_834477.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
-
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
-
+        $surveyFile = self::$surveysFolder.'/limesurvey_survey_834477.lss';
+        self::importSurvey($surveyFile);
         self::$testHelper->enablePreview();
     }
 
-    /**
-     * Selenium setup.
-     */
-    public function setUp()
-    {
-        if (empty(getenv('DOMAIN'))) {
-            die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
-        }
-
-        $capabilities = DesiredCapabilities::firefox();
-        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/wd/hub', $capabilities);
-    }
-
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
-    }
-
-    /**
-     * Tear down fixture.
-     */
-    public function tearDown()
-    {
-        // Close Firefox.
-        $this->webDriver->quit();
-    }
 
     /**
      * 
@@ -89,26 +35,55 @@ class DateTimeValidationTest extends TestBaseClass
             $domain = '';
         }
 
-        $this->webDriver->get(
-            sprintf(
-                'http://%s/index.php/%d?newtest=Y&lang=pt',
-                $domain,
-                self::$surveyId
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $url = $urlMan->createUrl('survey/index', array(
+            'sid' => self::$surveyId,
+            'newtest' => 'Y',
+            'lang' => 'pt'
             )
         );
-        $submit = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::id('ls-button-submit'));
+
+        self::$webDriver->get($url);
+
+        try {
+            $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
+        } catch (NoSuchElementException $ex) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
+            file_put_contents($filename, $screenshot);
+            $this->assertFalse(
+                true,
+                'Url: ' . $url . PHP_EOL .
+                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
+            );
+        }
+
         $this->assertNotEmpty($submit);
-        $this->webDriver->wait(10, 1000)->until(
+        self::$webDriver->wait(10, 1000)->until(
             WebDriverExpectedCondition::visibilityOf($submit)
         );
         $submit->click();
 
         // After submit we should see the complete page.
         try {
-            $div = $this->webDriver->findElement(\Facebook\WebDriver\WebDriverBy::className('completed-text'));
+            // Wait max 10 second to find this div.
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
+                    WebDriverBy::className('completed-text')
+                )
+            );
+            $div = self::$webDriver->findElement(WebDriverBy::className('completed-text'));
             $this->assertNotEmpty($div);
-        } catch (Facebook\WebDriver\Exception\NoSuchElementException $ex) {
-            $this->assertTrue(false, $ex->getMessage());
+        } catch (NoSuchElementException $ex) {
+            $screenshot = $this->webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
+            file_put_contents($filename, $screenshot);
+            $this->assertFalse(
+                true,
+                'Url: ' . $url . PHP_EOL .
+                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
+            );
         }
     }
 }

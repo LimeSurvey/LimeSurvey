@@ -221,6 +221,10 @@ set_error_handler(function($no, $msg, $file, $line, $context) {
 
 require_once(__DIR__ . '/TestHelper.php');
 require_once(__DIR__ . '/TestBaseClass.php');
+require_once(__DIR__ . '/TestBaseClassWeb.php');
+require_once(__DIR__ . '/TestBaseClassView.php');
 require_once(__DIR__ . '/DummyController.php');
+
+
 
 define('PHP_ENV', 'test');

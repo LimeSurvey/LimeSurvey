@@ -12,8 +12,11 @@
 /* @var Quota $oQuota The last Quota as base for Massive edits */
 /* @var QuotaLanguageSetting[] $aQuotaLanguageSettings The last Quota LanguageSettings */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyQuotas');
 
 ?>
+
 <!-- To update grid when pageSize is changed -->
 <script type="text/javascript">
     $(document).ready(function() {

@@ -4,6 +4,10 @@
  * @var Survey $oSurvey
  * @var array $queries
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyParticipantsIndex');
+
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT("Survey participant summary"); ?></h3>

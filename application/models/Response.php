@@ -62,7 +62,7 @@
          */
         public function getFilesAndSqga($sQID = 0)
         {
-            $aConditions=array('sid' => $this->dynamicId,'type' => '|','language'=>getBaseLanguageFromSurveyID($this->dynamicId));
+            $aConditions=array('sid' => $this->dynamicId,'type' => '|','language'=>$this->survey->language);
             if ($sQID>0)
             {
                 $aConditions['qid']=$sQID;

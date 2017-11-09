@@ -1,0 +1,48 @@
+language: php
+php:
+    - '7.0'
+      #- '5.6'
+before_script:
+
+    # Install LimeSurvey.
+    - phpunit --version
+    - touch enabletests
+      #- rm composer.lock
+      #- rm -r third_party
+    - composer install
+      #- composer install
+    - chmod -R 776 tmp
+    - chmod -R 776 tmp/runtime
+    - chmod -R 776 upload
+    - chmod -R 776 templates
+    - mkdir -p tests/tmp/runtime
+    - chmod -R 776 tests/tmp
+    - chmod -R 776 tests/tmp/runtime
+    - php application/commands/console.php install admin password TravisLS no@email.com verbose
+    - cp application/config/config-sample-mysql.php application/config/config.php
+
+    # Install Apache.
+    # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
+    - sudo apt-get update > /dev/null
+    - sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs chromium-browser
+    - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+    - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
+    - sudo a2enmod rewrite actions fastcgi alias
+    - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+    - sudo sed -i -e "s,www-data,travis,g" /etc/apache2/envvars
+    - sudo chown -R travis:travis /var/lib/apache2/fastcgi
+    - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+    - sudo cp -f tests/travis/travis-ci-apache /etc/apache2/sites-available/000-default.conf
+    - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/000-default.conf
+    - sudo service apache2 restart
+
+    # Test server.
+    - wget localhost
+    - more localhost
+
+    # Chromedriver setup.
+    - wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+    - unzip chromedriver_linux64.zip
+
+script:
+    - DOMAIN=localhost phpunit

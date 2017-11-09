@@ -102,6 +102,8 @@ class TutorialEntry extends LSActiveRecord
 	 */
 	public static function model($className=__CLASS__)
 	{
-		return parent::model($className);
+	    /** @var TutorialEntry $model */
+	    $model = parent::model($className);
+		return $model;
 	}
 }
