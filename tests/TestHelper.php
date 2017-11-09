@@ -202,10 +202,12 @@ class TestHelper extends TestCase
      */
     public function connectToOriginalDatabase()
     {
-        $db = \Yii::app()->getDb();
+        \Yii::app()->db->setActive(false);
         $config = require(\Yii::app()->getBasePath() . '/config/config.php');
         \Yii::app()->setComponent('db', $config['components']['db'], false);
-        $db->setActive(true);
+        \Yii::app()->db->setActive(true);
+        \Yii::app()->db->schema->getTables();
+        \Yii::app()->db->schema->refresh();
     }
 
     /**

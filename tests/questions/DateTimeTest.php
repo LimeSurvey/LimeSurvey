@@ -10,50 +10,20 @@ use PHPUnit\Framework\TestCase;
  */
 class DateTimeTest extends TestBaseClass
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
 
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
+
         $_POST = [];
         $_SESSION = [];
 
-        \Yii::app()->session['loginID'] = 1;
+        $surveyFile = self::$surveysFolder.'/limesurvey_survey_975622.lss';
+        self::importSurvey($surveyFile);
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_975622.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
-
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
-    }
-
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
     }
 
     /**

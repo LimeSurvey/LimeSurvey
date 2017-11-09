@@ -37,14 +37,6 @@
                         <?php endif; ?>
 
                         <?php if(isset($sSubaction)): ?>
-                            <li>
-                                <div>
-                                    <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/', ['surveyid' => $oSurvey->sid] );?>">
-                                        <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title);?>
-                                        (<?php echo flattenText($oSurvey->sid);?>)
-                                    </a>
-                                </div>
-                            </li>
                             <?php if(isset($sSimpleSubaction)): ?>
                                 <li class="active">
                                     <?php echo $sSimpleSubaction;?>
@@ -125,13 +117,6 @@
 
                         
                     <?php if(isset($token)): ?>
-                        <li>
-                            <div>
-                                <a id="breadcrumb__survey--overview" class="pjax animate" href="<?php echo App()->createUrl('/admin/survey/sa/view/',['surveyid' => $oSurvey->sid] );?>">
-                                    <?php echo flattenText($oSurvey->defaultlanguage->surveyls_title);?>
-                                </a>
-                            </div>
-                        </li>
                         <li>
                             <a id="breadcrumb__survey--participants" class="pjax animate" href="<?php echo App()->createUrl('admin/tokens/sa/index/',['surveyid' => $oSurvey->sid] );?>">
                                 <?php eT('Survey participants');?>

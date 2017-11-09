@@ -487,7 +487,6 @@ class UserAction extends Survey_Common_Action
     public function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
-        $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
         if ($iUserID) {
             //Only super admin (read) can update other user
             if(Permission::model()->hasGlobalPermission('superadmin','read')) {

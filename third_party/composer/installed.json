@@ -6,18 +6,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/process.git",
-            "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46"
+            "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
-            "reference": "ae1f0fe7202afcdd0ea905fe88b14c05e1be5a46",
+            "url": "https://api.github.com/repos/symfony/process/zipball/dce0aaed6962844b680b9a98a163e2f5f768752b",
+            "reference": "dce0aaed6962844b680b9a98a163e2f5f768752b",
             "shasum": ""
         },
         "require": {
             "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2017-10-24 14:12:06",
+        "time": "2017-11-05T16:10:10+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -57,12 +57,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/facebook/php-webdriver.git",
-            "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8"
+            "reference": "f049e6756ecb8a69282b88e0114a63866d3747d2"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
-            "reference": "e304e7e0e00f0f3b00ecc9111d893d1456c2f7b8",
+            "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/f049e6756ecb8a69282b88e0114a63866d3747d2",
+            "reference": "f049e6756ecb8a69282b88e0114a63866d3747d2",
             "shasum": ""
         },
         "require": {
@@ -76,12 +76,12 @@
             "guzzle/guzzle": "^3.4.1",
             "php-coveralls/php-coveralls": "^1.0.2",
             "php-mock/php-mock-phpunit": "^1.1",
-            "phpunit/phpunit": "^5.4",
+            "phpunit/phpunit": "^5.7",
             "sebastian/environment": "^1.3.4 || ^2.0 || ^3.0",
             "squizlabs/php_codesniffer": "^2.6",
             "symfony/var-dumper": "^3.3"
         },
-        "time": "2017-11-02 21:00:08",
+        "time": "2017-11-08T14:31:23+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {

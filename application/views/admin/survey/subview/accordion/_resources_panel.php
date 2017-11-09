@@ -2,6 +2,10 @@
 /**
  * ressources panel tab
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyResources');
+
 ?>
 <script type="text/javascript">
     var jsonUrl = '';

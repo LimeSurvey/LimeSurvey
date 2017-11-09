@@ -2108,9 +2108,6 @@ function display_first_page($thissurvey, $aSurveyInfo)
     $thissurvey['surveyUrl'] = Yii::app()->getController()->createUrl("survey/index",array("sid"=>$surveyid)); // For form action (will remove newtest)
     $thissurvey['attr']['welcomecontainer'] = $thissurvey['attr']['surveyname'] = $thissurvey['attr']['description'] = $thissurvey['attr']['welcome'] = $thissurvey['attr']['questioncount'] =  '';
 
-
-
-
     Yii::app()->twigRenderer->renderTemplateFromFile("layout_first_page.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }
 

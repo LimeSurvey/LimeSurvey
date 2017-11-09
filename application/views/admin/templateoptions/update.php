@@ -1,6 +1,9 @@
 <?php
-/* @var $this TemplateOptionsController */
+/* @var $this AdminController */
 /* @var $model TemplateOptions */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
 ?>
 

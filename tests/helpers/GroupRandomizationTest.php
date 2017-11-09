@@ -11,7 +11,7 @@ use Facebook\WebDriver\WebDriverBy;
  * @since 2017-11-02
  * @group rand
  */
-class GroupRandomizationTest extends TestBaseClass
+class GroupRandomizationTest extends TestBaseClassWeb
 {
     /**
      * @var int
@@ -22,6 +22,8 @@ class GroupRandomizationTest extends TestBaseClass
      */
     public static function setupBeforeClass()
     {
+        parent::setupBeforeClass();
+
         self::$testHelper->connectToOriginalDatabase();
 
         \Yii::app()->session['loginID'] = 1;
@@ -33,12 +35,20 @@ class GroupRandomizationTest extends TestBaseClass
 
         $translateLinksFields = false;
         $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
+        try {
+            $result = importSurveyFile(
+                $surveyFile,
+                $translateLinksFields,
+                $newSurveyName,
+                null
+            );
+        } catch (\CDbException $ex) {
+            self::assertTrue(
+                false,
+                'Could not import survey limesurvey_survey_88881.lss: ' . $ex->getMessage()
+            );
+        }
+
         if ($result) {
             self::$surveyId = $result['newsid'];
         } else {
@@ -55,8 +65,8 @@ class GroupRandomizationTest extends TestBaseClass
             die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
 
-        $capabilities = DesiredCapabilities::phantomjs();
-        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/', $capabilities);
+        //$capabilities = DesiredCapabilities::phantomjs();
+        //$this->webDriver = RemoteWebDriver::create('http://localhost:4444/', $capabilities);
     }
 
     /**
@@ -76,7 +86,7 @@ class GroupRandomizationTest extends TestBaseClass
     public function tearDown()
     {
         // Close Firefox.
-        $this->webDriver->quit();
+        self::$webDriver->quit();
     }
 
 
@@ -92,35 +102,33 @@ class GroupRandomizationTest extends TestBaseClass
             $domain = '';
         }
 
-        $this->webDriver->get(
-            sprintf(
-                'http://%s/index.php/%d?newtest=Y&lang=pt',
-                $domain,
-                self::$surveyId
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'survey/index',
+            array(
+                'sid' => self::$surveyId,
+                'newtest' => 'Y',
+                'lang' => 'pt'
             )
         );
-        $submit = $this->webDriver->findElement(WebDriverBy::id('ls-button-submit'));
+
+        self::$webDriver->get($url);
+        $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         $this->assertNotEmpty($submit);
-        $this->webDriver->wait(10, 1000)->until(
+        self::$webDriver->wait(10, 1000)->until(
             WebDriverExpectedCondition::visibilityOf($submit)
         );
         $submit->click();
 
-        $body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
+        $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
         $text = $body->getText();
 
-        if (strpos($text, 'PHP notice') === false) {
-            echo 'No PHP notice';
-            exit(0);
-        } else {
-            echo 'PHP notice!';
-            exit(1);
-        }
-
         // There should be no PHP notice.
-        //$this->assertTrue(strpos($text, 'PHP notice') === false, $text);
+        $this->assertTrue(strpos($text, 'PHP notice') === false, $text);
 
-        //$screenshot = $this->webDriver->takeScreenshot();
+        // NB: This is how to take a screenshot, if necessary.
+        //$screenshot = self::$webDriver->takeScreenshot();
         //file_put_contents(__DIR__ . '/screenshot.png', $screenshot);
 
         self::$testHelper->deactivateSurvey(self::$surveyId);

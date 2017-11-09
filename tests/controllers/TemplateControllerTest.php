@@ -1,8 +1,9 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\controllers;
 
-use PHPUnit\Framework\TestCase;
+use ls\tests\TestBaseClass;
+use ls\tests\DummyController;
 
 /**
  * @since 2017-10-15
@@ -34,7 +35,7 @@ class TemplateControllerTest extends TestBaseClass
         $_POST['copydir'] = 'default';
         $_SERVER['SERVER_NAME'] = 'localhost';
 
-        $contr = new \templates(new DummyController('dummyid'));
+        $contr = new \templates(new \ls\tests\DummyController('dummyid'));
         $contr->templatecopy();
         $template = \Template::model()->find('name = \'foobartest\'');
         $this->assertNotEmpty($template);

@@ -1,10 +1,15 @@
 <?php
 /**
+ * @var $this AdminController
+ *
 * Right accordion, integration panel
 * Use datatables, needs surveysettings.js
 */
 $yii = Yii::app();
 $controller = $yii->getController();
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyPanelIntegration');
+
 ?>
   <!-- Datatable translation-data -->
   <script type="text/javascript">

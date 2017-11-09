@@ -113,8 +113,6 @@ class SurveyRuntimeHelper {
             $this->setPreview();
         }
 
-
-
         $this->moveSubmitIfNeeded();
         $this->setGroup();
 
@@ -160,8 +158,12 @@ class SurveyRuntimeHelper {
                     }
 
                     // In group by group mode, we only procceed current group
-                    if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']){
-                        continue;
+                    if ($this->sSurveyMode == 'group' && $ia[5] != $this->aStepInfo['gid']) {
+                        if (isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster'])) {
+                            // This is a randomized survey, don't continue.
+                        } else {
+                            continue;
+                        }
                     }
 
                     $qidattributes = QuestionAttribute::model()->getQuestionAttributes($ia[0]);
@@ -298,6 +300,7 @@ class SurveyRuntimeHelper {
             $groupname        = $gl['group_name'];
             $groupdescription = $gl['description'];
 
+            $onlyThisGID = $this->aStepInfo['gid'];
             if ($this->sSurveyMode != 'survey' && $gid != $onlyThisGID){
                 continue;
             }
@@ -332,7 +335,7 @@ class SurveyRuntimeHelper {
             // one entry per QID
             foreach ($qanda as $qa) {
 
-                if ($gid == $qa[6]){
+                if ($gid == $qa[6] || isset($_SESSION[$this->LEMsessid]['fieldmap-'.$this->iSurveyid.'-randMaster'])) {
                     $qid             = $qa[4];
                     $qinfo           = LimeExpressionManager::GetQuestionStatus($qid);
                     $lemQuestionInfo = LimeExpressionManager::GetQuestionStatus($qid);
@@ -366,7 +369,7 @@ class SurveyRuntimeHelper {
                     $aGroup['aQuestions'][$qid]['valid_message']        = $qa[0]['valid_message'];
                     $aGroup['aQuestions'][$qid]['file_valid_message']   = $qa[0]['file_valid_message'];
                     $aGroup['aQuestions'][$qid]['man_message']          = $qa[0]['man_message'];
-                    $aGroup['aQuestions'][$qid]['answer']               = $qa[1];
+                    $aGroup['aQuestions'][$qid]['answer']               = LimeExpressionManager::ProcessString($qa[1], $qa[4], NULL, false, 3, 1, false, true, false);
                     $aGroup['aQuestions'][$qid]['help']['show']         = (flattenText( $lemQuestionInfo['info']['help'], true,true) != '');
                     $aGroup['aQuestions'][$qid]['help']['text']         = LimeExpressionManager::ProcessString($lemQuestionInfo['info']['help'], $qa[4], NULL, false, 3, 1, false, true, false);
                 }
@@ -651,7 +654,8 @@ class SurveyRuntimeHelper {
         {
             // Init session, randomization and filed array
             buildsurveysession($this->iSurveyid);
-            randomizationGroupsAndQuestions($this->iSurveyid);
+            $fieldmap = randomizationGroupsAndQuestions($this->iSurveyid);
+            initFieldArray($this->iSurveyid, $fieldmap);
 
             // Check surveyid coherence
             if($this->iSurveyid != LimeExpressionManager::getLEMsurveyId())
@@ -793,7 +797,6 @@ class SurveyRuntimeHelper {
      */
     private function setMoveResult()
     {
-
         // retrieve datas from local variable
         if (isset($_SESSION[$this->LEMsessid]['LEMtokenResume'])){
 
@@ -898,7 +901,6 @@ class SurveyRuntimeHelper {
      */
     private function setStep()
     {
-
         if ( $this->aMoveResult && isset($this->aMoveResult['seq']) ){
             if ($this->aMoveResult['finished'] != true){
                 $_SESSION[$this->LEMsessid]['step'] = $this->aMoveResult['seq'] + 1;  // step is index base 1
@@ -1713,7 +1715,6 @@ class SurveyRuntimeHelper {
 
     private function setGroup()
     {
-
         if ( !$this->previewgrp && !$this->previewquestion)
         {
             if (($this->bShowEmptyGroup) || !isset($_SESSION[$this->LEMsessid]['grouplist'])){

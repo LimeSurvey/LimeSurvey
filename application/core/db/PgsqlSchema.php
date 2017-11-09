@@ -42,4 +42,38 @@ class PgsqlSchema extends CPgsqlSchema
         }
         return $sResult;
     }
+
+    public function createTable($table, $columns, $options = null)
+    {
+        // Below copied from parent.
+        $cols=array();
+        foreach ($columns as $name => $type) {
+            if (is_array($type) && $name == 'composite_pk') {
+                // ...except this line.
+                $cols[]="\t".$this->getCompositePrimaryKey($table, $type);
+            } elseif (is_string($name)) {
+                $cols[]="\t".$this->quoteColumnName($name).' '.$this->getColumnType($type);
+            } else {
+                $cols[]="\t".$type;
+            }
+        }
+        $sql="CREATE TABLE ".$this->quoteTableName($table)." (\n".implode(",\n", $cols)."\n)";
+        return $options===null ? $sql : $sql.' '.$options;
+    }
+
+    /**
+     * Get composite primary key definition.
+     * CONSTRAINT prefix_assessments_pkey PRIMARY KEY (id,language)
+     * @param string $table
+     * @param array $columns
+     * @return string
+     */
+    public function getCompositePrimaryKey($table, array $columns)
+    {
+        return sprintf(
+            'CONSTRAINT %s_composite_pkey PRIMARY KEY (%s)',
+            $table,
+            implode(', ', $columns)
+        );
+    }
 }
