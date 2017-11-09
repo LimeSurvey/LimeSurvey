@@ -61,6 +61,8 @@ class TestBaseClassWeb extends TestBaseClass
         putenv(sprintf('webdriver.chrome.driver=/%s/../chromedriver', $base));
         self::$webDriver = ChromeDriver::start($caps);
 
+        self::deleteLoginTimeout();
+
         //self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
         //self::$webDriver->manage()->window()->maximize();
     }
@@ -110,8 +112,6 @@ class TestBaseClassWeb extends TestBaseClass
      */
     public static function adminLogin($userName, $password)
     {
-
-
         $url = self::getUrl(['login', 'route'=>'authentication/sa/login']);
         self::openView($url);
         try {
@@ -156,5 +156,16 @@ class TestBaseClassWeb extends TestBaseClass
                 'Found no welcome jumbotron after login.'
             );
         }
+    }
+
+    /**
+     * Delete failed login attempts.
+     */
+    protected static function deleteLoginTimeout()
+    {
+        $dbo = \Yii::app()->getDb();
+        $dbo
+            ->createCommand('DELETE FROM {{failed_login_attempts}}')
+            ->execute();
     }
 }
