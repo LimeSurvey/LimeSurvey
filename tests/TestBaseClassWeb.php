@@ -20,6 +20,7 @@ use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
 use Facebook\WebDriver\Chrome\ChromeDriver;
+use Facebook\WebDriver\Chrome\ChromeOptions;
 
 /**
  * Class TestBaseClassWeb
@@ -51,8 +52,14 @@ class TestBaseClassWeb extends TestBaseClass
         //$port = self::$webPort;
 
         $base = \Yii::app()->getBasePath();
+
+        $caps = new DesiredCapabilities();
+        $chromeOptions = new ChromeOptions();
+        $chromeOptions->addArguments(['--headless', 'window-size=1024,768']);
+        $caps->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+
         putenv(sprintf('webdriver.chrome.driver=/%s/../chromedriver', $base));
-        self::$webDriver = ChromeDriver::start();
+        self::$webDriver = ChromeDriver::start($caps);
 
         //self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
         //self::$webDriver->manage()->window()->maximize();
