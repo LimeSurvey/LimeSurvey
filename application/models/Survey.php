@@ -193,6 +193,12 @@ class Survey extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc */
+    public function delete()
+    {
+        return $this->deleteSurvey($this->sid);
+    }
+
 
     /**
      * The Survey languagesettings in currently active language. Falls back to the surveys' default language if the current language is not available.

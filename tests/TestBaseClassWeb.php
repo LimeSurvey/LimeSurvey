@@ -31,45 +31,45 @@ class TestBaseClassWeb extends TestBaseClass
      * @var int web server port
      * TODO this should be in configuration somewhere
      */
-    protected $webPort = 4444;
+    protected static $webPort = 4444;
 
     /**
      * @var WebDriver $webDriver
      */
-    protected $webDriver;
+    protected static $webDriver;
 
-    public function setUp()
+    public static function setUpBeforeClass()
     {
-        parent::setUp();
+        parent::setUpBeforeClass();
 
         if (empty(getenv('DOMAIN'))) {
             die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
 
         $capabilities = DesiredCapabilities::phantomjs();
-        $this->webDriver = RemoteWebDriver::create("http://localhost:{$this->webPort}/", $capabilities);
-        $this->webDriver->manage()->window()->maximize();
+        $port = self::$webPort;
+        self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
+        self::$webDriver->manage()->window()->maximize();
     }
 
-    /**
-     * Tear down fixture.
-     */
-    public function tearDown()
+    public static function tearDownAfterClass()
     {
-        // Close Firefox.
-        $this->webDriver->quit();
+        parent::tearDownAfterClass();
+        self::$webDriver->quit();
     }
 
     /**
-     * @param array $view
+     * @param $url
      * @return WebDriver
+     * @throws \Exception
+     * @internal param array $view
      */
-    public function openView($url)
+    public static function openView($url)
     {
         if (!is_string($url)) {
             throw new \Exception('$url must be a string, is ' . json_encode($url));
         }
-        return $this->webDriver->get($url);
+        return self::$webDriver->get($url);
     }
 
     /**
@@ -77,7 +77,7 @@ class TestBaseClassWeb extends TestBaseClass
      * @param array $view
      * @return string
      */
-    public function getUrl(array $view)
+    public static function getUrl(array $view)
     {
         $domain = getenv('DOMAIN');
         if (empty($domain)) {
@@ -95,23 +95,24 @@ class TestBaseClassWeb extends TestBaseClass
      * @param string $password
      * @return void
      */
-    public function adminLogin($userName, $password)
+    public static function adminLogin($userName, $password)
     {
-        $url = $this->getUrl(['route'=>'authentication/sa/login']);
-        $this->openView($url);
 
+
+        $url = self::getUrl(['login', 'route'=>'authentication/sa/login']);
+        self::openView($url);
         try {
-            $this->webDriver->wait(5)->until(
+            self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('user')
                 )
             );
         } catch (TimeOutException $ex) {
-            $screenshot = $this->webDriver->takeScreenshot();
-            $filename = \Yii::app()->basePath . '/../tests/tmp/screenshots/FailedLogin.png';
+            //$name =__DIR__ . '/_output/loginfailed.png';
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder .'/FailedLogin.png';
             file_put_contents($filename, $screenshot);
-
-            $this->assertTrue(
+            self::assertTrue(
                 false,
                 ' Screenshot in ' . $filename . PHP_EOL .
                 sprintf(
@@ -120,25 +121,23 @@ class TestBaseClassWeb extends TestBaseClass
                 )
             );
         }
-
-        $userNameField = $this->webDriver->findElement(WebDriverBy::id("user"));
+        $userNameField = self::$webDriver->findElement(WebDriverBy::id("user"));
         $userNameField->clear()->sendKeys($userName);
-        $passWordField = $this->webDriver->findElement(WebDriverBy::id("password"));
+        $passWordField = self::$webDriver->findElement(WebDriverBy::id("password"));
         $passWordField->clear()->sendKeys($password);
 
-        $submit = $this->webDriver->findElement(WebDriverBy::name('login_submit'));
+        $submit = self::$webDriver->findElement(WebDriverBy::name('login_submit'));
         $submit->click();
         try {
-            $this->webDriver->wait(2)->until(
+            self::$webDriver->wait(2)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('welcome-jumbotron')
                 )
             );
         } catch (TimeOutException $ex) {
-            $screenshot = $this->webDriver->takeScreenshot();
-            $filename = \Yii::app()->basePath . '/../tests/tmp/screenshots/FailedLogin.png';
-            file_put_contents($filename, $screenshot);
-            $this->assertTrue(
+            $screenshot = self::$webDriver->takeScreenshot();
+            file_put_contents(self::$screenshotsFolder .'/FailedLogin.png', $screenshot);
+            self::assertTrue(
                 false,
                 ' Screenshot in ' . $filename . PHP_EOL .
                 'Found no welcome jumbotron after login.'

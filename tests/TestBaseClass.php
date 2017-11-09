@@ -11,21 +11,36 @@ class TestBaseClass extends TestCase
      */
     protected static $testHelper = null;
 
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
+    /** @var  string $tempFolder*/
+    protected static $tempFolder;
 
-    public static function setupBeforeClass()
+    /** @var  string $screenshotsFolder */
+    protected static $screenshotsFolder;
+
+    /** @var  string $surveysFolder */
+    protected static $surveysFolder;
+
+    /** @var  string $dataFolder */
+    protected static $dataFolder;
+
+    /** @var  \Survey */
+    protected static $testSurvey;
+
+    /** @var  integer */
+    protected static $surveyId;
+
+    public static function setUpBeforeClass()
     {
+        parent::setUpBeforeClass();
         self::$testHelper = new TestHelper();
+
+        self::$dataFolder = __DIR__.'/data';
+        self::$surveysFolder = self::$dataFolder.'/surveys';
+        self::$tempFolder = __DIR__.'/tmp';
+        self::$screenshotsFolder = self::$tempFolder.'/screenshots';
         self::$testHelper->importAll();
     }
 
-    public function setUp()
-    {
-        parent::setUp();
-    }
 
     /**
      * @param string $fileName
@@ -48,9 +63,22 @@ class TestBaseClass extends TestCase
             null
         );
         if ($result) {
+            self::$testSurvey = \Survey::model()->findByPk($result['newsid']);
             self::$surveyId = $result['newsid'];
         } else {
             die('Fatal error: Could not import survey');
+        }
+    }
+
+
+    public static function tearDownAfterClass()
+    {
+        parent::tearDownAfterClass();
+        if(self::$testSurvey){
+            if (!self::$testSurvey->delete()) {
+                die('Fatal error: Could not clean up survey ' . serialize(self::$testSurvey->errors));
+            }
+            self::$testSurvey = null;
         }
     }
 }

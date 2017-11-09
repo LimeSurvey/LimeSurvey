@@ -68,15 +68,23 @@ class AdminViewsTest extends TestBaseClassView
     public function testAdminSurveyViews($name, $view)
     {
         if (isset($view['import_id'])) {
-            $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_'.$view['import_id'].'.lss';
+
+            // we'll change the survey in the middle of test
+            if(self::$testSurvey){
+                self::$testSurvey->delete();
+            }
+            $surveyFile = self::$surveysFolder . '/limesurvey_survey_'.$view['import_id'].'.lss';
             self::importSurvey($surveyFile);
+
+
         } elseif (empty(self::$surveyId)) {
             // This situation can happen if we test only one data entry,
             // using --filter="testAdminSurveyViews#13" (for data entry 13).
-            $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_454287.lss';
+            $surveyFile = self::$surveysFolder . '/../data/surveys/limesurvey_survey_454287.lss';
             self::importSurvey($surveyFile);
+
         }
-        $view['route'] = ReplaceFields($view['route'], ['{SID}'=>self::$surveyId]);
+        $view['route'] = ReplaceFields($view['route'], ['{SID}'=> self::$testSurvey->primaryKey]);
         $this->findViewTag($name, $view);
     }
 
@@ -95,8 +103,16 @@ class AdminViewsTest extends TestBaseClassView
      * @param array$view
      * @dataProvider addUsersViews
      */
-    public function testUsersViews($name, $view)
-    {
+    public function testUserViews($name,$view){
+        // use Admin user
+        $uid = 1;
+        // non-adminuser for some views
+        if(in_array($name,['setUserPermissions','setUserTemplates'])){
+            // FIXME need to crate another user
+            $this->markTestSkipped();
+            $uid = 2;
+        }
+        $view['route'] = ReplaceFields($view['route'],['{UID}'=>$uid]);
         $this->findViewTag($name, $view);
     }
 }

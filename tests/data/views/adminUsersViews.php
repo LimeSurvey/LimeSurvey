@@ -10,4 +10,13 @@ return [
 
     ['usersIndex', ['route'=>'user/sa/index']],
 
+    // TODO needs a POST
+    //['setUserPermissions', ['route'=>'user/sa/setuserpermissions/uid/{UID}']],
+
+    // FIXME issue #12870
+    //['modifyUser', ['route'=>'user/sa/modifyuser/uid/{UID}']],
+
+    // FIXME bug, also: needs a POST
+    //['setUserTemplates', ['route'=>'user/sa/setusertemplates/uid/{UID}']],
+
 ];

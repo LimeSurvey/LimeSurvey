@@ -28,24 +28,20 @@ class TestBaseClassView extends TestBaseClassWeb
     public static function setupBeforeClass()
     {
         parent::setupBeforeClass();
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-
         $username = getenv('ADMINUSERNAME');
-        if (empty($username)) {
+        if (!$username) {
             $username = 'admin';
         }
 
         $password = getenv('PASSWORD');
-        if (empty($password)) {
+        if (!$password) {
             $password = 'password';
         }
 
-        $this->adminLogin($username, $password);
+        self::adminLogin($username, $password);
+
     }
+
 
     /**
      * @param string $name
@@ -59,15 +55,15 @@ class TestBaseClassView extends TestBaseClassWeb
         $filename = null;
 
         try {
-            $element = $this->webDriver->wait(2)->until(
+            $element = self::$webDriver->wait(2)->until(
                 WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
                     WebDriverBy::id('action::' . $name)
                 )
             );
         } catch (\Exception $e) {
-            $screenshot = $this->webDriver->takeScreenshot();
-            $filename = \Yii::app()->basePath . "/../tests/tmp/screenshots/$name.png";
-            file_put_contents($filename, $screenshot);
+            //throw new Exception($e->getMessage());
+            $screenshot = self::$webDriver->takeScreenshot();
+            file_put_contents(self::$screenshotsFolder. '/'.$name.'.png', $screenshot);
         }
         //$body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
         //var_dump($body->getText());

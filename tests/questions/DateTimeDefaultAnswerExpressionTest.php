@@ -2,32 +2,22 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
-
 /**
  * @since 2017-06-16
  * @group datetimedefaultanswer
  */
 class DateTimeDefaultAnswerExpressionTest extends TestBaseClass
 {
-    public function setUp()
+
+    public static function setUpBeforeClass()
     {
-        parent::setUp();
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_454287.lss';
-        self::importSurvey($surveyFile);
+        parent::setUpBeforeClass();
+        $fileName = self::$surveysFolder . '/limesurvey_survey_454287.lss';
+        self::importSurvey($fileName);
     }
 
 
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
-    }
+
 
     /**
      * Test the question with lacking default answer expression,
