@@ -16,35 +16,9 @@ class UpdateDbHelperTest extends TestBaseClass
      */
     public static function teardownAfterClass()
     {
-        $dbo = \Yii::app()->getDb();
-        try {
-            $dbo->createCommand('DROP DATABASE __test_update_helper_258')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
-
-        try {
-            $dbo->createCommand('DROP DATABASE __test_update_helper_315')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
-
-        try {
-            $dbo->createCommand('DROP DATABASE __test_install_script')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
-
-        $dbo->setActive(false);
-        unset($dbo);
-        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
-        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        self::$testHelper->teardownDatabase('__test_update_helper_258');
+        self::$testHelper->teardownDatabase('__test_update_helper_315');
+        self::$testHelper->teardownDatabase('__test_install_script');
     }
 
     /**

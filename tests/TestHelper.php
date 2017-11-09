@@ -127,7 +127,7 @@ class TestHelper extends TestCase
         $survey = \Survey::model()->findByPk($surveyId);
         $survey->active = 'N';
         $result = $survey->save();
-        $this->assertTrue($result);
+        $this->assertTrue($result, 'Survey deactivated');
     }
 
     /**
@@ -167,7 +167,7 @@ class TestHelper extends TestCase
         } catch (\CDbException $ex) {
             $msg = $ex->getMessage();
             // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
+            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false, 'Could drop database');
         }
 
         try {
@@ -181,7 +181,7 @@ class TestHelper extends TestCase
         } catch (\CDbException $ex) {
             $msg = $ex->getMessage();
             // This error is OK.
-            $this->assertTrue(strpos($msg, 'database exists') !== false);
+            $this->assertTrue(strpos($msg, 'database exists') !== false, 'Could create database');
         }
 
         // Connect to new database.
@@ -224,7 +224,7 @@ class TestHelper extends TestCase
 
         // Check SQL file.
         $file = __DIR__ . '/data/sql/create-mysql.' . $version . '.sql';
-        $this->assertFileExists($file);
+        $this->assertFileExists($file, 'SQL file exists: ' . $file);
 
         // Run SQL install file.
         $result = $inst->_executeSQLFile($file, 'lime_');
@@ -263,6 +263,30 @@ class TestHelper extends TestCase
         } else {
             $setting->stg_value = 0;
             $setting->save();
+        }
+    }
+
+    /**
+     * Drop database $databaseName.
+     * Use in teardown methods.
+     * @param string $databaseName
+     * @return void
+     */
+    public function teardownDatabase($databaseName)
+    {
+        $dbo = \Yii::app()->getDb();
+        try {
+            $dbo->createCommand('DROP DATABASE ' . $databaseName)->execute();
+        } catch (\CDbException $ex) {
+            $msg = $ex->getMessage();
+            // Only this error is OK.
+            self::assertTrue(
+                // MySQL
+                strpos($msg, 'database doesn\'t exist') !== false ||
+                // Postgres
+                strpos($msg, "database \"$databaseName\" does not exist") !== false,
+                'Unexpected exception: ' . $ex->getMessage()
+            );
         }
     }
 }
