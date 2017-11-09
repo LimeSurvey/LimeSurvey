@@ -487,9 +487,6 @@ class UserAction extends Survey_Common_Action
     public function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
-        if(!$iUserID){
-            $iUserID = Yii::app()->request->getParam('uid');
-        }
         if ($iUserID) {
             //Only super admin (read) can update other user
             if(Permission::model()->hasGlobalPermission('superadmin','read')) {
@@ -556,9 +553,6 @@ class UserAction extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-tablesorter');
         App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'users.js');
         $postuserid = (int) Yii::app()->request->getPost("uid");
-        if(!$postuserid){
-            $postuserid = Yii::app()->request->getParam('uid');
-        }
         $oUser = User::model()->findByAttributes(array('uid' => $postuserid));
         if(!$oUser) {
             // @todo : review to send a 403

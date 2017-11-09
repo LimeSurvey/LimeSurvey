@@ -19,6 +19,8 @@ use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Chrome\ChromeDriver;
+use Facebook\WebDriver\Chrome\ChromeOptions;
 
 /**
  * Class TestBaseClassWeb
@@ -46,12 +48,21 @@ class TestBaseClassWeb extends TestBaseClass
             die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
 
-        $capabilities = DesiredCapabilities::phantomjs();
-        $port = self::$webPort;
-        $connection_timeout_in_ms= 5000;
-        $request_timeout_in_ms = 5000;
-        self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities,$connection_timeout_in_ms,$request_timeout_in_ms);
-        self::$webDriver->manage()->window()->maximize();
+        //$capabilities = DesiredCapabilities::phantomjs();
+        //$port = self::$webPort;
+
+        $base = \Yii::app()->getBasePath();
+
+        $caps = new DesiredCapabilities();
+        $chromeOptions = new ChromeOptions();
+        $chromeOptions->addArguments(['--headless', 'window-size=1024,768']);
+        $caps->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
+
+        putenv(sprintf('webdriver.chrome.driver=/%s/../chromedriver', $base));
+        self::$webDriver = ChromeDriver::start($caps);
+
+        //self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
+        //self::$webDriver->manage()->window()->maximize();
     }
 
     public static function tearDownAfterClass()

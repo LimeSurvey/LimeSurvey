@@ -18,13 +18,13 @@ before_script:
     - mkdir -p tests/tmp/runtime
     - chmod -R 776 tests/tmp
     - chmod -R 776 tests/tmp/runtime
-    - php application/commands/console.php install admin password TravisLS no@email.com
+    - php application/commands/console.php install admin password TravisLS no@email.com verbose
     - cp application/config/config-sample-mysql.php application/config/config.php
 
     # Install Apache.
     # Code fetched from https://docs.travis-ci.com/user/languages/php/#Apache-%2B-PHP
     - sudo apt-get update > /dev/null
-    - sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs
+    - sudo apt-get -y --force-yes install apache2 libapache2-mod-fastcgi nodejs chromium-browser
     - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
     - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
     - sudo a2enmod rewrite actions fastcgi alias
@@ -40,11 +40,9 @@ before_script:
     - wget localhost
     - more localhost
 
-    # Phantomjs setup.
-    - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
-    - tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
-    - ./phantomjs-2.1.1-linux-x86_64/bin/phantomjs  --webdriver=127.0.0.1:4444 --webdriver-logfile=phantomjs.log --webdriver-loglevel=ERROR > /dev/null &
+    # Chromedriver setup.
+    - wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+    - unzip chromedriver_linux64.zip
 
 script:
     - DOMAIN=localhost phpunit
-    - tail -n200 phantomjs.log

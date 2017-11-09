@@ -11,7 +11,7 @@ use Facebook\WebDriver\WebDriverBy;
  * @since 2017-11-02
  * @group rand
  */
-class GroupRandomizationTest extends TestBaseClass
+class GroupRandomizationTest extends TestBaseClassWeb
 {
     /**
      * @var int
@@ -22,6 +22,8 @@ class GroupRandomizationTest extends TestBaseClass
      */
     public static function setupBeforeClass()
     {
+        parent::setupBeforeClass();
+
         self::$testHelper->connectToOriginalDatabase();
 
         \Yii::app()->session['loginID'] = 1;
@@ -63,8 +65,8 @@ class GroupRandomizationTest extends TestBaseClass
             die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
 
-        $capabilities = DesiredCapabilities::phantomjs();
-        $this->webDriver = RemoteWebDriver::create('http://localhost:4444/', $capabilities);
+        //$capabilities = DesiredCapabilities::phantomjs();
+        //$this->webDriver = RemoteWebDriver::create('http://localhost:4444/', $capabilities);
     }
 
     /**
@@ -84,7 +86,7 @@ class GroupRandomizationTest extends TestBaseClass
     public function tearDown()
     {
         // Close Firefox.
-        $this->webDriver->quit();
+        self::$webDriver->quit();
     }
 
 
@@ -111,22 +113,22 @@ class GroupRandomizationTest extends TestBaseClass
             )
         );
 
-        $this->webDriver->get($url);
-        $submit = $this->webDriver->findElement(WebDriverBy::id('ls-button-submit'));
+        self::$webDriver->get($url);
+        $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
         $this->assertNotEmpty($submit);
-        $this->webDriver->wait(10, 1000)->until(
+        self::$webDriver->wait(10, 1000)->until(
             WebDriverExpectedCondition::visibilityOf($submit)
         );
         $submit->click();
 
-        $body = $this->webDriver->findElement(WebDriverBy::tagName('body'));
+        $body = self::$webDriver->findElement(WebDriverBy::tagName('body'));
         $text = $body->getText();
 
         // There should be no PHP notice.
         $this->assertTrue(strpos($text, 'PHP notice') === false, $text);
 
         // NB: This is how to take a screenshot, if necessary.
-        //$screenshot = $this->webDriver->takeScreenshot();
+        //$screenshot = self::$webDriver->takeScreenshot();
         //file_put_contents(__DIR__ . '/screenshot.png', $screenshot);
 
         self::$testHelper->deactivateSurvey(self::$surveyId);
