@@ -48,7 +48,9 @@ class TestBaseClassWeb extends TestBaseClass
 
         $capabilities = DesiredCapabilities::phantomjs();
         $port = self::$webPort;
-        self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
+        $connection_timeout_in_ms= 5000;
+        $request_timeout_in_ms = 5000;
+        self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities,$connection_timeout_in_ms,$request_timeout_in_ms);
         self::$webDriver->manage()->window()->maximize();
     }
 
