@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
  */
 class TemplateConfigurationTest extends TestBaseClass
 {
-
     /**
      * Issue #12795.
      */

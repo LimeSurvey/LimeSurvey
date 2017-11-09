@@ -19,6 +19,12 @@ class UpdateDbHelperTest extends TestBaseClass
         self::$testHelper->teardownDatabase('__test_update_helper_258');
         self::$testHelper->teardownDatabase('__test_update_helper_315');
         self::$testHelper->teardownDatabase('__test_install_script');
+
+        $dbo = \Yii::app()->getDb();
+        $dbo->setActive(false);
+        $config = require(\Yii::app()->getBasePath() . '/config/config.php');
+        \Yii::app()->setComponent('db', $config['components']['db'], false);
+        $dbo->setActive(true);
     }
 
     /**
