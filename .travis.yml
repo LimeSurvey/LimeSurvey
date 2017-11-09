@@ -8,6 +8,7 @@ apt:
   - apache2
   - libapache2-mod-fastcgi
   - nodejs
+  - chromium-browser
 
 before_script:
 
