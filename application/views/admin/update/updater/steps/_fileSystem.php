@@ -1,7 +1,7 @@
 <?php
 /**
  * This view display the changed files, and they're permission status
- * 
+ *
  * @var array $readonlyfiles an array containing the list of readonlyfiles
  * @var array $existingfiles an array containing the list of existingfiles
  * @var array $modifiedfiles an array containing the list of modifiedfiles
@@ -19,7 +19,7 @@
 <?php endif;?>
 
 <div class="updater-background">
-    
+
     <?php $this->renderPartial("./update/updater/steps/textaeras/_readonlyfiles", array("readonlyfiles"=>$readonlyfiles) );?>
     <?php $this->renderPartial("./update/updater/steps/textaeras/_existingfiles", array("existingfiles"=>$existingfiles) );?>
     <?php $this->renderPartial("./update/updater/steps/textaeras/_modifiedfiles", array("modifiedfiles"=>$modifiedfiles) );?>
@@ -61,7 +61,7 @@
     <?php endif;?>
 </div>
 
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/assets/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchBackupForm').comfortUpdateNextStep({'step': 3});
 </script>

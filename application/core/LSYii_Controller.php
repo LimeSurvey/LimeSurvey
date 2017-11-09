@@ -25,7 +25,6 @@ abstract class LSYii_Controller extends CController
      * @access public
      * @param string $id
      * @param CWebModule $module
-     * @return void
      */
     public function __construct($id, $module = null)
     {
@@ -139,9 +138,8 @@ abstract class LSYii_Controller extends CController
         {
             Yii::app()->setConfig("timeadjust",$timeadjust.' hours');
         }
-
-        //Yii::app()->setConfig('adminimageurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/images/');
-        //Yii::app()->setConfig('adminstyleurl', Yii::app()->getConfig('styleurl').Yii::app()->getConfig('admintheme').'/');
+        /* Set the default language, other controller can update if wanted */
+        Yii::app()->setLanguage(Yii::app()->getConfig("defaultlang"));
     }
 
     /**

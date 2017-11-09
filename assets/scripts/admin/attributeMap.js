@@ -1,4 +1,8 @@
-$(document).ready(function(){
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+$(document).on('ready  pjax:complete', function(){
 
     var height = $(document).height();
     var width = $(document).width();

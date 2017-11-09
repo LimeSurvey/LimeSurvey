@@ -1,7 +1,12 @@
 <?php
 /**
  * Export result view
+ * @var AdminController $this
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('exportResults');
+
 ?>
 <script type="text/javascript">
     var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
@@ -19,7 +24,7 @@
         ?>
     </h3>
 
-    <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport', 'class'=>'form-horizontal'));?>
+    <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport', 'class'=>''));?>
         <div class="row">
             <div class="col-sm-12 content-right">
                 <div class="row">
@@ -28,9 +33,9 @@
                         <!-- Format -->
                         <div class="panel panel-primary" id="panel-1">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Format");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
@@ -51,12 +56,13 @@
                                 </div>
                             </div>
 
+                        <?php if (empty(Yii::app()->session['responsesid'])): // If called from massive action, it will be filled the selected answers ?>
                         <!-- Range -->
                         <div class="panel panel-primary" id="panel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Range");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
@@ -97,13 +103,52 @@
                                 </div>
                             </div>
                         </div>
+                        <?php else: ?>
+
+                        <div class="panel panel-primary" id="panel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <?php eT("Selection");?>
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <?php
+                                        $sResponsesId = '';
+                                        $aResponsesId = json_decode(Yii::app()->session['responsesid']);
+                                        foreach($aResponsesId as $aResponseId){
+                                            $sResponsesId .= $aResponseId.', ';
+                                        }
+                                    ?>
+                                    <!-- From -->
+                                    <label for='export_ids' class="col-sm-2 control-label">
+                                        <?php eT("Selected answers"); ?>
+                                    </label>
+
+                                    <div class="col-sm-6">
+                                        <input type="text" readonly value="<?php echo  $sResponsesId; ?>" class="form-control" name="responses_id" id="responses_id" />
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/setSession/", array('unset'=>'true', 'sid'=>$surveyid)); ?>" role="button"><?php eT("Reset");?></a>
+                                    </div>
+                                    <input
+                                        type="hidden"
+                                        value='<?php echo json_encode($aResponsesId); ?>'
+                                        name="export_ids"
+                                        id="export_ids"
+                                        />
+
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif;?>
 
                         <!-- General -->
                         <div class="panel panel-primary" id="panel-3">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("General"); ?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
@@ -132,9 +177,9 @@
                         <!-- Heading -->
                         <div class="panel panel-primary" id="panel-4">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Headings");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
 
@@ -242,9 +287,9 @@
 
                         <div class="panel panel-primary" id="panel-5">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Responses");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <!-- Answer codes / Full answers -->
@@ -292,9 +337,9 @@
                         <!-- Column control -->
                         <div class="panel panel-primary" id="panel-6">
                             <div class="panel-heading">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <?php eT("Columns");?>
-                                </h4>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
@@ -320,9 +365,9 @@
                         <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid,'tokens','read')): ?>
                             <div class="panel panel-primary" id="panel-7">
                                 <div class="panel-heading">
-                                    <h4 class="panel-title">
+                                    <div class="panel-title h4">
                                         <?php eT("Token control");?>
-                                    </h4>
+                                    </div>
                                 </div>
                                 <div class="panel-body">
                                     <div class="alert alert-info alert-dismissible" role="alert">

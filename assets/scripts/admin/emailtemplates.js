@@ -1,6 +1,10 @@
 // $Id: saved.js 9330 2010-10-24 22:23:56Z c_schmitz $
 
-$(document).ready(function(){
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+$(document).on('ready  pjax:complete',  function(){
     /* handle=$('.tabsinner').tabs(
     {
          show: loadHTMLEditor
@@ -100,7 +104,7 @@ function addAttachment(target, url, relevance, size)
     // Ac8ions
     // TODO: Move edit relevance equation and change file into actions
     baserow += '<td>';
-    baserow += '<span title="' + LS.lang['Remove attachment'] + '" class="ui-pg-button btnattachmentremove glyphicon glyphicon-trash text-warning" data-toggle="tooltip" data-placement="bottom" data-original-title="' + LS.lang['Remove attachment'] + '"></span>';
+    baserow += '<span title="' + LS.lang['Remove attachment'] + '" class="ui-pg-button btnattachmentremove fa fa-trash text-warning" data-toggle="tooltip" data-placement="bottom" data-original-title="' + LS.lang['Remove attachment'] + '"></span>';
     baserow += '</td>';
 
     baserow += '<td><span class="filename"></span><input class="filename" type="hidden"></td>';

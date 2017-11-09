@@ -3,6 +3,7 @@ class FormattingOptions
 {
     public $responseMinRecord;
     public $responseMaxRecord;
+    public $aResponses;
 
     /**
     * The columns that have been selected for output.  The values must be
@@ -100,7 +101,7 @@ class FormattingOptions
     {
         return $this->format.','.$this->headingFormat.','
         .$this->headerSpacesToUnderscores.','.$this->responseCompletionState
-        .','.$this->responseMinRecord.','.$this->responseMaxRecord.','
+        .','.$this->responseMinRecord.','.$this->responseMaxRecord.','.$this->aResponses.','
         .$this->answerFormat.','.$this->convertY.','.$this->yValue.','
         .$this->convertN.','.$this->nValue.','
         .implode(',',$this->selectedColumns);

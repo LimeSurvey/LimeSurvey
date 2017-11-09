@@ -719,7 +719,7 @@ class pdf extends TCPDF {
    *
    * Add GID text to PDF
    * @param $sGroupName - Group name
-   * @param $sGroupDescription - Group description
+   * @param string $sGroupDescription - Group description
    * @param $bAllowBreakPage - Allow break cell in two pages
    * @return unknown_type
    */

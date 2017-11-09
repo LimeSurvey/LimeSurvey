@@ -1,0 +1,26 @@
+
+{#
+    LimeSurvey
+    Copyright (C) 2007-2017 The LimeSurvey Project Team / Louis Gac
+    All rights reserved.
+    License: GNU/GPL License v2 or later, see LICENSE.php
+    LimeSurvey is free software. This version may have been modified pursuant
+    to the GNU General Public License, and as distributed it includes or
+    is derivative of works licensed under the GNU General Public License or
+    other free or open source software licenses.
+    See COPYRIGHT.php for copyright notices and details.
+
+    (¯`·._.·(¯`·._.· Registration errors._.·´¯)·._.·´¯)
+
+    If there where errors on registration show them here
+
+#}
+{% if aSurveyInfo.errors is not empty %}
+    <ul class='{{ aSurveyInfo.class.registerul }} alert alert-danger list-unstyled' {{ aSurveyInfo.attr.registerul }} >
+        {% for error in aSurveyInfo.errors  %}
+            <!-- Error Html warnings -->
+                <li {{ aSurveyInfo.attr.registerulli }} >{{ error }}</li>
+                <br/>
+        {% endfor %}
+    </ul>
+{% endif %}

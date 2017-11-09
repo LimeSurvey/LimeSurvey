@@ -1,0 +1,27 @@
+.lstutorial__template--mainContainer {
+    min-height: 20vh;
+    min-width: 25vw;
+
+    .popover-title.lstutorial__template--title{
+        background-color: #0f3e12;
+        color: #efefef;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        padding: 1em;
+    }
+
+    .lstutorial__template--content{
+        padding: 1em;
+        font-size: 16px;
+        padding: 1em;
+    }
+
+    .popover-navigation.lstutorial__template--navigation{
+        padding: 1em 5px;
+    }
+    .lstutorial__typography--white{
+        color: white;
+    }
+}
+

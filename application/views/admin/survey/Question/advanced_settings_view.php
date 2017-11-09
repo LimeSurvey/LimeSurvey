@@ -17,14 +17,15 @@ $categoryNum=0;
         <?php endif; ?>
         <div class="panel panel-default panel-advancedquestionsettings">
             <div class="panel-heading" role="tab">
-                <h4 class="panel-title">
+                <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="fa fa-chevron-left"></span>
+			<span class="sr-only"><?php eT("Expand/Collapse");?></span>
                     </a>
                     <a id="button-collapse<?php echo $categoryNum ?>" class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-cat<?php echo $categoryNum ?>" aria-expanded="false" aria-controls="collapse-cat<?php echo $categoryNum ?>">
                         <?php echo $aAttribute['category']; ?>
                     </a>
-                </h4>
+                </div>
             </div>
             <div id="collapse-cat<?php echo $categoryNum ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="button-collapse<?php echo $categoryNum ?>">
                 <div class="panel-body">
@@ -35,7 +36,7 @@ $categoryNum=0;
     <div class="form-group">
     <!-- Form Group -->
         <!-- Label -->
-        <label class="col-sm-4 control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
+        <label class=" control-label" for='<?php echo $aAttribute['name'];?>' title='<?php echo $aAttribute['help'];?>'>
             <?php
                 echo $aAttribute['caption'];
                 if ($aAttribute['i18n']==true) { ?> (<?php echo $aAttribute['language'] ?>)<?php }
@@ -43,11 +44,12 @@ $categoryNum=0;
         </label>
 
         <!-- Input -->
-        <div class="col-sm-8">
+        <div class="">
             <?php
-                if ($aAttribute['readonly'] && $bIsActive)
+                if ( $aAttribute['readonly'] || ($aAttribute['readonly_when_active'] && $bIsActive) )
                 {
-                    echo $aAttribute['value'];
+                    // Alternate solution (maybe better for 3.0) : add the readonly/disable attribute (for singleselect or switch or buttongroup : this is really needed)
+                    echo "<div class='form-control-static'>".\CHtml::encode($aAttribute['value'])."</div>";
                 }
                 else
                 {

@@ -59,6 +59,7 @@ class LSActiveRecord extends CActiveRecord
      * This method is mainly internally used by other AR query methods.
      * @param CDbCriteria $criteria the query criteria
      * @param boolean $all whether to return all data
+     * @param bool $asAR
      * @return mixed the AR objects populated with the query result
      * @since 1.1.7
      */

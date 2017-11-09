@@ -37,6 +37,7 @@ class questiongroups extends Survey_Common_Action
     {
         $action = $_POST['action'];
         $iSurveyID = $surveyid =  $aData['surveyid'] = (int)$_POST['sid'];
+        $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         {
@@ -105,8 +106,7 @@ class questiongroups extends Survey_Common_Action
             //$aData['display']['menu_bars']['surveysummary'] = 'importgroup';
             $aData['sidemenu']['state'] = false;
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'import_view', $aData);
         }
@@ -119,6 +119,8 @@ class questiongroups extends Survey_Common_Action
     function importView($surveyid)
     {
         $iSurveyID = $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($iSurveyID);
+
         if (Permission::model()->hasSurveyPermission($surveyid,'surveycontent','import'))
         {
 
@@ -132,9 +134,7 @@ class questiongroups extends Survey_Common_Action
             $aData['surveybar']['savebutton']['text'] = gt('Import');
             $aData['surveyid'] = $surveyid;
 
-
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
 
             $this->_renderWrappedTemplate('survey/QuestionGroups', 'importGroup_view', $aData);
         }
@@ -154,6 +154,7 @@ class questiongroups extends Survey_Common_Action
     {
         /////
         $iSurveyID = $surveyid = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($iSurveyID);
         $aViewUrls = $aData = array();
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'create'))
@@ -175,8 +176,7 @@ class questiongroups extends Survey_Common_Action
             $aData['baselang'] = $baselang;
 
             $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
             $aData['surveybar']['importquestiongroup'] = true;
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/listquestiongroups/surveyid/'.$surveyid;  // Close button
             $aData['surveybar']['savebutton']['form'] = true;
@@ -245,7 +245,15 @@ class questiongroups extends Survey_Common_Action
             {
                 $this->getController()->redirect(array("admin/questiongroups/sa/view/surveyid/$surveyid/gid/$newGroupID"));
             }
-            else
+            else if(Yii::app()->request->getPost('saveandnew','') !== '')
+            {
+                $this->getController()->redirect(array("admin/questiongroups/sa/add/surveyid/$surveyid"));
+            }
+            else if(Yii::app()->request->getPost('saveandnewquestion','') !== '')
+            {
+                $this->getController()->redirect(array("admin/questions/sa/newquestion/", 'surveyid' => $surveyid, 'gid' => $newGroupID));
+            }
+            else 
             {
                 // After save, go to edit
                 $this->getController()->redirect(array("admin/questiongroups/sa/edit/surveyid/$surveyid/gid/$newGroupID"));
@@ -297,8 +305,9 @@ class questiongroups extends Survey_Common_Action
     {
         $aData = array();
         $aData['surveyid'] = $iSurveyID = $surveyid;
+        $survey = Survey::model()->findByPk($iSurveyID);
         $aData['gid'] = $gid;
-        $baselang = Survey::model()->findByPk($surveyid)->language;
+        $baselang = $survey->language;
         $condarray = getGroupDepsForConditions($surveyid, "all", $gid, "by-targgid");
         $aData['condarray'] = $condarray;
 
@@ -314,9 +323,7 @@ class questiongroups extends Survey_Common_Action
 
         $aData['sidemenu']['questiongroups'] = true;
         $aData['sidemenu']['group_name'] = $grow['group_name'];
-        $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
-        $aData['surveyIsActive'] = $surveyinfo['active']=='Y';
+        $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['questiongroupbar']['buttons']['view'] = true;
 
         ///////////
@@ -341,6 +348,7 @@ class questiongroups extends Survey_Common_Action
     public function edit($surveyid, $gid)
     {
         $surveyid = $iSurveyID = sanitize_int($surveyid);
+        $survey = Survey::model()->findByPk($surveyid);
         $gid = sanitize_int($gid);
         $aViewUrls = $aData = array();
 
@@ -419,8 +427,7 @@ class questiongroups extends Survey_Common_Action
             $aData['tabtitles'] = $aTabTitles;
             $aData['aBaseLanguage'] = $aBaseLanguage;
 
-            $surveyinfo = Survey::model()->findByPk($iSurveyID)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title.":".$iSurveyID.")";
 
             ///////////
             // sidemenu
@@ -440,6 +447,57 @@ class questiongroups extends Survey_Common_Action
     }
 
     /**
+     * Reorder the questiongroups based on the new order in the adminpanel
+     *
+     * @param [type] $surveyid
+     * @param [array] $grouparray
+     * @return void
+     */
+    public function updateOrder($surveyid)
+    {
+        $grouparray = Yii::app()->request->getPost('grouparray', []);
+        foreach($grouparray as $aQuestiongroup){
+            
+            //first set up the ordering for questiongroups
+            $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid",[':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid ]);
+            array_map( function($oQuestiongroup) use ($aQuestiongroup) {
+                $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                $oQuestiongroup->save();
+            }, $oQuestiongroups);
+
+            
+            foreach($aQuestiongroup['questions'] as $aQuestion){
+                $oQuestions = Question::model()->findAll("qid=:qid AND sid=:sid", [':qid'=> $aQuestion['qid'], ':sid'=> $surveyid ] );
+                array_map(function($oQuestion) use ($aQuestion){
+                    $oQuestion->question_order = $aQuestion['question_order'];
+                    $oQuestion->gid = $aQuestion['gid'];
+                    $oQuestion->save();
+                }, $oQuestions);
+            }
+            Question::updateSortOrder( $aQuestiongroup['gid'], $surveyid);
+        }
+    }
+
+    /**
+     * Reorder the questiongroups based on the new order in the adminpanel
+     *
+     * @param [type] $surveyid
+     * @param [array] $grouparray
+     * @return void
+     */
+    public function updateOrderWithQuestions($surveyid)
+    {
+        $grouparray = Yii::app()->request->getPost('grouparray', []);
+        foreach($grouparray as $aQuestiongroup){
+            $oQuestiongroups = QuestionGroup::model()->findAll("gid=:gid AND sid=:sid",[':gid'=> $aQuestiongroup['gid'], ':sid'=> $surveyid ]);
+            array_map( function($oQuestiongroup) use ($aQuestiongroup) {
+                $oQuestiongroup->group_order = $aQuestiongroup['group_order'];
+                $oQuestiongroup->save();
+            }, $oQuestiongroups);
+        }
+    }
+
+    /**
      * Provides an interface for updating a group
      *
      * @access public
@@ -451,20 +509,14 @@ class questiongroups extends Survey_Common_Action
         $gid = (int) $gid;
         $group = QuestionGroup::model()->findByAttributes(array('gid' => $gid));
         $surveyid = $group->sid;
+        $survey = Survey::model()->findByPk($surveyid);
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
         {
             Yii::app()->loadHelper('surveytranslator');
 
-            $grplangs = Survey::model()->findByPk($surveyid)->additionalLanguages;
-            $baselang = Survey::model()->findByPk($surveyid)->language;
-
-            array_push($grplangs, $baselang);
-
-            foreach ($grplangs as $grplang)
-            {
-                if (isset($grplang) && $grplang != "")
-                {
+            foreach ($survey->allLanguages as $grplang) {
+                if (isset($grplang) && $grplang != "") {
                     $group_name = $_POST['group_name_' . $grplang];
                     $group_description = $_POST['description_' . $grplang];
 

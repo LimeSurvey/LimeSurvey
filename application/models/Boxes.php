@@ -4,11 +4,11 @@
  * This is the model class for table "{{boxes}}".
  *
  * The followings are the available columns in table '{{boxes}}':
- * @property integer $id
+ * @property integer $id Primary key
  * @property integer $position
  * @property string $url
  * @property string $title
- * @property string $desc
+ * @property string $desc Description
  * @property string $page
  * @property integer $usergroup UserGroup ID
  */
@@ -132,11 +132,11 @@ class Boxes extends CActiveRecord
 
         $url = Yii::app()->createUrl("/admin/homepagesettings/sa/update/id/");
         $url .= '/'.$this->id;
-        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+        $button = '<a class="btn btn-default" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
 
         $url = Yii::app()->createUrl("/admin/homepagesettings/sa/delete/id/");
         $url .= '/'.$this->id;
-        $button .= '<a class="btn btn-default" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this box ?').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
+        $button .= '<a class="btn btn-default" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this box ?').'"><span class="text-danger fa fa-trash" ></span></a>';
         return $button;
     }
 
@@ -221,6 +221,8 @@ class Boxes extends CActiveRecord
      */
     public static function model($className=__CLASS__)
     {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 }

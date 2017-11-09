@@ -39,6 +39,7 @@ function doNumericSlider(qID,options) {
       // we need to show the tooltip (if it was hidden)
       // and to update the value of the input element with correct format
       theSlider.on('slideStart', function(){
+          $('#javatbd' + myfname).find('.slider-container').removeClass('slider-untouched').removeClass('slider-reset').addClass('slider-touched');
           $('#javatbd' + myfname).find('div.tooltip').show(); // Show the tooltip
           value = $(inputEl).val(); // We get the current value of the bootstrapSlider
           displayValue = value.toString().replace('.',separator); // We format it with the right separator
@@ -54,6 +55,7 @@ function doNumericSlider(qID,options) {
       /* reset action */
       $('#answer' + myfname + '_resetslider').on('click', function() {
           /* Position slider button at position */
+          $('#javatbd' + myfname).find('.slider-container').removeClass('slider-touched').addClass('slider-reset');
           theSlider.bootstrapSlider('setValue', $('#answer' + myfname).data('position'));
           /* if don't set position : reset to '' */
           if(!$('#answer' + myfname).data('set-position')){

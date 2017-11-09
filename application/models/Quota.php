@@ -17,19 +17,21 @@
 /**
  * Class Quota
  *
- * @property integer $id
- * @property integer $sid
- * @property string $name
- * @property integer $qlimit
- * @property integer $active
+ * @property integer $id ID (primary key)
+ * @property integer $sid Survey ID
+ * @property string $name Quota name (max 255 chars)
+ * @property integer $qlimit Quota limit
+ * @property integer $active Whether quota is active (0/1)
  * @property integer $action
- * @property integer $autoload_url
+ * @property integer $autoload_url Whether URL is automatically redirected if quota is triggered (0/1)
  *
  * @property QuotaLanguageSetting[] $languagesettings Indexed by language code
  * @property QuotaLanguageSetting $mainLanguagesetting
  * @property QuotaLanguageSetting $currentLanguageSetting
  * @property Survey $survey
  * @property QuotaMember[] $quotaMembers
+ *
+ * @property integer $completeCount Count of completed interviews for this quota
  */
 class Quota extends LSActiveRecord
 {
@@ -149,8 +151,7 @@ class Quota extends LSActiveRecord
         if (count($this->quotaMembers) > 0) {
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
-            foreach ($this->quotaMembers as $member)
-            {
+            foreach ($this->quotaMembers as $member) {
                 if(!in_array($member->memberInfo['fieldname'],$aExistingColumnName)) {
                     \Yii::log(
                         sprintf(
@@ -166,15 +167,12 @@ class Quota extends LSActiveRecord
             }
 
             $oCriteria = new CDbCriteria;
-            $oCriteria->condition="submitdate IS NOT NULL";
+            $oCriteria->condition= new CDbExpression("submitdate IS NOT NULL");
             foreach ($aQuotaColumns as $sColumn=>$aValue)
             {
-                if(count($aValue)==1)
-                {
+                if(count($aValue)==1) {
                     $oCriteria->compare(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : compare bind
-                }
-                else
-                {
+                } else {
                     $oCriteria->addInCondition(Yii::app()->db->quoteColumnName($sColumn),$aValue); // NO need params : addInCondition bind
                 }
             }

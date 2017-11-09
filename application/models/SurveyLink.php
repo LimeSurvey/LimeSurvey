@@ -24,7 +24,6 @@
  *
  * @property Participant $participant
  * @property Survey $survey
- * @property array $surveyInfo
  * @property string $dateFormat
  * @property string|boolean $isSubmitted
  * @property string $checkbox
@@ -42,7 +41,9 @@ class SurveyLink extends LSActiveRecord
 	 */
 	public static function model($class = __CLASS__)
 	{
-		return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
 	}
 
     /** @inheritdoc */
@@ -138,13 +139,6 @@ class SurveyLink extends LSActiveRecord
         return $dateFormat['phpdate'];
     }
 
-    /**
-     * @return array
-     */
-    public function getSurveyInfo()
-    {
-        return $this->survey->surveyinfo;
-    }
 
     /**
      * @return TokenDynamic
@@ -161,7 +155,7 @@ class SurveyLink extends LSActiveRecord
      */
     public function getSurveyName()
     {
-       return $this->surveyInfo['surveyls_title'];
+       return $this->survey->currentLanguageSettings->surveyls_title;
     }
 
     /**

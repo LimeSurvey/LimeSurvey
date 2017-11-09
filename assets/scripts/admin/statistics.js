@@ -1,12 +1,16 @@
+var LS = LS || {
+    onDocumentReady: {}
+};
+
 function toggleSection(chevron, section) {
     section.toggle();
-    chevron.toggleClass('glyphicon-chevron-up').toggleClass('glyphicon-chevron-down');
+    chevron.toggleClass('fa-chevron-up').toggleClass('fa-chevron-down');
 }
 
 function hideSection(chevron, section) {
     section.hide();
-    chevron.removeClass('glyphicon-chevron-up');
-    chevron.addClass('glyphicon-chevron-down');
+    chevron.removeClass('fa-chevron-up');
+    chevron.addClass('fa-chevron-down');
 }
 
 /**
@@ -160,7 +164,7 @@ function init_chart_js_graph_with_datas($type, $qid) {
     );
 }
 
-var onDocumentReady = function () {
+LS.onDocumentReady.Statistics2 = function () {
 
     if ($('#completionstateSimpleStat').length > 0) {
         $actionUrl = $('#completionstateSimpleStat').data('grid-display-url');
@@ -216,8 +220,8 @@ var onDocumentReady = function () {
         hideSection($('#generalfilters-chevron'), $('#statisticsgeneralfilters'));
         hideSection($('#responsefilters-chevron'), $('#filterchoices'))
         $('#statisticsoutput').show();
-        $('#statistics-render-chevron').removeClass('glyphicon-chevron-up');
-        $('#statistics-render-chevron').addClass('glyphicon-chevron-down');
+        $('#statistics-render-chevron').removeClass('fa-chevron-up');
+        $('#statistics-render-chevron').addClass('fa-chevron-down');
         $('#view-stats-alert-info').hide();
         $('#statsContainerLoading').show();
         //alert('ok');
@@ -744,8 +748,8 @@ var exportImages = function () {
         });
 };
 
-$(document).ready(function () {
-    onDocumentReady();
+$(document).on('ready  pjax:complete', function () {
+    LS.onDocumentReady.Statistics2();
     $('body').addClass('onStatistics');
     var exportImagesButton = $('<button class="btn btn-info" style="margin: auto;">Export images</button>');
     exportImagesButton.on('click', exportImages);
@@ -780,4 +784,4 @@ $(document).ready(function () {
     });
 });
 
-$(document).on('triggerReady', onDocumentReady);
+$(document).on('triggerReady', LS.onDocumentReady.Statistics2);

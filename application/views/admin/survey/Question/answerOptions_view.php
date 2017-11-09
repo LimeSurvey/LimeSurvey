@@ -1,5 +1,4 @@
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>$pageTitle )); ?>
     <h3>
         <?php echo $pageTitle; ?> <small><em><?php echo $oQuestion->title;?></em> (ID: <?php echo $oQuestion->qid;?>)</small>
     </h3>
@@ -26,6 +25,7 @@
                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                 <input type='hidden' name='gid' value='<?php echo $gid; ?>' />
                 <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
+                <input type='hidden' name='close-after-save' value='true' />
 
                 <?php if($viewType=='subQuestions'): ?>
                     <input type='hidden' id='action' name='action' value='updatesubquestions' />

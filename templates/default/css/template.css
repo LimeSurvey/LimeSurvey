@@ -1,13 +1,9 @@
-body
-{
+body {
      padding-bottom: 10px;
      background-color: #f6f6f6;
-}
-/* The header */
-body
-{
      padding-top: 60px;/* now is redefine in JS to fit any title length */
 }
+    
 .navbar-action-link{
     padding-right:1em; /* really close to window without */
 }
@@ -17,6 +13,21 @@ body
   .surveys-list .btn-group {
     width: 50%;
   }
+  .language_change_container{
+      height: 90vh;
+  }
+}
+
+.space-col {
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
+.group-outer-container{
+    display: flex;
+}
+.group-container{
+    width:100%;
 }
 
 .group-title-container {
@@ -76,6 +87,12 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
   margin-bottom: 2em;
   background:white;
   border-bottom: 1px solid #dbdbdb;
+}
+.question-container-printanswers {
+  margin-top: 2em ;
+  margin-bottom: 2em ;
+  padding-bottom: 2em ;
+  border-bottom: 1px solid rgba(225, 225, 255, 0.6);
 }
 
 .question-title-container {
@@ -216,8 +233,13 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
     width: 100%;
     text-align: center;
     margin-bottom: 0;
-    padding-bottom: 0;
+    padding-bottom: 80px;
+    padding-top: 10px;
     margin-top: 10px;
+
+    bottom: 0px;
+    height: 60px;
+    background-color: rgba(236, 240, 241, 0.2);
 }
 
 /**
@@ -235,6 +257,9 @@ padding-top:1em;padding-bottom:1em;margin-bottom:2em;
 /* slider : take bg-primary color */
 .bg-primary {
   background-color: #2c3e50;
+}
+.slider-item {
+    min-height: 50px;
 }
 .slider.slider-horizontal .slider-tick.triangle,
 .slider.slider-horizontal .slider-handle.triangle {
@@ -313,6 +338,34 @@ html body .navbar.navbar-default.navbar-fixed-top {
     height: auto;
     min-height:60px;
 }
+
+
+/**********************************
+Responsive navbar-brand image CSS
+- Remove navbar-brand padding for firefox bug workaround
+- add 100% height and width auto ... similar to how bootstrap img-responsive class works
+***********************************/
+
+.logo-container {
+  padding: 0px;
+  float: left;
+
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.logo-container>img {
+  max-height: 120px;
+  height: 100%;
+  padding: 15px;
+  width: auto;
+}
+
+.brand-logo  .top-container .top-content{
+    padding-top: 2em;
+}
+
+
 
 /* Wrap text in e.g. gender button "No answer */
 .wrap-normal {
@@ -737,4 +790,24 @@ div.yes-no .btn-group label {
 
 p.return-to-survey{
     clear:left;
+}
+
+/* Make sure question index menu is not too long. */
+#index-menu ul.dropdown-menu {
+    max-height: 50vh;
+    overflow-y: scroll;
+.text-break-pre{
+    white-space: pre-line;
+}
+
+.child-row-spacing>.row{
+    padding-bottom: 8px;
+}
+.child-row-border-bottom>.row:last-child{
+    padding-bottom: 0;
+}
+
+.superset {
+    font-size: 50%;
+    vertical-align: top;
 }

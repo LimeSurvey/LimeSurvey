@@ -1,7 +1,12 @@
 <?php
 /**
+ * @var $this AdminController
 * Response Summary view
 */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyResponsesIndex');
+
 ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT("Response summary"); ?></h3>

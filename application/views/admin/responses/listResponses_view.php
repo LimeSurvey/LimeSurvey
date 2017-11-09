@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var $this AdminController
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyResponsesBrowse');
+
+?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT('Survey responses'); ?></h3>
 
@@ -75,7 +84,7 @@
                             'id'=>'action',
                             'value'=>'$data->buttons',
                             'type'=>'raw',
-                            'htmlOptions' => array('class' => 'text-left'),
+                            'htmlOptions' => array('class' => 'text-left response-buttons'),
                             'filter'=>false,
                         ),
 
@@ -216,8 +225,9 @@
                 ?>
             </div>
 
-            <!-- To update rows per page via ajax -->
+            <!-- To update rows per page via ajax setSession-->
             <script type="text/javascript">
+                var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/responses/", array("sa" => "setSession")); ?>"; // For massive export
                 jQuery(function($) {
                     jQuery(document).on("change", '#pageSize', function(){
                         $.fn.yiiGridView.update('responses-grid',{ data:{ pageSize: $(this).val() }});

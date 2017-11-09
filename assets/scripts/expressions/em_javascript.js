@@ -39,7 +39,8 @@ $(document).on("change",".select-item select:not([onchange]),.dropdown-item sele
     checkconditions($(this).val(), $(this).attr('name'), 'select-one', 'change')
 });
 /* radio/button item */
-$(document).on("change",".radio-item :radio:not([onclick]),.button-item :radio:not([onclick])",function(event){
+$(document).on("change",".radio-item :radio:not([onclick]), .button-item :radio:not([onclick])",function(event){
+    console.log(event);
     checkconditions($(this).val(), $(this).attr('name'), 'radio', 'click')
 });
 /* checkbox item */
@@ -232,8 +233,8 @@ function LEMis_float(a)
 function LEMis_int(mixed_var)
 {
     try {
-        var iCheckValue = new Decimal(mixed_var)  
-    }  
+        var iCheckValue = new Decimal(mixed_var)
+    }
     catch (err) {
         return false;
     }
@@ -402,7 +403,7 @@ function LEMregexMatch(sRegExp,within)
     try {
         var flags = sRegExp.replace(/.*\/([gimy]*)$/, '$1');
         var pattern = sRegExp.replace(new RegExp('^/(.*?)/'+flags+'$'), '$1').trim();
-        var reg = new RegExp(pattern, flags); // Note that the /u flag crashes IE11       
+        var reg = new RegExp(pattern, flags); // Note that the /u flag crashes IE11
         return reg.test(within);
     }
     catch (err) {
@@ -597,7 +598,7 @@ function LEMval(alias)
                     }
                     else {
                         which_ans = '0~' + value;
-                        if (typeof attr.answers[which_ans] === 'undefined') {
+                        if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                             answer = value;
                         }
                         else {
@@ -611,7 +612,7 @@ function LEMval(alias)
                 case '1': //Array (Flexible Labels) dual scale  // need scale
                     prefix = (attr.jsName.match(/_1$/)) ? '1' : '0';
                     which_ans = prefix + '~' + value;
-                    if (typeof attr.answers[which_ans] === 'undefined') {
+                    if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                         answer = '';
                     }
                     else {
@@ -714,7 +715,7 @@ function LEMval(alias)
                         }
                         else {
                             which_ans = '0~' + value;
-                            if (typeof attr.answers[which_ans] === 'undefined') {
+                            if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                                 value = '';
                             }
                             else {
@@ -726,7 +727,7 @@ function LEMval(alias)
                     case '1': //Array (Flexible Labels) dual scale  // need scale
                         prefix = (attr.jsName.match(/_1$/)) ? '1' : '0';
                         which_ans = prefix + '~' + value;
-                        if (typeof attr.answers[which_ans] === 'undefined') {
+                        if (attr.answers === undefined || typeof attr.answers[which_ans] === 'undefined') {
                             value = '';
                         }
                         else {
@@ -766,7 +767,7 @@ function LEMval(alias)
                         value = str_repeat('0', length).substr(0,(length - value.length))+''+value.toString();
                     }
                 }
-                return value;
+                return Number(value);
             }
 
             // convert content in date questions to standard format yy-mm-dd to facilitate use in EM (comparisons, min/max etc.)
@@ -835,7 +836,9 @@ function LEMfixnum(value)
  */
 function LEMstrip_tags(htmlString)
 {
-   return $("<div/>").html(htmlString).text();
+   var tmp = document.createElement("DIV");
+   tmp.innerHTML = htmlString;
+   return tmp.textContent||tmp.innerText;
 }
 
 /**
@@ -3195,3 +3198,41 @@ function time () {
     return Math.floor(new Date().getTime() / 1000);
 }
 
+/**
+ * Updates the repeated headings in a dynamic table.
+ * @param {string} questionId
+ * @param {number} rep        - Repetition
+ */
+function updateHeadings(questionId, rep)
+{
+    var tab = $('#' + questionId).find('table.question');
+    tab.find('.repeat').remove();
+    var header = tab.find('thead>tr');
+    var trs = tab.find('tr:visible');
+    trs.each(function(i, tr)
+    {
+        // add heading but not for the first and the last rows
+        if(i != 0 && i % rep == 0 && i != trs.length-1)
+        {
+            header.clone().addClass('repeat').addClass('headings').insertAfter(tr);
+        }
+    });
+}
+
+/**
+ * Updates the colors in a dynamic table.
+ * No use of jQuery in this function due to speed reasons.
+ * Get all "#questionId table.question tr:visible" and reset
+ * class array1/array2.
+ * @param {string} questionId
+ */
+function updateColors(questionId)
+{
+    var tab = $('#' + questionId).find('table.question');
+    var trs = tab.find('tr:visible');
+    trs.each(function(i, tr)
+    {
+        // fix line colors
+        $(tr).removeClass('array1').removeClass('array2').addClass('array' + (1 + i % 2));
+    });
+}

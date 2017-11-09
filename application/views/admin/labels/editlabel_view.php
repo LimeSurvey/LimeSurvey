@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var $tgis AdminController
+ */
+?>
+
 <script type="text/javascript">
     var sImageURL = '';
     var duplicatelabelcode='<?php eT('Error: You are trying to use duplicate label codes.','js'); ?>';
@@ -7,6 +13,9 @@
 
 <div class="col-lg-12 list-surveys">
     <h3><?php if ($action == "newlabelset") { eT("Create or import new label set(s)");} else {eT("Edit label set"); } ?></h3>
+    <?=// DO NOT REMOVE This is for automated testing to validate we see that page
+    viewHelper::getViewTestTag('createLabelSets');?>
+
 
     <div class="row">
         <div class="col-lg-12 content-right">
@@ -30,21 +39,21 @@
                 <div id='neweditlblset0' class="tab-pane fade in active">
 
                     <!-- Form -->
-                    <?php echo CHtml::form(array("admin/labels/sa/process"), 'post',array('class'=>'form30 form-horizontal','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".gT("Error: You have to enter a name for this label set.","js")."')")); ?>
+                    <?php echo CHtml::form(array("admin/labels/sa/process"), 'post',array('class'=>'form form30 ','id'=>'labelsetform','onsubmit'=>"return isEmpty(document.getElementById('label_name'), '".gT("Error: You have to enter a name for this label set.","js")."')")); ?>
 
 
                             <!-- Set name -->
                             <div class="form-group">
-                                <label  class="col-sm-1 control-label" for='label_name'><?php eT("Set name:"); ?></label>
-                                <div class="col-sm-4">
+                                <label  class=" control-label" for='label_name'><?php eT("Set name:"); ?></label>
+                                <div class="">
                                 <?php echo CHtml::textField('label_name',isset($lbname)?$lbname:"",array('maxlength'=>100,'size'=>50)); ?>
                                 </div>
                             </div>
 
                             <!-- Languages -->
                             <div class="form-group">
-                                <label class="col-sm-1 control-label"><?php eT("Languages:"); ?></label>
-                                <div class="col-sm-4"><?php
+                                <label class=" control-label"><?php eT("Languages:"); ?></label>
+                                <div class=""><?php
                                 $aAllLanguages=getLanguageDataRestricted (false,'short');
                                 if (isset($esrow)) {
                                     unset($aAllLanguages[$esrow['language']]);
@@ -79,15 +88,15 @@
                 <!-- Import -->
                 <?php if ($action == "newlabelset" && Permission::model()->hasGlobalPermission('labelsets','import')): ?>
                     <div id='neweditlblset1' class="tab-pane fade in" >
-                        <?php echo CHtml::form(array("admin/labels/sa/import"), 'post',array('enctype'=>'multipart/form-data', 'class'=>'form-horizontal','id'=>'importlabels','name'=>"importlabels")); ?>
+                        <?php echo CHtml::form(array("admin/labels/sa/import"), 'post',array('enctype'=>'multipart/form-data', 'class'=>'form','id'=>'importlabels','name'=>"importlabels")); ?>
                                 <div class="form-group">
-                                    <label  class="col-sm-3 control-label" for='the_file'>
+                                    <label  class="control-label" for='the_file'>
                                     <?php echo gT("Select label set file (*.lsl):").'<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
                                     </label>
                                     <input id='the_file' name='the_file' type='file'/>
                                 </div>
                                 <div class="form-group">
-                                    <label  class="col-sm-3 control-label" for='checkforduplicates'>
+                                    <label  class=" control-label" for='checkforduplicates'>
                                         <?php eT("Don't import if label set already exists:"); ?>
                                     </label>
                                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -100,7 +109,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-sm-offset-3">
+                                    <div class="">
                                         <input type='submit' class='btn btn-default' value='<?php eT("Import label set(s)"); ?>' />
                                         <input type='hidden' name='action' value='importlabels' />
                                     </div>

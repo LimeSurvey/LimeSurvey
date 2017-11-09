@@ -89,7 +89,7 @@
 </div>
 
 <!-- this javascript code manage the step changing. It will catch the form submission, then load the comfortupdate for the required build -->
-<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->baseUrl; ?>/assets/scripts/admin/comfortupdate/comfortUpdateNextStep.js"></script>
 <script>
     $('#launchCheckLocalErrorsForm').comfortUpdateNextStep({'step': 0});
 </script>

@@ -16,9 +16,10 @@ if ( !defined('BASEPATH')) exit('No direct script access allowed');
 /**
  *
  * @param string $sql
- * @param array $inputarr
+ * @param array|bool $inputarr
  * @param boolean $silent
- * @return CDbDataReader|boolean
+ * @return bool|CDbDataReader
+ * @throws Exception
  */
 function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
 {
@@ -47,6 +48,9 @@ function dbExecuteAssoc($sql,$inputarr=false,$silent=true)
 }
 
 
+/**
+ * @param string $sql
+ */
 function dbQueryOrFalse($sql)
 {
     try {
@@ -60,44 +64,40 @@ function dbQueryOrFalse($sql)
 
 /**
  * @param string $sql
+ * @return bool|CDbDataReader
  */
 function dbSelectLimitAssoc($sql,$numrows=0,$offset=0,$inputarr=false,$dieonerror=true)
 {
-    $query = Yii::app()->db->createCommand($sql.= " ");
-    if ($numrows)
-    {
-        if ($offset)
-        {
+    $query = Yii::app()->db->createCommand($sql);
+    if ($numrows) {
+        if ($offset) {
             $query->limit($numrows, $offset);
-        }
-        else
-        {
+        } else {
             $query->limit($numrows, 0);
         }
     }
-    if($inputarr)
-    {
+    if($inputarr) {
         $query->bindValues($inputarr);    //Checked
     }
-    try
-    {
+    try {
         $dataset=$query->query();
     }
-    catch (CDbException $e)
-    {
+    catch (CDbException $e) {
         $dataset=false;
     }
-    if (!$dataset && $dieonerror) {safeDie('Error executing query in dbSelectLimitAssoc:'.$query->text);}
+    if (!$dataset && $dieonerror) {
+        safeDie('Error executing query in dbSelectLimitAssoc:'.$query->text);
+    }
     return $dataset;
 }
 
 
 /**
-* This functions quotes fieldnames accordingly
-*
-* @param mixed $id Fieldname to be quoted
-*/
-
+ * This functions quotes fieldnames accordingly
+ *
+ * @param mixed $id Fieldname to be quoted
+ * @return mixed|string
+ */
 function dbQuoteID($id)
 {
     switch (Yii::app()->db->getDriverName())
@@ -161,12 +161,13 @@ function dbRandom()
 }
 
 /**
-*  Return a sql statement for finding LIKE named tables
-*  Be aware that you have to escape underscor chars by using a backslash
-* otherwise you might get table names returned you don't want
-*
-* @param mixed $table
-*/
+ *  Return a sql statement for finding LIKE named tables
+ *  Be aware that you have to escape underscor chars by using a backslash
+ * otherwise you might get table names returned you don't want
+ *
+ * @param mixed $table
+ * @return string
+ */
 function dbSelectTablesLike($table)
 {
     switch (Yii::app()->db->getDriverName()) {

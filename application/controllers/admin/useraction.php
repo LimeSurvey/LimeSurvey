@@ -1,5 +1,5 @@
 <?php
-use ls\pluginmanager\AuthPluginBase;
+use LimeSurvey\PluginManager\AuthPluginBase;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -214,7 +214,7 @@ class UserAction extends Survey_Common_Action
             $sresultcount = 0; // 1 if I am parent of $postuserid
             if (!Permission::model()->hasGlobalPermission('superadmin','read'))
             {
-                $sresult = User::model()->findAllByAttributes(array('parent_id' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
+                $sresult = User::model()->findAllByAttributes(array('parent_id' => Yii::app()->session['loginID']));
                 $sresultcount = count($sresult);
             }
 
@@ -335,25 +335,19 @@ class UserAction extends Survey_Common_Action
     */
     public function modifyuser()
     {
-
-        if ( Yii::app()->request->getParam('uid') !=''  )
-        {
+        if ( Yii::app()->request->getParam('uid') !=''  ) {
             $postuserid = (int) Yii::app()->request->getParam("uid");
             $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
             $sresultcount = count($sresult);
-
-
             if (Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID'] == $postuserid ||
-            (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) )
-            {
-                $sresult = User::model()->parentAndUser($postuserid);
-                if(empty($sresult))
-                {
+            (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) ) {
+                if(empty($sresult)) {
                     Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
                     $this->getController()->redirect(array("admin/user/sa/index"));
                 }
+                $oUser = User::model()->findByPk($postuserid);
                 $aData = array();
-                $aData['aUserData'] = $sresult;
+                $aData['oUser'] = $oUser;
 
                 $aData['fullpagebar']['savebutton']['form'] = 'moduserform';
                 // Close button, UrlReferrer;
@@ -377,71 +371,62 @@ class UserAction extends Survey_Common_Action
     */
     public function moduser()
     {
-        $postuserid = (int) Yii::app()->request->getPost("uid");
-        $postuser = flattenText(Yii::app()->request->getPost("user"));
-        $postemail = flattenText(Yii::app()->request->getPost("email"));
-        $postfull_name = flattenText(Yii::app()->request->getPost("full_name"));
+        $postUser = Yii::app()->request->getPost("User");
+        $user_uid = Yii::app()->request->getPost("uid");
+        $oUser =  User::model()->findByPk($user_uid);
+        if(!$oUser) {
+            throw new CHttpException(403);// Bad param (and not 404) because it's POST value
+        }
+        $user_name = empty($postUser['users_name']) ? null : $postUser['users_name'];// Not updatable
+        $newUsermail = empty($postUser['email']) ? null : $postUser['email'];
+        $newUserFullName = empty($postUser['full_name']) ? null : $postUser['full_name'];
+        $newPassword = empty($postUser['password']) ? null : $postUser['password'];
         $display_user_password_in_html = Yii::app()->getConfig("display_user_password_in_html");
-        $addsummary = '';
         $aViewUrls = array();
+        if ( (
+                Permission::model()->hasGlobalPermission('superadmin','read') // superadmin have this right
+                || $user_uid == Yii::app()->session['loginID'] // always allow update himself
+                || ($oUser->parent_id == Yii::app()->session['loginID'] && Permission::model()->hasGlobalPermission('users','update')) // Allow to updated created user
+            )
+            && !(Yii::app()->getConfig("demoMode") == true && $user_uid == 1)// Disallow update password in demo mode
+            ) {
 
-        $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
-        $sresultcount = count($sresult);
-
-        if ((Permission::model()->hasGlobalPermission('superadmin','read') || $postuserid == Yii::app()->session['loginID'] ||
-        ($sresultcount > 0 && Permission::model()->hasGlobalPermission('users','update'))) && !(Yii::app()->getConfig("demoMode") == true && $postuserid == 1)
-        )
-        {
-            $users_name = html_entity_decode($postuser, ENT_QUOTES, 'UTF-8');
-            $email = html_entity_decode($postemail, ENT_QUOTES, 'UTF-8');
-            $sPassword = Yii::app()->request->getPost('password');
-
-            $full_name = html_entity_decode($postfull_name, ENT_QUOTES, 'UTF-8');
-
-            if (!validateEmailAddress($email))
-            {
+            $email = html_entity_decode($newUsermail, ENT_QUOTES, 'UTF-8');
+            $sPassword = $newPassword;
+            $full_name = html_entity_decode($newUserFullName, ENT_QUOTES, 'UTF-8');
+            if (!validateEmailAddress($email)) {
                 Yii::app()->setFlashMessage( gT("Could not modify user data."). ' '. gT("Email address is not valid."),'error');
-                $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
-            }
-            else
-            {
-                $oRecord = User::model()->findByPk($postuserid);
-                $oRecord->email= $email;
-                $oRecord->full_name= $full_name;
-                if (!empty($sPassword))
-                {
-                    $oRecord->password= hash('sha256', $sPassword);
+                $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$user_uid));
+            } else {
+                $oUser->email= $email;
+                $oUser->full_name= $full_name;
+                if (!empty($sPassword)) {
+                    $oUser->setPassword($sPassword);
                 }
-                $uresult = $oRecord->save();    // store result of save in uresult
+                $uresult = $oUser->save();    // store result of save in uresult
 
-                if (empty($sPassword))
-                {
+                if (empty($sPassword)) {
                     Yii::app()->setFlashMessage( gT("Success!") .' <br/> '.gT("Password") . ": (" . gT("Unchanged") . ")", 'success');
-                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
-                }
-                elseif ($uresult && !empty($sPassword)) // When saved successfully
-                {
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$user_uid));
+
+                } elseif ($uresult && !empty($sPassword)) {
+                    // When saved successfully
                     Yii::app()->session['pw_notify'] = $sPassword != '';
                     if ($display_user_password_in_html === true) {
                         $displayedPwd = htmlentities($sPassword);
-                    }
-                    else {
+                    } else {
                         $displayedPwd = preg_replace('/./', '*', $sPassword);
                     }
                     Yii::app()->setFlashMessage( gT("Success!") .' <br/> '.gT("Password") . ": " . $displayedPwd, 'success');
-                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
-                }
-                else
-                {
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$user_uid));
+                } else {
                     //Saving the user failed for some reason, message about email is not helpful here
                     // Username and/or email adress already exists.
                     Yii::app()->setFlashMessage(  gT("Could not modify user data."),'error');
-                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$postuserid));
+                    $this->getController()->redirect(array("/admin/user/sa/modifyuser/uid/".$user_uid));
                 }
             }
-        }
-        else
-        {
+        } else {
             Yii::app()->setFlashMessage(  gT("Could not modify user data."),'error');
             $this->getController()->redirect(array("/admin/"));
         }
@@ -461,15 +446,13 @@ class UserAction extends Survey_Common_Action
 
         $iUserID=(int)App()->request->getPost('uid');
         // A user may not modify his own permissions
-        if (Yii::app()->session['loginID']==$iUserID) {
+        if (Yii::app()->session['loginID'] == $iUserID) {
             Yii::app()->setFlashMessage(gT("You are not allowed to edit your own user permissions."),"error");
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
-        // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
-        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // it's the original superadmin !!!
-        {
-            Yii::app()->setFlashMessage(gT("Initial Superadmin permissions cannot be updated!"),'error');
+        // Can not update forced superadmin  rights
+        if ( Permission::isForcedSuperAdmin($iUserID) ) {
+            Yii::app()->setFlashMessage(gT("The permissions of this superadmin cannot be updated!"),'error');
             $this->getController()->redirect(array("admin/user/sa/index"));
         }
         $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
@@ -477,19 +460,13 @@ class UserAction extends Survey_Common_Action
         $aPermissions=array();
         foreach ($aBaseUserPermissions as $sPermissionKey=>$aCRUDPermissions)
         {
-            foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue)
-            {
-                if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) continue;
-
-                if ($CRUDValue)
-                {
-                    if(isset($_POST["perm_{$sPermissionKey}_{$sCRUDKey}"])){
-                        $aPermissions[$sPermissionKey][$sCRUDKey]=1;
-                    }
-                    else
-                    {
-                        $aPermissions[$sPermissionKey][$sCRUDKey]=0;
-                    }
+            foreach ($aCRUDPermissions as $sCRUDKey=>$CRUDValue) {
+                if (!in_array($sCRUDKey,array('create','read','update','delete','import','export'))) {
+                    continue;
+                }
+                if ($CRUDValue) {
+                    $sPermissionPostValue=Yii::app()->getRequest()->getPost("perm_{$sPermissionKey}_{$sCRUDKey}",'');
+                    $aPermissions[$sPermissionKey][$sCRUDKey] = $sPermissionPostValue=='on'?1:0;
                 }
             }
         }
@@ -510,30 +487,19 @@ class UserAction extends Survey_Common_Action
     public function setuserpermissions()
     {
         $iUserID = (int) Yii::app()->request->getPost('uid');
-
-        // Can not update initial superadmin permissions (with findByAttributes : found the first user without parent)
-        $oInitialAdmin = User::model()->findByAttributes(array('parent_id' => 0));
-
-        if ($oInitialAdmin && $oInitialAdmin->uid == $iUserID) // Trying to update the original superadmin !!!
-        {
-            Yii::app()->setFlashMessage(gT("Initial Superadmin permissions cannot be updated!"),'error');
-            $this->getController()->redirect(array("admin/user/sa/index"));
-        }
-
-        $aBaseUserPermissions = Permission::model()->getGlobalBasePermissions();
-        if ($iUserID)
-        {
-            //Never update 1st admin
-            if(Permission::model()->hasGlobalPermission('superadmin','read'))
+        if ($iUserID) {
+            //Only super admin (read) can update other user
+            if(Permission::model()->hasGlobalPermission('superadmin','read')) {
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID));
-            else
+            } else {
                 $oUser = User::model()->findByAttributes(array('uid' => $iUserID, 'parent_id' => Yii::app()->session['loginID']));
+            }
         }
 
         // Check permissions
         $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-        if (!Permission::model()->hasGlobalPermission('superadmin','read')) // if not superadmin filter the available permissions as no admin may give more permissions than he owns
-        {
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+             // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
             $aFilteredPermissions=array();
             foreach  ($aBasePermissions as $PermissionName=>$aPermission)
@@ -543,24 +509,20 @@ class UserAction extends Survey_Common_Action
                     if ($sPermissionKey!='title' && $sPermissionKey!='img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) $sPermissionValue=false;
                 }
                 // Only show a row for that permission if there is at least one permission he may give to other users
-                if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export'])
-                {
+                if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
                     $aFilteredPermissions[$PermissionName]=$aPermission;
                 }
             }
             $aBasePermissions=$aFilteredPermissions;
         }
 
-        if(isset($oUser))
-        {
+        if(isset($oUser)) {
             if ( $oUser  && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
             {
-                // Only the original superadmin (UID 1) may create superadmins
-                if (Yii::app()->session['loginID']!=1)
-                {
+                // Show superadmin right if create is set (review for delete too ?)
+                if (!Permission::model()->hasGlobalPermission('superadmin','create') ) {
                     unset($aBasePermissions['superadmin']);
                 }
-
                 $aData = array();
                 $aData['aBasePermissions'] = $aBasePermissions;
                 $aData['oUser'] = $oUser;
@@ -668,45 +630,56 @@ class UserAction extends Survey_Common_Action
     {
         // Save Data
         if (Yii::app()->request->getPost("action")) {
-            $aData = array(
-            'lang' => Yii::app()->request->getPost('lang'),
-            'dateformat' => Yii::app()->request->getPost('dateformat'),
-            'htmleditormode' => Yii::app()->request->getPost('htmleditormode'),
-            'questionselectormode' => Yii::app()->request->getPost('questionselectormode'),
-            'templateeditormode' => Yii::app()->request->getPost('templateeditormode'),
-            'full_name'=> Yii::app()->request->getPost('fullname'),
-            'email'=> Yii::app()->request->getPost('email')
-            );
-            if (Yii::app()->request->getPost('password')!='' && !Yii::app()->getConfig('demoMode'))
-            {
-                if (Yii::app()->request->getPost('password')==Yii::app()->request->getPost('repeatpassword'))
-                {
-                    $aData['password']=hash( "sha256",Yii::app()->request->getPost('password'));
-                }
-                else
-                {
+            $oUserModel = User::model()->findByPk(Yii::app()->session['loginID']);
+            $oUserModel->lang = Yii::app()->request->getPost('lang');
+            $oUserModel->dateformat = Yii::app()->request->getPost('dateformat');
+            $oUserModel->htmleditormode = Yii::app()->request->getPost('htmleditormode');
+            $oUserModel->questionselectormode = Yii::app()->request->getPost('questionselectormode');
+            $oUserModel->templateeditormode = Yii::app()->request->getPost('templateeditormode');
+            $oUserModel->full_name = Yii::app()->request->getPost('fullname');
+            $oUserModel->email = Yii::app()->request->getPost('email');
+
+            if (Yii::app()->request->getPost('password')!='' && !Yii::app()->getConfig('demoMode')) {
+                $oldPassword = Yii::app()->request->getPost('oldpassword');
+                $newPassword = Yii::app()->request->getPost('password');
+                $repeatPassword = Yii::app()->request->getPost('repeatpassword');
+
+                if(!$oUserModel->checkPassword($oldPassword)) {
+                    // Always check password
+                    Yii::app()->setFlashMessage(gT("Your new password was not saved because the old password was wrong."),'error');
+                } elseif(trim($oldPassword) === trim($newPassword)){
+                    //First test if old and new password are identical => no need to save it (or ?)
+                    Yii::app()->setFlashMessage(gT("Your new password was not saved because it matches the old password."),'error');
+                } elseif(trim($newPassword) !== trim($repeatPassword)){
+                    //Then test the new password and the repeat password for identity
                     Yii::app()->setFlashMessage(gT("Your new password was not saved because the passwords did not match."),'error');
+                //Now check if the old password matches the old password saved
+                } else {
+                    // We can update
+                    $oUserModel->setPassword($newPassword);
                 }
             }
-            $uresult = User::model()->updateByPk(Yii::app()->session['loginID'], $aData);
+            $uresult = $oUserModel->save();
+            if($uresult) {
+                if (Yii::app()->request->getPost('lang')=='auto') {
+                    $sLanguage = getBrowserLanguage();
+                } else {
+                    $sLanguage=Yii::app()->request->getPost('lang');
+                }
+                Yii::app()->session['adminlang'] = $sLanguage;
+                Yii::app()->setLanguage($sLanguage);
 
-            if (Yii::app()->request->getPost('lang')=='auto')
-            {
-                $sLanguage= getBrowserLanguage();
+                Yii::app()->session['htmleditormode'] = Yii::app()->request->getPost('htmleditormode');
+                Yii::app()->session['questionselectormode'] = Yii::app()->request->getPost('questionselectormode');
+                Yii::app()->session['templateeditormode'] = Yii::app()->request->getPost('templateeditormode');
+                Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
+
+                Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
+            } else {
+                // Show list of error if needed
+                Yii::app()->setFlashMessage(CHtml::errorSummary($oUserModel,gT("There was an error when saving your personal settings.")),'error');
             }
-            else
-            {
-                $sLanguage=Yii::app()->request->getPost('lang');
-            }
 
-            Yii::app()->session['adminlang'] = $sLanguage;
-            Yii::app()->setLanguage($sLanguage);
-
-            Yii::app()->session['htmleditormode'] = Yii::app()->request->getPost('htmleditormode');
-            Yii::app()->session['questionselectormode'] = Yii::app()->request->getPost('questionselectormode');
-            Yii::app()->session['templateeditormode'] = Yii::app()->request->getPost('templateeditormode');
-            Yii::app()->session['dateformat'] = Yii::app()->request->getPost('dateformat');
-            Yii::app()->setFlashMessage(gT("Your personal settings were successfully saved."));
             if (Yii::app()->request->getPost("saveandclose")) {
                 $this->getController()->redirect(array("admin/survey/sa/index"));
             }
@@ -716,23 +689,33 @@ class UserAction extends Survey_Common_Action
         }
 
         // Get user lang
-        $user = User::model()->findByPk(Yii::app()->session['loginID']);
+        unset($oUser);
+        $oUser = User::model()->findByPk(Yii::app()->session['loginID']);
+
         $aLanguageData=array('auto'=>gT("(Autodetect)"));
         foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind)
         {
            $aLanguageData[$langkey]=html_entity_decode($languagekind['nativedescription'].' - '.$languagekind['description'],ENT_COMPAT,'utf-8');
         }
+        $aData = array();
         $aData['aLanguageData'] = $aLanguageData;
-        $aData['sSavedLanguage'] = $user->lang;
-        $aData['sUsername'] = $user->users_name;
-        $aData['sFullname'] = $user->full_name;
-        $aData['sEmailAdress'] = $user->email;
+        $aData['sSavedLanguage'] = $oUser->lang;
+        $aData['sUsername'] = $oUser->users_name;
+        $aData['sFullname'] = $oUser->full_name;
+        $aData['sEmailAdress'] = $oUser->email;
 
         $aData['fullpagebar']['savebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['saveandclosebutton']['form'] = 'personalsettings';
         $aData['fullpagebar']['closebutton']['url_keep'] = true;
         $aData['fullpagebar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/user/sa/index") );
 
+        //Get data for personal menues
+        $oSurveymenu = Surveymenu::model();
+        $oSurveymenu->user_id = $oUser->uid;
+        $oSurveymenuEntries = SurveymenuEntries::model();
+        $oSurveymenuEntries->user_id = $oUser->uid;
+        $aData['surveymenu_data']['model'] = $oSurveymenu;
+        $aData['surveymenuentry_data']['model'] = $oSurveymenuEntries;
         // Render personal settings view
         if (isset($_POST['saveandclose']))
         {
@@ -771,7 +754,19 @@ class UserAction extends Survey_Common_Action
                 $post = new Template;
                 $post->folder = $tp;
                 $post->creator = Yii::app()->session['loginID'];
-                $post->save();
+
+                try {
+                    $post->save();
+                } catch (Exception $ex) {
+                    Yii::app()->setFlashMessage(
+                        sprintf(
+                            gT('Could not save template %s: %s'),
+                            $tp,
+                            $ex->getMessage()
+                        ),
+                        'error'
+                    );
+                }
             }
         }
         return true;

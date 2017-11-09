@@ -50,14 +50,17 @@ class Statistics_userController extends SurveyController {
     /**
      * @param int $surveyid
      * @param string $language
+     * @throws CHttpException
      */
     public function actionAction($surveyid,$language=null)
     {
         $sLanguage = $language;
+        $survey = Survey::model()->findByPk($surveyid);
+
         $this->sLanguage = $language;
 
-        $iSurveyID = (int) $surveyid;
-        $this->iSurveyID = (int) $surveyid;
+        $iSurveyID = (int) $survey->sid;
+        $this->iSurveyID = $survey->sid;
 
         //$postlang = returnglobal('lang');
         //~ Yii::import('application.libraries.admin.progressbar',true);
@@ -99,12 +102,9 @@ class Statistics_userController extends SurveyController {
             }
 
             //check if graphs should be shown for this survey
-            if ($surveyinfo['publicgraphs']=='Y')
-            {
+            if ($survey->isPublicGraphs) {
                 $publicgraphs = 1;
-            }
-            else
-            {
+            } else {
                 $publicgraphs = 0;
             }
         }
@@ -117,9 +117,9 @@ class Statistics_userController extends SurveyController {
         //False -> forget about charts
         if (isset($publicgraphs) && $publicgraphs == 1)
         {
-            require_once(APPPATH.'third_party/pchart/pchart/pChart.class');
-            require_once(APPPATH.'third_party/pchart/pchart/pData.class');
-            require_once(APPPATH.'third_party/pchart/pchart/pCache.class');
+            require_once(APPPATH.'third_party/pchart/pChart.class.php');
+            require_once(APPPATH.'third_party/pchart/pData.class.php');
+            require_once(APPPATH.'third_party/pchart/pCache.class.php');
 
             $MyCache = new pCache(Yii::app()->getConfig("tempdir").DIRECTORY_SEPARATOR);
             //$currentuser is created as prefix for pchart files
@@ -199,13 +199,12 @@ class Statistics_userController extends SurveyController {
         $totalrecords = 0;
 
         //count number of answers
-        $query = "SELECT count(*) FROM {{survey_".intval($iSurveyID)."}}";
+        $query = "SELECT count(*) FROM ".$survey->responsesTableName;
 
         //if incompleted answers should be filtert submitdate has to be not null
         //this setting is taken from config-defaults.php
-        if (Yii::app()->getConfig("filterout_incomplete_answers") == true)
-        {
-            $query .= " WHERE {{survey_".intval($iSurveyID)."}}.submitdate is not null";
+        if (Yii::app()->getConfig("filterout_incomplete_answers") == true) {
+            $query .= " WHERE ".$survey->responsesTableName.".submitdate is not null";
         }
         $result = Yii::app()->db->createCommand($query)->queryAll();
 

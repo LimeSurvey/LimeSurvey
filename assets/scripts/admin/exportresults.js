@@ -1,4 +1,8 @@
-$(document).ready(function(){
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+$(document).on('ready  pjax:complete',  function(){
     updateColumnCountDisplay();
     $('#colselect').change(updateColumnCountDisplay);
 });

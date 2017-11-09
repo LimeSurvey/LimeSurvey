@@ -148,3 +148,4 @@ float:none;
 box-shadow: 0 0 0 #fff;
 }
 
+.input-error input {border:1px solid #E75041;}

@@ -28,7 +28,7 @@ class Authdb extends AuthPluginBase
     /**
      * Create a DB user
      *
-     * @return null
+     * @return void
      */
     public function createNewUser()
     {
@@ -126,35 +126,27 @@ class Authdb extends AuthPluginBase
 
         $user = $this->api->getUserByName($username);
 
-        if ($user == null){
+        if ($user === null){
           $user = $this->api->getUserByEmail($username);
-          
           if (is_object($user)){
               $this->setUsername($user->users_name);
           }
         }
-
         if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
         {
             $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed for this user'));
             return;
         }
-        if ($user !== null and ($username==$user->users_name || $username==$user->email)) // Control of equality for uppercase/lowercase with mysql
-        {
-            if (gettype($user->password)=='resource')
-            {
-                $sStoredPassword=stream_get_contents($user->password,-1,0);  // Postgres delivers bytea fields as streams :-o
-            }
-            else
-            {
-                $sStoredPassword=$user->password;
-            }
+        if ($user === null) {
+            $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
+            return;
         }
-        else
+        if ($user !== null && ($username!=$user->users_name && $username!=$user->email)) // Control of equality for uppercase/lowercase with mysql
         {
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
+
 
         if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && md5($onepass) == $user->one_time_pw)
         {
@@ -164,12 +156,10 @@ class Authdb extends AuthPluginBase
             return;
         }
 
-        if ($sStoredPassword !== hash('sha256', $password))
-        {
+        if(!$user->checkPassword($password)) {
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
             return;
         }
-
         $this->setAuthSuccess($user);
     }
 

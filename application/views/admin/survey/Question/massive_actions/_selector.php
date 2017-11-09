@@ -40,7 +40,7 @@
                     'type'        => 'action',
                     'action'      => 'delete',
                     'url'         => App()->createUrl('/admin/questions/sa/deleteMultiple/'),
-                    'iconClasses' => 'text-danger glyphicon glyphicon-trash',
+                    'iconClasses' => 'text-danger fa fa-trash',
                     'text'        =>  gT('Delete'),
                     'grid-reload' => 'yes',
 

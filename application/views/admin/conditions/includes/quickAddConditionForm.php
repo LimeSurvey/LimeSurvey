@@ -2,7 +2,7 @@
     <div class="col-lg-12">
 
         <!-- Form quick-add condition -->
-        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"quick-add-conditions-form",'name'=>"quick-add-conditions-form", 'class' => 'form form-horizontal'));?>
+        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"quick-add-conditions-form",'name'=>"quick-add-conditions-form", 'class' => 'form '));?>
             <div class='form-group'>
                 <div class='col-sm-2'></div>
                 <div class='col-sm-10'>

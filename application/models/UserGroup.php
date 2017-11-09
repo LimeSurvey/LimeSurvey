@@ -15,14 +15,14 @@
 /**
  * Class UserGroup
  *
- * @property integer $ugid
- * @property string $name
- * @property string $description
- * @property integer $owner_id
+ * @property integer $ugid Model ID (primary key)
+ * @property string $name  Group name (max 20 chars)
+ * @property string $description Group description
+ * @property integer $owner_id Group owner user ID
  *
  * @property User[] $users Users of this group
- * @property User $owner
- * @property integer $countUsers
+ * @property User $owner Group ownre user
+ * @property integer $countUsers Count of users in this group
  */
 class UserGroup extends LSActiveRecord {
 
@@ -35,7 +35,9 @@ class UserGroup extends LSActiveRecord {
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -95,6 +97,11 @@ class UserGroup extends LSActiveRecord {
     }
 
     // TODO seems to be unused, probably shouldn't be done like that
+
+    /**
+     * @param string[] $fields
+     * @param string $from
+     */
     public function join($fields, $from, $condition=false, $join=false, $order=false)
     {
         $user = Yii::app()->db->createCommand();
@@ -128,7 +135,8 @@ class UserGroup extends LSActiveRecord {
     /**
      * @param string $group_name
      * @param string $group_description
-     * @return int|mixed|string
+     * @return boolean
+     * @todo should use save() and afterSave() methods!!
      */
     public function addGroup($group_name, $group_description) {
         $iLoginID=intval(Yii::app()->session['loginID']);
@@ -242,8 +250,7 @@ class UserGroup extends LSActiveRecord {
      */
     public function getCountUsers()
     {
-        // TODO get count without getting all user rows?
-        return count($this->users);
+        return (int) UserInGroup::model()->countByAttributes(['ugid'=>$this->ugid]);
     }
 
     /**
@@ -254,12 +261,12 @@ class UserGroup extends LSActiveRecord {
 
         // View users
         $url = Yii::app()->createUrl("admin/usergroups/sa/view/ugid/$this->ugid");
-        $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View users').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+        $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View users').'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
 
         // Edit user group
         if(Permission::model()->hasGlobalPermission('usergroups','update')) {
             $url = Yii::app()->createUrl("admin/usergroups/sa/edit/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit user group').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit user group').'" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
         }
 
         // Mail to user group
@@ -270,7 +277,7 @@ class UserGroup extends LSActiveRecord {
         // Delete user group
         if(Permission::model()->hasGlobalPermission('usergroups','delete')) {
             $url = Yii::app()->createUrl("admin/usergroups/sa/delete/ugid/$this->ugid");
-            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete user group').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this user group?').'"><span class="glyphicon glyphicon-trash text-warning"></span></a>';
+            $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete user group').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this user group?').'"><span class="fa fa-trash text-warning"></span></a>';
         }
 
         return $button;
@@ -346,6 +353,24 @@ class UserGroup extends LSActiveRecord {
         ));
 
         return $dataProvider;
+    }
+
+
+    /**
+     * Checks whether the specified UID is part of that group
+     * @param integer $uid
+     * @return bool
+     */
+    public function hasUser($uid){
+        // superadmin is part of all groups
+        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+            return true;
+        }
+        $userInGroup = UserInGroup::model()->findByAttributes(['ugid'=>$this->ugid],'uid=:uid',[':uid'=>$uid]);
+        if($userInGroup){
+            return true;
+        }
+        return false;
     }
       
 }

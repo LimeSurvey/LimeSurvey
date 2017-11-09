@@ -57,11 +57,13 @@
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
 </head>
 <body>
-
+    <div id="beginScripts">
+        <###begin###>
+    </div>
 <!-- Loading wrapper -->
 <div id='ls-loading'>
     <span id='ls-loading-spinner' class='fa fa-spinner fa-spin fa-4x'></span>
-    <span class='sr-only'><?php eT('Loading'); ?></span>
+    <span class='sr-only'><?php eT('Loading...'); ?></span>
 </div>
 
 <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>

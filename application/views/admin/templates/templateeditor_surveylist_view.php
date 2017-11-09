@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var Survey[] $publicSurveys
+ */
     $outputSurveys = 0;
     $list = "<div class='surveys-list-container'>";
     $list .= "<ul class='list-unstyled surveys-list'>";
@@ -13,13 +16,13 @@
             $surveylang=App()->language;
         }
         /* get the col class for with (src : http://encosia.com/using-btn-block-bootstrap-3-dropdown-button-groups) */
-        if ($survey->publicstatistics == "Y"){
+        if ($survey->isPublicStatistics){
             $colClass="col-xs-10 col-md-11";
         }else{
             $colClass="col-xs-12";
         }
         $surveyLine = CHtml::link(
-            $survey->localizedTitle,
+            $survey->currentLanguageSettings->surveyls_title,
             array(
                 'survey/index',
                 'sid' => $survey->sid,
@@ -31,7 +34,7 @@
                 'lang'=>$surveylang // Must add dir ?
             )
         );
-        if ($survey->publicstatistics == "Y"){
+        if ($survey->isPublicStatistics){
             $surveyLine .= CHtml::link('<span class="fa fa-bar-chart" aria-hidden="true"></span><span class="sr-only">'. gT('View statistics') .'</span>',
                 array('statistics_user/action', 'surveyid' => $survey->sid,'language' => $surveylang),
                 array(
@@ -63,7 +66,7 @@
                 $surveylang=App()->language;
             }
             $surveyLine = CHtml::link(
-                $survey->localizedTitle,
+                $survey->currentLanguageSettings->surveyls_title,
                 array(
                     'survey/index',
                     'sid' => $survey->sid,

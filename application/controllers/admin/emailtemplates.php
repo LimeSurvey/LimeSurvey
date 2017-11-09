@@ -30,6 +30,8 @@ class emailtemplates extends Survey_Common_Action {
     function index($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
+        $survey  = Survey::model()->findByPk($iSurveyId);
+
         Yii::app()->loadHelper('admin.htmleditor');
         Yii::app()->loadHelper('surveytranslator');
 
@@ -70,8 +72,7 @@ class emailtemplates extends Survey_Common_Action {
         }
 
             $aData['sidemenu']['state'] = false;
-            $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-            $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+            $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
 
 
             $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
@@ -84,6 +85,7 @@ class emailtemplates extends Survey_Common_Action {
             $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyId;  // Close button
 
         $aData['surveyid'] = $iSurveyId;
+        $aData['subaction'] = gT("Edit email templates");
         $aData['ishtml'] = $ishtml;
         $aData['grplangs'] = $grplangs;
         $this->_renderWrappedTemplate('emailtemplates', array('output' => $sEditScript, 'emailtemplates_view'), $aData);

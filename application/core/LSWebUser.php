@@ -6,17 +6,8 @@
         protected $sessionVariable = 'LSWebUser';
 
 
-        public function __construct()
-        {
+        public function __construct() {
             $this->loginUrl = Yii::app()->createUrl('admin/authentication', array('sa' => 'login'));
-
-            // Try to fix missing language in plugin controller
-            if (empty(Yii::app()->session['adminlang']))
-            {
-                 Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
-            }
-
-            Yii::app()->setLanguage(Yii::app()->session['adminlang']);
         }
 
         public function checkAccess($operation, $params = array(), $allowCaching = true)
@@ -54,6 +45,8 @@
 
         /**
          * @param string $key
+         * @param string $defaultValue
+         * @return mixed|null
          */
         public function getState($key, $defaultValue = null)
         {
@@ -123,4 +116,3 @@
         }
 
     }
-?>

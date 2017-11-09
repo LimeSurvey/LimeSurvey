@@ -10,17 +10,17 @@
 ?>
 
 <div id='dlgEditParameter'>
-    <div id='dlgForm' class='form-horizontal'>
+    <div id='dlgForm' class=''>
         <div class='row'>
             <div class='form-group'>
-                <label class='control-label col-sm-3' for='paramname'><?php eT('Parameter name:'); ?></label>
-                <div class='col-sm-4'>
+                <label class='control-label ' for='paramname'><?php eT('Parameter name:'); ?></label>
+                <div class=''>
                     <input class='form-control' name='paramname' id='paramname' type='text' size='20' />
                 </div>
             </div>
             <div class='form-group'>
-                <label class='control-label col-sm-3' for='targetquestion'><?php eT('Target (sub-)question:'); ?></label>
-                <div class='col-sm-4'>
+                <label class='control-label ' for='targetquestion'><?php eT('Target (sub-)question:'); ?></label>
+                <div class=''>
                     <select class='form-control' name='targetquestion' id='targetquestion' size='1'>
                         <option value=''><?php eT('(No target question)'); ?></option>
                         <?php foreach ($questions as $question){?>
@@ -37,7 +37,7 @@
             <div class='form-group'>
                 <div class='col-sm-12 text-center'>
                     <button class='btn btn-success' id='btnSaveParams'>
-                        <span class="glyphicon glyphicon-ok"></span>
+                        <span class="fa fa-floppy-o"></span>
                         <?php eT('Save'); ?>
                     </button>
                     <button class='btn btn-danger' id='btnCancelParams'><?php eT('Cancel'); ?></button>

@@ -11,7 +11,7 @@
 * See COPYRIGHT.php for copyright notices and details.
 *
 */
-namespace ls\helpers;
+namespace LimeSurvey\Helpers;
 
 /**
  * General helper class for question + question setting system
@@ -464,7 +464,7 @@ class questionHelper
             'sortorder'=>102,
             'inputtype'=>'text',
             'default'=>'500',
-            "help"=>gT("Width of the map in pixel (for google map)"),
+            "help"=>gT("Map width in pixel"),
             "caption"=>gT("Map width")
         );
 
@@ -474,7 +474,7 @@ class questionHelper
             'sortorder'=>103,
             'inputtype'=>'text',
             'default'=>'300',
-            "help"=>gT("Height of the map in pixel"),
+            "help"=>gT("Map height in pixel"),
             "caption"=>gT("Map height")
         );
 
@@ -538,7 +538,7 @@ class questionHelper
             'sortorder'=>102,
             'inputtype'=>'text',
             'expression'=>1,/* As static */
-            'help'=>gT('Add additional CSS class(es) for this question. Use a space between different CSS class names. You can use expression, remind this part was static.'),
+            'help'=>gT('Add additional CSS class(es) for this question. Use a space between multiple CSS class names. You may use expressions - remember this part is static.'),
             'caption'=>gT('CSS class(es)')
         );
 
@@ -948,7 +948,7 @@ class questionHelper
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'),1=>gT('Yes')),
             'default'=>1, /* before 3.0 : this is the default behaviour */
-            "help"=>gT('When using slider initial value : did this set the value.'),
+            "help"=>gT('When using slider initial value set this value at survey start.'),
             "caption"=>gT('Slider initial value set at start')
         );
 
@@ -1014,7 +1014,7 @@ class questionHelper
             'inputtype'=>'switch',
             'options'=>array(0=>gT('No'),1=>gT('Yes')),
             'default'=>0,
-            "help"=>gT('Reverses the slider direction and repositions the min/max text accoringly.'),
+            "help"=>gT('Reverses the slider direction and repositions the min/max text accordingly.'),
             "caption"=>gT('Reverse the slider direction')
         );
 
@@ -1567,7 +1567,7 @@ class questionHelper
             'inputtype'=>'question_template',
             'options'=>array(),
             'default' => "core",
-            "help"=>gT('Use a customed question template for this question'),
+            "help"=>gT('Use a customized question template for this question'),
             "caption"=>gT('Question template')
         );
 
@@ -1587,7 +1587,7 @@ class questionHelper
          *      'help' : an help
          *  ]
          */
-        $event = new \ls\pluginmanager\PluginEvent('newQuestionAttributes');
+        $event = new \LimeSurvey\PluginManager\PluginEvent('newQuestionAttributes');
         $result = App()->getPluginManager()->dispatchEvent($event);
         /* Cast as array , or test if exist , or set to an empty array at start (or to self::$attributes : and do self::$attributes=$result->get('questionAttributes') directly ) ? */
         $questionAttributes =(array) $result->get('questionAttributes');
@@ -1622,6 +1622,7 @@ class questionHelper
                 "sortorder"=>1000,
                 "i18n"=>false,
                 "readonly"=>false,
+                "readonly_when_active"=>false,
             );
             foreach($aQuestionTypeAttribute as $attribute=>$settings)
             {

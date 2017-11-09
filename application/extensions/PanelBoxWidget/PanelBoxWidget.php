@@ -14,6 +14,7 @@ class PanelBoxWidget extends CWidget
     public $display = 'singlebox';
     public $boxesbyrow = 3;
     public $external = false;
+    public $boxesincontainer = false;
 
     public function run()
     {
@@ -76,6 +77,7 @@ class PanelBoxWidget extends CWidget
                 'ico' => $this->ico,
                 'description' => $this->description,
                 'external' => $this->external,
+                'sizeClass' => "col-md-".(12/$this->boxesbyrow)." col-sm-".(floor(24/$this->boxesbyrow))
             ));
         }
     }
@@ -89,46 +91,22 @@ class PanelBoxWidget extends CWidget
         $boxes = self::getBoxes();
         $boxcount = 0;
         $bIsRowOpened = false;
+                $this->render('row_header', array(
+                    'orientation' => $this->getOrientationClass(),
+                    'containerclass' => ($this->boxesincontainer ? 'container' : 'container-fluid')
+                ));
         foreach ($boxes as $box) {
 
-            $canSeeBox = self::canSeeBox($box);
-            if ($canSeeBox) {
-                $boxcount = $boxcount + 1;
-            }
+             $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
+                 'display' => 'singlebox',
+                 'fromDb' => true,
+                 'dbPosition' => $box->position,
+                 'offset' => '',
+                 'boxesbyrow' => $this->boxesbyrow
+             ));
 
-            // It's the first box to show, we must display row header, and have an offset
-            if ($boxcount == 1 && $canSeeBox) {
-
-
-                $this->render('row_header');
-                $bIsRowOpened = true;
-                $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
-                    'display' => 'singlebox',
-                    'fromDb' => true,
-                    'dbPosition' => $box->position,
-                    'offset' => $this->offset,
-                ));
-            } elseif ($canSeeBox) {
-                $this->controller->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
-                    'display' => 'singlebox',
-                    'fromDb' => true,
-                    'dbPosition' => $box->position,
-                    'offset' => '',
-                ));
-            }
-
-            // If it is the last box, we should close the box
-            if ($boxcount == $this->boxesbyrow) {
-                $this->render('row_footer');
-                $boxcount = 0;
-                $bIsRowOpened = false;
-            }
         }
-
-        // If the last row has not been closed, we close it
-        if ($bIsRowOpened == true) {
             $this->render('row_footer');
-        }
     }
 
     protected function canSeeBox($box = '')
@@ -162,6 +140,15 @@ class PanelBoxWidget extends CWidget
             if (Yii::app()->user->isInUserGroup($box->usergroup)) {
                 return true;
             }
+        }
+    }
+
+    private function getOrientationClass(){
+        switch($this->offset){
+            case 1: return 'align-content-flex-start'; break; 
+            case 2: return 'align-content-flex-end'; break; 
+            case 3: //fallthrough
+           default: return 'align-content-space-around'; break;
         }
     }
 

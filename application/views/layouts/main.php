@@ -25,6 +25,9 @@
         <title>Limesurvey Administration</title>
     </head>
     <body>
+        <div id="beginScripts">
+        <###begin###>
+        </div>
         <div class="wrapper clearfix">
             <?php $this->widget('ext.FlashMessage.FlashMessage'); ?>
             <?php echo CHtml::tag('div', array('class' => 'maintitle titlebar'), App()->getConfig('sitename')); ?>
@@ -37,6 +40,9 @@
             </div>
         </div>
         <?php $this->widget('ext.AdminFooter.AdminFooter'); ?>
+        <div id="bottomScripts">
+        <###end###>
+        </div>
     </body>
 
 </html>

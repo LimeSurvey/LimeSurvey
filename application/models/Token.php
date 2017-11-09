@@ -28,25 +28,25 @@
  *
  */
 
-use \ls\pluginmanager\PluginEvent;
+use \LimeSurvey\PluginManager\PluginEvent;
 
 /**
  * Class Token
  *
- * @property integer $tid
- * @property string $participant_id
- * @property string $firstname
- * @property string $lasttname
- * @property string $email
- * @property string $emailstatus
- * @property string $token
- * @property string $language
- * @property string $blacklisted
+ * @property integer $tid Token ID
+ * @property string $participant_id Participant ID
+ * @property string $firstname Participant's first name
+ * @property string $lastname Participant's last name
+ * @property string $email Participant's e-mail address
+ * @property string $emailstatus Participant's e-mail address status: OK/bounced/OptOut
+ * @property string $token Participant's token
+ * @property string $language Participant's language eg: en
+ * @property string $blacklisted Whether participant is blacklisted: (Y/N)
  * @property string $sent
  * @property string $remindersent
  * @property integer $remindercount
- * @property string $completed
- * @property integer $usesleft
+ * @property string $completed Participant completed status (N:Not completed; Q:Locked with quota; 'YYYY-MM-DD hh:mm': date of completion)
+ * @property integer $usesleft How many uses left to fill questionnaire for this participant
  * @property string $validfrom
  * @property string $validuntil
  * @property integer $mpid //TODO Describe me!
@@ -216,7 +216,7 @@ abstract class Token extends Dynamic
     /**
      * Generates a token for all token objects in this survey.
      * Syntax: Token::model(12345)->generateTokens();
-     * @return array
+     * @return integer[]
      * @throws Exception
      */
     public function generateTokens() {
@@ -270,7 +270,9 @@ abstract class Token extends Dynamic
      * @return Token
      */
     public static function model($className = null) {
-        return parent::model($className);
+        /** @var self $model */
+        $model =parent::model($className);
+        return $model;
     }
 
     /**

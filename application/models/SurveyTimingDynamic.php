@@ -20,7 +20,10 @@ class SurveyTimingDynamic extends LSActiveRecord
 {
     /** @var int $sid Survey id */
     protected static $sid = 0;
-    
+
+    /** @var Survey $survey*/
+    protected static $survey;
+
 	/**
 	 * @inheritdoc
 	 * @return SurveyTimingDynamic
@@ -28,11 +31,14 @@ class SurveyTimingDynamic extends LSActiveRecord
     public static function model($sid = NULL)
     {         
         $refresh = false;
-        if (!is_null($sid)) {
-            self::sid($sid);
+        $survey = Survey::model()->findByPk($sid);
+        if ($survey) {
+            self::sid($survey->sid);
+            self::$survey = $survey;
             $refresh = true;
         }
-        
+
+        /** @var self $model */
         $model = parent::model(__CLASS__);
         
         //We need to refresh if we changed sid
@@ -177,18 +183,18 @@ class SurveyTimingDynamic extends LSActiveRecord
     {
         // View details
         $viewUrl = App()->createUrl("admin/responses/sa/view/surveyid/" . self::$sid . "/id/" . $this->id);
-        $buttons = '<a class="btn btn-xs btn-default" href="' . $viewUrl . '" role="button" data-toggle="tooltip" title="'.gT('View response details').'"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+        $buttons = '<a class="btn btn-xs btn-default" href="' . $viewUrl . '" role="button" data-toggle="tooltip" title="'.gT('View response details').'"><span class="fa fa-list-alt" ></span></a>';
 
         // Edit
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
             $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" href="' . $editUrl . '" role="button" data-toggle="tooltip" title="'.gT('Edit this response').'"><span class="glyphicon glyphicon-pencil" ></span></a>';
+            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" href="' . $editUrl . '" role="button" data-toggle="tooltip" title="'.gT('Edit this response').'"><span class="fa fa-pencil" ></span></a>';
         }
 
         // Delete
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
             $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" data-target="#confirmation-modal" data-href="' . $deleteUrl . '" role="button" data-toggle="modal" data-tooltip="true" title="'.gT('Delete this response').'"><span class="text-danger glyphicon glyphicon-trash" ></span></a>';
+            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" data-target="#confirmation-modal" data-href="' . $deleteUrl . '" role="button" data-toggle="modal" data-tooltip="true" title="'.gT('Delete this response').'"><span class="text-danger fa fa-trash" ></span></a>';
         }
 
         return $buttons;

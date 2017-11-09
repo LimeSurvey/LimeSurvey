@@ -9,6 +9,9 @@
  * To enjoy this feature, add to your package definition a 'devBaseUrl' with the relative url to your package
  *
  */
+$debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
+/* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
+$minVersion = ($debug>0) ? "":".min";
 /* needed ? @see third_party.php */
 if(isset($_GET['isAjax'])){
     return array();
@@ -30,9 +33,9 @@ return array(
         )
     ),
     /* For public template extended functionnality (based on default template) */
-    'template-default'=>array(
-        'devBaseUrl'  => 'assets/packages/template-default/',
-        'basePath' => 'core.template-default',
+    'template-core'=>array(
+        'devBaseUrl'  => 'assets/packages/template-core/',
+        'basePath' => 'core.template-core',
         'css'=> array(
             'template-core.css',
         ),
@@ -43,24 +46,24 @@ return array(
             'limesurvey-public',
         )
     ),
-    'template-default-ltr'=>array( /* complement for ltr */
-        'devBaseUrl'  => 'assets/packages/template-default/',
-        'basePath' => 'core.template-default',
+    'template-core-ltr'=>array( /* complement for ltr */
+        'devBaseUrl'  => 'assets/packages/template-core/',
+        'basePath' => 'core.template-core',
         'css'=> array(
             'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css',
         ),
         'depends' => array(
-            'template-default',
+            'template-core',
         )
     ),
-    'template-default-rtl'=>array( /* Same but for rtl */
-        'devBaseUrl'  => 'assets/packages/template-default/',
-        'basePath' => 'core.template-default',
+    'template-core-rtl'=>array( /* Same but for rtl */
+        'devBaseUrl'  => 'assets/packages/template-core/',
+        'basePath' => 'core.template-core',
         'css'=> array(
             'awesome-bootstrap-checkbox/awesome-bootstrap-checkbox-rtl.css',
         ),
         'depends' => array(
-            'template-default',
+            'template-core',
         )
     ),
 
@@ -103,5 +106,83 @@ return array(
             'bootstrap-slider',
         )
     ),
-
+    'ckeditor' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditor/',
+        'basePath' => 'core.ckeditor',
+        'js' => array(
+            'ckeditor.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        ),
+    ),
+    'ckeditoradditions' => array(
+        'devBaseUrl'  => 'assets/packages/ckeditoradditions/',
+        'basePath' => 'core.ckeditoradditions',
+        'js' => array(
+            'ckeditoradditions.js',
+        ),
+        'depends' => array(
+            'ckeditor'
+        )
+    ),
+    'pjax' => array(
+        'devBaseUrl' => 'assets/packages/pjax/',
+        'basePath' => 'core.pjax',
+        'js' => array(
+            'pjax.js',
+        ),
+    ),
+    'adminpanel' => array(
+        'devBaseUrl' => 'assets/packages/adminpanel/',
+        'basePath' => 'core.adminpanel',
+        'js' => array(
+            'build/lsadminpanel'.$minVersion.'.js',
+            'lib/surveysettings.js'
+        ),
+        'css' => array(
+            'build/lsadminpanel.css'
+        ),
+        'depends' => array(
+            'adminbasics'
+        )
+    ),
+    'lstutorial' => array(
+        'devBaseUrl' => 'assets/packages/lstutorial/',
+        'basePath' => 'core.lstutorial',
+        'position' =>CClientScript::POS_END,
+        'js' => array(
+            'build/lstutorial'.$minVersion.'.js',
+        ),
+        'css' => array(
+            'build/lstutorial.css'
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
+    'adminbasics' => array(
+        'devBaseUrl' => 'assets/packages/adminbasics/',
+        'basePath' => 'core.adminbasics',
+        'js' => array(
+            'js/admin_core.js',
+            'js/notifications.js'
+        ),
+        'depends' => array(
+            'pjax',
+            'jquery',
+        )
+    ),
+    'surveymenufunctions' => array(
+        'devBaseUrl' => 'assets/packages/surveymenufunctions/',
+        'basePath' => 'core.surveymenufunctions',
+        'js' => array(
+            'surveymenufunctionswrapper'.$minVersion.'.js',
+        ),
+        'depends' => array(
+            'adminbasics',
+        )
+    ),
+    
+    
 );
