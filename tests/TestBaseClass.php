@@ -39,6 +39,8 @@ class TestBaseClass extends TestCase
         self::$tempFolder = __DIR__.'/tmp';
         self::$screenshotsFolder = self::$tempFolder.'/screenshots';
         self::$testHelper->importAll();
+
+        self::$testHelper->connectToOriginalDatabase();
     }
 
 

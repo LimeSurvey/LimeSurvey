@@ -10,34 +10,21 @@ namespace ls\tests;
 class CheckDatabaseJsonValuesTest extends TestBaseClass
 {
     /**
+     * 
+     */
+    public static function setupBeforeClass()
+    {
+        parent::setupBeforeClass();
+    }
+
+    /**
      * Tear down fixtures.
      */
     public static function teardownAfterClass()
     {
-        $dbo = \Yii::app()->getDb();
-        try {
-            $dbo->createCommand('DROP DATABASE __test_check_database_json')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
-
-        try {
-            $dbo->createCommand('DROP DATABASE __test_update_helper_258')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
-
-        try {
-            $dbo->createCommand('DROP DATABASE __test_update_helper_315')->execute();
-        } catch (\CDbException $ex) {
-            $msg = $ex->getMessage();
-            // Only this error is OK.
-            self::assertTrue(strpos($msg, 'database doesn\'t exist') !== false);
-        }
+        self::$testHelper->teardownDatabase('__test_check_database_json');
+        self::$testHelper->teardownDatabase('__test_update_helper_258');
+        self::$testHelper->teardownDatabase('__test_update_helper_315');
     }
 
     /**
@@ -87,7 +74,6 @@ class CheckDatabaseJsonValuesTest extends TestBaseClass
     }
 
     /**
-     * 
      */
     public function testUpdateFrom315()
     {
