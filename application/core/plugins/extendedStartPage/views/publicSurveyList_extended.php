@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var Survey[] $publicSurveys
+ */
+
     $outputSurveys = 0;
     $list = "<div class='container'>";
     $list .= "<div class='row'>";
@@ -6,11 +10,9 @@
     /** @var Survey[] $publicSurveys */
     foreach($publicSurveys as $survey)
     {
-         $outputSurveys++;
-                //echo "IKI :";var_dump( $survey->localizedTitle);
+        $outputSurveys++;
         $divider = ($divideToggle ? " vertical-divider right " : "");
-        if ($survey->publicstatistics == "Y")
-        {
+        if ($survey->isPublicStatistics) {
             $statistics = "<div class='col-md-1 col-sm-2 col-xs-2 no-divide ls-custom-padding five ".$divider."'>";
             $statistics .= CHtml::link('<span class="fa fa-bar-chart" aria-hidden="true"></span><span class="sr-only">'. gT('View statistics') .'</span>',
                         array('statistics_user/action', 'surveyid' => $survey->sid,'language' => App()->language),
@@ -30,32 +32,25 @@
         }
 
         $tooltips = "";
-        if($survey->allowregister == "Y")
-        {
+        if($survey->isAllowRegister) {
             $tooltips .= "<i class=\"fa fa-sign-in\" aria-hidden=\"true\">&nbsp;</i>";
-        }
-        else
-        {
-            if($survey->hasTokens($survey->sid))
-            {
+        } else {
+            if($survey->hasTokensTable) {
                 $tooltips .= "<i class=\"fa fa-key\" aria-hidden=\"true\">&nbsp;</i>";
             }
         }
-        if($survey->anonymized == "Y")
-        {
+        if($survey->isAnonymized) {
             $tooltips .= "<i class=\"fa fa-shield\" aria-hidden=\"true\">&nbsp;</i>";
         }
-        if($survey->allowsave == "Y")
-        {
+        if($survey->isAllowSave) {
             $tooltips .= "<i class=\"fa fa-save\" aria-hidden=\"true\">&nbsp;</i>";
         }
-        if($survey->allowprev == "Y")
-        {
+        if($survey->isAllowPrev) {
             $tooltips .= "<i class=\"fa fa-undo\" aria-hidden=\"true\">&nbsp;</i>";
         }
         $tooltips .= "<i  class=\"fa fa-clock-o\" aria-hidden=\"true\">&nbsp;</i>&nbsp;".sprintf(gt("%s minutes"),$survey->calculateEstimatedTime());
 
-        $content = $survey->localizedTitle;
+        $content = $survey->currentLanguageSettings->surveyls_title;
         $content .= "<span class='pull-right clearfix'>"
                         ."&nbsp;<span href='#' class='fa fa-question-circle' onclick='return false;' data-html='true' data-toggle=\"popover\" title=\"".gT("Survey information")."\" data-content='".$tooltips."'></span>"
                         ."</span>";
@@ -92,7 +87,7 @@
         {
             $outputSurveys++;
             $list .= CHtml::openTag('div', array('class'=>'col-xs-12'));
-            $list .= CHtml::link($survey->localizedTitle, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
+            $list .= CHtml::link($survey->currentLanguageSettings->surveyls_title, array('survey/index', 'sid' => $survey->sid, 'lang' => App()->language), array('class' => 'surveytitle'));
             $list .= CHtml::closeTag('div');
             $list .= CHtml::tag('div', array(
                 'data-regformsurvey' => $survey->sid,

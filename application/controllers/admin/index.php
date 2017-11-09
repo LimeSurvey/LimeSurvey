@@ -31,8 +31,7 @@ class Index extends Survey_Common_Action
         {
             $aData['showLastSurvey'] = true;
             $iSurveyID = $lastsurvey;
-            $surveyinfo = $survey->surveyinfo;
-            $aData['surveyTitle'] = $surveyinfo['surveyls_title']."(".gT("ID").":".$iSurveyID.")";
+            $aData['surveyTitle'] = $survey->currentLanguageSettings->surveyls_title."(".gT("ID").":".$iSurveyID.")";
             $aData['surveyUrl'] = $this->getController()->createUrl("admin/survey/sa/view/surveyid/{$iSurveyID}");
         }
         else
@@ -89,7 +88,8 @@ class Index extends Survey_Common_Action
         $aData['oSurveySearch'] = new Survey('search');
         $aData['bShowLastSurveyAndQuestion'] = (getGlobalSetting('show_last_survey_and_question')=="show");
         $aData['iBoxesByRow']=(int) getGlobalSetting('boxes_by_row');
-        $aData['sBoxesOffSet']=(string) getGlobalSetting('boxes_offset');
+        $aData['sBoxesOffSet']=(int) getGlobalSetting('boxes_offset');
+        $aData['bBoxesInContainer']= (getGlobalSetting('boxes_in_container') == 'yes');
         $this->_renderWrappedTemplate('super', 'welcome', $aData);
     }
 

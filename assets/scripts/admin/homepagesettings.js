@@ -1,7 +1,11 @@
 /**
  * JavaScript functions for HomePage Settings
  */
-$(document).ready(function(){
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+$(document).on('ready  pjax:complete', function(){
 
     /**
      * Toggle show logo value
@@ -66,6 +70,26 @@ $(document).ready(function(){
      */
     $('#show_survey_list_search').on('switchChange.bootstrapSwitch', function(event, state) {
         $url = $('#show_survey_list_search-url').attr('data-url');
+        console.log($url);
+        $.ajax({
+            url : $url,
+            type : 'GET',
+            dataType : 'html',
+
+            // html contains the buttons
+            success : function(html, statut){
+            },
+            error :  function(html, statut){
+                alert('error');
+            }
+        });
+    });
+
+    /**
+     * Toggle wrap boxes in container value
+     */
+    $('#boxes_in_container').on('switchChange.bootstrapSwitch', function(event, state) {
+        $url = $('#boxes_in_container-url').attr('data-url');
         console.log($url);
         $.ajax({
             url : $url,

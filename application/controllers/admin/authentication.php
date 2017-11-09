@@ -1,6 +1,6 @@
 <?php
 // see: https://scrutinizer-ci.com/g/LimeSurvey/LimeSurvey/issues/master/files/application/controllers/admin/authentication.php?selectedSeverities[0]=10&orderField=path&order=asc&honorSelectedPaths=0
-// use ls\pluginmanager\PluginEvent;
+// use LimeSurvey\PluginManager\PluginEvent;
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
@@ -35,6 +35,11 @@ class Authentication extends Survey_Common_Action
      */
     public function index()
     {
+        /* Set adminlang to the one set in dropdown */
+        if(Yii::app()->request->getPost('loginlang','default')!='default') {
+            Yii::app()->session['adminlang'] = Yii::app()->request->getPost('loginlang','default');
+            Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
+        }
         // The page should be shown only for non logged in users
         $this->_redirectIfLoggedIn();
 
@@ -142,7 +147,7 @@ class Authentication extends Survey_Common_Action
             App()->getPluginManager()->dispatchEvent($newLoginForm);            // inject the HTML of the form inside the private varibale "_content" of the plugin
             $aData['summary'] = self::getSummary('logout');
             $aData['pluginContent'] = $newLoginForm->getAllContent();           // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
-        }else{
+        } else {
             // The form has been submited, or the plugin has been stoped (so normally, the value of login/password are available)
 
              // Handle getting the post and populating the identity there
@@ -223,12 +228,9 @@ class Authentication extends Survey_Common_Action
     {
         $this->_redirectIfLoggedIn();
 
-        if (!Yii::app()->request->getPost('action'))
-        {
+        if (!Yii::app()->request->getPost('action')) {
             $this->_renderWrappedTemplate('authentication', 'forgotpassword');
-        }
-        else
-        {
+        } else {
             $sUserName = Yii::app()->request->getPost('user');
             $sEmailAddr = Yii::app()->request->getPost('email');
 
@@ -237,16 +239,29 @@ class Authentication extends Survey_Common_Action
             // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
             usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"),Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
 
-            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid'])))
-            {
+            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
-                $aData['message'] = '<br>'.gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you').'<br>';
-            }
-            else
-            {
+                $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you').'<br>';
+            } else {
                 $aData['message'] = '<br>'.$this->_sendPasswordEmail($sEmailAddr, $aFields).'</br>';
             }
             $this->_renderWrappedTemplate('authentication', 'message', $aData);
+        }
+    }
+
+    public static function runDbUpgrade(){
+        // Check if the DB is up to date
+        if (Yii::app()->db->schema->getTable('{{surveys}}') )
+        {
+            $sDBVersion = getGlobalSetting('DBVersion');
+        }
+        if ((int) $sDBVersion < Yii::app()->getConfig('dbversionnumber') && $action != 'databaseupdate')
+        {
+            // Try a silent update first
+            Yii::app()->loadHelper('update/updatedb');
+            if (!db_upgrade_all(intval($sDBVersion),true)){
+                $this->redirect(array('/admin/databaseupdate/sa/db'));
+            }
         }
     }
 
@@ -276,9 +291,9 @@ class Authentication extends Survey_Common_Action
 
         if (SendEmailMessage($body, $sSubject, $sTo, $sFrom, $sSiteName, false, $sSiteAdminBounce))
         {
-            User::model()->updatePassword($aFields[0]['uid'], $sNewPass);
+            User::updatePassword($aFields[0]['uid'], $sNewPass);
             // For security reasons, we don't show a successful message
-            $sMessage = gT('If username and email are valid and you are allowed to use internal database authentication a new password has been sent to you');
+            $sMessage = gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you');
         }
         else
         {
@@ -329,6 +344,7 @@ class Authentication extends Survey_Common_Action
     {
         if (!Yii::app()->user->getIsGuest())
         {
+            $this->runDbUpgrade();
             $this->getController()->redirect(array('/admin'));
         }
     }
@@ -358,6 +374,7 @@ class Authentication extends Survey_Common_Action
      */
     private static function doRedirect()
     {
+        self::runDbUpgrade();
         $returnUrl = App()->user->getReturnUrl(array('/admin'));
         Yii::app()->getController()->redirect($returnUrl);
     }
@@ -373,6 +390,7 @@ class Authentication extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'authentication', $aViewUrls = array(), $aData = array())
     {
         $aData['display']['menu_bars'] = false;
+        $aData['language'] = Yii::app()->getLanguage() != Yii::app()->getConfig("defaultlang") ? Yii::app()->getLanguage() : 'default';
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 

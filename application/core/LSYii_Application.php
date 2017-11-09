@@ -39,20 +39,18 @@ class LSYii_Application extends CWebApplication
 
     /**
      *
-    * Initiates the application
-    *
-    * @access public
-    * @return void
-    */
+     * Initiates the application
+     *
+     * @access public
+     * @param array $aApplicationConfig
+     */
     public function __construct($aApplicationConfig = null)
     {
         /* Using some config part for app config, then load it before*/
         $baseConfig = require(__DIR__ . '/../config/config-defaults.php');
-        if(file_exists(__DIR__ . '/../config/config.php'))
-        {
+        if(file_exists(__DIR__ . '/../config/config.php')) {
             $userConfigs = require(__DIR__ . '/../config/config.php');
-            if(is_array($userConfigs['config']))
-            {
+            if(is_array($userConfigs['config'])) {
                 $baseConfig = array_merge($baseConfig, $userConfigs['config']);
             }
         }
@@ -126,11 +124,12 @@ class LSYii_Application extends CWebApplication
     }
 
     /**
-    * Loads a library
-    *
-    * @access public
-    * @return void
-    */
+     * Loads a library
+     *
+     * @access public
+     * @param string $library Libraby name
+     * @return void
+     */
     public function loadLibrary($library)
     {
         Yii::import('application.libraries.'.$library, true);
@@ -194,7 +193,7 @@ class LSYii_Application extends CWebApplication
     * @access public
     * @param string $name
     * @param boolean|mixed $default Value to return when not found, default is false
-    * @return mixed
+    * @return string
     */
     public function getConfig($name, $default = false)
     {
@@ -203,13 +202,21 @@ class LSYii_Application extends CWebApplication
 
 
     /**
-    * For future use, cache the language app wise as well.
-    *
-    * @access public
-    * @return void
-    */
+     * For future use, cache the language app wise as well.
+     *
+     * @access public
+     * @param string $sLanguage
+     * @return void
+     */
     public function setLanguage( $sLanguage )
     {
+        // This method is also called from AdminController and LSUser
+        // But if a param is defined, it should always have the priority
+        // eg: index.php/admin/authentication/sa/login/&lang=de
+        if ( $this->request->getParam('lang') !== null && in_array('authentication', explode( '/', Yii::app()->request->url)) ){
+            $sLanguage = $this->request->getParam('lang');
+        }
+
         $sLanguage=preg_replace('/[^a-z0-9-]/i', '', $sLanguage);
         $this->messages->catalog = $sLanguage;
         App()->session['_lang'] = $sLanguage;                                   // See: http://www.yiiframework.com/wiki/26/setting-and-maintaining-the-language-in-application-i18n/
@@ -223,7 +230,7 @@ class LSYii_Application extends CWebApplication
     {
         if (!isset($this->api))
         {
-            $this->api = new \ls\pluginmanager\LimesurveyApi();
+            $this->api = new \LimeSurvey\PluginManager\LimesurveyApi();
         }
         return $this->api;
     }
@@ -288,14 +295,19 @@ class LSYii_Application extends CWebApplication
      * @see http://www.yiiframework.com/doc/api/1.1/CApplication#onException-detail
      * Set surveys/error for 404 error
      * @param CExceptionEvent $event
-     * @return : void
+     * @return void
      */
     public function onException($event){
         if(Yii::app() instanceof CWebApplication){
-            if($event->exception->statusCode=='404'){
-                Yii::app()->setComponent('errorHandler',array(
-                    'errorAction'=>'surveys/error',
-                ));
+            if (defined('PHP_ENV') && PHP_ENV == 'test') {
+                // If run from phpunit, die with exception message.
+                die($event->exception->getMessage());
+            } else {
+                if($event->exception->statusCode=='404'){
+                    Yii::app()->setComponent('errorHandler',array(
+                        'errorAction'=>'surveys/error',
+                    ));
+                }
             }
         }
     }

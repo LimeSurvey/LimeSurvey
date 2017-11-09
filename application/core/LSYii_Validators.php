@@ -44,7 +44,9 @@ class LSYii_Validators extends CValidator {
     {
         if(Yii::app()->getConfig('DBVersion')< 172) // Permission::model exist only after 172 DB version
             return $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
+
         $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'));
+        return null;
     }
 
     protected function validateAttribute($object,$attribute)
@@ -54,14 +56,14 @@ class LSYii_Validators extends CValidator {
             $object->$attribute=$this->xssFilter($object->$attribute);
             if($this->isUrl)
             {
-                $object->$attribute=str_replace('javascript:','',html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8")); 
+                $object->$attribute=str_replace('javascript:','',html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"));
             }
         }
         // Note that URL checking only checks basic URL properties. As a URL can contain EM expression there needs to be a lot of freedom.
         if($this->isUrl)
         {
             if ($object->$attribute== 'http://' || $object->$attribute=='https://') {$object->$attribute="";}
-            $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"); 
+            $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8");
         }
         if($this->isLanguage)
         {
@@ -74,11 +76,12 @@ class LSYii_Validators extends CValidator {
     }
 
     /**
-    * Remove some empty characters put by CK editor
-    * Did we need to do if user don't use inline HTML editor ?
-    *
-    * @param string $value
-    */
+     * Remove some empty characters put by CK editor
+     * Did we need to do if user don't use inline HTML editor ?
+     *
+     * @param string $value
+     * @return string
+     */
     public function fixCKeditor($value)
     {
         // Actually don't use it in model : model apply too when import : needed or not ?
@@ -101,11 +104,13 @@ class LSYii_Validators extends CValidator {
         }
         return $value;
     }
+
     /**
-    * Remove any script or dangerous HTML
-    *
-    * @param string $value
-    */
+     * Remove any script or dangerous HTML
+     *
+     * @param string $value
+     * @return string
+     */
     public function xssFilter($value)
     {
         $filter = new CHtmlPurifier();
@@ -130,7 +135,7 @@ class LSYii_Validators extends CValidator {
 
         /** Start to get complete filtered value with  url decode {QCODE} (bug #09300). This allow only question number in url, seems OK with XSS protection **/
         $sFiltered=preg_replace('#%7B([a-zA-Z0-9\.]*)%7D#','{$1}',$filter->purify($value));
-        Yii::import('application.helpers.expressions.em_core_helper');// Already imported in em_manager_helper.php ?
+        Yii::import('application.helpers.expressions.em_core_helper',true);// Already imported in em_manager_helper.php ?
         $oExpressionManager= new ExpressionManager;
         /**  We get 2 array : one filtered, other unfiltered **/
         $aValues=$oExpressionManager->asSplitStringOnExpressions($value);// Return array of array : 0=>the string,1=>string length,2=>string type (STRING or EXPRESSION)
@@ -160,21 +165,25 @@ class LSYii_Validators extends CValidator {
         gc_collect_cycles(); // To counter a high memory usage of HTML-Purifier
         return $sNewValue;
     }
+
     /**
-    * Defines the customs validation rule for language string
-    *
-    * @param mixed $value
-    */
+     * Defines the customs validation rule for language string
+     *
+     * @param mixed $value
+     * @return mixed
+     */
     public function languageFilter($value)
     {
         // Maybe use the array of language ?
         return preg_replace('/[^a-z0-9-]/i', '', $value);
     }
+
     /**
-    * Defines the customs validation rule for multi language string
-    *
-    * @param mixed $value
-    */
+     * Defines the customs validation rule for multi language string
+     *
+     * @param mixed $value
+     * @return string
+     */
     public function multiLanguageFilter($value)
     {
         $aValue=explode(" ",trim($value));

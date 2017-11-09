@@ -395,6 +395,13 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ko']['dateformat'] = 7;
     $supportedLanguages['ko']['radixpoint'] = 0;
 
+    // Kirundi
+    $supportedLanguages['run']['description'] = gT('Kirundi');
+    $supportedLanguages['run']['nativedescription'] = 'Ikirundi';
+    $supportedLanguages['run']['rtl'] = false;
+    $supportedLanguages['run']['dateformat'] = 1;
+    $supportedLanguages['run']['radixpoint'] = 1;
+    
     // Kurdish (Sorani)
     $supportedLanguages['ckb']['description'] = gT('Kurdish (Sorani)');
     $supportedLanguages['ckb']['nativedescription'] = '&#1705;&#1608;&#1585;&#1583;&#1740;&#1740; &#1606;&#1575;&#1608;&#1749;&#1606;&#1583;&#1740;';
@@ -566,7 +573,7 @@ function getLanguageData($bOrderByNative = false, $sLanguageCode = 'en')
     $supportedLanguages['ru']['rtl'] = false;
     $supportedLanguages['ru']['dateformat'] = 1;
     $supportedLanguages['ru']['radixpoint'] = 1;
-
+    
     // Sinhala
     $supportedLanguages['si']['description'] = gT('Sinhala');
     $supportedLanguages['si']['nativedescription'] = '&#3523;&#3538;&#3458;&#3524;&#3517;';

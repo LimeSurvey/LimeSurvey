@@ -188,16 +188,7 @@ if (version_compare(PHP_VERSION, '5.3.3', '<'))
     die ('This script can only be run on PHP version 5.3.3 or later! Your version: '.PHP_VERSION.'<br />');
 
 
-/**
- * Load Psr4 autoloader, should be replaced by composer autoloader at some point.
- */
-require_once __DIR__ . '/../application/Psr4AutoloaderClass.php';
-$loader = new Psr4AutoloaderClass();
-$loader->register();
-$loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../application/libraries/PluginManager');
-$loader->addNamespace('ls\\pluginmanager', __DIR__ . '/../application/libraries/PluginManager/Storage');
-$loader->addNamespace('ls\\menu', __DIR__ . '/../application/libraries/MenuObjects');
-$loader->addNamespace('ls\\helpers', __DIR__ . '/../application/helpers');
+require_once __DIR__ . '/../third_party/autoload.php';
 
 /*
  * --------------------------------------------------------------------
@@ -230,3 +221,10 @@ set_error_handler(function($no, $msg, $file, $line, $context) {
 
 require_once(__DIR__ . '/TestHelper.php');
 require_once(__DIR__ . '/TestBaseClass.php');
+require_once(__DIR__ . '/TestBaseClassWeb.php');
+require_once(__DIR__ . '/TestBaseClassView.php');
+require_once(__DIR__ . '/DummyController.php');
+
+
+
+define('PHP_ENV', 'test');

@@ -2,7 +2,7 @@
     <h4 class='condition-and-or-or'><span class='label label-default'> <?php echo $andOrOr; ?> </span></h4>
 <?php endif; ?>
 
-<?php echo CHtml::form(
+<?php echo TbHtml::form(
     $formAction,
     'post',
     array(

@@ -19,48 +19,30 @@ class UserIdentity extends CUserIdentity
     protected $sOneTimePassword;
 
     /**
-    * Checks whether this user has correctly entered password or not
-    *
-    * @access public
-    * @return bool
-    */
+     * Checks whether this user has correctly entered password or not
+     *
+     * @access public
+     * @param string $sOneTimePassword
+     * @return bool
+     */
     public function authenticate($sOneTimePassword='')
-    {    
-        if (Yii::app()->getConfig("auth_webserver")==false || $this->username != "")         
-        {
+    {
+        if (Yii::app()->getConfig("auth_webserver")==false || $this->username != "") {
             $user = User::model()->findByAttributes(array('users_name' => $this->username));
-
-            if ($user !== null)
-            {
-                if (gettype($user->password)=='resource')
-                {
-                    $sStoredPassword=stream_get_contents($user->password,-1,0);  // Postgres delivers bytea fields as streams :-o
-                }
-                else
-                {
-                    $sStoredPassword=$user->password;
-                }
-            }
-            else
-            {
+            if ($user === null) {
                 $this->errorCode = self::ERROR_USERNAME_INVALID;
                 return !$this->errorCode;
             }
             
-            if ($sOneTimePassword!='' && Yii::app()->getConfig("use_one_time_passwords") && md5($sOneTimePassword)==$user->one_time_pw)
-            {
+            if ($sOneTimePassword!='' && Yii::app()->getConfig("use_one_time_passwords") && md5($sOneTimePassword)==$user->one_time_pw) {
                 $user->one_time_pw='';
                 $user->save();
                 $this->id = $user->uid;
                 $this->user = $user;
                 $this->errorCode = self::ERROR_NONE;
-            }
-            elseif ($sStoredPassword !== hash('sha256', $this->password))
-            {
+            } elseif ($user->checkPassword($this->password)) {
                 $this->errorCode = self::ERROR_PASSWORD_INVALID;
-            }
-            else
-            {
+            } else {
                 $this->id = $user->uid;
                 $this->user = $user;
                 $this->errorCode = self::ERROR_NONE;
@@ -90,14 +72,11 @@ class UserIdentity extends CUserIdentity
             $oUser=User::model()->findByAttributes(array('users_name'=>$sUser));
             if (is_null($oUser))
             {
-                if (function_exists("hook_get_auth_webserver_profile"))
-                {
+                if (function_exists("hook_get_auth_webserver_profile")) {
                     // If defined this function returns an array
                     // describing the defaukt profile for this user
                     $aUserProfile = hook_get_auth_webserver_profile($sUser);
-                }
-                elseif (Yii::app()->getConfig("auth_webserver_autocreate_user"))
-                {
+                } elseif (Yii::app()->getConfig("auth_webserver_autocreate_user")) {
                     $aUserProfile=Yii::app()->getConfig("auth_webserver_autocreate_profile"); 
                 }
             } else {
@@ -112,7 +91,7 @@ class UserIdentity extends CUserIdentity
             { // user doesn't exist but auto-create user is set
                 $oUser=new User;
                 $oUser->users_name=$sUser;
-                $oUser->password=hash('sha256', createPassword());
+                $oUser->setPassword(createPassword());
                 $oUser->full_name=$aUserProfile['full_name'];
                 $oUser->parent_id=1;
                 $oUser->lang=$aUserProfile['lang'];

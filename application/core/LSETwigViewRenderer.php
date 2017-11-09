@@ -56,15 +56,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Renders a general view file.
      *
-     * @param string $sourceFile the view file path
-     * @param mixed $data the data to be passed to the view
-     * @param boolean $return whether the rendering result should be returned
+     * @param string $sView the view file path
+     * @param mixed $aData the data to be passed to the view
+     * @param boolean $bReturn whether the rendering result should be returned
      * @return mixed the rendering result, or null if the rendering result is not needed.
      */
     public function render( $sView, $aData, $bReturn=true)
     {
-        global $thissurvey;
-
         $this->_twig = parent::getTwig();                                       // Twig object
         $loader      = $this->_twig->getLoader();                               // Twig Template loader
 
@@ -89,6 +87,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }else{
             return Yii::app()->getController()->renderPartial($sView, $aData, $bReturn);
         }
+        return null;
     }
 
     /**
@@ -96,8 +95,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * It first checks if the question use a template (set in display attributes)
      * If it is the case, it will use the views of that template, else, it will render the core view.
      *
-     * @param string $sView     Name of the view to render
-     * @param array  $aData     Datas for the view
+     * @param string $sView Name of the view to render
+     * @param array $aData Datas for the view
+     * @return string
      */
     public function renderQuestion( $sView, $aData)
     {
@@ -138,20 +138,75 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     public function renderTemplateForTemplateEditor($sView, $aDatas, $oEditedTemplate)
     {
         $oTemplate = $this->getTemplateForView($sView, $oEditedTemplate);
-        $line      = file_get_contents($oTemplate->viewPath.$sView);
-        $result = $this->renderTemplateFromString( $line, $aDatas, $oTemplate, true);
-        return $result;
+        if ($oTemplate) {
+            $line      = file_get_contents($oTemplate->viewPath.$sView);
+            $result    = $this->renderTemplateFromString($line, $aDatas, $oEditedTemplate, true);
+            return $result;
+        } else {
+            return null;
+        }
     }
 
     public function renderTemplateFromFile($sView, $aDatas, $bReturn)
     {
         $oRTemplate = Template::model()->getInstance();
-        $oTemplate = $this->getTemplateForView($sView, $oRTemplate);
-        $line      = file_get_contents($oTemplate->viewPath.$sView);
-        $result = $this->renderTemplateFromString( $line, $aDatas, $oTemplate, $bReturn);
-        if ($bReturn){
-            return $result;
+        $oTemplate  = $this->getTemplateForView($sView, $oRTemplate);
+        if ($oTemplate) {
+            $line       = file_get_contents($oTemplate->viewPath.$sView);
+            $result     = $this->renderTemplateFromString($line, $aDatas, $oRTemplate, $bReturn);
+
+            if ($bReturn) {
+                Yii::app()->clientScript->registerPackage($oRTemplate->sPackageName);
+                return $result;
+            }
+        } else {
+            trigger_error("TEMPLATE ERROR!", E_USER_ERROR);
         }
+
+        return null;
+    }
+
+    public function renderOptionPage($oTemplate,$renderArray = array())
+    {
+        $oRTemplate = $oTemplate;
+
+        $sOptionFile = '/options/options.twig';
+        $sOptionJS   = '/options/options.js';
+
+        // We get the options twig file from the right template (local or mother template)
+        while (!file_exists($oRTemplate->path.$sOptionFile)){
+
+            $oMotherTemplate = $oRTemplate->oMotherTemplate;
+            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+                return sprintf(gT('%s not found!',$oRTemplate->path.$sOptionFile));
+                break;
+            }
+            $oRTemplate = $oMotherTemplate;
+        }
+
+        if (file_exists($oRTemplate->path.$sOptionJS)){
+            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS, CClientScript::POS_HEAD);            
+        }
+
+        $line      = file_get_contents($oRTemplate->path.$sOptionFile);
+
+        $this->_twig  = $twig = parent::getTwig();
+        $loader       = $this->_twig->getLoader();
+        $loader->addPath($oRTemplate->viewPath);
+
+        // Add all mother templates path
+        while($oRTemplate->oMotherTemplate instanceof TemplateConfiguration){
+            $oRTemplate = $oRTemplate->oMotherTemplate;
+            $loader->addPath($oRTemplate->viewPath);
+        }
+
+        //$result    = $this->renderTemplateFromString( $line, $renderArray, $oRTemplate, true);
+
+        // Twig rendering
+        $oTwigTemplate = $twig->createTemplate($line);
+        $nvLine        = $oTwigTemplate->render($renderArray, false);
+
+        return $nvLine;
     }
 
     private function getTemplateForView($sView, $oRTemplate)
@@ -172,16 +227,21 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * Render a string, not a file. It's used from template replace function.
      *
-     * @param string  $line     The line of HTML/Twig to render
-     * @param array   $aDatas   Array containing the datas needed to render the view ($thissurvey)
-     * @param boolean $bReturn  Should the function echo the result, or just returns it?
+     * @param string $line The line of HTML/Twig to render
+     * @param array $aDatas Array containing the datas needed to render the view ($thissurvey)
+     * @param TemplateConfiguration $oTemplate
+     * @param boolean $bReturn Should the function echo the result, or just returns it?
+     * @return string
      */
-    public function renderTemplateFromString( $line, $aDatas, $oRTemplate, $bReturn=false)
+    public function renderTemplateFromString( $line, $aDatas, $oTemplate, $bReturn=false)
     {
+        $aClassAndAttributes = $oTemplate->getClassAndAttributes();
+        $aDatas["aSurveyInfo"] = array_merge($aDatas["aSurveyInfo"], $aClassAndAttributes);
+
+        $oRTemplate   = $oTemplate;
         $this->_twig  = $twig = parent::getTwig();
         $loader       = $this->_twig->getLoader();
         $loader->addPath($oRTemplate->viewPath);
-        Yii::app()->clientScript->registerPackage( $oRTemplate->sPackageName );
 
         // Set Langage // TODO remove one of the Yii::app()->session see bug #5901
         if (!empty($aDatas['aSurveyInfo']['sid'])){
@@ -204,12 +264,13 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
 
         // Add the template options
-        foreach($oRTemplate->oOptions as $oOption){
-            foreach($oOption as $key => $value){
+        if ($oTemplate->oOptions) {
+            foreach($oTemplate->oOptions as $key => $value){
                 $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
             }
         }
 
+        // Add core classes and attributes
 
         // Plugin for blocks replacement
         // TODO: add blocks to template....
@@ -235,7 +296,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oTwigTemplate = $twig->createTemplate($line);
         $nvLine        = $oTwigTemplate->render($aDatas, false);
 
+
         if (!$bReturn){
+            Yii::app()->clientScript->registerPackage( $oTemplate->sPackageName, LSYii_ClientScript::POS_BEGIN );
             ob_start(function($buffer, $phase)
             {
                 App()->getClientScript()->render($buffer);
@@ -251,5 +314,6 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }else{
             return $nvLine;
         }
+        return null;
     }
 }

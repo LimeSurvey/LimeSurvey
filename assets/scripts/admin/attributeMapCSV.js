@@ -1,4 +1,8 @@
-$(document).ready(function() {
+
+// Namespace
+var LS = LS || {  onDocumentReady: {} };
+
+$(document).on('ready  pjax:complete', function() {
     if(!$('#csvattribute').length ) {
         //alert("All the attributes are automatically mapped");
     }

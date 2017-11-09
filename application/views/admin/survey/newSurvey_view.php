@@ -1,7 +1,13 @@
 <?php
 /**
  * Create survey
+ * @var AdminController $this
+ * @var Survey $oSurvey
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('createSurvey');
+
 ?>
 <!-- new survey view -->
 <?php
@@ -40,3 +46,5 @@
         </div>
     </div>
 </div>
+
+

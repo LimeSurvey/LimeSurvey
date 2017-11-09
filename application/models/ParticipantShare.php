@@ -36,7 +36,9 @@ class ParticipantShare extends LSActiveRecord
      */
     public static function model($class = __CLASS__)
     {
-        return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
     }
 
     /** @inheritdoc */
@@ -105,8 +107,9 @@ class ParticipantShare extends LSActiveRecord
             if ($id['share_uid'] == -1) {
                 continue;
             }
-            $user = User::model()->getName($id['share_uid']);
-            $shareList[$id['share_uid']] = $user['full_name'];
+            /** @var User $oUser */
+            $oUser = User::model()->findByPk($id['share_uid']);
+            $shareList[$id['share_uid']] = $oUser->full_name;
         }
         return TbHtml::dropDownList('ParticipantShare[share_uid]',$selected, $shareList);
     }

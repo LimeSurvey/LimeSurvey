@@ -10,6 +10,17 @@
         var strnogroup='<?php eT("There are no groups available.", "js");?>';
     -->
 </script>
+<div class="container-fluid">
+<?php if($asessementNotActivated):?>
+
+    <div class="row text-center">
+        <div class="jumbotron message-box <?php echo isset($asessementNotActivated['class']) ? $asessementNotActivated['class'] : ""; ?>">
+            <h2 ><?php echo $asessementNotActivated['title'];?></h2>
+            <?php echo $asessementNotActivated['message'];?>
+        </div>
+    </div>
+</form>
+<?php else:?>
 
 <h4><?php eT("Assessment rules");?></h4>
 
@@ -68,7 +79,7 @@
                     <?php if (Permission::model()->hasSurveyPermission($surveyid, 'assessments','delete')):  ?>
                         <div class='pull-left'>
                         <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post');?>
-                            <span class="ui-pg-button glyphicon text-danger glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="" onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")) { $(this).parent().submit(); }' data-original-title="<?php echo eT("Delete assessment"); ?>">
+                            <span class="ui-pg-button fa text-danger fa-trash" data-toggle="tooltip" data-placement="bottom" title="" onclick='if (confirm("<?php eT("Are you sure you want to delete this entry?","js");?>")) { $(this).parent().submit(); }' data-original-title="<?php echo eT("Delete assessment"); ?>">
                             </span>
                              <input type='hidden' name='action' value='assessmentdelete' />
                              <input type='hidden' name='id' value='<?php echo $assess['id'];?>' />
@@ -121,7 +132,7 @@
 <!-- Edition -->
 <?php if ((Permission::model()->hasSurveyPermission($surveyid, 'assessments','update') && $actionvalue=="assessmentupdate") || (Permission::model()->hasSurveyPermission($surveyid, 'assessments','create')&& $actionvalue=="assessmentadd")): ?>
     <br />
-    <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form-horizontal','id'=>'assessmentsform','name'=>'assessmentsform', 'role' => 'form'));?>
+    <?php echo CHtml::form(array("admin/assessments/sa/index/surveyid/{$surveyid}"), 'post', array('class'=>'form','id'=>'assessmentsform','name'=>'assessmentsform', 'role' => 'form'));?>
         <h4><?php echo $actiontitle;?></h4>
 
             <!-- Scope, Total, Group -->
@@ -252,3 +263,5 @@
     </form>
 <?php endif; ?>
 </div></div></div><!-- opened in controller -->
+<?php endif;?>
+</div>

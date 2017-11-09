@@ -31,7 +31,7 @@
             <?php if(Permission::model()->hasGlobalPermission('superadmin','read')): ?>
                 <div class="box" id="systemoverview">
                     <div class="box-icon">
-                        <span class="glyphicon glyphicon-info-sign" id="info-header"></span>
+                        <span class="fa fa-info-sign" id="info-header"></span>
                     </div>
                     <div class="info">
                         <div class="text-center"><?php eT("System overview"); ?></div>
@@ -113,7 +113,7 @@
 
                     <!-- Show Survey logic file -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_file'); ?>">
+                        <a href="<?php echo $this->createUrl('admin/expressions/sa/survey_logic_form'); ?>">
                             <?php eT("Show survey logic file");?>
                         </a>
                     </li>
@@ -134,8 +134,8 @@
                 <?php if(Permission::model()->hasGlobalPermission('templates','read')): ?>
                     <!-- Template Editor -->
                     <li class="dropdown-item">
-                        <a href="<?php echo $this->createUrl("admin/templates/sa/view"); ?>">
-                            <?php eT("Template editor");?>
+                        <a href="<?php echo $this->createUrl("admin/templateoptions"); ?>">
+                            <?php eT("Template list");?>
                         </a>
                     </li>
                     <?php endif;?>
@@ -255,6 +255,23 @@
                             <?php eT("Plugin manager");?>
                         </a>
                     </li>
+                <!-- Surveymenu Editor -->
+                <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/menus/sa/view"); ?>">
+                            <?php eT("Menu configuration");?>
+                        </a>
+                    </li>
+                <?php endif;?>
+                <!-- Surveymenu entry Editor -->
+                <?php if(Permission::model()->hasGlobalPermission('settings','read')): ?>
+                    <li class="dropdown-item">
+                        <a href="<?php echo $this->createUrl("admin/menuentries/sa/view"); ?>">
+                            <?php eT("Menu entries configuration");?>
+                        </a>
+                    </li>
+                <?php endif;?>
+                    
                 <?php endif;?>
 
             </ul>

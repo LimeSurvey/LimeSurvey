@@ -41,6 +41,8 @@ class index extends CAction {
         $move        = getMove();
         $clienttoken = trim($param['token']);
 
+        $oSurvey = Survey::model()->findByPk($surveyid);
+
         Yii::app()->setConfig('surveyID',$surveyid);
         Yii::app()->setConfig('move',$move);
         App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."survey_runtime.js");
@@ -57,8 +59,9 @@ class index extends CAction {
             killSurveySession($surveyid);
         }
 
-        $surveyExists   = ($surveyid && Survey::model()->findByPk($surveyid));
-        $isSurveyActive = ($surveyExists && Survey::model()->findByPk($surveyid)->active=="Y");
+        $surveyExists   = ($oSurvey != null);
+        $isSurveyActive = ($surveyExists && $oSurvey->isActive);
+
 
         // collect all data in this method to pass on later
         $redata = compact(array_keys(get_defined_vars()));
@@ -99,7 +102,7 @@ class index extends CAction {
             App()->getController()->renderExitMessage(
                 $surveyid,
                 'restart-survey',
-                $aMessage,
+                $asMessage,
                 $aUrl,
                 $aErrors
             );
@@ -232,7 +235,7 @@ class index extends CAction {
             // Update the Session var only if needed
             if (App()->language != $sOldLang){
                 UpdateGroupList($surveyid, App()->language);   // to refresh the language strings in the group list session variable
-                UpdateFieldArray();                             // to refresh question titles and question text
+                updateFieldArray();                             // to refresh question titles and question text
             }
         }else{
 
@@ -241,7 +244,10 @@ class index extends CAction {
             $event->set('reason', 'surveyDoesNotExist');
             App()->getPluginManager()->dispatchEvent($event);
 
-            throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
+            $aError['title'] = "Not Found!";
+            $aError['message'] = "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.";
+
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_errors.twig", array( 'aSurveyInfo' => array('aError' => $aError, 'adminemail' => Yii::app()->getConfig('siteadminemail') )), false);
         }
 
         // Get token
@@ -261,7 +267,7 @@ class index extends CAction {
         }
 
         //SEE IF SURVEY USES TOKENS
-        if ($surveyExists == 1 && tableExists('{{tokens_'.$thissurvey['sid'].'}}')){
+        if ($oSurvey->hasTokensTable){
             $tokensexist = 1;
         }else{
             $tokensexist = 0;
@@ -409,7 +415,7 @@ class index extends CAction {
             $aLoadForm['aErrors']    = empty($aLoadErrorMsg) ? null : $aLoadErrorMsg; // Set tit to null if empty
             $thissurvey['aLoadForm'] = $aLoadForm;
             //$oTemplate->registerAssets();
-            Yii::app()->twigRenderer->renderTemplateFromFile("layout_load.twig", array('aSurveyInfo'=>$thissurvey), false);
+            Yii::app()->twigRenderer->renderTemplateFromFile("layout_load.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
         }
 
 
@@ -485,7 +491,7 @@ class index extends CAction {
 
         //Check to see if a refering URL has been captured.
         if (!isset($_SESSION['survey_'.$surveyid]['refurl'])){
-            $_SESSION['survey_'.$surveyid]['refurl']=GetReferringUrl(); // do not overwrite refurl
+            $_SESSION['survey_'.$surveyid]['refurl']=getReferringUrl(); // do not overwrite refurl
         }
 
         // Let's do this only if
@@ -655,13 +661,6 @@ class index extends CAction {
     }
 
 
-    /**
-     * @deprecated
-     */
-    function _printTemplateContent($sTemplateFile, &$redata, $iDebugLine = -1)
-    {
-        echo templatereplace(file_get_contents($sTemplateFile),array(),$redata,'survey['.$iDebugLine.']');
-    }
 }
 
 /* End of file survey.php */

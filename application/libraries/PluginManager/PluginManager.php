@@ -1,5 +1,5 @@
 <?php
-namespace ls\pluginmanager;
+namespace LimeSurvey\PluginManager;
 use \Yii;
 use Plugin;
 
@@ -101,8 +101,8 @@ class PluginManager extends \CApplicationComponent {
     public function getStore($storageClass)
     {
         if (!class_exists($storageClass)
-                && class_exists('ls\\pluginmanager\\' . $storageClass)) {
-            $storageClass = 'ls\\pluginmanager\\' . $storageClass;
+                && class_exists('LimeSurvey\\PluginManager\\' . $storageClass)) {
+            $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
         }
         if (!isset($this->stores[$storageClass]))
         {
@@ -151,7 +151,6 @@ class PluginManager extends \CApplicationComponent {
      * Unsubscribes a plugin from an event.
      * @param iPlugin $plugin Reference to the plugin being unsubscribed.
      * @param string $event Name of the event. Use '*', to unsubscribe all events for the plugin.
-     * @param string $function Optional function of the plugin that was registered.
      */
     public function unsubscribe(iPlugin $plugin, $event)
     {
@@ -241,6 +240,7 @@ class PluginManager extends \CApplicationComponent {
      * static function inside the plugin file.
      *
      * @param string $pluginClass The classname of the plugin
+     * @return array|null
      */
     public function getPluginInfo($pluginClass, $pluginDir = null)
     {
@@ -269,10 +269,14 @@ class PluginManager extends \CApplicationComponent {
             }
         }
 
-        $result['description'] = call_user_func(array($class, 'getDescription'));
-        $result['pluginName'] = call_user_func(array($class, 'getName'));
-        $result['pluginClass'] = $class;
-        return $result;
+        if (!class_exists($class)) {
+            return null;
+        } else {
+            $result['description'] = call_user_func(array($class, 'getDescription'));
+            $result['pluginName'] = call_user_func(array($class, 'getName'));
+            $result['pluginClass'] = $class;
+            return $result;
+        }
     }
 
     /**
@@ -301,11 +305,14 @@ class PluginManager extends \CApplicationComponent {
             if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName))
             {
                 if ($this->getPluginInfo($pluginName) !== false) {
-                    $this->plugins[$id] = new $pluginName($this, $id);
+                    if (class_exists($pluginName)) {
+                        $this->plugins[$id] = new $pluginName($this, $id);
 
-
-                    if (method_exists($this->plugins[$id], 'init')) {
-                        $this->plugins[$id]->init();
+                        if (method_exists($this->plugins[$id], 'init')) {
+                            $this->plugins[$id]->init();
+                        }
+                    } else {
+                        $this->plugins[$id] = null;
                     }
                 } else {
                     $this->plugins[$id] = null;

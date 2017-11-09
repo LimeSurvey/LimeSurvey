@@ -1,39 +1,25 @@
 <?php
 /* @var $this AdminController */
 /* @var QuestionGroup $oQuestionGroup */
+/* @var Survey $oSurvey */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('addQuestion');
+
 ?>
 <?php PrepareEditorScript(true, $this); ?>
 <?php $this->renderPartial("./survey/Question/question_subviews/_ajax_variables", $ajaxDatas); ?>
 
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <?php
 
-    if ($adding)
-    {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Add a new question")));
-    }
-    elseif($copying)
-    {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oQuestionGroup'=>$oQuestionGroup, 'active'=>gT("Copy question")));
-    }
-    else
-    {
-        $this->renderPartial('/admin/survey/breadcrumb', array('oQuestion'=>$oQuestion, 'active'=>gT('Edit question')));
-    }
-    ?>
     <!-- Page Title-->
     <div class="pagetitle h3">
         <?php
-        if ($adding)
-        {
+        if ($adding) {
             eT("Add a new question");
-        }
-        elseif ($copying)
-        {
+        } elseif ($copying) {
             eT("Copy question");
-        }
-        else
-        {
+        } else {
             eT("Edit question");
             echo ': <em>'.$eqrow['title'].'</em> (ID:'.$qid.')';
         }
@@ -42,7 +28,7 @@
 
     <div class="row">
         <!-- Form for the whole page-->
-        <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30 form-horizontal','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
+        <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'form30 ','id'=>'frmeditquestion','name'=>'frmeditquestion')); ?>
 
         <?php // if(!$adding):?>
 
@@ -53,8 +39,8 @@
                 $this->renderPartial(
                     './survey/Question/question_subviews/_tabs',
                     array(
+                        'oSurvey'=>$oSurvey,
                         'eqrow'=>$eqrow,
-                        'addlanguages'=>$addlanguages,
                         'surveyid'=>$surveyid,
                         'gid'=>$groupid, 'qid'=>NULL,
                         'adding'=>$adding,
@@ -67,8 +53,8 @@
                 $this->renderPartial(
                     './survey/Question/question_subviews/_tabs',
                     array(
+                        'oSurvey'=>$oSurvey,
                         'eqrow'=>$eqrow,
-                        'addlanguages'=>$addlanguages,
                         'surveyid'=>$surveyid,
                         'gid'=>$gid, 'qid'=>$qid,
                         'adding'=>$adding,
@@ -90,20 +76,21 @@
                     <?php if ($copying): ?>
                         <div class="panel panel-default">
                             <div class="panel-heading" role="tab" id="heading-copy">
-                                <h4 class="panel-title">
+                                <div class="panel-title h4">
                                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                                        <span class="glyphicon glyphicon-chevron-left"></span>
+                                        <span class="fa fa-chevron-left"></span>
+					<span class="sr-only"><?php eT("Expand/Collapse");?></span>
                                     </a>
                                     <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-copy" aria-expanded="false" aria-controls="collapse-copy">
                                         <?php eT("Copy options"); ?>
                                     </a>
-                                </h4>
+                                </div>
                             </div>
                             <div id="collapse-copy" class="panel-collapse collapse  in" role="tabpanel" aria-labelledby="heading-copy">
                                 <div class="panel-body">
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='copysubquestions'><?php eT("Copy subquestions?"); ?></label>
+                                        <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                 'name' => 'copysubquestions',
                                                 'id'=>'copysubquestions',
@@ -114,8 +101,8 @@
                                         </div>
                                     </div>
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='copyanswers'><?php eT("Copy answer options?"); ?></label>
+                                        <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                 'name' => 'copyanswers',
                                                 'id'=>'copyanswers',
@@ -126,8 +113,8 @@
                                         </div>
                                     </div>
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for='copyattributes'><?php eT("Copy advanced settings?"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='copyattributes'><?php eT("Copy advanced settings?"); ?></label>
+                                        <div class="">
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                                 'name' => 'copyattributes',
                                                 'id' => 'copyattributes',
@@ -147,25 +134,27 @@
 
                         <!-- General Options : Header  -->
                         <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
+                            <div class="panel-title h4">
                                 <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion">
-                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                    <span class="fa fa-chevron-left"></span>
+				    <span class="sr-only"><?php eT("Expand/Collapse");?></span>
                                 </a>
                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse-question" aria-expanded="true" aria-controls="collapse-question">
                                     <?php eT("General options");?>
                                 </a>
-                            </h4>
+                            </div>
                         </div>
 
                         <div id="collapse-question" class="panel-collapse collapse <?php if (!$copying){echo ' in '; } ?>" role="tabpanel" aria-labelledby="headingOne">
                             <div class="panel-body">
                                 <div>
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for="question_type_button" title="<?php eT("Question type");?>">
+                                        <label class=" control-label" for="question_type_button" title="<?php eT("Question type");?>">
                                             <?php
                                             eT("Question type:");
                                             ?>
                                         </label>
+                                        <div>
                                         <?php if(isset($selectormodeclass) && $selectormodeclass != "none" && $activated != "Y"): ?>
                                             <?php
                                             $aQuestionTypeList = (array) getQuestionTypeList($eqrow['type'], 'array');
@@ -179,7 +168,7 @@
                                             }
                                             ?>
                                             <input type="hidden" id="question_type" name="type" value="<?php echo $eqrow['type']; ?>" />
-                                            <div class="col-sm-8 btn-group" id="question_type_button">
+                                            <div class=" btn-group" id="question_type_button">
                                                 <button type="button" class="btn btn-default dropdown-toggle " <?php if ($activated == "Y"){echo " disabled ";} ?>  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
                                                     <?php foreach($groups as $name => $group):?>
                                                         <?php foreach($group as $type => $option):?>
@@ -220,7 +209,7 @@
                                                 </ul>
                                             </div>
                                             <?php elseif($activated == "Y" || (isset($selectormodeclass) && $selectormodeclass == "none")): ?>
-                                            <div class="col-sm-8 btn-group" id="question_type_button" style="z-index: 1000">
+                                            <div class=" btn-group" id="question_type_button" style="z-index: 1000">
                                                 <?php
                                                 $aQtypeData=array();
                                                 foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
@@ -239,12 +228,13 @@
                                                 );
                                                 ?>
                                             </div>
-                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                        </div>
                                     </div>
 
                                     <div  class="form-group">
-                                        <label class="col-sm-4 control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='gid' title="<?php eT("Set question group");?>"><?php eT("Question group:"); ?></label>
+                                        <div class="">
                                             <select name='gid' id='gid' class="form-control" <?php if ($activated == "Y"){echo " disabled ";} ?> >
                                                 <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                                             </select>
@@ -255,9 +245,9 @@
                                     </div>
 
                                     <div  class="form-group" id="OtherSelection">
-                                        <label class="col-sm-4 control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
+                                        <label class=" control-label" title="<?php eT("Option 'Other':");?>"><?php eT("Option 'Other':"); ?></label>
                                         <?php if ($activated != "Y"): ?>
-                                            <div class="col-sm-8">
+                                            <div class="">
                                                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'other', 'value'=> $eqrow['other'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                             </div>
                                             <?php else:?>
@@ -267,16 +257,16 @@
                                     </div>
 
                                     <div id='MandatorySelection' class="form-group">
-                                        <label class="col-sm-4 control-label" title="<?php eT("Set \"Mandatory\" state");?>"><?php eT("Mandatory:"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" title="<?php eT("Set \"Mandatory\" state");?>"><?php eT("Mandatory:"); ?></label>
+                                        <div class="">
                                             <!-- Todo : replace by direct use of bootstrap switch. See statistics -->
                                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'mandatory', 'value'=> $eqrow['mandatory'] === "Y", 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label" for='relevance' title="<?php eT("Relevance equation");?>"><?php eT("Relevance equation:"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='relevance' title="<?php eT("Relevance equation");?>"><?php eT("Relevance equation:"); ?></label>
+                                        <div class="">
                                             <div class="input-group">
                                                 <div class="input-group-addon">{</div>
                                                 <textarea class="form-control" rows='1' id='relevance' name='relevance' <?php if ($eqrow['conditions_number']) {?> readonly='readonly'<?php } ?> ><?php echo $eqrow['relevance']; ?></textarea>
@@ -289,8 +279,8 @@
                                     </div>
 
                                     <div id='Validation'  class="form-group">
-                                        <label class="col-sm-4 control-label" for='preg'  title="<?php eT("Validation:");?>"><?php eT("Validation:"); ?></label>
-                                        <div class="col-sm-8">
+                                        <label class=" control-label" for='preg'  title="<?php eT("Validation:");?>"><?php eT("Validation:"); ?></label>
+                                        <div class="">
                                             <input class="form-control" type='text' id='preg' name='preg' size='50' value="<?php echo $eqrow['preg']; ?>" />
                                         </div>
                                     </div>
@@ -311,7 +301,7 @@
                     </div>
                     <?php if (!$copying): ?>
                     <div class="loader-advancedquestionsettings text-center">
-                        <span class="glyphicon glyphicon-refresh" style="font-size:3em;" aria-hidden='true'></span>
+                        <span class="fa fa-refresh" style="font-size:3em;" aria-hidden='true'></span>
                     </div>
                         <!-- Advanced settings -->
                     <?php endif; ?>
@@ -334,7 +324,8 @@
             <p><button type='submit' class="saveandreturn hidden" name="redirection" value="edit"><?php eT("Save") ?> </button></p>
             <input type='submit'  class="hidden" value='<?php eT("Save and close"); ?>' />
         <?php endif; ?>
-        <input type='hidden' id='sid' name='sid' value='<?php echo $surveyid; ?>' />
+        <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
+        <input type='hidden' name='close-after-save' value='true' />
         </form>
     </div>
 </div>

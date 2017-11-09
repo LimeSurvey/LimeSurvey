@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	"http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Audio plugin</title>
+<link href="styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h1>Audio Plugin for CKEditor</h1>
+
+<h2>Introduction</h2>
+<p>This is a plugin to create HTML5 &lt;audio&gt; elements in <a href="http://www.ckeditor.com">CKEditor</a>.</p>
+<h3>Version history: </h3>
+<ol>
+  <li>1.0: 10-July-2015. First version.</li>
+</ol>
+
+<h2>Installation</h2>
+<h3>1. Copying the files</h3>
+<p>Extract the contents of the zip in you plugins directory, so it ends up like
+    this<br>
+    <!--<img src="installation.png" alt="Screenshot of installation" width="311" height="346" longdesc="#install">-->
+    </p>
+<pre id="--install">
+ckeditor\
+	...
+	images\
+	lang\
+	plugins\
+		...
+		audio\
+			plugin.js
+			dialogs\
+				audio.js
+			docs\
+				install.html
+			images\
+				icon.png
+				placeholder.png
+		...
+	skins\
+	themes\
+</pre>
+<h3>2. Adding it to CKEditor</h3>
+<p>Now add the plugin in your <em>config.js</em> or custom js configuration
+file:
+<code>config.extraPlugins='audio'; </code>
+</p>
+
+<h3>3. Add it to your toolbar</h3>
+<p>In your toolbar configuration, add a new 'Audio' item in the place where you want the button to show up.</p>
+
+<h3>4. Configure server browser for audio</h3>
+<p>You can use the <code>config.filebrowserAudioBrowseUrl</code> entry to specify a url so the file browser shows just audio elements (as long as your configure properly your file browser).</p>
+
+<h3>5. Use it</h3>
+<p>Now empty the cache of your browser and reload the editor, the new button should show up and you can add &lt;audio&gt; elements into the content.</p>
+
+<h2>Final notes</h2>
+<p>Please, note that only newer browsers support the Audio element, in older ones a simple text linking to the source audios is provided, you might want to
+use some javascript or css to customize the final behavior of these elements.</p>
+
+
+<h2>Disclaimers</h2>
+<p>CKEditor is  &copy; CKSource.com</p>
+</body>
+</html>

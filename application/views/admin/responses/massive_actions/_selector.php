@@ -16,7 +16,7 @@
             'type'        => 'action',
             'action'      => 'delete',
             'url'         =>  App()->createUrl('/admin/responses/sa/actionDelete/surveyid/'.$_GET['surveyid']),
-            'iconClasses' => 'text-danger glyphicon glyphicon-trash',
+            'iconClasses' => 'text-danger fa fa-trash',
             'text'        =>  gT('Delete'),
             'grid-reload' => 'yes',
 
@@ -26,6 +26,26 @@
             'keepopen'      => 'no',
             'sModalTitle'   => gT('Delete responses'),
             'htmlModalBody' => gT('Are you sure you want to delete the selected responses?'),
+            'aCustomDatas'  => array(
+                array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
+            ),
+        );
+
+        $buttons[] = array(
+            'type'        => 'action',
+            'action'      => 'deleteAttachments',
+            //'url'         =>  App()->createUrl("admin/responses", array("sa"=>"actionDeleteAttachments")),
+            'url'         =>  App()->createUrl('/admin/responses/sa/actionDeleteAttachments/surveyid/'.$_GET['surveyid']),
+            'iconClasses' => 'text-danger glyphicon glyphicon-paperclip',
+            'text'        =>  gT('Delete attachments'),
+            'grid-reload' => 'yes',
+
+            // modal
+            'actionType'    => 'modal',
+            'modalType'     => 'yes-no',
+            'keepopen'      => 'no',
+            'sModalTitle'   => gT('Delete attachments'),
+            'htmlModalBody' => gT('Are you sure you want to delete all uploaded files from the selected responses?'),
             'aCustomDatas'  => array(
                 array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
             ),
@@ -43,6 +63,24 @@
             'grid-reload' => 'no',
 
             'actionType' => 'window-location-href'
+        );
+
+
+        // Export responses
+        $buttons[] = array(
+            // li element
+            'type'            => 'action',
+            'action'          => 'export',
+            'url'             =>  App()->createUrl('admin/export/sa/exportresults/surveyid/'.$_GET['surveyid']),
+            'iconClasses'     => 'glyphicon glyphicon-download-alt',
+            'text'            =>  gT('Export'),
+
+            'aLinkSpecificDatas'  => array(
+                'input-name'     => 'tokenids',
+            ),
+
+            // modal
+            'actionType'    => 'fill-session-and-redirect',
         );
 
     }

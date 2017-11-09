@@ -134,6 +134,9 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
         $filename;
 }
 
+/**
+ * @param string $filename
+ */
 function beautify_filename($filename) {
     // reduce consecutive characters
     $filename = preg_replace(array(
@@ -428,12 +431,6 @@ function sanitize_languagecodeS($codestringtosanitize) {
     return implode(" ",$codearray);
 }
 
-/**
- * @deprecated use Token::sanitizeToken($codetosanitize);
- */
-function sanitize_token($codetosanitize) {
-    return Token::sanitizeToken($codetosanitize);
-}
 
 function sanitize_signedint($integer, $min='', $max='')
 {

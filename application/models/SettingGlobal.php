@@ -13,6 +13,13 @@
      *	Files Purpose: lots of common functions
 */
 
+/**
+ * Class SettingGlobal
+ *
+ * @property string $stg_name Setting name
+ * @property string $stg_value Setting value
+ *
+ */
 class SettingGlobal extends LSActiveRecord
 {
 	/**

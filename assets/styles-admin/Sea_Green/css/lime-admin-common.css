@@ -749,7 +749,6 @@ div.panel.disabled {
 
 .side-body {
   min-height: 800px;
-  margin-left: 320px;
 }
 
 .side-body-margin {
@@ -1804,8 +1803,9 @@ iframe#dialog {
 .question-filter-container {
     border : 1px solid #efefef;
     padding: 2em;
-    margin: 0.2em;
-    width: 33%;
+    margin: 0;
+    min-width:33%;
+    max-width:100%;
 }
 
 /* Subquestion */
@@ -2218,7 +2218,6 @@ table#responsedetail tr td{
 
 .welcome .panel {
     height: 110%;
-    min-width: 200px;
 }
 
 .welcome .panel-body {

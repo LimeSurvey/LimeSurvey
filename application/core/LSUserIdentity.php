@@ -1,5 +1,5 @@
 <?php
-use ls\pluginmanager\PluginEvent;
+use LimeSurvey\PluginManager\PluginEvent;
 /*
 * LimeSurvey
 * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -84,7 +84,7 @@ class LSUserIdentity extends CUserIdentity {
         } else {
             // Log a failed attempt
             $userHostAddress = getIPAddress();
-            FailedLoginAttempt::model()->addAttempt($userHostAddress);
+            FailedLoginAttempt::model()->addAttempt();
             regenerateCSRFToken();
             App()->session->regenerateID(); // Handled on login by Yii
         }

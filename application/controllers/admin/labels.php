@@ -261,71 +261,62 @@ class labels extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jquery-json');
         // Checks if user have the sufficient rights to manage the labels
         // Get a result containing labelset with the specified id
-        $result = LabelSet::model()->findByAttributes(array('lid' => $lid));
-
+        $model = LabelSet::model()->findByAttributes(array('lid' => $lid));
         // If there is label id in the variable $lid and there are labelset records in the database
-        $labelset_exists = !empty($result);
-
+        $labelset_exists = $model !== null;
+        
+        
         if ($lid && $labelset_exists)
         {
             // Now recieve all labelset information and display it
             $aData['lid'] = $lid;
-            $aData['row'] = $result->attributes;
+            $aData['row'] = $model->attributes;
 
-            $rwlabelset = $result;
+            $rwlabelset = $model->labels;
 
             // Make languages array from the current row
-            $lslanguages = explode(" ", trim($result['languages']));
+            $lslanguages = explode(" ", trim($model->languages));
 
             Yii::app()->loadHelper("admin/htmleditor");
 
             $aViewUrls['output'] = PrepareEditorScript(false, $this->getController());
 
-            $criteria = new CDbCriteria;
-            $criteria->select = 'max(sortorder) as maxsortorder, sortorder';
-            $criteria->addCondition('lid = :lid');
-            $criteria->addCondition('language = :language');
-            $criteria->params = array(':lid' => $lid, ':language' => $lslanguages[0]);
-            $criteria->group = 'sortorder';
-            $maxresult = Label::model()->find($criteria);
-            $maxsortorder = 1;
-            if (!empty($maxresult))
-                $maxsortorder = $maxresult->maxsortorder + 1;
+            $maxSortOrder = array_reduce($model->labels, function($mixed,$item){
+                if(((int) $item->sortorder) > $mixed) {
+                    $mixed = (int) $item->sortorder;
+                }
+                return $mixed;
+            },0);
 
-            $i = 0;
+
             Yii::app()->loadHelper("surveytranslator");
             $results = array();
             foreach ($lslanguages as $lslanguage)
             {
-                $result = Label::model()->findAllByAttributes(array('lid' => $lid, 'language' => $lslanguage), array('order' => 'sortorder, code'));
-                $criteria = new CDbCriteria;
-                $criteria->order = 'sortorder, code';
-                $criteria->condition = 'lid = :lid AND language = :language';
-                $criteria->params = array(':lid' => $lid, ':language' => $lslanguage);
-                $labelcount = Label::model()->count($criteria);
+                if(!$lslanguage) continue;
 
-                $results[$i] = array();
-
-                foreach ($result as $row)
-                    $results[$i][] = $row->attributes;
-
-                $i++;
+                $results[] = array_filter($model->labels, function($item) use ($lslanguage) {
+                    return ($item->language === $lslanguage);
+                });
             }
 
             $aViewUrls['labelview_view'][] = array(
                 'results' => $results,
                 'lslanguages' => $lslanguages,
                 'lid' => $lid,
-                'maxsortorder' => $maxsortorder,
+                'maxsortorder' => $maxSortOrder,
                 //    'msorow' => $maxresult->sortorder,
                 'action' => $action,
+                'model' => $model
             );
         }
         else {
             //show listing
             $aViewUrls['labelsets_view'][] = array();
-            $aData['model']  =  LabelSet::model();
+            $model  =  LabelSet::model();
         }
+
+        $aData['model']  = $model;
 
         if($lid==0)
         {

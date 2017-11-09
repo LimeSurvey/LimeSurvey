@@ -1,4 +1,4 @@
-$(document).ready(function(){
+var onDocumentReadyAttributeMapToken = function(){
     var height = $(document).height();
     var width = $(document).width();
     var tokencurrentarray = {};
@@ -163,4 +163,7 @@ $(document).ready(function(){
         });
     });
 
-});
+};
+
+$(document).on('ready  pjax:complete', onDocumentReadyAttributeMapToken);
+$(document).on(' pjax:complete',onDocumentReadyAttributeMapToken);

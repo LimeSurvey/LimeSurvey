@@ -14,7 +14,7 @@
 
 // Some function can be launch before document ready (and seems intersting)
 // But put it in ready : allowing update by template.js (before moving at end of HTML : best place */
-$(document).ready(function()
+$(document).on('ready pjax:complete',function()
 {
     tableCellAdapters();
     doToolTipTable();
@@ -115,7 +115,7 @@ function checkconditions(value, name, type, evt_type)
     }
 
     // $isRelevant = $.inArray(result, aQuestionsWithDependencies); NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
-    $isRelevant = 1;
+    var $isRelevant = 1;
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1)
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
@@ -170,10 +170,16 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
      */
     if(bFixNumAuto && (newval != ""))
     {
+        if(window.correctNumberField!=null) {
+            clearTimeout(window.correctNumberField);
+            window.correctNumberField = null;
+        }
+        
         var addition = "";
         if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
             addition = cleansedValue.split("").pop();
         }
+
         var matchFollowingZeroes =  cleansedValue.match(/^-?([0-9])*(,|\.)(0+)$/);
         if(matchFollowingZeroes){
             addition = LEMradix+matchFollowingZeroes[3];
@@ -223,7 +229,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             }
 
             if($('#answer'+name).val() != newval){
-                $('#answer'+name).val(newval);
+                window.correctNumberField = setTimeout(function(){$('#answer'+name).val(newval);}, 400);
             }
         }
     }

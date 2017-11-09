@@ -43,4 +43,41 @@ class MssqlSchema extends CMssqlSchema
             $sResult .= ' NULL';}
         return $sResult;
     }
+
+    public function createTable($table, $columns, $options = null)
+    {
+        // Below copied from parent.
+        $cols=array();
+        foreach ($columns as $name => $type) {
+            if (is_array($type) && $name == 'composite_pk') {
+                // ...except this line.
+                $cols[]="\t".$this->getCompositePrimaryKey($type);
+            } elseif (is_string($name)) {
+                $cols[]="\t".$this->quoteColumnName($name).' '.$this->getColumnType($type);
+            } else {
+                $cols[]="\t".$type;
+            }
+        }
+        $sql="CREATE TABLE ".$this->quoteTableName($table)." (\n".implode(",\n", $cols)."\n)";
+        return $options===null ? $sql : $sql.' '.$options;
+    }
+
+    /**
+     * Get composite primary key definition.
+     * @param array $columns
+     * @return string
+     */
+    public function getCompositePrimaryKey(array $columns)
+    {
+        $columns = array_map(
+            function ($column) {
+                return '[' . $column . ']';
+            },
+            $columns
+        );
+        return sprintf(
+            'PRIMARY KEY (%s)',
+            implode(', ', $columns)
+        );
+    }
 }

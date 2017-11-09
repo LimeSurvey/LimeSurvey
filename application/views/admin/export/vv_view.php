@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-sm-6 content-right">
 
-                <?php echo CHtml::form(array("admin/export/sa/vvexport/surveyid/{$surveyid}"), 'post', array('id'=>'vvexport', 'class'=>'form-horizontal'));?>
+                <?php echo CHtml::form(array("admin/export/sa/vvexport/surveyid/{$surveyid}"), 'post', array('id'=>'vvexport', 'class'=>''));?>
 
                 <div class="panel panel-primary" id="panel-1" style="opacity: 1; top: 0px;">
                     <div class="panel-heading">
-                        <h4 class="panel-title">
+                        <div class="panel-title h4">
                             <?php eT("Export survey");?>
-                        </h4>
+                        </div>
                     </div>
 
                     <div class="panel-body">
@@ -67,9 +67,9 @@
 
                 <div class="panel panel-primary" id="panel-1" style="opacity: 1; top: 0px;">
                     <div class="panel-heading">
-                        <h4 class="panel-title">
+                        <div class="panel-title h4">
                             <?php eT("Format");?>
-                        </h4>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="form-group">

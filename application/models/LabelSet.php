@@ -16,8 +16,8 @@
 /**
  * Class LabelSet
  *
- * @property integer $lid ID
- * @property string $label_name
+ * @property integer $lid ID (primary key)
+ * @property string $label_name Label Name (max 100 chars)
  * @property string $languages
  */
 class LabelSet extends LSActiveRecord
@@ -40,7 +40,9 @@ class LabelSet extends LSActiveRecord
 	 */
 	public static function model($class = __CLASS__)
 	{
-		return parent::model($class);
+        /** @var self $model */
+        $model =parent::model($class);
+        return $model;
 	}
 
     /** @inheritdoc */
@@ -55,6 +57,15 @@ class LabelSet extends LSActiveRecord
         );
     }
 
+    /** @inheritdoc */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
+            'labels' => array(self::HAS_MANY, 'Label', 'lid', 'order'=>'language ASC, sortorder ASC')
+        );
+    }
 
     /**
      * @param mixed|bool $condition
@@ -100,12 +111,12 @@ class LabelSet extends LSActiveRecord
 
             // View labelset
             $url = Yii::app()->createUrl("admin/labels/sa/view/lid/$this->lid");
-            $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View labels').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-list-alt" ></span></a>';
+            $button = '<a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('View labels').'" href="'.$url.'" role="button"><span class="fa fa-list-alt" ></span></a>';
 
             // Edit labelset
             if(Permission::model()->hasGlobalPermission('labelsets','update')) {
                 $url = Yii::app()->createUrl("admin/labels/sa/editlabelset/lid/$this->lid");
-                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit label set').'" href="'.$url.'" role="button"><span class="glyphicon glyphicon-pencil" ></span></a>';
+                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Edit label set').'" href="'.$url.'" role="button"><span class="fa fa-pencil" ></span></a>';
             }
 
             // Export labelset
@@ -117,7 +128,7 @@ class LabelSet extends LSActiveRecord
             // Delete labelset
             if(Permission::model()->hasGlobalPermission('labelsets','delete')) {
                 $url = Yii::app()->createUrl("admin/labels/sa/delete/lid/$this->lid");
-                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete label set').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this label set?').'"><span class="glyphicon glyphicon-trash text-warning"></span></a>';
+                $button .= ' <a class="btn btn-default list-btn" data-toggle="tooltip" data-placement="left" title="'.gT('Delete label set').'" href="'.$url.'" role="button" data-confirm="'.gT('Are you sure you want to delete this label set?').'"><span class="fa fa-trash text-warning"></span></a>';
             }
 
             return $button;

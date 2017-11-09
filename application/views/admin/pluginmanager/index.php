@@ -9,7 +9,7 @@
 
 ?>
 <?php $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize'])); ?>
-
+z
 <div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
 <div style="width: 75%; margin: auto;">
     <div id="ls_action_changestate_form_container">
@@ -132,6 +132,10 @@
         ));
     ?>
 </div>
+<!-- 508 -->
+<a name="activate"></a>
+<a name="deactivate"></a>
+
 <input id="ls_action_changestate_type" type="hidden" name="type" value="" />
 <input id="ls_action_changestate_id" type="hidden" name="id" value="" />
 <?php echo CHtml::endForm(); ?>

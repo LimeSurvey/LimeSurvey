@@ -5,11 +5,11 @@
 
                 <!-- Uploaded resources management -->
                 <div class="panel-heading" role="tab" id="headingOne">
-                    <h4 class="panel-title">
+                    <div class="panel-title h4">
                         <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <?php eT("Uploaded resources management"); ?>
                         </a>
-                    </h4>
+                    </div>
                 </div> <!-- headingOne -->
 
                 <!-- Body -->
@@ -24,10 +24,10 @@
                                     <!-- Browse uploaded resources -->
                                     <li>
                                         <label>&nbsp;</label>
-                                        <div class="col-sm-6">
+                                        <div class="">
                                             <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files','unescaped'), 'flash' => gT('Flash','unescaped'), 'images' => gT('Images','unescaped')), array('class'=>' form-control') ); ?>
                                         </div>
-                                        <div class="col-sm-5">
+                                        <div class="">
                                             <input type='submit' class="btn btn-default" value="<?php eT("Browse uploaded resources") ?>" />
                                         </div>
                                     </li>

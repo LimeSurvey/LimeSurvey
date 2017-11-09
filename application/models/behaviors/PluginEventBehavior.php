@@ -1,5 +1,5 @@
 <?php
-    use \ls\pluginmanager\PluginEvent;
+    use \LimeSurvey\PluginManager\PluginEvent;
 	class PluginEventBehavior extends CModelBehavior
 	{
 		public function events()
@@ -57,4 +57,3 @@
 			return App()->getPluginManager()->dispatchEvent($oPluginEvent);
 		}
 	}
-?>

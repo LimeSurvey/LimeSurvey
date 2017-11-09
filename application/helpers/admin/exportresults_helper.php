@@ -107,10 +107,9 @@ class ExportSurveyResultsService
         $surveyDao = new SurveyDao();
         $survey = $surveyDao->loadSurveyById($iSurveyId, $sLanguageCode);
         $writer->init($survey, $sLanguageCode, $oOptions);
-                
-        $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState);
         
-        $writer->write($survey, $sLanguageCode, $oOptions);
+        $surveyDao->loadSurveyResults($survey, $oOptions->responseMinRecord, $oOptions->responseMaxRecord, $sFilter, $oOptions->responseCompletionState, $oOptions->selectedColumns, $oOptions->aResponses);
+        $writer->write($survey, $sLanguageCode, $oOptions,true);
         $result = $writer->close();
         
         // Close resultset if needed

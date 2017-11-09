@@ -1,6 +1,6 @@
 <?php
 
-namespace ls\menu;
+namespace LimeSurvey\Menu;
 
 class Menu implements MenuInterface
 {

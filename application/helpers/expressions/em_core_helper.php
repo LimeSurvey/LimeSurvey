@@ -264,13 +264,46 @@ class ExpressionManager {
     }
 
     /**
+     * @return array
+     */
+    public function RDP_GetErrors()
+    {
+        return $this->RDP_errs;
+    }
+
+    /**
+     * Get informatin about type mismatch between arguments.
+     * @param Token $arg1
+     * @param Token $arg2
+     * @return boolean[] Like (boolean $bMismatchType, boolean $bBothNumeric, boolean $bBothString)
+     */
+    private function getMismatchInformation(array $arg1, array $arg2)
+    {
+        /* When value come from DB : it's set to 1.000000 (DECIMAL) : must be fixed see #11163. Response::model() must fix this . or not ? */
+        /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
+        $arg1[0]=($arg1[2]=="NUMBER" && strpos($arg1[0], ".")) ? rtrim(rtrim($arg1[0], "0"), ".") : $arg1[0];
+        $arg2[0]=($arg2[2]=="NUMBER" && strpos($arg2[0], ".")) ? rtrim(rtrim($arg2[0], "0"), ".") : $arg2[0];
+        $bNumericArg1 = !$arg1[0] || strval(floatval($arg1[0]))==strval($arg1[0]);
+        $bNumericArg2 = !$arg2[0] || strval(floatval($arg2[0]))==strval($arg2[0]);
+
+        $bStringArg1 = !$arg1[0] || !$bNumericArg1;
+        $bStringArg2 = !$arg2[0] || !$bNumericArg2;
+
+        $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
+        $bBothString = ($bStringArg1 && $bStringArg2);
+        $bMismatchType = (!$bBothNumeric && !$bBothString);
+
+        return array($bMismatchType, $bBothNumeric, $bBothString);
+    }
+
+    /**
      * RDP_EvaluateBinary() computes binary expressions, such as (a or b), (c * d), popping  the top two entries off the
      * stack and pushing the result back onto the stack.
      *
      * @param array $token
      * @return boolean - false if there is any error, else true
      */
-     private function RDP_EvaluateBinary(array $token)
+    public function RDP_EvaluateBinary(array $token)
     {
         if (count($this->RDP_stack) < 2)
         {
@@ -284,19 +317,8 @@ class ExpressionManager {
             $this->RDP_AddError(self::gT("Invalid value(s) on the stack"), $token);
             return false;
         }
-        /* When value come from DB : it's set to 1.000000 (DECIMAL) : must be fixed see #11163. Response::model() must fix this . or not ? */
-        /* Don't return true always : user can entre non numeric value in a numeric value : we must compare as string then */
-        $arg1[0]=($arg1[2]=="NUMBER" && strpos($arg1[0],".")) ? rtrim(rtrim($arg1[0],"0"),".") : $arg1[0];
-        $arg2[0]=($arg2[2]=="NUMBER" && strpos($arg2[0],".")) ? rtrim(rtrim($arg2[0],"0"),".") : $arg2[0];
-        $bNumericArg1 = !$arg1[0] || strval(floatval($arg1[0]))==strval($arg1[0]);
-        $bNumericArg2 = !$arg2[0] || strval(floatval($arg2[0]))==strval($arg2[0]);
 
-        $bStringArg1 = !$arg1[0] || !$bNumericArg1;
-        $bStringArg2 = !$arg2[0] || !$bNumericArg2;
-
-        $bBothNumeric = ($bNumericArg1 && $bNumericArg2);
-        $bBothString = ($bStringArg1 && $bStringArg2);
-        $bMismatchType=(!$bBothNumeric && !$bBothString);
+        list($bMismatchType, $bBothNumeric, $bBothString) = $this->getMismatchInformation($arg1, $arg2);
 
         // Set bBothString if one is forced to be string, only if both can be numeric. Mimic JS and PHP
         // Not sure if needed to test if [2] is set. : TODO review
@@ -305,7 +327,6 @@ class ExpressionManager {
             if( (isset($arg1[2]) && in_array($arg1[2],$aForceStringArray) || (isset($arg2[2]) && in_array($arg2[2],$aForceStringArray)) ) )
             {
                 $bBothNumeric=false;
-                $bBothString=true;
                 $bMismatchType=false;
                 $arg1[0]=strval($arg1[0]);
                 $arg2[0]=strval($arg2[0]);
@@ -338,7 +359,7 @@ class ExpressionManager {
                     $result = array(($arg1[0] < $arg2[0]),$token[1],'NUMBER');
                 }
                 break;
-            case '<=';
+                case '<=';
             case 'le':
                 if ($bMismatchType) {
                     $result = array(false,$token[1],'NUMBER');
@@ -368,7 +389,7 @@ class ExpressionManager {
                     }
                 }
                 break;
-            case '>=';
+                case '>=';
             case 'ge':
                 if ($bMismatchType) {
                     $result = array(false,$token[1],'NUMBER');
@@ -1201,6 +1222,14 @@ class ExpressionManager {
     }
 
     /**
+     * @return void
+     */
+    public function SetJsVarsUsed($vars)
+    {
+        $this->varsUsed = $vars;
+    }
+
+    /**
      * Return the JavaScript variable name for a named variable
      * @param string $name
      * @return string
@@ -1430,9 +1459,7 @@ class ExpressionManager {
         $tokens = $this->RDP_tokens;
         $errCount = count($errs);
         $errIndex = 0;
-        $aClass=array();
-        if ($errCount > 0)
-        {
+        if ($errCount > 0) {
             usort($errs,"cmpErrorTokens");
         }
         $stringParts=array();
@@ -2016,7 +2043,6 @@ class ExpressionManager {
         }
         $func = $this->RDP_ValidFunctions[$name];
         $funcName = $func[0];
-        $numArgs = count($params);
         $result=1;  // default value for $this->RDP_onlyparse
         if (function_exists($funcName)) {
             $numArgsAllowed = array_slice($func, 5);    // get array of allowable argument counts from end of $func
@@ -2361,8 +2387,7 @@ class ExpressionManager {
      * Pop a value token off of the stack
      * @return token
      */
-
-    private function RDP_StackPop()
+    public function RDP_StackPop()
     {
         if (count($this->RDP_stack) > 0)
         {
@@ -2379,8 +2404,7 @@ class ExpressionManager {
      * Stack only holds values (number, string), not operators
      * @param array $token
      */
-
-    private function RDP_StackPush(array $token)
+    public function RDP_StackPush(array $token)
     {
         if ($this->RDP_onlyparse)
         {
@@ -2465,10 +2489,17 @@ class ExpressionManager {
     static function ShowAllowableFunctions()
     {
         $em = new ExpressionManager();
-        $output = "<h3>Functions Available within Expression Manager</h3>\n";
+        $output = "<div class='h3'>Functions Available within Expression Manager</div>\n";
         $output .= "<table border='1'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
         foreach ($em->RDP_ValidFunctions as $name => $func) {
-            $output .= "<tr><td>" . $name . "</td><td>" . $func[2] . "</td><td>" . $func[3] . "</td><td><a href='" . $func[4] . "'>" . $func[4] . "</a>&nbsp;</td></tr>\n";
+            $output .= "<tr><td>" . $name . "</td><td>" . $func[2] . "</td><td>" . $func[3] . "</td><td>";
+
+	    // 508 fix, don't output empty anchor tags
+	    if ($func[4]) {
+		$output .= "<a href='" . $func[4] . "'>" . $func[4] . "</a>";
+	    }
+
+	    $output .= "&nbsp;</td></tr>\n";
         }
         $output .= "</table>\n";
         return $output;

@@ -147,8 +147,8 @@ class quotas extends Survey_Common_Action
 
         /** @var Survey $oSurvey */
         $oSurvey =Survey::model()->findByPk($iSurveyID);
-        $surveyinfo = $oSurvey->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyID.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
+        $aData['subaction'] = gT("Survey quotas");
 
         //$aData['surveybar']['active_survey_properties'] = 'quotas';
         $aData['surveybar']['buttons']['view']= TRUE;
@@ -187,7 +187,7 @@ class quotas extends Survey_Common_Action
             {
                 $totalquotas += $oQuota->qlimit;
                 $completed = 0;
-                $completed = getQuotaCompletedCount($iSurveyId, $oQuota->primaryKey);
+                $completed = $oQuota->completeCount;
                 $totalcompleted = $totalcompleted + $completed;
                 $csvoutput[] = $oQuota->name . "," . $oQuota->qlimit . "," . $completed . "," . ($oQuota->qlimit - $completed) . "\r\n";
 
@@ -217,7 +217,12 @@ class quotas extends Survey_Common_Action
                 foreach ($oQuota->quotaMembers as $oQuotaMember)
                 {
                     $aQuestionAnswers = self::getQuotaAnswers($oQuotaMember['qid'], $iSurveyId, $oQuota['id']);
-                    $answerText=isset($aQuestionAnswers[$oQuotaMember['code']]) ? flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']) : null;
+                    if($oQuotaMember->question->type == '*'){
+                        $answerText=$oQuotaMember->code ;
+                    }else{
+                        $answerText=isset($aQuestionAnswers[$oQuotaMember['code']]) ? flattenText($aQuestionAnswers[$oQuotaMember['code']]['Display']) : null;
+                    }
+
                     $aQuotaItems[$oQuota['id']][] = array(
                         'oQuestion' => Question::model()->findByPk(array('qid' => $oQuotaMember['qid'], 'language' => $oSurvey->language)),
                         'answer_title' => $answerText,
@@ -332,6 +337,7 @@ class quotas extends Survey_Common_Action
     function editquota($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
+        $oSurvey =  Survey::model()->findByPk($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
         $aViewUrls = array();
@@ -363,8 +369,6 @@ class quotas extends Survey_Common_Action
             }
         }
 
-        /** @var Survey $oSurvey */
-        $oSurvey =  Survey::model()->findByPk($iSurveyId);
 
         $aData['oQuota'] = $oQuota;
         $aData['aQuotaLanguageSettings'] = array();
@@ -372,12 +376,10 @@ class quotas extends Survey_Common_Action
             $aData['aQuotaLanguageSettings'][$languagesetting->quotals_language] = $languagesetting;
         }
 
-
         $aViewUrls[] = 'editquota_view';
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo =$oSurvey->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
 
         //$aData['surveybar']['active_survey_properties'] = 'quotas';
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;  // Close button
@@ -393,59 +395,45 @@ class quotas extends Survey_Common_Action
     function new_answer($iSurveyId, $sSubAction = 'new_answer')
     {
         $iSurveyId = sanitize_int($iSurveyId);
-
-        /** @var Survey $oSurvey */
         $oSurvey =  Survey::model()->findByPk($iSurveyId);
 
         $this->_checkPermissions($iSurveyId, 'update');
         $aData = $this->_getData($iSurveyId);
-        $sBaseLang = $aData['sBaseLang'];
         $aViewUrls = array();
+        $quota = Quota::model()->findByPk(Yii::app()->request->getPost('quota_id'));
+        $aData['oQuota'] = $quota;
 
         if (($sSubAction == "new_answer" || ($sSubAction == "new_answer_two" && !isset($_POST['quota_qid']))) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create'))
         {
-            $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
-
-            foreach ($result as $aQuotaDetails){
-                $quota_name = $aQuotaDetails['name'];
-            }
 
             $result = $oSurvey->quotableQuestions;
             if (empty($result)) {
                 $aViewUrls[] = 'newanswererror_view';
             } else {
-                $aData['newanswer_result'] = $result;
-                $aData['quota_name'] = $quota_name;
                 $aViewUrls[] = 'newanswer_view';
             }
         }
 
         if ($sSubAction == "new_answer_two" && isset($_POST['quota_qid']) && Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'create')) {
-            $result = Quota::model()->findAllByPk(Yii::app()->request->getPost('quota_id'));
-
-            foreach ($result as $aQuotaDetails){
-                $sQuotaName = $aQuotaDetails['name'];
-            }
+            $oQuestion = Question::model()->findByPk(array('qid' => Yii::app()->request->getPost('quota_qid'), 'language' => $oSurvey->language));
 
             $aQuestionAnswers = self::getQuotaAnswers(Yii::app()->request->getPost('quota_qid'), $iSurveyId, Yii::app()->request->getPost('quota_id'));
             $x = 0;
 
-            foreach ($aQuestionAnswers as $aQACheck)
-            {
+            foreach ($aQuestionAnswers as $aQACheck) {
                 if (isset($aQACheck['rowexists']))
                     $x++;
             }
 
             reset($aQuestionAnswers);
+            $aData['oQuestion'] = $oQuestion;
             $aData['question_answers'] = $aQuestionAnswers;
             $aData['x'] = $x;
-            $aData['quota_name'] = $sQuotaName;
             $aViewUrls[] = 'newanswertwo_view';
         }
 
         $aData['sidemenu']['state'] = false;
-        $surveyinfo = Survey::model()->findByPk($iSurveyId)->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;  // Close button
         $aData['surveybar']['closebutton']['forbidden'][] = 'new_answer';
 
@@ -455,6 +443,7 @@ class quotas extends Survey_Common_Action
     function newquota($iSurveyId)
     {
         $iSurveyId = sanitize_int($iSurveyId);
+        $oSurvey = Survey::model()->findByPk($iSurveyId);
         $this->_checkPermissions($iSurveyId, 'create');
         $aData = $this->_getData($iSurveyId);
 
@@ -464,10 +453,7 @@ class quotas extends Survey_Common_Action
 
         $aData['sidemenu']['state'] = false;
 
-        /** @var Survey $oSurvey */
-        $oSurvey = Survey::model()->findByPk($iSurveyId);
-        $surveyinfo = $oSurvey->surveyinfo;
-        $aData['title_bar']['title'] = $surveyinfo['surveyls_title']." (".gT("ID").":".$iSurveyId.")";
+        $aData['title_bar']['title'] = $oSurvey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyId.")";
         $aData['surveybar']['savebutton']['form'] = 'frmeditgroup';
         $aData['surveybar']['closebutton']['url'] = 'admin/quotas/sa/index/surveyid/'.$iSurveyId;  // Close button
 
@@ -569,7 +555,7 @@ class quotas extends Survey_Common_Action
 
             foreach ($aAnsResults as $aDbAnsList)
             {
-                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => substr($aDbAnsList['answer'], 0, 40), 'code' => $aDbAnsList['code']);
+                $aAnswerList[$aDbAnsList['code']] = array('Title' => $aQuestion['title'], 'Display' => $aDbAnsList['answer'], 'code' => $aDbAnsList['code']);
             }
 
         } elseif ($aQuestionType == 'A')

@@ -6,7 +6,7 @@
 
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><?php echo $aAction['sModalTitle']; ?></h4>
+                <div class="modal-title h4"><?php echo $aAction['sModalTitle']; ?></div>
             </div>
 
             <div class="modal-body">
