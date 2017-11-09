@@ -45,6 +45,9 @@ third_party/**/*.sh
 third_party/**/*.md
 third_party/**/gulpfile.js
 
+# Test stuff
+chromedriver
+
 # RFC and commons directory and files
 /.well-known/
 /sitemap.xml

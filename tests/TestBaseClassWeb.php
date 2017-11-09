@@ -19,6 +19,7 @@ use Facebook\WebDriver\WebDriver;
 use Facebook\WebDriver\WebDriverBy;
 use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\TimeOutException;
+use Facebook\WebDriver\Chrome\ChromeDriver;
 
 /**
  * Class TestBaseClassWeb
@@ -46,10 +47,15 @@ class TestBaseClassWeb extends TestBaseClass
             die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
 
-        $capabilities = DesiredCapabilities::phantomjs();
-        $port = self::$webPort;
-        self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
-        self::$webDriver->manage()->window()->maximize();
+        //$capabilities = DesiredCapabilities::phantomjs();
+        //$port = self::$webPort;
+
+        $base = \Yii::app()->getBasePath();
+        putenv(sprintf('webdriver.chrome.driver=/%s/../chromedriver', $base));
+        self::$webDriver = ChromeDriver::start();
+
+        //self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);
+        //self::$webDriver->manage()->window()->maximize();
     }
 
     public static function tearDownAfterClass()
