@@ -149,7 +149,8 @@ class TestBaseClassWeb extends TestBaseClass
             );
         } catch (TimeOutException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
-            file_put_contents(self::$screenshotsFolder .'/FailedLogin.png', $screenshot);
+            $filename = self::$screenshotsFolder .'/FailedLogin.png';
+            file_put_contents($filename, $screenshot);
             self::assertTrue(
                 false,
                 ' Screenshot in ' . $filename . PHP_EOL .
