@@ -47,6 +47,10 @@ class TutorialsController extends Survey_Common_Action
             ),
         );
     }
+
+    /**
+     * 
+     */
     public function serveprebuilt()
     {
         $ajax = Yii::app()->request->getParam('ajax', false);
