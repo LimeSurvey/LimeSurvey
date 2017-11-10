@@ -35,9 +35,8 @@
         ?>
         </div>
     </div>
-    <?php
-    echo CHtml::submitButton('submit', array("class"=>"btn btn-default", "id"=>"submitKeyButton"));
-    ?>
+    <?php echo CHtml::submitButton(gT('Submit'), array("class"=>"btn btn-default", "id"=>"submitKeyButton")); ?>
+
     <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
         <?php eT("Cancel"); ?>
     </a>
