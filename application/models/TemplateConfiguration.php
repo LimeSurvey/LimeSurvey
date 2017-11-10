@@ -543,15 +543,18 @@ class TemplateConfiguration extends TemplateConfig
         if(!empty($jFiles)){
             $oFiles = json_decode($jFiles, true);
             foreach($oFiles as $action => $aFileList){
-                if ($action == "add" || $action == "replace"){
 
-                    // Specific inheritance of one of the value of the json array
-                    if ($aFileList[0] == 'inherit'){
-                        $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
-                        $aFileList = $aParentjFiles[$action];
+                if ( is_array( $aFileList ) ){
+                    if ($action == "add" || $action == "replace"){
+
+                        // Specific inheritance of one of the value of the json array
+                        if ($aFileList[0] == 'inherit'){
+                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                            $aFileList = $aParentjFiles[$action];
+                        }
+
+                        $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                     }
-
-                    $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                 }
             }
 
