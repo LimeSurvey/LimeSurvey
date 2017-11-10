@@ -370,13 +370,9 @@ class Permission extends LSActiveRecord
         $oEvent->set('iUserID',$iUserID);
         $result = App()->getPluginManager()->dispatchEvent($oEvent);
 
-        // Only the original superadmin may change the superadmin permissions
-        if (Yii::app()->session['loginID']!=1)
-        {
+        if (!Permission::model()->hasGlobalPermission('superadmin','create')) {
             Permission::model()->deleteAllByAttributes($condition,"permission <> 'superadmin' AND entity <> 'template'");
-        }
-        else
-        {
+        } else {
             Permission::model()->deleteAllByAttributes($condition,"entity <> 'template'");
         }
 
