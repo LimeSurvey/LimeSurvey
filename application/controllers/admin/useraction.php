@@ -337,14 +337,11 @@ class UserAction extends Survey_Common_Action
     {
         if ( Yii::app()->request->getParam('uid') !=''  ) {
             $postuserid = (int) Yii::app()->request->getParam("uid");
-            $sresult = User::model()->findAllByAttributes(array('uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']));
-            $sresultcount = count($sresult);
-            if (Permission::model()->hasGlobalPermission('superadmin','read') || Yii::app()->session['loginID'] == $postuserid ||
-            (Permission::model()->hasGlobalPermission('users','update') && $sresultcount > 0) ) {
-                if(empty($sresult)) {
-                    Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
-                    $this->getController()->redirect(array("admin/user/sa/index"));
-                }
+            if (
+                Permission::model()->hasGlobalPermission('superadmin','read') // Super admin have all right on user
+                || Yii::app()->session['loginID'] == $postuserid // User can edit himself
+                || (Permission::model()->hasGlobalPermission('users','update') && User::model()->count("uid=:uid AND parent_id=:parent_id)", array(':uid' => $postuserid, 'parent_id' => Yii::app()->session['loginID']))) // User with users update can only update own Users
+            ) {
                 $oUser = User::model()->findByPk($postuserid);
                 $aData = array();
                 $aData['oUser'] = $oUser;
