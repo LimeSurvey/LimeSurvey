@@ -53,6 +53,10 @@ class SurveysGroupsController extends Survey_Common_Action
 
         $aData['model'] = $model;
         $aData['fullpagebar']['savebutton']['form'] = 'surveys-groups-form';
+        $aData['fullpagebar']['returnbutton'] = array(
+            'url'=>'admin/survey/sa/listsurveys#surveygroups',
+            'text'=>gT('Close'),
+        );
 
         $this->_renderWrappedTemplate('surveysgroups', 'create', $aData);
     }
