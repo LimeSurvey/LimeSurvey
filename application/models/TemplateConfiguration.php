@@ -634,7 +634,10 @@ class TemplateConfiguration extends TemplateConfig
         while (empty($oRTemplate->template->$sPath)){
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                throw new Exception("can't find a template for template '{$oRTemplate->template_name}' in path '$sPath'.");
+                //throw new Exception("can't find a template for template '{$oRTemplate->template_name}' for path '$sPath'.");
+                TemplateConfiguration::uninstall($this->template_name);
+                Yii::app()->setFlashMessage(sprintf(gT("%s has been uninstall because it's not compatible with LS3."), $this->template_name), 'error');
+                Yii::app()->getController()->redirect(array("admin/templateoptions"));
                 break;
             }
             $oRTemplate = $oMotherTemplate;
