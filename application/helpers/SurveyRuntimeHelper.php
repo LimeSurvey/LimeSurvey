@@ -300,9 +300,13 @@ class SurveyRuntimeHelper {
             $groupname        = $gl['group_name'];
             $groupdescription = $gl['description'];
 
-            $onlyThisGID = $this->aStepInfo['gid'];
-            if ($this->sSurveyMode != 'survey' && $gid != $onlyThisGID){
-                continue;
+
+
+            if ($this->sSurveyMode != 'survey'){
+                $onlyThisGID = $this->aStepInfo['gid'];
+                if ($onlyThisGID != $gid){
+                    continue;
+                }
             }
 
             Yii::app()->setConfig('gid',$gid);// To be used in templaterplace in whole group. Attention : it's the actual GID (not the GID of the question)
