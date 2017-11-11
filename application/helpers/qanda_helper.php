@@ -508,8 +508,8 @@ function return_timer_script($aQuestionAttributes, $ia, $disable=null)
 {
     global $thissurvey;
 
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js',CClientScript::POS_HEAD);
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'timer.js',CClientScript::POS_HEAD);
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'coookies.js',CClientScript::POS_BEGIN);
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'timer.js',CClientScript::POS_BEGIN);
 
     $langTimer=array(
         'hours'=>gT("hours"),
@@ -923,8 +923,8 @@ function do_date($ia)
     alertInvalidDate: '" . gT('Date entered is invalid!','js') . "',
     };";
 
-    App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_HEAD);
-    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js');
+    App()->getClientScript()->registerScript("sDateLangvarJS",$sDateLangvarJS,CClientScript::POS_BEGIN);
+    App()->getClientScript()->registerScriptFile(Yii::app()->getConfig("generalscripts").'date.js',CClientScript::POS_END);
 
     // date_min: Determine whether we have an expression, a full date (YYYY-MM-DD) or only a year(YYYY)
     if (trim($aQuestionAttributes['date_min'])!='')
@@ -1142,7 +1142,7 @@ function do_date($ia)
             'dateformat'             => $dateformatdetails['jsdate'],
             ), true);
 
-        App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_HEAD);
+        App()->getClientScript()->registerScript("doDropDownDate{$ia[0]}","doDropDownDate({$ia[0]});",CClientScript::POS_BEGIN);
     }
     else
     {
@@ -3244,7 +3244,7 @@ function do_multiplenumeric($ia)
         $sliderTranslation=array(
             'help'=>gT('Please click and drag the slider handles to enter your answer.')
         );
-        App()->getClientScript()->registerScript("sliderTranslation","var sliderTranslation=".json_encode($sliderTranslation).";\n",CClientScript::POS_HEAD);
+        App()->getClientScript()->registerScript("sliderTranslation","var sliderTranslation=".json_encode($sliderTranslation).";\n",CClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage("question-numeric-slider");
         if($slider_handle == 'custom'){/* unsure we still need it : in aJsonOptions : must choose the best */
             App()->getClientScript()->registerCss("cssNumericSlider{$ia[0]}","#question{$ia[0]} .slider-handle.custom::before{ content: '\\{$slider_custom_handle}'};");
@@ -3608,8 +3608,8 @@ function do_shortfreetext($ia)
         );
         App()->getClientScript()->registerPackage('leaflet');
         App()->getClientScript()->registerPackage('devbridge-autocomplete');/* for autocomplete */
-        Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_HEAD);
-        Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar).";",CClientScript::POS_HEAD);
+        Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar).";",CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
         Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
 
@@ -5378,7 +5378,7 @@ function do_array_multiflexi($ia)
         $coreRowClass        .= " checkbox-list";
         $caption            .= gT("Please check the matching combinations.");
         $textAlignment       = 'center';
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-number-checkbox.js",CClientScript::POS_HEAD);
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-number-checkbox.js",CClientScript::POS_END);
         App()->getClientScript()->registerScript("doArrayNumberCheckbox","doArrayNumberCheckbox();\n",CClientScript::POS_END);
     }
     elseif ($aQuestionAttributes['input_boxes']!=0 )
@@ -6302,8 +6302,8 @@ function do_array_dual($ia)
         $answer = "<p class='error'>".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames="";
     }
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js");
-    Yii::app()->getClientScript()->registerScript("doDualScaleFunction{$ia[0]}","{$doDualScaleFunction}({$ia[0]});");
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js", CClientScript::POS_END);
+    Yii::app()->getClientScript()->registerScript("doDualScaleFunction{$ia[0]}","{$doDualScaleFunction}({$ia[0]});",CClientScript::POS_END);
 
     return array($answer, $inputnames);
 }

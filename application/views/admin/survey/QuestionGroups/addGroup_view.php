@@ -1,7 +1,12 @@
 <?php
 /**
  * Add a group to survey
+ * @var AdminController $this
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('addQuestionGroup');
+
 ?>
 
 <!-- addGroup -->

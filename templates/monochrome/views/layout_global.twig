@@ -14,7 +14,6 @@
     This is the global layout that will be used to displayed most pages (less the error page)
     Other layout extend it, and will replace/extends the block "content".
 #}
-{% if( not ( aSurveyInfo.options.ajaxmode == "on" and getPost('ajax')=="on"  )) %}
     <!DOCTYPE html>
     <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
 
@@ -28,10 +27,7 @@
                 </div>
             </div>
         {% endif %}
-{% else %}
-    {{ unregisterScriptForAjax()}}
     <body>
-{% endif %}
         <div id="beginScripts">
             <###begin###>
         </div>

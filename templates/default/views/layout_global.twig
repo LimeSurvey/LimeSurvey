@@ -14,33 +14,30 @@
     This is the global layout that will be used to displayed most pages (less the error page)
     Other layout extend it, and will replace/extends the block "content".
 #}
-{% if( not ( aSurveyInfo.options.ajaxmode == "on" and getPost('ajax')=="on"  )) %}
+
     <!DOCTYPE html>
     <html lang="{{ aSurveyInfo.languagecode }}" dir="{{ aSurveyInfo.dir }}" class="{{ aSurveyInfo.languagecode }} dir-{{ aSurveyInfo.dir }} {{ aSurveyInfo.class.html }}" {{ aSurveyInfo.attr.html }}>
 
-        {# Headers, metadata, etc #}
-        {{ include('./subviews/head.twig') }}
+    {# Headers, metadata, etc #}
+    {{ include('./subviews/head.twig') }}
 
-        <body class=" {{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
-        {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
-            <div class="progress ajax_loading_indicator" id="ajax_loading_indicator">
-                <div class="progress-bar progress-bar-info ajax_loading_indicator_bar" id="ajax_loading_indicator_bar" role="progressbar">
-                </div>
+    <body class=" {{ aSurveyInfo.class.body }} lang-{{aSurveyInfo.languagecode}} {{aSurveyInfo.surveyformat}} {% if( aSurveyInfo.options.brandlogo == "on") %}brand-logo{%endif%}" {{ aSurveyInfo.attr.body }} >
+    {% if (aSurveyInfo.options.ajaxmode == "on" and aSurveyInfo.printPdf != 1) %}
+        <div class="progress ajax_loading_indicator" id="ajax_loading_indicator">
+            <div class="progress-bar progress-bar-info ajax_loading_indicator_bar" id="ajax_loading_indicator_bar" role="progressbar">
             </div>
-        {% endif %}
+        </div>
+    {% endif %}
 
-        {% if (aSurveyInfo.options.backgroundimage == "on") %}
-            {{ registerTemplateCssFile("css/background-image.css") }}
-        {% endif %}
+    {% if (aSurveyInfo.options.backgroundimage == "on") %}
+        {{ registerTemplateCssFile("css/background-image.css") }}
+    {% endif %}
 
-        {% if (aSurveyInfo.options.boxcontainer == "off") %}
-        {{ registerTemplateCssFile("css/no-container.css") }}
-        {% endif %}
+    {% if (aSurveyInfo.options.boxcontainer == "off") %}
+    {{ registerTemplateCssFile("css/no-container.css") }}
+    {% endif %}
 
-{% else %}
-    {{ unregisterScriptForAjax()}}
     <body>
-{% endif %}
         <div id="beginScripts">
             <###begin###>
         </div>

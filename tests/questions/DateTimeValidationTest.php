@@ -2,163 +2,88 @@
 
 namespace ls\tests;
 
-use PHPUnit\Framework\TestCase;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
+use Facebook\WebDriver\Exception\NoSuchElementException;
 
 /**
  * @since 2017-10-27
  * @group datevalidation
  */
-class DateTimeValidationTest extends TestBaseClass
+class DateTimeValidationTest extends TestBaseClassWeb
 {
-    /**
-     * @var int
-     */
-    public static $surveyId = null;
-
     /**
      * Import survey in tests/surveys/.
      */
-    public static function setupBeforeClass()
+    public static function setUpBeforeClass()
     {
-        \Yii::app()->session['loginID'] = 1;
+        parent::setUpBeforeClass();
 
-        $surveyFile = __DIR__ . '/../data/surveys/limesurvey_survey_834477.lss';
-        if (!file_exists($surveyFile)) {
-            die('Fatal error: found no survey file');
-        }
-
-        $translateLinksFields = false;
-        $newSurveyName = null;
-        $result = importSurveyFile(
-            $surveyFile,
-            $translateLinksFields,
-            $newSurveyName,
-            null
-        );
-        if ($result) {
-            self::$surveyId = $result['newsid'];
-        } else {
-            die('Fatal error: Could not import survey');
-        }
+        $surveyFile = self::$surveysFolder.'/limesurvey_survey_834477.lss';
+        self::importSurvey($surveyFile);
+        self::$testHelper->enablePreview();
     }
 
-    /**
-     * Destroy what had been imported.
-     */
-    public static function teardownAfterClass()
-    {
-        $result = \Survey::model()->deleteSurvey(self::$surveyId, true);
-        if (!$result) {
-            die('Fatal error: Could not clean up survey ' . self::$surveyId);
-        }
-    }
-
-    /**
-     * "currentQset" in EM.
-     */
-    protected function getQuestionSetForQ2(\Question $question, \QuestionGroup $group, $sgqa)
-    {
-        $qset = array($question->qid => array
-            (
-                'info' => array
-                (
-                    'relevance' => '1',
-                    'grelevance' => '',
-                    'qid' => $question->qid,
-                    'qseq' => 1,
-                    'gseq' => 0,
-                    'jsResultVar_on' => 'answer' . $sgqa,
-                    'jsResultVar' => 'java' . $sgqa,
-                    'type' => $question->type,
-                    'hidden' => false,
-                    'gid' => $group->gid,
-                    'mandatory' => $question->mandatory,
-                    'eqn' => '',
-                    'help' => '',
-                    'qtext' => '',
-                    'code' => $question->title,
-                    'other' => 'N',
-                    'default' => null,
-                    'rootVarName' => $question->title,
-                    'rowdivid' => '',
-                    'aid' => '',
-                    'sqid' => '',
-                ),
-                'relevant' => true,
-                'hidden' => false,
-                'relEqn' => '',
-                'sgqa' => $sgqa,
-                'unansweredSQs' => $sgqa,
-                'valid' => true,
-                'validEqn' => '',
-                'prettyValidEqn' => '',
-                'validTip' => '',
-                'prettyValidTip' => '',
-                'validJS' => '',
-                'invalidSQs' => '',
-                'relevantSQs' => $sgqa,
-                'irrelevantSQs' => '',
-                'subQrelEqn' => '',
-                'mandViolation' => false,
-                'anyUnanswered' => true,
-                'mandTip' => '',
-                'message' => '',
-                'updatedValues' => array(),
-                'sumEqn' => '',
-                'sumRemainingEqn' => ''
-            )
-        );
-        return $qset;
-    }
 
     /**
      * 
      */
     public function testBasic()
     {
-        /*
-        list($question, $group, $sgqa) = self::$testHelper->getSgqa('G1Q00005', self::$surveyId);
+        $domain = getenv('DOMAIN');
+        if (empty($domain)) {
+            $domain = '';
+        }
 
-        $qset = $this->getQuestionSetForQ2($question, $group, $sgqa);
-
-        $em = \LimeExpressionManager::singleton();
-        $em->setCurrentQset($qset);
-
-        $surveyMode = 'group';
-        $LEMdebugLevel = 0;
-        $surveyOptions = self::$testHelper->getSurveyOptions(self::$surveyId);
-        \LimeExpressionManager::StartSurvey(
-            self::$surveyId,
-            $surveyMode,
-            $surveyOptions,
-            false,
-            $LEMdebugLevel
+        $urlMan = \Yii::app()->urlManager;
+        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $url = $urlMan->createUrl('survey/index', array(
+            'sid' => self::$surveyId,
+            'newtest' => 'Y',
+            'lang' => 'pt'
+            )
         );
 
-        $qid = $question->qid;
-        $gseq = 0;
-        $_POST['relevance' . $qid] = 1;
-        $_POST['relevanceG' . $gseq] = 1;
-        $_POST[$sgqa] = '27/10/2017';
+        self::$webDriver->get($url);
 
-        //$moveResult = \LimeExpressionManager::NavigateForwards();
-        $result = \LimeExpressionManager::ProcessCurrentResponses();
-        echo '<pre>'; var_dump($_SESSION); echo '</pre>';
-         */
-        \Yii::app()->setController(new DummyController('dummyid'));
+        try {
+            $submit = self::$webDriver->findElement(WebDriverBy::id('ls-button-submit'));
+        } catch (NoSuchElementException $ex) {
+            $screenshot = self::$webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
+            file_put_contents($filename, $screenshot);
+            $this->assertFalse(
+                true,
+                'Url: ' . $url . PHP_EOL .
+                'Screenshot in ' . $filename . PHP_EOL . $ex->getMessage()
+            );
+        }
 
-        \Yii::app()->setConfig('surveyID', self::$surveyId);
-        global $thissurvey;
-        $thissurvey = getSurveyInfo(self::$surveyId);
-
-        $runtime = new \SurveyRuntimeHelper();
-        $runtime->run(
-            self::$surveyId,
-            [
-                'surveyid'   => self::$surveyId,
-                'thissurvey' => $thissurvey,
-                'param'      => []
-            ]
+        $this->assertNotEmpty($submit);
+        self::$webDriver->wait(10, 1000)->until(
+            WebDriverExpectedCondition::visibilityOf($submit)
         );
+        $submit->click();
+
+        // After submit we should see the complete page.
+        try {
+            // Wait max 10 second to find this div.
+            self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::presenceOfAllElementsLocatedBy(
+                    WebDriverBy::className('completed-text')
+                )
+            );
+            $div = self::$webDriver->findElement(WebDriverBy::className('completed-text'));
+            $this->assertNotEmpty($div);
+        } catch (NoSuchElementException $ex) {
+            $screenshot = $this->webDriver->takeScreenshot();
+            $filename = self::$screenshotsFolder.'/DateTimeValidationTest.png';
+            file_put_contents($filename, $screenshot);
+            $this->assertFalse(
+                true,
+                'Url: ' . $url . PHP_EOL .
+                'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
+            );
+        }
     }
 }

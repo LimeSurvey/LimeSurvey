@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
  */
 class TemplateConfigurationTest extends TestBaseClass
 {
-
     /**
      * Issue #12795.
      */
@@ -19,5 +18,8 @@ class TemplateConfigurationTest extends TestBaseClass
     {
         $tempConf = \TemplateConfiguration::getInstanceFromTemplateName('default');
         $tempConf->prepareTemplateRendering('default');
+
+        // No PHP notices.
+        $this->assertTrue(true);
     }
 }

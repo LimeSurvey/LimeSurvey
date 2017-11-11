@@ -7,8 +7,12 @@
 App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'emailtemplates.js');
 App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'popup-dialog.css');
 $count=0;
-?>
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyEmailTemplates');
+
+
+?>
 <script type='text/javascript'>
     var sReplaceTextConfirmation='<?php eT("This will replace the existing text. Continue?","js"); ?>';
     var sKCFinderLanguage='<?php echo sTranslateLangCode2CK(App()->language); ?>';

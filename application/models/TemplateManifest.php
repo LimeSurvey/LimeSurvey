@@ -210,15 +210,6 @@ class TemplateManifest extends TemplateConfiguration
     }
 
 
-    public function getPreview()
-    {
-        if (empty($this->sPreviewImgTag)){
-            $previewUrl =  $this->getTemplateURL();// $this->getTemplateURL();//Template::getTemplateURL($this->template->name);
-            $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
-        }
-        return $this->sPreviewImgTag;
-    }
-
     /**
      *
      */
@@ -275,30 +266,62 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function importManifest($sTemplateName, $aDatas=array()  )
     {
-        $oTemplate             = Template::getTemplateConfiguration($sTemplateName, null, null, true);
+        $oTemplate                  = Template::getTemplateConfiguration($sTemplateName, null, null, true);
+        $aDatas['extends']          = $bExtends = (string) $oTemplate->config->metadatas->extends;
 
-        $aDatas['api_version']       = (string) $oTemplate->config->metadatas->apiVersion;
-        $aDatas['extends']           = (string) $oTemplate->config->metadatas->extends;
-        $aDatas['author_email']      = (string) $oTemplate->config->metadatas->authorEmail;
-        $aDatas['author_url']        = (string) $oTemplate->config->metadatas->authorUrl;
-        $aDatas['copyright']         = (string) $oTemplate->config->metadatas->copyright;
-        $aDatas['version']           = (string) $oTemplate->config->metadatas->version;
-        $aDatas['license']           = (string) $oTemplate->config->metadatas->license;
-        $aDatas['view_folder']       = (string) $oTemplate->config->engine->viewdirectory;
-        $aDatas['files_folder']      = (string) $oTemplate->config->engine->filesdirectory;
+        // Metadas is never inherited
+        $aDatas['api_version']      = (string) $oTemplate->config->metadatas->apiVersion;
+        $aDatas['author_email']     = (string) $oTemplate->config->metadatas->authorEmail;
+        $aDatas['author_url']       = (string) $oTemplate->config->metadatas->authorUrl;
+        $aDatas['copyright']        = (string) $oTemplate->config->metadatas->copyright;
+        $aDatas['version']          = (string) $oTemplate->config->metadatas->version;
+        $aDatas['license']          = (string) $oTemplate->config->metadatas->license;
 
-        $aDatas['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
-        $aDatas['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
-        $aDatas['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
+        // Engine, files, and options can be inherited from a moter template
+        // It means that the while field should always be inherited, not a subfield (eg: all files, not only css add)
+        $oREngineTemplate = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'engine' )  : $oTemplate;
 
-        $aDatas['cssframework_name'] = (string) $oTemplate->config->engine->cssframework->name;
-        $aDatas['cssframework_css']  = self::formatArrayFields($oTemplate, 'engine', 'cssframework_css');
-        $aDatas['cssframework_js']   = self::formatArrayFields($oTemplate, 'engine', 'cssframework_js');
-        $aDatas['packages_to_load']  = self::formatArrayFields($oTemplate, 'engine', 'packages');
+
+        $aDatas['view_folder']       = (string) $oREngineTemplate->config->engine->viewdirectory;
+        $aDatas['files_folder']      = (string) $oREngineTemplate->config->engine->filesdirectory;
+        $aDatas['cssframework_name'] = (string) $oREngineTemplate->config->engine->cssframework->name;
+        $aDatas['cssframework_css']  = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_css');
+        $aDatas['cssframework_js']   = self::formatArrayFields($oREngineTemplate, 'engine', 'cssframework_js');
+        $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
+
+
+        // If empty in manifest, it should be the field in db, so the Mother Template css/js files will be used...
+        if (is_object($oTemplate->config->files)){
+            $aDatas['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
+            $aDatas['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
+            $aDatas['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
+        }else{
+            $aDatas['files_css'] = $aDatas['files_js'] = $aDatas['files_print_css'] = null;
+        }
 
         $aDatas['aOptions']          = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0  )?array():$oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
 
         return parent::importManifest($sTemplateName, $aDatas );
+    }
+
+    public static function getTemplateForXPath($oTemplate, $sFieldPath)
+    {
+        $oRTemplate = $oTemplate;
+        while (!is_object($oRTemplate->config->$sFieldPath) || empty($oRTemplate->config->$sFieldPath)) {
+            $sRTemplateName = (string) $oRTemplate->config->metadatas->extends;
+
+            if (!empty($sRTemplateName)){
+                $oRTemplate = Template::getTemplateConfiguration($sRTemplateName, null, null, true);
+                if (!is_a($oRTemplate, 'TemplateManifest')){
+                    // Think about what to do..
+                    throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sFieldPath'.");
+                }
+            }else{
+                throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sFieldPath'.");
+            }
+        }
+
+        return $oRTemplate;
     }
 
     /**
@@ -384,13 +407,13 @@ class TemplateManifest extends TemplateConfiguration
      *
      * @param DOMDocument   $oNewManifest  The DOMDOcument of the manifest
      */
-    public static function deleteFilesAndEngineInDom($oNewManifest)
+    public static function deleteEngineInDom($oNewManifest)
     {
         $oConfig            = $oNewManifest->getElementsByTagName('config')->item(0);
 
         // Then we delete the nodes that should be inherit
         $aNodesToDelete     = array();
-        $aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
+        //$aNodesToDelete[]   = $oConfig->getElementsByTagName('files')->item(0);
         $aNodesToDelete[]   = $oConfig->getElementsByTagName('engine')->item(0);
 
         foreach($aNodesToDelete as $node){
@@ -474,7 +497,7 @@ class TemplateManifest extends TemplateConfiguration
         libxml_disable_entity_loader(false);
         $oNewManifest = self::getManifestDOM($sConfigPath);
 
-        self::deleteFilesAndEngineInDom($oNewManifest);
+        self::deleteEngineInDom($oNewManifest);
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
         self::changeAuthorInDom($oNewManifest);
@@ -537,6 +560,7 @@ class TemplateManifest extends TemplateConfiguration
       */
     private function setTemplateName($sTemplateName='', $iSurveyId='')
     {
+
         // If it is called from the template editor, a template name will be provided.
         // If it is called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
@@ -639,12 +663,11 @@ class TemplateManifest extends TemplateConfiguration
     protected function getFilesToLoad($oTemplate, $sType)
     {
         $aFiles = array();
-        if(isset($oTemplate->config->files->$sType->filename)){
-            // TODO: check/get attributes "add" or "replace"
-            // For now: it's working. If a file is set to "remove", it will be removed from mother template,
-            // but then the daughter template will try to register it (and it will not be register, because the file doesn't exist in local template)
-            // But... would be cleaner, and closer to TemplateConfiguration logic
-            $aFiles = (array) $oTemplate->config->files->$sType->filename;
+        $oRFilesTemplate  = (!empty($bExtends))? self::getTemplateForXPath($oTemplate, 'files' )   : $oTemplate;
+
+        if(isset($oRFilesTemplate->config->files->$sType->add)){
+            // TODO: "replace" and "remove"
+            $aFiles = (array) $oTemplate->config->files->$sType->add;
         }
         return $aFiles;
     }

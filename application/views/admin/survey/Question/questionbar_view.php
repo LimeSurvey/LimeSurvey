@@ -104,7 +104,7 @@ $aReplacementData=array();
 
             <!-- Edit button -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')): ?>
-                <a class="btn btn-default " href='<?php echo $this->createUrl("admin/questions/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>' role="button">
+                <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/editquestion/surveyid/".$surveyid."/gid/".$gid."/qid/".$qid); ?>' role="button">
                     <span class="icon-edit"></span>
                     <?php eT("Edit");?>
                 </a>
@@ -113,7 +113,7 @@ $aReplacementData=array();
 
             <!-- Check logic -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read')): ?>
-                <a class="btn btn-default " href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>" role="button">
+                <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/expressions/sa/survey_logic_file/sid/{$surveyid}/gid/{$gid}/qid/{$qid}/"); ?>" role="button">
                     <span class="icon-expressionmanagercheck"></span>
                     <?php eT("Check logic"); ?>
                 </a>
@@ -164,7 +164,7 @@ $aReplacementData=array();
 
             <!-- conditions -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
-                <a class="btn btn-default " href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
+                <a class="btn btn-default pjax" href="<?php echo $this->createUrl("admin/conditions/sa/index/subaction/editconditionsform/surveyid/$surveyid/gid/$gid/qid/$qid"); ?>" role="button">
                     <span class="icon-conditions"></span>
                     <?php eT("Set conditions "); ?>
                 </a>
@@ -174,7 +174,7 @@ $aReplacementData=array();
             <!-- subquestions -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update')):?>
                 <?php if($qtypes[$qrrow['type']]['subquestions'] >0):?>
-                    <a id="adminpanel__topbar--selectorAddSubquestions" class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <a id="adminpanel__topbar--selectorAddSubquestions" class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/subquestions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
                         <?php eT("Edit subquestions "); ?>
                     </a>
@@ -184,7 +184,7 @@ $aReplacementData=array();
 
             <!-- Answer Options -->
             <?php if( Permission::model()->hasSurveyPermission($surveyid,'surveycontent','update') && $qtypes[$qrrow['type']]['answerscales'] > 0 ):?>
-                <a id="adminpanel__topbar--selectorAddAnswerOptions" class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                <a id="adminpanel__topbar--selectorAddAnswerOptions" class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/answeroptions/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                     <span class="icon-defaultanswers"></span>
                     <?php eT("Edit answer options "); ?>
                 </a>
@@ -193,7 +193,7 @@ $aReplacementData=array();
 
             <!-- Default Values -->
             <?php if(Permission::model()->hasSurveyPermission($surveyid,'surveycontent','read') && $qtypes[$qrrow['type']]['hasdefaultvalues'] >0):?>
-                    <a class="btn btn-default " href="<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
+                    <a class="btn btn-default pjax" href="<?php echo $this->createUrl('admin/questions/sa/editdefaultvalues/surveyid/'.$surveyid.'/gid/'.$gid.'/qid/'.$qid); ?>" role="button">
                         <span class="icon-defaultanswers"></span>
                         <?php eT("Edit default answers"); ?>
                     </a>

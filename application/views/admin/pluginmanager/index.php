@@ -9,7 +9,7 @@
 
 ?>
 <?php $pageSize = intval(Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize'])); ?>
-
+z
 <div class="pagetitle h3"><?php eT('Plugin manager'); ?></div>
 <div style="width: 75%; margin: auto;">
     <div id="ls_action_changestate_form_container">

@@ -9,16 +9,16 @@
     <div class="row">
         <div class="col-xs-12">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#your-profile" role="tab" data-toggle="tab"><?php eT("Your profile"); ?></a></li>
-                <li role="presentation"><a href="#your-personal-settings" role="tab" data-toggle="tab"><?php eT("Your personal settings"); ?></a></li>
-                <li role="presentation" ><a href="#your-personal-menues" role="tab" data-toggle="tab"><?php eT("Your personal menus"); ?></a></li>
-                <li role="presentation" ><a href="#your-personal-menueentries" role="tab" data-toggle="tab"><?php eT("Your personal menu entries"); ?></a></li>
+                <li role="presentation" class="active"><a href="#your-profile" role="tab" data-toggle="tab"><?php eT("My profile"); ?></a></li>
+                <li role="presentation"><a href="#your-personal-settings" role="tab" data-toggle="tab"><?php eT("My personal settings"); ?></a></li>
+                <li role="presentation" ><a href="#your-personal-menues" role="tab" data-toggle="tab"><?php eT("My personal menus"); ?></a></li>
+                <li role="presentation" ><a href="#your-personal-menueentries" role="tab" data-toggle="tab"><?php eT("My personal menu entries"); ?></a></li>
             </ul>
             <div class="tab-content">
 
-                <!-- TAB: Your profile settings -->
+                <!-- TAB: My profile settings -->
                 <div role="tabpanel" class="tab-pane fade in active" id="your-profile">
-                    <div class="pagetitle h3"><?php eT("Your profile"); ?></div>
+                    <div class="pagetitle h3"><?php eT("My profile"); ?></div>
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-12 col-md-12">
@@ -84,9 +84,9 @@
                     </div>
                 </div>
 
-                <!-- TAB: Your personal settings -->
+                <!-- TAB: My personal settings -->
                 <div role="tabpanel" class="tab-pane fade" id="your-personal-settings">
-                    <div class="pagetitle h3"><?php eT("Your personal settings"); ?></div>
+                    <div class="pagetitle h3"><?php eT("My personal settings"); ?></div>
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-12 col-md-6">
@@ -102,7 +102,7 @@
                                             'pluginOptions' => array(
                                                 'buttonWidth' => '100%',
                                                 'htmlOptions' => array(
-                                                    'id' => 'lang', 
+                                                    'id' => 'lang',
                                                     'style'=> "widht:100%;"
                                                 )
                                             ),
@@ -113,7 +113,7 @@
                                                 'data-width' => '100%'
                                             )
                                         ));
-                                            
+
                                             ?>
                                     </div>
                                 </div>

@@ -1,3 +1,13 @@
+<?php
+/**
+ * Export results to SPSS view
+ * @var AdminController $this
+ */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('exportSpss');
+
+?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3><?php eT("Export response data to SPSS");?></h3>
     <?php echo CHtml::form(array("admin/export/sa/exportspss/sid/{$surveyid}/"), 'post', array('id'=>'exportspss', 'class'=>''));?>

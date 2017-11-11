@@ -39,18 +39,19 @@ module.exports = {
             }]
         }, ],
         loaders: [{
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: [
-                    'babel'
-                ],
-                options: {
-                    data: '$env: ' + process.env.NODE_ENV + ';'
-                },
-                query: {
-                    presets: ['es2015']
-                }
+            test: /\.js$/,
+            exclude: /(node_modules|bower_components)/,
+            loader: [
+                'babel'
+            ],
+            options: {
+                data: '$env: ' + process.env.NODE_ENV + ';'
+            },
+            query: {
+                plugins: ['lodash'],
+                presets: ['es2015']
             }
+        }
         ]
     },
     plugins

@@ -54,8 +54,6 @@ class TemplateConfiguration extends TemplateConfig
 
     // Caches
 
-    public $allDbTemplateFolders = null;
-
     /** @var string $sPreviewImgTag the template preview image tag for the template list*/
     public $sPreviewImgTag;
 
@@ -272,9 +270,11 @@ class TemplateConfiguration extends TemplateConfig
 
         $criteria=new CDbCriteria;
 
+        $criteria->join = 'INNER JOIN {{templates}} AS `template` ON t.template_name = template.name';
         //Don't show surveyspecifi settings on the overview
-        $criteria->addCondition('sid IS NULL');
-        $criteria->addCondition('gsid IS NULL');
+        $criteria->addCondition('t.sid IS NULL');
+        $criteria->addCondition('t.gsid IS NULL');
+        $criteria->addCondition('template.name IS NOT NULL');
 
         $criteria->compare('id',$this->id);
         $criteria->compare('template_name',$this->template_name,true);
@@ -305,23 +305,6 @@ class TemplateConfiguration extends TemplateConfig
         return $model;
     }
 
-    // For list, so no "setConfiguration" before
-    public function getPreview()
-    {
-        if (empty($this->sPreviewImgTag)){
-
-            $previewPath =  Template::getTemplatePath($this->template->name);
-
-            if (file_exists($previewPath.'/preview.png')){
-                $previewUrl =  Template::getTemplateURL($this->template->name);
-                $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200"/>';
-            }else{
-                $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
-            }
-
-        }
-        return $this->sPreviewImgTag;
-    }
 
     /**
      * Create a new entry in {{templates}} and {{template_configuration}} table using the template manifest
@@ -562,18 +545,21 @@ class TemplateConfiguration extends TemplateConfig
         if(!empty($jFiles)){
             $oFiles = json_decode($jFiles, true);
             foreach($oFiles as $action => $aFileList){
-                if ($action == "add" || $action == "replace"){
 
-                    // Specific inheritance of one of the value of the json array
-                    if ($aFileList[0] == 'inherit'){
-                        $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
-                        $aFileList = $aParentjFiles[$action];
+                if ( is_array( $aFileList ) ){
+                    if ($action == "add" || $action == "replace"){
+
+                        // Specific inheritance of one of the value of the json array
+                        if ($aFileList[0] == 'inherit'){
+                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                            $aFileList = $aParentjFiles[$action];
+                        }
+
+                        $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                     }
-
-                    $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                 }
             }
-    
+
         }
 
 
@@ -589,7 +575,23 @@ class TemplateConfiguration extends TemplateConfig
     protected function changeMotherConfiguration( $sType, $aSettings )
     {
         if (is_a($this->oMotherTemplate, 'TemplateConfiguration')){
-            $this->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $aSettings);
+
+
+            // Check if each file exist in this template path
+            // If the file exists in local template, we can remove it from mother template package.
+            // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
+            // (and leave it in moter template definition if it already exists.)
+            foreach ($aSettings as $key => $sFileName){
+                if (file_exists($this->path.$sFileName)){
+                    Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName );
+                }else{
+                    $oTemplate = $this->getTemplateForFile($sFileName, $this);
+                    if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)){
+                        Yii::app()->clientScript->addFileToPackage($oTemplate->sPackageName, $sType, $sFileName);
+                        unset($aSettings[$key]);
+                    }
+                }
+            }
         }
 
         return $aSettings;
@@ -637,7 +639,10 @@ class TemplateConfiguration extends TemplateConfig
         while (empty($oRTemplate->template->$sPath)){
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                throw new Exception("can't find a template for template '{$oRTemplate->template_name}' in path '$sPath'.");
+                //throw new Exception("can't find a template for template '{$oRTemplate->template_name}' for path '$sPath'.");
+                TemplateConfiguration::uninstall($this->template_name);
+                Yii::app()->setFlashMessage(sprintf(gT("Templates '%s' has been uninstalled because it's not compatible with this LimeSurvey version."), $this->template_name), 'error');
+                Yii::app()->getController()->redirect(array("admin/templateoptions"));
                 break;
             }
             $oRTemplate = $oMotherTemplate;
@@ -833,21 +838,6 @@ class TemplateConfiguration extends TemplateConfig
     }
 
 
-    public function getTemplatesWithNoDb()
-    {
-        $aTemplatesInUpload   =  Template::getUploadTemplates();
-        $aTemplatesInDb       =  $this->getAllDbTemplateFolders();
-        $aTemplatesWithoutDB  = array();
-
-        foreach ($aTemplatesInUpload as $sName => $sPath) {
-            if (! in_array($sName, $aTemplatesInDb) ){
-                $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);    // Get the manifest
-            }
-        }
-
-        return $aTemplatesWithoutDB;
-    }
-
     /**
      * Change the template name inside the configuration entries (called from template editor)
      * NOTE: all tests (like template exist, etc) are done from template controller.
@@ -860,24 +850,6 @@ class TemplateConfiguration extends TemplateConfig
         self::model()->updateAll(array( 'template_name' => $sNewName  ), "template_name = :oldname", array(':oldname'=>$sOldName));
     }
 
-    public function getAllDbTemplateFolders()
-    {
-        if (empty($this->allDbTemplateFolders)){
-
-            $oCriteria = new CDbCriteria;
-            $oCriteria->select = 'folder';
-            $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
-
-            $aAllDbTemplateFolders = array();
-            foreach ($oAllDbTemplateFolders as $oAllDbTemplateFolders){
-                $aAllDbTemplateFolders[] = $oAllDbTemplateFolders->folder;
-            }
-
-            $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
-        }
-
-        return $this->allDbTemplateFolders;
-    }
 
     /**
      * Proxy for the AR method to manage the inheritance

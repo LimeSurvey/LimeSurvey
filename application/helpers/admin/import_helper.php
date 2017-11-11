@@ -742,7 +742,6 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
 {
     Yii::app()->loadHelper('database');
 
-
     $aGIDReplacements = array();
     if ($sXMLdata == NULL){
         $sXMLdata = file_get_contents($sFullFilePath);
@@ -842,10 +841,14 @@ function XMLImportSurvey($sFullFilePath,$sXMLdata=NULL,$sNewSurveyName=NULL,$iDe
         foreach($aBadData as $key=>$value){
             $results['importwarnings'][]=sprintf(gT("This survey setting has not been imported: %s => %s"),$key,$value);
         }
-
-        $iNewSID = $results['newsid'] = Survey::model()->insertNewSurvey($insertdata) or safeDie(gT("Error").": Failed to insert data [1]<br />");
-
-        $results['surveys']++;
+        $newSurvey = Survey::model()->insertNewSurvey($insertdata);
+        if($newSurvey->sid) {
+            $iNewSID = $results['newsid'] = $newSurvey->sid;
+            $results['surveys']++;
+        } else {
+            $results['error'] = gT("Unable to import survey.");
+            return $results;
+        }
     }
 
 
@@ -2058,12 +2061,14 @@ function TSVImportSurvey($sFullFilePath)
     $surveyinfo['startdate']=NULL;
     $surveyinfo['active']='N';
    // unset($surveyinfo['datecreated']);
-    $iNewSID = Survey::model()->insertNewSurvey($surveyinfo) ; //or safeDie(gT("Error").": Failed to insert survey<br />");
-    if ($iNewSID==false){
-        $results['error'] = Survey::model()->getErrors();
+    $newSurvey = Survey::model()->insertNewSurvey($surveyinfo) ; //or safeDie(gT("Error").": Failed to insert survey<br />");
+
+    if (!$newSurvey->sid){
+        $results['error'] = CHtml::errorSummary($newSurvey,gT("Error(s) when try to create survey"));
         $results['bFailed'] = true;
         return $results;
     }
+    $iNewSID = $newSurvey->sid;
     $surveyinfo['sid']=$iNewSID;
     $results['surveys']++;
     $results['newsid']=$iNewSID;

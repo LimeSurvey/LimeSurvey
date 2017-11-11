@@ -107,8 +107,19 @@ export default {
                 if(this.draggedQuestion.gid !== questiongroupObject.gid){
                     const removedFromInital = _.remove(this.draggedQuestionsGroup.questions, (question,i)=>{ return question.qid === this.draggedQuestion.qid; });
                     if(removedFromInital.length >0){ 
+                        this.draggedQuestion.question_order=null;
                         questiongroupObject.questions.push(this.draggedQuestion);
                         this.draggedQuestion.gid = questiongroupObject.gid;
+
+                        if(questiongroupObject.group_order>this.draggedQuestionsGroup.group_order){
+                            this.draggedQuestion.question_order = 0;
+                            _.each(questiongroupObject.questions, (question,i)=>{
+                                question.question_order = (parseInt(question.question_order)+1);
+                            });
+                        } else {
+                            this.draggedQuestion.question_order = (this.draggedQuestionsGroup.questions.length+1);
+                        }
+
                         this.draggedQuestionsGroup = questiongroupObject;
                     }
                 }
@@ -128,8 +139,8 @@ export default {
             this.draggedQuestionsGroup = null;
             this.$emit('questiongrouporder');
         },
-        dragoverQuestion($event, questionObject){
-            const orderSwap = questionObject.question_order;
+        dragoverQuestion($event, questionObject, questionGroupObject){
+            let orderSwap = questionObject.question_order;
             questionObject.question_order = this.draggedQuestion.question_order;
             this.draggedQuestion.question_order = orderSwap;
         },
@@ -160,7 +171,7 @@ export default {
                 </div>
                 <transition name="slide-fade-down">
                     <ul class="list-group background-muted padding-left" v-if="isActive(questiongroup.gid)" @drop="dropQuestion($event, question)">
-                        <li v-for="question in orderQuestions(questiongroup.questions)" v-bind:key="question.qid" v-bind:class="questionItemClasses(question)" class="list-group-item ls-flex-row align-itmes-flex-between" @dragenter="dragoverQuestion($event, question)">
+                        <li v-for="question in orderQuestions(questiongroup.questions)" v-bind:key="question.qid" v-bind:class="questionItemClasses(question)" class="list-group-item ls-flex-row align-itmes-flex-between" @dragenter="dragoverQuestion($event, question, questiongroup)">
                             <i class="fa fa-bars margin-right bigIcons dragPointer" draggable="true" @dragend="endDraggingQuestion($event, question)" @dragstart="startDraggingQuestion($event, question, questiongroup)">&nbsp;</i>
                             <a @click.stop="openQuestion(question)" :href="question.link" class="pjax" data-toggle="tootltip" :title="question.question"> <i>[{{question.title}}]</i> {{($store.state.maximalSidebar ? question.question : question.name_short)}} </a>
                         </li>
@@ -172,16 +183,6 @@ export default {
 </template>
 
 <style lang="scss">
-    .bigIcons {
-        font-size: 18px;
-        line-height: 21px;
-    }
-    .border-bottom{
-        border-bottom: 1px solid transparent;
-    }
-    .margin-bottom{
-        padding-bottom: 5px;
-    }
     #questionexplorer{
         overflow: auto;
     }

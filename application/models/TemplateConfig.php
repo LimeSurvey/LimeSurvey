@@ -77,7 +77,9 @@ class TemplateConfig extends CActiveRecord
     /** @var string $xmlFile What xml config file does it use? (config/minimal) */
     protected $xmlFile;
 
+    public $allDbTemplateFolders = null;
 
+    public static $aTemplatesWithoutDB = null;
 
      /**
       * get the template API version
@@ -142,8 +144,6 @@ class TemplateConfig extends CActiveRecord
          Yii::setPathOfAlias($sPathName, $oTemplate->path);
          Yii::setPathOfAlias($sViewName, $oTemplate->viewPath);
 
-         $aCssFiles  = $aJsFiles = array();
-
          // First we add the framework replacement (bootstrap.css must be loaded before template.css)
          $aCssFiles  = $this->getFrameworkAssetsReplacement('css');
          $aJsFiles   = $this->getFrameworkAssetsReplacement('js');
@@ -154,8 +154,6 @@ class TemplateConfig extends CActiveRecord
 
          $aCssFiles  = array_merge($aCssFiles, $aTCssFiles);
          $aJsFiles   = array_merge($aJsFiles, $aTJsFiles);
-
-         $dir        = getLanguageRTL(App()->language) ? 'rtl' : 'ltr';
 
          // Remove/Replace mother template files
          $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
@@ -188,7 +186,7 @@ class TemplateConfig extends CActiveRecord
       * It will search for current template and mother templates
       *
       * @param   string $sFile relative path to the file
-      * @param   string $oTemplate the template where to look for (and its mother templates)
+      * @param   TemplateConfig $oTemplate the template where to look for (and its mother templates)
       * @return string|false
       */
      protected function getFilePath($sFile, $oTemplate)
@@ -253,6 +251,22 @@ class TemplateConfig extends CActiveRecord
          return $packages;
      }
 
+     // For list, so no "setConfiguration" before
+     public function getPreview()
+     {
+         if (empty($this->sPreviewImgTag)){
+             $previewPath =  (is_a($this->template, 'Template'))?Template::getTemplatePath($this->template->name):false;
+
+             if ( $previewPath && file_exists($previewPath.'/preview.png')){
+                 $previewUrl =  Template::getTemplateURL($this->template->name);
+                 $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
+             }else{
+                 $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
+             }
+
+         }
+         return $this->sPreviewImgTag;
+     }
 
 
      /**
@@ -571,7 +585,7 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['attr']['nojs']  = ' ';
 
         // NavBar
-        $aClassAndAttributes['id']['navbar']            = ' navbar';
+        $aClassAndAttributes['id']['navbar']            = 'navbar';
         $aClassAndAttributes['class']['navbar']         = ' navbar navbar-default';
         $aClassAndAttributes['class']['navbarheader']   = ' navbar-header ';
         $aClassAndAttributes['class']['navbartoggle']   = ' navbar-toggle collapsed ';
@@ -692,8 +706,8 @@ class TemplateConfig extends CActiveRecord
         $aClassAndAttributes['class']['savebutton']            = ' ls-saveaction ls-loadall ';
 
         $aClassAndAttributes['attr']['navigatorbuttonprev']   = ' type="submit" value="moveprev" name="move" accesskey="p" accesskey="n"';
-        $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' type="submit" value="movesubmit" name="move" accesskey="l" ';
-        $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' type="submit" value="movenext" name="move"  ';
+        $aClassAndAttributes['attr']['navigatorbuttonsubmit'] = ' id="ls-button-submit" type="submit" value="movesubmit" name="move" accesskey="l" ';
+        $aClassAndAttributes['attr']['navigatorbuttonnext']   = ' id="ls-button-submit" type="submit" value="movenext" name="move"  ';
         $aClassAndAttributes['attr']['loadbutton']            = ' type="submit" value="loadall" name="loadall" accesskey="L"';
         $aClassAndAttributes['attr']['savebutton']            = ' type="submit" value="saveall" name="saveall" accesskey="s" ';
 
@@ -857,6 +871,45 @@ class TemplateConfig extends CActiveRecord
             throw new Exception($oNewTemplate->getErrors());
         }
     }
+
+    public function getAllDbTemplateFolders()
+    {
+        if (empty($this->allDbTemplateFolders)){
+
+            $oCriteria = new CDbCriteria;
+            $oCriteria->select = 'folder';
+            $oAllDbTemplateFolders = Template::model()->findAll($oCriteria);
+
+            $aAllDbTemplateFolders = array();
+            foreach ($oAllDbTemplateFolders as $oAllDbTemplateFolder){
+                $aAllDbTemplateFolders[] = $oAllDbTemplateFolder->folder;
+            }
+
+            $this->allDbTemplateFolders = array_unique($aAllDbTemplateFolders);
+        }
+
+        return $this->allDbTemplateFolders;
+    }
+
+
+    public function getTemplatesWithNoDb()
+    {
+        if (empty(self::$aTemplatesWithoutDB)){
+            $aTemplatesDirectories = Template::getAllTemplatesDirectories();
+            $aTemplatesInDb        = $this->getAllDbTemplateFolders();
+            $aTemplatesWithoutDB   = array();
+
+            foreach ($aTemplatesDirectories as $sName => $sPath) {
+                if (! in_array($sName, $aTemplatesInDb) ){
+                    $aTemplatesWithoutDB[$sName] = Template::getTemplateConfiguration($sName, null, null, true);    // Get the manifest
+                }
+            }
+            self::$aTemplatesWithoutDB = $aTemplatesWithoutDB;
+        }
+
+        return self::$aTemplatesWithoutDB;
+    }
+
 
     // TODO: try to refactore most of those methods in TemplateConfiguration and TemplateManifest so we can define their body here.
     // It will consist in adding private methods to get the values of variables... See what has been done for createTemplatePackage

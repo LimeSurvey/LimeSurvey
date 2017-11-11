@@ -1,8 +1,9 @@
 <?php
 
-namespace ls\tests;
+namespace ls\tests\controllers;
 
-use PHPUnit\Framework\TestCase;
+use ls\tests\TestBaseClass;
+use ls\tests\DummyController;
 
 /**
  * @since 2017-10-15
@@ -27,14 +28,16 @@ class TemplateControllerTest extends TestBaseClass
         // Remove folder from last test.
         $newname = 'foobartest';
         $newdirname  = \Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
-        @exec('rm -r ' . $newdirname);
+        if (file_exists($newdirname)) {
+            exec('rm -r ' . $newdirname);
+        }
 
         // Simulate a POST.
         $_POST['newname'] = $newname;
         $_POST['copydir'] = 'default';
         $_SERVER['SERVER_NAME'] = 'localhost';
 
-        $contr = new \templates(new DummyController('dummyid'));
+        $contr = new \templates(new \ls\tests\DummyController('dummyid'));
         $contr->templatecopy();
         $template = \Template::model()->find('name = \'foobartest\'');
         $this->assertNotEmpty($template);
@@ -47,7 +50,9 @@ class TemplateControllerTest extends TestBaseClass
     /**
      * @todo Copy template folder that does not exist.
      */
+    /*
     public function testCopyWrongFolder()
     {
     }
+     */
 }

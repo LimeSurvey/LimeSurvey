@@ -177,7 +177,7 @@ class User extends LSActiveRecord
     {
         $oUser = new self;
         $oUser->users_name = $new_user;
-        $oUser->password = hash('sha256', $new_pass);
+        $oUser->setPassword($new_pass);
         $oUser->full_name = $new_full_name;
         $oUser->parent_id = $parent_user;
         $oUser->lang = 'auto';
@@ -188,17 +188,6 @@ class User extends LSActiveRecord
             return false;
         }
     }
-
-    /** @inheritdoc */
-    public function beforeSave()
-    {
-         // Postgres delivers bytea fields as streams :-o - if this is not done it looks like Postgres saves something unexpected
-        if (gettype($this->password)=='resource') {
-            $this->password=stream_get_contents($this->password,-1,0);
-        }
-        return parent::beforeSave();
-    }
-
 
     /**
      * Delete user
@@ -235,17 +224,56 @@ class User extends LSActiveRecord
      * @param string $sPassword The clear text password
      * @return int number of rows updated
      */
-    public function updatePassword($iUserID, $sPassword)
+    public static function updatePassword($iUserID, $sPassword)
     {
-        // TODO should be $oUser->updatePassword($password)
-        return $this->updateByPk($iUserID, array('password' => hash('sha256', $sPassword)));
+        return User::model()->updateByPk($iUserID, password_hash($sPassword,PASSWORD_DEFAULT));
+    }
+
+    /**
+     * Set user password with hash
+     *
+     * @param string $sPassword The clear text password
+     * @return \User
+     */
+    public function setPassword($sPassword,$save=false)
+    {
+        $this->password = password_hash($sPassword,PASSWORD_DEFAULT);
+        if($save) {
+            $this->save();
+        }
+        return $this; // Return current object
+    }
+
+    /**
+     * Check if password is OK for current \User
+     *
+     * @param string $sPassword The clear password
+     * @return boolean
+     */
+    public function checkPassword($sPassword)
+    {
+        // password can not be empty
+        if(empty($this->password)) {
+            return false;
+        }
+        // Password is OK
+        if(password_verify($sPassword,$this->password)) {
+            return true;
+        }
+        // It can be an old password
+        if ($this->password == hash('sha256', $sPassword)) {
+            $this->setPassword($sPassword,true);
+            return true;
+        }
+        return false;
     }
 
     /**
     * Adds user record
     *
     * @access public
-     * @param array $data
+    * @param array $data
+    * @deprecated : just don't use it
     * @return string
     */
     public function insertRecords($data)
@@ -297,7 +325,7 @@ class User extends LSActiveRecord
         $setTemplatePermissionsUrl = Yii::app()->getController()->createUrl('admin/user/sa/setusertemplates');
         $changeOwnershipUrl = Yii::app()->getController()->createUrl('admin/user/sa/setasadminchild');
 
-        $oUser = $this->getName($this->uid);
+        $oUser = self::model()->findByPK($this->uid);
         if($this->uid == Yii::app()->user->getId()) {
             // Edit self
             $editUser = "<button

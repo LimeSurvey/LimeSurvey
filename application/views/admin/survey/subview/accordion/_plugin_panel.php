@@ -1,7 +1,12 @@
 <?php
 /**
+ * @var $this AdminController
  * Plugin options panel
  */
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyPlugins');
+
 ?>
 <script type="text/javascript">
     var jsonUrl = '';

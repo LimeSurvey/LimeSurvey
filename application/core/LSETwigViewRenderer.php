@@ -185,7 +185,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
 
         if (file_exists($oRTemplate->path.$sOptionJS)){
-            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS);            
+            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS, CClientScript::POS_HEAD);            
         }
 
         $line      = file_get_contents($oRTemplate->path.$sOptionFile);
@@ -298,7 +298,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
 
         if (!$bReturn){
-            Yii::app()->clientScript->registerPackage( $oTemplate->sPackageName );
+            Yii::app()->clientScript->registerPackage( $oTemplate->sPackageName, LSYii_ClientScript::POS_BEGIN );
             ob_start(function($buffer, $phase)
             {
                 App()->getClientScript()->render($buffer);

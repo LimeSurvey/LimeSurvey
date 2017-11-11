@@ -28,14 +28,15 @@
     -->
     <files>
         <css>
-            <add>css/template.css</add>
             <add>css/bootstrap-material-design.css</add>
             <add>css/ripples.min.css</add>
+            <add>css/template.css</add>            
         </css>
         <js>
             <add>scripts/template.js</add>
             <add>scripts/material.js</add>
             <add>scripts/ripples.min.js</add>
+            <add>scripts/ajaxify.js</add>
         </js>
         <print_css>
             <add>css/print_template.css</add>

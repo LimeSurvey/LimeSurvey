@@ -77,6 +77,11 @@ var getForm = function (that) {
     return form;
 };
 
+/**
+ * NB: This is not used for survey settings save button anymore. Instead,
+ * check out file application/views/admin/survey/editLocalSettings_main_view.php,
+ * bottom script tag.
+ */
 if ($('#save-button').length > 0){
     $('#save-button').on('click', function(ev)
     {

@@ -18,10 +18,11 @@
                 <?php foreach($templates as $key=>$template):?>
                     <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $oSurvey->template==htmlspecialchars($key) ): ?>
                     <div class="item text-center <?php if($key==$oSurvey->template){echo ' active ';}else{echo ' inactive ';}?>" id="template-big-<?php echo $key;?>">
-                        <img class="img-responsive imgSelectTemplate" src="<?php echo $template['preview']; ?>" alt="<?php echo $key;?>">
+                        <?php echo $template['preview']; ?>
+                            <h3><?php echo $key;?></h3>
                             <?php if($key==$oSurvey->template):?>
                                 <button
-                                    class="selectTemplate btn btn-default btn-success btn-xs disabled"
+                                    class="selectTemplate btn btn-default btn-success  disabled"
                                     data-selectedtext="<?php eT("Selected!");?>"
                                     data-unselectedtext="<?php eT('Select');?> &nbsp; <?php echo $key;?>">
                                         <?php eT('Selected!');?>
@@ -49,7 +50,7 @@
                             <?php foreach($templates as $key=>$template):?>
                                 <?php if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $key) == 1 || $oSurvey->template==htmlspecialchars($key) ): ?>
                                 <li class="template-miniature <?php if($key==$oSurvey->template){echo ' active';}?>" data-big="#template-big-<?php echo $key;?>">
-                                    <img src="<?php echo $template['preview']; ?>" alt="<?php echo $key;?>"  >
+                                    <?php echo $template['preview']; ?>
                                 </li>
                             <?php endif; ?>
                             <?php endforeach;?>

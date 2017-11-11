@@ -17,7 +17,7 @@
     */
   if (!isset($argv[0])) die();
   define('BASEPATH','.');
-    require_once __DIR__ . '/../../vendor/autoload.php';
+    require_once __DIR__ . '/../../third_party/autoload.php';
     require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
     // Load configuration.
     $sCurrentDir=dirname(__FILE__);

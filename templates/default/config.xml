@@ -27,9 +27,9 @@
     -->
     <files>
         <css>
-            <add>css/template.css</add>
             <add>css/animate.css</add>
             <add>css/ajaxify.css</add>
+            <add>css/template.css</add>            
         </css>
         <js>
             <add>scripts/template.js</add>
@@ -165,6 +165,24 @@
                     <file type="css">./css/background-image.css</file>
                     <file type="js">./scripts/template.js</file>
                 </save>
+
+                <register>
+                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_register.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_head.twig</file>                    
+                    <file type="view" role="subview">./subviews/registration/register_form.twig</file>                    
+                    <file type="view" role="subview">./subviews/registration/register_error.twig</file>                    
+                    <file type="view" role="subview">./subviews/registration/register_message.twig</file>                    
+                </register>
+                
+                <printanswers>
+                    <file type="view" role="global">layout_global.twig</file>
+                    <file type="view" role="layout">layout_printanswers.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_head.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_foot.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_question.twig</file>
+                    <file type="view" role="subview">./subviews/printanswers/printanswers_table.twig</file>
+                </printanswers>
             </screens>
 
         </template_editor>

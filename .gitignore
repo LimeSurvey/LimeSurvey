@@ -36,7 +36,6 @@
 .eslintrc
 .eslintignore
 node_modules/
-third_party/**/src/
 third_party/**/docs/
 third_party/**/scripts/
 third_party/**/tests/
@@ -45,6 +44,9 @@ third_party/**/less/
 third_party/**/*.sh
 third_party/**/*.md
 third_party/**/gulpfile.js
+
+# Test stuff
+chromedriver
 
 # RFC and commons directory and files
 /.well-known/

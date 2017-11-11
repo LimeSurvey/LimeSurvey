@@ -37,8 +37,15 @@ if (!defined('BASEPATH'))
  */
 class Template extends LSActiveRecord
 {
-    /** @var array $aTemplatesInUploadDir cache for the method getUploadTemplates */
+
+    /** @var array $aAllTemplatesDir cache for the method getAllTemplatesDirectories */
+    public static $aAllTemplatesDir = null;
+
+    /** @var array $aTemplatesInUploadDir cache for the method getTemplateInUpload */
     public static $aTemplatesInUploadDir = null;
+
+    /** @var array $aTemplatesInStandardDir cache for the method getTemplateInStandard */
+    public static $aTemplatesInStandardDir = null;
 
     /** @var Template - The instance of template object */
     private static $instance;
@@ -218,7 +225,6 @@ class Template extends LSActiveRecord
         if ( $bForceXML || !is_a($oTemplateConfigurationModel, 'TemplateConfiguration') || ! $oTemplateConfigurationModel->checkTemplate()){
             $oTemplateConfigurationModel = new TemplateManifest;
             $oTemplateConfigurationModel->setBasics($sTemplateName, $iSurveyId);
-
         }
 
         //$oTemplateConfigurationModel->prepareTemplateRendering($sTemplateName, $iSurveyId);
@@ -326,40 +332,15 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateListWithPreviews()
     {
-        $sUserTemplateRootDir     = Yii::app()->getConfig("usertemplaterootdir");
-        $standardtemplaterootdir = Yii::app()->getConfig("standardtemplaterootdir");
-        $usertemplaterooturl     = Yii::app()->getConfig("usertemplaterooturl");
-        $standardtemplaterooturl = Yii::app()->getConfig("standardtemplaterooturl");
 
         $aTemplateList = array();
-        $aStandardTemplates = self::getStandardTemplateList();
 
-        foreach ($aStandardTemplates as $sTemplateName){
-            $oTemplate  = self::model()->findByPk($sTemplateName);
+        $oTemplateList =  TemplateConfiguration::model()->search();
+        $oTemplateList->setPagination(false);
 
-            if (is_object($oTemplate)) {
-                $aTemplateList[$sTemplateName]['directory'] = $standardtemplaterootdir.DIRECTORY_SEPARATOR.$oTemplate->folder;
-                $aTemplateList[$sTemplateName]['preview']   = $standardtemplaterooturl.'/'.$oTemplate->folder.'/preview.png';
-            }
+        foreach ($oTemplateList->getData() as $oTemplate){
+            $aTemplateList[$oTemplate->template_name]['preview']   = $oTemplate->preview;
         }
-
-        if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)) {
-            while (false !== ($sTemplatePath = readdir($handle))) {
-                // Maybe $file[0] != "." to hide Linux hidden directory
-                if (!is_file("$sUserTemplateRootDir/$sTemplatePath") && $sTemplatePath != "." && $sTemplatePath != ".." && $sTemplatePath!=".svn") {
-
-
-                    $oTemplate  = self::model()->find('folder=:folder', array(':folder'=>$sTemplatePath));
-
-                    if (is_object($oTemplate)){
-                        $aTemplateList[$oTemplate->name]['directory'] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath;
-                        $aTemplateList[$oTemplate->name]['preview'] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sTemplatePath.'/'.'preview.png';
-                    }
-                }
-            }
-            closedir($handle);
-        }
-        ksort($aTemplateList);
 
         return $aTemplateList;
     }
@@ -441,7 +422,7 @@ class Template extends LSActiveRecord
     public static function getStandardTemplateList()
     {
 
-        $standardTemplates = array('default', 'vanilla', 'material', 'no_bootstrap');
+        $standardTemplates = array('default', 'vanilla', 'material', 'no_bootstrap', 'monochrome');
         return $standardTemplates;
 
         /*
@@ -474,29 +455,50 @@ class Template extends LSActiveRecord
         return self::model()->countByAttributes(array('extends' => $sTemplateName));
     }
 
-    public static function getUploadTemplates()
+    public static function getAllTemplatesDirectories()
     {
+        if(empty(self::$aAllTemplatesDir)){
+            $aTemplatesInUpload     = Template::getTemplateInUpload();
+            $aTemplatesInCore       = Template::getTemplateInStandard();
+            self::$aAllTemplatesDir = array_merge($aTemplatesInUpload, $aTemplatesInCore);
+        }
+        return self::$aAllTemplatesDir;
+    }
 
+    public static function getTemplateInUpload()
+    {
         if(empty(self::$aTemplatesInUploadDir)){
-
-            $sUserTemplateRootDir = Yii::app()->getConfig("usertemplaterootdir");
-            $aTemplateList        = array();
-
-            if ($sUserTemplateRootDir && $handle = opendir($sUserTemplateRootDir)){
-
-                while (false !== ($sFileName = readdir($handle))){
-
-                    if (!is_file("$sUserTemplateRootDir/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName!=".svn" && (file_exists("{$sUserTemplateRootDir}/{$sFileName}/config.xml") )){
-                        $aTemplateList[$sFileName] = $sUserTemplateRootDir.DIRECTORY_SEPARATOR.$sFileName;
-                    }
-                }
-                closedir($handle);
-            }
-            ksort($aTemplateList);
-            self::$aTemplatesInUploadDir = $aTemplateList;
+            $sUserTemplateRootDir        = Yii::app()->getConfig("usertemplaterootdir");
+            self::$aTemplatesInUploadDir = self::getTemplateInFolder($sUserTemplateRootDir);
         }
 
         return self::$aTemplatesInUploadDir;
+    }
+
+    public static function getTemplateInStandard()
+    {
+        if(empty(self::$aTemplatesInStandardDir)){
+            $standardTemplateRootDir       = Yii::app()->getConfig("standardtemplaterootdir");
+            self::$aTemplatesInStandardDir = self::getTemplateInFolder($standardTemplateRootDir);
+        }
+
+        return self::$aTemplatesInStandardDir;
+    }
+
+    public static function getTemplateInFolder($sFolder)
+    {
+        $aTemplateList        = array();
+
+        if ($sFolder && $handle = opendir($sFolder)){
+            while (false !== ($sFileName = readdir($handle))){
+                if (!is_file("$sFolder/$sFileName") && $sFileName != "." && $sFileName != ".." && $sFileName!=".svn" && (file_exists("{$sFolder}/{$sFileName}/config.xml") )){
+                    $aTemplateList[$sFileName] = $sFolder.DIRECTORY_SEPARATOR.$sFileName;
+                }
+            }
+            closedir($handle);
+        }
+        ksort($aTemplateList);
+        return  $aTemplateList;
     }
 
 

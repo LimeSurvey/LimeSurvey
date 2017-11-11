@@ -5,6 +5,9 @@
  * @var Survey $oSurvey
  */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyParticipantTokenOptions');
+
 ?>
 <script type="text/javascript">
     var jsonUrl = '';
