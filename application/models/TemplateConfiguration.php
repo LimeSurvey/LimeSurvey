@@ -641,7 +641,7 @@ class TemplateConfiguration extends TemplateConfig
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
                 //throw new Exception("can't find a template for template '{$oRTemplate->template_name}' for path '$sPath'.");
                 TemplateConfiguration::uninstall($this->template_name);
-                Yii::app()->setFlashMessage(sprintf(gT("%s has been uninstall because it's not compatible with LS3."), $this->template_name), 'error');
+                Yii::app()->setFlashMessage(sprintf(gT("Templates '%s' has been uninstalled because it's not compatible with this LimeSurvey version."), $this->template_name), 'error');
                 Yii::app()->getController()->redirect(array("admin/templateoptions"));
                 break;
             }
