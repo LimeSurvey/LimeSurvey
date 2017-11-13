@@ -270,7 +270,7 @@ class TemplateConfiguration extends TemplateConfig
 
         $criteria=new CDbCriteria;
 
-        $criteria->join = 'INNER JOIN {{templates}} AS `template` ON t.template_name = template.name';
+        $criteria->join = 'INNER JOIN {{templates}} AS template ON t.template_name = template.name';
         //Don't show surveyspecifi settings on the overview
         $criteria->addCondition('t.sid IS NULL');
         $criteria->addCondition('t.gsid IS NULL');
