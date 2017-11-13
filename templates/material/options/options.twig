@@ -154,8 +154,14 @@
 ' %}
 {% endif %}    
 
+<style>
+label.btn{
+    outline:none !important;
+}
+</style>
+<div class="container-fluid" style="position:relative">
 {# Small loading animation to give the scripts time to parse and render the correct values #}
-<div class="simple-template-edit-loading" style="display:none;height:100%;height:100vh;width:100%;width:100vw;position:fixed;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;" class="">
+<div class="simple-template-edit-loading" style="display:none;height:100%;width:100%;position:absolute;left:0;top:0;background:rgb(255,255,255);background:rgba(235,235,235,0.8);z-index:2000;" class="">
     <div style="position:absolute; left:49%;top:35%;" class="text-center"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></div>
 </div> 
 {# Begin template option form #}
@@ -205,32 +211,6 @@
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
                         <label class="btn btn-primary">
                             <input name='ajaxmode' type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
-                            Inherit
-                        </label>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class='col-sm-12 col-md-6'>
-            {# Brandlogo #}
-            <div class='form-group row'>
-                <label for='simple_edit_options_brandlogo' class='control-label'>Brandlogo</label>
-                <div class='col-sm-12'>
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
-                            <input type='radio' name='brandlogo' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
-                            Yes
-                        </label>
-                        <label class="btn btn-primary">
-                            <input type='radio' name='brandlogo' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
-                            No
-                        </label>
-                        {# If this is a root template setting, don't show the inherit button #}
-                        {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                        <label class="btn btn-primary">
-                            <input type='radio' name='brandlogo' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
                             Inherit
                         </label>
                         {% endif %}
@@ -296,6 +276,50 @@
     </div>
     <div class='row action_hide_on_inherit' >
         <div class='col-sm-12 col-md-4'>
+            {# Brandlogo #}
+            <div class='form-group row'>
+                <label for='simple_edit_options_brandlogo' class='control-label'>Brandlogo</label>
+                <div class='col-sm-12'>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary">
+                            <input type='radio' name='brandlogo' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
+                            Yes
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type='radio' name='brandlogo' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
+                            No
+                        </label>
+                        {# If this is a root template setting, don't show the inherit button #}
+                        {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
+                        <label class="btn btn-primary">
+                            <input type='radio' name='brandlogo' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
+                            Inherit
+                        </label>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class='col-sm-12 col-md-8'>
+            {#  Brandlogo file selector #}
+            <div class='form-group row'>
+                <label for='simple_edit_options_brandlogofile' class='control-label'>Brandlogo file</label>
+                <div class='col-sm-12'>
+                    <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="brandlogo" id='simple_edit_options_brandlogofile' name='brandlogofile'>
+                        {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}                        
+                            <option value="inherit">Inherit</option>
+                        {% endif %}
+                        
+                        {% for brandlogo in templateConfiguration.brandlogoFileList %}
+                            <option value="{{brandlogo.filepath}}">{{brandlogo.filename}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='row action_hide_on_inherit' >
+        <div class='col-sm-12 col-md-4'>
             <div class='form-group row'>
                 {# Animate body On/Off #}
                 <label for='simple_edit_options_animatebody' class='control-label'>Animate body</label>
@@ -320,14 +344,12 @@
                 </div>
             </div>
         </div>
-        <div class='col-sm-12 col-md-4'>
-        </div>
         <div class='col-sm-12 col-md-8'>
             {# Animate body -> Animation type #}
             <div class='form-group row'>
                 <label for='simple_edit_options_bodyanimation' class='control-label'>Body animation</label>
                 <div class='col-sm-12'>
-                    <select class='form-control selector_option_value_field' id='simple_edit_options_bodyanimation' name='bodyanimation'>
+                    <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatebody" id='simple_edit_options_bodyanimation' name='bodyanimation'>
                         {{animationOptions}}
                     </select>
                 </div>
@@ -365,7 +387,7 @@
             <div class='form-group row'>
                 <label for='simple_edit_options_questionanimation' class='control-label'>Question animation</label>
                 <div class='col-sm-12'>
-                    <select class='form-control selector_option_value_field' id='simple_edit_options_questionanimation' name='questionanimation'>
+                    <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatequestion" id='simple_edit_options_questionanimation' name='questionanimation'>
                         {{animationOptions}}
                     </select>
                 </div>
@@ -403,7 +425,7 @@
             <div class='form-group row'>
                 <label for='simple_edit_options_alertanimation' class='control-label'>Alert animation</label>
                 <div class='col-sm-12'>
-                    <select class='form-control selector_option_value_field' id='simple_edit_options_alertanimation' name='alertanimation'>
+                    <select class='form-control selector_option_value_field selector_radio_childfield' data-parent="animatealert" id='simple_edit_options_alertanimation' name='alertanimation'>
                         {{animationOptions}}
                     </select>
                 </div>
@@ -413,9 +435,11 @@
     <div class='row ls-space margin top-15 bottom-15 '>
         <hr/>
     </div>
+
     <div class='row'>
         <div class='col-sm-12'>
             <button class='btn btn-success col-md-2 col-sm-4 col-xs-6 action_update_options_string_button'>Save</button>
         </div>
     </div>
 </form>
+</div>

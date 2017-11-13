@@ -36,6 +36,18 @@ var prepare = function(){
             $(item).val(itemValue);
 
         });
+
+        //hotwapping the select fields to the radiobuttons
+        $('.selector_radio_childfield').each(function(i, selectorItem){
+            $('input[name='+$(selectorItem).data('parent')+']').on('change', function(){
+                if($(this).val() == 'on' && $(this).prop('checked') == true){
+                    $(selectorItem).prop('disabled', false);
+                } else {
+                    $(selectorItem).prop('disabled', true);
+                }
+            });
+        });
+        
         $('.action_update_options_string_form').find('.selector_option_radio_field').each(function(i,item){
             var itemValue = generalInherit() ? 'inherit' : optionObject[$(item).attr('name')];
             //if it is a radio selector, check it and propagate the change to bootstrapSwitch
@@ -92,6 +104,7 @@ var prepare = function(){
             optionObject[$(this).attr('name')] = $(this).val();
             $('#TemplateConfiguration_options').val(JSON.stringify(optionObject));
         });
+
 
         //Bootstrap theming?
         if($('#simple_edit_cssframework').length>0){
