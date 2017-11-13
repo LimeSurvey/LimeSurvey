@@ -44,12 +44,13 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                             'offLabel'=>gT('Off'),
                             'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
                                 if ($('#anonymized').is(':checked') == true) {
-                                $('#datestampModal').modal();
+                                $('#datestampModal_1').modal();
                                 }
                             }")
                             ));
                             $this->widget('bootstrap.widgets.TbModal', array(
-                                'id' => 'datestampModal',
+                                'id' => 'datestampModal_1',
+                                'htmlOptions' => ['class' => 'selector_dateStampModal_notification'],
                                 'header' => gt('Warning','unescaped'),
                                 'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
                                 'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
@@ -75,10 +76,15 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                             'name' => 'ipaddr',
                             'value'=> $oSurvey->isIpAddr,
                             'onLabel'=>gT('On'),
-                            'offLabel'=>gT('Off')
+                            'offLabel'=>gT('Off'),
+                            'events'=>array('switchChange.bootstrapSwitch'=>"function(event,state){
+                                if ($('#anonymized').is(':checked') == true) {
+                                $('#datestampModal_2').modal();
+                                }
+                            }")
                         ));
                         $this->widget('bootstrap.widgets.TbModal', array(
-                            'id' => 'datestampModal',
+                            'id' => 'datestampModal_2',
                             'header' => gt('Warning','unescaped'),
                             'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants. If you are running a closed survey you will NOT be able to link responses to participants if the survey is set to be anonymous.").'</p>',
                             'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))

@@ -314,6 +314,6 @@ class viewHelper
      * @return string
      */
      public static function getViewTestTag($name){
-         return CHtml::tag('div',['id'=>'action::'.$name,'style'=>'']);
+         return '<x-test id="action::'.$name.'" />';
      }
 }

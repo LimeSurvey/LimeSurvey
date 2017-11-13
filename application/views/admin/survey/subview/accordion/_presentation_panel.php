@@ -20,7 +20,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
     var sAddParam = '';
 </script>
 <!-- Presentation panel -->
-<div id='presentation' class="container-fluid">
+<div id='presentation-panel' class="container-fluid">
     <div class="col-sm-12 col-md-6">
         <!-- Navigation delay -->
         <div class="form-group">

@@ -19,7 +19,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     var sAddParam = '';
 </script>
 <!-- Publication panel -->
-<div id='publication' class="container-fluid">
+<div id='publication-panel' class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-6">
 

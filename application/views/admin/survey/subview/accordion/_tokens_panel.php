@@ -20,7 +20,7 @@ echo viewHelper::getViewTestTag('surveyParticipantTokenOptions');
     var sAddParam = '';
 </script>
 <!-- tokens panel -->
-<div id='tokens' class="container-fluid">
+<div id='tokens-panel' class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <!--  Set token length to -->
