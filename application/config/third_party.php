@@ -138,7 +138,7 @@ return array(
             'css/bootstrap-switch'.$minVersion.'.css'
         ),
         'js' => array(
-            'js/bootstrap-switch.min'.$minVersion.'.js'
+            'js/bootstrap-switch'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',

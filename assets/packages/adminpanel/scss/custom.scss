@@ -268,3 +268,15 @@ ol.breadcrumb.title-bar-breadcrumb {
         border-radius: 1px;
     }
 }
+
+#pjaxClickInhibitor{
+    position: fixed;
+    left: 0;
+    top:0;
+    z-index: 9999999;
+    width:100%;
+    width:100vw;
+    height:100%;
+    height:100vh;
+    background: rgba(250,250,250,0.4);
+}

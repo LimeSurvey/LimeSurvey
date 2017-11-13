@@ -25,7 +25,7 @@ hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'fu
 /* See function */
 fixAccordionPosition();
 
-$(document).on('ready  pjax:complete', function(){
+$(document).on('ready  pjax:success', function(){
 
     initializeAjaxProgress();
     tableCellAdapters();
@@ -57,7 +57,6 @@ $(document).on('ready  pjax:complete', function(){
         $(document).on('click', '.has-link', function () {
             $linkUrl = $(this).find('a').attr('href');
             window.location.href=$linkUrl;
-            console.log($linkUrl);
         });
     }
 
@@ -68,9 +67,6 @@ $(document).on('ready  pjax:complete', function(){
             $(this).addClass('active');
             $value = $(this).data('value');
             $url = $('#switch-url').attr('data-url')+'/format/'+$value;
-
-            console.log('required format: '+$value);
-            console.log('format url: '+$url);
 
             $.ajax({
                 url : $url,
@@ -341,31 +337,20 @@ function validatefilename (form, strmessage )
 
 function doToolTip()
 {
-    $('.btntooltip').each(function(i,item){
-        if($(item).data && $(item).data('bs.tooltip')){
-            $(item).tooltip('destroy');
-        }
-    });
+    try{ $('.btntooltip').tooltip('destroy'); } catch(e){}
 
     $('.btntooltip').tooltip();
 
     // Since you can only have one option per data-toggle,
     // we need this to enable both modal and toggle on one
     // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
-    $('[data-tooltip="true"]').each(function(i,item){
-        if($(item).data && $(item).data('bs.tooltip')){
-            $(item).tooltip('destroy');
-        }
-    });
-    
-    $('[data-tooltip="true"]').tooltip();
 
-    $('[data-toggle="tooltip"]').each(function(i,item){
-        if($(item).data && $(item).data('bs.tooltip')){
-            console.log($(item));
-            $(item).tooltip('destroy');
-        }
-    });
+    
+    try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
+
+    $('[data-tooltip="true"]').tooltip();
+    
+    try{ $('[data-tooltip="true"]').tooltip('destroy'); } catch(e){}
     
     $('[data-toggle="tooltip"]').tooltip();
 

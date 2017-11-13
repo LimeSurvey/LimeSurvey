@@ -37327,78 +37327,80 @@ __WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODU
 __WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_8__mixins_logSystem_js___default.a);
 
 __WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */].mixin({
-  methods: {
-    updatePjaxLinks: function () {
-      this.$store.commit('updatePjax');
+    methods: {
+        updatePjaxLinks: function () {
+            this.$store.commit('updatePjax');
+        }
     }
-  }
 });
 
-$(document).on('ready', function(){
+$(document).on('ready', function () {
     const AppState = __WEBPACK_IMPORTED_MODULE_7__store_vuex_store_js__["a" /* default */](LS.globalUserId);
     if (document.getElementById('vue-app-main-container')) {
-    // eslint-disable-next-line
-    const vueGeneralApp = new __WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */]({
-        el: '#vue-app-main-container',
-        store: AppState,
-        components: {
-        'sidebar': __WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue___default.a,
-        'topbar': __WEBPACK_IMPORTED_MODULE_5__components_topbar_vue___default.a,
-        'lspanelparametertable': __WEBPACK_IMPORTED_MODULE_6__components_parameter_table_vue___default.a,
-        },
-        methods: {
-        controlWindowSize() {
-            const
-            menuOffset = $('nav.navbar').outerHeight(),
-            menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
-            footerHeight = $('footer').outerHeight(),
-            windowHeight = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.max([screen.availHeight, screen.height]),
-            innerMenuHeight = $('#breadcrumb-container').outerHeight(),
-            inSurveyViewHeight = (windowHeight - (menuOffset + (2*menuHeight) + (2*footerHeight))),
-            generalContainerHeight = inSurveyViewHeight-(innerMenuHeight);
-                
-            this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
-            this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
-        }
-        },
-        created() {
-        this.controlWindowSize();
-        
-        window.addEventListener('resize', ()=>{
-            this.controlWindowSize();
+        // eslint-disable-next-line
+        const vueGeneralApp = new __WEBPACK_IMPORTED_MODULE_1_vue__["a" /* default */]({
+            el: '#vue-app-main-container',
+            store: AppState,
+            components: {
+                'sidebar': __WEBPACK_IMPORTED_MODULE_4__components_sidebar_vue___default.a,
+                'topbar': __WEBPACK_IMPORTED_MODULE_5__components_topbar_vue___default.a,
+                'lspanelparametertable': __WEBPACK_IMPORTED_MODULE_6__components_parameter_table_vue___default.a,
+            },
+            methods: {
+                controlWindowSize() {
+                    const
+                        menuOffset = $('nav.navbar').outerHeight(),
+                        menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
+                        footerHeight = $('footer').outerHeight(),
+                        windowHeight = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.max([screen.availHeight, screen.height]),
+                        innerMenuHeight = $('#breadcrumb-container').outerHeight(),
+                        inSurveyViewHeight = (windowHeight - (menuOffset + (2 * menuHeight) + (2 * footerHeight))),
+                        generalContainerHeight = inSurveyViewHeight - (innerMenuHeight);
+
+                    this.$store.commit('changeInSurveyViewHeight', inSurveyViewHeight);
+                    this.$store.commit('changeGeneralContainerHeight', generalContainerHeight);
+                }
+            },
+            created() {
+                this.controlWindowSize();
+
+                window.addEventListener('resize', () => {
+                    this.controlWindowSize();
+                });
+            },
+            mounted() {
+                const surveyid = $(this.$el).data('surveyid');
+                if (surveyid != 0) {
+                    this.$store.commit('updateSurveyId', surveyid);
+                }
+                const maxHeight = ($('#in_survey_common').height() - 35) || 400;
+                this.$store.commit('changeMaxHeight', maxHeight);
+                this.updatePjaxLinks();
+                $(document).on('click', 'ul.pagination>li>a', function () {
+                    this.updatePjaxLinks();
+                });
+            }
         });
-        },
-        mounted() {
-        const surveyid = $(this.$el).data('surveyid');
-        if(surveyid != 0){
-            this.$store.commit('updateSurveyId', surveyid);
-        }
-        const maxHeight = ($('#in_survey_common').height() - 35) || 400;
-        this.$store.commit('changeMaxHeight', maxHeight);
-        this.updatePjaxLinks();
-        $(document).on('click', 'ul.pagination>li>a', function(){
-            this.updatePjaxLinks();
-        });
-        }
-    });
-    global.vueGeneralApp = vueGeneralApp;
+        global.vueGeneralApp = vueGeneralApp;
     }
 
     $(document).on('pjax:send', () => {
-    $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
-    $('#pjax-file-load-container').find('div').css({
-        'width': '20%',
-        'display': 'block'
-    });
-    });
-    $(document).on('pjax:complete', () => {
-    $('#pjax-file-load-container').find('div').css('width', '100%');
-    setTimeout(function () {
+        $('<div id="pjaxClickInhibitor"></div>').appendTo('body');
+        $('.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-draggable.ui-resizable').remove();
         $('#pjax-file-load-container').find('div').css({
-        'width': '0%',
-        'display': 'none'
+            'width': '20%',
+            'display': 'block'
         });
-    }, 2200);
+    });
+    $(document).on('pjax:success', () => {
+        $('#pjaxClickInhibitor').fadeOut(400, function(){$(this).remove();});
+        $('#pjax-file-load-container').find('div').css('width', '100%');
+        setTimeout(function () {
+            $('#pjax-file-load-container').find('div').css({
+                'width': '0%',
+                'display': 'none'
+            });
+        }, 2200);
     });
 });
 
