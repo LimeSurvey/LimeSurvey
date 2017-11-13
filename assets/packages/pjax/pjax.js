@@ -84,7 +84,7 @@
       },
     
       loadContent: function(html, options) {
-        var tmpEl = document.implementation.createHTMLDocument("")
+        var tmpEl = document.implementation.createHTMLDocument("pjax")
     
         // parse HTML attributes to copy them
         // since we are forced to use documentElement.innerHTML (outerHTML can't be used for <html>)
@@ -467,16 +467,23 @@
       }
     
       event.preventDefault()
-    
+      var nameList = [];
       var paramObject = [];
       for(var elementKey in el.elements) {
         var element = el.elements[elementKey];
         if (!!element.name && element.attributes !== undefined && element.tagName.toLowerCase() !== 'button'){
-          if ((element.attributes.type !== 'checkbox' && element.attributes.type !== 'radio') || element.checked) {
-            paramObject.push({ name: encodeURIComponent(element.name), value: encodeURIComponent(element.value)});
+          if (
+            (element.type !== 'checkbox' && element.type !== 'radio') || element.checked
+          ) {
+            if(nameList.indexOf(element.name) === -1){
+              nameList.push(element.name);
+              paramObject.push({ name: encodeURIComponent(element.name), value: encodeURIComponent(element.value)});
+            }
           }
         }
       }
+    
+    
     
       //Creating a getString
       var paramsString = (paramObject.map(function(value){return value.name+"="+value.value;})).join('&');

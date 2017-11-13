@@ -56,17 +56,18 @@ var AjaxSubmitObject = function () {
             
         });
         // Always bind to document to not need to bind again
-        $(document).on("click", ".ls-move-btn",function () {
+        $(document).off('.lsmove').on("click.lsmove", ".ls-move-btn",function () {
             $("#limesurvey").append("<input name='"+$(this).attr("name")+"' value='"+$(this).attr("value")+"' type='hidden' />");
         });
 
         // If the user try to submit the form
         // Always bind to document to not need to bind again
-        $(document).on("submit", "#limesurvey", function (e) {
+        $("#limesurvey").off('.submitMainForm').on("submit.submitMainForm", function (e) {
+            console.log($('#limesurvey').serializeArray());
             // Prevent multiposting
             //Check if there is an active submit
             //If there is -> return immediately
-            if(activeSubmit) return;
+            if(activeSubmit) return false;
             //block further submissions
             activeSubmit = true;
             //start the loading animation
