@@ -308,12 +308,13 @@ class viewHelper
          return getLanguageData($bOrderByNative, $sLanguageCode );
      }
 
-    /**
-     * Get a tag to help automated tests identify pages
-     * @param string $name unique view name
-     * @return string
-     */
-     public static function getViewTestTag($name){
-         return '<x-test id="action::'.$name.'" />';
+     /**
+      * Get a tag to help automated tests identify pages
+      * @param string $name unique view name
+      * @return string
+      */
+     public static function getViewTestTag($name)
+     {
+         return sprintf('<x-test id="action::%s" />', $name);
      }
 }
