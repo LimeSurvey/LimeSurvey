@@ -54,14 +54,14 @@ echo viewHelper::getViewTestTag('modifyUser');
                     </label>
                     <div class="">
                         <?php echo $form->passwordField($oUser, 'password',array('value'=>'', 'placeholder'=>html_entity_decode(str_repeat("&#9679;",10),ENT_COMPAT,'utf-8'))); ?>
-                        <input type='hidden' name='uid' value="<?php echo $oUser->uid;?>" />
                     </div>
                 </div>
                 <?php endif; ?>
-
+                
                 <p>
                     <input type='submit' class="hidden" value='<?php eT("Save");?>' />
                     <input type='hidden' name='action' value='moduser' />
+                    <input type='hidden' name='uid' value="<?php echo $oUser->uid;?>" />
                 </p>
             <?php $this->endWidget()?>
         </div>
