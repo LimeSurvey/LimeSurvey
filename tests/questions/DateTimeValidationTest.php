@@ -30,18 +30,15 @@ class DateTimeValidationTest extends TestBaseClassWeb
      */
     public function testBasic()
     {
-        $domain = getenv('DOMAIN');
-        if (empty($domain)) {
-            $domain = '';
-        }
-
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
-        $url = $urlMan->createUrl('survey/index', array(
-            'sid' => self::$surveyId,
-            'newtest' => 'Y',
-            'lang' => 'pt'
-            )
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
+        $url = $urlMan->createUrl(
+            'survey/index',
+            [
+                'sid' => self::$surveyId,
+                'newtest' => 'Y',
+                'lang' => 'pt'
+            ]
         );
 
         self::$webDriver->get($url);

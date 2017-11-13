@@ -40,6 +40,11 @@ class TestBaseClassWeb extends TestBaseClass
      */
     protected static $webDriver;
 
+    /**
+     * @var string
+     */
+    protected static $domain;
+
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
@@ -47,6 +52,8 @@ class TestBaseClassWeb extends TestBaseClass
         if (empty(getenv('DOMAIN'))) {
             die('Must specify DOMAIN environment variable to run this test, like "DOMAIN=localhost/limesurvey" or "DOMAIN=limesurvey.localhost".');
         }
+
+        self::$domain = getenv('DOMAIN');
 
         //$capabilities = DesiredCapabilities::phantomjs();
         //$port = self::$webPort;
@@ -91,16 +98,12 @@ class TestBaseClassWeb extends TestBaseClass
      * Get URL to admin view.
      * @param array $view
      * @return string
+     * @todo Rename to getAdminUrl.
      */
     public static function getUrl(array $view)
     {
-        $domain = getenv('DOMAIN');
-        if (empty($domain)) {
-            $domain = '';
-        }
-
         $urlMan = \Yii::app()->urlManager;
-        $urlMan->setBaseUrl('http://' . $domain . '/index.php');
+        $urlMan->setBaseUrl('http://' . self::$domain . '/index.php');
         $url = $urlMan->createUrl('admin/' . $view['route']);
         return $url;
     }
