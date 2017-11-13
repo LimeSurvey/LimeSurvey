@@ -381,8 +381,8 @@ class TemplateConfiguration extends TemplateConfig
         $this->sTemplateName = $this->template->name;
         $this->setIsStandard();                                                 // Check if  it is a CORE template
         $this->path = ($this->isStandard)
-            ? Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder
-            : Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder;
+            ? Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder.DIRECTORY_SEPARATOR
+            : Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->template->folder.DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -484,7 +484,7 @@ class TemplateConfiguration extends TemplateConfig
     {
         $this->prepareTemplateRendering();
         $oRTemplate = $this;
-        $sOptionFile = '/options/options.twig';
+        $sOptionFile = 'options'.DIRECTORY_SEPARATOR.'options.twig';
         while (!file_exists($oRTemplate->path.$sOptionFile)){
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
@@ -582,7 +582,7 @@ class TemplateConfiguration extends TemplateConfig
             // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
             // (and leave it in moter template definition if it already exists.)
             foreach ($aSettings as $key => $sFileName){
-                if (file_exists($this->path.'/'.$sFileName)){
+                if (file_exists($this->path.$sFileName)){
                     Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName );
 
                 }else{
@@ -658,8 +658,8 @@ class TemplateConfiguration extends TemplateConfig
     {
 
         $this->apiVersion  = (!empty($this->template->api_version))? $this->template->api_version : null; // Mandtory setting in config XML
-        $this->viewPath    =  $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
-        $this->filesPath   = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR ;
+        $this->viewPath    =  $this->path.$this->getTemplateForPath($this, 'view_folder')->template->view_folder.DIRECTORY_SEPARATOR;
+        $this->filesPath   = $this->path.$this->getTemplateForPath($this, 'files_folder')->template->files_folder.DIRECTORY_SEPARATOR ;
 
         // Options are optional
         $this->setOptions();

@@ -114,7 +114,7 @@ class TemplateConfig extends CActiveRecord
       */
      public function getTemplateForFile($sFile, $oRTemplate)
      {
-         while (!file_exists($oRTemplate->path.'/'.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)){
+         while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)){
              $oMotherTemplate = $oRTemplate->oMotherTemplate;
              if(!($oMotherTemplate instanceof TemplateConfiguration)){
                  throw new Exception("No template found for $sFile! Last template searched: ".$oRTemplate->sTemplateName );
@@ -199,8 +199,8 @@ class TemplateConfig extends CActiveRecord
          $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
 
          if($oTemplate instanceof TemplateConfiguration){
-             if(file_exists($oTemplate->path.'/'.$sFile)){
-                 return $oTemplate->path.'/'.$sFile;
+             if(file_exists($oTemplate->path.$sFile)){
+                 return $oTemplate->path.$sFile;
              }elseif(file_exists($oTemplate->viewPath.$sFile)){
                  return $oTemplate->viewPath.$sFile;
              }

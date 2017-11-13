@@ -46,7 +46,7 @@ class templates extends Survey_Common_Action
         $oEditedTemplate = Template::getInstance($templatename);
 
         if (Permission::model()->hasGlobalPermission('templates','export')){
-            $templatedir = $oEditedTemplate->path . DIRECTORY_SEPARATOR;
+            $templatedir = $oEditedTemplate->path;
             $tempdir = Yii::app()->getConfig('tempdir');
 
             $zipfile = "$tempdir/$templatename.zip";
@@ -631,7 +631,7 @@ class templates extends Survey_Common_Action
 
 
                     //$savefilename = $oEditedTemplate
-                    if( !file_exists($oEditedTemplate->path.'/'.$relativePathEditfile) && !file_exists($oEditedTemplate->viewPath.$relativePathEditfile) ){
+                    if( !file_exists($oEditedTemplate->path.$relativePathEditfile) && !file_exists($oEditedTemplate->viewPath.$relativePathEditfile) ){
                         $oEditedTemplate->extendsFile($relativePathEditfile);
                     }
 

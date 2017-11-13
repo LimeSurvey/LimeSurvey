@@ -1937,7 +1937,6 @@ class questions extends Survey_Common_Action
         $answers = retrieveAnswers($ia,$surveyid);
 
         $oTemplate = Template::model()->getInstance(null, $surveyid);
-        //$sTemplatePath = $oTemplate->path;
         $thistpl = $oTemplate->viewPath;
 
         doHeader();

@@ -228,7 +228,7 @@ class LS_Twig_Extension extends Twig_Extension
         $oTemplate = self::getTemplateForRessource($sImagePath);
 
         if($oTemplate){
-            $sUrlImgAsset = self::assetPublish($oTemplate->path.'/'.$sImagePath);
+            $sUrlImgAsset = self::assetPublish($oTemplate->path.$sImagePath);
         }else{
             // TODO: publish a default image "not found"
         }
@@ -243,7 +243,7 @@ class LS_Twig_Extension extends Twig_Extension
     {
         $oRTemplate = Template::model()->getInstance();
 
-        while (!file_exists($oRTemplate->path.'/'.$sRessource)){
+        while (!file_exists($oRTemplate->path.$sRessource)){
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
             if(!($oMotherTemplate instanceof TemplateConfiguration)){

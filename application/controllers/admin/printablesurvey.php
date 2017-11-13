@@ -82,8 +82,7 @@ class printablesurvey extends Survey_Common_Action
                 $surveyexpirydate='';
             }
             //Fix $templatename : control if print_survey.pstpl exist
-            $oTemplate = Template::model()->getTemplateConfiguration($templatename);
-            $sFullTemplatePath = $oTemplate->path;
+            $oTemplate = Template::model()->getTemplateConfiguration($templatename);            
             if($oTemplate->pstplPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl') {
             }
             elseif(is_file(getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR.'print_survey.pstpl')) {
@@ -92,7 +91,7 @@ class printablesurvey extends Survey_Common_Action
                 $templatename="default";
             }
 
-            $sFullTemplatePath = $oTemplate->path . DIRECTORY_SEPARATOR;
+            $sFullTemplatePath = $oTemplate->path;
             $sFullTemplateUrl = Template::model()->getTemplateURL($templatename)."/";
             if (!defined('PRINT_TEMPLATE_DIR')) define('PRINT_TEMPLATE_DIR' , $sFullTemplatePath , true);
             if (!defined('PRINT_TEMPLATE_URL')) define('PRINT_TEMPLATE_URL' , $sFullTemplateUrl , true);

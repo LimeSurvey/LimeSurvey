@@ -122,11 +122,11 @@ class TemplateManifest extends TemplateConfiguration
     */
     public function extendsFile($sFile)
     {
-        if( !file_exists($this->path.'/'.$sFile) && !file_exists($this->viewPath.$sFile) ){
+        if( !file_exists($this->path.$sFile) && !file_exists($this->viewPath.$sFile) ){
 
             // Copy file from mother template to local directory
             $sRfilePath = $this->getFilePath($sFile, $this);
-            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.'/'.$sFile;
+            $sLfilePath = (pathinfo($sFile, PATHINFO_EXTENSION) == 'twig')?$this->viewPath.$sFile:$this->path.$sFile;
             copy ( $sRfilePath,  $sLfilePath );
 
             // If it's a css or js file from config... must update DB and XML too....
@@ -514,7 +514,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     private function readManifest()
     {
-        $this->xmlFile         = $this->path.DIRECTORY_SEPARATOR.'config.xml';
+        $this->xmlFile         = $this->path.'config.xml';
         $bOldEntityLoaderState = libxml_disable_entity_loader(true);            // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
         $sXMLConfigFile        = file_get_contents( realpath ($this->xmlFile)); // @see: Now that entity loader is disabled, we can't use simplexml_load_file; so we must read the file with file_get_contents and convert it as a string
         $this->config          = simplexml_load_string($sXMLConfigFile);        // Using PHP >= 5.4 then no need to decode encode + need attributes : then other function if needed :https://secure.php.net/manual/en/book.simplexml.php#108688 for example
@@ -529,14 +529,14 @@ class TemplateManifest extends TemplateConfiguration
     private function setPath()
     {
         // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on usertemplaterootdir
-        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
 
         // If the template directory doesn't exist, we just set Default as the template to use
         // TODO: create a method "setToDefault"
         if (!is_dir($this->path)) {
             $this->sTemplateName = 'default';
             $this->isStandard    = true;
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             if(!$this->iSurveyId){
                 setGlobalSetting('defaulttemplate', 'default');
             }
@@ -544,9 +544,9 @@ class TemplateManifest extends TemplateConfiguration
 
         // If the template doesn't have a config file (maybe it has been deleted, or whatever),
         // then, we load the default template
-        $this->hasConfigFile = (string) is_file($this->path.DIRECTORY_SEPARATOR.'config.xml');
+        $this->hasConfigFile = (string) is_file($this->path.'config.xml');
         if (!$this->hasConfigFile) {
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName;
+            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
 
         }
     }
@@ -626,7 +626,7 @@ class TemplateManifest extends TemplateConfiguration
         // First we get the XML file
         libxml_disable_entity_loader(false);
         $oNewManifest = new DOMDocument();
-        $oNewManifest->load($this->path."/config.xml");
+        $oNewManifest->load($this->path."config.xml");
 
         $oConfig   = $oNewManifest->getElementsByTagName('config')->item(0);
         $oFiles    = $oNewManifest->getElementsByTagName('files')->item(0);
@@ -650,7 +650,7 @@ class TemplateManifest extends TemplateConfiguration
         $oAssetElem->appendChild($replaceAttribute);
         $oAssetType->appendChild($oAssetElem);
         $oConfig->insertBefore($oFiles,$oOptions);
-        $oNewManifest->save($this->path."/config.xml");
+        $oNewManifest->save($this->path."config.xml");
         libxml_disable_entity_loader(true);
     }
 
@@ -744,8 +744,8 @@ class TemplateManifest extends TemplateConfiguration
         $this->apiVersion         = (isset($this->config->metadatas->apiVersion)) ? $this->config->metadatas->apiVersion  : null;
 
 
-        $this->viewPath           = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
-        $this->filesPath          = $this->path.DIRECTORY_SEPARATOR.$this->getTemplateForPath($this, '//filesdirectory')->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
+        $this->viewPath           = $this->path.$this->getTemplateForPath($this, '//viewdirectory')->config->engine->viewdirectory.DIRECTORY_SEPARATOR;
+        $this->filesPath          = $this->path.$this->getTemplateForPath($this, '//filesdirectory')->config->engine->filesdirectory.DIRECTORY_SEPARATOR;
         $this->templateEditor     = $this->getTemplateForPath($this, '//template_editor')->config->engine->template_editor;
 
         // Options are optional

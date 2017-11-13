@@ -170,8 +170,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         $oRTemplate = $oTemplate;
 
-        $sOptionFile = '/options/options.twig';
-        $sOptionJS   = '/options/options.js';
+        $sOptionFile = 'options/options.twig';
+        $sOptionJS   = 'options/options.js';
 
         // We get the options twig file from the right template (local or mother template)
         while (!file_exists($oRTemplate->path.$sOptionFile)){
@@ -185,7 +185,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         }
 
         if (file_exists($oRTemplate->path.$sOptionJS)){
-            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS, CClientScript::POS_BEGIN);            
+            Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS, CClientScript::POS_BEGIN);
         }
 
         $line      = file_get_contents($oRTemplate->path.$sOptionFile);
