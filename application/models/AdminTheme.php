@@ -140,7 +140,7 @@ class AdminTheme extends CFormModel
             App()->bootstrap->registerTooltipAndPopover();                                                               // See : https://github.com/LimeSurvey/LimeSurvey/blob/master/application/extensions/bootstrap/components/TbApi.php#l153-l160
             App()->getClientScript()->registerScript('coreuser', '
            LS.globalUserId = "'.Yii::app()->user->id.'";', CClientScript::POS_HEAD);
-            App()->getClientScript()->registerPackage('jquery');      // jqueryui
+            App()->getClientScript()->registerPackage('jquery');      // jquery
             App()->getClientScript()->registerPackage('jqueryui');      // jqueryui
             App()->getClientScript()->registerPackage('js-cookie');     // js-cookie
             App()->getClientScript()->registerPackage('fontawesome');   // fontawesome

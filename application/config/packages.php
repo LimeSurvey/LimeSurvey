@@ -164,13 +164,14 @@ return array(
     'adminbasics' => array(
         'devBaseUrl' => 'assets/packages/adminbasics/',
         'basePath' => 'core.adminbasics',
+        'position' =>CClientScript::POS_BEGIN,
         'js' => array(
             'js/admin_core.js',
             'js/notifications.js'
         ),
         'depends' => array(
-            'pjax',
             'jquery',
+            'pjax',
         )
     ),
     'surveymenufunctions' => array(

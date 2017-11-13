@@ -133,11 +133,12 @@ return array(
     'bootstrap-switch' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/switch/',
         'basePath' => 'core.bootstrap.plugins.switch',
+        'position' => CClientScript::POS_BEGIN,
         'css' => array(
-            'css/bootstrap-switch.min.css'
+            'css/bootstrap-switch'.$minVersion.'.css'
         ),
         'js' => array(
-            'js/bootstrap-switch.min.js'
+            'js/bootstrap-switch.min'.$minVersion.'.js'
         ),
         'depends' => array(
             'jquery',

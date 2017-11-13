@@ -26,10 +26,13 @@ hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'fu
 fixAccordionPosition();
 
 $(document).on('ready  pjax:complete', function(){
+
     initializeAjaxProgress();
     tableCellAdapters();
     linksInDialog();
     doToolTip();
+    renderBootstrapSwitch();
+
     $('button,input[type=submit],input[type=button],input[type=reset],.button').button();
     $('button,input[type=submit],input[type=button],input[type=reset],.button').addClass("limebutton");
 
@@ -97,9 +100,11 @@ $(document).on('ready  pjax:complete', function(){
     $('#MinimizeGroupWindow').click(function(){
         $('#groupdetails').hide();
     });
+
     $('#MaximizeGroupWindow').click(function(){
         $('#groupdetails').show();
     });
+
     $('#tabs').tabs({
         activate: function(event, ui) {
             if(history.pushState) {
@@ -110,14 +115,18 @@ $(document).on('ready  pjax:complete', function(){
             }
         }
     });
+
     $('.tab-nav').tabs();
+
     $(".flashmessage").each(function() {
         $(this).notify().notify('create','themeroller',{},{custom:true,
         speed: 500,
         expires: 5000
         });
     });
-    if ($("#question_type_button").not('.none').length > 0 && $("#question_type_button").attr('type')!='hidden'){
+
+    if ($("#question_type_button").not('.none').length > 0 && $("#question_type_button").attr('type')!='hidden')
+    {
 
        qTypeDropdownInit();
         $("#question_type_button").change(function(event){
@@ -222,9 +231,15 @@ $(document).on('ready  pjax:complete', function(){
         $(this).find('.modal-body-text').html($(e.relatedTarget).data('message'));
     });
 
-    $('[data-is-bootstrap-switch]').bootstrapSwitch();
-
 });
+
+function renderBootstrapSwitch(){
+    try{
+        $('[data-is-bootstrap-switch]').bootstrapSwitch('destroy');
+    } catch(e){}
+
+    $('[data-is-bootstrap-switch]').bootstrapSwitch();
+}
 
 function surveyQuickActionTrigger(){
     $url = $(this).data('url');
