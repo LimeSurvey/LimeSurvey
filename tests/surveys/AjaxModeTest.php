@@ -55,7 +55,8 @@ class AjaxModeTest extends TestBaseClassWeb
             self::$surveyId
         );
         $db = \Yii::app()->getDb();
-        var_dump($db->createCommand($query)->queryAll());
+        $rows = $db->createCommand($query)->queryAll();
+        $this->assertEmpty($rows, 'No answers');
 
         // Execute survey.
         $urlMan = \Yii::app()->urlManager;
@@ -77,6 +78,7 @@ class AjaxModeTest extends TestBaseClassWeb
 
             // Find yes-no radio buttons, click "Yes".
             $items = self::$webDriver->findElements(WebDriverBy::cssSelector('ul.yesno-button li'));
+            $this->assertCount(3, $items, 'Three radio buttons for yes-no question');
             $items[0]->click();
 
             // Check that EM is reacting.
@@ -96,8 +98,11 @@ class AjaxModeTest extends TestBaseClassWeb
 
             // Check so that we see end page.
             $completed = self::$webDriver->findElement(WebDriverBy::cssSelector('div.completed-text'));
-            $this->assertEquals($completed->getText(), "Thank you!\nYour survey responses have been recorded.");
-
+            $this->assertEquals(
+                $completed->getText(),
+                "Thank you!\nYour survey responses have been recorded.",
+                'I can see completed text'
+            );
         } catch (NoSuchElementException $ex) {
             $screenshot = self::$webDriver->takeScreenshot();
             $filename = self::$screenshotsFolder.'/AjaxModeTest.png';
@@ -113,6 +118,10 @@ class AjaxModeTest extends TestBaseClassWeb
             'SELECT * FROM {{survey_%d}}',
             self::$surveyId
         );
-        var_dump($db->createCommand($query)->queryAll());
+        $rows = $db->createCommand($query)->queryAll();
+        $this->assertCount(1, $rows);
+        $sgqa = self::$surveyId . 'X' . $survey->groups[0]->gid . 'X' . $questions['q1']->qid;
+        $answer = $rows[0][$sgqa];
+        $this->assertEquals('N', $answer, 'Answer is "N"');
     }
 }
