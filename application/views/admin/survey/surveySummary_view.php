@@ -27,7 +27,7 @@ $surveyid = $oSurvey->sid;
 ?>
     <!-- Quick Actions -->
     <div id="survey-action-title" class="h3 pagetitle">
-    <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny">
+    <button data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>" id="survey-action-chevron" class="btn btn-default btn-tiny" onclick="surveyQuickActionTrigger()">
         <i class="fa fa-caret-down"></i>
     </button>&nbsp;&nbsp;
     <?php eT('Survey quick actions'); ?>
@@ -338,6 +338,7 @@ $surveyid = $oSurvey->sid;
 
             </div>
         </div>
+
 
     <div class="row">
         <!-- Survey summary -->

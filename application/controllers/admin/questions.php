@@ -638,7 +638,7 @@ class questions extends Survey_Common_Action
         $aData['gid'] = $gid = sanitize_int($gid);
         $aData['qid'] = $qid = sanitize_int($qid);
 
-        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'subquestions.js');
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'subquestions.js', LSYii_ClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage('jquery-blockUI');
         App()->getClientScript()->registerPackage('jquery-selectboxes');
         Yii::app()->session['FileManagerContext'] = "edit:answer:{$surveyid}";

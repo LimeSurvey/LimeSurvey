@@ -25,8 +25,7 @@ hasFormValidation= typeof document.createElement( 'input' ).checkValidity == 'fu
 /* See function */
 fixAccordionPosition();
 
-$(document).on('ready pjax:complete', function(){
-
+$(document).on('ready  pjax:complete', function(){
     initializeAjaxProgress();
     tableCellAdapters();
     linksInDialog();
@@ -85,28 +84,6 @@ $(document).on('ready pjax:complete', function(){
 
         });
     };
-
-
-    $('#survey-action-chevron').click(function(){
-        $url = $(this).data('url');
-        $.ajax({
-            url : $url,
-            type : 'GET',
-            dataType : 'html',
-
-            // html contains the buttons
-            success : function(html, statut){
-                $('#survey-action-container').animate({
-                    "height": "toggle", "opacity": "toggle"
-                });
-                $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
-            },
-            error :  function(html, statut){
-                alert('error');
-            }
-        });
-    });
-
 
     $('#showadvancedattributes').click(function(){
         $('#showadvancedattributes').hide();
@@ -249,6 +226,25 @@ $(document).on('ready pjax:complete', function(){
 
 });
 
+function surveyQuickActionTrigger(){
+    $url = $(this).data('url');
+    $.ajax({
+        url : $url,
+        type : 'GET',
+        dataType : 'html',
+
+        // html contains the buttons
+        success : function(html, statut){
+            $('#survey-action-container').animate({
+                "height": "toggle", "opacity": "toggle"
+            });
+            $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+        },
+        error :  function(html, statut){
+            alert('error');
+        }
+    });
+};
 
 
 function qTypeDropdownInit()
@@ -330,17 +326,33 @@ function validatefilename (form, strmessage )
 
 function doToolTip()
 {
-    $('.btntooltip').tooltip('destroy');
+    $('.btntooltip').each(function(i,item){
+        if($(item).data && $(item).data('bs.tooltip')){
+            $(item).tooltip('destroy');
+        }
+    });
+
     $('.btntooltip').tooltip();
 
     // Since you can only have one option per data-toggle,
     // we need this to enable both modal and toggle on one
     // button. E.g., <button data-toggle='modal' data-tooltip='true' title="foo">...</button>
-    $('[data-tooltip="true"]').tooltip('destroy');
+    $('[data-tooltip="true"]').each(function(i,item){
+        if($(item).data && $(item).data('bs.tooltip')){
+            $(item).tooltip('destroy');
+        }
+    });
+    
     $('[data-tooltip="true"]').tooltip();
 
-    $('[data-toggle="tooltip"]').tooltip('destroy')
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').each(function(i,item){
+        if($(item).data && $(item).data('bs.tooltip')){
+            console.log($(item));
+            $(item).tooltip('destroy');
+        }
+    });
+    
+    $('[data-toggle="tooltip"]').tooltip();
 
     // ToolTip on menu
     $(".sf-menu li").each(function() {
