@@ -107,10 +107,11 @@ return array(
         )
     ),
     'ckeditor' => array(
-        'devBaseUrl'  => 'assets/packages/ckeditor/',
+        'devBaseUrl'  => 'assets/packages/ckeditor',
         'basePath' => 'core.ckeditor',
         'js' => array(
             'ckeditor.js',
+            'config.js',
         ),
         'depends' => array(
             'adminbasics',

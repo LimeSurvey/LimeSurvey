@@ -251,8 +251,7 @@
             function(){ 
                 if($('#".$fieldname."').length >0){
                     var $oCKeditorVarName = CKEDITOR.replace('$fieldname', {
-                    customConfig : \"".Yii::app()->getConfig('adminscripts')."ckeditor-config.js\"
-                    ,LimeReplacementFieldsType : \"".$fieldtype."\"
+                    LimeReplacementFieldsType : \"".$fieldtype."\"
                     ,LimeReplacementFieldsSID : \"".$surveyID."\"
                     ,LimeReplacementFieldsGID : \"".$gID."\"
                     ,LimeReplacementFieldsQID : \"".$qID."\"
