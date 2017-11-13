@@ -1670,14 +1670,17 @@ class SurveyRuntimeHelper {
         $this->setSurveyMode();
         $this->setSurveyOptions();
 
-        $this->previewgrp      = ($this->sSurveyMode == 'group' && isset($this->param['action'])    && ($this->param['action'] == 'previewgroup'))    ? true : false;
-        $this->previewquestion = ($this->sSurveyMode == 'question' && isset($this->param['action']) && ($this->param['action'] == 'previewquestion')) ? true : false;
+        $this->previewgrp      = (isset($this->param['action'])    &&  $this->param['action'] == 'previewgroup')?true:false;
+        $this->previewquestion = (isset($this->param['action'])    &&  $this->param['action'] == 'previewquestion')?true:false;
+
         $this->preview         = ($this->previewquestion || $this->previewgrp);
         $this->sLangCode       = App()->language;
     }
 
     private function setPreview()
     {
+        $this->sSurveyMode = ($this->previewgrp) ? 'group':'question';
+
         $_SESSION[$this->LEMsessid]['prevstep'] = 2;
         $_SESSION[$this->LEMsessid]['maxstep']  = 0;
 
