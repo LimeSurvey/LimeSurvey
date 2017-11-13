@@ -154,7 +154,7 @@ class QuestionTemplate extends CFormModel
      * @param string $sFile
      * @param int $pos
      */
-    public function registerScriptFile($sFile, $pos = CClientScript::POS_HEAD)
+    public function registerScriptFile($sFile, $pos = CClientScript::POS_BEGIN)
     {
         if ($this->templateLoadsCoreJs) {
             Yii::app()->getClientScript()->registerScriptFile($sFile, $pos);
@@ -166,7 +166,7 @@ class QuestionTemplate extends CFormModel
      * @param string $sScript
      * @param int $pos
      */
-    public function registerScript($sScript, $pos = CClientScript::POS_HEAD)
+    public function registerScript($sScript, $pos = CClientScript::POS_BEGIN)
     {
         if ($this->templateLoadsCoreJs) {
             Yii::app()->getClientScript()->registerScript($sScript, $pos);

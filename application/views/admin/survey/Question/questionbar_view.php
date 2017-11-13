@@ -271,7 +271,8 @@ $aReplacementData=array();
                     <?php eT("Save");?>
 
                 </a>
-                <?php/*
+                <?php
+                /*
                 <a class="btn btn-default" href="<?php echo $organizebar['saveandclosebuttonright']['url']; ?>" role="button" id="save-and-close-button">
                     <span class="fa fa-saved"></span>
                     <?php eT("Save and close");?>
@@ -280,7 +281,8 @@ $aReplacementData=array();
                     <span class="fa fa-close"></span>
                     <?php eT("Close");?>
                 </a>
-                */?>
+                */
+                ?>
             </div>
         <?php endif;?>
 
