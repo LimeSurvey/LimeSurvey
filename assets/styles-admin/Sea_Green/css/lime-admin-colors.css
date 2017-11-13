@@ -2050,7 +2050,7 @@ input[type="text"], input[type="password"], .ui-autocomplete-input, textarea, .u
 .ls-ba .list-group > .list-group-item .list-group .list-group-item:last-of-type {
   border-bottom: 1px solid #35363f; }
 .ls-ba .breadcrumb > li + li:before {
-  color: #35363f; }
+  color: #ffffff; }
 
 ol.breadcrumb.title-bar-breadcrumb {
   background: transparent;
