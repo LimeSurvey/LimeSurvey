@@ -409,7 +409,8 @@ class Template extends LSActiveRecord
         $Resource    = opendir($standardTemplatesPath);
         while ($Item = readdir($Resource)) {
             if (is_dir($standardTemplatesPath . $Item) && $Item != "." && $Item != "..") {
-                touch($standardTemplatesPath . $Item);
+                // TODO: This can be removed with latest asset manager fix.
+                //touch($standardTemplatesPath . $Item);
             }
         }
     }
