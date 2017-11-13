@@ -582,8 +582,9 @@ class TemplateConfiguration extends TemplateConfig
             // Else, we must remove it from current package, and if it doesn't exist in mother template definition, we must add it.
             // (and leave it in moter template definition if it already exists.)
             foreach ($aSettings as $key => $sFileName){
-                if (file_exists($this->path.$sFileName)){
+                if (file_exists($this->path.'/'.$sFileName)){
                     Yii::app()->clientScript->removeFileFromPackage($this->oMotherTemplate->sPackageName, $sType, $sFileName );
+
                 }else{
                     $oTemplate = $this->getTemplateForFile($sFileName, $this);
                     if (!Yii::app()->clientScript->IsFileInPackage($oTemplate->sPackageName, $sType, $sFileName)){
