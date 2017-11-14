@@ -290,6 +290,8 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['packages_to_load']  = self::formatArrayFields($oREngineTemplate, 'engine', 'packages');
 
 
+
+
         // If empty in manifest, it should be the field in db, so the Mother Template css/js files will be used...
         if (is_object($oTemplate->config->files)){
             $aDatas['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
@@ -335,7 +337,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function formatArrayFields($oTemplate, $sFieldPath, $sFieldName)
     {
-        return !empty($oTemplate->config->$sFieldPath->$sFieldName) ? ((array) $oTemplate->config->$sFieldPath->$sFieldName) : array();
+        return (empty($oTemplate->config->$sFieldPath->$sFieldName->value) )?array():$oTemplate->config->$sFieldPath->$sFieldName;
     }
 
     /**
