@@ -153,6 +153,7 @@ function updatequestionattributes()
                 },
                 show: {effect: {length:50}}
             });
+            renderBootstrapSwitch();
         }
     });
 }
