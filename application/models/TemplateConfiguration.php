@@ -468,8 +468,8 @@ class TemplateConfiguration extends TemplateConfig
         }else{
             $sButtons = $sEditorLink.'<br><br>'.$OptionLink;
 
-            if (!$this->isStandard){
-                $sButtons .= '<br><br>'.$sUninstallLink ;
+            if ($this->template_name != 'default'){
+                $sButtons .= '<br><br>'.$sUninstallLink;
             }
         }
 
