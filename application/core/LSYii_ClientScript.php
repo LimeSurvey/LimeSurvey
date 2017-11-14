@@ -191,7 +191,7 @@ class LSYii_ClientScript extends CClientScript {
      * eg: If a package A depends on B, and B depends on C, getRecursiveDependencies('A') will return {B,C}
      * @param string $sPackageName
      */
-    public function getRecursiveDependencies($sPackageName)
+    public function getRecursiveDependencies(string $sPackageName)
     {
         $aPackages     = Yii::app()->clientScript->packages;
         if ( array_key_exists('depends', $aPackages[$sPackageName]) ){
