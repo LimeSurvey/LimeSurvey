@@ -18,6 +18,8 @@ var prepare = function(){
     if(generalInherit()){
         $('#general_inherit_on').prop('checked',true).trigger('change').closest('label').addClass('active');
         $('.action_hide_on_inherit').addClass('hidden');
+    } else {
+        $('#general_inherit_off').prop('checked',true).trigger('change').closest('label').addClass('active');
     }
 
     if($('#TemplateConfiguration_options').length>0 && !generalInherit()){
