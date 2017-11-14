@@ -581,21 +581,20 @@ class responses extends Survey_Common_Action
                 $response = Response::model($iSurveyId)->findByPk($iResponseId);
                 if ($response) {
                     $result = $response->delete(true);
-                } else {
-                    $errors++;
-                }
-
-                if (!$result) {
-                    $errors++;
-                } else {
-                    $oSurvey=Survey::model()->findByPk($iSurveyId);
-                    // TODO : add it to response delete (maybe test if timing table exist)
-                    if ($oSurvey->savetimings == "Y") {
-                        $result = SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
-                        if (!$result) {
-                            $timingErrors++;
+                    if (!$result) {
+                        $errors++;
+                    } else {
+                        $oSurvey=Survey::model()->findByPk($iSurveyId);
+                        // TODO : add it to response delete (maybe test if timing table exist)
+                        if ($oSurvey->savetimings == "Y") {
+                            $result = SurveyTimingDynamic::model($iSurveyId)->deleteByPk($iResponseId);
+                            if (!$result) {
+                                $timingErrors++;
+                            }
                         }
                     }
+                } else {
+                    $errors++;
                 }
             }
 
