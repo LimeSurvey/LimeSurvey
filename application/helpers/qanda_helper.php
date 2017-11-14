@@ -1223,7 +1223,7 @@ function do_date($ia)
             );
             App()->getClientScript()->registerScript("setDatePickerGlobalOption","$.extend( $.fn.datetimepicker.defaults, ".json_encode($aDefaultDatePicker)." )",CClientScript::POS_BEGIN);
         }
-        App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]});",CClientScript::POS_END);
+        App()->getClientScript()->registerScript("doPopupDate{$ia[0]}","doPopupDate({$ia[0]});",LSYii_ClientScript::POS_POSTSCRIPT);
     }
     $inputnames[]=$ia[1];
 
@@ -2072,11 +2072,11 @@ function do_ranking($ia)
     }
     if(!App()->getClientScript()->isScriptRegistered("triggerEmRelevanceSortable")){
         Yii::app()->getClientScript()->registerPackage("question-ranking");
-        App()->getClientScript()->registerScript("triggerEmRelevanceSortable","triggerEmRelevanceSortable()",CClientScript::POS_END);
+        App()->getClientScript()->registerScript("triggerEmRelevanceSortable","triggerEmRelevanceSortable()",LSYii_ClientScript::POS_POSTSCRIPT);
         $rankingTranslation='LSvar.lang.rankhelp="'.gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js').'";';
         App()->getClientScript()->registerScript("rankingTranslation",$rankingTranslation,CClientScript::POS_BEGIN);
     }
-    App()->getClientScript()->registerScript("doDragDropRank{$ia[0]}","doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]},{$aQuestionAttributes["samechoiceheight"]},{$aQuestionAttributes["samelistheight"]})",CClientScript::POS_END);
+    App()->getClientScript()->registerScript("doDragDropRank{$ia[0]}","doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]},{$aQuestionAttributes["samechoiceheight"]},{$aQuestionAttributes["samelistheight"]})",LSYii_ClientScript::POS_POSTSCRIPT);
 
     if(trim($aQuestionAttributes['choice_title'][App()->language]) != '')
     {
@@ -2559,8 +2559,8 @@ function do_multiplechoice_withcomments($ia)
 
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js");
-        Yii::app()->getClientScript()->registerScript("doMultipleChoiceWithComments{$ia[0]}","doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');",CClientScript::POS_END);
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js", LSYii_ClientScript::POS_BEGIN);
+        Yii::app()->getClientScript()->registerScript("doMultipleChoiceWithComments{$ia[0]}","doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');",LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
     return array($answer, $inputnames);
@@ -2614,7 +2614,7 @@ function do_file_upload($ia)
         var imageurl =  '".Yii::app()->getConfig('imageurl')."';
         var uploadurl =  '".$scriptloc."';
     </script>\n";
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js");
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."modaldialog.js", LSYii_ClientScript::POS_BEGIN);
     Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . "uploader-files.css");
     // Modal dialog
     //$answer .= $uploadbutton;
@@ -3252,7 +3252,7 @@ function do_multiplenumeric($ia)
         $aJsonOptions=json_encode(array(
             'slider_custom_handle'=>$slider_custom_handle
         ));
-        App()->getClientScript()->registerScript("doNumericSlider{$ia[0]}","doNumericSlider({$ia[0]},{$aJsonOptions})",CClientScript::POS_END);
+        App()->getClientScript()->registerScript("doNumericSlider{$ia[0]}","doNumericSlider({$ia[0]},{$aJsonOptions})",LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
     return array($answer, $inputnames);
@@ -3610,8 +3610,8 @@ function do_shortfreetext($ia)
         App()->getClientScript()->registerPackage('devbridge-autocomplete');/* for autocomplete */
         Yii::app()->getClientScript()->registerScript('sGlobalMapScriptVar',"LSmap=".ls_json_encode($aGlobalMapScriptVar).";\nLSmaps= new Array();",CClientScript::POS_BEGIN);
         Yii::app()->getClientScript()->registerScript('sThisMapScriptVar'.$ia[1],"LSmaps['{$ia[1]}']=".ls_json_encode($aThisMapScriptVar).";",CClientScript::POS_BEGIN);
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js");
-        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css');
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."map.js",CClientScript::POS_END);
+        Yii::app()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'map.css',CClientScript::POS_END);
 
         if (isset($aQuestionAttributes['hide_tip']) && $aQuestionAttributes['hide_tip']==0)
         {
@@ -5378,8 +5378,8 @@ function do_array_multiflexi($ia)
         $coreRowClass        .= " checkbox-list";
         $caption            .= gT("Please check the matching combinations.");
         $textAlignment       = 'center';
-        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-number-checkbox.js",CClientScript::POS_END);
-        App()->getClientScript()->registerScript("doArrayNumberCheckbox","doArrayNumberCheckbox();\n",CClientScript::POS_END);
+        App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."array-number-checkbox.js",CClientScript::POS_BEGIN);
+        App()->getClientScript()->registerScript("doArrayNumberCheckbox","doArrayNumberCheckbox();\n",LSYii_ClientScript::POS_POSTSCRIPT);
     }
     elseif ($aQuestionAttributes['input_boxes']!=0 )
     {
@@ -6302,8 +6302,8 @@ function do_array_dual($ia)
         $answer = "<p class='error'>".gT("Error: There are no answer options for this question and/or they don't exist in this language.")."</p>\n";
         $inputnames="";
     }
-    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js", CClientScript::POS_END);
-    Yii::app()->getClientScript()->registerScript("doDualScaleFunction{$ia[0]}","{$doDualScaleFunction}({$ia[0]});",CClientScript::POS_END);
+    Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."dualscale.js", CClientScript::POS_BEGIN);
+    Yii::app()->getClientScript()->registerScript("doDualScaleFunction{$ia[0]}","{$doDualScaleFunction}({$ia[0]});",LSYii_ClientScript::POS_POSTSCRIPT);
 
     return array($answer, $inputnames);
 }

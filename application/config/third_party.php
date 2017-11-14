@@ -69,6 +69,7 @@ return array(
     'bootstrap-slider' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/slider',
         'basePath' => 'core.bootstrap.plugins.slider',
+        'position' => CClientScript::POS_BEGIN,
         'css'=> array(
             'css/bootstrap-slider'.$minVersion.'.css'
         ),
@@ -85,6 +86,7 @@ return array(
     'bootstrap-multiselect' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/multiselect',
         'basePath' => 'core.bootstrap.plugins.multiselect',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'js/bootstrap-multiselect.js',
         ),
@@ -101,6 +103,7 @@ return array(
     'bootstrap-select2' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/select2',
         'basePath' => 'core.bootstrap.plugins.select2',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'js/select2.full'.$minVersion.'.js',
         ),
@@ -117,6 +120,7 @@ return array(
     'bootstrap-datetimepicker' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/datetimepicker/build',
         'basePath' => 'core.bootstrap.plugins.datetimepicker.build',
+        'position' => CClientScript::POS_BEGIN,
         'css' => array(
             'css/bootstrap-datetimepicker'.$minVersion.'.css'
         ),
@@ -245,6 +249,7 @@ return array(
     // jQuery Table Sorter
     'jquery-tablesorter' => array(
         'basePath' => 'third_party.jquery-tablesorter',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.tablesorter.min.js'
         ),
@@ -256,6 +261,7 @@ return array(
     // jQuery NestedSortable
     'jquery-nestedSortable' => array(
         'basePath' => 'third_party.jquery-nestedSortable',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.mjs.nestedSortable.js'
         ),
@@ -291,6 +297,7 @@ return array(
     // jQuery selectboxes
     'jquery-selectboxes' => array(
         'basePath' => 'third_party.jquery-selectboxes.selectboxes',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.selectboxes.js'
         ),
@@ -391,6 +398,7 @@ return array(
     /* Used by ranking question type */
     'rubaxa-sortable' => array(
         'basePath' => 'third_party.rubaxa-sortable', /* for sorting ability */
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.fn.sortable'.$minVersion.'.js'
         ),
@@ -400,6 +408,7 @@ return array(
     ),
     'jquery-actual' => array(
         'basePath' => 'third_party.jquery-actual', /* for samechoiceheight/samelistheight */
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.actual.min.js'
         ),
@@ -410,6 +419,7 @@ return array(
     /* Used by short text with map by leaflet */
     'leaflet' => array(
         'basePath' => 'third_party.leaflet',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'leaflet.js'
         ),

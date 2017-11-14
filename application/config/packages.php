@@ -81,6 +81,7 @@ return array(
     'question-ranking'=>array(
         'devBaseUrl'  => 'assets/packages/questions/ranking/',
         'basePath' => 'core.questions.ranking',
+        'position' => CClientScript::POS_BEGIN,
         'css'=> array(
             'ranking.css',
         ),
@@ -131,8 +132,11 @@ return array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
         'js' => array(
-            'pjax.js',
+            'pjax'.$minVersion.'.js',
         ),
+        'depends' => array(
+            'es6promise'
+        )
     ),
     'adminpanel' => array(
         'devBaseUrl' => 'assets/packages/adminpanel/',
