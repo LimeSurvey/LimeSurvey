@@ -92,5 +92,14 @@
         <div id="bottomScripts">
             <###end###>
         </div>
+         {# Ajax mode #}
+    {% if(aSurveyInfo.options.ajaxmode == "on") %}
+        <script type="text/javascript">
+            var ajaxHandler = new AjaxSubmitObject();
+            $(document).ready(function () {
+                ajaxHandler.bindActions();
+            });
+        </script>
+    {% endif %}
     </body>
 </html>

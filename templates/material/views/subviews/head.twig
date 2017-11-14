@@ -35,16 +35,6 @@
 
     <link rel="shortcut icon" href="{{ aSurveyInfo.oTemplate.sTemplateurl }}/favicon.ico" />
 
-    {# Ajax mode #}
-    {% if(aSurveyInfo.options.ajaxmode == "on") %}
-        <script type="text/javascript">
-            var ajaxHandler = new AjaxSubmitObject();
-            $(document).ready(function () {
-                ajaxHandler.bindActions();
-            });
-        </script>
-    {% endif %}
-
     {{ include('./subviews/google_analytics.twig') }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 </head>
