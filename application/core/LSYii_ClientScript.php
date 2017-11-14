@@ -480,8 +480,8 @@ class LSYii_ClientScript extends CClientScript {
      */
     public function renderBodyEnd(&$output)
     {
-        if(!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END])
-            && !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]) && !isset($this->scripts[self::POS_POSTSCRIPT]))
+        if(!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_READY]) 
+        && !isset($this->scripts[self::POS_LOAD]) && !isset($this->scripts[self::POS_POSTSCRIPT]))
         {
             str_replace('<###end###>','',$output);
             return;
@@ -516,7 +516,7 @@ class LSYii_ClientScript extends CClientScript {
         if(isset($this->scripts[self::POS_LOAD]))
         {
             if($fullPage) //This part is different to reflect the changes needed in the backend by the pjax loading of pages
-                $scripts[]="jQuery(document).on('load pjax:complete',function() {\n".implode("\n",$this->scripts[self::POS_LOAD])."\n});";
+                $scripts[]="jQuery(document).on('ready pjax:complete',function() {\n".implode("\n",$this->scripts[self::POS_LOAD])."\n});";
             else
                 $scripts[]=implode("\n",$this->scripts[self::POS_LOAD]);
         }
@@ -524,7 +524,7 @@ class LSYii_ClientScript extends CClientScript {
         if(isset($this->scripts[self::POS_POSTSCRIPT]))
         {
             if($fullPage) //This part is different to reflect the changes needed in the backend by the pjax loading of pages
-                $scripts[]="jQuery(document).on('load pjax:scriptcomplete',function() {\nconsole.log('loading on scriptcomplete');\n".implode("\n",$this->scripts[self::POS_POSTSCRIPT])."\n});";
+                $scripts[]="jQuery(document).on('ready pjax:scriptcomplete', function() {\nconsole.log('loading on scriptcomplete');\n".implode("\n",$this->scripts[self::POS_POSTSCRIPT])."\n});";
             else
                 $scripts[]=implode("\n",$this->scripts[self::POS_POSTSCRIPT]);
         }
@@ -538,7 +538,7 @@ class LSYii_ClientScript extends CClientScript {
 
         if($fullPage)
         {
-            $output=str_replace('<###end###>',$html,$output);
+            $output=preg_replace('/<###end###>/',$html,$output,1);
         }
         else
         {

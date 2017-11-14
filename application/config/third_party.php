@@ -164,6 +164,7 @@ return array(
     'jqueryui' => array(
         'devBaseUrl' => 'third_party/jquery-ui',
         'basePath' => 'third_party.jquery-ui',
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery-ui'.$minVersion.'.js',
         ),

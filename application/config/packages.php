@@ -97,6 +97,7 @@ return array(
     'question-numeric-slider'=>array(
         'devBaseUrl'  => 'assets/packages/questions/numeric-slider/',
         'basePath' => 'core.questions.numeric-slider',
+        'position' => CClientScript::POS_BEGIN,
         'css'=> array(
             'numeric-slider.css',
         ),

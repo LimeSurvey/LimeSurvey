@@ -2560,7 +2560,7 @@ function do_multiplechoice_withcomments($ia)
     if($aQuestionAttributes['commented_checkbox']!="allways" && $aQuestionAttributes['commented_checkbox_auto'])
     {
         Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."multiplechoice_withcomments.js", LSYii_ClientScript::POS_BEGIN);
-        Yii::app()->getClientScript()->registerScript("doMultipleChoiceWithComments{$ia[0]}","doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');",LSYii_ClientScript::POS_POSTSCRIPT);
+        Yii::app()->getClientScript()->registerScript("doMultipleChoiceWithComments{$ia[0]}","doMultipleChoiceWithComments({$ia[0]},'{$aQuestionAttributes["commented_checkbox"]}');",LSYii_ClientScript::POS_LOAD);
     }
 
     return array($answer, $inputnames);

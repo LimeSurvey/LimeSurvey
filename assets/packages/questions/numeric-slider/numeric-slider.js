@@ -10,7 +10,7 @@
  * @param {number} qId The qid of the question where apply.
  */
 
-function doNumericSlider(qID,options) {
+var doNumericSlider = function(qID,options) {
   $("#vmsg_"+qID+"_default").text(sliderTranslation.help);
   $("#question"+qID+" .slider-container").each(function()
   {
