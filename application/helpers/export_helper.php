@@ -1268,31 +1268,34 @@ function quexml_create_subQuestions(&$question,$qid,$varname,$iResponseID,$field
  * @param bool|string $usesqid Search using sqid instead of qid
  * @param bool|string $usesaid Search using aid 
  */
-function quexml_set_default_value(&$element,$iResponseID,$qid,$iSurveyID,$fieldmap,$fieldadd = false,$usesqid = false,$usesaid = false,$usesscale = false)
+function quexml_set_default_value(&$element, $iResponseID, $qid, $iSurveyID, $fieldmap, $fieldadd = false, $usesqid = false, $usesaid = false, $usesscale = false)
 {
     //insert response into form if provided
     if ($iResponseID) {
         $colname = "";
-		$search = "qid";
-		if ($usesqid) {
-			$search = "sqid";
-		}
-        foreach($fieldmap as $key => $detail) {
+        $search = "qid";
+        if ($usesqid) {
+            $search = "sqid";
+        }
+        foreach ($fieldmap as $key => $detail) {
             if ($detail[$search] == $qid) {
-				if (($fieldadd == false || substr($key,(strlen($fieldadd) * -1)) == $fieldadd) &&
-					($usesaid == false || ($detail["aid"] == $usesaid)) &&
+                if (($fieldadd == false || substr($key, (strlen($fieldadd) * -1)) == $fieldadd) &&
+                    ($usesaid == false || ($detail["aid"] == $usesaid)) &&
                     ($usesscale == false || ($detail["scale_id"] == $usesscale))) {
-	                $colname = $key;
-	                break;
-				}
+                    $colname = $key;
+                    break;
+                }
             }
         }
         if ($colname != "") {
-            $Query = "SELECT `$colname` AS value FROM {{survey_$iSurveyID}} WHERE id = $iResponseID";
-            $QRE = Yii::app()->db->createCommand($Query)->query();
+            $QRE = Yii::app()->db->createCommand()
+                ->select($colname . ' AS value')
+                ->from("{{survey_$iSurveyID}}")
+                ->where('id = :id', ['id' => $iResponseID])
+                ->query();
             $QROW = $QRE->read();
-			$value = $QROW['value'];
-            $element->setAttribute("defaultValue",$value);
+            $value = $QROW['value'];
+            $element->setAttribute("defaultValue", $value);
         }
     }
 }
@@ -1376,7 +1379,8 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
 
     App()->setLanguage($quexmllang);
 
-    $fieldmap = createFieldMap($iSurveyID,'short',false,false,$quexmllang);
+    $oSurvey = Survey::model()->findByPk($iSurveyID);
+    $fieldmap = createFieldMap($oSurvey,'short',false,false,$quexmllang);
 
     $dom = new DOMDocument('1.0','UTF-8');
 
