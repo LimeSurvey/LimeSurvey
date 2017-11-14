@@ -47,4 +47,4 @@ before_script:
     - unzip chromedriver_linux64.zip
 
 script:
-    - DOMAIN=localhost phpunit
+    - phpdbg -qrr DOMAIN=localhost phpunit
