@@ -32,7 +32,7 @@ class AjaxModeTest extends TestBaseClassWeb
     /**
      * 
      */
-    public function testBasic()
+    public function testAjaxModeRecordsAnswer()
     {
         // Import survey.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_366446.lss';
@@ -113,6 +113,7 @@ class AjaxModeTest extends TestBaseClassWeb
                 'Screenshot in ' .$filename . PHP_EOL . $ex->getMessage()
             );
         }
+
         // Check answer in database.
         $query = sprintf(
             'SELECT * FROM {{survey_%d}}',
