@@ -63,7 +63,6 @@ var AjaxSubmitObject = function () {
         // If the user try to submit the form
         // Always bind to document to not need to bind again
         $("#limesurvey").off('.submitMainForm').on("submit.submitMainForm", function (e) {
-            console.log($('#limesurvey').serializeArray());
             // Prevent multiposting
             //Check if there is an active submit
             //If there is -> return immediately
