@@ -196,11 +196,11 @@ label.btn{
             <label for='simple_edit_options_general_inherit' class='control-label'>Inherit everything</label>
             <div class='col-sm-12'>            
                 <div class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary">                        
+                    <label class="btn btn-default">                        
                         <input id="general_inherit_on" name='general_inherit' type='radio' value='on' class='form-control selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
                         Yes
                     </label>
-                    <label class="btn btn-primary">
+                    <label class="btn btn-default">
                         <input id="general_inherit_off" name='general_inherit' type='radio' value='off' class='form-control selector_option_general_inherit ' data-id='simple_edit_options_general_inherit'/>
                         No
                     </label>
@@ -221,17 +221,17 @@ label.btn{
                 <label for='simple_edit_options_ajaxmode' class='control-label'>Ajaxmode</label>
                 <div class='col-sm-12'>
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">                        
+                        <label class="btn btn-default">                        
                             <input name='ajaxmode' type='radio' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
                             Yes
                         </label>
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input name='ajaxmode' type='radio' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
                             No
                         </label>
                         {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input name='ajaxmode' type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_ajaxmode'/>
                             Inherit
                         </label>
@@ -247,17 +247,17 @@ label.btn{
                 <label for='simple_edit_options_backgroundimage' class='control-label'>Background image</label>
                 <div class='col-sm-12'>
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' name='backgroundimage' value='on' class='form-control selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage' />
                             Yes
                         </label>
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' name='backgroundimage' value='off' class='form-control selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage' />
                             No
                         </label>
                         {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' name='backgroundimage' value='inherit' class='form-control selector_option_radio_field simple_edit_options_backgroundimage ' data-id='backgroundimage' />
                             Inherit
                         </label>
@@ -273,17 +273,17 @@ label.btn{
                 <label for='simple_edit_options_backgroundimage' class='control-label'>Box container</label>
                 <div class='col-sm-12'>
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' name='boxcontainer' value='on' class='form-control selector_option_radio_field simple_edit_options_boxcontainer ' data-id='boxcontainer' />
                             Yes
                         </label>
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' name='boxcontainer' value='off' class='form-control selector_option_radio_field simple_edit_options_boxcontainer ' data-id='boxcontainer' />
                             No
                         </label>
                         {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' name='boxcontainer' value='inherit' class='form-control selector_option_radio_field simple_edit_options_boxcontainer ' data-id='boxcontainer' />
                             Inherit
                         </label>
@@ -303,17 +303,17 @@ label.btn{
                 <label for='simple_edit_options_brandlogo' class='control-label'>Brandlogo</label>
                 <div class='col-sm-12'>
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' name='brandlogo' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
                             Yes
                         </label>
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' name='brandlogo' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
                             No
                         </label>
                         {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' name='brandlogo' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_brandlogo' />
                             Inherit
                         </label>
@@ -347,17 +347,17 @@ label.btn{
                 <label for='simple_edit_options_animatebody' class='control-label'>Animate body</label>
                 <div class='col-sm-12'>
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' value='on' class='form-control selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody' />
                             Yes
                         </label>
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' value='off' class='form-control selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody' />
                             No
                         </label>
                         {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' value='inherit' class='form-control selector_option_radio_field  ' data-id='simple_edit_options_animatebody' name='animatebody' />
                             Inherit
                         </label>
@@ -385,17 +385,17 @@ label.btn{
                 <label for='simple_edit_options_animatequestion' class='control-label'>Animate question</label>
                 <div class='col-sm-12'>
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion' />
                             Yes
                         </label>
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion' />
                             No
                         </label>
                         {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatequestion' name='animatequestion' />
                             Inherit
                         </label>
@@ -423,17 +423,17 @@ label.btn{
                 <label for='simple_edit_options_animatealert' class='control-label'>Animate alert</label>
                 <div class='col-sm-12'>
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' value='on' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert' />
                             Yes
                         </label>
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' value='off' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert' />
                             No
                         </label>
                         {# If this is a root template setting, don't show the inherit button #}
                         {% if templateConfiguration.sid is not empty or templateConfiguration.gsid is not empty %}
-                        <label class="btn btn-primary">
+                        <label class="btn btn-default">
                             <input type='radio' value='inherit' class='form-control selector_option_radio_field ' data-id='simple_edit_options_animatealert' name='animatealert' />
                             Inherit
                         </label>
@@ -475,7 +475,7 @@ label.btn{
             </div>
         </div>
     </div>
-    <div class='row'>
+    <div class='row hidden'>
         <div class='col-sm-12'>
             <button class='btn btn-success col-md-2 col-sm-4 col-xs-6 action_update_options_string_button'>Save</button>
         </div>

@@ -44,6 +44,10 @@ class AdminViewsTest extends TestBaseClassView
     {
         return require __DIR__."/../data/views/adminUsersViews.php";
     }
+    public function addParticipantsViews()
+    {
+        return require __DIR__."/../data/views/adminParticipantsViews.php";
+    }
 
     public function addGeneralSettingsViews()
     {
@@ -131,4 +135,12 @@ class AdminViewsTest extends TestBaseClassView
         $this->findViewTag($name, $view);
     }
 
+    /**
+     * @param string $name
+     * @param array$view
+     * @dataProvider addParticipantsViews
+     */
+    public function testParticipantsViews($name,$view){
+        $this->findViewTag($name, $view);
+    }
 }

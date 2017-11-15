@@ -248,6 +248,7 @@ class templateoptions  extends Survey_Common_Action
         );
 
         if($sid !== null){
+            $aData['surveybar']['savebutton']['form'] = true;
             $aData['surveyid'] = $sid;
             $aData['title_bar']['title'] = gT("Survey template options");
             $aData['subaction'] = gT("Survey template options");

@@ -533,7 +533,7 @@ class TemplateConfiguration extends TemplateConfig
      */
     protected function getFilesToLoad($oTemplate, $sType)
     {
-        if (empty($this->aFilesToLoad)){
+        if (empty($this->aFilesToLoad)) {
             $this->aFilesToLoad = array();
         }
 
@@ -541,23 +541,32 @@ class TemplateConfiguration extends TemplateConfig
         $jFiles = $oTemplate->$sField;
         $this->aFilesToLoad[$sType] = array();
 
-
-        if(!empty($jFiles)){
+        if (!empty($jFiles)) {
             $oFiles = json_decode($jFiles, true);
-            foreach($oFiles as $action => $aFileList){
+            if ($oFiles) {
+                foreach ($oFiles as $action => $aFileList) {
+                    if (is_array($aFileList)) {
+                        if ($action == "add" || $action == "replace") {
 
-                if ( is_array( $aFileList ) ){
-                    if ($action == "add" || $action == "replace"){
+                            // Specific inheritance of one of the value of the json array
+                            if ($aFileList[0] == 'inherit') {
+                                $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                                $aFileList = $aParentjFiles[$action];
+                            }
 
-                        // Specific inheritance of one of the value of the json array
-                        if ($aFileList[0] == 'inherit'){
-                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
-                            $aFileList = $aParentjFiles[$action];
+                            $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                         }
-
-                        $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                     }
                 }
+            } else {
+                Yii::app()->setFlashMessage(
+                    sprintf(
+                        gT('Could not get files to load for fields "%s", value "%s"'),
+                        $sField,
+                        $jFiles
+                    ),
+                    'error'
+                );
             }
 
         }
