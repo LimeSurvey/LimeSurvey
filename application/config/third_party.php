@@ -313,7 +313,6 @@ return array(
     // Decimal.js calculate in js
     'decimal' => array(
         'devBaseUrl' => 'third_party/decimal',
-        'devBaseUrl' => 'third_party/decimal',
         'basePath' => 'third_party.decimal',
         'js' => array(
             'decimal.js'
@@ -389,23 +388,20 @@ return array(
         )
     ),
     /* Used by ranking question type */
-    'rubaxa-sortable' => array(
-        'basePath' => 'third_party.rubaxa-sortable', /* for sorting ability */
+    'sortable' => array(
+        'devBaseUrl' => 'third_party/sortable',
+        'basePath' => 'third_party.sortable', /* for sorting ability */
+        'position' => CClientScript::POS_BEGIN,
         'js' => array(
             'jquery.fn.sortable'.$minVersion.'.js'
-        ),
-        'depends' => array(
-            'jquery',
         )
     ),
     'jquery-actual' => array(
+        'position' => CClientScript::POS_BEGIN,
         'basePath' => 'third_party.jquery-actual', /* for samechoiceheight/samelistheight */
         'js' => array(
             'jquery.actual.min.js'
         ),
-        'depends' => array(
-            'jquery'
-        )
     ),
     /* Used by short text with map by leaflet */
     'leaflet' => array(

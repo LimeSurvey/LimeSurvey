@@ -83,14 +83,14 @@ return array(
         'basePath' => 'core.questions.ranking',
         'position' => CClientScript::POS_BEGIN,
         'css'=> array(
-            'ranking.css',
+            'css/ranking.css',
         ),
         'js'=>array(
-            'ranking.js',
+            'scripts/sortable.min.js',
+            'scripts/ranking.js',
         ),
         'depends' => array(
-            'rubaxa-sortable',
-            'jquery-actual',
+            'jquery',
         )
     ),
     /* numeric slider question : numerci question type with slider */

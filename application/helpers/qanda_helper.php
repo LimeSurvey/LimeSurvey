@@ -2070,13 +2070,10 @@ function do_ranking($ia)
 
         $inputnames[]=$myfname;
     }
-    if(!App()->getClientScript()->isScriptRegistered("triggerEmRelevanceSortable")){
-        Yii::app()->getClientScript()->registerPackageScriptOnPosition("question-ranking",CClientScript::POS_BEGIN);
-        App()->getClientScript()->registerScript("triggerEmRelevanceSortable","triggerEmRelevanceSortable()",LSYii_ClientScript::POS_POSTSCRIPT);
-        $rankingTranslation='LSvar.lang.rankhelp="'.gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js').'";';
-        App()->getClientScript()->registerScript("rankingTranslation",$rankingTranslation,CClientScript::POS_BEGIN);
-    }
-    App()->getClientScript()->registerScript("doDragDropRank{$ia[0]}","doDragDropRank({$ia[0]},{$aQuestionAttributes["showpopups"]},{$aQuestionAttributes["samechoiceheight"]},{$aQuestionAttributes["samelistheight"]})",LSYii_ClientScript::POS_POSTSCRIPT);
+    
+    Yii::app()->getClientScript()->registerPackage("question-ranking",CClientScript::POS_BEGIN);
+    $rankingTranslation='LSvar.lang.rankhelp="'.gT("Double-click or drag-and-drop items in the left list to move them to the right - your highest ranking item should be on the top right, moving through to your lowest ranking item.",'js').'";';
+    App()->getClientScript()->registerScript("rankingTranslation",$rankingTranslation,CClientScript::POS_BEGIN);
 
     if(trim($aQuestionAttributes['choice_title'][App()->language]) != '')
     {

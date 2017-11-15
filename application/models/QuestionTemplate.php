@@ -317,6 +317,7 @@ class QuestionTemplate extends CFormModel
                     'basePath'    => $questionTemplatePath,
                     'css'         => $aCssFiles,
                     'js'          => $aJsFiles,
+                    'position'    => LSYii_ClientScript::POS_BEGIN
                 ) );
 
                 if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')) {
@@ -327,7 +328,7 @@ class QuestionTemplate extends CFormModel
                         Yii::app()->getClientScript()->registerCssFile("{$templateurl}$sCssFile");
                     }
                     foreach($aJsFiles as $sJsFile) {
-                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile");
+                        Yii::app()->getClientScript()->registerScriptFile("{$templateurl}$sJsFile", LSYii_ClientScript::POS_BEGIN);
                     }
                 }
 

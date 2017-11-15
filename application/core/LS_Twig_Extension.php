@@ -129,15 +129,19 @@ class LS_Twig_Extension extends Twig_Extension
     public static function getPosition($position){
         switch($position) {
             case "POS_HEAD":
-                $position = CClientScript::POS_HEAD;
+                $position = LSYii_ClientScript::POS_HEAD;
                 break;
 
             case "POS_BEGIN":
-                $position = CClientScript::POS_BEGIN;
+                $position = LSYii_ClientScript::POS_BEGIN;
                 break;
 
             case "POS_END":
-                $position = CClientScript::POS_END;
+                $position = LSYii_ClientScript::POS_END;
+                break;
+                
+            case "POS_POSTSCRIPT":
+                $position = LSYii_ClientScript::POS_POSTSCRIPT;
                 break;
 
             default:
