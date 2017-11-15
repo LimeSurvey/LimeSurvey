@@ -13,6 +13,7 @@ return [
     ['createNewBox', ['route'=>'homepagesettings/sa/create']],
     ['pluginManager', ['route'=>'pluginmanager/sa/index']],
     ['configurePlugin', ['route'=>'pluginmanager/sa/configure&id=3']],
+    ['surveyMenus', ['route'=>'menus/sa/view']],
 
 
 ];

@@ -1,5 +1,5 @@
 <?php
-/* @var $this SurveymenuController */
+/* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
 // $this->breadcrumbs=array(
@@ -10,9 +10,12 @@
 // 	array('label'=>'Create Surveymenu', 'url'=>array('create')),
 // 	array('label'=>'Manage Surveymenu', 'url'=>array('admin')),
 // );
-// 
+//
 $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 $massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massive_action/_selector', array(), true, false);
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyMenus');
 
 ?>
 <div class="container-fluid ls-space padding left-50 right-50">
