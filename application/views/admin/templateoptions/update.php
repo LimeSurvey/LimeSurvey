@@ -168,8 +168,8 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 <?php echo $form->error($model,'packages_to_load'); ?>
             </div>
 
-            <div class="row buttons">
-                <?php echo TbHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', ['class'=> 'btn-success']); ?>
+            <div class="row buttons hidden">
+                <?php echo TbHtml::submitButton($model->isNewRecord ? gT('Create') : gT('Save'), ['class'=> 'btn-success']); ?>
             </div>
 
             <?php $this->endWidget(); ?>
