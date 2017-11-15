@@ -515,7 +515,7 @@ class SurveyRuntimeHelper {
         $this->initTotalAndMaxSteps();
         $this->checkIfUseBrowserNav();                                          // Check if user used browser navigation, or relaoded page
 
-        if ($this->move != 'clearcancel' && $this->move != 'confirmquota'){
+        if ($this->sMove != 'clearcancel' && $this->sMove != 'confirmquota'){
             $this->checkPrevStep();                                                 // Check if prev step is set, else set it
             $this->setMoveResult();
             $this->checkClearCancel();
@@ -525,7 +525,7 @@ class SurveyRuntimeHelper {
 
             // CHECK UPLOADED FILES
             // TMSW - Move this into LEM::NavigateForwards?
-            $this->filenotvalidated = checkUploadedFileValidity($this->iSurveyid, $this->move);
+            $this->filenotvalidated = checkUploadedFileValidity($this->iSurveyid, $this->sMove);
 
             //SEE IF THIS GROUP SHOULD DISPLAY
             if ($_SESSION[$this->LEMsessid]['step'] == 0) {
@@ -729,11 +729,11 @@ class SurveyRuntimeHelper {
                  * Seems OK only when movenext but not with move by index : same with $this->aMoveResult = LimeExpressionManager::GetLastMoveResult(true);
                  */
                 $this->LEMskipReprocessing =  true;
-                $this->move                = "movenext"; // so will re-display the survey
+                $this->sMove                = "movenext"; // so will re-display the survey
             }else{
                 // trying to use browser back buttons, which may be disallowed if no 'previous' button is present
                 $this->LEMskipReprocessing = true;
-                $this->move                = "movenext"; // so will re-display the survey
+                $this->sMove                = "movenext"; // so will re-display the survey
                 $this->bInvalidLastPage     = true;
                 $this->backpopup           =  gT("Please use the LimeSurvey navigation buttons or index.  It appears you attempted to use the browser back button to re-submit a page.");    // TODO: twig
             }
@@ -767,12 +767,12 @@ class SurveyRuntimeHelper {
      */
     private function setPrevStep()
     {
-        if (isset($this->move))
+        if (isset($this->sMove))
         {
-            if(!in_array($this->move,array("clearall","changelang","saveall","reload")))
+            if(!in_array($this->sMove,array("clearall","changelang","saveall","reload")))
                 $_SESSION[$this->LEMsessid]['prevstep'] = $_SESSION[$this->LEMsessid]['step'];
             else // Accepted $move without error
-                $_SESSION[$this->LEMsessid]['prevstep']= $this->move;
+                $_SESSION[$this->LEMsessid]['prevstep']= $this->sMove;
         }
         else
         {
@@ -889,7 +889,7 @@ class SurveyRuntimeHelper {
             }
 
             if ($this->aMoveResult['finished'] == true){
-                $this->move = 'movesubmit';
+                $this->sMove = 'movesubmit';
             }
 
             if ($this->sMove == "movesubmit" && $this->aMoveResult['finished'] == false){
@@ -1166,7 +1166,6 @@ class SurveyRuntimeHelper {
         $this->param = $param;
 
         // Todo: check which ones are really needed
-        $this->move                   = isset( $move )                  ?$move                   :null ;
         $this->LEMskipReprocessing    = isset( $LEMskipReprocessing    )?$LEMskipReprocessing    :null ;
         $this->thissurvey             = isset( $thissurvey             )?$thissurvey             :null ;
         $this->iSurveyid              = isset( $surveyid               )?$surveyid               :null ;
@@ -1734,10 +1733,10 @@ class SurveyRuntimeHelper {
                 if ($this->sSurveyMode != 'group'){
                     $this->aStepInfo = LimeExpressionManager::GetStepIndexInfo($this->aMoveResult['seq']);
                 }
-
                 $this->gid              = $this->aStepInfo['gid'];
                 $this->groupname        = $this->aStepInfo['gname'];
                 $this->groupdescription = $this->aStepInfo['gtext'];
+
             }
         }
     }
