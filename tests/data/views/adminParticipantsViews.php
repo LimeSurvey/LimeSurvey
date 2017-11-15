@@ -12,6 +12,7 @@ return [
     ['participantsSummary', ['route'=>'participants/sa/index']],
     ['importParticipants', ['route'=>'participants/sa/importCSV']],
     ['participantsBlacklistControl', ['route'=>'participants/sa/blacklistControl']],
+    ['participantsAttributeControl', ['route'=>'participants/sa/attributeControl']],
 
 
 ];
