@@ -801,7 +801,7 @@ class Question extends LSActiveRecord
         $criteria->addCondition('t.scale_id=0');
         $criteria->addCondition('t.language=:language');
         $criteria->params = [':qid'=>$this->qid,':language'=>$this->language];
-        $criteria->order= ($random ==1 ? (new CDbExpression('RAND()')):'question_order ASC');
+        $criteria->order= ($random ==1 ? (new CDbExpression(dbRandom())):'question_order ASC');
         $ansresult = Question::model()->findAll($criteria);
 
         //if  exclude_all_others is set then the related answer should keep its position at all times
