@@ -96,6 +96,10 @@ enabletests
 !.bowerrc
 !.gitignore
 !.gitattributes
+!.editorconfig
+!.eslintignore
+!.eslint.json
+!.eslintrc.json
 
 ## ignore Vagrantfile
 Vagrantfile
