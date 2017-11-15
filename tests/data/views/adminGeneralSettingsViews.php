@@ -10,6 +10,7 @@ return [
     // --------------------------------------------------
 
     ['homepageSettings', ['route'=>'homepagesettings']],
+    ['createNewBox', ['route'=>'homepagesettings/sa/create']],
 
 
 ];
