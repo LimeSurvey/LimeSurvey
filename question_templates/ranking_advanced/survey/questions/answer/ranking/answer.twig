@@ -36,55 +36,46 @@ question_template_attribute.show_number           : {{question_template_attribut
 question_template_attribute.only_pull           : {{question_template_attribute.only_pull}}<br/>
 question_template_attribute.visualize           : {{question_template_attribute.visualize}}<br/>
 </p>
-{% set question_template_attribute.show_handle = 'yes' %}
+
+
+{% set show_handle=question_template_attribute.show_handle %}
+{% set show_number=question_template_attribute.show_number %}
+{# {% set show_handle="yes" %} #}
+
+{% set show_number="yes" %}
+
 
 <!-- answer -->
-<div class="{{coreClass}}">
+<div class="{{coreClass}} ranking-advanced-style">
     <ul class="list-unstyled ls-js-hidden-sr answers-list select-list " role="group" aria-labelledby="ls-question-text-{{basename}}">
             {# rows/answer_row.twig #}
             {{sSelects}}
     </ul>
-    <div class="ls-no-js-hidden answers-list{{ samechoiceheight ? " list-samechoiceheight": "" }} {{ samelistheight ? " list-samelistheight": "" }} row" aria-hidden="true">
-        <div class="col-sm-6 col-xs-6">
-            <strong class="sortable-subtitle sortable-rank-subtitle">{{rank_title}}</strong>
-            <!-- @todo : move htmlblock at the good place -->
-            <ul id="sortable-choice-{{qId}}" class="sortable-choice sortable-list list-group">
-                {% for ansrow in  answers %}
-                    <li id="javatbd{{rankingName}}{{ansrow.code}}" class="ls-choice list-group-item answer-item sortable-item sortable-enable" data-value="{{ansrow.code}}">
-                    {% if question_template_attribute.show_handle is same as('yes') %} 
-                        <i class="fa fa-bars bigIcons"></i>
-                    {% endif %}
-                        {{ansrow.answer}}
-
-                    </li>
-                {% endfor %}
-                <li class="hidden ls-remove"></li>
-            </ul>
-        </div>
-        <div class="col-sm-6 col-xs-6">
-            <strong class="sortable-subtitle sortable-rank-subtitle">{{choice_title}}</strong>
-            <ul id="sortable-rank-{{qId}}" class="sortable-rank sortable-list list-group">
-                <li class="hidden ls-remove"></li>
-            </ul>
-        </div>
-    </div>
+    {% set rankingView = './views/' ~ question_template_attribute.visualize ~ '.twig' %}
+    {% set rankingView = './views/buttons.twig' %}
+    {{ include(rankingView) }}
 </div>
 
 {% set script %}
 try{
- var ranking{{qId}} = new RankingQuestion({
-        max_answers      : "{{max_answers}}",
-        min_answers      : "{{min_answers}}",
+ var ranking{{qId}} = new AdvancedRankingQuestion({
+        max_answers      : {{max_answers}},
+        min_answers      : {{min_answers}},
         showpopups       : "{{showpopups}}",
         samechoiceheight : "{{samechoiceheight}}",
         samelistheight   : "{{samelistheight}}",
         rankingName      : "{{rankingName}}",
-        questionId       : "{{qId}}"
+        questionId       : "{{qId}}",
+        numbersActive    : {{ ((show_number is same as('yes'))) ? 1 : 0 }},
+        withHandle       : {{ ((show_handle is same as('yes'))) ? 1 : 0 }}
     });
  ranking{{qId}}.init()
 } catch(e){}
 {% endset %}
-
+{# DEBUG #}
+<div class="hidden">
+{{script}}
+</div>
 {{ registerScript( 'RankingQuestion'~qId, script, 'POS_POSTSCRIPT') }}
 
 

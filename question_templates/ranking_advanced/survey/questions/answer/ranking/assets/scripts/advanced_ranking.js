@@ -5,16 +5,18 @@
  */
 
 
-var RankingQuestion = function (options) {
+var AdvancedRankingQuestion = function (options) {
     "use strict";
     //Define option parameters
-    var max_answers = options.max_answers,
+    var questionId = options.questionId,
+        max_answers = options.max_answers,
         min_answers = options.min_answers,
         rankingName = options.rankingName,
         showpopups = options.showpopups || true,
         samechoiceheight = options.samechoiceheight || true,
         samelistheight = options.samelistheight || true,
-        questionId = options.questionId;
+        numbersActive = options.numbersActive,
+        withHandle = options.withHandle;
 
     //define reused variables
     var relevancename= "relevance"+rankingName,
@@ -28,24 +30,35 @@ var RankingQuestion = function (options) {
         //Add a class to the question
         $('#question' + questionId + '').addClass('sortable-activated');
         // Set up the connected sortable
-        $('#sortable-choice-' + questionId).sortable({
+        var sortableObjectChoice = {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
-        });
-
-        $('#sortable-rank-' + questionId).sortable({
+            onEnd: function(){updateRankingNumber();}
+        },
+        sortableObjectRank = {
             group: "sortable-" + questionId,
             ghostClass: "ls-rank-placeholder",
+            onEnd: function(){updateRankingNumber();},
             onSort: function (evt) {
                 if ($(evt.item).hasClass("disabled")) {
                     /* see https://github.com/RubaXa/Sortable/issues/933 */
                     $(evt.item).appendTo('#sortable-choice-' + questionId);
                     /* send a console notice 'from is undefined' in jquery.fn.sortable : must fix Sortable before */
                 } else {
-                    updateDragDropRank.call(self,questionId);
+                    updateDragDropRank();
                 }
             }
-        });
+        };
+
+        if(withHandle === 1){
+            sortableObjectChoice.handle = '.selector__dragHandle';
+            sortableObjectRank.handle = '.selector__dragHandle';
+        }
+
+
+        $('#sortable-choice-' + questionId).sortable(sortableObjectChoice);
+        $('#sortable-rank-' + questionId).sortable(sortableObjectRank);
+
         $('#question' + questionId + ' .ls-remove').remove();
         // Adapt choice and list height
         fixChoiceListHeight();
@@ -65,9 +78,9 @@ var RankingQuestion = function (options) {
     },
     bindActions = function () {
         // Allow users to double click to move to selections from list to list
-        $('#sortable-choice-' + questionId).on('dblclick', 'li:not(.disabled)', function () {
+        $('#sortable-choice-' + questionId).on('dblclick', '.answer-item.sortable-item.ls-choice:not(.disabled)', function () {
 
-            if (max_answers > 0 && $('#sortable-rank-' + questionId + ' li').length >= max_answers) {
+            if (max_answers > 0 && $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').length >= max_answers) {
                 sortableAlert();
                 return false;
             } else {
@@ -76,7 +89,7 @@ var RankingQuestion = function (options) {
             updateDragDropRank();
         });
 
-        $('#sortable-rank-' + questionId).on('dblclick', 'li', function () {
+        $('#sortable-rank-' + questionId).on('dblclick', '.answer-item.sortable-item.ls-choice', function () {
             $(this).appendTo('#sortable-choice-' + questionId + '');
             updateDragDropRank();
         });
@@ -87,15 +100,29 @@ var RankingQuestion = function (options) {
         loadDragDropRank();
         bindActions();
     },
-
+    
+    updateRankingNumber= function () {
+        $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
+            $(item).find('.selector__index_row').text('#'+(index+1));
+        });
+        $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
+            $(item).find('.selector__index_row').text('#'+(index+1));
+        });
+    },
     /**
      * Update answers after updating drag and drop part
      */
     updateDragDropRank = function() {
         
         $('#question' + questionId + ' .select-item select').val('');
-        $('#sortable-rank-' + questionId + ' li').each(function (index) {
+
+        $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function (index,item) {
+            if(numbersActive === 1){
+                updateRankingNumber();
+            }
+
             $('#question' + questionId + ' .select-item select').eq(index).val($(this).data("value"));
+
         });
 
         // Update #relevance and lauch checkconditions function
@@ -107,9 +134,9 @@ var RankingQuestion = function (options) {
             }
             $(this).trigger("change", { source: 'dragdrop' });
         });
-        $('#sortable-rank-' + questionId + ' li').removeClass("text-error");
-        $('#sortable-choice-' + questionId + ' li').removeClass("text-error");
-        $('#sortable-rank-' + questionId + ' li:gt(' + (max_answers * 1 - 1) + ')').addClass("text-error");
+        $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').removeClass("text-error");
+        $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice').removeClass("text-error");
+        $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice:gt(' + (max_answers * 1 - 1) + ')').addClass("text-error");
     },
 
     sortableAlert = function() {
@@ -122,28 +149,31 @@ var RankingQuestion = function (options) {
         
         // Update #relevance
         $("[id^=" + relevancename + "]").val('0');
-        $('#sortable-rank-' + questionId + ' li').each(function () {
+        $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').each(function () {
             $(this).appendTo('#sortable-choice-' + questionId );
         });
         $('#question' + questionId + ' .select-item select').each(function (index) {
             if ($(this).val() != '') {
                 $("#" + relevancename + (index+1)).val("1");
-                $('#sortable-choice-' + questionId + ' li#' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
+                $('#sortable-choice-' + questionId + ' #' + rankingID + $(this).val()).appendTo('#sortable-rank-' + questionId);
             }
         });
 
         updateDragDropRank(); // Update to reorder select
 
-        $('#sortable-rank-' + questionId + ' li').removeClass("error");
-        $('#sortable-choice-' + questionId + ' li').removeClass("error");
-        $('#sortable-rank-' + questionId + ' li:gt(' + (max_answers * 1 - 1) + ')').addClass("error");
+        $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice').removeClass("error");
+        $('#sortable-choice-' + questionId + ' .answer-item.sortable-item.ls-choice').removeClass("error");
+        $('#sortable-rank-' + questionId + ' .answer-item.sortable-item.ls-choice:gt(' + (max_answers * 1 - 1) + ')').addClass("error");
     },
 
     fixChoiceListHeight = function() {
         //Keep the target field as big as the source field
         var minHeight = $('#sortable-choice-' + questionId).height();
+        var minWidth = $('#sortable-choice-' + questionId).width();
         $('#sortable-choice-' + questionId).css('min-height', minHeight);
         $('#sortable-rank-' + questionId).css('min-height', minHeight);
+        $('#sortable-choice-' + questionId).css('min-width', minWidth);
+        $('#sortable-rank-' + questionId).css('min-width', minWidth);
 
         // if (samechoiceheight) {
         //     var maxHeight = 0;

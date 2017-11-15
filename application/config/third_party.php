@@ -69,6 +69,7 @@ return array(
     'bootstrap-slider' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/slider',
         'basePath' => 'core.bootstrap.plugins.slider',
+        'position' => CClientScript::POS_BEGIN,
         'css'=> array(
             'css/bootstrap-slider'.$minVersion.'.css'
         ),
@@ -117,6 +118,7 @@ return array(
     'bootstrap-datetimepicker' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/datetimepicker/build',
         'basePath' => 'core.bootstrap.plugins.datetimepicker.build',
+        'position' => CClientScript::POS_BEGIN,        
         'css' => array(
             'css/bootstrap-datetimepicker'.$minVersion.'.css'
         ),

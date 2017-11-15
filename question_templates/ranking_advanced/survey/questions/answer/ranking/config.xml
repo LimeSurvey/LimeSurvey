@@ -28,8 +28,7 @@
             <filename>css/flexbox.css</filename>
         </css>
         <js>
-            <filename>scripts/sortable.min.js</filename>
-            <filename>scripts/ranking.js</filename>
+            <filename>scripts/advanced_ranking.js</filename>
         </js>
     </files>
 

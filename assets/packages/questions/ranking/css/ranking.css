@@ -16,9 +16,12 @@
           box-sizing: content-box;
 }
 .sortable-list .ls-choice {
+    border-radius:0;
+}
+
+.sortable-list .grabable{
     cursor:move;
     cursor:grabbing;
-    border-radius:0;
 }
 .sortable-list .ls-choice.sortable-item {
     border-radius:0;
