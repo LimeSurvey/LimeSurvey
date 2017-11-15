@@ -13,6 +13,7 @@ return [
     ['importParticipants', ['route'=>'participants/sa/importCSV']],
     ['participantsBlacklistControl', ['route'=>'participants/sa/blacklistControl']],
     ['participantsAttributeControl', ['route'=>'participants/sa/attributeControl']],
+    ['participantsSharePanel', ['route'=>'participants/sa/sharePanel']],
 
 
 ];
