@@ -9,6 +9,7 @@ return [
     // --------------------------------------------------
 
     ['displayParticipants', ['route'=>'participants/sa/displayParticipants']],
+    ['participantsSummary', ['route'=>'participants/sa/index']],
 
 
 ];
