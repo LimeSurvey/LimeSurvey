@@ -23,6 +23,9 @@ class TestBaseClass extends TestCase
     /** @var  string $dataFolder */
     protected static $dataFolder;
 
+    /** @var  string $viewsFolder */
+    protected static $viewsFolder;
+
     /** @var  \Survey */
     protected static $testSurvey;
 
@@ -35,6 +38,7 @@ class TestBaseClass extends TestCase
         self::$testHelper = new TestHelper();
 
         self::$dataFolder = __DIR__.'/data';
+        self::$viewsFolder = self::$dataFolder."/views";
         self::$surveysFolder = self::$dataFolder.'/surveys';
         self::$tempFolder = __DIR__.'/tmp';
         self::$screenshotsFolder = self::$tempFolder.'/screenshots';
