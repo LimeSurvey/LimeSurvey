@@ -478,8 +478,8 @@ class LSYii_ClientScript extends CClientScript {
      */
     public function renderBodyEnd(&$output)
     {
-        if(!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END])
-            && !isset($this->scripts[self::POS_READY]) && !isset($this->scripts[self::POS_LOAD]))
+        if(!isset($this->scriptFiles[self::POS_END]) && !isset($this->scripts[self::POS_END]) && !isset($this->scripts[self::POS_READY]) 
+        && !isset($this->scripts[self::POS_LOAD]) && !isset($this->scripts[self::POS_POSTSCRIPT]))
         {
             str_replace('<###end###>','',$output);
             return;
