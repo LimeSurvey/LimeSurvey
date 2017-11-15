@@ -51,7 +51,7 @@ class SurveyRuntimeHelper {
 
     // moves
     private $aMoveResult            = false;                                    // Contains the result of LimeExpressionManager::JumpTo() OR LimeExpressionManager::NavigateBackwards() OR NavigateForwards::LimeExpressionManager(). TODO: create a function LimeExpressionManager::MoveTo that call the right method
-    private $move                   = null;                                     // The move requested by user. Set by frontend_helper::getMove() from the POST request.
+    private $sMove                   = null;                                     // The move requested by user. Set by frontend_helper::getMove() from the POST request.
     private $bInvalidLastPage       = false;                                    // Just a variable used to check if user submitted a survey while it's not finished. Just a variable for a logic step ==> should not be a Class variable (for now, only here for the redata== get_defined_vars mess)
     private $aStepInfo;
 
