@@ -1,5 +1,5 @@
 <?php
-/* @var $this SurveymenuEntriesController */
+/* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
 // $this->breadcrumbs=array(
@@ -13,7 +13,12 @@
 
 $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 $massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entries/massive_action/_selector', array(), true, false);
+
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('surveyMenuEntries');
+
 ?>
+
 <div class="container-fluid ls-space padding left-50 right-50">
     <div class="ls-flex-column ls-space padding left-35 right-35">
         <div class="col-12 h1">

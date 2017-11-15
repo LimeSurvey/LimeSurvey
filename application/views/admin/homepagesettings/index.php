@@ -1,7 +1,9 @@
 <?php
-/* @var $this homepagesettings  */
+/* @var $this AdminController  */
 /* @var $dataProvider CActiveDataProvider */
 
+// DO NOT REMOVE This is for automated testing to validate we see that page
+echo viewHelper::getViewTestTag('homepageSettings');
 ?>
 <script type="text/javascript">
     strConfirm='<?php eT('Please confirm','js');?>';

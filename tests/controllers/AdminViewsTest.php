@@ -49,6 +49,11 @@ class AdminViewsTest extends TestBaseClassView
         return require __DIR__."/../data/views/adminParticipantsViews.php";
     }
 
+    public function addGeneralSettingsViews()
+    {
+        return require __DIR__."/../data/views/adminGeneralSettingsViews.php";
+    }
+
     /**
      * @param string $name
      * @param array$view
@@ -119,6 +124,17 @@ class AdminViewsTest extends TestBaseClassView
         $view['route'] = ReplaceFields($view['route'],['{UID}'=>$uid]);
         $this->findViewTag($name, $view);
     }
+
+    /**
+     * @param string $name
+     * @param array$view
+     * @dataProvider addGeneralSettingsViews
+     */
+    public function testGeneralSettingsViews($name, $view)
+    {
+        $this->findViewTag($name, $view);
+    }
+
     /**
      * @param string $name
      * @param array$view
