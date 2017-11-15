@@ -81,6 +81,7 @@ return array(
     'question-ranking'=>array(
         'devBaseUrl'  => 'assets/packages/questions/ranking/',
         'basePath' => 'core.questions.ranking',
+        'position' => CClientScript::POS_BEGIN,
         'css'=> array(
             'ranking.css',
         ),

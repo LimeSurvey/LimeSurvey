@@ -305,13 +305,13 @@ class LSYii_ClientScript extends CClientScript {
             if(!empty($package['depends']))
 			{
 				foreach($package['depends'] as $p)
-					$this->registerCoreScript($p, $position);
+					$this->registerPackageScriptOnPosition($p, $position);
             }
             
 			$this->coreScripts[$name]=$package;
 			$this->hasScripts=true;
 			$params=func_get_args();
-			$this->recordCachingAction('clientScript','registerCoreScript',$params);
+			$this->recordCachingAction('clientScript','registerPackageScriptOnPosition',$params);
 		}
 		elseif(YII_DEBUG)
 			throw new CException('There is no LSYii_ClientScript package: '.$name);
