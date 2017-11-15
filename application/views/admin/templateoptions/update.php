@@ -8,8 +8,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 ?>
 
 
-
-<div class="container">
     <div class="row h1"><?php echo sprintf(gT('Update template options for %s'),'<em>' . $model->template_name . '</em>'); ?></div>
     <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
     <div class="row">
@@ -181,7 +179,6 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
     </div>
 
-</div>
 
 <script type="text/javascript">
 var progressHandling = function(event){
