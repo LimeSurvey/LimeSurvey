@@ -26,7 +26,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                     ),
                 )
             ));
-            echo '<h3>'.gT('Active templates:').'</h3>';
+            echo '<h3>'.gT('Installed templates:').'</h3>';
         }
 
 
