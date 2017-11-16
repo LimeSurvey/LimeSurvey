@@ -877,8 +877,9 @@ class questions extends Survey_Common_Action
         return $aViewUrls;
     }
 
-
-
+    /**
+     * @todo $codes can be too big for URL, should be in POST.
+     */
     public function getSubquestionRowForAllLanguages($surveyid, $gid, $qid, $codes, $scale_id, $type, $languages, $position, $assessmentvisible='')
     {
         $languages = explode ( ';', json_decode($languages));
