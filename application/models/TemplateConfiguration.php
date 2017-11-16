@@ -454,13 +454,19 @@ class TemplateConfiguration extends TemplateConfig
                 </a>";
         }
 
-        $sUninstallLink = "<a
-            id='remove_fromdb_link_".$this->template_name."'
-            href='".$sUninstallUrl."'
-            class='btn btn-danger'>
-                <span class='icon-trash'></span>
-                ".gT('Uninstall')."
-            </a>";
+
+        $sUninstallLink = '<a
+            id="remove_fromdb_link_'.$this->template_name.'"
+            data-href="'.$sUninstallUrl.'"
+            data-target="#confirmation-modal"
+            data-toggle="modal"
+            data-message="'.gT('This will delete all the specific configurations of this template').'<br>'.gT('Do you want to continue?').'"
+            data-tooltip="true"
+            title="'.gT('uninstall this template').'"
+            class="btn btn-danger">
+                <span class="icon-trash"></span>
+                '.gT('Uninstall').'
+            </a>';
 
 
         if (App()->getController()->action->id == "surveysgroups"){
