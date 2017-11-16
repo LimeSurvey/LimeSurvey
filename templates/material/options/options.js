@@ -137,7 +137,7 @@ var prepare = function(){
 
     return deferred.promise();
 };
-$(document).on('ready pjax:complete',function(){
+$(document).on('ready pjax:scriptcomplete',function(){
     $('.simple-template-edit-loading').css('display','block');
     prepare().then(function(){
         $('.simple-template-edit-loading').remove();
