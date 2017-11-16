@@ -2136,7 +2136,7 @@ function numericSize($sColumn)
     ->queryScalar();
     $integerMinLen = strlen(intval($minInteger));
     /* Get size of integer part */
-    $maxIntegerLen=max([$integerMaxLen,$integerMinLen]);
+    $maxIntegerLen=max(array($integerMaxLen,$integerMinLen));
     
     /* Find the max len of decimal part */
     $maxDecimal = Yii::app()->db
