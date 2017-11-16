@@ -96,7 +96,7 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
         $url                   = $elDatas.data('quickurl'),         // Url for the request
         $errormessage          = $elDatas.data('errormessage'),     // the error message if the AJAX request failed
         $defer                 = $.Deferred(),
-        $codes, datas;
+        $codes, datas, urlDatas;
 
 
     // We get all the subquestion codes currently displayed
@@ -113,11 +113,15 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
     // We convert them to json for the request
     $codes = JSON.stringify(codes);
 
-    //We build the datas for the request
-    datas  = {
+    // We build the datas for the request
+    // NB: URL params.
+    urlDatas = {
       'surveyid' : $elDatas.data('surveyid'),
       'gid': $elDatas.data('gid'),
-      'qid': $elDatas.data('qid'),
+      'qid': $elDatas.data('qid')
+    };
+    // NB: Post data.
+    datas  = {
       'codes': $codes,
       'scale_id': scale_id,
       'type' : 'answer',
@@ -127,11 +131,10 @@ function addinputQuickEdit($currentTable, language, first, scale_id, codes)
       'assessmentvisible' : ( $elDatas.data('assessmentvisible') == 1 )
     };
 
-    console.log(datas);
     // We get the HTML of the new row to insert
      $.ajax({
-        type: "GET",
-        url: $url,
+        type: "POST",
+        url: $url + '?' + jQuery.param(urlDatas),
         data: datas,
         success: function(htmlrow) {
             var $lang_table = $('#answers_'+language+'_'+scale_id);
