@@ -561,7 +561,7 @@ class TemplateConfiguration extends TemplateConfig
             } else {
                 Yii::app()->setFlashMessage(
                     sprintf(
-                        gT('Could not get files to load for fields "%s", value "%s"'),
+                        gT('Could not load file(s) for field "%s", value "%s"'),
                         $sField,
                         $jFiles
                     ),
