@@ -550,29 +550,18 @@ class TemplateConfiguration extends TemplateConfig
 
         if(!empty($jFiles)){
             $oFiles = json_decode($jFiles, true);
-            if ($oFiles == null) {
-                Yii::app()->setFlashMessage(
-                    sprintf(
-                        gT('Error: Malformed JSON: Field %s must be either a JSON array or the string "inherit". Found "%s".'),
-                        $sField,
-                        $jFiles
-                    ),
-                    'error'
-                );
-            } else {
-                foreach($oFiles as $action => $aFileList){
+            foreach($oFiles as $action => $aFileList){
 
-                    if ( is_array( $aFileList ) ){
-                        if ($action == "add" || $action == "replace"){
+                if ( is_array( $aFileList ) ){
+                    if ($action == "add" || $action == "replace"){
 
-                            // Specific inheritance of one of the value of the json array
-                            if ($aFileList[0] == 'inherit'){
-                                $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
-                                $aFileList = $aParentjFiles[$action];
-                            }
-
-                            $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
+                        // Specific inheritance of one of the value of the json array
+                        if ($aFileList[0] == 'inherit'){
+                            $aParentjFiles = (array) json_decode($oTemplate->getParentConfiguration->$sField);
+                            $aFileList = $aParentjFiles[$action];
                         }
+
+                        $this->aFilesToLoad[$sType] = array_merge($this->aFilesToLoad[$sType], $aFileList);
                     }
                 }
             }
