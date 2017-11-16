@@ -25,7 +25,6 @@
     <files>
         <css>
             <filename>css/ranking.css</filename>
-            <filename>css/flexbox.css</filename>
         </css>
         <js>
             <filename>scripts/advanced_ranking.js</filename>

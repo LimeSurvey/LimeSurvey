@@ -52,7 +52,7 @@ question_template_attribute.visualize           : {{question_template_attribute.
             {{sSelects}}
     </ul>
     {% set rankingView = './views/' ~ question_template_attribute.visualize ~ '.twig' %}
-    {% set rankingView = './views/buttons.twig' %}
+    {% set rankingView = './views/blocks.twig' %}
     {{ include(rankingView) }}
 </div>
 
