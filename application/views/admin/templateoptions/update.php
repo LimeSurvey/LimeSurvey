@@ -52,6 +52,16 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             ?>
         </div>
         <div role="tabpanel" class="tab-pane" id="advanced">
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <p><?php eT('All fields below (except CSS framework name) must be either a valid JSON array or the string "inherit".'); ?></p>
+        </div>
+
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <p><strong><?php eT('Warning!'); ?></strong> <?php eT("Don't touch the values below unless you know what you're doing."); ?></p>
+        </div>
+
         <?php
             $actionBaseUrl = 'admin/templateoptions/sa/update/';
             $actionUrlArray = array('id' => $model->id);
