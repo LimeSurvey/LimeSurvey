@@ -154,7 +154,7 @@ class SurveysGroups extends LSActiveRecord
                     'type' => 'raw',
                     'value'=> '$data->buttons',
                     'headerHtmlOptions'=>array('class' => 'hidden-xs'),
-                    'htmlOptions' => array('class' => 'hidden-xs has-link'),
+                    'htmlOptions' => array('class' => 'hidden-xs'),
                 ),
 
             );
@@ -223,7 +223,7 @@ class SurveysGroups extends LSActiveRecord
             $button .= '<a class="btn btn-default" href="'.$sEditUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit survey group').'"><i class="fa fa-edit" ></i><span class="sr-only">'.gT('Edit survey group').'</span></a>';
         }
         if (! $this->hasSurveys){
-            $button .= '<a class="btn btn-default" href="'.$sDeleteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger " ></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
+            $button .= '<a class="btn btn-default" href="#" data-href="'.$sDeleteUrl.'" data-target="#confirmation-modal" role="button" data-toggle="modal" data-message="'.gT('Do you want to continue?').'" data-tooltip="true" title="'.gT('Delete survey group').'"><i class="fa fa-trash text-danger "></i><span class="sr-only">'.gT('Delete survey group').'</span></a>';
         }
 
         return $button;
@@ -236,28 +236,28 @@ class SurveysGroups extends LSActiveRecord
 
         foreach( $oSurveyGroups as $oSurveyGroup){
             $aSurveyList[$oSurveyGroup->gsid] = $oSurveyGroup->title;
-        } 
-        
+        }
+
         return $aSurveyList;
     }
 
-	public function getNextOrderPosition(){
-		$oSurveysGroups = SurveysGroups::model()->findAll();
-		return count($oSurveysGroups)+1;
-	}
+    public function getNextOrderPosition(){
+        $oSurveysGroups = SurveysGroups::model()->findAll();
+        return count($oSurveysGroups)+1;
+    }
 
     public function getParentGroupOptions (){
-		$oSurveysGroups = SurveysGroups::model()->findAll();
-		$options = [
-			'' => gT('No parent menu')
-		];
-		foreach($oSurveysGroups as $oSurveysGroup){
-			//$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
-			$options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
-		}
-		//return join('\n',$options);
-		return $options;
-	}
+        $oSurveysGroups = SurveysGroups::model()->findAll();
+        $options = [
+            '' => gT('No parent menu')
+        ];
+        foreach($oSurveysGroups as $oSurveysGroup){
+            //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
+            $options[''.($oSurveysGroup->gsid).''] = '('.$oSurveysGroup->name.') '.$oSurveysGroup->title;
+        }
+        //return join('\n',$options);
+        return $options;
+    }
 
     /**
      * Returns the static model of the specified AR class.
