@@ -861,7 +861,7 @@ function buildsurveysession($surveyid,$preview=false)
     setTotalSteps($surveyid, $thissurvey, $totalquestions);
 
     // Break out and crash if there are no questions!
-    if ($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0){
+    if (($totalquestions == 0 || $iTotalGroupsWithoutQuestions > 0) && !$preview){
         breakOutAndCrash($sTemplateViewPath, $totalquestions, $iTotalGroupsWithoutQuestions, $thissurvey);
     }
 
