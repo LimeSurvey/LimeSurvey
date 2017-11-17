@@ -550,7 +550,7 @@ class TemplateConfiguration extends TemplateConfig
 
         if(!empty($jFiles)){
             $oFiles = json_decode($jFiles, true);
-            if ($oFiles == null) {
+            if ($oFiles === null) {
                 Yii::app()->setFlashMessage(
                     sprintf(
                         gT('Error: Malformed JSON: Field %s must be either a JSON array or the string "inherit". Found "%s".'),
