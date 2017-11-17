@@ -315,6 +315,6 @@ class viewHelper
       */
      public static function getViewTestTag($name)
      {
-         return sprintf('<x-test id="action::%s" />', $name);
+         return sprintf('<x-test id="action::%s"></x-test>', $name);
      }
 }
