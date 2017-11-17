@@ -121,6 +121,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
          * Here you should handle subscribing to the events your plugin will handle
          */
         $this->subscribe('beforeActivate');
+        $this->subscribe('getGlobalBasePermissions');
+        $this->subscribe('beforeHasPermission');
         $this->subscribe('createNewUser');
         $this->subscribe('beforeLogin');
         $this->subscribe('newLoginForm');
@@ -139,6 +141,40 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             $event = $this->getEvent();
             $event->set('success', false);
             $event->set('message', gT("LDAP authentication failed: LDAP PHP module is not available."));
+        }
+    }
+
+    /**
+     * Add AuthLDAP Permission to global Permission
+     * @return void
+     */
+    public function getGlobalBasePermissions() {
+        $this->getEvent()->append('globalBasePermissions',array(
+            'auth_ldap' => array(
+                'create' => false,
+                'update' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Use LDAP authentication"),
+                'description' => gT("Use LDAP authentication"),
+                'img' => 'usergroup'
+            ),
+        ));
+    }
+
+    /**
+     * Validation of AuthPermission (for super-admin only)
+     * @return void
+     */
+    public function beforeHasPermission() {
+        $oEvent = $this->getEvent();
+        if($oEvent->get('sEntityName') != 'global' || $oEvent->get('sPermission') !='auth_ldap' || $oEvent->get('sCRUD') !='read') {
+            return;
+        }
+        $iUserId = Permission::getUserId($oEvent->get('iUserID'));
+        if($iUserId == 1) {
+            $oEvent->set('bPermission',(bool)$this->get('allowInitialUser'));
         }
     }
 

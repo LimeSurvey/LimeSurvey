@@ -30,6 +30,9 @@
  */
 class Permission extends LSActiveRecord
 {
+    /* @var array[]|null The global base Permission LimeSurvey installation */
+    protected static $aGlobalBasePermissions;
+
     /** @inheritdoc */
     public function tableName()
     {
@@ -179,6 +182,9 @@ class Permission extends LSActiveRecord
      */
     public static function getGlobalBasePermissions()
     {
+        if(self::$aGlobalBasePermissions) {
+            return self::$aGlobalBasePermissions;
+        }
         $defaults = array(
             'create' => true,
             'read' => true,
@@ -253,31 +259,33 @@ class Permission extends LSActiveRecord
             'description' => gT("Use internal database authentication"),
             'img' => 'usergroup'
         );
-        $aPermissions['auth_ldap'] = array(
-            'create' => false,
-            'update' => false,
-            'delete' => false,
-            'import' => false,
-            'export' => false,
-            'title' => gT("Use LDAP authentication"),
-            'description' => gT("Use LDAP authentication"),
-            'img' => 'usergroup'
-        );
-        $aPermissions['auth_webserver'] = array(
-            'create' => false,
-            'update' => false,
-            'delete' => false,
-            'import' => false,
-            'export' => false,
-            'title' => gT("Use web server authentication"),
-            'description' => gT("Use web server authentication"),
-            'img' => 'usergroup'
-        );
+
+        /**
+         * New event to allow plugin to add own global permission
+         * Using $event->append('globalBasePermissions', $newGlobalBasePermissions);
+         * $newGlobalBasePermissions=[
+         *  permissionName=>[
+         *       'create' : create (optionnal)
+         *       'read' : read (optionnal)
+         *       'update' : update (optionnal)
+         *       'delete' : delete (optionnal)
+         *       'import' : import (optionnal)
+         *       'export' : export (optionnal)
+         *       'title' : translated title/name
+         *       'description' : translated description
+         *       'img': icon name class
+         *  ]
+         */
+        $event = new \LimeSurvey\PluginManager\PluginEvent('getGlobalBasePermissions');
+        $result = App()->getPluginManager()->dispatchEvent($event);
+        $aPluginPermissions =(array) $result->get('globalBasePermissions');
+        $aPermissions=array_merge($aPermissions,$aPluginPermissions);
 
         foreach ($aPermissions as &$permission) {
             $permission = array_merge($defaults, $permission);
         }
-        return $aPermissions;
+        self::$aGlobalBasePermissions = $aPermissions;
+        return self::$aGlobalBasePermissions;
     }
 
     /**
@@ -570,10 +578,9 @@ class Permission extends LSActiveRecord
 
         /* Always return false for guests */
         // TODO: should not be necessary
-        if(!$this->getUserId($iUserID)) {
+        $iUserID=self::getUserId($iUserID);
+        if(!$iUserID) {
             return false;
-        } else {
-            $iUserID=$this->getUserId($iUserID);
         }
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
@@ -700,7 +707,7 @@ class Permission extends LSActiveRecord
      * @return int user id
      * @throws Exception
      */
-    protected function getUserId($iUserID=null)
+    public static function getUserId($iUserID=null)
     {
         if (is_null($iUserID)) {
             if(Yii::app() instanceof CConsoleApplication) {

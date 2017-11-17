@@ -28,8 +28,28 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         /**
          * Here you should handle subscribing to the events your plugin will handle
          */
+        $this->subscribe('getGlobalBasePermissions');
         $this->subscribe('beforeLogin');
         $this->subscribe('newUserSession');
+    }
+
+    /**
+     * Add AuthLDAP Permission to global Permission
+     * @return void
+     */
+    public function getGlobalBasePermissions() {
+        $this->getEvent()->append('globalBasePermissions',array(
+            'auth_webserver' => array(
+                'create' => false,
+                'update' => false,
+                'delete' => false,
+                'import' => false,
+                'export' => false,
+                'title' => gT("Use web server authentication"),
+                'description' => gT("Use web server authentication"),
+                'img' => 'usergroup'
+            ),
+        ));
     }
 
     public function beforeLogin()
@@ -68,7 +88,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             }
         }
     }
-    
+
     public function newUserSession()
     {
         // Do nothing if this user is not Authwebserver type
