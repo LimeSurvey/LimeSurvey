@@ -49,7 +49,6 @@ class MultipleChoiceNextPreviousTest extends TestBaseClassWeb
             $questions[$q->title] = $q;
         }
 
-
         try {
 
             self::$webDriver->get($url);

@@ -24,7 +24,6 @@ class DateTimeValidationTest extends TestBaseClassWeb
         self::$testHelper->enablePreview();
     }
 
-
     /**
      * 
      */
