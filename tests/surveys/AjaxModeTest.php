@@ -18,7 +18,6 @@ class AjaxModeTest extends TestBaseClassWeb
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$webDriver->manage()->timeouts()->implicitlyWait(3);
     }
 
     /**

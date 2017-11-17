@@ -68,6 +68,9 @@ class TestBaseClassWeb extends TestBaseClass
         putenv(sprintf('webdriver.chrome.driver=/%s/../chromedriver', $base));
         self::$webDriver = ChromeDriver::start($caps);
 
+        // Implicit timout so we don't have to wait manually.
+        self::$webDriver->manage()->timeouts()->implicitlyWait(5);
+
         self::deleteLoginTimeout();
 
         //self::$webDriver = RemoteWebDriver::create("http://localhost:{$port}/", $capabilities);

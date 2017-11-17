@@ -20,7 +20,6 @@ class ScreenOutTest extends TestBaseClassWeb
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
-        self::$webDriver->manage()->timeouts()->implicitlyWait(3);
 
         // Import survey.
         $surveyFile = self::$surveysFolder . '/limesurvey_survey_186734.lss';
