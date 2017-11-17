@@ -878,13 +878,23 @@ class questions extends Survey_Common_Action
     }
 
     /**
-    * AJAX Method to QuickAdd multiple Rows AJAX-based
-    */
-    public function getSubquestionRowQuickAdd( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position=null, $assessmentvisible='' )
+     * AJAX Method to QuickAdd multiple Rows AJAX-based
+     * @todo Permission
+     */
+    public function getSubquestionRowQuickAdd($surveyid, $gid, $qid)
     {
-        $qid = '{{quid_placeholder}}';
-        echo $this->getSubquestionRow( $surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible );
+        $qid               = '{{quid_placeholder}}';
+        $request           = Yii::app()->request;
+        $codes             = $request->getPost('codes');
+        $language          = $request->getPost('language');
+        $first             = $request->getPost('first');
+        $scale_id          = $request->getPost('scale_id');
+        $type              = $request->getPost('type');
+        $position          = $request->getPost('position');
+        $assessmentvisible = $request->getPost('assessmentvisible');
+        echo $this->getSubquestionRow($surveyid, $gid, $qid, $codes, $language, $first, $scale_id, $type, $position, $assessmentvisible);
     }
+
     /**
      * This function should be called via ajax request
      * It returns a EMPTY subquestion row HTML for a given ....
