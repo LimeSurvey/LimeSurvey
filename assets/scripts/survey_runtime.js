@@ -114,8 +114,8 @@ function checkconditions(value, name, type, evt_type)
         result = result[2]
     }
 
-    // $isRelevant = $.inArray(result, aQuestionsWithDependencies); NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
-    var $isRelevant = 1;
+    var $isRelevant = $.inArray(result, aQuestionsWithDependencies);// NEED TO ADD THE QUESTIONS WITH CONDITIONS BEFORE WE CAN USE IT !!!!
+    //var $isRelevant = 1;
     if($.isFunction(window.ExprMgr_process_relevance_and_tailoring ) && $isRelevant!=-1)
         ExprMgr_process_relevance_and_tailoring(evt_type,name,type);
 }
@@ -174,7 +174,7 @@ function fixnum_checkconditions(value, name, type, evt_type, intonly)
             clearTimeout(window.correctNumberField);
             window.correctNumberField = null;
         }
-        
+
         var addition = "";
         if(cleansedValue && cleansedValue.split("").pop().match(/(,)|(\.)/)){
             addition = cleansedValue.split("").pop();
@@ -479,4 +479,3 @@ function doToolTipTable()
         }
     });
 }
-

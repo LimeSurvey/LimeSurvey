@@ -7143,7 +7143,7 @@
             $allJsVarsUsed=array();
             $rowdividList=array();   // list of subquestions needing relevance entries
             /* All function for expression manager */
-            
+
             App()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts')."expressions/em_javascript.js" );
             /* Call the function when trigerring event */
             App()->getClientScript()->registerScript("triggerEmClassChange","triggerEmClassChange();\n",CClientScript::POS_END);
@@ -7652,10 +7652,12 @@
                     foreach($qrelQIDs as $qrelQID)
                     {
                         $sQid = str_replace("relChange","",$qrelQID);
-                        if(!in_array($sQid, $aQuestionsWithDependencies)  )
-                        {
+                        if(!in_array($sQid, $aQuestionsWithDependencies)  ){
                             $aQuestionsWithDependencies[]=$sQid;
                         }
+
+                        // We add the question having condition itself to the array of question to check
+                        $aQuestionsWithDependencies[] = $arg['qid'];
                     }
 
 
