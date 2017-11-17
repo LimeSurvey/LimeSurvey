@@ -579,10 +579,9 @@ class Permission extends LSActiveRecord
 
         /* Always return false for guests */
         // TODO: should not be necessary
-        if(!$this->getUserId($iUserID)) {
+        $iUserID=self::getUserId($iUserID);
+        if(!$iUserID) {
             return false;
-        } else {
-            $iUserID=$this->getUserId($iUserID);
         }
 
         /* Always return true if you are the owner : this can be done in core plugin ? */
@@ -709,7 +708,7 @@ class Permission extends LSActiveRecord
      * @return int user id
      * @throws Exception
      */
-    protected function getUserId($iUserID=null)
+    public static function getUserId($iUserID=null)
     {
         if (is_null($iUserID)) {
             if(Yii::app() instanceof CConsoleApplication) {

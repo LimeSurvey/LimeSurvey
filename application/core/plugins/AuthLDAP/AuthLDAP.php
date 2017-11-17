@@ -122,6 +122,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
          */
         $this->subscribe('beforeActivate');
         $this->subscribe('getGlobalBasePermissions');
+        $this->subscribe('beforeHasPermission');
         $this->subscribe('createNewUser');
         $this->subscribe('beforeLogin');
         $this->subscribe('newLoginForm');
@@ -160,6 +161,21 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 'img' => 'usergroup'
             ),
         ));
+    }
+
+    /**
+     * Validation of AuthPermission (for super-admin only)
+     * @return void
+     */
+    public function beforeHasPermission() {
+        $oEvent = $this->getEvent();
+        if($oEvent->get('sEntityName') != 'global' || $oEvent->get('sPermission') !='auth_ldap' || $oEvent->get('sCRUD') !='read') {
+            return;
+        }
+        $iUserId = Permission::getUserId($oEvent->get('iUserID'));
+        if($iUserId == 1) {
+            $oEvent->set('bPermission',(bool)$this->get('allowInitialUser'));
+        }
     }
 
     /**
