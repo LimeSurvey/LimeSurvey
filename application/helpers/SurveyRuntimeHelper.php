@@ -532,10 +532,6 @@ class SurveyRuntimeHelper {
                 $this->bShowEmptyGroup = true;
             }
 
-            // For welcome screen
-            $this->thissurvey['iTotalquestions']   = $_SESSION['survey_'.$this->iSurveyid]['totalquestions'];
-            $showxquestions                        = Yii::app()->getConfig('showxquestions');
-            $this->thissurvey['bShowxquestions']   = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($this->aSurveyInfo['showxquestions'])) || ($showxquestions == 'choose' && $this->aSurveyInfo['showxquestions'] == 'Y'));
         }
 
     }

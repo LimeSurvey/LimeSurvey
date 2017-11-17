@@ -42,7 +42,6 @@
     <!-- Question count -->
     <div class="{{ aSurveyInfo.class.questioncount }} text-muted" {{ aSurveyInfo.attr.questioncount }}>
         <div class='{{ aSurveyInfo.class.questioncounttext }}' {{ aSurveyInfo.attr.questioncounttext }}>
-
             {# If survey creator set "show x questions" in survey setting  #}
             {% if aSurveyInfo.bShowxquestions == true %}
                 {% if aSurveyInfo.iTotalquestions < 1 %}
@@ -50,7 +49,8 @@
                 {% elseif aSurveyInfo.iTotalquestions == 1  %}
                     {{ "There is 1 question in this survey" | t }}
                 {% else %}
-                    {{ "There are " ~ aSurveyInfo.iTotalquestions ~ " questions in this survey." | t}}
+                    {% set nbQuestions = "There are " ~ aSurveyInfo.iTotalquestions ~ " questions in this survey." %}
+                    {{ nbQuestions | t}}
               {% endif %}
             {% endif %}
         </div>
