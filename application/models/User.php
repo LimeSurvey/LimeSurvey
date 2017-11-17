@@ -226,7 +226,7 @@ class User extends LSActiveRecord
      */
     public static function updatePassword($iUserID, $sPassword)
     {
-        return User::model()->updateByPk($iUserID, password_hash($sPassword,PASSWORD_DEFAULT));
+        return User::model()->updateByPk($iUserID, array('password'=>password_hash($sPassword,PASSWORD_DEFAULT)));
     }
 
     /**
