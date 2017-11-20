@@ -47,7 +47,6 @@ $(document).on('ready', function () {
             },
             created() {
                 this.controlWindowSize();
-
                 window.addEventListener('resize', () => {
                     this.controlWindowSize();
                 });

@@ -238,19 +238,23 @@ function renderBootstrapSwitch(){
 }
 
 function surveyQuickActionTrigger(){
-    $url = $(this).data('url');
-    $(document).trigger('quick-action-toggle');
+
+    var $self = $(this);
     $.ajax({
-        url : $url,
+        url : $self.data('url'),
         type : 'GET',
-        dataType : 'html',
-        
+        dataType : 'json',
+        data: {currentState: $self.data('active')},
         // html contains the buttons
-        success : function(html, statut){
-            $('#survey-action-container').animate({
-                "height": "toggle", "opacity": "toggle"
-            });
+        success : function(data, statut){
+            $self.data('active', data.newState);
+            if(data.newState === 1){
+                $('#survey-action-container').slideDown(500);
+            } else {
+                $('#survey-action-container').slideUp(500);
+            }
             $('#survey-action-chevron').find('i').toggleClass('fa-caret-up').toggleClass('fa-caret-down');
+            
         },
         error :  function(html, statut){
             alert('error');

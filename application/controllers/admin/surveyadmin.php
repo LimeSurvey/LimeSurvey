@@ -358,6 +358,17 @@ class SurveyAdmin extends Survey_Common_Action
                 setGlobalSetting($setting_entry, 0);
                 break;
         }
+        return Yii::app()->getController()->renderPartial(
+            '/admin/super/_renderJson',
+            array(
+                'data' => [
+                    'success' => true,
+                    'newState'=> getGlobalSetting($setting_entry)
+                ],
+            ),
+            false,
+            false
+        );
     }
 
     /**

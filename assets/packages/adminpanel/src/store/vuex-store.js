@@ -2,8 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueLocalStorage from 'vue-localstorage';
 import createPersist from 'vuex-localstorage';
-import Pjax from 'pjax';
-
 
 Vue.use(Vuex);
 Vue.use(VueLocalStorage);
@@ -22,7 +20,6 @@ const getAppState = function (userid) {
         sidebarwidth: '380px',
         maximalSidebar: false,
         isCollapsed: false,
-        quickMenu: false,
         pjax: null,
         pjaxLoading: false,
         lastMenuOpen: false,
@@ -70,9 +67,6 @@ const getAppState = function (userid) {
             },
             changeIsCollapsed(state, value) {
                 state.isCollapsed = value;
-            },
-            changeSurveyQuickMenuState(state, value) {
-                state.quickMenu = value;
             },
             changeMaxHeight(state, newHeight) {
                 state.maxHeight = newHeight;
