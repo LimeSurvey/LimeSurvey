@@ -99,10 +99,10 @@ return array(
         'basePath' => 'core.questions.numeric-slider',
         'position' => CClientScript::POS_BEGIN,
         'css'=> array(
-            'numeric-slider.css',
+            'css/numeric-slider.css',
         ),
         'js'=>array(
-            'numeric-slider.js',
+            'scripts/numeric-slider.js',
         ),
         'depends' => array(
             'bootstrap-slider',

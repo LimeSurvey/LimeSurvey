@@ -3153,6 +3153,7 @@ function do_multiplenumeric($ia)
             }else{
                 $sRows .= doRender('/survey/questions/answer/multiplenumeric/rows/sliders/answer_row', array(
                     'qid'                    => $ia[0],
+                    'basename'               => $ia[1],
                     'extraclass'             => $extraclass,
                     'sDisplayStyle'          => $sDisplayStyle,
                     'kpclass'                => $kpclass,
@@ -3245,13 +3246,6 @@ function do_multiplenumeric($ia)
         );
         App()->getClientScript()->registerScript("sliderTranslation","var sliderTranslation=".json_encode($sliderTranslation).";\n",CClientScript::POS_BEGIN);
         App()->getClientScript()->registerPackage("question-numeric-slider");
-        if($slider_handle == 'custom'){/* unsure we still need it : in aJsonOptions : must choose the best */
-            App()->getClientScript()->registerCss("cssNumericSlider{$ia[0]}","#question{$ia[0]} .slider-handle.custom::before{ content: '\\{$slider_custom_handle}'};");
-        }
-        $aJsonOptions=json_encode(array(
-            'slider_custom_handle'=>$slider_custom_handle
-        ));
-        App()->getClientScript()->registerScript("doNumericSlider{$ia[0]}","doNumericSlider({$ia[0]},{$aJsonOptions})",LSYii_ClientScript::POS_POSTSCRIPT);
     }
 
     return array($answer, $inputnames);

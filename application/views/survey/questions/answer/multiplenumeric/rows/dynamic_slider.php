@@ -1,6 +1,6 @@
 <?php
 /**
- * Multiple numerci : dynamic row (remaining + total)
+ * Multiple numeric : dynamic row (remaining + total)
  * @var $id
  * @var $sumRemainingEqn
  * @var $sumEqn

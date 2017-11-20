@@ -328,9 +328,11 @@ class LSYii_ClientScript extends CClientScript {
     {
         if($this->coreScripts===null)
             return;
+
         $cssFiles=array();
         $jsFiles=array();
         $jsFilesPositioned=array();
+
         foreach($this->coreScripts as $name=>$package)
         {
             $baseUrl=$this->getPackageBaseUrl($name);
@@ -390,8 +392,6 @@ class LSYii_ClientScript extends CClientScript {
             $html.=CHtml::linkTag(null,null,null,null,$link)."\n";
         foreach($this->cssFiles as $url=>$media)
             $html.=CHtml::cssFile($url,$media)."\n";
-        foreach($this->css as $css)
-            $html.=CHtml::css($css[0],$css[1])."\n";
         if($this->enableJavaScript)
         {
             if(isset($this->scriptFiles[self::POS_HEAD]))
@@ -433,6 +433,7 @@ class LSYii_ClientScript extends CClientScript {
     public function renderBodyBegin(&$output)
     {
         $html='';
+
         if(isset($this->scriptFiles[self::POS_BEGIN]))
         {
             foreach($this->scriptFiles[self::POS_BEGIN] as $scriptFileUrl=>$scriptFileValue)
@@ -522,7 +523,7 @@ class LSYii_ClientScript extends CClientScript {
         if(isset($this->scripts[self::POS_POSTSCRIPT]))
         {
             if($fullPage) //This part is different to reflect the changes needed in the backend by the pjax loading of pages
-                $scripts[]="jQuery(document).on('ready pjax:scriptcomplete',function() {\nconsole.log('loading on scriptcomplete');\n".implode("\n",$this->scripts[self::POS_POSTSCRIPT])."\n});";
+                $scripts[]="jQuery(document).on('ready pjax:scriptcomplete', function() {\nconsole.log('loading on scriptcomplete');\n".implode("\n",$this->scripts[self::POS_POSTSCRIPT])."\n});";
             else
                 $scripts[]=implode("\n",$this->scripts[self::POS_POSTSCRIPT]);
         }
