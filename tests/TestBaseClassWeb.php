@@ -62,7 +62,12 @@ class TestBaseClassWeb extends TestBaseClass
 
         $caps = new DesiredCapabilities();
         $chromeOptions = new ChromeOptions();
-        $chromeOptions->addArguments(['--headless', 'window-size=1024,768']);
+        $noHeadless = getenv('NOHEADLESS');
+        if (empty($noHeadless)) {
+            $chromeOptions->addArguments(['--headless', 'window-size=1400,1024']);
+        } else {
+            $chromeOptions->addArguments(['window-size=1400,1024']);
+        }
         $caps->setCapability(ChromeOptions::CAPABILITY, $chromeOptions);
 
         putenv(sprintf('webdriver.chrome.driver=/%s/../chromedriver', $base));
