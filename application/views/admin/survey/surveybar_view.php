@@ -231,7 +231,7 @@
                     <div class="btn-group hidden-xs">
 
                         <!-- Main button dropdown -->
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button id="ls-tools-button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="icon-tools" ></span>
                              <?php eT('Tools');?><span class="caret"></span>
                         </button>
