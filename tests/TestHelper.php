@@ -289,4 +289,20 @@ class TestHelper extends TestCase
             );
         }
     }
+
+    /**
+     * Use webdriver to put a screenshot in screenshot folder.
+     * @param WebDriver $webDriver
+     * @param string $name
+     * @return void
+     */
+    public function takeScreenshot($webDriver, $name)
+    {
+        $tempFolder = \Yii::app()->getBasePath() .'/../tests/tmp';
+        $folder     = $tempFolder.'/screenshots/';
+        $screenshot = $webDriver->takeScreenshot();
+        $filename   = $folder . $name . '.png';
+        $result     = file_put_contents($filename, $screenshot);
+        $this->assertTrue($result > 0, 'Could not write screenshot to file ' . $filename);
+    }
 }
