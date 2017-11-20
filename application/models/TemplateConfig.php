@@ -843,23 +843,21 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate->owner_id         = Yii::app()->user->id;
         $oNewTemplate->extends          = $aDatas['extends'];
 
-        if ($oNewTemplate->save()){
+        if ( $oNewTemplate->save() ){
             $oNewTemplateConfiguration                  = new TemplateConfiguration;
             $oNewTemplateConfiguration->template_name   = $sTemplateName;
             $oNewTemplateConfiguration->template_name   = $sTemplateName;
 
             // Those ones are only filled when importing manifest from upload directory
 
-            $oNewTemplateConfiguration->files_css         = json_encode($aDatas['files_css']);
-            $oNewTemplateConfiguration->files_js          = json_encode($aDatas['files_js']);
-            $oNewTemplateConfiguration->files_print_css   = json_encode($aDatas['files_print_css']);
-
-            $oNewTemplateConfiguration->cssframework_name  = $aDatas['cssframework_name'];
-            $oNewTemplateConfiguration->cssframework_css   = json_encode($aDatas['cssframework_css']);
-            $oNewTemplateConfiguration->cssframework_js    = json_encode($aDatas['cssframework_js']);
-
-            $oNewTemplateConfiguration->options          = json_encode($aDatas['aOptions']);
-            $oNewTemplateConfiguration->packages_to_load = json_encode($aDatas['packages_to_load']);
+            $oNewTemplateConfiguration->files_css         = self::formatToJsonArray($aDatas['files_css']);
+            $oNewTemplateConfiguration->files_js          = self::formatToJsonArray($aDatas['files_js']);
+            $oNewTemplateConfiguration->files_print_css   = self::formatToJsonArray($aDatas['files_print_css']);
+            $oNewTemplateConfiguration->cssframework_name = $aDatas['cssframework_name'];
+            $oNewTemplateConfiguration->cssframework_css  = self::formatToJsonArray($aDatas['cssframework_css']);
+            $oNewTemplateConfiguration->cssframework_js   = self::formatToJsonArray($aDatas['cssframework_js']);
+            $oNewTemplateConfiguration->options           = self::formatToJsonArray($aDatas['aOptions']);
+            $oNewTemplateConfiguration->packages_to_load  = self::formatToJsonArray($aDatas['packages_to_load']);
 
 
             if ($oNewTemplateConfiguration->save()){
@@ -870,6 +868,29 @@ class TemplateConfig extends CActiveRecord
         }else{
             throw new Exception($oNewTemplate->getErrors());
         }
+    }
+
+    /**
+     * Convert the values to a json.
+     * It checks that the correct values is inserted.
+     * @param array|object $oFiled the filed to convert
+     * @return string  json
+     */
+    public static function formatToJsonArray($oFiled)
+    {
+        // encode then decode will convert the SimpleXML to a normal object
+        $jFiled = json_encode($oFiled);
+        $oFiled = json_decode($jFiled);
+
+        // If in template manifest, a single file is provided, a string is produced instead of an array.
+        // We force it to array here
+        if (is_object($oFiled) && !empty($oFiled->add) && is_string($oFiled->add)){
+            $sValue      = $oFiled->add;
+            $oFiled->add = array($sValue);
+            $jFiled      = json_encode($oFiled);
+        }
+
+        return $jFiled;
     }
 
     public function getAllDbTemplateFolders()

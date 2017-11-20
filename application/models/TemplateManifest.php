@@ -342,7 +342,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function formatArrayFields($oTemplate, $sFieldPath, $sFieldName)
     {
-        return (empty($oTemplate->config->$sFieldPath->$sFieldName->value) )?array():$oTemplate->config->$sFieldPath->$sFieldName;
+        return ( empty($oTemplate->config->$sFieldPath->$sFieldName->value) && empty($oTemplate->config->$sFieldPath->$sFieldName) )?array():$oTemplate->config->$sFieldPath->$sFieldName;
     }
 
     /**
