@@ -189,10 +189,10 @@ class Expressions extends Survey_Common_Action {
         switch ($which)
         {
             case 'relevance':
-                App()->getClientScript()->registerScript("emscript", "ExprMgr_process_relevance_and_tailoring();", CClientScript::POS_LOAD);
+                App()->getClientScript()->registerScript("emscript", "ExprMgr_process_relevance_and_tailoring();", LSYii_ClientScript::POS_POSTSCRIPT);
                 break;
             case 'unit':
-                App()->getClientScript()->registerScript("emscript", "recompute();", CClientScript::POS_LOAD);
+                App()->getClientScript()->registerScript("emscript", "recompute();", LSYii_ClientScript::POS_POSTSCRIPT);
                 break;
         }
     }

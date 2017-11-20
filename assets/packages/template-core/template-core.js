@@ -68,7 +68,7 @@ function addHoverColumn(){
 function triggerEmClassChangeTemplate(){
     $('.ls-em-tip').each(function(){
         $(this).on('classChangeError', function() {
-            console.log('change error');
+            console.trace('change error');
             /* If user choose hide-tip : leave it */
              $parent = $(this).parent('div.hide-tip');
              if ($parent.hasClass('hide-tip'))
