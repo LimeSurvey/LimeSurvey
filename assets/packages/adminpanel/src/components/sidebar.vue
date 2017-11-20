@@ -1,5 +1,4 @@
 <script>
-import Vue from 'vue';
 import _ from 'lodash';
 import ajaxMixin from '../mixins/runAjax.js';
 import Questionexplorer from './subcomponents/_questionsgroups.vue';

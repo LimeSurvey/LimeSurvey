@@ -239,11 +239,12 @@ function renderBootstrapSwitch(){
 
 function surveyQuickActionTrigger(){
     $url = $(this).data('url');
+    $(document).trigger('quick-action-toggle');
     $.ajax({
         url : $url,
         type : 'GET',
         dataType : 'html',
-
+        
         // html contains the buttons
         success : function(html, statut){
             $('#survey-action-container').animate({

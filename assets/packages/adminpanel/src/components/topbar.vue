@@ -1,6 +1,4 @@
 <script>
-import Vue from 'vue';
-import _ from 'lodash';
 import ajaxMixin from '../mixins/runAjax.js';
 import Dropdown from './subcomponents/_dropdown.vue';
 export default {

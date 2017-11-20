@@ -1,8 +1,5 @@
 //globals formId
-import _ from 'lodash';
 import Vue from 'vue';
-import Vuex from 'vuex';
-import VueLocalStorage from 'vue-localstorage';
 import Sidebar from './components/sidebar.vue';
 import Topbar from './components/topbar.vue';
 import ParameterTable from './components/parameter-table.vue';
@@ -10,8 +7,7 @@ import getAppState from './store/vuex-store.js';
 import LOG from './mixins/logSystem.js';
 
 
-Vue.use(Vuex);
-Vue.use(VueLocalStorage);
+
 Vue.use(LOG);
 
 Vue.mixin({
@@ -40,7 +36,7 @@ $(document).on('ready', function () {
                         menuOffset = $('nav.navbar').outerHeight(),
                         menuHeight = $('.menubar.surveymanagerbar').outerHeight(),
                         footerHeight = $('footer').outerHeight(),
-                        windowHeight = _.max([screen.availHeight, screen.height]),
+                        windowHeight = Math.max([screen.availHeight, screen.height]),
                         innerMenuHeight = $('#breadcrumb-container').outerHeight(),
                         inSurveyViewHeight = (windowHeight - (menuOffset + (2 * menuHeight) + (2 * footerHeight))),
                         generalContainerHeight = inSurveyViewHeight - (innerMenuHeight);

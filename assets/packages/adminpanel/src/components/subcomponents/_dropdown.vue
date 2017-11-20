@@ -1,6 +1,5 @@
 <script>
-import Vue from 'vue';
-import _ from 'lodash';
+
 import ajaxMixin from '../../mixins/runAjax.js';
 
 export default {

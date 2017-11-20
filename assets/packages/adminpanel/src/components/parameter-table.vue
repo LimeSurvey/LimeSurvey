@@ -1,6 +1,4 @@
-
 <script>
-    import Vue from 'vue';
     import _ from 'lodash';
     import ParameterPopup from './parameter-popup.vue'
 
