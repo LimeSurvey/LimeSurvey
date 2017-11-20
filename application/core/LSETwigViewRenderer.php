@@ -258,9 +258,12 @@ class LSETwigViewRenderer extends ETwigViewRenderer
             $aDatas["aSurveyInfo"]['bShowxquestions']  = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($aDatas['aSurveyInfo']['showxquestions'])) || ($showxquestions == 'choose' && $aDatas['aSurveyInfo']['showxquestions'] == 'Y'));
             $aDatas["aSurveyInfo"]['languagecode']     = $languagecode;
             $aDatas["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode))?"rtl":"ltr";
-            $aDatas["aSurveyInfo"]['iTotalquestions']  = $_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'];            
-        }
 
+            // NB: Session is flushed at submit, so sid is not defined here.
+            if (isset($_SESSION['survey_' . $aDatas['aSurveyInfo']['sid']])) {
+                $aDatas["aSurveyInfo"]['iTotalquestions']  = $_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'];
+            }
+        }
 
         // Add all mother templates path
         while($oRTemplate->oMotherTemplate instanceof TemplateConfiguration){
