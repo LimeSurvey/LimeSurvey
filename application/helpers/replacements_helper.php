@@ -251,31 +251,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         $_dateoutput = '-';
     }
 
-    if (isset($thissurvey['surveyls_url']) and $thissurvey['surveyls_url'] != "")
-    {
-        if (trim($thissurvey['surveyls_urldescription']) != '')
-        {
-            $_linkreplace = App()->twigRenderer->render("/survey/system/url",array(
-                'url'=>$thissurvey['surveyls_url'],
-                'description'=>$thissurvey['surveyls_urldescription'],
-                'type'=>"survey-endurl",
-                'coreClass'=>"ls-endurl",
-            ),true);
-        }
-        else
-        {
-            $_linkreplace = App()->twigRenderer->render("/survey/system/url",array(
-                'url'=>$thissurvey['surveyls_url'],
-                'description'=>$thissurvey['surveyls_url'],
-                'type'=>"survey-endurl",
-                'coreClass'=>"ls-endurl ls-surveyurl",
-            ),true);
-        }
-    }
-    else
-    {
-        $_linkreplace='';
-    }
+    $_linkreplace='';
 
     if(isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active']=='Y')
     {
@@ -285,15 +261,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $iscompleted = $thissurvey['iscompleted'] = false;
     }
-    if (isset($surveyid) && !$iscompleted)
-    {
-        $aClearAll=doHtmlClearAll();    // Rem: still needed for JS
-        $_clearall = $aClearAll['button'];
-    }
-    else
-    {
-        $_clearall = "";
-    }
+
+    $_clearall = "";
 
     if (isset(Yii::app()->session['datestamp']))
     {
@@ -303,65 +272,11 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     {
         $_datestamp = '-';
     }
-    if (isset($thissurvey['allowsave']) and $thissurvey['allowsave'] == "Y" && !$iscompleted)
-    {
-        $_saveall = doHtmlSaveAll(isset($move)?$move:NULL);
-        $aSaveAllButtons = getSaveLinks(isset($move)?$move:NULL);
-        $thissurvey['bShowLoadButton']=$aSaveAllButtons['bShowLoadButton'];
-        $thissurvey['bShowSaveButton']=$aSaveAllButtons['bShowSaveButton'];
-    }
 
-    if(isset($surveyid))
-    {
-        $restartparam=array();
-        if($_token)
-            $restartparam['token']=Token::sanitizeToken($_token);// urlencode with needed with sanitize_token
-        if (Yii::app()->request->getQuery('lang'))
-            $restartparam['lang']=sanitize_languagecode(Yii::app()->request->getQuery('lang'));
-        elseif($s_lang)
-            $restartparam['lang']=$s_lang;
-        $restartparam['newtest']="Y";
-        $restarturl=Yii::app()->getController()->createUrl("survey/index/sid/$surveyid",$restartparam);
-        $_restart = App()->twigRenderer->render("/survey/system/url",array(
-            'url'=>$restarturl,
-            'description'=>gT("Restart this Survey"),
-            'type'=>"survey-restart",
-            'coreClass'=>"ls-restart",
-        ),true);
-    }
-    else
-    {
-        $_restart = "";
-    }
-
-    if (isset($surveyid))
-    {
-        if($_token)
-        {
-            $returnlink=Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}",array('token'=>Token::sanitizeToken($_token)));
-        }
-        else
-        {
-            $returnlink=Yii::app()->getController()->createUrl("survey/index/sid/{$surveyid}");
-        }
-        if(isset(Yii::app()->session['survey_'.$_surveyid]['step'])){
-            $returndescription = gT("Return to survey");
-        }else{
-            $returndescription = gT("Go to survey");
-        }
-
-        // TODO: change that
-        $_return_to_survey = App()->twigRenderer->render("/survey/system/url",array(
-            'url'=>$returnlink,
-            'description'=>$returndescription,
-            'type'=>"survey-return",
-            'coreClass'=>"ls-return",
-        ),true);
-    }
-    else
-    {
-        $_return_to_survey = "";
-    }
+    $_saveall = "";
+    $aSaveAllButtons="";
+    $_restart = "";
+    $_return_to_survey = "";
 
     if(isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
     {
@@ -419,7 +334,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['ACTIVE'] = (isset($thissurvey['active']) && !($thissurvey['active'] != "Y"));
     $coreReplacements['ANSWERSCLEARED'] = gT("Answers cleared");
     $coreReplacements['ASSESSMENT_HEADING'] = gT("Your assessment");
-    $coreReplacements['CHECKJAVASCRIPT'] = App()->twigRenderer->render("/survey/system/no-javascript",array(),true);
+    $coreReplacements['CHECKJAVASCRIPT'] = '';
     $coreReplacements['CLEARALL'] = $_clearall;
     $coreReplacements['CLOSEWINDOW'] = ''; // Obsolete tag - keep this line for compatibility reaons
     $coreReplacements['COMPLETED'] = isset($redata['completed']) ? $redata['completed'] : '';    // global
@@ -438,8 +353,8 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     $coreReplacements['NUMBEROFQUESTIONS'] = $_totalquestionsAsked;
     $coreReplacements['NUMBEROFGROUPS'] = $totalgroups;
     $coreReplacements['PERCENTCOMPLETE'] = isset($percentcomplete) ? $percentcomplete : '';    // global
-    $coreReplacements['PRIVACYHEADING'] = App()->twigRenderer->render("/survey/system/privacy/heading",array(),true);
-    $coreReplacements['PRIVACYMESSAGE'] = App()->twigRenderer->render("/survey/system/privacy/message",array(),true);
+    $coreReplacements['PRIVACYHEADING'] = '';
+    $coreReplacements['PRIVACYMESSAGE'] = '';
     /* Another solution to remove index from global */
     //~ $coreReplacements['QUESTION_INDEX']=isset($questionindex) ? $questionindex: '';
     //~ $coreReplacements['QUESTION_INDEX_MENU']=isset($questionindexmenu) ? $questionindexmenu: '';
@@ -542,179 +457,4 @@ function PassthruReplace($line, $thissurvey)
     }
 
     return $line;
-}
-
-/**
- * "Calculate" HTML for save links?
- *
- * @param string $move ?
- * @return string ?
- */
-function getSaveLinks($move="")
-{
-    static $aSaveAllButtons=array();
-    if(isset($aSaveAllButtons[$move]))
-        return $aSaveAllButtons[$move];
-
-    $surveyid   = Yii::app()->getConfig('surveyID');
-    $thissurvey = getsurveyinfo($surveyid);         // TODO: remove that call
-
-    $bShowLoadButton = false;
-    $bShowSaveButton = false;
-
-    if($thissurvey['allowsave'] == "Y")
-    {
-        // Fill some test here, more clear ....
-        $bTokenanswerspersistence   =   $thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
-        $bAlreadySaved              =   isset($_SESSION['survey_'.$surveyid]['scid']);
-        $iSessionStep               =   (isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
-        $iSessionMaxStep            =   (isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
-
-        // Find out if the user has any saved data
-        if ($thissurvey['format'] == 'A')
-        {
-            if ( !$bTokenanswerspersistence && !$bAlreadySaved )
-            {
-                $bShowLoadButton = true;
-            }
-        }
-        elseif (!$iSessionStep) //Welcome page, show load (but not save)
-        {
-            if (!$bTokenanswerspersistence && !$bAlreadySaved )
-            {
-                $bShowLoadButton = true;
-            }
-            if($thissurvey['showwelcome']=="N")
-            {
-                $bShowSaveButton = true;
-            }
-        }
-        elseif ($iSessionMaxStep==1 && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
-        {
-            if (!$bTokenanswerspersistence && !$bAlreadySaved )
-            {
-                $bShowLoadButton = true;
-            }
-            $bShowSaveButton = true;
-        }
-        elseif ($move != "movelast") // Not on last page or submited survey
-        {
-            $bShowSaveButton = true;
-        }
-    }
-
-    $aSaveAllButtons['bShowLoadButton']=$bShowLoadButton;
-    $aSaveAllButtons['bShowSaveButton']=$bShowSaveButton;
-    return $aSaveAllButtons;
-}
-
-/**
-* doHtmlSaveAll return HTML part of saveall button in survey
-* @param string $move :
-* @return string
-**/
-
-function doHtmlSaveAll($move="")
-{
-    static $aSaveAllButtons=array();
-    if(isset($aSaveAllButtons[$move]))
-        return $aSaveAllButtons[$move];
-    $surveyid=Yii::app()->getConfig('surveyID');
-    $thissurvey=getsurveyinfo($surveyid);
-    if($thissurvey['allowsave'] == "Y")
-    {
-        $sLoadButton=App()->twigRenderer->render("/survey/system/actionButton/saveLoad",array(
-            'value'=>'loadall',
-            'name'=>'loadall',
-            'class'=>'ls-saveaction ls-loadall'
-        ),true);
-        $sSaveButton=App()->twigRenderer->render("/survey/system/actionButton/saveSave",array(
-            'value'=>'saveall',
-            'name'=>'saveall',
-            'class'=>'ls-saveaction ls-saveall'
-        ),true);
-        App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
-    }
-    else
-    {
-        $sLoadButton = '';
-        $sSaveButton = '';
-    }
-    // Fill some test here, more clear ....
-    $bTokenanswerspersistence=$thissurvey['tokenanswerspersistence'] == 'Y' && tableExists('tokens_'.$surveyid);
-    $bAlreadySaved=isset($_SESSION['survey_'.$surveyid]['scid']);
-    $iSessionStep=(isset($_SESSION['survey_'.$surveyid]['step'])? $_SESSION['survey_'.$surveyid]['step'] : false );
-    $iSessionMaxStep=(isset($_SESSION['survey_'.$surveyid]['maxstep'])? $_SESSION['survey_'.$surveyid]['maxstep'] : false );
-    $sSaveAllButtons="";
-    // Find out if the user has any saved data
-    if ($thissurvey['format'] == 'A')
-    {
-        if ( !$bTokenanswerspersistence && !$bAlreadySaved )
-        {
-            $sSaveAllButtons .= $sLoadButton;
-        }
-        $sSaveAllButtons .= $sSaveButton;
-    }
-    elseif (!$iSessionStep) //Welcome page, show load (but not save)
-    {
-        if (!$bTokenanswerspersistence && !$bAlreadySaved )
-        {
-            $sSaveAllButtons .= $sLoadButton;
-        }
-        if($thissurvey['showwelcome']=="N")
-        {
-            $sSaveAllButtons .= $sSaveButton;
-        }
-    }
-    elseif ($iSessionMaxStep==1 && $thissurvey['showwelcome']=="N")//First page, show LOAD and SAVE
-    {
-        if (!$bTokenanswerspersistence && !$bAlreadySaved )
-        {
-            $sSaveAllButtons .= $sLoadButton;
-        }
-        $sSaveAllButtons .= $sSaveButton;
-    }
-    elseif ($move != "movelast") // Not on last page or submited survey
-    {
-        $sSaveAllButtons .= $sSaveButton;
-    }
-    $aSaveAllButtons[$move]=$sSaveAllButtons;
-    return $aSaveAllButtons[$move];
-}
-
-
-/**
- * ClearALl link and button
- *
- * @return array
- */
-function doHtmlClearAll(){
-    /* one of the reason of seaparation : call each tim we use templatereplace */
-    static $aClearAll=array();
-    if(empty($aClearAll)){
-        $aClearAll['button']=App()->twigRenderer->render("/survey/system/actionButton/clearAll",array(
-            'value'=>'clearall',
-            'name'=>'move',
-            'class'=>'ls-clearaction ls-clearall',
-            'confirmedby'=>'confirm-clearall',
-            'confirmvalue'=>'confirm',
-            ),true);
-        $submit=ls_json_encode(array(
-                'clearall'=>'clearall'
-            ));
-        $confirm=ls_json_encode(array(
-                'confirm-clearall'=>'confirm'
-            ));
-        $aClearAll['link'] = App()->twigRenderer->render("/survey/system/actionLink/clearAll",array(
-            'class'=>'ls-link-action ls-link-clearall',
-            'submit'=>$submit,
-            'confirm'=>$confirm,
-        ),true);
-        // To replace javascript confirm : https://ethaizone.github.io/Bootstrap-Confirmation/ or http://bootboxjs.com/documentation.html#bb-confirm-dialog or https://nakupanda.github.io/bootstrap3-dialog/ or ....
-        /* Don't do it in core actually, but put some language*/
-        App()->getClientScript()->registerScript("activateConfirmLanguage","$.extend(LSvar.lang,".ls_json_encode(array('yes'=>gT("Yes"),'no'=>gT("No"))).")",CClientScript::POS_BEGIN);
-        App()->getClientScript()->registerScript("activateActionLink","activateActionLink();\n",CClientScript::POS_END);
-        App()->getClientScript()->registerScript("activateConfirmButton","activateConfirmButton();\n",CClientScript::POS_END);
-    }
-    return $aClearAll;
 }

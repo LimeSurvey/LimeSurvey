@@ -97,11 +97,11 @@
                 /* Set the data for templatereplace */
                 $aReplacementData['title']='session-timeout';
                 $aReplacementData['message']=$error."<br/>".$message;
-                
+
                 $aData = array();
                 $aData['aSurveyInfo']=getSurveyInfo($iSurveyID);
                 $aData['aError'] = $aReplacementData;
-                
+
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_errors.twig',$aData, false);
                 // $content=templatereplace(file_get_contents($oTemplate->pstplPath."message.pstpl"),$aReplacementData,$this->aGlobalData);
                 // $this->render("/survey/system/display",array('content'=>$content));
@@ -131,7 +131,7 @@
             $aData['aSurveyInfo']['groupArray'] = $groupArray;
             $aData['aSurveyInfo']['printAnswersHeadFormUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'pdf'));
             $aData['aSurveyInfo']['printAnswersHeadFormQueXMLUrl'] = Yii::App()->getController()->createUrl('printanswers/view/',array('surveyid'=>$iSurveyID, 'printableexport'=>'quexmlpdf'));
-            
+
             if (empty($sExportType))
             {
                 Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, false);
@@ -155,6 +155,7 @@
                 LimeExpressionManager::StartProcessingGroup(1,($aSurveyInfo['anonymized']!="N"),$iSurveyID);
                 $aData['aSurveyInfo']['printPdf'] = 1;
                 $html = Yii::app()->twigRenderer->renderTemplateFromFile('layout_printanswers.twig',$aData, true);
+                Yii::app()->clientScript->registerPackage($oTemplate->sPackageName);
                 $oPDF->writeHTML($html, true, false, true, false, '');
 
                 header("Pragma: public");
@@ -184,6 +185,6 @@
 
                 $sExportFileName = sanitize_filename($sSurveyName);
                 $quexmlpdf->Output($sExportFileName."-".$iSurveyID."-queXML.pdf",'D');
-			}
+            }
         }
     }
