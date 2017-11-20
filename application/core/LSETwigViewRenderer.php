@@ -255,7 +255,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
         if (!empty($aDatas['aSurveyInfo']['sid'])){
             $showxquestions                            = Yii::app()->getConfig('showxquestions');
-            $aDatas["aSurveyInfo"]['bShowxquestions']  = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($this->aSurveyInfo['showxquestions'])) || ($showxquestions == 'choose' && $this->aSurveyInfo['showxquestions'] == 'Y'));
+            $aDatas["aSurveyInfo"]['bShowxquestions']  = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($aDatas['aSurveyInfo']['showxquestions'])) || ($showxquestions == 'choose' && $aDatas['aSurveyInfo']['showxquestions'] == 'Y'));
             $aDatas["aSurveyInfo"]['languagecode']     = $languagecode;
             $aDatas["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode))?"rtl":"ltr";
             $aDatas["aSurveyInfo"]['iTotalquestions']  = $_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'];            
