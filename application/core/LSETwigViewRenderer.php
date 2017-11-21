@@ -56,8 +56,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * If it is the case, it will use the views of that template, else, it will render the core view.
      *
      * @param string   $sView           the view (layout) to render
-     * @param array    $aDatas          the datas needed for the view rendering
-     * @param Template $oEditedTemplate the template to use
+     * @param array    $aData          the datas needed for the view rendering
      *
      * @return  string the generated html
      */
@@ -163,8 +162,8 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * If LS would use the normal Yii render flow, this function would not be necessary
      * In previous LS version, this logic was here: https://github.com/LimeSurvey/LimeSurvey/blob/700b20e2ae918550bfbf283f433f07622480978b/application/controllers/survey/index.php#L62-L71
      *
-     * @param $sHtml     The Html content of the page (it must not contain anymore any twig statement)
-     * @param $oTemplate The name of the template to use to register the packages
+     * @param string $sHtml     The Html content of the page (it must not contain anymore any twig statement)
+     * @param Template $oTemplate The name of the template to use to register the packages
      */
     private function renderHtmlPage($sHtml,$oTemplate )
     {
@@ -253,6 +252,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
 
     /**
      * Plugin event, should be replaced by Question Template
+     * @param string $sString
      */
     private function getPluginsData($sString, $aDatas)
     {
@@ -281,6 +281,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * In LS3, we did a first cycle of refactorisation. Some logic common to the different files are for now here, in this function.
      * TODO: move all the display logic to surveyRuntime so we don't need this function here
      *
+     * @param TemplateConfiguration $oTemplate
      */
     private function getAdditionalInfos($aDatas, $oTemplate)
     {
