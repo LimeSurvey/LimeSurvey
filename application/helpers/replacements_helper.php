@@ -372,7 +372,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     if (isset($surveyid))
     {
-        $_quexmlpdf=CHtml::link(gT("queXMLPDF export"),array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"),array('class'=>'btn btn-default'));
+        $_quexmlpdf=CHtml::link(gT("Save as PDF"),array("/printanswers/view/surveyid/{$surveyid}/printableexport/quexmlpdf"));
     }
     else
     {
