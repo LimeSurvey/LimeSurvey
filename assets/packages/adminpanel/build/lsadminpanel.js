@@ -39445,7 +39445,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                const scriptSwitch = function(oldEl, newEl, opt){
+                const switchInnerHTML = function(oldEl, newEl, opt){
                     oldEl.innerHTML = ' ';
                     oldEl.innerHTML = newEl.innerHTML;
                     this.onSwitch();
@@ -39460,8 +39460,10 @@ const getAppState = function (userid) {
                         '#beginScripts'
                     ],
                     switches: {
-                        '#bottomScripts' : scriptSwitch,
-                        '#beginScripts' : scriptSwitch
+                        '#bottomScripts' : switchInnerHTML,
+                        '#beginScripts' : switchInnerHTML,
+                        '#pjax-content' : switchInnerHTML,
+                        '#breadcrumb-container': switchInnerHTML,
                     },
                     debug: (env === 'developement')
                 });

@@ -132,9 +132,9 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                const scriptSwitch = function(oldEl, newEl, opt){
-                    oldEl.outerHTML = ' ';
-                    oldEl.outerHTML = newEl.outerHTML;
+                const switchInnerHTML = function(oldEl, newEl, opt){
+                    oldEl.innerHTML = ' ';
+                    oldEl.innerHTML = newEl.innerHTML;
                     this.onSwitch();
                 };
                 state.pjax = null;
@@ -147,8 +147,10 @@ const getAppState = function (userid) {
                         '#beginScripts'
                     ],
                     switches: {
-                        '#bottomScripts' : scriptSwitch,
-                        '#beginScripts' : scriptSwitch
+                        '#bottomScripts' : switchInnerHTML,
+                        '#beginScripts' : switchInnerHTML,
+                        '#pjax-content' : switchInnerHTML,
+                        '#breadcrumb-container': switchInnerHTML,
                     },
                     debug: (env === 'developement')
                 });

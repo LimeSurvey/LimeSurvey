@@ -502,8 +502,8 @@
                 </div>
 
                 <!-- Token -->
-                <?php if ($tokenmanagement):?>
-                    <a class="btn btn-default  btntooltip hidden-xs" href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>" role="button">
+                <?php if($tokenmanagement):?>
+                    <a class="btn btn-default pjax btntooltip hidden-xs" href="<?php echo $this->createUrl("admin/tokens/sa/index/surveyid/$surveyid"); ?>" role="button">
                         <span class="fa fa-user"></span>
                         <?php eT("Survey participants"); ?>
                     </a>
