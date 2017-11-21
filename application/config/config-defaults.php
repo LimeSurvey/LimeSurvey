@@ -613,7 +613,7 @@ $config['assets']                  = 'assets/';
 // URL defintions
 $config['homeurl']                = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
 $config['tempurl']                = $config['publicurl'].'tmp';
-$config['imageurl']               = $config['publicurl'].'images';         // Location of button bar files for admin script
+$config['imageurl']               = $config['publicurl'].'assets/images';         // Location of button bar files for admin script
 $config['uploadurl']              = $config['publicurl'].'upload';
 $config['standardthemerooturl']   = $config['publicurl'].'themes/survey';      // Location of the standard themes
 $config['adminscripts']           = $config['publicurl'].'assets/scripts/admin/';
@@ -633,7 +633,7 @@ $config['adminstyleurl']          = $config['styleurl'].$config['admintheme'].'/
 $config['publicdir']                = $config['rootdir'];                                   // The directory path of the public scripts
 $config['homedir']                  = $config['rootdir'];       // The directory path of the admin scripts
 $config['tempdir']                  = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
-$config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
+$config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."assets".DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
 $config['standardthemerootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey";            // The directory path of the standard themes
 $config['publicstylepath']          = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
