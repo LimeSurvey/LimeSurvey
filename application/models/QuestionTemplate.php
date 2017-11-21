@@ -123,7 +123,7 @@ class QuestionTemplate extends CFormModel
         if (!isset($this->sTemplatePath)){
             $sTemplateFolderName    = $this->getQuestionTemplateFolderName();
             $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestiontemplaterootdir");
-            $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestiontemplaterootdir");
+            $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestionthemerootdir");
 
             // Core templates come first
             if(is_dir("$sCoreQTemplateRootDir/$sTemplateFolderName/")) {
@@ -346,7 +346,7 @@ class QuestionTemplate extends CFormModel
             $sFolderName            = self::getFolderName($this->oQuestion->type);
             $sTemplateFolderName    = $this->getQuestionTemplateFolderName();
             $sCoreQTemplateRootDir  = Yii::app()->getConfig("corequestiontemplaterootdir");
-            $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestiontemplaterootdir");
+            $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestionthemerootdir");
 
             $sCoreQTemplateDir  = Yii::app()->getConfig("corequestiontemplatedir");
 
@@ -389,7 +389,7 @@ class QuestionTemplate extends CFormModel
      */
     static public function getQuestionTemplateUserList($type)
     {
-        $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestiontemplaterootdir");
+        $sUserQTemplateRootDir  = Yii::app()->getConfig("userquestionthemerootdir");
         $aQuestionTemplates     = array();
 
         $aQuestionTemplates['core'] = gT('Default');
