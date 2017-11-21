@@ -161,7 +161,6 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
-
             // Click "Execute survey".
             $execute = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
@@ -184,7 +183,6 @@ class CreateSurveyTest extends TestBaseClassWeb
             $dbo = \Yii::app()->getDb();
             $query = 'SELECT sid FROM {{surveys}} ORDER BY datecreated DESC LIMIT 1';
             $sids = $dbo->createCommand($query)->queryAll();
-            var_dump($sids);
             $this->assertCount(1, $sids);
             $sid = $sids[0]['sid'];
             $survey = \Survey::model()->findByPk($sid);
@@ -223,11 +221,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $this->assertCount(1, $result, 'Exactly one response');
             $this->assertEquals('foo bar', $result[0][$sgqa], '"foo bar" response');
 
-            // Close window.
-            self::$webDriver->getKeyboard()->sendKeys(
-                array(WebDriverKeys::CONTROL, 'w')
-            );
-
+            // Switch to first window.
             $windowHandles = self::$webDriver->getWindowHandles();
             self::$webDriver->switchTo()->window(
                 reset($windowHandles)
@@ -240,8 +234,13 @@ class CreateSurveyTest extends TestBaseClassWeb
                 )
             );
             $execute->click();
-            sleep(1);
-            $execute = self::$webDriver->wait(10)->until(
+            $execute = self::$webDriver->wait(5)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#ls-tools-button + ul li:first-child')
+                )
+            );
+            $execute->click();
+            $execute = self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('input[type="submit"]')
                 )
@@ -251,19 +250,17 @@ class CreateSurveyTest extends TestBaseClassWeb
             sleep(1);
 
             // Make sure the survey can't be found.
-            $survey = \Survey::model()->findByPk($sid);
-            $this->assertEmpty($survey);
+            $query = 'SELECT sid FROM {{surveys}} WHERE sid = ' . $sid;
+            $sids = $dbo->createCommand($query)->queryAll();
+            $this->assertCount(0, $sids);
 
         } catch (NoSuchElementException | StaleElementReferenceException | UnknownServerException $ex) {
-            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . __FUNCTION__);
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
                 $ex->getMessage() . PHP_EOL
                 . $ex->getTraceAsString()
             );
         }
-        $screenshot = self::$webDriver->takeScreenshot();
-        $filename = self::$screenshotsFolder.'/CreateSurvey.png';
-        file_put_contents($filename, $screenshot);
     }
 }
