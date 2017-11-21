@@ -271,7 +271,7 @@ class TemplateManifest extends TemplateConfiguration
 
         if ($bExtends && !Template::model()->findByPk($bExtends)){
             Yii::app()->setFlashMessage(sprintf(gT("You can't import template '%s' because '%s'  is not installed."), $sTemplateName, $bExtends ), 'error');
-            Yii::app()->getController()->redirect(array("admin/templateoptions"));
+            Yii::app()->getController()->redirect(array("admin/themeoptions"));
         }
 
         // Metadas is never inherited

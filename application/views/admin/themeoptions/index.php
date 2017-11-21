@@ -2,7 +2,7 @@
 /* @var $this AdminController */
 /* @var $dataProvider CActiveDataProvider */
 
-// TODO: rename to template_list.php
+// TODO: rename to template_list.php and move to template controller
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
 echo viewHelper::getViewTestTag('templateOptions');
@@ -26,7 +26,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                     ),
                 )
             ));
-            echo '<h3>'.gT('Installed templates:').'</h3>';
+            echo '<h3>'.gT('Installed survey themes:').'</h3>';
         }
 
 
@@ -91,7 +91,7 @@ echo viewHelper::getViewTestTag('templateOptions');
     </div>
 
     <?php if (count($model->templatesWithNoDb) > 0 && !$bFromSurveyGroup):?>
-        <h3><?php eT('Available templates:'); ?></h3>
+        <h3><?php eT('Available survey themes:'); ?></h3>
         <div class="row">
             <div class="col-sm-12 content-right">
 
@@ -110,7 +110,7 @@ echo viewHelper::getViewTestTag('templateOptions');
                                     <td class="col-md-1"><?php echo $oTemplate->preview; ?></td>
                                     <td class="col-md-2"><?php echo $oTemplate->sTemplateName; ?></td>
                                     <td class="col-md-3"><?php echo $oTemplate->config->metadatas->description; ?></td>
-                                    <td class="col-md-2"><?php eT('XML template');?></td>
+                                    <td class="col-md-2"><?php eT('XML themes');?></td>
                                     <td class="col-md-2"><?php echo $oTemplate->config->metadatas->extends; ?></td>
                                     <td class="col-md-1"><?php echo $oTemplate->buttons; ?></td>
                                 </tr>

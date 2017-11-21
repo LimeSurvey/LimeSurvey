@@ -200,7 +200,7 @@
                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
                     echo $this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
-                    <?php echo templateoptions($templates, $templatename); ?>
+                    <?php echo themeoptions($templates, $templatename); ?>
                 </select>
             </div>
 
@@ -229,7 +229,7 @@
                 <?php endif;?>
 
             <?php if(isset($fullpagebar['returnbutton'])):?>
-                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/templateoptions"); ?>" role="button">
+                <a class="btn btn-default" href="<?php echo $this->createUrl("admin/themeoptions"); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
                     <?php eT("Return to template list"); ?>

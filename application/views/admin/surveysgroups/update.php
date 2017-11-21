@@ -42,8 +42,8 @@
             <div id="templateSettingsFortThisGroup" class="tab-pane">
                 <?php
                     if (is_a($templateOptionsModel, 'TemplateConfiguration')){
-                    //    $this->renderPartial('./templateoptions/update', array('model'=>$templateOptionsModel, 'templateOptionPage'=>$templateOptionPage));
-                        $this->renderPartial('./templateoptions/index', array('model'=>$templateOptionsModel, 'bFromSurveyGroup'=>true));
+                    //    $this->renderPartial('./themeoptions/update', array('model'=>$templateOptionsModel, 'templateOptionPage'=>$templateOptionPage));
+                        $this->renderPartial('./themeoptions/index', array('model'=>$templateOptionsModel, 'bFromSurveyGroup'=>true));
                     }
                 ?>
             </div>

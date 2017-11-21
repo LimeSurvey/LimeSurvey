@@ -7,7 +7,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
 ?>
 
-<div class="row h1"><?php echo sprintf(gT('Update template options for %s'),'<em>' . $model->template_name . '</em>'); ?></div>
+<div class="row h1"><?php echo sprintf(gT('Update survey theme options for %s'),'<em>' . $model->template_name . '</em>'); ?></div>
 <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
 <div class="row">
     <!-- Nav tabs -->
@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                  if($jsonError !== JSON_ERROR_NONE && $model->options !== 'inherit')
                  {
                      //return
-                    echo "<div class='ls-flex-column fill'><h4>".gT('There are no simple options in this template.')."</h4></div>";
+                    echo "<div class='ls-flex-column fill'><h4>".gT('There are no simple options in this survey theme.')."</h4></div>";
                  }
                  //if however there is no error in the parsing of the json string go forth and render the form
                  else

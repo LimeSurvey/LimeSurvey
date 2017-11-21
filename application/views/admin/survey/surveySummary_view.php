@@ -526,7 +526,7 @@ $surveyid = $oSurvey->sid;
                             <?php $templatename = $oSurvey->template;
                             if (Permission::model()->hasGlobalPermission('templates','read'))
                             {
-                                $sTemplateOptionsUrl = $this->createUrl("admin/templateoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid)); 
+                                $sTemplateOptionsUrl = $this->createUrl("admin/themeoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid)); 
                                 $sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('templatename' => $oSurvey->template)); 
                                 //$sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template)); 
                                 ?>

@@ -30,7 +30,7 @@ class templates extends Survey_Common_Action
             parent::runWithParams($params);
         }else{
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
-            $this->getController()->redirect(array("admin/templateoptions"));
+            $this->getController()->redirect(array("admin/themeoptions"));
         }
     }
 
@@ -70,7 +70,7 @@ class templates extends Survey_Common_Action
             }
         }else{
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
-            $this->getController()->redirect(array("admin/templateoptions"));
+            $this->getController()->redirect(array("admin/themeoptions"));
         }
     }
 
@@ -241,7 +241,7 @@ class templates extends Survey_Common_Action
             $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
         }else{
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
-            $this->getController()->redirect(array("admin/templateoptions"));
+            $this->getController()->redirect(array("admin/themeoptions"));
         }
 
 
@@ -468,7 +468,7 @@ class templates extends Survey_Common_Action
                         Yii::app()->user->setFlash('error',sprintf(gT("Template '%s' could not be found."), $sOldName));
                     }
 
-                    $this->getController()->redirect(array('admin/templateoptions'));
+                    $this->getController()->redirect(array('admin/themeoptions'));
                 }
             }
         }else{
@@ -571,7 +571,7 @@ class templates extends Survey_Common_Action
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
         }
         // Redirect with default templatename, editfile and screenname
-        $this->getController()->redirect(array("admin/templateoptions"));
+        $this->getController()->redirect(array("admin/themeoptions"));
     }
 
     /**

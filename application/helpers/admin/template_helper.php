@@ -65,7 +65,7 @@ function mkdir_p($target){
     }
 }
 
-function templateoptions($optionarray, $selectedvalue) {
+function themeoptions($optionarray, $selectedvalue) {
     $return='';
     foreach ($optionarray as $arkey=>$arvalue) {
         $return .= "<option value='".HTMLEscape($arkey)."'";
