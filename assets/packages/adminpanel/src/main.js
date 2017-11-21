@@ -56,6 +56,7 @@ $(document).on('ready', function () {
                 });
             },
             mounted() {
+                window.singletonPjax();
                 const surveyid = $(this.$el).data('surveyid');
                 if (surveyid != 0) {
                     this.$store.commit('updateSurveyId', surveyid);

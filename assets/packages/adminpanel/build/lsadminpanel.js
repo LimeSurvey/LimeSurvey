@@ -30981,8 +30981,7 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(132);
-__webpack_require__(334);
-module.exports = __webpack_require__(385);
+module.exports = __webpack_require__(334);
 
 
 /***/ }),
@@ -36368,6 +36367,7 @@ $(document).on('ready', function () {
                 });
             },
             mounted() {
+                window.singletonPjax();
                 const surveyid = $(this.$el).data('surveyid');
                 if (surveyid != 0) {
                     this.$store.commit('updateSurveyId', surveyid);
@@ -39444,7 +39444,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                $(document).trigger('pjax:refresh');
+                $(window).trigger('pjax:refresh');
             }
         }
     });
@@ -40739,62 +40739,6 @@ exports.install = function (Vue) {
         }
     };
 };
-
-
-/***/ }),
-/* 385 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-const env = "developement";
-
-const switchInnerHTML = function (oldEl, newEl, opt) {
-        opt = opt || {};
-        oldEl.innerHTML = ' ';
-        oldEl.innerHTML = newEl.innerHTML;
-        this.onSwitch();
-    },
-    singletonPjax = function () {
-        window.activePjax = window.activePjax || null;
-
-        if (window.activePjax !== null) {
-            window.activePjax = new Pjax({
-                elements: ['a.pjax', 'form.pjax'], // default is "a[href], form[action]"
-                selectors: [
-                    '#pjax-content',
-                    '#breadcrumb-container',
-                    '#bottomScripts',
-                    '#beginScripts'
-                ],
-                switches: {
-                    '#bottomScripts': switchInnerHTML,
-                    '#beginScripts': switchInnerHTML,
-                    '#pjax-content': switchInnerHTML,
-                    '#breadcrumb-container': switchInnerHTML,
-                },
-                debug: (env === 'developement')
-            });
-        }
-        return window.activePjax;
-    },
-    forceRefreshPjax = function () {
-        window.activePjax = null;
-        singletonPjax();
-    };
-
-document.addEventListener('pjax:refresh', function () {
-    singletonPjax().parseDom(document);
-});
-document.addEventListener('pjax:reload', function () {
-    forceRefreshPjax();
-});
-document.addEventListener('pjax:create', function () {
-    singletonPjax();
-});
-document.addEventListener('pjax:load', function (url) {
-    singletonPjax().loadUrl(url, singletonPjax().options);
-});
 
 
 /***/ })

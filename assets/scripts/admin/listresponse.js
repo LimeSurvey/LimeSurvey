@@ -103,18 +103,23 @@ function reinstallResponsesFilterDatePicker() {
     
     }
     
-    var onDocumentReadyListresponse = function(){
-        
+function onDocumentReadyListresponse() {
+    if($('#bottom-scroller').length > 0)
         $('#fake-content').width($('#bottom-scroller')[0].scrollWidth);
-        $('#top-scroller').height('18px');
-        
-        LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
-        LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
+    
+    $('#top-scroller').height('18px');
+    
+    LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
+    LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
 
-        LS.resp.bindScrollWrapper();
+    LS.resp.bindScrollWrapper();
 
-        $('#displaymode input').off('.listresponse').on('change.listresponse', function(event){
-            $('#change-display-mode-form').find('input[type=submit]').trigger('click');
-        });
+    $('#displaymode input').on('change.listresponse', function(event){
+        $('#change-display-mode-form').find('input[type=submit]').trigger('click');
+    });
 
-    };
+}
+$(function(){
+    onDocumentReadyListresponse();
+    reinstallResponsesFilterDatePicker();
+})

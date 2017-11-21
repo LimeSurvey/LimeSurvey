@@ -229,18 +229,16 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
             </div>
 
             <!-- To update rows per page via ajax setSession-->
-            <script type="text/javascript">
-                var postUrl = "<?php echo Yii::app()->getController()->createUrl("admin/responses/", array("sa" => "setSession")); ?>"; // For massive export
-                jQuery(function($) {
-                    jQuery(document).on("change", '#pageSize', function(){
-                        $.fn.yiiGridView.update('responses-grid',{ data:{ pageSize: $(this).val() }});
-                    });
+            <?php
+
+            $script = '
+                var postUrl = "'.Yii::app()->getController()->createUrl("admin/responses/", array("sa" => "setSession")).'"; // For massive export
+                jQuery(document).on("change", "#pageSize", function(){
+                    $.fn.yiiGridView.update("responses-grid",{ data:{ pageSize: $(this).val() }});
                 });
-                $(document).on('ready pjax:scriptcomplete', function(){
-                    onDocumentReadyListresponse();
-                    reinstallResponsesFilterDatePicker();
-                });
-            </script>
+                ';
+            App()->getClientScript()->registerScript('listresponses', $script, LSYii_ClientScript::POS_POSTSCRIPT);
+            ?>
         </div>
     </div>
 </div>

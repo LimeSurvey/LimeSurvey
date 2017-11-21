@@ -133,7 +133,8 @@ return array(
         'devBaseUrl' => 'assets/packages/pjax/',
         'basePath' => 'core.pjax',
         'js' => array(
-            'pjax.js',
+            'pjax'.$minVersion.'.js',
+            'loadPjax'.$minVersion.'.js'
         ),
     ),
     'adminpanel' => array(

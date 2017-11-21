@@ -1,16 +1,16 @@
-"use strict";
-const env = process.env.NODE_ENV;
+'use strict';
 
-const switchInnerHTML = function (oldEl, newEl, opt) {
+var switchInnerHTML = function (oldEl, newEl, opt) {
         opt = opt || {};
         oldEl.innerHTML = ' ';
         oldEl.innerHTML = newEl.innerHTML;
         this.onSwitch();
     },
     singletonPjax = function () {
+        console.log('createing a Pjax instance on the window object');
         window.activePjax = window.activePjax || null;
 
-        if (window.activePjax !== null) {
+        if (window.activePjax === null) {
             window.activePjax = new Pjax({
                 elements: ['a.pjax', 'form.pjax'], // default is "a[href], form[action]"
                 selectors: [
@@ -25,9 +25,10 @@ const switchInnerHTML = function (oldEl, newEl, opt) {
                     '#pjax-content': switchInnerHTML,
                     '#breadcrumb-container': switchInnerHTML,
                 },
-                debug: (env === 'developement')
+                debug: true
             });
         }
+
         return window.activePjax;
     },
     forceRefreshPjax = function () {
@@ -35,15 +36,16 @@ const switchInnerHTML = function (oldEl, newEl, opt) {
         singletonPjax();
     };
 
-document.addEventListener('pjax:refresh', function () {
+window.singletonPjax = singletonPjax;
+
+window.addEventListener('pjax:reload', forceRefreshPjax);
+window.addEventListener('pjax:create', singletonPjax);
+
+window.addEventListener('pjax:refresh', function () {
     singletonPjax().parseDom(document);
 });
-document.addEventListener('pjax:reload', function () {
-    forceRefreshPjax();
-});
-document.addEventListener('pjax:create', function () {
-    singletonPjax();
-});
-document.addEventListener('pjax:load', function (url) {
+
+window.addEventListener('pjax:load', function (url) {
     singletonPjax().loadUrl(url, singletonPjax().options);
 });
+
