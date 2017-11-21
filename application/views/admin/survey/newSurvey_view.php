@@ -17,7 +17,7 @@ echo viewHelper::getViewTestTag('createSurvey');
     $active = (isset($_GET['tab']))?$_GET['tab']:'create';
 ?>
 <script type="text/javascript">
-    standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
+    standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>';
     templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>';
 </script>
 

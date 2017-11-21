@@ -274,7 +274,7 @@
         <div class="form-group">
             <label class=" control-label" for='template'><?php  eT("Template:"); ?></label>
             <div class="">
-                <select id='template' class="form-control"  name='template' data-standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>' data-templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>'>
+                <select id='template' class="form-control"  name='template' data-standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>' data-templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>'>
                     <?php foreach (array_keys(getTemplateList()) as $tname) {
 
                         if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $oSurvey->template==htmlspecialchars($tname) ) { ?>
