@@ -657,10 +657,10 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
             $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','["pjax"]','','']));
 
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['monochrome',NULL,NULL,NULL,'{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}','{"add":["scripts/template.js","scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{}','','["pjax"]','','']));            
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['monochrome',NULL,NULL,NULL,'{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}','{"add":["scripts/template.js","scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{}','','["pjax"]','','']));
 
             $oDB->createCommand()->update('{{surveymenu_entries}}',array('data'=>'{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'),"name='template_options'");
-                
+
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>325),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
@@ -669,6 +669,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->alterColumn('{{surveys}}','datecreated', 'datetime');
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>326),"stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
+
+        if ($iOldDBVersion < 327) {
+            $oTransaction = $oDB->beginTransaction();
+            upgrade327($oDB);
+            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>327),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -715,6 +722,56 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     Yii::app()->setConfig('Updating',false);
     return true;
+}
+
+
+
+/**
+* @param $oDB
+* @return void
+*/
+function upgrade327($oDB)
+{
+    // Update the box value so it uses to the the themeoptions controler
+    $oDB->createCommand()->update('{{boxes}}', array(
+        'position' =>  '6',
+        'url'      =>  'admin/themeoptions',
+        'title'    =>  'Themes',
+        'ico'      =>  'templates',
+        'desc'     =>  'Edit LimeSurvey Themes',
+        'page'     =>  'welcome',
+        'usergroup' => '-2',
+    ), 'url=:url', array(':url'=>"admin/templateoptions"));
+
+
+    // Update the survey menu so it uses the themeoptions controller
+    $oDB->createCommand()->update('{{surveymenu_entries}}', array(
+        'menu_id'          => 1,
+        'user_id'          => NULL,
+        'ordering'         => 4,
+        'name'             => 'theme_options',
+        'title'            => 'Theme options',
+        'menu_title'       => 'Theme options',
+        'menu_description' => 'Edit theme options for this survey',
+        'menu_icon'        =>  'paint-brush',
+        'menu_icon_type'   =>  'fontawesome',
+        'menu_class'       =>  '',
+        'menu_link'        => 'admin/themeoptions/sa/updatesurvey',
+        'action'           =>  '',
+        'partial'          => '',
+        'classes'          =>  '',
+        'permission'       =>  'templates', // TODO: change permission from template to theme
+        'permission_grade' =>  'read',
+        'data'             =>  '{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}',
+        'getdatamethod'    =>  '',
+        'language'         =>  'en-GB',
+        'active'           =>  1,
+        'changed_at'       =>  date('Y-m-d H:i:s'),
+        'changed_by'       =>  0,
+        'created_at'       =>  date('Y-m-d H:i:s'),
+        'created_by'       =>  0
+    ), 'name=:name', array(':name'=>"template_options"));
+
 }
 
 function transferPasswordFieldToText($oDB){
@@ -1019,6 +1076,8 @@ function createSurveyGroupTables306($oDB)
 
 
 }
+
+
 
 /**
 * @param $oDB

@@ -63,7 +63,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
         </div>
 
         <?php
-            $actionBaseUrl = 'admin/templateoptions/sa/update/';
+            $actionBaseUrl = 'admin/themeoptions/sa/update/';
             $actionUrlArray = array('id' => $model->id);
 
             if($model->sid) {
@@ -71,11 +71,11 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                 $actionUrlArray['sid'] = $model->sid;
                 $actionUrlArray['surveyd'] = $model->sid;
                 $actionUrlArray['gsid'] = $model->gsid;
-                $actionBaseUrl = 'admin/templateoptions/sa/updatesurvey/';
+                $actionBaseUrl = 'admin/themeoptions/sa/updatesurvey/';
                 }
             if($model->gsid) {
                 unset($actionUrlArray['id']);
-                $actionBaseUrl = 'admin/templateoptions/sa/updatesurveygroup/';
+                $actionBaseUrl = 'admin/themeoptions/sa/updatesurveygroup/';
                 $actionUrlArray['gsid'] = $model->gsid;
             }
 
@@ -88,14 +88,14 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                     <?php printf(gT("Upload a logo (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                 </div>
                 <div class="col-sm-6">
-                <?php echo TbHtml::form(array('admin/templates/sa/upload'), 'post', array('id'=>'uploadlogo', 'name'=>'uploadlogo', 'enctype'=>'multipart/form-data')); ?>                        
+                <?php echo TbHtml::form(array('admin/templates/sa/upload'), 'post', array('id'=>'uploadlogo', 'name'=>'uploadlogo', 'enctype'=>'multipart/form-data')); ?>
                     <span id="fileselector">
                         <label class="btn btn-default col-xs-8" for="upload_logo">
                             <input class="hidden" id="upload_logo" name="upload_logo" type="file">
                             <i class="fa fa-upload ls-space margin right-10"></i><?php eT("Upload"); ?>
                         </label>
                     </span>
-                    
+
                         <input type='hidden' name='templatename' value='<?php echo $model->template_name; ?>' />
                         <input type='hidden' name='templateconfig' value='<?php echo $model->id; ?>' />
                         <input type='hidden' name='<?php echo Yii::app()->request->csrfTokenName; ?>' value='<?php echo Yii::app()->request->csrfToken; ?>' />
@@ -211,7 +211,7 @@ $(document).on('ready pjax:complete', function(e){
         // add assoc key values, this will be posts values
         // formData.append("file", $('#upload_logo').prop('files')[0]);
 
-        $.ajax({    
+        $.ajax({
             type: "POST",
             url: $('#uploadlogo').attr('action'),
             xhr: function () {
@@ -226,16 +226,16 @@ $(document).on('ready pjax:complete', function(e){
                 if(data.success === true){
                     $('#notif-container').append('<div class="alert alert-success" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                     $(progress_bar_id).css("width", "0%");
-                    $(progress_bar_id).find('span.sr-only').text('0%'); 
+                    $(progress_bar_id).find('span.sr-only').text('0%');
                 } else {
                     $('#notif-container').append('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+data.message+'</div>');
                     $(progress_bar_id).css("width", "0%");
-                    $(progress_bar_id).find('span.sr-only').text('0%'); 
+                    $(progress_bar_id).find('span.sr-only').text('0%');
                 }
             },
             error: function (error) {
                 $(progress_bar_id).css("width", "0%");
-                $(progress_bar_id).find('span.sr-only').text('0%'); 
+                $(progress_bar_id).find('span.sr-only').text('0%');
                 console.log(error);
             },
             async: true,

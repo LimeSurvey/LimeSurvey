@@ -222,8 +222,8 @@ class TemplateManifest extends TemplateConfiguration
     public function getButtons()
     {
         $sEditorUrl  = Yii::app()->getController()->createUrl('admin/templates/sa/view', array("templatename"=>$this->sTemplateName));
-        $sLoadUrl    = Yii::app()->getController()->createUrl('admin/templateoptions/sa/importmanifest/', array("templatename"=>$this->sTemplateName));
-        $sDeleteUrl  = Yii::app()->getController()->createUrl('admin/templateoptions/sa/deleteTemplate/', array("templatename"=>$this->sTemplateName));
+        $sLoadUrl    = Yii::app()->getController()->createUrl('admin/themeoptions/sa/importmanifest/', array("templatename"=>$this->sTemplateName));
+        $sDeleteUrl  = Yii::app()->getController()->createUrl('admin/themeoptions/sa/deleteTemplate/', array("templatename"=>$this->sTemplateName));
 
         // TODO: load to DB
         $sEditorLink = "<a
