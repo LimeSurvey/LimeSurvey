@@ -30981,7 +30981,8 @@ module.exports = Component.exports
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(132);
-module.exports = __webpack_require__(334);
+__webpack_require__(334);
+module.exports = __webpack_require__(385);
 
 
 /***/ }),
@@ -39319,8 +39320,6 @@ if (false) {
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */]);
 __WEBPACK_IMPORTED_MODULE_0_vue__["a" /* default */].use(__WEBPACK_IMPORTED_MODULE_2_vue_localstorage___default.a);
 
-const env = "developement";
-
 const getAppState = function (userid) {
     const statePreset = {
         surveyid: 0,
@@ -39445,28 +39444,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                const switchInnerHTML = function(oldEl, newEl, opt){
-                    oldEl.innerHTML = ' ';
-                    oldEl.innerHTML = newEl.innerHTML;
-                    this.onSwitch();
-                };
-                state.pjax = null;
-                state.pjax = new Pjax({
-                    elements: ['a.pjax', 'form.pjax'], // default is "a[href], form[action]"
-                    selectors: [
-                        '#pjax-content',
-                        '#breadcrumb-container',
-                        '#bottomScripts',
-                        '#beginScripts'
-                    ],
-                    switches: {
-                        '#bottomScripts' : switchInnerHTML,
-                        '#beginScripts' : switchInnerHTML,
-                        '#pjax-content' : switchInnerHTML,
-                        '#breadcrumb-container': switchInnerHTML,
-                    },
-                    debug: (env === 'developement')
-                });
+                $(document).trigger('pjax:refresh');
             }
         }
     });
@@ -40761,6 +40739,62 @@ exports.install = function (Vue) {
         }
     };
 };
+
+
+/***/ }),
+/* 385 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+const env = "developement";
+
+const switchInnerHTML = function (oldEl, newEl, opt) {
+        opt = opt || {};
+        oldEl.innerHTML = ' ';
+        oldEl.innerHTML = newEl.innerHTML;
+        this.onSwitch();
+    },
+    singletonPjax = function () {
+        window.activePjax = window.activePjax || null;
+
+        if (window.activePjax !== null) {
+            window.activePjax = new Pjax({
+                elements: ['a.pjax', 'form.pjax'], // default is "a[href], form[action]"
+                selectors: [
+                    '#pjax-content',
+                    '#breadcrumb-container',
+                    '#bottomScripts',
+                    '#beginScripts'
+                ],
+                switches: {
+                    '#bottomScripts': switchInnerHTML,
+                    '#beginScripts': switchInnerHTML,
+                    '#pjax-content': switchInnerHTML,
+                    '#breadcrumb-container': switchInnerHTML,
+                },
+                debug: (env === 'developement')
+            });
+        }
+        return window.activePjax;
+    },
+    forceRefreshPjax = function () {
+        window.activePjax = null;
+        singletonPjax();
+    };
+
+document.addEventListener('pjax:refresh', function () {
+    singletonPjax().parseDom(document);
+});
+document.addEventListener('pjax:reload', function () {
+    forceRefreshPjax();
+});
+document.addEventListener('pjax:create', function () {
+    singletonPjax();
+});
+document.addEventListener('pjax:load', function (url) {
+    singletonPjax().loadUrl(url, singletonPjax().options);
+});
 
 
 /***/ })

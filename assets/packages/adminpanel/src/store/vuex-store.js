@@ -6,8 +6,6 @@ import createPersist from 'vuex-localstorage';
 Vue.use(Vuex);
 Vue.use(VueLocalStorage);
 
-const env = process.env.NODE_ENV;
-
 const getAppState = function (userid) {
     const statePreset = {
         surveyid: 0,
@@ -132,28 +130,7 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
-                const switchInnerHTML = function(oldEl, newEl, opt){
-                    oldEl.innerHTML = ' ';
-                    oldEl.innerHTML = newEl.innerHTML;
-                    this.onSwitch();
-                };
-                state.pjax = null;
-                state.pjax = new Pjax({
-                    elements: ['a.pjax', 'form.pjax'], // default is "a[href], form[action]"
-                    selectors: [
-                        '#pjax-content',
-                        '#breadcrumb-container',
-                        '#bottomScripts',
-                        '#beginScripts'
-                    ],
-                    switches: {
-                        '#bottomScripts' : switchInnerHTML,
-                        '#beginScripts' : switchInnerHTML,
-                        '#pjax-content' : switchInnerHTML,
-                        '#breadcrumb-container': switchInnerHTML,
-                    },
-                    debug: (env === 'developement')
-                });
+                $(document).trigger('pjax:refresh');
             }
         }
     });

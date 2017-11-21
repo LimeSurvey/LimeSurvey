@@ -1,6 +1,6 @@
 <div class="form-group pull-right">
     <label for='questionNav'><?php eT("Move to question:");?></label>
-    <select id='questionNav' class="form-control"  onchange="window.open(this.options[this.selectedIndex].value,'_top')">
+    <select id='questionNav' class="form-control"  >
 
         <optgroup class='activesurveyselect' label='<?php eT("Before"); ?>' >
             <?php foreach ($theserows as $row): ?>
@@ -25,4 +25,15 @@
         </optgroup>
 
     </select>
+    <a href="#" id="selector__hiddenNavigation" class="hidden pjax">hidden</a>
 </div>
+<script>
+    $(document).off('.conditions').on('ready.conditions, pjax:scriptcomplete.conditions',function(){
+        $('#questionNav').on('change', function(e){
+            $('#selector__hiddenNavigation').attr('href', $(this).val());
+            $('#selector__hiddenNavigation').trigger('click');
+            console.log($(this).val());
+        });
+    });
+    //onchange="window.open(this.options[this.selectedIndex].value,'_top')"
+</script>
