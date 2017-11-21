@@ -6,7 +6,7 @@
 ?>
 
 <!-- Copy Error -->
-<?php if (isset($aImportResults['error']) && $aImportResults['error'] != false): ?>
+<?php if (isset($aImportResults['error']) && $aImportResults['error']!=false): ?>
     <div class="jumbotron message-box message-box-error">
         <h2 ><?php eT("Copy survey"); ?></h2>
         <p class="lead danger"><?php eT("Error"); ?></p>
@@ -16,14 +16,11 @@
         <?php $importerror = true; ?>
         </p>
     </div>
-<?php else {
-    : ?>
+<?php else: ?>
 
 <!-- Copy success -->
 <div class="jumbotron message-box ">
-    <h2> <?php eT("Success");
-}
-?></h2>
+    <h2> <?php eT("Success"); ?></h2>
 
     <p class="lead"><?php eT("Survey import summary"); ?></p>
     <p>
@@ -49,7 +46,7 @@
         { ?>
             <li><?php eT("Label sets"); ?>: <?php echo $aImportResults['labelsets']; ?></li>
         <?php }
-        if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls'] > 0)
+        if (isset($aImportResults['deniedcountls']) && $aImportResults['deniedcountls']>0)
         { ?>
             <li><?php eT("Not imported label sets"); ?>: <?php echo $aImportResults['deniedcountls']; eT("(Label sets were not imported since you do not have the permission to create label sets.)"); ?></li>
         <?php } ?>
@@ -59,7 +56,7 @@
     </p>
 
     <!-- Warnings -->
-    <?php if (count($aImportResults['importwarnings']) > 0):?>
+    <?php if (count($aImportResults['importwarnings'])>0):?>
         <h2 class='text-warning'><?php eT("Warnings"); ?>:</h2>
         <p>
                 <ul style="text-align:left;">

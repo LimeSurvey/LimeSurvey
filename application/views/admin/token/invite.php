@@ -1,6 +1,7 @@
 <?php
 /**
  * Send email invitations
+
  * @var AdminController $this
  * @var Survey $oSurvey
  */
@@ -26,7 +27,7 @@
                     <?php echo CHtml::form(array("admin/tokens/sa/email/surveyid/{$oSurvey->sid}"), 'post', array('id'=>'sendinvitation', 'name'=>'sendinvitation', 'class'=>'')); ?>
                     <div class="row">
                         <div class="col-sm-4">
-                            <?php if (count($tokenids) > 0): ?>
+                            <?php if (count($tokenids)>0): ?>
                                 <div class='form-group'>
                                     <label class='control-label '><?php eT("Send invitation email to token ID(s):"); ?></label>
                                     <div class=''>
@@ -84,13 +85,13 @@
                                 echo '<li role="presentation"';
 
                                 if ($c) {
-                                    $c = false;
+                                    $c=false;
                                     echo ' class="active"';
                                 }
 
-                                echo '><a  data-toggle="tab" href="#'.$language.'">'.getLanguageNameFromCode($language, false);
+                                echo '><a  data-toggle="tab" href="#'.$language.'">' . getLanguageNameFromCode($language, false);
                                 if ($language == $oSurvey->language) {
-                                    echo " (".gT("Base language").")";
+                                    echo " (" . gT("Base language") . ")";
                                 }
                                 echo "</a></li>";
                             }
@@ -113,19 +114,19 @@
                                     $textarea = str_replace(array('<x>', '</x>'), array(''), $textarea);
                                 }
                             ?>
-                            <div id="<?php echo $language; ?>" class="tab-pane fade in <?php if ($c) {$c = false; echo ' active'; }?>">
+                            <div id="<?php echo $language; ?>" class="tab-pane fade in <?php if ($c){$c=false;echo ' active';}?>">
 
                                 <div class='form-group'>
                                     <label class='control-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
                                     <div class=''>
-                                        <?php echo CHtml::textField("from_{$language}", $oSurvey->admin." <".$oSurvey->adminemail.">", array('class' => 'form-control')); ?>
+                                        <?php echo CHtml::textField("from_{$language}",$oSurvey->admin." <".$oSurvey->adminemail.">",array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
 
                                 <div class='form-group'>
                                     <label class='control-label ' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
                                     <div class=''>
-                                        <?php echo CHtml::textField("subject_{$language}", $subject, array('class' => 'form-control')); ?>
+                                        <?php echo CHtml::textField("subject_{$language}",$subject,array('class' => 'form-control')); ?>
                                     </div>
                                 </div>
 
@@ -134,8 +135,8 @@
                                     <label class='control-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                     <div class=''>
                                         <div class="htmleditor">
-                                            <?php echo CHtml::textArea("message_{$language}", $textarea, array('cols'=>80, 'rows'=>20, 'class' => 'form-control')); ?>
-                                            <?php echo getEditor("email-invitation", "message_$language", "[".gT("Invitation email:", "js")."](".$language.")", $surveyid, '', '', "tokens"); ?>
+                                            <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
+                                            <?php echo getEditor("email-invitation", "message_$language", "[" . gT("Invitation email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
                                         </div>
                                     </div>
                                 </div>
@@ -146,14 +147,14 @@
                         <div class='form-group'>
                             <div class=''></div>
                             <div class=''>
-                                <?php echo CHtml::submitButton(gT("Send Invitations", 'unescaped'), array('class'=>'btn btn-default')); ?>
+                                <?php echo CHtml::submitButton(gT("Send Invitations",'unescaped'), array('class'=>'btn btn-default')); ?>
                             </div>
 
                             <?php
-                                echo CHtml::hiddenField('ok', 'absolutely');
-                                echo CHtml::hiddenField('subaction', 'invite');
+                                echo CHtml::hiddenField('ok','absolutely');
+                                echo CHtml::hiddenField('subaction','invite');
                                 if (!empty($tokenids)) {
-                                    echo CHtml::hiddenField('tokenids', implode('|', (array) $tokenids));
+                                    echo CHtml::hiddenField('tokenids',implode('|', (array) $tokenids));
                                 }
                             ?>
                         </div>

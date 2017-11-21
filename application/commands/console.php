@@ -15,8 +15,8 @@
     * File edited by Sam Mousa for Marcel Minke.
     * This loader bypasses the default Yii loader and loads a custom console class instead.
     */
-    if (!isset($argv[0])) die();
-    define('BASEPATH','.');
+  if (!isset($argv[0])) die();
+  define('BASEPATH','.');
     require_once __DIR__ . '/../../third_party/autoload.php';
     require_once(dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'yii.php');
     // Load configuration.
@@ -25,7 +25,7 @@
     $config=require (dirname($sCurrentDir).DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'internal.php');
     $core = dirname($sCurrentDir) . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR;
     if(isset($config['config'])){
-        $settings=array_merge($settings,$config['config']);
+      $settings=array_merge($settings,$config['config']);
     }
     unset ($config['defaultController']);
     unset ($config['config']);

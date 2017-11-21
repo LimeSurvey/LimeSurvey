@@ -21,6 +21,6 @@
         <?php echo $check_ans; ?>
         onclick="<?php echo $checkconditionFunction; ?>"
     />
-    <label for="<?php echo $id; ?>" class="radio-label control-label"><?php echo $labeltext; ?></label>
+    <label for="<?php echo $id; ?>" class="radio-label control-label"><?php echo $labeltext;?></label>
 </li>
 <!-- end of answer_row -->

@@ -31,13 +31,10 @@
                     <?php eT('LDAP is disabled or no LDAP query defined.'); ?>
                 </div>
             <br /><br /><br />
-            <?php else {
-    : ?>
+            <?php else: ?>
 
             <!-- Form -->
-                <?php echo CHtml::form(array("admin/tokens/sa/importldap/surveyid/{$iSurveyId}"), 'post', array('class'=>''));
-}
-?>
+                <?php echo CHtml::form(array("admin/tokens/sa/importldap/surveyid/{$iSurveyId}"), 'post', array('class'=>'')); ?>
 
                     <!-- LDAP query  -->
                     <div class="form-group">
@@ -71,7 +68,7 @@
 
                     <!-- Upload button -->
                     <input type='hidden' name='subaction' value='uploadldap' />
-                    <p><input type='submit' class="btn btn-default" name='submit' value='<?php eT('Upload'); ?>' /></p>
+                    <p><input type='submit' class="btn btn-default" name='submit' value='<?php eT('Upload');?>' /></p>
                 </form>
             <?php endif; ?>
 

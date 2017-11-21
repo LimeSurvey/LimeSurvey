@@ -8,5 +8,5 @@
 ?>
 
 <!-- col -->
-<col class="<?php echo $class; ?>" style='width: <?php echo $cellwidth; ?>%'/>
+<col class="<?php echo $class; ?>" style='width: <?php echo $cellwidth;?>%'/>
 <!-- end of col -->

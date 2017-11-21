@@ -5,11 +5,11 @@
  */
 ?>
 <?php
-if (!empty($aEnterErrors)) {
+if(!empty($aEnterErrors)){
 
     Yii::app()->getController()->renderPartial(
         '/survey/system/errorAlert',
-        array('aErrors'    => (array) $aEnterErrors)
+        array('aErrors'    => (array)$aEnterErrors)
     );
 }
 ?>

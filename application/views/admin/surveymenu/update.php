@@ -3,16 +3,16 @@
 /* @var $model Surveymenu */
 
 $this->breadcrumbs=array(
-    'Surveymenus'=>array('index'),
-    $model->title=>array('view','id'=>$model->id),
-    'Update',
+	'Surveymenus'=>array('index'),
+	$model->title=>array('view','id'=>$model->id),
+	'Update',
 );
 
 $this->menu=array(
-    array('label'=>'List Surveymenu', 'url'=>array('index')),
-    array('label'=>'Create Surveymenu', 'url'=>array('create')),
-    array('label'=>'View Surveymenu', 'url'=>array('view', 'id'=>$model->id)),
-    array('label'=>'Manage Surveymenu', 'url'=>array('admin')),
+	array('label'=>'List Surveymenu', 'url'=>array('index')),
+	array('label'=>'Create Surveymenu', 'url'=>array('create')),
+	array('label'=>'View Surveymenu', 'url'=>array('view', 'id'=>$model->id)),
+	array('label'=>'Manage Surveymenu', 'url'=>array('admin')),
 );
 ?>
 

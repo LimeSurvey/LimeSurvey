@@ -7,7 +7,7 @@
                       <span class="fa fa-chevron-left"></span>
                   </a>
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                 <?php eT("General options"); ?>
+                 <?php eT("General options");?>
                 </a>
               </div>
             </div>
@@ -19,7 +19,7 @@
                                 <?php eT("Question Type:"); ?>
                             </label>
                             <div class="">
-                            <?php if ($selectormodeclass != "none"): ?>
+                            <?php if($selectormodeclass!="none"): ?>
                                 <?php
                                     foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
                                     {
@@ -32,52 +32,52 @@
                                 ?>
 
                                 <select class="form-control" id="question_type" style="display: none;">
-                                <?php foreach ($groups as $name => $group):?>
-                                    <optgroup label="<?php echo $name; ?>">
-                                        <?php foreach ($group as $type => $option):?>
-                                            <option class="questionTypeOld" value="<?php echo $type; ?>" <?php if ($type == $eqrow['type']) {echo 'selected'; }?> ><?php echo $option; ?></option>
-                                        <?php endforeach; ?>
+                                <?php foreach($groups as $name => $group):?>
+                                    <optgroup label="<?php echo $name;?>">
+                                        <?php foreach($group as $type => $option):?>
+                                            <option class="questionTypeOld" value="<?php echo $type;?>" <?php if($type == $eqrow['type']){echo 'selected';}?> ><?php echo $option;?></option>
+                                        <?php endforeach;?>
                                     </optgroup>
-                                <?php endforeach; ?>
+                                <?php endforeach;?>
                                 </select>
 
                                 <div class="btn-group" id="question_type_button" style="z-index: 1000">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="z-index: 1000">
-                                        <?php foreach ($groups as $name => $group):?>
-                                            <?php foreach ($group as $type => $option):?>
-                                                <?php if ($type == $eqrow['type']) {echo $option; }?>
-                                            <?php endforeach; ?>
-                                        <?php endforeach; ?>
+                                        <?php foreach($groups as $name => $group):?>
+                                            <?php foreach($group as $type => $option):?>
+                                                <?php if($type == $eqrow['type']){echo $option;}?>
+                                            <?php endforeach;?>
+                                        <?php endforeach;?>
                                         <span class="caret"></span>
                                     </button>
 
                                     <ul class="dropdown-menu" style="z-index: 1000">
 
-                                        <?php foreach ($groups as $name => $group):?>
-                                            <small><?php echo $name; ?></small>
+                                        <?php foreach($groups as $name => $group):?>
+                                            <small><?php echo $name;?></small>
 
-                                        <?php foreach ($group as $type => $option):?>
+                                        <?php foreach($group as $type => $option):?>
                                                 <li>
-                                                    <a href="#" class="questionType" <?php if ($type == $eqrow['type']) {echo 'active'; }?>><?php echo $option; ?></a>
+                                                    <a href="#" class="questionType" <?php if($type == $eqrow['type']){echo 'active';}?>><?php echo $option;?></a>
                                                 </li>
-                                            <?php endforeach; ?>
+                                            <?php endforeach;?>
 
                                             <li role="separator" class="divider"></li>
-                                        <?php endforeach; ?>
+                                        <?php endforeach;?>
 
                                     </ul>
                                 </div>
                             <?php else: ?>
                                 <?php
-                                    $aQtypeData = array();
+                                    $aQtypeData=array();
                                     foreach (getQuestionTypeList($eqrow['type'], 'array') as $key=> $questionType)
                                     {
-                                        $aQtypeData[] = array('code'=>$key, 'description'=>$questionType['description'], 'group'=>$questionType['group']);
+                                        $aQtypeData[]=array('code'=>$key,'description'=>$questionType['description'],'group'=>$questionType['group']);
                                     }
                                     echo CHtml::dropDownList(
                                         'type',
                                         'category',
-                                        CHtml::listData($aQtypeData, 'code', 'description', 'group'),
+                                        CHtml::listData($aQtypeData,'code','description','group'),
                                         array(
                                             'class' => 'none',
                                             'id'=>'question_type',
@@ -92,18 +92,18 @@
                         <div  class="form-group">
                             <label for='gid'><?php eT("Question group:"); ?></label>
                             <select name='gid' id='gid' class="form-control">
-                                <?php echo getGroupList3($eqrow['gid'], $surveyid); ?>
+                                <?php echo getGroupList3($eqrow['gid'],$surveyid); ?>
                             </select>
                         </div>
 
                         <div  class="form-group" id="OtherSelection">
                             <label><?php eT("Option 'Other':"); ?></label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'optionother', 'onLabel'=>gT('On'), 'offLabel'=>gT('Off'))); ?>
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'optionother', 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                         </div>
 
                         <div id='MandatorySelection'  class="form-group">
                             <label><?php eT("Mandatory:"); ?></label>
-                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'switchbuttontest', 'onLabel'=>gT('On'), 'offLabel'=>gT('Off'))); ?>
+                            <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array('name' => 'switchbuttontest', 'onLabel'=>gT('On'),'offLabel'=>gT('Off')));?>
                         </div>
 
                         <div  class="form-group">

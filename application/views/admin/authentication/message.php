@@ -7,7 +7,7 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-                          <img alt='logo' id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL; ?>" />
+                          <img alt='logo' id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
                         </div>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
                 </div>
 
                 <!-- Form -->
-                <?php echo CHtml::form(array("admin/authentication/sa/forgotpassword"), 'post', array('id'=>'forgotpassword', 'name'=>'forgotpassword')); ?>
+                <?php echo CHtml::form(array("admin/authentication/sa/forgotpassword"), 'post', array('id'=>'forgotpassword','name'=>'forgotpassword'));?>
                     <div class="row login-content login-content-form">
                         <div class="col-lg-12">
                             <div class="alert alert-info" role="alert">

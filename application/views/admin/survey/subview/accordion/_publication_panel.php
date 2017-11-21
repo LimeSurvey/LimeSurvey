@@ -14,7 +14,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js'); ?>'
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
     var sURLParameters = '';
     var sAddParam = '';
 </script>
@@ -30,9 +30,9 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => date($dateformatdetails['phpdate']." H:i", strtotime($oSurvey->startdate)),
+                            'value' => date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->startdate)),
                             'pluginOptions' => array(
-                                'format' => $dateformatdetails['jsdate']." HH:mm",
+                                'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
                                 'showClear' => true,
                                 'tooltips' => array(
@@ -63,9 +63,9 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "expires",
                             'id' => 'expires',
-                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate']." H:i", strtotime($oSurvey->expires)) : ''),
+                            'value' => ($oSurvey->expires ? date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->expires)) : ''),
                             'pluginOptions' => array(
-                                'format' => $dateformatdetails['jsdate']." HH:mm",
+                                'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
                                 'showClear' => true,
                                 'tooltips' => array(
@@ -92,7 +92,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
         <div class="col-sm-12 col-md-6">
             <!-- List survey publicly -->
             <div class="form-group">
-                <label class=" control-label" for='listpublic'><?php  eT("List survey publicly:"); ?></label>
+                <label class=" control-label" for='listpublic'><?php  eT("List survey publicly:");?></label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'listpublic',
@@ -125,7 +125,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                         'name' => 'usecaptcha_surveyaccess',
                         'value'=> $usecap === 'A' || $usecap === 'B' || $usecap === 'C' || $usecap === 'X',
-                        'onLabel'=>gT('On'), 'offLabel'=>gT('Off')));
+                        'onLabel'=>gT('On'),'offLabel'=>gT('Off')));
                     ?>
                 </div>
             </div>

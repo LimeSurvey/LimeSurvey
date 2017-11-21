@@ -73,7 +73,7 @@ class ExportSTATAxml extends \LimeSurvey\PluginManager\PluginBase {
     {
         $event = $this->getEvent();
 
-        $pluginsettings = $this->getPluginSettings(true);
+        $pluginsettings=$this->getPluginSettings(true);
         $writer = new STATAxmlWriter($pluginsettings);
         $event->set('writer', $writer);
     }

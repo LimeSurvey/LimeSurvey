@@ -12,8 +12,8 @@
  * @var $color
  *
  */
-    // TODO: move to controller
-    $qqid = str_replace ( '-', '__' , $qqid );
+ // TODO: move to controller
+ $qqid = str_replace ( '-', '__' , $qqid );
 ?>
 <tr>
     <td colspan='4' style=\"text-align:center\" id='statzone_<?php echo $rt;?>'>
@@ -27,11 +27,11 @@
                 data-color="<?php echo $color; // the background color for bar, etc. ?>"
             >
 
-            <?php if (array_sum($grawdata_percent) < 1):?>
+            <?php if (array_sum($grawdata_percent)<1):?>
                 <div class="stat-no-answer text-center" id="stat-no-answer-<?php echo $qqid; ?>" style="position: relative; top: 300px; display: none;" >
-                    <?php eT('Not enough response data'); ?>
+                    <?php eT('Not enough response data');?>
                 </div>
-            <?php endif; ?>
+            <?php endif;?>
 
                 <!-- a default width/height is provided from the server side. But it's overwritten by javascript-->
                 <canvas class="canvas-chart " id="chartjs-<?php echo $qqid; ?>" width="<?php echo $canvaWidth?>" height="<?php echo $canvaHeight?>"
@@ -40,37 +40,37 @@
 
             </div>
             <!-- legends -->
-            <div class="legend legend-no-percent col-lg-4 col-md-12" id="legend-no-percent-<?php echo $qqid; ?>">
-                <?php foreach ($labels as $i=>$label): ?>
-                    <?php $colorindex = $color + $i; $colorindex = ($colorindex < 72) ? $colorindex : 0; ?>
+            <div class="legend legend-no-percent col-lg-4 col-md-12" id="legend-no-percent-<?php echo $qqid;?>">
+                <?php foreach($labels as $i=>$label): ?>
+                    <?php $colorindex = $color+$i; $colorindex = ($colorindex < 72)?$colorindex:0;?>
                     <div class="row" style="margin-bottom: 10px;">
                         <div class="col-sm-1">
-                            <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex]; ?>,0.6) !important; display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
+                            <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex];?>,0.6) !important; display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
                             </span>
                         </div>
                         <div class="col-sm-10">
-                            <?php echo $label; ?>
+                            <?php echo $label;?>
                         </div>
                     </div>
-                <?php endforeach; ?>
+                <?php endforeach;?>
             </div>
 
             <!-- legends in percents -->
             <?php // var_dump($labels); var_dump($graph_labels_percent);?>
-            <div class="legend legend-percent col-lg-4  col-md-12" id="legend-percent-<?php echo $qqid; ?>">
-                <?php if (count($graph_labels_percent) > 0):?>
-                    <?php foreach ($graph_labels_percent as $i=>$label): ?>
-                        <?php $colorindex = $color + $i; $colorindex = ($colorindex < 72) ? $colorindex : 0; ?>
+            <div class="legend legend-percent col-lg-4  col-md-12" id="legend-percent-<?php echo $qqid;?>">
+                <?php if (count($graph_labels_percent)>0):?>
+                    <?php foreach($graph_labels_percent as $i=>$label): ?>
+                        <?php $colorindex = $color+$i; $colorindex = ($colorindex < 72)?$colorindex:0;?>
                         <div class="row" style="margin-bottom: 10px;">
                             <div class="col-sm-1">
-                                <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex]; ?>,0.6); display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
+                                <span style="background-color:rgba(<?php echo $COLORS_FOR_SURVEY[$colorindex];?>,0.6); display: block;    width: 20px;    height: 20px;    border-radius: 5px; margin: 0px; padding: 0px;">
                                 </span>
                             </div>
                             <div class="col-sm-10">
-                                <?php echo $label; ?>
+                                <?php echo $label;?>
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php endforeach;?>
                 <?php endif; ?>
             </div>
         </div>
@@ -120,17 +120,17 @@
                 <?php eT('Doughnut chart'); ?>
             </button>
         </div>
-        <div id='stats_<?php echo $rt; ?>' class='graphdisplay' style="text-align:center">
+        <div id='stats_<?php echo $rt;?>' class='graphdisplay' style="text-align:center">
         </div>
     <?php else: ?>
         <div class="row">
             <div class="col-sm-12">
                 <div class="alert alert-warning" role="alert">
-                    <?php eT("Too many labels, can't generate chart"); ?>
+                    <?php eT("Too many labels, can't generate chart");?>
                 </div>
             </div>
         </div>
-    <?php endif; ?>
+    <?php endif;?>
     </td>
 </tr>
 <?php

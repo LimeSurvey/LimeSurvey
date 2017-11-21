@@ -12,5 +12,5 @@
         <div class="row">
             <div class="col-lg-12 content-right">
         
-                <?php echo CHtml::form(array("admin/dataentry/sa/update"), 'post', array('name'=>'editresponse', 'id'=>'editresponse')); ?>
+                <?php echo CHtml::form(array("admin/dataentry/sa/update"), 'post', array('name'=>'editresponse', 'id'=>'editresponse'));?>
                    <table id='responsedetail' class="table" width='99%' align='center'>

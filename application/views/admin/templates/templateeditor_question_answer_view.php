@@ -1,8 +1,8 @@
 <!-- templateeditor_question_answer_view -->
 <?php
-if (isset($alt)) {
+if (isset($alt)){
     App()->getController()->renderPartial('/admin/templates/templateeditor_question_answertext_view');
-} else {
+}else{
     App()->getController()->renderPartial('/admin/templates/templateeditor_question_answerlist_view');
 }
 ?>

@@ -14,13 +14,13 @@
         <td></td>
         <?php foreach ($labelans as $i=>$ld):?>
             <th>
-                <?php echo $ld; ?>
+                <?php echo $ld;?>
             </th>
-        <?php endforeach; ?>
+        <?php endforeach;?>
 
         <?php if ($right_exists):?>
             <td></td>
-        <?php endif; ?>
+        <?php endif;?>
 
         <?php
             echo $col_head; /* What is it ? */

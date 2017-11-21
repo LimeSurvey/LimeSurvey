@@ -53,7 +53,7 @@
                     'sModalTitle'   => gT('Delete survey participants'),
                     'htmlModalBody' => gT('Are you sure you want to delete the selected participants?'),
                     'aCustomDatas'  => array(
-                        array('name'=>'sid', 'value'=> $_GET['surveyid']),
+                        array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
                     ),
                 ),
 

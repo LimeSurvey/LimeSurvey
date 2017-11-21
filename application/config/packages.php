@@ -1,6 +1,4 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /**
  * Core packages , no third_party
  * sees third_party.php for third party package
@@ -13,16 +11,16 @@
  */
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
-$minVersion = ($debug > 0) ? "" : ".min";
+$minVersion = ($debug>0) ? "":".min";
 /* needed ? @see third_party.php */
-if (isset($_GET['isAjax'])) {
+if(isset($_GET['isAjax'])){
     return array();
 }
 return array(
     /* For public template functionnality */
     'limesurvey-public'=>array(
         'devBaseUrl'  => 'assets/packages/limesurvey/',
-        'basePath' => 'core.limesurvey', /* public part only : rename directory ? */
+        'basePath' => 'core.limesurvey',/* public part only : rename directory ? */
         'css'=> array(
             'survey.css',
         ),

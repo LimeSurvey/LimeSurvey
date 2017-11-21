@@ -45,7 +45,7 @@
     <?php //If survey is not activated and first language : move button, code editable   ?>
     <?php  elseif ($first): ?>
 
-        <?php $sPattern = ($title) ? "^([a-zA-Z0-9]*|{$title})$" : "^[a-zA-Z0-9]*$"; ?>
+        <?php $sPattern = ($title)?"^([a-zA-Z0-9]*|{$title})$":"^[a-zA-Z0-9]*$"; ?>
 
         <!-- Move icon -->
         <td class="move-icon" >
@@ -54,7 +54,7 @@
 
         <!-- Code (title) -->
         <td  class="code-title" style="vertical-align: middle;">
-            <?php if ($oldCode): ?>
+            <?php if($oldCode): ?>
                 <input
                     type='hidden'
                     class='oldcode code-title'
@@ -78,8 +78,7 @@
         </td>
 
     <?php // If survey is not active, and it's not the first language : no move button, code not editable ?>
-    <?php else {
-    :?>
+    <?php else:?>
 
         <!-- Move icon -->
         <td class="move-icon-disable">
@@ -88,9 +87,7 @@
 
         <!-- Code (title) -->
         <td  class="code-title" style="vertical-align: middle;">
-            <?php echo $title;
-}
-?>
+            <?php echo $title; ?>
         </td>
     <?php endif; ?>
 
@@ -105,7 +102,7 @@
             class='answer form-control input'
             id='answer_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
             name='answer_<?php echo $language; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>'
-            placeholder='<?php eT("Some example subquestion", "js") ?>'
+            placeholder='<?php eT("Some example subquestion","js") ?>'
             value="<?php echo $question; ?>"
             onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
             />
@@ -116,12 +113,9 @@
         <td class="relevance-equation">
             <input data-toggle="tooltip" data-title="<?php eT("Click to expand"); ?>" type='text' class='relevance form-control input' id='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' name='relevance_<?php echo $qid; ?>_<?php echo $scale_id; ?>' value="<?php echo $relevance; ?>" onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}" />
         </td>
-    <?php else {
-    : ?>
+    <?php else: ?>
         <span style="display: none" class="relevance relevance-equation">
-            <?php echo $relevance;
-}
-?>
+            <?php echo $relevance; ?>
         </span>
     <?php endif; ?>
 
@@ -129,9 +123,9 @@
     <!-- Icons add/edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
 
-        <?php echo  getEditor("editanswer", "answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")", $surveyid, $gid, $qid, 'editanswer'); ?>
+        <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
 
-        <?php if ($activated != 'Y' && $first):?>
+        <?php if ( $activated != 'Y' && $first  ):?>
             <?php
                 // TODO : to merge subquestion and answer options,  implies : define in controller titles
             ?>

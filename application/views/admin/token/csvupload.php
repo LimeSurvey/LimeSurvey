@@ -16,7 +16,7 @@
                 <div class="form-group">
                     <label class=" control-label" for='the_file'><?php eT("Choose the CSV file to upload:"); ?></label>
                     <div class="">
-                        <?php echo CHtml::fileField('the_file', '', array('required'=>'required', 'accept'=>'.csv')); ?>
+                        <?php echo CHtml::fileField('the_file','',array('required'=>'required','accept'=>'.csv')); ?>
                     </div>
                 </div>
 
@@ -38,11 +38,11 @@
                             'name' => 'separator',
                             'value'=> 'auto',
                             'selectOptions'=>array(
-                                "auto"=>gT("Automatic", 'unescaped'),
-                                "comma"=>gT("Comma", 'unescaped'),
-                                "semicolon"=>gT("Semicolon", 'unescaped')
+                                "auto"=>gT("Automatic",'unescaped'),
+                                "comma"=>gT("Comma",'unescaped'),
+                                "semicolon"=>gT("Semicolon",'unescaped')
                             )
-                        )); ?>
+                        ));?>
                     </div>
                 </div>
 
@@ -111,7 +111,7 @@
                     <label class=" control-label" for='filterduplicatefields'><?php eT("Duplicates are determined by:"); ?></label>
                     <div class="">
                         <?php
-                            echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aTokenTableFields, array('multiple' => 'multiple', 'size' => '7', 'class'=>'form-control'));
+                            echo CHtml::listBox('filterduplicatefields', array('firstname', 'lastname', 'email'), $aTokenTableFields, array('multiple' => 'multiple', 'size' => '7','class'=>'form-control'));
                         ?>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                 <!-- Buttons -->
                 <div class="form-group">
                     <div class="">
-                        <?php echo CHtml::htmlButton(gT("Upload"), array('type'=>'submit', 'name'=>'upload', 'value'=>'import', 'class'=>'btn btn-default')); ?>
+                        <?php echo CHtml::htmlButton(gT("Upload"),array('type'=>'submit','name'=>'upload','value'=>'import', 'class'=>'btn btn-default')); ?>
                     </div>
                 </div>
             </form>

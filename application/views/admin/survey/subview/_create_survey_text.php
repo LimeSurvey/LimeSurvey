@@ -7,8 +7,8 @@
 ?>
 
   <script type="text/javascript">
-    var standardthemerooturl = '<?php echo Yii::app()->getConfig('standardthemerooturl'); ?>';
-    var templaterooturl = '<?php echo Yii::app()->getConfig('userthemerooturl'); ?>';
+    var standardthemerooturl = '<?php echo Yii::app()->getConfig('standardthemerooturl');?>';
+    var templaterooturl = '<?php echo Yii::app()->getConfig('userthemerooturl');?>';
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';
@@ -21,7 +21,7 @@
 
 <?php
 $count = 0;
-if (isset($scripts))
+if(isset($scripts))
 echo $scripts;
 
 $aSurveyLanguageSettings = $aTabContents['aSurveyLanguageSettings'];
@@ -39,7 +39,7 @@ $surveyid = $aTabContents['surveyid'];
                     <?php eT("Survey title:"); ?>
                 </label>
                 <div class="">
-                    <?php echo CHtml::textField("surveyls_title", $aSurveyLanguageSettings['surveyls_title'], array('class'=>'form-control', 'size'=>"80", 'id'=>"surveyls_title")); ?>
+                    <?php echo CHtml::textField("surveyls_title",$aSurveyLanguageSettings['surveyls_title'],array('class'=>'form-control','size'=>"80",'id'=>"surveyls_title")); ?>
                 </div>
             </div>
         </div>
@@ -68,8 +68,8 @@ $surveyid = $aTabContents['surveyid'];
                 </label>
                 <div class="">
                     <div class="htmleditor input-group">
-                        <?php echo CHtml::textArea("description", $aSurveyLanguageSettings['surveyls_description'], array('class'=>'form-control', 'cols'=>'80', 'rows'=>'15', 'id'=>"description")); ?>
-                        <?php echo getEditor("survey-desc", "description", "[".gT("Description:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")", $surveyid, '', '', $action); ?>
+                        <?php echo CHtml::textArea("description",$aSurveyLanguageSettings['surveyls_description'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"description")); ?>
+                        <?php echo getEditor("survey-desc","description", "[".gT("Description:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@ $surveyid = $aTabContents['surveyid'];
                     <?php eT("End URL:"); ?>
                 </label>
                 <div class="">
-                    <?php echo CHtml::textField("url", $aSurveyLanguageSettings['surveyls_url'], array('class'=>'form-control', 'size'=>"80", 'placeholder'=>'http://', 'id'=>"url")); ?>
+                    <?php echo CHtml::textField("url",$aSurveyLanguageSettings['surveyls_url'],array('class'=>'form-control','size'=>"80",'placeholder'=>'http://','id'=>"url")); ?>
                 </div>
             </div>
 
@@ -92,7 +92,7 @@ $surveyid = $aTabContents['surveyid'];
                     <?php eT("URL description:"); ?>
                 </label>
                 <div class="">
-                    <?php echo CHtml::textField("urldescrip", $aSurveyLanguageSettings['surveyls_urldescription'], array('class'=>'form-control', 'size'=>"80", 'id'=>"urldescrip")); ?>
+                    <?php echo CHtml::textField("urldescrip",$aSurveyLanguageSettings['surveyls_urldescription'],array('class'=>'form-control','size'=>"80",'id'=>"urldescrip")); ?>
                 </div>
             </div>
 
@@ -104,8 +104,8 @@ $surveyid = $aTabContents['surveyid'];
 
                 <div class="">
                     <select size='1' id='dateformat' name='dateformat' class="form-control">
-                    <?php foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index=>$dateformatdata): ?>
-                        <option value='<?php echo $index; ?>' <?php if ($aSurveyLanguageSettings['surveyls_dateformat'] == $index): ?>
+                    <?php foreach (getDateFormatData(0,Yii::app()->session['adminlang']) as $index=>$dateformatdata): ?>
+                        <option value='<?php echo $index; ?>' <?php if ($aSurveyLanguageSettings[ 'surveyls_dateformat']==$index): ?>
                         selected='selected'
                         <?php endif; ?>
                             >
@@ -123,14 +123,14 @@ $surveyid = $aTabContents['surveyid'];
                 </label>
                 <div class="">
                     <?php
-                    $aRadixPoint = array();
+                    $aRadixPoint=array();
                     foreach (getRadixPointData() as $index=>$radixptdata)
                     {
-                        $aRadixPoint[$index] = html_entity_decode($radixptdata['desc']);
+                        $aRadixPoint[$index]=html_entity_decode($radixptdata['desc']);
                     }
                     $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'numberformat_'.$aSurveyLanguageSettings['surveyls_language'],
-                    'value'=> $aSurveyLanguageSettings['surveyls_numberformat'],
+                    'value'=> $aSurveyLanguageSettings['surveyls_numberformat'] ,
                     'selectOptions'=>$aRadixPoint,
                     'htmlOptions' => array(
                     "style" => "z-index:0"
@@ -150,8 +150,8 @@ $surveyid = $aTabContents['surveyid'];
                 </label>
                 <div class="">
                     <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("welcome", $aSurveyLanguageSettings['surveyls_welcometext'], array('class'=>'form-control', 'cols'=>'80', 'rows'=>'15', 'id'=>"welcome")); ?>
-                        <?php echo getEditor("survey-welc", "welcome", "[".gT("Welcome:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")", $surveyid, '', '', $action); ?>
+                    <?php echo CHtml::textArea("welcome",$aSurveyLanguageSettings['surveyls_welcometext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"welcome")); ?>
+                        <?php echo getEditor("survey-welc","welcome", "[".gT("Welcome:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                 </div>
             </div>
@@ -164,8 +164,8 @@ $surveyid = $aTabContents['surveyid'];
                 </label>
                 <div class="">
                     <div class="htmleditor input-group">
-                    <?php echo CHtml::textArea("endtext", $aSurveyLanguageSettings['surveyls_endtext'], array('class'=>'form-control', 'cols'=>'80', 'rows'=>'15', 'id'=>"endtext")); ?>
-                        <?php echo getEditor("survey-endtext", "endtext", "[".gT("End message:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")", $surveyid, '', '', $action); ?>
+                    <?php echo CHtml::textArea("endtext",$aSurveyLanguageSettings['surveyls_endtext'],array('class'=>'form-control','cols'=>'80','rows'=>'15','id'=>"endtext")); ?>
+                        <?php echo getEditor("survey-endtext","endtext", "[".gT("End message:", "js")."](".$aSurveyLanguageSettings['surveyls_language'].")",$surveyid,'','',$action); ?>
                     </div>
                 </div>
             </div>

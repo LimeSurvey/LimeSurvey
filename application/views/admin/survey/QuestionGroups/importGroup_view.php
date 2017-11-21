@@ -13,12 +13,12 @@ echo viewHelper::getViewTestTag('importQuestionGroup');
     <div class="row">
         <div class="col-lg-12">
             <!-- form -->
-            <?php echo CHtml::form(array("admin/questiongroups/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30 ', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
+            <?php echo CHtml::form(array("admin/questiongroups/sa/import"), 'post', array('id'=>'importgroup', 'name'=>'importgroup', 'class'=>'form30 ', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!','js').'");')); ?>
 
                 <!-- Select question group file -->
                 <div class="form-group">
                     <label for='the_file' class=" control-label"><?php eT("Select question group file (*.lsg):");
-                    echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024);
+                    echo '<br>'.sprintf(gT("(Maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024);
                     ?></label>
                         <div class="">
                            <input id='the_file' name="the_file" type="file" accept='.lsg' />

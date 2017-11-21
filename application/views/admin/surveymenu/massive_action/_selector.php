@@ -9,7 +9,7 @@
 <!-- Rendering massive action widget -->
 <?php
     $buttons = array();
-    if (Permission::model()->hasGlobalPermission('settings', 'update')) {
+    if (Permission::model()->hasGlobalPermission('settings','update')) {
         // Delete
         $buttons[] = array(
             // li element

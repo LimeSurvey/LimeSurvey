@@ -31,16 +31,17 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
 </td>
     <?php
         $i = 0;
-        $browsedatafield = "";
+        $browsedatafield="";
         if ($surveyinfo['anonymized'] == "N" && $dtrow['token'])
         {
             if (isset($dtrow['tid']) && !empty($dtrow['tid']))
             {
                 //If we have a token, create a link to edit it
-                $browsedatafield .= "<a href='".$this->createUrl("admin/tokens/sa/edit/surveyid/$surveyid/tokenid/{$dtrow['tid']}/")."' title='".gT("Edit this token")."'>";
+                $browsedatafield .= "<a href='" . $this->createUrl("admin/tokens/sa/edit/surveyid/$surveyid/tokenid/{$dtrow['tid']}/") . "' title='" . gT("Edit this token") . "'>";
                 $browsedatafield .= "{$dtrow['token']}";
                 $browsedatafield .= "</a>";
-            } else
+            }
+            else
             {
                 //No corresponding token in the token tabel, just didsplay the token
                 $browsedatafield .= "{$dtrow['token']}";
@@ -48,12 +49,12 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
         ?>
         <td align='center'><?php echo $browsedatafield; ?></td>
         <?php
-            $i++; //We skip the first record (=token) as we just outputted that one
+            $i++;   //We skip the first record (=token) as we just outputted that one
         }
 
         for ($i; $i < $fncount; $i++)
         {
-            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|" && $dtrow[$fnames[$i][0]] != '')
+            if (isset($fnames[$i]['type']) && $fnames[$i]['type'] == "|" && $dtrow[$fnames[$i][0]]!='')
             {
                 $index = $fnames[$i]['index'];
                 $metadata = $fnames[$i]['metadata'];
@@ -63,11 +64,11 @@ if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'delete'))
                     if ($metadata === "size")
                     {
                     ?>
-                    <td align='center'><?php echo rawurldecode(((int) ($phparray[$index][$metadata]))." KB"); ?></td>
+                    <td align='center'><?php echo rawurldecode(((int) ($phparray[$index][$metadata])) . " KB"); ?></td>
                     <?php }
                     else if ($metadata === "name")
                         { ?>
-                        <td><?php echo CHtml::link(htmlspecialchars(rawurldecode($phparray[$index][$metadata])), App()->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$dtrow['id']}/surveyid/{$surveyid}", array('downloadindividualfile'=>$phparray[$index][$metadata]))) ?></td>
+                        <td><?php echo CHtml::link(htmlspecialchars(rawurldecode($phparray[$index][$metadata])), App()->getController()->createUrl("/admin/responses/sa/browse/fieldname/{$fnames[$i][0]}/id/{$dtrow['id']}/surveyid/{$surveyid}",array('downloadindividualfile'=>$phparray[$index][$metadata]))) ?></td>
                         <?php }
                         else
                         { ?>

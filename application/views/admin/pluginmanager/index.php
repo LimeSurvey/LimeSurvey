@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('pluginManager');
 <div style="width: 75%; margin: auto;">
     <div id="ls_action_changestate_form_container">
     <?php
-    echo CHtml::beginForm(Yii::app()->createUrl('/admin/pluginmanager/sa/changestate'), 'POST', array('id' => 'ls_action_changestate_form'));
+    echo CHtml::beginForm(Yii::app()->createUrl('/admin/pluginmanager/sa/changestate'),'POST', array('id' => 'ls_action_changestate_form'));
     /* @var $this ConfigController */
     /* @var $dataProvider CActiveDataProvider */
 
@@ -64,7 +64,8 @@ echo viewHelper::getViewTestTag('pluginManager');
                 if ($data['active'] == 1)
                 {
                     return "<span class='fa fa-circle'></span>";
-                } else
+                }
+                else
                 {
                     return "<span class='fa fa-circle-thin'></span>";
                 }
@@ -87,8 +88,8 @@ echo viewHelper::getViewTestTag('pluginManager');
             ),
             'value' => function($data) {
 
-                $output = '';
-                if (Permission::model()->hasGlobalPermission('settings', 'update'))
+                $output='';
+                if(Permission::model()->hasGlobalPermission('settings','update'))
                 {
                     if ($data['active'] == 0)
                     {
@@ -103,9 +104,9 @@ echo viewHelper::getViewTestTag('pluginManager');
                         ."</a>";
                     }
                 }
-                if (count($data['settings']) > 0)
+                if(count($data['settings'])>0)
                 {
-                    $output .= "&nbsp;<a href='".Yii::app()->createUrl('/admin/pluginmanager/sa/configure', array('id' => $data['id']))."' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>".gT('Configure')."</a>";
+                    $output .= "&nbsp;<a href='" . Yii::app()->createUrl('/admin/pluginmanager/sa/configure', array('id' => $data['id'])) . "' class='btn btn-default btn-xs'><span class='icon-edit'>&nbsp;</span>" . gT('Configure') . "</a>";
                 }
                 return $output;
             }
@@ -124,7 +125,7 @@ echo viewHelper::getViewTestTag('pluginManager');
     $this->widget('bootstrap.widgets.TbGridView', array(
         'dataProvider'=>$dataProvider,
         'id' => 'plugins-grid',
-        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
+        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
             CHtml::dropDownList(
                 'pageSize',
                 $pageSize,

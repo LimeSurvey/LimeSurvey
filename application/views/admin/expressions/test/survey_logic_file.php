@@ -3,18 +3,18 @@
  * Important functionailites are set in core now, this is just to render the output
  */
 
-    $gid = isset($gid) ? $gid : NULL;
-    $qid = isset($qid) ? $qid : NULL;
+ $gid = isset($gid) ? $gid : NULL;
+ $qid = isset($qid) ? $qid : NULL;
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="container-center">
-        <h3><?php eT("Survey logic view"); ?> </h3>
+        <h3><?php eT("Survey logic view");?> </h3>
         <div class="row">
             <?=TbHtml::form(array('admin/expressions/sa/survey_logic_file'), 'post', array('id'=>'survey_logic_file_form', 'target' => '_blank'))?>
                 <input name="sid" type="hidden" value="<?=$sid?>" />
-                <?php if ($gid !== NULL): ?> <input name="gid" type="hidden" value="<?=$gid?>" /> <?php endif; ?>
-                <?php if ($qid !== NULL): ?> <input name="qid" type="hidden" value="<?=$qid?>" /> <?php endif; ?>
+                <?php if($gid!==NULL): ?> <input name="gid" type="hidden" value="<?=$gid?>" /> <?php endif; ?>
+                <?php if($qid!==NULL): ?> <input name="qid" type="hidden" value="<?=$qid?>" /> <?php endif; ?>
                 
                 <input name="printable" type="hidden" value="1" />
                 <div class="form-group">

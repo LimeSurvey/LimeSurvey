@@ -6,7 +6,7 @@
  * @var array $readonlyfiles array continaing the readonly files. 
  */
 ?>
-<?php if (count($readonlyfiles) > 0):?>
+<?php if (count($readonlyfiles)>0):?>
     <span class="text-warning">
         <?php eT('Warning: The following files/directories need to be updated but their permissions are set to read-only.'); ?>
         <br />
@@ -16,13 +16,10 @@
 <textarea readonly="readonly" style="background-color: #FFF; width: 800px; height: 150px; font-family: Monospace; font-size: 11px;">
 <?php foreach ($readonlyfiles as $readonlyfile):?>
 <?php echo trim(htmlspecialchars($readonlyfile))."\n"; ?>
-<?php endforeach; ?>
+<?php endforeach;?>
 </textarea>
-<?php  else {
-    :?>
+<?php  else:?>
     <p class="success text-left">
-        <?php eT("All files in local directories are writable.");
-}
-?>
+        <?php eT("All files in local directories are writable."); ?>
     </p>
-<?php  endif; ?>
+<?php  endif;?>

@@ -1,6 +1,6 @@
 <script type='text/javascript'>
-    var duplicatelabelcode='<?php eT('Error: You are trying to use duplicate label codes.', 'js'); ?>';
-    var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.", 'js'); ?>';
+    var duplicatelabelcode='<?php eT('Error: You are trying to use duplicate label codes.','js'); ?>';
+    var otherisreserved='<?php eT("Error: 'other' is a reserved keyword.",'js'); ?>';
 </script>
 
 <!-- quick add popup -->
@@ -9,8 +9,8 @@
 <div class="col-sm-12 labels">
     <div class="pagetitle h3">
         <?php eT("Labels") ?>
-        <?php if (isset($model->label_name)): ?> 
-            - <?=$model->label_name; ?>
+        <?php if(isset($model->label_name)): ?> 
+            - <?=$model->label_name;?>
         <?php endif; ?>
     </div>
     <div class="container">
@@ -22,12 +22,12 @@
                 <!-- tabs -->
                 <ul class="nav nav-tabs">
                     <?php  foreach ($lslanguages as $i => $language): ?>
-                        <li role="presentation" <?php if ($i == 0) { echo 'class="active"'; }?>>
+                        <li role="presentation" <?php if($i==0){ echo 'class="active"';}?>>
                             <a data-toggle="tab" href='#neweditlblset<?php echo $i; ?>' >
                                 <?php echo getLanguageNameFromCode($language, false); ?>
                             </a>
                         </li>
-                    <?php endforeach; ?>
+                    <?php endforeach;?>
                 </ul>
 
                 <!-- FORM -->
@@ -42,7 +42,7 @@
 
             <!-- Right content -->
             <div class="col-sm-4">
-            <?php if (Permission::model()->hasGlobalPermission('labelsets', 'edit'))
+            <?php if(Permission::model()->hasGlobalPermission('labelsets','edit'))
             { ?>
                 <?php $this->renderPartial("./labels/_labelviewrightcontent_view", array('lid'=>$lid)); ?>
             <?php }; ?>

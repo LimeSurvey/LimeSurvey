@@ -12,20 +12,21 @@ namespace ls\mersenne;
 function setSeed($surveyid)
 {
     //traceVar(@$_SESSION['survey_' . $surveyid]['srid']);
-    if (isset($_SESSION['survey_'.$surveyid]['srid']))
+    if (isset($_SESSION['survey_' . $surveyid]['srid']))
     {
-        $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_'.$surveyid]['srid']);
+        $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_' . $surveyid]['srid']);
         $seed = $oResponse->seed;
-    } else
+    }
+    else
     {
         $seed = mt_rand();
 
         // Only set seed if corresponding database column exists.
         // This mismatch can happen if survey is activated before update to
         // new version that uses seed.
-        $table = \Yii::app()->db->schema->getTable('{{survey_'.$surveyid.'}}');
+        $table = \Yii::app()->db->schema->getTable('{{survey_' . $surveyid.'}}');
         if (isset($table->columns['seed'])) {
-            $_SESSION['survey_'.$surveyid]['startingValues']['seed'] = $seed;
+            $_SESSION['survey_' . $surveyid]['startingValues']['seed'] = $seed;
         }
     }
     MersenneTwister::init($seed);
@@ -50,7 +51,7 @@ function shuffle(array $arr)
  */
 class MersenneTwister
 {
-    private $state = array();
+    private $state = array ();
     private $index = 0;
 
     /**
@@ -93,7 +94,7 @@ class MersenneTwister
         $new = $arr;
         for ($i = count($new) - 1; $i > 0; $i--)
         {
-            $j = $mt->getNext(0, $i);
+            $j = $mt->getNext(0,$i);
             $tmp = $new[$i];
             $new[$i] = $new[$j];
             $new[$j] = $tmp;
@@ -103,9 +104,8 @@ class MersenneTwister
 
 
     public function __construct($seed = null) {
-        if ($seed === null) {
-                    $seed = mt_rand();
-        }
+        if ($seed === null)
+            $seed = mt_rand();
 
         $this->setSeed($seed);
     }
@@ -132,9 +132,8 @@ class MersenneTwister
     }
 
     public function getNext($min = null, $max = null) {
-        if (($min === null && $max !== null) || ($min !== null && $max === null)) {
-                    throw new Exception('Invalid arguments');
-        }
+        if (($min === null && $max !== null) || ($min !== null && $max === null))
+            throw new Exception('Invalid arguments');
 
         if ($this->index === 0) {
             $this->generateTwister();
@@ -148,9 +147,8 @@ class MersenneTwister
 
         $this->index = ($this->index + 1) % 624;
 
-        if ($min === null && $max === null) {
-                    return $y;
-        }
+        if ($min === null && $max === null)
+            return $y;
 
         $range = abs($max - $min);
 

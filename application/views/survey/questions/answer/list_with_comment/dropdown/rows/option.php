@@ -7,6 +7,6 @@
  * @var $classes
  */
 ?>
-    <option class="<?php if (isset($classes)) {echo $classes; }?>" value="<?php echo $value; ?>" <?php echo $check_ans; ?>>
-        <?php echo $option_text; ?>
+    <option class="<?php if(isset($classes)){echo $classes;}?>" value="<?php echo $value;?>" <?php echo $check_ans;?>>
+        <?php echo $option_text;?>
     </option>

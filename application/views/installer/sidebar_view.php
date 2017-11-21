@@ -4,7 +4,7 @@
  */
 ?>
 <h2 class="maintitle"><?php eT("Progress"); ?></h2>
-<p><?php printf(gT("%s%% completed"), $progressValue); ?></p>
+<p><?php printf(gT("%s%% completed"),$progressValue); ?></p>
 <?php
     echo TbHtml::animatedProgressBar($progressValue);
 ?>

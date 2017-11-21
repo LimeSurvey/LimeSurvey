@@ -41,14 +41,14 @@
 
             <div class="row ls-space margin top-5">
                 <div class='form-group'>
-                <label class="col-sm-4 control-label" for='datestampG'><?php eT("Later than:"); ?></label>
+                <label class="col-sm-4 control-label" for='datestampG'><?php eT("Later than:");?></label>
                     <div class="col-sm-5 has-feedback">
                         <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "datestampG",
                                 'id' => 'datestampG',
                                 'value' => isset($_POST['datestampG']) ? $_POST['datestampG'] : '',
                                 'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate']." HH:mm",
+                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' =>true,
                                     'showClear' => true,
                                     'tooltips' => array(
@@ -76,14 +76,14 @@
             
             <div class="row ls-space margin top-5">
                 <div class='form-group'>
-                    <label class="col-sm-4 control-label" for='datestampL'><?php eT("Earlier than:"); ?></label>
+                    <label class="col-sm-4 control-label" for='datestampL'><?php eT("Earlier than:");?></label>
                     <div class="col-sm-5 has-feedback">
                         <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                                 'name' => "datestampL",
                                 'id' => 'datestampL',
                                 'value' => isset($_POST['datestampL']) ? $_POST['datestampL'] : '',
                                 'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate']." HH:mm",
+                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' =>true,
                                     'showClear' => true,
                                     'tooltips' => array(

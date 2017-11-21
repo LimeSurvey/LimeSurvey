@@ -6,13 +6,13 @@
 ?>
 <div class=''>
     <div class='form-group'>
-        <label class='control-label col-sm-3' for='loadname'><?php echo gT("Token:") ?><?php $this->renderPartial('/survey/system/required', array()); ?></label>
+        <label class='control-label col-sm-3' for='loadname'><?php echo gT("Token:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
         <div class='col-sm-7 load-survey-input input-cell'>
-            <?php if (!isset($token)): ?>
+            <?php if(!isset($token)): ?>
                 <input class='form-control' type='password' id='token' name='token' value='' required>
             <?php else: ?>
                 <?php
-                    echo CHtml::passwordField('token', $token, array(
+                    echo CHtml::passwordField('token',$token,array(
                         'id'=>'token',
                         'required'=>true,
                         'readonly'=>true,
@@ -24,14 +24,14 @@
     <?php if (isset($bCaptchaEnabled)): ?>
         <div class='form-group captcha-item'>
             <!-- Don't seems aria capable -->
-            <label class='control-label col-sm-3' for='loadsecurity'><?php echo gT("Please enter the letters you see:") ?><?php $this->renderPartial('/survey/system/required', array()); ?></label>
+            <label class='control-label col-sm-3' for='loadsecurity'><?php echo gT("Please enter the letters you see:") ?><?php $this->renderPartial('/survey/system/required',array());?></label>
             <div class='col-sm-7'>
                 <div class='ls-input-group'>
                     <div class='ls-input-group-extra captcha-widget' >
-                          <?php $this->widget('CCaptcha', array(
+                          <?php $this->widget('CCaptcha',array(
                               'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
                               'buttonType' => 'button',
-                              'buttonLabel' => gt('Reload image', 'unescaped')
+                              'buttonLabel' => gt('Reload image','unescaped')
                           )); ?>
                     </div>
                     <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>

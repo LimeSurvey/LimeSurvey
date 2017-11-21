@@ -18,13 +18,13 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'bounceaccounttype',
-                'value'=> getGlobalSetting('bounceaccounttype'),
+                'value'=> getGlobalSetting('bounceaccounttype') ,
                 'selectOptions'=>array(
-                "off"=>gT("Off", 'unescaped'),
-                "IMAP"=>gT("IMAP", 'unescaped'),
-                "POP"=>gT("POP", 'unescaped')
+                "off"=>gT("Off",'unescaped'),
+                "IMAP"=>gT("IMAP",'unescaped'),
+                "POP"=>gT("POP",'unescaped')
                 )
-                )); ?>
+                ));?>
     </div>
 </div>
 
@@ -57,17 +57,17 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                 'name' => 'bounceencryption',
-                'value'=> getGlobalSetting('bounceencryption'),
+                'value'=> getGlobalSetting('bounceencryption') ,
                 'selectOptions'=>array(
-                "off"=>gT("Off", 'unescaped'),
+                "off"=>gT("Off",'unescaped'),
                 "SSL"=>"SSL",
                 "TLS"=>"TLS"
                 )
-                )); ?>
+                ));?>
     </div>
 </div>
 
 
-<?php if (Yii::app()->getConfig("demoMode") == true):?>
+<?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>

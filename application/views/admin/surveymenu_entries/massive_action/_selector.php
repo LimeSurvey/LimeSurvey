@@ -9,7 +9,7 @@
 <!-- Rendering massive action widget -->
 <?php
     $buttons = array();
-    if (Permission::model()->hasGlobalPermission('settings', 'read')) {
+    if (Permission::model()->hasGlobalPermission('settings','read')) {
         // Delete
         $buttons[] = array(
             // li element
@@ -29,7 +29,7 @@
         );
     }
 
-    if (Permission::model()->hasGlobalPermission('settings', 'read')) {
+    if (Permission::model()->hasGlobalPermission('settings','read')) {
         // Download ZIP archive of file upload question types
         $buttons[] = array(
             'type' => 'action',

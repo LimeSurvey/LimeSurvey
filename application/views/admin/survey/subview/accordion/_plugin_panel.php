@@ -14,7 +14,7 @@ echo viewHelper::getViewTestTag('surveyPlugins');
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js'); ?>'
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
     var sURLParameters = '';
     var sAddParam = '';
 </script>
@@ -24,7 +24,7 @@ echo viewHelper::getViewTestTag('surveyPlugins');
                 <div class="panel-title h4">
                     <a class="btn btn-default btn-xs hide-button hidden-xs opened handleAccordion hidden-sm">
                         <span class="fa fa-chevron-left"></span>
-			<span class="sr-only"><?php eT("Expand/Collapse"); ?></span>
+			<span class="sr-only"><?php eT("Expand/Collapse");?></span>
                     </a>
                     <a id="button-plugin<?php echo $id; ?>" class="collapsed" data-parent="#accordion" role="button" data-toggle="collapse" href="#plugin<?php echo $id; ?>" aria-expanded="false" aria-controls="plugin<?php echo $id; ?>">
                         <?php printf(gT("Settings for plugin %s"), $plugin['name']); ?>

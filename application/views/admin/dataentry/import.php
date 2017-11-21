@@ -12,7 +12,7 @@
 
                 <div class="pluginsettings messagebox">
                 <?php
-                    //  echo CHtml::tag('div', array('class' => 'header ui-widget-header'), gT("Import responses from a deactivated survey table"));
+                  //  echo CHtml::tag('div', array('class' => 'header ui-widget-header'), gT("Import responses from a deactivated survey table"));
                     $this->widget('ext.SettingsWidget.SettingsWidget', array(
 
                             'settings' => $settings,

@@ -7,6 +7,7 @@
  * @var $sRows      : the rows, generated with the view rows/answer_row.php
  *
  * @var $extraclass
+
  *
  */
 ?>
@@ -30,10 +31,10 @@
         </tr>
     </thead>
     <tbody>
-        <?php if ($anscount == 0):?>
+        <?php if($anscount==0):?>
             <tr>
                 <th class="answertext">
-                    <?php eT('Error: This question has no answers.'); ?>
+                    <?php eT('Error: This question has no answers.');?>
                 </th>
             </tr>
         <?php endif; ?>

@@ -19,7 +19,7 @@
 </div>
 
 <div class="form-group">
-    <label class=" control-label"  for='filterxsshtml'><?php eT("Filter HTML for XSS:"); echo ((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?></label>
+    <label class=" control-label"  for='filterxsshtml'><?php eT("Filter HTML for XSS:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
             'name' => 'filterxsshtml',
@@ -50,19 +50,19 @@
 
 <div class="form-group">
     <label class=" control-label"  for="x_frame_options">
-    <?php if (Yii::app()->getConfig("demoMode") == true) { ?>
+    <?php if (Yii::app()->getConfig("demoMode")==true){ ?>
     <span class="text-danger asterisk"></span>
     <?php }; ?>
-     <?php eT('IFrame embedding allowed:'); echo ((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?></label>
+     <?php eT('IFrame embedding allowed:'); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?></label>
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'x_frame_options',
             'value'=> getGlobalSetting('x_frame_options'),
             'selectOptions'=>array(
-                "allow"=>gT("Allow", 'unescaped'),
-                "sameorigin"=>gT("Same origin", 'unescaped')
+                "allow"=>gT("Allow",'unescaped'),
+                "sameorigin"=>gT("Same origin",'unescaped')
             )
-        )); ?>
+        ));?>
     </div>
 </div>
 
@@ -73,15 +73,15 @@
             'name' => 'force_ssl',
             'value'=> getGlobalSetting('force_ssl'),
             'selectOptions'=>array(
-                "neither"=>gT("Don't force on/off", 'unescaped'),
-                "on"=>gT("On", 'unescaped'),
-                "off"=>gT("Off", 'unescaped')
+                "neither"=>gT("Don't force on/off",'unescaped'),
+                "on"=>gT("On",'unescaped'),
+                "off"=>gT("Off",'unescaped')
             )
-        )); ?>
+        ));?>
     </div>
 </div>
 <?php
-$warning_force_ssl = sprintf(gT('Warning: Before turning on HTTPS,%s check if this link works.%s'), '<a href="https://'.$_SERVER['HTTP_HOST'].$this->createUrl("admin/globalsettings/sa").'" title="'.gT('Test if your server has SSL enabled by clicking on this link.').'">', '</a>')
+$warning_force_ssl = sprintf(gT('Warning: Before turning on HTTPS,%s check if this link works.%s'),'<a href="https://'.$_SERVER['HTTP_HOST'].$this->createUrl("admin/globalsettings/sa").'" title="'. gT('Test if your server has SSL enabled by clicking on this link.').'">','</a>')
 .'<br/> '
 . gT("If the link does not work and you turn on HTTPS, LimeSurvey will break and you won't be able to access it.");
 ?>
@@ -92,6 +92,6 @@ $warning_force_ssl = sprintf(gT('Warning: Before turning on HTTPS,%s check if th
 
 
 
-<?php if (Yii::app()->getConfig("demoMode") == true):?>
+<?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
     <?php endif; ?>

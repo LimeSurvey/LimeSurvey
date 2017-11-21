@@ -8,7 +8,7 @@
 ?>
 <!-- views/survey/system/actionButton/moveNext -->
 <?php
-    echo CHtml::htmlButton(gT("Load unfinished survey"), array(
+    echo CHtml::htmlButton(gT("Load unfinished survey"),array(
         'type'=>'submit',
         'value'=>$value,
         'name'=>$name,

@@ -15,7 +15,7 @@
 <!-- Date, dropdown layout -->
 
 <!-- answer -->
-<div class="<?php echo $coreClass; ?> form-group form-inline" role="group" aria-labelledby="ls-question-text-<?php echo $name; ?>">
+<div class="<?php echo $coreClass;?> form-group form-inline" role="group" aria-labelledby="ls-question-text-<?php echo $name; ?>">
     <?php
         // rows/*.php
         echo $sRows;
@@ -30,10 +30,10 @@
         name="<?php echo $name; ?>"
         style="display: none"
         id="answer<?php echo $name; ?>"
-        value="<?php echo $dateoutput; ?>"
+        value="<?php echo $dateoutput;?>"
         maxlength="10"
         onchange="<?php echo $checkconditionFunction; ?>"
-        title="<?php echo sprintf(gT('Date in the format : %s'), $dateformat); ?>"
+        title="<?php echo sprintf(gT('Date in the format : %s'),$dateformat);?>"
 />
 <input type="hidden" id="dateformat<?php echo $name; ?>" value="<?php echo $dateformatdetails; ?>"/>
 <!-- end of answer -->

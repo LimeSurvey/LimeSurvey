@@ -17,15 +17,15 @@
         <?php eT('Minute'); ?>
     </option>
 
-    <?php for ($i = 0; $i < 60; $i += $dropdown_dates_minute_step):?>
-        <option value="<?php echo $i; ?>" <?php if ($i === (int) $currentminute && is_numeric($currentminute)):?>SELECTED<?php endif; ?> >
-            <?php if ($datepart == 'i'):?>
-                <?php echo sprintf('%02d', $i); ?>
+    <?php for($i=0; $i<60; $i+=$dropdown_dates_minute_step):?>
+        <option value="<?php echo $i; ?>" <?php if ($i === (int)$currentminute && is_numeric($currentminute)):?>SELECTED<?php endif;?> >
+            <?php if ($datepart=='i'):?>
+                <?php echo sprintf('%02d', $i);?>
             <?php else:?>
-                <?php echo $i; ?>
-            <?php endif; ?>
+                <?php echo $i;?>
+            <?php endif;?>
         </option>
-    <?php endfor; ?>
+    <?php endfor;?>
 </select>
 
 <!-- end of minute -->

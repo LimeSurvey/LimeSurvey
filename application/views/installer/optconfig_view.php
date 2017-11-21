@@ -5,10 +5,7 @@
     <div class="col-md-9">
     <h2><?php echo $title; ?></h2>
     <legend><?php echo $descp; ?></legend>
-    <?php if (isset($confirmation)) {
-    echo "<div class='alert alert-success'>".$confirmation."</div>";
-}
-?>
+    <?php if (isset($confirmation)) echo "<div class='alert alert-success'>".$confirmation."</div>"; ?>
     <div style="color:red; font-size:12px;">
         <?php echo CHtml::errorSummary($model, null, null, array('class' => 'alert alert-danger')); ?>
     </div>
@@ -51,7 +48,7 @@
             'description' => gT("This name will appear in the survey list overview and in the administration header."),
             'control' => CHtml::activeTextField($model, 'siteName', array('class' => 'form-control'))
         );
-        foreach (getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
+        foreach(getLanguageData(true, Yii::app()->session['installerLang']) as $langkey => $languagekind)
         {
             $languages[$langkey] = sprintf('%s - %s', $languagekind['nativedescription'], $languagekind['description']);
         }
@@ -83,7 +80,7 @@
             </div>
             <div class="col-md-4"></div>
             <div class="col-md-4">
-                <?php echo CHtml::submitButton(gT("Next", 'unescaped'), array('class' => 'btn btn-default')); ?>
+                <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-default')); ?>
             </div>
         </div>
 

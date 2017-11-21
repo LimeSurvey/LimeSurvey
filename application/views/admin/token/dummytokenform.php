@@ -83,7 +83,7 @@
                                 'name' => "validfrom",
                                 'value' => isset($validfrom) ? $validfrom : '',
                                 'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate']." HH:mm",
+                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' =>true,
                                     'showClear' => true,
                                     'tooltips' => array(
@@ -104,7 +104,7 @@
                                 )
                             ));
                         ?>
-                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'].' '.gT('hh:mm')); ?></span>
+                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
                     </div>
 
                     <label  class=" control-label" for='validuntil'><?php eT('Until:'); ?></label>
@@ -113,7 +113,7 @@
                                 'name' => "validuntil",
                                 'value' => isset($validuntil) ? $validuntil : '',
                                 'pluginOptions' => array(
-                                    'format' => $dateformatdetails['jsdate']." HH:mm",
+                                    'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                     'allowInputToggle' =>true,
                                     'showClear' => true,
                                     'tooltips' => array(
@@ -134,16 +134,16 @@
                                 )
                             ));
                         ?>
-                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'].' '.gT('hh:mm')); ?></span>
+                        <span class="help-block"><?php printf(gT('Format: %s'), $dateformatdetails['jsdate'] . ' ' . gT('hh:mm')); ?></span>
                     </div>
                 </div>
 
                 <!-- Attribute fields  -->
                 <?php foreach ($aAttributeFields as $attr_name => $attr_description): ?>
                     <div class="form-group">
-                        <label  class=" control-label" for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'].($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
+                        <label  class=" control-label" for='<?php echo $attr_name; ?>'><?php echo $attr_description['description'] . ($attr_description['mandatory'] == 'Y' ? '*' : '') ?>:</label>
                         <div class="">
-                            <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)) {echo htmlspecialchars($$attr_name, ENT_QUOTES, 'UTF-8'); }?>' />
+                            <input class='form-control' type='text' size='55' id='<?php echo $attr_name; ?>' name='<?php echo $attr_name; ?>' value='<?php if (isset($$attr_name)){echo htmlspecialchars($$attr_name, ENT_QUOTES, 'UTF-8');}?>' />
                         </div>
                     </div>
                 <?php endforeach; ?>

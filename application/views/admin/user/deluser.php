@@ -11,9 +11,8 @@
                         $intUid = $user['uid'];
                         $sUsersName = $user['users_name'];
                         $selected = '';
-                        if ($intUid == $current_user) {
-                                                    $selected = ' selected="selected"';
-                        }
+                        if ($intUid == $current_user)
+                            $selected = ' selected="selected"';
 
                         if ($postuserid != $intUid)
                         {

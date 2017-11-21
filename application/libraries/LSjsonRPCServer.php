@@ -4,24 +4,24 @@
     class LSjsonRPCServer extends jsonRPCServer
     {
         /**
-         * This function handle a request binding it to a given object
-         *
-         * @param remotecontrol_handle $object
-         * @return boolean
-         */
-    public static function handle($object) {
+	 * This function handle a request binding it to a given object
+	 *
+	 * @param remotecontrol_handle $object
+	 * @return boolean
+	 */
+	public static function handle($object) {
         // checks if a JSON-RCP request has been received
-        if (
-            $_SERVER['REQUEST_METHOD'] != 'POST' ||
-            empty($_SERVER['CONTENT_TYPE']) ||
-            strpos($_SERVER['CONTENT_TYPE'], "application/json") === FALSE
-            ) {
-            // This is not a JSON-RPC request
-            return false;
-        }
+		if (
+			$_SERVER['REQUEST_METHOD'] != 'POST' ||
+			empty($_SERVER['CONTENT_TYPE']) ||
+			strpos($_SERVER['CONTENT_TYPE'], "application/json") === FALSE
+			) {
+			// This is not a JSON-RPC request
+			return false;
+		}
         
-        // reads the input data
-        $request = json_decode(file_get_contents('php://input'),true);
+		// reads the input data
+		$request = json_decode(file_get_contents('php://input'),true);
         // executes the task on local object
         if (is_null($request)) {
             // Can not decode the json, issue error
@@ -55,14 +55,14 @@
             }
         }
 
-        // output the response
-        if (is_null($request) || !empty($request['id'])) { // notifications don't want response
-            header('content-type: text/javascript');
+		// output the response
+		if (is_null($request) || !empty($request['id'])) { // notifications don't want response
+			header('content-type: text/javascript');
             BigData::json_echo($response);
-        }
+		}
 
-        // finish
-        return true;
-    }
+		// finish
+		return true;
+	}
     }
 ?>

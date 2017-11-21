@@ -8,16 +8,13 @@
                 <div class="jumbotron message-box">
                     <h2>gT("Token file upload")</h2>
                 </div>
-            <?php else {
-    :?>
+            <?php else:?>
                 <div class="jumbotron message-box message-box-error">
                     <h2>gT("Token file upload")</h2>
-                    <p class="lead danger"><?php gT("Error");
-}
-?></p>
+                    <p class="lead danger"><?php gT("Error"); ?></p>
                     <p><?php echo $sError; ?></p>
                 </div>
-            <?php endif; ?>
+            <?php endif;?>
         </div>
     </div>
 </div>

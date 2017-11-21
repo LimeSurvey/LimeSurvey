@@ -11,10 +11,10 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
 
 <!-- addGroup -->
 <script type='text/javascript'>
-    var sEnterTitle = '<?php eT('Error: You have to enter a group title for each language.', 'js'); ?>';
+    var sEnterTitle = '<?php eT('Error: You have to enter a group title for each language.','js'); ?>';
 </script>
 
-<?php echo PrepareEditorScript(false, $this); $active = 1; ?>
+<?php echo PrepareEditorScript(false, $this); $active = 1;?>
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="pagetitle h3"><?php eT("Add question group"); ?></div>
     <div class="row">
@@ -22,10 +22,10 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
         <!-- Tabs -->
         <ul class="nav nav-tabs" >
             <?php foreach ($grplangs as $grouplang): ?>
-                <li role="presentation" class="<?php if ($active) { echo 'active'; $active = 0; }?>">
+                <li role="presentation" class="<?php if($active){ echo 'active'; $active=0; }?>">
                     <a role="tab" data-toggle="tab" href="#<?php echo $grouplang; ?>">
-                            <?php echo getLanguageNameFromCode($grouplang, false);
-                            if ($grouplang == $baselang) { ?> (<?php eT("Base language"); ?>) <?php } ?>
+                            <?php echo getLanguageNameFromCode($grouplang,false);
+                            if ($grouplang==$baselang) { ?> (<?php eT("Base language"); ?>) <?php } ?>
                     </a>
                 </li>
             <?php endforeach; ?>
@@ -38,10 +38,10 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
             <!-- tab content -->
             <div class="tab-content">
 
-                <?php $active = 1; foreach ($grplangs as $grouplang): ?>
+                <?php $active=1; foreach ($grplangs as $grouplang): ?>
 
                     <!-- Lang Content -->
-                    <div id="<?php echo $grouplang; ?>" class="tab-pane fade in <?php if ($active) { echo 'active'; $active = 0; }?> ">
+                    <div id="<?php echo $grouplang; ?>" class="tab-pane fade in <?php if($active){ echo 'active'; $active=0; }?> ">
                         <div>
 
                             <!-- Title -->
@@ -56,12 +56,12 @@ echo viewHelper::getViewTestTag('addQuestionGroup');
                             <div class="form-group">
                                 <label class="control-label " for='description_<?php echo $grouplang; ?>'><?php eT("Description:"); ?></label>
                                 <div class=" input-group">
-                                    <?php echo CHtml::textArea("description_{$grouplang}", "", array('class'=>'form-control', 'cols'=>'60', 'rows'=>'8', 'id'=>"description_{$grouplang}")); ?>
-                                    <?php echo getEditor("group-desc", "description_".$grouplang, "[".gT("Description:", "js")."](".$grouplang.")", $surveyid, '', '', $action); ?>
+                                    <?php echo CHtml::textArea("description_{$grouplang}","",array('class'=>'form-control','cols'=>'60','rows'=>'8','id'=>"description_{$grouplang}")); ?>
+                                    <?php echo getEditor("group-desc","description_".$grouplang, "[".gT("Description:", "js")."](".$grouplang.")",$surveyid,'','',$action); ?>
                                 </div>
                             </div>
 
-                            <?php if ($grouplang == $baselang) {?>
+                            <?php if ($grouplang==$baselang){?>
                             <!-- Base Lang -->
 
                                 <!-- Randomization group -->

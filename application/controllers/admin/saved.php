@@ -1,6 +1,4 @@
-<?php if (!defined('BASEPATH')) {
-    exit('No direct script access allowed');
-}
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -19,7 +17,7 @@
  *
  * @package LimeSurvey
  * @copyright 2011
- * @access public
+  * @access public
  */
 class saved extends Survey_Common_Action
 {
@@ -44,7 +42,7 @@ class saved extends Survey_Common_Action
         if (count($aViewUrls['savedlist_view'][0]['aResults']))
         {
             App()->getClientScript()->registerPackage('jquery-tablesorter');
-            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'saved.js');
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'saved.js');
         }
 
 
@@ -77,7 +75,7 @@ class saved extends Survey_Common_Action
         $oSurvey = Survey::model()->findByPk($aData['iSurveyId']);
 
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
-        $aData['menu']['close'] = true;
+        $aData['menu']['close'] =  true;
         $aData['menu']['edition'] = false;
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
@@ -101,7 +99,7 @@ class saved extends Survey_Common_Action
             return compact('aResults');
         }
         else
-        {return array('aResults'=>array()); }
+        {return array('aResults'=>array());}
     }
 
 }

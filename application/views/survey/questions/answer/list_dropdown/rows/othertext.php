@@ -12,7 +12,7 @@
     <?php echo $label; ?>
 </label>
 <?php
-echo \CHtml::textField("{$name}other", $value, array(
+echo \CHtml::textField("{$name}other",$value,array(
     'id' => "{$name}othertext",
     'style' => $display,
     'aria-labelledby' => "answer{$name}-oth-",

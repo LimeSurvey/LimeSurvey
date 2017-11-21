@@ -10,23 +10,23 @@
 <!-- Language -->
 
 <!-- answer -->
-<div class="<?php echo $coreClass; ?> form-group form-inline">
+<div class="<?php echo $coreClass;?> form-group form-inline">
     <label for='answer<?php echo $name; ?>' class='sr-only control-label'>
         <?php eT('Choose your language'); ?>
     </label>
 
     <select
-        name="<?php echo $name; ?>"
-        id="answer<?php echo $name; ?>"
+        name="<?php echo $name;?>"
+        id="answer<?php echo $name;?>"
         class="languagesurvey form-control"
         aria-describedby="ls-question-text-<?php echo $name; ?>"
     >
         <?php foreach ($answerlangs as $ansrow):?>
-            <option value="<?php echo $ansrow; ?>" <?php if ($sLang == $ansrow):?> SELECTED <?php endif; ?>>
-                <?php $aLanguage = getLanguageNameFromCode($ansrow, true); ?>
-                <?php echo $aLanguage[1]; ?>
+            <option value="<?php echo $ansrow; ?>" <?php if ($sLang == $ansrow):?> SELECTED <?php endif;?>>
+                <?php $aLanguage=getLanguageNameFromCode($ansrow, true); ?>
+                <?php echo $aLanguage[1];?>
             </option>
-        <?php endforeach; ?>
+        <?php endforeach;?>
     </select>
     <input type="hidden" name="java<?php echo $name; ?>" id="java<?php echo $name; ?>" value="<?php echo $sLang; ?>" />
 </div>

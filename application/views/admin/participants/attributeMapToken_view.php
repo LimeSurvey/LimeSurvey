@@ -25,7 +25,7 @@
                         {
                             foreach ($tokenattribute as $key => $value)
                             {
-                                echo "<div id='t_".$value."' data-name='".$key."' class='panel panel-default token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"panel-body\">".$key."</div></div>";
+                                echo "<div id='t_" . $value . "' data-name='" . $key . "' class='panel panel-default token-attribute attribute-item draggable'><div title='".gT("Drag this attribute to another column to map it to the central participants database")."' data-name=\"$key\" class=\"panel-body\">" . $key . "</div></div>";
                             }
                         }
                     ?>
@@ -51,7 +51,7 @@
                     {
                         foreach ($attribute as $key => $value)
                         {
-                            echo "<div class='panel panel-default mappable-attribute-wrapper droppable'><div class=\"panel-body mappable-attribute attribute-item\" id='c_".$key."' data-name='c_".$key."'>".$value."</div></div>";
+                            echo "<div class='panel panel-default mappable-attribute-wrapper droppable'><div class=\"panel-body mappable-attribute attribute-item\" id='c_" . $key . "' data-name='c_" . $key . "'>" . $value . "</div></div>";
                         }
                     }
                     ?>
@@ -71,14 +71,14 @@
                 <?php } else { ?>
 
                 <?php }
-                if (!empty($alreadymappedattributename)) {
+                if(!empty($alreadymappedattributename)) {
                     ?>
                     <div class='heading text-center'><?php eT("Pre-mapped attributes") ?></div>
                     <div class="notsortable">
                     <?php
                     foreach ($alreadymappedattributename as $key => $value)
                     {
-                        echo "<div title='".gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute\" >".$alreadymappedattdescription[$value]."</div>";
+                        echo "<div title='".gT("This attribute is automatically mapped")."' data-name='$value' class=\"already-mapped-attribute\" >" . $alreadymappedattdescription[$value] . "</div>";
                     }
                     ?>
                     </div>
@@ -102,7 +102,7 @@
 
     <?php
     $ajaxloader = array(
-        'src' => Yii::app()->getConfig('adminimageurl').'/ajax-loader.gif',
+        'src' => Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif',
         'alt' => 'Ajax Loader',
         'title' => 'Ajax Loader'
     );
@@ -121,7 +121,7 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

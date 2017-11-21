@@ -8,8 +8,8 @@
         <label class="col-sm-4 control-label"><?php eT("Random order:"); ?></label>
         <div class="col-sm-8">
             <select class="form-control custom-data attributes-to-update" id="random_order" name="random_order">
-                <option value="0" selected="selected"><?php eT('Off'); ?></option>
-                <option value="1"><?php eT('Randomize on each page load'); ?></option>
+                <option value="0" selected="selected"><?php eT('Off');?></option>
+                <option value="1"><?php eT('Randomize on each page load');?></option>
             </select>
         </div>
         <input type="hidden" name="sid" value="<?php echo $_GET['surveyid']; ?>" class="custom-data"/>

@@ -8,16 +8,16 @@
             <!-- Survey name and description -->
             <div class="jumbotron ">
             <h2><?php echo stripJavaScript($thissurvey['name']); ?></h2>
-            <p><?php echo flattenText($thissurvey['description'], true); ?></p>
+            <p><?php echo flattenText($thissurvey['description'],true); ?></p>
             </div>
-        <?php echo CHtml::form(array("admin/dataentry/sa/insert"), 'post', array('name'=>'addsurvey', 'id'=>'addsurvey', 'enctype'=>'multipart/form-data')); ?>
+        <?php echo CHtml::form(array("admin/dataentry/sa/insert"), 'post', array('name'=>'addsurvey', 'id'=>'addsurvey', 'enctype'=>'multipart/form-data'));?>
             <table class='data-entry-tbl table'>
 
                 <tr class='data-entry-separator'>
                     <td colspan='3'></td>
                 </tr>
 
-                <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages) > 0):?>
+                <?php if (count(Survey::model()->findByPk($surveyid)->additionalLanguages)>0):?>
                     <tr>
                         <td colspan='3' class="langlistbox">
                             <?php echo $langlistbox; ?>
@@ -33,7 +33,7 @@
                 <tr>
                 <td valign='top' width='1%'></td>
                 <td valign='top' align='right' width='30%'><font color='red'>*</font>
-                    <strong><?php echo gT("Token", 'html', $sDataEntryLanguage); ?>:</strong>
+                    <strong><?php echo gT("Token",'html',$sDataEntryLanguage); ?>:</strong>
                 </td>
                 <td valign='top'  align='left' style='padding-left: 20px'>
                 <input type='text' id='token' name='token' oninput='activateSubmit(this);' />
@@ -64,11 +64,11 @@
 
             if ($thissurvey['datestamp'] == "Y") //Give datestampentry field
             {
-                $localtimedate = dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')); ?>
+                $localtimedate=dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig('timeadjust')); ?>
                 <tr>
                 <td valign='top' width='1%'></td>
                 <td valign='top' align='right' width='30%'><strong>
-                <?php echo gT("Datestamp", 'html', $sDataEntryLanguage); ?>:</strong></td>
+                <?php echo gT("Datestamp",'html',$sDataEntryLanguage); ?>:</strong></td>
                 <td valign='top'  align='left' style='padding-left: 20px'>
                 <input type='text' name='datestamp' value='<?php echo $localtimedate; ?>' />
                 </td>
@@ -82,7 +82,7 @@
                 <tr>
                 <td valign='top' width='1%'></td>
                 <td valign='top' align='right' width='30%'><strong>
-                <?php echo gT("IP address", 'html', $sDataEntryLanguage); ?>:</strong></td>
+                <?php echo gT("IP address",'html',$sDataEntryLanguage); ?>:</strong></td>
                 <td valign='top'  align='left' style='padding-left: 20px'>
                 <input type='text' name='ipaddr' value='NULL' />
                 </td>

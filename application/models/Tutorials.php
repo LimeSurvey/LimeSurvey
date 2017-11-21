@@ -18,13 +18,13 @@ class Tutorials extends LSActiveRecord
 {
     private $preBuiltPackage = [];
 
-    public function __construct() {
+    public function __construct(){
         $this->_generatePreBuiltPackage();
         parent::__construct();
     }
 
-    private function _generatePreBuiltPackage() {
-        $this->preBuiltPackage = array(
+    private function _generatePreBuiltPackage (){
+        $this->preBuiltPackage =  array(
             'firstStartTour' => array(
                 'name' => 'firstStartTour',
                 'steps' => array(
@@ -518,22 +518,22 @@ class Tutorials extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria = new CDbCriteria;
+        $criteria=new CDbCriteria;
 
-        $criteria->compare('tid', $this->tid);
-        $criteria->compare('name', $this->name, true);
-        $criteria->compare('description', $this->description, true);
-        $criteria->compare('active', $this->active);
-        $criteria->compare('permission', $this->permission, true);
-        $criteria->compare('permission_grade', $this->permission_grade, true);
+        $criteria->compare('tid',$this->tid);
+        $criteria->compare('name',$this->name,true);
+        $criteria->compare('description',$this->description,true);
+        $criteria->compare('active',$this->active);
+        $criteria->compare('permission',$this->permission,true);
+        $criteria->compare('permission_grade',$this->permission_grade,true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
         ));
     }
 
-    public function getPrebuilt($prebuiltName) {
-        if (isset($this->preBuiltPackage[$prebuiltName])) {
+    public function getPrebuilt($prebuiltName){
+        if(isset($this->preBuiltPackage[$prebuiltName])){
             return $this->preBuiltPackage[$prebuiltName];
         }
         return [];
@@ -545,7 +545,7 @@ class Tutorials extends LSActiveRecord
      * @param string $className active record class name.
      * @return Tutorials the static model class
      */
-    public static function model($className = __CLASS__)
+    public static function model($className=__CLASS__)
     {
         /** @var Tutorials $model */
         $model = parent::model($className);

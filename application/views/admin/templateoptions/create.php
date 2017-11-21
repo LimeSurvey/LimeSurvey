@@ -3,13 +3,13 @@
 /* @var $model TemplateOptions */
 
 $this->breadcrumbs=array(
-    'Template Options'=>array('index'),
-    'Create',
+	'Template Options'=>array('index'),
+	'Create',
 );
 
 $this->menu=array(
-    array('label'=>'List TemplateOptions', 'url'=>array('index')),
-    array('label'=>'Manage TemplateOptions', 'url'=>array('admin')),
+	array('label'=>'List TemplateOptions', 'url'=>array('index')),
+	array('label'=>'Manage TemplateOptions', 'url'=>array('admin')),
 );
 ?>
 

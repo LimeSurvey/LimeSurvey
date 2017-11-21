@@ -1,7 +1,8 @@
 <?php
 /**
 * Multiple short texts question, item input text Html
- * @var $question
+
+* @var $question
 * @var $alert
 * @var $extraclass
 * @var $sDisplayStyle
@@ -17,8 +18,8 @@
 ?>
 
 <!--answer_row_inputtext -->
-<li id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-group<?php if ($alert):?> ls-error-mandatory has-error<?php endif; ?><?php echo $extraclass; ?>" <?php echo $sDisplayStyle; ?> >
-    <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?><?php echo ($sLabelWidth === 0) ? " hidden" : ""; ?>' for="answer<?php echo$myfname; ?>">
+<li id="javatbd<?php echo $myfname; ?>" class="question-item answer-item text-item form-group<?php if($alert):?> ls-error-mandatory has-error<?php endif; ?><?php echo $extraclass;?>" <?php echo $sDisplayStyle;?> >
+    <label class='control-label col-xs-12 col-sm-<?php echo $sLabelWidth; ?><?php echo ($sLabelWidth===0) ? " hidden":""; ?>' for="answer<?php echo$myfname;?>">
         <?php echo $question; ?>
     </label>
     <div class="col-xs-12 col-sm-<?php echo $sInputContainerWidth; ?>">
@@ -36,9 +37,9 @@
                 name="<?php echo $myfname; ?>"
                 id="answer<?php echo $myfname; ?>"
                 value="<?php echo $dispVal; ?>"
-                <?php echo ($inputsize ? 'size="'.$inputsize.'"' : ''); ?>
-                <?php echo ($maxlength ? 'maxlength='.$maxlength : ''); ?>
-                <?php echo ($numbersonly) ? "data-number='{$numbersonly}'" : ""; ?>
+                <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+                <?php echo ($numbersonly)? "data-number='{$numbersonly}'":""; ?>
                 />
             <?php if ($suffix != ''): ?>
                 <div class="ls-input-group-extra suffix-text suffix">

@@ -11,7 +11,7 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
         <div class="container-fluid">
             <div class="row">
                 <?php
-                    $this->widget('bootstrap.widgets.TbGridView', array(
+                  $this->widget('bootstrap.widgets.TbGridView', array(
                     'id' => 'share_central_participants',
                     'emptyText' => gT('No shared participants found'),
                     'itemsCssClass' => 'table table-striped items',
@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('participantsSharePanel');
                     'ajaxType' => 'POST',
                     'afterAjaxUpdate' => 'LS.CPDB.bindButtons',
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                    'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
+                    'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSizeShareParticipantView',
                             $pageSizeShareParticipantView,

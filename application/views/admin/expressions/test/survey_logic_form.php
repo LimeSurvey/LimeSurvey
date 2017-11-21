@@ -5,7 +5,7 @@
 ?>
 
 <div id='edit-survey-text-element' class='side-body <?php echo getSideBodyClass(false); ?>'>
-    <h3><?php eT("Edit survey settings"); ?></h3>
+    <h3><?php eT("Edit survey settings");?></h3>
     <div class="container">
         <div class="row">
             <div class="col-lg-12 content-right">

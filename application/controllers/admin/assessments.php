@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -55,7 +55,7 @@ class Assessments extends Survey_Common_Action
             if ($sAction == "assessmentdelete")
                 $this->_delete($iSurveyID, $_POST['id']);
 
-            if ($sAction == "asessementactivate")
+            if($sAction == "asessementactivate")
                 $this->_activateAsessement($iSurveyID);
 
 
@@ -63,7 +63,7 @@ class Assessments extends Survey_Common_Action
         }
         else
         {
-            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."), 'error');
+            Yii::app()->setFlashMessage(gT("You do not have permission to access this page."),'error');
             $this->getController()->redirect(array("admin/"));
         }
     }
@@ -79,14 +79,14 @@ class Assessments extends Survey_Common_Action
     protected function _renderWrappedTemplate($sAction = 'assessments', $aViewUrls = array(), $aData = array())
     {
         $aData['sidemenu']['state'] = false;
-        $iSurveyID = $aData['surveyid'];
+        $iSurveyID=$aData['surveyid'];
         $survey = Survey::model()->findByPk($iSurveyID);
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$iSurveyID; // Close button
         $aData['title_bar']['title'] = $survey->currentLanguageSettings->surveyls_title." (".gT("ID").":".$iSurveyID.")";
         $aData['surveybar']['savebutton']['form'] = true;
         $aData['surveybar']['saveandclosebutton']['form'] = true;
-        $aData['gid'] = null;
-        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'assessments.js');
+        $aData['gid']=null;
+        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'assessments.js');
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
 
@@ -117,28 +117,28 @@ class Assessments extends Survey_Common_Action
         Yii::app()->loadHelper('admin/htmleditor');
 
         // FIXME this must be in VIEWS!
-        $urls['output'] = '<div class="side-body '.getSideBodyClass(false).'">';
-        $urls['output'] .= viewHelper::getViewTestTag('surveyAssessments');
+        $urls['output'] = '<div class="side-body ' . getSideBodyClass(false) . '">';
+        $urls['output'] .=viewHelper::getViewTestTag('surveyAssessments');
         $urls['output'] .= '<h3>'.gT("Assessments").'</h3>';
         $aData['asessementNotActivated'] = false;
-        if ($oSurvey->assessments != 'Y')
+        if ($oSurvey->assessments!='Y')
         {
             $aData['asessementNotActivated'] = array(
                 'title' => gT("Assessments mode not activated"), 
                 'message' => gT("Assessment mode for this survey is not activated.").'<br/>'
                     . gt("If you want to activate it click here:").'<br/>'
                     . '<a type="submit" class="btn btn-primary" href="'
-                    . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate', 'surveyid'=> $iSurveyID])
+                    . App()->getController()->createUrl('admin/assessments', ['action'=> 'asessementactivate','surveyid'=> $iSurveyID])
                     .'">'.gT('Activate assessements').'</a>', 
                 'class'=> 'warningheader col-sm-12 col-md-6 col-md-offset-3');
         }
-        $urls['assessments_view'][] = $aData;
+        $urls['assessments_view'][]= $aData;
         $this->_renderWrappedTemplate('', $urls, $aData);
     }
 
     private function _activateAsessement($iSurveyID)
     {
-        $oSurvey = Survey::model()->findByPk($iSurveyID);
+        $oSurvey=Survey::model()->findByPk($iSurveyID);
         $oSurvey->assessments = "Y";
         $oSurvey->save();
         return ['success' => true];
@@ -158,9 +158,9 @@ class Assessments extends Survey_Common_Action
 
     private function _collectEditData(array $aData)
     {
-        $oAssessment = Assessment::model()->find("id=:id", array(':id' => App()->request->getParam('id')));
-        if (!$oAssessment)
-            throw new CHttpException(500); // 404 ?
+        $oAssessment = Assessment::model()->find("id=:id",array(':id' => App()->request->getParam('id')));
+        if(!$oAssessment)
+            throw new CHttpException(500);// 404 ?
 
         $editData = $oAssessment->attributes;
         $aData['actiontitle'] = gT("Edit");
@@ -224,9 +224,8 @@ class Assessments extends Survey_Common_Action
 
     private function _getAssessmentPostData($iSurveyID, $language)
     {
-        if (!isset($_POST['gid'])) {
-                    $_POST['gid'] = 0;
-        }
+        if (!isset($_POST['gid']))
+            $_POST['gid'] = 0;
 
         return array(
             'sid' => $iSurveyID,
@@ -234,9 +233,9 @@ class Assessments extends Survey_Common_Action
             'gid' => sanitize_int($_POST['gid']),
             'minimum' => intval($_POST['minimum']),
             'maximum' => intval($_POST['maximum']),
-            'name' => $_POST['name_'.$language],
+            'name' => $_POST['name_' . $language],
             'language' => $language,
-            'message' => $_POST['assessmentmessage_'.$language]
+            'message' => $_POST['assessmentmessage_' . $language]
         );
     }
 }

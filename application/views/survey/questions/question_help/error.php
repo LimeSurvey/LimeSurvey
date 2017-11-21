@@ -5,5 +5,5 @@
  */
 ?>
 <div class="alert alert-warning error <?php echo $classes; ?>" role="alert">
-    <?php echo $message; ?>
+    <?php echo $message;?>
 </div>

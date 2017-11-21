@@ -6,7 +6,7 @@
 
 <?php
     $aOptions = array();
-    $aOptions[''] = gT('Select...', 'unescaped');
+    $aOptions[''] = gT('Select...','unescaped');
     foreach (getLanguageData(false, Yii::app()->session['adminlang']) as $langkey2 => $langname)
     {
         $aOptions[$langkey2] = $langname['description'];
@@ -19,12 +19,12 @@
     <div class="row">
         <div class="col-lg-12 content-right">
 
-            <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/'.Yii::app()->request->getQuery('aid')).'/', "post", array('class'=>' col-md-6  col-md-offset-3', 'role' => 'form')); ?>
+            <?php echo CHtml::beginForm(Yii::app()->getController()->createUrl('admin/participants/sa/saveAttribute/aid/' . Yii::app()->request->getQuery('aid')) . '/', "post",array('class'=>' col-md-6  col-md-offset-3', 'role' => 'form')); ?>
 
             <div class="form-group">
                 <label for="defaultname" class='control-label col-sm-3'><?php eT('Default attribute name:'); ?></label>
                 <div class='col-sm-3'>
-                    <?php echo CHtml::textField('defaultname', $attributes['defaultname'], array('required'=>'required', 'class' => 'form-control')); ?>
+                    <?php echo CHtml::textField('defaultname', $attributes['defaultname'],array('required'=>'required', 'class' => 'form-control')); ?>
                 </div>
             </div>
 
@@ -45,7 +45,7 @@
             <div class="form-group">
                 <label for='attvisible' id='attvisible' class='col-sm-3 control-label'><?php eT('Attribute visible:') ?></label>
                 <div class='col-sm-3'>
-                    <?php  echo CHtml::checkbox('visible', ($attributes['visible'] == "TRUE"), array('value'=>'TRUE', 'uncheckValue'=>'FALSE')); ?>
+                    <?php  echo CHtml::checkbox('visible', ($attributes['visible'] == "TRUE"),array('value'=>'TRUE','uncheckValue'=>'FALSE')); ?>
                 </div>
             </div>
 
@@ -72,7 +72,7 @@
                 <td class='actions'>
                     <span data-toggle='tooltip' data-placement='bottom' class="fa fa-remove-circle text-warning cancel ui-pg-button" title="<?php eT('Cancel editing'); ?>"></span>
                     <span data-toggle='tooltip' data-placement='bottom' class="fa fa-pencil text-success edit ui-pg-button" name="<?php echo $value['value_id']; ?>" title="<?php eT('Edit value'); ?>"></span>
-                    <a href="<?php echo $this->createUrl('admin/participants/sa/delAttributeValues/aid/'.$attributes['attribute_id'].'/vid/'.$value['value_id']); ?>" title="<?php eT('Delete value'); ?>" >
+                    <a href="<?php echo $this->createUrl('admin/participants/sa/delAttributeValues/aid/' . $attributes['attribute_id'] . '/vid/' . $value['value_id']); ?>" title="<?php eT('Delete value'); ?>" >
                         <span data-toggle='tooltip' data-placement='bottom' class="fa fa-trash text-warning delete ui-pg-button" title="<?php eT('Delete value'); ?>"></span>
                     </a>
                 </td>
@@ -98,7 +98,7 @@
 <div id='tabs'>
 <ul class="nav nav-tabs" id="">
     <?php foreach ($attributenames as $key => $value): ?>
-        <li role="presentation" <?php if ($key == 0) { echo 'class="active"'; }?>>
+        <li role="presentation" <?php if($key==0){ echo 'class="active"'; }?>>
             <a data-toggle="tab" href='#<?php echo $value['lang']; ?>'>
                 <?php echo $aOptions[$value['lang']] ?>
             </a>
@@ -106,7 +106,7 @@
                 removeitem.push('<?php echo $value['lang'] ?>');
             </script>
         </li>
-    <?php endforeach; ?>
+    <?php endforeach;?>
     </ul>
     <?php //var_dump($attributenames); ?>
     <?php
@@ -119,7 +119,7 @@
                         <?php eT('Attribute name:'); ?>
                     </label>
                     <div class='col-sm-3'>
-                        <?php echo CHtml::textField('lang['.$value['lang'].']', $value['attribute_name'], array('class'=>'languagesetting form-control')); ?>
+                        <?php echo CHtml::textField('lang[' . $value['lang'] . ']', $value['attribute_name'], array('class'=>'languagesetting form-control')); ?>
                     </div>
             </div>
         </div>

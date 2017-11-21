@@ -41,10 +41,10 @@ class InstallCommand extends CConsoleCommand
             try {
                 $this->output('Connecting to database...');
                 $this->connection = App()->getDb();
-                $this->connection->active = true;
-                $this->output('Using connection string '.$this->connection->connectionString);
+                $this->connection->active=true;
+                $this->output('Using connection string ' . $this->connection->connectionString);
             } catch (CDbException $e) {
-                $this->output('Could not connect to database: '.$e->getMessage());
+                $this->output('Could not connect to database: ' . $e->getMessage());
                 $this->createDatabase();
             };
 
@@ -54,7 +54,7 @@ class InstallCommand extends CConsoleCommand
                 // NB: FALLTHRU
                 case 'mysql':
                 case 'mysqli':
-                    $this->connection->createCommand("ALTER DATABASE ".$this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname'))." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
+                    $this->connection->createCommand("ALTER DATABASE ". $this->connection->quoteTableName($this->getDBConnectionStringProperty('dbname')) ." DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;")->execute();
                     $sql_file = 'mysql';
                     break;
                 case 'pgsql':
@@ -76,7 +76,7 @@ class InstallCommand extends CConsoleCommand
                 $this->output('Creating tables...');
                 createDatabase($this->connection);
             } catch (Exception $e) {
-                $this->output('Could not create LimeSurvey tables: '.$e->getMessage());
+                $this->output('Could not create LimeSurvey tables: ' . $e->getMessage());
                 return 1;
             }
 
@@ -141,18 +141,18 @@ class InstallCommand extends CConsoleCommand
     {
         $this->output('Creating database...');
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>false))));
-        $this->connection = App()->db;
+        $this->connection=App()->db;
         App()->configure(array('components'=>array('db'=>array('autoConnect'=>true))));
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
         $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', $connectionString);
         try {
-            $this->connection->active = true;
+            $this->connection->active=true;
         } catch (Exception $e) {
             throw new CException("Invalid access data. Check your config.php db access data");
         }
 
-        $sDatabaseName = $this->getDBConnectionStringProperty('dbname', $connectionString);
+        $sDatabaseName= $this->getDBConnectionStringProperty('dbname', $connectionString);
         try {
             switch ($this->connection->driverName) {
                 case 'mysqli':
@@ -187,7 +187,7 @@ class InstallCommand extends CConsoleCommand
     public function output($msg)
     {
         if ($this->noisy) {
-            echo $msg.PHP_EOL;
+            echo $msg . PHP_EOL;
         }
     }
 

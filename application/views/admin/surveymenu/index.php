@@ -11,7 +11,7 @@
 // 	array('label'=>'Manage Surveymenu', 'url'=>array('admin')),
 // );
 //
-$pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
+$pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
 $massiveAction = App()->getController()->renderPartial('/admin/surveymenu/massive_action/_selector', array(), true, false);
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -26,7 +26,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
 				<a class="btn btn-primary pull-right col-xs-6 col-sm-3 col-md-2" id="createnewmenu" >
                     <i class="fa fa-plus"></i>&nbsp;<?php eT('New menu') ?>
                 </a>	
-                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')):?>
+                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
                 <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
                     <i class="fa fa-refresh"></i>&nbsp;
                     <?php eT('Reset menus') ?>
@@ -38,30 +38,30 @@ echo viewHelper::getViewTestTag('surveyMenus');
 		<div class="ls-flex-row">
 			<div class="col-12 ls-flex-item">
 				<?php $this->widget('bootstrap.widgets.TbGridView', array(
-                    'dataProvider' => $model->search(),
-                    // Number of row per page selection
-                    'id' => 'surveymenu-grid',
-                    'columns' => $model->getColumns(),
-                    'filter' => $model,
-                    'emptyText'=>gT('No customizable entries found.'),
-                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
-                        CHtml::dropDownList(
-                            'pageSize',
-                            $pageSize,
-                            Yii::app()->params['pageSizeOptions'],
-                            array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
-                        )
-                    ),
-                    'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
-                    'htmlOptions' => array('class'=> 'table-responsive'),
-                    'itemsCssClass' => 'table table-responsive table-striped',
-                    'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
-                    'ajaxType' => 'POST',
+					'dataProvider' => $model->search(),
+					// Number of row per page selection
+					'id' => 'surveymenu-grid',
+					'columns' => $model->getColumns(),
+					'filter' => $model,
+					'emptyText'=>gT('No customizable entries found.'),
+					'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+						CHtml::dropDownList(
+							'pageSize',
+							$pageSize,
+							Yii::app()->params['pageSizeOptions'],
+							array('class'=>'changePageSize form-control', 'style'=>'display: inline; width: auto')
+						)
+					),
+					'rowHtmlOptionsExpression' => '["data-surveymenu-id" => $data->id]',
+					'htmlOptions' => array('class'=> 'table-responsive'),
+					'itemsCssClass' => 'table table-responsive table-striped',
+					'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction grid-view'),
+					'ajaxType' => 'POST',
                     'ajaxUpdate' => true,
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                    'afterAjaxUpdate'=>'bindAction',
-                ));
-                ?>
+    				'afterAjaxUpdate'=>'bindAction',
+				));
+				?>
 			</div>
 		</div>
 	</div>
@@ -81,7 +81,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
   	<div class="modal-dialog modal-lg" role="document">
     	<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title"><?php eT("Really delete this survey menu?"); ?></h4>
+				<h4 class="modal-title"><?php eT("Really delete this survey menu?");?></h4>
 			</div>
 			<div class="modal-body">
 				<?php eT("All menu entries of this menu will also be deleted."); ?>
@@ -98,7 +98,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><?php eT("Really restore the default survey menus?"); ?></h4>
+          <h4 class="modal-title"><?php eT("Really restore the default survey menus?");?></h4>
         </div>
         <div class="modal-body">
           <p>
@@ -122,7 +122,7 @@ echo viewHelper::getViewTestTag('surveyMenus');
 
 <script>
 var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenu','surveymenu-grid', {
-    loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menus/sa/getsurveymenuform') ?>",
+    loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menus/sa/getsurveymenuform' ) ?>",
     restoreEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menus/sa/restore'); ?>",
     deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menus/sa/delete'); ?>"
   }),

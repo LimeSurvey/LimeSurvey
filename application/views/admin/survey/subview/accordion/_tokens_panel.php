@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('surveyParticipantTokenOptions');
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js'); ?>'
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
     var sURLParameters = '';
     var sAddParam = '';
 </script>
@@ -94,7 +94,7 @@ echo viewHelper::getViewTestTag('surveyParticipantTokenOptions');
                     ));
                     $this->widget('bootstrap.widgets.TbModal', array(
                         'id' => 'tokenanswerspersistenceModal',
-                        'header' => gt('Error', 'unescaped'),
+                        'header' => gt('Error','unescaped'),
                         'content' => '<p>'.gT("This option can't be used if the -Anonymized responses- option is active.").'</p>',
                         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                     ));
@@ -150,7 +150,7 @@ echo viewHelper::getViewTestTag('surveyParticipantTokenOptions');
                     ));
                     $this->widget('bootstrap.widgets.TbModal', array(
                         'id' => 'htmlemailModal',
-                        'header' => gt('Error', 'unescaped'),
+                        'header' => gt('Error','unescaped'),
                         'content' => '<p>'.gT("If you switch email mode, you'll have to review your email templates to fit the new format").'</p>',
                         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                     ));
@@ -178,13 +178,13 @@ echo viewHelper::getViewTestTag('surveyParticipantTokenOptions');
     <?php
     $this->widget('bootstrap.widgets.TbModal', array(
         'id' => 'alertPrivacy1',
-        'header' => gt('Warning', 'unescaped'),
+        'header' => gt('Warning','unescaped'),
         'content' => '<p>'.gT("You can't use Anonymized responses when Token-based answers persistence is enabled.").'</p>',
         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
     ));
     $this->widget('bootstrap.widgets.TbModal', array(
         'id' => 'alertPrivacy2',
-        'header' => gt('Warning', 'unescaped'),
+        'header' => gt('Warning','unescaped'),
         'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
         'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
     ));

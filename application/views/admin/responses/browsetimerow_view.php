@@ -43,7 +43,7 @@
         'afterAjaxUpdate' => 'doToolTip',
 
         // Number of row per page selection
-        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
+        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
             CHtml::dropDownList(
                 'pageSize',
                 $pageSize,

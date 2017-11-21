@@ -1,7 +1,7 @@
 <?php
     namespace LimeSurvey\PluginManager;
 
-    abstract class QuestionPluginBase extends PluginBase {
+    abstract class QuestionPluginBase extends PluginBase{
 
 
 
@@ -35,7 +35,7 @@
         {
             if (!empty($this->questionTypes))
             {
-                $event->set('questionplugins.'.get_class($this), $this->questionTypes);
+                $event->set('questionplugins.' . get_class($this), $this->questionTypes);
             }
         }
 

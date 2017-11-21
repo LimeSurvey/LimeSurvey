@@ -1,6 +1,7 @@
 <?php
 /**
  * Send email invitations
+
  * @var AdminController $this
  * @var Survey $oSurvey
  */
@@ -11,13 +12,13 @@
     </h3>
     <div class="row">
         <div class="col-lg-8 content-right">
-            <?php echo CHtml::form(array("admin/database/index"), 'post', array('class'=>'', 'id'=>'frmdefaultvalues', 'name'=>'frmdefaultvalues')); ?>
+            <?php echo CHtml::form(array("admin/database/index"), 'post',array('class'=>'','id'=>'frmdefaultvalues','name'=>'frmdefaultvalues')); ?>
 
                     <ul class="nav nav-tabs">
                         <?php
                             foreach ($oSurvey->allLanguages as $i=>$language) {
                             ?>
-                            <li role="presentation" <?php if ($i == 0) {echo 'class="active"'; }?> >
+                            <li role="presentation" <?php if($i==0){echo 'class="active"';}?> >
                                 <a data-toggle="tab" href='#df_<?php echo $language ?>'><?php echo getLanguageNameFromCode($language, false) ?></a>
                             </li>
                             <?php
@@ -28,11 +29,11 @@
                         <?php
                             foreach ($oSurvey->allLanguages as $i => $language) {
                             ?>
-                            <div id='df_<?php echo $language ?>' class="tab-pane fade in <?php if ($i == 0) {echo 'active'; }?>">
+                            <div id='df_<?php echo $language ?>' class="tab-pane fade in <?php if($i==0){echo 'active';}?>">
 
                                     <?php if ($qtproperties[$questionrow['type']]['answerscales'] > 0): ?>
                                         <?php for ($scale_id = 0; $scale_id < $qtproperties[$questionrow['type']]['answerscales']; $scale_id++): ?>
-                                            <?php $opts = $langopts[$language][$questionrow['type']][$scale_id]; ?>
+                                            <?php $opts = $langopts[$language][$questionrow['type']][$scale_id];?>
                                             <div class="form-group col-sm-12">
                                                 <label class=" control-label"for='defaultanswerscale_<?php echo "{$scale_id}_{$language}" ?>'>
                                                     <?php $qtproperties[$questionrow['type']]['answerscales'] > 1 ? printf(gT('Default answer for scale %s:'), $scale_id) : printf(gT('Default answer value:'), $scale_id) ?>
@@ -46,7 +47,7 @@
                                                         <?php
                                                             foreach ($opts['answers'] as $answer) {
                                                                 $answer = $answer->attributes;
-                                                            ?>                          <option<?php if ($answer['code'] == $opts['defaultvalue']) { ?> selected="selected" <?php } ?> value="<?php echo $answer['code'] ?>"><?php echo $answer['answer'] ?></option>
+                                                            ?>                          <option<?php if ($answer['code'] == $opts['defaultvalue']){ ?> selected="selected" <?php } ?> value="<?php echo $answer['code'] ?>"><?php echo $answer['answer'] ?></option>
                                                             <?php
                                                             }
                                                         ?>
@@ -78,18 +79,18 @@
                                                 <?php endif; ?>
 
                                                 <?php
-                                                    switch ($questionrow['type'])
+                                                    switch($questionrow['type'])
                                                     {
                                                         case 'L':
                                                         case 'M':
                                                         case 'O':
                                                         case 'P':
                                                         case '!':
-                                                            $inputStyle = 'enum';
+                                                            $inputStyle='enum';
                                                             break;
                                                         case 'K':
                                                         case 'Q':
-                                                            $inputStyle = 'text';
+                                                            $inputStyle='text';
                                                             break;
                                                     }
 
@@ -98,7 +99,7 @@
                                                         ?>
                                                         <div class="form-group">
                                                             <label class="col-sm-12 control-label"for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
-                                                                <?php echo "{$aSubquestion['title']}: ".flattenText($aSubquestion['question']) ?>
+                                                                <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                             </label>
                                                             <div class="col-sm-12">
                                                                 <select class='form-control' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>' id='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
@@ -116,7 +117,7 @@
                                                         foreach ($opts['sqresult'] as $aSubquestion) { ?>
                                                             <div class="form-group">
                                                                 <label class="col-sm-12 control-label"for='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'>
-                                                                    <?php echo "{$aSubquestion['title']}: ".flattenText($aSubquestion['question']) ?>
+                                                                    <?php echo "{$aSubquestion['title']}: " . flattenText($aSubquestion['question']) ?>
                                                                 </label>
                                                                 <div class="col-sm-12">
                                                                     <textarea cols='50' name='defaultanswerscale_<?php echo "{$scale_id}_{$language}_{$aSubquestion['qid']}" ?>'
@@ -130,7 +131,7 @@
                                             <?php endfor; ?>
                                         <?php endif; ?>
                                         <?php
-                                        if ($qtproperties[$questionrow['type']]['answerscales'] == 0 && $qtproperties[$questionrow['type']]['subquestions'] == 0) {
+                                        if ($qtproperties[$questionrow['type']]['answerscales']==0 && $qtproperties[$questionrow['type']]['subquestions']==0) {
                                             /*
                                             case 'D':
                                             case 'N':
@@ -143,11 +144,11 @@
                                              * This is fast insert rewrite of this view follows
                                              */
                                             $widgetOptions = array(
-                                                'language' =>$language,
+                                                'language' =>$language ,
                                                 'questionrow' => $questionrow,
                                                 'qtproperties' => $qtproperties,
                                                 'langopts' => $langopts,
-                                                );
+                                             );
                                             $this->widget('application.views.admin.survey.Question.yesNo_defaultvalue_widget', array('widgetOptions'=>$widgetOptions));
                                             ?>
                                             <?php if ($questionrow['type'] != 'Y'): //temporary solution - until everything is move to widgets?>
@@ -161,7 +162,7 @@
                                                             echo htmlspecialchars($langopts[$language][$questionrow['type']][0]); ?></textarea>
                                                     </div>
                                                 </div>
-                                            <?php endif; //temporary solution?>
+                                            <?php endif;  //temporary solution?>
                                         <?php
                                         }
 

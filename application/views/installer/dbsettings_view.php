@@ -5,10 +5,7 @@
     <div class="col-md-9">
         <h2><?php echo $title; ?></h2>
             <legend><?php eT('Database creation'); ?></legend>
-                <?php if (isset($adminoutputText)) {
-    echo $adminoutputText;
-}
-?>
+                <?php if (isset($adminoutputText)) echo $adminoutputText; ?>
 
             <div class="row">
                 <div class="col-md-4" >

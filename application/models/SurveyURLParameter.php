@@ -29,7 +29,7 @@ class SurveyURLParameter extends LSActiveRecord {
     public static function model($class = __CLASS__)
     {
         /** @var self $model */
-        $model = parent::model($class);
+        $model =parent::model($class);
         return $model;
     }
 
@@ -62,7 +62,7 @@ class SurveyURLParameter extends LSActiveRecord {
     /**
      * @param array $compareToArray
      */
-    public function compareToArray($compareToArray) {
+    public function compareToArray($compareToArray){
 
     }
 
@@ -73,9 +73,9 @@ class SurveyURLParameter extends LSActiveRecord {
     public function deleteRecords($aConditions)
     {
         foreach ($aConditions as $sFieldname=>$sFieldvalue) {
-            Yii::app()->db->createCommand()->where($sFieldname, $sFieldvalue);
+            Yii::app()->db->createCommand()->where($sFieldname,$sFieldvalue);
         }
-        return Yii::app()->db->delete('survey_url_parameters'); // Deletes from token
+        return Yii::app()->db->delete('survey_url_parameters');// Deletes from token
     }
 
     /**
@@ -84,7 +84,7 @@ class SurveyURLParameter extends LSActiveRecord {
      */
     public function insertRecord($aData)
     {
-        return Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}', $aData);
+        return Yii::app()->db->createCommand()->insert('{{survey_url_parameters}}',$aData);
     }
 
 }

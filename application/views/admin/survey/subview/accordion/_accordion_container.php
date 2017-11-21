@@ -26,7 +26,7 @@
 		    <span class="sr-only">Expand/Collapse</span>
                 </a>
                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#generaloptions" aria-expanded="true" aria-controls="generaloptions">
-                    <?php eT("General options"); ?>
+                    <?php eT("General options");?>
                 </a>
             </div>
         </div>
@@ -118,7 +118,7 @@
     </div>
 
     <!-- Edition Mode -->
-    <?php if ($data['action'] == 'surveygeneralsettings'):?>
+    <?php if($data['action']=='surveygeneralsettings'):?>
         <!-- Panel integration -->
         <div class="panel panel-default">
             <div class="panel-heading" role="tab" id="heading-integrationoptions">
@@ -160,6 +160,6 @@
                 </div>
             </div>
         </div>
-    <?php endif; ?>
+    <?php endif;?>
     */?>
 </div>

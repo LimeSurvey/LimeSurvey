@@ -11,13 +11,13 @@ echo viewHelper::getViewTestTag('templateOptions');
 
 <?php
     //$bFromSurveyGroup = (isset($bFromSurveyGroup))?$bFromSurveyGroup:false;
-    $bFromSurveyGroup = ($model->scenario == 'surveygroup') ?true:false;
+    $bFromSurveyGroup = ($model->scenario == 'surveygroup')?true:false;
 ?>
 
 <div class="col-lg-12 list-surveys">
 
     <?php
-        if (!$bFromSurveyGroup) {
+        if (!$bFromSurveyGroup){
             $this->renderPartial('super/fullpagebar_view', array(
             'fullpagebar' => array(
                 'returnbutton'=>array(
@@ -110,11 +110,11 @@ echo viewHelper::getViewTestTag('templateOptions');
                                     <td class="col-md-1"><?php echo $oTemplate->preview; ?></td>
                                     <td class="col-md-2"><?php echo $oTemplate->sTemplateName; ?></td>
                                     <td class="col-md-3"><?php echo $oTemplate->config->metadatas->description; ?></td>
-                                    <td class="col-md-2"><?php eT('XML template'); ?></td>
+                                    <td class="col-md-2"><?php eT('XML template');?></td>
                                     <td class="col-md-2"><?php echo $oTemplate->config->metadatas->extends; ?></td>
                                     <td class="col-md-1"><?php echo $oTemplate->buttons; ?></td>
                                 </tr>
-                            <?php endforeach; ?>
+                            <?php endforeach;?>
                         </tbody>
                     </table>
 
@@ -122,5 +122,5 @@ echo viewHelper::getViewTestTag('templateOptions');
 
             </div>
         </div>
-    <?php endif; ?>
+    <?php endif;?>
 </div>

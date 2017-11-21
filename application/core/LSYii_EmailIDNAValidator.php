@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -22,13 +22,14 @@ class LSYii_EmailIDNAValidator extends CValidator {
 
         if ($object->$attribute=='' && $this->allowEmpty)
         {
-                return;
+             return;
         }
 
         if ($this->allowMultiple)
         {
             $aEmailAdresses = preg_split( "/(,|;)/", $object->$attribute );
-        } else
+        }
+        else
         {
             $aEmailAdresses=array($object->$attribute);
         }

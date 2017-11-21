@@ -17,14 +17,11 @@
 <!-- Numerical -->
 
 <!-- answer -->
-<?php if ($withColumn): ?>
+<?php if($withColumn): ?>
 <div class='<?php echo $coreClass; ?> row'>
     <div class="<?php echo $extraclass; ?>">
-<?php else {
-    : ?>
-<div class='<?php echo $coreClass;
-}
-?> <?php echo $extraclass; ?>'>
+<?php else: ?>
+<div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
 <?php endif; ?>
     <?php if ($prefix !== '' || $suffix !== ''): ?>
         <div class="ls-input-group">
@@ -36,7 +33,7 @@
     <?php
     // Want to use HTML5 number type? Think again: Doesn't work as we want with locale: http://stackoverflow.com/questions/13412204/localization-of-input-type-number
     // type=number is localized by default : broke API, (disable survey settings, but surely better)
-    echo \CHtml::textField($id, $fValue, array(
+    echo \CHtml::textField($id,$fValue,array(
         'id' => "answer{$id}",
         'class' => "form-control {$answertypeclass}",
         'title' => gT('Only numbers may be entered in this field.'),
@@ -54,13 +51,10 @@
     <?php if ($prefix !== '' || $suffix !== ''): ?>
         </div>
     <?php endif; ?>
-<?php if ($withColumn): ?>
+<?php if($withColumn): ?>
     </div>
 </div>
-<?php else {
-    : ?>
+<?php else: ?>
 </div>
-<?php endif;
-}
-?>
+<?php endif; ?>
 <!-- end of answer -->

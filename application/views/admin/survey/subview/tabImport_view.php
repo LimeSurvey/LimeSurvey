@@ -7,13 +7,13 @@
 <div class="container-fluid col-sm-10 col-md-8">
 <!-- tab import survey -->
     <!-- import form -->
-    <?php echo CHtml::form(array('admin/survey/sa/copy'), 'post', array('id'=>'importsurvey', 'name'=>'importsurvey', 'class'=>'', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
+    <?php echo CHtml::form(array('admin/survey/sa/copy'), 'post', array('id'=>'importsurvey', 'name'=>'importsurvey', 'class'=>'', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'. gT('Please select a file to import!', 'js').'");')); ?>
         <div class="row">
 
             <!-- Select file -->
             <div class='form-group '>
                 <label class='control-label ' for='the_file'>
-                    <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                    <?php printf(gT("Select survey structure file (*.lss, *.txt) or survey archive (*.lsa) (maximum file size: %01.2f MB)"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
                 <div class=''>
                     <input id='the_file' name="the_file" type="file" accept='.lss,.lsa,.tsv,.txt'/>
@@ -41,10 +41,7 @@
                 </div>
             </div>
 
-            <?php if (isset($surveyid)) {
-    echo '<input type="hidden" name="sid" value="'.$surveyid.'" />';
-}
-?>
+            <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="'.$surveyid.'" />'; ?>
             <input type='hidden' name='action' value='importsurvey' />
         </div>
     </form>
@@ -61,7 +58,7 @@
                     <p><?php eT("Please select a file to import!"); ?></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

@@ -15,7 +15,7 @@
                     <p><?php echo $resultnum; ?></p>
                     <p>
                         <?php eT("Results from LDAP Query."); ?><br />
-                        <?php printf(gT("%s records met minimum requirements"), $xv); ?><br />
+                        <?php printf(gT("%s records met minimum requirements"),$xv); ?><br />
                         <?php echo $xz; ?> <?php eT("Records imported"); ?>.<br />
                         <?php echo $xy; ?> <?php eT("Duplicate records removed"); ?>                        
                     </p>
@@ -32,16 +32,13 @@
                 </div>
                 
             <!-- Error -->
-            <?php else {
-    : ?>
+            <?php else: ?>
                 <div class="jumbotron message-box message-box-error">
-                    <h2 class="text-danger"><?php eT("Error");
-}
-?></h2>
+                    <h2 class="text-danger"><?php eT("Error"); ?></h2>
                     <p><?php echo $resultnum; ?></p>
                     <p>
                         <?php eT("Results from LDAP Query."); ?><br />
-                        <?php printf(gT("%s records met minimum requirements"), $xv); ?><br />
+                        <?php printf(gT("%s records met minimum requirements"),$xv); ?><br />
                         <?php echo $xz; ?> <?php eT("Records imported"); ?>.<br />
                         <?php echo $xy; ?> <?php eT("Duplicate records removed"); ?>                        
                     </p>
@@ -57,7 +54,7 @@
                     </p>
 
                 </div>                
-            <?php endif; ?>
+            <?php endif;?>
         </div>
     </div>
 </div>

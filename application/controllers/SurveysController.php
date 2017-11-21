@@ -22,7 +22,7 @@
             if (!empty($lang)){
                 // Control is a real language , in restrictToLanguages ?
                 App()->setLanguage($lang);
-            } else{
+            }else{
                 App()->setLanguage(App()->getConfig('defaultlang'));
             }
 
@@ -47,15 +47,15 @@
                     'bShowClearAll'     => false,
                 );
 
-            $aData['alanguageChanger']['show'] = false;
-            $alanguageChangerDatas = getLanguageChangerDatasPublicList(App()->language);
+            $aData['alanguageChanger']['show']  = false;
+            $alanguageChangerDatas                   = getLanguageChangerDatasPublicList(App()->language);
 
-            if ($alanguageChangerDatas) {
+            if ($alanguageChangerDatas){
                 $aData['alanguageChanger']['show']  = true;
                 $aData['alanguageChanger']['datas'] = $alanguageChangerDatas;
             }
 
-            Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js', CClientScript::POS_HEAD);
+            Yii::app()->clientScript->registerScriptFile(Yii::app()->getConfig("generalscripts").'nojs.js',CClientScript::POS_HEAD);
 
 
             Yii::app()->twigRenderer->renderTemplateFromFile("layout_survey_list.twig", array('aSurveyInfo'=>$aData), false);
@@ -76,7 +76,7 @@
             if ($error){
                 App()->setConfig('sitename',"Not found");
                 $this->render('/system/error'.$error['code'], array('error'=>$error,'admin'=>encodeEmail(Yii::app()->getConfig("siteadminemail"))));
-            } else{
+            }else{
                 throw new CHttpException(404, 'Page not found.');
             }
         }

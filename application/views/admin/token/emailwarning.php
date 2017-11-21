@@ -25,7 +25,7 @@
             { ?>
                     <input type='hidden' name='maxremindercount' value="<?php echo Yii::app()->request->getPost('maxremindercount'); ?>" />
                     <?php }
-            if (Yii::app()->request->getPost('bypassdatecontrol') == '1')
+            if (Yii::app()->request->getPost('bypassdatecontrol')=='1')
             { ?>
                         <input type='hidden' name='bypassdatecontrol' value="<?php echo Yii::app()->request->getPost('bypassdatecontrol'); ?>" />
                         <?php }
@@ -37,9 +37,9 @@
         <?php
             foreach ($aSurveyLangs as $language)
             {
-                echo CHtml::hiddenField('from_'.$language, Yii::app()->request->getPost('from_'.$language));
-                echo CHtml::hiddenField('subject_'.$language, Yii::app()->request->getPost('subject_'.$language));
-                echo CHtml::hiddenField('message_'.$language, Yii::app()->request->getPost('message_'.$language));
+                echo CHtml::hiddenField('from_'.$language, Yii::app()->request->getPost('from_' . $language));
+                echo CHtml::hiddenField('subject_'.$language, Yii::app()->request->getPost('subject_' . $language));
+                echo CHtml::hiddenField('message_'.$language, Yii::app()->request->getPost('message_' . $language));
             } 
         ?>
     </form>

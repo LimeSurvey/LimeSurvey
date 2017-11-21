@@ -16,7 +16,7 @@ echo viewHelper::getViewTestTag('createNewBox');
         )
     )); ?>
 
-    <h3><?php eT('New box'); ?></h3>
+    <h3><?php eT('New box');?></h3>
 
     <div class="row">
         <div class="col-lg-12 content-right">

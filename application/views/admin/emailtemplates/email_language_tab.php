@@ -100,7 +100,7 @@
                         {
                             
                             echo "<li role='presentation' class='$state'><a  data-toggle='tab' href='#tab-$grouplang-$tab'>{$details['title']}</a></li>";
-                            if ($count == 0) { $state = ''; $count++; }
+                            if($count == 0){ $state = ''; $count++;}
                         }
                         ?>
                     </ul>
@@ -111,8 +111,8 @@
                         $active = 'active';                        
                         foreach ($tabs as $tab => $details)
                         {
-                            $this->renderPartial('/admin/emailtemplates/email_language_template_tab', compact('ishtml', 'surveyid', 'esrow', 'grouplang', 'tab', 'details', 'active'));
-                            if ($count == 0) { $active = ''; $count++; }
+                            $this->renderPartial('/admin/emailtemplates/email_language_template_tab', compact('ishtml', 'surveyid' , 'esrow', 'grouplang', 'tab', 'details', 'active'));
+                            if($count == 0){ $active = ''; $count++;}
                         }
                         ?>
                     </div>

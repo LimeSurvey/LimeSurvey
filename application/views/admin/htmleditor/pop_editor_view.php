@@ -9,13 +9,13 @@
             App()->getClientScript()->registerPackage('jquery-superfish');
             App()->getClientScript()->registerPackage('ckeditor');
             App()->getClientScript()->registerPackage('ckeditoradditions');
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'jquery-ui.css');
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui.css');
         ?>
-        <!--<script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL').'/ckeditor.js'; ?>"></script>-->
+        <!--<script type="text/javascript" src="<?php echo Yii::app()->getConfig('sCKEditorURL') . '/ckeditor.js'; ?>"></script>-->
     </head>
 
     <body>
-        <?php echo CHtml::form('', 'post', array('onsubmit'=>'saveChanges=true;')); ?>
+        <?php echo CHtml::form('', 'post', array('onsubmit'=>'saveChanges=true;'));?>
 
             <script type='text/javascript'>
                 <!--
@@ -31,8 +31,8 @@
 
 
                 var saveChanges = false;
-                var sReplacementFieldTitle = '<?php eT('Placeholder fields', 'js'); ?>';
-                var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field', 'js'); ?>';
+                var sReplacementFieldTitle = '<?php eT('Placeholder fields','js');?>';
+                var sReplacementFieldButton = '<?php eT('Insert/edit placeholder field','js');?>';
                 $(document).on('ready pjax:complete', function(){
                     //console.log('iGroupId: '+iGroupId);
             // Better use try/catch to not crash JS completely
@@ -62,7 +62,7 @@
                     var editor = evt.editor;
                     editor.setData(window.opener.document.getElementsByName("<?php echo $sFieldName; ?>")[0].value);
                     editor.execCommand('maximize');
-                    window.status='LimeSurvey <?php eT('Editing', 'js').' '.'javascriptEscape('.$sFieldText.', true)'; ?>';
+                    window.status='LimeSurvey <?php eT('Editing', 'js') . ' ' . 'javascriptEscape(' . $sFieldText . ', true)'; ?>';
                 }
 
                 function html_transfert()
@@ -78,7 +78,8 @@
                     var editedtext = oEditor.getData().replace(new RegExp( "\r", "g" ),'');
 
                     <?php
-                    } else
+                    }
+                    else
                     {
                     ?>
 

@@ -39,7 +39,7 @@ class MssqlSchema extends CMssqlSchema
                 $sResult=preg_replace('/^\w+/', $this->columnTypes[$matches[1]], $type);
             }
         }
-        if (stripos($sResult, 'NULL') === false) {
+       if (stripos($sResult, 'NULL') === false) {
             $sResult .= ' NULL';}
         return $sResult;
     }
@@ -70,8 +70,8 @@ class MssqlSchema extends CMssqlSchema
     public function getCompositePrimaryKey(array $columns)
     {
         $columns = array_map(
-            function($column) {
-                return '['.$column.']';
+            function ($column) {
+                return '[' . $column . ']';
             },
             $columns
         );

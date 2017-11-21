@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="<?php echo App()->language; ?>"<?php if (getLanguageRTL(Yii::app()->language)) {echo 'dir="rtl"'; }?> >
+<html lang="<?php echo App()->language; ?>"<?php if(getLanguageRTL(Yii::app()->language)) {echo 'dir="rtl"';}?> >
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />

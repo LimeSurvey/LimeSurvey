@@ -21,7 +21,7 @@
          */
         public static function model($className = null) {
             /** @var self $model */
-            $model = parent::model($className);
+            $model =parent::model($className);
             return $model;
         }
         /**
@@ -40,10 +40,10 @@
          * @param integer $sQID The question ID - optional - Default 0
          * @return array
          */
-        public function getFiles($sQID = 0)
+        public function getFiles($sQID=0)
         {
             $survey = Survey::model()->findByPk($this->dynamicId);
-            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId, 'type' => '|', 'language'=>$survey->language));
+            $questions = Question::model()->findAllByAttributes(array('sid' => $this->dynamicId,'type' => '|','language'=>$survey->language));
             $files = array();
             foreach ($questions as $question) {
                 $field = "{$question->sid}X{$question->gid}X{$question->qid}";
@@ -62,10 +62,10 @@
          */
         public function getFilesAndSqga($sQID = 0)
         {
-            $aConditions = array('sid' => $this->dynamicId, 'type' => '|', 'language'=>$this->survey->language);
-            if ($sQID > 0)
+            $aConditions=array('sid' => $this->dynamicId,'type' => '|','language'=>$this->survey->language);
+            if ($sQID>0)
             {
-                $aConditions['qid'] = $sQID;
+                $aConditions['qid']=$sQID;
             }
             $aQuestions = Question::model()->findAllByAttributes($aConditions);
             $files = array();
@@ -88,11 +88,11 @@
          */
         public function someFileExists($sQID = 0)
         {
-            $uploaddir = Yii::app()->getConfig('uploaddir')."/surveys/{$this->dynamicId}/files/";
+            $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
             foreach ($this->getFiles($sQID) as $fileInfo)
             {
                 $basename = basename($fileInfo['filename']);
-                if (file_exists($uploaddir.$basename)) {
+                if (file_exists($uploaddir . $basename)) {
                     return true;
                 }
             }
@@ -106,10 +106,10 @@
         public function deleteFiles()
         {
             $errors = array();
-            $uploaddir = Yii::app()->getConfig('uploaddir')."/surveys/{$this->dynamicId}/files/";
+            $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
             foreach ($this->getFiles() as $fileInfo) {
                 $basename = basename($fileInfo['filename']);
-                $result = @unlink($uploaddir.$basename);
+                $result = @unlink($uploaddir . $basename);
                 if (!$result) {
                     $errors[] = $fileInfo['filename'];
                 }
@@ -128,12 +128,12 @@
         {
             $errors = array();
             $success = 0;
-            $uploaddir = Yii::app()->getConfig('uploaddir')."/surveys/{$this->dynamicId}/files/";
+            $uploaddir = Yii::app()->getConfig('uploaddir') ."/surveys/{$this->dynamicId}/files/";
             $filesData = $this->getFilesAndSqga();
             foreach ($filesData as $sgqa => $fileInfos) {
                 foreach ($fileInfos as $i => $fileInfo) {
                     $basename = basename($fileInfo['filename']);
-                    $fullFilename = $uploaddir.$basename;
+                    $fullFilename = $uploaddir . $basename;
 
                     if (file_exists($fullFilename)) {
                         $result = @unlink($fullFilename);
@@ -141,13 +141,13 @@
                             $errors[] = $fileInfo['filename'];
                         } else {
                             //$filesData[$sgqa][$i]['filename'] = 'deleted';
-                            $fileInfos[$i]['name'] = $fileInfo['name'].sprintf(' (%s)', gT('deleted'));
+                            $fileInfos[$i]['name'] = $fileInfo['name'] . sprintf(' (%s)', gT('deleted'));
                             $this->$sgqa = json_encode($fileInfos);
                             $result = $this->save();
                             if ($result) {
                                 $success++;
                             } else {
-                                $errors[] = 'Could not update filename info for file '.$fileInfo['filename'];
+                                $errors[] = 'Could not update filename info for file ' . $fileInfo['filename'];
                             }
                         }
                     } else {
@@ -168,21 +168,21 @@
         public function relations()
         {
             $result = array(
-                'token' => array(self::BELONGS_TO, 'Token_'.$this->dynamicId, array('token' => 'token')),
-                'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}")
+                'token' => array(self::BELONGS_TO, 'Token_' . $this->dynamicId, array('token' => 'token')),
+                'survey' =>  array(self::BELONGS_TO, 'Survey', '', 'on' => "sid = {$this->dynamicId}" )
             );
             return $result;
         }
         public function tableName()
         {
-            return '{{survey_'.$this->dynamicId.'}}';
+            return '{{survey_' . $this->dynamicId . '}}';
         }
         public function getSurveyId() {
             return $this->dynamicId;
         }
-        public function browse() {
+        public function browse(){
         }
-        public function search() {
+        public function search(){
 
         }
     }

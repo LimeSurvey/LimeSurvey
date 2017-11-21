@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js'); ?>'
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
     var sURLParameters = '';
     var sAddParam = '';
 </script>
@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                                 eT("Responses will be date stamped.");
                         } ?>
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                        <?php echo CHtml::hiddenField('datestamp', $oSurvey->datestamp); // Maybe use a readonly dropdown? ?>
+                        <?php echo CHtml::hiddenField('datestamp',$oSurvey->datestamp); // Maybe use a readonly dropdown? ?>
                         <?php }
                         else {
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -51,7 +51,7 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                             $this->widget('bootstrap.widgets.TbModal', array(
                                 'id' => 'datestampModal_1',
                                 'htmlOptions' => ['class' => 'selector_dateStampModal_notification'],
-                                'header' => gt('Warning', 'unescaped'),
+                                'header' => gt('Warning','unescaped'),
                                 'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants.").'</p>',
                                 'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                             ));
@@ -64,13 +64,13 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                 <label class=" control-label" for='ipaddr'><?php  eT("Save IP address:"); ?></label>
                 <div class="">
                     <?php if ($oSurvey->isActive) {
-                        if ($oSurvey->ipaddr != "Y") {
+                        if ($oSurvey->ipaddr!= "Y") {
                             eT("Responses will not have the IP address logged.");
                         } else {
                             eT("Responses will have the IP address logged");
                         } ?>
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                        <?php echo CHtml::hiddenField('ipaddr', $oSurvey->ipaddr);
+                        <?php echo CHtml::hiddenField('ipaddr',$oSurvey->ipaddr);
                     } else {
                         $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'ipaddr',
@@ -85,7 +85,7 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                         ));
                         $this->widget('bootstrap.widgets.TbModal', array(
                             'id' => 'datestampModal_2',
-                            'header' => gt('Warning', 'unescaped'),
+                            'header' => gt('Warning','unescaped'),
                             'content' => '<p>'.gT("If the option -Anonymized responses- is activated only a dummy date stamp (1980-01-01) will be used for all responses to ensure the anonymity of your participants. If you are running a closed survey you will NOT be able to link responses to participants if the survey is set to be anonymous.").'</p>',
                             'footer' => TbHtml::button('Close', array('data-dismiss' => 'modal'))
                         ));
@@ -105,7 +105,7 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                                 eT("Responses will have their referring URL logged.");
                         } ?>
                         <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                        <?php echo CHtml::hiddenField('refurl', $oSurvey->refurl); ?>
+                        <?php echo CHtml::hiddenField('refurl',$oSurvey->refurl);?>
                         <?php } else {
                             $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                             'name' => 'refurl',
@@ -127,7 +127,7 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                         <?php else: ?>
                             <?php  eT("Timings will be saved."); ?>
                             <span class='annotation'> <?php  eT("Cannot be changed"); ?></span>
-                            <?php echo CHtml::hiddenField('savetimings', $oSurvey->savetimings); // Maybe use a readonly dropdown? ?>
+                            <?php echo CHtml::hiddenField('savetimings',$oSurvey->savetimings);  // Maybe use a readonly dropdown? ?>
                         <?php endif; ?>
                     <?php else: ?>
                         <?php
@@ -137,9 +137,8 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                                 'onLabel'=>gT('On'),
                                 'offLabel'=>gT('Off')
                             ));
-}
                         ?>
-                    <?php endif; ?>
+                    <?php endif;?>
                 </div>
             </div>
         </div>
@@ -177,7 +176,7 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
             <div class="form-group">
                 <label class=" control-label" for='emailnotificationto'><?php  eT("Send basic admin notification email to:"); ?></label>
                 <div class="">
-                    <?php echo CHtml::textField('emailnotificationto', $oSurvey->emailnotificationto, array('size'=>70, 'class'=>"form-control")); ?>
+                    <?php echo CHtml::textField('emailnotificationto',$oSurvey->emailnotificationto,array('size'=>70, 'class'=>"form-control")); ?>
                 </div>
             </div>
 
@@ -185,32 +184,32 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
             <div class="form-group">
                 <label class=" control-label" for='emailresponseto'><?php  eT("Send detailed admin notification email to:"); ?></label>
                 <div class="">
-                    <?php echo CHtml::textField('emailresponseto', $oSurvey->emailresponseto, array('size'=>70, 'class'=>"form-control")) ?>
+                    <?php echo CHtml::textField('emailresponseto',$oSurvey->emailresponseto,array('size'=>70, 'class'=>"form-control")) ?>
                 </div>
             </div>
 
             <!-- GoogleAnalytics settings to be used -->
             <div class="form-group">
                 <label class=" control-label" for="googleanalyticsapikeysetting">
-                    <?php echo gT('Google Analytics settings:'); ?>
+                    <?php echo gT('Google Analytics settings:');?>
                 </label>
                 <div class="">
                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'googleanalyticsapikeysetting',
                         'value'=>  $oSurvey->googleanalyticsapikeysetting,
                         'selectOptions'=>array(
-                            "N"=>gT("None", 'unescaped'),
-                            "Y"=>gT("Use settings below", 'unescaped'),
-                            "G"=>gT("Use global settings", 'unescaped')
+                            "N"=>gT("None",'unescaped'),
+                            "Y"=>gT("Use settings below",'unescaped'),
+                            "G"=>gT("Use global settings",'unescaped')
                         )
-                    )); ?>
+                    ));?>
                 </div>
             </div>
             <!-- Google Analytics -->
             <div class="form-group">
                 <label class=" control-label" for='googleanalyticsapikey'><?php  eT("Google Analytics Tracking ID:"); ?></label>
                 <div class="">
-                    <?php echo CHtml::textField('googleanalyticsapikey', $oSurvey->googleanalyticsapikey, array('size'=>20), array('class'=>"form-control")); ?>
+                    <?php echo CHtml::textField('googleanalyticsapikey',$oSurvey->googleanalyticsapikey,array('size'=>20), array('class'=>"form-control")); ?>
                 </div>
             </div>
             <!-- Google Analytics style -->
@@ -219,15 +218,15 @@ echo viewHelper::getViewTestTag('surveyNotificationOptions');
                 <div class="">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'googleanalyticsstyle',
-                        'value'=> $oSurvey->googleanalyticsstyle,
+                        'value'=> $oSurvey->googleanalyticsstyle ,
                         'selectOptions'=>array(
-                        "0"=>gT("Off", 'unescaped'),
-                        "1"=>gT("Default", 'unescaped'),
-                        "2"=>gT("Survey-SID/Group", 'unescaped'))
-                        )); ?>
+                        "0"=>gT("Off",'unescaped'),
+                        "1"=>gT("Default",'unescaped'),
+                        "2"=>gT("Survey-SID/Group",'unescaped'))
+                        ));?>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'survey_edit_notificationpanel.js'); ?>
+<?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'survey_edit_notificationpanel.js'); ?>

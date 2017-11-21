@@ -15,12 +15,12 @@
         <div class="col-md-4 text-right">
 
             <!-- Save -->
-            <?php if (isset($fullpagebar['savebutton']['form'])):?>
+            <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-floppy-o"></span>
-                    <?php eT("Save"); ?>
+                    <?php eT("Save");?>
                 </a>
-            <?php endif; ?>
+            <?php endif;?>
 
             <?php /*
             <?php if(isset($fullpagebar['saveandclosebutton']['form'])):?>
@@ -41,32 +41,32 @@
             <?php endif;?>
             */ ?>
 
-            <?php if (isset($fullpagebar['boxbuttons'])):?>
-                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/create/'); ?>" class="btn btn-default">
+            <?php if(isset($fullpagebar['boxbuttons'])):?>
+                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/create/');?>" class="btn btn-default">
                     <span class="icon-add  text-success"></span>
-                    <?php eT("Create a new box"); ?>
+                    <?php eT("Create a new box");?>
                 </a>
-                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/resetall/'); ?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">
+                <a href="<?php echo $this->createUrl('admin/homepagesettings/sa/resetall/');?>" class="btn btn-danger" data-confirm="<?php eT('This will delete all current boxes to restore the default ones. Are you sure you want to continue?'); ?>">
                     <span class="fa fa-refresh"></span>
-                    <?php eT("Reset to default boxes"); ?>
+                    <?php eT("Reset to default boxes");?>
                 </a>
-            <?php endif; ?>
+            <?php endif;?>
 
-            <?php if (isset($fullpagebar['update'])):?>
-                <a href="<?php echo $this->createUrl('admin/update/sa/managekey/'); ?>" class="btn btn-default">
+            <?php if(isset($fullpagebar['update'])):?>
+                <a href="<?php echo $this->createUrl('admin/update/sa/managekey/');?>" class="btn btn-default">
                     <span class="fa fa-key text-success"></span>
-                    <?php eT("Manage your key"); ?>
+                    <?php eT("Manage your key");?>
                 </a>
-            <?php endif; ?>
+            <?php endif;?>
 
             <!-- Return -->
-            <?php if (isset($fullpagebar['returnbutton']['url'])):?>
+            <?php if(isset($fullpagebar['returnbutton']['url'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl($fullpagebar['returnbutton']['url']); ?>" role="button">
                     <span class="fa fa-backward"></span>
                     &nbsp;&nbsp;
                     <?php echo $fullpagebar['returnbutton']['text']; ?>
                 </a>
-            <?php endif; ?>
+            <?php endif;?>
         </div>
     </div>
 </div>

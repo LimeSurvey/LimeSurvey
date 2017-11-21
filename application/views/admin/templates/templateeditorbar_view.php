@@ -24,7 +24,7 @@
             var ext='';
             if ((lastdotpos=filename.lastIndexOf('.')) < 0)
             {
-                alert('<?php eT('This file type is not allowed to be uploaded.', 'js'); ?>');
+                alert('<?php eT('This file type is not allowed to be uploaded.','js'); ?>');
                 return false;
             }
             else
@@ -33,7 +33,7 @@
                 ext = ext.toLowerCase();
                 if (allowedtypes.indexOf(ext) < 0)
                 {
-                    alert('<?php eT('This file type is not allowed to be uploaded.', 'js'); ?>');
+                    alert('<?php eT('This file type is not allowed to be uploaded.','js'); ?>');
                     return false;
                 }
                 else
@@ -54,41 +54,38 @@
         <div class="col-md-5">
 
             <!-- Create -->
-            <?php if (Permission::model()->hasGlobalPermission('templates', 'create')):?>
-                <?php if (is_writable($userthemerootdir)):?>
+            <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
+                <?php if(is_writable($userthemerootdir) ):?>
                     <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
                         <span class="icon-add text-success"></span>
                         <?php eT("Create"); ?>
                     </a>
-                    <?php else {
-    : ?>
-                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable.");
-}
-?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                    <?php else: ?>
+                    <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-addt text-success"></span>
                             <?php eT("Create"); ?>
                         </button>
                     </span>
-                    <?php endif; ?>
-                <?php endif; ?>
+                    <?php endif;?>
+                <?php endif;?>
 
             <!-- Import -->
-            <?php $importModal = false; ?>
-            <?php if (is_writable($tempdir)):?>
-                <?php if (Permission::model()->hasGlobalPermission('templates', 'import')):?>
+            <?php $importModal=false;?>
+            <?php if(is_writable($tempdir)):?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
                     <?php if (is_writable($userthemerootdir) && function_exists("zip_open")):?>
-                        <?php $importModal = true; ?>
+                        <?php $importModal=true;?>
                         <a class="btn btn-default" href="" role="button" data-toggle="modal" data-target="#importModal">
                             <span class="icon-import text-success"></span>
                             <?php eT("Import"); ?>
                         </a>
                         <?php else:
-                        if (function_exists("zip_open")) {
-                            $sMessage = gT("The template upload directory doesn't exist or is not writable.");
+                        if (function_exists("zip_open")){
+                            $sMessage=gT("The template upload directory doesn't exist or is not writable.");
                         }
-                        else {
-                            $sMessage = gT("You do not have the required ZIP library installed in PHP.");
+                        else{
+                            $sMessage=gT("You do not have the required ZIP library installed in PHP.");
                         }
                         ?>
                         <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
@@ -97,7 +94,7 @@
                                 <?php eT("Import"); ?>
                             </button>
                         </span>
-                        <?php endif; ?>
+                        <?php endif;?>
                     <?php else: ?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("We are sorry but you don't have permissions to do this."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
@@ -105,38 +102,34 @@
                             <?php eT("Import"); ?>
                         </button>
                     </span>
-                    <?php endif; ?>
+                    <?php endif;?>
 
                 <!-- Export -->
-                <?php if (Permission::model()->hasGlobalPermission('templates', 'export') && function_exists("zip_open")):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/'.$templatename) ?>" role="button">
+                <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
+                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>" role="button">
                         <span class="icon-export text-success"></span>
                         <?php eT("Export"); ?>
                     </a>
-                    <?php endif; ?>
+                    <?php endif;?>
 
                 <!-- Copy -->
-                <?php if (Permission::model()->hasGlobalPermission('templates', 'create')):?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
                     <?php if (is_writable($userthemerootdir)):?>
                         <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new template:"); ?>', '<?php echo gT("extends_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
                             <span class="icon-copy text-success"></span>
                             <?php eT("Extend"); ?>
                         </a>
-                        <?php else {
-    : ?>
-                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable.");
-}
-?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
+                        <?php else: ?>
+                        <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php eT("The template upload directory doesn't exist or is not writable."); ?>" style="display: inline-block" data-toggle="tooltip" data-placement="bottom">
                             <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                                 <span class="icon-copy text-success"></span>
                                 <?php eT("Copy"); ?>
                             </button>
                         </span>
-                        <?php endif; ?>
-                    <?php endif; ?>
+                        <?php endif;?>
+                    <?php endif;?>
 
-                <?php else {
-    : ?>
+                <?php else: ?>
 
                 <!-- All buttons disabled -->
 
@@ -145,59 +138,59 @@
 
                 if (!function_exists("zip_open"))
                 {
-                    $sMessage = gT("You cannot upload templates because you do not have the required ZIP library installed in PHP.");
+                    $sMessage=gT("You cannot upload templates because you do not have the required ZIP library installed in PHP.");
                 }
                 else
                 {
-                    $sMessage = gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/templates in order to enable this option.");
+                    $sMessage=gT("Some directories are not writable. Please change the folder permissions for /tmp and /upload/templates in order to enable this option.");
                 }
-                if (Permission::model()->hasGlobalPermission('templates', 'import')):?>
+                if(Permission::model()->hasGlobalPermission('templates','import')):?>
                     <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
                         <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                             <span class="icon-import text-muted"></span>
                             <?php eT("Import"); ?>
                         </button>
                     </span>
-                    <?php endif; ?>
+                    <?php endif;?>
 
             <!-- export disabled -->
-            <?php if (Permission::model()->hasGlobalPermission('templates', 'export')):?>
+            <?php if(Permission::model()->hasGlobalPermission('templates','export')):?>
                 <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
                     <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                         <span class="icon-export text-muted"></span>
                         <?php eT("Export"); ?>
                     </button>
                 </span>
-                <?php endif; ?>
+                <?php endif;?>
 
             <!-- create disabled -->
-            <?php if (Permission::model()->hasGlobalPermission('templates', 'create')):?>
+            <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
                 <span class="btntooltip" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>"  style="display: inline-block" data-toggle="tooltip" data-placement="bottom" title="<?php echo $sMessage; ?>" >
                     <button type="button" class="btn btn-default btntooltip" disabled="disabled">
                         <span class="icon-copy text-muted"></span>
                         <?php eT("Copy"); ?>
                     </button>
                 </span>
-                <?php endif; ?>
+                <?php endif;?>
 
-            <?php endif; ?>
+            <?php endif;?>
 
 
-            <?php if (is_template_editable($templatename)):?>
-                <?php if (Permission::model()->hasGlobalPermission('templates', 'update')):?>
+            <?php if(is_template_editable($templatename)):?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','update')):?>
                     <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Rename this template to:"); ?>', '<?php echo $templatename; ?>', '<?php echo $templatename; ?>', 'rename');">
                         <span class="fa fa-pencil  text-success"></span>
                         <?php eT("Rename"); ?>
                     </a>
-                    <?php endif; ?>
+                    <?php endif;?>
 
-                <?php if (Permission::model()->hasGlobalPermission('templates', 'delete')):?>
+                <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
                     <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/sa/delete/templatename/'.$templatename); ?>", "_top")'>
                         <span class="fa fa-trash  text-warning"></span>
                         <?php eT("Delete"); ?>
                     </a>
-                    <?php endif; ?>
-                <?php endif; ?>
+                    <?php endif;?>
+                <?php endif;?>
         </div>
 
         <!-- Right Menu -->
@@ -206,47 +199,47 @@
                 <label for='templatedir'><?php eT("Template:"); ?></label>
                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
-                    echo $this->createUrl("admin/templates", array('sa'=>'view', 'editfile'=>$relativePathEditfile, 'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
+                    echo $this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
                     <?php echo templateoptions($templates, $templatename); ?>
                 </select>
             </div>
 
             <div class="form-group">
                 <label for='listboxtemplates'><?php eT("Screen:"); ?></label>
-                <?php echo CHtml::dropDownList('screenname', $screenname, $screens, array(
+                <?php echo CHtml::dropDownList('screenname',$screenname,$screens,array(
                     'id'=>'listboxtemplates',
                     'class'=>"listboxtemplates form-control",
-                    'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates", array('sa'=>'view', 'editfile'=>$relativePathEditfile, 'templatename'=>$templatename))."'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
+                    'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$relativePathEditfile,'templatename'=>$templatename))."'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
                 )); ?>
             </div>
 
-            <?php if (isset($fullpagebar['savebutton']['form'])):?>
+            <?php if(isset($fullpagebar['savebutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="<?php echo $fullpagebar['savebutton']['form']; ?>">
                     <span class="fa fa-floppy-o" ></span>
-                    <?php eT("Save"); ?>
+                    <?php eT("Save");?>
                 </a>
-                <?php endif; ?>
+                <?php endif;?>
 
             <!-- Close -->
-            <?php if (isset($fullpagebar['closebutton']['url'])):?>
+            <?php if(isset($fullpagebar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $fullpagebar['closebutton']['url']; ?>" role="button">
                     <span class="fa fa-close" ></span>
-                    <?php eT("Close"); ?>
+                    <?php eT("Close");?>
                 </a>
-                <?php endif; ?>
+                <?php endif;?>
 
-            <?php if (isset($fullpagebar['returnbutton'])):?>
+            <?php if(isset($fullpagebar['returnbutton'])):?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/templateoptions"); ?>" role="button">
                     <span class="fa fa-backward" ></span>
                     &nbsp;&nbsp;
                     <?php eT("Return to template list"); ?>
                 </a>
-                <?php endif; ?>
+                <?php endif;?>
         </div>
     </div>
 </div>
 
-<?php if ($importModal):?>
+<?php if($importModal):?>
     <div class="modal fade" tabindex="-1" role="dialog" id="importModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -261,7 +254,7 @@
                     <div  class="form-group">
                         <label for='the_file'><?php eT("Select template ZIP file:") ?></label>
                         <input id='the_file' name='the_file' type="file" accept='.zip' />
-                        <?php printf(gT('(Maximum file size: %01.2f MB)'), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                        <?php printf(gT('(Maximum file size: %01.2f MB)'),getMaximumFileUploadSize()/1024/1024); ?>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -270,41 +263,41 @@
                         <?php } else {?>
                         <input class="btn btn-success" type='button' value='<?php eT("Import") ?>' onclick='if (validatefilename(this.form,"<?php eT('Please select a file to import!', 'js') ?>")) { this.form.submit();}' />
                         <?php }?>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
                 </div>
                 </form>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-    <?php endif; ?>
+    <?php endif;?>
 
 <div class="col-lg-12 templateeditor">
     <div class="h3"><?php eT("Template editor:"); ?> <i><?php echo $templatename; ?></i></div>
 
 
-    <?php if (!is_template_editable($templatename)):?>
+    <?php if(!is_template_editable($templatename)):?>
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
             <span class="fa fa-info-sign" ></span>&nbsp;&nbsp;&nbsp;
             <strong>
-                <?php eT('Note: This is a standard template.'); ?>
+                <?php eT('Note: This is a standard template.');?>
             </strong>
             <?php
-            printf(gT('If you want to modify it %s you can extend it%s.'), "<a href='#' title=\"".gT("Extend template")."\""
-                ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the new template:")."', '".gT("extends_")."$templatename', '$templatename', 'copy')\">", '</a>');
+            printf(gT('If you want to modify it %s you can extend it%s.'),"<a href='#' title=\"".gT("Extend template")."\""
+                ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the new template:")."', '".gT("extends_")."$templatename', '$templatename', 'copy')\">",'</a>');
             ?>
         </div>
-    <?php endif; ?>
-    <?php if (intval($templateapiversion) < intval(App()->getConfig("versionnumber"))):?>
+    <?php endif;?>
+    <?php if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
         <div class="alert alert-info alert-dismissible" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
             <div class="h4">
                 <span class="fa fa-info-sign" ></span>
-                <?php eT('This template is out of date.'); ?>
+                <?php eT('This template is out of date.');?>
             </div>
             <?php
-                printf(gT("We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API."), intval(App()->getConfig("versionnumber")));
+                printf(gT("We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API."),intval(App()->getConfig("versionnumber")));
             ?>
         </div>
-    <?php endif; ?>
+    <?php endif;?>
 </div>

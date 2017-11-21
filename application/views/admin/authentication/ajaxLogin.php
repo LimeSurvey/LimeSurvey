@@ -4,19 +4,19 @@
 
         <!-- Header -->
         <div class="col-lg-12">
-          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL; ?>" />
+          <img alt="logo" id="profile-img" class="profile-img-card img-responsive center-block" src="<?php echo LOGO_URL;?>" />
         </div>
 
         <!-- Action Name -->
         <div class="row login-title login-content">
             <div class="col-lg-12">
-                <h3><?php eT("Log in"); ?></h3>
+                <h3><?php eT("Log in");?></h3>
                 <p class='text-muted'><?php eT('You\'ve been logged out due to inactivity. Please log in again.'); ?></p>
             </div>
         </div>
 
         <!-- Form -->
-        <?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id'=>'loginform', 'name'=>'loginform')); ?>
+        <?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id'=>'loginform', 'name'=>'loginform'));?>
             <div class="row login-content login-content-form">
                 <div class="col-sm-6 col-sm-offset-3">
                     <?php
@@ -27,7 +27,7 @@
                             $defaultAuth = reset($pluginNames);
                         }
 
-                        if (count($pluginContent) > 1)
+                        if (count($pluginContent)>1)
                         {
                             $selectedAuth = App()->getRequest()->getParam('authMethod', $defaultAuth);
                             if (!in_array($selectedAuth, $pluginNames))
@@ -39,7 +39,7 @@
                    <label for='authMethod'><?php eT("Authentication method"); ?></label>
                         <?php
                             $possibleAuthMethods = array();
-                            foreach ($pluginNames as $plugin)
+                            foreach($pluginNames as $plugin)
                             {
                                 $info = App()->getPluginManager()->getPluginInfo($plugin);
                                 $possibleAuthMethods[$plugin] = $info['pluginName'];
@@ -57,7 +57,8 @@
                             )));
 
 
-                        } else
+                        }
+                        else
                         {
                             echo CHtml::hiddenField('authMethod', $defaultAuth);
                             $selectedAuth = $defaultAuth;
@@ -74,7 +75,7 @@
                         );
                         foreach (getLanguageDataRestricted(true) as $sLangKey => $aLanguage)
                         {
-                            $languageData[$sLangKey] = html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8')." - ".$aLanguage['description'];
+                            $languageData[$sLangKey] =  html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
                         }
                         echo CHtml::label(gT('Language'), 'loginlang');
 
@@ -104,7 +105,7 @@
                 <div class="col-lg-12">
                         <p><input type='hidden' name='action' value='login' />
                            <input type='hidden' id='width' name='width' value='' />
-                            <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in'); ?></button><br />
+                            <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in');?></button><br />
                             <br/>
                             <?php
                             if (Yii::app()->getConfig("display_user_password_in_email") === true)

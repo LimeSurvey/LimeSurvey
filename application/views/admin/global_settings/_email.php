@@ -25,21 +25,21 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'emailmethod',
-            'value'=> getGlobalSetting('emailmethod'),
+            'value'=> getGlobalSetting('emailmethod') ,
             'selectOptions'=>array(
                 "mail"=>"PHP",
                 "smtp"=>"SMTP",
                 "sendmail"=>"Sendmail",
                 "qmail"=>"qmail"
             )
-        )); ?>
+        ));?>
     </div>
 </div>
 <div class="form-group">
     <label class="  control-label"  for="emailsmtphost"><?php eT("SMTP host:"); ?></label>
     <div class="">
         <input class="form-control"  type='text' size='50' id='emailsmtphost' name='emailsmtphost' value="<?php echo htmlspecialchars(getGlobalSetting('emailsmtphost')); ?>" />
-        <p class="help-block"><?php printf("Enter your hostname and port, e.g.: %s", "smtp.example.org:25"); ?></p>
+        <p class="help-block"><?php printf("Enter your hostname and port, e.g.: %s","smtp.example.org:25"); ?></p>
     </div>
 </div>
 <div class="form-group">
@@ -59,13 +59,13 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'emailsmtpssl',
-            'value'=> getGlobalSetting('emailsmtpssl'),
+            'value'=> getGlobalSetting('emailsmtpssl') ,
             'selectOptions'=>array(
-                ""=>gT("Off", 'unescaped'),
-                "ssl"=>gT("SSL", 'unescaped'),
-                "tls"=>gT("TLS", 'unescaped')
+                ""=>gT("Off",'unescaped'),
+                "ssl"=>gT("SSL",'unescaped'),
+                "tls"=>gT("TLS",'unescaped')
             )
-        )); ?>
+        ));?>
     </div>
 </div>
 <div class="form-group">
@@ -73,13 +73,13 @@
     <div class="">
         <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
             'name' => 'emailsmtpdebug',
-            'value'=> getGlobalSetting('emailsmtpdebug'),
+            'value'=> getGlobalSetting('emailsmtpdebug') ,
             'selectOptions'=>array(
-                "0"=>gT("Off", 'unescaped'),
-                "1"=>gT("On errors", 'unescaped'),
-                "2"=>gT("Always", 'unescaped')
+                "0"=>gT("Off",'unescaped'),
+                "1"=>gT("On errors",'unescaped'),
+                "2"=>gT("Always",'unescaped')
             )
-        )); ?>
+        ));?>
 
         <br />&nbsp;
     </div>
@@ -91,6 +91,6 @@
     </div>
 </div>
 
-<?php if (Yii::app()->getConfig("demoMode") == true):?>
+<?php if (Yii::app()->getConfig("demoMode")==true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
     <?php endif; ?>

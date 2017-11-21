@@ -1,4 +1,4 @@
-<div class="pagetitle h3"><?php eT("Check data integrity"); ?></div>
+<div class="pagetitle h3"><?php eT("Check data integrity");?></div>
         
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-12">
@@ -8,12 +8,12 @@
                 <p>
                     <ul>
                     <?php foreach ($messages as $sMessage) {?>
-                     <li><?php echo $sMessage; ?></li>
+                     <li><?php echo $sMessage;?></li>
                     <?php } ?>
                     </ul>           
                 </p>
                 <p>
-                    <a class="btn btn-lg btn-success" href='<?php echo $this->createUrl('admin/checkintegrity'); ?>'><?php eT("Check again"); ?></a>
+                    <a class="btn btn-lg btn-success" href='<?php echo $this->createUrl('admin/checkintegrity');?>'><?php eT("Check again"); ?></a>
                 </p>
         </div>        
         

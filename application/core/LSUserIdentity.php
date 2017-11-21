@@ -65,7 +65,7 @@ class LSUserIdentity extends CUserIdentity {
                 $result->setError(self::ERROR_UNKNOWN_HANDLER);
             } else {
                 // Delegate actual authentication to plugin
-                $authEvent = new PluginEvent('newUserSession', $this); // TODO: rename the plugin function authenticate()
+                $authEvent = new PluginEvent('newUserSession', $this);          // TODO: rename the plugin function authenticate()
                 $authEvent->set('identity', $this);
                 App()->getPluginManager()->dispatchEvent($authEvent);
                 $pluginResult = $authEvent->get('result');
@@ -101,22 +101,22 @@ class LSUserIdentity extends CUserIdentity {
     }
 
     /**
-     * Returns the current user's ID
-     *
-     * @access public
-     * @return int
-     */
+    * Returns the current user's ID
+    *
+    * @access public
+    * @return int
+    */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-     * Returns the active user's record
-     *
-     * @access public
-     * @return User
-     */
+    * Returns the active user's record
+    *
+    * @access public
+    * @return User
+    */
     public function getUser()
     {
         return $this->user;
@@ -133,15 +133,15 @@ class LSUserIdentity extends CUserIdentity {
                 'user_id' => App()->user->id,
                 'importance' => Notification::HIGH_IMPORTANCE,
                 'title' => 'Password warning',
-                'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                'message' => '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
                     gT("Warning: You are still using the default password ('password'). Please change your password and re-login again.")
             ));
             $not->save();
         }
 
-        if ((int) App()->request->getPost('width', '1220') < 1220) // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
+        if ((int)App()->request->getPost('width', '1220') < 1220) // Should be 1280 but allow 60 lenience pixels for browser frame and scrollbar
         {
-            Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."), 'error');
+            Yii::app()->setFlashMessage(gT("Your browser screen size is too small to use the administration properly. The minimum size required is 1280*1024 px."),'error');
         }
 
         // Do session setup
@@ -152,22 +152,22 @@ class LSUserIdentity extends CUserIdentity {
         Yii::app()->session['templateeditormode'] = $user->templateeditormode;
         Yii::app()->session['questionselectormode'] = $user->questionselectormode;
         Yii::app()->session['dateformat'] = $user->dateformat;
-        Yii::app()->session['session_hash'] = hash('sha256', getGlobalSetting('SessionName').$user->users_name.$user->uid);
+        Yii::app()->session['session_hash'] = hash('sha256',getGlobalSetting('SessionName').$user->users_name.$user->uid);
 
         // Perform language settings
         if (App()->request->getPost('loginlang', 'default') != 'default')
         {
             $user->lang = sanitize_languagecode(App()->request->getPost('loginlang'));
             $user->save();
-            $sLanguage = $user->lang;
+            $sLanguage=$user->lang;
         }
-        else if ($user->lang == 'auto' || $user->lang == '')
+        else if ($user->lang=='auto' || $user->lang=='')
         {
-            $sLanguage = getBrowserLanguage();
+            $sLanguage=getBrowserLanguage();
         }
         else
         {
-            $sLanguage = $user->lang;
+            $sLanguage=$user->lang;
         }
 
         Yii::app()->session['adminlang'] = $sLanguage;

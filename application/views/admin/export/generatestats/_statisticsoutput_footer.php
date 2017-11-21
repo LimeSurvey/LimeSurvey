@@ -12,8 +12,8 @@
  * @var $color
  *
  */
-    // TODO: move to controller
-    $qqid = str_replace ( '-', '__' , $qqid );
+ // TODO: move to controller
+ $qqid = str_replace ( '-', '__' , $qqid );
 ?>
 
 statisticsData['quid'+'<?php echo $qqid; ?>'] = {

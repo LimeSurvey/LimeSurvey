@@ -35,7 +35,7 @@
             $questionrow = $this->widgetOptions['questionrow'];
             $langopts = $this->widgetOptions['langopts'];
             $language = $this->widgetOptions['language'];
-            $defaultValues = $this->widgetOptions['langopts'][$language][$questionrow['type']][0];
+            $defaultValues =  $this->widgetOptions['langopts'][$language][$questionrow['type']][0];
 
             $emfield_css = '';
             $emValue = '';
@@ -43,30 +43,30 @@
             $sEmfield_css_class = '';
 
             // prepare variables for prefilling the form
-            if (!is_null($defaultValues))
+            if(!is_null ($defaultValues))
             {
                 $sDefaultValue = $defaultValues;
-                if (($sDefaultValue == 'N') || ($sDefaultValue == 'Y') || ($sDefaultValue == '')) { //|| 'Y' || NULL)){
+                if(($sDefaultValue == 'N') || ($sDefaultValue == 'Y') || ($sDefaultValue == '') ){ //|| 'Y' || NULL)){
                 $select = $defaultValues;
-            } else {
+            }else{
                 $select = 'EM';
                 $emValue = $defaultValues;
             }
             }
 
-            if ($questionrow['type'] == 'Y') // do we need this?
+            if($questionrow['type'] == 'Y') // do we need this?
             {
-                $sElement_id = 'defaultanswerscale_0_'.$language;
+                $sElement_id = 'defaultanswerscale_0_' . $language;
 
                 $aList = array(
-                    'N'    => gT('No', 'unescaped'),
-                    'Y'    => gT('Yes', 'unescaped'),
-                    'EM'   => gT('EM value', 'unescaped')
+                    'N'    => gT('No','unescaped'),
+                    'Y'    => gT('Yes','unescaped'),
+                    'EM'   => gT('EM value','unescaped')
                 );
 
                 $aHtmlOptions = array(
                     'empty'    => gT('<No default value>'),
-                    'class'    => $sElement_id.' form-control',
+                    'class'    => $sElement_id . ' form-control',
                     'onchange' => '// show EM Value Field
                                    if ($(this).val() == "EM"){
                                        $("#"+$(this).closest("select").attr("id")+ "_EM").removeClass("hide");
@@ -77,12 +77,12 @@
                 echo CHtml::dropDownList($sElement_id, $select, $aList, $aHtmlOptions);
 
                 // textfield preparation
-                if (empty($defaultValues) || $defaultValues == 'Y')
+                if(empty($defaultValues) ||  $defaultValues == 'Y')
                 {
                     $sEmfield_css_class = 'hide';
                 }
-                echo CHtml::textField($sElement_id.'_EM', $emValue, array(
-                        'id'    => $sElement_id.'_EM',
+                echo CHtml::textField ($sElement_id . '_EM', $emValue,array(
+                        'id'    => $sElement_id . '_EM',
                         'class' => $sEmfield_css_class,
                         'width' => 100
                     ));

@@ -8,6 +8,6 @@
 
 <!-- thead -->
 <th class="<?php echo $class; ?>">
-    <?php echo $content; ?>
+    <?php echo $content;?>
 </th>
 <!-- end of thead -->

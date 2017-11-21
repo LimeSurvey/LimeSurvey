@@ -40,28 +40,28 @@ class Authdb extends AuthPluginBase
         $new_user = flattenText(Yii::app()->request->getPost('new_user'), false, true);
         $new_email = flattenText(Yii::app()->request->getPost('new_email'), false, true);
         if (!validateEmailAddress($new_email)) {
-            $oEvent->set('errorCode', self::ERROR_INVALID_EMAIL);
-            $oEvent->set('errorMessageTitle', gT("Failed to add user"));
-            $oEvent->set('errorMessageBody', gT("The email address is not valid."));
+            $oEvent->set('errorCode',self::ERROR_INVALID_EMAIL);
+            $oEvent->set('errorMessageTitle',gT("Failed to add user"));
+            $oEvent->set('errorMessageBody',gT("The email address is not valid."));
             return;
         }
         $new_full_name = flattenText(Yii::app()->request->getPost('new_full_name'), false, true);
         $new_pass = createPassword();
         $iNewUID = User::model()->insertUser($new_user, $new_pass, $new_full_name, Yii::app()->session['loginID'], $new_email);
         if (!$iNewUID) {
-            $oEvent->set('errorCode', self::ERROR_ALREADY_EXISTING_USER);
-            $oEvent->set('errorMessageTitle', '');
-            $oEvent->set('errorMessageBody', gT("Failed to add user"));
+            $oEvent->set('errorCode',self::ERROR_ALREADY_EXISTING_USER);
+            $oEvent->set('errorMessageTitle','');
+            $oEvent->set('errorMessageBody',gT("Failed to add user"));
             return;
         }
 
-        Permission::model()->setGlobalPermission($iNewUID, 'auth_db');
+        Permission::model()->setGlobalPermission($iNewUID,'auth_db');
 
-        $oEvent->set('newUserID', $iNewUID);
-        $oEvent->set('newPassword', $new_pass);
-        $oEvent->set('newEmail', $new_email);
-        $oEvent->set('newFullName', $new_full_name);
-        $oEvent->set('errorCode', self::ERROR_NONE);
+        $oEvent->set('newUserID',$iNewUID);
+        $oEvent->set('newPassword',$new_pass);
+        $oEvent->set('newEmail',$new_email);
+        $oEvent->set('newFullName',$new_full_name);
+        $oEvent->set('errorCode',self::ERROR_NONE);
     }
 
     public function beforeDeactivate()
@@ -105,8 +105,8 @@ class Authdb extends AuthPluginBase
         }
 
         $this->getEvent()->getContent($this)
-                ->addContent(CHtml::tag('span', array(), "<label for='user'>"  . gT("Username") . "</label>".CHtml::textField('user',$sUserName,array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))))
-                ->addContent(CHtml::tag('span', array(), "<label for='password'>"  . gT("Password") . "</label>".CHtml::passwordField('password',$sPassword,array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))));
+             ->addContent(CHtml::tag('span', array(), "<label for='user'>"  . gT("Username") . "</label>".CHtml::textField('user',$sUserName,array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))))
+             ->addContent(CHtml::tag('span', array(), "<label for='password'>"  . gT("Password") . "</label>".CHtml::passwordField('password',$sPassword,array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))));
     }
 
     public function newUserSession()
@@ -127,10 +127,10 @@ class Authdb extends AuthPluginBase
         $user = $this->api->getUserByName($username);
 
         if ($user === null){
-            $user = $this->api->getUserByEmail($username);
-            if (is_object($user)){
-                $this->setUsername($user->users_name);
-            }
+          $user = $this->api->getUserByEmail($username);
+          if (is_object($user)){
+              $this->setUsername($user->users_name);
+          }
         }
         if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
         {
@@ -141,7 +141,7 @@ class Authdb extends AuthPluginBase
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
-        if ($user !== null && ($username != $user->users_name && $username != $user->email)) // Control of equality for uppercase/lowercase with mysql
+        if ($user !== null && ($username!=$user->users_name && $username!=$user->email)) // Control of equality for uppercase/lowercase with mysql
         {
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
@@ -150,13 +150,13 @@ class Authdb extends AuthPluginBase
 
         if ($onepass != '' && $this->api->getConfigKey('use_one_time_passwords') && md5($onepass) == $user->one_time_pw)
         {
-            $user->one_time_pw = '';
+            $user->one_time_pw='';
             $user->save();
             $this->setAuthSuccess($user);
             return;
         }
 
-        if (!$user->checkPassword($password)) {
+        if(!$user->checkPassword($password)) {
             $this->setAuthFailure(self::ERROR_PASSWORD_INVALID);
             return;
         }

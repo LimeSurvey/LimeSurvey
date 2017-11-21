@@ -9,7 +9,7 @@
 <!-- Rendering massive action widget -->
 <?php
     $buttons = array();
-    if (Permission::model()->hasSurveyPermission($_GET['surveyid'], 'responses', 'delete')) {
+    if (Permission::model()->hasSurveyPermission($_GET['surveyid'], 'responses','delete')) {
         // Delete
         $buttons[] = array(
             // li element
@@ -27,7 +27,7 @@
             'sModalTitle'   => gT('Delete responses'),
             'htmlModalBody' => gT('Are you sure you want to delete the selected responses?'),
             'aCustomDatas'  => array(
-                array('name'=>'sid', 'value'=> $_GET['surveyid']),
+                array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
             ),
         );
 
@@ -47,7 +47,7 @@
             'sModalTitle'   => gT('Delete attachments'),
             'htmlModalBody' => gT('Are you sure you want to delete all uploaded files from the selected responses?'),
             'aCustomDatas'  => array(
-                array('name'=>'sid', 'value'=> $_GET['surveyid']),
+                array( 'name'=>'sid',  'value'=> $_GET['surveyid']),
             ),
         );
     }
@@ -57,7 +57,7 @@
         $buttons[] = array(
             'type' => 'action',
             'action' => 'downloadZip',
-            'url' => App()->createUrl('/admin/responses/sa/actionDownloadfiles/iSurveyId/'.$_GET['surveyid']).'/sResponseId/',
+            'url' => App()->createUrl('/admin/responses/sa/actionDownloadfiles/iSurveyId/' . $_GET['surveyid']) . '/sResponseId/',
             'iconClasses' => 'fa fa-download',
             'text' => gT('Download files'),
             'grid-reload' => 'no',

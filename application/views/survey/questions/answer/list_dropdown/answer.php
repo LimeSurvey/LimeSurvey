@@ -22,7 +22,7 @@
             class="form-control list-question-select"
             name="<?php echo $name; ?>"
             id="answer<?php echo $name; ?>"
-            <?php  echo ($dropdownSize) ? "size=$dropdownSize" : ""; ?>
+            <?php  echo ($dropdownSize) ? "size=$dropdownSize" : "" ; ?>
             aria-labelledby="ls-question-text-<?php echo $basename; ?>"
     >
         <?php
@@ -36,7 +36,7 @@
     ?>
     <?php
     /* Value for expression manager javascript (use id) ; no need to submit */
-    echo \CHtml::hiddenField("java{$name}", $value, array(
+    echo \CHtml::hiddenField("java{$name}",$value,array(
         'id' => "java{$name}",
         'disabled' => "disabled",
     ));

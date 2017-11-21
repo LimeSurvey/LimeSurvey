@@ -16,7 +16,7 @@
                         "number"=>gT('Show question number only'),
                         "code"=>gT('Show question code only'),
                         "none"=>gT('Hide both')
-                    ), array('class'=>'form-control'));
+                    ),array('class'=>'form-control'));
                 ?>
             </div>
         </div>
@@ -69,7 +69,7 @@
                         "name"=>gT('Show group name only'),
                         "description"=>gT('Show group description only'),
                         "none"=>gT('Hide both')
-                    ), array('class'=>'form-control'));
+                    ),array('class'=>'form-control'));
                 ?>
             </div>
         </div>
@@ -81,13 +81,13 @@
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'shownoanswer',
-                    'value'=> getGlobalSetting('shownoanswer'),
+                    'value'=> getGlobalSetting('shownoanswer') ,
                     'selectOptions'=>array(
-                        "2"=>gT("Selectable", 'unescaped'),
-                        "1"=>gT("On", 'unescaped'),
-                        "0"=>gT("Off", 'unescaped')
+                        "2"=>gT("Selectable",'unescaped'),
+                        "1"=>gT("On",'unescaped'),
+                        "0"=>gT("Off",'unescaped')
                     )
-                )); ?>
+                ));?>
             </div>
         </div>
 
@@ -96,23 +96,23 @@
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'showxquestions',
-                    'value'=> getGlobalSetting('showxquestions'),
+                    'value'=> getGlobalSetting('showxquestions') ,
                     'selectOptions'=>array(
-                        "choose"=>gT("Selectable", 'unescaped'),
-                        "show"=>gT("On", 'unescaped'),
-                        "hide"=>gT("Off", 'unescaped')
+                        "choose"=>gT("Selectable",'unescaped'),
+                        "show"=>gT("On",'unescaped'),
+                        "hide"=>gT("Off",'unescaped')
                     )
-                )); ?>
+                ));?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class=" control-label"  for='pdfshowheader'><?php eT("Show header in answers export PDFs:"); ?></label>
+            <label class=" control-label"  for='pdfshowheader'><?php eT("Show header in answers export PDFs:") ; ?></label>
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'pdfshowheader',
                     'id'=>'pdfshowheader',
-                    'value' => getGlobalSetting('pdfshowheader') == 'Y' ? '1' : 0,
+                    'value' => getGlobalSetting('pdfshowheader')=='Y'?'1':0,
                     'onLabel'=>gT('On'),
                     'offLabel' => gT('Off')));
                 ?>
@@ -175,7 +175,7 @@
 </div>
 
 
-<?php if (Yii::app()->getConfig("demoMode") == true):?>
+<?php if (Yii::app()->getConfig("demoMode")==true):?>
 <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>
 

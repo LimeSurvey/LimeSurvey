@@ -16,7 +16,7 @@
 <!-- answer -->
 <table class="<?php echo $coreClass; ?> table table-bordered table-hover" role="group" aria-labelledby="ls-question-text-<?php echo $basename ?>">
     <colgroup class="col-responses">
-        <col class="col-answers"  style='width: <?php echo $answerwidth; ?>%;'  />
+        <col class="col-answers"  style='width: <?php echo $answerwidth;?>%;'  />
         <?php
             // columns/col.php
             echo $sColumns;
@@ -31,10 +31,10 @@
         </tr>
     </thead>
     <tbody>
-        <?php if ($anscount == 0):?>
+        <?php if($anscount==0):?>
             <tr>
                 <th class="answertext">
-                    <?php eT('Error: This question has no answers.'); ?>
+                    <?php eT('Error: This question has no answers.');?>
                 </th>
             </tr>
         <?php endif; ?>

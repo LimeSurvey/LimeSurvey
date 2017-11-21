@@ -16,20 +16,20 @@ echo viewHelper::getViewTestTag('login');
                 <!-- Header -->
                 <div class="panel-body">
                     <div class="row">
-                          <img alt="logo" id="profile-img" class="profile-img-card center-block" src="<?php echo LOGO_URL; ?>" />
-                             <p><?php eT("Administration"); ?></p>
+                          <img alt="logo" id="profile-img" class="profile-img-card center-block" src="<?php echo LOGO_URL;?>" />
+                             <p><?php eT("Administration");?></p>
                     </div>
                 </div>
 
                 <!-- Action Name -->
                 <div class="row login-title login-content">
                       <div class="col-lg-12">
-                       <h3><?php eT("Log in"); ?></h3>
+                       <h3><?php eT("Log in");?></h3>
                     </div>
                 </div>
 
                 <!-- Form -->
-                <?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id'=>'loginform', 'name'=>'loginform')); ?>
+                <?php echo CHtml::form(array('admin/authentication/sa/login'), 'post', array('id'=>'loginform', 'name'=>'loginform'));?>
                     <div class="row login-content login-content-form">
                         <div class="col-lg-12">
                             <?php
@@ -40,7 +40,7 @@ echo viewHelper::getViewTestTag('login');
                                     $defaultAuth = reset($pluginNames);
                                 }
 
-                                if (count($pluginContent) > 1)
+                                if (count($pluginContent)>1)
                                 {
                                     $selectedAuth = App()->getRequest()->getParam('authMethod', $defaultAuth);
                                     if (!in_array($selectedAuth, $pluginNames))
@@ -52,7 +52,7 @@ echo viewHelper::getViewTestTag('login');
                            <label for='authMethod'><?php eT("Authentication method"); ?></label>
                                 <?php
                                     $possibleAuthMethods = array();
-                                    foreach ($pluginNames as $plugin)
+                                    foreach($pluginNames as $plugin)
                                     {
                                         $info = App()->getPluginManager()->getPluginInfo($plugin);
                                         $possibleAuthMethods[$plugin] = $info['pluginName'];
@@ -70,7 +70,8 @@ echo viewHelper::getViewTestTag('login');
                                     )));
 
 
-                                } else
+                                }
+                                else
                                 {
                                     echo CHtml::hiddenField('authMethod', $defaultAuth);
                                     $selectedAuth = $defaultAuth;
@@ -86,17 +87,17 @@ echo viewHelper::getViewTestTag('login');
                                 $languageData = array();
 
                                 $reqLang = App()->request->getParam('lang');
-                                if ($reqLang === null) {
+                                if ($reqLang === null){
                                     $languageData['default'] = gT('Default');
-                                } else {
-                                    $languageData[$reqLang] = html_entity_decode($aLangList[$reqLang]['nativedescription'], ENT_NOQUOTES, 'UTF-8')." - ".$aLangList[$reqLang]['description'];
+                                }else{
+                                    $languageData[$reqLang] = html_entity_decode($aLangList[$reqLang]['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLangList[$reqLang]['description'];
                                     $languageData['default'] = gT('Default');
                                     unset($aLangList[$reqLang]);
                                 }
 
-                                foreach ($aLangList as $sLangKey => $aLanguage)
+                                foreach ( $aLangList as $sLangKey => $aLanguage)
                                 {
-                                    $languageData[$sLangKey] = html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8')." - ".$aLanguage['description'];
+                                    $languageData[$sLangKey] =  html_entity_decode($aLanguage['nativedescription'], ENT_NOQUOTES, 'UTF-8') . " - " . $aLanguage['description'];
                                 }
 
 
@@ -127,7 +128,7 @@ echo viewHelper::getViewTestTag('login');
                         <div class="col-lg-12">
                                 <p><input type='hidden' name='action' value='login' />
                                    <input type='hidden' id='width' name='width' value='' />
-                                    <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in'); ?></button><br />
+                                    <button type="submit" class="btn btn-default" name='login_submit' value='login'><?php eT('Log in');?></button><br />
                                     <br/>
                                     <?php
                                     if (Yii::app()->getConfig("display_user_password_in_email") === true)

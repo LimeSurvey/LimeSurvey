@@ -13,30 +13,30 @@ class MenuItem implements MenuItemInterface
 
     public function __construct($options)
     {
-        if (isset($options['isDivider']))
-        {
-            $this->isDivider = $options['isDivider'];
-        }
+      if (isset($options['isDivider']))
+      {
+          $this->isDivider = $options['isDivider'];
+      }
 
-        if (isset($options['isSmallText']))
-        {
-            $this->isSmallText = $options['isSmallText'];
-        }
+      if (isset($options['isSmallText']))
+      {
+          $this->isSmallText = $options['isSmallText'];
+      }
 
-        if (isset($options['label']))
-        {
-            $this->label = $options['label'];
-        }
+      if (isset($options['label']))
+      {
+          $this->label = $options['label'];
+      }
 
-        if (isset($options['href']))
-        {
-            $this->href = $options['href'];
-        }
+      if (isset($options['href']))
+      {
+          $this->href = $options['href'];
+      }
 
-        if (isset($options['iconClass']))
-        {
-            $this->iconClass = $options['iconClass'];
-        }
+      if (isset($options['iconClass']))
+      {
+          $this->iconClass = $options['iconClass'];
+      }
     }
 
     public function getHref() { return $this->href; }

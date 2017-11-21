@@ -38,12 +38,9 @@
                 </p>
             </div>
 </div>
-<?php else {
-    :?>
+<?php else:?>
 
-<div class='side-body <?php echo getSideBodyClass(false);
-}
-?>'>
+<div class='side-body <?php echo getSideBodyClass(false); ?>'>
 <div class='container message-box col-sm-12'>
 
     <h2 class='col-sm-7 col-sm-offset-2'><?php eT("Warning: Please read this carefully before proceeding!"); ?></h2>
@@ -63,8 +60,8 @@
     </div>
 
     <div class="col-sm-7 col-sm-offset-2"><p><strong>
-        <?php eT("Additionally the following settings cannot be changed when the survey is active."); ?>
-    </strong><br><?php eT("Please check these settings now:"); ?></p></div>
+        <?php eT("Additionally the following settings cannot be changed when the survey is active.");?>
+    </strong><br><?php eT("Please check these settings now:");?></p></div>
 
     <?php echo CHtml::form(array("admin/survey/sa/activate/surveyid/{$surveyid}/"), 'post', array('class'=>'')); ?>
         <div class='row'>
@@ -78,7 +75,7 @@
                             {
                                 if (document.getElementById('anonymized').value == 'Y')
                                 {
-                                    alert('<?php eT("Warning"); ?>: <?php eT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.", "js"); ?>');
+                                    alert('<?php eT("Warning"); ?>: <?php eT("If you turn on the -Anonymized responses- option and create a tokens table, LimeSurvey will mark your completed tokens only with a 'Y' instead of date/time to ensure the anonymity of your participants.","js"); ?>');
                                 }
                             }
                             //-->
@@ -116,11 +113,11 @@
                     </label>
                     <div class='col-sm-5'>
                         <select id='datestamp' class='form-control' name='datestamp' onchange='alertDateStampAnonymization();'>
-                            <option value='Y' <?php if ($aSurveysettings['datestamp'] == "Y") {echo 'selected="selected"'; }?>>
+                            <option value='Y' <?php if ($aSurveysettings['datestamp'] == "Y"){echo 'selected="selected"';}?>>
                                 <?php eT("Yes"); ?>
                             </option>
 
-                            <option value='N' <?php if ($aSurveysettings['datestamp'] != "Y") {echo "selected='selected'"; }?>>
+                            <option value='N' <?php if ($aSurveysettings['datestamp'] != "Y"){echo "selected='selected'";}?>>
                                 <?php eT("No"); ?>
                             </option>
                         </select>
@@ -138,10 +135,10 @@
 
                     <div class='col-sm-5'>
                         <select name='ipaddr' id='ipaddr' class='form-control'>
-                            <option value='Y' <?php if ($aSurveysettings['ipaddr'] == "Y") {echo "selected='selected'"; } ?>>
+                            <option value='Y' <?php if ($aSurveysettings['ipaddr'] == "Y") {echo "selected='selected'";} ?>>
                                 <?php eT("Yes"); ?>
                             </option>
-                            <option value='N' <?php if ($aSurveysettings['ipaddr'] != "Y") { echo "selected='selected'"; } ?>>
+                            <option value='N' <?php if ($aSurveysettings['ipaddr'] != "Y") { echo "selected='selected'";} ?>>
                                 <?php eT("No"); ?>
                             </option>
                         </select>
@@ -154,10 +151,10 @@
                     <label class='control-label col-sm-7' for='refurl'><?php eT("Save referrer URL?"); ?></label>
                     <div class='col-sm-5'>
                         <select class='form-control' name='refurl' id='refurl'>
-                            <option value='Y' <?php if ($aSurveysettings['refurl'] == "Y") {echo "selected='selected'"; } ?>>
+                            <option value='Y' <?php if ($aSurveysettings['refurl'] == "Y"){echo "selected='selected'";} ?>>
                                 <?php eT("Yes"); ?>
                             </option>
-                            <option value='N' <?php if ($aSurveysettings['refurl'] != "Y") {echo "selected='selected'"; } ?>>
+                            <option value='N' <?php if ($aSurveysettings['refurl'] != "Y") {echo "selected='selected'";} ?>>
                                 <?php eT("No"); ?>
                             </option>
                         </select>
@@ -200,4 +197,4 @@
     </form>
 </div>
 </div>
-<?php endif; ?>
+<?php endif;?>

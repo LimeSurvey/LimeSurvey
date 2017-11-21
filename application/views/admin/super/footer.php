@@ -19,13 +19,13 @@
             <!-- Support / Donate -->
             <div  class="col-xs-6 col-sm-4 text-center"  >
                 <a href='http://donate.limesurvey.org' target="_blank">
-                    <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl'); ?>donate.png'/>
+                    <img alt='<?php eT("Support this project - Donate to "); ?>LimeSurvey' title='<?php eT("Support this project - Donate to "); ?>LimeSurvey!' src='<?php echo Yii::app()->getConfig('adminimageurl');?>donate.png'/>
                 </a>
             </div>
 
             <!-- Lime survey website -->
             <div class="col-xs-12 col-sm-4 text-right">
-                <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber.$buildtext; ?>
+                <a  title='<?php eT("Visit our website!"); ?>' href='https://www.limesurvey.org' target='_blank'>LimeSurvey</a><br /><?php echo $versiontitle."  ".$versionnumber.$buildtext;?>
             </div>
         </div>
     </div>
@@ -45,6 +45,7 @@
         data-onclick='(function() { LS.plugin.cintlink.cancelOrder("<?php echo $order->url; ?>"); })'
         class='btn btn-warning btn-sm' 
     >
+
  */
 ?>
 <div id="confirmation-modal" class="modal fade" role="dialog">
@@ -59,7 +60,7 @@
                 <p class='modal-body-text'><?php eT("Are you sure?"); ?></p>
                 <!-- the ajax loader -->
                 <div id="ajaxContainerLoading" >
-                    <p><?php eT('Please wait, loading data...'); ?></p>
+                    <p><?php eT('Please wait, loading data...');?></p>
                     <div class="preloader loading">
                         <span class="slice"></span>
                         <span class="slice"></span>

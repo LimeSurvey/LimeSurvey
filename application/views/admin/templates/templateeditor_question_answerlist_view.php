@@ -1,6 +1,6 @@
 <?php
 /* Set some part */
-$sRows = "";
+$sRows="";
 $sRows .= App()->getController()->renderPartial('/survey/questions/answer/listradio/columns/column_header', array('iColumnWidth' => 12), true);
 $sRows .= App()->getController()->renderPartial('/survey/questions/answer/listradio/rows/answer_row', array(
     'sDisplayStyle' => '',

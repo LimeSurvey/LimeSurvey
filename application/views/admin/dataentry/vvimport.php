@@ -1,7 +1,7 @@
 <div class="side-body <?php echo getSideBodyClass(false); ?>">
-    <?php if ($tableExists):?>
+    <?php if($tableExists):?>
     <h3><?php eT("Import a VV response data file"); ?></h3>
-    <?php endif; ?>
+    <?php endif;?>
 
         <div class="row">
             <div class="col-lg-12 content-right">
@@ -9,19 +9,19 @@
 <?php
     if ($tableExists) {
     ?>
-    <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport', 'class'=>'')); ?>
+    <?php echo CHtml::form(array('admin/dataentry/sa/vvimport/surveyid/'.$surveyid), 'post', array('enctype'=>'multipart/form-data', 'id'=>'vvexport',  'class'=>''));?>
 
     <div class="panel panel-primary" id="panel-1">
         <div class="panel-heading">
             <div class="panel-title h4">
-                <?php eT("General"); ?>
+                <?php eT("General");?>
             </div>
         </div>
 
         <div class="panel-body">
             <div class="form-group">
                 <label for="csv_vv_file" class=" control-label">
-                    <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
+                    <?php printf(gT("Response data file (*.csv,*.vv,*.txt) (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                 </label>
                 <div class="">
                     <input type="file" value="" name="csv_vv_file" id="csv_vv_file" class="form-control"  accept='.csv,.vv,.txt' required>
@@ -54,7 +54,7 @@
                             'replace' => gT("Replace the existing record."),
                             'replaceanswers' => gT("Replace answers in file in the existing record."),
                             ),array('disabled'=>'disabled','class'=>'form-control'));
-                        ?>
+                     ?>
                 </div>
             </div>
 
@@ -78,7 +78,7 @@
                     <?php eT("Character set of the file:"); ?>
                 </label>
                 <div class="">
-                    <?php  echo CHtml::dropDownList('vvcharset', false, $aEncodings, array('class'=>'form-control', 'empty' => gT('Automatic (UTF-8)'))); ?>
+                    <?php  echo CHtml::dropDownList('vvcharset',false,$aEncodings,array('class'=>'form-control', 'empty' => gT('Automatic (UTF-8)'))); ?>
                 </div>
             </div>
 

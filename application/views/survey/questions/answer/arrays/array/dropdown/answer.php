@@ -5,6 +5,7 @@
  * @var $sRows      : the rows, generated with the view rows/answer_row.php
  *
  * @var $extraclass
+
  *
  */
 ?>
@@ -15,7 +16,7 @@
     <colgroup class="col-responses">
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
         <col class="odd" style='width: <?php echo $columnswidth; ?>%;' />
-        <?php if ($right_exists): ?>
+        <?php if($right_exists): ?>
             <col class="col-answersright" style='width: <?php echo $answerwidth; ?>%;' />
         <?php endif; ?>
     </colgroup>

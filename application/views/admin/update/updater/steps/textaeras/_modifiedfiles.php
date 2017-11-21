@@ -8,12 +8,12 @@
 */
 ?>
 <?php
-if (count($modifiedfiles) > 0): ?>
+if (count($modifiedfiles)>0): ?>
     <p>
         <br/><br/>
-        <?php eT('The following files will be modified or deleted but were already modified by someone else.'); ?>
+        <?php eT('The following files will be modified or deleted but were already modified by someone else.');?>
         <br/>
-        <?php eT('These files will be backed up and then replaced by the update procedure.'); ?>
+        <?php eT('These files will be backed up and then replaced by the update procedure.');?>
     </p>
     <textarea readonly="readonly" style="background-color: #FFF; width: 800px; height: 150px; font-family: Monospace; font-size: 11px;"><?php
         sort($modifiedfiles);
@@ -21,5 +21,5 @@ if (count($modifiedfiles) > 0): ?>
         {
             echo htmlspecialchars($modifiedfile['file'])."\n";
     }?></textarea>
-    <?php endif; ?>
+    <?php endif;?>
 

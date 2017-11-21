@@ -5,8 +5,8 @@
         <label class=' control-label' for='email_<?php echo $tab; ?>_subj_<?php echo $grouplang; ?>'><?php echo $details['subject'] ?></label>
         <div class=''>
             <?php
-            $sSubjectField = $details['field']['subject'];
-            echo CHtml::textField("email_{$tab}_subj_{$grouplang}", $esrow->$sSubjectField, array('class' => 'form-control', 'size'=>80)); ?>
+            $sSubjectField=$details['field']['subject'];
+            echo CHtml::textField("email_{$tab}_subj_{$grouplang}",$esrow->$sSubjectField,array('class' => 'form-control', 'size'=>80)); ?>
         </div>
     </div>
 
@@ -14,19 +14,19 @@
         <label class=' control-label' for='email_<?php echo $tab; ?>_<?php echo $grouplang; ?>'><?php echo $details['body']; ?></label>
         <div class=''>
             <?php
-            $sBodyField = $details['field']['body'];
-            echo CHtml::textArea("email_{$tab}_{$grouplang}", $esrow->$sBodyField, array('cols'=>80, 'rows'=>20, 'class'=>'form-control')); ?>
-            <?php echo getEditor("email-$tab", "email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')', $surveyid, '', '', 'editemailtemplates'); ?>
+            $sBodyField=$details['field']['body'];
+            echo CHtml::textArea("email_{$tab}_{$grouplang}",$esrow->$sBodyField,array('cols'=>80,'rows'=>20, 'class'=>'form-control')); ?>
+            <?php echo getEditor("email-$tab","email_{$tab}_$grouplang", $details['body'].'('.$grouplang.')',$surveyid,'','','editemailtemplates'); ?>
         </div>
         <div class=''></div>
     </div>
     <div class='form-group '>
-        <label class=' control-label'><?php et('Actions:'); ?></label>
+        <label class=' control-label'><?php et('Actions:');?></label>
         <div class=''>
-            <?php echo CHtml::link(gT("Validate expressions"), array('admin/validate', 'sa'=>'email', 'sid'=>$surveyid, 'lang'=>$grouplang, 'type'=>$tab), array('title'=>$details['title'], "target"=>"dialog", "class"=>'btn btn-default')); ?>
+            <?php echo CHtml::link(gT("Validate expressions"),array('admin/validate','sa'=>'email','sid'=>$surveyid,'lang'=>$grouplang,'type'=>$tab),array('title'=>$details['title'],"target"=>"dialog","class"=>'btn btn-default')); ?>
             <?php
-            $details['default']['body'] = ($tab == 'admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'], $ishtml);
-            echo CHtml::button(gT("Reset this template"), array('class'=>'fillin btn btn-default', 'data-target'=>"email_{$tab}_{$grouplang}", 'data-value'=>$details['default']['body']));
+            $details['default']['body']=($tab=='admin_detailed_notification') ? $details['default']['body'] : conditionalNewlineToBreak($details['default']['body'],$ishtml) ;
+            echo CHtml::button(gT("Reset this template"),array('class'=>'fillin btn btn-default','data-target'=>"email_{$tab}_{$grouplang}",'data-value'=>$details['default']['body']));
             ?>
         </div>
     </div>

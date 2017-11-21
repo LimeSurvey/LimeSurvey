@@ -28,19 +28,19 @@ echo viewHelper::getViewTestTag('dataEntryView');
     <!-- question text -->
     <td valign='top' align='right' width='30%'>
         <!-- mandatory -->
-        <?php if ($deqrow['mandatory'] == "Y"):?>
+        <?php if ($deqrow['mandatory']=="Y"):?>
             <span class="text-warning">*</span>
         <?php endif; ?>
 
         <!-- question text -->
         <strong>
-            <?php echo $deqrow['question']; // don't flatten if want to use EM.  However, may not be worth it as want dynamic relevance and question changes?>
+            <?php echo $deqrow['question'];   // don't flatten if want to use EM.  However, may not be worth it as want dynamic relevance and question changes?>
         </strong>
     </td>
 
     <!-- Answers -->
     <td valign='top'  align='left' style='padding-left: 20px'>
-        <?php switch ($deqrow['type'])
+        <?php switch($deqrow['type'])
         {
 
 
@@ -48,8 +48,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
             case "5": ?>
             <div class="col-sm-10">
                 <select name='<?php echo $fieldname; ?>' class='form-control'>
-                    <option value=''><?php eT("No answer", 'html', $sDataEntryLanguage); ?></option>
-                    <?php for ($x = 1; $x <= 5; $x++)
+                    <option value=''><?php eT("No answer",'html',$sDataEntryLanguage); ?></option>
+                    <?php for ($x=1; $x<=5; $x++)
                     { ?>
                         <option value='<?php echo $x; ?>'><?php echo $x; ?></option>
                     <?php } ?>
@@ -64,11 +64,11 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 $dateformatdetails = getDateFormatDataForQID($qidattributes, $thissurvey);
                 ?>
             <div class="col-sm-10 has-feedback">
-                <?php if (canShowDatePicker($dateformatdetails)): ?>
+                <?php if(canShowDatePicker($dateformatdetails)): ?>
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                         'name' => $fieldname,
                         'pluginOptions' => array(
-                            'format' => $dateformatdetails['jsdate']." HH:mm",
+                            'format' => $dateformatdetails['jsdate'] . " HH:mm",
                             'allowInputToggle' =>true,
                             'showClear' => true,
                             'tooltips' => array(
@@ -89,11 +89,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
                         )
                     )); ?>
                     <input type='hidden' name='dateformat<?php echo $fieldname; ?>' id='dateformat<?php echo $fieldname; ?>' value='<?php echo $dateformatdetails['jsdate']; ?>'  />
-                <?php else {
-    :?>
-                    <input type='text' name='<?php echo $fieldname;
-}
-?>'/>
+                <?php else:?>
+                    <input type='text' name='<?php echo $fieldname; ?>'/>
                 <?php endif; ?>
             </div>
             <?php break;
@@ -103,9 +100,9 @@ echo viewHelper::getViewTestTag('dataEntryView');
             case "G": ?>
             <div class="col-sm-10">
                 <select name='<?php echo $fieldname; ?>'  class='form-control'>
-                    <option selected='selected' value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
-                    <option value='F'><?php eT("Female", 'html', $sDataEntryLanguage); ?></option>
-                    <option value='M'><?php eT("Male", 'html', $sDataEntryLanguage); ?></option>
+                    <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
+                    <option value='F'><?php eT("Female",'html',$sDataEntryLanguage); ?></option>
+                    <option value='M'><?php eT("Male",'html',$sDataEntryLanguage); ?></option>
                 </select>
             </div>
             <?php break;
@@ -138,7 +135,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <tr>
                         <th></th>
                         <th>
-                            <?php echo sprintf(gT('Label %s'), '1').'</th><th>'.sprintf(gT('Label %s'), '2'); ?>
+                            <?php echo sprintf(gT('Label %s'),'1').'</th><th>'.sprintf(gT('Label %s'),'2'); ?>
                         </th>
                     </tr>
 
@@ -174,7 +171,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                                     </div>
                                 </td>
                             </tr>
-                    <?php endforeach; ?>
+                    <?php endforeach;?>
 
                     <!-- other -->
                     <?php if ($fother == "Y"): ?>
@@ -196,20 +193,20 @@ echo viewHelper::getViewTestTag('dataEntryView');
         case "!": ?>
         <div class="col-sm-10">
             <select name='<?php echo $fieldname; ?>'  class='form-control'>
-                <?php if ($defexists == "") { ?>
-                    <option selected='selected' value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option><?php echo $datatemp; }
-                    else { echo $datatemp; } ?>
+                <?php if ($defexists=="") { ?>
+                    <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option><?php echo $datatemp; }
+                    else  { echo $datatemp;} ?>
 
                     <?php if ($fother == "Y")
                     { ?>
-                        <option value='-oth-'><?php eT("Other", 'html', $sDataEntryLanguage); ?></option>
+                        <option value='-oth-'><?php eT("Other",'html',$sDataEntryLanguage); ?></option>
                         <?php } ?>
                     </select>
         </div>
         <?php if ($fother == "Y")
             { ?>
             <div class="col-sm-10">
-            <?php eT("Other", 'html', $sDataEntryLanguage); ?>:
+            <?php eT("Other",'html',$sDataEntryLanguage); ?>:
             <input type='text' name='<?php echo $fieldname; ?>other' value='' />
             </div>
             <?php }
@@ -220,16 +217,16 @@ echo viewHelper::getViewTestTag('dataEntryView');
         case "O":  ?>
         <div class="col-sm-10">
             <select name='<?php echo $fieldname; ?>'  class='form-control'>
-                <?php if ($defexists == "") { ?>
-                    <option selected='selected' value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option><?php echo $datatemp; }
-                    else { echo $datatemp; } ?>
+                <?php if ($defexists=="") { ?>
+                    <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option><?php echo $datatemp; }
+                    else  { echo $datatemp;} ?>
             </select>
         </div>
         <div class="col-sm-10">
             <?php eT("Comment"); ?>:<br />
             <textarea cols='40' rows='5' name='<?php echo $fieldname; ?>comment'></textarea>
         </div>
-        <?php break; ?>
+        <?php break;?>
 
         <?php case "*":?>
             <input type="text" name="<?php echo $fieldname; ?>" value="">
@@ -241,19 +238,19 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <div class="col-sm-10">
         <div id="question<?php echo $thisqid ?>" class="ranking-answers">
             <ul class="answers-list list-unstyled">
-                <?php for ($i = 1; $i <= $anscount; $i++)
+                <?php for ($i=1; $i<=$anscount; $i++)
             {
             ?>
             <li class="select-item">
             <?php
-                if ($i == 1) {
-                    eT('First choice', 'html', $sDataEntryLanguage);
-                } else {
-                    eT('Next choice', 'html', $sDataEntryLanguage);
+                if($i==1){
+                    eT('First choice','html',$sDataEntryLanguage);
+                }else{
+                    eT('Next choice','html',$sDataEntryLanguage);
                 }
             ?>
             <select name="<?php echo $fieldname.$i ?>"  class='form-control' id="answer<?php echo $fieldname.$i ?>">";
-                <option value=""><?php eT('None', 'html', $sDataEntryLanguage) ?></option>
+                <option value=""><?php eT('None','html',$sDataEntryLanguage) ?></option>
                 <?php
                     foreach ($answers as $ansrow)
                     {
@@ -279,8 +276,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <script type='text/javascript'>
             <!--
             var aRankingTranslations = {
-                choicetitle: '<?php echo gT("Your Choices", 'js') ?>',
-                ranktitle: '<?php echo gT("Your Ranking", 'js') ?>'
+                choicetitle: '<?php echo gT("Your Choices",'js') ?>',
+                ranktitle: '<?php echo gT("Your Ranking",'js') ?>'
             };
             function checkconditions(){
                 // Some space so the EM won't kick in
@@ -299,7 +296,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
         case "M": ?>
         <div class="col-sm-10">
             <?php
-            if ($deqrow['other'] == "Y") {$meacount++; }
+            if ($deqrow['other'] == "Y") {$meacount++;}
 
             /* This caused a regression in 2.5, BUT: code below ($mearesult->FetchRow())
              * assumes that $mearesult sometimes could be an object,
@@ -308,17 +305,17 @@ echo viewHelper::getViewTestTag('dataEntryView');
             //if ($dcols > 0 && $meacount >= $dcols)
             if (true)
             {
-                $width = sprintf("%0d", 100 / $dcols);
-                $maxrows = ceil(100 * ($meacount / $dcols) / 100); //Always rounds up to nearest whole number
-                $divider = " </td> <td valign='top' width='$width%' nowrap='nowrap'>";
-                $upto = 0; ?>
+                $width=sprintf("%0d", 100/$dcols);
+                $maxrows=ceil(100*($meacount/$dcols)/100); //Always rounds up to nearest whole number
+                $divider=" </td> <td valign='top' width='$width%' nowrap='nowrap'>";
+                $upto=0; ?>
             <table class='question'><tr> <td valign='top' width='<?php echo $width; ?>%' nowrap='nowrap'>
                         <?php foreach ($mearesult as $mearow)
                             {
                                 if ($upto == $maxrows)
                                 {
                                     echo $divider;
-                                    $upto = 0;
+                                    $upto=0;
                             } ?>
                             <input type='checkbox' class='checkboxbtn' name='<?php echo $fieldname.$mearow['title']; ?>' id='answer<?php echo $fieldname.$mearow['title']; ?>' value='Y' />
                             <label for='answer<?php echo $fieldname.$mearow['title']; ?>'><?php echo $mearow['question']; ?></label><br />
@@ -326,11 +323,12 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             }
                             if ($deqrow['other'] == "Y")
                             { ?>
-                            <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
+                            <?php eT("Other",'html',$sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
                             <?php } ?>
                     </td></tr></table>
 
-            <?php } else
+            <?php }
+            else
             {
                 if (is_object($mearesult))
                 {
@@ -342,9 +340,10 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <?php }
                     if ($deqrow['other'] == "Y")
                     { ?>
-                    <?php eT("Other", 'html', $sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
+                    <?php eT("Other",'html',$sDataEntryLanguage); ?> <input type='text' name='<?php echo $fieldname; ?>other' />
                     <?php }
-                } else
+                }
+                else
                 {
                     throw new CException("\$mearesult should be an object here");
                 }
@@ -357,11 +356,11 @@ echo viewHelper::getViewTestTag('dataEntryView');
         case "I":  ?>
         <div class="col-sm-10">
             <select name='<?php echo $fieldname; ?>'  class='form-control'>
-                <option value='' selected='selected'><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
+                <option value='' selected='selected'><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
 
                 <?php foreach ($slangs as $lang)
                     { ?>
-                        <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang, false); ?></option>
+                        <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang,false); ?></option>
                 <?php } ?>
             </select>
         </div>
@@ -388,7 +387,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                         if ($deqrow['other'] == "Y")
                         { ?>
                             <tr>
-                                <td  align='left'><label><?php eT("Other", 'html', $sDataEntryLanguage); ?>:</label>
+                                <td  align='left'><label><?php eT("Other",'html',$sDataEntryLanguage); ?>:</label>
                                     <input type='text' name='$fieldname"."other' size='10'/>
                                 </td>
                                 <td align='left'>
@@ -437,7 +436,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     jsonstr = jsonstr.substring(0, jsonstr.length - 1);
 
                 jsonstr += ']';
-                $('#<?php echo $fieldname; ?>').val(jsonstr);
+                $('#<?php echo $fieldname ; ?>').val(jsonstr);
                 $('#<?php echo $fieldname; ?>_filecount').val(filecount);
             }
         </script>
@@ -456,17 +455,11 @@ echo viewHelper::getViewTestTag('dataEntryView');
             <?php for ($i = 0; $i < $maxfiles; $i++)
                 { ?>
                 <tr>
-                    <?php if ($qidattributes['show_title']) {
-    ?>
-                    <td align='center'><input type='text' id='<?php echo $fieldname;
-}
-?>_title_<?php echo $i; ?>' maxlength='100' onChange='updateJSON<?php echo $fieldname; ?>()' /></td>
+                    <?php if ($qidattributes['show_title'])  ?>
+                    <td align='center'><input type='text' id='<?php echo $fieldname; ?>_title_<?php echo $i; ?>' maxlength='100' onChange='updateJSON<?php echo $fieldname; ?>()' /></td>
 
-                    <?php if ($qidattributes['show_comment']) {
-    ?>
-                    <td align='center'><input type='text' id='<?php echo $fieldname;
-}
-?>_comment_<?php echo $i; ?>' maxlength='100' onChange='updateJSON<?php echo $fieldname; ?>()' /></td>
+                    <?php if ($qidattributes['show_comment']) ?>
+                    <td align='center'><input type='text' id='<?php echo $fieldname; ?>_comment_<?php echo $i; ?>' maxlength='100' onChange='updateJSON<?php echo $fieldname; ?>()' /></td>
 
                     <td align='center'><input type='file' name='<?php echo $fieldname; ?>_file_<?php echo $i; ?>' id='<?php echo $fieldname; ?>_file_<?php echo $i; ?>' onChange='updateJSON<?php echo $fieldname; ?>()' /></td></tr>
                 <?php } ?>
@@ -547,30 +540,31 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 $tiwidth = 50;
             }
 
-            if ($qidattributes['numbers_only'] == 1)
+            if ($qidattributes['numbers_only']==1)
             {
                 $sSeparator = getRadixPointData($thissurvey['surveyls_numberformat']);
                 $sSeparator = $sSeparator['separator'];
                 $numbersonly = 'onkeypress="return goodchars(event,\'-0123456789'.$sSeparator.'\')"';
-            } else
+            }
+            else
             {
                 $numbersonly = '';
             }
 
-            if (trim($qidattributes['display_rows']) != '')
+            if (trim($qidattributes['display_rows'])!='')
             {
                 //question attribute "display_rows" is set -> we need a textarea to be able to show several rows
-                $drows = $qidattributes['display_rows'];
+                $drows=$qidattributes['display_rows'];
 
                 //if a textarea should be displayed we make it equal width to the long text question
                 //this looks nicer and more continuous
-                if ($tiwidth == 50)
+                if($tiwidth == 50)
                 {
-                    $tiwidth = 40;
+                    $tiwidth=40;
                 }
                 echo $prefix; ?><textarea name='<?php echo $fieldname; ?>' cols='<?php echo $tiwidth; ?>' rows='<?php echo $drows; ?>' <?php echo $numbersonly; ?>></textarea><?php echo $suffix;
             } else {
-                echo $prefix; ?><input type='text' name='<?php echo $fieldname; ?>' size='<?php echo $tiwidth; ?>' <?php echo $maxlength.' '.$numbersonly; ?> /><?php echo $suffix;
+                echo $prefix; ?><input type='text' name='<?php echo $fieldname; ?>' size='<?php echo $tiwidth; ?>' <?php echo $maxlength . ' ' . $numbersonly; ?> /><?php echo $suffix;
             }
         ?>
         </div>
@@ -582,9 +576,9 @@ echo viewHelper::getViewTestTag('dataEntryView');
         ?>
         <div class="col-sm-10">
         <?php
-            if (trim($qidattributes['display_rows']) != '')
+            if (trim($qidattributes['display_rows'])!='')
             {
-                $drows = $qidattributes['display_rows'];
+                $drows=$qidattributes['display_rows'];
             } else {
                 $drows = 5;
             }
@@ -607,15 +601,15 @@ echo viewHelper::getViewTestTag('dataEntryView');
                 $suffix = '';
             }
             echo $prefix; ?><textarea name='<?php echo $fieldname; ?>' cols='<?php echo $tiwidth; ?>' rows='<?php echo $drows; ?>'></textarea>
-            <?php echo $suffix; ?>
+            <?php echo $suffix;?>
             </div>
             <?php
             break;
 
         case "U": //HUGE FREE TEXT
-            if (trim($qidattributes['display_rows']) != '')
+            if (trim($qidattributes['display_rows'])!='')
             {
-                $drows = $qidattributes['display_rows'];
+                $drows=$qidattributes['display_rows'];
             } else {
                 $drows = 70;
             }
@@ -644,9 +638,9 @@ echo viewHelper::getViewTestTag('dataEntryView');
         ?>
         <div class="col-sm-10">
             <select name='<?php echo $fieldname; ?>'  class='form-control'>
-                <option selected='selected' value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
-                <option value='Y'><?php eT("Yes", 'html', $sDataEntryLanguage); ?></option>
-                <option value='N'><?php eT("No", 'html', $sDataEntryLanguage); ?></option>
+                <option selected='selected' value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
+                <option value='Y'><?php eT("Yes",'html',$sDataEntryLanguage); ?></option>
+                <option value='N'><?php eT("No",'html',$sDataEntryLanguage); ?></option>
             </select>
         </div>
         <?php break;
@@ -663,8 +657,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
                             <td align='right'><?php echo $mearow['question']; ?></td>
                             <td>
                                 <select name='<?php echo $fieldname.$mearow['title']; ?>' class='form-control'>
-                                    <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
-                                    <?php for ($i = 1; $i <= 5; $i++)
+                                    <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
+                                    <?php for ($i=1; $i<=5; $i++)
                                     { ?>
                                         <option value='<?php echo $i; ?>'><?php echo $i; ?></option>
                                     <?php } ?>
@@ -687,8 +681,8 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <td align='right'><?php echo $mearow['question']; ?></td>
                     <td>
                         <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
-                            <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
-                            <?php for ($i = 1; $i <= 10; $i++)
+                            <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
+                            <?php for ($i=1; $i<=10; $i++)
                                 { ?>
                                 <option value='<?php echo $i; ?>'><?php echo $i; ?></option>
                                 <?php } ?>
@@ -712,10 +706,10 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <td align='right'><?php echo $mearow['question']; ?></td>
                     <td>
                         <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
-                            <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
-                            <option value='Y'><?php eT("Yes", 'html', $sDataEntryLanguage); ?></option>
-                            <option value='U'><?php eT("Uncertain", 'html', $sDataEntryLanguage); ?></option>
-                            <option value='N'><?php eT("No", 'html', $sDataEntryLanguage); ?></option>
+                            <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
+                            <option value='Y'><?php eT("Yes",'html',$sDataEntryLanguage); ?></option>
+                            <option value='U'><?php eT("Uncertain",'html',$sDataEntryLanguage); ?></option>
+                            <option value='N'><?php eT("No",'html',$sDataEntryLanguage); ?></option>
                         </select>
                     </td>
                 </tr>
@@ -737,10 +731,10 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <td align='right'><?php echo $mearow['question']; ?></td>
                     <td>
                         <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
-                            <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
-                            <option value='I'><?php eT("Increase", 'html', $sDataEntryLanguage); ?></option>
-                            <option value='S'><?php eT("Same", 'html', $sDataEntryLanguage); ?></option>
-                            <option value='D'><?php eT("Decrease", 'html', $sDataEntryLanguage); ?></option>
+                            <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
+                            <option value='I'><?php eT("Increase",'html',$sDataEntryLanguage); ?></option>
+                            <option value='S'><?php eT("Same",'html',$sDataEntryLanguage); ?></option>
+                            <option value='D'><?php eT("Decrease",'html',$sDataEntryLanguage); ?></option>
                         </select>
                     </td>
                 </tr>
@@ -752,44 +746,44 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
         //ARRAY (Multi Flexi)
         case ":":
-            $labelcodes = array();
+            $labelcodes=array();
         ?>
         <div class="col-sm-10">
         <table>
             <tr><td></td>
-                <?php foreach ($lresult as $data)
+                <?php foreach($lresult as $data)
                     { ?>
                     <th><?php echo $data['question']; ?></th>
-                    <?php $labelcodes[] = $data['title'];
+                    <?php $labelcodes[]=$data['title'];
                     }
                 ?>
             </tr>
-            <?php $i = 0;
+            <?php $i=0;
                 foreach ($mearesult as $mearow)
                 {
 
-                    if (strpos($mearow['question'], '|'))
+                    if (strpos($mearow['question'],'|'))
                     {
-                        $answerleft = substr($mearow['question'], 0, strpos($mearow['question'], '|'));
-                        $answerright = substr($mearow['question'], strpos($mearow['question'], '|') + 1);
+                        $answerleft=substr($mearow['question'],0,strpos($mearow['question'],'|'));
+                        $answerright=substr($mearow['question'],strpos($mearow['question'],'|')+1);
                     }
                     else
                     {
-                        $answerleft = $mearow['question'];
-                        $answerright = '';
+                        $answerleft=$mearow['question'];
+                        $answerright='';
                 } ?>
 
                 <tr>
                     <td align='right'><?php echo $answerleft; ?></td>
-                    <?php foreach ($labelcodes as $ld)
+                    <?php foreach($labelcodes as $ld)
                         { ?>
                         <td>
-                            <?php if ($qidattributes['input_boxes'] != 0) { ?>
-                                <input type='text' name='<?php echo $fieldname.$mearow['title']."_".$ld; ?>' size=4 />
+                            <?php if ($qidattributes['input_boxes']!=0) { ?>
+                                <input type='text' name='<?php echo $fieldname.$mearow['title']."_".$ld;?>' size=4 />
                                 <?php } else { ?>
                                 <select name='<?php echo $fieldname.$mearow['title']."_$ld"; ?>'  class='form-control'>
                                     <option value=''>...</option>
-                                    <?php for ($ii = $minvalue; $ii <= $maxvalue; $ii += $stepvalue)
+                                    <?php for($ii=$minvalue;$ii<=$maxvalue;$ii+=$stepvalue)
                                         { ?>
                                         <option value='<?php echo $ii; ?>'><?php echo $ii; ?></option>
                                         <?php } ?>
@@ -811,32 +805,32 @@ echo viewHelper::getViewTestTag('dataEntryView');
         <div class="col-sm-10">
         <table>
             <tr><td></td>
-                <?php $labelcodes = array();
+                <?php $labelcodes=array();
                     foreach ($lresult as $data)
                     { ?>
                     <th><?php echo $data['question']; ?></th>
-                    <?php $labelcodes[] = $data['title'];
+                    <?php $labelcodes[]=$data['title'];
                 } ?>
 
             </tr>
 
-            <?php $i = 0;
+            <?php $i=0;
                 foreach ($mearesult as $mearow)
                 {
-                    if (strpos($mearow['question'], '|'))
+                    if (strpos($mearow['question'],'|'))
                     {
-                        $answerleft = substr($mearow['question'], 0, strpos($mearow['question'], '|'));
-                        $answerright = substr($mearow['question'], strpos($mearow['question'], '|') + 1);
+                        $answerleft=substr($mearow['question'],0,strpos($mearow['question'],'|'));
+                        $answerright=substr($mearow['question'],strpos($mearow['question'],'|')+1);
                     }
                     else
                     {
-                        $answerleft = $mearow['question'];
-                        $answerright = '';
+                        $answerleft=$mearow['question'];
+                        $answerright='';
                     }
                 ?>
                 <tr>
                     <td align='right'><?php echo $answerleft; ?></td>
-                    <?php foreach ($labelcodes as $ld)
+                    <?php foreach($labelcodes as $ld)
                         { ?>
                         <td>
                             <input type='text' name='<?php echo $fieldname.$mearow['title']."_$ld"; ?>' />
@@ -856,18 +850,18 @@ echo viewHelper::getViewTestTag('dataEntryView');
         case "H": ?>
         <div class="col-sm-10">
         <table>
-            <?php  foreach ($mearesult as $mearow)
+            <?php  foreach ( $mearesult as $mearow)
                 {
 
-                    if (strpos($mearow['question'], '|'))
+                    if (strpos($mearow['question'],'|'))
                     {
-                        $answerleft = substr($mearow['question'], 0, strpos($mearow['question'], '|'));
-                        $answerright = substr($mearow['question'], strpos($mearow['question'], '|') + 1);
+                        $answerleft=substr($mearow['question'],0,strpos($mearow['question'],'|'));
+                        $answerright=substr($mearow['question'],strpos($mearow['question'],'|')+1);
                     }
                     else
                     {
-                        $answerleft = $mearow['question'];
-                        $answerright = '';
+                        $answerleft=$mearow['question'];
+                        $answerright='';
                     }
                 ?>
 
@@ -875,7 +869,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
                     <td align='right'><?php echo $answerleft; ?></td>
                     <td>
                         <select name='<?php echo $fieldname.$mearow['title']; ?>'  class='form-control'>
-                            <option value=''><?php eT("Please choose", 'html', $sDataEntryLanguage); ?>..</option>
+                            <option value=''><?php eT("Please choose",'html',$sDataEntryLanguage); ?>..</option>
 
                             <?php foreach ($fresult as $frow)
                                 { ?>
@@ -893,7 +887,7 @@ echo viewHelper::getViewTestTag('dataEntryView');
 
 <?php if ($deqrow['help']): ?>
     <div class="col-sm-1">
-        <a href="#" onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" title="<?php eT('Help about this question', 'html', $sDataEntryLanguage); ?>" data-toggle="tooltip" data-placement="top">
+        <a href="#" onclick="javascript:alert('Question <?php echo $deqrow['title']; ?> Help: <?php echo $hh; ?>')" title="<?php eT('Help about this question','html',$sDataEntryLanguage); ?>" data-toggle="tooltip" data-placement="top">
             <span class="fa fa-question-circle"></span>
         </a>
     </div>

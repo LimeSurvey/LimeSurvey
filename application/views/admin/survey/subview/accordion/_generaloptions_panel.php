@@ -11,7 +11,7 @@
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js'); ?>'
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
     var sURLParameters = '';
     var sAddParam = '';
 </script>
@@ -21,9 +21,9 @@
     $controller = $yii->getController();
     $action = 'editsurveysettings';
 ?>
-<?php if ($action == 'editsurveysettings'):?>
+<?php if($action=='editsurveysettings'):?>
     <?php
-    $sConfirmLanguageScript = "
+    $sConfirmLanguageScript="
     $(document).on('submit','#globalsetting',function(){
       if(!ConfirmLanguageChange('".gT("All questions, answers, etc for removed languages will be lost. Are you sure?", "js")."')){
         return false;
@@ -69,50 +69,50 @@
             <!-- Base language -->
             <div class="form-group">
 
-                <label class=" control-label" ><?php  eT("Base language:"); ?></label>
+                <label class=" control-label" ><?php  eT("Base language:") ; ?></label>
                 <div class="" style="padding-top: 7px;">
-                    <?php if ($oSurvey->isNewRecord):?>
+                    <?php if($oSurvey->isNewRecord):?>
                     <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                         'asDropDownList' => true,
                         'htmlOptions'=>array('style'=>"width: 80%"),
-                        'data' => getLanguageDataRestricted(false, 'short'),
+                        'data' => getLanguageDataRestricted (false,'short'),
                         'value' => $oSurvey->language,
                         'name' => 'language',
                         'pluginOptions' => array()
-                    )); ?>
+                    ));?>
                     <?php else:?>
-                    <?php echo getLanguageNameFromCode($oSurvey->language, false); ?>
-                    <?php endif; ?>
+                    <?php echo getLanguageNameFromCode($oSurvey->language,false); ?>
+                    <?php endif;?>
                 </div>
             </div>
 
-            <?php if (!$oSurvey->isNewRecord):?>
+            <?php if(!$oSurvey->isNewRecord):?>
             <!-- Additional Languages -->
             <div class="form-group">
                 <label class=" control-label"  for='additional_languages'><?php  eT("Additional Languages"); ?>:</label>
                 <div class="">
                     <?php
-                    $aAllLanguages = getLanguageDataRestricted(false, 'short');
+                    $aAllLanguages=getLanguageDataRestricted (false,'short');
                     unset($aAllLanguages[$oSurvey->language]);
 
                     Yii::app()->getController()->widget('yiiwheels.widgets.select2.WhSelect2', array(
                         'asDropDownList' => true,
-                        'htmlOptions'=>array('multiple'=>'multiple', 'style'=>"width: 100%"),
+                        'htmlOptions'=>array('multiple'=>'multiple','style'=>"width: 100%"),
                         'data' => $aAllLanguages,
                         'value' =>  $oSurvey->additionalLanguages,
                         'name' => 'additional_languages',
                         'pluginOptions' => array(
-                            'placeholder' => gt('Select additional languages', 'unescaped'),
+                            'placeholder' => gt('Select additional languages','unescaped'),
                     )));
                     ?>
                     <input type='hidden' name='oldlanguages' id='oldlanguages' value='<?php echo implode(' ', $oSurvey->additionalLanguages); ?>'>
                 </div>
             </div>
-            <?php endif; ?>
+            <?php endif;?>
 
             <!-- Survey owner -->
             <?php
-            if (Yii::app()->session['loginID'] == $oSurvey->owner_id || Permission::model()->hasGlobalPermission('superadmin', 'read')):?>
+            if (Yii::app()->session['loginID']==$oSurvey->owner_id || Permission::model()->hasGlobalPermission('superadmin','read')):?>
                 <div class="form-group">
                     <label class=" control-label"  for='owner_id'><?php  eT("Survey owner:"); ?></label>
                     <div class=""><?php
@@ -121,7 +121,7 @@
                             'htmlOptions'=>array(
                                 'style'=>'width:100%;'
                             ),
-                            'data' => isset($users) ? $users : [],
+                            'data' => isset($users) ?  $users : [],
                             'value' => $oSurvey->owner_id,
                             'name' => 'owner_id',
                             'pluginOptions' => array(
@@ -130,7 +130,7 @@
                         ?>
                     </div>
                 </div>
-                <?php endif; ?>
+                <?php endif;?>
 
             <!-- Administrator -->
             <div class="form-group">
@@ -170,13 +170,10 @@
                 </div>
             </div>
 
-            <?php else {
-    : ?>
+            <?php else: ?>
             <!-- End URL -->
             <div class="form-group">
-                <label class=" control-label" for='url'><?php  eT("End URL:");
-}
-?></label>
+                <label class=" control-label" for='url'><?php  eT("End URL:"); ?></label>
                 <div class="">
                     <input type='text' class="form-control"  id='url' name='url' placeholder="http://example.com" />
                 </div>
@@ -184,17 +181,17 @@
 
             <!-- URL description -->
             <div class="form-group">
-                <label class=" control-label" for='urldescrip'><?php  eT("URL description:"); ?></label>
+                <label class=" control-label" for='urldescrip'><?php  eT("URL description:") ; ?></label>
                 <div class="">
-                    <input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value=''  class="form-control"  placeholder="<?php eT('Some description text'); ?>" />
+                    <input type='text' maxlength='255' size='50' id='urldescrip' name='urldescrip' value=''  class="form-control"  placeholder="<?php eT('Some description text');?>" />
                 </div>
             </div>
 
             <!-- Date format -->
             <div class="form-group">
-                <label class=" control-label" for='dateformat'><?php  eT("Date format:"); ?></label>
+                <label class=" control-label" for='dateformat'><?php  eT("Date format:") ; ?></label>
                 <div class="">
-                    <?php echo CHtml::listBox('dateformat', $sDateFormatDefault, $aDateFormatData, array('id'=>'dateformat', 'size'=>'1', 'class'=>'form-control')); ?>
+                    <?php echo CHtml::listBox('dateformat',$sDateFormatDefault, $aDateFormatData, array('id'=>'dateformat','size'=>'1', 'class'=>'form-control')); ?>
                 </div>
             </div>
 
@@ -202,43 +199,43 @@
             <div class="form-group">
                 <label class=" control-label" for='numberformat'><?php  eT("Decimal mark:"); ?></label>
                 <div class="">
-                    <?php echo CHtml::listBox('numberformat', $sRadixDefault, $aRadixPointData, array('id'=>'numberformat', 'size'=>'1', 'class'=>'form-control')); ?>
+                    <?php echo CHtml::listBox('numberformat',$sRadixDefault, $aRadixPointData, array('id'=>'numberformat','size'=>'1', 'class'=>'form-control')); ?>
                 </div>
             </div>
 
             <!-- Administrator -->
             <div class="form-group">
-                <label class=" control-label" for='admin'><?php  eT("Administrator:"); ?></label>
+                <label class=" control-label" for='admin'><?php  eT("Administrator:") ; ?></label>
                 <div class="">
-                    <input type='text' size='50' id='admin' name='admin'   class="form-control"  value='<?php echo $owner['full_name']; ?>' />
+                    <input type='text' size='50' id='admin' name='admin'   class="form-control"  value='<?php echo $owner['full_name'] ; ?>' />
                 </div>
             </div>
 
             <!-- Admin email -->
             <div class="form-group">
-                <label class=" control-label" for='adminemail'><?php  eT("Admin email:"); ?></label>
+                <label class=" control-label" for='adminemail'><?php  eT("Admin email:") ; ?></label>
                 <div class="">
-                    <input type='email' size='30'   class="form-control"   id='adminemail' name='adminemail' value='<?php echo $owner['email']; ?>' />
+                    <input type='email' size='30'   class="form-control"   id='adminemail' name='adminemail' value='<?php echo $owner['email'] ; ?>' />
                 </div>
             </div>
 
             <!-- Bounce Email -->
             <div class="form-group">
-                <label class=" control-label" for='bounce_email'><?php  eT("Bounce Email:"); ?></label>
+                <label class=" control-label" for='bounce_email'><?php  eT("Bounce Email:") ; ?></label>
                 <div class="">
-                    <input type='email' size='50'  class="form-control"  id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email']; ?>' />
+                    <input type='email' size='50'  class="form-control"  id='bounce_email' name='bounce_email' value='<?php echo $owner['bounce_email'] ; ?>' />
                 </div>
             </div>
 
             <!-- Fax to -->
             <div class="form-group">
-                <label class=" control-label" for='faxto'><?php  eT("Fax to:"); ?></label>
+                <label class=" control-label" for='faxto'><?php  eT("Fax to:") ; ?></label>
                 <div class="">
                     <input type='text' size='50' id='faxto' name='faxto'  class="form-control" />
                 </div>
             </div>
 
-            <?php endif; ?>
+            <?php endif;?>
     </div>
     <div class="col-md-6 col-sm-12">
 
@@ -249,11 +246,11 @@
                 <?php $this->widget('yiiwheels.widgets.select2.WhSelect2', array(
                     'asDropDownList' => true,
                     'htmlOptions'=>array('style'=>"width: 100%"),
-                    'data' => isset($aSurveyGroupList) ? $aSurveyGroupList : [],
+                    'data' => isset($aSurveyGroupList) ?  $aSurveyGroupList : [],
                     'value' => $oSurvey->gsid,
                     'name' => 'gsid',
                     'pluginOptions' => array()
-                )); ?>
+                ));?>
             </div>
         </div>
 
@@ -266,10 +263,10 @@
                     'name' => 'format',
                     'value'=> $oSurvey->format,
                     'selectOptions'=>array(
-                        'S' => gT('Question by Question', 'unescaped'),
-                        'G' => gT('Group by Group', 'unescaped'),
-                        'A' => gT('All in one', 'unescaped'))
-                )); ?>
+                        'S' => gT('Question by Question','unescaped'),
+                        'G' => gT('Group by Group','unescaped'),
+                        'A' => gT('All in one','unescaped'))
+                ));?>
             </div>
         </div>
         <!-- Template -->
@@ -277,10 +274,10 @@
         <div class="form-group">
             <label class=" control-label" for='template'><?php  eT("Template:"); ?></label>
             <div class="">
-                <select id='template' class="form-control"  name='template' data-standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl'); ?>' data-templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl'); ?>'>
+                <select id='template' class="form-control"  name='template' data-standardthemerooturl='<?php echo Yii::app()->getConfig('standardthemerooturl');?>' data-templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>'>
                     <?php foreach (array_keys(getTemplateList()) as $tname) {
 
-                        if (Permission::model()->hasGlobalPermission('superadmin', 'read') || Permission::model()->hasGlobalPermission('templates', 'read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $oSurvey->template == htmlspecialchars($tname)) { ?>
+                        if (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('templates','read') || hasTemplateManageRights(Yii::app()->session["loginID"], $tname) == 1 || $oSurvey->template==htmlspecialchars($tname) ) { ?>
                             <option value='<?php echo $tname; ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars($tname) == $oSurvey->template) { ?>
                                     selected='selected'

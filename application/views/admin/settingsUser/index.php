@@ -2,7 +2,7 @@
 /* @var $this SettingsUserController */
 
 $this->breadcrumbs=array(
-    'Settings User',
+	'Settings User',
 );
 ?>
 <h1><?php echo $this->id . '/' . $this->action->id; ?></h1>

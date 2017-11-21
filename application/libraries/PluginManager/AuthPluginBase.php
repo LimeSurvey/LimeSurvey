@@ -61,7 +61,7 @@ abstract class AuthPluginBase extends PluginBase {
         // Here we handle post data
         $request = $this->api->getRequest();
         if ($request->getIsPostRequest()) {
-            $this->setUsername($request->getPost('user'));
+            $this->setUsername( $request->getPost('user'));
             $this->setPassword($request->getPost('password'));
         }
     }

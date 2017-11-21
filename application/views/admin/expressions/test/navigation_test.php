@@ -14,12 +14,12 @@ if (count($_POST) == 0) {
     . "from {{surveys_languagesettings}} as a join {{surveys}} as b on a.surveyls_survey_id = b.sid"
     . " where a.surveyls_language='en' order by a.surveyls_title, b.datecreated";
     $data = dbExecuteAssoc($query);
-    $surveyList = '';
-    foreach ($data->readAll() as $row) {
-        $surveyList .= "<option value='".$row['sid'].'|'.$row['assessments']."'>#".$row['sid']." [".$row['datecreated'].'] '.flattenText($row['title'])."</option>\n";
+    $surveyList='';
+    foreach($data->readAll() as $row) {
+        $surveyList .= "<option value='" . $row['sid'] .'|' . $row['assessments'] . "'>#" . $row['sid'] . " [" . $row['datecreated'] . '] ' . flattenText($row['title']) . "</option>\n";
     }
 
-    $sFormTag = CHtml::form(array('admin/expressions/sa/navigation_test'), 'post');
+    $sFormTag= CHtml::form(array('admin/expressions/sa/navigation_test'), 'post');
 
     $form = <<< EOD
 $sFormTag    
@@ -52,7 +52,8 @@ Specify which debugging features to use
 </form>
 EOD;
     echo $form;
-} else {
+}
+else {
 
     
 
@@ -66,7 +67,7 @@ EOD;
             ((isset($_POST['LEM_DEBUG_VALIDATION_DETAIL']) && $_POST['LEM_DEBUG_VALIDATION_DETAIL'] == 'Y') ? LEM_DEBUG_VALIDATION_DETAIL : 0) +
             ((isset($_POST['LEM_PRETTY_PRINT_ALL_SYNTAX']) && $_POST['LEM_PRETTY_PRINT_ALL_SYNTAX'] == 'Y') ? LEM_PRETTY_PRINT_ALL_SYNTAX : 0)
             );
-    $deletenonvalues = ((isset($_POST['deletenonvalues']) && $_POST['deletenonvalues'] == 'Y') ? 1 : 0);            
+    $deletenonvalues = ((isset($_POST['deletenonvalues']) && $_POST['deletenonvalues']=='Y') ? 1 : 0);            
 
     $surveyOptions = array(
         'active'=>false,
@@ -80,24 +81,24 @@ EOD;
         'rooturl'=>'../../..',
     );
 
-    print '<h3>Starting survey '.$surveyid." using Survey Mode '".$surveyMode.(($assessments) ? "' [Uses Assessments]" : "'")."</h3>";
+    print '<h3>Starting survey ' . $surveyid . " using Survey Mode '". $surveyMode . (($assessments) ? "' [Uses Assessments]" : "'") . "</h3>";
     $now = microtime(true);
-    LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, true, $LEMdebugLevel);
-    print '<b>[StartSurvey() took '.(microtime(true) - $now).' seconds]</b><br/>';
+    LimeExpressionManager::StartSurvey($surveyid, $surveyMode, $surveyOptions, true,$LEMdebugLevel);
+    print '<b>[StartSurvey() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
 
-    while (true) {
+    while(true) {
         $now = microtime(true);
         $result = LimeExpressionManager::NavigateForwards(true);
-        print $result['message']."<br/>";
+        print $result['message'] . "<br/>";
         LimeExpressionManager::FinishProcessingPage();
         if (($LEMdebugLevel & LEM_DEBUG_TIMING) == LEM_DEBUG_TIMING) {
             print LimeExpressionManager::GetDebugTimingMessage();
         }
-        print '<b>[NavigateForwards() took '.(microtime(true) - $now).' seconds]</b><br/>';
+        print '<b>[NavigateForwards() took ' . (microtime(true) - $now) . ' seconds]</b><br/>';
         if (is_null($result) || $result['finished'] == true) {
             break;
         }
     }
-    print "<h3>Finished survey ".$surveyid."</h3>";
+    print "<h3>Finished survey " . $surveyid . "</h3>";
 }
 ?>

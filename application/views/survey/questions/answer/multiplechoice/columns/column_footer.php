@@ -5,7 +5,7 @@
  *
  * @var $last the very last item must also close the bootstrap row containg the columns
  */
-    ?>
+ ?>
  <!-- column_footer -->
 </ul>
 <!-- end of column_footer -->

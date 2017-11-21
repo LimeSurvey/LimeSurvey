@@ -34,17 +34,17 @@ echo viewHelper::getViewTestTag('surveyQuotas');
     <div class="row">
         <div class="col-lg-12 content-right">
             <h3>
-                <?php eT("Survey quotas"); ?>
+                <?php eT("Survey quotas");?>
             </h3>
 
-            <?php if (isset($sShowError)):?>
+            <?php if( isset($sShowError) ):?>
                 <div class="alert alert-warning alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <strong><?php eT("Quota could not be added!", 'js'); ?></strong><br/> <?php eT("It is missing a quota message for the following languages:", 'js'); ?><br/><?php echo $sShowError; ?>
                 </div>
             <?php endif; ?>
 
-            <?php if ($oDataProvider->itemCount > 0):?>
+            <?php if($oDataProvider->itemCount > 0):?>
             <!-- Grid -->
             <div class="row">
                 <div class="col-sm-12 content-right">
@@ -52,7 +52,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                         'dataProvider' => $oDataProvider,
                         'id' => 'quota-grid',
                         'emptyText'=>gT('No quotas'),
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
                                 CHtml::dropDownList(
                                     'pageSize',
                                     $iGridPageSize,
@@ -70,7 +70,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                                 'name'=>gT('Quota members'),
                                 'type'=>'raw',
                                 'htmlOptions'=>array('style'=>'vertical-align:top'),
-                                'value'=>function($oQuota) use($oSurvey, $aQuotaItems){
+                                'value'=>function($oQuota) use($oSurvey,$aQuotaItems){
                                     /** @var Quota $oQuota */
                                     $out = '<p>'.$this->renderPartial('/admin/quotas/viewquotas_quota_members',
                                         array(
@@ -102,7 +102,7 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                             ),
                             array(
                                 'header'=>gT("Action"),
-                                'value'=>function($oQuota)use($oSurvey, $aEditUrls, $aDeleteUrls, $aQuotaItems){
+                                'value'=>function($oQuota)use($oSurvey,$aEditUrls,$aDeleteUrls,$aQuotaItems){
                                     /** @var Quota $oQuota */
                                     $this->renderPartial('/admin/quotas/viewquotas_quota_actions',
                                         array(
@@ -130,28 +130,28 @@ echo viewHelper::getViewTestTag('surveyQuotas');
                 </div>
                 <?php endif; ?>
 
-                <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas', 'create')):?>
-                    <?php if ($oDataProvider->itemCount > 0):?>
+                <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','create')):?>
+                    <?php if($oDataProvider->itemCount > 0):?>
                         <div class="pull-left">
                             <?php $this->renderPartial('/admin/quotas/viewquotas_massive_selector',
                                 array(
                                     'oSurvey'=>$oSurvey,
                                     'oQuota'=>$oQuota,
                                     'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
-                                )); ?>
+                                ));?>
                         </div>
                     <?php endif; ?>
                     <div class="pull-right">
                         <?php echo CHtml::beginForm(array("admin/quotas/sa/newquota/surveyid/{$oSurvey->getPrimaryKey()}"), 'post'); ?>
-                        <?php echo CHtml::hiddenField('sid', $oSurvey->getPrimaryKey()); ?>
-                        <?php echo CHtml::hiddenField('action', 'quotas'); ?>
-                        <?php echo CHtml::hiddenField('subaction', 'new_quota'); ?>
-                        <input type="button" class="btn btn-default" value="<?php eT("Quick CSV report"); ?>" onClick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/quickreport/y") ?>', '_top')" />                                                
-                        <?php echo CHtml::submitButton(gT("Add new quota"), array(
+                        <?php echo CHtml::hiddenField('sid',$oSurvey->getPrimaryKey());?>
+                        <?php echo CHtml::hiddenField('action','quotas');?>
+                        <?php echo CHtml::hiddenField('subaction','new_quota');?>
+                        <input type="button" class="btn btn-default" value="<?php eT("Quick CSV report");?>" onClick="window.open('<?php echo $this->createUrl("admin/quotas/sa/index/surveyid/$surveyid/quickreport/y") ?>', '_top')" />                                                
+                        <?php echo CHtml::submitButton(gT("Add new quota"),array(
                             'name'=>'submit',
                             'class'=>'quota_new btn btn-default',
-                        )); ?>
-                        <?php echo CHtml::endForm(); ?>
+                        ));?>
+                        <?php echo CHtml::endForm();?>
                     </div>
                 <?php endif; ?>
             </div>

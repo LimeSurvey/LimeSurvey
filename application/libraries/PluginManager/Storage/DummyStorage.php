@@ -14,7 +14,7 @@ namespace LimeSurvey\PluginManager;
          * Always fail to save.
          */
         public function set($plugin, $key, $data, $model = 'NULL', $id = 'NULL', $language = 'NULL') {
-            echo "DummyStorage::set('".get_class($plugin)."', '$key', ".serialize($data).", '$model', '$id', '$language')<br>";
+            echo "DummyStorage::set('" . get_class($plugin) . "', '$key', " . serialize($data) . ", '$model', '$id', '$language')<br>";
             return false;
         }
         

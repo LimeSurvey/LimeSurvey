@@ -22,9 +22,9 @@
 
 <tr class='row-container row_<?php echo $position; ?>' id='row_<?php echo $language; ?>_<?php echo $position; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>' data-common-id="<?php echo $position; ?>_<?php echo $qid; ?>_<?php echo $scale_id; ?>">
 
-    <?php if ($first): // If survey is not activated and first language ?>
+    <?php if ( $first ): // If survey is not activated and first language ?>
 
-        <?php $sPattern = ($title) ? "^([a-zA-Z0-9]*|{$title})$" : "^[a-zA-Z0-9]*$"; ?>
+        <?php $sPattern = ($title)?"^([a-zA-Z0-9]*|{$title})$":"^[a-zA-Z0-9]*$"; ?>
 
         <!-- Move icon -->
         <td class="move-icon" >
@@ -34,7 +34,7 @@
         <!-- Code (title) -->
         <td  class="code-title" style="vertical-align: middle;">
 
-            <?php if ($oldCode): ?>
+            <?php if($oldCode): ?>
             <input
                 type='hidden'
                 class='oldcode code-title'
@@ -57,8 +57,7 @@
             />
         </td>
         <?php // If survey is not active, and it's not the first language : no move button, code not editable ?>
-    <?php else {
-    :?>
+    <?php else:?>
 
         <!-- Move icon -->
         <td class="move-icon-disable">
@@ -67,9 +66,7 @@
 
         <!-- Code (title) -->
         <td  class="code-title" style="vertical-align: middle;">
-            <?php echo $title;
-}
-?>
+            <?php echo $title; ?>
         </td>
     <?php endif; ?>
 
@@ -88,7 +85,7 @@
                 onkeypress="return goodchars(event,'-1234567890')"
             />
         </td>
-    <?php elseif ($first): ?>
+    <?php elseif ( $first): ?>
         <td style='display:none;' class="assessment-value">
             <input
                 type='text'
@@ -103,13 +100,10 @@
         <td class="assessment-value">
             <?php echo $row['assessment_value']; ?>
         </td>
-    <?php else {
-    : ?>
+    <?php else: ?>
         <td style='display:none;' class="assessment-value">
         </td>
-    <?php endif;
-}
-?>
+    <?php endif; ?>
 
     <!-- Answer (Subquestion Text) -->
     <td  class="subquestion-text" style="vertical-align: middle;">
@@ -119,7 +113,7 @@
             class='answer form-control input'
             id='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
             name='answer_<?php echo $language; ?>_<?php echo $sortorder; ?>_<?php echo $scale_id; ?>'
-            placeholder='<?php eT("Some example answer option", "js") ?>'
+            placeholder='<?php eT("Some example answer option","js") ?>'
             value="<?php echo $answer; ?>"
             onkeypress=" if(event.keyCode==13) { if (event && event.preventDefault) event.preventDefault(); document.getElementById('save-button').click(); return false;}"
         />
@@ -131,10 +125,10 @@
     <!-- Icons edit/delete -->
     <td style="vertical-align: middle;" class="subquestion-actions">
 
-        <?php echo  getEditor("editanswer", "answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")", $surveyid, $gid, $qid, 'editanswer'); ?>
+        <?php echo  getEditor("editanswer","answer_".$language."_".$qid."_{$scale_id}", "[".gT("Subquestion:", "js")."](".$language.")",$surveyid,$gid,$qid,'editanswer'); ?>
 
-        <?php if ($first):?>
-            <span class="icon-add text-success btnaddanswer" data-assessmentvisible='<?php echo $assessmentvisible; ?>' data-position="<?php echo $position; ?>" data-code="<?php echo $title; ?>" data-scale-id="<?php echo $scale_id; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
+        <?php if ( $first):?>
+            <span class="icon-add text-success btnaddanswer" data-assessmentvisible='<?php echo $assessmentvisible;?>' data-position="<?php echo $position; ?>" data-code="<?php echo $title; ?>" data-scale-id="<?php echo $scale_id; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php eT("Insert a new answer option after this one") ?>"></span>
             <span class="fa fa-trash text-danger btndelanswer" data-toggle="tooltip" data-placement="bottom"  title="<?php eT("Delete this answer option") ?>"></span>
         <?php endif; ?>
     </td>

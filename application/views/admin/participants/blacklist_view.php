@@ -5,7 +5,7 @@
 echo viewHelper::getViewTestTag('participantsBlacklistControl');
 
 ?>
-<script src="<?php echo Yii::app()->getConfig('adminscripts')."userControl.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('adminscripts') . "userControl.js" ?>" type="text/javascript"></script>
 
 <div class="col-lg-12 list-surveys">
     <h3><?php eT("Blacklist settings"); ?></h3>
@@ -16,11 +16,11 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
 
 <div id='usercontrol-1'>
         <?php
-        if (Permission::model()->hasGlobalPermission('superadmin', 'read'))
+        if (Permission::model()->hasGlobalPermission('superadmin','read'))
         {
             $attribute = array('class' => 'col-md-6 col-md-offset-1 ');
             echo CHtml::beginForm($this->createUrl('/admin/participants/sa/storeBlacklistValues'), 'post', $attribute);
-            $options = array('Y' => gT('Yes', 'unescaped'), 'N' => gT('No', 'unescaped'));
+            $options = array('Y' => gT('Yes','unescaped'), 'N' => gT('No','unescaped'));
             ?>
             <div class="row ls-space margin top-10 bottom-10">
                 <div class="form-group">
@@ -122,9 +122,10 @@ echo viewHelper::getViewTestTag('participantsBlacklistControl');
             </div>
             <?php
             echo CHtml::endForm();
-        } else
+        }
+        else
         {
-            echo "<div class='messagebox ui-corner-all'>".gT("We are sorry but you don't have permissions to do this.")."</div>";
+            echo "<div class='messagebox ui-corner-all'>" . gT("We are sorry but you don't have permissions to do this.") . "</div>";
         }
         ?>
     </div>

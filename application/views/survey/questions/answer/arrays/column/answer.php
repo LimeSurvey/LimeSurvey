@@ -6,16 +6,16 @@
  * @var $anscount
  * @var $cellwidth
  */
-    ?>
+ ?>
 <table class="<?php echo $coreClass; ?> table table-bordered table-col-hover" role="group" aria-labelledby="ls-question-text-<?php echo $basename ?>">
     <colgroup>
         <col class="col-answers" style='width: <?php echo $answerwidth; ?>%;' />
         <?php foreach ($aQuestions as $i=>$question): ?>
             <col
-                class="answers-list radio-list <?php echo ($i % 2) ? 'ls-odd' : 'ls-even'; ?> <?php if ($question['errormandatory']): echo " ls-error-mandatory has-error"; endif; ?>"
+                class="answers-list radio-list <?php echo ($i % 2)?'ls-odd':'ls-even';?> <?php if($question['errormandatory']): echo " ls-error-mandatory has-error"; endif; ?>"
                 style='width: <?php echo $cellwidth; ?>%;'
                 role="radiogroup"
-                aria-labelledby="answertext<?php echo $question['myfname']; ?>"
+                aria-labelledby="answertext<?php echo $question['myfname'];?>"
                 >
                 <!-- @todo : control if radiogroup can be used in col : https://www.w3.org/TR/wai-aria/roles -->
         <?php endforeach; ?>
@@ -25,7 +25,7 @@
             <td></td>
             <?php
             foreach ($aQuestions as $i=>$question): ?>
-                <th id="answertext<?php echo $question['myfname']; ?>" class="answertext control-label <?php if ($question['errormandatory']) { echo " has-error error-mandatory"; } ?>">
+                <th id="answertext<?php echo $question['myfname'];?>" class="answertext control-label <?php if($question['errormandatory']){ echo " has-error error-mandatory";} ?>">
                     <?php echo $question['question']; ?>
                 </th>
             <?php endforeach; ?>
@@ -33,13 +33,13 @@
     </thead>
     <tbody>
         <?php foreach ($labels as $ansrow): ?>
-            <tr id="javatbd<?php echo $ansrow['code']; ?>" class="answers-list">
-                <th id="label-<?php echo $ansrow['code']; ?>" class="answertext<?php echo ($answerwidth == 0) ? " sr-only" : ""; ?>">
+            <tr id="javatbd<?php echo $ansrow['code'];?>" class="answers-list">
+                <th id="label-<?php echo $ansrow['code'];?>" class="answertext<?php echo ($answerwidth==0)? " sr-only":""; ?>">
                     <?php echo $ansrow['answer']; ?>
                 </th>
                 <?php
                 foreach ($anscode as $i => $ld): ?>
-                    <td class="answer_cell_<?php echo $ld; ?> answer-item radio-item">
+                    <td class="answer_cell_<?php echo $ld;?> answer-item radio-item">
                             <input
                                 type="radio"
                                 name="<?php echo $aQuestions[$i]['myfname']; ?>"
@@ -48,7 +48,7 @@
                                 <?php echo $checked[$ansrow['code']][$ld]; ?>
                                  />
                                 <label class="ls-label-xs-visibility " for="answer<?php echo $aQuestions[$i]['myfname']; ?>-<?php echo $ansrow['code']; ?>">
-                                    <?php echo $aQuestions[$i]['question']; ?>
+                                    <?php echo $aQuestions[$i]['question'];?>
                                 </label>
                     </td>
                 <?php endforeach; ?>
@@ -58,7 +58,7 @@
 </table>
 
 <?php foreach ($anscode as $i => $ld) {
-    echo \CHtml::hiddenField("java{$aQuestions[$i]['myfname']}", $aQuestions[$i]['myfname_value'], array(
+    echo \CHtml::hiddenField("java{$aQuestions[$i]['myfname']}",$aQuestions[$i]['myfname_value'],array(
         'id' => "java{$aQuestions[$i]['myfname']}",
         'disabled' => true,
     ));

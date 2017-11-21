@@ -32,23 +32,23 @@
             <!-- active surveys -->
             <?php if ($activesurveyscount > 0): ?>
                 <li>
-                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y'); ?>">
-                        <?php eT("Active surveys"); ?> <span class="badge badge-success"><?php echo $activesurveyscount ?></span>
+                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
+                        <?php eT("Active surveys");?> <span class="badge badge-success"><?php echo $activesurveyscount ?></span>
                     </a>
                 </li>
-            <?php endif; ?>
+            <?php endif;?>
 
             <!-- List surveys -->
             <li>
                 <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
-                    <?php eT("List surveys"); ?>
+                    <?php eT("List surveys");?>
                 </a>
             </li>
 
             <!-- Logout -->
             <li>
                 <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
-                    <?php eT("Logout"); ?>
+                    <?php eT("Logout");?>
                 </a>
             </li>
         </ul>
@@ -58,12 +58,12 @@
         <ul class="nav navbar-nav navbar-right">
 
             <!-- Configuration menu -->
-            <?php $this->renderPartial("/admin/super/_configuration_menu", $dataForConfigMenu); ?>
+            <?php $this->renderPartial( "/admin/super/_configuration_menu", $dataForConfigMenu ); ?>
 
             <!-- Surveys menus -->
             <li class="dropdown-split-left">
                 <a style="" href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>"><span class="icon-list" ></span>
-                    <?php eT("Surveys"); ?>
+                    <?php eT("Surveys");?>
                 </a>
             </li>
             <li class="dropdown dropdown-split-right">
@@ -72,34 +72,34 @@
                     <span style="margin-left: 0px;" class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                         <?php if (Permission::model()->hasGlobalPermission('surveys', 'create')): ?>
+                         <?php if (Permission::model()->hasGlobalPermission('surveys','create')): ?>
                          <!-- Create a new survey -->
                          <li>
                              <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey"); ?>">
-                                 <?php eT("Create a new survey"); ?>
+                                 <?php eT("Create a new survey");?>
                              </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
                            <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/import"); ?>">
-                               <?php eT("Import a survey"); ?>
+                               <?php eT("Import a survey");?>
                            </a>
                          </li>
 
                          <!-- Import a survey -->
                          <li>
                            <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey/tab/copy"); ?>">
-                               <?php eT("Copy a survey"); ?>
+                               <?php eT("Copy a survey");?>
                            </a>
                          </li>
 
                          <li class="divider"></li>
-                        <?php endif; ?>
+                        <?php endif;?>
                          <!-- List surveys -->
                          <li>
                              <a href="<?php echo $this->createUrl("admin/survey/sa/listsurveys"); ?>">
-                                 <?php eT("List surveys"); ?>
+                                 <?php eT("List surveys");?>
                              </a>
                          </li>
 
@@ -110,11 +110,11 @@
             <!-- active surveys -->
             <?php if ($activesurveyscount > 0): ?>
                 <li>
-                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y'); ?>">
-                        <?php eT("Active surveys"); ?> <span class="badge badge-success"> <?php echo $activesurveyscount ?> </span>
+                    <a href="<?php echo $this->createUrl('admin/survey/sa/listsurveys/active/Y');?>">
+                        <?php eT("Active surveys");?> <span class="badge badge-success"> <?php echo $activesurveyscount ?> </span>
                     </a>
                 </li>
-            <?php endif; ?>
+            <?php endif;?>
 
             <!-- Extra menus from plugins -->
             <?php // TODO: This views should be in same module as ExtraMenu and ExtraMenuItem classes (not plugin) ?>
@@ -131,7 +131,7 @@
                                 <?php if ($menuItem->isDivider()): ?>
                                     <li class="divider"></li>
                                 <?php elseif ($menuItem->isSmallText()): ?>
-                                    <li class="dropdown-header"><?php echo $menuItem->getLabel(); ?></li>
+                                    <li class="dropdown-header"><?php echo $menuItem->getLabel();?></li>
                                 <?php else: ?>
                                     <li>
                                         <a href="<?php echo $menuItem->getHref(); ?>">
@@ -145,20 +145,17 @@
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </ul>
-                    <?php else {
-    : ?>
-                        <a href="<?php echo $menu->getHref();
-}
-?>"><?php echo $menu->getLabel(); ?></a>
+                    <?php else: ?>
+                        <a href="<?php echo $menu->getHref(); ?>"><?php echo $menu->getLabel(); ?></a>
                     <?php endif; ?>
                 </li>
             <?php endforeach; ?>
 
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><span class="icon-user" ></span> <?php echo Yii::app()->session['user']; ?> <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" ><span class="icon-user" ></span> <?php echo Yii::app()->session['user'];?> <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                     <li>
-                        <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>"><?php eT("My account"); ?></a>
+                        <a href="<?php echo $this->createUrl("/admin/user/sa/personalsettings"); ?>"><?php eT("My account");?></a>
                     </li>
 
                     <li class="divider"></li>
@@ -166,7 +163,7 @@
                     <!-- Logout -->
                     <li>
                         <a href="<?php echo $this->createUrl("admin/authentication/sa/logout"); ?>">
-                            <?php eT("Logout"); ?>
+                            <?php eT("Logout");?>
                         </a>
                     </li>
                 </ul>

@@ -16,7 +16,7 @@
     <?php if (isset($participantIds)): ?>
         <?php foreach ($participantIds as $id): ?>
             <input type="hidden" name="participant_id[]" value="<?php echo $id; ?>" />
-        <?php endforeach; ?>
+        <?php endforeach;?>
     <?php else: ?>
         <input type="hidden" name="participant_id" value="<?php echo $model->participant_id; ?>" />
     <?php endif; ?>

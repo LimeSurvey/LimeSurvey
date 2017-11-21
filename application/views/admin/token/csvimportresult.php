@@ -6,39 +6,37 @@
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row">
         <div class="col-lg-12 content-right">
-            <?php if (empty($aTokenListArray) || $iRecordImported == 0):?>
+            <?php if (empty($aTokenListArray) || $iRecordImported == 0 ):?>
                 <div class="jumbotron message-box message-box-error">
                     <h2 class="text-danger">
                         <?php
                                 if (empty($aTokenListArray))
                                 {
                                     eT("Failed to open the uploaded file!");
-                                } else
+                                }
+                                else
                                 {
                                     eT("Failed to create token entries");
                                 }
                         ?>
                     </h2>
-            <?php else {
-    :?>
+            <?php else:?>
                 <div class="jumbotron message-box">
-                    <h2 class="text-success"><?php eT("Uploaded CSV file successfully");
-}
-?></h2>
+                    <h2 class="text-success"><?php eT("Uploaded CSV file successfully"); ?></h2>
                     <p class='lead text-success'><?php eT("Successfully created token entries"); ?></p>
-            <?php endif; ?>
+            <?php endif;?>
                     <p>
                         <ul class="list-unstyled">
                             <li><?php printf(gT("%s records in CSV"), $iRecordCount); ?></li>
                             <li><?php printf(gT("%s records met minimum requirements"), $iRecordOk); ?></li>
-                            <?php if ($iInvalidEmailCount) { ?>
+                            <?php if($iInvalidEmailCount) { ?>
                                 <li><?php printf(gT("%s records with allowed invalid email"), $iInvalidEmailCount); ?></li>
                             <?php } ?>
                             <li><?php printf(gT("%s records imported"), $iRecordImported); ?></li>
                         </ul>
                     </p>
 
-                    <?php if (!empty($aInvalidTokenList) ||
+                    <?php if (  !empty($aInvalidTokenList) ||
                                 !empty($aDuplicateList) ||
                                 !empty($aInvalidFormatList) ||
                                 !empty($aInvalidEmailList) ||

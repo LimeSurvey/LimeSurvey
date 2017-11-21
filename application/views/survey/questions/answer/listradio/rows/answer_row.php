@@ -17,7 +17,7 @@
         value="<?php echo $code; ?>"
         name="<?php echo $name; ?>"
         id="answer<?php echo $name.$code; ?>"
-        <?php echo $checkedState; ?>
+        <?php echo $checkedState;?>
         onclick="if (document.getElementById('answer<?php echo $name; ?>othertext') != null) document.getElementById('answer<?php echo $name; ?>othertext').value='';checkconditions(this.value, this.name, this.type)"
      />
     <label for="answer<?php echo $name.$code; ?>" class="control-label radio-label">

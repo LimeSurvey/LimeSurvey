@@ -3,7 +3,7 @@
 
     <div class="row">
         <div class="col-lg-12 content-right">
-            <form name='translatemenu' id='translatemenu' action='<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/lang/{$tolang}"); ?>' method='get'  class="">
+            <form name='translatemenu' id='translatemenu' action='<?php echo $this->createUrl("admin/translate/sa/index/surveyid/{$surveyid}/lang/{$tolang}");?>' method='get'  class="">
                 <?php echo $adminmenu; ?>
             </form>
         </div>
@@ -12,6 +12,6 @@
     <div class="row">
         <div class="col-lg-12 content-right">
             <h4>
-                <?php eT("Translate survey"); ?>
+                <?php eT("Translate survey");?>
             </h4>
     </div>

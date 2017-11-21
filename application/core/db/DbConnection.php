@@ -17,8 +17,8 @@ class DbConnection extends \CDbConnection
     protected function initConnection($pdo)
     {
         parent::initConnection($pdo);
-        $driver = strtolower($pdo->getAttribute(PDO::ATTR_DRIVER_NAME));
-        if (in_array($driver, array('mysql', 'mysqli'))) {
+        $driver=strtolower($pdo->getAttribute(PDO::ATTR_DRIVER_NAME));
+        if(in_array($driver,array('mysql','mysqli'))) {
             $pdo->exec("SET collation_connection='utf8mb4_unicode_ci'");
         }
     }
@@ -32,13 +32,13 @@ class DbConnection extends \CDbConnection
      */
     public function quoteValueExtended($str, $quoteParam)
     {
-        if (is_int($str) || is_float($str))
+        if(is_int($str) || is_float($str))
             return $str;
 
         $this->setActive(true);
-        if (($value = $this->getPdoInstance()->quote($str, $quoteParam)) !== false)
+        if(($value=$this->getPdoInstance()->quote($str, $quoteParam))!==false)
             return $value;
         else  // the driver doesn't support quote (e.g. oci)
-            return "'".addcslashes(str_replace("'", "''", $str), "\000\n\r\\\032")."'";
+            return "'" . addcslashes(str_replace("'", "''", $str), "\000\n\r\\\032") . "'";
     }
 }

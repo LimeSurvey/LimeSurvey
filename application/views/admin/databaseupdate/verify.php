@@ -15,15 +15,16 @@
         </div>
     </div>
 
-    <?php if ((int) GetGlobalSetting('DBVersion') < 184) { ?>
+    <?php if ((int)GetGlobalSetting('DBVersion')<184) { ?>
             <div class="alert alert-danger" role="alert">
-                <strong><?php echo eT("Error:"); ?></strong> <?php eT("You will not be able to update because your previous LimeSurvey version is too old."); ?>
+                <strong><?php echo eT("Error:"); ?></strong> <?php eT("You will not be able to update because your previous LimeSurvey version is too old.");?>
                 <br>
                 <?php eT("Please first update to Version 2.6.4 or any later 2.x version before you update to Version 3.x."); ?>
             </div>
 
 
-    <?php } else
+    <?php } 
+    else
     { ?>
 
 
