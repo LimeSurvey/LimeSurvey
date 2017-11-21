@@ -10,7 +10,7 @@ $templatenames=array_keys(getTemplateList());
 $thisadmintheme=getGlobalSetting('admintheme');
 $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode');
 $thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode');
-$thisdefaulttemplateeditormode=getGlobalSetting('defaulttemplateeditormode'); 
+$thisdefaultthemeteeditormode=getGlobalSetting('defaultthemeteeditormode'); 
 $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); 
 ?>
 
@@ -229,14 +229,14 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <!-- Default template editor mode -->
         <div class="row ls-space margin top-10">
             <div class="form-group">
-                <label class="col-sm-12 text-left control-label" for='defaulttemplateeditormode'>
+                <label class="col-sm-12 text-left control-label" for='defaultthemeteeditormode'>
                     <?php eT("Template editor:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
                 </label>
                 <div class="col-sm-12">
                     <?php
                         $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
-                            'name' => 'defaulttemplateeditormode',
-                            'value'=> $thisdefaulttemplateeditormode ,
+                            'name' => 'defaultthemeteeditormode',
+                            'value'=> $thisdefaultthemeteeditormode ,
                             'selectOptions'=>array(
                                 "default"=>gT("Full",'unescaped'),
                                 "none"=>gT("Simple",'unescaped')

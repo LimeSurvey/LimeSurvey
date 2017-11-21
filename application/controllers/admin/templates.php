@@ -713,7 +713,7 @@ class templates extends Survey_Common_Action
         $aData = array();
         $time = date("ymdHis");
         // Prepare textarea class for optional javascript
-        $templateclasseditormode = getGlobalSetting('defaulttemplateeditormode'); // default
+        $templateclasseditormode = getGlobalSetting('defaultthemeteeditormode'); // default
         if (Yii::app()->session['templateeditormode'] == 'none'){
             $templateclasseditormode = 'none';
         }

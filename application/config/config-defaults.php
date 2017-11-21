@@ -674,7 +674,7 @@ $config['bounceaccountuser']='';
 $config['defaultquestionselectormode']='default';
 
 // Template editor mode
-$config['defaulttemplateeditormode']='default';
+$config['defaultthemeteeditormode']='default'; 
 
 // Side Menu behaviout
 $config['sideMenuBehaviour']='adaptive';
