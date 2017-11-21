@@ -16,11 +16,11 @@
 
         <hr/>
         <!-- Form  editconditions -->
-        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"editconditions",'name'=>"editconditions", 'class' => 'form'));?>
+        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"editconditions", 'name'=>"editconditions", 'class' => 'form')); ?>
             <div class='form-group'>
                 <div class='col-sm-2'></div>
                 <div class='col-sm-10'>
-                    <h4 id='formHeader'><?php echo $title;?></h4>
+                    <h4 id='formHeader'><?php echo $title; ?></h4>
                 </div>
             </div>
 
@@ -28,8 +28,8 @@
             <div class='form-group'>
                 <label class='control-label col-sm-2'><?php eT('Scenario'); ?></label>
                 <div class='<?php if ($showScenario): ?> col-sm-4 <?php else: ?> col-sm-2 <?php endif; ?> add-scenario-column'>
-                    <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if($showScenario):?> style='display: none;' <?php endif;?>/>
-                    <?php if($showScenario):?>
+                    <input class='form-control' type='number' name='scenario' id='scenario' value='<?php echo ($addConditionToScenarioNr ? $addConditionToScenarioNr : '1'); ?>' <?php if ($showScenario):?> style='display: none;' <?php endif; ?>/>
+                    <?php if ($showScenario):?>
                         <span id='defaultscenariotxt'>
                             <?php eT("Default scenario"); ?>
                         </span>
@@ -37,7 +37,7 @@
                         <button class='btn btn-default' id='scenarioaddbtn' onclick="scenarioaddbtnOnClickAction(); return false;" >
                             <span class='icon-add'></span>&nbsp;<?php eT('Add scenario'); ?>
                         </button>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -157,9 +157,9 @@
                                     <?php if ($cqn[2] != 'M' && $cqn[2] != 'P'): ?>
                                         <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
                                         <option
-                                            value='<?php echo '@' . $cqn[3] . '@'; ?>'
+                                            value='<?php echo '@'.$cqn[3].'@'; ?>'
                                             title="<?php echo HTMLEscape($cqn[0]); ?>"
-                                            <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@'): echo ' selected="selected" '; endif; ?>
+                                            <?php if ($p_prevquestionsgqa == '@'.$cqn[3].'@'): echo ' selected="selected" '; endif; ?>
                                             >
                                             <?php echo HTMLEscape($cqn[0]); ?>
                                         </option>

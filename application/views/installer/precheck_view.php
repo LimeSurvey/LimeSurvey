@@ -7,29 +7,29 @@ function dirReport($dir, $write)
 
     if ($dir == "Found")
     {
-       $a = gT("Found");
+        $a = gT("Found");
     } else
     {
-       $error = 1;
-       $a = gT("Not found");
+        $error = 1;
+        $a = gT("Not found");
     }
 
     if ($write == "Writable")
     {
-       $b = gT("Writable");
+        $b = gT("Writable");
     } else
     {
-       $error = 1;
-       $b = gT("Unwritable");
+        $error = 1;
+        $b = gT("Unwritable");
     }
 
     if ($error)
     {
-       return '<h3 class="label label-danger" style="font-size: 100%;">'.$a.' &amp; '.$b.'</h3>';
+        return '<h3 class="label label-danger" style="font-size: 100%;">'.$a.' &amp; '.$b.'</h3>';
     }
     else
     {
-       return $a.' &amp; '.$b;
+        return $a.' &amp; '.$b;
     }
 }
 
@@ -62,7 +62,7 @@ function dirReport($dir, $write)
                <td><?php eT("Minimum memory available"); ?></td>
                <td>128</td>
                <td><?php
-               if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php eT("Too low"); ?>: <?php echo convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
+                if (isset($bMemoryError) && $bMemoryError) { ?><span style='font-weight:bold; color: red'><?php eT("Too low"); ?>: <?php echo convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024; ?>MB</span>
                <?php } elseif (ini_get('memory_limit')=='-1') eT("Unlimited"); else { echo convertPHPSizeToBytes(ini_get('memory_limit'))/1024/1024; echo ' MB';} ?></td>
         </tr>
         <tr>
@@ -77,9 +77,9 @@ function dirReport($dir, $write)
                <td><?php echo $mbstringPresent; ?></td>
         </tr>
         <tr>
-               <td><?php eT("PHP zlib library");?></td>
+               <td><?php eT("PHP zlib library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Yes"></span></td>
-               <td><?php echo $zlibPresent ; ?></td>
+               <td><?php echo $zlibPresent; ?></td>
         </tr>
         <tr>
                <td><?php eT("PHP/PECL JSON library"); ?></td>
@@ -89,22 +89,22 @@ function dirReport($dir, $write)
         <tr>
                <td>/application/config <?php eT("directory"); ?></td>
                <td><?php eT("Found & writable"); ?></td>
-               <td><?php  echo dirReport($configPresent,$configWritable); ?></td>
+               <td><?php  echo dirReport($configPresent, $configWritable); ?></td>
         </tr>
         <tr>
                <td>/upload <?php eT("directory"); ?></td>
                <td><?php eT("Found & writable"); ?></td>
-               <td><?php  echo dirReport($uploaddirPresent,$uploaddirWritable); ?></td>
+               <td><?php  echo dirReport($uploaddirPresent, $uploaddirWritable); ?></td>
         </tr>
         <tr>
                <td>/tmp <?php eT("directory"); ?></td>
                <td><?php eT("Found & writable"); ?></td>
-               <td><?php  echo dirReport($tmpdirPresent,$tmpdirWritable); ?></td>
+               <td><?php  echo dirReport($tmpdirPresent, $tmpdirWritable); ?></td>
         </tr>
         <tr>
                <td><?php eT("Session writable"); ?></td>
                <td><span class='fa fa-check text-success' alt="Yes"></span></td>
-               <td><?php echo $sessionWritableImg; if (!$sessionWritable) echo '<br/>session.save_path: ' . session_save_path(); ?></td>
+               <td><?php echo $sessionWritableImg; if (!$sessionWritable) echo '<br/>session.save_path: '.session_save_path(); ?></td>
         </tr>
         </tbody>
         </table>
@@ -122,22 +122,22 @@ function dirReport($dir, $write)
         <tr>
                <td><?php eT("PHP GD library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
-               <td><?php echo $gdPresent ; ?></td>
+               <td><?php echo $gdPresent; ?></td>
         </tr>
         <tr>
                <td><?php eT("PHP LDAP library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
-               <td><?php echo $ldapPresent ; ?></td>
+               <td><?php echo $ldapPresent; ?></td>
         </tr>
         <tr>
                <td><?php eT("PHP zip library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
-               <td><?php echo $zipPresent ; ?></td>
+               <td><?php echo $zipPresent; ?></td>
         </tr>
         <tr>
                <td><?php eT("PHP imap library"); ?></td>
                <td><span class='fa fa-check text-success' alt="Check"></span></td>
-               <td><?php echo $bIMAPPresent ; ?></td>
+               <td><?php echo $bIMAPPresent; ?></td>
         </tr>
         </tbody>
 
@@ -151,7 +151,7 @@ function dirReport($dir, $write)
             </div>
             <div class="col-md-4">
 
-                <?php if (isset($next) && $next== TRUE) { ?>
+                <?php if (isset($next) && $next == TRUE) { ?>
                 <input class="btn btn-default" type="button" value="<?php eT('Next'); ?>" onclick="javascript: window.open('<?php echo $this->createUrl("installer/database"); ?>', '_top')" />
                 <?php } ?>
             </div>

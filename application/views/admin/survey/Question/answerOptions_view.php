@@ -1,6 +1,6 @@
 <div id='edit-question-body' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
-        <?php echo $pageTitle; ?> <small><em><?php echo $oQuestion->title;?></em> (ID: <?php echo $oQuestion->qid;?>)</small>
+        <?php echo $pageTitle; ?> <small><em><?php echo $oQuestion->title; ?></em> (ID: <?php echo $oQuestion->qid; ?>)</small>
     </h3>
 
     <div class="row">
@@ -27,36 +27,36 @@
                 <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
                 <input type='hidden' name='close-after-save' value='true' />
 
-                <?php if($viewType=='subQuestions'): ?>
+                <?php if ($viewType == 'subQuestions'): ?>
                     <input type='hidden' id='action' name='action' value='updatesubquestions' />
-                <?php elseif($viewType=='answerOptions'): ?>
+                <?php elseif ($viewType == 'answerOptions'): ?>
                     <input type='hidden' name='action' value='updateansweroptions' />
                 <?php endif; ?>
 
                 <input type='hidden' name='sortorder' value='' />
                 <input type='hidden' id='deletedqids' name='deletedqids' value='' />
 
-                <?php $first=true; ?>
+                <?php $first = true; ?>
 
                 <!-- Tabs -->
                 <ul class="nav nav-tabs">
                     <?php foreach ($anslangs as $i => $anslang):?>
-                        <li role="presentation" <?php if($i==0){echo 'class="active"';}?>>
+                        <li role="presentation" <?php if ($i == 0) {echo 'class="active"'; }?>>
                             <a data-toggle="tab" href='#tabpage_<?php echo $anslang; ?>'>
-                                <?php echo getLanguageNameFromCode($anslang, false).($anslang==Survey::model()->findByPk($surveyid)->language ? ' ('.gT("Base language").')':''); ?>
+                                <?php echo getLanguageNameFromCode($anslang, false).($anslang == Survey::model()->findByPk($surveyid)->language ? ' ('.gT("Base language").')' : ''); ?>
                             </a>
                         </li>
-                    <?php endforeach;?>
+                    <?php endforeach; ?>
                 </ul>
                 <?php
-                    $sortorderids='';
-                    $codeids='';
+                    $sortorderids = '';
+                    $codeids = '';
                 ?>
 
                 <!-- Tab content -->
                 <div class="tab-content">
                     <?php foreach ($anslangs as $i => $anslang):?>
-                        <div id='tabpage_<?php echo $anslang; ?>' class='tab-page tab-pane fade in <?php if($i==0){echo 'active';}?>'>
+                        <div id='tabpage_<?php echo $anslang; ?>' class='tab-page tab-pane fade in <?php if ($i == 0) {echo 'active'; }?>'>
                             <?php for ($scale_id = 0; $scale_id < $scalecount; $scale_id++): ?>
                                 <?php
                                     $result = $results[$anslang][$scale_id];
@@ -66,26 +66,29 @@
                                 <?php // TODO : check the rendering of XSCALES / Y SCALES ?>
 
                                 <?php // For subQuestions ?>
-                                <?php if($viewType=='subQuestions'): ?>
-                                    <?php $position=0; ?>
-                                    <?php if ($scalecount>1): ?>
-                                        <?php if ($scale_id==0): ?>
+                                <?php if ($viewType == 'subQuestions'): ?>
+                                    <?php $position = 0; ?>
+                                    <?php if ($scalecount > 1): ?>
+                                        <?php if ($scale_id == 0): ?>
                                             <div class='header ui-widget-header'>
                                                 <?php eT("Y-Scale"); ?>
                                             </div>
-                                        <?php else: ?>
+                                        <?php else {
+    : ?>
                                             <div class='header ui-widget-header'>
-                                                <?php eT("X-Scale"); ?>
+                                                <?php eT("X-Scale");
+}
+?>
                                             </div>
                                         <?php endif; ?>
                                     <?php endif; ?>
 
                                 <?php // For answers ?>
-                                <?php elseif($viewType=='answerOptions'): ?>
-                                    <?php $position=1; ?>
-                                    <?php  if ($scalecount>1): ?>
+                                <?php elseif ($viewType == 'answerOptions'): ?>
+                                    <?php $position = 1; ?>
+                                    <?php  if ($scalecount > 1): ?>
                                         <div class='header ui-widget-header' style='margin-top:5px;'>
-                                            <?php echo sprintf(gT("Answer scale %s"),$scale_id+1); ?>
+                                            <?php echo sprintf(gT("Answer scale %s"), $scale_id + 1); ?>
                                         </div>
                                     <?php endif; ?>
                                 <?php endif; ?>
@@ -97,8 +100,8 @@
                                     <thead>
                                         <tr>
                                             <th class="col-md-1">
-                                                <?php if( $first && $activated != 'Y'): ?>
-                                                    <?php eT("Position");?>
+                                                <?php if ($first && $activated != 'Y'): ?>
+                                                    <?php eT("Position"); ?>
                                                 <?php else: ?>
                                                     &nbsp;
                                                 <?php endif; ?>
@@ -106,7 +109,7 @@
                                             <th class='col-md-1'><?php eT("Code"); ?></th>
 
                                             <!-- subQuestions headers -->
-                                            <?php if($viewType=='subQuestions'): ?>
+                                            <?php if ($viewType == 'subQuestions'): ?>
                                                 <th>
                                                     <?php eT("Subquestion"); ?>
                                                 </th>
@@ -120,25 +123,28 @@
                                                 <?php endif; ?>
 
                                             <!-- answer Options header-->
-                                            <?php elseif($viewType=='answerOptions'): ?>
+                                            <?php elseif ($viewType == 'answerOptions'): ?>
                                                 <?php if ($assessmentvisible): ?>
                                                     <th class='col-md-1'>
                                                         <?php eT("Assessment value"); ?>
                                                     </th>
-                                                <?php else: ?>
+                                                <?php else {
+    : ?>
                                                     <th style='display:none;'>
                                                         &nbsp;
                                                     </th>
-                                                <?php endif; ?>
+                                                <?php endif;
+}
+?>
 
                                                 <th class='col-md-8'>
                                                     <?php eT("Answer option"); ?>
                                                 </th>
 
                                                 <th class='col-md-1'>
-                                                    <?php if( $first): ?>
+                                                    <?php if ($first): ?>
                                                         <?php eT("Actions"); ?>
-                                                    <?php endif;?>
+                                                    <?php endif; ?>
                                                 </th>
                                             <?php endif; ?>
                                         </tr>
@@ -149,7 +155,7 @@
                                         <?php foreach ($result as $row): ?>
 
                                             <!-- Line tag -->
-                                            <?php if($viewType=='subQuestions'): ?>
+                                            <?php if ($viewType == 'subQuestions'): ?>
                                                 <?php $this->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_subquestion', array(
                                                     'position'  => $position,
                                                     'scale_id'  => $scale_id,
@@ -163,9 +169,9 @@
                                                     'question'  => $row->question,
                                                     'relevance' => $row->relevance,
                                                     'oldCode'   => true,
-                                                ));?>
+                                                )); ?>
 
-                                            <?php elseif($viewType=='answerOptions'):?>
+                                            <?php elseif ($viewType == 'answerOptions'):?>
                                                 <?php $this->renderPartial('/admin/survey/Question/subquestionsAndAnswers/_answer_option', array(
                                                     'position'          => $position,
                                                     'first'             => $first,
@@ -180,7 +186,7 @@
                                                     'sortorder'         => $row->sortorder,
                                                     'answer'            => $row->answer,
                                                     'oldCode'   => true,
-                                                ));?>
+                                                )); ?>
 
                                             <?php endif; ?>
 
@@ -191,17 +197,17 @@
                                 </table>
 
                                 <div class="action-buttons">
-                                    <?php if($viewType=='subQuestions'): ?>
+                                    <?php if ($viewType == 'subQuestions'): ?>
                                         <?php
-                                            $disabled = ($activated == 'Y')?$disabled="disabled='disabled'":'';
+                                            $disabled = ($activated == 'Y') ? $disabled = "disabled='disabled'" : '';
                                         ?>
-                                    <?php elseif($viewType=='answerOptions'): ?>
+                                    <?php elseif ($viewType == 'answerOptions'): ?>
                                         <?php if ($first): ?>
                                             <input type='hidden' id='answercount_<?php echo $scale_id; ?>' name='answercount_<?php echo $scale_id; ?>' value='<?php echo $anscount; ?>' />
-                                            <?php $disabled=""; ?>
+                                            <?php $disabled = ""; ?>
                                         <?php endif; ?>
                                         <br/>
-                                    <?php endif;?>
+                                    <?php endif; ?>
 
                                     <button <?php echo $disabled; ?>  id='btnlsbrowser_<?php echo $anslang; ?>_<?php echo $scale_id; ?>' class='btnlsbrowser btn btn-default' type='button'    data-toggle="modal" data-target="#labelsetbrowserModal">
                                         <?php eT('Predefined label sets...'); ?>
@@ -212,17 +218,17 @@
                                     </button>
 
 
-                                    <?php if(Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('labelsets','create')): ?>
+                                    <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read') || Permission::model()->hasGlobalPermission('labelsets', 'create')): ?>
                                         <button class='bthsaveaslabel btn btn-default' id='bthsaveaslabel_<?php echo $scale_id; ?>' type='button' data-toggle="modal" data-target="#saveaslabelModal">
                                             <?php eT('Save as label set'); ?>
                                         </button>
                                     <?php endif; ?>
 
                                 </div>
-                                <?php $position=sprintf("%05d", $position); ?>
-                            <?php endfor;?>
+                                <?php $position = sprintf("%05d", $position); ?>
+                            <?php endfor; ?>
                         </div>
-                        <?php $first=false; ?>
+                        <?php $first = false; ?>
                     <?php endforeach; ?>
 
 
@@ -235,7 +241,7 @@
                         <input
                             type="hidden"
                             id="add-input-javascript-datas"
-                            data-url="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowForAllLanguages/');?>"
+                            data-url="<?php echo App()->createUrl('/admin/questions/sa/getSubquestionRowForAllLanguages/'); ?>"
                             data-quickurl="<?php echo App()->createUrl(
                                 '/admin/questions/',
                                 array(
@@ -244,13 +250,13 @@
                                     'gid' => $gid,
                                     'qid' => $qid
                                 )
-                            );?>"
-                            data-assessmentvisible="<?php echo (isset($assessmentvisible) && $assessmentvisible==true ? "1" : "0"); ?>"
+                            ); ?>"
+                            data-assessmentvisible="<?php echo (isset($assessmentvisible) && $assessmentvisible == true ? "1" : "0"); ?>"
                             data-errormessage="An error occured while processing the ajax request."
-                            data-surveyid="<?php echo $surveyid;?>"
-                            data-gid="<?php echo $gid;?>"
-                            data-qid="<?php echo $qid;?>"
-                            data-scale-id="<?php echo $scale_id-1; // -1 : because it's incremented via <  ?>"
+                            data-surveyid="<?php echo $surveyid; ?>"
+                            data-gid="<?php echo $gid; ?>"
+                            data-qid="<?php echo $qid; ?>"
+                            data-scale-id="<?php echo $scale_id - 1; // -1 : because it's incremented via <  ?>"
                         />
                     </p>
 

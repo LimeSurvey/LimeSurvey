@@ -1,5 +1,5 @@
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <div class="pagetitle h3"><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title'];?></em> (ID: <?php echo  $qid;?>)</small></div>
+    <div class="pagetitle h3"><?php eT('Question summary'); ?>  <small><em><?php echo  $qrrow['title']; ?></em> (ID: <?php echo  $qid; ?>)</small></div>
     <div class="row">
         <div class="col-lg-12 content-right">
 
@@ -8,8 +8,8 @@
 
                 <!-- Question Group -->
                 <tr>
-                    <td><strong><?php eT('Question group:');?></strong>&nbsp;&nbsp;&nbsp;</td>
-                    <td><em><?php echo flattenText($oQuestion->groups->group_name);?></em> (ID:<?php echo $oQuestion->groups->gid;?>)</td>
+                    <td><strong><?php eT('Question group:'); ?></strong>&nbsp;&nbsp;&nbsp;</td>
+                    <td><em><?php echo flattenText($oQuestion->groups->group_name); ?></em> (ID:<?php echo $oQuestion->groups->gid; ?>)</td>
                 </tr>
 
                 <!-- Code -->
@@ -25,8 +25,11 @@
                         <?php if ($qrrow['type'] != "X"): ?>
                             <?php if ($qrrow['mandatory'] == "Y") :?>
                                 : (<i><?php eT("Mandatory Question"); ?></i>)
-                            <?php else: ?>
-                                    : (<i><?php eT("Optional Question"); ?></i>)
+                            <?php else {
+    : ?>
+                                    : (<i><?php eT("Optional Question");
+}
+?></i>)
                             <?php endif; ?>
                         <?php endif; ?>
                     </td>
@@ -41,7 +44,7 @@
                     </td>
                     <td>
                         <?php
-                            templatereplace($qrrow['question'],array(),$aReplacementData,'Unspecified', false ,$qid);
+                            templatereplace($qrrow['question'], array(), $aReplacementData, 'Unspecified', false, $qid);
                             echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                         ?>
                     </td>
@@ -57,9 +60,9 @@
                     <td>
 
                         <?php
-                            if (trim($qrrow['help'])!='')
+                            if (trim($qrrow['help']) != '')
                             {
-                                templatereplace($qrrow['help'],array(),$aReplacementData,'Unspecified', false ,$qid);
+                                templatereplace($qrrow['help'], array(), $aReplacementData, 'Unspecified', false, $qid);
                                 echo viewHelper::stripTagsEM(LimeExpressionManager::GetLastPrettyPrintExpression());
                             }
                         ?>
@@ -93,7 +96,7 @@
                 </tr>
 
                 <!-- Warning : You need to add answer -->
-                <?php if ($qct == 0 && $qtypes[$qrrow['type']]['answerscales'] >0):?>
+                <?php if ($qct == 0 && $qtypes[$qrrow['type']]['answerscales'] > 0):?>
                 <tr>
                     <td>
                     </td>
@@ -110,7 +113,7 @@
                 <?php endif; ?>
 
                 <!--  Warning : You need to add subquestions to this question -->
-                <?php  if($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] >0): ?>
+                <?php  if ($sqct == 0 && $qtypes[$qrrow['type']]['subquestions'] > 0): ?>
                     <tr>
                         <td></td>
                         <td>
@@ -136,8 +139,11 @@
                         <td>
                             <?php if ($qrrow['other'] == "Y"):?>
                                 <?php eT("Yes"); ?>
-                            <?php else:?>
-                                <?php eT("No"); ?>
+                            <?php else {
+    :?>
+                                <?php eT("No");
+}
+?>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -156,7 +162,7 @@
                                 <?php eT("Yes"); ?>
                             <?php else:?>
                                 <?php eT("No"); ?>
-                            <?php endif;  ?>
+                            <?php endif; ?>
                         </td>
                     </tr>
                 <?php endif; ?>
@@ -167,7 +173,7 @@
                         <td><?php eT("Relevance equation:"); ?></td>
                         <td>
                             <?php
-                            LimeExpressionManager::ProcessString("{" . $qrrow['relevance'] . "}", $qid);    // tests Relevance equation so can pretty-print it
+                            LimeExpressionManager::ProcessString("{".$qrrow['relevance']."}", $qid); // tests Relevance equation so can pretty-print it
                             echo LimeExpressionManager::GetLastPrettyPrintExpression();
                             ?>
                         </td>
@@ -176,15 +182,15 @@
 
                 <!-- Advanced Settings -->
                 <?php
-                    $sCurrentCategory='';
+                    $sCurrentCategory = '';
                     foreach ($advancedsettings as $aAdvancedSetting): ?>
                         <tr>
                             <td>
-                                <?php echo $aAdvancedSetting['caption'];?>:
+                                <?php echo $aAdvancedSetting['caption']; ?>:
                             </td>
                             <td>
                                 <?php
-                                    if ($aAdvancedSetting['i18n']==false)
+                                    if ($aAdvancedSetting['i18n'] == false)
                                         echo htmlspecialchars($aAdvancedSetting['value']);
                                     else
                                         echo htmlspecialchars($aAdvancedSetting[$baselang]['value'])
@@ -204,12 +210,12 @@
                         <div class="col-lg-3">
                             <div class="panel panel-primary <?php if ($surveyIsActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                                 <div class="panel-heading">
-                                    <div class="panel-title h4"><?php eT("Add new question to group");?></div>
+                                    <div class="panel-title h4"><?php eT("Add new question to group"); ?></div>
                                 </div>
                                 <div class="panel-body">
                                     <span class="icon-add text-success"  style="font-size: 3em;"></span>
                                     <p class='btn-link'>
-                                            <?php eT("Add new question to group");?>
+                                            <?php eT("Add new question to group"); ?>
                                     </p>
                                 </div>
                             </div>

@@ -54,16 +54,16 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 <input type='hidden' name='dateFormatDetails' value='<?php echo json_encode($dateformatdetails); ?>' />
                 <input type='hidden' name='rtl' value='<?php echo getLanguageRTL($_SESSION['adminlang']) ? '1' : '0'; ?>' />
 
-                <?php if (Yii::app()->user->getState('sql_'.$surveyid) != null ):?>
+                <?php if (Yii::app()->user->getState('sql_'.$surveyid) != null):?>
                     <!-- Filter is on -->
                     <?php eT("Showing filtered results"); ?>
 
-                    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl('admin/responses', array("sa"=>'browse','surveyid'=>$surveyid, 'filters'=>'reset')); ?>" role="button">
+                    <a class="btn btn-default" href="<?php echo Yii::app()->createUrl('admin/responses', array("sa"=>'browse', 'surveyid'=>$surveyid, 'filters'=>'reset')); ?>" role="button">
                         <?php eT("View without the filter."); ?>
                         <span aria-hidden="true">&times;</span>
                     </a>
 
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php
                     // the massive actions dropup button
@@ -115,7 +115,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'filter'=>TbHtml::dropDownList(
                                 'SurveyDynamic[completed_filter]',
                                 $model->completed_filter,
-                                array(''=>gT('All'),'Y'=>gT('Yes'),'N'=>gT('No')))
+                                array(''=>gT('All'), 'Y'=>gT('Yes'), 'N'=>gT('No')))
                         );
 
                         //add token to top of list if survey is not private
@@ -166,9 +166,9 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                             'name'=>'startlanguage',
                         );
 
-                   // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
-                   // All other columns are based on the questions.
-                   // An array to control unicity of $code (EM code)
+                    // The column model must be built dynamically, since the columns will differ from survey to survey, depending on the questions.
+                    // All other columns are based on the questions.
+                    // An array to control unicity of $code (EM code)
                     foreach($model->metaData->columns as $column)
                     {
                         if(!in_array($column->name, $aDefaultColumns))
@@ -213,7 +213,7 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                         'ajaxType'      => 'POST',
                         'afterAjaxUpdate'=>'LS.resp.bindScrollWrapper',
                         'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                        'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
@@ -246,12 +246,12 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?php eT('Edit survey participant');?></h4>
+                <h4 class="modal-title"><?php eT('Edit survey participant'); ?></h4>
             </div>
             <div class="modal-body">
                 <!-- the ajax loader -->
                 <div id="ajaxContainerLoading2" class="ajaxLoading" >
-                    <p><?php eT('Please wait, loading data...');?></p>
+                    <p><?php eT('Please wait, loading data...'); ?></p>
                     <div class="preloader loading">
                         <span class="slice"></span>
                         <span class="slice"></span>
@@ -265,8 +265,8 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
-                <button type="button" class="btn btn-primary" id="save-edittoken"><?php eT("Save");?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
+                <button type="button" class="btn btn-primary" id="save-edittoken"><?php eT("Save"); ?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

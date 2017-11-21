@@ -11,7 +11,7 @@
 // 	array('label'=>'Manage SurveymenuEntries', 'url'=>array('admin')),
 // );
 
-$pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+$pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
 $massiveAction = App()->getController()->renderPartial('/admin/surveymenu_entries/massive_action/_selector', array(), true, false);
 
 // DO NOT REMOVE This is for automated testing to validate we see that page
@@ -31,7 +31,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
                 <i class="fa fa-plus"></i>&nbsp;
                 <?php eT('Reorder entries') ?>
             </a>
-            <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
+            <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')):?>
                 <a class="btn btn-danger pull-right ls-space margin right-10 col-xs-6 col-sm-3 col-md-2" href="#restoremodal" data-toggle="modal">
                     <i class="fa fa-refresh"></i>&nbsp;
                     <?php eT('Reset menu entries') ?>
@@ -48,7 +48,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
                     'columns' => $model->getColumns(),
                     'filter' => $model,
                     'emptyText'=>gT('No customizable entries found.'),
-                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
@@ -84,7 +84,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><?php eT("Really delete this survey menu entry?");?></h4>
+          <h4 class="modal-title"><?php eT("Really delete this survey menu entry?"); ?></h4>
         </div>
         <div class="modal-body">
           <?php eT("Please be careful - if you delete default entries you may not be able access some parts of the application."); ?>
@@ -105,7 +105,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title"><?php eT("Really restore the default survey menu entries?");?></h4>
+          <h4 class="modal-title"><?php eT("Really restore the default survey menu entries?"); ?></h4>
         </div>
         <div class="modal-body">
           <p>
@@ -129,7 +129,7 @@ echo viewHelper::getViewTestTag('surveyMenuEntries');
 
   <script>
     var surveyMenuEntryFunctions = new SurveyMenuFunctionsWrapper('#editcreatemenuentry','surveymenu-entries-grid', {
-      loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menuentries/sa/getsurveymenuentryform' ) ?>",
+      loadSurveyEntryFormUrl: "<?php echo Yii::app()->urlManager->createUrl('/admin/menuentries/sa/getsurveymenuentryform') ?>",
       restoreEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/restore'); ?>",
       reorderEntriesUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/reorder'); ?>",
       deleteEntryUrl: "<?php echo Yii::app()->getController()->createUrl('/admin/menuentries/sa/delete'); ?>"

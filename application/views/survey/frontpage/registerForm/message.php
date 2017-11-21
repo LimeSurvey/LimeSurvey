@@ -4,8 +4,8 @@
  * @todo : some cmlass ? Review class ?
  */
 ?>
-<?php if($sStartDate) : ?>
-  <p><?php echo sprintf(gT("You may register for this survey but you have to wait for the %s before starting the survey."),$sStartDate); ?></p>
+<?php if ($sStartDate) : ?>
+  <p><?php echo sprintf(gT("You may register for this survey but you have to wait for the %s before starting the survey."), $sStartDate); ?></p>
 <?php else: ?>
   <p><?php echo gT("You may register for this survey if you wish to take part."); ?></p>
 <?php endif; ?>

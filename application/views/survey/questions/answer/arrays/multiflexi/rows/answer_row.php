@@ -16,12 +16,12 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="<?php echo $coreRowClass;?> <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php if($error){ echo " ls-error-mandatory";} ?><?php if($error && $layout=="checkbox"){ echo " has-error";} ?>" role="group" aria-labelledby="answertext<?php echo $myfname;?>">
-    <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php if($error && $layout!="checkbox"){ echo " text-danger";} ?><?php echo ($answerwidth==0)? " sr-only":""; ?>">
+<tr id="javatbd<?php echo $myfname; ?>" class="<?php echo $coreRowClass; ?> <?php echo ($odd) ? "ls-odd" : "ls-even"; ?><?php if ($error) { echo " ls-error-mandatory"; } ?><?php if ($error && $layout == "checkbox") { echo " has-error"; } ?>" role="group" aria-labelledby="answertext<?php echo $myfname; ?>">
+    <th id="answertext<?php echo $myfname; ?>" class="answertext control-label<?php if ($error && $layout != "checkbox") { echo " text-danger"; } ?><?php echo ($answerwidth == 0) ? " sr-only" : ""; ?>">
         <?php echo $answertext; ?>
         <?php
         /* Value for expression manager javascript ? Used ? */
-        echo \CHtml::hiddenField("java{$myfname}",$row_value,array(
+        echo \CHtml::hiddenField("java{$myfname}", $row_value, array(
             'id' => "java{$myfname}",
             'disabled' => true,
         ));
@@ -34,8 +34,8 @@
     ?>
 
     <!-- right -->
-    <?php if($rightTd): ?>
+    <?php if ($rightTd): ?>
         <td class="answertextright"><?php echo $answertextright; ?></td>
-    <?php endif;?>
+    <?php endif; ?>
 </tr>
 <!-- end of answer_row -->

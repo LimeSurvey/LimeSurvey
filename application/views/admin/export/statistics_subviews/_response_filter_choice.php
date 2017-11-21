@@ -1,5 +1,5 @@
 <div class='ls-flex-column col-12 ls-space padding top-5 left-5 bottom-5 right-5'>
-    <div class="ls-flex-row wrap" id="filterchoices" <?php if ($filterchoice_state!='' || !empty($summary)) { echo " style='display:none' "; } ?>>
+    <div class="ls-flex-row wrap" id="filterchoices" <?php if ($filterchoice_state != '' || !empty($summary)) { echo " style='display:none' "; } ?>>
         
         <?php foreach ($aGroups as $groupKey => $aGroup):?>
             <!-- Group Title -->
@@ -22,7 +22,7 @@
                 <!-- Questions container -->
                 <div class="ls-flex-row questionContainer" id="grp_question_container_<?php echo $aGroup['gid']; ?>">
                     <div id='grp_<?php echo $aGroup['gid']; ?>' class="ls-flex-row wrap filtertable ">
-                        <?php foreach($aGroup['questions'] as  $key1 => $flt ): ?>
+                        <?php foreach ($aGroup['questions'] as  $key1 => $flt): ?>
                             <!-- Questions -->
                             <?php $this->renderPartial('/admin/export/statistics_subviews/_question', array(
                                     'key1'=>$key1,
@@ -38,12 +38,12 @@
                                     'language'=>$language,
                                     'dshresults'=>$dshresults,
                                     'dshresults2'=>$dshresults2,
-                                )) ; ?>
+                                )); ?>
 
                         
                         <?php endforeach; ?>
                     </div>
                 </div>
             </div>
-        <?php endforeach;?>
+        <?php endforeach; ?>
 </div></div>

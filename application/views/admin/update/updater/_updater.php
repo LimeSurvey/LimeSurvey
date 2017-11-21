@@ -13,7 +13,7 @@
     <div class="col-sm-9">
         <?php
             // The right part of the updater, containing the steps.
-             $this->renderPartial("./update/updater/_right_container" );
+                $this->renderPartial("./update/updater/_right_container" );
         ?>
     </div>
 </div>

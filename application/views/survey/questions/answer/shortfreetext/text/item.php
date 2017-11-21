@@ -14,11 +14,14 @@
  */
 ?>
 
-<?php if($withColumn): ?>
+<?php if ($withColumn): ?>
 <div class='<?php echo $coreClass; ?> row'>
     <div class="<?php echo $extraclass; ?>">
-<?php else: ?>
-<div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
+<?php else {
+    : ?>
+<div class='<?php echo $coreClass;
+}
+?> <?php echo $extraclass; ?>'>
 <?php endif; ?>
     <?php if ($prefix !== '' || $suffix !== ''): ?>
         <div class="ls-input-group">
@@ -30,13 +33,13 @@
 
         <!-- Input -->
         <input
-            class="form-control <?php echo $kpclass;?>"
+            class="form-control <?php echo $kpclass; ?>"
             type="text"
             name="<?php echo $name; ?>"
-            id="answer<?php echo $name;?>"
+            id="answer<?php echo $name; ?>"
             value="<?php echo $dispVal; ?>"
-            <?php echo ($inputsize ? 'size="'.$inputsize.'"': '') ; ?>
-            <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+            <?php echo ($inputsize ? 'size="'.$inputsize.'"' : ''); ?>
+            <?php echo ($maxlength ? 'maxlength='.$maxlength : ''); ?>
             aria-labelledby="ls-question-text-<?php echo $basename; ?>"
         />
 
@@ -47,9 +50,12 @@
     <?php if ($prefix !== '' || $suffix !== ''): ?>
         </div>
     <?php endif; ?>
-<?php if($withColumn): ?>
+<?php if ($withColumn): ?>
     </div>
 </div>
-<?php else: ?>
+<?php else {
+    : ?>
 </div>
-<?php endif; ?>
+<?php endif;
+}
+?>

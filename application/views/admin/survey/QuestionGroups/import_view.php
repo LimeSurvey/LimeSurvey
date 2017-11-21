@@ -21,15 +21,15 @@
                     <!-- results -->
                     <p>
                         <ul class="list-unstyled">
-                            <li><?php echo gT("Question groups") .": " .$aImportResults['groups'] ?></li>
+                            <li><?php echo gT("Question groups").": ".$aImportResults['groups'] ?></li>
                             <li><?php echo gT("Questions").": ".$aImportResults['questions'] ?></li>
                             <li><?php echo gT("Subquestions").": ".$aImportResults['subquestions'] ?></li>
                             <li><?php echo gT("Answers").": ".$aImportResults['answers'] ?></li>
                             <li><?php echo gT("Conditions").": ".$aImportResults['conditions'] ?></li>
-                            <?php if (strtolower($sExtension)=='csv'):?>
+                            <?php if (strtolower($sExtension) == 'csv'):?>
                                     <li><?php echo gT("Label sets").": ".$aImportResults['labelsets']." (".$aImportResults['labels'].")" ?></li>
-                            <?php endif;?>
-                            <li><?php echo gT("Question attributes:") . $aImportResults['question_attributes'] ?></li>
+                            <?php endif; ?>
+                            <li><?php echo gT("Question attributes:").$aImportResults['question_attributes'] ?></li>
                          </ul>                        
                     </p>
                     <p class="text-info"><?php eT("Question group import is complete.") ?></p>

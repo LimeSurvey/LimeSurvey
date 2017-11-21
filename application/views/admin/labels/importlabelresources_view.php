@@ -4,23 +4,23 @@
 
 <?php
     $ImportListHeader = '';
-    if (!count($aErrorFilesInfo) &&count($aImportedFilesInfo))
+    if (!count($aErrorFilesInfo) && count($aImportedFilesInfo))
     {
         $status = gT("Success");
         $statusClass = 'successheader';
         $okfiles = count($aImportedFilesInfo);
-        $errfiles=0;
-        $ImportListHeader .= "<br /><strong><u>" . gT("Imported files list") . ":</u></strong><br />\n";
+        $errfiles = 0;
+        $ImportListHeader .= "<br /><strong><u>".gT("Imported files list").":</u></strong><br />\n";
         $ErrorListHeader = '';
     }
-    elseif (count($aErrorFilesInfo) &&count($aImportedFilesInfo))
+    elseif (count($aErrorFilesInfo) && count($aImportedFilesInfo))
     {
         $status = gT("Partial");
         $statusClass = 'partialheader';
         $okfiles = count($aImportedFilesInfo);
         $errfiles = count($aErrorFilesInfo);
-        $ErrorListHeader = "<br /><strong><u>" . gT("Error files list") . ":</u></strong><br />\n";
-        $ImportListHeader .= "<br /><strong><u>" . gT("Imported files list") . ":</u></strong><br />\n";
+        $ErrorListHeader = "<br /><strong><u>".gT("Error files list").":</u></strong><br />\n";
+        $ImportListHeader .= "<br /><strong><u>".gT("Imported files list").":</u></strong><br />\n";
     }
     else
     {
@@ -43,7 +43,7 @@
  <?php
     foreach ($aImportedFilesInfo as $entry)
     {
- ?>
+    ?>
         <li><?php echo gT("File") . ": " . $entry["filename"] ?></li>
 <?php
     }
@@ -58,7 +58,7 @@
     foreach ($aErrorFilesInfo as $entry)
     {
 ?>
-        <li><?php echo gT("File") . ": " . $entry['filename'] . " (" . $entry['status'] . ")" ?></li>
+        <li><?php echo gT("File").": ".$entry['filename']." (".$entry['status'].")" ?></li>
 <?php
     }
     if (!is_null($aErrorFilesInfo))
@@ -69,6 +69,6 @@
     }
 ?>
 <p>
-    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/' . $lid) ?>', '_top')" />
+    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back") ?>' onclick="window.open('<?php echo $this->createUrl('admin/labels/sa/view/lid/'.$lid) ?>', '_top')" />
 </p>
 </div>

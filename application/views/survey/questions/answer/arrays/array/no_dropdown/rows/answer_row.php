@@ -10,12 +10,12 @@
 ?>
 
 <!-- answer_row -->
-<tr id="javatbd<?php echo $myfname;?>" class="answers-list radio-list <?php echo ($odd) ? " ls-odd" : " ls-even"; ?><?php echo ($error) ? " ls-error-mandatory has-error" : ""; ?>" role="radiogroup"  aria-labelledby="answertext<?php echo $myfname;?>">
-    <th id="answertext<?php echo $myfname;?>" class="answertext control-label<?php echo ($answerwidth==0)? " sr-only":""; ?>">
-        <?php echo $answertext;?>
+<tr id="javatbd<?php echo $myfname; ?>" class="answers-list radio-list <?php echo ($odd) ? " ls-odd" : " ls-even"; ?><?php echo ($error) ? " ls-error-mandatory has-error" : ""; ?>" role="radiogroup"  aria-labelledby="answertext<?php echo $myfname; ?>">
+    <th id="answertext<?php echo $myfname; ?>" class="answertext control-label<?php echo ($answerwidth == 0) ? " sr-only" : ""; ?>">
+        <?php echo $answertext; ?>
         <?php
         /* Value for expression manager javascript (use id) ; no need to submit */
-        echo \CHtml::hiddenField("java{$myfname}",$value,array(
+        echo \CHtml::hiddenField("java{$myfname}", $value, array(
             'id' => "java{$myfname}",
             'disabled' => true,
         ));
@@ -26,7 +26,7 @@
         echo $answer_tds;
     ?>
     <?php if ($right_exists): ?>
-        <th class='answertextright information-item<?php echo ($answerwidth==0)? " sr-only":""; ?>'><?php echo $answertextright; ?></th>
+        <th class='answertextright information-item<?php echo ($answerwidth == 0) ? " sr-only" : ""; ?>'><?php echo $answertextright; ?></th>
     <?php endif; ?>
 
     <?php

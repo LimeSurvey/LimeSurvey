@@ -6,17 +6,17 @@
     <meta name="author" content="" />
 
     <link rel="shortcut icon" href="<?php echo Yii::app()->baseUrl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="<?php echo $this->createUrl('/');?>assets/styles-admin/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="<?php echo $this->createUrl('/'); ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
 
         <?php
         App()->getClientScript()->registerPackage('jqueryui');
         App()->bootstrap->register();
         App()->getClientScript()->registerPackage('fontawesome');
 
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/assets/styles-admin/Sea_Green/css/lime-admin-colors.css');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/assets/styles-admin/Sea_Green/css/lime-admin-common.css');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/main.css');
-        App()->getClientScript()->registerCssFile(App()->baseUrl . '/installer/css/fonts.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl.'/assets/styles-admin/Sea_Green/css/lime-admin-colors.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl.'/assets/styles-admin/Sea_Green/css/lime-admin-common.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl.'/installer/css/main.css');
+        App()->getClientScript()->registerCssFile(App()->baseUrl.'/installer/css/fonts.css');
 
         $script = "$(function() {
         $('.on').animate({

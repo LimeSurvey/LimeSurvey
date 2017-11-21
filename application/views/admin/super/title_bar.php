@@ -6,8 +6,8 @@
 
 
 $oSurvey = Survey::model()->findByPk((int) $surveyid);
-$oQuestion = isset($qid) ? @Question::model()->find('qid=:qid',['qid'=> $qid]) : null;
-$oQuestionGroup = isset($gid) ? @QuestionGroup::model()->find('gid=:gid',['gid'=> $gid]) : null;
+$oQuestion = isset($qid) ? @Question::model()->find('qid=:qid', ['qid'=> $qid]) : null;
+$oQuestionGroup = isset($gid) ? @QuestionGroup::model()->find('gid=:gid', ['gid'=> $gid]) : null;
 
 $subaction = isset($subaction) ? $subaction : null;
 $simpleSubaction = isset($title_bar['subaction']) ? $title_bar['subaction'] : null;

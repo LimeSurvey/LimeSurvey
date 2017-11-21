@@ -5,13 +5,13 @@
 */
 ?>
 <?php
-$thisdefaulttheme=getGlobalSetting('defaulttheme');
-$templatenames=array_keys(getTemplateList());
-$thisadmintheme=getGlobalSetting('admintheme');
-$thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode');
-$thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode');
-$thisdefaultthemeteeditormode=getGlobalSetting('defaultthemeteeditormode'); 
-$dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); 
+$thisdefaulttheme = getGlobalSetting('defaulttheme');
+$templatenames = array_keys(getTemplateList());
+$thisadmintheme = getGlobalSetting('admintheme');
+$thisdefaulthtmleditormode = getGlobalSetting('defaulthtmleditormode');
+$thisdefaultquestionselectormode = getGlobalSetting('defaultquestionselectormode');
+$thisdefaultthemeteeditormode = getGlobalSetting('defaultthemeteeditormode'); 
+$dateformatdata = getDateFormatData(Yii::app()->session['dateformat']); 
 ?>
 
 <div class="container-fluid">
@@ -20,7 +20,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <div class="row ls-space margin top-10">
             <div class="form-group">
                 <label class="col-sm-12 text-left control-label" for='sitename'>
-                    <?php eT("Site name:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
+                    <?php eT("Site name:"); echo ((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
                 </label>
                 <div class="col-sm-12 text-left">
                     <input class="form-control" type='text' size='50' id='sitename' name='sitename' value="<?php echo htmlspecialchars(getGlobalSetting('sitename')); ?>" />
@@ -31,12 +31,12 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <div class="row ls-space margin top-10">
             <div class="form-group">
                 <label class="col-sm-12 text-left control-label" for="defaulttheme">
-                <?php eT("Default template:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?>
+                <?php eT("Default template:"); echo ((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
                 </label>
                 <div class="col-sm-12">
                     <select class="form-control" name="defaulttheme" id="defaulttheme">
                         <?php foreach ($templatenames as $templatename) : ?>
-                        <option value='<?php echo $templatename; ?>' <?php echo ($thisdefaulttheme==$templatename) ? "selected='selected'" : ""?> >
+                        <option value='<?php echo $templatename; ?>' <?php echo ($thisdefaulttheme == $templatename) ? "selected='selected'" : ""?> >
                             <?php echo $templatename; ?>
                         </option>
                         <?php endforeach; ?>
@@ -52,20 +52,20 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 </label>
                 <div class="col-sm-12">
                     <select class="form-control" name="admintheme" id="admintheme">
-                        <?php  foreach($aListOfThemeObjects as $templatename => $templateconfig): ?>
-                        <option value='<?php echo $templatename; ?>' <?php echo ($thisadmintheme==$templatename)? "selected='selected'" : "" ?> >
+                        <?php  foreach ($aListOfThemeObjects as $templatename => $templateconfig): ?>
+                        <option value='<?php echo $templatename; ?>' <?php echo ($thisadmintheme == $templatename) ? "selected='selected'" : "" ?> >
                             <?php echo $templateconfig->metadatas->name; ?>
                         </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
+                <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')):?>
                 <div class="col-sm-12 control-label ">
                     <p class="text-info text-left">
-                    <?php eT("You can add your custom templates in upload/admintheme");?>
+                    <?php eT("You can add your custom templates in upload/admintheme"); ?>
                     </p>
                 </div>
-                <?php endif;?>
+                <?php endif; ?>
             </div>
       </div>
         <div class="row ls-space margin top-10">
@@ -75,18 +75,18 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 </label>
                 <div class="col-sm-4">
                     <span>
-                        <input class="form-control"  type='text' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+',' hours',' minutes'),array('','',''),getGlobalSetting('timeadjust'))/60); ?>" />
+                        <input class="form-control"  type='text' id='timeadjust' name='timeadjust' value="<?php echo htmlspecialchars(str_replace(array('+', ' hours', ' minutes'), array('', '', ''), getGlobalSetting('timeadjust')) / 60); ?>" />
                     </span>
                 </div>
                 <div class="col-sm-8">
-                    <?php echo gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i')
+                    <?php echo gT("Server time:").' '.convertDateTimeFormat(date('Y-m-d H:i:s'), 'Y-m-d H:i:s', $dateformatdata['phpdate'].' H:i')
                         ."<br>"
                         . gT("Corrected time:").' '
-                        .convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')),'Y-m-d H:i:s',$dateformatdata['phpdate'].' H:i'); ?>
+                        .convertDateTimeFormat(dateShift(date("Y-m-d H:i:s"), 'Y-m-d H:i:s', getGlobalSetting('timeadjust')), 'Y-m-d H:i:s', $dateformatdata['phpdate'].' H:i'); ?>
                 </div>
             </div>
         </div>
-        <?php if( !isset(Yii::app()->session->connectionID)): ?>
+        <?php if (!isset(Yii::app()->session->connectionID)): ?>
         <div class="row ls-space margin top-10">
             <div class="form-group" >
                 <label class="col-sm-12 text-left control-label" for='iSessionExpirationTime'>
@@ -148,7 +148,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                     <select class='form-control' name='characterset' id='characterset'>
                     <?php foreach ($aEncodings as $code => $charset): ?>
                         <option value='<?php echo $code; ?>' 
-                        <?php if (array_key_exists($thischaracterset, $aEncodings) && $code==$thischaracterset): ?>
+                        <?php if (array_key_exists($thischaracterset, $aEncodings) && $code == $thischaracterset): ?>
                             selected='selected'
                         <?php elseif (!array_key_exists($thischaracterset, $aEncodings) && $code == "auto"): ?>
                             selected='selected'
@@ -167,17 +167,17 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <div class="row ls-space margin top-10">
             <div class="form-group">
                 <label class="col-sm-12 text-left control-label" for='defaulthtmleditormode'>
-                <?php eT("Default HTML editor mode:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
+                <?php eT("Default HTML editor mode:"); echo ((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
                 </label>
                 <div class="col-sm-12">
                     <?php
                         $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'defaulthtmleditormode',
-                            'value'=> $thisdefaulthtmleditormode ,
+                            'value'=> $thisdefaulthtmleditormode,
                             'selectOptions'=>array(
-                                "inline"=>gT("Inline",'unescaped'),
-                                "popup"=>gT("Popup",'unescaped'),
-                                "none"=>gT("HTML source",'unescaped')
+                                "inline"=>gT("Inline", 'unescaped'),
+                                "popup"=>gT("Popup", 'unescaped'),
+                                "none"=>gT("HTML source", 'unescaped')
                                 )
                             ));
                     ?>
@@ -195,11 +195,11 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                     <?php
                         $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                         'name' => 'sideMenuBehaviour',
-                        'value'=> $sideMenuBehaviour ,
+                        'value'=> $sideMenuBehaviour,
                         'selectOptions'=>array(
-                            "adaptive"=>gT("Adaptive",'unescaped'),
-                            "alwaysOpen"=>gT("Always open",'unescaped'),
-                            "alwaysClosed"=>gT("Always closed",'unescaped')
+                            "adaptive"=>gT("Adaptive", 'unescaped'),
+                            "alwaysOpen"=>gT("Always open", 'unescaped'),
+                            "alwaysClosed"=>gT("Always closed", 'unescaped')
                             )
                         ));
                     ?>
@@ -210,16 +210,16 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <div class="row ls-space margin top-10">
             <div class="form-group">
                 <label class="col-sm-12 text-left control-label" for='defaultquestionselectormode'>
-                <?php eT("Question type selector:"); echo((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
+                <?php eT("Question type selector:"); echo((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
                 </label>
                 <div class="col-sm-12">
                     <?php
                         $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'defaultquestionselectormode',
-                            'value'=> $thisdefaultquestionselectormode ,
+                            'value'=> $thisdefaultquestionselectormode,
                             'selectOptions'=>array(
-                                "default"=>gT("Full",'unescaped'),
-                                "none"=>gT("Simple",'unescaped')
+                                "default"=>gT("Full", 'unescaped'),
+                                "none"=>gT("Simple", 'unescaped')
                                 )
                             ));
                     ?>
@@ -230,16 +230,16 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <div class="row ls-space margin top-10">
             <div class="form-group">
                 <label class="col-sm-12 text-left control-label" for='defaultthemeteeditormode'>
-                    <?php eT("Template editor:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?>
+                    <?php eT("Template editor:"); echo ((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?>
                 </label>
                 <div class="col-sm-12">
                     <?php
                         $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                             'name' => 'defaultthemeteeditormode',
-                            'value'=> $thisdefaultthemeteeditormode ,
+                            'value'=> $thisdefaultthemeteeditormode,
                             'selectOptions'=>array(
-                                "default"=>gT("Full",'unescaped'),
-                                "none"=>gT("Simple",'unescaped')
+                                "default"=>gT("Full", 'unescaped'),
+                                "none"=>gT("Simple", 'unescaped')
                                 )
                             ));
                     ?>
@@ -249,7 +249,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
     </div>
 </div>
 
-<?php if (Yii::app()->getConfig("demoMode")==true):?>
+<?php if (Yii::app()->getConfig("demoMode") == true):?>
 <p>
     <?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?>
 </p>

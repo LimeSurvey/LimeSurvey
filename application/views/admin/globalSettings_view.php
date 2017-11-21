@@ -10,7 +10,7 @@ App()->getClientScript()->registerPackage('jquery-selectboxes');
 
 ?>
 <script type="text/javascript">
-    var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.",'js'); ?>';
+    var msgCantRemoveDefaultLanguage = '<?php eT("You can't remove the default language.", 'js'); ?>';
 </script>
 
 <div class="container-fluid welcome full-page-wrapper">
@@ -27,7 +27,7 @@ App()->getClientScript()->registerPackage('jquery-selectboxes');
         <li role="presentation" ><a role="tab" data-toggle="tab" href='#interfaces'><?php eT("Interfaces"); ?></a></li>
 </ul>
 
-<?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'','id'=>'frmglobalsettings','name'=>'frmglobalsettings'));?>
+<?php echo CHtml::form(array("admin/globalsettings"), 'post', array('class'=>'', 'id'=>'frmglobalsettings', 'name'=>'frmglobalsettings')); ?>
 <div class="tab-content">
     <div id="overview" class="tab-pane  in active col-md-6 col-md-offset-1">
             <?php $this->renderPartial("./global_settings/_overview", array(
@@ -83,7 +83,7 @@ App()->getClientScript()->registerPackage('jquery-selectboxes');
         ?>
     </div>
 </div>
-    <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ',$restrictToLanguages); ?>'/>
+    <input type='hidden' name='restrictToLanguages' id='restrictToLanguages' value='<?php implode(' ', $restrictToLanguages); ?>'/>
     <input type='hidden' name='action' value='globalsettingssave'/>
     <input type='submit' class="hidden"/>
 </form>

@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -91,7 +91,7 @@ class conditionsaction extends Survey_Common_Action {
      * @param int $qid
      * @return void
      */
-    public function index($subaction, $iSurveyID=null, $gid=null, $qid=null)
+    public function index($subaction, $iSurveyID = null, $gid = null, $qid = null)
     {
         $request = Yii::app()->request;
         $iSurveyID = sanitize_int($iSurveyID);
@@ -108,10 +108,10 @@ class conditionsaction extends Survey_Common_Action {
         $aData['title_bar']['title'] = gT("Conditions designer");
 
         $aData['subaction'] = gT("Conditions designer");
-        $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;  // Close button
+        $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
         $aData['questionbar']['buttons']['conditions'] = TRUE;
 
-        switch($subaction) {
+        switch ($subaction) {
             case 'editconditionsform':
                 $aData['questionbar']['buttons']['condition']['edit'] = TRUE;
                 break;
@@ -135,39 +135,39 @@ class conditionsaction extends Survey_Common_Action {
         }
 
         //BEGIN Sanitizing POSTed data
-        if ( !isset($iSurveyID) ) { $iSurveyID = returnGlobal('sid'); }
-        if ( !isset($qid) ) { $qid = returnGlobal('qid'); }
-        if ( !isset($gid) ) { $gid = returnGlobal('gid'); }
-        if ( !isset($p_scenario)) {$p_scenario=returnGlobal('scenario');}
-        if ( !isset($p_cqid))
+        if (!isset($iSurveyID)) { $iSurveyID = returnGlobal('sid'); }
+        if (!isset($qid)) { $qid = returnGlobal('qid'); }
+        if (!isset($gid)) { $gid = returnGlobal('gid'); }
+        if (!isset($p_scenario)) {$p_scenario = returnGlobal('scenario'); }
+        if (!isset($p_cqid))
         {
             $p_cqid = returnGlobal('cqid');
-            if ($p_cqid == '') $p_cqid=0; // we are not using another question as source of condition
+            if ($p_cqid == '') $p_cqid = 0; // we are not using another question as source of condition
         }
 
-        if (!isset($p_cid)) { $p_cid=returnGlobal('cid'); }
+        if (!isset($p_cid)) { $p_cid = returnGlobal('cid'); }
         if (!isset($p_subaction)) {
-            $p_subaction=$subaction;
+            $p_subaction = $subaction;
         }
-        if (!isset($p_cquestions)) {$p_cquestions=returnGlobal('cquestions');}
-        if (!isset($p_csrctoken)) {$p_csrctoken=returnGlobal('csrctoken');}
-        if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa=returnGlobal('prevQuestionSGQA');}
+        if (!isset($p_cquestions)) {$p_cquestions = returnGlobal('cquestions'); }
+        if (!isset($p_csrctoken)) {$p_csrctoken = returnGlobal('csrctoken'); }
+        if (!isset($p_prevquestionsgqa)) {$p_prevquestionsgqa = returnGlobal('prevQuestionSGQA'); }
 
         $p_canswers = null;
         if (is_array($request->getPost('canswers'))) {
             foreach ($request->getPost('canswers') as $key => $val) {
-                $p_canswers[$key]= preg_replace("/[^_.a-zA-Z0-9]@/", "", $val);
+                $p_canswers[$key] = preg_replace("/[^_.a-zA-Z0-9]@/", "", $val);
             }
         }
 
         $method = $this->getMethod();
 
         if ($request->getPost('method') != '') {
-            if ( !in_array($request->getPost('method'), array_keys($method))) {
+            if (!in_array($request->getPost('method'), array_keys($method))) {
                 $p_method = "==";
             }
             else {
-                $p_method = trim ($request->getPost('method'));
+                $p_method = trim($request->getPost('method'));
             }
         }
         else {
@@ -257,14 +257,14 @@ class conditionsaction extends Survey_Common_Action {
         $theserows = $this->getTheseRows($questionlist);
         $postrows  = $this->getPostRows($postquestionlist);
 
-        $questionscount=count($theserows);
-        $postquestionscount=count($postrows);
+        $questionscount = count($theserows);
+        $postquestionscount = count($postrows);
 
         if (isset($postquestionscount) && $postquestionscount > 0)
         { //Build the array used for the questionNav and copyTo select boxes
             foreach ($postrows as $pr)
             {
-                $pquestions[]  =array("text" => $pr['title'].": ".substr(strip_tags($pr['question']), 0, 80),
+                $pquestions[] = array("text" => $pr['title'].": ".substr(strip_tags($pr['question']), 0, 80),
                 "fieldname" => $pr['sid']."X".$pr['gid']."X".$pr['qid']);
             }
         }
@@ -288,7 +288,7 @@ class conditionsaction extends Survey_Common_Action {
         $aViewUrls = array();
 
         $oQuestion = Question::model()->find('qid=:qid', array(':qid'=>$qid));
-        $aData['oQuestion']=$oQuestion;
+        $aData['oQuestion'] = $oQuestion;
 
         $aData['surveyid'] = $iSurveyID;
         $aData['qid'] = $qid;
@@ -338,7 +338,7 @@ class conditionsaction extends Survey_Common_Action {
         {
 
             //3: Get other conditions currently set for this question
-            $s=0;
+            $s = 0;
 
             $scenariocount = count($scenarios);
 
@@ -347,28 +347,26 @@ class conditionsaction extends Survey_Common_Action {
             $aData['questionNavOptions'] = $questionNavOptions;
             $aData['conditionsoutput_action_error'] = $conditionsoutput_action_error;
             $aData['javascriptpre'] = $javascriptpre;
-            $aData['sCurrentQuestionText'] = $questiontitle .': '.viewHelper::flatEllipsizeText($sCurrentFullQuestionText,true,'120');
+            $aData['sCurrentQuestionText'] = $questiontitle.': '.viewHelper::flatEllipsizeText($sCurrentFullQuestionText, true, '120');
             //$aData['subaction'] = $subaction;
             $aData['scenariocount'] = $scenariocount;
             $aViewUrls['conditionslist_view'][] = $aData;
 
             if ($scenariocount > 0)
             {
-                App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'checkgroup.js');
+                App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'checkgroup.js');
                 foreach ($scenarios as $scenarionr) {
 
                     if ($s == 0 && $scenariocount > 1) {
                         $aData['showScenarioText'] = 'normal';
-                    }
-                    else if ($s > 0) {
+                    } else if ($s > 0) {
                         $aData['showScenarioText'] = 'withOr';
-                    }
-                    else {
+                    } else {
                         $aData['showScenarioText'] = null;
                     }
 
                     if (!empty($aData['showScenarioText']) &&
-                        (  $subaction == "editconditionsform"
+                        ($subaction == "editconditionsform"
                         || $subaction == "insertcondition"
                         || $subaction == "updatecondition"
                         || $subaction == "editthiscondition"
@@ -378,8 +376,7 @@ class conditionsaction extends Survey_Common_Action {
                         || $subaction == "delete")
                     ) {
                         $aData['showScenarioButtons'] = true;
-                    }
-                    else {
+                    } else {
                         $aData['showScenarioButtons'] = false;
                     }
 
@@ -422,34 +419,32 @@ class conditionsaction extends Survey_Common_Action {
                     ////////////////// BUILD CONDITIONS DISPLAY
                     if ($conditionscount > 0)
                     {
-                        $aConditionsMerged=Array();
+                        $aConditionsMerged = Array();
                         foreach ($resulttoken->readAll() as $arow)
                         {
-                            $aConditionsMerged[]=$arow;
+                            $aConditionsMerged[] = $arow;
                         }
                         foreach ($conditions as $arow)
                         {
-                            $aConditionsMerged[]=$arow;
+                            $aConditionsMerged[] = $arow;
                         }
 
                         foreach ($aConditionsMerged as $rows)
                         {
-                            if($rows['method'] == "") {$rows['method'] = "==";} //Fill in the empty method from previous versions
+                            if ($rows['method'] == "") {$rows['method'] = "=="; } //Fill in the empty method from previous versions
 
                             // This variable is used for condition.php view; $aData is used for other view
                             $data = array();
 
-                            if (isset($currentfield) && $currentfield != $rows['cfieldname'] )
+                            if (isset($currentfield) && $currentfield != $rows['cfieldname'])
                             {
                                 //$aViewUrls['output'] .= gT("and");
                                 $data['andOrOr'] = gT('and');
-                            }
-                            elseif (isset($currentfield))
+                            } elseif (isset($currentfield))
                             {
                                 //$aViewUrls['output'] .= gT("or");
                                 $data['andOrOr'] = gT('or');
-                            }
-                            else {
+                            } else {
                                 $data['andOrOr'] = '';
                             }
 
@@ -470,7 +465,7 @@ class conditionsaction extends Survey_Common_Action {
                             $data['method'] = $method;
 
                             $leftOperandType = 'unknown'; // prevquestion, tokenattr
-                            if (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/',$rows['cfieldname'],$extractedTokenAttr) > 0) {
+                            if (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/', $rows['cfieldname'], $extractedTokenAttr) > 0) {
                                 $leftOperandType = 'tokenattr';
 
                                 $thisAttrName = $this->getAttributeName($extractedTokenAttr);
@@ -482,18 +477,16 @@ class conditionsaction extends Survey_Common_Action {
                                     "cid"  => $rows['cid'],
                                     "text" => $thisAttrName
                                 );
-                            }
-                            else {
+                            } else {
                                 $leftOperandType = 'prevquestion';
                                 foreach ($cquestions as $cqn) {
                                     if ($cqn[3] == $rows['cfieldname']) {
-                                        $data['name'] = $cqn[0] . "(qid{$rows['cqid']})";
+                                        $data['name'] = $cqn[0]."(qid{$rows['cqid']})";
                                         $conditionsList[] = array(
                                             "cid"  => $rows['cid'],
                                             "text" => $cqn[0]." ({$rows['value']})"
                                         );
-                                    }
-                                    else {
+                                    } else {
                                         //$aViewUrls['output'] .= "\t<font color='red'>ERROR: Delete this condition. It is out of order.</font>\n";
                                     }
                                 }
@@ -506,7 +499,7 @@ class conditionsaction extends Survey_Common_Action {
                                 $rightOperandType = 'regexp';
                                 $data['target'] = HTMLEscape($rows['value']);
                             }
-                            elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/',$rows['value'],$matchedSGQA) > 0) { // SGQA
+                            elseif (preg_match('/^@([0-9]+X[0-9]+X[^@]*)@$/', $rows['value'], $matchedSGQA) > 0) { // SGQA
                                 $rightOperandType = 'prevQsgqa';
                                 $textfound = false;
                                 $matchedSGQAText = '';
@@ -524,7 +517,7 @@ class conditionsaction extends Survey_Common_Action {
 
                                 $data['target'] = HTMLEscape($matchedSGQAText);
                             }
-                            elseif (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/',$rows['value'],$extractedTokenAttr) > 0) {
+                            elseif (!$surveyIsAnonymized && preg_match('/^{TOKEN:([^}]*)}$/', $rows['value'], $extractedTokenAttr) > 0) {
                                 $rightOperandType = 'tokenAttr';
                                 $aTokenAttrNames = $this->tokenFieldsAndNames;
                                 if ($this->tokenTableExists) {
@@ -549,13 +542,12 @@ class conditionsaction extends Survey_Common_Action {
                                 $rightOperandType = 'constantVal';
                                 if ($rows['value'] == ' ' || $rows['value'] == '') {
                                     $data['target'] = gT("No answer");
-                                }
-                                else {
+                                } else {
                                     $data['target'] = HTMLEscape($rows['value']);
                                 }
                             }
 
-                            if (   $subaction == "editconditionsform"
+                            if ($subaction == "editconditionsform"
                                 || $subaction == "insertcondition"
                                 || $subaction == "updatecondition"
                                 || $subaction == "editthiscondition"
@@ -572,10 +564,9 @@ class conditionsaction extends Survey_Common_Action {
 
                                 //$aViewUrls['includes/conditions_edit'][] = $aData;
 
-                                $data['editButtons'] = $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit',$aData, TRUE);
+                                $data['editButtons'] = $this->getController()->renderPartial('/admin/conditions/includes/conditions_edit', $aData, TRUE);
                                 $data['hiddenFields'] = $this->getHiddenFields($rows, $leftOperandType, $rightOperandType);
-                            }
-                            else {
+                            } else {
                                 $data['editButtons'] = '';
                                 $data['hiddenFields'] = '';
                             }
@@ -601,11 +592,10 @@ class conditionsaction extends Survey_Common_Action {
                 }
                 // If we have a condition, all ways reset the condition, this can fix old import (see #09344)
                 // LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
-            }
-            else
+            } else
             { // no condition ==> disable delete all conditions button, and display a simple comment
                 // no_conditions
-                $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/no_condition',$aData, true);
+                $aViewUrls['output'] = $this->getController()->renderPartial('/admin/conditions/no_condition', $aData, true);
             }
 
             //// To close the div opened in condition header....  see : https://goo.gl/BY7gUJ
@@ -615,12 +605,12 @@ class conditionsaction extends Survey_Common_Action {
         //END DISPLAY CONDITIONS FOR THIS QUESTION
 
         // Display the copy conditions form
-        if (   $subaction == "copyconditionsform"
+        if ($subaction == "copyconditionsform"
             || $subaction == "copyconditions") {
             $aViewUrls['output'] .= $this->getCopyForm($qid, $gid, $conditionsList, $pquestions);
         }
 
-        if (   $subaction == "editconditionsform"
+        if ($subaction == "editconditionsform"
             || $subaction == "insertcondition"
             || $subaction == "updatecondition"
             || $subaction == "deletescenario"
@@ -651,31 +641,31 @@ class conditionsaction extends Survey_Common_Action {
 
         $imageurl = Yii::app()->getConfig("adminimageurl");
 
-        if(!isset($max))
+        if (!isset($max))
         {
             $max = 20;
         }
-        $htmlhinttext=str_replace("'",'&#039;',$hinttext);  //the string is already HTML except for single quotes so we just replace these only
-        $jshinttext=javascriptEscape($hinttext,true,true);
+        $htmlhinttext = str_replace("'", '&#039;', $hinttext); //the string is already HTML except for single quotes so we just replace these only
+        $jshinttext = javascriptEscape($hinttext, true, true);
 
-        if(strlen(html_entity_decode($hinttext,ENT_QUOTES,'UTF-8')) > ($max+3))
+        if (strlen(html_entity_decode($hinttext, ENT_QUOTES, 'UTF-8')) > ($max + 3))
         {
-            $shortstring = flattenText($hinttext,true);
+            $shortstring = flattenText($hinttext, true);
 
-            $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring,ENT_QUOTES,'UTF-8'), 0, $max, 'UTF-8'));
+            $shortstring = htmlspecialchars(mb_strcut(html_entity_decode($shortstring, ENT_QUOTES, 'UTF-8'), 0, $max, 'UTF-8'));
 
             //output with hoover effect
-            $reshtml= "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
-            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />"
+            $reshtml = "<span style='cursor: hand' alt='".$htmlhinttext."' title='".$htmlhinttext."' "
+            ." onclick=\"alert('".gT("Question", "js").": $jshinttext')\" />"
             ." \"$shortstring...\" </span>"
             ."<span class='fa fa-commenting-o text-success' style='cursor: hand'  title='".$htmlhinttext."'></span>"
-            ." onclick=\"alert('".gT("Question","js").": $jshinttext')\" />";
+            ." onclick=\"alert('".gT("Question", "js").": $jshinttext')\" />";
         }
         else
         {
-            $shortstring = flattenText($hinttext,true);
+            $shortstring = flattenText($hinttext, true);
 
-            $reshtml= "<span title='".$shortstring."'> \"$shortstring\"</span>";
+            $reshtml = "<span title='".$shortstring."'> \"$shortstring\"</span>";
         }
 
         return $reshtml;
@@ -690,8 +680,7 @@ class conditionsaction extends Survey_Common_Action {
     {
         if (Yii::app()->getConfig('stringcomparizonoperators') == 1) {
             $method = $this->stringComparisonOperators;
-        }
-        else {
+        } else {
             $method = $this->nonStringComparisonOperators;
         }
 
@@ -713,8 +702,7 @@ class conditionsaction extends Survey_Common_Action {
                 'message' => $content
             )));
             Yii::app()->end();
-        }
-        else {
+        } else {
             LimeExpressionManager::RevertUpgradeConditionsToRelevance($iSurveyID);
             Condition::model()->deleteRecords("qid in (select qid from {{questions}} where sid={$iSurveyID})");
             Yii::app()->setFlashMessage(gT("All conditions in this survey have been deleted."));
@@ -736,7 +724,7 @@ class conditionsaction extends Survey_Common_Action {
         if (isset($p_cquestions) && $p_cquestions != '') {
             $conditionCfieldname = $p_cquestions;
         }
-        elseif(isset($p_csrctoken) && $p_csrctoken != '') {
+        elseif (isset($p_csrctoken) && $p_csrctoken != '') {
             $conditionCfieldname = $p_csrctoken;
         }
 
@@ -761,18 +749,16 @@ class conditionsaction extends Survey_Common_Action {
                 $count_caseinsensitivedupes = count($result);
 
                 if ($count_caseinsensitivedupes == 0) {
-                    $results[] = Condition::model()->insertRecords($condition_data);;
+                    $results[] = Condition::model()->insertRecords($condition_data); ;
                 }
             }
 
             // Check if any result returned false
             if (in_array(false, $results, true)) {
                 Yii::app()->setFlashMessage(gT('Could not insert all conditions.'), 'error');
-            }
-            else if (!empty($results)) {
+            } else if (!empty($results)) {
                 Yii::app()->setFlashMessage(gT('Condition added.'), 'success');
-            }
-            else {
+            } else {
                 Yii::app()->setFlashMessage(
                     gT(
                         "Your condition could not be added! It did not include the question and/or answer upon which the condition was based. Please ensure you have selected a question and an answer.",
@@ -788,16 +774,16 @@ class conditionsaction extends Survey_Common_Action {
             $posted_condition_value = null;
 
             // Other conditions like constant, other question or token field
-            if ($request->getPost('editTargetTab')=="#CONST") {
+            if ($request->getPost('editTargetTab') == "#CONST") {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
             }
-            elseif ($request->getPost('editTargetTab')=="#PREVQUESTIONS") {
+            elseif ($request->getPost('editTargetTab') == "#PREVQUESTIONS") {
                 $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
             }
-            elseif ($request->getPost('editTargetTab')=="#TOKENATTRS") {
+            elseif ($request->getPost('editTargetTab') == "#TOKENATTRS") {
                 $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
             }
-            elseif ($request->getPost('editTargetTab')=="#REGEXP") {
+            elseif ($request->getPost('editTargetTab') == "#REGEXP") {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
             }
 
@@ -826,7 +812,7 @@ class conditionsaction extends Survey_Common_Action {
             }
         }
 
-        LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+        LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
 
         $this->redirectToConditionStart($qid, $gid);
     }
@@ -844,7 +830,7 @@ class conditionsaction extends Survey_Common_Action {
         if (isset($cquestions) && $cquestions != '' && $editSourceTab == '#SRCPREVQUEST') {
             $conditionCfieldname = $cquestions;
         }
-        elseif(isset($csrctoken) && $csrctoken != '') {
+        elseif (isset($csrctoken) && $csrctoken != '') {
             $conditionCfieldname = $csrctoken;
         }
         else {
@@ -872,7 +858,7 @@ class conditionsaction extends Survey_Common_Action {
                 $count_caseinsensitivedupes = count($result);
 
                 if ($count_caseinsensitivedupes == 0) {
-                    $results[] = Condition::model()->insertRecords($condition_data);;
+                    $results[] = Condition::model()->insertRecords($condition_data); ;
                 }
             }
 
@@ -881,7 +867,7 @@ class conditionsaction extends Survey_Common_Action {
                 return array(gT('Could not insert all conditions.'), 'error');
             }
             else if (!empty($results)) {
-                return array (gT('Condition added.'), 'success');
+                return array(gT('Condition added.'), 'success');
             }
             else {
                 return array(
@@ -899,16 +885,16 @@ class conditionsaction extends Survey_Common_Action {
             $posted_condition_value = null;
 
             // Other conditions like constant, other question or token field
-            if ($editTargetTab=="#CONST") {
+            if ($editTargetTab == "#CONST") {
                 $posted_condition_value = $ConditionConst;
             }
-            elseif ($editTargetTab=="#PREVQUESTIONS") {
+            elseif ($editTargetTab == "#PREVQUESTIONS") {
                 $posted_condition_value = $prevQuestionSGQA;
             }
-            elseif ($editTargetTab=="#TOKENATTRS") {
+            elseif ($editTargetTab == "#TOKENATTRS") {
                 $posted_condition_value = $tokenAttr;
             }
-            elseif ($editTargetTab=="#REGEXP") {
+            elseif ($editTargetTab == "#REGEXP") {
                 $posted_condition_value = $ConditionRegexp;
             }
 
@@ -924,7 +910,7 @@ class conditionsaction extends Survey_Common_Action {
                 return array(gT('Could not insert all conditions.'), 'error');
             }
             else if ($result === true) {
-                return array (gT('Condition added.'), 'success');
+                return array(gT('Condition added.'), 'success');
             }
             else {
                 return array(
@@ -959,7 +945,7 @@ class conditionsaction extends Survey_Common_Action {
             ls\ajax\AjaxHelper::outputError($message);
         }
         else {
-            ls\ajax\AjaxHelper::outputError('Internal error: Could not add condition, status unknown: ' . $status);
+            ls\ajax\AjaxHelper::outputError('Internal error: Could not add condition, status unknown: '.$status);
         }
     }
 
@@ -990,8 +976,8 @@ class conditionsaction extends Survey_Common_Action {
             'tokenAttr'
         );
         foreach ($keys as $key) {
-            $value = $request->getPost('quick-add-' . $key);
-            $value = str_replace('QUICKADD-', '', $value);  // Remove QUICKADD- from editSourceTab/editTargetTab
+            $value = $request->getPost('quick-add-'.$key);
+            $value = str_replace('QUICKADD-', '', $value); // Remove QUICKADD- from editSourceTab/editTargetTab
             $result[$key] = $value;
         }
 
@@ -1007,10 +993,10 @@ class conditionsaction extends Survey_Common_Action {
     {
         extract($args);
 
-        if ( isset($p_cquestions) && $p_cquestions != '' ) {
+        if (isset($p_cquestions) && $p_cquestions != '') {
             $conditionCfieldname = $p_cquestions;
         }
-        elseif(isset($p_csrctoken) && $p_csrctoken != '') {
+        elseif (isset($p_csrctoken) && $p_csrctoken != '') {
             $conditionCfieldname = $p_csrctoken;
         }
 
@@ -1046,16 +1032,16 @@ class conditionsaction extends Survey_Common_Action {
 
             // Please note that autoUnescape is already applied in database.php included above
             // so we only need to db_quote _POST variables
-            if ($request->getPost('editTargetTab')=="#CONST") {
+            if ($request->getPost('editTargetTab') == "#CONST") {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionConst');
             }
-            elseif ($request->getPost('editTargetTab')=="#PREVQUESTIONS") {
+            elseif ($request->getPost('editTargetTab') == "#PREVQUESTIONS") {
                 $posted_condition_value = Yii::app()->request->getPost('prevQuestionSGQA');
             }
-            elseif ($request->getPost('editTargetTab')=="#TOKENATTRS") {
+            elseif ($request->getPost('editTargetTab') == "#TOKENATTRS") {
                 $posted_condition_value = Yii::app()->request->getPost('tokenAttr');
             }
-            elseif ($request->getPost('editTargetTab')=="#REGEXP") {
+            elseif ($request->getPost('editTargetTab') == "#REGEXP") {
                 $posted_condition_value = Yii::app()->request->getPost('ConditionRegexp');
             }
 
@@ -1075,14 +1061,13 @@ class conditionsaction extends Survey_Common_Action {
 
             if ($result) {
                 Yii::app()->setFlashMessage(gT('Condition updated.'), 'success');
-            }
-            else {
+            } else {
                 Yii::app()->setFlashMessage(gT('Could not update condition.'), 'error');
             }
 
         }
 
-        LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+        LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
         $this->redirectToConditionStart($qid, $gid);
     }
 
@@ -1095,18 +1080,18 @@ class conditionsaction extends Survey_Common_Action {
         extract($args);
 
         $query = "SELECT DISTINCT scenario FROM {{conditions}} WHERE qid=:qid ORDER BY scenario";
-        $result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safeDie ("Couldn't select scenario<br />$query<br />");
+        $result = Yii::app()->db->createCommand($query)->bindParam(":qid", $qid, PDO::PARAM_INT)->query() or safeDie("Couldn't select scenario<br />$query<br />");
         $newindex = 1;
 
         foreach ($result->readAll() as $srow)
         {
             // new var $update_result == old var $result2
             $update_result = Condition::model()->insertRecords(array('scenario'=>$newindex), TRUE,
-                array( 'qid'=>$qid, 'scenario'=>$srow['scenario'] )
+                array('qid'=>$qid, 'scenario'=>$srow['scenario'])
             );
             $newindex++;
         }
-        LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+        LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
         Yii::app()->setFlashMessage(gT("All conditions scenarios were renumbered."));
     }
 
@@ -1122,7 +1107,7 @@ class conditionsaction extends Survey_Common_Action {
         $copyconditionsto = returnGlobal('copyconditionsto');
         if (isset($copyconditionsto) && is_array($copyconditionsto) && isset($copyconditionsfrom) && is_array($copyconditionsfrom)) {
             //Get the conditions we are going to copy
-            foreach($copyconditionsfrom as &$entry)
+            foreach ($copyconditionsfrom as &$entry)
                 $entry = Yii::app()->db->quoteValue($entry);
             $query = "SELECT * FROM {{conditions}}\n"
                 ."WHERE cid in (";
@@ -1142,7 +1127,7 @@ class conditionsaction extends Survey_Common_Action {
             } // while
 
             foreach ($copyconditionsto as $copyc) {
-                list($newsid, $newgid, $newqid)=explode("X", $copyc);
+                list($newsid, $newgid, $newqid) = explode("X", $copyc);
                 foreach ($proformaconditions as $pfc) { //TIBO
 
                     //First lets make sure there isn't already an exact replica of this condition
@@ -1171,22 +1156,19 @@ class conditionsaction extends Survey_Common_Action {
                     if ($countduplicates == 0) { //If there is no match, add the condition.
                         $result = Condition::model()->insertRecords($conditions_data);
                         $conditionCopied = true;
-                    }
-                    else {
+                    } else {
                         $conditionDuplicated = true;
                     }
                 }
             }
 
             if (isset($conditionCopied) && $conditionCopied === true) {
-                if (isset($conditionDuplicated) && $conditionDuplicated ==true) {
+                if (isset($conditionDuplicated) && $conditionDuplicated == true) {
                     Yii::app()->setFlashMessage(gT("Condition successfully copied (some were skipped because they were duplicates)"), 'warning');
-                }
-                else {
+                } else {
                     Yii::app()->setFlashMessage(gT("Condition successfully copied"));
                 }
-            }
-            else {
+            } else {
                 Yii::app()->setFlashMessage(gT("No conditions could be copied (due to duplicates)"), 'error');
             }
         }
@@ -1215,17 +1197,17 @@ class conditionsaction extends Survey_Common_Action {
 
             // Delete entry if this is delete
             case "delete":
-                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL, $qid); // in case deleted the last condition
                 $result = Condition::model()->deleteRecords(array('cid'=>$p_cid));
-                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
                 $this->redirectToConditionStart($qid, $gid);
                 break;
 
             // Delete all conditions in this scenario
             case "deletescenario":
-                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL, $qid); // in case deleted the last condition
                 $result = Condition::model()->deleteRecords(array('qid'=>$qid, 'scenario'=>$p_scenario));
-                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
                 $this->redirectToConditionStart($qid, $gid);
                 break;
 
@@ -1234,12 +1216,12 @@ class conditionsaction extends Survey_Common_Action {
                 // TODO: Check if $p_newscenarionum is null
                 $result = Condition::model()->insertRecords(array('scenario'=>$p_newscenarionum), TRUE, array(
                     'qid'=>$qid, 'scenario'=>$p_scenario));
-                LimeExpressionManager::UpgradeConditionsToRelevance(NULL,$qid);
+                LimeExpressionManager::UpgradeConditionsToRelevance(NULL, $qid);
                 break;
 
             // Delete all conditions for this question
             case "deleteallconditions":
-                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL,$qid);   // in case deleted the last condition
+                LimeExpressionManager::RevertUpgradeConditionsToRelevance(NULL, $qid); // in case deleted the last condition
                 $result = Condition::model()->deleteRecords(array('qid'=>$qid));
                 Yii::app()->setFlashMessage(gT("All conditions for this question have been deleted."), 'success');
                 $this->redirectToConditionStart($qid, $gid);
@@ -1393,16 +1375,16 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getQuestionList($qid, array $qrows)
     {
-        $position="before";
+        $position = "before";
         $questionlist = array();
         // Go through each question until we reach the current one
         foreach ($qrows as $qrow)
         {
-            if ($qrow["qid"] != $qid && $position=="before")
+            if ($qrow["qid"] != $qid && $position == "before")
             {
                 // remember all previous questions
                 // all question types are supported.
-                $questionlist[]=$qrow["qid"];
+                $questionlist[] = $qrow["qid"];
             }
             elseif ($qrow["qid"] == $qid)
             {
@@ -1423,12 +1405,12 @@ class conditionsaction extends Survey_Common_Action {
         $postquestionlist = array();
         foreach ($qrows as $qrow) //Go through each question until we reach the current one
         {
-            if ( $qrow["qid"] == $qid )
+            if ($qrow["qid"] == $qid)
             {
                 $position = "after";
                 //break;
             }
-            elseif ($qrow["qid"] != $qid && $position=="after")
+            elseif ($qrow["qid"] != $qid && $position == "after")
             {
                 $postquestionlist[] = $qrow['qid'];
             }
@@ -1446,9 +1428,9 @@ class conditionsaction extends Survey_Common_Action {
         $cquestions = array();
         $canswers = array();
 
-        foreach($theserows as $rows)
+        foreach ($theserows as $rows)
         {
-            $shortquestion=$rows['title'].": ".strip_tags($rows['question']);
+            $shortquestion = $rows['title'].": ".strip_tags($rows['question']);
 
             if ($rows['type'] == "A" ||
                 $rows['type'] == "B" ||
@@ -1470,42 +1452,42 @@ class conditionsaction extends Survey_Common_Action {
 
                     switch ($rows['type'])
                     {
-                    case "A": //Array 5 buttons
-                        for ($i=1; $i<=5; $i++)
-                        {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
-                        }
-                        break;
-                    case "B": //Array 10 buttons
-                        for ($i=1; $i<=10; $i++)
-                        {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
-                        }
-                        break;
-                    case "C": //Array Y/N/NA
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "Y", gT("Yes"));
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "U", gT("Uncertain"));
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "N", gT("No"));
-                        break;
-                    case "E": //Array >/=/<
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "I", gT("Increase"));
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "S", gT("Same"));
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "D", gT("Decrease"));
-                        break;
-                    case "F": //Array Flexible Row
-                    case "H": //Array Flexible Column
+                        case "A": //Array 5 buttons
+                            for ($i=1; $i<=5; $i++)
+                            {
+                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
+                            }
+                            break;
+                        case "B": //Array 10 buttons
+                            for ($i=1; $i<=10; $i++)
+                            {
+                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i);
+                            }
+                            break;
+                        case "C": //Array Y/N/NA
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "Y", gT("Yes"));
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "U", gT("Uncertain"));
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "N", gT("No"));
+                            break;
+                        case "E": //Array >/=/<
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "I", gT("Increase"));
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "S", gT("Same"));
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "D", gT("Decrease"));
+                            break;
+                        case "F": //Array Flexible Row
+                        case "H": //Array Flexible Column
 
-                        $fresult = Answer::model()->findAllByAttributes(array(
-                            'qid' => $rows['qid'],
-                            "language" => $this->language,
-                            'scale_id' => 0,
-                        ), array('order' => 'sortorder, code'));
+                            $fresult = Answer::model()->findAllByAttributes(array(
+                                'qid' => $rows['qid'],
+                                "language" => $this->language,
+                                'scale_id' => 0,
+                            ), array('order' => 'sortorder, code'));
 
-                        foreach ($fresult as $frow)
-                        {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['answer']);
-                        }
-                        break;
+                            foreach ($fresult as $frow)
+                            {
+                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['answer']);
+                            }
+                            break;
                     }
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y')
@@ -1514,8 +1496,7 @@ class conditionsaction extends Survey_Common_Action {
                     }
 
                 } //while
-            }
-            elseif ($rows['type'] == ":" || $rows['type'] == ";")
+            } elseif ($rows['type'] == ":" || $rows['type'] == ";")
             { // Multiflexi
 
                 // Get the Y-Axis
@@ -1528,7 +1509,7 @@ class conditionsaction extends Survey_Common_Action {
                     ." AND q.qid=:qid
                     AND sq.scale_id=0
                     ORDER BY sq.question_order";
-                    $sLanguage=$this->language;
+                    $sLanguage = $this->language;
                     $y_axis_db = Yii::app()->db->createCommand($fquery)
                         ->bindParam(":lang1", $sLanguage, PDO::PARAM_STR)
                         ->bindParam(":lang2", $sLanguage, PDO::PARAM_STR)
@@ -1546,48 +1527,50 @@ class conditionsaction extends Survey_Common_Action {
                         AND sq.scale_id=1
                         ORDER BY sq.question_order";
 
-                    $x_axis_db=Yii::app()->db->createCommand($aquery)
+                    $x_axis_db = Yii::app()->db->createCommand($aquery)
                         ->bindParam(":lang1", $sLanguage, PDO::PARAM_STR)
                         ->bindParam(":lang2", $sLanguage, PDO::PARAM_STR)
                         ->bindParam(":qid", $rows['qid'], PDO::PARAM_INT)
-                        ->query() or safeDie ("Couldn't get answers to Array questions<br />$aquery<br />");
+                        ->query() or safeDie("Couldn't get answers to Array questions<br />$aquery<br />");
 
                     foreach ($x_axis_db->readAll() as $frow)
                     {
-                        $x_axis[$frow['title']]=$frow['question'];
+                        $x_axis[$frow['title']] = $frow['question'];
                     }
 
                     foreach ($y_axis_db->readAll() as $yrow)
                     {
-                        foreach($x_axis as $key=>$val)
+                        foreach ($x_axis as $key=>$val)
                         {
-                            $shortquestion=$rows['title'].":{$yrow['title']}:$key: [".strip_tags($yrow['question']). "][" .strip_tags($val). "] " . flattenText($rows['question']);
-                            $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key);
+                            $shortquestion = $rows['title'].":{$yrow['title']}:$key: [".strip_tags($yrow['question'])."][".strip_tags($val)."] ".flattenText($rows['question']);
+                            $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key);
                             if ($rows['mandatory'] != 'Y')
                             {
-                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key, "", gT("No answer"));
+                                $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$yrow['title']."_".$key, "", gT("No answer"));
                             }
                         }
                     }
                     unset($x_axis);
             } //if A,B,C,E,F,H
-            elseif ($rows['type'] == "1") //Multi Scale
+            elseif ($rows['type'] == "1") {
+                //Multi Scale
             {
                 $aresult = Question::model()->findAllByAttributes(array('parent_qid' => $rows['qid'], 'language' => $this->language),
                 array('order' => 'question_order desc'));
+            }
 
                 foreach ($aresult as $arows)
                 {
                     $attr = QuestionAttribute::model()->getQuestionAttributes($rows['qid']);
-                    $sLanguage=$this->language;
+                    $sLanguage = $this->language;
                     // dualscale_header are allways set, but can be empty
                     $label1 = empty($attr['dualscale_headerA'][$sLanguage]) ? gT('Scale 1') : $attr['dualscale_headerA'][$sLanguage];
                     $label2 = empty($attr['dualscale_headerB'][$sLanguage]) ? gT('Scale 2') : $attr['dualscale_headerB'][$sLanguage];
-                    $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label1]";
+                    $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."][$label1]";
                     $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0");
 
-                    $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "][$label2]";
+                    $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."][$label2]";
                     $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
                     $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1");
 
@@ -1595,7 +1578,7 @@ class conditionsaction extends Survey_Common_Action {
                     $lresult = Answer::model()->findAllByAttributes(array('qid' => $rows['qid'], 'scale_id' => 0, 'language' => $this->language), array('order' => 'sortorder, answer'));
                     foreach ($lresult as $lrows)
                     {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "{$lrows['code']}", "{$lrows['code']}");
                     }
 
                     // second label
@@ -1607,18 +1590,18 @@ class conditionsaction extends Survey_Common_Action {
 
                     foreach ($lresult as $lrows)
                     {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "{$lrows['code']}", "{$lrows['code']}");
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "{$lrows['code']}", "{$lrows['code']}");
                     }
 
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y')
                     {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "", gT("No answer"));
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "", gT("No answer"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#0", "", gT("No answer"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']."#1", "", gT("No answer"));
                     }
                 } //while
             }
-            elseif ($rows['type'] == "K" ||$rows['type'] == "Q") //Multi shorttext/numerical
+            elseif ($rows['type'] == "K" || $rows['type'] == "Q") //Multi shorttext/numerical
             {
                 $aresult = Question::model()->findAllByAttributes(array(
                     "parent_qid" => $rows['qid'],
@@ -1627,48 +1610,49 @@ class conditionsaction extends Survey_Common_Action {
 
                 foreach ($aresult as $arows)
                 {
-                    $shortanswer = "{$arows['title']}: [" . strip_tags($arows['question']) . "]";
-                    $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-                    $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
+                    $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."]";
+                    $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
+                    $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
 
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y')
                     {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", gT("No answer"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", gT("No answer"));
                     }
 
                 } //while
-            }
-            elseif ($rows['type'] == "R") //Answer Ranking
+            } elseif ($rows['type'] == "R") {
+                //Answer Ranking
             {
                 $aresult = Answer::model()->findAllByAttributes(array(
                     "qid" => $rows['qid'],
                     "scale_id" => 0,
                     "language" => $this->language,
                 ), array('order' => 'sortorder, answer'));
+            }
 
                 $acount = count($aresult);
                 foreach ($aresult as $arow)
                 {
                     $theanswer = $arow['answer'];
-                    $quicky[]=array($arow['code'], $theanswer);
+                    $quicky[] = array($arow['code'], $theanswer);
                 }
-                for ($i=1; $i<=$acount; $i++)
+                for ($i = 1; $i <= $acount; $i++)
                 {
-                    $cquestions[]=array("{$rows['title']}: [RANK $i] ".strip_tags($rows['question']), $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i);
+                    $cquestions[] = array("{$rows['title']}: [RANK $i] ".strip_tags($rows['question']), $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i);
                     foreach ($quicky as $qck)
                     {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, $qck[0], $qck[1]);
                     }
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y')
                     {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", gT("No answer"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$i, " ", gT("No answer"));
                     }
                 }
                 unset($quicky);
             } // End if type R
-            elseif($rows['type'] == "M" || $rows['type'] == "P")
+            elseif ($rows['type'] == "M" || $rows['type'] == "P")
             {
                 $shortanswer = " [".gT("Group of checkboxes")."]";
                 $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
@@ -1691,97 +1675,98 @@ class conditionsaction extends Survey_Common_Action {
                     $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', gT("checked"));
                     $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', gT("not checked"));
                 }
-            }
-            elseif($rows['type'] == "X") //Boilerplate question
+            } elseif($rows['type'] == "X") {
+                //Boilerplate question
             {
                 //Just ignore this questiontype
             }
             else
             {
                 $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+            }
                 switch ($rows['type'])
                 {
-                case "Y": // Y/N/NA
-                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", gT("Yes"));
-                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", gT("No"));
-                    // Only Show No-Answer if question is not mandatory
-                    if ($rows['mandatory'] != 'Y')
-                    {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
-                    }
-                    break;
-                case "G": //Gender
-                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", gT("Female"));
-                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", gT("Male"));
-                    // Only Show No-Answer if question is not mandatory
-                    if ($rows['mandatory'] != 'Y')
-                    {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
-                    }
-                    break;
-                case "5": // 5 choice
-                    for ($i=1; $i<=5; $i++)
-                    {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
-                    }
-                    // Only Show No-Answer if question is not mandatory
-                    if ($rows['mandatory'] != 'Y')
-                    {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
-                    }
-                    break;
-
-                case "N": // Simple Numerical questions
-
-                    // Only Show No-Answer if question is not mandatory
-                    if ($rows['mandatory'] != 'Y')
-                    {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
-                    }
-                    break;
-
-                default:
-
-                    $aresult = Answer::model()->findAllByAttributes(array(
-                        'qid' => $rows['qid'],
-                        'scale_id' => 0,
-                        'language' => $this->language
-                    ), array('order' => 'sortorder, answer'));
-
-                    foreach ($aresult as $arows)
-                    {
-                        $theanswer = $arows['answer'];
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
-                    }
-                    if ($rows['type'] == "D")
-                    {
+                    case "Y": // Y/N/NA
+                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", gT("Yes"));
+                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", gT("No"));
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y')
                         {
                             $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
-                    }
-                    elseif ($rows['type'] != "M" &&
-                        $rows['type'] != "P" &&
-                        $rows['type'] != "J" &&
-                        $rows['type'] != "I" )
-                    {
-                        // For dropdown questions
-                        // optinnaly add the 'Other' answer
-                        if ( (    $rows['type'] == "L" ||
-                            $rows['type'] == "!") &&
-                            $rows['other'] == "Y" )
+                        break;
+                    case "G": //Gender
+                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", gT("Female"));
+                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", gT("Male"));
+                        // Only Show No-Answer if question is not mandatory
+                        if ($rows['mandatory'] != 'Y')
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
+                        break;
+                    case "5": // 5 choice
+                        for ($i=1; $i<=5; $i++)
+                        {
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
+                        }
+                        // Only Show No-Answer if question is not mandatory
+                        if ($rows['mandatory'] != 'Y')
+                        {
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                        }
+                        break;
+
+                    case "N": // Simple Numerical questions
 
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y')
                         {
                             $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
-                    }
-                    break;
+                        break;
+
+                    default:
+
+                        $aresult = Answer::model()->findAllByAttributes(array(
+                            'qid' => $rows['qid'],
+                            'scale_id' => 0,
+                            'language' => $this->language
+                        ), array('order' => 'sortorder, answer'));
+
+                        foreach ($aresult as $arows)
+                        {
+                            $theanswer = $arows['answer'];
+                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
+                        }
+                        if ($rows['type'] == "D")
+                        {
+                            // Only Show No-Answer if question is not mandatory
+                            if ($rows['mandatory'] != 'Y')
+                            {
+                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                            }
+                        }
+                        elseif ($rows['type'] != "M" &&
+                            $rows['type'] != "P" &&
+                            $rows['type'] != "J" &&
+                            $rows['type'] != "I" )
+                        {
+                            // For dropdown questions
+                            // optinnaly add the 'Other' answer
+                            if ( (    $rows['type'] == "L" ||
+                                $rows['type'] == "!") &&
+                                $rows['other'] == "Y" )
+                            {
+                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));
+                            }
+
+                            // Only Show No-Answer if question is not mandatory
+                            if ($rows['mandatory'] != 'Y')
+                            {
+                                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                            }
+                        }
+                        break;
                 }//switch row type
             } //else
         } //foreach theserows
@@ -1797,7 +1782,7 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getCopyForm($qid, $gid, array $conditionsList, array $pquestions)
     {
-        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'checkgroup.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'checkgroup.js');
 
         $url = $this->getcontroller()->createUrl(
             '/admin/conditions/sa/index/subaction/copyconditions/',
@@ -1836,15 +1821,14 @@ class conditionsaction extends Survey_Common_Action {
 
         $js_getAnswers_onload = $this->getJsAnswersToSelect($cquestions, $p_cquestions, $p_canswers);
 
-        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'conditions.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'conditions.js');
 
         if ($subaction == "editthiscondition" && isset($p_cid)) {
             $title = gT("Edit condition");
             $submitLabel = gT("Update condition");
             $submitSubaction = "updatecondition";
             $submitcid = sanitize_int($p_cid);
-        }
-        else {
+        } else {
             $title = gT("Add condition");
             $submitLabel = $title;
             $submitSubaction = "insertcondition";
@@ -1933,7 +1917,7 @@ class conditionsaction extends Survey_Common_Action {
                     foreach ($p_canswers as $checkval) {
                         $canswersToSelect .= ";$checkval";
                     }
-                    $canswersToSelect = substr($canswersToSelect,1);
+                    $canswersToSelect = substr($canswersToSelect, 1);
                     $js_getAnswers_onload .= "$('#canswersToSelect').val('$canswersToSelect');\n";
                 }
             }
@@ -1951,12 +1935,11 @@ class conditionsaction extends Survey_Common_Action {
         $EDITConditionConst = '';
         if ($subaction == "editthiscondition") {
             if ($request->getPost('EDITConditionConst') != '') {
-                $EDITConditionConst=HTMLEscape($request->getPost('EDITConditionConst'));
+                $EDITConditionConst = HTMLEscape($request->getPost('EDITConditionConst'));
             }
-        }
-        else {
+        } else {
             if ($request->getPost('ConditionConst') != '') {
-                $EDITConditionConst=HTMLEscape($request->getPost('ConditionConst'));
+                $EDITConditionConst = HTMLEscape($request->getPost('ConditionConst'));
             }
         }
         return $EDITConditionConst;
@@ -1972,12 +1955,11 @@ class conditionsaction extends Survey_Common_Action {
         $EDITConditionRegexp = '';
         if ($subaction == "editthiscondition") {
             if ($request->getPost('EDITConditionRegexp') != '') {
-                $EDITConditionRegexp=HTMLEscape($request->getPost('EDITConditionRegexp'));
+                $EDITConditionRegexp = HTMLEscape($request->getPost('EDITConditionRegexp'));
             }
-        }
-        else {
+        } else {
             if ($request->getPost('ConditionRegexp') != '') {
-                $EDITConditionRegexp=HTMLEscape($request->getPost('ConditionRegexp'));
+                $EDITConditionRegexp = HTMLEscape($request->getPost('ConditionRegexp'));
             }
         }
         return $EDITConditionRegexp;
@@ -1999,22 +1981,18 @@ class conditionsaction extends Survey_Common_Action {
                 // Thus the value is directly set when creating the Textarea element
                 //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('EDITConditionConst'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
-            }
-            elseif ($request->getPost('EDITprevQuestionSGQA') != '') {
+            } elseif ($request->getPost('EDITprevQuestionSGQA') != '') {
                 $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($request->getPost('EDITprevQuestionSGQA'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
-            }
-            elseif ($request->getPost('EDITtokenAttr') != '') {
+            } elseif ($request->getPost('EDITtokenAttr') != '') {
                 $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($request->getPost('EDITtokenAttr'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
-            }
-            elseif ($request->getPost('EDITConditionRegexp') != '') {
+            } elseif ($request->getPost('EDITConditionRegexp') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
                 //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($request->getPost('EDITConditionRegexp'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
-            }
-            elseif (is_array($request->getPost('EDITcanswers'))) { // was a predefined answers post
+            } elseif (is_array($request->getPost('EDITcanswers'))) { // was a predefined answers post
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CANSWERSTAB';\n";
                 $EDITcanswers = $request->getPost('EDITcanswers');
                 $aViewUrls['output'] .= "\t$('#canswersToSelect').val('".$EDITcanswers[0]."');\n";
@@ -2022,33 +2000,27 @@ class conditionsaction extends Survey_Common_Action {
 
             if ($request->getPost('csrctoken') != '') {
                 $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($request->getPost('csrctoken'))."';\n";
-            }
-            else if ($request->getPost('cquestions') != '') {
+            } else if ($request->getPost('cquestions') != '') {
                 $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($request->getPost('cquestions'))."';\n";
             }
-        }
-        else { // in other modes, for the moment we do the same as for edit mode
+        } else { // in other modes, for the moment we do the same as for edit mode
             if ($request->getPost('ConditionConst') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
                 //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionConst').value='".HTMLEscape($request->getPost('ConditionConst'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#CONST';\n";
-            }
-            elseif ($request->getPost('prevQuestionSGQA') != '') {
+            } elseif ($request->getPost('prevQuestionSGQA') != '') {
                 $aViewUrls['output'] .= "\tdocument.getElementById('prevQuestionSGQA').value='".HTMLEscape($request->getPost('prevQuestionSGQA'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#PREVQUESTIONS';\n";
-            }
-            elseif ($request->getPost('tokenAttr') != '') {
+            } elseif ($request->getPost('tokenAttr') != '') {
                 $aViewUrls['output'] .= "\tdocument.getElementById('tokenAttr').value='".HTMLEscape($request->getPost('tokenAttr'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#TOKENATTRS';\n";
-            }
-            elseif ($request->getPost('ConditionRegexp') != '') {
+            } elseif ($request->getPost('ConditionRegexp') != '') {
                 // In order to avoid issues with backslash escaping, I don't use javascript to set the value
                 // Thus the value is directly set when creating the Textarea element
                 //$aViewUrls['output'] .= "\tdocument.getElementById('ConditionRegexp').value='".HTMLEscape($request->getPost('ConditionRegexp'))."';\n";
                 $aViewUrls['output'] .= "\tdocument.getElementById('editTargetTab').value='#REGEXP';\n";
-            }
-            else { // was a predefined answers post
+            } else { // was a predefined answers post
                 if ($request->getPost('cquestions') != '') {
                     $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".HTMLEscape($request->getPost('cquestions'))."';\n";
                 }
@@ -2057,8 +2029,7 @@ class conditionsaction extends Survey_Common_Action {
 
             if ($request->getPost('csrctoken') != '') {
                 $aViewUrls['output'] .= "\tdocument.getElementById('csrctoken').value='".HTMLEscape($request->getPost('csrctoken'))."';\n";
-            }
-            else
+            } else
             {
                 if ($request->getPost('cquestions') != '') {
                     $aViewUrls['output'] .= "\tdocument.getElementById('cquestions').value='".javascriptEscape($request->getPost('cquestions'))."';\n";
@@ -2076,11 +2047,9 @@ class conditionsaction extends Survey_Common_Action {
         $request = Yii::app()->request;
         if ($request->getPost('csrctoken') != '') {
             return '#SRCTOKENATTRS';
-        }
-        else if ($request->getPost('cquestions') != '') {
+        } else if ($request->getPost('cquestions') != '') {
             return '#SRCPREVQUEST';
-        }
-        else {
+        } else {
             return '#SRCPREVQUEST';
         }
     }
@@ -2093,20 +2062,15 @@ class conditionsaction extends Survey_Common_Action {
         $request = Yii::app()->request;
         if ($request->getPost('EDITConditionConst') != '') {
             return '#CONST';
-        }
-        elseif ($request->getPost('EDITprevQuestionSGQA') != '') {
+        } elseif ($request->getPost('EDITprevQuestionSGQA') != '') {
             return '#PREVQUESTIONS';
-        }
-        elseif ($request->getPost('EDITtokenAttr') != '') {
+        } elseif ($request->getPost('EDITtokenAttr') != '') {
             return '#TOKENATTRS';
-        }
-        elseif ($request->getPost('EDITConditionRegexp') != '') {
+        } elseif ($request->getPost('EDITConditionRegexp') != '') {
             return '#REGEXP';
-        }
-        elseif (is_array($request->getPost('EDITcanswers'))) {
+        } elseif (is_array($request->getPost('EDITcanswers'))) {
             return '#CANSWERSTAB';
-        }
-        else {
+        } else {
             return '#PREVQUESTIONS';
         }
     }
@@ -2125,20 +2089,20 @@ class conditionsaction extends Survey_Common_Action {
         $theserows2 = array();
         foreach ($theserows as $row) {
             $question = strip_tags($row['question']);
-            $questionselecter = viewHelper::flatEllipsizeText($question,true,'40');
+            $questionselecter = viewHelper::flatEllipsizeText($question, true, '40');
             $theserows2[] = array(
                 'value' => $this->createNavigatorUrl($row['gid'], $row['qid']),
-                'text' => strip_tags($row['title']) . ':' . $questionselecter
+                'text' => strip_tags($row['title']).':'.$questionselecter
             );
         }
 
         $postrows2 = array();
         foreach ($postrows as $row) {
             $question = strip_tags($row['question']);
-            $questionselecter = viewHelper::flatEllipsizeText($question,true,'40');
+            $questionselecter = viewHelper::flatEllipsizeText($question, true, '40');
             $postrows2[] = array(
                 'value' => $this->createNavigatorUrl($row['gid'], $row['qid']),
-                'text' => strip_tags($row['title']) . ':' . $questionselecter
+                'text' => strip_tags($row['title']).':'.$questionselecter
             );
         }
 
@@ -2146,7 +2110,7 @@ class conditionsaction extends Survey_Common_Action {
             'theserows' => $theserows2,
             'postrows' => $postrows2,
             'currentValue'=> $this->createNavigatorUrl($gid, $qid),
-            'currentText' => $questiontitle . ':' . viewHelper::flatEllipsizeText(strip_tags($sCurrentFullQuestionText), true, '40')
+            'currentText' => $questiontitle.':'.viewHelper::flatEllipsizeText(strip_tags($sCurrentFullQuestionText), true, '40')
         );
 
         return $this->getController()->renderPartial('/admin/conditions/includes/navigator', $data, true);
@@ -2188,7 +2152,7 @@ class conditionsaction extends Survey_Common_Action {
             . "\tvar Qtypes = new Array();\n";
 
         $jn = 0;
-        foreach($canswers as $can) {
+        foreach ($canswers as $can) {
             $an = ls_json_encode(flattenText($can[2]));
             $javascriptpre .= "Fieldnames[{$jn}]='{$can[0]}';\n"
                 . "Codes[{$jn}]='{$can[1]}';\n"
@@ -2207,8 +2171,7 @@ class conditionsaction extends Survey_Common_Action {
         //  record a JS variable to let jQuery know if survey is Anonymous
         if ($surveyIsAnonymized) {
             $javascriptpre .= "isAnonymousSurvey = true;";
-        }
-        else {
+        } else {
             $javascriptpre .= "isAnonymousSurvey = false;";
         }
 
@@ -2224,14 +2187,14 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getAttributeName($extractedTokenAttr)
     {
-        if(isset($this->tokenFieldsAndNames[strtolower($extractedTokenAttr[1])])) {
+        if (isset($this->tokenFieldsAndNames[strtolower($extractedTokenAttr[1])])) {
             $thisAttrName = HTMLEscape($this->tokenFieldsAndNames[strtolower($extractedTokenAttr[1])]['description']);
         }
         else {
             $thisAttrName = HTMLEscape($extractedTokenAttr[1]);
         }
 
-        if($this->tokenTableExists) {
+        if ($this->tokenTableExists) {
             $thisAttrName .= " [".gT("From token table")."]";
         }
         else {
@@ -2258,8 +2221,7 @@ class conditionsaction extends Survey_Common_Action {
             $html .= CHtml::hiddenField('csrctoken', HTMLEscape($rows['cfieldname']), array(
                 'id' => 'csrctoken'.$rows['cid']
             ));
-        }
-        else
+        } else
         {
             $html .= CHtml::hiddenField('cquestions', HTMLEscape($rows['cfieldname']),
                 array(
@@ -2276,32 +2238,28 @@ class conditionsaction extends Survey_Common_Action {
             $html .= CHtml::hiddenField('EDITcanswers[]', HTMLEscape($rows['value']), array(
                 'id' => 'editModeTargetVal'.$rows['cid']
             ));
-        }
-        elseif ($rightOperandType == 'prevQsgqa')
+        } elseif ($rightOperandType == 'prevQsgqa')
         {
             $html .= CHtml::hiddenField('EDITprevQuestionSGQA', HTMLEscape($rows['value']),
                 array(
                     'id' => 'editModeTargetVal'.$rows['cid']
                 ));
-        }
-        elseif ($rightOperandType == 'tokenAttr')
+        } elseif ($rightOperandType == 'tokenAttr')
         {
             $html .= CHtml::hiddenField('EDITtokenAttr', HTMLEscape($rows['value']), array(
                 'id' => 'editModeTargetVal'.$rows['cid']
             ));
-        }
-        elseif ($rightOperandType == 'regexp')
+        } elseif ($rightOperandType == 'regexp')
         {
             $html .= CHtml::hiddenField('EDITConditionRegexp', HTMLEscape($rows['value']),
                 array(
                     'id' => 'editModeTargetVal'.$rows['cid']
                 ));
-        }
-        else
+        } else
         {
             $html .= CHtml::hiddenField('EDITConditionConst', HTMLEscape($rows['value']),
                 array(
-                    'id' => 'editModeTargetVal' . $rows['cid']
+                    'id' => 'editModeTargetVal'.$rows['cid']
                 ));
         }
 
@@ -2314,12 +2272,12 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getAllScenarios($qid)
     {
-        $criteria=new CDbCriteria;
-        $criteria->select='scenario';  // only select the 'scenario' column
-        $criteria->condition='qid=:qid';
-        $criteria->params=array(':qid'=>$qid);
-        $criteria->order='scenario';
-        $criteria->group='scenario';
+        $criteria = new CDbCriteria;
+        $criteria->select = 'scenario'; // only select the 'scenario' column
+        $criteria->condition = 'qid=:qid';
+        $criteria->params = array(':qid'=>$qid);
+        $criteria->order = 'scenario';
+        $criteria->group = 'scenario';
 
         return Condition::model()->findAll($criteria);
     }
@@ -2351,7 +2309,7 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function shouldShowScenario($subaction, $scenariocount)
     {
-        return $subaction != "editthiscondition" && ($scenariocount == 1 || $scenariocount==0);
+        return $subaction != "editthiscondition" && ($scenariocount == 1 || $scenariocount == 0);
     }
 
     /**
@@ -2362,10 +2320,9 @@ class conditionsaction extends Survey_Common_Action {
      */
     protected function getQCount(array $cquestions)
     {
-        if ( count($cquestions) > 0 && count($cquestions) <=10) {
+        if (count($cquestions) > 0 && count($cquestions) <= 10) {
             $qcount = count($cquestions);
-        }
-        else {
+        } else {
             $qcount = 9;
         }
 

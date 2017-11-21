@@ -26,8 +26,7 @@
             if (!$hasStream)
             {
                 echo json_encode($json, $options);
-            }
-            else
+            } else
             {
                 self::json_echo_data($json, ($options & JSON_FORCE_OBJECT) == JSON_FORCE_OBJECT);
             }
@@ -40,7 +39,7 @@
             {
                 return true;
             }
-            elseif(is_array($item))
+            elseif (is_array($item))
             {
                 return array_reduce($item, array('BigData', 'hasStream'), false);
             }
@@ -48,8 +47,7 @@
             elseif (self::isStream($item))
             {
                 return true;
-            }
-            else
+            } else
             {
                 return false;
             }
@@ -79,24 +77,19 @@
             if (self::isStream($json))
             {
                 self::json_echo_stream($json);
-            }
-            elseif ((is_array($json) && self::isAssociative($json)) || is_object($json))
+            } elseif ((is_array($json) && self::isAssociative($json)) || is_object($json))
             {
                 self::json_echo_object($json);
-            }
-            elseif (is_array($json))
+            } elseif (is_array($json))
             {
                 self::json_echo_array($json);
-            }
-            elseif (is_numeric($json))
+            } elseif (is_numeric($json))
             {
                 self::json_echo_number($json);
-            }
-            elseif (is_string($json))
+            } elseif (is_string($json))
             {
                 self::json_echo_string($json);
-            }
-            elseif (is_null($json))
+            } elseif (is_null($json))
             {
                 echo json_encode(null);
             }
@@ -107,7 +100,7 @@
             echo '[';
                 foreach ($json as $key => $entry)
                 {
-                    echo json_encode($key) . ':';
+                    echo json_encode($key).':';
                     self::json_echo_data($entry);
                     echo ', '; // The extra comma is allowed: { 1: 'test', 2: 'test',} is valid.
                 }
@@ -127,7 +120,7 @@
                 reset($json);
                 foreach ($json as $key => $entry)
                 {
-                    echo json_encode($key) . ':';
+                    echo json_encode($key).':';
                     self::json_echo_data($entry);
                     if ($lastKey !== $key)
                     {
@@ -169,20 +162,16 @@
             if (self::isStream($data))
             {
                 self::xmlrpc_echo_stream($data);
-            }
-            elseif ((is_array($data) && self::isAssociative($data)) || is_object($data))
+            } elseif ((is_array($data) && self::isAssociative($data)) || is_object($data))
             {
                 self::xmlrpc_echo_object($data);
-            }
-            elseif (is_array($data))
+            } elseif (is_array($data))
             {
                 self::xmlrpc_echo_array($data);
-            }
-            elseif (is_numeric($data))
+            } elseif (is_numeric($data))
             {
                 self::xmlrpc_echo_number($data);
-            }
-            elseif (is_string($data))
+            } elseif (is_string($data))
             {
                 self::xmlrpc_echo_string($data);
             }
@@ -209,10 +198,9 @@
          */
         protected static function xmlrpc_echo_number($data)
         {
-            if (floor($data) == $data){
+            if (floor($data) == $data) {
                 self::tag('int', $data);
-            }
-            else {
+            } else {
                 self::tag('double', $data);
             }
         }
@@ -255,7 +243,7 @@
         protected $deleteAfterUse;
         protected $defaultEcho;
 
-        public function __construct($fileName, $deleteAfterUse = true, $defaultEcho ='base64')
+        public function __construct($fileName, $deleteAfterUse = true, $defaultEcho = 'base64')
         {
             $this->fileName = $fileName;
             $this->deleteAfterUse = $deleteAfterUse;

@@ -24,7 +24,7 @@
             <?php echo CHtml::form(array("admin/tokens/sa/email/action/remind/surveyid/{$surveyid}"), 'post', array('id'=>'sendreminder', 'class'=>'')); ?>
             <div class="row">
                 <div class="col-sm-6">
-                <?php if (count($tokenids)>0): ?>
+                <?php if (count($tokenids) > 0): ?>
                         <div class='form-group'>
                             <label class='control-label '><?php eT("Send reminder to token ID(s):"); ?></label>
                             <div class=''>
@@ -65,11 +65,11 @@
 
                     <div class='form-group'>
                           <?php echo CHtml::label(gT("Bypass date control before sending email:"),'bypassdatecontrol', 
-                          array(
-                              'title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
-                              'unescaped'=>'unescaped', 
-                              'class' => 'control-label '
-                              )
+                            array(
+                                'title'=>gt("If some tokens have a 'valid from' date set which is in the future, they will not be able to access the survey before that 'valid from' date."),
+                                'unescaped'=>'unescaped', 
+                                'class' => 'control-label '
+                                )
                             ); ?>
                           <div class=''>
                           <?php
@@ -96,14 +96,14 @@
 
                         if ($c)
                         {
-                            $c=false;
+                            $c = false;
                             echo ' class="active"';
                         }
 
-                        echo ' ><a data-toggle="tab" href="#'.$language.'">' . getLanguageNameFromCode($language, false);
+                        echo ' ><a data-toggle="tab" href="#'.$language.'">'.getLanguageNameFromCode($language, false);
                         if ($language == $baselang)
                         {
-                            echo " (" . gT("Base language") . ")";
+                            echo " (".gT("Base language").")";
                         }
                         echo "</a></li>";
                     }
@@ -129,27 +129,27 @@
                         }
                         ?>
 
-                        <div id="<?php echo $language; ?>" class="tab-pane fade in <?php if ($c){$c=false;echo ' active';}?>">
+                        <div id="<?php echo $language; ?>" class="tab-pane fade in <?php if ($c) {$c = false; echo ' active'; }?>">
 
                             <div class='form-group'>
                                 <label class='control-label ' for='from_<?php echo $language; ?>'><?php eT("From:"); ?></label>
                                 <div class=''>
-                                    <?php echo CHtml::textField("from_{$language}",$thissurvey[$baselang]['adminname']." <".$thissurvey[$baselang]['adminemail'].">",array('class' => 'form-control')); ?>
+                                    <?php echo CHtml::textField("from_{$language}", $thissurvey[$baselang]['adminname']." <".$thissurvey[$baselang]['adminemail'].">", array('class' => 'form-control')); ?>
                                 </div>
                             </div>
 
                             <div class='form-group'>
                                 <label class='control-label ' for='subject_<?php echo $language; ?>'><?php eT("Subject:"); ?></label>
                                 <div class=''>
-                                    <?php echo CHtml::textField("subject_{$language}",$subject,array('class' => 'form-control')); ?>
+                                    <?php echo CHtml::textField("subject_{$language}", $subject, array('class' => 'form-control')); ?>
                                 </div>
                             </div>
 
                             <div class='form-group'>
                                 <label class='control-label ' for='message_<?php echo $language; ?>'><?php eT("Message:"); ?></label>
                                 <div class="htmleditor ">
-                                    <?php echo CHtml::textArea("message_{$language}",$textarea,array('cols'=>80,'rows'=>20, 'class' => 'form-control')); ?>
-                                    <?php echo getEditor("email-reminder", "message_$language", "[" . gT("Reminder Email:", "js") . "](" . $language . ")", $surveyid, '', '', "tokens"); ?>
+                                    <?php echo CHtml::textArea("message_{$language}", $textarea, array('cols'=>80, 'rows'=>20, 'class' => 'form-control')); ?>
+                                    <?php echo getEditor("email-reminder", "message_$language", "[".gT("Reminder Email:", "js")."](".$language.")", $surveyid, '', '', "tokens"); ?>
                                 </div>
                             </div>
                         </div>
@@ -159,14 +159,14 @@
                     <div class='form-group'>
                         <div class=''></div>
                         <div class=''>
-                            <?php echo CHtml::submitButton(gT("Send Reminders",'unescaped'), array('class'=>'btn btn-default')); ?>
+                            <?php echo CHtml::submitButton(gT("Send Reminders", 'unescaped'), array('class'=>'btn btn-default')); ?>
                         </div>
 
                             <?php
-                                echo CHtml::hiddenField('ok','absolutely');
-                                echo CHtml::hiddenField('subaction','remind');
+                                echo CHtml::hiddenField('ok', 'absolutely');
+                                echo CHtml::hiddenField('subaction', 'remind');
                                 if (!empty($tokenids)) {
-                                    echo CHtml::hiddenField('tokenids',implode('|', (array) $tokenids));
+                                    echo CHtml::hiddenField('tokenids', implode('|', (array) $tokenids));
                                 }
                             ?>
                     </div>

@@ -11,7 +11,7 @@
 echo viewHelper::getViewTestTag('viewLabelSets');
 
 ?>
-<?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+<?php $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']); ?>
 <div class="col-lg-12">
 	<div class="pagetitle h3"><?php eT('Label sets list'); ?></div>
 
@@ -24,7 +24,7 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                     // Number of row per page selection
                     'id' => 'labelsets-grid',
                     'emptyText'=>gT('No label sets found.'),
-                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
@@ -33,7 +33,7 @@ echo viewHelper::getViewTestTag('viewLabelSets');
 
                     'columns' => array(
 
-                    	array(
+                        array(
                             'header' => gT('Label set ID'),
                             'name' => 'labelset_id',
                             'value'=>'$data->lid',
@@ -66,9 +66,9 @@ echo viewHelper::getViewTestTag('viewLabelSets');
                     ),
 
                     'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
-                    'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/labels/sa/view/lid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                    'selectionChanged'=>"function(id){window.location='".Yii::app()->urlManager->createUrl('admin/labels/sa/view/lid').'/'."' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                     'ajaxUpdate' => true,
-                   ));
+                    ));
             ?>
         </div>
     </div>

@@ -4,7 +4,7 @@
             <div class="col-sm-12 content-right">
                 <div class="jumbotron message-box message-box-error">
                     <h2>
-                        <?php eT("Stop this survey");  echo "<em>($surveyid)</em>" ; ?>
+                        <?php eT("Stop this survey"); echo "<em>($surveyid)</em>"; ?>
                     </h2>
                     <p class="lead text-warning">
                         <?php eT("Warning: Please read this carefully before proceeding!"); ?>
@@ -24,21 +24,21 @@
                         <tr>
                             <td>
                                 <ul>
-                                    <li><?php eT("No responses are lost.");?></li>
-                                    <li><?php eT("No participant information lost.");?></li>
-                                    <li><?php eT("Ability to change of questions, groups and parameters is still limited.");?></li>
-                                    <li><?php eT("An expired survey is not accessible to participants (they only see a message that the survey has expired).");?></li>
-                                    <li><?php eT("It's still possible to perform statistics on responses using LimeSurvey.");?></li>
+                                    <li><?php eT("No responses are lost."); ?></li>
+                                    <li><?php eT("No participant information lost."); ?></li>
+                                    <li><?php eT("Ability to change of questions, groups and parameters is still limited."); ?></li>
+                                    <li><?php eT("An expired survey is not accessible to participants (they only see a message that the survey has expired)."); ?></li>
+                                    <li><?php eT("It's still possible to perform statistics on responses using LimeSurvey."); ?></li>
                                 </ul>
                             </td>
                             <td>
                                 <ul>
-                                    <li><?php eT("All responses are not accessible anymore with LimeSurvey.");?> <?php echo gT("Your response table will be renamed to:")." {$dbprefix}old_".$surveyid."_{$date}"; ?></li>
-                                    <li><?php eT("All participant information is lost.");?></li>
-                                    <li><?php eT("A deactivated survey is not accessible to participants (only a message appears that they are not permitted to see this survey).");?></li>
-                                    <li><?php eT("All questions, groups and parameters are editable again.");?></li>
+                                    <li><?php eT("All responses are not accessible anymore with LimeSurvey."); ?> <?php echo gT("Your response table will be renamed to:")." {$dbprefix}old_".$surveyid."_{$date}"; ?></li>
+                                    <li><?php eT("All participant information is lost."); ?></li>
+                                    <li><?php eT("A deactivated survey is not accessible to participants (only a message appears that they are not permitted to see this survey)."); ?></li>
+                                    <li><?php eT("All questions, groups and parameters are editable again."); ?></li>
                                     <li><a title='<?php eT("Export survey results") ?>' href='<?php echo $this->createUrl('admin/export/sa/exportresults/surveyid/'.$surveyid) ?>'>
-                                        <?php eT("You should export your responses before deactivating.");?>
+                                        <?php eT("You should export your responses before deactivating."); ?>
                                     </li>
                                 </ul>
                             </td>
@@ -60,8 +60,8 @@
                 </div>
 
                 <div class="jumbotron message-box" style="border: none;">
-                    <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid);?>" class="btn btn-danger btn-lg">
-                        <?php eT('Cancel');?>
+                    <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>" class="btn btn-danger btn-lg">
+                        <?php eT('Cancel'); ?>
                     </a>
                 </div>
             </div>
@@ -72,8 +72,11 @@
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     </div>
 
-<?php else: ?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<?php else {
+    : ?>
+    <div class='side-body <?php echo getSideBodyClass(false);
+}
+?>'>
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">
             <div class="jumbotron message-box">
@@ -98,15 +101,18 @@
                 }?>
             </p>
             <p>
-                <?php if (isset($sNewTimingsTableName)) echo gT("The response timings table has been renamed to: ")." ".$sNewTimingsTableName; ?>
+                <?php if (isset($sNewTimingsTableName)) {
+    echo gT("The response timings table has been renamed to: ")." ".$sNewTimingsTableName;
+}
+?>
             </p>
             <p>
             <?php eT("You should note the name(s) of the table(s) in case you need to access this information later."); ?><br>
             <p><?php eT("Note: If you deactivated this survey in error, it is possible to restore this data easily if you do not make any changes to the survey structure. See the LimeSurvey documentation for further details"); ?>
             </p>
             <p>
-                <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid);?>" class="btn btn-default btn-lg">
-                    <?php eT('Close');?>
+                <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/view/surveyid/'.$surveyid); ?>" class="btn btn-default btn-lg">
+                    <?php eT('Close'); ?>
                 </a>
             </p>
         </div>

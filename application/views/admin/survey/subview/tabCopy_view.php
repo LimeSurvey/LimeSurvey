@@ -151,7 +151,7 @@
         <!-- Submit -->
         <div class="text-center">
             <input type='submit' class='btn btn-default col-6' value='<?php  eT("Copy survey"); ?>' />
-            <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="' . $surveyid . '" />'; ?>
+            <?php if (isset($surveyid)) echo '<input type="hidden" name="sid" value="'.$surveyid.'" />'; ?>
             <input type='hidden' name='action' value='copysurvey' />
         </div>
     </form>

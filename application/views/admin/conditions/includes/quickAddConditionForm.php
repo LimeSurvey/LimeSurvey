@@ -2,7 +2,7 @@
     <div class="col-lg-12">
 
         <!-- Form quick-add condition -->
-        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"),'post',array('id'=>"quick-add-conditions-form",'name'=>"quick-add-conditions-form", 'class' => 'form '));?>
+        <?php echo CHtml::form(array("/admin/conditions/sa/index/subaction/{$subaction}/surveyid/{$iSurveyID}/gid/{$gid}/qid/{$qid}/"), 'post', array('id'=>"quick-add-conditions-form", 'name'=>"quick-add-conditions-form", 'class' => 'form ')); ?>
             <div class='form-group'>
                 <div class='col-sm-2'></div>
                 <div class='col-sm-10'>
@@ -133,9 +133,9 @@
                                     <?php if ($cqn[2] != 'M' && $cqn[2] != 'P'): ?>
                                         <!-- Type M or P aren't real fieldnames and thus can't be used in @SGQA@ placehodlers -->
                                         <option
-                                            value='<?php echo '@' . $cqn[3] . '@'; ?>'
+                                            value='<?php echo '@'.$cqn[3].'@'; ?>'
                                             title="<?php echo HTMLEscape($cqn[0]); ?>"
-                                            <?php if ($p_prevquestionsgqa == '@' . $cqn[3] . '@'): echo ' selected="selected" '; endif; ?>
+                                            <?php if ($p_prevquestionsgqa == '@'.$cqn[3].'@'): echo ' selected="selected" '; endif; ?>
                                             >
                                             <?php echo HTMLEscape($cqn[0]); ?>
                                         </option>

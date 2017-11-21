@@ -18,14 +18,14 @@
                         <div id="upload-form-container">
 
                             <!-- Form browselabelresources -->
-                            <?php echo CHtml::form(Yii::app()->baseUrl.'/third_party/kcfinder/browse.php?language='.sTranslateLangCode2CK(App()->language), 'get', array('id'=>'browselabelresources','class'=>'form30','name'=>'browselabelresources','target'=>'_blank')); ?>
+                            <?php echo CHtml::form(Yii::app()->baseUrl.'/third_party/kcfinder/browse.php?language='.sTranslateLangCode2CK(App()->language), 'get', array('id'=>'browselabelresources', 'class'=>'form30', 'name'=>'browselabelresources', 'target'=>'_blank')); ?>
                                 <ul class="list-unstyled">
 
                                     <!-- Browse uploaded resources -->
                                     <li>
                                         <label>&nbsp;</label>
                                         <div class="">
-                                            <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files','unescaped'), 'flash' => gT('Flash','unescaped'), 'images' => gT('Images','unescaped')), array('class'=>' form-control') ); ?>
+                                            <?php echo CHtml::dropDownList('type', 'files', array('files' => gT('Files', 'unescaped'), 'flash' => gT('Flash', 'unescaped'), 'images' => gT('Images', 'unescaped')), array('class'=>' form-control')); ?>
                                         </div>
                                         <div class="">
                                             <input type='submit' class="btn btn-default" value="<?php eT("Browse uploaded resources") ?>" />
@@ -64,7 +64,7 @@
                                         <!-- Import resources ZIP archive -->
                                         <span class="col-sm-6">
                                             <input class="btn btn-default" type='button' value='<?php eT("Import resources ZIP archive") ?>'
-                                            <?php echo !function_exists("zip_open") ? "onclick='alert(\"" . gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js") . "\");'" : "onclick='if (validatefilename(this.form,\"" . gT('Please select a file to import!', 'js') . "\")) { this.form.submit();}'" ?>/>
+                                            <?php echo !function_exists("zip_open") ? "onclick='alert(\"".gT("The ZIP library is not activated in your PHP configuration thus importing ZIP files is currently disabled.", "js")."\");'" : "onclick='if (validatefilename(this.form,\"".gT('Please select a file to import!', 'js')."\")) { this.form.submit();}'" ?>/>
                                         </span>
                                     </li>
                                 </ul>

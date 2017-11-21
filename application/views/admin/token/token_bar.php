@@ -11,7 +11,7 @@
         <div class="col-md-10">
 
             <!-- Token view buttons -->
-            <?php if( isset($token_bar['buttons']['view']) ): ?>
+            <?php if (isset($token_bar['buttons']['view'])): ?>
 
                 <!-- Display tokens -->
                 <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'read')): ?>
@@ -25,7 +25,7 @@
                 <div class="btn-group">
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span class="icon-add text-success"></span>
-                    <?php eT("Create...");?> <span class="caret"></span>
+                    <?php eT("Create..."); ?> <span class="caret"></span>
                 </button>
 
                 <!-- Add new token entry -->
@@ -92,7 +92,7 @@
                 <div class="btn-group">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="icon-emailtemplates text-success"></span>
-                        <?php eT("Invitations & reminders");?> <span class="caret"></span>
+                        <?php eT("Invitations & reminders"); ?> <span class="caret"></span>
                     </button>
 
                     <ul class="dropdown-menu">
@@ -128,7 +128,7 @@
 
                         <!-- Bounce processing -->
                         <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'update')):?>
-                            <?php if($oSurvey->bounceprocessing != 'N' ||  ($oSurvey->bounceprocessing == 'G' && getGlobalSetting('bounceaccounttype') != 'off')):?>
+                            <?php if ($oSurvey->bounceprocessing != 'N' || ($oSurvey->bounceprocessing == 'G' && getGlobalSetting('bounceaccounttype') != 'off')):?>
                                 <?php if (function_exists('imap_open')):?>
                                     <li>
                                         <a href="#" id="startbounceprocessing" data-url="<?php echo $this->createUrl("admin/tokens/sa/bounceprocessing/surveyid/$oSurvey->sid"); ?>" >
@@ -138,13 +138,13 @@
                                     </li>
                                 <?php else: ?>
                                     <?php $eMessage = gT("The imap PHP library is not installed or not activated. Please contact your system administrator."); ?>
-                                <?php endif;?>
+                                <?php endif; ?>
                             <?php else: ?>
                                 <?php $eMessage = gT("Bounce processing is deactivated either application-wide or for this survey in particular."); ?>
-                            <?php endif;?>
+                            <?php endif; ?>
                         <?php else:?>
                             <?php $eMessage = gT("We are sorry but you don't have permissions to do this."); ?>
-                        <?php endif;?>
+                        <?php endif; ?>
 
                         <?php if (isset($eMessage)):?>
                             <li>
@@ -153,7 +153,7 @@
                                     <?php eT("Start bounce processing"); ?>
                                 </a>
                             </li>
-                        <?php endif;?>
+                        <?php endif; ?>
 
                         <!-- Bounce settings -->
                         <li>
@@ -177,17 +177,17 @@
                     <?php eT("View in CPDB"); ?>
                 </a>
                 <?php endif; ?>
-            <?php endif;?>
+            <?php endif; ?>
         </div>
 
         <!-- Right buttons -->
         <div class="col-md-2 text-right">
 
             <!-- View token buttons -->
-            <?php if( isset($token_bar['buttons']['view'] )): ?>
+            <?php if (isset($token_bar['buttons']['view'])): ?>
 
                 <!-- Delete tokens table -->
-                <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens','delete')): ?>
+                <?php if (Permission::model()->hasSurveyPermission($oSurvey->sid, 'surveysettings', 'update') || Permission::model()->hasSurveyPermission($oSurvey->sid, 'tokens', 'delete')): ?>
                     <a class="btn btn-danger" href="<?php echo $this->createUrl("admin/tokens/sa/kill/surveyid/$oSurvey->sid"); ?>" role="button">
                         <?php eT("Delete participants table"); ?>
                     </a>
@@ -196,53 +196,53 @@
 
 
             <!-- Send invitations buttons -->
-            <?php if(isset($token_bar['sendinvitationbutton'])):?>
+            <?php if (isset($token_bar['sendinvitationbutton'])):?>
                 <a class="btn btn-default" href="#" role="button" id="send-invitation-button">
                     <span class="icon-invite" ></span>
-                    <?php eT("Send invitations");?>
+                    <?php eT("Send invitations"); ?>
                 </a>
-            <?php endif;?>
+            <?php endif; ?>
 
             <!-- Send reminder buttons -->
-            <?php if(isset($token_bar['sendreminderbutton'])):?>
+            <?php if (isset($token_bar['sendreminderbutton'])):?>
                 <a class="btn btn-default" href="#" role="button" id="send-reminders-button">
                     <span class="icon-invite" ></span>
-                    <?php eT("Send reminders");?>
+                    <?php eT("Send reminders"); ?>
                 </a>
-            <?php endif;?>
+            <?php endif; ?>
 
 
             <!-- Save buttons -->
-            <?php if(isset($token_bar['savebutton']['form'])):?>
+            <?php if (isset($token_bar['savebutton']['form'])):?>
 
-                <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])){ echo '1';}?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
+                <a class="btn btn-success" href="#" role="button" id="save-button" data-use-form-id="<?php if (isset($token_bar['savebutton']['useformid'])) { echo '1'; }?>" data-form-to-save="<?php if (is_string($token_bar['savebutton']['form'])) {echo $token_bar['savebutton']['form']; }?>">
                     <span class="fa fa-floppy-o" ></span>
-                    <?php eT("Save");?>
+                    <?php eT("Save"); ?>
                 </a>
-            <?php endif;?>
+            <?php endif; ?>
 
-            <?php if(isset($token_bar['exportbutton']['form'])):?>
+            <?php if (isset($token_bar['exportbutton']['form'])):?>
                 <a class="btn btn-success" href="#" role="button" id="save-button">
                     <span class="fa fa fa-export" ></span>
                        <?php eT("Download CSV file"); ?>
                 </a>
-            <?php endif;?>
+            <?php endif; ?>
 
             <!-- Close -->
-            <?php if(isset($token_bar['closebutton']['url'])):?>
+            <?php if (isset($token_bar['closebutton']['url'])):?>
                 <a class="btn btn-danger" href="<?php echo $token_bar['closebutton']['url']; ?>" role="button">
                     <span class="fa fa-close" ></span>
-                    <?php eT("Close");?>
+                    <?php eT("Close"); ?>
                 </a>
-            <?php endif;?>
+            <?php endif; ?>
 
             <!-- Return -->
-            <?php if(isset($token_bar['returnbutton'])):?>
+            <?php if (isset($token_bar['returnbutton'])):?>
                 <a class="btn btn-default" href="<?php echo $token_bar['returnbutton']['url']; ?>" role="button">
                     <span class="fa fa-step-backward" ></span>
-                    <?php echo $token_bar['returnbutton']['text'];?>
+                    <?php echo $token_bar['returnbutton']['text']; ?>
                 </a>
-            <?php endif;?>
+            <?php endif; ?>
         </div>
 
     </div>
@@ -254,7 +254,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><?php eT('Bounce processing');?></h4>
+                <h4 class="modal-title"><?php eT('Bounce processing'); ?></h4>
             </div>
             <div class="modal-body">
                 <!-- Here will come the result of the ajax request -->
@@ -264,7 +264,7 @@
 
                 <!-- the ajax loader -->
                 <div id="ajaxContainerLoading" >
-                    <p><?php eT('Please wait, loading data...');?></p>
+                    <p><?php eT('Please wait, loading data...'); ?></p>
                     <div class="preloader loading">
                         <span class="slice"></span>
                         <span class="slice"></span>
@@ -277,7 +277,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><?php eT("Cancel");?></button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><?php eT("Cancel"); ?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

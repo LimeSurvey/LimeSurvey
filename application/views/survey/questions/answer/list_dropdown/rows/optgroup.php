@@ -8,7 +8,7 @@
 ?>
 
 <!-- optgroup -->
-<optgroup class="dropdowncategory" label="<?php echo $categoryname;?>">
+<optgroup class="dropdowncategory" label="<?php echo $categoryname; ?>">
     <?php
         // rows/option.php
         echo $sOptGroupOptions;

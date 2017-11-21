@@ -5,6 +5,6 @@
  *
  * @var $iColumnWidth
  */
- ?>
+    ?>
 <!-- on small screen, each column is full widht, so it look like a single colunm-->
 <ul class="list-unstyled col-sm-<?php echo $iColumnWidth?> col-xs-12">

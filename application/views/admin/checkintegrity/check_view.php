@@ -6,7 +6,7 @@
 echo viewHelper::getViewTestTag('checkIntegrity');
 
 ?>
-<div class="pagetitle h3"><?php eT("Check data integrity");?></div>
+<div class="pagetitle h3"><?php eT("Check data integrity"); ?></div>
 
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-12">
@@ -23,19 +23,18 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($conditions as $condition) {?>
-                                 <li>CID:<?php echo $condition['cid'].' '.gT("Reason:")." {$condition['reason']}";?></li><?php
+                                 <li>CID:<?php echo $condition['cid'].' '.gT("Reason:")." {$condition['reason']}"; ?></li><?php
                             }?>
                         </ul>
                     <?php
-                    }
-                    else
+                    } else
                     { ?>
                     <li><?php eT("All conditions meet consistency standards."); ?></li><?php
                 } ?>
 
                 <?php
                     if (isset($questionattributes)) { ?>
-                    <li><?php printf(gT("There are %s orphaned question attributes."),count($questionattributes)); ?> </li>
+                    <li><?php printf(gT("There are %s orphaned question attributes."), count($questionattributes)); ?> </li>
                     <?php }
                     else
                     { ?>
@@ -44,7 +43,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                     if ($defaultvalues) { ?>
-                    <li><?php printf(gT("There are %s orphaned default value entries which can be deleted."),$defaultvalues); ?> </li>
+                    <li><?php printf(gT("There are %s orphaned default value entries which can be deleted."), $defaultvalues); ?> </li>
                     <?php }
                     else
                     { ?>
@@ -53,7 +52,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                     if ($quotas) { ?>
-                    <li><?php printf(gT("There are %s orphaned quota entries which can be deleted."),$quotas); ?> </li>
+                    <li><?php printf(gT("There are %s orphaned quota entries which can be deleted."), $quotas); ?> </li>
                     <?php }
                     else
                     { ?>
@@ -62,7 +61,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                     if ($quotals) { ?>
-                    <li><?php printf(gT("There are %s orphaned quota language settings which can be deleted."),$quotals); ?> </li>
+                    <li><?php printf(gT("There are %s orphaned quota language settings which can be deleted."), $quotals); ?> </li>
                     <?php }
                     else
                     { ?>
@@ -71,7 +70,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
 
                 <?php
                     if ($quotamembers) { ?>
-                    <li><?php printf(gT("There are %s orphaned quota members which can be deleted."),$quotamembers); ?> </li>
+                    <li><?php printf(gT("There are %s orphaned quota members which can be deleted."), $quotamembers); ?> </li>
                     <?php }
                     else
                     { ?>
@@ -85,13 +84,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($assessments as $assessment) {?>
-                                <li>AID:<?php echo $assessment['id'];?> <?php eT("Assessment:");?> <?php eT("Reason:");?> <?php echo $assessment['reason'];?></li><?php
+                                <li>AID:<?php echo $assessment['id']; ?> <?php eT("Assessment:"); ?> <?php eT("Reason:"); ?> <?php echo $assessment['reason']; ?></li><?php
                             }?>
                         </ul>
                     </li>
                     <?php
-                    }
-                    else
+                    } else
                     { ?>
                     <li><?php eT("All assessments meet consistency standards."); ?></li><?php
                 } ?>
@@ -103,13 +101,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($answers as $answer) {?>
-                                <li>QID:<?php echo $answer['qid'];?> <?php eT("Code:");?> <?php eT("Reason:");?> <?php echo $answer['reason'];?></li><?php
+                                <li>QID:<?php echo $answer['qid']; ?> <?php eT("Code:"); ?> <?php eT("Reason:"); ?> <?php echo $answer['reason']; ?></li><?php
                             }?>
                         </ul>
                     </li>
                     <?php
-                    }
-                    else
+                    } else
                     { ?>
                     <li><?php eT("All answers meet consistency standards."); ?></li><?php
                 } ?>
@@ -121,13 +118,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($surveys as $survey) {?>
-                                <li>SID:<?php echo $survey['sid'];?> <?php eT("Reason:");?> <?php echo $survey['reason'];?></li><?php
+                                <li>SID:<?php echo $survey['sid']; ?> <?php eT("Reason:"); ?> <?php echo $survey['reason']; ?></li><?php
                             }?>
                         </ul>
                     </li>
                     <?php
-                    }
-                    else
+                    } else
                     { ?>
                     <li><?php eT("All surveys meet consistency standards."); ?></li><?php
                 } ?>
@@ -139,13 +135,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($surveylanguagesettings as $surveylanguagesetting) {?>
-                                <li>SLID:<?php echo $surveylanguagesetting['slid'];?> <?php eT("Reason:");?> <?php echo $surveylanguagesetting['reason'];?></li><?php
+                                <li>SLID:<?php echo $surveylanguagesetting['slid']; ?> <?php eT("Reason:"); ?> <?php echo $surveylanguagesetting['reason']; ?></li><?php
                             }?>
                         </ul>
                     </li>
                     <?php
-                    }
-                    else
+                    } else
                     { ?>
                     <li><?php eT("All survey language settings meet consistency standards."); ?></li><?php
                 } ?>
@@ -157,13 +152,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($questions as $question) {?>
-                                <li>QID:<?php echo $question['qid'];?> <?php eT("Reason:");?> <?php echo $question['reason'];?></li><?php
+                                <li>QID:<?php echo $question['qid']; ?> <?php eT("Reason:"); ?> <?php echo $question['reason']; ?></li><?php
                             }?>
                         </ul>
                     </li>
                     <?php
-                    }
-                    else
+                    } else
                     { ?>
                     <li><?php eT("All questions meet consistency standards."); ?></li><?php
                 } ?>
@@ -175,13 +169,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($groups as $group) {?>
-                                <li>GID:<?php echo $group['gid'];?> <?php eT("Reason:");?> <?php echo $group['reason'];?></li><?php
+                                <li>GID:<?php echo $group['gid']; ?> <?php eT("Reason:"); ?> <?php echo $group['reason']; ?></li><?php
                             }?>
                         </ul>
                     </li>
                     <?php
-                    }
-                    else
+                    } else
                     { ?>
                     <li><?php eT("All groups meet consistency standards."); ?></li><?php
                 } ?>
@@ -193,13 +186,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($orphansurveytables as $surveytable) {?>
-                                <li><?php echo $surveytable;?></li><?php
+                                <li><?php echo $surveytable; ?></li><?php
                             }?>
                         </ul>
                     </li>
                     <?php
-                    }
-                    else
+                    } else
                     { ?>
                     <li><?php eT("All old survey tables meet consistency standards."); ?></li><?php
                 } ?>
@@ -211,13 +203,12 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         <ul class="list-unstyled" >
                             <?php
                                 foreach ($orphantokentables as $tokentable) {?>
-                                <li><?php echo $tokentable;?></li><?php
+                                <li><?php echo $tokentable; ?></li><?php
                             }?>
                         </ul>
                     </li>
                     <?php
-                    }
-                    else
+                    } else
                     { ?>
                     <li><?php eT("All old token tables meet consistency standards."); ?></li><?php
                 } ?>
@@ -228,7 +219,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 <?php } else
                 {?>
                 <br /><?php eT("Should we proceed with the delete?"); ?> <br />
-                <?php echo CHtml::form(array("admin/checkintegrity","sa"=>'fixintegrity'), 'post');?>
+                <?php echo CHtml::form(array("admin/checkintegrity", "sa"=>'fixintegrity'), 'post'); ?>
                     <button type='submit' value='Y' name='ok' class="btn btn-default" ><?php eT("Yes - Delete Them!"); ?></button>
                 </form>
                 <?php
@@ -245,7 +236,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                 <br /> <?php eT("No database action required!"); ?>
                 <?php } else
                 {?>
-                <?php echo CHtml::form(array("admin/checkintegrity/fixredundancy"), 'post');?>
+                <?php echo CHtml::form(array("admin/checkintegrity/fixredundancy"), 'post'); ?>
                     <ul class='data-redundancy-list list-unstyled'>
                         <?php
                             if (isset($redundantsurveytables))
@@ -262,7 +253,7 @@ echo viewHelper::getViewTestTag('checkIntegrity');
                         } ?>
 
                         <?php
-                            if (isset($redundanttokentables) && count($redundanttokentables)>0)
+                            if (isset($redundanttokentables) && count($redundanttokentables) > 0)
                             {?>
                             <li><?php eT("The following old token list tables exist and may be deleted if no longer required:"); ?>
                                 <ul class='token-tables-list list-unstyled'>

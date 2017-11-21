@@ -1,4 +1,4 @@
-<div class="pagetitle h3"><?php printf(gT('Edit template permissions for user %s'),"<em>".\CHtml::encode($oUser->users_name)."</em>");?></div>
+<div class="pagetitle h3"><?php printf(gT('Edit template permissions for user %s'), "<em>".\CHtml::encode($oUser->users_name)."</em>"); ?></div>
 <div class="row" style="margin-bottom: 100px">
     <div class="col-lg-6 col-lg-offset-3 content-right">
 
@@ -7,15 +7,15 @@
             <thead>
                 <tr>
                     <th>
-                        <?php eT('Template name');?>
+                        <?php eT('Template name'); ?>
                     </th>
                     <th>
-                        <?php eT('Access');?>
+                        <?php eT('Access'); ?>
                     </th>
                 </tr>
                 <tr>
                     <th>
-                        <?php eT('All templates');?>
+                        <?php eT('All templates'); ?>
                     </th>
                     <th>
                         <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
@@ -32,9 +32,9 @@
             <tfoot>
                 <tr>
                     <td colspan="2">
-                        <input type="submit" class="hidden" value="<?php eT('Save settings');?>" />
+                        <input type="submit" class="hidden" value="<?php eT('Save settings'); ?>" />
                         <input type="hidden" name="action" value="usertemplates" />
-                        <input type="hidden" name="uid" value="<?php echo $oUser->uid;?>" />
+                        <input type="hidden" name="uid" value="<?php echo $oUser->uid; ?>" />
                     </td>
                 </tr>
             </tfoot>
@@ -42,18 +42,18 @@
             <tbody>
 
                 <?php
-                $templaterights=$data['templaterights'];
+                $templaterights = $data['templaterights'];
                 $table_row_odd_even = 'odd';
                 foreach ($data['templates'] as $trow)
                 {?>
 
                     <tr>
-                        <td><?php echo $trow["folder"];?></td>
+                        <td><?php echo $trow["folder"]; ?></td>
                         <td>
                             <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                                 'name' => $trow['folder'].'_use',
                                 'id'=>$trow['folder'].'_use',
-                                'value' => isset($templaterights[$trow['folder']]['use'])?$templaterights[$trow['folder']]['use']:0,
+                                'value' => isset($templaterights[$trow['folder']]['use']) ? $templaterights[$trow['folder']]['use'] : 0,
                                 'onLabel'=>gT('On'),
                                 'offLabel' => gT('Off')));
                             ?>

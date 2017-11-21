@@ -17,7 +17,7 @@
             <input class='form-control' type='password' id='loadpass' name='loadpass' value='' required>
         </div>
     </div>
-    <?php if($captcha) : ?>
+    <?php if ($captcha) : ?>
       <div class='form-group load-survey-row load-survey-captcha'>
           <label class='control-label col-sm-3 load-survey-label label-cell' for='loadsecurity'><?php echo gT("Security question:") ?></label>
           <div class='col-sm-7 load-survey-input input-cell'>

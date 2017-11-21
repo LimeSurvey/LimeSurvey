@@ -13,7 +13,7 @@
  */
 
 
- // THIS FILE SHOULD NOT BE CHANGED MANUALLY !
+    // THIS FILE SHOULD NOT BE CHANGED MANUALLY !
 
 $config['updaterversion'] = 6;
 $config['comfort_update_server_url'] = 'comfortupdate.limesurvey.org/';

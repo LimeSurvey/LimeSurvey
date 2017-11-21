@@ -18,7 +18,7 @@
         type="radio"
         name="<?php echo $name; ?>"
         id="answer<?php echo $id; ?>"
-        value="<?php echo $value;?>"
+        value="<?php echo $value; ?>"
         <?php echo $checkedState; ?>
     />
     <label for="answer<?php echo $id; ?>" class="control-label radio-label"><?php echo $labelText; ?></label>

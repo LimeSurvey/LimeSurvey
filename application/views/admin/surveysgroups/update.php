@@ -41,7 +41,7 @@
             </div>
             <div id="templateSettingsFortThisGroup" class="tab-pane">
                 <?php
-                    if (is_a($templateOptionsModel, 'TemplateConfiguration')){
+                    if (is_a($templateOptionsModel, 'TemplateConfiguration')) {
                     //    $this->renderPartial('./templateoptions/update', array('model'=>$templateOptionsModel, 'templateOptionPage'=>$templateOptionPage));
                         $this->renderPartial('./templateoptions/index', array('model'=>$templateOptionsModel, 'bFromSurveyGroup'=>true));
                     }

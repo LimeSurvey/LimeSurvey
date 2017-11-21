@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
     /*
     * LimeSurvey
     * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,7 +15,7 @@
     //Security Checked: POST/GET/SESSION/DB/returnGlobal
     function initKcfinder()
     {
-     Yii::app()->session['KCFINDER'] = array();
+        Yii::app()->session['KCFINDER'] = array();
 
         $sAllowedExtensions = implode(' ', array_map('trim', explode(',', Yii::app()->getConfig('allowedresourcesuploads'))));
         $_SESSION['KCFINDER']['types'] = array(
@@ -45,29 +45,29 @@
                 if (Permission::model()->hasSurveyPermission($surveyid, 'surveycontent', 'update'))
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
-                    if (preg_match('/^edit:emailsettings/',$_SESSION['FileManagerContext']) != 0)
+                    if (preg_match('/^edit:emailsettings/', $_SESSION['FileManagerContext']) != 0)
                     {
                         // Uploadurl use public url or getBaseUrl(true);
                         // Maybe need external function
-                        $sBaseAbsoluteUrl=Yii::app()->getBaseUrl(true);
-                        $sPublicUrl=Yii::app()->getConfig("publicurl");
-                        $aPublicUrl=parse_url($sPublicUrl);
-                        if(isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
+                        $sBaseAbsoluteUrl = Yii::app()->getBaseUrl(true);
+                        $sPublicUrl = Yii::app()->getConfig("publicurl");
+                        $aPublicUrl = parse_url($sPublicUrl);
+                        if (isset($aPublicUrl['scheme']) && isset($aPublicUrl['host']))
                         {
-                            $sBaseAbsoluteUrl=$sPublicUrl;
+                            $sBaseAbsoluteUrl = $sPublicUrl;
                         }
-                        $sBaseUrl=Yii::app()->getBaseUrl();
-                        $sUploadUrl=Yii::app()->getConfig('uploadurl');
+                        $sBaseUrl = Yii::app()->getBaseUrl();
+                        $sUploadUrl = Yii::app()->getConfig('uploadurl');
                         if (substr($sUploadUrl, 0, strlen($sBaseUrl)) == $sBaseUrl) {
                             $sUploadUrl = substr($sUploadUrl, strlen($sBaseUrl));
                         }
-                        $_SESSION['KCFINDER']['uploadURL'] = trim($sBaseAbsoluteUrl,"/").$sUploadUrl."/surveys/{$surveyid}/";
+                        $_SESSION['KCFINDER']['uploadURL'] = trim($sBaseAbsoluteUrl, "/").$sUploadUrl."/surveys/{$surveyid}/";
                     }
                     else
                     {
                         $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
-                    $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) .DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
+                    $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')).DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
                 }
             }
             elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
@@ -75,18 +75,18 @@
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $labelid = $contextarray[2];
                 // check if the user has label management right and labelid defined
-                if (Permission::model()->hasGlobalPermission('labelsets','update') && isset($labelid) && $labelid != '')
+                if (Permission::model()->hasGlobalPermission('labelsets', 'update') && isset($labelid) && $labelid != '')
                 {
                     $_SESSION['KCFINDER']['disabled'] = false;
                     $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/labels/{$labelid}/";
-                    $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')) .DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
+                    $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')).DIRECTORY_SEPARATOR.'labels'.DIRECTORY_SEPARATOR.$labelid.DIRECTORY_SEPARATOR;
                 }
             }
         }
     }
 
-    function sTranslateLangCode2CK($sLanguageCode){
-        $aTranslationTable=array(
+    function sTranslateLangCode2CK($sLanguageCode) {
+        $aTranslationTable = array(
         'ca-valencia'=>'ca',
         'de-informal'=>'de',
         'es-AR-informal'=>'es',
@@ -101,17 +101,17 @@
         'zh-Hant-TW'=>'zh'
         );
         if (isset($aTranslationTable[$sLanguageCode])) {
-            $sResultCode=$aTranslationTable[$sLanguageCode];
+            $sResultCode = $aTranslationTable[$sLanguageCode];
         }
         else
         {
-            $sResultCode=strtolower($sLanguageCode);
+            $sResultCode = strtolower($sLanguageCode);
         }
         return $sResultCode;
     }
 
 
-    function PrepareEditorScript($load=false, $controller = null)
+    function PrepareEditorScript($load = false, $controller = null)
     {
         if ($controller == null)
         {
@@ -120,15 +120,15 @@
         if ($load == false)
         {
 
-            return $controller->renderPartial('/admin/survey/prepareEditorScript_view',array(),true);
+            return $controller->renderPartial('/admin/survey/prepareEditorScript_view', array(), true);
         }
         else
         {
-            $controller->renderPartial('/admin/survey/prepareEditorScript_view',array());
+            $controller->renderPartial('/admin/survey/prepareEditorScript_view', array());
         }
     }
 
-    function getEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
+    function getEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
         initKcfinder();
         //error_log("TIBO fieldtype=$fieldtype,fieldname=$fieldname,fieldtext=$fieldtext,surveyID=$surveyID,gID=$gID,qID=$qID,action=$action");
@@ -143,7 +143,7 @@
 
         if (!$session['htmleditormode'] ||
         ($session['htmleditormode'] != 'inline' &&
-        $session['htmleditormode'] != 'popup') )
+        $session['htmleditormode'] != 'popup'))
         {
             $htmleditormode = Yii::app()->getConfig('defaulthtmleditormode');
         }
@@ -151,22 +151,22 @@
         {
             $htmleditormode = $session['htmleditormode'];
         }
-        if ( $surveyID && getEmailFormat($surveyID) != 'html' && substr($fieldtype,0,6)==="email-" )// email but survey as text email
+        if ($surveyID && getEmailFormat($surveyID) != 'html' && substr($fieldtype, 0, 6) === "email-")// email but survey as text email
         {
             return '';
         }
 
         if ($htmleditormode == 'popup' ||
-        ( $fieldtype == 'editanswer' ||
+        ($fieldtype == 'editanswer' ||
         $fieldtype == 'addanswer' ||
         $fieldtype == 'editlabel' ||
-        $fieldtype == 'addlabel') && (preg_match("/^translate/",$action) == 0 ) )
+        $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0))
         {
-            return getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID,$gID,$qID,$action);
+            return getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
         }
         elseif ($htmleditormode == 'inline')
         {
-            return getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID,$gID,$qID,$action);
+            return getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
         }
         else
         {
@@ -174,7 +174,7 @@
         }
     }
 
-    function getPopupEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
+    function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
 
         $htmlcode = '';
@@ -183,12 +183,12 @@
         $fieldtype == 'addanswer' ||
         $fieldtype == 'editlabel' ||
         $fieldtype == 'addlabel') {
-            $class="editorLink";
+            $class = "editorLink";
         } else {
-            $class="editorLink input-group-addon";
+            $class = "editorLink input-group-addon";
         }
         $htmlcode .= ""
-        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext,ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='{$class}'>\n"
+        . "<a href=\"javascript:start_popup_editor('".$fieldname."','".addslashes(htmlspecialchars_decode($fieldtext, ENT_QUOTES))."','".$surveyID."','".$gID."','".$qID."','".$fieldtype."','".$action."')\" id='".$fieldname."_ctrl' class='{$class}'>\n"
         . "\t<span class='fa fa-pencil btneditanswerena' id='".$fieldname."_popupctrlena' data-toggle='tooltip' data-placement='bottom' title='".gT("Start HTML editor in a popup window")."'></span>"
         . "\t<span class='fa fa-pencil btneditanswerdis' id='".$fieldname."_popupctrldis'  style='display:none'  ></span>"
         . "</a>\n";
@@ -196,48 +196,47 @@
         return $htmlcode;
     }
 
-    function getInlineEditor($fieldtype,$fieldname,$fieldtext, $surveyID=null,$gID=null,$qID=null,$action=null)
+    function getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
 
         $htmlcode = '';
-        $toolbaroption="";
-        $sFileBrowserAvailable='';
-        $htmlformatoption="";
-        $oCKeditorVarName = "oCKeditor_".str_replace("-","_",$fieldname);
+        $toolbaroption = "";
+        $sFileBrowserAvailable = '';
+        $htmlformatoption = "";
+        $oCKeditorVarName = "oCKeditor_".str_replace("-", "_", $fieldname);
 
-        if ( ($fieldtype == 'editanswer' ||
+        if (($fieldtype == 'editanswer' ||
         $fieldtype == 'addanswer' ||
         $fieldtype == 'editlabel' ||
-        $fieldtype == 'addlabel') && (preg_match("/^translate/",$action) == 0) )
+        $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0))
         {
-            $toolbaroption= ",toolbarStartupExpanded:true\n"
+            $toolbaroption = ",toolbarStartupExpanded:true\n"
             .",toolbar:'popup'\n"
             .",toolbarCanCollapse:false\n";
-        }
-        else
+        } else
         {
             $ckeditexpandtoolbar = Yii::app()->getConfig('ckeditexpandtoolbar');
-            if (!isset($ckeditexpandtoolbar) ||  $ckeditexpandtoolbar == true)
+            if (!isset($ckeditexpandtoolbar) || $ckeditexpandtoolbar == true)
             {
                 $toolbaroption = ",toolbarStartupExpanded:true\n"
                 .",toolbar:'inline'\n";
             }
         }
 
-        if ( $fieldtype == 'email-invitation' ||
+        if ($fieldtype == 'email-invitation' ||
         $fieldtype == 'email-registration' ||
-        $fieldtype == 'email-confirmation'||
-        $fieldtype == 'email-admin_notification'||
-        $fieldtype == 'email-admin_detailed_notification'||
-        $fieldtype == 'email-reminder' )
+        $fieldtype == 'email-confirmation' ||
+        $fieldtype == 'email-admin_notification' ||
+        $fieldtype == 'email-admin_detailed_notification' ||
+        $fieldtype == 'email-reminder')
         {
             $htmlformatoption = ",fullPage:true\n";
         }
 
-        if ($surveyID=='')
+        if ($surveyID == '')
         {
-            $sFakeBrowserURL=Yii::app()->getController()->createUrl('admin/survey/sa/fakebrowser');
-            $sFileBrowserAvailable=",filebrowserBrowseUrl:'{$sFakeBrowserURL}'
+            $sFakeBrowserURL = Yii::app()->getController()->createUrl('admin/survey/sa/fakebrowser');
+            $sFileBrowserAvailable = ",filebrowserBrowseUrl:'{$sFakeBrowserURL}'
             ,filebrowserImageBrowseUrl:'{$sFakeBrowserURL}'
             ,filebrowserFlashBrowseUrl:'{$sFakeBrowserURL}'
             ,filebrowserUploadUrl:'{$sFakeBrowserURL}'
@@ -267,7 +266,7 @@
                 }
         });";
 
-        $htmlcode.= '</script>';
+        $htmlcode .= '</script>';
 
         return $htmlcode;
     }

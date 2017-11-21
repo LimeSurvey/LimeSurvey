@@ -29,7 +29,7 @@
         </ul>
         <?php
         /* Value for expression manager javascript (use id) ; no need to submit */
-        echo \CHtml::hiddenField($java_name,$java_value,array(
+        echo \CHtml::hiddenField($java_name, $java_value, array(
             'id' => $java_id,
             'disabled' => true,
         ));
@@ -38,10 +38,10 @@
 
     <div class="form-group answer-item text-item col-sm-6 col-xs-12">
         <label class="control-label" for="<?php echo $id; ?>">
-            <?php echo $hint_comment;?>:
+            <?php echo $hint_comment; ?>:
         </label>
         <?php
-        echo \CHtml::textArea($name,$comment_saved,array(
+        echo \CHtml::textArea($name, $comment_saved, array(
             'id' => $id,
             'class' => "form-control {$kpclass}",
             'rows' => $tarows

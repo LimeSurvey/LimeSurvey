@@ -26,7 +26,7 @@
             </div>
             <label class="col-sm-3 control-label"  for='menu_id'><?php eT("Menu ID?"); ?></label>
             <div class="col-sm-8">
-                <?php echo TbHtml::dropDownList('menu_id', 'lskeep', (['lskeep' => gT('Keep old value')]+$model->getMenuIdOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+                <?php echo TbHtml::dropDownList('menu_id', 'lskeep', (['lskeep' => gT('Keep old value')] + $model->getMenuIdOptions()), ['disabled'=>'disabled', 'class'=>'custom-data selector_submitField']); ?>
             </div>
         </div>
 
@@ -38,7 +38,7 @@
             </div>
             <label class="col-sm-3 control-label"  for='menu_class'><?php eT("Menu class?"); ?></label>
             <div class="col-sm-8">
-                <?php echo TbHtml::textField('menu_class', 'lskeep', array('size'=>60,'maxlength'=>255,'disabled'=>'disabled','class'=>'custom-data selector_submitField'));?>
+                <?php echo TbHtml::textField('menu_class', 'lskeep', array('size'=>60, 'maxlength'=>255, 'disabled'=>'disabled', 'class'=>'custom-data selector_submitField')); ?>
             </div>
 		</div>
 
@@ -51,7 +51,7 @@
             </div>
             <label class="col-sm-3 control-label"  for='permission'><?php eT("Permission?"); ?></label>
             <div class="col-sm-8">
-                <?php echo TbHtml::textField('permission', 'lskeep', array('size'=>60,'maxlength'=>255,'disabled'=>'disabled','class'=>'custom-data selector_submitField'));?>
+                <?php echo TbHtml::textField('permission', 'lskeep', array('size'=>60, 'maxlength'=>255, 'disabled'=>'disabled', 'class'=>'custom-data selector_submitField')); ?>
             </div>
 		</div>
 
@@ -63,7 +63,7 @@
             </div>
             <label class="col-sm-3 control-label"  for='permission_grade'><?php eT("Permission grade?"); ?></label>
             <div class="col-sm-8">
-                <?php echo TbHtml::textField('permission_grade', 'lskeep', array('size'=>60,'maxlength'=>255,'disabled'=>'disabled','class'=>'custom-data selector_submitField'));?>
+                <?php echo TbHtml::textField('permission_grade', 'lskeep', array('size'=>60, 'maxlength'=>255, 'disabled'=>'disabled', 'class'=>'custom-data selector_submitField')); ?>
             </div>
 		</div>
 
@@ -81,7 +81,7 @@
                 </div>
                 <label class="col-sm-3 control-label"  for='permission_grade'><?php eT("User?"); ?></label>
                 <div class="col-sm-8">
-                    <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled'=>'disabled','class'=>'custom-data selector_submitField'] );?>
+                    <?php echo TbHtml::dropDownList('user_id', 'lskeep', array_merge(['lskeep' => gT('Keep old value')], $model->getUserIdOptions()), ['disabled'=>'disabled', 'class'=>'custom-data selector_submitField']); ?>
                 </div>
             </div>
             
@@ -93,14 +93,14 @@
                 </div>
                 <label class="col-sm-3 control-label"  for='language'><?php eT("Language?"); ?></label>
                 <div class="col-sm-8">
-                    <?php echo TbHtml::textField('language', 'lskeep', array('size'=>60,'maxlength'=>255,'disabled'=>'disabled', 'class'=>'custom-data selector_submitField'));?>
+                    <?php echo TbHtml::textField('language', 'lskeep', array('size'=>60, 'maxlength'=>255, 'disabled'=>'disabled', 'class'=>'custom-data selector_submitField')); ?>
                 </div>
 			</div>
 		
 		</div>
 
-		<?php echo TbHtml::hiddenField('changed_by', Yii::app()->user->id, ['class'=>'custom-data']);?>
-		<?php echo TbHtml::hiddenField('changed_at', date('Y-m-d H:i:s'), ['class'=>'custom-data']);?>
+		<?php echo TbHtml::hiddenField('changed_by', Yii::app()->user->id, ['class'=>'custom-data']); ?>
+		<?php echo TbHtml::hiddenField('changed_at', date('Y-m-d H:i:s'), ['class'=>'custom-data']); ?>
 		
 	</div>
 </form>

@@ -19,8 +19,8 @@
     <option value="">
         <?php eT('Year'); ?>
     </option>
-    <?php for ($i=$yearmax; ($reverse? $i<=$yearmin: $i>=$yearmin); $i+=$step): ?>
-        <option value="<?php echo $i; ?>" <?php if ($i == $currentyear):?>SELECTED<?php endif;?> >
+    <?php for ($i = $yearmax; ($reverse ? $i <= $yearmin : $i >= $yearmin); $i += $step): ?>
+        <option value="<?php echo $i; ?>" <?php if ($i == $currentyear):?>SELECTED<?php endif; ?> >
             <?php echo $i; ?>
         </option>
     <?php endfor; ?>

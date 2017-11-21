@@ -30,7 +30,7 @@
             >
                 <span class="icon-renumber"></span>
                 &nbsp;
-                <?php eT("Renumber scenario automatically");?>
+                <?php eT("Renumber scenario automatically"); ?>
             </button>
         <?php endif; ?>
 
@@ -51,8 +51,8 @@
         <div class="col-lg-12 content-right">
 
 
-<?php echo $conditionsoutput_action_error;?>
-<?php echo $javascriptpre;?>
+<?php echo $conditionsoutput_action_error; ?>
+<?php echo $javascriptpre; ?>
 
 <!-- Modal for quick add -->
 <div id="quick-add-condition-modal" class="modal fade" role="dialog">

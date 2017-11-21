@@ -19,10 +19,10 @@
 ?>
 
 <script type="text/javascript">
-    zoom['<?php echo $name;?>'] = <?php echo $location_mapzoom;?>;
+    zoom['<?php echo $name; ?>'] = <?php echo $location_mapzoom; ?>;
 </script>
 
-<div class="<?php echo $coreClass; ?> <?php echo $extraclass;?>" row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
+<div class="<?php echo $coreClass; ?> <?php echo $extraclass; ?>" row" role="group" aria-labelledby="ls-question-text-<?php echo $basename; ?>">
     <!-- Input Text Location -->
     <div class="col-sm-12" >
             <input
@@ -39,7 +39,7 @@
     <div
         id="gmap_canvas_<?php echo $name; ?>_c"
         class='col-xs-12'
-        style='height: <?php echo $location_mapheight;?>px'>
+        style='height: <?php echo $location_mapheight; ?>px'>
     </div>
 
     <!-- hidden input -->
@@ -55,20 +55,20 @@
         name="mapservice_<?php echo $name; ?>"
         id="mapservice_<?php echo $name; ?>"
         class="mapservice"
-        value = "<?php echo $location_mapservice;?>"
+        value = "<?php echo $location_mapservice; ?>"
         />
 
     <input
         type="hidden"
-        name="<?php echo $name;?>"
-        id="<?php echo $freeTextId;?>"
+        name="<?php echo $name; ?>"
+        id="<?php echo $freeTextId; ?>"
         value="<?php echo $value; ?>"
         />
 
-    <?php if($questionHelp):?>
+    <?php if ($questionHelp):?>
         <div class="questionhelp col-sm-12">
             <?php echo $question_text_help; ?>
         </div>
-    <?php endif;?>
+    <?php endif; ?>
 
 </div>

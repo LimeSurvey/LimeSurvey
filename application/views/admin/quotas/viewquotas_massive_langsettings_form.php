@@ -13,6 +13,6 @@
         'form'=>$form,
         'oQuota'=>$oQuota,
         'aQuotaLanguageSettings' =>$aQuotaLanguageSettings,
-    ));?>
+    )); ?>
 &nbsp;
 <?php $this->endWidget(); ?>

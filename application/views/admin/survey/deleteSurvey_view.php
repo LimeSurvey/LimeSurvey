@@ -19,7 +19,7 @@
                     <?php eT("It will also delete any resources/files that have been uploaded for this survey."); ?><br /><br />
                     <?php eT("We recommend that before you delete this survey you export the entire survey from the main administration screen."); ?>
 
-                    <?php if($survey->hasTokensTable):?>
+                    <?php if ($survey->hasTokensTable):?>
                         <span class="text-warning"><?php eT("This survey is active and a responses table exists. If you delete this survey, these responses (and files) will be deleted. We recommend that you export the responses before deleting this survey."); ?></span><br /><br />
                     <?php endif; ?>
 
@@ -30,10 +30,10 @@
 
                 </p>
                 <p>
-                    <?php echo CHtml::beginForm($this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"), 'post');?>
+                    <?php echo CHtml::beginForm($this->createUrl("admin/survey/sa/delete/surveyid/{$surveyid}"), 'post'); ?>
                         <input type='hidden' name='delete' value='yes'>
                         <input type='submit'  class="btn btn-lg btn-warning" value='<?php eT("Delete survey"); ?>'>
-                        <input type='button'  class="btn btn-lg btn-default" value='<?php eT("Cancel"); ?>' onclick="window.open('<?php echo Yii::app()->request->getUrlReferrer( Yii::app()->createUrl("admin/survey/sa/view/surveyid/$surveyid") ); ?>', '_top')" />
+                        <input type='button'  class="btn btn-lg btn-default" value='<?php eT("Cancel"); ?>' onclick="window.open('<?php echo Yii::app()->request->getUrlReferrer(Yii::app()->createUrl("admin/survey/sa/view/surveyid/$surveyid")); ?>', '_top')" />
                     <?php echo CHtml::endForm(); ?>
                 </p>
         </div>

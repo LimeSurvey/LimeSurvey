@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
   <div class="container-fluid">
         <?php 
         $hiddenFilterValues = "";
-        if($searchcondition)
+        if ($searchcondition)
         {
             echo "<div class='container-fluid' id='ParticipantFilters'>" 
                     . "<div class='row'>"
@@ -33,37 +33,37 @@ echo viewHelper::getViewTestTag('displayParticipants');
                             . "<button id='removeAllFilters' class='btn btn-warning btn-xs'>".gT("Remove filters")."</button>"
                         . "</div>"
                     . "</div>";
-            $i=0;
-            $iNumberOfConditions = (count($searchcondition)+1)/4;
+            $i = 0;
+            $iNumberOfConditions = (count($searchcondition) + 1) / 4;
             while ($i < $iNumberOfConditions)
             {
-                $sFieldname=$searchcondition[$i*4];
-                $sOperator=$searchcondition[($i*4)+1];
-                switch($sOperator)
+                $sFieldname = $searchcondition[$i * 4];
+                $sOperator = $searchcondition[($i * 4) + 1];
+                switch ($sOperator)
                     {
                         case 'equal':
-                            $operator= gT('equals');
+                            $operator = gT('equals');
                             break;
                         case 'contains':
                         case 'beginswith':
-                            $operator=gT("is like");
+                            $operator = gT("is like");
                             break;
                         case 'notequal':
                         case 'notcontains':
-                            $operator=gT("is not like");
+                            $operator = gT("is not like");
                             break;
                         case 'greaterthan':
-                            $operator=gT("is greater than");
+                            $operator = gT("is greater than");
                             break;
                         case 'lessthan':
-                            $operator=gT("is lesser than");
+                            $operator = gT("is lesser than");
                             break;
                     }
-                $sValue=$searchcondition[($i*4)+2];
+                $sValue = $searchcondition[($i * 4) + 2];
                 
                     echo "<div class='row'>"
                         . "<div class='col-xs-12'>"
-                           ." ".$model->getAttributeLabel($sFieldname)." ".$operator." ".$sValue
+                            ." ".$model->getAttributeLabel($sFieldname)." ".$operator." ".$sValue
                         . "</div>"
                     . "</div>";
                 $i++;
@@ -74,7 +74,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
         ?>
     <div class="row">
         <?php
-            echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='".join("||",$searchcondition)."' />";
+            echo "<input type='hidden' id='searchcondition' name='searchcondition[]' value='".join("||", $searchcondition)."' />";
             $this->widget('bootstrap.widgets.TbGridView', array(
                 'id' => 'list_central_participants',
                 'emptyText'=>gT('No participants found.'),
@@ -89,7 +89,7 @@ echo viewHelper::getViewTestTag('displayParticipants');
                 'ajaxType' => 'POST',
                 'beforeAjaxUpdate' => 'insertSearchCondition',
                 'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
                     CHtml::dropDownList(
                         'pageSizeParticipantView',
                         Yii::app()->user->getState('pageSizeParticipantView', Yii::app()->params['defaultPageSize']),

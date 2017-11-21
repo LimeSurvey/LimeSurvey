@@ -24,7 +24,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
             <?php eT("Participants owned by you"); ?>
         </th>
         <td>
-            <?php echo $owned . ' / ' . $totalrecords; ?>
+            <?php echo $owned.' / '.$totalrecords; ?>
         </td>
     </tr>
     <tr>
@@ -32,7 +32,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
             <?php eT("Participants shared with you"); ?>
         </th>
         <td>
-            <?php echo $totalrecords - $owned . ' / ' . $totalrecords; ?>
+            <?php echo $totalrecords - $owned.' / '.$totalrecords; ?>
         </td>
     </tr>
     <tr>
@@ -40,7 +40,7 @@ echo viewHelper::getViewTestTag('participantsSummary');
             <?php eT("Participants you have shared"); ?>
         </th>
         <td>
-            <?php echo $shared . ' / ' . $totalrecords; ?>
+            <?php echo $shared.' / '.$totalrecords; ?>
         </td>
     </tr>
     <tr>

@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('surveyGeneralSettings');
 
 <?php
 $count = 0;
-if(isset($scripts))
+if (isset($scripts))
     echo $scripts;
 ?>
 
@@ -29,11 +29,11 @@ if(isset($scripts))
 
     <!-- Form -->
     <div class="col-xs-12">
-        <?php echo CHtml::form(array("admin/database/index/".$entryData['action']), 'post', array('id'=>$entryData['name'],'name'=>$entryData['name'],'class'=>' form30')); ?>
+        <?php echo CHtml::form(array("admin/database/index/".$entryData['action']), 'post', array('id'=>$entryData['name'], 'name'=>$entryData['name'], 'class'=>' form30')); ?>
 
         <div class="row">
             <div class="<?=$entryData['classes']?>">
-                <?php $this->renderPartial($entryData['partial'],$templateData); ?>
+                <?php $this->renderPartial($entryData['partial'], $templateData); ?>
             </div>
         </div>
 

@@ -8,7 +8,7 @@
 ?>
 <!-- views/survey/system/actionButton/moveNext -->
 <?php
-    echo CHtml::htmlButton(gT("Resume later"),array(
+    echo CHtml::htmlButton(gT("Resume later"), array(
         'type'=>'submit',
         'value'=>$value,
         'name'=>$name,

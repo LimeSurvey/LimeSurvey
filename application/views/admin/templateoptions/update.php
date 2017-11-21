@@ -7,7 +7,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
 ?>
 
-<div class="row h1"><?php echo sprintf(gT('Update template options for %s'),'<em>' . $model->template_name . '</em>'); ?></div>
+<div class="row h1"><?php echo sprintf(gT('Update template options for %s'), '<em>'.$model->template_name.'</em>'); ?></div>
 <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
 <div class="row">
     <!-- Nav tabs -->
@@ -27,18 +27,18 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                  * before saving that to database.
                  */
 
-                 //First convert options to json and check if it is valid
-                 $oOptions = json_decode($model->options);
-                 $jsonError = json_last_error();
-                 //if it is not valid, render message
-                 if($jsonError !== JSON_ERROR_NONE && $model->options !== 'inherit')
-                 {
-                     //return
+                    //First convert options to json and check if it is valid
+                    $oOptions = json_decode($model->options);
+                    $jsonError = json_last_error();
+                    //if it is not valid, render message
+                    if($jsonError !== JSON_ERROR_NONE && $model->options !== 'inherit')
+                    {
+                        //return
                     echo "<div class='ls-flex-column fill'><h4>".gT('There are no simple options in this template.')."</h4></div>";
-                 }
-                 //if however there is no error in the parsing of the json string go forth and render the form
-                 else
-                 {
+                    }
+                    //if however there is no error in the parsing of the json string go forth and render the form
+                    else
+                    {
                     /**
                      * The form element needs to hold the class "action_update_options_string_form" to be correctly bound
                      * To be able to change the value in the "real" form, the input needs to now what to change.
@@ -46,9 +46,9 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                      */
 
                     echo $templateOptionPage;
-                 }
+                    }
 
-                 //
+                    //
             ?>
         </div>
         <div role="tabpanel" class="tab-pane" id="advanced">
@@ -66,26 +66,26 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             $actionBaseUrl = 'admin/templateoptions/sa/update/';
             $actionUrlArray = array('id' => $model->id);
 
-            if($model->sid) {
+            if ($model->sid) {
                 unset($actionUrlArray['id']);
                 $actionUrlArray['sid'] = $model->sid;
                 $actionUrlArray['surveyd'] = $model->sid;
                 $actionUrlArray['gsid'] = $model->gsid;
                 $actionBaseUrl = 'admin/templateoptions/sa/updatesurvey/';
                 }
-            if($model->gsid) {
+            if ($model->gsid) {
                 unset($actionUrlArray['id']);
                 $actionBaseUrl = 'admin/templateoptions/sa/updatesurveygroup/';
                 $actionUrlArray['gsid'] = $model->gsid;
             }
 
-            $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl,$actionUrlArray);
+            $actionUrl = Yii::app()->getController()->createUrl($actionBaseUrl, $actionUrlArray);
         ?>
 
         <div class="container-fluid ls-space margin bottom-15">
             <div class="row ls-space margin bottom-15">
                 <div class="col-sm-6 h4">
-                    <?php printf(gT("Upload a logo (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
+                    <?php printf(gT("Upload a logo (maximum size: %d MB):"), getMaximumFileUploadSize() / 1024 / 1024); ?>
                 </div>
                 <div class="col-sm-6">
                 <?php echo TbHtml::form(array('admin/templates/sa/upload'), 'post', array('id'=>'uploadlogo', 'name'=>'uploadlogo', 'enctype'=>'multipart/form-data')); ?>                        
@@ -115,7 +115,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
         <hr/>
 
         <div class="container-fluid">
-            <?php $form=$this->beginWidget('TbActiveForm', array(
+            <?php $form = $this->beginWidget('TbActiveForm', array(
                 'id'=>'template-options-form',
                 'enableAjaxValidation'=>false,
                 'htmlOptions' => ['class' => 'form '],
@@ -125,57 +125,57 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
             <?php echo $form->errorSummary($model); ?>
 
 
-            <?php echo $form->hiddenField($model,'template_name'); ?>
-            <?php echo $form->hiddenField($model,'sid'); ?>
-            <?php echo $form->hiddenField($model,'gsid'); ?>
-            <?php echo $form->hiddenField($model,'uid'); ?>
+            <?php echo $form->hiddenField($model, 'template_name'); ?>
+            <?php echo $form->hiddenField($model, 'sid'); ?>
+            <?php echo $form->hiddenField($model, 'gsid'); ?>
+            <?php echo $form->hiddenField($model, 'uid'); ?>
 
             <div class="form-group">
-                <?php echo $form->labelEx($model,'files_css'); ?>
-                <?php echo $form->textArea($model,'files_css',array('rows'=>6, 'cols'=>50)); ?>
-                <?php echo $form->error($model,'files_css'); ?>
+                <?php echo $form->labelEx($model, 'files_css'); ?>
+                <?php echo $form->textArea($model, 'files_css', array('rows'=>6, 'cols'=>50)); ?>
+                <?php echo $form->error($model, 'files_css'); ?>
             </div>
 
             <div class="form-group">
-                <?php echo $form->labelEx($model,'files_js'); ?>
-                <?php echo $form->textArea($model,'files_js',array('rows'=>6, 'cols'=>50)); ?>
-                <?php echo $form->error($model,'files_js'); ?>
+                <?php echo $form->labelEx($model, 'files_js'); ?>
+                <?php echo $form->textArea($model, 'files_js', array('rows'=>6, 'cols'=>50)); ?>
+                <?php echo $form->error($model, 'files_js'); ?>
             </div>
 
             <div class="form-group">
-                <?php echo $form->labelEx($model,'files_print_css'); ?>
-                <?php echo $form->textArea($model,'files_print_css',array('rows'=>6, 'cols'=>50)); ?>
-                <?php echo $form->error($model,'files_print_css'); ?>
+                <?php echo $form->labelEx($model, 'files_print_css'); ?>
+                <?php echo $form->textArea($model, 'files_print_css', array('rows'=>6, 'cols'=>50)); ?>
+                <?php echo $form->error($model, 'files_print_css'); ?>
             </div>
 
             <div class="form-group">
-                <?php echo $form->labelEx($model,'options'); ?>
-                <?php echo $form->textArea($model,'options',array('rows'=>6, 'cols'=>50 )); ?>
-                <?php echo $form->error($model,'options'); ?>
+                <?php echo $form->labelEx($model, 'options'); ?>
+                <?php echo $form->textArea($model, 'options', array('rows'=>6, 'cols'=>50)); ?>
+                <?php echo $form->error($model, 'options'); ?>
             </div>
 
             <div class="form-group">
-                <?php echo $form->labelEx($model,'cssframework_name'); ?>
-                <?php echo $form->textField($model,'cssframework_name',array('size'=>45,'maxlength'=>45)); ?>
-                <?php echo $form->error($model,'cssframework_name'); ?>
+                <?php echo $form->labelEx($model, 'cssframework_name'); ?>
+                <?php echo $form->textField($model, 'cssframework_name', array('size'=>45, 'maxlength'=>45)); ?>
+                <?php echo $form->error($model, 'cssframework_name'); ?>
             </div>
 
             <div class="form-group">
-                <?php echo $form->labelEx($model,'cssframework_css'); ?>
-                <?php echo $form->textArea($model,'cssframework_css',array('rows'=>6, 'cols'=>50)); ?>
-                <?php echo $form->error($model,'cssframework_css'); ?>
+                <?php echo $form->labelEx($model, 'cssframework_css'); ?>
+                <?php echo $form->textArea($model, 'cssframework_css', array('rows'=>6, 'cols'=>50)); ?>
+                <?php echo $form->error($model, 'cssframework_css'); ?>
             </div>
 
             <div class="form-group">
-                <?php echo $form->labelEx($model,'cssframework_js'); ?>
-                <?php echo $form->textArea($model,'cssframework_js',array('rows'=>6, 'cols'=>50)); ?>
-                <?php echo $form->error($model,'cssframework_js'); ?>
+                <?php echo $form->labelEx($model, 'cssframework_js'); ?>
+                <?php echo $form->textArea($model, 'cssframework_js', array('rows'=>6, 'cols'=>50)); ?>
+                <?php echo $form->error($model, 'cssframework_js'); ?>
             </div>
 
             <div class="form-group">
-                <?php echo $form->labelEx($model,'packages_to_load'); ?>
-                <?php echo $form->textArea($model,'packages_to_load',array('rows'=>6, 'cols'=>50)); ?>
-                <?php echo $form->error($model,'packages_to_load'); ?>
+                <?php echo $form->labelEx($model, 'packages_to_load'); ?>
+                <?php echo $form->textArea($model, 'packages_to_load', array('rows'=>6, 'cols'=>50)); ?>
+                <?php echo $form->error($model, 'packages_to_load'); ?>
             </div>
 
             <div class="row buttons hidden">

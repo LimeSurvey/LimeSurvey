@@ -17,7 +17,7 @@
                     <?php
                     foreach ($firstline as $value)
                     {
-                        echo "<div id='cs_" . $value . "' data-name='" . $value . "' class='draggable well well-sm csv-attribute-item'>" . $value . "</div>";
+                        echo "<div id='cs_".$value."' data-name='".$value."' class='draggable well well-sm csv-attribute-item'>".$value."</div>";
                     }
                     ?>
                 </div>
@@ -58,7 +58,7 @@
                         <label for='overwrite'><?php eT("Overwrite existing token attribute values if a duplicate participant is found?") ?>
                         <br />
                         <?php
-                        if($participant_id_exists) {
+                        if ($participant_id_exists) {
                             eT("Duplicates will be detected using the participant_id field in this CSV file.");
                         } else {
                             eT("Duplicates will be detected by a combination of firstname, lastname and email addresses.");
@@ -76,6 +76,6 @@
         <input class='btn btn-default' type="button" name="attmap" id="attmap" value="<?php eT("Continue"); ?>" />
     </div>
     <div id="processing" title="<?php eT("Processing...") ?>" style="display:none">
-        <img src="<?php echo Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif'; ?>" alt="<?php eT('Loading...'); ?>" title="<?php eT('Loading...'); ?>" />
+        <img src="<?php echo Yii::app()->getConfig('adminimageurl').'/ajax-loader.gif'; ?>" alt="<?php eT('Loading...'); ?>" title="<?php eT('Loading...'); ?>" />
     </div>
 </div>

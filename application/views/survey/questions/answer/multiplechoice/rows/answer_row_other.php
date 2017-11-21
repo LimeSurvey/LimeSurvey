@@ -29,7 +29,7 @@
                 <?php echo $checkedState; ?>
                 aria-hidden="true"
             />
-            <label for="answer<?php echo $myfname;?>cbox" class="answertext" id="label-<?php echo $myfname; ?>-other"><?php echo $othertext; ?></label>
+            <label for="answer<?php echo $myfname; ?>cbox" class="answertext" id="label-<?php echo $myfname; ?>-other"><?php echo $othertext; ?></label>
         </div>
 
         <!-- comment -->

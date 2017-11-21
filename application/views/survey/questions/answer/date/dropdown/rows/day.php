@@ -7,16 +7,16 @@
 ?>
 
 <!-- day -->
-<label for="day<?php echo $dayId;?>" class="sr-only">
+<label for="day<?php echo $dayId; ?>" class="sr-only">
     <?php eT('Day'); ?>
 </label>
-<select id="day<?php echo $dayId;?>" name="day<?php echo $dayId;?>" class="form-control day">
+<select id="day<?php echo $dayId; ?>" name="day<?php echo $dayId; ?>" class="form-control day">
     <option value="">
         <?php eT('Day'); ?>
     </option>
 
-    <?php for ($i=1; $i<=31; $i++): ?>
-        <option value="<?php echo sprintf('%02d', $i); ?>" <?php if($i == $currentdate):?>SELECTED<?php endif; ?> >
+    <?php for ($i = 1; $i <= 31; $i++): ?>
+        <option value="<?php echo sprintf('%02d', $i); ?>" <?php if ($i == $currentdate):?>SELECTED<?php endif; ?> >
             <?php echo sprintf('%02d', $i); ?>
         </option>
     <?php endfor; ?>

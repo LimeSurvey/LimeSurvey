@@ -7,7 +7,7 @@
 	    <span class='sr-only'>Notifications</span>
         </a>
     </li>
-<?php elseif($showLoader): ?>
+<?php elseif ($showLoader): ?>
 <li id='notification-li' class='dropdown' onclick='LS.updateNotificationWidget("<?php echo $updateUrl; ?>");' >
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
@@ -25,11 +25,14 @@
             </li>
         </ul>
     </li>
-<?php else: ?>
+<?php else {
+    : ?>
     <li id='notification-li' class='dropdown' onclick='LS.styleNotificationMenu();'>
         <a class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false' href='#'>
             <?php // Use class 'notification-bell-pulse' for pulsating bell ?>
-            <span id='notification-bell' class='fa fa-bell <?php echo $bellColor; ?>'></span>
+            <span id='notification-bell' class='fa fa-bell <?php echo $bellColor;
+}
+?>'></span>
 
             <?php if ($nrOfNewNotifications): ?>
                 <span class='badge'><?php echo $nrOfNewNotifications; ?></span>
@@ -57,8 +60,11 @@
                                     <strong><?php echo $not->title; ?></strong>
                                     <br />
                                     <span class='text-muted'><?php echo ellipsize($not->message, 50); ?></span>
-                                <?php else: ?>
-                                    <span class='text-muted'><?php echo $not->title; ?></span>
+                                <?php else {
+    : ?>
+                                    <span class='text-muted'><?php echo $not->title;
+}
+?></span>
                                     <br />
                                     <span class='text-muted' style='opacity: 0.5;'><?php echo ellipsize($not->message, 50); ?></span>
                                 <?php endif; ?>
@@ -83,11 +89,11 @@
     </li>
 <?php endif; ?>
 <?php
-    $notificationLanguageString=array(
+    $notificationLanguageString = array(
         'errorTitle' => gT("Error : %s"),
         'errorUnknow' => gT("unknown"),
         'unknowText' => gT("An unknown error occurred"),
     );
     $script = "LS.lang = $.extend(LS.lang,".json_encode($notificationLanguageString).");\n";
-    Yii::app()->getClientScript()->registerScript('notificationLanguageString',$script,CClientScript::POS_HEAD);
+    Yii::app()->getClientScript()->registerScript('notificationLanguageString', $script, CClientScript::POS_HEAD);
 ?>

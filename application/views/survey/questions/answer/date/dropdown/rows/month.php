@@ -16,11 +16,11 @@
         <?php eT('Month'); ?>
     </option>
 
-    <?php for ($i=1; $i<=12; $i++):?>
+    <?php for ($i = 1; $i <= 12; $i++):?>
         <option value="<?php echo sprintf('%02d', $i); ?>" <?php if ($i == $currentmonth):?>SELECTED<?php endif; ?>>
-            <?php echo $montharray[$i-1]; ?>
+            <?php echo $montharray[$i - 1]; ?>
         </option>
-    <?php endfor;?>
+    <?php endfor; ?>
 </select>
 
 <!-- end of month -->

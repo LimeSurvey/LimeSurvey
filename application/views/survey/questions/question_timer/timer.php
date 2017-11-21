@@ -6,5 +6,5 @@
  */
 ?>
 
-<div style='display: inline' id='LS_question<?php echo $iQid;?>_Warning<?php echo $sWarnId;?>'>
+<div style='display: inline' id='LS_question<?php echo $iQid; ?>_Warning<?php echo $sWarnId; ?>'>
 </div>

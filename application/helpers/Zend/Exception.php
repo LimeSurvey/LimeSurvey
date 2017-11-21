@@ -77,8 +77,8 @@ class Zend_Exception extends Exception
         if (version_compare(PHP_VERSION, '5.3.0', '<')) {
             if (null !== ($e = $this->getPrevious())) {
                 return $e->__toString()
-                       . "\n\nNext "
-                       . parent::__toString();
+                        . "\n\nNext "
+                        . parent::__toString();
             }
         }
         return parent::__toString();

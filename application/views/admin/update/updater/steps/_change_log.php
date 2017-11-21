@@ -28,8 +28,8 @@
         $changelog.= gT("Note: Because you are updating from a stable to an unstable version or vice versa a change log might not be available or incomplete.")."\n\n";
     }
 
-   foreach  ($changelogs->changelogentries as $changelogentry)
-   {
+    foreach  ($changelogs->changelogentries as $changelogentry)
+    {
         if (trim($changelogentry->changelog !=''))
         {
 
@@ -39,7 +39,7 @@
             $changelog.="Changes from ".Yii::app()->getConfig("versionnumber")." Build ".Yii::app()->getConfig("buildnumber")." to {$changelogentry->versionnumber} Build {$changelogentry->build} --- Legend: + New feature, # Updated feature, - Bug fix\n";
             $changelog.=$changelogentry->changelog;
         }
-   }
+    }
 
 ?>
 
@@ -57,8 +57,8 @@ echo $changelog;
         <?php
             $formUrl = Yii::app()->getController()->createUrl("admin/update/sa/filesystem/");
             echo CHtml::beginForm($formUrl, 'post', array("id"=>"launchFileSystemForm"));
-            echo CHtml::hiddenField('destinationBuild' , $destinationBuild);
-            echo CHtml::hiddenField('access_token' , $access_token);
+            echo CHtml::hiddenField('destinationBuild', $destinationBuild);
+            echo CHtml::hiddenField('access_token', $access_token);
         ?>
 
         <a class="btn btn-default" href="<?php echo Yii::app()->createUrl("admin/update"); ?>" role="button" aria-disabled="false">
@@ -67,7 +67,7 @@ echo $changelog;
 
 
     <?php
-        echo CHtml::submitButton(gT('Continue','unescaped'), array('id'=>'step2launch', "class"=>"btn btn-default ajax_button launch_update"));
+        echo CHtml::submitButton(gT('Continue', 'unescaped'), array('id'=>'step2launch', "class"=>"btn btn-default ajax_button launch_update"));
         echo CHtml::endForm();
     ?>
 

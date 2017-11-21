@@ -7,7 +7,7 @@ if (isset($uqresult))
 if (isset($result)) // Checked
 {
 ?>
-<script type="text/javascript">alert("<?php eT("Failed to update answers", 'js') . " - " . $query; ?>")</script><br />
+<script type="text/javascript">alert("<?php eT("Failed to update answers", 'js')." - ".$query; ?>")</script><br />
 <?php
 }
 if (isset($invalidCode) && $invalidCode == 1)
@@ -25,7 +25,7 @@ if (isset($duplicateCode) && $duplicateCode == 1)
 if (isset($aresult))
 {
 ?>
-<script type="text/javascript">alert("<?php eT("Failed to delete answer", 'js') . " - ".$query; ?>")</script><br />
+<script type="text/javascript">alert("<?php eT("Failed to delete answer", 'js')." - ".$query; ?>")</script><br />
 <?php
 }
 if (isset($strlen) && $strlen < 1)
@@ -62,7 +62,7 @@ if (isset($array_result) && !is_null($array_result['notAbove']) && is_null($arra
 {
 ?>
 <script type="text/javascript">alert("$errormsg")</script><br />
-    <?php $gid= $oldgid; // group move impossible ==> keep display on oldgid ?>
+    <?php $gid = $oldgid; // group move impossible ==> keep display on oldgid ?>
 <?php
 }
 if (!isset($gid) || $gid != "")
@@ -71,7 +71,7 @@ if (!isset($gid) || $gid != "")
 <script type="text/javascript">alert("<?php eT("Question could not be updated", 'js'); ?>")</script><br />
 <?php
 }
-if (isset($usresult) &&$usresult)
+if (isset($usresult) && $usresult)
 {
 ?>
 <script type="text/javascript">alert("<?php eT("Survey could not be updated", 'js'); ?>")</script><br />
@@ -79,7 +79,7 @@ if (isset($usresult) &&$usresult)
 }
 ?>
 <?php
-if(isset($flag) && $flag=="y")
+if (isset($flag) && $flag == "y")
 {
 ?>
 <script type="text/javascript">alert(<?php echo "'{$errormsg}'"; ?>)</script><br />

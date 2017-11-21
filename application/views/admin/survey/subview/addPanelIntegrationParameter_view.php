@@ -23,11 +23,11 @@
                 <div class=''>
                     <select class='form-control' name='targetquestion' id='targetquestion' size='1'>
                         <option value=''><?php eT('(No target question)'); ?></option>
-                        <?php foreach ($questions as $question){?>
-                            <option value='<?php echo $question['qid'].'-'.$question['sqid'];?>'><?php echo $question['title'].': '.ellipsize(flattenText($question['question'],true,true),43,.70);
-                                if ($question['sqquestion']!='')
+                        <?php foreach ($questions as $question) {?>
+                            <option value='<?php echo $question['qid'].'-'.$question['sqid']; ?>'><?php echo $question['title'].': '.ellipsize(flattenText($question['question'], true, true), 43, .70);
+                                if ($question['sqquestion'] != '')
                                 {
-                                    echo ' - '.ellipsize(flattenText($question['sqquestion'],true,true),30,.75);
+                                    echo ' - '.ellipsize(flattenText($question['sqquestion'], true, true), 30, .75);
                                 }
                             ?></option> <?php
                         }?>

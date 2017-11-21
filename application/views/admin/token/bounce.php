@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-sm-12">
             <div id='bouncesettingsdiv'>
-                <?php echo CHtml::form(array("admin/tokens/sa/bouncesettings/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
+                <?php echo CHtml::form(array("admin/tokens/sa/bouncesettings/surveyid/$surveyid"), 'post', array('class'=>'form-core settingswidget ', 'id'=>'bouncesettings', 'name'=>'frmeditquestion')); ?>
 
                         <div class="settings-list">
 
@@ -13,25 +13,25 @@
                                     <?php eT('Survey bounce email address:'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <input class='form-control' size="50" type="email" value="<?php echo $settings['bounce_email'];?>" name="bounce_email" id="bounce_email" />
+                                    <input class='form-control' size="50" type="email" value="<?php echo $settings['bounce_email']; ?>" name="bounce_email" id="bounce_email" />
                                 </div>
                             </div>
 
                             <!-- Bounce settings to be used -->
                             <div class="form-group setting control-group setting-select">
                                 <label class="default control-label" for="bounceprocessing">
-                                    <?php eT('Used bounce settings:');?>
+                                    <?php eT('Used bounce settings:'); ?>
                                 </label>
                                 <div class="default controls">
                                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                         'name' => 'bounceprocessing',
-                                        'value'=> $settings['bounceprocessing'] ,
+                                        'value'=> $settings['bounceprocessing'],
                                         'selectOptions'=>array(
-                                            "N"=>gT("None",'unescaped'),
-                                            "L"=>gT("Use settings below",'unescaped'),
-                                            "G"=>gT("Use global settings",'unescaped')
+                                            "N"=>gT("None", 'unescaped'),
+                                            "L"=>gT("Use settings below", 'unescaped'),
+                                            "G"=>gT("Use global settings", 'unescaped')
                                         )
-                                    ));?>
+                                    )); ?>
                                 </div>
                             </div>
 
@@ -45,12 +45,12 @@
                                 <div class="default controls">
                                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                         'name' => 'bounceaccounttype',
-                                        'value'=> $settings['bounceaccounttype'] ,
+                                        'value'=> $settings['bounceaccounttype'],
                                         'selectOptions'=>array(
-                                            "IMAP"=>gT("IMAP",'unescaped'),
-                                            "POP"=>gT("POP",'unescaped')
+                                            "IMAP"=>gT("IMAP", 'unescaped'),
+                                            "POP"=>gT("POP", 'unescaped')
                                         )
-                                    ));?>
+                                    )); ?>
                                 </div>
                             </div>
 
@@ -73,7 +73,7 @@
                                     <?php eT('User name:'); ?>
                                 </label>
                                 <div class="default controls">
-                                    <input size="50" type="text" value="<?php echo $settings['bounceaccountuser'];?>" name="bounceaccountuser" id="bounceaccountuser" />
+                                    <input size="50" type="text" value="<?php echo $settings['bounceaccountuser']; ?>" name="bounceaccountuser" id="bounceaccountuser" />
                                 </div>
                             </div>
 
@@ -84,7 +84,7 @@
                                 </label>
 
                                 <div class="default controls">
-                                    <input autocomplete="off" size="50" type="password" value="<?php echo $settings['bounceaccountpass'];?>" name="bounceaccountpass" id="bounceaccountpass" />
+                                    <input autocomplete="off" size="50" type="password" value="<?php echo $settings['bounceaccountpass']; ?>" name="bounceaccountpass" id="bounceaccountpass" />
                                 </div>
                             </div>
 
@@ -96,13 +96,13 @@
                                 <div class="default controls">
                                     <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                         'name' => 'bounceaccountencryption',
-                                        'value'=> $settings['bounceaccountencryption'] ,
+                                        'value'=> $settings['bounceaccountencryption'],
                                         'selectOptions'=>array(
-                                            "Off"=>gT("Off",'unescaped'),
-                                            "SSL"=>gT("SSL",'unescaped'),
-                                            "TLS"=>gT("TLS",'unescaped')
+                                            "Off"=>gT("Off", 'unescaped'),
+                                            "SSL"=>gT("SSL", 'unescaped'),
+                                            "TLS"=>gT("TLS", 'unescaped')
                                         )
-                                    ));?>
+                                    )); ?>
                                 </div>
                             </div>
                         </div>
@@ -121,4 +121,4 @@
     </div> <!-- Row -->
 </div> <!-- Side body -->
 
-<?php App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokenbounce.js'); ?>
+<?php App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokenbounce.js'); ?>

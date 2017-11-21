@@ -8,7 +8,7 @@
 ?>
 <!-- views/survey/system/actionButton/moveSubmit -->
 <?php
-    echo CHtml::htmlButton(gT("Submit"),array(
+    echo CHtml::htmlButton(gT("Submit"), array(
         'type'=>'submit',
         'value'=>$value,
         'name'=>'move',

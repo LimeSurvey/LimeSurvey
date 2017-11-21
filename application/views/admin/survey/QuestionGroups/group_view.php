@@ -20,30 +20,30 @@
                     <?php eT("Description:"); ?></strong>
                 </td>
                 <td>
-                    <?php if (trim($grow['description'])!='') {
+                    <?php if (trim($grow['description']) != '') {
                             templatereplace($grow['description']);
                             echo LimeExpressionManager::GetLastPrettyPrintExpression();
                     } ?>
                 </td>
             </tr>
-            <?php if (trim($grow['grelevance'])!='') { ?>
+            <?php if (trim($grow['grelevance']) != '') { ?>
                 <tr>
                     <td><strong>
                         <?php eT("Relevance:"); ?></strong>
                     </td>
                     <td>
                         <?php
-                            templatereplace('{' . $grow['grelevance'] . '}');
+                            templatereplace('{'.$grow['grelevance'].'}');
                             echo LimeExpressionManager::GetLastPrettyPrintExpression();
                         ?>
                     </td>
                 </tr>
                 <?php } ?>
             <?php
-                if (trim($grow['randomization_group'])!='')
+                if (trim($grow['randomization_group']) != '')
                 {?>
                 <tr>
-                    <td><?php eT("Randomization group:"); ?></td><td><?php echo $grow['randomization_group'];?></td>
+                    <td><?php eT("Randomization group:"); ?></td><td><?php echo $grow['randomization_group']; ?></td>
                 </tr>
                 <?php
                 }
@@ -58,8 +58,8 @@
                                 foreach ($deprow['conditions'] as $depqid => $depcid)
                                 {
 
-                                    $listcid=implode("-",$depcid);?>
-                                <a href='<?php echo $this->createUrl("admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$depgid/qid/$depqid",array('markcid'=>implode("-",$depcid))); ?>'>[QID: <?php echo $depqid; ?>]</a>
+                                    $listcid = implode("-", $depcid); ?>
+                                <a href='<?php echo $this->createUrl("admin/conditions/sa/index/subaction/conditions/surveyid/$surveyid/gid/$depgid/qid/$depqid", array('markcid'=>implode("-", $depcid))); ?>'>[QID: <?php echo $depqid; ?>]</a>
                                 <?php }
                         } ?>
                     </td></tr>
@@ -77,12 +77,12 @@
                 <div class="col-lg-3">
                     <div class="panel panel-primary <?php if ($oSurvey->isActive) { echo 'disabled'; } else { echo 'panel-clickable'; } ?>" id="panel-1" data-url="<?php echo $this->createUrl('admin/questions/sa/newquestion/surveyid/'.$surveyid.'/gid/'.$gid); ?>">
                         <div class="panel-heading">
-                            <div class="panel-title h4"><?php eT("Add new question to group");?></div>
+                            <div class="panel-title h4"><?php eT("Add new question to group"); ?></div>
                         </div>
                         <div class="panel-body">
                             <span class="icon-add text-success"  style="font-size: 3em;"></span>
                             <p class='btn-link'>
-                                    <?php eT("Add new question to group");?>
+                                    <?php eT("Add new question to group"); ?>
                             </p>
                         </div>
                     </div>

@@ -1,11 +1,11 @@
 <?php
-   /**
-    * This view displays the sidemenu on the left side, containing the question explorer
-    *
-    * Var to manage open/close state of the sidemenu, question explorer :
-    * @var $sidemenu['state'] : if set, the sidemnu is close
-    * @var $sidemenu['explorer']['state'] : if set to true, question explorer will be opened
-    */
+    /**
+     * This view displays the sidemenu on the left side, containing the question explorer
+     *
+     * Var to manage open/close state of the sidemenu, question explorer :
+     * @var $sidemenu['state'] : if set, the sidemnu is close
+     * @var $sidemenu['explorer']['state'] : if set to true, question explorer will be opened
+     */
 ?>
 <?php
     $sidemenu['state'] = isset($sidemenu['state']) ? $sidemenu['state'] : true;
@@ -19,15 +19,15 @@
     {
         $showSideMenu = true;
     }
-    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/" ,["surveyid" => $surveyid]);
-    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/" ,["surveyid" => $surveyid]);
-    $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/" ,["surveyid" =>  $surveyid]);
-    if(isset($oQuestionGroup))
-        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid, "gid" => $oQuestionGroup->gid]);
+    $getQuestionsUrl = $this->createUrl("/admin/survey/sa/getAjaxQuestionGroupArray/", ["surveyid" => $surveyid]);
+    $getMenuUrl = $this->createUrl("/admin/survey/sa/getAjaxMenuArray/", ["surveyid" => $surveyid]);
+    $createQuestionGroupLink = $this->createUrl("admin/questiongroups/sa/add/", ["surveyid" =>  $surveyid]);
+    if (isset($oQuestionGroup))
+        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $surveyid, "gid" => $oQuestionGroup->gid]);
     else 
-        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/" ,["surveyid" => $surveyid]);
+        $createQuestionLink = $this->createUrl("admin/questions/sa/newquestion/", ["surveyid" => $surveyid]);
 
-    $updateOrderLink =  $this->createUrl("admin/questiongroups/sa/updateOrder", ["surveyid" =>  $surveyid]);
+    $updateOrderLink = $this->createUrl("admin/questiongroups/sa/updateOrder", ["surveyid" =>  $surveyid]);
 
 
     if ($activated)
@@ -45,7 +45,7 @@
     create-question-group-link ="<?=$createQuestionGroupLink?>"
     create-question-link ="<?=$createQuestionLink?>"
     update-order-link="<?=$updateOrderLink?>"
-    :translate="{settings: '<?php eT("Settings");?>', structure:'<?php eT("Structure");?>', createQuestionGroup:'<?php eT("Add question group");?>', createQuestion:'<?php eT("Add question");?>' }"
+    :translate="{settings: '<?php eT("Settings"); ?>', structure:'<?php eT("Structure"); ?>', createQuestionGroup:'<?php eT("Add question group"); ?>', createQuestion:'<?php eT("Add question"); ?>' }"
 ></sidebar>
 
 

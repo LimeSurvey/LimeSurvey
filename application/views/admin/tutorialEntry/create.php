@@ -3,13 +3,13 @@
 /* @var $model TutorialEntry */
 
 $this->breadcrumbs=array(
-	'Tutorial Entries'=>array('index'),
-	'Create',
+    'Tutorial Entries'=>array('index'),
+    'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List TutorialEntry', 'url'=>array('index')),
-	array('label'=>'Manage TutorialEntry', 'url'=>array('admin')),
+    array('label'=>'List TutorialEntry', 'url'=>array('index')),
+    array('label'=>'Manage TutorialEntry', 'url'=>array('admin')),
 );
 ?>
 

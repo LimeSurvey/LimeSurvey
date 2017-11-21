@@ -31,26 +31,26 @@
 
         <?php if ($bNAgDataExtraLine): ?>
             <?php echo $bNAgDataExtraLine; ?>
-        <?php endif;?>
+        <?php endif; ?>
 
         <?php if ($showAggregatedPercentage):?>
             <td  align='right' >
                 <?php echo sprintf("%01.2f", $aggregatedPercentage); ?>%
             </td>
-        <?php elseif($showEmptyAggregatedPercentage):?>
+        <?php elseif ($showEmptyAggregatedPercentage):?>
             <td  align='right' >
                 &nbsp;
             </td>
-        <?php endif;?>
+        <?php endif; ?>
 
     <?php endif; ?>
 </tr>
 
-<?php if ($bShowSumAnswer ):?>
+<?php if ($bShowSumAnswer):?>
     <tr>
         <td align='right'>
             <strong>
-                <?php eT("Sum");?>(<?php eT("Answers"); ?>)
+                <?php eT("Sum"); ?>(<?php eT("Answers"); ?>)
             </strong>
         </td>
         <td align='right'>

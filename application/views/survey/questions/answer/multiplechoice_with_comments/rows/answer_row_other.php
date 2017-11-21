@@ -29,14 +29,14 @@
     <!-- Checkbox + label -->
     <div class="col-sm-<?php echo $sLabelWidth; ?> col-xs-12">
         <div class="form-group answer-item text-item other-text-item ls-input-group"><!-- input-group from BS seems OK too -->
-            <label for="<?php echo $id;?>" class="label-text control-label ls-input-group-extra" id="label-<?php echo $id;?>" ><?php echo $labeltext;?></label>
+            <label for="<?php echo $id; ?>" class="label-text control-label ls-input-group-extra" id="label-<?php echo $id; ?>" ><?php echo $labeltext; ?></label>
             <input
-               class="other-text form-control input multipleco-other-topic <?php echo $classes; echo $kpclass;?>"
+               class="other-text form-control input multipleco-other-topic <?php echo $classes; echo $kpclass; ?>"
                type="text"
                name="<?php echo $name; ?>"
-               id="<?php echo $id;?>"
+               id="<?php echo $id; ?>"
                value="<?php  echo $value; ?>"
-               data-number=<?php echo $otherNumber;?>
+               data-number=<?php echo $otherNumber; ?>
             />
         </div>
     </div>
@@ -47,7 +47,7 @@
             <input
                 class='form-control <?php echo $kpclass; ?>'
                 type='text'
-                id='<?php echo $inputCommentId;?>'
+                id='<?php echo $inputCommentId; ?>'
                 name='<?php echo $inputCommentName; ?>'
                 value='<?php echo $inputCOmmentValue; ?>'
                 aria-labelledby='label-<?php echo $id; ?> <?php echo $id; ?>'

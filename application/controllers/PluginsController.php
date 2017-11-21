@@ -28,7 +28,7 @@ class PluginsController extends LSYii_Controller
     public function _init()
     {
         parent::_init();
-        Yii::app()->bootstrap->init();      // Make sure bootstrap css is rendered in time
+        Yii::app()->bootstrap->init(); // Make sure bootstrap css is rendered in time
     }
 
     /**
@@ -39,9 +39,9 @@ class PluginsController extends LSYii_Controller
      */
     public function actionActivate($id)
     {
-        if(!Permission::model()->hasGlobalPermission('settings','update'))
+        if (!Permission::model()->hasGlobalPermission('settings', 'update'))
         {
-            Yii::app()->setFlashMessage(gT("Access denied!"),'error');
+            Yii::app()->setFlashMessage(gT("Access denied!"), 'error');
             $this->redirect($this->createUrl("/admin/plugins"));
         }
         $oPlugin = Plugin::model()->findByPk($id);
@@ -77,9 +77,9 @@ class PluginsController extends LSYii_Controller
      */
     public function actionConfigure($id)
     {
-        if(!Permission::model()->hasGlobalPermission('settings','update'))
+        if (!Permission::model()->hasGlobalPermission('settings', 'update'))
         {
-            Yii::app()->setFlashMessage(gT("Access denied!"),'error');
+            Yii::app()->setFlashMessage(gT("Access denied!"), 'error');
             $this->redirect($this->createUrl("/admin/plugins"));
         }
         $arPlugin      = Plugin::model()->findByPk($id)->attributes;
@@ -103,7 +103,7 @@ class PluginsController extends LSYii_Controller
             }
             $oPluginObject->saveSettings($aSave);
             Yii::app()->user->setFlash('pluginmanager', gT('Settings saved'));
-            if(App()->request->getPost('redirect'))
+            if (App()->request->getPost('redirect'))
             {
                 $this->redirect(App()->request->getPost('redirect'), true);
             }
@@ -132,9 +132,9 @@ class PluginsController extends LSYii_Controller
      */
     public function actionDeactivate($id)
     {
-        if(!Permission::model()->hasGlobalPermission('settings','update'))
+        if (!Permission::model()->hasGlobalPermission('settings', 'update'))
         {
-            Yii::app()->setFlashMessage(gT("Access denied!"),'error');
+            Yii::app()->setFlashMessage(gT("Access denied!"), 'error');
             $this->redirect($this->createUrl("/admin/plugins"));
         }
         $oPlugin = Plugin::model()->findByPk($id);
@@ -165,7 +165,7 @@ class PluginsController extends LSYii_Controller
      * @param $plugin : the target
      * @param $function : the function to call from the plugin
      */
-    public function actionDirect($plugin, $function=null)
+    public function actionDirect($plugin, $function = null)
     {
         $oEvent = new PluginEvent('newDirectRequest');
         // The intended target of the call.
@@ -191,7 +191,7 @@ class PluginsController extends LSYii_Controller
      * @param $plugin : the target
      * @param $function : the function to call from the plugin
      */
-    public function actionUnsecure($plugin, $function=null)
+    public function actionUnsecure($plugin, $function = null)
     {
         $oEvent = new PluginEvent('newUnsecureRequest');
         // The intended target of the call.
@@ -219,9 +219,9 @@ class PluginsController extends LSYii_Controller
      */
     public function actionIndex()
     {
-        if(!Permission::model()->hasGlobalPermission('settings','read'))
+        if (!Permission::model()->hasGlobalPermission('settings', 'read'))
         {
-            Yii::app()->setFlashMessage(gT("Access denied!"),'error');
+            Yii::app()->setFlashMessage(gT("Access denied!"), 'error');
             $this->redirect($this->createUrl("/admin"));
         }
 
@@ -230,7 +230,7 @@ class PluginsController extends LSYii_Controller
         // Scan the plugins folder.
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();
         $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
-        $aInstalledNames    = array_map(function ($installedPlugin) {
+        $aInstalledNames    = array_map(function($installedPlugin) {
                 return $installedPlugin->name;
             }, $aInstalledPlugins);
 
@@ -266,7 +266,7 @@ class PluginsController extends LSYii_Controller
             {
                 // This plugin is missing, maybe the files were deleted but the record was not removed from the database
                 // Now delete this record. Depending on the plugin the settings will be preserved
-                App()->user->setFlash('pluginDelete' . $oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
+                App()->user->setFlash('pluginDelete'.$oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
                 $oPlugin->delete();
             }
         }

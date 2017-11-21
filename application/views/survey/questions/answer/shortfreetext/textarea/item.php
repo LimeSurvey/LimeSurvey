@@ -14,11 +14,14 @@
 ?>
 
 <!-- Short free text, textarea item -->
-<?php if($withColumn): ?>
+<?php if ($withColumn): ?>
 <div class='<?php echo $coreClass; ?> row'>
     <div class="<?php echo $extraclass; ?>">
-<?php else: ?>
-<div class='<?php echo $coreClass; ?> <?php echo $extraclass; ?>'>
+<?php else {
+    : ?>
+<div class='<?php echo $coreClass;
+}
+?> <?php echo $extraclass; ?>'>
 <?php endif; ?>
         <?php if ($prefix !== '' || $suffix !== ''): ?>
             <div class="ls-input-group">
@@ -30,11 +33,11 @@
 
             <textarea
                 class="form-control textarea <?php echo $kpclass; ?>"
-                name="<?php echo $name;?>"
-                id="<?php echo $freeTextId;?>"
+                name="<?php echo $name; ?>"
+                id="<?php echo $freeTextId; ?>"
                 rows="<?php echo $drows; ?>"
-                <?php echo ($inputsize ? 'cols="'.$inputsize.'"': '') ; ?>
-                <?php echo ($maxlength ? 'maxlength='.$maxlength: ''); ?>
+                <?php echo ($inputsize ? 'cols="'.$inputsize.'"' : ''); ?>
+                <?php echo ($maxlength ? 'maxlength='.$maxlength : ''); ?>
                 aria-labelledby="ls-question-text-<?php echo $basename; ?>"
             ><?php echo $dispVal; ?></textarea>
 
@@ -45,9 +48,12 @@
         <?php if ($prefix !== '' || $suffix !== ''): ?>
             </div>
         <?php endif; ?>
-<?php if($withColumn): ?>
+<?php if ($withColumn): ?>
     </div>
 </div>
-<?php else: ?>
+<?php else {
+    : ?>
 </div>
-<?php endif; ?>
+<?php endif;
+}
+?>

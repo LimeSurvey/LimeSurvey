@@ -12,7 +12,7 @@
 ?>
 <tr class="ls-heading <?php echo $class; ?>" aria-hidden="true">
     <td></td>
-    <?php if ($leftheader != '' || $rightheader !=''): ?>
+    <?php if ($leftheader != '' || $rightheader != ''): ?>
         <td class="hidden"></td>
     <?php endif; ?>
     <?php foreach ($labelans0 as $ld): ?>
@@ -22,7 +22,7 @@
         <td class="header_separator"><?php if ($shownoanswer): ?>
         <div class="ls-js-hidden"><?php eT('No answer'); ?></div>
         <?php endif; ?></td>  <!-- Separator : and No answer for accessibility for first colgroup -->
-        <?php if ($leftheader != '' || $rightheader !=''): ?>
+        <?php if ($leftheader != '' || $rightheader != ''): ?>
             <td class="hidden"></td>
         <?php endif; ?>
         <?php foreach ($labelans1 as $ld): ?>

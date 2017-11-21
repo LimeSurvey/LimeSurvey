@@ -28,23 +28,23 @@
                 );
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbuser', array('class' => 'control-label ', 'label' => gT("Database user"))),
-                    'control' => CHtml::activeTextField($model, 'dbuser', array('required' => 'required','autocomplete'=>'off', 'class' => 'form-control')),
+                    'control' => CHtml::activeTextField($model, 'dbuser', array('required' => 'required', 'autocomplete'=>'off', 'class' => 'form-control')),
                     'description' => gT('Your database server user name. In most cases "root" will work.')
                 );
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbpwd', array('class' => 'control-label ', 'label' => gT("Database password"))),
-                    'control' => CHtml::activePasswordField($model, 'dbpwd',array('autocomplete'=>'off', 'class' => 'form-control')),
+                    'control' => CHtml::activePasswordField($model, 'dbpwd', array('autocomplete'=>'off', 'class' => 'form-control')),
                     'description' => gT("Your database server password.")
                 );
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbname', array('class' => 'control-label ', 'label' => gT("Database name"))),
-                    'control' => CHtml::activeTextField($model, 'dbname', array('required' => 'required','autocomplete'=>'off', 'class' => 'form-control')),
+                    'control' => CHtml::activeTextField($model, 'dbname', array('required' => 'required', 'autocomplete'=>'off', 'class' => 'form-control')),
                     'description' => gT("If the database does not yet exist it will be created (make sure your database user has the necessary permissions). In contrast, if there are existing LimeSurvey tables in that database they will be upgraded automatically after installation.")
                 );
 
                 $rows[] = array(
                     'label' => CHtml::activeLabelEx($model, 'dbprefix', array('class' => 'control-label ', 'label' => gT("Table prefix"))),
-                    'control' => CHtml::activeTextField($model, 'dbprefix', array('value' => 'lime_','autocomplete'=>'off', 'class' => 'form-control')),
+                    'control' => CHtml::activeTextField($model, 'dbprefix', array('value' => 'lime_', 'autocomplete'=>'off', 'class' => 'form-control')),
                     'description' => gT('If your database is shared, recommended prefix is "lime_" else you can leave this setting blank.')
                 );
 
@@ -52,7 +52,7 @@
             {
                 echo CHtml::openTag('div', array('class' => 'form-group'));
                 echo $row['label'];
-                echo CHtml::tag('div', array('class' => 'controls '), $row['control'] . CHtml::tag('p', array('class' => 'help-block'), $row['description']));
+                echo CHtml::tag('div', array('class' => 'controls '), $row['control'].CHtml::tag('p', array('class' => 'help-block'), $row['description']));
                 echo CHtml::closeTag('div');
             }
 
@@ -65,7 +65,7 @@
             <div class="col-md-4" style="text-align: center;">
             </div>
             <div class="col-md-4" style="text-align: right;">
-                <?php echo CHtml::submitButton(gT("Next",'unescaped'), array('class' => 'btn btn-default')); ?>
+                <?php echo CHtml::submitButton(gT("Next", 'unescaped'), array('class' => 'btn btn-default')); ?>
             </div>
         </div>
         <?php echo CHtml::endForm(); ?>

@@ -30,7 +30,7 @@ class Plugin extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         /** @var self $model */
-        $model =parent::model($className);
+        $model = parent::model($className);
         return $model;
     }
 
