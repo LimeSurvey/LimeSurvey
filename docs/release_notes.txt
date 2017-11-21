@@ -35,6 +35,24 @@ Thank you to everyone who helped with this new release!
 CHANGE LOG
 ------------------------------------------------------
 
+Changes from 2.72.4 (build 171020) to 2.72.5 (build 171121) Nov 21, 2017
+
+Fixed issue: Fix problem with answer option rows in admin (Olle Haerstedt)
+#Updated translation: Dutch (Informal) by Han
+#Updated translation: Dutch by Han
+#Updated translation: Finnish by jeskiv
+#Updated translation: Hungarian by kkd
+#Updated translation: Indonesian by radhwaw
+#Updated translation: Italian (Informal) by lfanfoni
+#Updated translation: Italian by lfanfoni
+#Updated translation: Japanese by nomoto
+#Updated translation: Polish (Informal) by elissa
+#Updated translation: Polish by elissa
+#Updated translation: Portuguese (Brazil) by mauriciofurtado
+#Updated translation: Spanish (Spain) by aesteban
+#Updated translation: Swedish by maxzomborszki
+#Updated translation: Turkish by kayazeren
+
 Changes from 2.72.3 (build 171020) to 2.72.4 (build 171020) Nov 10, 2017
 -Fixed issue: [Security] Possible to edit file outside of template directory from template editor (found and reported by Robin Peraglie from RIPS Technologies www.ripstech.com ) (LouisGac)
 -Fixed issue: [Security] Possible XSS in Resume later function (found and reported by Robin Peraglie from RIPS Technologies www.ripstech.com ) (Carsten Schmitz)
