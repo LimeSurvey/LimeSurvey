@@ -169,7 +169,7 @@ class templates extends Survey_Common_Action
                 $zip = new PclZip($_FILES['the_file']['tmp_name']);
 
                 $sNewDirectoryName=sanitize_dirname(pathinfo($_FILES['the_file']['name'], PATHINFO_FILENAME ));
-                $destdir = Yii::app()->getConfig('usertemplaterootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
+                $destdir = Yii::app()->getConfig('userthemerootdir').DIRECTORY_SEPARATOR.$sNewDirectoryName;
 
                 if (!is_writeable(dirname($destdir))){
                     Yii::app()->user->setFlash('error',sprintf(gT("Incorrect permissions in your %s folder."), dirname($destdir)));
@@ -438,8 +438,8 @@ class templates extends Survey_Common_Action
         if (Permission::model()->hasGlobalPermission('templates','update')){
             if (returnGlobal('action') == "templaterename" && returnGlobal('newname') && returnGlobal('copydir')) {
                 $sNewName = sanitize_dirname(returnGlobal('newname'));
-                $sNewDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
-                $sOldDirectoryPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . returnGlobal('copydir');
+                $sNewDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
+                $sOldDirectoryPath = Yii::app()->getConfig('userthemerootdir') . "/" . returnGlobal('copydir');
 
                 if (isStandardTemplate(returnGlobal('newname'))){
                     Yii::app()->user->setFlash('error',sprintf(gT("Template could not be renamed to '%s'."), $sNewName) . " " . gT("This name is reserved for standard template."));
@@ -493,7 +493,7 @@ class templates extends Survey_Common_Action
             if ($newname && $copydir) {
                 // Copies all the files from one template directory to a new one
                 Yii::app()->loadHelper('admin/template');
-                $newdirname  = Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
+                $newdirname  = Yii::app()->getConfig('userthemerootdir') . "/" . $newname;
                 $copydirname = getTemplatePath($copydir);
                 $oFileHelper = new CFileHelper;
                 $mkdirresult = mkdir_p($newdirname);
@@ -538,7 +538,7 @@ class templates extends Survey_Common_Action
 
                 if (!Template::hasInheritance($templatename)){
 
-                    if (rmdirr(Yii::app()->getConfig('usertemplaterootdir') . "/" . $templatename) == true) {
+                    if (rmdirr(Yii::app()->getConfig('userthemerootdir') . "/" . $templatename) == true) {
                         $surveys = Survey::model()->findAllByAttributes(array('template' => $templatename));
 
                         // The default template could be the same as the one we're trying to remove
@@ -686,7 +686,7 @@ class templates extends Survey_Common_Action
         $aData['screens'] = $screens;
         $aData['tempdir'] = $tempdir;
         $aData['templatename'] = $templatename;
-        $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
+        $aData['userthemerootdir'] = Yii::app()->getConfig('userthemerootdir');
 
         $this->getController()->renderPartial("/admin/templates/templatebar_view", $aData);
     }
@@ -1104,7 +1104,7 @@ class templates extends Survey_Common_Action
         $aData['editfile'] = $sEditfile;
         $aData['screenname'] = $screenname;
         $aData['tempdir'] = Yii::app()->getConfig('tempdir');
-        $aData['usertemplaterootdir'] = Yii::app()->getConfig('usertemplaterootdir');
+        $aData['userthemerootdir'] = Yii::app()->getConfig('userthemerootdir');
         $aData['relativePathEditfile'] = $editfile;
         $aViewUrls['templateeditorbar_view'][] = $aData;
 

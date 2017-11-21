@@ -55,7 +55,7 @@
 
             <!-- Create -->
             <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
-                <?php if(is_writable($usertemplaterootdir) ):?>
+                <?php if(is_writable($userthemerootdir) ):?>
                     <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Create template called:"); ?>', '<?php eT("NewTemplate"); ?>', 'default', 'copy')">
                         <span class="icon-add text-success"></span>
                         <?php eT("Create"); ?>
@@ -74,7 +74,7 @@
             <?php $importModal=false;?>
             <?php if(is_writable($tempdir)):?>
                 <?php if(Permission::model()->hasGlobalPermission('templates','import')):?>
-                    <?php if (is_writable($usertemplaterootdir) && function_exists("zip_open")):?>
+                    <?php if (is_writable($userthemerootdir) && function_exists("zip_open")):?>
                         <?php $importModal=true;?>
                         <a class="btn btn-default" href="" role="button" data-toggle="modal" data-target="#importModal">
                             <span class="icon-import text-success"></span>
@@ -114,7 +114,7 @@
 
                 <!-- Copy -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','create')):?>
-                    <?php if (is_writable($usertemplaterootdir)):?>
+                    <?php if (is_writable($userthemerootdir)):?>
                         <a class="btn btn-default" href="#" role="button" onclick="javascript: copyprompt('<?php eT("Please enter the name for the new template:"); ?>', '<?php echo gT("extends_")."$templatename"; ?>', '<?php echo $templatename; ?>', 'copy')">
                             <span class="icon-copy text-success"></span>
                             <?php eT("Extend"); ?>

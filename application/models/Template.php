@@ -149,7 +149,7 @@ class Template extends LSActiveRecord
         /* Validate if template is OK in user dir, DIRECTORY_SEPARATOR not needed "/" is OK */
         $oTemplate  = self::model()->findByPk($sTemplateName);
 
-        if( is_object($oTemplate) && is_file(Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
+        if( is_object($oTemplate) && is_file(Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder.DIRECTORY_SEPARATOR.'config.xml')) {
             return $sTemplateName;
         }
 
@@ -195,7 +195,7 @@ class Template extends LSActiveRecord
             return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
         }
         else {
-            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
+            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
         }
     }
 
@@ -290,7 +290,7 @@ class Template extends LSActiveRecord
      */
     public static function getTemplateList()
     {
-        $sUserTemplateRootDir    = Yii::app()->getConfig("usertemplaterootdir");
+        $sUserTemplateRootDir    = Yii::app()->getConfig("userthemerootdir");
         $standardTemplateRootDir = Yii::app()->getConfig("standardtemplaterootdir");
 
         $aTemplateList=array();
@@ -469,7 +469,7 @@ class Template extends LSActiveRecord
     public static function getTemplateInUpload()
     {
         if(empty(self::$aTemplatesInUploadDir)){
-            $sUserTemplateRootDir        = Yii::app()->getConfig("usertemplaterootdir");
+            $sUserTemplateRootDir        = Yii::app()->getConfig("userthemerootdir");
             self::$aTemplatesInUploadDir = self::getTemplateInFolder($sUserTemplateRootDir);
         }
 

@@ -401,7 +401,7 @@ class TemplateManifest extends TemplateConfiguration
     public static function rename($sOldName,$sNewName)
     {
         libxml_disable_entity_loader(false);
-        $sConfigPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
+        $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
         $oNewManifest = self::getManifestDOM($sConfigPath);
         self::changeNameInDOM($oNewManifest, $sNewName);
         self::changeDateInDOM($oNewManifest);
@@ -498,7 +498,7 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function extendsConfig($sToExtends, $sNewName)
     {
-        $sConfigPath = Yii::app()->getConfig('usertemplaterootdir') . "/" . $sNewName;
+        $sConfigPath = Yii::app()->getConfig('userthemerootdir') . "/" . $sNewName;
 
         // First we get the XML file
         libxml_disable_entity_loader(false);
@@ -535,8 +535,8 @@ class TemplateManifest extends TemplateConfiguration
      */
     private function setPath()
     {
-        // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on usertemplaterootdir
-        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR:Yii::app()->getConfig("usertemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
+        // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on userthemerootdir
+        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR:Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
 
         // If the template directory doesn't exist, we just set Default as the template to use
         // TODO: create a method "setToDefault"
