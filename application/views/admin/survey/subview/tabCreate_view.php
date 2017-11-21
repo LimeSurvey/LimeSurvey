@@ -22,7 +22,7 @@ PrepareEditorScript(false, $this);
     var sURLParameters = '';
     var sAddParam = '';
     var standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
-    var templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
+    var templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>';
     var formId = 'addnewsurvey';
 
 </script>

@@ -8,7 +8,7 @@
 
   <script type="text/javascript">
     var standardtemplaterooturl = '<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
-    var templaterooturl = '<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
+    var templaterooturl = '<?php echo Yii::app()->getConfig('userthemerooturl');?>';
     var jsonUrl = '';
     var sAction = '';
     var sParameter = '';

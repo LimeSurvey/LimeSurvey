@@ -18,7 +18,7 @@ echo viewHelper::getViewTestTag('createSurvey');
 ?>
 <script type="text/javascript">
     standardtemplaterooturl='<?php echo Yii::app()->getConfig('standardtemplaterooturl');?>';
-    templaterooturl='<?php echo Yii::app()->getConfig('usertemplaterooturl');?>';
+    templaterooturl='<?php echo Yii::app()->getConfig('userthemerooturl');?>';
 </script>
 
 <div class="pagetitle h3"><?php eT("Create, import, or copy survey"); ?></div>

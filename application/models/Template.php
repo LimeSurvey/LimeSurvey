@@ -272,7 +272,7 @@ class Template extends LSActiveRecord
                 return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("standardtemplaterooturl").'/'.$oTemplate->folder.'/';
             }
             else {
-                return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("usertemplaterooturl").'/'.$oTemplate->folder.'/';
+                return $aTemplateUrl[$sTemplateName]=Yii::app()->getConfig("userthemerooturl").'/'.$oTemplate->folder.'/';
             }
         }else{
             return '';
