@@ -14,6 +14,10 @@
 !/upload/surveys/readme.txt
 !/upload/templates/index.html
 !/upload/templates/readme.txt
+!/upload/themes/index.html
+!/upload/themes/readme.txt
+!/upload/themes/survey/index.html
+!/upload/themes/question/readme.txt
 
 # tmp directory : whole except the index.html for directory create
 /tmp/*
@@ -103,5 +107,3 @@ enabletests
 
 ## ignore Vagrantfile
 Vagrantfile
-
-
