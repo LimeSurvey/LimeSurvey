@@ -110,9 +110,9 @@
     </div>
     </div>
 
-    <?php if($questionHelp):?>
+    <?php if ($questionHelp):?>
         <div class="questionhelp col-sm-12">
             <?php echo $question_text_help; ?>
         </div>
-    <?php endif;?>
+    <?php endif; ?>
 </div>

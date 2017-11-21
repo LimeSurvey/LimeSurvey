@@ -11,7 +11,7 @@ echo viewHelper::getViewTestTag('importParticipants');
     <div class="row">
         <div class="container">
 
-            <?php echo TbHtml::form(array("admin/participants/sa/attributeMapCSV"), 'post', array('id'=>'addsurvey','enctype'=>'multipart/form-data', 'accept-charset'=>'utf-8')); ?>
+            <?php echo TbHtml::form(array("admin/participants/sa/attributeMapCSV"), 'post', array('id'=>'addsurvey', 'enctype'=>'multipart/form-data', 'accept-charset'=>'utf-8')); ?>
 
             <div class="row ls-space margin top-25 bottom-25">
                 <div class="col-md-12">
@@ -36,7 +36,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 <?php
                                 foreach (aEncodingsArray() as $key=>$encoding):
                                     ?>
-                                    <option value="<?php echo $key;?>" <?php if($encoding==gT('Automatic')){echo 'selected="selected"';}?> ><?php echo $encoding; ?></option>
+                                    <option value="<?php echo $key; ?>" <?php if ($encoding == gT('Automatic')) {echo 'selected="selected"'; }?> ><?php echo $encoding; ?></option>
                                     <?php
                                     endforeach;
                                 ?>
@@ -60,7 +60,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                                 <?php
                                 foreach ($separatorused as $key=>$separator):
                                     ?>
-                                    <option value="<?php echo $key;?>"><?php echo $separator; ?></option>
+                                    <option value="<?php echo $key; ?>"><?php echo $separator; ?></option>
                                     <?php
                                     endforeach;
                                 ?>
@@ -89,7 +89,7 @@ echo viewHelper::getViewTestTag('importParticipants');
                     </div>
                 </div>
             </div>
-            <?php echo CHtml::endForm();?>
+            <?php echo CHtml::endForm(); ?>
   
 
             <div class="col-sm-12  ls-space margin top-25 bottom-25">

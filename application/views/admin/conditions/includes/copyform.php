@@ -1,4 +1,4 @@
-<?php echo CHtml::form($url, 'post', array('id'=>"copyconditions",'name'=>"copyconditions")); ?>
+<?php echo CHtml::form($url, 'post', array('id'=>"copyconditions", 'name'=>"copyconditions")); ?>
     <h3><?php eT("Copy conditions"); ?></h3>
 
     <?php if (count($conditionsList)): ?>
@@ -29,10 +29,13 @@
             <input type='hidden' name='qid' value='<?php echo $qid; ?>' />
         </div>
 
-    <?php else: ?>
+    <?php else {
+    : ?>
         <div class='messagebox ui-corner-all'>
             <div class='partialheader'>
-                <?php eT("There are no existing conditions in this survey."); ?>
+                <?php eT("There are no existing conditions in this survey.");
+}
+?>
             </div>
         </div>
     <?php endif; ?>

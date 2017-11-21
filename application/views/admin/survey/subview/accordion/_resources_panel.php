@@ -13,7 +13,7 @@ echo viewHelper::getViewTestTag('surveyResources');
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js'); ?>'
     var sURLParameters = '';
     var sAddParam = '';
 </script>
@@ -26,8 +26,8 @@ echo viewHelper::getViewTestTag('surveyResources');
                 <!-- Browse -->
                 <li>
                     <label>&nbsp;</label>
-                    <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files','unescaped'), 'flash' =>  gT('Flash','unescaped'), 'images' =>  gT('Images','unescaped')), array('class'=>'btn btn-default')); ?>
-                    <a id="loadiframe" class="btn btn-default" href="<?php echo Yii::app()->request->getBaseUrl() ; ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" target='_blank'>
+                    <?php echo CHtml::dropDownList('type', 'files', array('files' =>  gT('Files', 'unescaped'), 'flash' =>  gT('Flash', 'unescaped'), 'images' =>  gT('Images', 'unescaped')), array('class'=>'btn btn-default')); ?>
+                    <a id="loadiframe" class="btn btn-default" href="<?php echo Yii::app()->request->getBaseUrl(); ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'" target='_blank'>
                         <?php  eT("Browse uploaded resources") ?>
                     </a>
                 </li>
@@ -53,7 +53,7 @@ echo viewHelper::getViewTestTag('surveyResources');
             </ul>
         </div>
         <div class="col-sm-12 col-md-8">
-            <iframe id="browseiframe" src="<?php echo Yii::app()->request->getBaseUrl() ; ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK( App()->language); ?>'" width="100%" height="600px"></iframe>
+            <iframe id="browseiframe" src="<?php echo Yii::app()->request->getBaseUrl(); ?>/third_party/kcfinder/browse.php?language='<?php echo sTranslateLangCode2CK(App()->language); ?>'" width="100%" height="600px"></iframe>
         </div>
     </div>
 </div>

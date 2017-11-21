@@ -8,11 +8,11 @@
  */
 ?>
 
-<?php if (count($existingfiles)>0): ?>
+<?php if (count($existingfiles) > 0): ?>
     <br/><br/>
     <?php eT('The following files would be added by the update but already exist. This is unusual and may result from an earlier update attempt.'); ?>
     <br />
-    <?php eT('These files will be backed up and then replaced by the update procedure.');?>
+    <?php eT('These files will be backed up and then replaced by the update procedure.'); ?>
     <br />
 <textarea readonly="readonly" style="background-color: #FFF; width: 800px; height: 150px; font-family: Monospace; font-size: 11px;">
 <?php
@@ -23,4 +23,4 @@ echo htmlspecialchars($existingfile['file'])."\n";
 }
 ?>
 </textarea>
-<?php endif;?>
+<?php endif; ?>

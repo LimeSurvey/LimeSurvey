@@ -7,10 +7,10 @@ echo viewHelper::getViewTestTag('usersIndex');
 
 ?>
 <div class="container-fluid">
-<div class="pagetitle h3"><?php eT("User control");?></div>
+<div class="pagetitle h3"><?php eT("User control"); ?></div>
     <div class="row">
         <div class="col-md-2 col-sm-4 col-xs-12  col-md-offset-10 col-sm-offset-8">
-            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-primary btn-block"><?php eT("Add user");?></button>
+            <button id="add_user_admin" data-target="#adduser-modal" data-toggle="modal" title="<?php eT('Add a new survey administrator'); ?>" class="btn btn-primary btn-block"><?php eT("Add user"); ?></button>
         </div>
 
     </div>
@@ -23,7 +23,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                 'dataProvider' => $model->search(),
                 'columns' => $model->colums,
                 'afterAjaxUpdate' => 'bindButtons',
-                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                'summaryText'   => gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
@@ -54,44 +54,44 @@ echo viewHelper::getViewTestTag('usersIndex');
             </div>
             <div class="modal-body">
                 <div class="row">
-                 <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>''));?>
+                 <?php echo CHtml::form(array('admin/user/sa/adduser'), 'post', array('class'=>'')); ?>
                     <?php if (App()->getPluginManager()->isPluginActive('AuthLDAP')) {
                         echo "<div class=\"form-group\">";
-                          echo "<label  class='col-md-4 control-label'>";
+                            echo "<label  class='col-md-4 control-label'>";
                             eT("Central database");
-                          echo "</label>";
-                          echo "<div class='col-md-8'>";
+                            echo "</label>";
+                            echo "<div class='col-md-8'>";
                             echo CHtml::dropDownList('user_type',
                                 'DB',
                                 array(
-                                'DB' => gT("Internal database authentication",'unescaped'),
-                                'LDAP' => gT("LDAP authentication",'unescaped')
+                                'DB' => gT("Internal database authentication", 'unescaped'),
+                                'LDAP' => gT("LDAP authentication", 'unescaped')
                                 ),
                                 array(
                                     'class' => ""
                                 )
                             );
-                          echo "</div>";
+                            echo "</div>";
                         echo "</div>";
-                      } else {
-                          echo "<input type='hidden' id='user_type' name='user_type' value='DB'/>";
-                      }
+                        } else {
+                            echo "<input type='hidden' id='user_type' name='user_type' value='DB'/>";
+                        }
                     ?>
 
                     <div class="form-group">
-                        <label for="new_user" class="control-label"><?php eT("Username:");?></label>
+                        <label for="new_user" class="control-label"><?php eT("Username:"); ?></label>
                         <div class="">
                             <input type='text' class="text input-sm form-control" id='new_user' name='new_user' required />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="new_email" class="control-label" ><?php eT("Email:");?></label>
+                        <label for="new_email" class="control-label" ><?php eT("Email:"); ?></label>
                         <div class="">
                             <input type='email' class="text input-sm form-control" id='new_email' name='new_email' required />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="new_full_name" class="control-label "><?php eT("Full name:");?></label>
+                        <label for="new_full_name" class="control-label "><?php eT("Full name:"); ?></label>
                         <div class="">
                             <input type='text' class="text input-sm form-control" id='new_full_name' name='new_full_name' required />
                         </div>
@@ -103,7 +103,7 @@ echo viewHelper::getViewTestTag('usersIndex');
                     </div>
                     <div class="col-md-12">&nbsp;</div>
                     <div class="col-md-4 col-md-offset-8">
-                        <input type='submit' id='add_user_btn' class="btn btn-primary btn-block" value='<?php eT("Save");?>' />
+                        <input type='submit' id='add_user_btn' class="btn btn-primary btn-block" value='<?php eT("Save"); ?>' />
                         <input type='hidden' name='action' value='adduser' />
                     </div>
                 </div>

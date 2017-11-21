@@ -6,12 +6,12 @@
  * @var $model  obj    the UserGroup model
  */
 ?>
-<?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+<?php $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']); ?>
 <div class="col-lg-12">
     <div class="pagetitle h3"><?php eT('User groups list'); ?></div>
     
     <div class="h4"><?php 
-            if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read'))
             {
                 eT('My user groups');
             }
@@ -26,7 +26,7 @@
                     'id' => 'usergroups-grid-mine',
                     'emptyText'=>gT('No user groups found.'),
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
@@ -82,15 +82,15 @@
                     ),
 
                     'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
-                    'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/usergroups/sa/view/ugid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                    'selectionChanged'=>"function(id){window.location='".Yii::app()->urlManager->createUrl('admin/usergroups/sa/view/ugid').'/'."' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                     'ajaxUpdate' => true,
-                   ));
+                    ));
             ?>
         </div>
     </div>
     
     <div class="h4"><?php
-        if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read'))
         {
             eT('Groups to which I belong');
         }
@@ -100,14 +100,14 @@
     <div class="row">
         <div class="col-lg-12 content-right">
             <?php
-            if (!Permission::model()->hasGlobalPermission('superadmin','read'))
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read'))
             {
                 $this->widget('bootstrap.widgets.TbGridView', array(
                     'dataProvider' => $model->searchMine(FALSE),
                     'id' => 'usergroups-grid-belong-to',
                     'emptyText'=>gT('No user groups found.'),
                     'template'  => "{items}\n<div id='tokenListPager'><div class=\"col-sm-4\" id=\"massive-action-container\"></div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '. sprintf(gT('%s rows per page'),
+                    'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
                         CHtml::dropDownList(
                             'pageSize',
                             $pageSize,
@@ -163,9 +163,9 @@
                     ),
 
                     'htmlOptions'=>array('style'=>'cursor: pointer;', 'class'=>'hoverAction'),
-                    'selectionChanged'=>"function(id){window.location='" . Yii::app()->urlManager->createUrl('admin/usergroups/sa/view/ugid' ) . '/' . "' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
+                    'selectionChanged'=>"function(id){window.location='".Yii::app()->urlManager->createUrl('admin/usergroups/sa/view/ugid').'/'."' + $.fn.yiiGridView.getSelection(id.split(',', 1));}",
                     'ajaxUpdate' => true,
-                   ));
+                    ));
             }
             ?>
         </div>

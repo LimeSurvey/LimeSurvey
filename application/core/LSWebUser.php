@@ -15,8 +15,7 @@
             if ($operation == 'administrator')
             {
                 return Permission::model()->hasGlobalPermission('superadmin', 'read');
-            }
-            else
+            } else
             {
                 return parent::checkAccess($operation, $params, $allowCaching);
             }
@@ -37,7 +36,7 @@
         }
 
         public function getFlashes($delete = true)
-           {
+            {
             $result = $this->getState('flash', array());
             $this->removeState('flash');
             return $result;
@@ -53,8 +52,7 @@
             if (!isset($_SESSION[$this->sessionVariable]) || !Hash::check($_SESSION[$this->sessionVariable], $key))
             {
                 return $defaultValue;
-            }
-            else
+            } else
             {
                 return Hash::get($_SESSION[$this->sessionVariable], $key);
             }
@@ -72,11 +70,10 @@
         public function setState($key, $value, $defaultValue = null)
         {
             $current = isset($_SESSION[$this->sessionVariable]) ? $_SESSION[$this->sessionVariable] : array();
-            if($value === $defaultValue)
+            if ($value === $defaultValue)
             {
                 $_SESSION[$this->sessionVariable] = Hash::remove($current, $key);
-            }
-            else
+            } else
             {
                 $_SESSION[$this->sessionVariable] = Hash::insert($current, $key, $value);
             }
@@ -99,20 +96,21 @@
             $oUsergroup = UserGroup::model()->findByPk($gid);
 
             // The group doesn't exist anymore
-            if(!is_object($oUsergroup))
+            if (!is_object($oUsergroup))
                 return false;
 
             $users = $oUsergroup->users;
             $aUids = array();
-            foreach($users as $user)
+            foreach ($users as $user)
             {
-                $aUids[]=$user->uid;
+                $aUids[] = $user->uid;
             }
 
-            if (in_array($this->id, $aUids))
-                return true;
-            else
-                return false;
+            if (in_array($this->id, $aUids)) {
+                            return true;
+            } else {
+                            return false;
+            }
         }
 
     }

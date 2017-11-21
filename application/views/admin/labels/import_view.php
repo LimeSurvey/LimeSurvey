@@ -10,7 +10,8 @@
                 </a>
             </p>
     </div>
-<?php else:?>
+<?php else {
+    :?>
     <div class="jumbotron message-box">
             <h2 class="text-success"><?php eT("Import Label Set") ?></h2>
             <p class="lead"><?php eT("File upload succeeded.") ?></p>
@@ -22,10 +23,10 @@
                     <ul class="list-unstyled">
                         <?php foreach ($aImportResults['warnings'] as $warning):?>
                             <li><?php echo $warning ?></li>
-                        <?php endforeach;?>
+                        <?php endforeach; ?>
                     </ul>
                 </p>
-            <?php endif;?>
+            <?php endif; ?>
 
             <p  class="lead text-success">
                 <?php eT("Label set import summary") ?>
@@ -33,8 +34,8 @@
 
             <p>
                 <ul class="list-unstyled">
-                    <li><?php echo gT("Label sets") . ": {$aImportResults['labelsets']}" ?></li>
-                    <li><?php echo gT("Labels") . ": {$aImportResults['labels']}" ?></li>
+                    <li><?php echo gT("Label sets").": {$aImportResults['labelsets']}" ?></li>
+                    <li><?php echo gT("Labels").": {$aImportResults['labels']}" ?></li>
                 </ul>
             </p>
 

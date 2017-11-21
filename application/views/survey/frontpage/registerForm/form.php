@@ -34,10 +34,10 @@
             <div class='input-group'>
                 <div class='control-label captcha-widget' >
                       <?php $this->widget('CCaptcha',array(
-                          'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
-                          'buttonType' => 'button',
-                          'buttonLabel' => gt('Reload image','unescaped')
-                      )); ?>
+                            'buttonOptions'=>array('class'=> 'btn btn-xs btn-info'),
+                            'buttonType' => 'button',
+                            'buttonLabel' => gt('Reload image','unescaped')
+                        )); ?>
                 </div>
                 <input class='form-control' type='text' size='15' maxlength='15' id='loadsecurity' name='loadsecurity' value='' alt='' required>
             </div>
@@ -47,12 +47,12 @@
     <div class='row' aria-hidden='true'>
         <div class="col-sm-7 col-md-offset-5">
             <?php
-                printf(gT('Fields marked with an asterisk (%s) are mandatory.'),'<small class="text-danger asterisk fa fa-asterisk small"></small>'); ?>
+                printf(gT('Fields marked with an asterisk (%s) are mandatory.'), '<small class="text-danger asterisk fa fa-asterisk small"></small>'); ?>
         </div>
     </div>
 
 <div class='form-group'>
     <div class='col-sm-7 col-md-offset-3'>
-        <?php echo CHtml::submitButton(gT("Continue",'unescaped'),array('class'=>'btn-primary btn-block btn','id'=>'register','name'=>'register')); ?>
+        <?php echo CHtml::submitButton(gT("Continue", 'unescaped'), array('class'=>'btn-primary btn-block btn', 'id'=>'register', 'name'=>'register')); ?>
     </div>
 </div>

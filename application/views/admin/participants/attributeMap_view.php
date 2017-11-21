@@ -92,10 +92,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php else: ?>
+                                    <?php else {
+    : ?>
                                         <div class='tokenatt-container col-sm-12'>
                                             <div class='col-sm-6'>
-                                                <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id; ?>'>
+                                                <div class='panel panel-default ui-state-disabled token-attribute' id='t_<?php echo $id;
+}
+?>'>
                                                     <div class='panel-body'>
                                                         <?php echo $name; ?>
                                                     </div>
@@ -106,7 +109,7 @@
                             <?php endforeach; ?>
                     </div>
 
-                    <?php if(!empty($selectedtokenattribute)): ?>
+                    <?php if (!empty($selectedtokenattribute)): ?>
                         <div class='explanation row'>
                             <div class='form-group'>
                                 <label class='control-label col-sm-10 text-right' for='overwriteman'><?php eT("Overwrite existing token attribute values if a participant already exists?") ?></label>
@@ -123,7 +126,7 @@
                         </div>
                     <?php endif; ?>
 
-                    <?php if(!empty($alreadymappedattributename)): ?>
+                    <?php if (!empty($alreadymappedattributename)): ?>
                         <div class='panel-heading'>
                             <?php eT("Pre-mapped attributes") ?>
                         </div>
@@ -188,7 +191,7 @@
 
 <?php
 $ajaxloader = array(
-    'src' => Yii::app()->getConfig('adminimageurl') . '/ajax-loader.gif',
+    'src' => Yii::app()->getConfig('adminimageurl').'/ajax-loader.gif',
     'alt' => 'Ajax loader',
     'title' => 'Ajax loader'
 );
@@ -207,7 +210,7 @@ $ajaxloader = array(
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

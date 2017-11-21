@@ -9,8 +9,8 @@
 if(isset($data)){
     extract($data);
 }
- $count=0;
- if(isset($scripts))
+    $count=0;
+    if(isset($scripts))
     echo $scripts;
 
 PrepareEditorScript(false, $this);

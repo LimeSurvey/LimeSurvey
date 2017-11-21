@@ -6,13 +6,13 @@
     $formAction,
     'post',
     array(
-        'id'=>"conditionaction" . $row['cid'],
-        'name'=>"conditionaction" . $row['cid']
+        'id'=>"conditionaction".$row['cid'],
+        'name'=>"conditionaction".$row['cid']
     )
 ); ?>
     <table class='table conditions-table'>
         <tr class='active'>
-            <?php if ($subaction == "copyconditionsform" || $subaction == "copyconditions" ): ?>
+            <?php if ($subaction == "copyconditionsform" || $subaction == "copyconditions"): ?>
                 <td></td>
                 <td class='scenariotd'>
                     <input 

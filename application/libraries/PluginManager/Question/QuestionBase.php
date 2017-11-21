@@ -145,8 +145,7 @@ namespace LimeSurvey\PluginManager;
             {
                 $questionId = $this->questionId;
                 return $this->plugin->getStore()->get($this->plugin, $key, 'Question', $questionId, $default, $language);
-            }
-            else
+            } else
             {
                 return false;
             }
@@ -164,7 +163,7 @@ namespace LimeSurvey\PluginManager;
             $allAttributes = array_merge($this->defaultAttributes, $this->attributes);
             if (count($allAttributes) != count($this->defaultAttributes) + count($this->attributes))
             {
-                throw new Exception(get_class($this) . " must not redefine default attributes");
+                throw new Exception(get_class($this)." must not redefine default attributes");
             }
             
             foreach ($allAttributes as $name => &$metaData)
@@ -178,8 +177,7 @@ namespace LimeSurvey\PluginManager;
                         {
                             $metaData['current'][$language] = $this->get($name, null, $language);
                         }
-                    }
-                    else
+                    } else
                     {
                         $metaData['current'] = $this->get($name, null, $languages);
                     }
@@ -285,8 +283,7 @@ namespace LimeSurvey\PluginManager;
                                 $result = false;
                             }
                         }
-                    }
-                    else
+                    } else
                     {
                         if (!$this->set($key, $value, $qid))
                         {
@@ -314,8 +311,7 @@ namespace LimeSurvey\PluginManager;
             {
                 $questionId = $this->questionId;
                 return $this->plugin->getStore()->set($this->plugin, $key, $value, 'Question', $questionId, $language);
-            }
-            else
+            } else
             {
                 return false;
             }

@@ -1,12 +1,12 @@
 <?php
     /**
-    * Statistic main view
-    *
-    */
+     * Statistic main view
+     *
+     */
 ?>
 
 <!-- Javascript variables  -->
-<?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)) ; ?>
+<?php $this->renderPartial('/admin/export/statistics_subviews/_statistics_view_scripts', array('sStatisticsLanguage'=>$sStatisticsLanguage, 'surveyid'=>$surveyid, 'showtextinline'=>$showtextinline)); ?>
 
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
 
@@ -28,9 +28,9 @@
                         'completionstate',
                         incompleteAnsFilterState(),
                         array(
-                            "all"=>gT("All responses",'unescaped'),
-                            "complete"=>gT("Complete only",'unescaped'),
-                            "incomplete"=>gT("Incomplete only",'unescaped'),
+                            "all"=>gT("All responses", 'unescaped'),
+                            "complete"=>gT("Complete only", 'unescaped'),
+                            "incomplete"=>gT("Incomplete only", 'unescaped'),
                         ),
                         array(
                             'class'=>'form-control',

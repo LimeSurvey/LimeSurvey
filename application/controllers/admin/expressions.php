@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -15,63 +15,62 @@ class Expressions extends Survey_Common_Action {
 
     function index()
     {
-        $aData=array();
-        $needpermission=false;
+        $aData = array();
+        $needpermission = false;
 
         $iSurveyID = sanitize_int(Yii::app()->request->getQuery('surveyid', false));
-        if(!$iSurveyID)
+        if (!$iSurveyID)
         {
             $iSurveyID = sanitize_int(Yii::app()->request->getQuery('sid'));
         }
         
-        $aData['sa']=$sa=sanitize_paranoid_string(Yii::app()->request->getQuery('sa','index'));
+        $aData['sa'] = $sa = sanitize_paranoid_string(Yii::app()->request->getQuery('sa', 'index'));
 
-        $aData['fullpagebar']['closebutton']['url'] = 'admin/';  // Close button
+        $aData['fullpagebar']['closebutton']['url'] = 'admin/'; // Close button
 
-        if (($aData['sa']=='survey_logic_file' || $aData['sa']=='navigation_test') && $iSurveyID)
+        if (($aData['sa'] == 'survey_logic_file' || $aData['sa'] == 'navigation_test') && $iSurveyID)
         {
-            $needpermission=true;
+            $needpermission = true;
         }
 
-        if($needpermission && !Permission::model()->hasSurveyPermission($iSurveyID,'surveycontent','read'))
+        if ($needpermission && !Permission::model()->hasSurveyPermission($iSurveyID, 'surveycontent', 'read'))
         {
-            $message['title']= gT('Access denied!');
-            $message['message']= gT('You do not have permission to access this page.');
-            $message['class']= "error";
+            $message['title'] = gT('Access denied!');
+            $message['message'] = gT('You do not have permission to access this page.');
+            $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
-        }
-        else
+        } else
         {
             App()->getClientScript()->registerPackage('jqueryui');
             App()->getClientScript()->registerPackage('decimal');
 
-            App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . 'survey_runtime.js');
-            App()->getClientScript()->registerScriptFile( App()->getConfig('generalscripts') . '/expressions/em_javascript.js');
+            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'survey_runtime.js');
+            App()->getClientScript()->registerScriptFile(App()->getConfig('generalscripts').'/expressions/em_javascript.js');
             $this->_printOnLoad(Yii::app()->request->getQuery('sa', 'index'));
-            $aData['pagetitle']="ExpressionManager:  {$aData['sa']}";
-            $aData['subaction']=$this->_printTitle($aData['sa']);
+            $aData['pagetitle'] = "ExpressionManager:  {$aData['sa']}";
+            $aData['subaction'] = $this->_printTitle($aData['sa']);
 
 
             //header("Content-type: text/html; charset=UTF-8"); // needed for correct UTF-8 encoding
-            $sAction = Yii::app()->request->getQuery('sa',false);
-            if($sAction)
-                $this->test($sAction,$aData);
+            $sAction = Yii::app()->request->getQuery('sa', false);
+            if ($sAction)
+                $this->test($sAction, $aData);
             else
                 $this->_renderWrappedTemplate('expressions', 'test_view', $aData);
         }
     }
 
-    public function survey_logic_file(){
+    public function survey_logic_file() {
         
-        $aData=array();
+        $aData = array();
         
         $sid = sanitize_int(Yii::app()->request->getParam('sid', 0));
 
-        if(!Permission::model()->hasSurveyPermission($sid,'surveycontent','read'))
+        if (!Permission::model()->hasSurveyPermission($sid, 'surveycontent', 'read'))
         {
-            $message['title']= gT('Access denied!');
-            $message['message']= gT('You do not have permission to access this page.');
-            $message['class']= "error";
+            $message['title'] = gT('Access denied!');
+            $message['message'] = gT('You do not have permission to access this page.');
+            $message['class'] = "error";
             $this->_renderWrappedTemplate('survey', array("message"=>$message), $aData);
             return;
         }
@@ -82,9 +81,9 @@ class Expressions extends Survey_Common_Action {
         
         $oSurvey = Survey::model()->findByPk($sid);
 
-        $language = Yii::app()->request->getParam('lang',NULL); 
+        $language = Yii::app()->request->getParam('lang', NULL); 
         
-        if($language !== NULL)
+        if ($language !== NULL)
             $language = sanitize_languagecode($language);
 
         $aData['sid'] = $sid;
@@ -112,14 +111,14 @@ class Expressions extends Survey_Common_Action {
 
         $aData['surveybar']['closebutton']['url'] = 'admin/survey/sa/view/surveyid/'.$sid;
 
-        if($gid !== NULL)
+        if ($gid !== NULL)
         {
             $gid = sanitize_int($gid);
             $aData['questiongroupbar']['closebutton']['url'] = 'admin/questiongroups/sa/view/surveyid/'.$sid.'/gid/'.$gid;
             $aData['gid'] = $gid;
         }
         
-        if($qid !== NULL)
+        if ($qid !== NULL)
         {
             $qid = sanitize_int($qid);
             $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$sid.'/gid/'.$gid.'/qid/'.$qid;
@@ -127,9 +126,9 @@ class Expressions extends Survey_Common_Action {
         }
 
         App()->getClientScript()->registerPackage('decimal');
-        App()->getClientScript()->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
-        App()->getClientScript()->registerScriptFile( 'SCRIPT_PATH', '/expressions/em_javascript.js');
-        App()->getClientScript()->registerCssFile( Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css' );
+        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
+        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', '/expressions/em_javascript.js');
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'expressionlogicfile.css');
 
         SetSurveyLanguage($sid, $language);
 
@@ -140,8 +139,8 @@ class Expressions extends Survey_Common_Action {
         $aData['result'] = LimeExpressionManager::ShowSurveyLogicFile($sid, $gid, $qid,$LEMdebugLevel,$assessments);
 
         if(Yii::app()->request->getParam('printable', 0) == 1){
-           $html = "<html><body>";
-           $html .= "<style>
+            $html = "<html><body>";
+            $html .= "<style>
            @page { 
                size: landscape;
            }
@@ -154,32 +153,32 @@ class Expressions extends Survey_Common_Action {
                 
             }
            </style>";
-           $html .= $aData['result']['html'];
-           $html .= "</body></html>"; 
-           App()->getClientScript()->render($html);
-           echo $html; 
+            $html .= $aData['result']['html'];
+            $html .= "</body></html>"; 
+            App()->getClientScript()->render($html);
+            echo $html; 
 
-           Yii::app()->end();
+            Yii::app()->end();
         }
 
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_file', $aData);        
     }
 
-    public function survey_logic_form(){
+    public function survey_logic_form() {
 
-        $aData['surveylist']= getSurveyList();
+        $aData['surveylist'] = getSurveyList();
         
         App()->getClientScript()->registerPackage('decimal');
-        App()->getClientScript()->registerScriptFile( 'SCRIPT_PATH', 'survey_runtime.js');
-        App()->getClientScript()->registerScriptFile( 'SCRIPT_PATH', '/expressions/em_javascript.js');
+        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', 'survey_runtime.js');
+        App()->getClientScript()->registerScriptFile('SCRIPT_PATH', '/expressions/em_javascript.js');
 
         
         $this->_renderWrappedTemplate('expressions', 'test/survey_logic_form', $aData);        
     }
 
-    protected function test($which,$aData)
+    protected function test($which, $aData)
     {
-        if($which == 'survey_logic_file') $which='survey_logic_form';
+        if ($which == 'survey_logic_file') $which = 'survey_logic_form';
             $this->_renderWrappedTemplate('expressions', 'test/'.$which, $aData);
         //$this->getController()->render('/admin/expressions/test/'.$which);
     }
@@ -258,12 +257,12 @@ class Expressions extends Survey_Common_Action {
         }
     }
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
     protected function _renderWrappedTemplate($sAction = 'expressions', $aViewUrls = array(), $aData = array())
     {
         $aData['imageurl'] = Yii::app()->getConfig('adminimageurl');

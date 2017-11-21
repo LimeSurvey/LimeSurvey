@@ -9,22 +9,22 @@ echo viewHelper::getViewTestTag('exportResults');
 
 ?>
 <script type="text/javascript">
-    var sMsgColumnCount = '<?php eT("%s of %s columns selected",'js'); ?>';
+    var sMsgColumnCount = '<?php eT("%s of %s columns selected", 'js'); ?>';
 </script>
 
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <h3>
-        <?php eT("Export results");?>
+        <?php eT("Export results"); ?>
         <?php
-            if (isset($_POST['sql'])) {echo" - ".gT("Filtered from statistics script");}
+            if (isset($_POST['sql'])) {echo" - ".gT("Filtered from statistics script"); }
             if ($SingleResponse)
             {
-                echo " - ".sprintf(gT("Single response: ID %s"),$SingleResponse);
+                echo " - ".sprintf(gT("Single response: ID %s"), $SingleResponse);
             }
         ?>
     </h3>
 
-    <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport', 'class'=>''));?>
+    <?php echo CHtml::form(array('admin/export/sa/exportresults/surveyid/'.$surveyid), 'post', array('id'=>'resultexport', 'class'=>'')); ?>
         <div class="row">
             <div class="col-sm-12 content-right">
                 <div class="row">
@@ -34,7 +34,7 @@ echo viewHelper::getViewTestTag('exportResults');
                         <div class="panel panel-primary" id="panel-1">
                             <div class="panel-heading">
                                 <div class="panel-title h4">
-                                    <?php eT("Format");?>
+                                    <?php eT("Format"); ?>
                                 </div>
                             </div>
                             <div class="panel-body">
@@ -47,7 +47,7 @@ echo viewHelper::getViewTestTag('exportResults');
                                         <?php foreach ($exports as $key => $info): ?>
                                             <?php if (!empty($info['label'])): ?>
                                                 <div class="radio">
-                                                    <label><input type="radio" name="type" id="<?php echo $key;?>" value="<?php echo $key;?>" <?php if($info['label']=='CSV'){ echo 'checked';}?>><?php echo $info['label'];?></label>
+                                                    <label><input type="radio" name="type" id="<?php echo $key; ?>" value="<?php echo $key; ?>" <?php if ($info['label'] == 'CSV') { echo 'checked'; }?>><?php echo $info['label']; ?></label>
                                                 </div>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -58,10 +58,10 @@ echo viewHelper::getViewTestTag('exportResults');
 
                         <?php if (empty(Yii::app()->session['responsesid'])): // If called from massive action, it will be filled the selected answers ?>
                         <!-- Range -->
-                        <div class="panel panel-primary" id="panel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
+                        <div class="panel panel-primary" id="panel-2" <?php  if ($SingleResponse) { echo 'style="display:none"'; } ?> >
                             <div class="panel-heading">
                                 <div class="panel-title h4">
-                                    <?php eT("Range");?>
+                                    <?php eT("Range"); ?>
                                 </div>
                             </div>
                             <div class="panel-body">
@@ -105,10 +105,10 @@ echo viewHelper::getViewTestTag('exportResults');
                         </div>
                         <?php else: ?>
 
-                        <div class="panel panel-primary" id="panel-2" <?php  if ($SingleResponse) { echo 'style="display:none"';} ?> >
+                        <div class="panel panel-primary" id="panel-2" <?php  if ($SingleResponse) { echo 'style="display:none"'; } ?> >
                             <div class="panel-heading">
                                 <h4 class="panel-title">
-                                    <?php eT("Selection");?>
+                                    <?php eT("Selection"); ?>
                                 </h4>
                             </div>
                             <div class="panel-body">
@@ -116,7 +116,7 @@ echo viewHelper::getViewTestTag('exportResults');
                                     <?php
                                         $sResponsesId = '';
                                         $aResponsesId = json_decode(Yii::app()->session['responsesid']);
-                                        foreach($aResponsesId as $aResponseId){
+                                        foreach ($aResponsesId as $aResponseId) {
                                             $sResponsesId .= $aResponseId.', ';
                                         }
                                     ?>
@@ -129,7 +129,7 @@ echo viewHelper::getViewTestTag('exportResults');
                                         <input type="text" readonly value="<?php echo  $sResponsesId; ?>" class="form-control" name="responses_id" id="responses_id" />
                                     </div>
                                     <div class="col-sm-2">
-                                        <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/setSession/", array('unset'=>'true', 'sid'=>$surveyid)); ?>" role="button"><?php eT("Reset");?></a>
+                                        <a class="btn btn-default" href="<?php echo Yii::app()->getController()->createUrl("admin/responses/sa/setSession/", array('unset'=>'true', 'sid'=>$surveyid)); ?>" role="button"><?php eT("Reset"); ?></a>
                                     </div>
                                     <input
                                         type="hidden"
@@ -141,7 +141,7 @@ echo viewHelper::getViewTestTag('exportResults');
                                 </div>
                             </div>
                         </div>
-                    <?php endif;?>
+                    <?php endif; ?>
 
                         <!-- General -->
                         <div class="panel panel-primary" id="panel-3">
@@ -152,13 +152,13 @@ echo viewHelper::getViewTestTag('exportResults');
                             </div>
                             <div class="panel-body">
                                 <div class="form-group">
-                                    <label for='completionstate' class="col-sm-4 control-label"><?php eT("Completion state:");?></label>
+                                    <label for='completionstate' class="col-sm-4 control-label"><?php eT("Completion state:"); ?></label>
 
                                     <div class="col-sm-4">
                                         <select name='completionstate' id='completionstate' class='form-control'>
-                                            <option value='complete' <?php echo $selecthide;?>><?php eT("Completed responses only");?></option>
-                                            <option value='all' <?php echo $selectshow;?>><?php eT("All responses");?></option>
-                                            <option value='incomplete' <?php echo $selectinc;?>><?php eT("Incomplete responses only");?></option>
+                                            <option value='complete' <?php echo $selecthide; ?>><?php eT("Completed responses only"); ?></option>
+                                            <option value='all' <?php echo $selectshow; ?>><?php eT("All responses"); ?></option>
+                                            <option value='incomplete' <?php echo $selectinc; ?>><?php eT("Incomplete responses only"); ?></option>
                                         </select>
                                     </div>
                                 </div>
@@ -178,7 +178,7 @@ echo viewHelper::getViewTestTag('exportResults');
                         <div class="panel panel-primary" id="panel-4">
                             <div class="panel-heading">
                                 <div class="panel-title h4">
-                                    <?php eT("Headings");?>
+                                    <?php eT("Headings"); ?>
                                 </div>
                             </div>
                             <div class="panel-body">
@@ -186,16 +186,16 @@ echo viewHelper::getViewTestTag('exportResults');
                                 <!-- Headers -->
                                 <div class="form-group">
                                     <div class="btn-group col-sm-12" data-toggle="buttons">
-                                        <?php foreach($headexports as $type=>$headexport):?>
-                                            <label class="btn btn-default <?php if($headexport['checked']=='checked'){ echo 'active';}?>">
+                                        <?php foreach ($headexports as $type=>$headexport):?>
+                                            <label class="btn btn-default <?php if ($headexport['checked'] == 'checked') { echo 'active'; }?>">
                                                 <input
                                                     value="<?php echo $type; ?>"
                                                     id="headstyle-<?php echo $type; ?>"
                                                     type="radio"
                                                     name="headstyle"
-                                                    <?php if($headexport['checked']=='checked'){ echo 'checked';} ?>
+                                                    <?php if ($headexport['checked'] == 'checked') { echo 'checked'; } ?>
                                                 />
-                                                <?php echo $headexport['label'];?>
+                                                <?php echo $headexport['label']; ?>
                                             </label>
                                         <?php endforeach; ?>
                                     </div>
@@ -288,7 +288,7 @@ echo viewHelper::getViewTestTag('exportResults');
                         <div class="panel panel-primary" id="panel-5">
                             <div class="panel-heading">
                                 <div class="panel-title h4">
-                                    <?php eT("Responses");?>
+                                    <?php eT("Responses"); ?>
                                 </div>
                             </div>
                             <div class="panel-body">
@@ -301,7 +301,7 @@ echo viewHelper::getViewTestTag('exportResults');
                                             type="radio"
                                             id="answers-short"
                                         />
-                                        <?php eT("Answer codes");?>
+                                        <?php eT("Answer codes"); ?>
                                     </label>
 
                                     <label class="btn btn-default active">
@@ -313,19 +313,19 @@ echo viewHelper::getViewTestTag('exportResults');
                                             id="answers-long"
                                             autofocus="true"
                                         />
-                                        <?php eT("Full answers");?>
+                                        <?php eT("Full answers"); ?>
                                     </label>
                                 </div>
 
                                 <!-- Responses  -->
                                 <div class="form-group">
                                     <br/>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('converty',false,array('value'=>'Y','id'=>'converty'));
-                                    echo '&nbsp;'.CHTML::label(gT("Convert Y to:"),'converty');?>
-                                    <?php echo CHTML::textField('convertyto','1',array('id'=>'convertyto','size'=>'3','maxlength'=>'1')); ?>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('convertn',false,array('value'=>'Y','id'=>'convertn'));
-                                    echo '&nbsp;'.CHTML::label(gT("Convert N to:"),'convertn');?>
-                                    <?php echo CHTML::textField('convertnto','2',array('id'=>'convertnto','size'=>'3','maxlength'=>'1')); ?>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('converty', false, array('value'=>'Y', 'id'=>'converty'));
+                                    echo '&nbsp;'.CHTML::label(gT("Convert Y to:"), 'converty'); ?>
+                                    <?php echo CHTML::textField('convertyto', '1', array('id'=>'convertyto', 'size'=>'3', 'maxlength'=>'1')); ?>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo CHTML::checkBox('convertn', false, array('value'=>'Y', 'id'=>'convertn'));
+                                    echo '&nbsp;'.CHTML::label(gT("Convert N to:"), 'convertn'); ?>
+                                    <?php echo CHTML::textField('convertnto', '2', array('id'=>'convertnto', 'size'=>'3', 'maxlength'=>'1')); ?>
                                 </div>
                             </div>
                         </div>
@@ -338,20 +338,20 @@ echo viewHelper::getViewTestTag('exportResults');
                         <div class="panel panel-primary" id="panel-6">
                             <div class="panel-heading">
                                 <div class="panel-title h4">
-                                    <?php eT("Columns");?>
+                                    <?php eT("Columns"); ?>
                                 </div>
                             </div>
                             <div class="panel-body">
                                 <input type='hidden' name='sid' value='<?php echo $surveyid; ?>' />
                                 <?php if ($SingleResponse): ?>
-                                    <input type='hidden' name='response_id' value="<?php echo $SingleResponse;?>" />
+                                    <input type='hidden' name='response_id' value="<?php echo $SingleResponse; ?>" />
                                 <?php endif; ?>
                                 <label for='colselect' class="col-sm-3 control-label">
-                                    <?php eT("Select columns:");?>
+                                    <?php eT("Select columns:"); ?>
                                 </label>
                                 <div class="col-sm-9">
                                 <?php
-                                    echo CHtml::listBox('colselect[]',array_keys($aFields),$aFields,array('multiple'=>'multiple','size'=>'20','options'=>$aFieldsOptions, 'class'=>'form-control'));
+                                    echo CHtml::listBox('colselect[]', array_keys($aFields), $aFields, array('multiple'=>'multiple', 'size'=>'20', 'options'=>$aFieldsOptions, 'class'=>'form-control'));
                                 ?>
                                 </div>
                                 <div class="col-sm-8 col-sm-offset-4">
@@ -362,11 +362,11 @@ echo viewHelper::getViewTestTag('exportResults');
                         </div>
 
                         <!-- Token control -->
-                        <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid,'tokens','read')): ?>
+                        <?php if ($thissurvey['anonymized'] == "N" && tableExists("{{tokens_$surveyid}}") && Permission::model()->hasSurveyPermission($surveyid, 'tokens', 'read')): ?>
                             <div class="panel panel-primary" id="panel-7">
                                 <div class="panel-heading">
                                     <div class="panel-title h4">
-                                        <?php eT("Token control");?>
+                                        <?php eT("Token control"); ?>
                                     </div>
                                 </div>
                                 <div class="panel-body">
@@ -376,15 +376,15 @@ echo viewHelper::getViewTestTag('exportResults');
                                     </div>
 
                                     <label for='attribute_select' class="col-sm-4 control-label">
-                                        <?php eT("Choose token fields:");?>
+                                        <?php eT("Choose token fields:"); ?>
                                     </label>
                                     <div class="col-sm-8">
                                         <select name='attribute_select[]' multiple size='20' class="form-control" id="attribute_select">
-                                            <option value='first_name' id='first_name'><?php eT("First name");?></option>
-                                            <option value='last_name' id='last_name'><?php eT("Last name");?></option>
-                                            <option value='email_address' id='email_address'><?php eT("Email address");?></option>
+                                            <option value='first_name' id='first_name'><?php eT("First name"); ?></option>
+                                            <option value='last_name' id='last_name'><?php eT("Last name"); ?></option>
+                                            <option value='email_address' id='email_address'><?php eT("Email address"); ?></option>
 
-                                            <?php $attrfieldnames=getTokenFieldsAndNames($surveyid,true);
+                                            <?php $attrfieldnames = getTokenFieldsAndNames($surveyid, true);
                                             foreach ($attrfieldnames as $attr_name=>$attr_desc)
                                             {
                                                 echo "<option value='$attr_name' id='$attr_name' />".$attr_desc['description']."</option>\n";
@@ -393,12 +393,12 @@ echo viewHelper::getViewTestTag('exportResults');
                                     </div>
                                 </div>
                             </div>
-                        <?php endif;?>
+                        <?php endif; ?>
 
                     </div>
                 </div>
             </div>
         </div>
-          <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data");?>' id='exportresultsubmitbutton' />
+          <input type='submit' class="btn btn-default hidden" value='<?php eT("Export data"); ?>' id='exportresultsubmitbutton' />
     </form>
 </div>

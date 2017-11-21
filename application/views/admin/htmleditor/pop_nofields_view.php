@@ -6,7 +6,7 @@
         <meta name="robots" content="noindex, nofollow" />
         <?php
             App()->getClientScript()->registerPackage('jqueryui');            
-            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'jquery-ui.css');
+            App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'jquery-ui.css');
         ?>
     </head>
 

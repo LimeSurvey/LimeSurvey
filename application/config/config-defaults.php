@@ -1,4 +1,6 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -145,7 +147,7 @@ $config['display_user_password_in_email'] = true;
 // If no auth plugin is set as default, LS shows this auth method in login form
 // Authdb is not set as default from Authdb plugin.
 // If value of this variable is not a active plugin, 'Authdb' is used
-$config['default_displayed_auth_method']= 'Authdb';
+$config['default_displayed_auth_method'] = 'Authdb';
 
 // auth_webserver
 // Enable delegation of authentication to the webserver.
@@ -186,7 +188,7 @@ $config['auth_webserver_autocreate_profile'] = Array(
 );
 
 $config['auth_webserver_autocreate_permissions'] = Array(
-    'surveys' => array('create'=>true,'read'=>true,'update'=>true,'delete'=>true)
+    'surveys' => array('create'=>true, 'read'=>true, 'update'=>true, 'delete'=>true)
 );
 
 // hook_get_auth_webserver_profile
@@ -267,7 +269,7 @@ $config['column_style'] = 'ul';
 * with all questions hidden by conditions is displayed in all-in-one survey mode.
 * hide_groupdescr_allinone can be set to true or false (default: true)
 */
-$config['hide_groupdescr_allinone']=true;
+$config['hide_groupdescr_allinone'] = true;
 
 
 /**
@@ -293,7 +295,7 @@ $config['showaggregateddata'] = 1;
 * This prevents upgrade problems later because if you modify your standard themes you could accidenitally
 * overwrite these on a LimSurvey upgrade. Only set this to 0 if you know what you are doing.
 */
-$config['standard_themes_readonly'] =  true;
+$config['standard_themes_readonly'] = true;
 
 
 /**
@@ -308,20 +310,20 @@ $config['standard_themes_readonly'] =  true;
 * This code will be shown in front of each question and in front of each answer option at the printable survey.
 * It can be used as a data analysis code book for querying data from the main response table.
 */
-$config['showsgqacode'] =  false;
+$config['showsgqacode'] = false;
 
 /**
 * When this settings is true/1 (default = false/0) then the printable survey option will show
 * the raw relevance equation below the general fill-out instructions in case the question has conditions.
 */
-$config['showrelevance'] =  false;
+$config['showrelevance'] = false;
 
 /**
 * To prevent brute force against forgotten password functionality, there is a random delay
 * that prevent attacker from knowing whether username and email address are valid or not.
 */
-$config['minforgottenpasswordemaildelay'] =  500000;
-$config['maxforgottenpasswordemaildelay'] =  1500000;
+$config['minforgottenpasswordemaildelay'] = 500000;
+$config['maxforgottenpasswordemaildelay'] = 1500000;
 
 /**
 *  PDF Export Settings
@@ -330,21 +332,21 @@ $config['maxforgottenpasswordemaildelay'] =  1500000;
 *  See http://www.tcpdf.org/fonts.php to have the list of PDF core fonts
 */
 
-$config['pdfdefaultfont'] = 'auto';              //Default font for the pdf Export
+$config['pdfdefaultfont'] = 'auto'; //Default font for the pdf Export
 /**
 *  $alternatepdffontfile - array of the font file name used to created pdf in statistics in specific langage - this font are included in tcpdf core
 *  Only used if $pdfdefaultfont is set to auto or set to a PDF core fonts
 *  Some langage are not tested : need translation for Yes,No and Gender : ckb, swh
 */
-$config['alternatepdffontfile']=array(
-    'ar'=>'dejavusans',// 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
+$config['alternatepdffontfile'] = array(
+    'ar'=>'dejavusans', // 'dejavusans' work but maybe more characters in aealarabiya or almohanad: but then need a dynamic font size too
     'be'=>'dejavusans',
     'bg'=>'dejavusans',
     'zh-Hans'=>'cid0cs',
     'zh-Hant-HK'=>'cid0ct',
     'zh-Hant-TW'=>'cid0ct',
     'cs'=>'dejavusans',
-    'cs-informal'=>'dejavusans',// This one not really tested: no translation for Yes/No or Gender
+    'cs-informal'=>'dejavusans', // This one not really tested: no translation for Yes/No or Gender
     'el'=>'dejavusans',
     'he'=>'freesans',
     'hi'=>'dejavusans',
@@ -401,12 +403,12 @@ $config['maxstringlengthshortimplode'] = 100; // short_implode: Max length of re
 *  $chartfontfile - set the font file name used to created the charts in statistics - this font must reside in <limesurvey root folder>/fonts
 *  Set this to specific font-file (for example 'DejaVuSans.ttf') or set it to 'auto' and LimeSurvey tried to pick the best font depending on your survey base language
 */
-$config['chartfontfile']='auto';
+$config['chartfontfile'] = 'auto';
 /**
 *  $alternatechartfontfile - array of the font file name used to created the charts in statistics in specific langage - this font must reside in <limesurvey root folder>/fonts
 *  Only used if $chartfontfile is set to auto. If font file doesn't exist in <limesurvey root folder>/fonts, an alert is sent to admin
 */
-$config['alternatechartfontfile']=array(
+$config['alternatechartfontfile'] = array(
     'hi'=>'FreeSans.ttf',
     'ja'=> 'migmix-1p-regular.ttf',
     'ko'=>'UnBatang.ttf',
@@ -420,7 +422,7 @@ $config['alternatechartfontfile']=array(
 /**
 *  $chartfontsize - set the size of the font to created the charts in statistics
 */
-$config['chartfontsize'] =10;
+$config['chartfontsize'] = 10;
 
 
 /**
@@ -428,7 +430,7 @@ $config['chartfontsize'] =10;
 * Set to 0 to disable any update checks
 * Recommended: 7
 */
-$config['updatecheckperiod']=7;
+$config['updatecheckperiod'] = 7;
 
 
 /**
@@ -543,11 +545,11 @@ $config['characterset'] = 'auto';
 * @var $config['iFileUploadTotalSpaceMB']  Integer number to determine the available space in MB - Default: 0
 *
 */
-$config['iFileUploadTotalSpaceMB']= 0;
+$config['iFileUploadTotalSpaceMB'] = 0;
 
 
 // defines if the CKeditor toolbar should be opened by default
-$config['ckeditexpandtoolbar']     = true;
+$config['ckeditexpandtoolbar'] = true;
 
 /**
 * This variable defines the languages available in LimeSurvey (front- and backend)
@@ -602,8 +604,7 @@ $config['forcedsuperadmin'] = array(1);
 if(!isset($argv[0]) && Yii::app()!=null)
 {
     $config['publicurl'] = Yii::app()->baseUrl . '/';                          // The public website location (url) of the public survey script
-}
-else
+} else
 {
     $config['publicurl'] =  '/';
 }
@@ -652,7 +653,7 @@ $config['plugindir']               = 'webroot.plugins';
 // (javascript) Fix automatically the value entered in numeric question type : 1: remove all non numeric caracters; 0 : leave all caracters
 $config['bFixNumAuto']             = 1;
 // (javascript) Send real value entered when using Numeric question type in Expression Manager : 0 : {NUMERIC} with bad caracters send '', 1 : {NUMERIC} send all caracters entered
-$config['bNumRealValue']             = 0;
+$config['bNumRealValue'] = 0;
 
 // Home page default Settings
 $config['show_logo'] = 'show';

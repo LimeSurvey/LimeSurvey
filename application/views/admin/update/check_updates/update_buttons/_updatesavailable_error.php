@@ -7,8 +7,8 @@
 ?>
 <?php
     // First we check if the server provided a specific HTML message
-    if(isset($serverAnswer->html))
-        if($serverAnswer->html != "")
+    if (isset($serverAnswer->html))
+        if ($serverAnswer->html != "")
             echo $serverAnswer->html;
 
     $bError = true;
@@ -73,15 +73,15 @@
     }
 ?>
 
-<div class="jumbotron message-box <?php if($bError) echo 'message-box-error'; ?>">
-        <h2 class="<?php if($bError){echo 'text-danger';}else{echo 'text-success';} ?>"><?php echo $sTile; ?></h2>
+<div class="jumbotron message-box <?php if ($bError) echo 'message-box-error'; ?>">
+        <h2 class="<?php if ($bError) {echo 'text-danger'; } else {echo 'text-success'; } ?>"><?php echo $sTile; ?></h2>
         <p class="lead"><?php echo $sHeader; ?></p>
         <p><?php echo $sMessage; ?></p>
-        <?php if(isset($sErrorCode)):?>
+        <?php if (isset($sErrorCode)):?>
             <p>
                 <?php echo $sErrorCode; ?>
             </p>
-        <?php endif;?>
+        <?php endif; ?>
         <p>
             <a class="btn btn-lg btn-default" href="<?php echo $this->createUrl("admin/"); ?>" role="button"><?php eT("Ok"); ?></a>
         </p>

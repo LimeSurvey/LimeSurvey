@@ -8,12 +8,12 @@
             
             <div class="form-group">
                 <label for='name'><?php eT("Name:"); ?></label>
-                <input type='text' size='50' maxlength='20' id='name' name='name' value="<?php echo htmlspecialchars($esrow['name'],ENT_QUOTES, 'UTF-8'); ?>" class="form-control" />
+                <input type='text' size='50' maxlength='20' id='name' name='name' value="<?php echo htmlspecialchars($esrow['name'], ENT_QUOTES, 'UTF-8'); ?>" class="form-control" />
             </div>
 
             <div class="form-group">
                 <label for='description'><?php eT("Description:"); ?></label>
-                <textarea cols='50' rows='4' id='description' name='description' class="form-control"><?php echo htmlspecialchars($esrow['description'],ENT_QUOTES, 'UTF-8'); ?></textarea>
+                <textarea cols='50' rows='4' id='description' name='description' class="form-control"><?php echo htmlspecialchars($esrow['description'], ENT_QUOTES, 'UTF-8'); ?></textarea>
             </div>
 
             <input type='submit' value='<?php eT("Update user group"); ?>' class="hidden" />

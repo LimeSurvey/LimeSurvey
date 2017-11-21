@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -25,11 +27,11 @@ class Usergroups extends Survey_Common_Action
 {
 
     /**
-    * Usergroups::mail()
-    * Function responsible to send an e-mail to a user group.
-    * @param mixed $ugid
-    * @return void
-    */
+     * Usergroups::mail()
+     * Function responsible to send an e-mail to a user group.
+     * @param mixed $ugid
+     * @return void
+     */
     public function mail($ugid)
     {
 
@@ -42,17 +44,17 @@ class Usergroups extends Survey_Common_Action
 
             // user must be in user group or superadmin
             $result = UserInGroup::model()->findAllByPk(array('ugid' => $ugid, 'uid' => Yii::app()->session['loginID']));
-            if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin','read'))
+            if (count($result) > 0 || Permission::model()->hasGlobalPermission('superadmin', 'read'))
             {
                 $criteria = new CDbCriteria;
-                $criteria->compare('ugid',$ugid)->addNotInCondition('users.uid',array(Yii::app()->session['loginID']));
+                $criteria->compare('ugid', $ugid)->addNotInCondition('users.uid', array(Yii::app()->session['loginID']));
                 $eguresult = UserInGroup::model()->with('users')->findAll($criteria);
                 //die('me');
                 $to = array();
 
                 foreach ($eguresult as $egurow)
                 {
-                    $to[] = \CHtml::encode($egurow->users->users_name) . ' <' . $egurow->users->email . '>';
+                    $to[] = \CHtml::encode($egurow->users->users_name).' <'.$egurow->users->email.'>';
                 }
                 $from_user_result = User::model()->findByPk(Yii::app()->session['loginID']);
                 $from_user_row = $from_user_result;
@@ -60,11 +62,11 @@ class Usergroups extends Survey_Common_Action
                 if ($from_user_row->full_name) {
                     $from = $from_user_row->full_name;
                     $from .= ' <';
-                    $from .= $from_user_row->email . '> ';
+                    $from .= $from_user_row->email.'> ';
                 }
                 else
                 {
-                    $from = $from_user_row->users_name . ' <' . $from_user_row->email . '> ';
+                    $from = $from_user_row->users_name.' <'.$from_user_row->email.'> ';
                 }
 
                 $body = $_POST['body'];
@@ -78,8 +80,7 @@ class Usergroups extends Survey_Common_Action
 
                 if (SendEmailMessage($body, $subject, $to, $from, '')) {
                     list($aViewUrls, $aData) = $this->index($ugid, array("type" => "success", "message" => gT("Message(s) sent successfully!")));
-                }
-                else
+                } else
                 {
                     global $maildebug;
                     global $debug;
@@ -88,19 +89,17 @@ class Usergroups extends Survey_Common_Action
                     //$debug = (isset($debug)) ? $debug : 9;
                     //$maildebugbody = (isset($maildebugbody)) ? $maildebugbody : 'an unknown error accourd';
                     $headercfg["type"] = "warning";
-                    $headercfg["message"] = sprintf(gT("Email to %s failed. Error Message:"), $to) . " " . $maildebug;
+                    $headercfg["message"] = sprintf(gT("Email to %s failed. Error Message:"), $to)." ".$maildebug;
                     list($aViewUrls, $aData) = $this->index($ugid, $headercfg);
                 }
-            }
-            else
+            } else
             {
                 die();
             }
 
-        }
-        else
+        } else
         {
-            $where = array('and', 'a.ugid =' . $ugid, 'uid =' . Yii::app()->session['loginID']);
+            $where = array('and', 'a.ugid ='.$ugid, 'uid ='.Yii::app()->session['loginID']);
             $join = array('where' => "{{user_in_groups}} AS b", 'on' => 'a.ugid = b.ugid');
             $result = UserGroup::model()->join(array('a.ugid', 'a.name', 'a.owner_id', 'b.uid'), "{{user_groups}} AS a", $where, $join, 'name');
 
@@ -110,40 +109,40 @@ class Usergroups extends Survey_Common_Action
             $aViewUrls = 'mailUserGroup_view';
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index'));  // Close button, UrlReferrer
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index')); // Close button, UrlReferrer
 
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
     /**
-    * Usergroups::delete()
-    * Function responsible to delete a user group.
-    * @return void
-    */
+     * Usergroups::delete()
+     * Function responsible to delete a user group.
+     * @return void
+     */
     public function delete($ugid)
     {
 
         $aViewUrls = array();
         $aData = array();
 
-        if (Permission::model()->hasGlobalPermission('usergroups','delete')) {
+        if (Permission::model()->hasGlobalPermission('usergroups', 'delete')) {
 
             if (!empty($ugid) && ($ugid > -1)) {
                 $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session["loginID"]);
                 if ($result->count() > 0) {  // OK - AR count
                     $delquery_result = UserGroup::model()->deleteGroup($ugid, Yii::app()->session["loginID"]);
 
-                    if ($delquery_result) //Checked)
+                    if ($delquery_result) {
+                        //Checked)
                     {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "success", "message" => gT("Success!")));
                     }
-                    else
+                    } else
                     {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Could not delete user group.")));
                     }
                 }
-            }
-            else
+            } else
             {
                 list($aViewUrls, $aData) = $this->index($ugid, array("type" => "warning", "message" => gT("Could not delete user group. No group selected.")));
             }
@@ -160,56 +159,54 @@ class Usergroups extends Survey_Common_Action
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         $aData = array();
 
-        if (Permission::model()->hasGlobalPermission('usergroups','create')) {
+        if (Permission::model()->hasGlobalPermission('usergroups', 'create')) {
 
             if ($action == "usergroupindb") {
-                $db_group_name = flattenText($_POST['group_name'],false,true,'UTF-8',true);
+                $db_group_name = flattenText($_POST['group_name'], false, true, 'UTF-8', true);
                 $db_group_description = $_POST['group_description'];
 
                 if (isset($db_group_name) && strlen($db_group_name) > 0)
                 {
                     if (strlen($db_group_name) > 21) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group name length more than 20 characters.")));
-                        Yii::app()->user->setFlash('error',  gT("Failed to add group! Group name length more than 20 characters."));
+                        Yii::app()->user->setFlash('error', gT("Failed to add group! Group name length more than 20 characters."));
                     }
                     elseif (UserGroup::model()->find("name=:groupName", array(':groupName'=>$db_group_name))) {
                         list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group already exists.")));
-                        Yii::app()->user->setFlash('error',  gT("Failed to add group! Group already exists."));
+                        Yii::app()->user->setFlash('error', gT("Failed to add group! Group already exists."));
                     }
                     else
                     {
                         $ugid = UserGroup::model()->addGroup($db_group_name, $db_group_description);
                         Yii::app()->session['flashmessage'] = gT("User group successfully added!");
                         list($aViewUrls, $aData) = $this->index($ugid, true);
-                        $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/' . $ugid));
+                        $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
                     }
 
                     $this->getController()->redirect(array('admin/usergroups'));
 
-                }
-                else
+                } else
                 {
                     list($aViewUrls, $aData) = $this->index(false, array("type" => "warning", "message" => gT("Failed to add group! Group Name was not supplied.")));
                 }
-            }
-            else
+            } else
             {
                 $aViewUrls = 'addUserGroup_view';
             }
         }
-        $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
-        $aData['usergroupbar']['savebutton']['text']= gT('Save');
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index'));  // Close button, urlReferrer
+        $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
+        $aData['usergroupbar']['savebutton']['text'] = gT('Save');
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index')); // Close button, urlReferrer
         $aData['usergroupbar']['add'] = 'admin/usergroups';
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
     /**
-    * Usergroups::edit()
-    * Load edit user group screen.
-    * @param mixed $ugid
-    * @return void
-    */
+     * Usergroups::edit()
+     * Load edit user group screen.
+     * @param mixed $ugid
+     * @return void
+     */
     function edit($ugid)
     {
         $ugid = (int)$ugid;
@@ -217,7 +214,7 @@ class Usergroups extends Survey_Common_Action
         $action = (isset($_POST['action'])) ? $_POST['action'] : '';
         if (Permission::model()->hasGlobalPermission('usergroups','update')) {
             if ($action == "editusergroupindb")
-             {
+                {
 
                 $ugid = (int)$_POST['ugid'];
 
@@ -227,15 +224,13 @@ class Usergroups extends Survey_Common_Action
                     Yii::app()->session['flashmessage'] = gT("User group successfully saved!");
                     $aData['ugid'] = $ugid;
                     $this->getController()->redirect(array('admin/usergroups/sa/view/ugid/'.$ugid));
-                }
-                else
+                } else
                 {
                     Yii::app()->session['flashmessage'] = gT("Failed to edit user group!");
                     $this->getController()->redirect(array('admin/usergroups/sa/edit/ugid/'.$ugid));
                 }
 
-            }
-            else
+            } else
             {
                 $result = UserGroup::model()->requestEditGroup($ugid, Yii::app()->session['loginID']);
                 $aData['esrow'] = $result;
@@ -244,29 +239,29 @@ class Usergroups extends Survey_Common_Action
             }
         }
 
-        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index'));  // Close button, urlReferrer
-        $aData['usergroupbar']['savebutton']['form']= 'usergroupform';
-        $aData['usergroupbar']['savebutton']['text']= gT("Update user group");
+        $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(App()->createUrl('admin/usergroups/sa/index')); // Close button, urlReferrer
+        $aData['usergroupbar']['savebutton']['form'] = 'usergroupform';
+        $aData['usergroupbar']['savebutton']['text'] = gT("Update user group");
 
         $this->_renderWrappedTemplate('usergroup', 'editUserGroup_view', $aData);
     }
 
 
     /**
-    * Load viewing of a user group screen.
-    * @param bool $ugid
-    * @param array|bool $header (type=success, warning)(message=localized message)
-    * @return array
-    */
+     * Load viewing of a user group screen.
+     * @param bool $ugid
+     * @param array|bool $header (type=success, warning)(message=localized message)
+     * @return array
+     */
     public function index($ugid = false, $header = false)
     {
-        if(!Permission::model()->hasGlobalPermission('usergroups','read'))
+        if (!Permission::model()->hasGlobalPermission('usergroups', 'read'))
         {
-            Yii::app()->session['flashmessage'] =gT('Access denied!');
+            Yii::app()->session['flashmessage'] = gT('Access denied!');
             $this->getController()->redirect(App()->createUrl("/admin"));
         }
         if ($ugid != false)
-            $ugid = (int)$ugid;
+            $ugid = (int) $ugid;
 
         if (!empty($header))
             $aData['headercfg'] = $header;
@@ -288,18 +283,19 @@ class Usergroups extends Survey_Common_Action
                 if ($result) {
                     $aData["groupfound"] = true;
                     $aData["groupname"] = $crow['name'];
-                    if (!empty($crow['description']))
-                        $aData["usergroupdescription"] = $crow['description'];
-                    else
-                        $aData["usergroupdescription"] = "";
+                    if (!empty($crow['description'])) {
+                                            $aData["usergroupdescription"] = $crow['description'];
+                    } else {
+                                            $aData["usergroupdescription"] = "";
+                    }
                 }
                 //$this->user_in_groups_model = new User_in_groups;
-                $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = " . $ugid . " ORDER BY b.users_name";
+                $eguquery = "SELECT * FROM {{user_in_groups}} AS a INNER JOIN {{users}} AS b ON a.uid = b.uid WHERE ugid = ".$ugid." ORDER BY b.users_name";
                 $eguresult = dbExecuteAssoc($eguquery);
                 $aUserInGroupsResult = $eguresult->readAll();
-                $query2 = "SELECT ugid FROM {{user_groups}} WHERE ugid = " . $ugid;
-                if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
-                    $query2 .= " AND owner_id = " . Yii::app()->session['loginID'];
+                $query2 = "SELECT ugid FROM {{user_groups}} WHERE ugid = ".$ugid;
+                if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                    $query2 .= " AND owner_id = ".Yii::app()->session['loginID'];
                 }
                 $result2 = dbSelectLimitAssoc($query2, 1);
                 $row2 = $result2->readAll();
@@ -317,7 +313,7 @@ class Usergroups extends Survey_Common_Action
 
                     //	output users
                     $userloop[$row]["rowclass"] = $bgcc;
-                    if (Permission::model()->hasGlobalPermission('superadmin','update')) {
+                    if (Permission::model()->hasGlobalPermission('superadmin', 'update')) {
                         $userloop[$row]["displayactions"] = true;
                     } else {
                         $userloop[$row]["displayactions"] = false;
@@ -335,11 +331,10 @@ class Usergroups extends Survey_Common_Action
                     $aData["useraddurl"] = "";
                 }
                 $aViewUrls[] = 'viewUserGroup_view';
-            }
-            else {
+            } else {
                 //show listing
                 $aViewUrls['usergroups_view'][] = array();
-                $aData['model']  =  UserGroup::model();
+                $aData['model'] = UserGroup::model();
             }
 
 
@@ -347,25 +342,24 @@ class Usergroups extends Survey_Common_Action
 
         if ($ugid == false)
         {
-            $aData['usergroupbar']['returnbutton']['url']='admin/index';
-            $aData['usergroupbar']['returnbutton']['text']=gT('Return to admin home');
+            $aData['usergroupbar']['returnbutton']['url'] = 'admin/index';
+            $aData['usergroupbar']['returnbutton']['text'] = gT('Return to admin home');
         }
         else
         {
             $aData['usergroupbar']['edit'] = TRUE;
-            $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('admin/usergroups/sa/view');  // Close button
+            $aData['usergroupbar']['closebutton']['url'] = Yii::app()->createUrl('admin/usergroups/sa/view'); // Close button
         }
 
         if (isset($_GET['pageSize']))
         {
-            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
 
         if (!empty($header))
         {
             return array($aViewUrls, $aData);
-        }
-        else
+        } else
         {
             $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
         }
@@ -376,12 +370,12 @@ class Usergroups extends Survey_Common_Action
      */
     function user($ugid, $action = 'add')
     {
-        if (!Permission::model()->hasGlobalPermission('usergroups','read') || !in_array($action, array('add', 'remove')))
+        if (!Permission::model()->hasGlobalPermission('usergroups', 'read') || !in_array($action, array('add', 'remove')))
         {
             die('access denied');
         }
         $uid = (int) Yii::app()->request->getPost('uid');
-        if (Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (Permission::model()->hasGlobalPermission('superadmin', 'read'))
         {
             $group = UserGroup::model()->findByAttributes(array('ugid' => $ugid));
         }
@@ -391,7 +385,7 @@ class Usergroups extends Survey_Common_Action
         }
         if (empty($group))
         {
-            list($aViewUrls, $aData) = $this->index(0, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('Group not found.')));
+            list($aViewUrls, $aData) = $this->index(0, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('Group not found.')));
         }
         else
         {
@@ -399,7 +393,7 @@ class Usergroups extends Survey_Common_Action
             {
                 if ($group->owner_id == $uid)
                 {
-                    list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('You can not add or remove the group owner from the group.')));
+                    list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('You can not add or remove the group owner from the group.')));
                 }
                 else {
                     $user_in_group = UserInGroup::model()->findByPk(array('ugid' => $ugid, 'uid' => $uid));
@@ -410,10 +404,9 @@ class Usergroups extends Survey_Common_Action
                             if (empty($user_in_group) && UserInGroup::model()->insertRecords(array('ugid' => $ugid, 'uid' => $uid)))
                             {
                                 list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'success', 'message' => gT('User added.')));
-                            }
-                            else
+                            } else
                             {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to add user.') . '<br />' . gT('User already exists in the group.')));
+                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to add user.').'<br />'.gT('User already exists in the group.')));
                             }
                             break;
                         case 'remove' :
@@ -423,7 +416,7 @@ class Usergroups extends Survey_Common_Action
                             }
                             else
                             {
-                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to remove user.') . '<br />' . gT('User does not exist in the group.')));
+                                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed to remove user.').'<br />'.gT('User does not exist in the group.')));
                             }
                             break;
                     }
@@ -431,23 +424,23 @@ class Usergroups extends Survey_Common_Action
             }
             else
             {
-                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.') . '<br />' . gT('User not found.')));
+                list($aViewUrls, $aData) = $this->index($ugid, array('type' => 'warning', 'message' => gT('Failed.').'<br />'.gT('User not found.')));
             }
         }
         $this->_renderWrappedTemplate('usergroup', $aViewUrls, $aData);
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string|array $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string|array $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
     protected function _renderWrappedTemplate($sAction = 'usergroup', $aViewUrls = array(), $aData = array())
     {
         App()->getClientScript()->registerPackage('jquery-tablesorter');
-        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'users.js');
+        App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'users.js');
         $aData['display']['menu_bars']['user_group'] = true;
 
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

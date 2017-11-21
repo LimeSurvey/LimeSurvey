@@ -28,17 +28,17 @@ echo viewHelper::getViewTestTag('index');
 <div class="container-fluid welcome full-page-wrapper">
 
     <!-- Logo & Presentation -->
-    <?php if($bShowLogo):?>
+    <?php if ($bShowLogo):?>
         <div class="row">
             <div class="jumbotron" id="welcome-jumbotron">
-                <img alt="logo" src="<?php echo LOGO_URL;?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
+                <img alt="logo" src="<?php echo LOGO_URL; ?>" id="lime-logo"  class="profile-img-card img-responsive center-block" />
                 <p class="hidden-xs custom custom-margin top-25" ><?php echo PRESENTATION; // Defined in AdminController?></p>
             </div>
         </div>
-    <?php endif;?>
+    <?php endif; ?>
 
     <!-- Message when first start -->
-    <?php if($countSurveyList==0  && Permission::model()->hasGlobalPermission('surveys','create') ):?>
+    <?php if ($countSurveyList == 0 && Permission::model()->hasGlobalPermission('surveys', 'create')):?>
         <script type="text/javascript">
             $(window).load(function(){
                 $('#welcomeModal').modal('show');
@@ -72,8 +72,8 @@ echo viewHelper::getViewTestTag('index');
                         </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close');?></button>
-                      <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey") ?>" class="btn btn-primary"><?php eT('Create a new survey');?></a>
+                      <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT('Close'); ?></button>
+                      <a href="<?php echo $this->createUrl("admin/survey/sa/newsurvey") ?>" class="btn btn-primary"><?php eT('Create a new survey'); ?></a>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -82,31 +82,31 @@ echo viewHelper::getViewTestTag('index');
 
 
 
-    <?php endif;?>
+    <?php endif; ?>
 
     <!-- Last visited survey/question -->
-    <?php if( $bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
+    <?php if ($bShowLastSurveyAndQuestion && ($showLastSurvey || $showLastQuestion)): // bShowLastSurveyAndQuestion is the homepage setting, showLastSurvey & showLastQuestion are about if infos are available ?>
         <div class="row text-right">
             <div class="col-lg-9 col-sm-9  ">
                 <div class='pull-right'>
-                <?php if($showLastSurvey):?>
+                <?php if ($showLastSurvey):?>
                     <span id="last_survey" class="rotateShown">
-                    <?php eT("Last visited survey:");?>
-                    <a href="<?php echo $surveyUrl;?>" class=""><?php echo $surveyTitle;?></a>
+                    <?php eT("Last visited survey:"); ?>
+                    <a href="<?php echo $surveyUrl; ?>" class=""><?php echo $surveyTitle; ?></a>
                     </span>
                 <?php endif; ?>
 
-                <?php if($showLastQuestion):?>
+                <?php if ($showLastQuestion):?>
                     <span id="last_question" class="rotateHidden">
-                    <?php eT("Last visited question:");?>
-                    <a href="<?php echo $last_question_link;?>" class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
+                    <?php eT("Last visited question:"); ?>
+                    <a href="<?php echo $last_question_link; ?>" class=""><?php echo viewHelper::flatEllipsizeText($last_question_name, true, 60); ?></a>
                     </span>
                 <?php endif; ?>
                 </div>
                 <br/><br/>
             </div>
         </div>
-    <?php endif;?>
+    <?php endif; ?>
 
     <!-- Rendering all boxes in database -->
     <?php $this->widget('ext.PanelBoxWidget.PanelBoxWidget', array(
@@ -117,7 +117,7 @@ echo viewHelper::getViewTestTag('index');
         ));
     ?>
 
-    <?php if( $bShowSurveyList ): ?>
+    <?php if ($bShowSurveyList): ?>
         <div class="col-sm-12 list-surveys">
             <h2><?php eT('Survey list'); ?></h2>
             <?php
@@ -134,27 +134,27 @@ echo viewHelper::getViewTestTag('index');
     <div class="row  hidden-sm  hidden-md hidden-lg ">
         <div class="panel panel-primary panel-clickable" id="panel-7" data-url="/limesurvey/LimeSurveyNext/index.php/admin/survey/sa/listsurveys" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
-                <div class="panel-title"><?php eT('List surveys');?></div>
+                <div class="panel-title"><?php eT('List surveys'); ?></div>
             </div>
             <div class="panel-body">
                 <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'>
                     <span class="icon-list" style="font-size: 4em"></span>
-            <span class="sr-only"><?php eT('List surveys');?></span>
+            <span class="sr-only"><?php eT('List surveys'); ?></span>
                 </a><br><br>
-                <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'><?php eT('List surveys');?></a>
+                <a href='<?php echo $this->createUrl("admin/survey/sa/listsurveys") ?>'><?php eT('List surveys'); ?></a>
             </div>
         </div>
 
         <div class="panel panel-primary panel-clickable" id="panel-8" data-url="/limesurvey/LimeSurveyNext/index.php/admin/globalsettings" style="opacity: 1; top: 0px;">
             <div class="panel-heading">
-                <div class="panel-title"><?php eT('Edit global settings');?></div>
+                <div class="panel-title"><?php eT('Edit global settings'); ?></div>
             </div>
             <div class="panel-body">
                 <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'>
                     <span class="icon-settings" style="font-size: 4em"></span>
-                    <span class="sr-only"><?php eT('Edit global settings');?></span>
+                    <span class="sr-only"><?php eT('Edit global settings'); ?></span>
                 </a><br><br>
-                <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'><?php eT('Edit global settings');?></a>
+                <a href='<?php echo $this->createUrl("admin/globalsettings") ?>'><?php eT('Edit global settings'); ?></a>
             </div>
         </div>
 

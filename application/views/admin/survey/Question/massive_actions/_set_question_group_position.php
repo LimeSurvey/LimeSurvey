@@ -14,9 +14,9 @@
         <label class="control-label col-sm-4" for="group_gid"><?php et('Group:'); ?></label>
         <div class="col-sm-8">
             <select name="group_gid" class="form-control custom-data" id="gid">
-                <?php foreach($model->AllGroups as $group): ?>
-                    <option value="<?php echo $group->gid;?>">
-                        <?php echo flattenText($group->group_name);?>
+                <?php foreach ($model->AllGroups as $group): ?>
+                    <option value="<?php echo $group->gid; ?>">
+                        <?php echo flattenText($group->group_name); ?>
                     </option>
                 <?php endforeach?>
             </select>

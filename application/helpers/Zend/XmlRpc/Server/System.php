@@ -71,7 +71,7 @@ class Zend_XmlRpc_Server_System
         $table = $this->_server->getDispatchTable();
         if (!$table->hasMethod($method)) {
             require_once 'Zend/XmlRpc/Server/Exception.php';
-            throw new Zend_XmlRpc_Server_Exception('Method "' . $method . '" does not exist', 640);
+            throw new Zend_XmlRpc_Server_Exception('Method "'.$method.'" does not exist', 640);
         }
 
         return $table->getMethod($method)->getMethodHelp();
@@ -88,7 +88,7 @@ class Zend_XmlRpc_Server_System
         $table = $this->_server->getDispatchTable();
         if (!$table->hasMethod($method)) {
             require_once 'Zend/XmlRpc/Server/Exception.php';
-            throw new Zend_XmlRpc_Server_Exception('Method "' . $method . '" does not exist', 640);
+            throw new Zend_XmlRpc_Server_Exception('Method "'.$method.'" does not exist', 640);
         }
         $method = $table->getMethod($method)->toArray();
         return $method['prototypes'];
@@ -119,7 +119,7 @@ class Zend_XmlRpc_Server_System
             if (!is_array($method)) {
                 $fault = $this->_server->fault('system.multicall expects each method to be a struct', 601);
             } elseif (!isset($method['methodName'])) {
-                $fault = $this->_server->fault('Missing methodName: ' . var_export($methods, 1), 602);
+                $fault = $this->_server->fault('Missing methodName: '.var_export($methods, 1), 602);
             } elseif (!isset($method['params'])) {
                 $fault = $this->_server->fault('Missing params', 603);
             } elseif (!is_array($method['params'])) {

@@ -6,11 +6,11 @@
  */
 ?>
     <div class="form-group">
-            <label class=" control-label"  for='defaultlang'><?php eT("Default site language:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':''); ?></label>
+            <label class=" control-label"  for='defaultlang'><?php eT("Default site language:"); echo ((Yii::app()->getConfig("demoMode") == true) ? '*' : ''); ?></label>
             <div class="">
                     <select class="form-control"  name='defaultlang' id='defaultlang'>
             <?php
-                $actuallang=getGlobalSetting('defaultlang');
+                $actuallang = getGlobalSetting('defaultlang');
                 foreach (getLanguageData(true) as  $langkey2=>$langname)
                 {
                 ?>
@@ -67,6 +67,6 @@
     </div>
 
 
-<?php if (Yii::app()->getConfig("demoMode")==true):?>
+<?php if (Yii::app()->getConfig("demoMode") == true):?>
     <p><?php eT("Note: Demo mode is activated. Marked (*) settings can't be changed."); ?></p>
 <?php endif; ?>

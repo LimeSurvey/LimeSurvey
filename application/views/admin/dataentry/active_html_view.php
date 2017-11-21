@@ -81,10 +81,10 @@ if ($thissurvey['active'] == "Y")
                                 <?php foreach ($slangs as $lang)
                                 {
                                 if ($lang == $baselang) { ?>
-                                  <option value='<?php echo $lang; ?>' selected='selected'><?php echo getLanguageNameFromCode($lang,false); ?></option>
+                                  <option value='<?php echo $lang; ?>' selected='selected'><?php echo getLanguageNameFromCode($lang, false); ?></option>
                                   <?php }
                                 else { ?>
-                                  <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang,false); ?></option>
+                                  <option value='<?php echo $lang; ?>'><?php echo getLanguageNameFromCode($lang, false); ?></option>
                                   <?php }
                                 } ?>
                                 </select>
@@ -99,16 +99,14 @@ if ($thissurvey['active'] == "Y")
                 <input type='submit' id='submitdata' class="btn btn-default hidden" value='<?php eT("Submit"); ?>' />
                 </td>
                 </tr>
-            <?php }
-            elseif ($thissurvey['active'] == "N")
+            <?php } elseif ($thissurvey['active'] == "N")
             { ?>
                 <tr>
                 <td colspan='3' align='center'>
                 <font color='red'><strong><?php eT("This survey is not yet active. Your response cannot be saved"); ?>
                 </strong></font></td>
                 </tr>
-            <?php }
-            else
+            <?php } else
             { ?>
                 </form>
                 <tr>

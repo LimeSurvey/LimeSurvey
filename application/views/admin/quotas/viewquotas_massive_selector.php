@@ -62,7 +62,7 @@
                 array(
                     'oQuota'=>$oQuota,
                     'aQuotaLanguageSettings'=>$aQuotaLanguageSettings,
-                    ),true),
+                    ), true),
         ),
 
         // Separator

@@ -7,7 +7,7 @@
 * @var $surveyid int
 */
 ?>
-<?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+<?php $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']); ?>
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
     <h3><?php eT('Question groups in this survey'); ?></h3>
     <div class="row">
@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="form">
-                        <?php $form=$this->beginWidget('CActiveForm', array(
+                        <?php $form = $this->beginWidget('CActiveForm', array(
                             'action' => Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid),
                             'method' => 'get',
                             'htmlOptions'=>array(
@@ -30,8 +30,8 @@
                                 <?php echo $form->textField($model, 'group_name', array('class'=>'form-control')); ?>
                             </div>
                             <div class="">
-                                <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-                                <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('Reset');?></a>
+                                <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class'=>'btn btn-success')); ?>
+                                <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestiongroups/surveyid/'.$surveyid); ?>" class="btn btn-warning"><?php eT('Reset'); ?></a>
                             </div>
                         </div>
                         <?php $this->endWidget(); ?>
@@ -47,12 +47,12 @@
                         'id'=>'question-group-grid',
                         'dataProvider' => $model->search(),
                         'emptyText'=>gT('No questions groups found.'),
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
                                 Yii::app()->params['pageSizeOptions'],
-                                array(  'class'=>'changePageSize form-control',
+                                array('class'=>'changePageSize form-control',
                                     'style'=>'display: inline; width: auto'))),
 
                         // Columns to dispplay

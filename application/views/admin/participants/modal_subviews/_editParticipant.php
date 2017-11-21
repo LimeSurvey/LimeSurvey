@@ -1,6 +1,9 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <div class="modal-title h4" id="participant_edit_modal"><?php if ($editType == 'add'): eT('Add participant'); else: eT('Edit participant'); endif; ?></div>
+    <div class="modal-title h4" id="participant_edit_modal"><?php if ($editType == 'add'): eT('Add participant'); else {
+    : eT('Edit participant');
+}
+endif; ?></div>
 </div>
 <div class="modal-body edit-participant-modal-body ">
 <?php
@@ -18,9 +21,9 @@
     <?php
         echo "<legend>".gT("Basic attributes")."</legend>";
         $baseControlGroupHtmlOptions = array(
-             'labelOptions'=> array('class'=> ''),
-             'class' => '',
-             'required' => 'required'
+                'labelOptions'=> array('class'=> ''),
+                'class' => '',
+                'required' => 'required'
         );
     ?>
         <div class='form-group'>
@@ -67,9 +70,12 @@
                         <?php endforeach; ?>
 
                     <?php // When we add a user, owner is set to current owner ?>
-                    <?php else: ?>
+                    <?php else {
+    : ?>
                         <?php foreach ($users as $user): ?>
-                            <option <?php if ($model->owner_uid == $user->uid): echo ' selected="selected" '; endif; ?> value='<?php echo $user->uid; ?>'><?php echo $user->users_name; ?></option>
+                            <option <?php if ($model->owner_uid == $user->uid): echo ' selected="selected" ';
+}
+endif; ?> value='<?php echo $user->uid; ?>'><?php echo $user->users_name; ?></option>
                         <?php endforeach; ?>
                     <?php endif; ?>
 
@@ -81,7 +87,7 @@
 
     <?php if (count($extraAttributes) > 0): ?>
         <legend><?php eT("Custom attributes"); ?></legend>
-        <?php $i = 0; foreach($extraAttributes as $attribute): $i++; ?>
+        <?php $i = 0; foreach ($extraAttributes as $attribute): $i++; ?>
 
             <!-- Two inputs on each row -->
             <?php if ($i % 2 == 0): ?>

@@ -10,8 +10,8 @@
 
 <h2 class="text-danger"><?php eT("Write error!"); ?></h2>
 <?php
-	if( isset($serverAnswer->html) )
-		echo $serverAnswer->html;
+    if( isset($serverAnswer->html) )
+        echo $serverAnswer->html;
 ?>
 <p>
 	<strong><?php eT("Those files/directories are not writable:")?></strong>

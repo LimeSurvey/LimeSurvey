@@ -1,7 +1,7 @@
 <?php if( !isset($fnames[$i]['type']) ||
           (isset($fnames[$i]['type']) && $fnames[$i]['type']!='|') ||
           (isset($fnames[$i]['type']) && $fnames[$i]['type'] == '|' && $answervalue != '' )
-           ):?>
+            ):?>
 <tr <?php echo $inserthighlight; ?>>
     <th>
         <?php if(isset($fnames[$i]['code'])){ ?>
@@ -10,7 +10,7 @@
         <?php echo strip_tags(stripJavaScript($fnames[$i][1])); ?></th>
     <td>
         <?php
-          echo $answervalue; ?>
+            echo $answervalue; ?>
     </td>
 </tr>
-<?php endif;?>
+<?php endif; ?>

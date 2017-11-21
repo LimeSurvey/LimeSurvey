@@ -7,5 +7,5 @@
 ?>
 
 <!-- thead -->
-<td class="<?php echo $class; ?>"><?php echo $content;?></td>
+<td class="<?php echo $class; ?>"><?php echo $content; ?></td>
 <!-- end of thead -->

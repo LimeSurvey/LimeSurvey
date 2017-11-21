@@ -5,7 +5,7 @@
  */
 ?>
 <!DOCTYPE html>
-<html lang="<?php echo str_replace('-informal','',$adminlang); ?>"<?php echo $languageRTL;?> >
+<html lang="<?php echo str_replace('-informal', '', $adminlang); ?>"<?php echo $languageRTL; ?> >
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -42,16 +42,19 @@
         $oAdminTheme = AdminTheme::getInstance();
         $oAdminTheme->registerStylesAndScripts();
     ?>
-    <?php if(!YII_DEBUG ||  Yii::app()->getConfig('use_asset_manager')): ?>
+    <?php if (!YII_DEBUG || Yii::app()->getConfig('use_asset_manager')): ?>
         <!-- Debug mode is off, so the asset manager will be used-->
-    <?php else: ?>
+    <?php else {
+    : ?>
         <!-- Debug mode is on, so the asset manager will not be used -->
-    <?php endif; ?>
+    <?php endif;
+}
+?>
 
-    <?php echo $datepickerlang;?>
-    <title><?php echo $sitename;?></title>
-    <link rel="shortcut icon" href="<?php echo $baseurl;?>assets/styles-admin/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="<?php echo $baseurl;?>assets/styles-admin/favicon.ico" type="image/x-icon" />
+    <?php echo $datepickerlang; ?>
+    <title><?php echo $sitename; ?></title>
+    <link rel="shortcut icon" href="<?php echo $baseurl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="<?php echo $baseurl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
     <?php echo $firebug ?>
     <?php $this->widget('ext.LimeScript.LimeScript'); ?>
     <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
@@ -70,7 +73,7 @@
 
 <script type='text/javascript'>
 var frameSrc = "/login";
-    <?php if(isset($formatdata)):?>
+    <?php if (isset($formatdata)):?>
     var userdateformat='<?php echo $formatdata['jsdate']; ?>';
     var userlanguage='<?php echo $adminlang; ?>';
     <?php endif; ?>

@@ -3,13 +3,13 @@
 /* @var $model Tutorials */
 
 $this->breadcrumbs=array(
-	'Tutorials'=>array('index'),
-	'Manage',
+    'Tutorials'=>array('index'),
+    'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List Tutorials', 'url'=>array('index')),
-	array('label'=>'Create Tutorials', 'url'=>array('create')),
+    array('label'=>'List Tutorials', 'url'=>array('index')),
+    array('label'=>'Create Tutorials', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -36,23 +36,23 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 <?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
-	'model'=>$model,
+    'model'=>$model,
 )); ?>
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'tutorials-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-	'columns'=>array(
-		'tid',
-		'name',
-		'description',
-		'active',
-		'permission',
-		'permission_grade',
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
+    'id'=>'tutorials-grid',
+    'dataProvider'=>$model->search(),
+    'filter'=>$model,
+    'columns'=>array(
+        'tid',
+        'name',
+        'description',
+        'active',
+        'permission',
+        'permission_grade',
+        array(
+            'class'=>'CButtonColumn',
+        ),
+    ),
 )); ?>

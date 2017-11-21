@@ -19,13 +19,13 @@
 <!-- Date, selector layout -->
 
 <!-- answer -->
-<div class='<?php echo $coreClass;?> form-group form-inline'>
-    <label for='answer<?php echo $name;?>' class='sr-only control-label'>
+<div class='<?php echo $coreClass; ?> form-group form-inline'>
+    <label for='answer<?php echo $name; ?>' class='sr-only control-label'>
         <?php echo sprintf(gT('Date in the format: %s'), $dateformatdetails); ?>
     </label>
-    <div id="answer<?php echo $name; ?>_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="<?php echo $name;?>"><!-- data-basename used in js function -->
-        <?php echo CHtml::textField($name,$dateoutput,array(
-            'id' => "answer" . $name,
+    <div id="answer<?php echo $name; ?>_datetimepicker" class="input-group answer-item date-timepicker-group" data-basename="<?php echo $name; ?>"><!-- data-basename used in js function -->
+        <?php echo CHtml::textField($name, $dateoutput, array(
+            'id' => "answer".$name,
             'class'=>"form-control date-control date",
             'aria-describedby' => "ls-question-text-{$name}",
         )); ?>
@@ -56,7 +56,7 @@
     );
     $jsonOptions=json_encode($aJsonOption);
     App()->getClientScript()->registerScript("doDatetimepicker{$name}","jQuery('#answer{$name}_datetimepicker').datetimepicker({$jsonOptions});",CClientScript::POS_END);
-     // Min and max date sets default value, so use this to override it
+        // Min and max date sets default value, so use this to override it
     App()->getClientScript()->registerScript("resetDate{$name}","$('#answer{$name}').val('{$dateoutput}');;",CClientScript::POS_END);
     ?>
 <!-- end of answer -->

@@ -1,5 +1,7 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * Offer some way to validate Expression in survey
 *
@@ -11,17 +13,17 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 class ExpressionValidate extends Survey_Common_Action {
 
     /**
-    * @var string : Default layout is popup : less header, no footer
-    */
+     * @var string : Default layout is popup : less header, no footer
+     */
     public $layout = 'popup';
 
     /**
-    * @var integer : The survey id to start to fill know vars
-    */
+     * @var integer : The survey id to start to fill know vars
+     */
     private $iSurveyId;
     /**
-    * @var string : The language for the survey
-    */
+     * @var string : The language for the survey
+     */
     private $sLang;
 
     public function index()
@@ -30,25 +32,25 @@ class ExpressionValidate extends Survey_Common_Action {
     }
 
     /**
-    * Check the Expression in quota
-    * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
-    * @param integer $quota : the quota id
-    * @param string $lang : the survey language, optional : if not set get all language of survey
-    *
-    * @author Denis Chenu
-    * @version 1.0
-    */
+     * Check the Expression in quota
+     * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
+     * @param integer $quota : the quota id
+     * @param string $lang : the survey language, optional : if not set get all language of survey
+     *
+     * @author Denis Chenu
+     * @version 1.0
+     */
     public function quota($iSurveyId,$quota,$lang=null)
     {
-        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','read'))
-            throw new CHttpException(401,"401 Unauthorized");
+        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','read')) {
+                    throw new CHttpException(401,"401 Unauthorized");
+        }
         $iQuotaId=$quota;
         if(is_string($lang))
         {
             $oValidator= new LSYii_Validators;
             $aLangs=array($oValidator->languageFilter($lang));
-        }
-        else
+        } else
         {
             $aLangs = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
         }
@@ -88,17 +90,18 @@ class ExpressionValidate extends Survey_Common_Action {
         $this->getController()->render("/admin/expressions/validationList", $aData);
     }
     /**
-    * Check the Expression in email
-    * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
-    * @param string $lang : the mail language
-    *
-    * @author Denis Chenu
-    * @version 1.1
-    */
+     * Check the Expression in email
+     * @param integer $iSurveyId : the survey id : can be sid/surveyid url GET parameters
+     * @param string $lang : the mail language
+     *
+     * @author Denis Chenu
+     * @version 1.1
+     */
     public function email($iSurveyId,$lang)
     {
-        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'read'))
-            throw new CHttpException(401,"401 Unauthorized");
+        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'read')) {
+                    throw new CHttpException(401,"401 Unauthorized");
+        }
         $sType=Yii::app()->request->getQuery('type');
         $this->sLang=$sLang=$lang;
         $this->iSurveyId=$iSurveyId; // This start the survey before Expression : is this allways needed ?
@@ -165,17 +168,17 @@ class ExpressionValidate extends Survey_Common_Action {
                 ),
             ),
         );
-        $aSurveyInfo=getSurveyInfo($iSurveyId,$sLang);
+        $aSurveyInfo = getSurveyInfo($iSurveyId, $sLang);
         // Replaced before email edit
-        $aReplacement=array(
+        $aReplacement = array(
             'ADMINNAME'=> $aSurveyInfo['admin'],
             'ADMINEMAIL'=> $aSurveyInfo['adminemail'],
         );
         // Not needed : templatereplace do the job : but this can/must be fixed for invitaton/reminder/registration (#9424)
         $aReplacement["SURVEYNAME"] = gT("Name of the survey");
-        $aReplacement["SURVEYDESCRIPTION"] =  gT("Description of the survey");
+        $aReplacement["SURVEYDESCRIPTION"] = gT("Description of the survey");
         // Replaced when sending email with Survey
-        $aAttributes = getTokenFieldsAndNames($iSurveyId,true);
+        $aAttributes = getTokenFieldsAndNames($iSurveyId, true);
         $aReplacement["TOKEN"] = gT("Token code for this participant");
         $aReplacement["TOKEN:EMAIL"] = gT("Email from the token");
         $aReplacement["TOKEN:FIRSTNAME"] = gT("First name from token");
@@ -184,7 +187,7 @@ class ExpressionValidate extends Survey_Common_Action {
         $aReplacement["TOKEN:LANGUAGE"] = gT("language of token");
         foreach ($aAttributes as $sAttribute=>$aAttribute)
         {
-            $aReplacement['TOKEN:'.strtoupper($sAttribute).'']=sprintf(gT("Token attribute: %s"), $aAttribute['description']);
+            $aReplacement['TOKEN:'.strtoupper($sAttribute).''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
         }
 
         switch ($sType)
@@ -202,7 +205,7 @@ class ExpressionValidate extends Survey_Common_Action {
                 $aReplacement["SURVEYURL"] = gT("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute)
                 {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
+                    $aReplacement[''.strtoupper($sAttribute).''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
                 }
                 break;
             case 'confirmation' :
@@ -212,7 +215,7 @@ class ExpressionValidate extends Survey_Common_Action {
                 $aReplacement["SURVEYURL"] = gT("URL of the survey");
                 foreach ($aAttributes as $sAttribute=>$aAttribute)
                 {
-                    $aReplacement['' . strtoupper($sAttribute) . ''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
+                    $aReplacement[''.strtoupper($sAttribute).''] = sprintf(gT("Token attribute: %s"), $aAttribute['description']);
                 }
                 // $moveResult = LimeExpressionManager::NavigateForwards(); // Seems OK without, nut need $LEM::StartSurvey
                 break;
@@ -226,41 +229,41 @@ class ExpressionValidate extends Survey_Common_Action {
                 // $moveResult = LimeExpressionManager::NavigateForwards(); // Seems OK without, nut need $LEM::StartSurvey
                 break;
             default:
-                throw new CHttpException(400,gT('Invalid type.'));
+                throw new CHttpException(400, gT('Invalid type.'));
                 break;
         }
 
-        $aData=array();
+        $aData = array();
         //$oSurveyLanguage=SurveyLanguageSetting::model()->find("surveyls_survey_id=:sid and surveyls_language=:language",array(":sid"=>$iSurveyId,":language"=>$sLang));
-        $aExpressions=array();
-        foreach($aTypeAttributes[$sType] as $key=>$aAttribute)
+        $aExpressions = array();
+        foreach ($aTypeAttributes[$sType] as $key=>$aAttribute)
         {
-            $sAttribute=$aAttribute['attribute'];
+            $sAttribute = $aAttribute['attribute'];
             // Email send do : templatereplace + ReplaceField to the Templatereplace done : we need 2 in one
             // $LEM::ProcessString($oSurveyLanguage->$sAttribute,null,$aReplacement,false,1,1,false,false,true); // This way : ProcessString don't replace coreReplacements
-            $aExpressions[$key]=array(
+            $aExpressions[$key] = array(
                 'title'=>$aAttribute['title'],
-                'expression'=> $this->getHtmlExpression($aSurveyInfo[$sAttribute],$aReplacement,__METHOD__),
+                'expression'=> $this->getHtmlExpression($aSurveyInfo[$sAttribute], $aReplacement, __METHOD__),
             );
         }
-        $aData['aExpressions']=$aExpressions;
-        $this->getController()->layout=$this->layout;
-        $this->getController()->pageTitle=sprintf(gT("Validate expression in email : %s"),$sType);
+        $aData['aExpressions'] = $aExpressions;
+        $this->getController()->layout = $this->layout;
+        $this->getController()->pageTitle = sprintf(gT("Validate expression in email : %s"), $sType);
 
         $this->getController()->render("/admin/expressions/validationList", $aData);
     }
 
     /**
-    * Get the complete HTML from a string
-    * @param string $sExpression : the string to parse
-    * @param array $aReplacement : optionnal array of replacemement
-    * @param string $sDebugSource : optionnal debug source (for templatereplace)
-    * @uses ExpressionValidate::$iSurveyId
-    * @uses ExpressionValidate::$sLang
-    *
-    * @author Denis Chenu
-    * @version 1.0
-    */
+     * Get the complete HTML from a string
+     * @param string $sExpression : the string to parse
+     * @param array $aReplacement : optionnal array of replacemement
+     * @param string $sDebugSource : optionnal debug source (for templatereplace)
+     * @uses ExpressionValidate::$iSurveyId
+     * @uses ExpressionValidate::$sLang
+     *
+     * @author Denis Chenu
+     * @version 1.0
+     */
     private function getHtmlExpression($sExpression,$aReplacement=array(),$sDebugSource=__CLASS__)
     {
         $LEM =LimeExpressionManager::singleton();

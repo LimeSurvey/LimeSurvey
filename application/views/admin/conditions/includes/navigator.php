@@ -1,5 +1,5 @@
 <div class="form-group pull-right">
-    <label for='questionNav'><?php eT("Move to question:");?></label>
+    <label for='questionNav'><?php eT("Move to question:"); ?></label>
     <select id='questionNav' class="form-control"  onchange="window.open(this.options[this.selectedIndex].value,'_top')">
 
         <optgroup class='activesurveyselect' label='<?php eT("Before"); ?>' >

@@ -16,7 +16,7 @@
     id="answer<?php echo $name; ?>"
     value=""
     <?php echo $check_ans; ?>
-    onclick="if (document.getElementById('answer<?php echo $name;?>othertext') != null) document.getElementById('answer<?php echo $name; ?>othertext').value='';<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
+    onclick="if (document.getElementById('answer<?php echo $name; ?>othertext') != null) document.getElementById('answer<?php echo $name; ?>othertext').value='';<?php echo $checkconditionFunction; ?>(this.value, this.name, this.type)"
     />
     <label for="answer<?php echo $name; ?>" class="control-label radio-label">
         <?php echo eT('No answer'); ?>

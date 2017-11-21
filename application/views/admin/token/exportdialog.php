@@ -3,7 +3,7 @@
     <h3><?php eT("Survey participant export options"); ?></h3>
     <div class="row">
         <div class="col-lg-12 content-right">
-            <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post',array('class'=>'form-core settingswidget ','id'=>'bouncesettings','name'=>'frmeditquestion')); ?>
+            <?php echo CHtml::form(array("admin/tokens/sa/exportdialog/surveyid/$surveyid"), 'post', array('class'=>'form-core settingswidget ', 'id'=>'bouncesettings', 'name'=>'frmeditquestion')); ?>
                 <div class="settings-list">
 
                     <!--Survey status -->
@@ -30,13 +30,13 @@
                         <div class="default controls">
                             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                 'name' => 'invitationstatus',
-                                'value'=> 0 ,
+                                'value'=> 0,
                                 'selectOptions'=>array(
-                                    "0"=>gT("All",'unescaped'),
-                                    "1"=>gT("Invited",'unescaped'),
-                                    "2"=>gT("Not invited",'unescaped')
+                                    "0"=>gT("All", 'unescaped'),
+                                    "1"=>gT("Invited", 'unescaped'),
+                                    "2"=>gT("Not invited", 'unescaped')
                                 )
-                            ));?>
+                            )); ?>
                         </div>
                     </div>
 
@@ -48,13 +48,13 @@
                         <div class="default controls">
                             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                                 'name' => 'reminderstatus',
-                                'value'=> 0 ,
+                                'value'=> 0,
                                 'selectOptions'=>array(
-                                    "0"=>gT("All",'unescaped'),
-                                    "1"=>gT("Reminder(s) sent",'unescaped'),
-                                    "2"=>gT("No reminder(s) sent",'unescaped')
+                                    "0"=>gT("All", 'unescaped'),
+                                    "1"=>gT("Reminder(s) sent", 'unescaped'),
+                                    "2"=>gT("No reminder(s) sent", 'unescaped')
                                 )
-                            ));?>
+                            )); ?>
                         </div>
                     </div>
 

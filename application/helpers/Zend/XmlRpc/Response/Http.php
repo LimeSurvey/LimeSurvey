@@ -43,7 +43,7 @@ class Zend_XmlRpc_Response_Http extends Zend_XmlRpc_Response
     public function __toString()
     {
         if (!headers_sent()) {
-            header('Content-Type: text/xml; charset=' . strtolower($this->getEncoding()));
+            header('Content-Type: text/xml; charset='.strtolower($this->getEncoding()));
         }
 
         return parent::__toString();

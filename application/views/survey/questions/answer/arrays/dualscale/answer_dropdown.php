@@ -2,7 +2,6 @@
 
 /**
  * Dual-scale array with dropdown representation
-
  * @var $answerwidth
  * @var $cellwidth
  * @var $ddprefix
@@ -21,7 +20,7 @@
     <col class="dsheader"  style='width: <?php echo $cellwidth; ?>%;' />
 </colgroup>
 <!-- Header -->
-<?php if ($leftheader != '' || $rightheader !=''): ?>
+<?php if ($leftheader != '' || $rightheader != ''): ?>
     <thead>
         <tr class="ls-heading">
             <td></td>
@@ -38,7 +37,7 @@
 
     <?php foreach ($aSubQuestions as $ansrow): ?>
         <!-- <tr> -->
-        <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php if($ansrow['mandatoryviolation']){ echo " ls-error-mandatory";} ?>">
+        <tr id="javatbd<?php echo $ansrow['myfname']; ?>" role="group" class="answers-list radio-list <?php echo ($ansrow['odd']) ? "ls-odd" : "ls-even"; ?><?php if ($ansrow['mandatoryviolation']) { echo " ls-error-mandatory"; } ?>">
             <!-- Answer text (actual question) -->
 
             <th id="answertext<?php echo $ansrow['myfname']; ?>" class="answertext control-label<?php echo ($ansrow['mandatoryviolation']) ? " text-danger" : ""; ?>">
@@ -47,11 +46,11 @@
                 </label>
                 <?php
                 /* Value for expression manager javascript (use id) ; no need to submit */
-                echo \CHtml::hiddenField("java{$ansrow['myfid0']}",$ansrow['sActualAnswer0'],array(
+                echo \CHtml::hiddenField("java{$ansrow['myfid0']}", $ansrow['sActualAnswer0'], array(
                     'id' => "java{$ansrow['myfid0']}",
                     'disabled' => true,
                 ));
-                echo \CHtml::hiddenField("java{$ansrow['myfid1']}",$ansrow['sActualAnswer1'],array(
+                echo \CHtml::hiddenField("java{$ansrow['myfid1']}", $ansrow['sActualAnswer1'], array(
                     'id' => "java{$ansrow['myfid1']}",
                     'disabled' => true,
                 ));
@@ -60,7 +59,7 @@
 
             <!-- First dropdown -->
 
-            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation'] && $ansrow['sActualAnswer0']==='') ? " has-error" : ""; ?>">
+            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation'] && $ansrow['sActualAnswer0'] === '') ? " has-error" : ""; ?>">
                 <?php if ($leftheader != '') : ?>
                     <div  class='visible-xs leftheader control-label'><?php echo $leftheader; ?></div>
                 <?php endif; ?>
@@ -119,7 +118,7 @@
 
             <!-- Second dropdown -->
 
-            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation'] && $ansrow['sActualAnswer1']==='') ? " has-error" : ""; ?>">
+            <td class="answer-item dropdown-item<?php echo ($ansrow['mandatoryviolation'] && $ansrow['sActualAnswer1'] === '') ? " has-error" : ""; ?>">
                 <?php if ($rightheader != '') : ?>
                     <div  class='visible-xs rightheader control-label'><?php echo $rightheader; ?></div>
                 <?php endif; ?>

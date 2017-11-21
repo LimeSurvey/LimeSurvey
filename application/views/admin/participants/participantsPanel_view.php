@@ -1,4 +1,4 @@
-<script src="<?php echo Yii::app()->getConfig('adminscripts') . "participantpanel.js" ?>" type="text/javascript"></script>
+<script src="<?php echo Yii::app()->getConfig('adminscripts')."participantpanel.js" ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
     var exporttocsvcountall = "<?php echo Yii::app()->getController()->createUrl("/admin/participants/sa/exporttocsvcountAll"); ?>";
@@ -40,7 +40,7 @@
                     "nextCentury" => gT('Next century')
                 )
             )
-        ));?>;
+        )); ?>;
 </script>
 <div class="menubar surveymanagerbar">
     <div class="row container-fluid">
@@ -56,63 +56,63 @@
             <!-- Display participants -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/displayParticipants"); ?>" role="button">
                 <span class="fa fa-list text-success"></span>
-                <?php eT("Display CPDB participants");?>
+                <?php eT("Display CPDB participants"); ?>
             </a>
 
             <!-- Information -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/index"); ?>" role="button">
                 <span class="fa fa-list-alt text-success" ></span>
-                <?php eT("Info");?>
+                <?php eT("Info"); ?>
             </a>
 
             <!-- Import from CSV file -->
             <?php
-            if (Permission::model()->hasGlobalPermission('participantpanel','import')): ?>
+            if (Permission::model()->hasGlobalPermission('participantpanel', 'import')): ?>
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/importCSV"); ?>" role="button">
                     <span class="icon-importcsv text-success"></span>
-                    <?php eT("Import");?>
+                    <?php eT("Import"); ?>
                 </a>
-                <?php endif;?>
+                <?php endif; ?>
 
 
             <!-- Export to CSV file -->
             <?php
-            if (Permission::model()->hasGlobalPermission('participantpanel','export')): ?>
+            if (Permission::model()->hasGlobalPermission('participantpanel', 'export')): ?>
                 <?php if (isset($totalrecords) && $totalrecords > 0): ?>
                     <a id="export" class="btn btn-default" href="#" role="button">
                         <span class="icon-exportcsv text-success"></span>
-                        <?php eT("Export");?>
+                        <?php eT("Export"); ?>
                     </a>
                     <?php else:?>
-                    <span  title="<?php eT('No participants');?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
+                    <span  title="<?php eT('No participants'); ?>" data-toggle="tooltip" data-placement="bottom" style="display: inline-block">
                         <a id="export" class="btn btn-default disabled" role="button">
                             <span class="icon-exportcsv text-success"></span>
-                            <?php eT("Export");?>
+                            <?php eT("Export"); ?>
                         </a>
                     </span>
-                    <?php endif;?>
-                <?php endif;?>
+                    <?php endif; ?>
+                <?php endif; ?>
 
-            <?php if (Permission::model()->hasGlobalPermission('superadmin','read')):?>
+            <?php if (Permission::model()->hasGlobalPermission('superadmin', 'read')):?>
 
                 <!-- Global participant settings -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/blacklistControl"); ?>" role="button">
                     <span class="icon-global text-success"></span>
-                    <?php eT("Blacklist settings");?>
+                    <?php eT("Blacklist settings"); ?>
                 </a>
 
                 <!-- Attribute management -->
                 <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/attributeControl"); ?>" role="button">
                     <span class="fa fa-tag text-success"></span>
-                    <?php eT("Attributes");?>
+                    <?php eT("Attributes"); ?>
                 </a>
 
-            <?php endif;?>
+            <?php endif; ?>
 
             <!-- Share panel -->
             <a class="btn btn-default" href="<?php echo $this->createUrl("admin/participants/sa/sharePanel"); ?>" role="button">
                 <span class="fa fa-share text-success"></span>
-                <?php eT("Share panel");?>
+                <?php eT("Share panel"); ?>
             </a>
 
         </div>
@@ -141,7 +141,7 @@
 
 
 <div id='exportcsvallprocessing' title='exportcsvall' style='display:none'>
-    <p><?php eT('Please wait, loading data...');?></p>
+    <p><?php eT('Please wait, loading data...'); ?></p>
     <div class="preloader loading">
         <span class="slice"></span>
         <span class="slice"></span>
@@ -179,13 +179,13 @@
             <div class="modal-body">
                 <div class="form ">
                     <div class='form-group'>
-                        <label class='control-label col-sm-4' for='attributes'><?php eT('Attributes to export:');?></label>
+                        <label class='control-label col-sm-4' for='attributes'><?php eT('Attributes to export:'); ?></label>
                         <div class='col-sm-8'>
                             <select id="attributes" name="attributes" multiple="multiple" style='width: 350px' size=7>
                                 <?php
                                 foreach ($aAttributes as $value)
                                 {
-                                    echo "<option value=" . $value['attribute_id'] . ">" . $value['defaultname'] . "</option>\n";
+                                    echo "<option value=".$value['attribute_id'].">".$value['defaultname']."</option>\n";
                                 }
                                 ?>
                             </select>

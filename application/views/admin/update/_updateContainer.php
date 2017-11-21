@@ -23,9 +23,9 @@ echo viewHelper::getViewTestTag('update');
     <h3>
         <span id="comfortUpdateIcon" class="icon-shield text-success"></span>
         <?php eT('ComfortUpdate'); ?>
-        <?php if(YII_DEBUG):?>
-            <small>server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url");?></em></small>
-        <?php endif;?>
+        <?php if (YII_DEBUG):?>
+            <small>server:<em class="text-warning"> <?php echo Yii::app()->getConfig("comfort_update_server_url"); ?></em></small>
+        <?php endif; ?>
     </h3>
 
     <div class="row">
@@ -35,12 +35,11 @@ echo viewHelper::getViewTestTag('update');
                 <!-- The check buttons : render by ajax only if no step is required by url or post -->
                 <?php // $this->renderPartial("./update/check_updates/_checkButtons", array( "thisupdatecheckperiod"=>$thisupdatecheckperiod, "updatelastcheck"=>$updatelastcheck,"UpdateNotificationForBranch"=>$UpdateNotificationForBranch )); ?>
                 <?php
-                    if( $serverAnswer->result )
+                    if ($serverAnswer->result)
                     {
                         unset($serverAnswer->result);
                         $this->renderPartial('./update/check_updates/update_buttons/_updatesavailable', array('updateInfos' => $serverAnswer));
-                    }
-                    else
+                    } else
                     {
                         // Error : we build the error title and messages
                         $this->renderPartial('./update/check_updates/update_buttons/_updatesavailable_error', array('serverAnswer' => $serverAnswer));

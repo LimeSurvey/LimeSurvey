@@ -25,13 +25,13 @@
     <div class="answer-item dropdown-item col-sm-6 col-xs-12">
         <select
                 class="select form-control"
-                name="<?php echo $name;?>"
-                id="<?php echo $id;?>"
-                <?php if($show_noanswer):?>
+                name="<?php echo $name; ?>"
+                id="<?php echo $id; ?>"
+                <?php if ($show_noanswer):?>
                     <option class="noanswer-item" value="" SELECTED>
-                        <?php eT('Please choose...');?>
+                        <?php eT('Please choose...'); ?>
                     </option>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php
                     // rows/option.php
@@ -39,17 +39,17 @@
                 ?>
         </select>
         <!-- Input copy for EM : default is radio and EM use id -->
-        <input type="hidden" name="java<?php echo $name?>" id="java<?php echo $name?>" value="<?php echo $value;?>" disabled />
+        <input type="hidden" name="java<?php echo $name?>" id="java<?php echo $name?>" value="<?php echo $value; ?>" disabled />
     </div>
 
     <div class="answer-item text-item col-sm-6 col-xs-12">
-        <label for="answer<?php echo $name ;?>comment">
-            <?php echo $label_text;?>:
+        <label for="answer<?php echo $name; ?>comment">
+            <?php echo $label_text; ?>:
         </label>
         <textarea
             class="form-control textarea <?php echo $kpclass; ?>"
-            name="<?php echo $name;?>comment"
-            id="answer<?php echo $name ;?>comment"
+            name="<?php echo $name; ?>comment"
+            id="answer<?php echo $name; ?>comment"
             rows="<?php echo $tarows; ?>"
             cols="<?php echo $maxoptionsize; ?>"
         ><?php echo $comment_saved; ?></textarea>

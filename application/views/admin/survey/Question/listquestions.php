@@ -1,16 +1,16 @@
 <?php
-   /**
-    * This file render the list of groups
-    */
+    /**
+     * This file render the list of groups
+     */
 ?>
-<?php $pageSize=Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);?>
+<?php $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']); ?>
 
 <div class='side-body <?php echo getSideBodyClass(true); ?>'>
-    <?php if(App()->request->getParam('group_name')!=''):?>
+    <?php if (App()->request->getParam('group_name') != ''):?>
         <h3><?php eT('Questions in group: '); ?> <em><?php echo App()->request->getParam('group_name'); ?></em></h3>
     <?php else:?>
         <h3><?php eT('Questions in this survey'); ?></h3>
-    <?php endif;?>
+    <?php endif; ?>
 
 
     <div class="row">
@@ -21,7 +21,7 @@
                 <div class="col-lg-12">
                     <div class="form  text-right">
                         <!-- Begin Form -->
-                        <?php $form=$this->beginWidget('CActiveForm', array(
+                        <?php $form = $this->beginWidget('CActiveForm', array(
                             'action' => Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid),
                             'method' => 'get',
                                 'htmlOptions'=>array(
@@ -31,25 +31,25 @@
 
                             <!-- search input -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'search', array('label'=>gT('Search:'),'class'=>'control-label' )); ?>
+                                <?php echo $form->label($model, 'search', array('label'=>gT('Search:'), 'class'=>'control-label')); ?>
                                 <?php echo $form->textField($model, 'title', array('class'=>'form-control')); ?>
                             </div>
 
                             <!-- select group -->
                             <div class="form-group">
-                                <?php echo $form->label($model, 'group', array('label'=>gT('Group:'),'class'=>'control-label')); ?>
+                                <?php echo $form->label($model, 'group', array('label'=>gT('Group:'), 'class'=>'control-label')); ?>
                                     <select name="gid" class="form-control">
-                                        <option value=""><?php eT('(Any group)');?></option>
-                                        <?php foreach($model->AllGroups as $group): ?>
-                                            <option value="<?php echo $group->gid;?>" <?php if( $group->gid == $model->gid){echo 'selected';} ?>>
-                                                <?php echo flattenText($group->group_name);?>
+                                        <option value=""><?php eT('(Any group)'); ?></option>
+                                        <?php foreach ($model->AllGroups as $group): ?>
+                                            <option value="<?php echo $group->gid; ?>" <?php if ($group->gid == $model->gid) {echo 'selected'; } ?>>
+                                                <?php echo flattenText($group->group_name); ?>
                                             </option>
                                         <?php endforeach?>
                                     </select>
                             </div>
 
-                            <?php echo CHtml::submitButton(gT('Search','unescaped'), array('class'=>'btn btn-success')); ?>
-                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid);?>" class="btn btn-warning"><?php eT('Reset');?></a>
+                            <?php echo CHtml::submitButton(gT('Search', 'unescaped'), array('class'=>'btn btn-success')); ?>
+                            <a href="<?php echo Yii::app()->createUrl('admin/survey/sa/listquestions/surveyid/'.$surveyid); ?>" class="btn btn-warning"><?php eT('Reset'); ?></a>
 
                         <?php $this->endWidget(); ?>
                     </div><!-- form -->
@@ -106,7 +106,7 @@
                                 'type' => 'raw',
                                 'name' => 'mandatory',
                                 'value'=> '$data->mandatoryIcon',
-                                 'htmlOptions' => array('class' => 'text-center'),
+                                    'htmlOptions' => array('class' => 'text-center'),
                             ),
 
                             array(
@@ -114,7 +114,7 @@
                                 'type' => 'raw',
                                 'name' => 'other',
                                 'value'=> '$data->otherIcon',
-                                 'htmlOptions' => array('class' => 'text-center'),
+                                    'htmlOptions' => array('class' => 'text-center'),
                             ),
 
 
@@ -139,7 +139,7 @@
                         'type'=>'striped',
                         'emptyText'=>gT('No questions found.'),
                         'template'      => "{items}\n<div id='ListPager'><div class=\"col-sm-4\" id=\"massive-action-container\">$massiveAction</div><div class=\"col-sm-4 pager-container \">{pager}</div><div class=\"col-sm-4 summary-container\">{summary}</div></div>",
-                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).') .' '.sprintf(gT('%s rows per page'),
+                        'summaryText'=>gT('Displaying {start}-{end} of {count} result(s).').' '.sprintf(gT('%s rows per page'),
                             CHtml::dropDownList(
                                 'pageSize',
                                 $pageSize,
@@ -172,13 +172,13 @@ jQuery(document).on("change", '#pageSize', function(){
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><?php eT("Question preview");?></h4>
+        <h4 class="modal-title" id="myModalLabel"><?php eT("Question preview"); ?></h4>
       </div>
       <div class="modal-body">
           <iframe id="frame-question-preview" src="" style="zoom:0.60" width="99.6%" height="600" frameborder="0"></iframe>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close");?></button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php eT("Close"); ?></button>
       </div>
     </div>
   </div>

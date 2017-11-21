@@ -48,7 +48,7 @@ class Zend_XmlRpc_Value_Boolean extends Zend_XmlRpc_Value_Scalar
         $this->_type = self::XMLRPC_TYPE_BOOLEAN;
         // Make sure the value is boolean and then convert it into a integer
         // The double convertion is because a bug in the ZendOptimizer in PHP version 5.0.4
-        $this->_value = (int)(bool)$value;
+        $this->_value = (int) (bool) $value;
     }
 
     /**
@@ -58,6 +58,6 @@ class Zend_XmlRpc_Value_Boolean extends Zend_XmlRpc_Value_Scalar
      */
     public function getValue()
     {
-        return (bool)$this->_value;
+        return (bool) $this->_value;
     }
 }

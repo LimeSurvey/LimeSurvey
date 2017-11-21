@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -42,8 +42,7 @@ function getGlobalSetting($settingname)
         {
             Yii::app()->setConfig($settingname, null);
             $dbvalue = '';
-        }
-        else
+        } else
         {
             $dbvalue = $dbvalue->getAttribute('stg_value');
         }
@@ -62,7 +61,7 @@ function getGlobalSetting($settingname)
 
 function setGlobalSetting($settingname, $settingvalue)
 {
-    if (Yii::app()->getConfig("demoMode")==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
+    if (Yii::app()->getConfig("demoMode") == true && ($settingname == 'sitename' || $settingname == 'defaultlang' || $settingname == 'defaulthtmleditormode' || $settingname == 'filterxsshtml'))
     {
         return; //don't save
     }
@@ -71,8 +70,7 @@ function setGlobalSetting($settingname, $settingvalue)
     {
         $record->stg_value = $settingvalue;
         $record->save();
-    }
-    else
+    } else
     {
         $record = new SettingGlobal;
         $record->stg_name = $settingname;

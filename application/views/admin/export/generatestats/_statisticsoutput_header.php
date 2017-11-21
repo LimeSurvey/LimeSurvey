@@ -10,14 +10,14 @@
 ?>
 <!-- _statisticsoutput_header -->
 <div class="col-lg-<?php echo $nbcols; ?> sol-sm-12 printable" >
-<table class='statisticstable table table-bordered printable' id="quid_<?php echo $outputs['parentqid'];?>">
+<table class='statisticstable table table-bordered printable' id="quid_<?php echo $outputs['parentqid']; ?>">
     <thead>
         <tr class='success'>
             <th colspan='4' align='center' style='text-align: center; '>
                 <strong>
-                    <?php echo sprintf(gT("Field summary for %s"),$outputs['qtitle']); ?>
+                    <?php echo sprintf(gT("Field summary for %s"), $outputs['qtitle']); ?>
                 </strong>
-                <button class="pull-right action_js_export_to_pdf btn btn-default btn-sm" data-question-id="quid_<?php echo $outputs['parentqid'];?>" data-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>">
+                <button class="pull-right action_js_export_to_pdf btn btn-default btn-sm" data-question-id="quid_<?php echo $outputs['parentqid']; ?>" data-toggle="tooltip" title="<?php eT('Export this question to PDF.'); ?>">
                     <i class="fa fa-file-pdf-o"></i>
                 </button>
             </th>
@@ -26,7 +26,7 @@
             <th colspan='4' align='center' style='text-align: center; '>
                 <!-- question title -->
                 <strong>
-                    <?php echo $outputs['qquestion'];?>
+                    <?php echo $outputs['qquestion']; ?>
                 </strong>
             </th>
         </tr>
@@ -34,26 +34,26 @@
         <tr>
             <th width='' align='center' >
                 <strong>
-                    <?php eT("Answer");?>
+                    <?php eT("Answer"); ?>
                 </strong>
             </th>
 
-            <?php if ($bShowCount  = true): ?>
+            <?php if ($bShowCount = true): ?>
                 <th width='' align='center' >
                     <strong><?php eT("Count"); ?></strong>
                 </th>
-            <?php endif;?>
+            <?php endif; ?>
 
-            <?php if ($bShowPercentage  = true): ?>
+            <?php if ($bShowPercentage = true): ?>
                 <th width='' align='center' >
-                    <strong><?php eT("Percentage");?></strong>
+                    <strong><?php eT("Percentage"); ?></strong>
                 </th>
-            <?php endif;?>
+            <?php endif; ?>
 
-            <?php if($bSum): ?>
+            <?php if ($bSum): ?>
                 <th width='' align='center' >
                     <strong>
-                        <?php eT("Sum");?>
+                        <?php eT("Sum"); ?>
                     </strong>
                 </th>
             <?php endif; ?>

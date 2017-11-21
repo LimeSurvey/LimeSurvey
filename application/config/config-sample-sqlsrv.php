@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -30,7 +32,7 @@ return array(
             'password' => 'somepassword',
             'charset' => 'utf8',
             'tablePrefix' => 'lime_',
-            'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;'),
+            'initSQLs'=>array('SET DATEFORMAT ymd;', 'SET QUOTED_IDENTIFIER ON;'),
         ),
 
         // Uncomment the following line if you need table-based sessions

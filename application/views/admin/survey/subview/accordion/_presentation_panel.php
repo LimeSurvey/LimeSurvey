@@ -15,7 +15,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
     var sParameter = '';
     var sTargetQuestion = '';
     var sNoParametersDefined = '';
-    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.",'js'); ?>'
+    var sAdminEmailAddressNeeded = '<?php  eT("If you are using token functions or notifications emails you need to set an administrator email address.", 'js'); ?>'
     var sURLParameters = '';
     var sAddParam = '';
 </script>
@@ -36,16 +36,16 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
 
             <?php $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup', array(
                     'name' => 'questionindex',
-                    'value'=> $oSurvey->questionindex ,
+                    'value'=> $oSurvey->questionindex,
                     'selectOptions'=>array(
-                        0 => gT('Disabled','unescaped'),
-                        1 => gT('Incremental','unescaped'),
-                        2 => gT('Full','unescaped'))
-                    ));?>
+                        0 => gT('Disabled', 'unescaped'),
+                        1 => gT('Incremental', 'unescaped'),
+                        2 => gT('Full', 'unescaped'))
+                    )); ?>
             </div>
         </div>
                 <!-- showxquestions -->
-        <?php switch($showxquestions):
+        <?php switch ($showxquestions):
                 case 'show':  ?>
 
                     <!-- Show "There are X questions in this survey -->
@@ -56,7 +56,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                             <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('Yes (Forced by the system administrator)'); ?>" />
                         </div>
                     </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php case 'hide': ?>
 
@@ -68,7 +68,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         <input type="text" name="dis_showxquestions" id="dis_showxquestions" disabled="disabled" value="<?php  eT('No (Forced by the system administrator)'); ?>" />
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php default: ?>
 
@@ -85,10 +85,10 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         ?>
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
         <?php endswitch ?>
 
-        <?php switch($showgroupinfo):
+        <?php switch ($showgroupinfo):
                 case 'both': ?>
 
                     <!-- Show group name and/or group description -->
@@ -99,7 +99,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                             <input class="form-control"  type="text" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show both (Forced by the system administrator)'); ?>" />
                         </div>
                     </div>
-            <?php break;?>
+            <?php break; ?>
             <?php case 'name': ?>
 
                 <!-- Show group name and/or group description -->
@@ -110,7 +110,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         <input type="text" class="form-control" name="dis_showgroupinfo" id="dis_showgroupinfo" disabled="disabled" value="<?php  eT('Show group name only (Forced by the system administrator)'); ?>" />
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php case 'description': ?>
 
@@ -122,7 +122,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         <input type="hidden" name="showgroupinfo" id="showgroupinfo" value="D" />
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php case 'none': ?>
 
@@ -135,18 +135,19 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
 
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php default: ?>
                 <?php
-                    $sel_showgri = array( 'B' => '' , 'D' => '' , 'N' => '' , 'X' => '' );
+                    $sel_showgri = array('B' => '', 'D' => '', 'N' => '', 'X' => '');
                     if (isset($oSurvey->showgroupinfo))
                     {
                         $set_showgri = $oSurvey->showgroupinfo;
                         $sel_showgri[$set_showgri] = ' selected="selected"';
                     }
-                    if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X']))
-                        $sel_showgri['C'] = ' selected="selected"';
+                    if (empty($sel_showgri['B']) && empty($sel_showgri['D']) && empty($sel_showgri['N']) && empty($sel_showgri['X'])) {
+                                            $sel_showgri['C'] = ' selected="selected"';
+                    }
                 ?>
 
                 <!-- Show group name and/or group description -->
@@ -159,14 +160,14 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                             <option value="D"<?php echo $sel_showgri['D']; ?>><?php  eT('Show group description only'); ?></option>
                             <option value="X"<?php echo $sel_showgri['X']; ?>><?php  eT('Hide both'); ?></option>
                         </select>
-                        <?php unset($sel_showgri,$set_showgri); ?>
+                        <?php unset($sel_showgri, $set_showgri); ?>
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
         <?php endswitch ?>
 
-        <?php switch($showqnumcode):
+        <?php switch ($showqnumcode):
                 case 'none':  ?>
 
                     <!-- Show question number and/or code -->
@@ -177,7 +178,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                             <input type="text" class="form-control" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Hide both (Forced by the system administrator)'); ?>" />
                         </div>
                     </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php case 'number': ?>
 
@@ -186,11 +187,11 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                     <label class=" control-label" for="dis_showqnumcode"><?php  eT('Show question number and/or code:'); ?></label>
                     <div class="">
                         <input type="hidden" name="showqnumcode" id="showqnumcode" value="N" />
-                        <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show question number only (Forced by the system administrator)') ; ?>" />
+                        <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show question number only (Forced by the system administrator)'); ?>" />
 
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php case 'code': ?>
 
@@ -202,7 +203,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show question code only (Forced by the system administrator)'); ?>" />
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php case 'both': ?>
 
@@ -214,11 +215,11 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         <input class="form-control" type="text" name="dis_showqnumcode" id="dis_showqnumcode" disabled="disabled" value="<?php  eT('Show both (Forced by the system administrator)'); ?>"/>
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php default: ?>
                 <?php
-                    $sel_showqnc = array( 'B' => '' , 'C' => '' , 'N' => '' , 'X' => '' );
+                    $sel_showqnc = array('B' => '', 'C' => '', 'N' => '', 'X' => '');
                     if (isset($oSurvey->showqnumcode)) {
                         $set_showqnc = $oSurvey->showqnumcode;
                         $sel_showqnc[$set_showqnc] = ' selected="selected"';
@@ -238,13 +239,13 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                             <option value="C"<?php echo $sel_showqnc['C']; ?>><?php  eT('Show question code only'); ?></option>
                             <option value="X"<?php echo $sel_showqnc['X']; ?>><?php  eT('Hide both'); ?></option>
                         </select>
-                        <?php unset($sel_showqnc,$set_showqnc);?>
+                        <?php unset($sel_showqnc, $set_showqnc); ?>
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
         <?php endswitch; ?>
 
-        <?php switch($shownoanswer):
+        <?php switch ($shownoanswer):
                 case 0:  ?>
 
                     <!-- Show "No answer" -->
@@ -254,7 +255,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                             <input class="form-control" type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('Off (Forced by the system administrator)'); ?>" />
                         </div>
                     </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php case 2: ?>
 
@@ -271,7 +272,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         ?>
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
             <?php default: ?>
 
@@ -283,7 +284,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
                         <input class="form-control" type="text" name="dis_shownoanswer" id="dis_shownoanswer" disabled="disabled" value="<?php  eT('On (Forced by the system administrator)'); ?>" />
                     </div>
                 </div>
-            <?php break;?>
+            <?php break; ?>
 
         <?php endswitch ?>
     </div>
@@ -291,7 +292,7 @@ echo viewHelper::getViewTestTag('surveyPresentationOptions');
         
         <!-- welcome screen -->
         <div class="form-group">
-            <label class=" control-label" for='showwelcome'><?php  eT("Show welcome screen:") ; ?></label>
+            <label class=" control-label" for='showwelcome'><?php  eT("Show welcome screen:"); ?></label>
             <div class="">
                 <?php $this->widget('yiiwheels.widgets.switch.WhSwitch', array(
                     'name' => 'showwelcome',

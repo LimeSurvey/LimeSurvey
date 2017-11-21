@@ -1,11 +1,11 @@
-<?php if (!count($aErrorFilesInfo) &&count($aImportedFilesInfo)): ?>
+<?php if (!count($aErrorFilesInfo) && count($aImportedFilesInfo)): ?>
 <div class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="row welcome survey-action">
         <div class="col-sm-12 content-right">
             <div class="jumbotron message-box">
                 <h2><?php eT("Import survey resources"); ?></h2>
                 <p class="lead text-success">
-                    <?php eT("Success");?>
+                    <?php eT("Success"); ?>
                 </p>
                 <p>
                     <?php eT("Resources Import Summary"); ?>
@@ -21,26 +21,26 @@
                         <?php
                         foreach ($aImportedFilesInfo as $entry)
                         {
-                            echo CHtml::tag('li', array(), gT("File") . ': ' . $entry["filename"]);
+                            echo CHtml::tag('li', array(), gT("File").': '.$entry["filename"]);
                         }
                         ?>
                     </ul>
                 </p>
                 <p>
-                    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
+                    <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/'.$surveyid); ?>', '_top')" />
                 </p>
             </div>
         </div>
     </div>
 </div>
-<?php elseif(count($aErrorFilesInfo) &&count($aImportedFilesInfo)): ?>
+<?php elseif (count($aErrorFilesInfo) && count($aImportedFilesInfo)): ?>
     <div class='side-body <?php echo getSideBodyClass(false); ?>'>
         <div class="row welcome survey-action">
             <div class="col-sm-12 content-right">
                 <div class="jumbotron message-box message-box-warning">
                     <h2><?php eT("Import survey resources"); ?></h2>
                     <p class="lead text-warning">
-                        <?php eT("Partial");?>
+                        <?php eT("Partial"); ?>
                     </p>
                     <p>
                         <?php eT("Resources Import Summary"); ?>
@@ -57,7 +57,7 @@
                             <?php
                             foreach ($aImportedFilesInfo as $entry)
                             {
-                                echo CHtml::tag('li', array(), gT("File") . ': ' . $entry["filename"]);
+                                echo CHtml::tag('li', array(), gT("File").': '.$entry["filename"]);
                             }
                             ?>
                         </ul>
@@ -69,26 +69,29 @@
                         <?php
                             foreach ($aErrorFilesInfo as $entry)
                             {
-                                echo CHtml::tag('li', array(), gT("File") . ': ' . $entry['filename'] . " (" . $entry['status'] . ")");
+                                echo CHtml::tag('li', array(), gT("File").': '.$entry['filename']." (".$entry['status'].")");
                             }
                         ?>
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
+                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/'.$surveyid); ?>', '_top')" />
                     </p>
                 </div>
             </div>
         </div>
     </div>
-<?php else:?>
-    <div class='side-body <?php echo getSideBodyClass(false); ?>'>
+<?php else {
+    :?>
+    <div class='side-body <?php echo getSideBodyClass(false);
+}
+?>'>
         <div class="row welcome survey-action">
             <div class="col-sm-12 content-right">
                 <div class="jumbotron message-box message-box-error">
                     <h2><?php eT("Import survey resources"); ?></h2>
                     <p class="lead text-danger">
-                        <?php eT("Error");?>
+                        <?php eT("Error"); ?>
                     </p>
                     <p>
                         <?php eT("Resources Import Summary"); ?>
@@ -104,13 +107,13 @@
                         <?php
                             foreach ($aErrorFilesInfo as $entry)
                             {
-                                echo CHtml::tag('li', array(), gT("File") . ': ' . $entry['filename'] . " (" . $entry['status'] . ")");
+                                echo CHtml::tag('li', array(), gT("File").': '.$entry['filename']." (".$entry['status'].")");
                             }
                         ?>
                         </ul>
                     </p>
                     <p>
-                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/' . $surveyid); ?>', '_top')" />
+                        <input class="btn btn-default btn-lg" type='submit' value='<?php eT("Back"); ?>' onclick="window.open('<?php echo $this->createUrl('admin/survey/sa/editlocalsettings/surveyid/'.$surveyid); ?>', '_top')" />
                     </p>
                 </div>
             </div>
