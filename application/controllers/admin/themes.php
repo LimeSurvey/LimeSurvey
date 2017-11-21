@@ -238,7 +238,7 @@ class themes extends Survey_Common_Action
                 $aData = array('lid' => $lid);
             }
 
-            $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
+            $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
         }else{
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."),'error');
             $this->getController()->redirect(array("admin/themeoptions"));
@@ -383,7 +383,7 @@ class themes extends Survey_Common_Action
         App()->getClientScript()->registerPackage('jsuri');
         $aData['fullpagebar']['returnbutton']=true;
 
-        $this->_renderWrappedTemplate('templates', $aViewUrls, $aData);
+        $this->_renderWrappedTemplate('themes', $aViewUrls, $aData);
         // This helps handle the load/save buttons)
         if ($screenname != 'welcome')
         {
@@ -1150,7 +1150,7 @@ class themes extends Survey_Common_Action
     * @param string|array $aViewUrls View url(s)
     * @param array $aData Data to be passed on. Optional.
     */
-    protected function _renderWrappedTemplate($sAction = 'templates', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = 'themes', $aViewUrls = array(), $aData = array())
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);
     }
