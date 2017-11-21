@@ -8,6 +8,7 @@ use Facebook\WebDriver\WebDriverExpectedCondition;
 use Facebook\WebDriver\Exception\NoSuchElementException;
 use Facebook\WebDriver\Exception\StaleElementReferenceException;
 use Facebook\WebDriver\Exception\UnknownServerException;
+use Facebook\WebDriver\Exception\TimeOutException;
 
 /**
  * Login and create a survey, add a group
@@ -279,6 +280,13 @@ class CreateSurveyTest extends TestBaseClassWeb
                 . $ex->getTraceAsString()
             );
         } catch (UnknownServerException $ex) {
+            self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
+            $this->assertFalse(
+                true,
+                $ex->getMessage() . PHP_EOL
+                . $ex->getTraceAsString()
+            );
+        } catch (TimeOutException $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
