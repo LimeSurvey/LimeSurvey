@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-11-08 15:09:46+00:00\n"
+"POT-Creation-Date: 2017-11-21 09:02:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -443,8 +443,8 @@ msgstr ""
 #: application/controllers/admin/questions.php:405
 #: application/controllers/admin/questions.php:449
 #: application/controllers/admin/questions.php:667
-#: application/controllers/admin/questions.php:1040
-#: application/controllers/admin/questions.php:1178
+#: application/controllers/admin/questions.php:1051
+#: application/controllers/admin/questions.php:1189
 #: application/controllers/admin/quotas.php:151
 #: application/controllers/admin/quotas.php:382
 #: application/controllers/admin/quotas.php:450
@@ -3020,8 +3020,8 @@ msgstr ""
 #: application/controllers/admin/questions.php:438
 #: application/controllers/admin/questions.php:648
 #: application/controllers/admin/questions.php:697
-#: application/controllers/admin/questions.php:1032
-#: application/controllers/admin/questions.php:1207
+#: application/controllers/admin/questions.php:1043
+#: application/controllers/admin/questions.php:1218
 #: application/controllers/admin/surveyadmin.php:138
 #: application/controllers/admin/surveyadmin.php:191
 #: application/controllers/admin/surveyadmin.php:762
@@ -3132,48 +3132,48 @@ msgstr ""
 msgid "Edit subquestions"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1428
+#: application/controllers/admin/questions.php:1439
 #: application/controllers/admin/surveyadmin.php:71
 msgid "Deleted"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1469
+#: application/controllers/admin/questions.php:1480
 msgid "Question could not be deleted. There are conditions for other questions that rely on this question. You cannot delete this question until those conditions are removed."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1508
+#: application/controllers/admin/questions.php:1519
 msgid "Question was successfully deleted."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1528
+#: application/controllers/admin/questions.php:1539
 msgid "You are not authorized to delete questions."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1853
+#: application/controllers/admin/questions.php:1864
 msgid "The existing label set has assessment values assigned."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1853
+#: application/controllers/admin/questions.php:1864
 msgid "If you replace the label set the existing asssessment values will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1857
+#: application/controllers/admin/questions.php:1868
 msgid "The existing label set has different/more languages."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1857
+#: application/controllers/admin/questions.php:1868
 msgid "If you replace the label set these translations will be lost."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1864
+#: application/controllers/admin/questions.php:1875
 msgid "Do you really want to continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:1868
+#: application/controllers/admin/questions.php:1879
 msgid "You are about to replace an existing label set with the current answer options."
 msgstr ""
 
-#: application/controllers/admin/questions.php:1870
+#: application/controllers/admin/questions.php:1881
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:65
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:83
 #: application/extensions/admin/survey/ListSurveysWidget/views/massive_actions/_selector.php:99
@@ -3181,7 +3181,7 @@ msgstr ""
 msgid "Continue?"
 msgstr ""
 
-#: application/controllers/admin/questions.php:2094
+#: application/controllers/admin/questions.php:2105
 #: application/views/admin/super/_question_explorer.php:74
 msgid "You can't add questions while the survey is active."
 msgstr ""
@@ -10413,23 +10413,23 @@ msgstr ""
 msgid "Moving user templates to new location at %s..."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1635
+#: application/helpers/update/updatedb_helper.php:1636
 msgid "Database update"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:1636
+#: application/helpers/update/updatedb_helper.php:1637
 msgid "The database has been updated from version %s to version %s."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2965
+#: application/helpers/update/updatedb_helper.php:2966
 msgid "Some user templates can not be updated, please add the placeholder {TEMPLATEJS} in your startpage.pstpl manually."
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2967
+#: application/helpers/update/updatedb_helper.php:2968
 msgid "Template(s) to be verified :"
 msgstr ""
 
-#: application/helpers/update/updatedb_helper.php:2973
+#: application/helpers/update/updatedb_helper.php:2974
 msgid "All %s user templates updated."
 msgstr ""
 
