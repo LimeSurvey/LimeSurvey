@@ -74,12 +74,16 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
-            $button = self::$webDriver->wait(10)->until(
-                WebDriverExpectedCondition::elementToBeClickable(
-                    WebDriverBy::cssSelector('#welcomeModal button.btn-default')
-                )
-            );
-            $button->click();
+            try {
+                $button = self::$webDriver->wait(3)->until(
+                    WebDriverExpectedCondition::elementToBeClickable(
+                        WebDriverBy::cssSelector('#welcomeModal button.btn-default')
+                    )
+                );
+                $button->click();
+            } catch (NoSuchElementException $ex) {
+                // Ignore this if welcome modal was not shown.
+            }
 
             sleep(1);
 
