@@ -31,7 +31,7 @@ return array(
 
     // Bootstrap
     // This package replace the Yiistrap register() function
-    // Then instead of using the composer dependency system for templates
+    // Then instead of using the composer dependency system for themes
     // We can use the package dependency system (easier for now)
     'bootstrap' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/',
@@ -49,7 +49,7 @@ return array(
     ),
 
     // Bootstrap admin
-    // must be different for template editor not to colide with template files replacement
+    // must be different for theme editor not to colide with theme files replacement
     'bootstrap-admin' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/',
         'basePath' => 'core.bootstrap',
@@ -63,7 +63,7 @@ return array(
         'depends' => array(
             'jquery',
         )
-    ),    
+    ),
 
     // bootstrap-slider : for multinumeric with slider
     'bootstrap-slider' => array(
@@ -118,7 +118,7 @@ return array(
     'bootstrap-datetimepicker' => array(
         'devBaseUrl' => 'assets/packages/bootstrap/plugins/datetimepicker/build',
         'basePath' => 'core.bootstrap.plugins.datetimepicker.build',
-        'position' => CClientScript::POS_BEGIN,        
+        'position' => CClientScript::POS_BEGIN,
         'css' => array(
             'css/bootstrap-datetimepicker'.$minVersion.'.css'
         ),

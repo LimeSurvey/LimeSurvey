@@ -81,7 +81,7 @@ $config['allowunblacklist']     =  'N';             // Allow participant to unbl
 $config['userideditable']     =  'N';               // Allow editing of user IDs
 $config['defaulttheme']    =  'default';         // This setting specifys the default theme used for the 'public list' of surveys
 
-$config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2';  // File types allowed to be uploaded in the templates section.
+$config['allowedthemeuploads'] = 'gif,ico,jpg,png,css,js,map,json,eot,svg,ttf,woff,txt,md,xml,woff2';  // File types allowed to be uploaded in the themes section.
 
 $config['allowedresourcesuploads'] = '7z,aiff,asf,avi,bmp,csv,doc,docx,fla,flv,gif,gz,gzip,ico,jpeg,jpg,mid,mov,mp3,mp4,mpc,mpeg,mpg,ods,odt,pdf,png,ppt,pxd,qt,ram,rar,rm,rmi,rmvb,rtf,sdc,sitd,swf,sxc,sxw,tar,tgz,tif,tiff,txt,vsd,wav,wma,wmv,xls,xlsx,xml,zip,css,js';   // File types allowed to be uploaded in the resources sections, and with the HTML Editor
 
@@ -228,7 +228,7 @@ $config['usercontrolSameGroupPolicy'] = true;
 // Demo mode disables the following things:
 //
 // * Disables changing of the admin user's details and password
-// * Disables uploading files on the Template Editor
+// * Disables uploading files on the theme Editor
 // * Disables sending email invitations and reminders
 // * Disables doing a database dump
 // * Disables the ability to save the following global settings: Site name, Default language, Default Htmleditor Mode, XSS filter
@@ -253,7 +253,7 @@ $config['demoModePrefill'] = false;
 * $column_style defines how columns are rendered for survey answers.
 * There are four possible options:
 *     'css'   using one of the various CSS only methods for creating
-columns (see template style sheet for details).
+columns (see theme style sheet for details).
 *     'ul'    using multiple floated unordered lists. (DEFAULT)
 *     'table' using conventional tables based layout.
 *     NULL    blocks the use of columns
@@ -272,7 +272,7 @@ $config['hide_groupdescr_allinone']=true;
 
 /**
 * use_firebug_lite
-* Use FireBug Lite for JavaScript and template development and testing.
+* Use FireBug Lite for JavaScript and theme development and testing.
 * This allows you to use all the features of Firebug in any browser.
 * see http://getfirebug.com/lite.html for more info.
 */
@@ -288,9 +288,9 @@ $config['showaggregateddata'] = 1;
 
 
 /**
-* When this settings is true/1 (default) then the standard templates that are delivered with the
-* LimeSurvey installation package are read-only. If you want to modify a template just copy it first.
-* This prevents upgrade problems later because if you modify your standard templates you could accidenitally
+* When this settings is true/1 (default) then the standard themes that are delivered with the
+* LimeSurvey installation package are read-only. If you want to modify a theme just copy it first.
+* This prevents upgrade problems later because if you modify your standard themes you could accidenitally
 * overwrite these on a LimSurvey upgrade. Only set this to 0 if you know what you are doing.
 */
 $config['standard_themes_readonly'] =  true;
@@ -375,7 +375,7 @@ $config['notsupportlanguages'] = array(
 $config['pdffontsize']    = 9;                       //Fontsize for normal text; Surveytitle is +4; grouptitle is +2
 $config['pdforientation'] = 'P';                     // Set L for Landscape or P for portrait format
 $config['pdfshowheader'] = 'N';           // Show header in pdf answer export
-$config['pdflogofile'] = 'logo_pdf.png';  // File name of logo for single answer export. Path is template path, i.e. template/default/logo_pdf.png.
+$config['pdflogofile'] = 'logo_pdf.png';  // File name of logo for single answer export. Path is theme path, i.e. theme/default/logo_pdf.png.
                                           // If not found, resulting pdf doesn't have header. A large image implies slower pdf generation.
 $config['pdflogowidth'] = '50';           // Logo width
 $config['pdfheadertitle'] = '';           // Header title (bold font). If this config param is empty and header is enabled, site name is used
@@ -433,7 +433,7 @@ $config['updatecheckperiod']=7;
 
 /**
 * @var $showxquestions string allows you to control whether or not
-* {THEREAREXQUESTIONS} is displayed (if it is included in a template)
+* {THEREAREXQUESTIONS} is displayed (if it is included in a theme)
 *	hide = always hide {THEREAREXQUESTIONS}
 *	show = always show {THEREAREXQUESTIONS}
 *	choose = allow survey admins to choose
@@ -444,7 +444,7 @@ $config['showxquestions'] = 'choose';
 /**
 * @var $showgroupinfo string allows you to control whether or not
 * {GROUPNAME} and/or {GROUPDESCRIPTION} are displayed (if they are
-* included in a template)
+* included in a theme)
 *	none = always hide both title and description
 *	name = always {GROUPNAME} only
 *	description = always show {GROUPDESCRIPTION} only
@@ -457,7 +457,7 @@ $config['showgroupinfo'] = 'choose';
 /**
 * @var $showqnumcode string allows you to control whether or not
 * {QUESTION_NUMBER} and/or {QUESTION_CODE} are displayed (if they
-* are included in a template)
+* are included in a theme)
 *	none = always hide both {QUESTION_NUMBER} and {QUESTION_CODE}
 *	code = always show {QUESTION_CODE} only
 *	number = always show {QUESTION_NUMBER} only
@@ -506,7 +506,7 @@ $config['ssl_emergency_override'] = false;
 * Valid values are allow, sameorigin
 * Default: allow
 * Recommended: sameorigin
-* Using 'deny' is currently not supported as it will disable the template editor preview and probably file upload.
+* Using 'deny' is currently not supported as it will disable the theme editor preview and probably file upload.
 */
 $config['x_frame_options'] = 'allow';
 
@@ -615,7 +615,7 @@ $config['homeurl']                 = $config['publicurl'].'admin';          // T
 $config['tempurl']                 = $config['publicurl'].'tmp';
 $config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
 $config['uploadurl']               = $config['publicurl'].'upload';
-$config['standardthemerooturl'] = $config['publicurl'].'templates';      // Location of the standard templates
+$config['standardthemerooturl'] = $config['publicurl'].'templates';      // Location of the standard themes
 $config['adminscripts']            = $config['publicurl'].'assets/scripts/admin/';
 $config['generalscripts']          = $config['publicurl'].'assets/scripts/';
 $config['third_party']             = $config['publicurl'].'third_party/';
@@ -623,7 +623,7 @@ $config['styleurl']                = $config['publicurl'].$config['assets'].'sty
 $config['publicstyle']             = $config['publicurl'].$config['assets'].'styles-public/';
 $config['publicstyleurl']          = $config['publicstyle'];
 $config['sCKEditorURL']            = $config['third_party'].'ckeditor';
-$config['userthemerooturl']     = $config['uploadurl'].'/templates';     // Location of the user templates
+$config['userthemerooturl']     = $config['uploadurl'].'/templates';     // Location of the user themes
 $config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
 $config['applicationurl']          = $config['publicurl'].'application/';
 $config['extensionsurl']           = $config['applicationurl'].'extensions/';
@@ -637,15 +637,15 @@ $config['homedir']                      = $config['rootdir'];       // The direc
 $config['tempdir']                      = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
 $config['imagedir']                     = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
 $config['uploaddir']                    = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
-$config['standardthemerootdir']      = $config['rootdir'].DIRECTORY_SEPARATOR."templates";            // The directory path of the standard templates
+$config['standardthemerootdir']      = $config['rootdir'].DIRECTORY_SEPARATOR."templates";            // The directory path of the standard themes
 $config['publicstylepath']              = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
 $config['corequestionthemedir']      = "question_templates";
-$config['corequestionthemerootdir']  = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestionthemedir'];   // The directory containing the core's question templates.
+$config['corequestionthemerootdir']  = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestionthemedir'];   // The directory containing the core's question themes.
 $config['styledir']                     = $config['rootdir'].DIRECTORY_SEPARATOR.$config['assets'].DIRECTORY_SEPARATOR.'styles-admin';
 $config['questiontypedir']              = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
-$config['userthemerootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user templates
-$config['userquestionthemedir']         = "question_templates";   // The directory containing the user's question templates.
-$config['userquestionthemerootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir'];   // The directory containing the user's question templates.
+$config['userthemerootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user themes
+$config['userquestionthemedir']         = "question_templates";   // The directory containing the user's question themes.
+$config['userquestionthemerootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir'];   // The directory containing the user's question themes.
 
 
 // Use alias notation, we should move to this format everywhere.
@@ -673,7 +673,7 @@ $config['bounceaccountuser']='';
 // Question selector
 $config['defaultquestionselectormode']='default';
 
-// Template editor mode
+// theme editor mode
 $config['defaultthemeteeditormode']='default';
 
 // Side Menu behaviout

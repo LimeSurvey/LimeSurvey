@@ -79,7 +79,7 @@ $ldap_server[$serverId]['bindpw']	=	"AsecretPassword";
 /**********************************************************************/
 /* Predefined Queries for Token Imports                               */
 /*                                                                    */
-/* This sample query definition is just an fake template: do not      */
+/* This sample query definition is just an fake theme: do not      */
 /* expect it to do something intelligent on your directory            */
 /* Instead have a look at the online documentation:                   */
 /* - Section Installation, paragraph LDAP_Settings                     */
