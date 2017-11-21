@@ -17,11 +17,9 @@
         <?php // If there are no save or close buttons, take up some more space (useful for 1366x768 screens) ?>
         <?php if (!isset($surveybar['savebutton']['form']) && (!isset($surveybar['saveandclosebutton'])) && (!isset($surveybar['closebutton']))): ?>
             <div class="col-md-12 col-xs-6">
-        <?php else {
-    : ?>
+        <?php else : ?>
             <div class="col-md-8 col-xs-6">
         <?php endif;
-}
 ?>
 
             <!-- Add a new group -->
@@ -63,10 +61,8 @@
                                 <?php eT("Add new question"); ?>
                             </button>
                         </span>
-                    <?php else {
-    :?>
+                    <?php else :?>
                     <a class="btn btn-default" href='<?php echo $this->createUrl("admin/questions/sa/newquestion/surveyid/".$surveyid);
-}
 ?>' role="button">
                         <span class="icon-add"></span>
                         <?php eT("Add new question"); ?>
@@ -289,12 +285,10 @@
                                             <span class="icon-resetsurveylogic" ></span>
                                             <?php eT("Reset conditions"); ?>
                                           </a>
-                                    <?php else {
-    : ?>
+                                    <?php else : ?>
 
                                           <!-- condition disabled -->
                                           <a href="#" onclick="alert('<?php eT("Currently there are no conditions configured for this survey.", "js");
-}
 ?>');" >
                                             <span class="icon-resetsurveylogic" ></span>
                                             <?php eT("Reset conditions"); ?>
@@ -590,10 +584,8 @@
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </ul>
-                    <?php else {
-    : ?>
+                    <?php else : ?>
                         <a class='btn btn-default' href="<?php echo $menu->getHref();
-}
 ?>">
                             <?php if ($menu->getIconClass()): ?>
                                 <span class="<?php echo $menu->getIconClass(); ?>"></span>&nbsp;
