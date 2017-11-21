@@ -807,9 +807,11 @@ class TemplateConfig extends CActiveRecord
         if (Permission::model()->hasGlobalPermission('templates','delete'))
         {
             $oTemplate                = Template::model()->findByAttributes(array('name' => $templatename));
-            if( $oTemplate->delete()){
-                $oTemplateConfig      = TemplateConfiguration::model()->findByAttributes(array('template_name' => $templatename));
-                return TemplateConfiguration::model()->deleteAll('template_name=:templateName', array(':templateName' => $templatename) );
+            if ($oTemplate) {
+                if( $oTemplate->delete()){
+                    $oTemplateConfig      = TemplateConfiguration::model()->findByAttributes(array('template_name' => $templatename));
+                    return TemplateConfiguration::model()->deleteAll('template_name=:templateName', array(':templateName' => $templatename) );
+                }
             }
         }
         return false;

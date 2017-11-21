@@ -24,11 +24,14 @@ class TemplateControllerTest extends TestBaseClass
         \Yii::import('application.helpers.globalsettings_helper', true);
 
         // Clean up from last test.
+        $templateName = 'foobartest';
+        \TemplateConfiguration::uninstall($templateName);
         \Template::model()->deleteAll('name = \'foobartest\'');
+        \Permission::model()->deleteAllByAttributes(array('permission' => $templateName,'entity' => 'template'));
 
         // Remove folder from last test.
         $newname = 'foobartest';
-        $newdirname  = \Yii::app()->getConfig('usertemplaterootdir') . "/" . $newname;
+        $newdirname  = \Yii::app()->getConfig('userthemerootdir') . "/" . $newname;
         if (file_exists($newdirname)) {
             exec('rm -r ' . $newdirname);
         }
@@ -40,9 +43,13 @@ class TemplateControllerTest extends TestBaseClass
 
         $contr = new \templates(new \ls\tests\DummyController('dummyid'));
         $contr->templatecopy();
+
+        $flashes = \Yii::app()->user->getFlashes();
+        $this->assertEmpty($flashes, 'No flash messages');
+
         $template = \Template::model()->find('name = \'foobartest\'');
         $this->assertNotEmpty($template);
-        $this->assertEquals('foobartest', $template->name);
+        $this->assertEquals($templateName, $template->name);
 
         // Clean up.
         \Template::model()->deleteAll('name = \'foobartest\'');
