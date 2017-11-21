@@ -6,4 +6,6 @@ checks:
         code_rating: true
         duplication: true
         one_class_per_file: true
+coding_style:
+    php: {  }
                 
