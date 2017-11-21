@@ -12,6 +12,9 @@ class SurveymenuEntryData extends CFormModel {
     public $pjaxed  = true;
     public $isActive  = null;
 
+    /**
+     * @param integer|null $surveyid
+     */
     public function apply($menuEntry, $surveyid){
         $this->surveyid = $surveyid;
         $this->menuEntry = $menuEntry;
@@ -86,6 +89,9 @@ class SurveymenuEntryData extends CFormModel {
 
     }
 
+    /**
+     * @param string[] $checkArray
+     */
     private function _recursiveIssetWithDefault ($variable, $checkArray, $i=0, $fallback=null) {
         $default = null;
         if(is_array($variable) && array_key_exists($checkArray[$i], $variable))

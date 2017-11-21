@@ -228,7 +228,7 @@ class TemplateConfiguration extends TemplateConfig
      *
      * @param [String] $sTemplateName
      * @param [Integer] $iSurveyGroupId
-     * @param [Integer] $iSurveyId
+     * @param integer $iSurveyId
      * @return TemplateConfiguration
      */
     public static function getInstance($sTemplateName=null, $iSurveyGroupId=null, $iSurveyId=null){

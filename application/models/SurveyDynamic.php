@@ -565,7 +565,7 @@ class SurveyDynamic extends LSActiveRecord
 
     /**
      * Get the list of default columns for surveys
-     * @return array
+     * @return string[]
      */
     public function getDefaultColumns()
     {

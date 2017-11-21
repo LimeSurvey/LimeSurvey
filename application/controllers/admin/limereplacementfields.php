@@ -139,6 +139,7 @@ class limereplacementfields extends Survey_Common_Action
 
     /**
      * @param integer $gid
+     * @param string $surveyformat
      */
     private function _addQuestionToList($action, $gid, array $field, $questionType, $surveyformat, $isPreviousPageQuestion, &$questionList)
     {

@@ -333,7 +333,7 @@ class Permission extends LSActiveRecord
      * @param string $sEntityName
      * @param mixed $aPermissions
      * @param boolean $bBypassCheck
-     * @return bool
+     * @return null|boolean
      */
     public static function setPermissions($iUserID, $iEntityID, $sEntityName, $aPermissions, $bBypassCheck=false)
     {

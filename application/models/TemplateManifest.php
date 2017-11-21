@@ -311,6 +311,9 @@ class TemplateManifest extends TemplateConfiguration
         return parent::importManifest($sTemplateName, $aDatas );
     }
 
+    /**
+     * @param string $sFieldPath
+     */
     public static function getTemplateForXPath($oTemplate, $sFieldPath)
     {
         $oRTemplate = $oTemplate;

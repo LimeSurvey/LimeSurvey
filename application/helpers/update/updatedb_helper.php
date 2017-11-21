@@ -1558,7 +1558,7 @@ function rollBackToTransactionBookmark($sBookmark='limesurvey')
 /**
 * Drop a default value in MSSQL
 *
-* @param mixed $fieldname
+* @param string $fieldname
 * @param mixed $tablename
 */
 function dropDefaultValueMSSQL($fieldname, $tablename)
@@ -1628,6 +1628,7 @@ function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
 * Drops the primary key of a table
 *
 * @param string $sTablename
+* @param string $oldPrimaryKeyColumn
 */
 function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 {

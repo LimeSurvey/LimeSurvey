@@ -753,7 +753,7 @@ class Participant extends LSActiveRecord
      * @param integer $userid
      * @param integer $page
      * @param integer $limit
-     * @param null $order
+     * @param string|null $order
      * @return CDbCommand
      */
     private function getParticipantsSelectCommand($count = false, $attid, $search = null, $userid = null, $page = null, $limit = null, $order = null)
