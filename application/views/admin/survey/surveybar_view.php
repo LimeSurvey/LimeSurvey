@@ -531,7 +531,7 @@
                             <?php if ($respstatsread && $oSurvey->isActive):?>
                                 <!-- Responses & statistics -->
                                 <li>
-                                    <a href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid/"); ?>' >
+                                    <a class="pjax" href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid/");?>' >
                                         <span class="icon-browse"></span>
                                         <?php eT("Responses & statistics"); ?>
                                     </a>

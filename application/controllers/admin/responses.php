@@ -412,9 +412,9 @@ class responses extends Survey_Common_Action
      * Change the value of the max characters to elipsize headers/questions in reponse grid.
      * It's called via ajax request
      */
-    public function set_grid_display()
+    public function set_grid_display($displaymode)
     {
-        if (Yii::app()->request->getPost('state') == 'extended')
+        if ($displaymode=='extended')
         {
             Yii::app()->user->setState('responsesGridSwitchDisplayState', 'extended');
             Yii::app()->user->setState('defaultEllipsizeHeaderValue', 1000);
@@ -437,10 +437,16 @@ class responses extends Survey_Common_Action
     public function browse($iSurveyId)
     {
         $survey = Survey::model()->findByPk($iSurveyId);
-        if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
+        $displaymode = Yii::app()->request->getPost('displaymode', null);
+        
+        if($displaymode !== null){
+            $this->set_grid_display($displaymode);
+        }
+
+        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
         {
-            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'listresponse.js');
-            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'listresponse.js', LSYii_ClientScript::POS_BEGIN);
+            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js',LSYii_ClientScript::POS_BEGIN);
 
             // Basic datas for the view
             $aData                      = $this->_getData($iSurveyId);
@@ -1073,12 +1079,14 @@ class responses extends Survey_Common_Action
      */
     protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
     {
-        App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'browse.js');
+        // App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'browse.js');
         App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'browse.css');
 
         $iSurveyId = $aData['iSurveyId'];
         $oSurvey = Survey::model()->findByPk($iSurveyId);
         $aData['display']['menu_bars'] = false;
+        $aData['subaction'] = gT("Responses and Statistics");
+        $aData['title_bar']['subaction'] = gT("Responses and Statistics");
         $aData['display']['menu_bars']['browse'] = gT('Browse responses'); // browse is independent of the above
         $aData['title_bar']['title'] = gT('Browse responses').': '.$oSurvey->currentLanguageSettings->surveyls_title;
         parent::_renderWrappedTemplate('responses', $aViewUrls, $aData);

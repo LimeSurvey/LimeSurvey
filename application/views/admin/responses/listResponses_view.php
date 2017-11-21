@@ -15,31 +15,34 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
     <div class="text-right in-title">
         <div class="pull-right">
             <div class="form text-right">
-                <div class="form-group">
-
-                    <label for="display-mode">
+                <form action="<?=App()->createUrl('/admin/responses/sa/browse/', ['surveyid' => $surveyid])?>" class="pjax" method="POST" id="change-display-mode-form">
+                    <div class="form-group">
+                        <label for="display-mode">
+                            <?php
+                                eT('Display mode:');
+                            ?>
+                        </label>
                         <?php
-                            eT('Display mode:');
-                        ?>
-                    </label>
-                    <?php
-                        $state = Yii::app()->user->getState('responsesGridSwitchDisplayState') == "" ? 'compact' : Yii::app()->user->getState('responsesGridSwitchDisplayState');
-                        $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
-                        array(
-                        'name' => 'display-mode',
-                        'value'=> $state,
-                        'selectOptions'=>array(
-                            'extended'=>gT('Extended'),
-                            'compact'=>gT('Compact')
-                            ),
-                        'htmlOptions' => array(
-                            'data-url'=>App()->createUrl('/admin/responses/sa/set_grid_display/'),
-                            'data-value' => $state
+                            $state = Yii::app()->user->getState('responsesGridSwitchDisplayState') == "" ? 'compact' : Yii::app()->user->getState('responsesGridSwitchDisplayState');
+                            $this->widget('yiiwheels.widgets.buttongroup.WhButtonGroup',
+                            array(
+                            'name' => 'displaymode',
+                            'value'=> $state,
+                            'selectOptions'=>array(
+                                'extended'=>gT('Extended'),
+                                'compact'=>gT('Compact')
+                                ),
+                            'htmlOptions' => array(
+                                'classes' => 'selector__action-change-display-mode'
+                                )
                             )
-                        )
-                    );
-                    ?>
-                </div>
+                        );
+                        ?>
+                        <input type="hidden" name="surveyid" value="<?=$surveyid?>" />
+                        <input type="hidden" name="<?=Yii::app()->request->csrfTokenName?>" value="<?=Yii::app()->request->csrfToken?>" />
+                        <input type="submit" class="hidden" name="submit" value="submit" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -232,6 +235,10 @@ echo viewHelper::getViewTestTag('surveyResponsesBrowse');
                     jQuery(document).on("change", '#pageSize', function(){
                         $.fn.yiiGridView.update('responses-grid',{ data:{ pageSize: $(this).val() }});
                     });
+                });
+                $(document).on('ready pjax:scriptcomplete', function(){
+                    onDocumentReadyListresponse();
+                    reinstallResponsesFilterDatePicker();
                 });
             </script>
         </div>

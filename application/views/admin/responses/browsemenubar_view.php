@@ -4,7 +4,7 @@
             <div class="col-md-12">
             <!-- Show summary information -->
             <?php if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'read')): ?>
-                <a class="btn btn-default" href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>' role="button">
+                <a class="btn btn-default pjax" href='<?php echo $this->createUrl("admin/responses/sa/index/surveyid/$surveyid"); ?>' role="button">
                     <span class="fa fa-list-alt text-success"></span>
                     <?php eT("Summary"); ?>
                 </a>

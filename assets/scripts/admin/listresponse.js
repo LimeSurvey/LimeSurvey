@@ -20,96 +20,59 @@ var useRtl = false;
 
 // Return public functions for this module
 LS.resp =  {
-            /**
-             * Scroll the pager and the footer when scrolling horizontally
-             * @return
-             */
-            setListPagerPosition : function (pager) {
-                var $elListPager = $('#ListPager');
+    /**
+     * Scroll the pager and the footer when scrolling horizontally
+     * @return
+     */
+    setListPagerPosition : function (pager) {
+        var $elListPager = $('#ListPager');
 
-                if (useRtl) {
-                    var scrollAmount = Math.abs($(pager).scrollLeft() - initialScrollValue);
-                    $elListPager.css({
-                        'position': 'relative',
-                        'right': scrollAmount
-                    });
-                }
-                else {
-                    $elListPager.css({
-                        'position': 'relative',
-                        'left': $(pager).scrollLeft()
-                    });
-                }
-            },              
-            /**
-             * Bind fixing pager position on scroll event
-             * @return
-             */
-            bindScrollWrapper: function () {
-                LS.resp.setListPagerPosition();
-                $('#bottom-scroller').scroll(function() {
-                    LS.resp.setListPagerPosition(this);
-                    $("#top-scroller").scrollLeft($("#bottom-scroller").scrollLeft());
-                });
-                $('#top-scroller').scroll(function() {
-                    LS.resp.setListPagerPosition(this);
-                    $("#bottom-scroller").scrollLeft($("#top-scroller").scrollLeft());
-                });
-    
-                reinstallResponsesFilterDatePicker();
-                $(document).trigger('vue-redraw');
-            },
-    
-            /**
-             * Set value of module private variable initialScrollValue
-             * @param {number} val
-             */
-            setInitialScrollValue: function(val) {
-                initialScrollValue = val;
-            },
-    
-            /**
-             * @param {boolean} val
-             */
-            setUseRtl: function(val) {
-                useRtl = val;
-            }
-        };
-
-var onDocumentReadyListresponse = function(){
-
-    $('#fake-content').width($('#bottom-scroller')[0].scrollWidth);
-    $('#top-scroller').height('18px');
-    
-    LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
-    LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
-
-    LS.resp.bindScrollWrapper();
-
-    $('#display-mode').click(function(event){
-        event.preventDefault();
-
-        var $that        = $(this);
-        var $actionUrl   = $(this).data('url');
-        var $display     = $that.find('input:not(:checked)').val();
-        var $postDatas   = {state:$display};
-
-        $.ajax({
-            url  : encodeURI($actionUrl),
-            type : 'POST',
-            data :  $postDatas,
-
-            // html contains the buttons
-            success : function(html, statut){
-                location.reload();
-            },
-            error :  function(html, statut){
-                console.log(html);
-            }
+        if (useRtl) {
+            var scrollAmount = Math.abs($(pager).scrollLeft() - initialScrollValue);
+            $elListPager.css({
+                'position': 'relative',
+                'right': scrollAmount
+            });
+        }
+        else {
+            $elListPager.css({
+                'position': 'relative',
+                'left': $(pager).scrollLeft()
+            });
+        }
+    },              
+    /**
+     * Bind fixing pager position on scroll event
+     * @return
+     */
+    bindScrollWrapper: function () {
+        LS.resp.setListPagerPosition();
+        $('#bottom-scroller').scroll(function() {
+            LS.resp.setListPagerPosition(this);
+            $("#top-scroller").scrollLeft($("#bottom-scroller").scrollLeft());
+        });
+        $('#top-scroller').scroll(function() {
+            LS.resp.setListPagerPosition(this);
+            $("#bottom-scroller").scrollLeft($("#top-scroller").scrollLeft());
         });
 
-    });
+        reinstallResponsesFilterDatePicker();
+    },
 
+    /**
+     * Set value of module private variable initialScrollValue
+     * @param {number} val
+     */
+    setInitialScrollValue: function(val) {
+        initialScrollValue = val;
+    },
+
+    /**
+     * @param {boolean} val
+     */
+    setUseRtl: function(val) {
+        useRtl = val;
+    }
 };
 
 /**
@@ -117,25 +80,41 @@ var onDocumentReadyListresponse = function(){
  * @return
  */
 function reinstallResponsesFilterDatePicker() {
+    
+        // Since grid view is updated with Ajax, we need to fetch date format each update
+        var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
+    
+        $('#SurveyDynamic_startdate').datetimepicker({
+            format: dateFormatDetails.jsdate
+        });
+        $('#SurveyDynamic_datestamp').datetimepicker({
+            format: dateFormatDetails.jsdate
+        });
+    
+        $('#SurveyDynamic_startdate').on('focusout', function() {
+            var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+            $.fn.yiiGridView.update('responses-grid', {data: data});
+        });
+    
+        $('#SurveyDynamic_datestamp').on('focusout', function() {
+            var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
+            $.fn.yiiGridView.update('responses-grid', {data: data});
+        });
+    
+    }
+    
+    var onDocumentReadyListresponse = function(){
+        
+        $('#fake-content').width($('#bottom-scroller')[0].scrollWidth);
+        $('#top-scroller').height('18px');
+        
+        LS.resp.setInitialScrollValue($('.scrolling-wrapper').scrollLeft());
+        LS.resp.setUseRtl($('input[name="rtl"]').val() === '1');
 
-    // Since grid view is updated with Ajax, we need to fetch date format each update
-    var dateFormatDetails = JSON.parse($('input[name="dateFormatDetails"]').val());
+        LS.resp.bindScrollWrapper();
 
-    $('#SurveyDynamic_startdate').datetimepicker({
-        format: dateFormatDetails.jsdate
-    });
-    $('#SurveyDynamic_datestamp').datetimepicker({
-        format: dateFormatDetails.jsdate
-    });
+        $('#displaymode input').off('.listresponse').on('change.listresponse', function(event){
+            $('#change-display-mode-form').find('input[type=submit]').trigger('click');
+        });
 
-    $('#SurveyDynamic_startdate').on('focusout', function() {
-        var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
-        $.fn.yiiGridView.update('responses-grid', {data: data});
-    });
-
-    $('#SurveyDynamic_datestamp').on('focusout', function() {
-        var data = $('#responses-grid .filters input, #responses-grid .filters select').serialize();
-        $.fn.yiiGridView.update('responses-grid', {data: data});
-    });
-
-}
+    };

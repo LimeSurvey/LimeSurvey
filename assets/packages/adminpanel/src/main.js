@@ -50,6 +50,10 @@ $(document).on('ready', function () {
                 window.addEventListener('resize', () => {
                     this.controlWindowSize();
                 });
+
+                $(document).on('vue-sidebar-collapse',  ()=>{
+                    this.$store.commit('changeIsCollapsed', true);
+                });
             },
             mounted() {
                 const surveyid = $(this.$el).data('surveyid');
@@ -59,12 +63,15 @@ $(document).on('ready', function () {
                 const maxHeight = ($('#in_survey_common').height() - 35) || 400;
                 this.$store.commit('changeMaxHeight', maxHeight);
                 this.updatePjaxLinks();
+
                 $(document).on('click', 'ul.pagination>li>a',  ()=>{
                     this.updatePjaxLinks();
                 });
+
                 $(document).on('vue-redraw',  ()=>{
                     this.$forceUpdate();
                 });
+
             }
         });
         global.vueGeneralApp = vueGeneralApp;

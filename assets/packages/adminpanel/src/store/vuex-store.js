@@ -6,6 +6,7 @@ import createPersist from 'vuex-localstorage';
 Vue.use(Vuex);
 Vue.use(VueLocalStorage);
 
+const env = process.env.NODE_ENV;
 
 const getAppState = function (userid) {
     const statePreset = {
@@ -131,15 +132,25 @@ const getAppState = function (userid) {
                 state.bottommenus = bottommenus;
             },
             updatePjax(state) {
+                const scriptSwitch = function(oldEl, newEl, opt){
+                    oldEl.outerHTML = ' ';
+                    oldEl.outerHTML = newEl.outerHTML;
+                    this.onSwitch();
+                };
                 state.pjax = null;
                 state.pjax = new Pjax({
-                    elements: ['a.pjax'], // default is "a[href], form[action]"
+                    elements: ['a.pjax', 'form.pjax'], // default is "a[href], form[action]"
                     selectors: [
                         '#pjax-content',
                         '#breadcrumb-container',
                         '#bottomScripts',
                         '#beginScripts'
-                    ]
+                    ],
+                    switches: {
+                        '#bottomScripts' : scriptSwitch,
+                        '#beginScripts' : scriptSwitch
+                    },
+                    debug: (env === 'developement')
                 });
             }
         }

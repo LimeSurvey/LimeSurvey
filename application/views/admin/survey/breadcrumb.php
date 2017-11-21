@@ -31,15 +31,15 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="active">
-                                <?php echo $active; ?>
+                            <li class="marks_as_active">
+                                <?php echo $active;?>
                             </li>
                         <?php endif; ?>
 
-                        <?php if (isset($sSubaction)): ?>
-                            <?php if (isset($sSimpleSubaction)): ?>
-                                <li class="active">
-                                    <?php echo $sSimpleSubaction; ?>
+                        <?php if(isset($sSubaction)): ?>
+                            <?php if(isset($sSimpleSubaction)): ?>
+                                <li class="marks_as_active">
+                                    <?php echo $sSimpleSubaction;?>
                                 </li>
                             <?php else: ?>
                                 <li>
@@ -57,9 +57,9 @@
                     <?php //If we are in a questiongroup view render the breadcrumb with question group ?>
                     <?php if (isset($oQuestionGroup)): ?>
                         <?php //If the questiongroup view is active right now, don't link it?>
-                        <?php if (!isset($active) && !isset($oQuestion)): ?>
-                            <li class="active">
-                                <?php echo flattenText($oQuestionGroup->group_name); ?>
+                        <?php if(!isset($active) && !isset($oQuestion)): ?>
+                            <li class="marks_as_active">
+                                <?php echo flattenText($oQuestionGroup->group_name);?>
                             </li>
                         <?php else: ?>
                             <li>
@@ -69,16 +69,16 @@
                                     </a>
                                 </div>
                             </li>
-                            <?php if (!isset($oQuestion)): ?>
-                                <li class="active">
-                                    <?php echo $active; ?>
+                            <?php if(!isset($oQuestion)): ?>
+                                <li class="marks_as_active">
+                                    <?php echo $active;?>
                                 </li>
                             <?php endif; ?>
 
                     
-                            <?php if (!isset($oQuestion) && isset($sSubaction)): ?>
-                                <li class="active">
-                                    <?php echo $sSubaction; ?>
+                            <?php if(!isset($oQuestion) && isset($sSubaction)): ?>
+                                <li class="marks_as_active">
+                                    <?php echo $sSubaction;?>
                                 </li>
                             <?php endif; ?>
 
@@ -88,9 +88,9 @@
                     <?php //If we are in a question view render the breadcrumb with the question ?>
                     <?php if (isset($oQuestion)): ?>
                         <?php //If the question view is active right now, don't link it?>    
-                        <?php if (!isset($active)): ?>
-                            <li class="active">
-                                <?php echo flattenText($oQuestion->title); ?>
+                        <?php if(!isset($active)): ?>
+                            <li class="marks_as_active">
+                                <?php echo flattenText($oQuestion->title);?>
                             </li>
                         <?php else: ?>
                             <li>
@@ -100,16 +100,16 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="active">
-                                <?php echo $active; ?>
+                            <li class="marks_as_active">
+                                <?php echo $active;?>
                             </li>
                         <?php endif; ?>
 
 
                         <?php //If a subaction is defined, display it ?>
-                        <?php if (isset($sSubaction)): ?>
-                            <li class="active">
-                                <?php echo $sSubaction; ?>
+                        <?php if(isset($sSubaction)): ?>
+                            <li class="marks_as_active">
+                                <?php echo $sSubaction;?>
                             </li>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -122,8 +122,8 @@
                                 <?php eT('Survey participants'); ?>
                             </a>
                         </li>
-                        <li class="active">
-                            <?php echo $active; ?>
+                        <li class="marks_as_active">
+                            <?php echo $active;?>
                         </li>
                     <?php endif; ?>
 
