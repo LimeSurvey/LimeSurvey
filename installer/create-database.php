@@ -11,7 +11,7 @@ function createDatabase($oDB){
     */
 
     ////// Current database version: //////
-    $databaseCurrentVersion = "325";
+    $databaseCurrentVersion = "326";
     ///////////////////////////////////////
 
     Yii::app()->loadHelper('database');
@@ -561,7 +561,7 @@ function createDatabase($oDB){
             'printanswers' => "string(1) NOT NULL default 'N'",
             'ipaddr' => "string(1) NOT NULL default 'N'",
             'refurl' => "string(1) NOT NULL default 'N'",
-            'datecreated' => "datetime NULL",
+            'datecreated' => "datetime",
             'publicstatistics' => "string(1) NOT NULL default 'N'",
             'publicgraphs' => "string(1) NOT NULL default 'N'",
             'listpublic' => "string(1) NOT NULL default 'N'",
