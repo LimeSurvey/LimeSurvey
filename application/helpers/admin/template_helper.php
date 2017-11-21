@@ -123,7 +123,7 @@ function is_template_editable($templatename)
 */
 function templateExtractFilter($p_event, &$p_header)
 {
-    $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedtemplateuploads'));
+    $aAllowExtensions=explode(',',Yii::app()->getConfig('allowedthemeuploads'));
     $aAllowExtensions[]='pstpl';
     $info = pathinfo($p_header['filename']);
     // Deny files with multiple extensions in general

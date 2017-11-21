@@ -19,7 +19,7 @@
             if(filename==""){
                 return false; // False click
             }
-            var allowedtypes=',<?php echo Yii::app()->getConfig('allowedtemplateuploads'); ?>,';
+            var allowedtypes=',<?php echo Yii::app()->getConfig('allowedthemeuploads'); ?>,';
             var lastdotpos=-1;
             var ext='';
             if ((lastdotpos=filename.lastIndexOf('.')) < 0)

@@ -262,7 +262,7 @@ class templates extends Survey_Common_Action
             $templatename           = returnGlobal('templatename');
             $oEditedTemplate        = Template::getInstance($templatename);
             $screenname             = returnGlobal('screenname');
-            $allowedtemplateuploads = Yii::app()->getConfig('allowedtemplateuploads');
+            $allowedthemeuploads = Yii::app()->getConfig('allowedthemeuploads');
             $filename               = sanitize_filename($_FILES['upload_file']['name'],false,false,false);// Don't force lowercase or alphanumeric
             $dirfilepath            = $oEditedTemplate->filesPath;
 
@@ -284,7 +284,7 @@ class templates extends Survey_Common_Action
                     $uploadresult = gT("Demo mode: Uploading template files is disabled.");
                 }elseif($filename!=$_FILES['upload_file']['name']){
                     $uploadresult = gT("This filename is not allowed to be uploaded.");
-                }elseif(!in_array(strtolower(substr(strrchr($filename, '.'),1)),explode ( "," , $allowedtemplateuploads ))){
+                }elseif(!in_array(strtolower(substr(strrchr($filename, '.'),1)),explode ( "," , $allowedthemeuploads ))){
                     $uploadresult = gT("This file type is not allowed to be uploaded.");
                 }else{
                     //Uploads the file into the appropriate directory
