@@ -743,6 +743,10 @@ class Survey extends LSActiveRecord
      */
     public function insertNewSurvey($aData)
     {
+        if (!isset($aData['datecreated'])) {
+            $aData['datecreated'] = date('Y-m-d H:i:s');
+        }
+
         do {
             // if wishSID is set check if it is not taken already
             if (isset($aData['wishSID'])) {
