@@ -129,6 +129,8 @@ class CreateSurveyTest extends TestBaseClassWeb
             $overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_1_1'));
             $overview->click();
 
+            sleep(1);
+
             // Click "Add question".
             $addgroup = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
