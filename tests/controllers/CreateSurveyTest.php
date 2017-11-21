@@ -73,6 +73,15 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
+            $button = self::$webDriver->wait(10)->until(
+                WebDriverExpectedCondition::elementToBeClickable(
+                    WebDriverBy::cssSelector('#welcomeModal button.btn-default')
+                )
+            );
+            $button->click();
+
+            sleep(1);
+
             // Click on big "Create survey" button.
             $link = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
