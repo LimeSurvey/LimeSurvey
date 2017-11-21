@@ -15,6 +15,7 @@ class TemplateControllerTest extends TestBaseClass
 
     /**
      * Test copy a template.
+     * @group copytemplate
      */
     public function testCopyTemplate()
     {
