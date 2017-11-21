@@ -293,7 +293,7 @@ $config['showaggregateddata'] = 1;
 * This prevents upgrade problems later because if you modify your standard templates you could accidenitally
 * overwrite these on a LimSurvey upgrade. Only set this to 0 if you know what you are doing.
 */
-$config['standard_templates_readonly'] =  true;
+$config['standard_themes_readonly'] =  true;
 
 
 /**

@@ -104,7 +104,7 @@ function recursive_in_array($needle, $haystack) {
 */
 function is_template_editable($templatename)
 {
-    if (isStandardTemplate($templatename) && Yii::app()->getConfig("standard_templates_readonly")==true)
+    if (isStandardTemplate($templatename) && Yii::app()->getConfig("standard_themes_readonly")==true)
     {
         return false;
     }
