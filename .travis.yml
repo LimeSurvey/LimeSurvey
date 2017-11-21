@@ -21,7 +21,7 @@ before_script:
     - chmod -R 776 tmp
     - chmod -R 776 tmp/runtime
     - chmod -R 776 upload
-    - chmod -R 776 templates
+    - chmod -R 776 themes
     - mkdir -p tests/tmp/runtime
     - chmod -R 776 tests/tmp
     - chmod -R 776 tests/tmp/runtime
