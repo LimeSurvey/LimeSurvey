@@ -109,7 +109,7 @@ class CreateSurveyTest extends TestBaseClassWeb
 
 
             // Click "Add group".
-            $addgroup = self::$webDriver->wait(3)->until(
+            $addgroup = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('#panel-1 .panel-body-link a')
                 )
@@ -130,7 +130,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             $overview->click();
 
             // Click "Add question".
-            $addgroup = self::$webDriver->wait(5)->until(
+            $addgroup = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('#panel-2 .panel-body-link a')
                 )
@@ -238,19 +238,19 @@ class CreateSurveyTest extends TestBaseClassWeb
             );
 
             // Delete survey.
-            $execute = self::$webDriver->wait(5)->until(
+            $execute = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::id('ls-tools-button')
                 )
             );
             $execute->click();
-            $execute = self::$webDriver->wait(5)->until(
+            $execute = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('#ls-tools-button + ul li:first-child')
                 )
             );
             $execute->click();
-            $execute = self::$webDriver->wait(5)->until(
+            $execute = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('input[type="submit"]')
                 )
