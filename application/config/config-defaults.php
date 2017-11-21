@@ -611,41 +611,39 @@ else
 $config['assets']                  = 'assets/';
 
 // URL defintions
-$config['homeurl']                 = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
-$config['tempurl']                 = $config['publicurl'].'tmp';
-$config['imageurl']                = $config['publicurl'].'images';         // Location of button bar files for admin script
-$config['uploadurl']               = $config['publicurl'].'upload';
-$config['standardthemerooturl'] = $config['publicurl'].'templates';      // Location of the standard themes
-$config['adminscripts']            = $config['publicurl'].'assets/scripts/admin/';
-$config['generalscripts']          = $config['publicurl'].'assets/scripts/';
-$config['third_party']             = $config['publicurl'].'third_party/';
-$config['styleurl']                = $config['publicurl'].$config['assets'].'styles-admin/';
-$config['publicstyle']             = $config['publicurl'].$config['assets'].'styles-public/';
-$config['publicstyleurl']          = $config['publicstyle'];
-$config['sCKEditorURL']            = $config['third_party'].'ckeditor';
-$config['userthemerooturl']     = $config['uploadurl'].'/templates';     // Location of the user themes
-$config['adminimageurl']           = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
-$config['applicationurl']          = $config['publicurl'].'application/';
-$config['extensionsurl']           = $config['applicationurl'].'extensions/';
+$config['homeurl']                = $config['publicurl'].'admin';          // The website location (url) of the admin scripts
+$config['tempurl']                = $config['publicurl'].'tmp';
+$config['imageurl']               = $config['publicurl'].'images';         // Location of button bar files for admin script
+$config['uploadurl']              = $config['publicurl'].'upload';
+$config['standardthemerooturl']   = $config['publicurl'].'themes/survey';      // Location of the standard themes
+$config['adminscripts']           = $config['publicurl'].'assets/scripts/admin/';
+$config['generalscripts']         = $config['publicurl'].'assets/scripts/';
+$config['third_party']            = $config['publicurl'].'third_party/';
+$config['styleurl']               = $config['publicurl'].$config['assets'].'styles-admin/';
+$config['publicstyle']            = $config['publicurl'].$config['assets'].'styles-public/';
+$config['publicstyleurl']         = $config['publicstyle'];
+$config['sCKEditorURL']           = $config['third_party'].'ckeditor';
+$config['userthemerooturl']       = $config['uploadurl'].'/themes/survey';     // Location of the user themes
+$config['adminimageurl']          = $config['styleurl'].$config['admintheme'].'/images/';         // Location of button bar files for admin script
+$config['applicationurl']         = $config['publicurl'].'application/';
+$config['extensionsurl']          = $config['applicationurl'].'extensions/';
+$config['adminstyleurl']          = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
 
-
-$config['adminstyleurl']           = $config['styleurl'].$config['admintheme'].'/';         // Location of button bar files for admin script
-
-
-$config['publicdir']                    = $config['rootdir'];                                   // The directory path of the public scripts
-$config['homedir']                      = $config['rootdir'];       // The directory path of the admin scripts
-$config['tempdir']                      = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
-$config['imagedir']                     = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
-$config['uploaddir']                    = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
-$config['standardthemerootdir']      = $config['rootdir'].DIRECTORY_SEPARATOR."templates";            // The directory path of the standard themes
-$config['publicstylepath']              = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
-$config['corequestionthemedir']      = "question_templates";
-$config['corequestionthemerootdir']  = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestionthemedir'];   // The directory containing the core's question themes.
-$config['styledir']                     = $config['rootdir'].DIRECTORY_SEPARATOR.$config['assets'].DIRECTORY_SEPARATOR.'styles-admin';
-$config['questiontypedir']              = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
-$config['userthemerootdir']          = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user themes
-$config['userquestionthemedir']         = "question_templates";   // The directory containing the user's question themes.
-$config['userquestionthemerootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir'];   // The directory containing the user's question themes.
+// Dir
+$config['publicdir']                = $config['rootdir'];                                   // The directory path of the public scripts
+$config['homedir']                  = $config['rootdir'];       // The directory path of the admin scripts
+$config['tempdir']                  = $config['rootdir'].DIRECTORY_SEPARATOR."tmp";         // The directory path where LimeSurvey can store temporary files
+$config['imagedir']                 = $config['rootdir'].DIRECTORY_SEPARATOR."images";      // The directory path of the image directory
+$config['uploaddir']                = $config['rootdir'].DIRECTORY_SEPARATOR."upload";
+$config['standardthemerootdir']     = $config['rootdir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey";            // The directory path of the standard themes
+$config['publicstylepath']          = $config['rootdir'].DIRECTORY_SEPARATOR.$config['publicstyle'];
+$config['corequestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";
+$config['corequestionthemerootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR.$config['corequestionthemedir'];   // The directory containing the core's question themes.
+$config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.$config['assets'].DIRECTORY_SEPARATOR.'styles-admin';
+$config['questiontypedir']          = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
+$config['userthemerootdir']         = $config['uploaddir'].DIRECTORY_SEPARATOR."themes".DIRECTORY_SEPARATOR."survey"; // The directory path of the user themes
+$config['userquestionthemedir']     = "themes".DIRECTORY_SEPARATOR."question";   // The directory containing the user's question themes.
+$config['userquestionthemerootdir'] = $config['uploaddir'].DIRECTORY_SEPARATOR.$config['userquestionthemedir'];   // The directory containing the user's question themes.
 
 
 // Use alias notation, we should move to this format everywhere.
