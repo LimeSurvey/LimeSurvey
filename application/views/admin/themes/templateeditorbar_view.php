@@ -8,7 +8,7 @@
     {
         if (newtemplatename=window.prompt(text, defvalue))
         {
-            sendPost('<?php echo $this->createUrl('admin/templates/sa/template'); ?>'+action,'',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
+            sendPost('<?php echo $this->createUrl('admin/themes/sa/template'); ?>'+action,'',new Array('action','newname','copydir'),new Array('template'+action,newtemplatename,copydirectory));
         }
     }
 
@@ -106,7 +106,7 @@
 
                 <!-- Export -->
                 <?php if(Permission::model()->hasGlobalPermission('templates','export') && function_exists("zip_open")):?>
-                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/templates/sa/templatezip/templatename/' . $templatename) ?>" role="button">
+                    <a class="btn btn-default" href="<?php echo $this->createUrl('admin/themes/sa/templatezip/templatename/' . $templatename) ?>" role="button">
                         <span class="icon-export text-success"></span>
                         <?php eT("Export"); ?>
                     </a>
@@ -185,7 +185,7 @@
                     <?php endif;?>
 
                 <?php if(Permission::model()->hasGlobalPermission('templates','delete')):?>
-                    <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/templates/sa/delete/templatename/'.$templatename); ?>", "_top")'>
+                    <a class="btn btn-default" href="#" role="button" onclick='if (confirm("<?php eT("Are you sure you want to delete this template?", "js"); ?>")) window.open("<?php echo $this->createUrl('admin/themes/sa/delete/templatename/'.$templatename); ?>", "_top")'>
                         <span class="fa fa-trash  text-warning"></span>
                         <?php eT("Delete"); ?>
                     </a>
@@ -199,7 +199,7 @@
                 <label for='templatedir'><?php eT("Template:"); ?></label>
                 <select class="listboxtemplates form-control" id='templatedir' name='templatedir' onchange="javascript: var uri = new Uri('<?php
                     // Don't put 'sa' into the URL dirctly because YIi will then try to use filenames directly in the path because of the route
-                    echo $this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
+                    echo $this->createUrl("admin/themes",array('sa'=>'view','editfile'=>$relativePathEditfile,'screenname'=>$screenname)); ?>'); uri.addQueryParam('templatename',this.value); window.open(uri.toString(), '_top')">
                     <?php echo themeoptions($templates, $templatename); ?>
                 </select>
             </div>
@@ -209,7 +209,7 @@
                 <?php echo CHtml::dropDownList('screenname',$screenname,$screens,array(
                     'id'=>'listboxtemplates',
                     'class'=>"listboxtemplates form-control",
-                    'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/templates",array('sa'=>'view','editfile'=>$relativePathEditfile,'templatename'=>$templatename))."'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
+                    'onchange'=> "javascript:  var uri = new Uri('".$this->createUrl("admin/themes",array('sa'=>'view','editfile'=>$relativePathEditfile,'templatename'=>$templatename))."'); uri.addQueryParam('screenname',this.value); window.open(uri.toString(), '_top')"
                 )); ?>
             </div>
 
@@ -247,7 +247,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <div class="modal-title h4"><?php eT("Upload template file") ?></div>
                 </div>
-                <?php echo CHtml::form(array('admin/templates/sa/upload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
+                <?php echo CHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'importtemplate', 'name'=>'importtemplate', 'enctype'=>'multipart/form-data', 'onsubmit'=>'return validatefilename(this,"'.gT('Please select a file to import!', 'js').'");')); ?>
                 <div class="modal-body">
                     <input type='hidden' name='lid' value='$lid' />
                     <input type='hidden' name='action' value='templateupload' />

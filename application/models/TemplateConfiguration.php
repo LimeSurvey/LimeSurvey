@@ -422,7 +422,7 @@ class TemplateConfiguration extends TemplateConfig
 
     public function getButtons()
     {
-        $sEditorUrl    = Yii::app()->getController()->createUrl('admin/templates/sa/view', array("templatename"=>$this->template_name));
+        $sEditorUrl    = Yii::app()->getController()->createUrl('admin/themes/sa/view', array("templatename"=>$this->template_name));
         if (App()->getController()->action->id == "surveysgroups"){
             $gisd = Yii::app()->request->getQuery('id', null);
             $sOptionUrl    = Yii::app()->getController()->createUrl('admin/themeoptions/sa/updatesurveygroup', array("id"=>$this->id, "gsid"=>$gisd));

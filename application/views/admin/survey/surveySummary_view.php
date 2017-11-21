@@ -527,8 +527,8 @@ $surveyid = $oSurvey->sid;
                             if (Permission::model()->hasGlobalPermission('templates','read'))
                             {
                                 $sTemplateOptionsUrl = $this->createUrl("admin/themeoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid)); 
-                                $sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('templatename' => $oSurvey->template)); 
-                                //$sTemplateEditorUrl = $this->createUrl("admin/templates/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template)); 
+                                $sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('templatename' => $oSurvey->template)); 
+                                //$sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template)); 
                                 ?>
                                 <?php echo $templatename; ?>
                                 <a href='<?=$sTemplateOptionsUrl?>' title="<?php eT("Open template options"); ?>" class="btn btn-default btn-xs"><i class="fa fa-paint-brush"></i></a>

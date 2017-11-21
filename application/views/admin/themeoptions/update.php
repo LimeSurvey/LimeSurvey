@@ -88,7 +88,7 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
                     <?php printf(gT("Upload a logo (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                 </div>
                 <div class="col-sm-6">
-                <?php echo TbHtml::form(array('admin/templates/sa/upload'), 'post', array('id'=>'uploadlogo', 'name'=>'uploadlogo', 'enctype'=>'multipart/form-data')); ?>
+                <?php echo TbHtml::form(array('admin/themes/sa/upload'), 'post', array('id'=>'uploadlogo', 'name'=>'uploadlogo', 'enctype'=>'multipart/form-data')); ?>
                     <span id="fileselector">
                         <label class="btn btn-default col-xs-8" for="upload_logo">
                             <input class="hidden" id="upload_logo" name="upload_logo" type="file">

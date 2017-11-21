@@ -28,7 +28,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                         <div class="row">
                             <div class="col-sm-9">
                                 <a
-                                    href  = "<?php echo $this->createUrl('admin/templates', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>"
+                                    href  = "<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>"
                                     class = "<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>"
                                     >
                                     <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
@@ -58,7 +58,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                         <div class="row">
                             <div class="col-sm-9">
                                 <a
-                                    href="<?php echo $this->createUrl('admin/templates', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>"
+                                    href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>"
                                     class = "<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>"
                                 >
                                     <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
@@ -88,7 +88,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                         <div class="row">
                             <div class="col-sm-9">
                                 <a
-                                    href="<?php echo $this->createUrl('admin/templates', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>"
+                                    href="<?php echo $this->createUrl('admin/themes', array('sa'=>'view','screenname'=>$screenname,'templatename'=>$templatename, 'editfile' => $file )); ?>"
                                     class = "<?php if($file == $relativePathEditfile ){echo 'text-danger';}else{echo 'text-success';}; ?>"
                                 >
                                     <?php echo (empty(substr(strrchr($file, DIRECTORY_SEPARATOR), 1)))?$file:substr(strrchr($file, DIRECTORY_SEPARATOR), 1) ;?>
@@ -113,7 +113,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
 
         <div class="col-lg-8 templateeditor">
-            <?php echo CHtml::form(array('admin/templates/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
+            <?php echo CHtml::form(array('admin/themes/sa/templatesavechanges'), 'post', array('id'=>'editTemplate', 'name'=>'editTemplate')); ?>
 
             <?php echo CHtml::hiddenField('templatename', $templatename, array('class'=>'templatename'));
             echo CHtml::hiddenField('screenname', $screenname, array('class'=>'screenname'));
@@ -170,7 +170,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                             <?php //TODO: make it ajax and less messy ?>
                             <?php if ( $oEditedTemplate->getTemplateForFile($fileName, $oEditedTemplate)->sTemplateName == $oEditedTemplate->sTemplateName):?>
                                 <?php if (Permission::model()->hasGlobalPermission('templates','delete')): ?>
-                                    <?php echo CHtml::form(array('admin/templates/sa/templatefiledelete'), 'post'); ?>
+                                    <?php echo CHtml::form(array('admin/themes/sa/templatefiledelete'), 'post'); ?>
                                     <input type='hidden' name="otherfile" id="otherfile" value="<?php echo $file; ?>" />
                                     <input type='submit' class='btn btn-default btn-xs' value='<?php eT("Delete"); ?>' onclick="javascript:return confirm('<?php eT("Are you sure you want to delete this file?","js"); ?>')"/>
                                     <input type='hidden' name='screenname' value='<?php echo htmlspecialchars($screenname); ?>' />
@@ -198,7 +198,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 if (Permission::model()->hasGlobalPermission('templates','update'))
                 { ?>
 
-                    <?php echo CHtml::form(array('admin/templates/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
+                    <?php echo CHtml::form(array('admin/themes/sa/uploadfile'), 'post', array('id'=>'importtemplatefile', 'name'=>'importtemplatefile', 'enctype'=>'multipart/form-data')); ?>
                     <?php printf(gT("Upload a file (maximum size: %d MB):"),getMaximumFileUploadSize()/1024/1024); ?>
                     <br>
                     <input name='upload_file' id="upload_file" type="file" required="required"/>
@@ -274,7 +274,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
             else
             { ?>
                 <p>
-                    <iframe id='previewiframe' title='Preview' src='<?php echo $this->createUrl('admin/templates/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
+                    <iframe id='previewiframe' title='Preview' src='<?php echo $this->createUrl('admin/themes/sa/tmp/',array('id'=>$time)); ?>' height='768' name='previewiframe' style='width:95%;background-color: white;'>Embedded Frame</iframe>
                 </p>
             </div>
             <?php

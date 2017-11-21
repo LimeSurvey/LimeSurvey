@@ -391,7 +391,7 @@ class homepagesettings extends Survey_Common_Action
 
             $oDB->createCommand()->insert('{{boxes}}', array(
                 'position' =>  '6',
-                'url'      =>  'admin/templates/sa/view',
+                'url'      =>  'admin/themes/sa/view',
                 'title'    =>  'Template editor',
                 'ico'      =>  'templates',
                 'desc'     =>  'Edit LimeSurvey templates',

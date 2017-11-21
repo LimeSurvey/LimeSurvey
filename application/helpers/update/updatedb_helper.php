@@ -1328,7 +1328,7 @@ function upgradeSurveyTables255()
 
     $oDB->createCommand()->insert('{{boxes}}', array(
         'position' =>  '6',
-        'url'      =>  'admin/templates/sa/view',
+        'url'      =>  'admin/themes/sa/view',
         'title'    =>  'Template editor',
         'ico'      =>  'templates',
         'desc'     =>  'Edit LimeSurvey templates',
@@ -1444,7 +1444,7 @@ function createBoxes250()
 
     $oDB->createCommand()->insert('{{boxes}}', array(
         'position' =>  '6',
-        'url'      =>  'admin/templates/sa/view',
+        'url'      =>  'admin/themes/sa/view',
         'title'    =>  'Template editor',
         'img'      =>  'templates.png',
         'desc'     =>  'Edit LimeSurvey templates',
