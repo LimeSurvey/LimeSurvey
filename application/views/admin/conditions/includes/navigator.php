@@ -27,13 +27,15 @@
     </select>
     <a href="#" id="selector__hiddenNavigation" class="hidden pjax">hidden</a>
 </div>
+
+<?php
+App()->getClientScript()->registerScript('conditionmovetoquestion', 
+"$('#questionNav').off('.conditionmovetoquestion').on('change.conditionmovetoquestion', function(e){
+    var triggerEvent = new Event('pjax:load');
+    triggerEvent.url = $(this).val();
+    window.dispatchEvent( triggerEvent );
+});", LSYii_ClientScript::POS_POSTSCRIPT);
+?>
 <script>
-    $(document).off('.conditions').on('ready.conditions, pjax:scriptcomplete.conditions',function(){
-        $('#questionNav').on('change', function(e){
-            $('#selector__hiddenNavigation').attr('href', $(this).val());
-            $('#selector__hiddenNavigation').trigger('click');
-            console.log($(this).val());
-        });
-    });
     //onchange="window.open(this.options[this.selectedIndex].value,'_top')"
 </script>
