@@ -75,7 +75,7 @@ class CreateSurveyTest extends TestBaseClassWeb
             sleep(1);
 
             try {
-                $button = self::$webDriver->wait(3)->until(
+                $button = self::$webDriver->wait(1)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
                         WebDriverBy::cssSelector('#welcomeModal button.btn-default')
                     )
@@ -110,7 +110,6 @@ class CreateSurveyTest extends TestBaseClassWeb
             $save->click();
 
             sleep(1);
-
 
             // Click "Add group".
             $addgroup = self::$webDriver->wait(10)->until(
@@ -202,12 +201,15 @@ class CreateSurveyTest extends TestBaseClassWeb
             $this->assertCount(1, $sids);
             $sid = $sids[0]['sid'];
             $survey = \Survey::model()->findByPk($sid);
+            $this->assertNotEmpty($survey);
+            $this->assertCount(1, $survey->groups, 'Wrong number of groups: ' . count($survey->groups));
             $questionObjects = $survey->groups[0]->questions;
             $questions = [];
             foreach ($questionObjects as $q) {
                 $questions[$q->title] = $q;
             }
             $this->assertCount(1, $questions, 'We have exactly one question');
+            $this->assertTrue(isset($questions['question1']), json_encode(array_keys($questions)));
 
             // Enter answer text.
             $sgqa = $sid . 'X' . $survey->groups[0]->gid . 'X' . $questions['question1']->qid;
