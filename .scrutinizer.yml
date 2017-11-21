@@ -8,4 +8,6 @@ checks:
         one_class_per_file: true
 coding_style:
     php: {  }
-                
+tools:
+    php_cs_fixer:
+        config: { level: psr2 }                
