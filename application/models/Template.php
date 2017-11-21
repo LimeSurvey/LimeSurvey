@@ -138,7 +138,7 @@ class Template extends LSActiveRecord
     */
     public static function templateNameFilter($sTemplateName)
     {
-        $sDefaultTemplate = Yii::app()->getConfig('defaulttemplate','Default template');
+        $sDefaultTemplate = Yii::app()->getConfig('defaulttheme','Default template');
         $sTemplateName    = empty($sTemplateName) ? $sDefaultTemplate : $sTemplateName;
 
         /* Standard Template return it without testing */

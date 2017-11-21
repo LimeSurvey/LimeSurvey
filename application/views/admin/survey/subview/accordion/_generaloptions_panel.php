@@ -281,7 +281,7 @@
                             <option value='<?php echo $tname; ?>'
                                 <?php if ($oSurvey->template && htmlspecialchars($tname) == $oSurvey->template) { ?>
                                     selected='selected'
-                                    <?php   } elseif (!$oSurvey->template && $tname == Yii::app()->getConfig('defaulttemplate')) { ?>
+                                    <?php   } elseif (!$oSurvey->template && $tname == Yii::app()->getConfig('defaulttheme')) { ?>
                                     selected='selected'
                                     <?php } ?>
                                 ><?php echo $tname; ?></option>

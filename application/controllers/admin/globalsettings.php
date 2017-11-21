@@ -242,10 +242,10 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('defaultthemeteeditormode', sanitize_paranoid_string(Yii::app()->getRequest()->getPost('defaultthemeteeditormode','default')));
         if (!Yii::app()->getConfig('demoMode'))
         {
-            $sTemplate=Yii::app()->getRequest()->getPost("defaulttemplate");
+            $sTemplate=Yii::app()->getRequest()->getPost("defaulttheme");
             if(array_key_exists($sTemplate,getTemplateList()))// Filter template name
             {
-                setGlobalSetting('defaulttemplate', $sTemplate);
+                setGlobalSetting('defaulttheme', $sTemplate);
             }
             setGlobalSetting('x_frame_options', Yii::app()->getRequest()->getPost('x_frame_options'));
         }

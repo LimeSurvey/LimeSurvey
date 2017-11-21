@@ -85,8 +85,8 @@ class printablesurvey extends Survey_Common_Action
             $oTemplate = Template::model()->getTemplateConfiguration($templatename);            
             if($oTemplate->pstplPath . DIRECTORY_SEPARATOR . 'print_survey.pstpl') {
             }
-            elseif(is_file(getTemplatePath(Yii::app()->getConfig("defaulttemplate")).DIRECTORY_SEPARATOR.'print_survey.pstpl')) {
-                $templatename=Yii::app()->getConfig("defaulttemplate");
+            elseif(is_file(getTemplatePath(Yii::app()->getConfig("defaulttheme")).DIRECTORY_SEPARATOR.'print_survey.pstpl')) {
+                $templatename=Yii::app()->getConfig("defaulttheme");
             } else {
                 $templatename="default";
             }

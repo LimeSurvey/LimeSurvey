@@ -103,7 +103,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     }
     else
     {
-        $templatename=Yii::app()->getConfig('defaulttemplate');
+        $templatename=Yii::app()->getConfig('defaulttheme');
     }
     if(!isset($templateurl)) $templateurl = getTemplateURL($templatename)."/";
     if (!$anonymized && isset($thissurvey['anonymized'])) {

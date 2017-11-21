@@ -180,7 +180,7 @@ class Survey extends LSActiveRecord
         }
 
 
-        $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttemplate'));
+        $this->template = Template::templateNameFilter(Yii::app()->getConfig('defaulttheme'));
         $validator= new LSYii_Validators;
         $this->language = $validator->languageFilter(Yii::app()->getConfig('defaultlang'));
         $this->attachEventHandler("onAfterFind", array($this,'fixSurveyAttribute'));
@@ -415,9 +415,9 @@ class Survey extends LSActiveRecord
             if(!$this->isNewRecord){
                 $oSurvey=self::model()->findByPk($this->sid);
                 if($oSurvey->template != $sTemplateName)// No need to test !is_null($oSurvey)
-                    $sTemplateName = Yii::app()->getConfig('defaulttemplate');
+                    $sTemplateName = Yii::app()->getConfig('defaulttheme');
             } else {
-                $sTemplateName = Yii::app()->getConfig('defaulttemplate');
+                $sTemplateName = Yii::app()->getConfig('defaulttheme');
             }
         }
         return Template::templateNameFilter($sTemplateName);

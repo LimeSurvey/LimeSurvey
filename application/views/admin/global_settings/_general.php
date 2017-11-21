@@ -5,7 +5,7 @@
 */
 ?>
 <?php
-$thisdefaulttemplate=getGlobalSetting('defaulttemplate');
+$thisdefaulttheme=getGlobalSetting('defaulttheme');
 $templatenames=array_keys(getTemplateList());
 $thisadmintheme=getGlobalSetting('admintheme');
 $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode');
@@ -30,13 +30,13 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <!-- Default Template -->
         <div class="row ls-space margin top-10">
             <div class="form-group">
-                <label class="col-sm-12 text-left control-label" for="defaulttemplate">
+                <label class="col-sm-12 text-left control-label" for="defaulttheme">
                 <?php eT("Default template:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?>
                 </label>
                 <div class="col-sm-12">
-                    <select class="form-control" name="defaulttemplate" id="defaulttemplate">
+                    <select class="form-control" name="defaulttheme" id="defaulttheme">
                         <?php foreach ($templatenames as $templatename) : ?>
-                        <option value='<?php echo $templatename; ?>' <?php echo ($thisdefaulttemplate==$templatename) ? "selected='selected'" : ""?> >
+                        <option value='<?php echo $templatename; ?>' <?php echo ($thisdefaulttheme==$templatename) ? "selected='selected'" : ""?> >
                             <?php echo $templatename; ?>
                         </option>
                         <?php endforeach; ?>

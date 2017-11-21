@@ -27,7 +27,7 @@
             }
 
 
-            $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+            $oTemplate       = Template::model()->getInstance(Yii::app()->getConfig("defaulttheme"));
             //$oTemplate->registerAssets();
 
 
@@ -68,7 +68,7 @@
          */
         public function actionError()
         {
-            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttemplate"));
+            $oTemplate = Template::model()->getInstance(Yii::app()->getConfig("defaulttheme"));
 
             $this->sTemplate = $oTemplate->sTemplateName;
 
