@@ -762,11 +762,11 @@ function initializeAjaxProgress()
             'minHeight': 0,
             'resizable': false
         });
-    $('#ajaxprogress').bind('ajaxStart', function()
+    $('#ajaxprogress').on('ajaxStart', function()
     {
         $(this).dialog('open');
     });
-    $('#ajaxprogress').bind('ajaxStop', function()
+    $('#ajaxprogress').on('ajaxStop', function()
     {
 
         $(this).dialog('close');
@@ -775,14 +775,14 @@ function initializeAjaxProgress()
 
 /**
  * Adapt cell to have a click on cell do a click on input:radio or input:checkbox (if unique)
- * Using delegate the can be outside document.ready
+ * Using node delegation they can be outside document.ready
  */
 function tableCellAdapters()
 {
-    $('table.activecell').delegate('tbody td input:checkbox,tbody td input:radio,tbody td label,tbody th input:checkbox,tbody th input:radio,tbody th label',"click", function(e) {
+    $('table.activecell').on("click", 'tbody td input:checkbox,tbody td input:radio,tbody td label,tbody th input:checkbox,tbody th input:radio,tbody th label', function(e) {
         e.stopPropagation();
     });
-    $('table.activecell').delegate('tbody td,tbody th',"click", function() {
+    $('table.activecell').on("click", 'tbody td,tbody th', function() {
         if($(this).find("input:radio,input:checkbox").length==1)
         {
           $(this).find("input:radio").click();

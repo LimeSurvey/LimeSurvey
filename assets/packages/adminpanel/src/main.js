@@ -59,8 +59,11 @@ $(document).on('ready', function () {
                 const maxHeight = ($('#in_survey_common').height() - 35) || 400;
                 this.$store.commit('changeMaxHeight', maxHeight);
                 this.updatePjaxLinks();
-                $(document).on('click', 'ul.pagination>li>a', function () {
+                $(document).on('click', 'ul.pagination>li>a',  ()=>{
                     this.updatePjaxLinks();
+                });
+                $(document).on('vue-redraw',  ()=>{
+                    this.$forceUpdate();
                 });
             }
         });

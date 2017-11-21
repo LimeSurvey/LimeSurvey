@@ -6,81 +6,75 @@
 // Namespace
 var LS = LS || {  onDocumentReady: {} };
 
-// Module
-$(document).on('ready pjax:complete', function() {
+ /**
+ * Needed to calculate correct pager position at RTL language
+ * @var {number}
+ */
+var initialScrollValue = 0;
 
-    /**
-     * Needed to calculate correct pager position at RTL language
-     * @var {number}
-     */
-    var initialScrollValue = 0;
+/**
+ * True if admin uses an RTL language
+ * @var {boolean}
+ */
+var useRtl = false;
 
-    /**
-     * True if admin uses an RTL language
-     * @var {boolean}
-     */
-    var useRtl = false;
+// Return public functions for this module
+LS.resp =  {
+            /**
+             * Scroll the pager and the footer when scrolling horizontally
+             * @return
+             */
+            setListPagerPosition : function (pager) {
+                var $elListPager = $('#ListPager');
 
-    /**
-     * Scroll the pager and the footer when scrolling horizontally
-     * @return
-     */
-    function setListPagerPosition(pager) {
-        var $elListPager = $('#ListPager');
-
-        if (useRtl) {
-            var scrollAmount = Math.abs($(pager).scrollLeft() - initialScrollValue);
-            $elListPager.css({
-                'position': 'relative',
-                'right': scrollAmount
-            });
-        }
-        else {
-            $elListPager.css({
-                'position': 'relative',
-                'left': $(pager).scrollLeft()
-            });
-        }
-    }
-
-    // Return public functions for this module
-    return {
-
-        /**
-         * Bind fixing pager position on scroll event
-         * @return
-         */
-        bindScrollWrapper: function () {
-            setListPagerPosition();
-            $('#bottom-scroller').scroll(function() {
-                setListPagerPosition(this);
-                $("#top-scroller").scrollLeft($("#bottom-scroller").scrollLeft());
-            });
-            $('#top-scroller').scroll(function() {
-                setListPagerPosition(this);
-                $("#bottom-scroller").scrollLeft($("#top-scroller").scrollLeft());
-            });
-
-            reinstallResponsesFilterDatePicker();
-        },
-
-        /**
-         * Set value of module private variable initialScrollValue
-         * @param {number} val
-         */
-        setInitialScrollValue: function(val) {
-            initialScrollValue = val;
-        },
-
-        /**
-         * @param {boolean} val
-         */
-        setUseRtl: function(val) {
-            useRtl = val;
-        }
-    };
-});
-
+                if (useRtl) {
+                    var scrollAmount = Math.abs($(pager).scrollLeft() - initialScrollValue);
+                    $elListPager.css({
+                        'position': 'relative',
+                        'right': scrollAmount
+                    });
+                }
+                else {
+                    $elListPager.css({
+                        'position': 'relative',
+                        'left': $(pager).scrollLeft()
+                    });
+                }
+            },              
+            /**
+             * Bind fixing pager position on scroll event
+             * @return
+             */
+            bindScrollWrapper: function () {
+                LS.resp.setListPagerPosition();
+                $('#bottom-scroller').scroll(function() {
+                    LS.resp.setListPagerPosition(this);
+                    $("#top-scroller").scrollLeft($("#bottom-scroller").scrollLeft());
+                });
+                $('#top-scroller').scroll(function() {
+                    LS.resp.setListPagerPosition(this);
+                    $("#bottom-scroller").scrollLeft($("#top-scroller").scrollLeft());
+                });
+    
+                reinstallResponsesFilterDatePicker();
+                $(document).trigger('vue-redraw');
+            },
+    
+            /**
+             * Set value of module private variable initialScrollValue
+             * @param {number} val
+             */
+            setInitialScrollValue: function(val) {
+                initialScrollValue = val;
+            },
+    
+            /**
+             * @param {boolean} val
+             */
+            setUseRtl: function(val) {
+                useRtl = val;
+            }
+        };
 
 var onDocumentReadyListresponse = function(){
 

@@ -88,8 +88,8 @@
 <?php if (empty($q_table_id)): ?>
     <script type="text/javascript">
     <!--
-        $('#question<?php echo $name; ?> .question').delegate('input[type=text]:visible:enabled','blur keyup',function(event){
-            <?php echo $checkconditionFunction; ?>($(this).val(), $(this).attr('name'), 'text');
+        $('#question<?php echo $name;?> .question').on('blur keyup', 'input[type=text]:visible:enabled', function(event){
+            <?php echo $checkconditionFunction;?>($(this).val(), $(this).attr('name'), 'text');
             return true;
         })
     // -->

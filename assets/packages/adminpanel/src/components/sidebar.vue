@@ -202,7 +202,52 @@ export default {
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }
-        }
+        },
+        getQuestions(){
+            return this.get(this.getQuestionsUrl).then( (result) =>{
+                this.$log.log(result);
+                this.questiongroups = result.data.groups;
+                this.$store.commit('updateQuestiongroups', this.questiongroups);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getSidemenus(){
+            return this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
+                this.$log.log('sidemenues',result);
+                this.sidemenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+                this.$store.commit('updateSidemenus', this.sidemenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getCollapsedmenus(){
+            return this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
+                this.$log.log('quickmenu',result);
+                this.collapsedmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+                this.$store.commit( 'updateCollapsedmenus', this.collapsedmenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getTopmenus(){
+            return this.get(this.getMenuUrl, {position: 'top'}).then( (result) =>{
+                this.$log.log('topmenus',result);
+                this.topmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+                this.$store.commit('updateTopmenus', this.topmenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getBottommenus(){
+            return this.get(this.getMenuUrl, {position: 'bottom'}).then( (result) =>{
+                this.$log.log('bottommenus',result);
+                this.bottommenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
+                this.$store.commit('updateBottommenus', this.bottommenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
     },
     created(){
         const self = this;
@@ -217,6 +262,7 @@ export default {
     },
     mounted(){
         const self = this;
+
         $(document).trigger('sidebar:mounted');
         //Calculate the sidebar height and bin it to the resize event
         self.calculateHeight(self);
@@ -224,49 +270,18 @@ export default {
             self.calculateHeight(self);
         });
         //retrieve the current menues via ajax
-        //questions
-        this.get(this.getQuestionsUrl).then( (result) =>{
-            // self.$log.debug(result);
-            self.questiongroups = result.data.groups;
-            self.$store.commit('updateQuestiongroups', self.questiongroups);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
+        this.getQuestions();
+        this.getSidemenus();
+        this.getCollapsedmenus();
+        this.getTopmenus();
+        this.getBottommenus();
 
-        //sidemenus
-        this.get(this.getMenuUrl, {position: 'side'}).then( (result) =>{
-            self.$log.debug('sidemenues',result);
-            self.sidemenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$store.commit('updateSidemenus', self.sidemenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
-
-        //collapsedmenus
-        this.get(this.getMenuUrl, {position: 'collapsed'}).then( (result) =>{
-            self.$log.debug('quickmenu',result);
-            self.collapsedmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$store.commit( 'updateCollapsedmenus', self.collapsedmenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
-
-        //topmenus
-        this.get(this.getMenuUrl, {position: 'top'}).then( (result) =>{
-            self.$log.debug('topmenus',result);
-            self.topmenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$store.commit('updateTopmenus', self.topmenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
-
-        //bottommenus
-        this.get(this.getMenuUrl, {position: 'bottom'}).then( (result) =>{
-            self.$log.debug('bottommenus',result);
-            self.bottommenus =  _.orderBy(result.data.menues,(a)=>{return parseInt((a.order || 999999))},['desc']);
-            self.$store.commit('updateBottommenus', self.bottommenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
+        $(document).on('vue-redraw', ()=>{
+            this.getQuestions();
+            this.getSidemenus();
+            this.getCollapsedmenus();
+            this.getTopmenus();
+            this.getBottommenus();
         });
 
         //control the active link

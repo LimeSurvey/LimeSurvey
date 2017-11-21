@@ -36370,8 +36370,11 @@ $(document).on('ready', function () {
                 const maxHeight = ($('#in_survey_common').height() - 35) || 400;
                 this.$store.commit('changeMaxHeight', maxHeight);
                 this.updatePjaxLinks();
-                $(document).on('click', 'ul.pagination>li>a', function () {
+                $(document).on('click', 'ul.pagination>li>a',  ()=>{
                     this.updatePjaxLinks();
+                });
+                $(document).on('vue-redraw',  ()=>{
+                    this.$forceUpdate();
                 });
             }
         });
@@ -36743,6 +36746,59 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 window.clearTimeout(self.isMouseDownTimeOut);
                 self.isMouseDownTimeOut = null;
             }
+        },
+        getQuestions() {
+            return this.get(this.getQuestionsUrl).then(result => {
+                this.$log.log(result);
+                this.questiongroups = result.data.groups;
+                this.$store.commit('updateQuestiongroups', this.questiongroups);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getSidemenus() {
+            return this.get(this.getMenuUrl, { position: 'side' }).then(result => {
+                this.$log.log('sidemenues', result);
+                this.sidemenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
+                    return parseInt(a.order || 999999);
+                }, ['desc']);
+                this.$store.commit('updateSidemenus', this.sidemenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getCollapsedmenus() {
+            return this.get(this.getMenuUrl, { position: 'collapsed' }).then(result => {
+                this.$log.log('quickmenu', result);
+                this.collapsedmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
+                    return parseInt(a.order || 999999);
+                }, ['desc']);
+                this.$store.commit('updateCollapsedmenus', this.collapsedmenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getTopmenus() {
+            return this.get(this.getMenuUrl, { position: 'top' }).then(result => {
+                this.$log.log('topmenus', result);
+                this.topmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
+                    return parseInt(a.order || 999999);
+                }, ['desc']);
+                this.$store.commit('updateTopmenus', this.topmenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
+        },
+        getBottommenus() {
+            return this.get(this.getMenuUrl, { position: 'bottom' }).then(result => {
+                this.$log.log('bottommenus', result);
+                this.bottommenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
+                    return parseInt(a.order || 999999);
+                }, ['desc']);
+                this.$store.commit('updateBottommenus', this.bottommenus);
+                this.$forceUpdate();
+                this.updatePjaxLinks();
+            });
         }
     },
     created() {
@@ -36758,6 +36814,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted() {
         const self = this;
+
         $(document).trigger('sidebar:mounted');
         //Calculate the sidebar height and bin it to the resize event
         self.calculateHeight(self);
@@ -36765,57 +36822,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             self.calculateHeight(self);
         });
         //retrieve the current menues via ajax
-        //questions
-        this.get(this.getQuestionsUrl).then(result => {
-            // self.$log.debug(result);
-            self.questiongroups = result.data.groups;
-            self.$store.commit('updateQuestiongroups', self.questiongroups);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
+        this.getQuestions();
+        this.getSidemenus();
+        this.getCollapsedmenus();
+        this.getTopmenus();
+        this.getBottommenus();
 
-        //sidemenus
-        this.get(this.getMenuUrl, { position: 'side' }).then(result => {
-            self.$log.debug('sidemenues', result);
-            self.sidemenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
-                return parseInt(a.order || 999999);
-            }, ['desc']);
-            self.$store.commit('updateSidemenus', self.sidemenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
-
-        //collapsedmenus
-        this.get(this.getMenuUrl, { position: 'collapsed' }).then(result => {
-            self.$log.debug('quickmenu', result);
-            self.collapsedmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
-                return parseInt(a.order || 999999);
-            }, ['desc']);
-            self.$store.commit('updateCollapsedmenus', self.collapsedmenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
-
-        //topmenus
-        this.get(this.getMenuUrl, { position: 'top' }).then(result => {
-            self.$log.debug('topmenus', result);
-            self.topmenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
-                return parseInt(a.order || 999999);
-            }, ['desc']);
-            self.$store.commit('updateTopmenus', self.topmenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
-        });
-
-        //bottommenus
-        this.get(this.getMenuUrl, { position: 'bottom' }).then(result => {
-            self.$log.debug('bottommenus', result);
-            self.bottommenus = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(result.data.menues, a => {
-                return parseInt(a.order || 999999);
-            }, ['desc']);
-            self.$store.commit('updateBottommenus', self.bottommenus);
-            self.$forceUpdate();
-            this.updatePjaxLinks();
+        $(document).on('vue-redraw', () => {
+            this.getQuestions();
+            this.getSidemenus();
+            this.getCollapsedmenus();
+            this.getTopmenus();
+            this.getBottommenus();
         });
 
         //control the active link
