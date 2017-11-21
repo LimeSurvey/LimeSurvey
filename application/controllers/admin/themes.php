@@ -21,7 +21,7 @@ if (!defined('BASEPATH'))
 * @author
 * @copyright 2011
 */
-class templates extends Survey_Common_Action
+class themes extends Survey_Common_Action
 {
 
     public function runWithParams($params)
