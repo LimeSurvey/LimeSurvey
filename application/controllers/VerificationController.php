@@ -66,9 +66,9 @@ class VerificationController extends LSYii_Controller
         $font_rand = rand(1, 2); //Maybe add other specific hard font
         if ($font_rand == 1)
         {
-            $font = $rootdir."/fonts/FreeSans.ttf";
+            $font = $rootdir."/assets/fonts/FreeSans.ttf";
         } else {
-            $font = $rootdir."/fonts/DejaVuSans.ttf";
+            $font = $rootdir."/assets/fonts/DejaVuSans.ttf";
         }
 
         $line_rand = rand(1, 3);
@@ -101,4 +101,3 @@ class VerificationController extends LSYii_Controller
         $_SESSION['survey_'.$iSurveyID]['secanswer'] = $num1 + $num2;
     }
 }
-
