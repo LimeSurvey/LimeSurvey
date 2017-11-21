@@ -535,15 +535,15 @@ class TemplateManifest extends TemplateConfiguration
      */
     private function setPath()
     {
-        // If the template is standard, its root is based on standardtemplaterootdir, else, it is a user template, its root is based on userthemerootdir
-        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR:Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
+        // If the template is standard, its root is based on standardthemerootdir, else, it is a user template, its root is based on userthemerootdir
+        $this->path = ($this->isStandard)?Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR:Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
 
         // If the template directory doesn't exist, we just set Default as the template to use
         // TODO: create a method "setToDefault"
         if (!is_dir($this->path)) {
             $this->sTemplateName = 'default';
             $this->isStandard    = true;
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
+            $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
             if(!$this->iSurveyId){
                 setGlobalSetting('defaulttemplate', 'default');
             }
@@ -553,7 +553,7 @@ class TemplateManifest extends TemplateConfiguration
         // then, we load the default template
         $this->hasConfigFile = (string) is_file($this->path.'config.xml');
         if (!$this->hasConfigFile) {
-            $this->path = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
+            $this->path = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$this->sTemplateName.DIRECTORY_SEPARATOR;
 
         }
     }

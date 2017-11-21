@@ -192,7 +192,7 @@ class Template extends LSActiveRecord
         $oTemplate  = self::model()->findByPk($sTemplateName);
 
         if (self::isStandardTemplate($sTemplateName)) {
-            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
+            return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
         }
         else {
             return $aTemplatePath[$sTemplateName] = Yii::app()->getConfig("userthemerootdir").DIRECTORY_SEPARATOR.$oTemplate->folder;
@@ -291,7 +291,7 @@ class Template extends LSActiveRecord
     public static function getTemplateList()
     {
         $sUserTemplateRootDir    = Yii::app()->getConfig("userthemerootdir");
-        $standardTemplateRootDir = Yii::app()->getConfig("standardtemplaterootdir");
+        $standardTemplateRootDir = Yii::app()->getConfig("standardthemerootdir");
 
         $aTemplateList=array();
         $aStandardTemplates = self::getStandardTemplateList();
@@ -405,7 +405,7 @@ class Template extends LSActiveRecord
         // Don't touch symlinked assets because it won't work
         if (App()->getAssetManager()->linkAssets) return;
 
-        $standardTemplatesPath = Yii::app()->getConfig("standardtemplaterootdir").DIRECTORY_SEPARATOR;
+        $standardTemplatesPath = Yii::app()->getConfig("standardthemerootdir").DIRECTORY_SEPARATOR;
         $Resource    = opendir($standardTemplatesPath);
         while ($Item = readdir($Resource)) {
             if (is_dir($standardTemplatesPath . $Item) && $Item != "." && $Item != "..") {
@@ -430,7 +430,7 @@ class Template extends LSActiveRecord
         $standardTemplates=self::$standardTemplates;
         if(empty($standardTemplates)){
             $standardTemplates = array();
-            $sStandardTemplateRootDir=Yii::app()->getConfig("standardtemplaterootdir");
+            $sStandardTemplateRootDir=Yii::app()->getConfig("standardthemerootdir");
             if ($sStandardTemplateRootDir && $handle = opendir($sStandardTemplateRootDir)) {
                 while (false !== ($sFileName = readdir($handle))) {
                     // Maybe $file[0] != "." to hide Linux hidden directory
@@ -479,7 +479,7 @@ class Template extends LSActiveRecord
     public static function getTemplateInStandard()
     {
         if(empty(self::$aTemplatesInStandardDir)){
-            $standardTemplateRootDir       = Yii::app()->getConfig("standardtemplaterootdir");
+            $standardTemplateRootDir       = Yii::app()->getConfig("standardthemerootdir");
             self::$aTemplatesInStandardDir = self::getTemplateInFolder($standardTemplateRootDir);
         }
 
