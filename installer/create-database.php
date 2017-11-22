@@ -474,7 +474,7 @@ function createDatabase($oDB){
             'menu_class' =>  "string(192)  NOT NULL DEFAULT ''",
             'menu_link' =>  "string(192)  NOT NULL DEFAULT ''",
             'action' =>  "string(192)  NOT NULL DEFAULT ''",
-            'template' =>  "string(192)  NOT NULL DEFAULT ''",
+            'theme' =>  "string(192)  NOT NULL DEFAULT ''",
             'partial' =>  "string(192)  NOT NULL DEFAULT ''",
             'classes' =>  "string(192)  NOT NULL DEFAULT ''",
             'permission' =>  "string(192)  NOT NULL DEFAULT ''",
