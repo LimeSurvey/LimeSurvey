@@ -46,7 +46,7 @@ class PluginEventContent {
         if (strtolower($placement) === self::APPEND) {
             $this->_content .= $content;
         } else {
-            $this->_content = $content . $this->_content;
+            $this->_content = $content.$this->_content;
         }
         
         return $this;

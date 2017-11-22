@@ -37,7 +37,7 @@
         }
 
         public function getFlashes($delete = true)
-           {
+            {
             $result = $this->getState('flash', array());
             $this->removeState('flash');
             return $result;
@@ -72,7 +72,7 @@
         public function setState($key, $value, $defaultValue = null)
         {
             $current = isset($_SESSION[$this->sessionVariable]) ? $_SESSION[$this->sessionVariable] : array();
-            if($value === $defaultValue)
+            if ($value === $defaultValue)
             {
                 $_SESSION[$this->sessionVariable] = Hash::remove($current, $key);
             }
@@ -99,14 +99,14 @@
             $oUsergroup = UserGroup::model()->findByPk($gid);
 
             // The group doesn't exist anymore
-            if(!is_object($oUsergroup))
+            if (!is_object($oUsergroup))
                 return false;
 
             $users = $oUsergroup->users;
             $aUids = array();
-            foreach($users as $user)
+            foreach ($users as $user)
             {
-                $aUids[]=$user->uid;
+                $aUids[] = $user->uid;
             }
 
             if (in_array($this->id, $aUids))

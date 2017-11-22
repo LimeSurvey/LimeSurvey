@@ -36,8 +36,8 @@ class Authentication extends Survey_Common_Action
     public function index()
     {
         /* Set adminlang to the one set in dropdown */
-        if(Yii::app()->request->getPost('loginlang','default')!='default') {
-            Yii::app()->session['adminlang'] = Yii::app()->request->getPost('loginlang','default');
+        if (Yii::app()->request->getPost('loginlang', 'default') != 'default') {
+            Yii::app()->session['adminlang'] = Yii::app()->request->getPost('loginlang', 'default');
             Yii::app()->setLanguage(Yii::app()->session["adminlang"]);
         }
         // The page should be shown only for non logged in users
@@ -115,10 +115,10 @@ class Authentication extends Survey_Common_Action
         App()->getPluginManager()->dispatchEvent($beforeLogin);
 
         /* @var $identity LSUserIdentity */
-        $identity = $beforeLogin->get('identity');                              // Why here?
+        $identity = $beforeLogin->get('identity'); // Why here?
 
         // If the plugin private parameter "_stop" is false and the login form has not been submitted: render the login form
-        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')) )
+        if (!$beforeLogin->isStopped() && is_null(App()->getRequest()->getPost('login_submit')))
         {
             // First step: set the value of $aData['defaultAuth']
             // This variable will be used to select the default value of the Authentication method selector
@@ -136,7 +136,7 @@ class Authentication extends Survey_Common_Action
                 // eg: 'config'=>array()'debug'=>2,'debugsql'=>0, 'default_displayed_auth_method'=>'muh_auth_method')
                 if (App()->getPluginManager()->isPluginActive(Yii::app()->getConfig('default_displayed_auth_method'))) {
                         $aData['defaultAuth'] = Yii::app()->getConfig('default_displayed_auth_method');
-                    }else {
+                    } else {
                         $aData['defaultAuth'] = 'Authdb';
                     }
             }
@@ -150,7 +150,7 @@ class Authentication extends Survey_Common_Action
         } else {
             // The form has been submited, or the plugin has been stoped (so normally, the value of login/password are available)
 
-             // Handle getting the post and populating the identity there
+                // Handle getting the post and populating the identity there
             $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin);      // If form has been submitted, $_POST['authMethod'] is set, else  $identity->plugin should be set, ELSE: TODO error
             $identity->plugin = $authMethod;
 
@@ -166,7 +166,7 @@ class Authentication extends Survey_Common_Action
             // This call LSUserIdentity::authenticate() (application/core/LSUserIdentity.php))
             // which will call the plugin function newUserSession() (eg: Authdb::newUserSession() )
             // TODO: for sake of clarity, the plugin function should be renamed to authenticate().
-            if ($identity->authenticate()){
+            if ($identity->authenticate()) {
                 FailedLoginAttempt::model()->deleteAttempts();
                 App()->user->setState('plugin', $authMethod);
 
@@ -182,7 +182,7 @@ class Authentication extends Survey_Common_Action
                 App()->getPluginManager()->dispatchEvent($event);
 
                 return array('success');
-            }else{
+            } else {
                 // Failed
                 $event = new PluginEvent('afterFailedLoginAttempt');
                 $event->set('identity', $identity);
@@ -237,9 +237,9 @@ class Authentication extends Survey_Common_Action
             $aFields = User::model()->findAllByAttributes(array('users_name' => $sUserName, 'email' => $sEmailAddr));
 
             // Preventing attacker from easily knowing whether the user and email address are valid or not (and slowing down brute force attacks)
-            usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"),Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
+            usleep(rand(Yii::app()->getConfig("minforgottenpasswordemaildelay"), Yii::app()->getConfig("maxforgottenpasswordemaildelay")));
 
-            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$aFields[0]['uid']))) {
+            if (count($aFields) < 1 || ($aFields[0]['uid'] != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $aFields[0]['uid']))) {
                 // Wrong or unknown username and/or email. For security reasons, we don't show a fail message
                 $aData['message'] = '<br>'.gT('If the username and email address is valid and you are allowed to use the internal database authentication a new password has been sent to you').'<br>';
             } else {
@@ -249,9 +249,9 @@ class Authentication extends Survey_Common_Action
         }
     }
 
-    public static function runDbUpgrade(){
+    public static function runDbUpgrade() {
         // Check if the DB is up to date
-        if (Yii::app()->db->schema->getTable('{{surveys}}') )
+        if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
             $sDBVersion = getGlobalSetting('DBVersion');
         }
@@ -259,7 +259,7 @@ class Authentication extends Survey_Common_Action
         {
             // Try a silent update first
             Yii::app()->loadHelper('update/updatedb');
-            if (!db_upgrade_all(intval($sDBVersion),true)){
+            if (!db_upgrade_all(intval($sDBVersion), true)) {
                 $this->redirect(array('/admin/databaseupdate/sa/db'));
             }
         }
@@ -273,7 +273,7 @@ class Authentication extends Survey_Common_Action
      */
     private function _sendPasswordEmail($sEmailAddr, $aFields)
     {
-        $sFrom = Yii::app()->getConfig("siteadminname") . " <" . Yii::app()->getConfig("siteadminemail") . ">";
+        $sFrom = Yii::app()->getConfig("siteadminname")." <".Yii::app()->getConfig("siteadminemail").">";
         $sTo = $sEmailAddr;
         $sSubject = gT('User data');
         $sNewPass = createPassword();
@@ -323,12 +323,12 @@ class Authentication extends Survey_Common_Action
 
             case 'login' :
             default :
-                $sSummary = '<br />' . sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']) . '<br />&nbsp;';
+                $sSummary = '<br />'.sprintf(gT('Welcome %s!'), Yii::app()->session['full_name']).'<br />&nbsp;';
                 if (!empty(Yii::app()->session['redirect_after_login']) && strpos(Yii::app()->session['redirect_after_login'], 'logout') === FALSE)
                 {
                     Yii::app()->session['metaHeader'] = '<meta http-equiv="refresh"'
-                    . ' content="1;URL=' . Yii::app()->session['redirect_after_login'] . '" />';
-                    $sSummary = '<p><font size="1"><i>' . gT('Reloading screen. Please wait.') . '</i></font>';
+                    . ' content="1;URL='.Yii::app()->session['redirect_after_login'].'" />';
+                    $sSummary = '<p><font size="1"><i>'.gT('Reloading screen. Please wait.').'</i></font>';
                     unset(Yii::app()->session['redirect_after_login']);
                 }
                 break;

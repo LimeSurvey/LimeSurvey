@@ -45,11 +45,11 @@ class CsvWriter extends Writer
     
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
-        $sRecord='';
-        if(!$this->hasOutputHeader)
+        $sRecord = '';
+        if (!$this->hasOutputHeader)
         {
-            if ($oOptions->output=='display') {
-                header("Content-Disposition: attachment; filename=" . $this->csvFilename);
+            if ($oOptions->output == 'display') {
+                header("Content-Disposition: attachment; filename=".$this->csvFilename);
                 header("Content-type: text/comma-separated-values; charset=UTF-8");
             }
             
@@ -62,7 +62,7 @@ class CsvWriter extends Writer
                     $index++;
                 }
                 //Output the header...once and only once.
-                $sRecord.=implode($this->separator, $headers) . PHP_EOL;
+                $sRecord .= implode($this->separator, $headers).PHP_EOL;
             }
             $this->hasOutputHeader = true;
         }
@@ -73,15 +73,15 @@ class CsvWriter extends Writer
             $values[$index] = $this->csvEscape($value);
             $index++;
         }
-        $sRecord.= implode($this->separator, $values) . PHP_EOL;
-        if ($oOptions->output=='display')
+        $sRecord .= implode($this->separator, $values).PHP_EOL;
+        if ($oOptions->output == 'display')
         {
             echo $sRecord; 
             $this->output = '';
         } elseif ($oOptions->output == 'file') {
             $this->output .= $sRecord;
             fwrite($this->file, $this->output);
-            $this->output='';
+            $this->output = '';
         }
     }
 
@@ -96,14 +96,14 @@ class CsvWriter extends Writer
     }
 
     /**
-    * Returns the value with all necessary escaping needed to place it into a CSV string.
-    *
-    * @param string $value
-    * @return string
-    */
+     * Returns the value with all necessary escaping needed to place it into a CSV string.
+     *
+     * @param string $value
+     * @return string
+     */
     protected function csvEscape($value)
     {
         $sString = preg_replace(array('~\R~u'), array(PHP_EOL), $value);
-        return '"' . str_replace('"','""', $sString) . '"';
+        return '"'.str_replace('"', '""', $sString).'"';
     }
 }

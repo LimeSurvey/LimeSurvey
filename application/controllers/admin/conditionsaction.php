@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -22,39 +22,39 @@
 class conditionsaction extends Survey_Common_Action {
     
     /**
-    * @var array
-    */
+     * @var array
+     */
     private $stringComparisonOperators;
     
     /**
-    * @var array
-    */
+     * @var array
+     */
     private $nonStringComparisonOperators;
     
     /**
-    * @var int
-    */
+     * @var int
+     */
     private $iSurveyID;
     
     /**
-    * @var string
-    */
+     * @var string
+     */
     private $language;
     
     /**
-    * True if there exists a token table for this survey
-    * @var boolean
-    */
+     * True if there exists a token table for this survey
+     * @var boolean
+     */
     private $tokenTableExists;
     
     /**
-    * @var array
-    */
+     * @var array
+     */
     private $tokenFieldsAndNames;
     
     /**
-    * Init some stuff
-    */
+     * Init some stuff
+     */
     public function __construct($controller = null, $id = null)
     {
         parent::__construct($controller, $id);
@@ -85,12 +85,12 @@ class conditionsaction extends Survey_Common_Action {
     }
     
     /**
-    * @param string $subaction
-    * @param int $iSurveyID
-    * @param int $gid
-    * @param int $qid
-    * @return void
-    */
+     * @param string $subaction
+     * @param int $iSurveyID
+     * @param int $gid
+     * @param int $qid
+     * @return void
+     */
     public function index($subaction, $iSurveyID = null, $gid = null, $qid = null)
     {
         $request = Yii::app()->request;
@@ -108,7 +108,7 @@ class conditionsaction extends Survey_Common_Action {
         $aData['title_bar']['title'] = gT("Conditions designer");
         
         $aData['subaction'] = gT("Conditions designer");
-        $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid;  // Close button
+        $aData['questionbar']['closebutton']['url'] = 'admin/questions/sa/view/surveyid/'.$iSurveyID.'/gid/'.$gid.'/qid/'.$qid; // Close button
         $aData['questionbar']['buttons']['conditions'] = TRUE;
         
         switch ($subaction) {
@@ -1444,10 +1444,10 @@ protected function getCAnswersAndCQuestions(array $theserows)
                 
                 switch ($rows['type']) {
                     //Array 5 buttons
-                case "A": for ($i=1; $i<=5; $i++) { $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i); } break;
-                    //Array 10 buttons
-                case "B": for ($i=1; $i<=10; $i++) { $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i); } break;
-                    //Array Y/N/NA
+                    case "A": for ($i=1; $i<=5; $i++) { $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i); } break;
+                        //Array 10 buttons
+                    case "B": for ($i=1; $i<=10; $i++) { $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i); } break;
+                        //Array Y/N/NA
                     case "C":
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "Y", gT("Yes"));
                         $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "U", gT("Uncertain"));
@@ -1470,17 +1470,17 @@ protected function getCAnswersAndCQuestions(array $theserows)
                                 'scale_id' => 0,
                             ), array('order' => 'sortorder, code')
                         );
-                            foreach ($fresult as $frow) { $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['answer']); }
+                            foreach ($fresult as $frow) { $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $frow['code'], $frow['answer']); }
                     break;
                 }
                 // Only Show No-Answer if question is not mandatory
                 if ($rows['mandatory'] != 'Y') {
-                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", gT("No answer"));
+                    $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "", gT("No answer"));
                 }
                 
             } //foreach
             
-        } elseif ($rows['type'] == ":" || $rows['type'] == ";"){
+        } elseif ($rows['type'] == ":" || $rows['type'] == ";") {
             // Multiflexi
             // Get the Y-Axis
             $fquery = "SELECT sq.*, q.other"
@@ -1637,49 +1637,49 @@ protected function getCAnswersAndCQuestions(array $theserows)
             
             foreach ($aresult as $arows) {
                 $theanswer = $arows['question'];
-                $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
+                $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['title'], $theanswer);
                 
-                $shortanswer = "{$arows['title']}: [". strip_tags($arows['question']) ."]";
+                $shortanswer = "{$arows['title']}: [".strip_tags($arows['question'])."]";
                 $shortanswer .= "[".gT("Single checkbox")."]";
-                $shortquestion=$rows['title'].":$shortanswer ".strip_tags($rows['question']);
-                $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
-                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', gT("checked"));
-                $canswers[]=array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', gT("not checked"));
+                $shortquestion = $rows['title'].":$shortanswer ".strip_tags($rows['question']);
+                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], "+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']);
+                $canswers[] = array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], 'Y', gT("checked"));
+                $canswers[] = array("+".$rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], '', gT("not checked"));
             }
             
         } else {
-            $cquestions[]=array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
+            $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'], $rows['sid'].$X.$rows['gid'].$X.$rows['qid']);
         
             switch ($rows['type']) {
                 case "Y": // Y/N/NA
-                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", gT("Yes"));
-                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", gT("No"));
+                    $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "Y", gT("Yes"));
+                    $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "N", gT("No"));
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y') {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
                 case "G": //Gender
-                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", gT("Female"));
-                    $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", gT("Male"));
+                    $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "F", gT("Female"));
+                    $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "M", gT("Male"));
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y') {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
                 case "5": // 5 choice
-                    for ($i=1; $i<=5; $i++) {
+                    for ($i = 1; $i <= 5; $i++) {
                         $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $i, $i);
                     }
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y') {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
                 case "N": // Simple Numerical questions
                     // Only Show No-Answer if question is not mandatory
                     if ($rows['mandatory'] != 'Y') {
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                     }
                 break;
 
@@ -1692,26 +1692,26 @@ protected function getCAnswersAndCQuestions(array $theserows)
                     
                     foreach ($aresult as $arows) {
                         $theanswer = $arows['answer'];
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], $arows['code'], $theanswer);
                     }
 
                     if ($rows['type'] == "D") {
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y') {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                            $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
-                    } elseif ($rows['type'] != "M" && $rows['type'] != "P" && $rows['type'] != "J" && $rows['type'] != "I" ) {
+                    } elseif ($rows['type'] != "M" && $rows['type'] != "P" && $rows['type'] != "J" && $rows['type'] != "I") {
                         // For dropdown questions
                         // optinnaly add the 'Other' answer
-                        if ( (    $rows['type'] == "L" || $rows['type'] == "!")
-                            && $rows['other'] == "Y" )
+                        if (($rows['type'] == "L" || $rows['type'] == "!")
+                            && $rows['other'] == "Y")
                         {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));
+                            $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], "-oth-", gT("Other"));
                         }
                         
                         // Only Show No-Answer if question is not mandatory
                         if ($rows['mandatory'] != 'Y') {
-                            $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
+                            $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'], " ", gT("No answer"));
                         }
                     }
                 break;

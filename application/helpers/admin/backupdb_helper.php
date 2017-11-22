@@ -14,9 +14,9 @@
 
 
     /**
-    * Outputs a full dump of the current LimeSurvey database
-    * @param string $sDbName Database Name
-    */
+     * Outputs a full dump of the current LimeSurvey database
+     * @param string $sDbName Database Name
+     */
     function outputDatabase($sDbName='', $bEchoOutput=true, $sFileName=null)
     {
         if($sDbName=='')
@@ -33,12 +33,12 @@
 
         if (!is_null($sFileName))
         {
-            $oFile=fopen($sFileName,'w');
-            fwrite($oFile,$sOutput);
+            $oFile = fopen($sFileName, 'w');
+            fwrite($oFile, $sOutput);
         }
         else
         {
-            $oFile=null;
+            $oFile = null;
         }
         _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile);
         if (!is_null($sFileName))
@@ -50,65 +50,65 @@
 
     function _outputDBDescription($sDbName, $bAllowExportAllDb)
     {
-        $sOutput= '--' . "\n";
-        $sOutput.= '-- LimeSurvey Database Dump of `' . $sDbName . '`' . "\n";
+        $sOutput = '--'."\n";
+        $sOutput .= '-- LimeSurvey Database Dump of `'.$sDbName.'`'."\n";
         if (!$bAllowExportAllDb) {
-            $sOutput= '-- Only prefixed tables with: ' . Yii::app()->db->tablePrefix . "\n";
+            $sOutput = '-- Only prefixed tables with: '.Yii::app()->db->tablePrefix."\n";
         }
-        $sOutput.= '-- Date of Dump: ' . dateShift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust')) . "\n";
-        $sOutput.= '--' . "\n";
+        $sOutput .= '-- Date of Dump: '.dateShift(date('d-M-Y'), 'd-M-Y', Yii::app()->getConfig('timeadjust'))."\n";
+        $sOutput .= '--'."\n";
         return $sOutput;
     }
 
     function _outputDBData($bAllowExportAllDb, $bEchoOutput, $sFileName, $oFile)
     {
-        if ($bAllowExportAllDb){
+        if ($bAllowExportAllDb) {
             $aTables = Yii::app()->db->getSchema()->getTableNames();
         }
         else
         {
-            $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes(Yii::app()->db->tablePrefix,'_')."%"))->queryColumn();
+            $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes(Yii::app()->db->tablePrefix, '_')."%"))->queryColumn();
         }
         foreach ($aTables as $sTableName)
         {
-            $oTableData=Yii::app()->db->getSchema()->getTable($sTableName);
-            $sOutput=_outputTableDescription($sTableName);
+            $oTableData = Yii::app()->db->getSchema()->getTable($sTableName);
+            $sOutput = _outputTableDescription($sTableName);
             if ($bEchoOutput)
             {
                 echo $sOutput;
             }
             if (!is_null($sFileName))
             {
-                fwrite($oFile,$sOutput);
+                fwrite($oFile, $sOutput);
             }
             _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile);
         }
     }
 
     /**
-    * Outputs the table structure in sql format
-    */
+     * Outputs the table structure in sql format
+     */
     function _outputTableDescription($sTableName)
     {
-        $sOutput= "\n".'-- --------------------------------------------------------'."\n\n";
-        $sOutput.= '--'."\n";
-        $sOutput.= '-- Table structure for table `'.$sTableName.'`'."\n";
-        $sOutput.= '--'."\n\n";
-        $sOutput.= 'DROP TABLE IF EXISTS `'.$sTableName.'`;'."\n";
+        $sOutput = "\n".'-- --------------------------------------------------------'."\n\n";
+        $sOutput .= '--'."\n";
+        $sOutput .= '-- Table structure for table `'.$sTableName.'`'."\n";
+        $sOutput .= '--'."\n\n";
+        $sOutput .= 'DROP TABLE IF EXISTS `'.$sTableName.'`;'."\n";
 
         $aCreateTable = Yii::app()->db->createCommand('SHOW CREATE TABLE '.Yii::app()->db->quoteTableName($sTableName))->queryRow();
-        $sOutput.= $aCreateTable['Create Table'].';'."\n\n";
+        $sOutput .= $aCreateTable['Create Table'].';'."\n\n";
         return $sOutput;
     }
 
     /**
-    * Outputs the table data in sql format
-    */
+     * Outputs the table data in sql format
+     */
     function _outputTableData($sTableName, $oTableData, $bEchoOutput, $sFileName, $oFile)
     {
-        $sOutput= '--'."\n";
-        $sOutput.= '-- Dumping data for table `'.$sTableName.'`'."\n";
-        $sOutput.= '--'."\n\n";
+        $sOutput = '--'."\n";
+        $sOutput .= '-- Dumping data for table `'.$sTableName.'`'."\n";
+        $sOutput .= '--'."\n\n";
 
         $iNbRecords = _countNumberOfEntries($sTableName);
         if ($iNbRecords > 0) {
@@ -123,20 +123,20 @@
                 ->limit(intval($iMaxNbRecords), ($i != 0 ? ($i * $iMaxNbRecords) : null))
                 ->query()->readAll();
 
-                $sOutput.=_outputRecords($sTableName, $aFieldNames, $aRecords);
+                $sOutput .= _outputRecords($sTableName, $aFieldNames, $aRecords);
                 if ($bEchoOutput)
                 {
                     echo $sOutput;
                 }
                 if (!is_null($sFileName))
                 {
-                    fwrite($oFile,$sOutput);
+                    fwrite($oFile, $sOutput);
                 }
-                $sOutput='';
+                $sOutput = '';
 
 
             }
-            $sOutput.= "\n";
+            $sOutput .= "\n";
 
         }
         if ($bEchoOutput)
@@ -145,52 +145,52 @@
         }
         if (!is_null($sFileName))
         {
-            fwrite($oFile,$sOutput);
+            fwrite($oFile, $sOutput);
         }
     }
 
     function _outputRecords($sTableName, $aFieldNames, $aRecords)
     {
-        $sLastFieldName=end($aFieldNames);
-        $aLastRecord=end($aRecords);
-        $i=0;
-        $sOutput='';
+        $sLastFieldName = end($aFieldNames);
+        $aLastRecord = end($aRecords);
+        $i = 0;
+        $sOutput = '';
         foreach ($aRecords as $aRecord)
         {
-            if ($i==0){
-                $sOutput.= 'INSERT INTO `' . $sTableName . "` (";
+            if ($i == 0) {
+                $sOutput .= 'INSERT INTO `'.$sTableName."` (";
                 foreach ($aFieldNames as $sFieldName)
                 {
-                    $sOutput.=  '`'.$sFieldName.'`,';
+                    $sOutput .= '`'.$sFieldName.'`,';
                 }
-                $sOutput=substr($sOutput,0,-1);
-                $sOutput.=") VALUES\n";
+                $sOutput = substr($sOutput, 0, -1);
+                $sOutput .= ") VALUES\n";
             }
-            $sOutput.= '(';
+            $sOutput .= '(';
             foreach ($aFieldNames as $sFieldName)
             {
 
                 if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
-                    $sOutput.=Yii::app()->db->quoteValue($aRecord[$sFieldName]);
+                    $sOutput .= Yii::app()->db->quoteValue($aRecord[$sFieldName]);
                 }
                 else
                 {
-                    $sOutput.= 'NULL';
+                    $sOutput .= 'NULL';
                 }
 
                 if ($sFieldName != $sLastFieldName) {
-                    $sOutput.= ', ';
+                    $sOutput .= ', ';
                 }
             }
             $i++;
-            if ($i==200 || ($aLastRecord == $aRecord))
+            if ($i == 200 || ($aLastRecord == $aRecord))
             {
-                $sOutput.= ');' . "\n";
-                $i=0;
+                $sOutput .= ');'."\n";
+                $i = 0;
             }
             else
             {
-                $sOutput.= '),' . "\n";
+                $sOutput .= '),'."\n";
             }
         }
         return $sOutput;
@@ -198,14 +198,14 @@
 
     function _countNumberOfEntries($sTableName)
     {
-        $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM ' . Yii::app()->db->quoteTableName($sTableName))->queryRow();
+        $aNumRows = Yii::app()->db->createCommand('SELECT COUNT(*) FROM '.Yii::app()->db->quoteTableName($sTableName))->queryRow();
         $iNumRows = $aNumRows['COUNT(*)'];
         return $iNumRows;
     }
 
     function _getMaxNbRecords()
     {
-        $iMaxRecords = (int)Yii::app()->getConfig('maxdumpdbrecords');
+        $iMaxRecords = (int) Yii::app()->getConfig('maxdumpdbrecords');
         if ($iMaxRecords < 1) {
             $iMaxRecords = 2500;
             return $iMaxRecords; // default

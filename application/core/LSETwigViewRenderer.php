@@ -24,31 +24,31 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     /**
      * @var array Twig_Extension_Sandbox configuration
      */
-     public  $sandboxConfig = array();
-     private $_twig;
+        public  $sandboxConfig = array();
+        private $_twig;
 
-     /**
-      * Main method to render a survey.
-      * @param string  $sLayout the name of the layout to render
-      * @param array   $aDatas  the datas needed to fill the layout
-      * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
-      */
-     public function renderTemplateFromFile($sLayout, $aDatas, $bReturn)
-     {
-         $oTemplate  = $this->getTemplateForView($sLayout, Template::model()->getInstance());
-         if ($oTemplate) {
-             $line       = file_get_contents($oTemplate->viewPath.$sLayout);
-             $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
+        /**
+         * Main method to render a survey.
+         * @param string  $sLayout the name of the layout to render
+         * @param array   $aDatas  the datas needed to fill the layout
+         * @param boolean $bReturn if true, it will return the html string without rendering the whole page. Usefull for debuging, and used for Print Answers
+         */
+        public function renderTemplateFromFile($sLayout, $aDatas, $bReturn)
+        {
+            $oTemplate  = $this->getTemplateForView($sLayout, Template::model()->getInstance());
+            if ($oTemplate) {
+                $line       = file_get_contents($oTemplate->viewPath.$sLayout);
+                $sHtml      = $this->convertTwigToHtml($line, $aDatas, $oTemplate);
 
-             if ($bReturn) {
-                 return $sHtml;
-             }else{
-                 $this->renderHtmlPage($sHtml,$oTemplate );
-             }
-         } else {
-             trigger_error("TEMPLATE ERROR!", E_USER_ERROR);
-         }
-     }
+                if ($bReturn) {
+                    return $sHtml;
+                }else{
+                    $this->renderHtmlPage($sHtml,$oTemplate );
+                }
+            } else {
+                trigger_error("TEMPLATE ERROR!", E_USER_ERROR);
+            }
+        }
 
     /**
      * This method is called from qanda helper to render a question view file.
@@ -60,38 +60,38 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      *
      * @return  string the generated html
      */
-    public function renderQuestion( $sView, $aData)
+    public function renderQuestion($sView, $aData)
     {
-        $this->_twig  = parent::getTwig();                                                      // Twig object
-        $loader       = $this->_twig->getLoader();                                              // Twig Template loader
-        $requiredView = Yii::getPathOfAlias('application.views').$sView;                        // By default, the required view is the core view
-        $loader->setPaths(App()->getBasePath().'/views/');                                      // Core views path
+        $this->_twig  = parent::getTwig(); // Twig object
+        $loader       = $this->_twig->getLoader(); // Twig Template loader
+        $requiredView = Yii::getPathOfAlias('application.views').$sView; // By default, the required view is the core view
+        $loader->setPaths(App()->getBasePath().'/views/'); // Core views path
 
-        $oQuestionTemplate   = QuestionTemplate::getInstance();                                 // Question template instance has been created at top of qanda_helper::retrieveAnswers()
-        $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName();             // Get the name of the folder for that question type.
+        $oQuestionTemplate   = QuestionTemplate::getInstance(); // Question template instance has been created at top of qanda_helper::retrieveAnswers()
+        $sTemplateFolderName = $oQuestionTemplate->getQuestionTemplateFolderName(); // Get the name of the folder for that question type.
 
         // Check if question use a custom template and that it provides its own twig view
-        if ($sTemplateFolderName){
-            $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView);         // A template can change only one of the view of the question type. So other views should be rendered by core.
+        if ($sTemplateFolderName) {
+            $bTemplateHasThisView = $oQuestionTemplate->checkIfTemplateHasView($sView); // A template can change only one of the view of the question type. So other views should be rendered by core.
 
-            if ($bTemplateHasThisView){
-                $sQTemplatePath  = $oQuestionTemplate->getTemplatePath();                       // Question template views path
-                $loader->setPaths($sQTemplatePath);                                             // Loader path
-                $requiredView = $sQTemplatePath.ltrim($sView, '/');                             // Complete path of the view
+            if ($bTemplateHasThisView) {
+                $sQTemplatePath = $oQuestionTemplate->getTemplatePath(); // Question template views path
+                $loader->setPaths($sQTemplatePath); // Loader path
+                $requiredView = $sQTemplatePath.ltrim($sView, '/'); // Complete path of the view
             }
         }
 
         // We check if the file is a twig file or a php file
         // This allow us to twig the view one by one, from PHP to twig.
         // The check will be removed when 100% of the views will have been twig
-        if( file_exists($requiredView.'.twig') ){
+        if (file_exists($requiredView.'.twig')) {
             // We're not using the Yii Theming system, so we don't use parent::renderFile
             // current controller properties will be accessible as {{ this.property }}
             $aData['this'] = Yii::app()->getController();
             $aData['question_template_attribute'] = $oQuestionTemplate->getCustomAttributes();
             $template = $this->_twig->loadTemplate($sView.'.twig')->render($aData);
             return $template;
-        }else{
+        } else {
             return Yii::app()->getController()->renderPartial($sView, $aData, true);
         }
     }
@@ -123,7 +123,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param array    $renderArray  ** MARKUS PLEASE DOCUMENT THIS ***
      * @return html
      */
-    public function renderOptionPage($oTemplate,$renderArray = array())
+    public function renderOptionPage($oTemplate, $renderArray = array())
     {
         $oRTemplate = $oTemplate;
 
@@ -131,21 +131,21 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $sOptionJS   = 'options/options.js';
 
         // We get the options twig file from the right template (local or mother template)
-        while (!file_exists($oRTemplate->path.$sOptionFile)){
+        while (!file_exists($oRTemplate->path.$sOptionFile)) {
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
-            if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                return sprintf(gT('%s not found!',$oRTemplate->path.$sOptionFile));
+            if (!($oMotherTemplate instanceof TemplateConfiguration)) {
+                return sprintf(gT('%s not found!', $oRTemplate->path.$sOptionFile));
                 break;
             }
             $oRTemplate = $oMotherTemplate;
         }
 
-        if (file_exists($oRTemplate->path.$sOptionJS)){
+        if (file_exists($oRTemplate->path.$sOptionJS)) {
             Yii::app()->getClientScript()->registerScriptFile($oRTemplate->sTemplateurl.$sOptionJS, CClientScript::POS_BEGIN);
         }
 
-        $this->_twig  = $twig = parent::getTwig();
+        $this->_twig = $twig = parent::getTwig();
         $this->addRecursiveTemplatesPath($oRTemplate);
 
 
@@ -165,9 +165,9 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param string $sHtml     The Html content of the page (it must not contain anymore any twig statement)
      * @param Template $oTemplate The name of the template to use to register the packages
      */
-    private function renderHtmlPage($sHtml,$oTemplate )
+    private function renderHtmlPage($sHtml, $oTemplate)
     {
-        Yii::app()->clientScript->registerPackage( $oTemplate->sPackageName, LSYii_ClientScript::POS_BEGIN );
+        Yii::app()->clientScript->registerPackage($oTemplate->sPackageName, LSYii_ClientScript::POS_BEGIN);
 
         ob_start(function($buffer, $phase)
         {
@@ -192,10 +192,10 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      * @param TemplateConfiguration $oTemplate
      * @return string
      */
-    public function convertTwigToHtml( $sString, $aDatas, $oTemplate)
+    public function convertTwigToHtml($sString, $aDatas, $oTemplate)
     {
         // Twig init
-        $this->_twig  = $twig = parent::getTwig();
+        $this->_twig = $twig = parent::getTwig();
 
         // Get the additional infos for the view, such as language, direction, etc
         $aDatas = $this->getAdditionalInfos($aDatas, $oTemplate);
@@ -221,10 +221,10 @@ class LSETwigViewRenderer extends ETwigViewRenderer
      */
     private function getTemplateForView($sView, $oRTemplate)
     {
-        while (!file_exists($oRTemplate->viewPath.$sView)){
+        while (!file_exists($oRTemplate->viewPath.$sView)) {
 
             $oMotherTemplate = $oRTemplate->oMotherTemplate;
-            if(!($oMotherTemplate instanceof TemplateConfiguration)){
+            if (!($oMotherTemplate instanceof TemplateConfiguration)) {
                 return false;
                 break;
             }
@@ -244,7 +244,7 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $oRTemplate   = $oTemplate;
         $loader       = $this->_twig->getLoader();
         $loader->addPath($oRTemplate->viewPath);
-        while($oRTemplate->oMotherTemplate instanceof TemplateConfiguration){
+        while ($oRTemplate->oMotherTemplate instanceof TemplateConfiguration) {
             $oRTemplate = $oRTemplate->oMotherTemplate;
             $loader->addPath($oRTemplate->viewPath);
         }
@@ -258,18 +258,18 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         $event = new PluginEvent('beforeTwigRenderTemplate');
 
-        if (!empty($aDatas['aSurveyInfo']['sid'])){
+        if (!empty($aDatas['aSurveyInfo']['sid'])) {
             $surveyid = $aDatas['aSurveyInfo']['sid'];
             $event->set('surveyId', $aDatas['aSurveyInfo']['sid']);
 
-            if (!empty($_SESSION['survey_'.$surveyid]['srid'])){
-                $aDatas['aSurveyInfo']['bShowClearAll'] = ! SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
+            if (!empty($_SESSION['survey_'.$surveyid]['srid'])) {
+                $aDatas['aSurveyInfo']['bShowClearAll'] = !SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$surveyid]['srid']);
             }
         }
 
         App()->getPluginManager()->dispatchEvent($event);
         $aPluginContent = $event->getAllContent();
-        if (!empty($aPluginContent['sTwigBlocks'])){
+        if (!empty($aPluginContent['sTwigBlocks'])) {
             $sString = $sString.$aPluginContent['sTwigBlocks'];
         }
 
@@ -289,32 +289,32 @@ class LSETwigViewRenderer extends ETwigViewRenderer
         $aDatas["aSurveyInfo"] = array_merge($aDatas["aSurveyInfo"], $oTemplate->getClassAndAttributes());
 
         $languagecode = Yii::app()->getConfig('defaultlang');
-        if (!empty($aDatas['aSurveyInfo']['sid'])){
-            if (Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'] ){
-                $languagecode =  Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'];
-            }elseif ($aDatas['aSurveyInfo']['sid']  && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])){
+        if (!empty($aDatas['aSurveyInfo']['sid'])) {
+            if (Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang']) {
+                $languagecode = Yii::app()->session['survey_'.$aDatas['aSurveyInfo']['sid']]['s_lang'];
+            }elseif ($aDatas['aSurveyInfo']['sid'] && Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])) {
                 $languagecode = Survey::model()->findByPk($aDatas['aSurveyInfo']['sid'])->language;
             }
         }
 
         $aDatas["aSurveyInfo"]['languagecode']     = $languagecode;
-        $aDatas["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode))?"rtl":"ltr";
+        $aDatas["aSurveyInfo"]['dir']              = (getLanguageRTL($languagecode)) ? "rtl" : "ltr";
 
-        if (!empty($aDatas['aSurveyInfo']['sid'])){
+        if (!empty($aDatas['aSurveyInfo']['sid'])) {
             $showxquestions                            = Yii::app()->getConfig('showxquestions');
-            $aDatas["aSurveyInfo"]['bShowxquestions']  = ( $showxquestions == 'show' || ($showxquestions == 'choose' && !isset($aDatas['aSurveyInfo']['showxquestions'])) || ($showxquestions == 'choose' && $aDatas['aSurveyInfo']['showxquestions'] == 'Y'));
+            $aDatas["aSurveyInfo"]['bShowxquestions']  = ($showxquestions == 'show' || ($showxquestions == 'choose' && !isset($aDatas['aSurveyInfo']['showxquestions'])) || ($showxquestions == 'choose' && $aDatas['aSurveyInfo']['showxquestions'] == 'Y'));
 
 
             // NB: Session is flushed at submit, so sid is not defined here.
-            if (isset($_SESSION['survey_' . $aDatas['aSurveyInfo']['sid']])) {
-                $aDatas["aSurveyInfo"]['iTotalquestions']  = $_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'];
+            if (isset($_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']])) {
+                $aDatas["aSurveyInfo"]['iTotalquestions'] = $_SESSION['survey_'.$aDatas['aSurveyInfo']['sid']]['totalquestions'];
             }
         }
 
 
         // Add the template options
         if ($oTemplate->oOptions) {
-            foreach($oTemplate->oOptions as $key => $value){
+            foreach ($oTemplate->oOptions as $key => $value) {
                 $aDatas["aSurveyInfo"]["options"][$key] = (string) $value;
             }
         }
@@ -330,19 +330,19 @@ class LSETwigViewRenderer extends ETwigViewRenderer
     {
         $this->_twig = parent::getTwig();
         foreach ($extensions as $extName) {
-            if ($extName=="Twig_Extension_Sandbox"){
+            if ($extName == "Twig_Extension_Sandbox") {
                 // Process to load the sandBox
-                $tags       = isset($this->sandboxConfig['tags'])?$this->sandboxConfig['tags']:array();
-                $filters    = isset($this->sandboxConfig['filters'])?$this->sandboxConfig['filters']:array();
-                $methods    = isset($this->sandboxConfig['methods'])?$this->sandboxConfig['methods']:array();
-                $properties = isset($this->sandboxConfig['properties'])?$this->sandboxConfig['properties']:array();
-                $functions  = isset($this->sandboxConfig['functions'])?$this->sandboxConfig['functions']:array();
+                $tags       = isset($this->sandboxConfig['tags']) ? $this->sandboxConfig['tags'] : array();
+                $filters    = isset($this->sandboxConfig['filters']) ? $this->sandboxConfig['filters'] : array();
+                $methods    = isset($this->sandboxConfig['methods']) ? $this->sandboxConfig['methods'] : array();
+                $properties = isset($this->sandboxConfig['properties']) ? $this->sandboxConfig['properties'] : array();
+                $functions  = isset($this->sandboxConfig['functions']) ? $this->sandboxConfig['functions'] : array();
                 $policy     = new Twig_Sandbox_SecurityPolicy($tags, $filters, $methods, $properties, $functions);
                 $sandbox    = new Twig_Extension_Sandbox($policy, true);
 
                 $this->_twig->addExtension($sandbox);
             }
-            else{
+            else {
                 $this->_twig->addExtension(new $extName());
             }
         }

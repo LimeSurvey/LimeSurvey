@@ -19,7 +19,7 @@ class PluginManager extends Survey_Common_Action
         // Scan the plugins folder.
         $aDiscoveredPlugins = $oPluginManager->scanPlugins();
         $aInstalledPlugins  = $oPluginManager->getInstalledPlugins();
-        $aInstalledNames    = array_map(function ($installedPlugin) {
+        $aInstalledNames    = array_map(function($installedPlugin) {
                 return $installedPlugin->name;
             }, $aInstalledPlugins);
 
@@ -62,12 +62,12 @@ class PluginManager extends Survey_Common_Action
             {
                 // This plugin is missing, maybe the files were deleted but the record was not removed from the database
                 // Now delete this record. Depending on the plugin the settings will be preserved
-                App()->user->setFlash('pluginDelete' . $oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
+                App()->user->setFlash('pluginDelete'.$oPlugin->id, sprintf(gT("Plugin '%s' was missing and is removed from the database."), $oPlugin->name));
                 $oPlugin->delete();
             }
         }
 
-        if(Yii::app()->request->getParam('pageSize')) {
+        if (Yii::app()->request->getParam('pageSize')) {
             Yii::app()->user->setState('pageSize', intval(Yii::app()->request->getParam('pageSize')));
         }
 
@@ -75,7 +75,7 @@ class PluginManager extends Survey_Common_Action
         $aData['fullpagebar']['returnbutton']['text'] = gT('Return to admin home');
         $aData['data'] = $data;
         $this->_renderWrappedTemplate('pluginmanager', 'index', $aData);
-        if(!Permission::model()->hasGlobalPermission('settings','read'))
+        if (!Permission::model()->hasGlobalPermission('settings', 'read'))
         {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin'));
@@ -87,15 +87,15 @@ class PluginManager extends Survey_Common_Action
      *
      * @return void
      */
-    public function changestate(){
+    public function changestate() {
         //Yii::app()->request->validateCsrfToken();
         $id = Yii::app()->request->getPost('id');
         $type = Yii::app()->request->getPost('type');
-        if($type=="activate")
+        if ($type == "activate")
         {
             $this->activate($id);
         }
-        else if($type=="deactivate")
+        else if ($type == "deactivate")
         {
             $this->deactivate($id);
         }
@@ -110,7 +110,7 @@ class PluginManager extends Survey_Common_Action
      */
     private function activate($id)
     {
-        if(!Permission::model()->hasGlobalPermission('settings','update'))
+        if (!Permission::model()->hasGlobalPermission('settings', 'update'))
         {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
@@ -157,7 +157,7 @@ class PluginManager extends Survey_Common_Action
      */
     private function deactivate($id)
     {
-        if(!Permission::model()->hasGlobalPermission('settings','update'))
+        if (!Permission::model()->hasGlobalPermission('settings', 'update'))
         {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
@@ -199,7 +199,7 @@ class PluginManager extends Survey_Common_Action
      */
     public function configure($id)
     {
-        if(!Permission::model()->hasGlobalPermission('settings','read'))
+        if (!Permission::model()->hasGlobalPermission('settings', 'read'))
         {
             Yii::app()->setFlashMessage(gT("No permission"), 'error');
             $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
@@ -217,7 +217,7 @@ class PluginManager extends Survey_Common_Action
         // If post handle data, yt0 seems to be the submit button
         if (App()->request->isPostRequest)
         {
-            if(!Permission::model()->hasGlobalPermission('settings','update'))
+            if (!Permission::model()->hasGlobalPermission('settings', 'update'))
             {
                 Yii::app()->setFlashMessage(gT("No permission"), 'error');
                 $this->getController()->redirect(array('/admin/pluginmanager/sa/index'));
@@ -230,7 +230,7 @@ class PluginManager extends Survey_Common_Action
             }
             $oPluginObject->saveSettings($aSave);
             Yii::app()->user->setFlash('success', gT('The plugin settings were saved.'));
-            if(App()->request->getPost('redirect'))
+            if (App()->request->getPost('redirect'))
             {
                 $this->getController()->redirect(App()->request->getPost('redirect'), true);
             }
@@ -252,12 +252,12 @@ class PluginManager extends Survey_Common_Action
     }
 
     /**
-    * Renders template(s) wrapped in header and footer
-    *
-    * @param string $sAction Current action, the folder to fetch views from
-    * @param string $aViewUrls View url(s)
-    * @param array $aData Data to be passed on. Optional.
-    */
+     * Renders template(s) wrapped in header and footer
+     *
+     * @param string $sAction Current action, the folder to fetch views from
+     * @param string $aViewUrls View url(s)
+     * @param array $aData Data to be passed on. Optional.
+     */
     protected function _renderWrappedTemplate($sAction = 'pluginmanager', $aViewUrls = array(), $aData = array())
     {
         parent::_renderWrappedTemplate($sAction, $aViewUrls, $aData);

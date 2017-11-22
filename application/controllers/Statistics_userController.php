@@ -52,7 +52,7 @@ class Statistics_userController extends SurveyController {
      * @param string $language
      * @throws CHttpException
      */
-    public function actionAction($surveyid,$language=null)
+    public function actionAction($surveyid, $language = null)
     {
         $sLanguage = $language;
         $survey = Survey::model()->findByPk($surveyid);
@@ -69,9 +69,9 @@ class Statistics_userController extends SurveyController {
         Yii::app()->loadHelper('surveytranslator');
         $data = array();
 
-        if(!isset($iSurveyID))
+        if (!isset($iSurveyID))
         {
-            $iSurveyID=returnGlobal('sid');
+            $iSurveyID = returnGlobal('sid');
         }
         else
         {
@@ -80,11 +80,11 @@ class Statistics_userController extends SurveyController {
         if (!$iSurveyID)
         {
             //This next line ensures that the $iSurveyID value is never anything but a number.
-            throw new CHttpException(404,'You have to provide a valid survey ID.');
+            throw new CHttpException(404, 'You have to provide a valid survey ID.');
         }
 
 
-        $actresult = Survey::model()->findAll('sid = :sid AND active = :active', array(':sid' => $iSurveyID, ':active' => 'Y'));      //Checked
+        $actresult = Survey::model()->findAll('sid = :sid AND active = :active', array(':sid' => $iSurveyID, ':active' => 'Y')); //Checked
         if (count($actresult) == 0)
         {
             throw new CHttpException(404, 'You have to provide a valid survey ID.');
@@ -96,7 +96,7 @@ class Statistics_userController extends SurveyController {
             $thisSurveyTitle = $surveyinfo["name"];
             // CHANGE JSW_NZ - let's get css from individual template.css - so define path
             $thisSurveyCssPath = getTemplateURL($surveyinfo["template"]);
-            if ($surveyinfo['publicstatistics']!='Y')
+            if ($surveyinfo['publicstatistics'] != 'Y')
             {
                 throw new CHttpException(404, 'The public statistics for this survey are deactivated.');
             }
@@ -110,7 +110,7 @@ class Statistics_userController extends SurveyController {
         }
 
         //we collect all the output within this variable
-        $statisticsoutput ='';
+        $statisticsoutput = '';
 
         //for creating graphs we need some more scripts which are included here
         //True -> include
@@ -125,25 +125,25 @@ class Statistics_userController extends SurveyController {
             //$currentuser is created as prefix for pchart files
             if (isset($_SERVER['REDIRECT_REMOTE_USER']))
             {
-                $currentuser=$_SERVER['REDIRECT_REMOTE_USER'];
+                $currentuser = $_SERVER['REDIRECT_REMOTE_USER'];
             }
             else if (session_id())
             {
-                $currentuser=substr(session_id(), 0, 15);
+                $currentuser = substr(session_id(), 0, 15);
             }
             else
             {
-                $currentuser="standard";
+                $currentuser = "standard";
             }
         }
         // Set language for questions and labels to base language of this survey
-        if ($sLanguage== null || !in_array($sLanguage,Survey::model()->findByPk($iSurveyID)->getAllLanguages()))
+        if ($sLanguage == null || !in_array($sLanguage, Survey::model()->findByPk($iSurveyID)->getAllLanguages()))
         {
             $sLanguage = Survey::model()->findByPk($iSurveyID)->language;
         }
         else
         {
-            $sLanguage=sanitize_languagecode($sLanguage);
+            $sLanguage = sanitize_languagecode($sLanguage);
         }
         //set survey language for translations
         SetSurveyLanguage($iSurveyID, $sLanguage);
@@ -163,13 +163,13 @@ class Statistics_userController extends SurveyController {
         $query = "SELECT q.* , group_name, group_order FROM {{questions}} q, {{groups}} g, {{question_attributes}} qa
                     WHERE g.gid = q.gid AND g.language = :lang1 AND q.language = :lang2 AND q.sid = :surveyid AND q.qid = qa.qid AND q.parent_qid = 0 AND qa.attribute = 'public_statistics'";
         $databasetype = Yii::app()->db->getDriverName();
-        if ($databasetype=='mssql' || $databasetype=="sqlsrv" || $databasetype=="dblib")
+        if ($databasetype == 'mssql' || $databasetype == "sqlsrv" || $databasetype == "dblib")
         {
-            $query .=" AND CAST(CAST(qa.value as varchar) as int)='1'\n";
+            $query .= " AND CAST(CAST(qa.value as varchar) as int)='1'\n";
         }
         else
         {
-            $query .=" AND qa.value='1'\n";
+            $query .= " AND qa.value='1'\n";
         }
 
         //execute query
@@ -187,7 +187,7 @@ class Statistics_userController extends SurveyController {
         foreach ($rows as $row)
         {
             //store some column names in $filters array
-            $filters[]=array($row['qid'],
+            $filters[] = array($row['qid'],
             $row['gid'],
             $row['type'],
             $row['title'],
@@ -209,7 +209,7 @@ class Statistics_userController extends SurveyController {
         $result = Yii::app()->db->createCommand($query)->queryAll();
 
         //$totalrecords = total number of answers
-        foreach($result as $row)
+        foreach ($result as $row)
         {
             $totalrecords = reset($row);
         }
@@ -229,7 +229,7 @@ class Statistics_userController extends SurveyController {
          ['question'];
                  */
 
-        $currentgroup='';
+        $currentgroup = '';
         // use to check if there are any question with public statistics
         if (isset($filters)) {
             $allfields = $this->createSGQA($filters);
@@ -238,7 +238,7 @@ class Statistics_userController extends SurveyController {
         $summary = $allfields;
 
         // Get the survey inforamtion
-        $thissurvey = getSurveyInfo($surveyid,$sLanguage);
+        $thissurvey = getSurveyInfo($surveyid, $sLanguage);
 
         //SET THE TEMPLATE DIRECTORY
         //---------- CREATE STATISTICS ----------
@@ -268,9 +268,9 @@ class Statistics_userController extends SurveyController {
 
         // creates array of post variable names
         $postvars = array();
-        for (reset($_POST); $key=key($_POST); next($_POST))
+        for (reset($_POST); $key = key($_POST); next($_POST))
         {
-            $postvars[]=$key;
+            $postvars[] = $key;
         }
         $data['thisSurveyTitle'] = $thisSurveyTitle;
         $data['totalrecords'] = $totalrecords;
@@ -290,7 +290,7 @@ class Statistics_userController extends SurveyController {
             //~ $prb->moveStep($process_status);
 
             //let's run through the survey // Fixed bug 3053 with array_unique
-            $runthrough=array_unique($summary);
+            $runthrough = array_unique($summary);
 
             //loop through all selected questions
             foreach ($runthrough as $rt)
@@ -303,11 +303,11 @@ class Statistics_userController extends SurveyController {
             }    // end foreach -> loop through all questions
 
             $helper = new userstatistics_helper();
-            $statisticsoutput .= $helper->generate_statistics($iSurveyID, $summary, $summary, $publicgraphs, 'html', null,$sLanguage,false);
+            $statisticsoutput .= $helper->generate_statistics($iSurveyID, $summary, $summary, $publicgraphs, 'html', null, $sLanguage, false);
 
         }    //end if -> show summary results
 
-        $data['statisticsoutput']=$statisticsoutput;
+        $data['statisticsoutput'] = $statisticsoutput;
         //done! set progress bar to 100%
         if (isset($prb))
         {
@@ -316,9 +316,9 @@ class Statistics_userController extends SurveyController {
             //~ $prb->hide();
         }
 
-        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts') . 'statistics_user.js');
-        $this->layout="public";
-        $this->render('/statistics_user_view',$data);
+        Yii::app()->getClientScript()->registerScriptFile(Yii::app()->getConfig('generalscripts').'statistics_user.js');
+        $this->layout = "public";
+        $this->render('/statistics_user_view', $data);
 
         //Delete all Session Data
         Yii::app()->session['finished'] = true;
@@ -345,12 +345,12 @@ class Statistics_userController extends SurveyController {
                 case "Q": // Multiple Short Text
                     //get answers
                     $query = "SELECT title as code, question as answer FROM {{questions}} WHERE parent_qid=:flt_0 AND language = :lang ORDER BY question_order";
-                    $result =  Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
+                    $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
 
                     //go through all the (multiple) answers
-                    foreach($result as $row)
+                    foreach ($result as $row)
                     {
-                        $myfield2=$flt[2].$myfield.reset($row);
+                        $myfield2 = $flt[2].$myfield.reset($row);
                         $allfields[] = $myfield2;
                     }
                     break;
@@ -365,31 +365,31 @@ class Statistics_userController extends SurveyController {
                     $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
 
                     //go through all the (multiple) answers
-                    foreach($result as $row)
+                    foreach ($result as $row)
                     {
                         $myfield2 = $myfield.reset($row);
-                        $allfields[]=$myfield2;
+                        $allfields[] = $myfield2;
                     }
                     break;
                 // all "free text" types (T, U, S)  get the same prefix ("T")
                 case "T": // Long free text
                 case "U": // Huge free text
                 case "S": // Short free text
-                    $myfield="T$myfield";
+                    $myfield = "T$myfield";
                     $allfields[] = $myfield;
                     break;
                 case ";":  //ARRAY (Multi Flex) (Text)
                 case ":":  //ARRAY (Multi Flex) (Numbers)
                     $query = "SELECT title, question FROM {{questions}} WHERE parent_qid=:flt_0 AND language=:lang AND scale_id = 0 ORDER BY question_order";
                     $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
-                    foreach($result as $row)
+                    foreach ($result as $row)
                     {
                         $fquery = "SELECT * FROM {{questions}} WHERE parent_qid = :flt_0 AND language = :lang AND scale_id = 1 ORDER BY question_order, title";
                         $fresult = Yii::app()->db->createCommand($fquery)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
-                        foreach($fresult as $frow)
+                        foreach ($fresult as $frow)
                         {
-                            $myfield2 = $myfield . reset($row) . "_" . $frow['title'];
-                        $allfields[]=$myfield2;
+                            $myfield2 = $myfield.reset($row)."_".$frow['title'];
+                        $allfields[] = $myfield2;
                     }
                     }
                     break;
@@ -402,10 +402,10 @@ class Statistics_userController extends SurveyController {
                     $count = count($result);
 
                     //loop through all answers. if there are 3 items to rate there will be 3 statistics
-                    for ($i=1; $i<=$count; $i++)
+                    for ($i = 1; $i <= $count; $i++)
                     {
-                        $myfield2 = "R" . $myfield . $i . "-" . strlen($i);
-                        $allfields[]=$myfield2;
+                        $myfield2 = "R".$myfield.$i."-".strlen($i);
+                        $allfields[] = $myfield2;
                     }
                     break;
                 //Boilerplate questions are only used to put some text between other questions -> no analysis needed
@@ -417,14 +417,14 @@ class Statistics_userController extends SurveyController {
                     $result = Yii::app()->db->createCommand($query)->bindParam(":flt_0", $flt[0], PDO::PARAM_INT)->bindParam(":lang", $this->sLanguage, PDO::PARAM_STR)->queryAll();
 
                     //loop through answers
-                    foreach($result as $row)
+                    foreach ($result as $row)
                     {
                         //----------------- LABEL 1 ---------------------
-                        $myfield2 = $myfield . $row['title']."#0";
-                        $allfields[]=$myfield2;
+                        $myfield2 = $myfield.$row['title']."#0";
+                        $allfields[] = $myfield2;
                         //----------------- LABEL 2 ---------------------
-                        $myfield2 = $myfield . $row['title']."#1";
-                        $allfields[]=$myfield2;
+                        $myfield2 = $myfield.$row['title']."#1";
+                        $allfields[] = $myfield2;
                     }    //end WHILE -> loop through all answers
                     break;
 
@@ -433,7 +433,7 @@ class Statistics_userController extends SurveyController {
                 case "N":  //N - Numerical input
                 case "D":  //D - Date
                     $myfield2 = $flt[2].$myfield;
-                    $allfields[]=$myfield2;
+                    $allfields[] = $myfield2;
                     break;
                 default:   //Default settings
                     $allfields[] = $myfield;

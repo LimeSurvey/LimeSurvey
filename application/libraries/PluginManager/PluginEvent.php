@@ -91,7 +91,7 @@ class PluginEvent
     public function getAllContent()
     {
         $output = array();
-        foreach($this->_content as $plugin => $content)
+        foreach ($this->_content as $plugin => $content)
         {
             /* @var $content PluginEventContent */
             if ($content->hasContent()) {

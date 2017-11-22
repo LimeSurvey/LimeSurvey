@@ -34,7 +34,7 @@ abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlu
         $question = new self($this->pluginManager, $this->id);
         $question->populate($data);
         
-        $question->isQuestion(true);    // Signal this is not the plugin, but a question object
+        $question->isQuestion(true); // Signal this is not the plugin, but a question object
         
         return $question;
     }
@@ -43,8 +43,8 @@ abstract class QuestionPluginAbstract extends PluginBase implements iQuestionPlu
     {
         foreach ($data as $key => $value)
         {
-            $setter='set'.ucfirst($key);
-            if(method_exists($this,$setter))
+            $setter = 'set'.ucfirst($key);
+            if (method_exists($this, $setter))
             {
                 $this->$setter($value);
             } else {

@@ -2,13 +2,13 @@
 
 class SettingsUserController extends Controller
 {
-	public function actionIndex()
-	{
-		$this->render('index');
-	}
+    public function actionIndex()
+    {
+        $this->render('index');
+    }
 
-	// Uncomment the following methods and override them if needed
-	/*
+    // Uncomment the following methods and override them if needed
+    /*
 	public function filters()
 	{
 		// return the filter configuration for this controller, e.g.:

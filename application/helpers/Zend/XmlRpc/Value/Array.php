@@ -57,8 +57,8 @@ class Zend_XmlRpc_Value_Array extends Zend_XmlRpc_Value_Collection
     {
         $generator = $this->getGenerator();
         $generator->openElement('value')
-                  ->openElement('array')
-                  ->openElement('data');
+                    ->openElement('array')
+                    ->openElement('data');
 
         if (is_array($this->_value)) {
             foreach ($this->_value as $val) {
@@ -66,8 +66,8 @@ class Zend_XmlRpc_Value_Array extends Zend_XmlRpc_Value_Collection
             }
         }
         $generator->closeElement('data')
-                  ->closeElement('array')
-                  ->closeElement('value');
+                    ->closeElement('array')
+                    ->closeElement('value');
     }
 }
 

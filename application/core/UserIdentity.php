@@ -25,17 +25,17 @@ class UserIdentity extends CUserIdentity
      * @param string $sOneTimePassword
      * @return bool
      */
-    public function authenticate($sOneTimePassword='')
+    public function authenticate($sOneTimePassword = '')
     {
-        if (Yii::app()->getConfig("auth_webserver")==false || $this->username != "") {
+        if (Yii::app()->getConfig("auth_webserver") == false || $this->username != "") {
             $user = User::model()->findByAttributes(array('users_name' => $this->username));
             if ($user === null) {
                 $this->errorCode = self::ERROR_USERNAME_INVALID;
                 return !$this->errorCode;
             }
             
-            if ($sOneTimePassword!='' && Yii::app()->getConfig("use_one_time_passwords") && md5($sOneTimePassword)==$user->one_time_pw) {
-                $user->one_time_pw='';
+            if ($sOneTimePassword != '' && Yii::app()->getConfig("use_one_time_passwords") && md5($sOneTimePassword) == $user->one_time_pw) {
+                $user->one_time_pw = '';
                 $user->save();
                 $this->id = $user->uid;
                 $this->user = $user;
@@ -65,7 +65,7 @@ class UserIdentity extends CUserIdentity
             $aUserMappings=Yii::app()->getConfig("auth_webserver_user_map");
             if (isset($aUserMappings[$sUser])) 
             {
-               $sUser = $aUserMappings[$sUser];
+                $sUser = $aUserMappings[$sUser];
             }
             $this->username = $sUser;
 
@@ -77,7 +77,7 @@ class UserIdentity extends CUserIdentity
                     // describing the defaukt profile for this user
                     $aUserProfile = hook_get_auth_webserver_profile($sUser);
                 } elseif (Yii::app()->getConfig("auth_webserver_autocreate_user")) {
-                    $aUserProfile=Yii::app()->getConfig("auth_webserver_autocreate_profile"); 
+                    $aUserProfile = Yii::app()->getConfig("auth_webserver_autocreate_profile"); 
                 }
             } else {
                 $this->id = $oUser->uid;
@@ -89,19 +89,19 @@ class UserIdentity extends CUserIdentity
             
             if (Yii::app()->getConfig("auth_webserver_autocreate_user") && isset($aUserProfile) && is_null($oUser))
             { // user doesn't exist but auto-create user is set
-                $oUser=new User;
-                $oUser->users_name=$sUser;
+                $oUser = new User;
+                $oUser->users_name = $sUser;
                 $oUser->setPassword(createPassword());
-                $oUser->full_name=$aUserProfile['full_name'];
-                $oUser->parent_id=1;
-                $oUser->lang=$aUserProfile['lang'];
-                $oUser->email=$aUserProfile['email'];
+                $oUser->full_name = $aUserProfile['full_name'];
+                $oUser->parent_id = 1;
+                $oUser->lang = $aUserProfile['lang'];
+                $oUser->email = $aUserProfile['email'];
                 if ($oUser->save())
                 {
-                    $aTemplates=explode(",",$aUserProfile['templatelist']);
+                    $aTemplates = explode(",", $aUserProfile['templatelist']);
                     foreach ($aTemplates as $sTemplateName)
                     {
-                        $oPermission=new Permission;
+                        $oPermission = new Permission;
                         $oPermission->uid = $oUser->uid;
                         $oPermission->entity = 'template';
                         $oPermission->permission = trim($sTemplateName);
@@ -129,22 +129,22 @@ class UserIdentity extends CUserIdentity
     }
 
     /**
-    * Returns the current user's ID
-    *
-    * @access public
-    * @return int
-    */
+     * Returns the current user's ID
+     *
+     * @access public
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
     /**
-    * Returns the active user's record
-    *
-    * @access public
-    * @return CActiveRecord
-    */
+     * Returns the active user's record
+     *
+     * @access public
+     * @return CActiveRecord
+     */
     public function getUser()
     {
         return $this->user;

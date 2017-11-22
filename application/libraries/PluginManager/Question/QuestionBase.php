@@ -164,7 +164,7 @@ namespace LimeSurvey\PluginManager;
             $allAttributes = array_merge($this->defaultAttributes, $this->attributes);
             if (count($allAttributes) != count($this->defaultAttributes) + count($this->attributes))
             {
-                throw new Exception(get_class($this) . " must not redefine default attributes");
+                throw new Exception(get_class($this)." must not redefine default attributes");
             }
             
             foreach ($allAttributes as $name => &$metaData)
