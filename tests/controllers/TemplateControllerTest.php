@@ -20,7 +20,7 @@ class TemplateControllerTest extends TestBaseClass
     public function testCopyTemplate()
     {
         \Yii::app()->session['loginID'] = 1;
-        \Yii::import('application.controllers.admin.templates', true);
+        \Yii::import('application.controllers.admin.themes', true);
         \Yii::import('application.helpers.globalsettings_helper', true);
 
         // Clean up from last test.
@@ -41,7 +41,7 @@ class TemplateControllerTest extends TestBaseClass
         $_POST['copydir'] = 'default';
         $_SERVER['SERVER_NAME'] = 'localhost';
 
-        $contr = new \templates(new \ls\tests\DummyController('dummyid'));
+        $contr = new \themes(new \ls\tests\DummyController('dummyid'));
         $contr->templatecopy();
 
         $flashes = \Yii::app()->user->getFlashes();
