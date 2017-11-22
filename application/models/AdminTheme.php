@@ -147,7 +147,7 @@ class AdminTheme extends CFormModel
             App()->getClientScript()->registerPackage('bootstrap-switch');
             App()->getClientScript()->registerPackage('bootstrap-select2');
             App()->getClientScript()->registerPackage('bootstrap-datetimepicker');
-            App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style 
+            App()->getClientScript()->registerPackage('adminbasics'); // Combined scripts and style
             App()->getClientScript()->registerPackage('adminpanel'); // The new admin panel
             App()->getClientScript()->registerPackage('lstutorial'); // Tutorial scripts
             App()->getClientScript()->registerPackage('ckeditor'); //
@@ -341,7 +341,9 @@ class AdminTheme extends CFormModel
                     // Simple Xml is buggy on PHP < 5.4. The [ array -> json_encode -> json_decode ] workaround seems to be the most used one.
                     // @see: http://php.net/manual/de/book.simplexml.php#105330 (top comment on PHP doc for simplexml)
                     $oTemplateConfig = json_decode(json_encode((array) simplexml_load_string($sXMLConfigFile), 1));
-
+                    $previewUrl = Yii::app()->getConfig('styleurl').$file; // NOTE: will not work with uploaded themes for now
+                    $oTemplateConfig->path    =  $file;
+                    $oTemplateConfig->preview = '<img src="'.$previewUrl.'/preview.png" alt="admin theme preview" height="200" class="img-thumbnail" />';
                     $aListOfFiles[$file] = $oTemplateConfig;
                 }
             }
@@ -350,6 +352,7 @@ class AdminTheme extends CFormModel
         libxml_disable_entity_loader($bOldEntityLoaderState);
         return $aListOfFiles;
     }
+
 
     /**
      * Few constants depending on Template

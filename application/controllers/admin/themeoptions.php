@@ -148,15 +148,28 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
+    public function setAdminTheme($sAdminThemeName)
+    {
+        if (!Permission::model()->hasGlobalPermission('settings', 'update')) {
+            Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
+            $this->getController()->redirect(array('/admin'));
+        }
+
+        $sAdmintheme = sanitize_paranoid_string($sAdminThemeName);
+        setGlobalSetting('admintheme', $sAdmintheme);
+        $this->getController()->redirect(Yii::app()->getController()->createUrl("admin/themeoptions#adminthemes"));
+    }
+
     /**
      * Lists all models.
      */
     public function index()
     {
         if (Permission::model()->hasGlobalPermission('templates', 'read')) {
-            $model          = new TemplateConfiguration();
             $aData          = array();
-            $aData['model'] = $model;
+            $aData['oSurveyTheme'] = new TemplateConfiguration();
+            $aData['oAdminTheme']  = new AdminTheme();
+
             $this->_renderWrappedTemplate('themeoptions', 'index', $aData);
         } else {
             Yii::app()->setFlashMessage(gT("We are sorry but you don't have permissions to do this."), 'error');
