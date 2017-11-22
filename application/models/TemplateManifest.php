@@ -231,7 +231,7 @@ class TemplateManifest extends TemplateConfiguration
             href='".$sEditorUrl."'
             class='btn btn-default'>
                 <span class='icon-templates'></span>
-                ".gT('Template editor')."
+                ".gT('Theme editor')."
             </a>";
 
             //
@@ -270,7 +270,7 @@ class TemplateManifest extends TemplateConfiguration
         $aDatas['extends']          = $bExtends = (string) $oTemplate->config->metadatas->extends;
 
         if ($bExtends && !Template::model()->findByPk($bExtends)){
-            Yii::app()->setFlashMessage(sprintf(gT("You can't import template '%s' because '%s'  is not installed."), $sTemplateName, $bExtends ), 'error');
+            Yii::app()->setFlashMessage(sprintf(gT("You can't import the theme '%s' because '%s'  is not installed."), $sTemplateName, $bExtends ), 'error');
             Yii::app()->getController()->redirect(array("admin/themeoptions"));
         }
 

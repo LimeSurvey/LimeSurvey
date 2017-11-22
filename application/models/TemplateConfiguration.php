@@ -414,7 +414,7 @@ class TemplateConfiguration extends TemplateConfig
     public function getTypeIcon()
     {
         if (empty($this->sTypeIcon)){
-            $this->sTypeIcon = (Template::isStandardTemplate($this->template->name))?gT("Core template"):gT("User template");
+            $this->sTypeIcon = (Template::isStandardTemplate($this->template->name))?gT("Core theme"):gT("User theme");
         }
         return $this->sTypeIcon;
     }
@@ -437,7 +437,7 @@ class TemplateConfiguration extends TemplateConfig
             href='".$sEditorUrl."'
             class='btn btn-default'>
                 <span class='icon-templates'></span>
-                ".gT('Template editor')."
+                ".gT('Theme editor')."
             </a>";
 
             //
@@ -450,7 +450,7 @@ class TemplateConfiguration extends TemplateConfig
                 href='".$sOptionUrl."'
                 class='btn btn-default'>
                     <span class='fa fa-tachometer'></span>
-                    ".gT('Template options')."
+                    ".gT('Theme options')."
                 </a>";
         }
 
