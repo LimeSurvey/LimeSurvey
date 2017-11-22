@@ -474,7 +474,7 @@ function createDatabase($oDB){
             'menu_class' =>  "string(192)  NOT NULL DEFAULT ''",
             'menu_link' =>  "string(192)  NOT NULL DEFAULT ''",
             'action' =>  "string(192)  NOT NULL DEFAULT ''",
-            'theme' =>  "string(192)  NOT NULL DEFAULT ''",
+            'template' =>  "string(192)  NOT NULL DEFAULT ''",
             'partial' =>  "string(192)  NOT NULL DEFAULT ''",
             'classes' =>  "string(192)  NOT NULL DEFAULT ''",
             'permission' =>  "string(192)  NOT NULL DEFAULT ''",
@@ -492,7 +492,7 @@ function createDatabase($oDB){
         $oDB->createCommand()->createIndex('{{idx1_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_id', false);
         $oDB->createCommand()->createIndex('{{idx5_surveymenu_entries}}', '{{surveymenu_entries}}', 'menu_title', false);
 
-        $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','theme','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
+        $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
         $basicMenues = [
             [1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
             [1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings_generalsettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
