@@ -678,7 +678,6 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>327),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-
     }
     catch(Exception $e)
     {
@@ -741,7 +740,7 @@ function upgrade327($oDB)
         'desc'     =>  'Edit LimeSurvey Themes',
         'page'     =>  'welcome',
         'usergroup' => '-2',
-    ), 'url=:url', array(':url'=>"admin/templateoptions"));
+    ), "url='admin/templateoptions'");
 
 
     // Update the survey menu so it uses the themeoptions controller
@@ -770,7 +769,7 @@ function upgrade327($oDB)
         'changed_by'       =>  0,
         'created_at'       =>  date('Y-m-d H:i:s'),
         'created_by'       =>  0
-    ), 'name=:name', array(':name'=>"template_options"));
+    ), "name='template_options'");
 
 }
 
