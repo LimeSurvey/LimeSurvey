@@ -137,9 +137,9 @@ class Expressions extends Survey_Common_Action {
 
         Yii::app()->setLanguage(Yii::app()->session['adminlang']);
 
-        $aData['result'] = LimeExpressionManager::ShowSurveyLogicFile($sid, $gid, $qid,$LEMdebugLevel,$assessments);
+        $aData['result'] = LimeExpressionManager::ShowSurveyLogicFile($sid, $gid, $qid, $LEMdebugLevel, $assessments);
 
-        if(Yii::app()->request->getParam('printable', 0) == 1){
+        if (Yii::app()->request->getParam('printable', 0) == 1) {
             $html = "<html><body>";
             $html .= "<style>
            @page { 

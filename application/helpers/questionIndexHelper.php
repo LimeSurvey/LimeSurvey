@@ -219,20 +219,20 @@ class questionIndexHelper {
                             'index-item-unanswered' => $stepInfo['anyUnanswered'],
                             'index-item-error' => $stepInfo['anyErrors'],
                             'index-item-current' => ($questionStep == $sessionLem['step']),
-                            ),/* order have importance for css : last on is apply */
+                            ), /* order have importance for css : last on is apply */
                     );
-                    $aClass=array_filter($questionInfo['stepStatus']);
-                    $questionInfo['coreClass']=implode(" ",array_merge(array('index-item'),array_keys($aClass)));
-                    $questionInGroup[$questionStep]=$questionInfo;
+                    $aClass = array_filter($questionInfo['stepStatus']);
+                    $questionInfo['coreClass'] = implode(" ", array_merge(array('index-item'), array_keys($aClass)));
+                    $questionInGroup[$questionStep] = $questionInfo;
                 }
                 /* Update the previous step */
-                $prevStep=$questionFieldmap['questionSeq'];
+                $prevStep = $questionFieldmap['questionSeq'];
             }
         }
         /* Add the last group */
-        if(!empty($questionInGroup)){
-            $actualGroup['questions']=$questionInGroup;
-            $stepIndex[]=$actualGroup;
+        if (!empty($questionInGroup)) {
+            $actualGroup['questions'] = $questionInGroup;
+            $stepIndex[] = $actualGroup;
         }
         return $stepIndex;
     }

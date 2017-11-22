@@ -226,7 +226,7 @@ class Question extends LSActiveRecord
      * @param string $sLanguage  If you give a language then only the attributes for that language are returned
      * @return array
      */
-    public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage=null)
+    public function getAdvancedSettingsWithValues($iQuestionID, $sQuestionType, $iSurveyID, $sLanguage = null)
     {
         if (is_null($sLanguage)) {
             $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);

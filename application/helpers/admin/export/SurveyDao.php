@@ -62,18 +62,18 @@ class SurveyDao
         'WHERE q.sid = '.$intId.' AND a.language = \''.$lang.'\' '.
         'ORDER BY a.qid, a.sortorder;';
         //$survey->answers = Yii::app()->db->createCommand($sQuery)->queryAll();
-        $aAnswers= Yii::app()->db->createCommand($sQuery)->queryAll();
-        foreach($aAnswers as $aAnswer)
+        $aAnswers = Yii::app()->db->createCommand($sQuery)->queryAll();
+        foreach ($aAnswers as $aAnswer)
         {
-                $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']]=$aAnswer;
+                $survey->answers[$aAnswer['qid']][$aAnswer['scale_id']][$aAnswer['code']] = $aAnswer;
         }
         //Load language settings for requested language
-        $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.' AND surveyls_language = \'' . $lang . '\';';
+        $sQuery = 'SELECT * FROM {{surveys_languagesettings}} WHERE surveyls_survey_id = '.$intId.' AND surveyls_language = \''.$lang.'\';';
         $recordSet = Yii::app()->db->createCommand($sQuery)->query();
         $survey->languageSettings = $recordSet->read();
         $recordSet->close();
 
-        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id,'tokens','read'))
+        if (tableExists('tokens_'.$survey->id) && array_key_exists('token', SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read'))
         {
             // Now add the tokenFields
             $survey->tokenFields = getTokenFieldsAndNames($survey->id);
@@ -96,34 +96,34 @@ class SurveyDao
      * @param string $completionState all, complete or incomplete
      * @param string $aFields If empty all, otherwise only select the selected fields from the survey response table
      */
-    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter='', $completionState = 'all', $aFields = array(), $aResponsesId = array() )
+    public function loadSurveyResults(SurveyObj $survey, $iMinimum, $iMaximum, $sFilter = '', $completionState = 'all', $aFields = array(), $aResponsesId = array())
     {
 
-        $aSelectFields=Yii::app()->db->schema->getTable('{{survey_' . $survey->id . '}}')->getColumnNames();
+        $aSelectFields = Yii::app()->db->schema->getTable('{{survey_'.$survey->id.'}}')->getColumnNames();
         // Get info about the survey
-        if (!empty($aFields)){
-            $aSelectFields=array_intersect($aFields,$aSelectFields);
+        if (!empty($aFields)) {
+            $aSelectFields = array_intersect($aFields, $aSelectFields);
         }
         // Allways add Table prefix : see bug #08396 . Don't use array_walk for PHP < 5.3 compatibility
         foreach ($aSelectFields as &$sField)
-            $sField =$survey->responsesTableName.".".$sField;
+            $sField = $survey->responsesTableName.".".$sField;
         $oRecordSet = Yii::app()->db->createCommand()->from($survey->responsesTableName);
-        if (tableExists('tokens_'.$survey->id) && array_key_exists ('token',SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id,'tokens','read'))
+        if (tableExists('tokens_'.$survey->id) && array_key_exists('token', SurveyDynamic::model($survey->id)->attributes) && Permission::model()->hasSurveyPermission($survey->id, 'tokens', 'read'))
         {
-            $oRecordSet->leftJoin($survey->tokensTableName.' tokentable','tokentable.token=' . $survey->tokensTableName . '.token');
-            $aTokenFields=Yii::app()->db->schema->getTable($survey->tokensTableName)->getColumnNames();
+            $oRecordSet->leftJoin($survey->tokensTableName.' tokentable', 'tokentable.token='.$survey->tokensTableName.'.token');
+            $aTokenFields = Yii::app()->db->schema->getTable($survey->tokensTableName)->getColumnNames();
             foreach ($aTokenFields as &$sField)
-                $sField ="tokentable.".$sField;
-            $aSelectFields=array_merge($aSelectFields,array_diff($aTokenFields, array('tokentable.token')));
+                $sField = "tokentable.".$sField;
+            $aSelectFields = array_merge($aSelectFields, array_diff($aTokenFields, array('tokentable.token')));
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.token'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.token';
         }
-        if ($survey->info['savetimings']=="Y") {
-            $oRecordSet->leftJoin($survey->timi." survey_timings", $survey->responsesTableName. ".id = survey_timings.id");
-            $aTimingFields=Yii::app()->db->schema->getTable($survey->hasTimingsTable)->getColumnNames();
+        if ($survey->info['savetimings'] == "Y") {
+            $oRecordSet->leftJoin($survey->timi." survey_timings", $survey->responsesTableName.".id = survey_timings.id");
+            $aTimingFields = Yii::app()->db->schema->getTable($survey->hasTimingsTable)->getColumnNames();
             foreach ($aTimingFields as &$sField)
-                $sField ="survey_timings.".$sField;
-            $aSelectFields=array_merge($aSelectFields,array_diff($aTimingFields, array('survey_timings.id')));
+                $sField = "survey_timings.".$sField;
+            $aSelectFields = array_merge($aSelectFields, array_diff($aTimingFields, array('survey_timings.id')));
             //$aSelectFields=array_diff($aSelectFields, array('{{survey_{$survey->id}}}.id'));
             //$aSelectFields[]='{{survey_' . $survey->id . '}}.id';
         }

@@ -75,11 +75,11 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         {
             $graph = new pChart(690, 200);
             $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->drawTitle(0,0,gT('Sorry, but this question has too many answer options to be shown properly in a graph.','unescaped'),30,30,30,690,200);
-            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
-            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
+            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet, $graph);
+            $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -94,11 +94,11 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         {
             $graph = new pChart(690, 200);
             $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->drawTitle(0,0,gT('Sorry, but this question has no responses yet so a graph cannot be shown.','unescaped'),30,30,30,690,200);
-            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
-            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
+            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet, $graph);
+            $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -181,31 +181,31 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             }
             else
             {
-                $graph = new pChart(1,1);
+                $graph = new pChart(1, 1);
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-                $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
+                $legendsize = $graph->getLegendBoxSize($DataSet->GetDataDescription());
 
                 if ($legendsize[1] < 320) $gheight = 420; else $gheight = $legendsize[1] + 100;
                 $graph = new pChart(690 + $legendsize[0], $gheight);
                 $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
                 $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-                $graph->setGraphArea(50,30,500,$gheight-60);
-                $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
-                $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
-                $graph->drawGraphArea(254,254,254,TRUE);
-                $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
-                $graph->drawGrid(4,TRUE,230,230,230,50);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setGraphArea(50, 30, 500, $gheight - 60);
+                $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
+                $graph->drawRoundedRectangle(5, 5, 525 + $legendsize[0], $gheight - 5, 5, 230, 230, 230);
+                $graph->drawGraphArea(254, 254, 254, TRUE);
+                $graph->drawScale($DataSet->GetData(), $DataSet->GetDataDescription(), SCALE_START0, 150, 150, 150, TRUE, 90, 0, TRUE, 5, false);
+                $graph->drawGrid(4, TRUE, 230, 230, 230, 50);
                 // Draw the 0 line
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-                $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->drawTreshold(0, 143, 55, 72, TRUE, TRUE);
 
                 // Draw the bar graph
                 $graph->drawBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), FALSE);
                 //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
                 // Finish the graph
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-                $graph->drawLegend(510,30,$DataSet->GetDataDescription(),250,250,250);
+                $graph->drawLegend(510, 30, $DataSet->GetDataDescription(), 250, 250, 250);
 
                 $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData(), $graph);
                 $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData()));
@@ -2305,45 +2305,45 @@ class statistics_helper {
 
             //// Here the 72 colors of the original limesurvey palette.
             //// This could be change by some user palette coming from database.
-            $COLORS_FOR_SURVEY = array('20,130,200','232,95,51','34,205,33','210,211,28','134,179,129','201,171,131','251,231,221','23,169,161','167,187,213','211,151,213','147,145,246','147,39,90','250,250,201','201,250,250','94,0,94','250,125,127','0,96,201','201,202,250','0,0,127','250,0,250','250,250,0','0,250,250','127,0,127','127,0,0','0,125,127','0,0,250','0,202,250','201,250,250','201,250,201','250,250,151','151,202,250','251,149,201','201,149,250','250,202,151','45,96,250','45,202,201','151,202,0','250,202,0','250,149,0','250,96,0','184,230,115','102,128,64','220,230,207','134,191,48','184,92,161','128,64,112','230,207,224','191,48,155','230,138,115','128,77,64','230,211,207','191,77,48','80,161,126','64,128,100','207,230,220','48,191,130','25,25,179','18,18,125','200,200,255','145,145,255','255,178,0','179,125,0','255,236,191','255,217,128','255,255,0','179,179,0','255,255,191','255,255,128','102,0,153','71,0,107','234,191,255','213,128,255');
+            $COLORS_FOR_SURVEY = array('20,130,200', '232,95,51', '34,205,33', '210,211,28', '134,179,129', '201,171,131', '251,231,221', '23,169,161', '167,187,213', '211,151,213', '147,145,246', '147,39,90', '250,250,201', '201,250,250', '94,0,94', '250,125,127', '0,96,201', '201,202,250', '0,0,127', '250,0,250', '250,250,0', '0,250,250', '127,0,127', '127,0,0', '0,125,127', '0,0,250', '0,202,250', '201,250,250', '201,250,201', '250,250,151', '151,202,250', '251,149,201', '201,149,250', '250,202,151', '45,96,250', '45,202,201', '151,202,0', '250,202,0', '250,149,0', '250,96,0', '184,230,115', '102,128,64', '220,230,207', '134,191,48', '184,92,161', '128,64,112', '230,207,224', '191,48,155', '230,138,115', '128,77,64', '230,211,207', '191,77,48', '80,161,126', '64,128,100', '207,230,220', '48,191,130', '25,25,179', '18,18,125', '200,200,255', '145,145,255', '255,178,0', '179,125,0', '255,236,191', '255,217,128', '255,255,0', '179,179,0', '255,255,191', '255,255,128', '102,0,153', '71,0,107', '234,191,255', '213,128,255');
 
             //// $lbl is generated somewhere upthere by the original code. We translate it for chartjs.
                 $labels = array();
-                foreach($lbl as $name => $lb)
+                foreach ($lbl as $name => $lb)
                     $labels[] = $name;
 
             //close table/output
-            if($outputType=='html') {
+            if ($outputType == 'html') {
                 // show this block only when we show graphs and are not in the public statics controller
-                if ($usegraph==1 && $bShowGraph && get_class(Yii::app()->getController()) !== 'Statistics_userController')
+                if ($usegraph == 1 && $bShowGraph && get_class(Yii::app()->getController()) !== 'Statistics_userController')
                 {
                     // We clean the labels
                     $iMaxLabelLength = 0;
-                    foreach($labels as $key => $label)
+                    foreach ($labels as $key => $label)
                     {
                         $cleanLabel = viewHelper::flatEllipsizeText($label, true, 20);
                         $labels[$key] = $cleanLabel;
-                        $iMaxLabelLength = (strlen( $cleanLabel ) > $iMaxLabelLength)?strlen( $cleanLabel ):$iMaxLabelLength;
+                        $iMaxLabelLength = (strlen($cleanLabel) > $iMaxLabelLength) ?strlen($cleanLabel) : $iMaxLabelLength;
                     }
 
                     $iCanvaHeight = $iMaxLabelLength * 3;
-                    $aData['iCanvaHeight'] = ($iCanvaHeight > 150)?$iCanvaHeight:150;
-                    $qqid = str_replace ('#', '_', $qqid);
+                    $aData['iCanvaHeight'] = ($iCanvaHeight > 150) ? $iCanvaHeight : 150;
+                    $qqid = str_replace('#', '_', $qqid);
                     $aData['rt'] = $rt;
                     $aData['qqid'] = $qqid;
                     $aData['labels'] = $labels;
                     $aData['charttype'] = $charttype;
                     $aData['sChartname'] = '';
                     $aData['grawdata'] = $grawdata;
-                    $aData['color'] = rand ( 0, 72 ); // random truc much
+                    $aData['color'] = rand(0, 72); // random truc much
                     $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
                     // Output graph
-                    $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_graphs', $aData, true);
+                    $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_graphs', $aData, true);
 
                 }
                 else
                 {
-                    $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_nograph', array(), true);
+                    $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/simplestats/_statisticsoutput_nograph', array(), true);
                 }
                 $statisticsoutput .= "</div>\n";
             }
@@ -3692,16 +3692,16 @@ class statistics_helper {
 
                             //// Here the 72 colors of the original limesurvey palette.
                             //// This could be change by some user palette coming from database.
-                            $COLORS_FOR_SURVEY = array('20,130,200','232,95,51','34,205,33','210,211,28','134,179,129','201,171,131','251,231,221','23,169,161','167,187,213','211,151,213','147,145,246','147,39,90','250,250,201','201,250,250','94,0,94','250,125,127','0,96,201','201,202,250','0,0,127','250,0,250','250,250,0','0,250,250','127,0,127','127,0,0','0,125,127','0,0,250','0,202,250','201,250,250','201,250,201','250,250,151','151,202,250','251,149,201','201,149,250','250,202,151','45,96,250','45,202,201','151,202,0','250,202,0','250,149,0','250,96,0','184,230,115','102,128,64','220,230,207','134,191,48','184,92,161','128,64,112','230,207,224','191,48,155','230,138,115','128,77,64','230,211,207','191,77,48','80,161,126','64,128,100','207,230,220','48,191,130','25,25,179','18,18,125','200,200,255','145,145,255','255,178,0','179,125,0','255,236,191','255,217,128','255,255,0','179,179,0','255,255,191','255,255,128','102,0,153','71,0,107','234,191,255','213,128,255');
+                            $COLORS_FOR_SURVEY = array('20,130,200', '232,95,51', '34,205,33', '210,211,28', '134,179,129', '201,171,131', '251,231,221', '23,169,161', '167,187,213', '211,151,213', '147,145,246', '147,39,90', '250,250,201', '201,250,250', '94,0,94', '250,125,127', '0,96,201', '201,202,250', '0,0,127', '250,0,250', '250,250,0', '0,250,250', '127,0,127', '127,0,0', '0,125,127', '0,0,250', '0,202,250', '201,250,250', '201,250,201', '250,250,151', '151,202,250', '251,149,201', '201,149,250', '250,202,151', '45,96,250', '45,202,201', '151,202,0', '250,202,0', '250,149,0', '250,96,0', '184,230,115', '102,128,64', '220,230,207', '134,191,48', '184,92,161', '128,64,112', '230,207,224', '191,48,155', '230,138,115', '128,77,64', '230,211,207', '191,77,48', '80,161,126', '64,128,100', '207,230,220', '48,191,130', '25,25,179', '18,18,125', '200,200,255', '145,145,255', '255,178,0', '179,125,0', '255,236,191', '255,217,128', '255,255,0', '179,179,0', '255,255,191', '255,255,128', '102,0,153', '71,0,107', '234,191,255', '213,128,255');
 
                             //// $lbl is generated somewhere upthere by the original code. We translate it for chartjs.
                                 $labels = array();
-                                foreach($lbl as $name => $lb)
+                                foreach ($lbl as $name => $lb)
                                     $labels[] = $name;
 
-                                if ( isset($lblPercent)  )
+                                if (isset($lblPercent))
                                 {
-                                    foreach($lblPercent as  $name => $lb)
+                                    foreach ($lblPercent as  $name => $lb)
                                     $labels_percent[] = $name;
                                 }
                                 else
@@ -3753,29 +3753,29 @@ class statistics_helper {
                 }
 
                 $iCanvaHeight = $iMaxLabelLength * 3;
-                $aData['iCanvaHeight'] = ($iCanvaHeight > 150)?$iCanvaHeight:150;
+                $aData['iCanvaHeight'] = ($iCanvaHeight > 150) ? $iCanvaHeight : 150;
 
-                $qqid = str_replace ('#', '_', $qqid);
+                $qqid = str_replace('#', '_', $qqid);
                 $aData['rt'] = $rt;
                 $aData['qqid'] = $qqid;
                 $aData['graph_labels'] = $graph_labels;
                 $aData['graph_labels_percent'] = $labels_percent;
                 $aData['labels'] = $labels;
                 //$aData['COLORS_FOR_SURVEY'] = COLORS_FOR_SURVEY;
-                $aData['charttype'] = (isset($charttype))?$charttype:'Bar';
+                $aData['charttype'] = (isset($charttype)) ? $charttype : 'Bar';
                 $aData['sChartname'] = '';
                 $aData['grawdata'] = $grawdata;
-                $aData['color'] = rand ( 0, 70 );
+                $aData['color'] = rand(0, 70);
                 $aData['COLORS_FOR_SURVEY'] = $COLORS_FOR_SURVEY;
-                $aData['lbl'] =$lbl;
+                $aData['lbl'] = $lbl;
                 ///
 
-                $statisticsoutput .=  Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
+                $statisticsoutput .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_graphs', $aData, true);
                 $statisticsoutput_footer .= Yii::app()->getController()->renderPartial('/admin/export/generatestats/_statisticsoutput_footer', $aData, true);
             }
             $statisticsoutput .= "</table></div><!-- in statistics helper --> \n";
         }
-            $statisticsoutput =  $statisticsoutput. $statisticsoutput_footer."</script>";
+            $statisticsoutput = $statisticsoutput.$statisticsoutput_footer."</script>";
         return array("statisticsoutput"=>$statisticsoutput, "pdf"=>$this->pdf, "astatdata"=>$astatdata);
 
     }
@@ -3785,10 +3785,10 @@ class statistics_helper {
      * @param string[] $allfields
      * @return string
      */
-        public function generate_simple_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
+        public function generate_simple_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
         {
 
-                $aStatisticsData=array();
+                $aStatisticsData = array();
                 $survey = Survey::model()->findByPk($surveyid);
 
                 Yii::import('application.helpers.surveytranslator_helper', true);
@@ -3797,14 +3797,14 @@ class statistics_helper {
                 //pick the best font file if font setting is 'auto'
                 if (is_null($sLanguageCode))
                 {
-                    $sLanguageCode =  $survey->language;
+                    $sLanguageCode = $survey->language;
                 }
 
 
                 $surveylanguagecodes = $survey->allLanguages;
 
                 // Set language for questions and answers to base language of this survey
-                $language=$survey->language;
+                $language = $survey->language;
 
                 // This gets all the 'to be shown questions' from the POST and puts these into an array
                 $summary = $q2show;
@@ -3817,9 +3817,9 @@ class statistics_helper {
                 $query = "SELECT count(*) FROM {{survey_$surveyid}}";
 
                 //get me some data Scotty
-                $results=$total=Yii::app()->db->createCommand($query)->queryScalar();
-                $percent='100';
-                $sql= null;
+                $results = $total = Yii::app()->db->createCommand($query)->queryScalar();
+                $percent = '100';
+                $sql = null;
 
                 //only continue if we have something to output
                 $bBrowse = true;
@@ -3887,13 +3887,13 @@ class statistics_helper {
             $sOutputHTML .= '</div>';
 
                 $sGoogleMapsAPIKey = trim(Yii::app()->getConfig("googleMapsAPIKey"));
-                if ($sGoogleMapsAPIKey!='')
+                if ($sGoogleMapsAPIKey != '')
                 {
-                    $sGoogleMapsAPIKey='&key='.$sGoogleMapsAPIKey;
+                    $sGoogleMapsAPIKey = '&key='.$sGoogleMapsAPIKey;
                 }
-                $sSSL='';
-                if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off"){
-                    $sSSL='s';
+                $sSSL = '';
+                if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "off") {
+                    $sSSL = 's';
                 }
                 $sOutputHTML .= "<script type=\"text/javascript\" src=\"http{$sSSL}://maps.googleapis.com/maps/api/js?sensor=false$sGoogleMapsAPIKey\"></script>\n"
                 ."<script type=\"text/javascript\">var site_url='".Yii::app()->baseUrl."';var temppath='".Yii::app()->getConfig("tempurl")."';var imgpath='".Yii::app()->getConfig('adminimageurl')."';var aStatData=".ls_json_encode($aStatisticsData)."</script>";
@@ -3990,14 +3990,14 @@ class statistics_helper {
         /**
          * Start generating
          */
-        $selects=buildSelects($allfields, $surveyid, $language);
+        $selects = buildSelects($allfields, $surveyid, $language);
 
         //count number of answers
         $query = "SELECT count(*) FROM {{survey_$surveyid}}";
 
         //if incompleted answers should be filtert submitdate has to be not null
-        if (incompleteAnsFilterState() == "incomplete") {$query .= " WHERE submitdate is null";}
-        elseif (incompleteAnsFilterState() == "complete") {$query .= " WHERE submitdate is not null";}
+        if (incompleteAnsFilterState() == "incomplete") {$query .= " WHERE submitdate is null"; }
+        elseif (incompleteAnsFilterState() == "complete") {$query .= " WHERE submitdate is not null"; }
         $total = Yii::app()->db->createCommand($query)->queryScalar();
 
         //are there any filters that have to be taken care of?
@@ -4127,10 +4127,10 @@ class statistics_helper {
      * @param mixed $browse  Show browse buttons
      * @return string
      */
-    public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $outputTarget='I',$sLanguageCode=null, $browse = true)
+    public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $outputTarget = 'I', $sLanguageCode = null, $browse = true)
     {
         $survey = Survey::model()->findByPk($surveyid);
-        $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
+        $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
         Yii::import('application.third_party.ar-php.Arabic', true);
@@ -4224,24 +4224,24 @@ class statistics_helper {
         /**
          * pdf Config
          */
-        if($outputType=='pdf')
+        if ($outputType == 'pdf')
         {
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
             Yii::import('application.helpers.pdfHelper');
-            $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($language);
+            $aPdfLanguageSettings = pdfHelper::getPdfLanguageSettings($language);
 
             // create new PDF document
             $this->pdf = new pdf();
 
-            $surveyInfo = getSurveyInfo($surveyid,$language);
+            $surveyInfo = getSurveyInfo($surveyid, $language);
 
             // set document information
             $this->pdf->SetCreator(PDF_CREATOR);
             $this->pdf->SetAuthor('LimeSurvey');
-            $this->pdf->SetTitle(sprintf(gT("Statistics survey %s"),$surveyid));
+            $this->pdf->SetTitle(sprintf(gT("Statistics survey %s"), $surveyid));
             $this->pdf->SetSubject($surveyInfo['surveyls_title']);
-            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"),$surveyid));
+            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"), $surveyid));
             $this->pdf->SetDisplayMode('fullpage', 'two');
             $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
 
@@ -4253,19 +4253,19 @@ class statistics_helper {
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             //$headerlogo = '$this->pdf';
             $headerlogo = '';
-            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics",'unescaped') , gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
+            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics", 'unescaped'), gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'], false, true, 'UTF-8')."'");
             $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         }
-        if($outputType=='xls')
+        if ($outputType == 'xls')
         {
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
             require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
 
-            if($outputTarget=='F')
+            if ($outputTarget == 'F')
             {
                 $sFileName = $sTempDir.'/statistic-survey'.$surveyid.'.xls';
                 $this->workbook = new Xlswriter($sFileName);
@@ -4595,58 +4595,58 @@ class statistics_helper {
                 break;
         }
 
-        $q1 = $quartile/4 * ($recordCount+1);
-        $row = $q1-1; // -1 since we start counting at 0
+        $q1 = $quartile / 4 * ($recordCount + 1);
+        $row = $q1 - 1; // -1 since we start counting at 0
         if ($q1 === (int) $q1) {
             return $allRows[$row][$fieldname];
         } else {
             $diff = ($q1 - (int) $q1);
-            return $allRows[$row][$fieldname] + $diff * ($allRows[$row+1][$fieldname]-$allRows[$row][$fieldname]);
+            return $allRows[$row][$fieldname] + $diff * ($allRows[$row + 1][$fieldname] - $allRows[$row][$fieldname]);
         }
     }
 
     /**
      *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
      */
-    function _listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
+    function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
-        $search['condition']=Yii::app()->db->quoteColumnName($column)." != ''";
-        $sDBDriverName=Yii::app()->db->getDriverName();
-        if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
+        $search['condition'] = Yii::app()->db->quoteColumnName($column)." != ''";
+        $sDBDriverName = Yii::app()->db->getDriverName();
+        if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
         {
-            $search['condition']="CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
+            $search['condition'] = "CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
         }
 
         //filter incomplete answers if set
-        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null";}
-        elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null";}
+        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null"; }
+        elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null"; }
 
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
         {
-            foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
+            foreach (Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
                 $search['condition'] .= " AND $sql";
             }
         }
 
-        if ($sortby!='')
+        if ($sortby != '')
         {
-            if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
+            if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
             {
-                $sortby="CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
+                $sortby = "CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
             }
             else
             {
-                $sortby=Yii::app()->db->quoteColumnName($sortby);
+                $sortby = Yii::app()->db->quoteColumnName($sortby);
             }
 
-            if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
-            $search['order']=$sortby.' '.$sortmethod;
+            if ($sorttype == 'N') {$sortby = "($sortby * 1)"; } //Converts text sorting into numerical sorting
+            $search['order'] = $sortby.' '.$sortmethod;
         }
-        $results=SurveyDynamic::model($surveyid)->findAll($search);
-        $output=array();
-        foreach($results as $row) {
-            $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
+        $results = SurveyDynamic::model($surveyid)->findAll($search);
+        $output = array();
+        foreach ($results as $row) {
+            $output[] = array("id"=>$row['id'], "value"=>$row[$column]);
         }
         return $output;
     }

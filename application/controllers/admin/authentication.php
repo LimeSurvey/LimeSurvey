@@ -144,14 +144,14 @@ class Authentication extends Survey_Common_Action
             // Call the plugin method newLoginForm
             // For Authdb:  @see: application/core/plugins/Authdb/Authdb.php: function newLoginForm()
             $newLoginForm = new PluginEvent('newLoginForm');
-            App()->getPluginManager()->dispatchEvent($newLoginForm);            // inject the HTML of the form inside the private varibale "_content" of the plugin
+            App()->getPluginManager()->dispatchEvent($newLoginForm); // inject the HTML of the form inside the private varibale "_content" of the plugin
             $aData['summary'] = self::getSummary('logout');
-            $aData['pluginContent'] = $newLoginForm->getAllContent();           // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
+            $aData['pluginContent'] = $newLoginForm->getAllContent(); // Retreives the private varibale "_content" , and parse it to $aData['pluginContent'], which will be  rendered in application/views/admin/authentication/login.php
         } else {
             // The form has been submited, or the plugin has been stoped (so normally, the value of login/password are available)
 
                 // Handle getting the post and populating the identity there
-            $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin);      // If form has been submitted, $_POST['authMethod'] is set, else  $identity->plugin should be set, ELSE: TODO error
+            $authMethod = App()->getRequest()->getPost('authMethod', $identity->plugin); // If form has been submitted, $_POST['authMethod'] is set, else  $identity->plugin should be set, ELSE: TODO error
             $identity->plugin = $authMethod;
 
             // Call the function afterLoginFormSubmit of the plugin.

@@ -39,7 +39,7 @@ class User extends LSActiveRecord
     /**
      * @var string $lang Default value for user language
      */
-    public $lang='auto';
+    public $lang = 'auto';
 
 
     /**

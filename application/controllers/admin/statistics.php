@@ -528,16 +528,16 @@ class statistics extends Survey_Common_Action {
     /**
      *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
      */
-    function listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
+    function listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
         Yii::app()->loadHelper('admin/statistics');
         $helper = new statistics_helper();
-        $aData['data']=$helper->_listcolumn($surveyid, $column, $sortby, $sortmethod, $sorttype);
-        $aData['surveyid']=$surveyid;
-        $aData['column']=$column;
-        $aData['sortby']=$sortby;
-        $aData['sortmethod']=$sortmethod;
-        $aData['sorttype']=$sorttype;
+        $aData['data'] = $helper->_listcolumn($surveyid, $column, $sortby, $sortmethod, $sorttype);
+        $aData['surveyid'] = $surveyid;
+        $aData['column'] = $column;
+        $aData['sortby'] = $sortby;
+        $aData['sortmethod'] = $sortmethod;
+        $aData['sorttype'] = $sorttype;
         App()->getClientScript()->reset();
         $this->getController()->render('export/statistics_browse_view', $aData);
     }
@@ -662,12 +662,12 @@ class statistics extends Survey_Common_Action {
      */
         public function simpleStatistics($surveyid)
         {
-            $usegraph=1;
-            $iSurveyId =  sanitize_int($surveyid);
+            $usegraph = 1;
+            $iSurveyId = sanitize_int($surveyid);
             $aData['surveyid'] = $iSurveyId;
             $showcombinedresults = 0;
             $maxchars = 50;
-            $statisticsoutput ='';
+            $statisticsoutput = '';
             $cr_statisticsoutput = '';
 
             // Set language for questions and answers to base language of this survey

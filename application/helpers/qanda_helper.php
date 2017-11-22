@@ -2191,7 +2191,7 @@ function do_multiplechoice($ia)
         $myfname = $ia[1].$ansrow['title'];
 
         $relevanceClass = currentRelevecanceClass($iSurveyId, $ia[1], $myfname, $aQuestionAttributes);
-        $checkedState  = '';
+        $checkedState = '';
         /* If the question has already been ticked, check the checkbox */
         if (isset($_SESSION['survey_'.Yii::app()->getConfig('surveyID')][$myfname]))
         {
@@ -4027,7 +4027,7 @@ function do_array_5point($ia)
         if ($defaultWidth) {
             $columnswidth -= $answerwidth;
         } else {
-            $answerwidth  = $answerwidth / 2;
+            $answerwidth = $answerwidth / 2;
         }
     }
     $cellwidth = $columnswidth / $colCount;
@@ -4594,7 +4594,7 @@ function do_array($ia)
             if ($defaultWidth) {
                 $columnswidth -= $answerwidth;
             } else {
-                $answerwidth  = $answerwidth / 2;
+                $answerwidth = $answerwidth / 2;
             }
         }
         else
@@ -4804,7 +4804,7 @@ function do_array($ia)
             if ($defaultWidth) {
                 $columnswidth -= $answerwidth;
             } else {
-                $answerwidth  = $answerwidth / 2;
+                $answerwidth = $answerwidth / 2;
             }
         }
         else

@@ -62,8 +62,8 @@ class Date_Time_Converter
      *   Example: $obj = new Date_Time_Calc('12/30/2008 17:40:00', 'm/d/Y H:i:s'); 	*/
     public function __construct($sDate, $sFormat)
     {
-        require_once(APPPATH . '/helpers/adodb/adodb-time.inc_helper.php');
-        $this->_default_date_time_units();				//set date&time units to default values
+        require_once(APPPATH.'/helpers/adodb/adodb-time.inc_helper.php');
+        $this->_default_date_time_units(); //set date&time units to default values
         $this->date_time = $sDate;
         $this->date_time_mask = $sFormat;
 

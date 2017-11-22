@@ -399,23 +399,23 @@ class Participant extends LSActiveRecord
                
             );
             //textbox
-            if($attribute['attribute_type'] == "TB") {
+            if ($attribute['attribute_type'] == "TB") {
                     $col_array["filter"] = TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name]);
             }
             //dropdown
-            else if($attribute['attribute_type'] == "DD") {
+            else if ($attribute['attribute_type'] == "DD") {
                 $options_raw = $this->getOptionsForAttribute($attribute['attribute_id']);
                 $options_array = array(
                     ''=>''
                 );
-                foreach($options_raw as $option) {
+                foreach ($options_raw as $option) {
                     $options_array[$option['value']] = $option['value'];
                 }
 
                 $col_array["filter"] = TbHtml::dropDownList("extraAttribute[".$name."]", $extraAttributeParams[$name], $options_array);
             }
             //date -> still a text field, too many errors with the gridview
-            else if($attribute['attribute_type'] == "DP") {
+            else if ($attribute['attribute_type'] == "DP") {
                     $col_array["filter"] = TbHtml::textField("extraAttribute[".$name."]", $extraAttributeParams[$name]);
             }
             $cols[] = $col_array;
@@ -767,8 +767,8 @@ class Participant extends LSActiveRecord
 
         $aAllAttributes = ParticipantAttributeName::model()->getAllAttributes();
         foreach ($aAllAttributes as $aAttribute) {
-            if(!is_null($search) && strpos($search->condition,'attribute'.$aAttribute['attribute_id'])!==false) {
-                $attid[$aAttribute['attribute_id']]=$aAttribute;
+            if (!is_null($search) && strpos($search->condition, 'attribute'.$aAttribute['attribute_id']) !== false) {
+                $attid[$aAttribute['attribute_id']] = $aAttribute;
             }
         }
         // Add survey count subquery
@@ -1820,7 +1820,7 @@ class Participant extends LSActiveRecord
      * @return boolean|null true/false
      */
         public function updateAttributeValueToken($surveyId, $participantId, $participantAttributeId, $tokenFieldname) {
-            $survey=Survey::model()->findByPk($surveyId);
+            $survey = Survey::model()->findByPk($surveyId);
             $val = Yii::app()->db
             ->createCommand()
             ->select($tokenFieldname)
@@ -1898,7 +1898,7 @@ class Participant extends LSActiveRecord
                 Yii::app()->db
                             ->createCommand()
                             ->insert('{{participant_attribute_names}}', $insertnames);
-                $attid[$key] = $aAttributesToBeCreated[$key]=getLastInsertID('{{participant_attribute_names}}'); /* eg $attid['attribute_1']='8372' */
+                $attid[$key] = $aAttributesToBeCreated[$key] = getLastInsertID('{{participant_attribute_names}}'); /* eg $attid['attribute_1']='8372' */
                 $insertnameslang = array(
                                             'attribute_id' => $attid[$key],
                                             'attribute_name' => urldecode($value),

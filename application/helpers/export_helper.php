@@ -835,31 +835,31 @@ function surveyGetXMLStructure($iSurveyID, $xmlwriter, $exclude = array())
     WHERE sid=$iSurveyID";
 
     //Exclude some fields from the export
-    $excludeFromSurvey = array('owner_id','active','datecreated');
-    if (isset($exclude['dates']) && $exclude['dates']){
+    $excludeFromSurvey = array('owner_id', 'active', 'datecreated');
+    if (isset($exclude['dates']) && $exclude['dates']) {
         $excludeFromSurvey[] = 'startdate';
         $excludeFromSurvey[] = 'expires';
     }
 
-    buildXMLFromQuery($xmlwriter,$squery,'',$excludeFromSurvey);
+    buildXMLFromQuery($xmlwriter, $squery, '', $excludeFromSurvey);
 
     // Survey language settings
     $slsquery = "SELECT *
     FROM {{surveys_languagesettings}}
     WHERE surveyls_survey_id=$iSurveyID";
-    buildXMLFromQuery($xmlwriter,$slsquery);
+    buildXMLFromQuery($xmlwriter, $slsquery);
 
     // Survey url parameters
     $slsquery = "SELECT *
     FROM {{survey_url_parameters}}
     WHERE sid={$iSurveyID}";
-    buildXMLFromQuery($xmlwriter,$slsquery);
+    buildXMLFromQuery($xmlwriter, $slsquery);
 
     // Survey plugin(s)
     $slsquery = " SELECT settings.id,name,".Yii::app()->db->quoteColumnName("key").",".Yii::app()->db->quoteColumnName("value")
                 . " FROM {{plugin_settings}} as settings JOIN {{plugins}} as plugins ON plugins.id = settings.plugin_id"
                 . " WHERE model='Survey' and model_id=$iSurveyID";
-    buildXMLFromQuery($xmlwriter,$slsquery);
+    buildXMLFromQuery($xmlwriter, $slsquery);
 
 }
 
@@ -1235,19 +1235,19 @@ function quexml_create_subQuestions(&$question, $qid, $varname, $iResponseID, $f
         $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
     }
     $QueryResult = Yii::app()->db->createCommand($Query)->query();
-    foreach($QueryResult->readAll() as $Row)
+    foreach ($QueryResult->readAll() as $Row)
     {
         if ($use_answers) {
             $aid = $Row["aid"];
         }
         $subQuestion = $dom->createElement("subQuestion");
-        $text = $dom->createElement("text",QueXMLCleanup($Row['question'],''));
+        $text = $dom->createElement("text", QueXMLCleanup($Row['question'], ''));
         $subQuestion->appendChild($text);
-        $subQuestion->setAttribute("varName",$varname .'_'. QueXMLCleanup($Row['title']));
+        $subQuestion->setAttribute("varName", $varname.'_'.QueXMLCleanup($Row['title']));
         if ($use_answers == false && $aid != false) { //dual scale array questions
-            quexml_set_default_value($subQuestion,$iResponseID,$qid,$iSurveyID,$fieldmap,false,false,$Row['title'],$scale);
+            quexml_set_default_value($subQuestion, $iResponseID, $qid, $iSurveyID, $fieldmap, false, false, $Row['title'], $scale);
         } else {
-            quexml_set_default_value($subQuestion,$iResponseID,$Row['qid'],$iSurveyID,$fieldmap,false,!$use_answers,$aid);
+            quexml_set_default_value($subQuestion, $iResponseID, $Row['qid'], $iSurveyID, $fieldmap, false, !$use_answers, $aid);
         }
         $question->appendChild($subQuestion);
     }
@@ -1510,25 +1510,25 @@ function quexml_export($surveyi, $quexmllan, $iResponseID = false)
                 $Query = "SELECT * FROM {{questions}} WHERE parent_qid = $qid and scale_id = 0  AND language='$quexmllang' ORDER BY question_order ASC";
                 $SQueryResult = Yii::app()->db->createCommand($Query)->query();
 		
-                foreach($SQueryResult->readAll() as $SRow)  {
-                    $question = quexml_create_question($RowQ,$SRow['question']);
+                foreach ($SQueryResult->readAll() as $SRow) {
+                    $question = quexml_create_question($RowQ, $SRow['question']);
 
                     if ($type == ":") {
                         //get multiflexible_checkbox - if set then each box is a checkbox (single fixed response)
-                        $mcb  = quexml_get_lengthth($qid,'multiflexible_checkbox',-1);
+                        $mcb = quexml_get_lengthth($qid, 'multiflexible_checkbox', -1);
                         if ($mcb != -1)
-                            quexml_create_multi($question,$qid,$sgq . "_" . $SRow['title'],$iResponseID,$fieldmap,1);
+                            quexml_create_multi($question, $qid, $sgq."_".$SRow['title'], $iResponseID, $fieldmap, 1);
                         else
                         {
                             //get multiflexible_max and maximum_chars - if set then make boxes of max of these widths
-                            $mcm = max(quexml_get_lengthth($qid,'maximum_chars',1), strlen(quexml_get_lengthth($qid,'multiflexible_max',1)));
-                            quexml_create_multi($question,$qid,$sgq . "_" . $SRow['title'],$iResponseID,$fieldmap,1,array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
+                            $mcm = max(quexml_get_lengthth($qid, 'maximum_chars', 1), strlen(quexml_get_lengthth($qid, 'multiflexible_max', 1)));
+                            quexml_create_multi($question, $qid, $sgq."_".$SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'integer', 'len' => $mcm, 'lab' => ''));
                         }
                     } else if ($type == ";") {
                         //multi-flexi array text
 
                         //foreach question where scale_id = 1 this is a textbox
-                        quexml_create_multi($question,$qid,$sgq . "_" . $SRow['title'],$iResponseID,$fieldmap,1,array('f' => 'text', 'len' => quexml_get_lengthth($qid,'maximum_chars',10), 'lab' => ''));
+                        quexml_create_multi($question, $qid, $sgq."_".$SRow['title'], $iResponseID, $fieldmap, 1, array('f' => 'text', 'len' => quexml_get_lengthth($qid, 'maximum_chars', 10), 'lab' => ''));
                     }
                     $section->appendChild($question);
                 }

@@ -129,11 +129,11 @@ class SurveyLanguageSetting extends LSActiveRecord
      */
     public function lsdefault($attribute)
     {
-        $oSurvey=Survey::model()->findByPk($this->surveyls_survey_id);
-        $sEmailFormat=$oSurvey->htmlemail=='Y'?'html':'';
-        $aDefaultTexts=templateDefaultTexts($this->surveyls_language,'unescaped', $sEmailFormat);
+        $oSurvey = Survey::model()->findByPk($this->surveyls_survey_id);
+        $sEmailFormat = $oSurvey->htmlemail == 'Y' ? 'html' : '';
+        $aDefaultTexts = templateDefaultTexts($this->surveyls_language, 'unescaped', $sEmailFormat);
 
-            $aDefaultTextData=array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
+            $aDefaultTextData = array('surveyls_email_invite_subj' => $aDefaultTexts['invitation_subject'],
                 'surveyls_email_invite' => $aDefaultTexts['invitation'],
                 'surveyls_email_remind_subj' => $aDefaultTexts['reminder_subject'],
                 'surveyls_email_remind' => $aDefaultTexts['reminder'],

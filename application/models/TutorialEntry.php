@@ -81,13 +81,13 @@ class TutorialEntry extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
-        $criteria->compare('teid',$this->teid);
-        $criteria->compare('tid',$this->tid);
-        $criteria->compare('title',$this->title,true);
-        $criteria->compare('content',$this->content,true);
-        $criteria->compare('settings',$this->settings,true);
+        $criteria->compare('teid', $this->teid);
+        $criteria->compare('tid', $this->tid);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('content', $this->content, true);
+        $criteria->compare('settings', $this->settings, true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -100,7 +100,7 @@ class TutorialEntry extends LSActiveRecord
      * @param string $className active record class name.
      * @return TutorialEntry the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var TutorialEntry $model */
         $model = parent::model($className);

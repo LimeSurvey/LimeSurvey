@@ -86,11 +86,11 @@ class remotecontrol_handle
      * @param string $sSetttingName Name of the setting to get
      * @return string|array The requested value or an array with the error in case of error
      */
-    public function get_site_settings($sSessionKey,$sSetttingName)
+    public function get_site_settings($sSessionKey, $sSetttingName)
     {
         if ($this->_checkSessionKey($sSessionKey)) {
-            if(Permission::model()->hasGlobalPermission('superadmin','read')) {
-                $sSetttingName=(string)$sSetttingName;
+            if (Permission::model()->hasGlobalPermission('superadmin', 'read')) {
+                $sSetttingName = (string) $sSetttingName;
                 if (Yii::app()->getConfig($sSetttingName) !== false) {
                     return Yii::app()->getConfig($sSetttingName);
                 } else {
@@ -221,29 +221,29 @@ class remotecontrol_handle
      * @param integer $DestSurveyID  (optional) This is the new ID of the survey - if already used a random one will be taken instead
      * @return int|array The ID of the new survey in case of success
      */
-    public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName=NULL, $DestSurveyID=NULL)
+    public function import_survey($sSessionKey, $sImportData, $sImportDataType, $sNewSurveyName = NULL, $DestSurveyID = NULL)
     {
-        $sImportData=(string)$sImportData;
-        $sNewSurveyName=(string)$sNewSurveyName;
+        $sImportData = (string) $sImportData;
+        $sNewSurveyName = (string) $sNewSurveyName;
         if (!is_null($DestSurveyID)) 
         {
-            $DestSurveyID=(int)$DestSurveyID;
+            $DestSurveyID = (int) $DestSurveyID;
         }
         if ($this->_checkSessionKey($sSessionKey))
         {
-            if (Permission::model()->hasGlobalPermission('surveys','create'))
+            if (Permission::model()->hasGlobalPermission('surveys', 'create'))
             {
-                if (!in_array($sImportDataType,array('lsa','csv','txt','lss'))) return array('status' => 'Invalid extension');
+                if (!in_array($sImportDataType, array('lsa', 'csv', 'txt', 'lss'))) return array('status' => 'Invalid extension');
                 Yii::app()->loadHelper('admin/import');
                 // First save the data to a temporary file
-                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
-                file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
+                $sFullFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(40).'.'.$sImportDataType;
+                file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
                 $aImportResults = importSurveyFile($sFullFilePath, true, $sNewSurveyName, $DestSurveyID);
                 unlink($sFullFilePath);
                 if (isset($aImportResults['error']) && $aImportResults['error']) return array('status' => 'Error: '.$aImportResults['error']);
                 else
                 {
-                    return (int)$aImportResults['newsid'];
+                    return (int) $aImportResults['newsid'];
                 }
             }
             else
@@ -334,12 +334,12 @@ class remotecontrol_handle
      * @param array|null $aSurveySettings (optional) The properties to get
      * @return array
      */
-    public function get_survey_properties($sSessionKey,$iSurveyID, $aSurveySettings=null)
+    public function get_survey_properties($sSessionKey, $iSurveyID, $aSurveySettings = null)
     {
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID=(int)$iSurveyID;
+            $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
             {
@@ -513,49 +513,49 @@ class remotecontrol_handle
      * @param int|array $groupIDs (optional) array or integer containing the groups we choose to generate statistics from
      * @return string|array in case of success : Base64 encoded string with the statistics file
      */
-    public function export_statistics($sSessionKey, $iSurveyID,  $docType='pdf', $sLanguage=null, $graph='0', $groupIDs=null)
+    public function export_statistics($sSessionKey, $iSurveyID, $docType = 'pdf', $sLanguage = null, $graph = '0', $groupIDs = null)
     {
         Yii::app()->loadHelper('admin/statistics');
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-        $iSurveyID=(int)$iSurveyID;
+        $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey))
-            return array('status' => 'Error: Invalid survey ID');;
+            return array('status' => 'Error: Invalid survey ID'); ;
 
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'statistics', 'read'))
             return array('status' => 'Error: No Permission');
 
         $aAdditionalLanguages = array_filter(explode(" ", $oSurvey->additional_languages));
 
-        if (is_null($sLanguage)|| !in_array($sLanguage,$aAdditionalLanguages))
+        if (is_null($sLanguage) || !in_array($sLanguage, $aAdditionalLanguages))
             $sLanguage = $oSurvey->language;
 
-        $oAllQuestions =Question::model()->getQuestionList($iSurveyID, $sLanguage);
+        $oAllQuestions = Question::model()->getQuestionList($iSurveyID, $sLanguage);
         if (!isset($oAllQuestions))
             return array('status' => 'No available data');
 
-        if($groupIDs!=null)
+        if ($groupIDs != null)
         {
-            if(is_int($groupIDs))
+            if (is_int($groupIDs))
                 $groupIDs = array($groupIDs);
 
-            if(is_array($groupIDs))
+            if (is_array($groupIDs))
             {
                 //check that every value of the array belongs to the survey defined
                 $aGroups = QuestionGroup::model()->findAllByAttributes(array('sid' => $iSurveyID));
 
-                foreach( $aGroups as $group)
+                foreach ($aGroups as $group)
                     $validGroups[] = $group['gid'];
 
-                $groupIDs=array_intersect($groupIDs,$validGroups);
+                $groupIDs = array_intersect($groupIDs, $validGroups);
 
                 if (empty($groupIDs))
                     return array('status' => 'Error: Invalid group ID');
 
-                foreach($oAllQuestions as $key => $aQuestion)
+                foreach ($oAllQuestions as $key => $aQuestion)
                 {
-                    if(!in_array($aQuestion['gid'],$groupIDs))
+                    if (!in_array($aQuestion['gid'], $groupIDs))
                         unset($oAllQuestions[$key]);
                 }
             }
@@ -651,7 +651,7 @@ class remotecontrol_handle
      * @param string $sStatName (optional) Name of the summary option, or all to send all in an array (all by default)
      * @return string|array in case of success the requested value or an array of all values 
      */
-    public function get_summary($sSessionKey,$iSurveyID, $sStatName='all')
+    public function get_summary($sSessionKey, $iSurveyID, $sStatName = 'all')
     {
 
         if ($this->_checkSessionKey($sSessionKey)) {
@@ -864,12 +864,12 @@ class remotecontrol_handle
      * @param string|null $sLang (optional) Language to use, default to Survey->language
      * @return array in case of success The requested values
      */
-    public function get_language_properties($sSessionKey,$iSurveyID, $aSurveyLocaleSettings=null, $sLang=null)
+    public function get_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleSettings = null, $sLang = null)
     {
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID=(int)$iSurveyID;
+            $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
             {
@@ -924,13 +924,13 @@ class remotecontrol_handle
      * @param string $sLanguage - Optional - Language to update  - if not give the base language of the particular survey is used
      * @return array in case of success 'status'=>'OK', when save successful otherwise error text.
      */
-    public function set_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage=NULL)
+    public function set_language_properties($sSessionKey, $iSurveyID, $aSurveyLocaleData, $sLanguage = NULL)
     {
         Yii::app()->loadHelper("surveytranslator");
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID=(int)$iSurveyID;
-            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            $iSurveyID = (int) $iSurveyID;
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))
             {
                 return array('status' => 'Error: Invalid survey ID');
@@ -1003,28 +1003,28 @@ class remotecontrol_handle
      * @param string $sGroupDescription     Optional description of the group
      * @return array|int The id of the new group - Or status
      */
-    public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription='')
+    public function add_group($sSessionKey, $iSurveyID, $sGroupTitle, $sGroupDescription = '')
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
-                $iSurveyID=(int)$iSurveyID;
+                $iSurveyID = (int) $iSurveyID;
                 $oSurvey = Survey::model()->findByPk($iSurveyID);
                 if (!isset($oSurvey))
                     return array('status' => 'Error: Invalid survey ID');
 
-                if($oSurvey['active']=='Y')
+                if ($oSurvey['active'] == 'Y')
                     return array('status' => 'Error:Survey is active and not editable');
 
                 $oGroup = new QuestionGroup;
                 $oGroup->sid = $iSurveyID;
-                $oGroup->group_name =  $sGroupTitle;
+                $oGroup->group_name = $sGroupTitle;
                 $oGroup->description = $sGroupDescription;
                 $oGroup->group_order = getMaxGroupOrder($iSurveyID);
-                $oGroup->language =  Survey::model()->findByPk($iSurveyID)->language;
-                if($oGroup->save())
-                    return (int)$oGroup->gid;
+                $oGroup->language = Survey::model()->findByPk($iSurveyID)->language;
+                if ($oGroup->save())
+                    return (int) $oGroup->gid;
                 else
                     return array('status' => 'Creation Failed');
             }
@@ -1097,37 +1097,37 @@ class remotecontrol_handle
      * @param string $sNewGroupDescription  Optional new description for the group
      * @return array|integer iGroupID  - ID of the new group or status
      */
-    public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName=NULL, $sNewGroupDescription=NULL)
+    public function import_group($sSessionKey, $iSurveyID, $sImportData, $sImportDataType, $sNewGroupName = NULL, $sNewGroupDescription = NULL)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID=(int)$iSurveyID;
-            $sImportData=(string)$sImportData;
+            $iSurveyID = (int) $iSurveyID;
+            $sImportData = (string) $sImportData;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
-                if($oSurvey->getAttribute('active') =='Y')
+                if ($oSurvey->getAttribute('active') == 'Y')
                     return array('status' => 'Error:Survey is active and not editable');
 
-                if (!in_array($sImportDataType,array('csv','lsg'))) return array('status' => 'Invalid extension');
+                if (!in_array($sImportDataType, array('csv', 'lsg'))) return array('status' => 'Invalid extension');
                 libxml_use_internal_errors(true);
                 Yii::app()->loadHelper('admin/import');
                 // First save the data to a temporary file
-                $sFullFilePath = Yii::app()->getConfig('tempdir') . DIRECTORY_SEPARATOR . randomChars(40).'.'.$sImportDataType;
-                file_put_contents($sFullFilePath,base64_decode(chunk_split($sImportData)));
+                $sFullFilePath = Yii::app()->getConfig('tempdir').DIRECTORY_SEPARATOR.randomChars(40).'.'.$sImportDataType;
+                file_put_contents($sFullFilePath, base64_decode(chunk_split($sImportData)));
 
-                if ( strtolower($sImportDataType)=='lsg')
+                if (strtolower($sImportDataType) == 'lsg')
                 {
-                    $bOldEntityLoaderState = libxml_disable_entity_loader(true);             // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
+                    $bOldEntityLoaderState = libxml_disable_entity_loader(true); // @see: http://phpsecurity.readthedocs.io/en/latest/Injection-Attacks.html#xml-external-entity-injection
                     $sXMLdata = file_get_contents($sFullFilePath);
-                    $xml = @simplexml_load_string($sXMLdata,'SimpleXMLElement',LIBXML_NONET);
-                    if(!$xml)
+                    $xml = @simplexml_load_string($sXMLdata, 'SimpleXMLElement', LIBXML_NONET);
+                    if (!$xml)
                     {
                         unlink($sFullFilePath);
-                        libxml_disable_entity_loader($bOldEntityLoaderState);                   // Put back entity loader to its original state, to avoid contagion to other applications on the server
+                        libxml_disable_entity_loader($bOldEntityLoaderState); // Put back entity loader to its original state, to avoid contagion to other applications on the server
                         return array('status' => 'Error: Invalid LimeSurvey group structure XML ');
                     }
                     $aImportResults = XMLImportGroup($sFullFilePath, $iSurveyID);
@@ -1209,28 +1209,28 @@ class remotecontrol_handle
      * @param array  $aGroupSettings The properties to get
      * @return array in case of success the requested values in array
      */
-    public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings=null)
+    public function get_group_properties($sSessionKey, $iGroupID, $aGroupSettings = null)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iGroupID=(int)$iGroupID;
+            $iGroupID = (int) $iGroupID;
             $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
             if (!isset($oGroup))
                 return array('status' => 'Error: Invalid group ID');
 
             if (Permission::model()->hasSurveyPermission($oGroup->sid, 'survey', 'read'))
             {
-                $aBasicDestinationFields=QuestionGroup::model()->tableSchema->columnNames;
-                if(!empty($aGroupSettings)) {
-                    $aGroupSettings=array_intersect($aGroupSettings,$aBasicDestinationFields);
+                $aBasicDestinationFields = QuestionGroup::model()->tableSchema->columnNames;
+                if (!empty($aGroupSettings)) {
+                    $aGroupSettings = array_intersect($aGroupSettings, $aBasicDestinationFields);
                 } else {
-                    $aGroupSettings=$aBasicDestinationFields;
+                    $aGroupSettings = $aBasicDestinationFields;
                 }
 
                 if (empty($aGroupSettings))
                     return array('status' => 'No valid Data');
 
-                foreach($aGroupSettings as $sGroupSetting)
+                foreach ($aGroupSettings as $sGroupSetting)
                 {
                     $aResult[$sGroupSetting] = $oGroup->$sGroupSetting;
                 }
@@ -1405,20 +1405,20 @@ class remotecontrol_handle
      * @param string $sNewQuestionHelp (optional) new question help text
      * @return array|integer The id of the new question in case of success. Array if errors
      */
-    public function import_question($sSessionKey, $iSurveyID,$iGroupID, $sImportData, $sImportDataType, $sMandatory='N', $sNewQuestionTitle=NULL, $sNewqQuestion=NULL, $sNewQuestionHelp=NULL)
+    public function import_question($sSessionKey, $iSurveyID, $iGroupID, $sImportData, $sImportDataType, $sMandatory = 'N', $sNewQuestionTitle = NULL, $sNewqQuestion = NULL, $sNewQuestionHelp = NULL)
     {
         $bOldEntityLoaderState = null;
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID=(int)$iSurveyID;
-            $iGroupID=(int)$iGroupID;
+            $iSurveyID = (int) $iSurveyID;
+            $iGroupID = (int) $iGroupID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'update'))
             {
-                if($oSurvey->getAttribute('active') =='Y')
+                if ($oSurvey->getAttribute('active') == 'Y')
                     return array('status' => 'Error:Survey is Active and not editable');
 
                 $oGroup = QuestionGroup::model()->findByAttributes(array('gid' => $iGroupID));
@@ -1515,11 +1515,11 @@ class remotecontrol_handle
      * @param string $sLanguage (optional) parameter language for multilingual questions, default are \Survey->language
      * @return array The requested values
      */
-    public function get_question_properties($sSessionKey, $iQuestionID, $aQuestionSettings=null, $sLanguage=null)
+    public function get_question_properties($sSessionKey, $iQuestionID, $aQuestionSettings = null, $sLanguage = null)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iQuestionID=(int)$iQuestionID;
+            $iQuestionID = (int) $iQuestionID;
             Yii::app()->loadHelper("surveytranslator");
             $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (!isset($oQuestion))
@@ -1666,13 +1666,13 @@ class remotecontrol_handle
      * @param string $sLanguage Optional parameter language for multilingual questions
      * @return array Of succeeded and failed modifications according to internal validation.
      */
-    public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData,$sLanguage=NULL)
+    public function set_question_properties($sSessionKey, $iQuestionID, $aQuestionData, $sLanguage = NULL)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
             Yii::app()->loadHelper("surveytranslator");
-            $iQuestionID=(int)$iQuestionID;
-            $oQuestion=Question::model()->findByAttributes(array('qid' => $iQuestionID));
+            $iQuestionID = (int) $iQuestionID;
+            $oQuestion = Question::model()->findByAttributes(array('qid' => $iQuestionID));
             if (is_null($oQuestion))
                 return array('status' => 'Error: Invalid group ID');
 
@@ -1767,11 +1767,11 @@ class remotecontrol_handle
      * @param bool $bCreateToken Optional - Defaults to true and determins if the access token automatically created
      * @return array The values added
      */
-    public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken=true)
+    public function add_participants($sSessionKey, $iSurveyID, $aParticipantData, $bCreateToken = true)
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-        $iSurveyID=(int)$iSurveyID;
-        $oSurvey=Survey::model()->findByPk($iSurveyID);
+        $iSurveyID = (int) $iSurveyID;
+        $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (is_null($oSurvey)) {
             return array('status' => 'Error: Invalid survey ID');
         }
@@ -1856,24 +1856,24 @@ class remotecontrol_handle
      * @param array $aTokenProperties The properties to get
      * @return array The requested values
      */
-    public function get_participant_properties($sSessionKey, $iSurveyID, $aTokenQueryProperties, $aTokenProperties=null)
+    public function get_participant_properties($sSessionKey, $iSurveyID, $aTokenQueryProperties, $aTokenProperties = null)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID = (int)$iSurveyID;
+            $iSurveyID = (int) $iSurveyID;
             $surveyidExists = Survey::model()->findByPk($iSurveyID);
             if (!isset($surveyidExists))
                 return array('status' => 'Error: Invalid survey ID');
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read')) {
-                if(!tableExists("{{tokens_$iSurveyID}}"))
+                if (!tableExists("{{tokens_$iSurveyID}}"))
                     return array('status' => 'Error: No token table');
 
-                if(is_array($aTokenQueryProperties)) {
+                if (is_array($aTokenQueryProperties)) {
                     $tokenCount = Token::model($iSurveyID)->countByAttributes($aTokenQueryProperties);
-                    if($tokenCount == 0) {
+                    if ($tokenCount == 0) {
                         return array('status' => 'Error: No results were found based on your attributes.');
-                    } elseif($tokenCount > 1) {
+                    } elseif ($tokenCount > 1) {
                         return array('status' => 'Error: More than 1 result was found based on your attributes.');
                     }
                     $token = Token::model($iSurveyID)->findByAttributes($aTokenQueryProperties);
@@ -2027,20 +2027,20 @@ class remotecontrol_handle
      * @param array $aConditions Optional conditions to limit the list, e.g. with array('email' => 'info@example.com')
      * @return array The list of tokens
      */
-    public function list_participants($sSessionKey, $iSurveyID, $iStart=0, $iLimit=10, $bUnused=false, $aAttributes=false, $aConditions=array() )
+    public function list_participants($sSessionKey, $iSurveyID, $iStart = 0, $iLimit = 10, $bUnused = false, $aAttributes = false, $aConditions = array())
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
-            $iSurveyID = (int)$iSurveyID;
-            $iStart = (int)$iStart;
-            $iLimit = (int)$iLimit;
+            $iSurveyID = (int) $iSurveyID;
+            $iStart = (int) $iStart;
+            $iLimit = (int) $iLimit;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
 
             if (Permission::model()->hasSurveyPermission($iSurveyID, 'tokens', 'read'))
             {
-                if(!tableExists("{{tokens_$iSurveyID}}"))
+                if (!tableExists("{{tokens_$iSurveyID}}"))
                     return array('status' => 'Error: No token table');
 
                 $aAttributeValues = array();
@@ -2101,12 +2101,12 @@ class remotecontrol_handle
      * @param string $sLanguage Optional parameter language for multilingual questions
      * @return array The list of questions
      */
-    public function list_questions($sSessionKey, $iSurveyID, $iGroupID=NULL, $sLanguage=NULL)
+    public function list_questions($sSessionKey, $iSurveyID, $iGroupID = NULL, $sLanguage = NULL)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
             Yii::app()->loadHelper("surveytranslator");
-            $iSurveyID = (int)$iSurveyID;
+            $iSurveyID = (int) $iSurveyID;
             $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (!isset($oSurvey))
                 return array('status' => 'Error: Invalid survey ID');
@@ -2213,18 +2213,18 @@ class remotecontrol_handle
      * @param string|null $sUsername (optional) username to get list of surveys
      * @return array In case of success the list of surveys
      */
-    public function list_surveys($sSessionKey, $sUsername=NULL)
+    public function list_surveys($sSessionKey, $sUsername = NULL)
     {
         if ($this->_checkSessionKey($sSessionKey))
         {
             $oSurvey = new Survey;
-            if (!Permission::model()->hasGlobalPermission('superadmin','read') && ($sUsername == null))
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && ($sUsername == null))
             {
                 $oSurvey->permission(Yii::app()->user->getId());
             }
-            elseif ($sUsername!=null)
+            elseif ($sUsername != null)
             {
-                $aUserData = User::model()->findByAttributes(array('users_name' => (string)$sUsername));
+                $aUserData = User::model()->findByAttributes(array('users_name' => (string) $sUsername));
                 if (!isset($aUserData))
                     return array('status' => 'Invalid user');
                 else
@@ -2318,25 +2318,25 @@ class remotecontrol_handle
      * @param array $aAttributeFields  An array of integer describing any additional attribute fields
      * @return array Status=>OK when successful, otherwise the error description
      */
-    public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields=array())
+    public function activate_tokens($sSessionKey, $iSurveyID, $aAttributeFields = array())
     {
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
-        if (Permission::model()->hasGlobalPermission('surveys','create'))
+        if (Permission::model()->hasGlobalPermission('surveys', 'create'))
         {
-            $iSurveyID=(int)$iSurveyID;
-            $oSurvey=Survey::model()->findByPk($iSurveyID);
+            $iSurveyID = (int) $iSurveyID;
+            $oSurvey = Survey::model()->findByPk($iSurveyID);
             if (is_null($oSurvey))
             {
                 return array('status' => 'Error: Invalid survey ID');
             }
-            if (is_array($aAttributeFields) && count($aAttributeFields)>0)
+            if (is_array($aAttributeFields) && count($aAttributeFields) > 0)
             {
                 foreach ($aAttributeFields as &$sField)
                 {
-                    $sField= intval($sField);
-                    $sField='attribute_'.$sField;
+                    $sField = intval($sField);
+                    $sField = 'attribute_'.$sField;
                 }
-                $aAttributeFields=array_unique($aAttributeFields);
+                $aAttributeFields = array_unique($aAttributeFields);
             }
             Yii::app()->loadHelper('admin/token');
             if (Token::createTable($iSurveyID, $aAttributeFields))
@@ -2458,12 +2458,12 @@ class remotecontrol_handle
      * @param bool $bEmail Send only pending invites (TRUE) or resend invites only (FALSE)
      * @return array Result of the action
      */
-    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true )
+    public function invite_participants($sSessionKey, $iSurveyID, $aTokenIds = null, $bEmail = true)
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
             return array('status' => 'Invalid session key');
-        $iSurveyID=(int)$iSurveyID;
+        $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey))
             return array('status' => 'Error: Invalid survey ID');
@@ -2520,12 +2520,12 @@ class remotecontrol_handle
      * @param array $aTokenIds Ids of the participant to remind (optional filter)
      * @return array in case of success array of result of each email send action and count of invitations left to send in status key
      */
-    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween=null, $iMaxReminders=null, $aTokenIds = false )
+    public function remind_participants($sSessionKey, $iSurveyID, $iMinDaysBetween = null, $iMaxReminders = null, $aTokenIds = false)
     {
         Yii::app()->loadHelper('admin/token');
         if (!$this->_checkSessionKey($sSessionKey))
             return array('status' => 'Invalid session key');
-        $iSurveyID=(int)$iSurveyID;
+        $iSurveyID = (int) $iSurveyID;
         $oSurvey = Survey::model()->findByPk($iSurveyID);
         if (!isset($oSurvey))
             return array('status' => 'Error: Invalid survey ID');
@@ -2846,44 +2846,44 @@ class remotecontrol_handle
      * @param array $aFields (optional) Selected fields
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      * */
-    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $iFromResponseID=null, $iToResponseID=null, $aFields=null)
+    public function export_responses($sSessionKey, $iSurveyID, $sDocumentType, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $iFromResponseID = null, $iToResponseID = null, $aFields = null)
     {
-        $iSurveyID=(int)$iSurveyID;
+        $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
         Yii::app()->loadHelper('admin/exportresults');
         if (!tableExists($survey->responsesTableName)) return array('status' => 'No Data, survey table does not exist.');
-        if(!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
-        if(!empty($sLanguageCode) && !in_array($sLanguageCode,$survey->getAllLanguages()) ) return array('status' => 'Language code not found for this survey.');
+        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
+        if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) return array('status' => 'Language code not found for this survey.');
 
-        if (empty($sLanguageCode)) $sLanguageCode=$survey->language;
-        if (is_null($aFields)) $aFields=array_keys(createFieldMap($survey,'full',true,false,$sLanguageCode));
-        if($sDocumentType=='xls'){
+        if (empty($sLanguageCode)) $sLanguageCode = $survey->language;
+        if (is_null($aFields)) $aFields = array_keys(createFieldMap($survey, 'full', true, false, $sLanguageCode));
+        if ($sDocumentType == 'xls') {
             // Cut down to the first 255 fields
-            $aFields=array_slice($aFields,0,255);
+            $aFields = array_slice($aFields, 0, 255);
         }
-        $oFormattingOptions=new FormattingOptions();
+        $oFormattingOptions = new FormattingOptions();
 
-        if($iFromResponseID !=null)
-            $oFormattingOptions->responseMinRecord=(int)$iFromResponseID;
+        if ($iFromResponseID != null)
+            $oFormattingOptions->responseMinRecord = (int) $iFromResponseID;
         else
-            $oFormattingOptions->responseMinRecord=1;
+            $oFormattingOptions->responseMinRecord = 1;
 
-        if($iToResponseID !=null)
-            $oFormattingOptions->responseMaxRecord=(int)$iToResponseID;
+        if ($iToResponseID != null)
+            $oFormattingOptions->responseMaxRecord = (int) $iToResponseID;
         else
             $oFormattingOptions->responseMaxRecord = $maxId;
 
-        $oFormattingOptions->selectedColumns=$aFields;
-        $oFormattingOptions->responseCompletionState=$sCompletionStatus;
-        $oFormattingOptions->headingFormat=$sHeadingType;
-        $oFormattingOptions->answerFormat=$sResponseType;
-        $oFormattingOptions->output='file';
+        $oFormattingOptions->selectedColumns = $aFields;
+        $oFormattingOptions->responseCompletionState = $sCompletionStatus;
+        $oFormattingOptions->headingFormat = $sHeadingType;
+        $oFormattingOptions->answerFormat = $sResponseType;
+        $oFormattingOptions->output = 'file';
 
-        $oExport=new ExportSurveyResultsService();
-        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFormattingOptions, '');
+        $oExport = new ExportSurveyResultsService();
+        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, '');
         return new BigFile($sTempFile, true, 'base64');
     }
 
@@ -2904,37 +2904,37 @@ class remotecontrol_handle
      * @return array|string On success: Requested file as base 64-encoded string. On failure array with error information
      *
      */
-    public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode=null, $sCompletionStatus='all', $sHeadingType='code', $sResponseType='short', $aFields=null)
+    public function export_responses_by_token($sSessionKey, $iSurveyID, $sDocumentType, $sToken, $sLanguageCode = null, $sCompletionStatus = 'all', $sHeadingType = 'code', $sResponseType = 'short', $aFields = null)
     {
-        $iSurveyID=(int)$iSurveyID;
+        $iSurveyID = (int) $iSurveyID;
         $survey = Survey::model()->findByPk($iSurveyID);
 
         if (!$this->_checkSessionKey($sSessionKey)) return array('status' => 'Invalid session key');
         Yii::app()->loadHelper('admin/exportresults');
         if (!tableExists($survey->responsesTableName)) return array('status' => 'No Data, survey table does not exist.');
-        if(!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
-        if(!empty($sLanguageCode) && !in_array($sLanguageCode,$survey->getAllLanguages()) ) return array('status' => 'Language code not found for this survey.');
+        if (!($maxId = SurveyDynamic::model($iSurveyID)->getMaxId())) return array('status' => 'No Data, could not get max id.');
+        if (!empty($sLanguageCode) && !in_array($sLanguageCode, $survey->getAllLanguages())) return array('status' => 'Language code not found for this survey.');
 
         if (!SurveyDynamic::model($iSurveyID)->findByAttributes(array('token' => $sToken))) return array('status' => 'No Response found for Token');
         if (!Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'export')) return array('status' => 'No permission');
-        if (empty($sLanguageCode)) $sLanguageCode=$survey->language;
-        if (is_null($aFields)) $aFields=array_keys(createFieldMap($survey,'full',true,false,$sLanguageCode));
+        if (empty($sLanguageCode)) $sLanguageCode = $survey->language;
+        if (is_null($aFields)) $aFields = array_keys(createFieldMap($survey, 'full', true, false, $sLanguageCode));
 
-        $oFormattingOptions=new FormattingOptions();
-        $oFormattingOptions->responseMinRecord=1;
+        $oFormattingOptions = new FormattingOptions();
+        $oFormattingOptions->responseMinRecord = 1;
         $oFormattingOptions->responseMaxRecord = $maxId;
 
-        $oFormattingOptions->selectedColumns=$aFields;
-        $oFormattingOptions->responseCompletionState=$sCompletionStatus;
-        $oFormattingOptions->headingFormat=$sHeadingType;
-        $oFormattingOptions->answerFormat=$sResponseType;
-        $oFormattingOptions->output='file';
+        $oFormattingOptions->selectedColumns = $aFields;
+        $oFormattingOptions->responseCompletionState = $sCompletionStatus;
+        $oFormattingOptions->headingFormat = $sHeadingType;
+        $oFormattingOptions->answerFormat = $sResponseType;
+        $oFormattingOptions->output = 'file';
 
-        $oExport=new ExportSurveyResultsService();
+        $oExport = new ExportSurveyResultsService();
 
         $sTableName = Yii::app()->db->tablePrefix.'survey_'.$iSurveyID;
 
-        $sTempFile=$oExport->exportSurvey($iSurveyID,$sLanguageCode, $sDocumentType,$oFormattingOptions, "{$sTableName}.token=".dbQuoteAll('$sToken'));
+        $sTempFile = $oExport->exportSurvey($iSurveyID, $sLanguageCode, $sDocumentType, $oFormattingOptions, "{$sTableName}.token=".dbQuoteAll('$sToken'));
         return new BigFile($sTempFile, true, 'base64');
 
     }

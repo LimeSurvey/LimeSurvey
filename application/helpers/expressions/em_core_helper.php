@@ -2080,72 +2080,72 @@ class ExpressionManager {
                         case 1:
                             if (!$this->RDP_onlyparse) {
                                 switch($funcName) {
-                                case 'acos':
-                                case 'asin':
-                                case 'atan':
-                                case 'cos':
-                                case 'exp':
-                                case 'is_nan':
-                                case 'sin':
-                                case 'sqrt':
-                                case 'tan':
-                                    if (is_numeric($params[0]))
-                                    {
-                                        $result = $funcName(floatval($params[0]));
-                                    }
-                                    else
-                                    {
-                                        $result = NAN;
-                                    }
-                                    break;
-                                default:
-                                    $result = $funcName($params[0]);
-                                    break;
+                                    case 'acos':
+                                    case 'asin':
+                                    case 'atan':
+                                    case 'cos':
+                                    case 'exp':
+                                    case 'is_nan':
+                                    case 'sin':
+                                    case 'sqrt':
+                                    case 'tan':
+                                        if (is_numeric($params[0]))
+                                        {
+                                            $result = $funcName(floatval($params[0]));
+                                        }
+                                        else
+                                        {
+                                            $result = NAN;
+                                        }
+                                        break;
+                                    default:
+                                        $result = $funcName($params[0]);
+                                        break;
                                 }
                         }
                         break;
                         case 2:
                             if (!$this->RDP_onlyparse) {
                                 switch($funcName) {
-                                case 'atan2':
-                                    if (is_numeric($params[0]) && is_numeric($params[1]))
-                                    {
-                                        $result = $funcName(floatval($params[0]),floatval($params[1]));
-                                    }
-                                    else
-                                    {
-                                        $result = NAN;
-                                    }
-                                    break;
-                                default:
-                                    $result = $funcName($params[0], $params[1]);
+                                    case 'atan2':
+                                        if (is_numeric($params[0]) && is_numeric($params[1]))
+                                        {
+                                            $result = $funcName(floatval($params[0]),floatval($params[1]));
+                                        }
+                                        else
+                                        {
+                                            $result = NAN;
+                                        }
                                         break;
+                                    default:
+                                        $result = $funcName($params[0], $params[1]);
+                                            break;
                             }
                         }
                         break;
-                    case 3:
-                        if (!$this->RDP_onlyparse) {
-                            $result = $funcName($params[0], $params[1], $params[2]);
-                        }
-                        break;
-                    case 4:
-                        if (!$this->RDP_onlyparse) {
-                            $result = $funcName($params[0], $params[1], $params[2], $params[3]);
-                        }
-                        break;
-                    case 5:
-                        if (!$this->RDP_onlyparse) {
-                            $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4]);
-                        }
-                        break;
-                    case 6:
-                        if (!$this->RDP_onlyparse) {
-                            $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
-                        }
-                        break;
-                    default:
-                        $this->RDP_AddError(sprintf(self::gT("Unsupported number of arguments: %s"), $argsPassed), $funcNameToken);
-                        return false;
+                        case 3:
+                            if (!$this->RDP_onlyparse) {
+                                $result = $funcName($params[0], $params[1], $params[2]);
+                            }
+                            break;
+                        case 4:
+                            if (!$this->RDP_onlyparse) {
+                                $result = $funcName($params[0], $params[1], $params[2], $params[3]);
+                            }
+                            break;
+                        case 5:
+                            if (!$this->RDP_onlyparse) {
+                                $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4]);
+                            }
+                            break;
+                        case 6:
+                            if (!$this->RDP_onlyparse) {
+                                $result = $funcName($params[0], $params[1], $params[2], $params[3], $params[4], $params[5]);
+                            }
+                            break;
+                        default:
+                            $this->RDP_AddError(sprintf(self::gT("Unsupported number of arguments: %s"), $argsPassed), $funcNameToken);
+                            return false;
                     }
 
                 } else {
@@ -2434,9 +2434,9 @@ class ExpressionManager {
      * @param bool $bOnEdit : on edition, actually don't remove space
      * @return array
      */
-    public function Tokenize($sSource,$bOnEdit)
+    public function Tokenize($sSource, $bOnEdit)
     {
-        return $this->RDP_Tokenize($sSource,$bOnEdit);
+        return $this->RDP_Tokenize($sSource, $bOnEdit);
     }
 
     /**
@@ -2446,35 +2446,35 @@ class ExpressionManager {
      * @param bool $bOnEdit : on edition, actually don't remove space
      * @return array
      */
-    private function RDP_Tokenize($sSource,$bOnEdit=false)
+    private function RDP_Tokenize($sSource, $bOnEdit = false)
     {
         // $aInitTokens = array of tokens from equation, showing value and offset position.  Will include SPACE.
-        if($bOnEdit)
-            $aInitTokens = preg_split($this->RDP_TokenizerRegex,$sSource,-1,(PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        if ($bOnEdit)
+            $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
         else
-            $aInitTokens = preg_split($this->RDP_TokenizerRegex,$sSource,-1,(PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+            $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
 
         // $aTokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE if !$bOnEdit, but will contain OTHER
         $aTokens = array();
         // Add token_type to $tokens:  For each token, test each categorization in order - first match will be the best.
-        for ($j=0;$j<count($aInitTokens);++$j)
+        for ($j = 0; $j < count($aInitTokens); ++$j)
         {
-            for ($i=0;$i<count($this->RDP_CategorizeTokensRegex);++$i)
+            for ($i = 0; $i < count($this->RDP_CategorizeTokensRegex); ++$i)
             {
                 $sToken = $aInitTokens[$j][0];
-                if (preg_match($this->RDP_CategorizeTokensRegex[$i],$sToken))
+                if (preg_match($this->RDP_CategorizeTokensRegex[$i], $sToken))
                 {
                     if ($this->RDP_TokenType[$i] !== 'SPACE' || $bOnEdit) {
                         $aInitTokens[$j][2] = $this->RDP_TokenType[$i];
                         if ($this->RDP_TokenType[$i] == 'DQ_STRING' || $this->RDP_TokenType[$i] == 'SQ_STRING')
                         {
                             // remove outside quotes
-                            $sUnquotedToken = str_replace(array('\"',"\'","\\\\"),array('"',"'",'\\'),substr($sToken,1,-1));
+                            $sUnquotedToken = str_replace(array('\"', "\'", "\\\\"), array('"', "'", '\\'), substr($sToken, 1, -1));
                             $aInitTokens[$j][0] = $sUnquotedToken;
                         }
-                        $aTokens[] = $aInitTokens[$j];   // get first matching non-SPACE token type and push onto $tokens array
+                        $aTokens[] = $aInitTokens[$j]; // get first matching non-SPACE token type and push onto $tokens array
                     }
-                    break;  // only get first matching token type
+                    break; // only get first matching token type
                 }
             }
         }
@@ -2492,11 +2492,11 @@ class ExpressionManager {
         $output = "<div class='h3'>Functions Available within Expression Manager</div>\n";
         $output .= "<table border='1'><tr><th>Function</th><th>Meaning</th><th>Syntax</th><th>Reference</th></tr>\n";
         foreach ($em->RDP_ValidFunctions as $name => $func) {
-            $output .= "<tr><td>" . $name . "</td><td>" . $func[2] . "</td><td>" . $func[3] . "</td><td>";
+            $output .= "<tr><td>".$name."</td><td>".$func[2]."</td><td>".$func[3]."</td><td>";
 
         // 508 fix, don't output empty anchor tags
         if ($func[4]) {
-        $output .= "<a href='" . $func[4] . "'>" . $func[4] . "</a>";
+        $output .= "<a href='".$func[4]."'>".$func[4]."</a>";
         }
 
         $output .= "&nbsp;</td></tr>\n";

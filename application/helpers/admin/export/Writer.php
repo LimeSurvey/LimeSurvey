@@ -188,7 +188,7 @@ abstract class Writer implements IWriter
      * @param string $sValue
      * @return string
      */
-    public function getLongAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName,$sValue)
+    public function getLongAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName, $sValue)
     {
         return $this->transformResponseValue(
                 $oSurvey->getFullAnswer($fieldName, $sValue, $this->translator, $this->languageCode),
@@ -207,7 +207,7 @@ abstract class Writer implements IWriter
      * @param string $sValue
      * @return string
      */
-    public function getShortAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName,$sValue)
+    public function getShortAnswer(SurveyObj $oSurvey, FormattingOptions $oOptions, $fieldName, $sValue)
     {
         return $this->transformResponseValue(
                 $oSurvey->getShortAnswer($fieldName, $sValue),
@@ -269,7 +269,7 @@ abstract class Writer implements IWriter
      * @param FormattingOptions $oOptions
      * @param boolean $bOutputHeaders Set if header should be given back
      */
-    final public function write(SurveyObj $oSurvey, $sLanguageCode, FormattingOptions $oOptions, $bOutputHeaders=true)
+    final public function write(SurveyObj $oSurvey, $sLanguageCode, FormattingOptions $oOptions, $bOutputHeaders = true)
     {
 
         //Output the survey.
@@ -299,48 +299,48 @@ abstract class Writer implements IWriter
             }
         }
         //Output the results.
-        $sFile='';
+        $sFile = '';
 
         // If empty survey, prepare an empty responses array, and output just 1 empty record with header.
         if ($oSurvey->responses->rowCount == 0)
         {
                 foreach ($oOptions->selectedColumns as $column)
                 {
-                    $elementArray[]="";
+                    $elementArray[] = "";
                 }
             $this->outputRecord($headers, $elementArray, $oOptions);
         }
 
         // If no empty survey, render/export responses array.
-        foreach($oSurvey->responses as $response)
+        foreach ($oSurvey->responses as $response)
         {
             $elementArray = array();
 
             foreach ($oOptions->selectedColumns as $column)
             {
                 $value = $response[$column];
-                if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type']!='answer_time' && $oSurvey->fieldMap[$column]['type']!='page_time' && $oSurvey->fieldMap[$column]['type']!='interview_time')
+                if (isset($oSurvey->fieldMap[$column]) && $oSurvey->fieldMap[$column]['type'] != 'answer_time' && $oSurvey->fieldMap[$column]['type'] != 'page_time' && $oSurvey->fieldMap[$column]['type'] != 'interview_time')
                 {
                     switch ($oOptions->answerFormat) {
                         case 'long':
-                            $elementArray[] = $this->getLongAnswer($oSurvey, $oOptions, $column,$value);
+                            $elementArray[] = $this->getLongAnswer($oSurvey, $oOptions, $column, $value);
                             break;
                         default:
                         case 'short':
-                            $elementArray[] = $this->getShortAnswer($oSurvey, $oOptions, $column,$value);
+                            $elementArray[] = $this->getShortAnswer($oSurvey, $oOptions, $column, $value);
                             break;
                     }
                 }
                 else //Token table value
                 {
-                    $elementArray[]=$value;
+                    $elementArray[] = $value;
                 }
             }
-            if ($oOptions->output=='display')
+            if ($oOptions->output == 'display')
             {
                 $this->outputRecord($headers, $elementArray, $oOptions);
             } else {
-                $sFile.=$this->outputRecord($headers, $elementArray, $oOptions);
+                $sFile .= $this->outputRecord($headers, $elementArray, $oOptions);
             }
         }
         return $sFile;

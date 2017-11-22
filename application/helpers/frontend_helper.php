@@ -445,65 +445,65 @@ function submittokens($quotaexit = false)
     }
     $token->save();
 
-    if ($quotaexit==false)
+    if ($quotaexit == false)
     {
         if ($token && trim(strip_tags($thissurvey['email_confirm'])) != "" && $thissurvey['sendconfirmation'] == "Y")
         {
             //   if($token->completed == "Y" || $token->completed == $today)
 //            {
                 $from = "{$thissurvey['adminname']} <{$thissurvey['adminemail']}>";
-                $subject=$thissurvey['email_confirm_subj'];
+                $subject = $thissurvey['email_confirm_subj'];
 
-                $aReplacementVars=array();
-                $aReplacementVars["ADMINNAME"]=$thissurvey['admin'];
-                $aReplacementVars["ADMINEMAIL"]=$thissurvey['adminemail'];
+                $aReplacementVars = array();
+                $aReplacementVars["ADMINNAME"] = $thissurvey['admin'];
+                $aReplacementVars["ADMINEMAIL"] = $thissurvey['adminemail'];
                 $aReplacementVars['ADMINEMAIL'] = $thissurvey['adminemail'];
                 //Fill with token info, because user can have his information with anonimity control
-                $aReplacementVars["FIRSTNAME"]=$token->firstname;
-                $aReplacementVars["LASTNAME"]=$token->lastname;
-                $aReplacementVars["TOKEN"]=$token->token;
-                $aReplacementVars["EMAIL"]=$token->email;
+                $aReplacementVars["FIRSTNAME"] = $token->firstname;
+                $aReplacementVars["LASTNAME"] = $token->lastname;
+                $aReplacementVars["TOKEN"] = $token->token;
+                $aReplacementVars["EMAIL"] = $token->email;
                 // added survey url in replacement vars
-                $surveylink = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}",array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'],'token'=>$token->token));
+                $surveylink = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$surveyid}", array('lang'=>$_SESSION['survey_'.$surveyid]['s_lang'], 'token'=>$token->token));
                 $aReplacementVars['SURVEYURL'] = $surveylink;
 
-                $attrfieldnames=getAttributeFieldNames($surveyid);
+                $attrfieldnames = getAttributeFieldNames($surveyid);
                 foreach ($attrfieldnames as $attr_name)
                 {
                     $aReplacementVars[strtoupper($attr_name)] = $token->$attr_name;
                 }
 
-                $redata=array('thissurvey'=>$thissurvey);
+                $redata = array('thissurvey'=>$thissurvey);
 
                 // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                $subject=templatereplace($subject,$aReplacementVars,$redata,'email_confirm_subj', false, NULL, array(), true );
+                $subject = templatereplace($subject, $aReplacementVars, $redata, 'email_confirm_subj', false, NULL, array(), true);
 
-                $subject=html_entity_decode($subject,ENT_QUOTES,$emailcharset);
+                $subject = html_entity_decode($subject, ENT_QUOTES, $emailcharset);
 
                 if (getEmailFormat($surveyid) == 'html')
                 {
-                    $ishtml=true;
+                    $ishtml = true;
                 }
                 else
                 {
-                    $ishtml=false;
+                    $ishtml = false;
                 }
 
-                $message=$thissurvey['email_confirm'];
+                $message = $thissurvey['email_confirm'];
                 //$message=ReplaceFields($message, $fieldsarray, true);
                 // NOTE: this occurence of template replace should stay here. User from backend could use old replacement keyword
-                $message=templatereplace($message,$aReplacementVars,$redata,'email_confirm', false, NULL, array(), true );
+                $message = templatereplace($message, $aReplacementVars, $redata, 'email_confirm', false, NULL, array(), true);
                 if (!$ishtml)
                 {
-                    $message=strip_tags(breakToNewline(html_entity_decode($message,ENT_QUOTES,$emailcharset)));
+                    $message = strip_tags(breakToNewline(html_entity_decode($message, ENT_QUOTES, $emailcharset)));
                 }
                 else
                 {
-                    $message=html_entity_decode($message,ENT_QUOTES, $emailcharset );
+                    $message = html_entity_decode($message, ENT_QUOTES, $emailcharset);
                 }
 
                 //Only send confirmation email if there is a valid email address
-            $sToAddress=validateEmailAddresses($token->email);
+            $sToAddress = validateEmailAddresses($token->email);
             if ($sToAddress) {
                 $aAttachments = unserialize($thissurvey['attachments']);
 
@@ -1601,70 +1601,70 @@ function doAssessment($surveyid)
 {
 
     $survey = Survey::model()->findByPk($surveyid);
-    $baselang=$survey->language;
-    if(Survey::model()->findByPk($surveyid)->assessments!="Y"){
+    $baselang = $survey->language;
+    if (Survey::model()->findByPk($surveyid)->assessments != "Y") {
         return array('show'=>false);
     }
 
-    $total=0;
-    if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])){
-        $_SESSION['survey_'.$surveyid]['s_lang']=$baselang;
+    $total = 0;
+    if (!isset($_SESSION['survey_'.$surveyid]['s_lang'])) {
+        $_SESSION['survey_'.$surveyid]['s_lang'] = $baselang;
     }
 
     $query = "SELECT * FROM {{assessments}}
         WHERE sid=$surveyid and language='".$_SESSION['survey_'.$surveyid]['s_lang']."'
         ORDER BY scope, id";
 
-    if ($result = dbExecuteAssoc($query)){
-        $aResultSet=$result->readAll();
+    if ($result = dbExecuteAssoc($query)) {
+        $aResultSet = $result->readAll();
 
-        if (count($aResultSet) > 0){
+        if (count($aResultSet) > 0) {
 
-            foreach($aResultSet as $row){
+            foreach ($aResultSet as $row) {
 
-                if ($row['scope'] == "G"){
-                    $assessment['group'][$row['gid']][]=array("name"=>$row['name'],
+                if ($row['scope'] == "G") {
+                    $assessment['group'][$row['gid']][] = array("name"=>$row['name'],
                         "min"     => $row['minimum'],
                         "max"     => $row['maximum'],
                         "message" => $row['message']
                     );
-                }else{
-                    $assessment['total'][]=array( "name"=>$row['name'],
+                } else {
+                    $assessment['total'][] = array("name"=>$row['name'],
                         "min"     => $row['minimum'],
                         "max"     => $row['maximum'],
                         "message" => $row['message']
                     );
                 }
             }
-            $fieldmap = createFieldMap($survey, "full",false,false,$_SESSION['survey_'.$surveyid]['s_lang']);
+            $fieldmap = createFieldMap($survey, "full", false, false, $_SESSION['survey_'.$surveyid]['s_lang']);
             $i        = 0;
             $total    = 0;
             $groups   = array();
 
-            foreach ($fieldmap as $field){
+            foreach ($fieldmap as $field) {
 
                 // Init Assessment Value
                 $assessmentValue = NULL;
 
-                if (in_array($field['type'],array('1','F','H','W','Z','L','!','M','O','P'))){
+                if (in_array($field['type'], array('1', 'F', 'H', 'W', 'Z', 'L', '!', 'M', 'O', 'P'))) {
 
                     $fieldmap[$field['fieldname']]['assessment_value'] = 0;
 
-                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])){
+                    if (isset($_SESSION['survey_'.$surveyid][$field['fieldname']])) {
 
                         //Multiflexi choice  - result is the assessment attribute value
-                        if (($field['type'] == "M") || ($field['type'] == "P")){
-                            if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y"){
+                        if (($field['type'] == "M") || ($field['type'] == "P")) {
+                            if ($_SESSION['survey_'.$surveyid][$field['fieldname']] == "Y") {
 
                                 $aAttributes     = QuestionAttribute::model()->getQuestionAttributes($field['qid']);
-                                $assessmentValue = (int)$aAttributes['assessment_value'];
+                                $assessmentValue = (int) $aAttributes['assessment_value'];
                             }
-                        }else{
+                        } else {
                                 // Single choice question
                             $usquery  = "SELECT assessment_value FROM {{answers}} where qid=".$field['qid']." and language='$baselang' and code=".dbQuoteAll($_SESSION['survey_'.$surveyid][$field['fieldname']]);
-                            $usresult = dbExecuteAssoc($usquery);          //Checked
+                            $usresult = dbExecuteAssoc($usquery); //Checked
 
-                            if ($usresult){
+                            if ($usresult) {
                                 $usrow              = $usresult->read();
                                 $assessmentValue    = $usrow['assessment_value'];
                             //    $total              = $total+$usrow['assessment_value'];
@@ -1944,68 +1944,68 @@ function checkCompletedQuota($surveyid, $return = false)
     );
 
     // We take only the first matched quota, no need for each
-    $aMatchedQuota=$aMatchedQuotas[0];
+    $aMatchedQuota = $aMatchedQuotas[0];
     // If a token is used then mark the token as completed, do it before event : this allow plugin to update token information
     $event = new PluginEvent('afterSurveyQuota');
     $event->set('surveyId', $surveyid);
-    $event->set('responseId', $_SESSION['survey_'.$surveyid]['srid']);// We allways have a responseId
-    $event->set('aMatchedQuotas', $aMatchedQuotas);// Give all the matched quota : the first is the active
+    $event->set('responseId', $_SESSION['survey_'.$surveyid]['srid']); // We allways have a responseId
+    $event->set('aMatchedQuotas', $aMatchedQuotas); // Give all the matched quota : the first is the active
     App()->getPluginManager()->dispatchEvent($event);
     $blocks = array();
 
-    foreach ($event->getAllContent() as $blockData){
+    foreach ($event->getAllContent() as $blockData) {
         /* @var $blockData PluginEventContent */
         $blocks[] = CHtml::tag('div', array('id' => $blockData->getCssId(), 'class' => $blockData->getCssClass()), $blockData->getContent());
     }
 
     // Allow plugin to update message, url, url description and action
-    $sMessage=$event->get('message',$aMatchedQuota['quotals_message']);
-    $sUrl=$event->get('url',$aMatchedQuota['quotals_url']);
-    $sUrlDescription=$event->get('urldescrip',$aMatchedQuota['quotals_urldescrip']);
-    $sAction=$event->get('action',$aMatchedQuota['action']);
+    $sMessage = $event->get('message', $aMatchedQuota['quotals_message']);
+    $sUrl = $event->get('url', $aMatchedQuota['quotals_url']);
+    $sUrlDescription = $event->get('urldescrip', $aMatchedQuota['quotals_urldescrip']);
+    $sAction = $event->get('action', $aMatchedQuota['action']);
     /* Tag if we close or not the survey */
-    $closeSurvey = ($sAction=="1" || App()->getRequest()->getPost('move')=='confirmquota');
-    $sAutoloadUrl=$event->get('autoloadurl',$aMatchedQuota['autoload_url']);
+    $closeSurvey = ($sAction == "1" || App()->getRequest()->getPost('move') == 'confirmquota');
+    $sAutoloadUrl = $event->get('autoloadurl', $aMatchedQuota['autoload_url']);
     // Doing the action and show the page
     if ($sAction == \Quota::ACTION_TERMINATE && $sClientToken) {
         submittokens(true);
     }
     // Construct the default message
-    $sMessage        = templatereplace($sMessage,array(),$aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
+    $sMessage        = templatereplace($sMessage, array(), $aDataReplacement, 'QuotaMessage', $aSurveyInfo['anonymized'] != 'N', NULL, array(), true);
     $sUrl            = passthruReplace($sUrl, $aSurveyInfo);
-    $sUrl            = templatereplace($sUrl,array(),$aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
-    $sUrlDescription = templatereplace($sUrlDescription,array(),$aDataReplacement, 'QuotaUrldescription', $aSurveyInfo['anonymized']!='N', NULL, array(), true );
+    $sUrl            = templatereplace($sUrl, array(), $aDataReplacement, 'QuotaUrl', $aSurveyInfo['anonymized'] != 'N', NULL, array(), true);
+    $sUrlDescription = templatereplace($sUrlDescription, array(), $aDataReplacement, 'QuotaUrldescription', $aSurveyInfo['anonymized'] != 'N', NULL, array(), true);
 
 
     // Datas for twig view
     $thissurvey['aQuotas']                       = array();
     $thissurvey['aQuotas']['sMessage']           = $sMessage;
     $thissurvey['aQuotas']['bShowNavigator']     = !$closeSurvey;
-    $thissurvey['aQuotas']['sQuotaStep']         = isset($_SESSION['survey_'.$surveyid]['step'])?$_SESSION['survey_'.$surveyid]['step']:0; // Surely not needed
+    $thissurvey['aQuotas']['sQuotaStep']         = isset($_SESSION['survey_'.$surveyid]['step']) ? $_SESSION['survey_'.$surveyid]['step'] : 0; // Surely not needed
     $thissurvey['aQuotas']['sClientToken']       = $sClientToken;
-    $thissurvey['aQuotas']['aPostedQuotaFields'] = isset($aPostedQuotaFields)?$aPostedQuotaFields:'';
+    $thissurvey['aQuotas']['aPostedQuotaFields'] = isset($aPostedQuotaFields) ? $aPostedQuotaFields : '';
     $thissurvey['aQuotas']['sPluginBlocks']      = implode("\n", $blocks);
     $thissurvey['aQuotas']['sUrlDescription']    = $sUrlDescription;
     $thissurvey['aQuotas']['sUrl']               = $sUrl;
 
-    $thissurvey['aQuotas']['hiddeninputs']      = '<input type="hidden" name="sid"      value="'.$thissurvey['sid'].'" />
+    $thissurvey['aQuotas']['hiddeninputs'] = '<input type="hidden" name="sid"      value="'.$thissurvey['sid'].'" />
                                                    <input type="hidden" name="token"    value="'.$thissurvey['aQuotas']['sClientToken'].'" />
                                                    <input type="hidden" name="thisstep" value="'.$thissurvey['aQuotas']['sQuotaStep'].'" />';
 
-    foreach($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post){
-        $thissurvey['aQuotas']['hiddeninputs']      .= '<input type="hidden" name="'.$field.'"   value="'.$post.'" />';
+    foreach ($thissurvey['aQuotas']['aPostedQuotaFields'] as $field => $post) {
+        $thissurvey['aQuotas']['hiddeninputs'] .= '<input type="hidden" name="'.$field.'"   value="'.$post.'" />';
     }
 
     //field,post in aSurveyInfo.aQuotas.aPostedQuotaFields %}
 
-    if ($closeSurvey){
+    if ($closeSurvey) {
         killSurveySession($surveyid);
 
-        if ($sAutoloadUrl == 1 && $sUrl != ""){
+        if ($sAutoloadUrl == 1 && $sUrl != "") {
             header("Location: ".$sUrl);
         }
     }
-    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid),'aSurveyInfo'=>$thissurvey), false);
+    Yii::app()->twigRenderer->renderTemplateFromFile("layout_quotas.twig", array('oSurvey'=>Survey::model()->findByPk($surveyid), 'aSurveyInfo'=>$thissurvey), false);
 }
 
 /**
@@ -2155,19 +2155,19 @@ function SetSurveyLanguage($surveyid, $sLanguage)
             empty($sLanguage)                                                   //check if there
             || (!in_array($sLanguage, $additional_survey_languages))            //Is the language in the survey-language array
             || ($default_survey_language == $sLanguage)                         //Is the $default_language the chosen language?
-            ){
+            ) {
             // Language not supported, fall back to survey's default language
             $_SESSION['survey_'.$surveyid]['s_lang'] = $default_survey_language;
         } else {
-            $_SESSION['survey_'.$surveyid]['s_lang'] =  $sLanguage;
+            $_SESSION['survey_'.$surveyid]['s_lang'] = $sLanguage;
         }
 
         App()->setLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
         Yii::app()->loadHelper('surveytranslator');
         LimeExpressionManager::SetEMLanguage($_SESSION['survey_'.$surveyid]['s_lang']);
-    }else{
+    } else {
 
-        if(!$sLanguage){
+        if (!$sLanguage) {
             $sLanguage = $default_language;
         }
 

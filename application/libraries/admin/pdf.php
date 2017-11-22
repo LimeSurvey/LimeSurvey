@@ -12,7 +12,7 @@
  *
  */
 # override the default TCPDF config file
-if(!defined('K_TCPDF_EXTERNAL_CONFIG')) {
+if (!defined('K_TCPDF_EXTERNAL_CONFIG')) {
     define('K_TCPDF_EXTERNAL_CONFIG', TRUE);
 }
 
@@ -225,7 +225,7 @@ class pdf extends TCPDF {
      * @return
      */
     public function setConfig($tcpdf) {
-    $this->_config=$tcpdf;
+    $this->_config = $tcpdf;
     }
 
 
@@ -243,8 +243,8 @@ class pdf extends TCPDF {
 
 
     # set the TCPDF system constants
-    foreach($this->cfg_constant_map as $const => $cfgkey) {
-        if(!defined($const)) {
+    foreach ($this->cfg_constant_map as $const => $cfgkey) {
+        if (!defined($const)) {
         define($const, $this->_config[$cfgkey]);
         #echo sprintf("Defining: %s = %s\n<br />", $const, $this->_config[$cfgkey]);
         }
@@ -308,14 +308,14 @@ class pdf extends TCPDF {
      * @param $format
      * @return unknown_type
      */
-    function intopdf($text,$format='')
+    function intopdf($text, $format = '')
     {
     $text = $this->delete_html($text);
     $oldformat = $this->FontStyle;
-    $this->SetFont('',$format,$this->FontSizePt);
-    $this->Write(5,$text);
+    $this->SetFont('', $format, $this->FontSizePt);
+    $this->Write(5, $text);
     $this->ln(5);
-    $this->SetFont('',$oldformat,$this->FontSizePt);
+    $this->SetFont('', $oldformat, $this->FontSizePt);
     }
     /**
      *
@@ -338,29 +338,29 @@ class pdf extends TCPDF {
      * @param $description
      * @return unknown_type
      */
-    function titleintopdf($title,$description='')
+    function titleintopdf($title, $description = '')
     {
-    if(!empty($title))
+    if (!empty($title))
     {
         $title = $this->delete_html($title);
         $oldsize = $this->FontSizePt;
-        $this->SetFontSize($oldsize+4);
-        $this->Line(5,$this->y,($this->w-5),$this->y);
+        $this->SetFontSize($oldsize + 4);
+        $this->Line(5, $this->y, ($this->w - 5), $this->y);
         $this->ln(3);
-        $this->MultiCell('','',$title,'','C',0);
-        if(!empty($description) && isset($description))
+        $this->MultiCell('', '', $title, '', 'C', 0);
+        if (!empty($description) && isset($description))
         {
         $description = $this->delete_html($description);
         $this->ln(7);
-        $this->SetFontSize($oldsize+2);
-        $this->MultiCell('','',$description,'','C',0);
+        $this->SetFontSize($oldsize + 2);
+        $this->MultiCell('', '', $description, '', 'C', 0);
         $this->ln(2);
         }
         else
         {
         $this->ln(4);
         }
-        $this->Line(5,$this->y,($this->w-5),$this->y);
+        $this->Line(5, $this->y, ($this->w - 5), $this->y);
         $this->ln(5);
         $this->SetFontSize($oldsize);
     }
@@ -377,11 +377,11 @@ class pdf extends TCPDF {
     $maxwidth = $this->getEqualWidth($array);
     $oldStyle = $this->FontStyle;
     $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
-    for($a=0;$a<sizeof($array);$a++)
+    for ($a = 0; $a < sizeof($array); $a++)
     {
-        for($b=0;$b<sizeof($array[$a]);$b++)
+        for ($b = 0; $b < sizeof($array[$a]); $b++)
         {
-        $this->Cell($maxwidth,4,$this->delete_html($array[$a][$b]),0,0,'L');
+        $this->Cell($maxwidth, 4, $this->delete_html($array[$a][$b]), 0, 0, 'L');
         }
         $this->ln();
     }
@@ -396,22 +396,22 @@ class pdf extends TCPDF {
      * @param $modulo - fills each second row with a light-grey for better visibility. Default is on turn off with 0
      * @return unknown_type
      */
-    function equalTable($array, $modulo=1)
+    function equalTable($array, $modulo = 1)
     {
     //$maxwidth = array();
     $maxwidth = $this->getEqualWidth($array);
     $this->SetFillColor(220, 220, 220);
-    for($a=0;$a<sizeof($array);$a++)
+    for ($a = 0; $a < sizeof($array); $a++)
     {
-        if($modulo){
-        if($a%2 === 0){$fill=0;}
-        else{$fill=1;}
+        if ($modulo) {
+        if ($a % 2 === 0) {$fill = 0; }
+        else {$fill = 1; }
         }
-        else{$fill=0;}
-        for($b=0;$b<sizeof($array[$a]);$b++)
+        else {$fill = 0; }
+        for ($b = 0; $b < sizeof($array[$a]); $b++)
         {
 
-        $this->Cell($maxwidth,4,$this->delete_html($array[$a][$b]),0,0,'L',$fill);
+        $this->Cell($maxwidth, 4, $this->delete_html($array[$a][$b]), 0, 0, 'L', $fill);
 
         }
         $this->ln();
@@ -426,23 +426,23 @@ class pdf extends TCPDF {
      * @param $modulo - fills each second row with a light-grey for better visibility. Default is off, turn on with 1
      * @return unknown_type
      */
-    function tableintopdf($array, $modulo=1 )
+    function tableintopdf($array, $modulo = 1)
     {
     $maxwidth = array();
     $maxwidth = $this->getFullWidth($array);
 
     $this->SetFillColor(220, 220, 220);
-    for($a=0;$a<sizeof($array);$a++)
+    for ($a = 0; $a < sizeof($array); $a++)
     {
-        if($modulo){
-        if($a%2 === 0){$fill=0;}
-        else{$fill=1;}
+        if ($modulo) {
+        if ($a % 2 === 0) {$fill = 0; }
+        else {$fill = 1; }
         }
-        else{$fill=0;}
-        for($b=0;$b<sizeof($array[$a]);$b++)
+        else {$fill = 0; }
+        for ($b = 0; $b < sizeof($array[$a]); $b++)
         {
         //echo $maxwidth[$b]." max $b.Spalte<br/>";
-        $this->Cell($maxwidth[$b],4,$this->delete_html($array[$a][$b]),0,0,'L',$fill);
+        $this->Cell($maxwidth[$b], 4, $this->delete_html($array[$a][$b]), 0, 0, 'L', $fill);
         }
         $this->ln();
     }
@@ -457,7 +457,7 @@ class pdf extends TCPDF {
      * @param $modulo - fills each second row with a light-grey for better visibility. Default is on, turn off with 0
      * @return unknown_type
      */
-    function headTable($head, $table, $modulo=1 )
+    function headTable($head, $table, $modulo = 1)
     {
     $array = array_merge_recursive($head, $table);
     //print_r($array);
@@ -465,51 +465,51 @@ class pdf extends TCPDF {
     $maxwidth = $this->getFullWidth($array);
 
     $this->SetFillColor(220, 220, 220);
-    for($a=0;$a<sizeof($array);$a++)
+    for ($a = 0; $a < sizeof($array); $a++)
     {
-        if($modulo){
-        if($a%2 === 0){$fill=1;}
-        else{$fill=0;}
+        if ($modulo) {
+        if ($a % 2 === 0) {$fill = 1; }
+        else {$fill = 0; }
         }
-        else{$fill=0;}
-        for($b=0;$b<sizeof($array[$a]);$b++)
+        else {$fill = 0; }
+        for ($b = 0; $b < sizeof($array[$a]); $b++)
         {
-        $bEndOfCell=0;
-        if ($b==sizeof($array[$a])-1)
+        $bEndOfCell = 0;
+        if ($b == sizeof($array[$a]) - 1)
         {
-            $bEndOfCell=1;
+            $bEndOfCell = 1;
         }
 
-        if($a==0)
+        if ($a == 0)
         {
             $oldStyle = $this->FontStyle;
             $this->SetFont($this->FontFamily, 'B', $this->FontSizePt);
 
-            if ($maxwidth[$b] > 140) $maxwidth[$b]=130;
-            if ($maxwidth[$b] < 25) $maxwidth[$b]=25;
-            $this->MultiCell($maxwidth[$b],6,$this->delete_html($array[$a][$b]),0,'L',1,$bEndOfCell);
+            if ($maxwidth[$b] > 140) $maxwidth[$b] = 130;
+            if ($maxwidth[$b] < 25) $maxwidth[$b] = 25;
+            $this->MultiCell($maxwidth[$b], 6, $this->delete_html($array[$a][$b]), 0, 'L', 1, $bEndOfCell);
 
             $this->SetFont($this->FontFamily, $oldStyle, $this->FontSizePt);
         }
         else
         {
-            if ($a==1)
+            if ($a == 1)
             {
             $this->SetFillColor(240, 240, 240);
             }
             //echo $maxwidth[$b]." max $b.Spalte<br/>";
 
-            if ($maxwidth[$b] > 140) $maxwidth[$b]=130;
-            if ($b==0)
+            if ($maxwidth[$b] > 140) $maxwidth[$b] = 130;
+            if ($b == 0)
             {
-            $iHeight=$this->getStringHeight($maxwidth[$b],$this->delete_html($array[$a][$b]));
-            $this->MultiCell($maxwidth[$b],$iHeight,$this->delete_html($array[$a][$b]),0,'L',$fill,$bEndOfCell);
+            $iHeight = $this->getStringHeight($maxwidth[$b], $this->delete_html($array[$a][$b]));
+            $this->MultiCell($maxwidth[$b], $iHeight, $this->delete_html($array[$a][$b]), 0, 'L', $fill, $bEndOfCell);
             }
             else
             {
-            $iLines=$this->getStringHeight($maxwidth[$b],$this->delete_html($array[$a][$b]));
-            if ($iLines>$iHeight) $iHeight=$iLines;
-            $this->MultiCell($maxwidth[$b],$iHeight,$this->delete_html($array[$a][$b]),0,'L',$fill,$bEndOfCell);
+            $iLines = $this->getStringHeight($maxwidth[$b], $this->delete_html($array[$a][$b]));
+            if ($iLines > $iHeight) $iHeight = $iLines;
+            $this->MultiCell($maxwidth[$b], $iHeight, $this->delete_html($array[$a][$b]), 0, 'L', $fill, $bEndOfCell);
             }
         }
         }
@@ -519,21 +519,21 @@ class pdf extends TCPDF {
     function getminwidth($array)
     {
     $width = array();
-    for($i=0;$i<sizeof($array);$i++)
+    for ($i = 0; $i < sizeof($array); $i++)
     {
-        for($j=0;$j<sizeof($array[$i]);$j++)
+        for ($j = 0; $j < sizeof($array[$i]); $j++)
         {
-        $stringWidth=0;
-        $chars = str_split($this->delete_html($array[$i][$j]),1);
-        foreach($chars as $char)
+        $stringWidth = 0;
+        $chars = str_split($this->delete_html($array[$i][$j]), 1);
+        foreach ($chars as $char)
         {
-            $stringWidth = $stringWidth+$this->GetCharWidth($char);
+            $stringWidth = $stringWidth + $this->GetCharWidth($char);
 
             //echo $stringWidth.": ".$char."<br/>";
         }
-        if($stringWidth!=0 && $stringWidth<8)
-            $stringWidth = $stringWidth*3;
-        if(!isset($width[$j])|| $stringWidth>$width[$j])
+        if ($stringWidth != 0 && $stringWidth < 8)
+            $stringWidth = $stringWidth * 3;
+        if (!isset($width[$j]) || $stringWidth > $width[$j])
         {
             $width[$j] = $stringWidth;
         }
@@ -543,20 +543,20 @@ class pdf extends TCPDF {
     }
     function getmaxwidth($array)
     {
-    for($i=0;$i<sizeof($array);$i++)
+    for ($i = 0; $i < sizeof($array); $i++)
     {
-        for($j=0;$j<sizeof($array[$i]);$j++)
+        for ($j = 0; $j < sizeof($array[$i]); $j++)
         {
-        if(($i-1)>=0)
+        if (($i - 1) >= 0)
         {
-            if(strlen($this->delete_html($array[($i-1)][$j])) < strlen($this->delete_html($array[$i][$j])))
+            if (strlen($this->delete_html($array[($i - 1)][$j])) < strlen($this->delete_html($array[$i][$j])))
             {
             $width[$j] = strlen($this->delete_html($array[$i][$j]));
             }
         }
         else
         {
-            $width[$j]=strlen($this->delete_html($array[$i][$j]));
+            $width[$j] = strlen($this->delete_html($array[$i][$j]));
         }
         }
     }
@@ -575,13 +575,13 @@ class pdf extends TCPDF {
     $width = $this->getminwidth($array);
 
     $margins = $this->getMargins();
-    $deadSpace = $margins['left']+$margins['right'];
-    $fullWidth = ($this->GetLineWidth()*1000)-$deadSpace;
-    $faktor = $fullWidth/array_sum($width);
+    $deadSpace = $margins['left'] + $margins['right'];
+    $fullWidth = ($this->GetLineWidth() * 1000) - $deadSpace;
+    $faktor = $fullWidth / array_sum($width);
 
-    for($i=0;$i<sizeof($width);$i++)
+    for ($i = 0; $i < sizeof($width); $i++)
     {
-        $maxlength[$i]=$faktor*$width[$i];
+        $maxlength[$i] = $faktor * $width[$i];
     }
     return $maxlength;
     }
@@ -595,35 +595,35 @@ class pdf extends TCPDF {
     function getEqualWidth($array)
     {
     $margins = $this->getMargins();
-    $deadSpace = $margins['left']+$margins['right'];
+    $deadSpace = $margins['left'] + $margins['right'];
 
-    $width = ($this->GetLineWidth()*1000)-$deadSpace;
+    $width = ($this->GetLineWidth() * 1000) - $deadSpace;
     $count = 0;
-    for($i=0;$i<sizeof($array);$i++)
+    for ($i = 0; $i < sizeof($array); $i++)
     {
-        for($j=0;$j<sizeof($array[$i]);$j++)
+        for ($j = 0; $j < sizeof($array[$i]); $j++)
         {
-        if(sizeof($array[$i])>$count)
+        if (sizeof($array[$i]) > $count)
         {
             $count = sizeof($array[$i]);
         }
         }
     }
 
-    if($count!=0)
-        return ($width/$count);
+    if ($count != 0)
+        return ($width / $count);
     else
         return FALSE;
     }
     function write_out($name)
     {
-    $this->Output($name,"D");
+    $this->Output($name, "D");
     }
 
     function delete_html($text)
     {
-    $text = html_entity_decode($text,null,'UTF-8');
-    $text = str_replace("\t",' ',$text);
+    $text = html_entity_decode($text, null, 'UTF-8');
+    $text = str_replace("\t", ' ', $text);
     return strip_tags($text);
     }
     /**
@@ -666,20 +666,20 @@ class pdf extends TCPDF {
      * @param $sSubtitle - Subtitle
      * @return unknown_type
      */
-    function addTitle($sTitle, $sSubtitle="")
+    function addTitle($sTitle, $sSubtitle = "")
     {
-    if(!empty($sTitle))
+    if (!empty($sTitle))
     {
         $this->ln(1);
         $this->SetFontSize($this->_ibaseAnswerFontSize + 6);
         $oPurifier = new CHtmlPurifier();
-        $sTitleHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sTitle)),ENT_COMPAT);
+        $sTitleHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sTitle)), ENT_COMPAT);
         $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sTitleHTML, 0, 1, false, true, 'C');
         if (!empty($sSubtitle))
         {
         $this->ln(1);
         $this->SetFontSize($this->_ibaseAnswerFontSize + 2);
-        $sSubtitleHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sSubtitle)),ENT_COMPAT);
+        $sSubtitleHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sSubtitle)), ENT_COMPAT);
         $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sSubtitleHTML, 0, 1, false, true, 'C');
         }
         $this->ln(6);
@@ -723,14 +723,14 @@ class pdf extends TCPDF {
      * @param $bAllowBreakPage - Allow break cell in two pages
      * @return unknown_type
      */
-    function addGidAnswer($sGroupName, $sGroupDescription, $bAllowBreakPage=false)
+    function addGidAnswer($sGroupName, $sGroupDescription, $bAllowBreakPage = false)
     {
     $oPurifier = new CHtmlPurifier();
-    $sGroupName = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupName)),ENT_COMPAT);
-    $sGroupDescription = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupDescription)),ENT_COMPAT);
-    $sData['thissurvey']=$this->_aSurveyInfo;
-    $sGroupName = templatereplace($sGroupName, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
-    $sGroupDescription = templatereplace($sGroupDescription, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+    $sGroupName = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupName)), ENT_COMPAT);
+    $sGroupDescription = html_entity_decode(stripJavaScript($oPurifier->purify($sGroupDescription)), ENT_COMPAT);
+    $sData['thissurvey'] = $this->_aSurveyInfo;
+    $sGroupName = templatereplace($sGroupName, array(), $sData, '', $this->_aSurveyInfo['anonymized'] == "Y", NULL, array(), true);
+    $sGroupDescription = templatereplace($sGroupDescription, array(), $sData, '', $this->_aSurveyInfo['anonymized'] == "Y", NULL, array(), true);
 
     $startPage = $this->getPage();
     $this->startTransaction();
@@ -765,55 +765,55 @@ class pdf extends TCPDF {
      * @param $bAllowBreakPage - Allow break cell in two pages
      * @return unknown_type
      */
-    function addAnswer($sQuestion, $sResponse, $bReplaceExpressions=true, $bAllowBreakPage=false)
+    function addAnswer($sQuestion, $sResponse, $bReplaceExpressions = true, $bAllowBreakPage = false)
     {
-    $bYiiQuestionBorder=1;
-    $bQuestionFill=1;
-    $bQuestionBorder=1;
-    $bResponseBorder=1;
+    $bYiiQuestionBorder = 1;
+    $bQuestionFill = 1;
+    $bQuestionBorder = 1;
+    $bResponseBorder = 1;
     $bYiiQuestionFill = Yii::app()->getConfig('bPdfQuestionFill');
-    if ($bYiiQuestionFill==0)
+    if ($bYiiQuestionFill == 0)
     {
-        $bQuestionFill=0;
+        $bQuestionFill = 0;
     }
     $bYiiQuestionBorder = Yii::app()->getConfig('bPdfQuestionBorder');
-    if ($bYiiQuestionBorder==0)
+    if ($bYiiQuestionBorder == 0)
     {
-        $bQuestionBorder=0;
+        $bQuestionBorder = 0;
     }
 	
     $bYiiResponseBorder = Yii::app()->getConfig('bPdfResponseBorder');
-    if ($bYiiResponseBorder=='0')
+    if ($bYiiResponseBorder == '0')
     {
-        $bResponseBorder=0;
+        $bResponseBorder = 0;
     }
 	
     $oPurifier = new CHtmlPurifier();
-    $sQuestionHTML = str_replace('-oth-','',$sQuestion); // Copied from Writer::stripTagsFull. Really necessary?
-    $sQuestionHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sQuestionHTML)),ENT_COMPAT);
+    $sQuestionHTML = str_replace('-oth-', '', $sQuestion); // Copied from Writer::stripTagsFull. Really necessary?
+    $sQuestionHTML = html_entity_decode(stripJavaScript($oPurifier->purify($sQuestionHTML)), ENT_COMPAT);
     if ($bReplaceExpressions)
     {
         $sData = array();
-        $sData['thissurvey']=$this->_aSurveyInfo;
-        $sQuestionHTML = templatereplace($sQuestionHTML, array() , $sData, '', $this->_aSurveyInfo['anonymized']=="Y",NULL, array(), true);
+        $sData['thissurvey'] = $this->_aSurveyInfo;
+        $sQuestionHTML = templatereplace($sQuestionHTML, array(), $sData, '', $this->_aSurveyInfo['anonymized'] == "Y", NULL, array(), true);
     }
     $sResponse = flattenText($sResponse, false, true, 'UTF-8', false);
     $startPage = $this->getPage();
     $this->startTransaction();
     $bYiiQuestionBold = Yii::app()->getConfig('bPdfQuestionBold');
-    if ($bYiiQuestionBold=='1')
+    if ($bYiiQuestionBold == '1')
     {
         $sFontFamily = $this->getFontFamily;
-        $this->SetFont($sFontFamily,'B',$this->_ibaseAnswerFontSize);
+        $this->SetFont($sFontFamily, 'B', $this->_ibaseAnswerFontSize);
     }
     else
     {
         $this->SetFontSize($this->_ibaseAnswerFontSize);
     }
     $this->WriteHTMLCell(0, $this->_iCellHeight, $this->getX(), $this->getY(), $sQuestionHTML, $bQuestionBorder, 1, $bQuestionFill, true, 'L');
-    if ($bYiiQuestionBold=='1')
+    if ($bYiiQuestionBold == '1')
     {
-        $this->SetFont($sFontFamily,'',$this->_ibaseAnswerFontSize);
+        $this->SetFont($sFontFamily, '', $this->_ibaseAnswerFontSize);
     }
     $this->MultiCell(0, $this->_iCellHeight, $sResponse, $bResponseBorder, 'L', 0, 1, '', '', true);
     $this->ln(2);
@@ -821,7 +821,7 @@ class pdf extends TCPDF {
     {
         $this->rollbackTransaction(true);
         $this->AddPage();
-        $this->addAnswer($sQuestion,$sResponse,$bReplaceExpressions,true); // "Last param = true" prevents an endless loop if a cell is longer than a page
+        $this->addAnswer($sQuestion, $sResponse, $bReplaceExpressions, true); // "Last param = true" prevents an endless loop if a cell is longer than a page
     }
     else
     {

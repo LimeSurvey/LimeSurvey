@@ -63,7 +63,7 @@ class GlobalSettings extends Survey_Common_Action
 
         // Some URLs are not to be allowed to refered back to.
         // These exceptions can be added to the $aReplacements array
-        $aReplacements=array('admin/update/sa/step4b'=>'admin/sa/index',
+        $aReplacements = array('admin/update/sa/step4b'=>'admin/sa/index',
                                 'admin/user/sa/adduser'=>'admin/user/sa/index',
                                 'admin/user/sa/setusertemplates'=>'admin/user/sa/index'
                             );

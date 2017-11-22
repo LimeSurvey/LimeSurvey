@@ -18,60 +18,60 @@ class LSYii_Validators extends CValidator {
      * Filter attribute for fixCKeditor
      * @var boolean
      */
-    public $fixCKeditor=false;
+    public $fixCKeditor = false;
     /**
      * Filter attribute for XSS
      * @var boolean
      */
-    public $xssfilter=true;
+    public $xssfilter = true;
     /**
      * Filter attribute for url
      * @var boolean
      */
-    public $isUrl=false;
+    public $isUrl = false;
     /**
      * Filter attribute for isLanguage
      * @var boolean
      */
-    public $isLanguage=false;
+    public $isLanguage = false;
     /**
      * Filter attribute for isLanguageMulti (multi language string)
      * @var boolean
      */
-    public $isLanguageMulti=false;
+    public $isLanguageMulti = false;
 
     public function __construct()
     {
-        if(Yii::app()->getConfig('DBVersion')< 172) // Permission::model exist only after 172 DB version
-            return $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
+        if (Yii::app()->getConfig('DBVersion') < 172) // Permission::model exist only after 172 DB version
+            return $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml'));
 
-        $this->xssfilter=($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin','read'));
+        $this->xssfilter = ($this->xssfilter && Yii::app()->getConfig('filterxsshtml') && !Permission::model()->hasGlobalPermission('superadmin', 'read'));
         return null;
     }
 
-    protected function validateAttribute($object,$attribute)
+    protected function validateAttribute($object, $attribute)
     {
-        if($this->xssfilter)
+        if ($this->xssfilter)
         {
-            $object->$attribute=$this->xssFilter($object->$attribute);
-            if($this->isUrl)
+            $object->$attribute = $this->xssFilter($object->$attribute);
+            if ($this->isUrl)
             {
-                $object->$attribute=str_replace('javascript:','',html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"));
+                $object->$attribute = str_replace('javascript:', '', html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8"));
             }
         }
         // Note that URL checking only checks basic URL properties. As a URL can contain EM expression there needs to be a lot of freedom.
-        if($this->isUrl)
+        if ($this->isUrl)
         {
-            if ($object->$attribute== 'http://' || $object->$attribute=='https://') {$object->$attribute="";}
-            $object->$attribute=html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8");
+            if ($object->$attribute == 'http://' || $object->$attribute == 'https://') {$object->$attribute = ""; }
+            $object->$attribute = html_entity_decode($object->$attribute, ENT_QUOTES, "UTF-8");
         }
-        if($this->isLanguage)
+        if ($this->isLanguage)
         {
-            $object->$attribute=$this->languageFilter($object->$attribute);
+            $object->$attribute = $this->languageFilter($object->$attribute);
         }
-        if($this->isLanguageMulti)
+        if ($this->isLanguageMulti)
         {
-            $object->$attribute=$this->multiLanguageFilter($object->$attribute);
+            $object->$attribute = $this->multiLanguageFilter($object->$attribute);
         }
     }
 

@@ -962,7 +962,7 @@ class SurveyAdmin extends Survey_Common_Action
      * @param [string] $subaction
      * @return void
      */
-        public function rendersidemenulink($iSurveyID, $subaction){
+        public function rendersidemenulink($iSurveyID, $subaction) {
             $aViewUrls = $aData = $activePanels = [];
             $menuaction = (String) $subaction;
             $iSurveyID = sanitize_int($iSurveyID);
@@ -1021,7 +1021,7 @@ class SurveyAdmin extends Survey_Common_Action
      * Edit surveytexts and general settings
      */
 
-        public function surveygeneralsettings($iSurveyID){
+        public function surveygeneralsettings($iSurveyID) {
             $aViewUrls = $aData = $activePanels = array();
             $aData['surveyid'] = $iSurveyID = sanitize_int($iSurveyID);
             $survey = Survey::model()->findByPk($iSurveyID);
@@ -1546,18 +1546,18 @@ class SurveyAdmin extends Survey_Common_Action
      * @deprecated use Survey objects instead
      * @return
      */
-    private function _fetchSurveyInfo($action, $iSurveyID=null)
+    private function _fetchSurveyInfo($action, $iSurveyID = null)
     {
         if ($action == 'newsurvey')
         {
-            $oSurvey=new Survey;
+            $oSurvey = new Survey;
         }
         elseif ($action == 'editsurvey' && $iSurveyID)
         {
             $oSurvey = Survey::model()->findByPk($iSurveyID);
         }
 
-        if($oSurvey)
+        if ($oSurvey)
         {
             $attribs = $oSurvey->attributes;
             $attribs['googleanalyticsapikeysetting'] = $oSurvey->getGoogleanalyticsapikeysetting();
@@ -1594,24 +1594,24 @@ class SurveyAdmin extends Survey_Common_Action
 
         $aData['action'] = "newsurvey";
         $aData['owner'] = $owner;
-        $aLanguageDetails= getLanguageDetails(Yii::app()->session['adminlang']);
+        $aLanguageDetails = getLanguageDetails(Yii::app()->session['adminlang']);
         $aData['sRadixDefault'] = $aLanguageDetails['radixpoint'];
         $aData['sDateFormatDefault'] = $aLanguageDetails['dateformat'];
-        foreach (getRadixPointData() as $index=>$radixptdata){
-            $aRadixPointData[$index]=$radixptdata['desc'];
+        foreach (getRadixPointData() as $index=>$radixptdata) {
+            $aRadixPointData[$index] = $radixptdata['desc'];
         }
-        $aData['aRadixPointData']=$aRadixPointData;
+        $aData['aRadixPointData'] = $aRadixPointData;
 
-        foreach (getDateFormatData (0,Yii::app()->session['adminlang']) as $index => $dateformatdata)
+        foreach (getDateFormatData(0, Yii::app()->session['adminlang']) as $index => $dateformatdata)
         {
-            $aDateFormatData[$index]=$dateformatdata['dateformat'];
+            $aDateFormatData[$index] = $dateformatdata['dateformat'];
         }
-        $aData['aDateFormatData']=$aDateFormatData;
+        $aData['aDateFormatData'] = $aDateFormatData;
 
         return $aData;
     }
 
-    private function _getGeneralTemplateData($iSurveyID){
+    private function _getGeneralTemplateData($iSurveyID) {
         //$aData['action'] = "editsurveysettings";
         $aData['surveyid'] = $iSurveyID;
 
@@ -1769,7 +1769,7 @@ class SurveyAdmin extends Survey_Common_Action
      * @param mixed $esrow
      * @return array
      */
-    private function _tabNotificationDataManagement( $esrow)
+    private function _tabNotificationDataManagement($esrow)
     {
         $aData['esrow'] = $esrow;
         return $aData;

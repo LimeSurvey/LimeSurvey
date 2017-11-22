@@ -953,46 +953,46 @@ class TokenDynamic extends LSActiveRecord
         );
 
         // Make sortable custom attributes
-        foreach($this->custom_attributes as $sColName => $oColumn) {
-            $sort->attributes[$sColName] =  array(
+        foreach ($this->custom_attributes as $sColName => $oColumn) {
+            $sort->attributes[$sColName] = array(
                 'asc'=>$sColName,
                 'desc'=>$sColName.' desc',
             );
         }
 
         $criteria = new LSDbCriteria;
-        $criteria->compare('tid',$this->tid,false);
-        $criteria->compare('token',$this->token,true);
-        $criteria->compare('firstname',$this->firstname,true);
-        $criteria->compare('lastname',$this->lastname,true);
-        $criteria->compare('email',$this->email,true);
-        $criteria->compare('emailstatus',$this->emailstatus,true);
-        $criteria->compare('token',$this->token,true);
-        $criteria->compare('language',$this->language,true);
-        $criteria->compare('sent',$this->sent,true);
-        $criteria->compare('remindersent',$this->remindersent,true);
-        $criteria->compare('remindercount',$this->remindercount,false);
-        $criteria->compare('completed',$this->completed,true);
-        $criteria->compare('usesleft',$this->usesleft,false);
+        $criteria->compare('tid', $this->tid, false);
+        $criteria->compare('token', $this->token, true);
+        $criteria->compare('firstname', $this->firstname, true);
+        $criteria->compare('lastname', $this->lastname, true);
+        $criteria->compare('email', $this->email, true);
+        $criteria->compare('emailstatus', $this->emailstatus, true);
+        $criteria->compare('token', $this->token, true);
+        $criteria->compare('language', $this->language, true);
+        $criteria->compare('sent', $this->sent, true);
+        $criteria->compare('remindersent', $this->remindersent, true);
+        $criteria->compare('remindercount', $this->remindercount, false);
+        $criteria->compare('completed', $this->completed, true);
+        $criteria->compare('usesleft', $this->usesleft, false);
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if ($this->validfrom) {
-            $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validfrom);
+            $s = DateTime::createFromFormat($dateformatdetails['phpdate'].' H:i', $this->validfrom);
             $s2 = $s->format('Y-m-d H:i');
-            $criteria->addCondition('validfrom <= \'' . $s2 . '\'');
+            $criteria->addCondition('validfrom <= \''.$s2.'\'');
         }
 
         if ($this->validuntil) {
-            $s = DateTime::createFromFormat($dateformatdetails['phpdate'] . ' H:i', $this->validuntil);
+            $s = DateTime::createFromFormat($dateformatdetails['phpdate'].' H:i', $this->validuntil);
             $s2 = $s->format('Y-m-d H:i');
-            $criteria->addCondition('validuntil >= \'' . $s2 . '\'');
+            $criteria->addCondition('validuntil >= \''.$s2.'\'');
         }
 
-        foreach($this->custom_attributes as $sColName => $oColumn) {
-            $criteria->compare($sColName,$this->$sColName,true);
+        foreach ($this->custom_attributes as $sColName => $oColumn) {
+            $criteria->compare($sColName, $this->$sColName, true);
         }
 
-        $dataProvider=new CActiveDataProvider('TokenDynamic', array(
+        $dataProvider = new CActiveDataProvider('TokenDynamic', array(
             'sort'=>$sort,
             'criteria'=>$criteria,
             'pagination'=>array(

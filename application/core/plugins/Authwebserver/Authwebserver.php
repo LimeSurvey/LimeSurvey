@@ -58,33 +58,33 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
         $serverKey = $this->get('serverkey');
         if (!empty($serverKey) && isset($_SERVER[$serverKey]))
         {
-            $sUser=$_SERVER[$serverKey];
+            $sUser = $_SERVER[$serverKey];
             
             // Only strip domain part when desired
             if ($this->get('strip_domain', null, null, false)) {
-                if (strpos($sUser,"\\")!==false) {
+                if (strpos($sUser, "\\") !== false) {
                     // Get username for DOMAIN\USER
-                    $sUser = substr($sUser, strrpos($sUser, "\\")+1);
-                } elseif (strpos($sUser,"@")!==false) {
+                    $sUser = substr($sUser, strrpos($sUser, "\\") + 1);
+                } elseif (strpos($sUser, "@") !== false) {
                     // Get username for USER@DOMAIN
                     $sUser = substr($sUser, 0, strrpos($sUser, "@"));
                 }
             }
             
-            $aUserMappings=$this->api->getConfigKey('auth_webserver_user_map', array());
+            $aUserMappings = $this->api->getConfigKey('auth_webserver_user_map', array());
             if (isset($aUserMappings[$sUser])) 
             {
                 $sUser = $aUserMappings[$sUser];
             }
             $oUser = $this->api->getUserByName($sUser);
-            if($oUser || $this->api->getConfigKey('auth_webserver_autocreate_user'))
+            if ($oUser || $this->api->getConfigKey('auth_webserver_autocreate_user'))
             {
                 $this->setUsername($sUser);
                 $this->setAuthPlugin(); // This plugin handles authentication, halt further execution of auth plugins
             }
-            elseif($this->get('is_default',null,null,$this->settings['is_default']['default']))
+            elseif ($this->get('is_default', null, null, $this->settings['is_default']['default']))
             {
-                throw new CHttpException(401,'Wrong credentials for LimeSurvey administration.');
+                throw new CHttpException(401, 'Wrong credentials for LimeSurvey administration.');
             }
         }
     }

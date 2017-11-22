@@ -31,7 +31,7 @@ class labels extends Survey_Common_Action
      * @param string $sa
      * @return void
      */
-    public function run($sa=null)
+    public function run($sa = null)
     {
         if ($sa == 'newlabelset' || $sa == 'editlabelset')
             $this->route('index', array('sa', 'lid'));
@@ -173,16 +173,16 @@ class labels extends Survey_Common_Action
      * @param integer $lid
      * @return
      */
-    public function index($sa, $lid=0)
+    public function index($sa, $lid = 0)
     {
         Yii::app()->loadHelper('surveytranslator');
 
         $lid = sanitize_int($lid);
         $aViewUrls = array();
 
-        if (Permission::model()->hasGlobalPermission('labelsets','read'))
+        if (Permission::model()->hasGlobalPermission('labelsets', 'read'))
         {
-            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets','update'))
+            if ($sa == "editlabelset" && Permission::model()->hasGlobalPermission('labelsets', 'update'))
             {
                 $result = LabelSet::model()->findAllByAttributes(array('lid' => $lid));
                 foreach ($result as $row)
@@ -327,18 +327,18 @@ class labels extends Survey_Common_Action
             $aData['labelbar']['buttons']['delete'] = true;
             $aData['labelbar']['savebutton']['form'] = 'mainform';
             $aData['labelbar']['savebutton']['text'] = gT("Save changes");
-            $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl('admin/labels/sa/view') );
+            $aData['labelbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl('admin/labels/sa/view'));
             $aData['labelbar']['buttons']['edition'] = true;
 
             $aData['labelbar']['buttons']['edit'] = true;
-            if (!Permission::model()->hasGlobalPermission('labelsets','update')){
+            if (!Permission::model()->hasGlobalPermission('labelsets', 'update')) {
                 unset($aData['labelbar']['buttons']['edition']);
             }
         }
 
         if (isset($_GET['pageSize']))
         {
-            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
         }
 
         $this->_renderWrappedTemplate('labels', $aViewUrls, $aData);

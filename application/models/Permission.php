@@ -374,7 +374,7 @@ class Permission extends LSActiveRecord
         $aFilteredPermissions = array();
         foreach ($aBasePermissions as $sPermissionname=>$aPermission) {
             $aFilteredPermissions[$sPermissionname]['create'] = (isset($aPermissions[$sPermissionname]['create']) && $aPermissions[$sPermissionname]['create']);
-            $aFilteredPermissions[$sPermissionname]['read']  = (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
+            $aFilteredPermissions[$sPermissionname]['read'] = (isset($aPermissions[$sPermissionname]['read']) && $aPermissions[$sPermissionname]['read']);
             $aFilteredPermissions[$sPermissionname]['update'] = (isset($aPermissions[$sPermissionname]['update']) && $aPermissions[$sPermissionname]['update']);
             $aFilteredPermissions[$sPermissionname]['delete'] = (isset($aPermissions[$sPermissionname]['delete']) && $aPermissions[$sPermissionname]['delete']);
             $aFilteredPermissions[$sPermissionname]['import'] = (isset($aPermissions[$sPermissionname]['import']) && $aPermissions[$sPermissionname]['import']);
@@ -537,10 +537,10 @@ class Permission extends LSActiveRecord
      * @param $iUserID integer User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
-    public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD='read', $iUserID=null)
+    public function hasPermission($iEntityID, $sEntityName, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
         // TODO: in entry script, if CConsoleApplication, set user as superadmin
-        if(is_null($iUserID) && Yii::app() instanceof CConsoleApplication){
+        if (is_null($iUserID) && Yii::app() instanceof CConsoleApplication) {
             return true;
         }
         static $aPermissionStatic;
@@ -649,7 +649,7 @@ class Permission extends LSActiveRecord
      * @param $iUserID integer User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
-    public function hasGlobalPermission($sPermission, $sCRUD='read', $iUserID=null)
+    public function hasGlobalPermission($sPermission, $sCRUD = 'read', $iUserID = null)
     {
         return $this->hasPermission(0, 'global', $sPermission, $sCRUD, $iUserID);
     }
@@ -663,18 +663,18 @@ class Permission extends LSActiveRecord
      * @param $iUserID integer User ID - if not given the one of the current user is used
      * @return bool True if user has the permission
      */
-    public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD='read', $iUserID=null)
+    public function hasSurveyPermission($iSurveyID, $sPermission, $sCRUD = 'read', $iUserID = null)
     {
-        $oSurvey=Survey::Model()->findByPk($iSurveyID);
+        $oSurvey = Survey::Model()->findByPk($iSurveyID);
         if (!$oSurvey) {
             return false;
         }
         // If the user has the permission to update all other surveys he may import/export as well
-        if ($this->hasGlobalPermission('surveys', 'update', $iUserID) && $sPermission=='token' && ($sCRUD=='import' || $sCRUD=='export')) {
-            $sCRUD='update';
+        if ($this->hasGlobalPermission('surveys', 'update', $iUserID) && $sPermission == 'token' && ($sCRUD == 'import' || $sCRUD == 'export')) {
+            $sCRUD = 'update';
         }
         // Get global correspondance for surveys rigth
-        $sGlobalCRUD=($sCRUD=='create' || ($sCRUD=='delete' && $sPermission!='survey') ) ? 'update' : $sCRUD;
+        $sGlobalCRUD = ($sCRUD == 'create' || ($sCRUD == 'delete' && $sPermission != 'survey')) ? 'update' : $sCRUD;
         return $this->hasGlobalPermission('surveys', $sGlobalCRUD, $iUserID) || $this->hasPermission($iSurveyID, 'survey', $sPermission, $sCRUD, $iUserID);
     }
 
@@ -696,7 +696,7 @@ class Permission extends LSActiveRecord
      * @param array $aBpermission The second permission information
      * @return integer
      */
-    private static function comparePermissionTitle($aApermission,$aBpermission)
+    private static function comparePermissionTitle($aApermission, $aBpermission)
     {
         return strcmp($aApermission['title'], $aBpermission['title']);
     }

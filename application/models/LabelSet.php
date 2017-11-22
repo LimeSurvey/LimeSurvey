@@ -71,7 +71,7 @@ class LabelSet extends LSActiveRecord
      * @param mixed|bool $condition
      * @return static[]
      */
-    public function getAllRecords($condition=FALSE)
+    public function getAllRecords($condition = FALSE)
     {
         $criteria = new CDbCriteria;
         if ($condition != FALSE) {

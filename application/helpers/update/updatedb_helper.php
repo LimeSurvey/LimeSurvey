@@ -26,21 +26,21 @@
 * @param integer $iOldDBVersion The previous database version
 * @param boolean $bSilent Run update silently with no output - this checks if the update can be run silently at all. If not it will not run any updates at all.
 */
-function db_upgrade_all($iOldDBVersion, $bSilent=false) {
+function db_upgrade_all($iOldDBVersion, $bSilent = false) {
     /**
      * If you add a new database version add any critical database version numbers to this array. See link
      * @link https://manual.limesurvey.org/Database_versioning for explanations
      * @var array $aCriticalDBVersions An array of cricital database version.
      */
     $aCriticalDBVersions = array(310);
-    $aAllUpdates         = range($iOldDBVersion+1,Yii::app()->getConfig('dbversionnumber'));
+    $aAllUpdates         = range($iOldDBVersion + 1, Yii::app()->getConfig('dbversionnumber'));
 
     // If trying to update silenty check if it is really possible
-    if ($bSilent && (count(array_intersect($aCriticalDBVersions,$aAllUpdates))>0)){
+    if ($bSilent && (count(array_intersect($aCriticalDBVersions, $aAllUpdates)) > 0)) {
         return false;
     }
     // If DBVersion is older than 184 don't allow database update
-    If ($iOldDBVersion<184) {
+    If ($iOldDBVersion < 184) {
         return false;
     }
 
@@ -652,39 +652,39 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->createIndex('{{idx3_template_configuration}}', '{{template_configuration}}', 'gsid', false);
             $oDB->createCommand()->createIndex('{{idx4_template_configuration}}', '{{template_configuration}}', 'uid', false);
 
-            $headerArray = ['template_name','sid','gsid','uid','files_css','files_js','files_print_css','options','cssframework_name','cssframework_css','cssframework_js','packages_to_load','packages_ltr','packages_rtl'];
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['default',NULL,NULL,NULL,'{"add": ["css/animate.css","css/template.css"]}','{"add": ["scripts/template.js", "scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/flatly.css"]]}','','["pjax"]','','']));
+            $headerArray = ['template_name', 'sid', 'gsid', 'uid', 'files_css', 'files_js', 'files_print_css', 'options', 'cssframework_name', 'cssframework_css', 'cssframework_js', 'packages_to_load', 'packages_ltr', 'packages_rtl'];
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['default', NULL, NULL, NULL, '{"add": ["css/animate.css","css/template.css"]}', '{"add": ["scripts/template.js", "scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "boxcontainer":"on", "backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/flatly.css"]]}', '', '["pjax"]', '', '']));
 
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['material',NULL,NULL,NULL,'{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}','{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}','','["pjax"]','','']));
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['material', NULL, NULL, NULL, '{"add": ["css/bootstrap-material-design.css", "css/ripples.min.css", "css/template.css"]}', '{"add": ["scripts/template.js", "scripts/material.js", "scripts/ripples.min.js", "scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on", "brandlogofile": "./files/logo.png", "animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{"replace": [["css/bootstrap.css","css/bootstrap.css"]]}', '', '["pjax"]', '', '']));
 
-            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray,['monochrome',NULL,NULL,NULL,'{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}','{"add":["scripts/template.js","scripts/ajaxify.js"]}','{"add":"css/print_template.css"}','{"ajaxmode":"on","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}','bootstrap','{}','','["pjax"]','','']));
+            $oDB->createCommand()->insert("{{template_configuration}}", array_combine($headerArray, ['monochrome', NULL, NULL, NULL, '{"add":["css/animate.css","css/ajaxify.css","css/sea_green.css", "css/template.css"]}', '{"add":["scripts/template.js","scripts/ajaxify.js"]}', '{"add":"css/print_template.css"}', '{"ajaxmode":"on","brandlogo":"on","brandlogofile":".\/files\/logo.png","boxcontainer":"on","backgroundimage":"off","animatebody":"off","bodyanimation":"fadeInRight","animatequestion":"off","questionanimation":"flipInX","animatealert":"off","alertanimation":"shake"}', 'bootstrap', '{}', '', '["pjax"]', '', '']));
 
-            $oDB->createCommand()->update('{{surveymenu_entries}}',array('data'=>'{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'),"name='template_options'");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('data'=>'{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}'), "name='template_options'");
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>325),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>325), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 326) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->alterColumn('{{surveys}}','datecreated', 'datetime');
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>326),"stg_name='DBVersion'");
+            $oDB->createCommand()->alterColumn('{{surveys}}', 'datecreated', 'datetime');
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>326), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 327) {
             $oTransaction = $oDB->beginTransaction();
             upgrade327($oDB);
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>327),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>327), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     }
-    catch(Exception $e)
+    catch (Exception $e)
     {
-        Yii::app()->setConfig('Updating',false);
+        Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
         // Activate schema caching
-        $oDB->schemaCachingDuration=3600;
+        $oDB->schemaCachingDuration = 3600;
         // Load all tables of the application in the schema
         $oDB->schema->getTables();
         // clear the cache of all loaded tables
