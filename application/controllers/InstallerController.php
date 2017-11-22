@@ -809,12 +809,12 @@ class InstallerController extends CController {
          * @param string $aData
          * @return bool result of check (that it is writeable which implies existance)
          */
-        function check_PathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive=false)
+        function check_PathWriteable($path, $type, &$aData, $base, $keyError, $bRecursive = false)
         {
             $bResult = false;
             $aData[$base.'Present'] = 'Not Found';
             $aData[$base.'Writable'] = '';
-            switch($type) {
+            switch ($type) {
                 case 1:
                     $exists = is_file($path);
                     break;
@@ -865,7 +865,7 @@ class InstallerController extends CController {
          * @param string $keyError key for error data
          * @return bool result of check (that it is writeable which implies existance)
          */
-        function check_DirectoryWriteable($directory, &$data, $base, $keyError, $bRecursive=false)
+        function check_DirectoryWriteable($directory, &$data, $base, $keyError, $bRecursive = false)
         {
             return check_PathWriteable($directory, 2, $data, $base, $keyError, $bRecursive);
         }

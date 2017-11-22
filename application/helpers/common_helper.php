@@ -819,17 +819,17 @@ function getGroupList3($gid, $surveyid)
  */
 function getGroupListLang($gid, $language, $surveyid)
 {
-    $groupselecter="";
-    if (!$surveyid) {$surveyid=returnGlobal('sid',true);}
+    $groupselecter = "";
+    if (!$surveyid) {$surveyid = returnGlobal('sid', true); }
 
     $gidresult = QuestionGroup::model()->findAll(array('condition'=>'sid=:surveyid AND language=:language',
     'order'=>'group_order',
-    'params'=>array(':surveyid'=>$surveyid,':language'=>$language)));   //Checked)
+    'params'=>array(':surveyid'=>$surveyid, ':language'=>$language))); //Checked)
     foreach ($gidresult as $gv)
     {
         $gv = $gv->attributes;
         $groupselecter .= "<option";
-        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1;}
+        if ($gv['gid'] == $gid) {$groupselecter .= " selected='selected'"; $gvexist = 1; }
         $link = Yii::app()->getController()->createUrl("/admin/questiongroups/sa/view/surveyid/".$surveyid."/gid/".$gv['gid']);
         $groupselecter .= " value='{$link}'>";
         if (strip_tags($gv['group_name']))
@@ -1432,16 +1432,16 @@ function validateEmailAddress($sEmailAddress) {
 *
 * @param mixed $aEmailAddressList  Email address to check
 */
-function validateEmailAddresses($aEmailAddressList){
-    $aOutList=false;
+function validateEmailAddresses($aEmailAddressList) {
+    $aOutList = false;
     if (!is_array($aEmailAddressList)) {
-        $aEmailAddressList=explode(';',$aEmailAddressList);
+        $aEmailAddressList = explode(';', $aEmailAddressList);
     }
 
     foreach ($aEmailAddressList as $sEmailAddress) {
-        $sEmailAddress= trim($sEmailAddress);
-        if (validateEmailAddress($sEmailAddress)){
-            $aOutList=$sEmailAddress;
+        $sEmailAddress = trim($sEmailAddress);
+        if (validateEmailAddress($sEmailAddress)) {
+            $aOutList = $sEmailAddress;
         }
     }
     return $aOutList;
@@ -2973,7 +2973,7 @@ function isTokenCompletedDatestamped($thesurvey)
 *
 * will output: 2007-01-01 03:00:00
 *
-* @param mixed $date
+* @param string $date
 * @param string $dformat
 * @param mixed $shift
 * @return string
@@ -3990,21 +3990,21 @@ function translateInsertansTags($newsid, $oldsid, $fieldnames)
 * @param integer $iSurveyID The survey ID
 * @param mixed $aCodeMap The codemap array (old_code=>new_code)
 */
-function replaceExpressionCodes ($iSurveyID, $aCodeMap)
+function replaceExpressionCodes($iSurveyID, $aCodeMap)
 {
-    $arQuestions=Question::model()->findAll("sid=:sid",array(':sid'=>$iSurveyID));
+    $arQuestions = Question::model()->findAll("sid=:sid", array(':sid'=>$iSurveyID));
     foreach ($arQuestions as $arQuestion)
     {
-        $bModified=false;
+        $bModified = false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
             // Don't search/replace old codes that are too short or were numeric (because they would not have been usable in EM expressions anyway)
-            if (strlen($sOldCode)>1 && !is_numeric($sOldCode[0]))
+            if (strlen($sOldCode) > 1 && !is_numeric($sOldCode[0]))
             {
-                $sOldCode=preg_quote($sOldCode,'~');
-                $arQuestion->relevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->relevance,-1,$iCount);
+                $sOldCode = preg_quote($sOldCode, '~');
+                $arQuestion->relevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->relevance, -1, $iCount);
                 $bModified = $bModified || $iCount;
-                $arQuestion->question=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arQuestion->question,-1,$iCount);
+                $arQuestion->question = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arQuestion->question, -1, $iCount);
                 $bModified = $bModified || $iCount;
             }
         }
@@ -4013,16 +4013,16 @@ function replaceExpressionCodes ($iSurveyID, $aCodeMap)
             $arQuestion->save();
         }
     }
-    $arGroups=QuestionGroup::model()->findAll("sid=:sid",array(':sid'=>$iSurveyID));
+    $arGroups = QuestionGroup::model()->findAll("sid=:sid", array(':sid'=>$iSurveyID));
     foreach ($arGroups as $arGroup)
     {
-        $bModified=false;
+        $bModified = false;
         foreach ($aCodeMap as $sOldCode=>$sNewCode)
         {
-            $sOldCode=preg_quote($sOldCode,'~');
-            $arGroup->grelevance=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->grelevance,-1,$iCount);
+            $sOldCode = preg_quote($sOldCode, '~');
+            $arGroup->grelevance = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->grelevance, -1, $iCount);
             $bModified = $bModified || $iCount;
-            $arGroup->description=preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~",$sNewCode,$arGroup->description,-1,$iCount);
+            $arGroup->description = preg_replace("~{[^}]*\K{$sOldCode}(?=[^}]*?})~", $sNewCode, $arGroup->description, -1, $iCount);
             $bModified = $bModified || $iCount;
         }
         if ($bModified)
@@ -5204,24 +5204,24 @@ function getIPAddress()
 */
 function getBrowserLanguage()
 {
-    $sLanguage=Yii::app()->getRequest()->getPreferredLanguage();
+    $sLanguage = Yii::app()->getRequest()->getPreferredLanguage();
     Yii::app()->loadHelper("surveytranslator");
-    $aLanguages=getLanguageData();
+    $aLanguages = getLanguageData();
     if (!isset($aLanguages[$sLanguage]))
     {
-        $sLanguage=str_replace('_','-',$sLanguage);
-        if (strpos($sLanguage,'-')!==false)
+        $sLanguage = str_replace('_', '-', $sLanguage);
+        if (strpos($sLanguage, '-') !== false)
         {
-            $aLanguage=explode('-',$sLanguage);
-            $aLanguage[1]=strtoupper($aLanguage[1]);
-            $sLanguage=implode('-',$aLanguage);
+            $aLanguage = explode('-', $sLanguage);
+            $aLanguage[1] = strtoupper($aLanguage[1]);
+            $sLanguage = implode('-', $aLanguage);
         }
         if (!isset($aLanguages[$sLanguage]))
         {
-            $sLanguage=substr($sLanguage,0,strpos($sLanguage,'-'));
+            $sLanguage = substr($sLanguage, 0, strpos($sLanguage, '-'));
             if (!isset($aLanguages[$sLanguage]))
             {
-                $sLanguage=Yii::app()->getConfig('defaultlang');
+                $sLanguage = Yii::app()->getConfig('defaultlang');
             }
         }
     }
@@ -5298,7 +5298,7 @@ function convertPHPSizeToBytes($sSize)
     //This function transforms the php.ini notation for numbers (like '2M') to an integer (2*1024*1024 in this case)
     $sSuffix = substr($sSize, -1);
     $iValue = substr($sSize, 0, -1);
-    switch(strtoupper($sSuffix)){
+    switch (strtoupper($sSuffix)) {
         case 'P':
             $iValue *= 1024;
         case 'T':
@@ -5341,9 +5341,9 @@ function decodeTokenAttributes($oTokenAttributeData) {
     }
     else
     {
-            $aReturnData=@json_decode($oTokenAttributeData,true);
+            $aReturnData = @json_decode($oTokenAttributeData, true);
     }
-    if ($aReturnData===false || $aReturnData===null) return array();
+    if ($aReturnData === false || $aReturnData === null) return array();
     return $aReturnData;
 }
 

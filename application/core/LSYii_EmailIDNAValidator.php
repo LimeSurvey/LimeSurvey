@@ -14,24 +14,24 @@
 
 class LSYii_EmailIDNAValidator extends CValidator {
 
-    public $allowEmpty=false;
-    public $allowMultiple=false;
+    public $allowEmpty = false;
+    public $allowMultiple = false;
 
 
-    public function validateAttribute($object,$attribute){
+    public function validateAttribute($object, $attribute) {
 
-        if ($object->$attribute=='' && $this->allowEmpty)
+        if ($object->$attribute == '' && $this->allowEmpty)
         {
                 return;
         }
 
         if ($this->allowMultiple)
         {
-            $aEmailAdresses = preg_split( "/(,|;)/", $object->$attribute );
+            $aEmailAdresses = preg_split("/(,|;)/", $object->$attribute);
         }
         else
         {
-            $aEmailAdresses=array($object->$attribute);
+            $aEmailAdresses = array($object->$attribute);
         }
 
         foreach ($aEmailAdresses as $sEmailAddress)

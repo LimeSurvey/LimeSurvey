@@ -61,7 +61,7 @@ class jsonRPCClient {
      * @param string $url
      * @param boolean $debug
      */
-    public function __construct($url,$debug = false) {
+    public function __construct($url, $debug = false) {
         // server URL
         $this->url = $url;
         // proxy
@@ -91,7 +91,7 @@ class jsonRPCClient {
      * @param array $params
      * @return array
      */
-    public function __call($method,$params) {
+    public function __call($method, $params) {
 
         // check
         if (!is_scalar($method)) {
@@ -120,23 +120,23 @@ class jsonRPCClient {
                         'id' => $currentId
                         );
         $request = json_encode($request);
-        $this->debug && $this->debug.='***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
+        $this->debug && $this->debug .= '***** Request *****'."\n".$request."\n".'***** End Of request *****'."\n\n";
 
         // performs the HTTP POST
-        $opts = array ('http' => array (
+        $opts = array('http' => array(
                             'method'  => 'POST',
                             'header'  => 'Content-type: application/json',
                             'content' => $request
                             ));
-        $context  = stream_context_create($opts);
+        $context = stream_context_create($opts);
         if ($fp = fopen($this->url, 'r', false, $context)) {
             stream_set_timeout($fp, 120);
             $response = '';
-            while($row = fgets($fp)) {
-                $response.= trim($row)."\n";
+            while ($row = fgets($fp)) {
+                $response .= trim($row)."\n";
             }
-            $this->debug && $this->debug.='***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
-            $response = json_decode($response,true);
+            $this->debug && $this->debug .= '***** Server response *****'."\n".$response.'***** End of server response *****'."\n";
+            $response = json_decode($response, true);
         } else {
             throw new Exception('Unable to connect to '.$this->url);
         }

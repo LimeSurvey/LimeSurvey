@@ -347,8 +347,8 @@ abstract class Zend_Server_Reflection_Function_Abstract
             require_once 'Zend/Server/Reflection/Exception.php';
             throw new Zend_Server_Reflection_Exception(
                 'Variable number of arguments is not supported for services (except optional parameters). '
-                . 'Number of function arguments in ' . $function->getDeclaringClass()->getName() . '::'
-                . $function->getName() . '() must correspond to actual number of arguments described in the '
+                . 'Number of function arguments in '.$function->getDeclaringClass()->getName().'::'
+                . $function->getName().'() must correspond to actual number of arguments described in the '
                 . 'docblock.');
         }
 

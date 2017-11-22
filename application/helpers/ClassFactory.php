@@ -7,7 +7,7 @@
 		
         public static function autoload($className)
         {
-            foreach(self::$map as $prefix => $baseClass)
+            foreach (self::$map as $prefix => $baseClass)
             {
                 if (strpos($className, $prefix) === 0)
                 {

@@ -25,7 +25,7 @@ class LSYii_CompareInsensitiveValidator extends CValidator
      * @var boolean whether the attribute value can be null or empty. Defaults to false.
      * If this is true, it means the attribute is considered valid when it is empty.
      */
-    public $allowEmpty=false;
+    public $allowEmpty = false;
     /**
      * @var string the operator for comparison. Defaults to '='.
      * The followings are valid operators:
@@ -36,7 +36,7 @@ class LSYii_CompareInsensitiveValidator extends CValidator
      * will be done in strict mode (i.e. checking value type as well).</li>
      * </ul>
      */
-    public $operator='=';
+    public $operator = '=';
 
     /**
      * Validates the attribute of the object.
@@ -45,37 +45,37 @@ class LSYii_CompareInsensitiveValidator extends CValidator
      * @param string $attribute the attribute being validated
      * @throws CException if invalid operator is used
      */
-    protected function validateAttribute($object,$attribute)
+    protected function validateAttribute($object, $attribute)
     {
-        $value=strtolower($object->$attribute);
-        if($this->allowEmpty && $this->isEmpty($value))
+        $value = strtolower($object->$attribute);
+        if ($this->allowEmpty && $this->isEmpty($value))
             return;
-        if($this->compareValue!==null)
+        if ($this->compareValue !== null)
         {
-            $compareTo=$this->compareValue;
-            $compareValue=strtolower($compareTo);
+            $compareTo = $this->compareValue;
+            $compareValue = strtolower($compareTo);
         }
         else
         {
                 throw new CException('compareValue must be set when using LSYii_CompareInsensitiveValidator');
         }
-        switch($this->operator)
+        switch ($this->operator)
         {
             case '=':
             case '==':
-                if($value!=$compareValue)
-                    $message=$this->message!==null? $this->message : sprintf(gT('%s must be case-insensitive equal to %s'),$attribute,$compareTo);
+                if ($value != $compareValue)
+                    $message = $this->message !== null ? $this->message : sprintf(gT('%s must be case-insensitive equal to %s'), $attribute, $compareTo);
                 break;
             case '!=':
-                if($value==$compareValue)
-                    $message=$this->message!==null? $this->message : sprintf(gT('%s must not be case-insensitive equal to %s'),$attribute,$compareTo);
+                if ($value == $compareValue)
+                    $message = $this->message !== null ? $this->message : sprintf(gT('%s must not be case-insensitive equal to %s'), $attribute, $compareTo);
                 break;
             default:
-                throw new CException(Yii::t('yii','Invalid operator "{operator}".',array('{operator}'=>$this->operator)));
+                throw new CException(Yii::t('yii', 'Invalid operator "{operator}".', array('{operator}'=>$this->operator)));
         }
-        if(!empty($message))
+        if (!empty($message))
         {
-            $this->addError($object,$attribute,$message,array('{compareAttribute}'=>$compareTo,'{compareValue}'=>$compareValue));
+            $this->addError($object, $attribute, $message, array('{compareAttribute}'=>$compareTo, '{compareValue}'=>$compareValue));
         }
     }
 }

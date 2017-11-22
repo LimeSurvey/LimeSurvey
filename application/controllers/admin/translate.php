@@ -155,9 +155,9 @@ class translate extends Survey_Common_Action {
 
         //iterate through all tabs
         $allTabNames = count($tab_names);
-        for($i=0;$i<$allTabNames;$i++ )
+        for ($i = 0; $i < $allTabNames; $i++)
         {
-            $type= $tab_names[$i];
+            $type = $tab_names[$i];
             $amTypeOptions = $this->setupTranslateFields($type);
             // Setup form
             $evenRow = FALSE; //deprecated => using css
@@ -179,30 +179,30 @@ class translate extends Survey_Common_Action {
             }
 
             $aData['type'] = $type;
-            $aData['activeTab']=($i<1);
+            $aData['activeTab'] = ($i < 1);
             $aData['translateTabs'] = $this->displayTranslateFieldsHeader($baselangdesc, $tolangdesc, $type);
             $aViewUrls['output'] .= $this->getController()->renderPartial("/admin/translate/translatetabs_view", $aData, true);
 
-            for($j=0;$j<count($resultbase);$j++)
+            for ($j = 0; $j < count($resultbase); $j++)
             {
                 $rowfrom = $resultbase[$j];
                 $textfrom = htmlspecialchars_decode($rowfrom[$amTypeOptions["dbColumn"]]);
                 
                 $textto = $resultto[$j][$amTypeOptions["dbColumn"]];
-                if ( $associated )
+                if ($associated)
                 {
                     $textfrom2 = htmlspecialchars_decode($resultbase2[$j][$amTypeOptions2["dbColumn"]]);
                     $textto2 = $resultto2[$j][$amTypeOptions2["dbColumn"]];
                 }
                
-                $gid = ( $amTypeOptions["gid"] == TRUE ) ? $gid = $rowfrom['gid'] : NULL;
-                $qid = ( $amTypeOptions["qid"] == TRUE ) ? $qid = $rowfrom['qid'] : NULL;
+                $gid = ($amTypeOptions["gid"] == TRUE) ? $gid = $rowfrom['gid'] : NULL;
+                $qid = ($amTypeOptions["qid"] == TRUE) ? $qid = $rowfrom['qid'] : NULL;
 
                 $textform_length = strlen(trim($textfrom));
 
-                $all_fields_empty = !( $textform_length > 0 );
+                $all_fields_empty = !($textform_length > 0);
 
-                $aData = array_merge($aData,  array(
+                $aData = array_merge($aData, array(
                                 'textfrom' => $this->_cleanup($textfrom, array()),
                                 'textfrom2' => $this->_cleanup($textfrom2, array()),
                                 'textto' => $this->_cleanup($textto, array()),
@@ -835,7 +835,7 @@ class translate extends Survey_Common_Action {
             //$translateoutput .= '<colgroup width="37" />';
             //$translateoutput .= '<colgroup width="55%" />';
             $translateoutput .= CHtml::openTag('div', array('class' => 'row'));
-            if ($type=='question' || $type=='subquestion' || $type=='question_help' || $type=='answer')
+            if ($type == 'question' || $type == 'subquestion' || $type == 'question_help' || $type == 'answer')
             {
                 $translateoutput .= CHtml::tag('div', array('class'=>'col-md-2'), CHtml::tag('b', array(), gT('Question code / ID')));
             }
@@ -867,25 +867,25 @@ class translate extends Survey_Common_Action {
     {
         $translateoutput = "";
         $translateoutput .= CHtml::openTag('div', array('class'=>'row'));
-            $value1 = ( ! empty($amTypeOptions["id1"]) ) ? $rowfrom[$amTypeOptions["id1"]] : "";
-            $value2 = ( ! empty($amTypeOptions["id2"]) ) ? $rowfrom[$amTypeOptions["id2"]] : "";
-            $iScaleID = ( ! empty($amTypeOptions["scaleid"]) ) ? $rowfrom[$amTypeOptions["scaleid"]] : "";
+            $value1 = (!empty($amTypeOptions["id1"])) ? $rowfrom[$amTypeOptions["id1"]] : "";
+            $value2 = (!empty($amTypeOptions["id2"])) ? $rowfrom[$amTypeOptions["id2"]] : "";
+            $iScaleID = (!empty($amTypeOptions["scaleid"])) ? $rowfrom[$amTypeOptions["scaleid"]] : "";
             // Display text in original language
             // Display text in foreign language. Save a copy in type_oldvalue_i to identify changes before db update
-            if ($type=='answer')
+            if ($type == 'answer')
             {
                 //print_r($rowfrom->attributes);die();
-                $translateoutput .= CHtml::tag("div",array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->questions->title)." (".$rowfrom->questions->qid.")");
+                $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->questions->title)." (".$rowfrom->questions->qid.")");
             }
-            if ($type=='question_help' || $type=='question')
+            if ($type == 'question_help' || $type == 'question')
             {
                 //print_r($rowfrom->attributes);die();
-                $translateoutput .= CHtml::tag("div",array("class"=>'col-sm-2'),htmlspecialchars($rowfrom->title)." ({$rowfrom->qid})");
+                $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->title)." ({$rowfrom->qid})");
             }
-            else if ($type=='subquestion')
+            else if ($type == 'subquestion')
             {
                 //print_r($rowfrom->attributes);die();
-                $translateoutput .= CHtml::tag("div",array("class"=>'col-sm-2'),htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid})");
+                $translateoutput .= CHtml::tag("div", array("class"=>'col-sm-2'), htmlspecialchars($rowfrom->parents->title)." ({$rowfrom->parents->qid})");
             }
 
             $translateoutput .= CHtml::tag(
@@ -954,7 +954,7 @@ class translate extends Survey_Common_Action {
      * @param string $subject The text string that is being translated
      * @return double
      */
-    private function calc_nrows( $subject )
+    private function calc_nrows($subject)
     {
         // Determines the size of the text box
         // A proxy for box sixe is string length divided by 80
@@ -990,7 +990,7 @@ class translate extends Survey_Common_Action {
      * @param string $scriptname
      * @return string
      */
-    private function menuItem( $jsMenuText, $menuImageText, $menuIconClasses, $scriptname)
+    private function menuItem($jsMenuText, $menuImageText, $menuIconClasses, $scriptname)
     {
         //$imageurl = Yii::app()->getConfig("adminimageurl");
 

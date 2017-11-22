@@ -37,11 +37,11 @@ class OptoutController extends LSYii_Controller {
             Yii::app()->loadHelper('sanitize');
 
             //IF there is no survey id, redirect back to the default public page
-            if (!$iSurveyID){
+            if (!$iSurveyID) {
                 $this->redirect(array('/'));
             }
 
-            $iSurveyID = (int)$iSurveyID; //Make sure it's an integer (protect from SQL injects)
+            $iSurveyID = (int) $iSurveyID; //Make sure it's an integer (protect from SQL injects)
             //Check that there is a SID
             // Get passed language from form, so that we dont lose this!
             if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
@@ -55,13 +55,13 @@ class OptoutController extends LSYii_Controller {
 
             Yii::app()->setLanguage($sBaseLanguage);
 
-            $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
+            $aSurveyInfo = getSurveyInfo($iSurveyID, $sBaseLanguage);
 
-            if ($aSurveyInfo==false || !tableExists("{{tokens_{$iSurveyID}}}")){
+            if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}")) {
                 throw new CHttpException(404, "The survey in which you are trying to participate does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-            }else{
-                $sMessage = "<p>".gT('Please confirm that you want to opt out of this survey by clicking the button below.').'<br>'. gT("After confirmation you won't receive any invitations or reminders for this survey anymore.")."</p>";
-                $sMessage .= '<p><a href="'.Yii::app()->createUrl('optout/removetokens', array('surveyid'=>$iSurveyID, 'langcode'=> $sBaseLanguage, 'token' => $sToken )).'" class="btn btn-default btn-lg">'.gT("I confirm").'</a><p>';
+            } else {
+                $sMessage = "<p>".gT('Please confirm that you want to opt out of this survey by clicking the button below.').'<br>'.gT("After confirmation you won't receive any invitations or reminders for this survey anymore.")."</p>";
+                $sMessage .= '<p><a href="'.Yii::app()->createUrl('optout/removetokens', array('surveyid'=>$iSurveyID, 'langcode'=> $sBaseLanguage, 'token' => $sToken)).'" class="btn btn-default btn-lg">'.gT("I confirm").'</a><p>';
                 $this->_renderHtml($sMessage, $aSurveyInfo, $iSurveyID);
             }
 

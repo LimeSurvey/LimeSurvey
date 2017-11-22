@@ -181,17 +181,17 @@ class ProgressBar
             'brd_color' => '#dfdfdf #404040 #404040 #dfdfdf'
             );
 
-            if ($width>0) {$this->frame['width'] = $width;}
-            if ($height>0) {$this->frame['height'] = $height;}
+            if ($width > 0) {$this->frame['width'] = $width; }
+            if ($height > 0) {$this->frame['height'] = $height; }
     }
 
     /**
      * @param string $type
      * @param string $name
      */
-    function addLabel($type,$name,$value='&nbsp;')
+    function addLabel($type, $name, $value = '&nbsp;')
     {
-        switch($type) {
+        switch ($type) {
             case 'text':
                 $this->label[$name] = array(
                 'type' => 'text',

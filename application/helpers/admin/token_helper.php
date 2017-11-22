@@ -30,20 +30,20 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         $bHtml = false;
 
     $attributes = array_keys(getTokenFieldsAndNames($iSurveyID));
-    $oSurveyLocale=SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
+    $oSurveyLocale = SurveyLanguageSetting::model()->findAllByAttributes(array('surveyls_survey_id' => $iSurveyID));
     $oTokens = Token::model($iSurveyID);
     $aSurveyLangs = $oSurvey->additionalLanguages;
     array_unshift($aSurveyLangs, $oSurvey->language);
 
     //Convert result to associative array to minimize SurveyLocale access attempts
-    foreach($oSurveyLocale as $rows)
+    foreach ($oSurveyLocale as $rows)
     {
-        $oTempObject=array();
-        foreach($rows as $k=>$v)
+        $oTempObject = array();
+        foreach ($rows as $k=>$v)
         {
             $oTempObject[$k] = $v;
         }
-        $aSurveyLocaleData[$rows['surveyls_language']]=$oTempObject;
+        $aSurveyLocaleData[$rows['surveyls_language']] = $oTempObject;
     }
 
     foreach ($aResultTokens as $aTokenRow)
@@ -63,7 +63,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         $aEmailaddresses = explode(';', $aTokenRow['email']);
         foreach ($aEmailaddresses as $sEmailaddress)
         {
-            $to[] = ($aTokenRow['firstname'] . " " . $aTokenRow['lastname'] . " <{$sEmailaddress}>");
+            $to[] = ($aTokenRow['firstname']." ".$aTokenRow['lastname']." <{$sEmailaddress}>");
         }
 
 
@@ -78,28 +78,28 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
 
         $fieldsarray["{ADMINNAME}"] = $oSurvey->admin;
         $fieldsarray["{ADMINEMAIL}"] = $oSurvey->adminemail;
-        $fieldsarray["{EXPIRY}"]=$oSurvey->expires;
-        if(empty($fieldsarray["{ADMINEMAIL}"] ))
+        $fieldsarray["{EXPIRY}"] = $oSurvey->expires;
+        if (empty($fieldsarray["{ADMINEMAIL}"]))
             $fieldsarray["{ADMINEMAIL}"] = Yii::app()->getConfig('siteadminemail');
-        $from = $fieldsarray["{ADMINNAME}"] . ' <' . $fieldsarray["{ADMINEMAIL}"] . '>';
+        $from = $fieldsarray["{ADMINNAME}"].' <'.$fieldsarray["{ADMINEMAIL}"].'>';
 
         foreach ($attributes as $attributefield)
         {
-            $fieldsarray['{' . strtoupper($attributefield) . '}'] = $aTokenRow[$attributefield];
-            $fieldsarray['{TOKEN:'.strtoupper($attributefield).'}']=$aTokenRow[$attributefield];
+            $fieldsarray['{'.strtoupper($attributefield).'}'] = $aTokenRow[$attributefield];
+            $fieldsarray['{TOKEN:'.strtoupper($attributefield).'}'] = $aTokenRow[$attributefield];
         }
 
         //create urls
-        $fieldsarray["{OPTOUTURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optout/tokens/langcode/" . trim($aTokenRow['language']) . "/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
-        $fieldsarray["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/langcode/" . trim($aTokenRow['language']) . "/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
-        $fieldsarray["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/token/{$aTokenRow['token']}/lang/" . trim($aTokenRow['language']) . "/");
+        $fieldsarray["{OPTOUTURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optout/tokens/langcode/".trim($aTokenRow['language'])."/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
+        $fieldsarray["{OPTINURL}"] = Yii::app()->getController()->createAbsoluteUrl("/optin/tokens/langcode/".trim($aTokenRow['language'])."/surveyid/{$iSurveyID}/token/{$aTokenRow['token']}");
+        $fieldsarray["{SURVEYURL}"] = Yii::app()->getController()->createAbsoluteUrl("/survey/index/sid/{$iSurveyID}/token/{$aTokenRow['token']}/lang/".trim($aTokenRow['language'])."/");
 
-        if($bHtml)
+        if ($bHtml)
         {
-            foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
+            foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
             {
                 $url = $fieldsarray["{{$key}URL}"];
-                $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
+                $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
                 if ($key == 'SURVEY')
                 {
                     $barebone_link = $url;
@@ -108,7 +108,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         }
 
         //mail headers
-        $customheaders = array('1' => "X-surveyid: " . $iSurveyID,'2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
+        $customheaders = array('1' => "X-surveyid: ".$iSurveyID, '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
 
         global $maildebug;
 
@@ -148,7 +148,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
 
         if (isset($aTokenRow['validfrom']) && trim($aTokenRow['validfrom']) != '' && convertDateTimeFormat($aTokenRow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
         {
-            $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
+            $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                 'email'=>$fieldsarray["{EMAIL}"],
                                                 'status'=>'fail',
                                                 'error'=>'Token not valid yet');
@@ -156,7 +156,7 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         }
         elseif (isset($aTokenRow['validuntil']) && trim($aTokenRow['validuntil']) != '' && convertDateTimeFormat($aTokenRow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
         {
-            $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
+            $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                 'email'=>$fieldsarray["{EMAIL}"],
                                                 'status'=>'fail',
                                                 'error'=>'Token not valid anymore');
@@ -166,25 +166,25 @@ function emailTokens($iSurveyID, $aResultTokens, $sType)
         {
             if (SendEmailMessage($modmessage, $modsubject, $to, $from, Yii::app()->getConfig("sitename"), $bHtml, getBounceEmail($iSurveyID), null, $customheaders))
             {
-                $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
+                $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                     'email'=>$fieldsarray["{EMAIL}"],
                                                     'status'=>'OK');
 
-                if($sType == 'invite' || $sType == 'register')
+                if ($sType == 'invite' || $sType == 'register')
                     $oTokens->updateByPk($aTokenRow['tid'], array('sent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
 
-                if($sType == 'remind')
+                if ($sType == 'remind')
                 {
-                    $iRCount = $oTokens->findByPk($aTokenRow['tid'])->remindercount +1;
+                    $iRCount = $oTokens->findByPk($aTokenRow['tid'])->remindercount + 1;
                     $oTokens->updateByPk($aTokenRow['tid'], array('remindersent' => dateShift(date("Y-m-d H:i:s"), "Y-m-d H:i", Yii::app()->getConfig("timeadjust"))));
-                    $oTokens->updateByPk($aTokenRow['tid'],array('remindercount' => $iRCount));
+                    $oTokens->updateByPk($aTokenRow['tid'], array('remindercount' => $iRCount));
                     }
 
             }
             else
             {
 
-                $aResult[$aTokenRow['tid']] =  array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
+                $aResult[$aTokenRow['tid']] = array('name'=>$fieldsarray["{FIRSTNAME}"]." ".$fieldsarray["{LASTNAME}"],
                                                     'email'=>$fieldsarray["{EMAIL}"],
                                                     'status'=>'fail',
                                                     'error'=>$maildebug);

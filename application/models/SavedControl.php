@@ -50,7 +50,7 @@ class SavedControl extends LSActiveRecord {
     }
 
 
-    function getAllRecords($condition=false)
+    function getAllRecords($condition = false)
     {
         if ($condition != false)
         {
@@ -86,8 +86,8 @@ class SavedControl extends LSActiveRecord {
         $record = new self;
         $criteria = new CDbCriteria;
 
-        if($condition != false) {
-            foreach($condition as $column=>$value) {
+        if ($condition != false) {
+            foreach ($condition as $column=>$value) {
                 $criteria->addCondition("$column='$value'");
             }
         }

@@ -96,17 +96,17 @@ class Authdb extends AuthPluginBase
 
     public function newLoginForm()
     {
-        $sUserName='';
-        $sPassword='';
+        $sUserName = '';
+        $sPassword = '';
         if (Yii::app()->getConfig("demoMode") === true && Yii::app()->getConfig("demoModePrefill") === true)
         {
-            $sUserName=Yii::app()->getConfig("defaultuser");
-            $sPassword=Yii::app()->getConfig("defaultpass");
+            $sUserName = Yii::app()->getConfig("defaultuser");
+            $sPassword = Yii::app()->getConfig("defaultpass");
         }
 
         $this->getEvent()->getContent($this)
-                ->addContent(CHtml::tag('span', array(), "<label for='user'>"  . gT("Username") . "</label>".CHtml::textField('user',$sUserName,array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))))
-                ->addContent(CHtml::tag('span', array(), "<label for='password'>"  . gT("Password") . "</label>".CHtml::passwordField('password',$sPassword,array('size'=>40,'maxlength'=>40, 'class'=>"form-control"))));
+                ->addContent(CHtml::tag('span', array(), "<label for='user'>".gT("Username")."</label>".CHtml::textField('user', $sUserName, array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))))
+                ->addContent(CHtml::tag('span', array(), "<label for='password'>".gT("Password")."</label>".CHtml::passwordField('password', $sPassword, array('size'=>40, 'maxlength'=>40, 'class'=>"form-control"))));
     }
 
     public function newUserSession()
@@ -126,13 +126,13 @@ class Authdb extends AuthPluginBase
 
         $user = $this->api->getUserByName($username);
 
-        if ($user === null){
+        if ($user === null) {
             $user = $this->api->getUserByEmail($username);
-            if (is_object($user)){
+            if (is_object($user)) {
                 $this->setUsername($user->users_name);
             }
         }
-        if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db','read',$user->uid))
+        if ($user !== null && $user->uid != 1 && !Permission::model()->hasGlobalPermission('auth_db', 'read', $user->uid))
         {
             $this->setAuthFailure(self::ERROR_AUTH_METHOD_INVALID, gT('Internal database authentication method is not allowed for this user'));
             return;

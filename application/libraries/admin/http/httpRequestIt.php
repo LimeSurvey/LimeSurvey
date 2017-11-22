@@ -40,42 +40,42 @@ class httpRequestIt
     var $proxy_request_password;
     var $proxy_request_realm;
     var $proxy_request_workstation;
-    var $request_body="";
-    var $request_arguments=array();
-    var $protocol_version="1.1";
-    var $timeout=0;
-    var $data_timeout=0;
-    var $debug=0;
-    var $debug_response_body=1;
-    var $html_debug=0;
-    var $support_cookies=1;
-    var $cookies=array();
-    var $error="";
-    var $exclude_address="";
-    var $follow_redirect=0;
-    var $redirection_limit=5;
-    var $response_status="";
-    var $response_message="";
-    var $file_buffer_length=8000;
-    var $force_multipart_form_post=0;
+    var $request_body = "";
+    var $request_arguments = array();
+    var $protocol_version = "1.1";
+    var $timeout = 0;
+    var $data_timeout = 0;
+    var $debug = 0;
+    var $debug_response_body = 1;
+    var $html_debug = 0;
+    var $support_cookies = 1;
+    var $cookies = array();
+    var $error = "";
+    var $exclude_address = "";
+    var $follow_redirect = 0;
+    var $redirection_limit = 5;
+    var $response_status = "";
+    var $response_message = "";
+    var $file_buffer_length = 8000;
+    var $force_multipart_form_post = 0;
     var $prefer_curl = 0;
 
     /* private variables - DO NOT ACCESS */
 
-    var $state="Disconnected";
-    var $use_curl=0;
-    var $connection=0;
-    var $content_length=0;
-    var $response="";
-    var $read_response=0;
-    var $read_length=0;
-    var $request_host="";
-    var $next_token="";
-    var $redirection_level=0;
-    var $chunked=0;
-    var $remaining_chunk=0;
-    var $last_chunk_read=0;
-    var $months=array(
+    var $state = "Disconnected";
+    var $use_curl = 0;
+    var $connection = 0;
+    var $content_length = 0;
+    var $response = "";
+    var $read_response = 0;
+    var $read_length = 0;
+    var $request_host = "";
+    var $next_token = "";
+    var $redirection_level = 0;
+    var $chunked = 0;
+    var $remaining_chunk = 0;
+    var $last_chunk_read = 0;
+    var $months = array(
         "Jan"=>"01",
         "Feb"=>"02",
         "Mar"=>"03",
@@ -88,31 +88,31 @@ class httpRequestIt
         "Oct"=>"10",
         "Nov"=>"11",
         "Dec"=>"12");
-    var $session='';
-    var $connection_close=0;
+    var $session = '';
+    var $connection_close = 0;
 
     /* Private methods - DO NOT CALL */
 
-    Function Tokenize($string,$separator="")
+    Function Tokenize($string, $separator = "")
     {
-        if(!strcmp($separator,""))
+        if (!strcmp($separator, ""))
         {
-            $separator=$string;
-            $string=$this->next_token;
+            $separator = $string;
+            $string = $this->next_token;
         }
-        for($character=0;$character<strlen($separator);$character++)
+        for ($character = 0; $character < strlen($separator); $character++)
         {
-            if(GetType($position=strpos($string,$separator[$character]))=="integer")
-            $found=(IsSet($found) ? min($found,$position) : $position);
+            if (GetType($position = strpos($string, $separator[$character])) == "integer")
+            $found = (IsSet($found) ? min($found, $position) : $position);
         }
-        if(IsSet($found))
+        if (IsSet($found))
         {
-            $this->next_token=substr($string,$found+1);
-            return(substr($string,0,$found));
+            $this->next_token = substr($string, $found + 1);
+            return(substr($string, 0, $found));
         }
         else
         {
-            $this->next_token="";
+            $this->next_token = "";
             return($string);
         }
     }
@@ -499,7 +499,7 @@ class httpRequestIt
                                             );
                                             $error_code = $response[1];
                                             $error = (IsSet($socks_errors[$error_code]) ? $socks_errors[$error_code] : 'unknown');
-                                            if(strlen($error))
+                                            if (strlen($error))
                                             $error = 'SOCKS error: '.$error;
                                     }
                                 }
@@ -936,28 +936,28 @@ class httpRequestIt
             }
         }
         else
-        $content_type="application/octet-stream";
-        $definition=array(
+        $content_type = "application/octet-stream";
+        $definition = array(
             "Content-Type"=>$content_type,
             "NAME"=>$name
         );
-        if(IsSet($file["FileName"]))
+        if (IsSet($file["FileName"]))
         {
-            if(GetType($length=@filesize($file["FileName"]))!="integer")
+            if (GetType($length = @filesize($file["FileName"])) != "integer")
             {
-                $error="it was not possible to determine the length of the file ".$file["FileName"];
-                if(IsSet($php_errormsg)
+                $error = "it was not possible to determine the length of the file ".$file["FileName"];
+                if (IsSet($php_errormsg)
                 && strlen($php_errormsg))
-                $error.=": ".$php_errormsg;
-                if(!file_exists($file["FileName"]))
-                $error="it was not possible to access the file ".$file["FileName"];
+                $error .= ": ".$php_errormsg;
+                if (!file_exists($file["FileName"]))
+                $error = "it was not possible to access the file ".$file["FileName"];
                 return($error);
             }
-            $definition["FILENAME"]=$file["FileName"];
-            $definition["Content-Length"]=$length;
+            $definition["FILENAME"] = $file["FileName"];
+            $definition["Content-Length"] = $length;
         }
-        elseif(IsSet($file["Data"]))
-        $definition["Content-Length"]=strlen($definition["DATA"]=$file["Data"]);
+        elseif (IsSet($file["Data"]))
+        $definition["Content-Length"] = strlen($definition["DATA"] = $file["Data"]);
         else
         return("it was not specified a valid file name");
         return("");
@@ -1388,28 +1388,28 @@ class httpRequestIt
      *
      * @return string
      */
-    Function SetCookie($name, $value, $expires="" , $path="/" , $domain="" , $secure=0, $verbatim=0)
+    Function SetCookie($name, $value, $expires = "", $path = "/", $domain = "", $secure = 0, $verbatim = 0)
     {
-        if(strlen($this->error))
+        if (strlen($this->error))
         return($this->error);
-        if(strlen($name)==0)
+        if (strlen($name) == 0)
         return($this->SetError("it was not specified a valid cookie name"));
-        if(strlen($path)==0
-        || strcmp($path[0],"/"))
+        if (strlen($path) == 0
+        || strcmp($path[0], "/"))
         return($this->SetError($path." is not a valid path for setting cookie ".$name));
-        if($domain==""
-        || !strpos($domain,".",$domain[0]=="." ? 1 : 0))
+        if ($domain == ""
+        || !strpos($domain, ".", $domain[0] == "." ? 1 : 0))
         return($this->SetError($domain." is not a valid domain for setting cookie ".$name));
-        $domain=strtolower($domain);
-        if(!strcmp($domain[0],"."))
-        $domain=substr($domain,1);
-        if(!$verbatim)
+        $domain = strtolower($domain);
+        if (!strcmp($domain[0], "."))
+        $domain = substr($domain, 1);
+        if (!$verbatim)
         {
-            $name=$this->CookieEncode($name,1);
-            $value=$this->CookieEncode($value,0);
+            $name = $this->CookieEncode($name, 1);
+            $value = $this->CookieEncode($value, 0);
         }
-        $secure=intval($secure);
-        $this->cookies[$secure][$domain][$path][$name]=array(
+        $secure = intval($secure);
+        $this->cookies[$secure][$domain][$path][$name] = array(
             "name"=>$name,
             "value"=>$value,
             "domain"=>$domain,
@@ -1962,45 +1962,45 @@ class httpRequestIt
         }
     }
 
-    Function SavePersistentCookies(&$cookies, $domain='', $secure_only=0)
+    Function SavePersistentCookies(&$cookies, $domain = '', $secure_only = 0)
     {
         $this->SaveCookies($cookies, $domain, $secure_only, 1);
     }
 
-    Function GetPersistentCookies(&$cookies, $domain='', $secure_only=0)
+    Function GetPersistentCookies(&$cookies, $domain = '', $secure_only = 0)
     {
         $this->SavePersistentCookies($cookies, $domain, $secure_only);
     }
 
-    Function RestoreCookies($cookies, $clear=1)
+    Function RestoreCookies($cookies, $clear = 1)
     {
-        $new_cookies=($clear ? array() : $this->cookies);
-        for($secure_cookies=0, Reset($cookies); $secure_cookies<count($cookies); Next($cookies), $secure_cookies++)
+        $new_cookies = ($clear ? array() : $this->cookies);
+        for ($secure_cookies = 0, Reset($cookies); $secure_cookies < count($cookies); Next($cookies), $secure_cookies++)
         {
-            $secure=Key($cookies);
-            if(GetType($secure)!="integer")
+            $secure = Key($cookies);
+            if (GetType($secure) != "integer")
             return($this->SetError("invalid cookie secure value type (".serialize($secure).")"));
-            for($cookie_domain=0,Reset($cookies[$secure]);$cookie_domain<count($cookies[$secure]);Next($cookies[$secure]),$cookie_domain++)
+            for ($cookie_domain = 0, Reset($cookies[$secure]); $cookie_domain < count($cookies[$secure]); Next($cookies[$secure]), $cookie_domain++)
             {
-                $domain_pattern=Key($cookies[$secure]);
-                if(GetType($domain_pattern)!="string")
+                $domain_pattern = Key($cookies[$secure]);
+                if (GetType($domain_pattern) != "string")
                 return($this->SetError("invalid cookie domain value type (".serialize($domain_pattern).")"));
-                for(Reset($cookies[$secure][$domain_pattern]),$path_part=0;$path_part<count($cookies[$secure][$domain_pattern]);Next($cookies[$secure][$domain_pattern]),$path_part++)
+                for (Reset($cookies[$secure][$domain_pattern]), $path_part = 0; $path_part < count($cookies[$secure][$domain_pattern]); Next($cookies[$secure][$domain_pattern]), $path_part++)
                 {
-                    $path=Key($cookies[$secure][$domain_pattern]);
-                    if(GetType($path)!="string"
+                    $path = Key($cookies[$secure][$domain_pattern]);
+                    if (GetType($path) != "string"
                     || strcmp(substr($path, 0, 1), "/"))
                     return($this->SetError("invalid cookie path value type (".serialize($path).")"));
-                    for(Reset($cookies[$secure][$domain_pattern][$path]),$cookie=0;$cookie<count($cookies[$secure][$domain_pattern][$path]);Next($cookies[$secure][$domain_pattern][$path]),$cookie++)
+                    for (Reset($cookies[$secure][$domain_pattern][$path]), $cookie = 0; $cookie < count($cookies[$secure][$domain_pattern][$path]); Next($cookies[$secure][$domain_pattern][$path]), $cookie++)
                     {
-                        $cookie_name=Key($cookies[$secure][$domain_pattern][$path]);
-                        $expires=$cookies[$secure][$domain_pattern][$path][$cookie_name]["expires"];
-                        $value=$cookies[$secure][$domain_pattern][$path][$cookie_name]["value"];
-                        if(GetType($expires)!="string"
+                        $cookie_name = Key($cookies[$secure][$domain_pattern][$path]);
+                        $expires = $cookies[$secure][$domain_pattern][$path][$cookie_name]["expires"];
+                        $value = $cookies[$secure][$domain_pattern][$path][$cookie_name]["value"];
+                        if (GetType($expires) != "string"
                         || (strlen($expires)
                         && !preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}\$/", $expires)))
                         return($this->SetError("invalid cookie expiry value type (".serialize($expires).")"));
-                        $new_cookies[$secure][$domain_pattern][$path][$cookie_name]=array(
+                        $new_cookies[$secure][$domain_pattern][$path][$cookie_name] = array(
                             "name"=>$cookie_name,
                             "value"=>$value,
                             "domain"=>$domain_pattern,

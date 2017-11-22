@@ -780,10 +780,10 @@ class Survey extends LSActiveRecord
      * @param bool $recursive
      * @return boolean
      */
-    public function deleteSurvey($iSurveyID, $recursive=true)
+    public function deleteSurvey($iSurveyID, $recursive = true)
     {
         if (Permission::model()->hasSurveyPermission($iSurveyID, 'survey', 'delete')) {
-            if ( Survey::model()->deleteByPk($iSurveyID) ) {
+            if (Survey::model()->deleteByPk($iSurveyID)) {
                 if ($recursive == true) {
                     //delete the survey_$iSurveyID table
                     if (tableExists("{{survey_".intval($iSurveyID)."}}")) {

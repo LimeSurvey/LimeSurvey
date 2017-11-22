@@ -962,14 +962,14 @@ function _adodb_getdate($origd = false, $fast = false, $is_gmt = false)
         'mday' => $day,
         'mon' => $month,
         'year' => $year,
-        'yday' => floor($secsInYear/$_day_power),
+        'yday' => floor($secsInYear / $_day_power),
         'leap' => $leaf,
         'ndays' => $ndays
         );
     }
 
 
-    $dow = adodb_dow($year,$month,$day);
+    $dow = adodb_dow($year, $month, $day);
 
     return array(
         'seconds' => $secs,
@@ -979,9 +979,9 @@ function _adodb_getdate($origd = false, $fast = false, $is_gmt = false)
         'wday' => $dow,
         'mon' => $month,
         'year' => $year,
-        'yday' => floor($secsInYear/$_day_power),
-        'weekday' => gmdate('l',$_day_power*(3+$dow)),
-        'month' => gmdate('F',mktime(0,0,0,$month,2,1971)),
+        'yday' => floor($secsInYear / $_day_power),
+        'weekday' => gmdate('l', $_day_power * (3 + $dow)),
+        'month' => gmdate('F', mktime(0, 0, 0, $month, 2, 1971)),
     0 => $origd
     );
 }
@@ -994,38 +994,38 @@ function _adodb_getdate($origd = false, $fast = false, $is_gmt = false)
 /**
  * @param boolean $isphp5
  */
-function adodb_tz_offset($gmt,$isphp5)
+function adodb_tz_offset($gmt, $isphp5)
 {
-    $zhrs = abs($gmt)/3600;
+    $zhrs = abs($gmt) / 3600;
     $hrs = floor($zhrs);
     if ($isphp5)
-    return sprintf('%s%02d%02d',($gmt<=0)?'+':'-',floor($zhrs),($zhrs-$hrs)*60);
+    return sprintf('%s%02d%02d', ($gmt <= 0) ? '+' : '-', floor($zhrs), ($zhrs - $hrs) * 60);
     else
-    return sprintf('%s%02d%02d',($gmt<0)?'+':'-',floor($zhrs),($zhrs-$hrs)*60);
+    return sprintf('%s%02d%02d', ($gmt < 0) ? '+' : '-', floor($zhrs), ($zhrs - $hrs) * 60);
 }
 
 
-function adodb_gmdate($fmt,$d=false)
+function adodb_gmdate($fmt, $d = false)
 {
-    return adodb_date($fmt,$d,true);
+    return adodb_date($fmt, $d, true);
 }
 
 // accepts unix timestamp and iso date format in $d
-function adodb_date2($fmt, $d=false, $is_gmt=false)
+function adodb_date2($fmt, $d = false, $is_gmt = false)
 {
     if ($d !== false) {
         if (!preg_match(
             "|^([0-9]{4})[-/\.]?([0-9]{1,2})[-/\.]?([0-9]{1,2})[ -]?(([0-9]{1,2}):?([0-9]{1,2}):?([0-9\.]{1,4}))?|", 
-        ($d), $rr)) return adodb_date($fmt,false,$is_gmt);
+        ($d), $rr)) return adodb_date($fmt, false, $is_gmt);
 
-        if ($rr[1] <= 100 && $rr[2]<= 1) return adodb_date($fmt,false,$is_gmt);
+        if ($rr[1] <= 100 && $rr[2] <= 1) return adodb_date($fmt, false, $is_gmt);
 
         // h-m-s-MM-DD-YY
-        if (!isset($rr[5])) $d = adodb_mktime(0,0,0,$rr[2],$rr[3],$rr[1],false,$is_gmt);
-        else $d = @adodb_mktime($rr[5],$rr[6],$rr[7],$rr[2],$rr[3],$rr[1],false,$is_gmt);
+        if (!isset($rr[5])) $d = adodb_mktime(0, 0, 0, $rr[2], $rr[3], $rr[1], false, $is_gmt);
+        else $d = @adodb_mktime($rr[5], $rr[6], $rr[7], $rr[2], $rr[3], $rr[1], false, $is_gmt);
     }
 
-    return adodb_date($fmt,$d,$is_gmt);
+    return adodb_date($fmt, $d, $is_gmt);
 }
 
 

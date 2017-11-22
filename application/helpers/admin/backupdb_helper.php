@@ -17,15 +17,15 @@
      * Outputs a full dump of the current LimeSurvey database
      * @param string $sDbName Database Name
      */
-    function outputDatabase($sDbName='', $bEchoOutput=true, $sFileName=null)
+    function outputDatabase($sDbName = '', $bEchoOutput = true, $sFileName = null)
     {
-        if($sDbName=='')
+        if ($sDbName == '')
         {
-            $sDbName=_getDbName();
+            $sDbName = _getDbName();
         }
         $bAllowExportAllDb = (bool) Yii::app()->getConfig('allowexportalldb');
 
-        $sOutput=_outputDBDescription($sDbName, $bAllowExportAllDb);
+        $sOutput = _outputDBDescription($sDbName, $bAllowExportAllDb);
         if ($bEchoOutput)
         {
             echo $sOutput;

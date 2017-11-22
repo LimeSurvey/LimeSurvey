@@ -339,8 +339,8 @@ class UpdateForm extends CFormModel
     public function removeTmpFile($sTmpFile = 'update.zip')
     {
         $sTmpFilePath = $this->tempdir.DIRECTORY_SEPARATOR.$sTmpFile;
-        if ( file_exists( $sTmpFilePath ) ) {
-            if (! @unlink( $sTmpFilePath ) ) {
+        if (file_exists($sTmpFilePath)) {
+            if (!@unlink($sTmpFilePath)) {
                 $return = array('result'=>FALSE, 'error'=>'cant_remove_update_file', 'message'=>'file : '.$sTmpFilePath);
                 return (object) $return;
             }

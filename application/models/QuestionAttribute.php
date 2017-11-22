@@ -133,9 +133,9 @@ class QuestionAttribute extends LSActiveRecord
                     // We check if we can update this attribute for this question type
                     // TODO: if (in_array($oQuestion->attributes, $sAttribute))
                     if (in_array($oQuestion->type, $aValidQuestionTypes)) {
-                        if (count($iInsertCount)>0) {
+                        if (count($iInsertCount) > 0) {
                             // Update
-                                QuestionAttribute::model()->updateAll(array('value'=>$sValue),'attribute=:attribute AND qid=:qid', array(':attribute'=>$sAttribute, ':qid'=>$iQid));
+                                QuestionAttribute::model()->updateAll(array('value'=>$sValue), 'attribute=:attribute AND qid=:qid', array(':attribute'=>$sAttribute, ':qid'=>$iQid));
                         } else {
                             // Create
                             $oAttribute            = new QuestionAttribute;

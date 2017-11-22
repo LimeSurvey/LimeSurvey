@@ -98,17 +98,17 @@ abstract class LSYii_Controller extends CController
             throw new CException($dieoutput);
 
             if (ini_get("max_execution_time") < 1200) @set_time_limit(1200); // Maximum execution time - works only if safe_mode is off
-        if (ini_get('memory_limit')!=-1 && convertPHPSizeToBytes(ini_get("memory_limit"))<convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit').'M'))
+        if (ini_get('memory_limit') != -1 && convertPHPSizeToBytes(ini_get("memory_limit")) < convertPHPSizeToBytes(Yii::app()->getConfig('memory_limit').'M'))
         {
-            @ini_set("memory_limit",Yii::app()->getConfig('memory_limit').'M'); // Set Memory Limit for big surveys
+            @ini_set("memory_limit", Yii::app()->getConfig('memory_limit').'M'); // Set Memory Limit for big surveys
         }
 
         // The following function (when called) includes FireBug Lite if true
-        defined('FIREBUG') or define('FIREBUG' , Yii::app()->getConfig('use_firebug_lite'));
+        defined('FIREBUG') or define('FIREBUG', Yii::app()->getConfig('use_firebug_lite'));
 
         //Every 50th time clean up the temp directory of old files (older than 1 day)
         //depending on the load the  probability might be set higher or lower
-        if (rand(1,50)==1)
+        if (rand(1, 50) == 1)
         {
             cleanTempDirectory();
         }

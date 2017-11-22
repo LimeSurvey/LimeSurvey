@@ -33,13 +33,13 @@ use Template;
          */
         protected function getTableName(iPlugin $plugin, $tableName)
         {
-            return App()->getDb()->tablePrefix . strtolower($plugin->getName()) . "_$tableName";
+            return App()->getDb()->tablePrefix.strtolower($plugin->getName())."_$tableName";
         }
         /**
          * Sets a flash message to be shown to the user.
          * @param html $message
          */
-        public function setFlash($message, $key ='api')
+        public function setFlash($message, $key = 'api')
         {
             // @todo Remove direct session usage.
             \Yii::app()->user->setFlash($key, $message);
@@ -53,11 +53,11 @@ use Template;
          * @param string $sOptions additional SQL fragment that will be appended to the generated SQL.
          * @return integer number of rows affected by the execution.
          */
-        public function createTable($plugin, $sTableName, $aColumns, $sOptions=null)
+        public function createTable($plugin, $sTableName, $aColumns, $sOptions = null)
         {
             if (null !== $sTableName = $this->getTableName($plugin, $sTableName))
             {
-                return App()->getDb()->createCommand()->createTable($sTableName,$aColumns,$sOptions);
+                return App()->getDb()->createCommand()->createTable($sTableName, $aColumns, $sOptions);
             }
             return false;
         }
@@ -273,7 +273,7 @@ use Template;
          * Returns false if the user is not logged and returns null if the user does not exist anymore for some reason (should not really happen)
          * @return User
          */
-        public function getCurrentUser(){
+        public function getCurrentUser() {
             if (\Yii::app()->user->id)
             {
                 return \User::model()->findByPk(\Yii::app()->user->id);
@@ -354,7 +354,7 @@ use Template;
          * Returns null if the user does not exist anymore for some reason (should not really happen)
          * @return User
          */
-        public function getPermissionSet($iUserID, $iEntityID=null, $sEntityName=null){
+        public function getPermissionSet($iUserID, $iEntityID = null, $sEntityName = null) {
             return \Permission::model()->getPermissions($iUserID, $iEntityID, $sEntityName);
         }
 
@@ -364,7 +364,7 @@ use Template;
          * Returns null if the user does not exist anymore for some reason (should not really happen)
          * @return User
          */
-        public function getParticipant($iParticipantID){
+        public function getParticipant($iParticipantID) {
             return \Participant::model()->findByPk($iParticipantID);
         }
 

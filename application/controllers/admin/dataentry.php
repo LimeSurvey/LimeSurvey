@@ -76,15 +76,15 @@ class dataentry extends Survey_Common_Action
         $aData['title_bar']['title'] = gT("Data entry");
         $aData['sidemenu']['state'] = false;
         $aData['menu']['edition'] = true;
-        $aData['menu']['import'] =  true;
-        $aData['menu']['close'] =  true;
+        $aData['menu']['import'] = true;
+        $aData['menu']['close'] = true;
         //
 
         $iSurveyId = sanitize_int(Yii::app()->request->getParam('surveyid'));
         $aData['iSurveyId'] = $aData['surveyid'] = $iSurveyId;
-        if( Permission::model()->hasSurveyPermission($iSurveyId,'responses','create') )
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'create'))
         {
-            if(tableExists("{{survey_$iSurveyId}}"))
+            if (tableExists("{{survey_$iSurveyId}}"))
             {
                 // First load the database helper
                 Yii::app()->loadHelper('database'); // Really needed ?
@@ -351,50 +351,50 @@ class dataentry extends Survey_Common_Action
             $imported = 0;
             $sourceResponses = new CDataProviderIterator(new CActiveDataProvider($sourceTable), 500);
             foreach ($sourceResponses as $sourceResponse) {
-                $iOldID=$sourceResponse->id;
+                $iOldID = $sourceResponse->id;
                 // Using plugindynamic model because I dont trust surveydynamic.
                 $targetResponse = new PluginDynamic("{{survey_$iSurveyId}}");
 
-                foreach($fieldMap as $sourceField => $targetField) {
+                foreach ($fieldMap as $sourceField => $targetField) {
                     $targetResponse[$targetField] = $sourceResponse[$sourceField];
                 }
 
                 $beforeDataEntryImport = new PluginEvent('beforeDataEntryImport');
-                $beforeDataEntryImport->set('iSurveyID',$iSurveyId);
-                $beforeDataEntryImport->set('oModel',$targetResponse);
+                $beforeDataEntryImport->set('iSurveyID', $iSurveyId);
+                $beforeDataEntryImport->set('oModel', $targetResponse);
                 App()->getPluginManager()->dispatchEvent($beforeDataEntryImport);
 
                 $imported++;
                 $targetResponse->save();
-                $aSRIDConversions[$iOldID]=$targetResponse->id;
+                $aSRIDConversions[$iOldID] = $targetResponse->id;
                 unset($targetResponse);
             }
 
 
 
             Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) were successfully imported."), $imported);
-            $sOldTimingsTable=substr(substr($sourceTable->tableName(),0,strrpos($sourceTable->tableName(),'_')).'_timings'.substr($sourceTable->tableName(),strrpos($sourceTable->tableName(),'_')),strlen(Yii::app()->db->tablePrefix));
+            $sOldTimingsTable = substr(substr($sourceTable->tableName(), 0, strrpos($sourceTable->tableName(), '_')).'_timings'.substr($sourceTable->tableName(), strrpos($sourceTable->tableName(), '_')), strlen(Yii::app()->db->tablePrefix));
             $sNewTimingsTable = "survey_{$surveyid}_timings";
 
             if (isset($_POST['timings']) && $_POST['timings'] == 1 && tableExists($sOldTimingsTable) && tableExists($sNewTimingsTable)) {
                 // Import timings
-                $aFieldsOldTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
-                $aFieldsNewTimingTable=array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
+                $aFieldsOldTimingTable = array_values(Yii::app()->db->schema->getTable('{{'.$sOldTimingsTable.'}}')->columnNames);
+                $aFieldsNewTimingTable = array_values(Yii::app()->db->schema->getTable('{{'.$sNewTimingsTable.'}}')->columnNames);
 
-                $aValidTimingFields=array_intersect($aFieldsOldTimingTable,$aFieldsNewTimingTable);
+                $aValidTimingFields = array_intersect($aFieldsOldTimingTable, $aFieldsNewTimingTable);
 
-                $sQueryOldValues = "SELECT ".implode(", ",$aValidTimingFields)." FROM {{{$sOldTimingsTable}}} ";
-                $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll();   //Checked
-                $iRecordCountT=0;
+                $sQueryOldValues = "SELECT ".implode(", ", $aValidTimingFields)." FROM {{{$sOldTimingsTable}}} ";
+                $aQueryOldValues = Yii::app()->db->createCommand($sQueryOldValues)->query()->readAll(); //Checked
+                $iRecordCountT = 0;
                 foreach ($aQueryOldValues as $sRecord) {
                     if (isset($aSRIDConversions[$sRecord['id']])) {
-                        $sRecord['id']=$aSRIDConversions[$sRecord['id']];
+                        $sRecord['id'] = $aSRIDConversions[$sRecord['id']];
                     }
                     else continue;
-                    Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}",$sRecord);
+                    Yii::app()->db->createCommand()->insert("{{{$sNewTimingsTable}}}", $sRecord);
                     $iRecordCountT++;
                 }
-                Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."),$imported,$iRecordCountT);
+                Yii::app()->session['flashmessage'] = sprintf(gT("%s old response(s) and according timings were successfully imported."), $imported, $iRecordCountT);
             }
             $this->getController()->redirect(array("/admin/responses/sa/index/", 'surveyid' => $surveyid));
         }
@@ -480,7 +480,7 @@ class dataentry extends Survey_Common_Action
      * @param mixed $language
      * @return
      */
-    public function editdata($subaction, $id, $surveyid, $language='')
+    public function editdata($subaction, $id, $surveyid, $language = '')
     {
 
         $surveyid = sanitize_int($surveyid);
@@ -1937,26 +1937,26 @@ class dataentry extends Survey_Common_Action
      * @param mixed $surveyid
      * @param mixed $lang
      */
-    public function view($surveyid, $lang=NULL)
+    public function view($surveyid, $lang = NULL)
     {
         $surveyid = sanitize_int($surveyid);
         $survey = Survey::model()->findByPk($surveyid);
         $lang = isset($_GET['lang']) ? $_GET['lang'] : NULL;
-        if(isset($lang)) $lang=sanitize_languagecode($lang);
+        if (isset($lang)) $lang = sanitize_languagecode($lang);
         $aViewUrls = array();
 
         if (Permission::model()->hasSurveyPermission($surveyid, 'responses', 'create')) {
             $baselang = Survey::model()->findByPk($surveyid)->language;
             $slangs = $survey->allLanguages;
 
-            if(is_null($lang) || !in_array($lang,$slangs)) {
+            if (is_null($lang) || !in_array($lang, $slangs)) {
                 $sDataEntryLanguage = $baselang;
             } else {
                 $sDataEntryLanguage = $lang;
             }
 
-            $langlistbox = languageDropdown($surveyid,$sDataEntryLanguage);
-            $thissurvey=getSurveyInfo($surveyid);
+            $langlistbox = languageDropdown($surveyid, $sDataEntryLanguage);
+            $thissurvey = getSurveyInfo($surveyid);
 
             //This is the default, presenting a blank dataentry form
             LimeExpressionManager::StartSurvey($surveyid, 'survey', NULL, false, LEM_PRETTY_PRINT_ALL_SYNTAX);

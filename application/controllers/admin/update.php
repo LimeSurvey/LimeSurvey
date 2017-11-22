@@ -217,7 +217,7 @@ class update extends Survey_Common_Action
             $destinationBuild = $_REQUEST['destinationBuild'];
                 $welcome = (array) $updateModel->getWelcomeMessage($updateKey, $destinationBuild);
                 $welcome['destinationBuild'] = $destinationBuild;
-            $welcome = (object)$welcome;
+            $welcome = (object) $welcome;
 
                 return $this->_renderWelcome($welcome);
         }
