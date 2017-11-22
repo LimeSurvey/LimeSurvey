@@ -191,7 +191,6 @@ class InstallerController extends CController {
     */
     private function stepPreInstallationCheck()
     {
-
         $oModel = new InstallerConfigForm();
         //usual data required by view
         $aData['title'] = gT('Pre-installation check');
@@ -613,7 +612,6 @@ class InstallerController extends CController {
     */
     private function stepOptionalConfiguration()
     {
-
         $aData['confirmation'] = Yii::app()->session['optconfig_message'];
         $aData['title'] = gT("Optional settings");
         $aData['descp'] = gT("Optional settings to give you a head start");
@@ -656,7 +654,7 @@ class InstallerController extends CController {
                     try {
 
                         if (User::model()->count()>0){
-                            die();
+                            die('Fatal error: Already an admin user in the system.');
                         }
                         // Save user
                         $user=new User;
