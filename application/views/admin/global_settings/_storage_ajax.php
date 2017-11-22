@@ -21,7 +21,7 @@
             <td><?php echo $surveySize; ?></td>
         </tr>
         <tr>
-            <td><?php eT('Template storage'); ?></td>
+            <td><?php eT('Themes storage'); ?></td>
             <td><?php echo $templateSize; ?></td>
         </tr>
         <tr>
@@ -63,7 +63,7 @@
 <?php endif; ?>
 
 <?php if ($templates): ?>
-    <label><?php eT('Template storage'); ?></label>
+    <label><?php eT('Themes storage'); ?></label>
     <table class='table table-striped table-bordered'>
         <?php foreach ($templates as $templates): ?>
         <tr>

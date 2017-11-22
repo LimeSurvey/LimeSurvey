@@ -10,8 +10,8 @@ $templatenames=array_keys(getTemplateList());
 $thisadmintheme=getGlobalSetting('admintheme');
 $thisdefaulthtmleditormode=getGlobalSetting('defaulthtmleditormode');
 $thisdefaultquestionselectormode=getGlobalSetting('defaultquestionselectormode');
-$thisdefaultthemeteeditormode=getGlobalSetting('defaultthemeteeditormode'); 
-$dateformatdata=getDateFormatData(Yii::app()->session['dateformat']); 
+$thisdefaultthemeteeditormode=getGlobalSetting('defaultthemeteeditormode');
+$dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
 ?>
 
 <div class="container-fluid">
@@ -31,7 +31,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <div class="row ls-space margin top-10">
             <div class="form-group">
                 <label class="col-sm-12 text-left control-label" for="defaulttheme">
-                <?php eT("Default template:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?>
+                <?php eT("Default theme:"); echo ((Yii::app()->getConfig("demoMode")==true)?'*':'');?>
                 </label>
                 <div class="col-sm-12">
                     <select class="form-control" name="defaulttheme" id="defaulttheme">
@@ -48,7 +48,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
         <div class="row ls-space margin top-10">
             <div class="form-group">
                 <label class="col-sm-12 text-left control-label" for="admintheme">
-                <?php eT("Administration template:"); ?>
+                <?php eT("Administration theme:"); ?>
                 </label>
                 <div class="col-sm-12">
                     <select class="form-control" name="admintheme" id="admintheme">
@@ -62,7 +62,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <?php if(Permission::model()->hasGlobalPermission('superadmin','read')):?>
                 <div class="col-sm-12 control-label ">
                     <p class="text-info text-left">
-                    <?php eT("You can add your custom templates in upload/admintheme");?>
+                    <?php eT("You can add your custom themes in upload/admintheme");?>
                     </p>
                 </div>
                 <?php endif;?>
@@ -147,7 +147,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 <div class='col-sm-12'>
                     <select class='form-control' name='characterset' id='characterset'>
                     <?php foreach ($aEncodings as $code => $charset): ?>
-                        <option value='<?php echo $code; ?>' 
+                        <option value='<?php echo $code; ?>'
                         <?php if (array_key_exists($thischaracterset, $aEncodings) && $code==$thischaracterset): ?>
                             selected='selected'
                         <?php elseif (!array_key_exists($thischaracterset, $aEncodings) && $code == "auto"): ?>
@@ -204,7 +204,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                         ));
                     ?>
                 </div>
-            </div>            
+            </div>
         </div>
         <!-- Default question type selector mode -->
         <div class="row ls-space margin top-10">
@@ -226,7 +226,7 @@ $dateformatdata=getDateFormatData(Yii::app()->session['dateformat']);
                 </div>
             </div>
         </div>
-        <!-- Default template editor mode -->
+        <!-- Default theme editor mode -->
         <div class="row ls-space margin top-10">
             <div class="form-group">
                 <label class="col-sm-12 text-left control-label" for='defaultthemeteeditormode'>

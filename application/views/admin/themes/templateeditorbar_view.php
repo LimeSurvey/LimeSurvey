@@ -280,10 +280,10 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
             <span class="fa fa-info-sign" ></span>&nbsp;&nbsp;&nbsp;
             <strong>
-                <?php eT('Note: This is a standard template.');?>
+                <?php eT('Note: This is a standard theme.');?>
             </strong>
             <?php
-            printf(gT('If you want to modify it %s you can extend it%s.'),"<a href='#' title=\"".gT("Extend template")."\""
+            printf(gT('If you want to modify it %s you can extend it%s.'),"<a href='#' title=\"".gT("Extend theme")."\""
                 ." onclick=\"javascript: copyprompt('".gT("Please enter the name for the new template:")."', '".gT("extends_")."$templatename', '$templatename', 'copy')\">",'</a>');
             ?>
         </div>
@@ -293,7 +293,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span >&times;</span></button>
             <div class="h4">
                 <span class="fa fa-info-sign" ></span>
-                <?php eT('This template is out of date.');?>
+                <?php eT('This theme is out of date.');?>
             </div>
             <?php
                 printf(gT("We can not guarantee optimum operation. It would be preferable to no longer use it or to make it compatible with the version %s of the LimeSurvey API."),intval(App()->getConfig("versionnumber")));

@@ -59,14 +59,6 @@ $surveyid = $oSurvey->sid;
                             <?php eT('Set below if your questions are shown one at a time, group by group or all on one page.');?>
                         </div>
                     <?php endif;?>
-
-                    <?php /* Commented out for the moment because it is not properly working
-                    if(intval($templateapiversion) < intval(App()->getConfig("versionnumber")) ):?>
-                        <div class="alert alert-warning alert-dismissible" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-                            <strong><?php eT('This template is out of date.');?></strong> <?php eT('We can not guarantee optimum operation. It would be preferable to use a new template.');?>
-                        </div>
-                    <?php endif; */ ?>
                 </div>
             </div>
 
@@ -336,7 +328,7 @@ $surveyid = $oSurvey->sid;
             </div> <!-- row boxes and template-->
         </div>
     </div>
-    
+
     <script>$(function(){$('#survey-action-chevron').on('click', surveyQuickActionTrigger);});</script>
 
     <div class="row">
@@ -526,9 +518,9 @@ $surveyid = $oSurvey->sid;
                             <?php $templatename = $oSurvey->template;
                             if (Permission::model()->hasGlobalPermission('templates','read'))
                             {
-                                $sTemplateOptionsUrl = $this->createUrl("admin/themeoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid)); 
-                                $sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('templatename' => $oSurvey->template)); 
-                                //$sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template)); 
+                                $sTemplateOptionsUrl = $this->createUrl("admin/themeoptions/sa/updatesurvey",array('surveyid'=>$oSurvey->sid, "gsid"=>$oSurvey->gsid));
+                                $sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('templatename' => $oSurvey->template));
+                                //$sTemplateEditorUrl = $this->createUrl("admin/themes/sa/view",array('editfile'=>'layout_first_page.twig', "screenname"=>'welcome', 'template' => $oSurvey->template));
                                 ?>
                                 <?php echo $templatename; ?>
                                 <a href='<?=$sTemplateOptionsUrl?>' title="<?php eT("Open template options"); ?>" class="btn btn-default btn-xs"><i class="fa fa-paint-brush"></i></a>

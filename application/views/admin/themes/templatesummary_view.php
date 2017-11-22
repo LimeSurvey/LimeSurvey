@@ -219,7 +219,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
 
             <div class="">
                 <a href="#" data-toggle="modal" data-target="#fileHelp" />
-                <?php eT('Tip: How to embed a picture in your template?'); ?>
+                <?php eT('Tip: How to embed a picture in your theme?'); ?>
                 </a>
             </div>
         </div>
@@ -230,7 +230,7 @@ Yii::app()->clientScript->registerScript('editorfiletype',"editorfiletype ='".$s
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <div class="modal-title h4" id="myModalLabel"><?php eT('Tip: How to display a picture in your template?'); ?></div>
+                        <div class="modal-title h4" id="myModalLabel"><?php eT('Tip: How to display a picture in your theme?'); ?></div>
                     </div>
                     <div class="modal-body">
                         <?php eT('To use a picture in a .twig file:');?><br/>

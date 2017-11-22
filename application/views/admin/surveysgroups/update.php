@@ -22,7 +22,7 @@
         <ul class="nav nav-tabs" id="surveygrouptabsystem" role="tablist">
             <li class="active"><a href="#surveysInThisGroup"><?php eT('Surveys in this group'); ?></a></li>
             <li><a href="#settingsForThisGroup"><?php eT('Settings for this survey group'); ?></a></li>
-            <li><a href="#templateSettingsFortThisGroup"><?php eT('Template options for this survey group'); ?></a></li>
+            <li><a href="#templateSettingsFortThisGroup"><?php eT('Themes options for this survey group'); ?></a></li>
         </ul>
         <div class="tab-content">
             <div id="surveysInThisGroup" class="tab-pane active">
@@ -42,7 +42,6 @@
             <div id="templateSettingsFortThisGroup" class="tab-pane">
                 <?php
                     if (is_a($templateOptionsModel, 'TemplateConfiguration')){
-                    //    $this->renderPartial('./themeoptions/update', array('model'=>$templateOptionsModel, 'templateOptionPage'=>$templateOptionPage));
                         $this->renderPartial('./themeoptions/index', array('model'=>$templateOptionsModel, 'bFromSurveyGroup'=>true));
                     }
                 ?>
