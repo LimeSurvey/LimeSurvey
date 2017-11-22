@@ -21,7 +21,7 @@ class DocWriter extends Writer
         parent::init($survey, $sLanguageCode, $oOptions);
         App()->setLanguage($sLanguageCode);
 
-        if ($oOptions->output=='display')
+        if ($oOptions->output == 'display')
         {
             header("Content-Disposition: attachment; filename=results-survey".$survey->id.".doc");
             header("Content-type: application/vnd.ms-word");
@@ -40,7 +40,7 @@ class DocWriter extends Writer
         background: #c0c0c0;
         }
         </style>';
-        if ($oOptions->output=='display'){
+        if ($oOptions->output == 'display') {
             echo  $sOutput;
         } elseif ($oOptions->output == 'file') {
             $this->file = fopen($this->filename, 'w');
@@ -49,10 +49,10 @@ class DocWriter extends Writer
     }
 
     /**
-    * @param array $headers
-    * @param array $values
-    * @param FormattingOptions $oOptions
-    */
+     * @param array $headers
+     * @param array $values
+     * @param FormattingOptions $oOptions
+     */
     protected function outputRecord($headers, $values, FormattingOptions $oOptions)
     {
         if ($oOptions->answerFormat == 'short')
@@ -78,7 +78,7 @@ class DocWriter extends Writer
             {
                 //if cell empty, output a space instead, otherwise the cell will be in 2pt font
                 $value = "&nbsp;";
-                if($values[$counter] != "")
+                if ($values[$counter] != "")
                 {
                     $value = $values[$counter];
                 }
@@ -91,12 +91,12 @@ class DocWriter extends Writer
         {
             safeDie('An invalid answer format was selected.  Only \'short\' and \'long\' are valid.');
         }
-        if ($oOptions->output=='display'){
+        if ($oOptions->output == 'display') {
             echo  $this->output;
-            $this->output='';
+            $this->output = '';
         } elseif ($oOptions->output == 'file') {
             fwrite($this->file, $this->output);
-            $this->output='';
+            $this->output = '';
         }
     }
 

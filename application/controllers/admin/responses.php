@@ -127,12 +127,12 @@ class responses extends Survey_Common_Action
      */
     public function viewquexmlpdf($iSurveyID, $iId, $sBrowseLang = '')
     {
-        if(Permission::model()->hasSurveyPermission($iSurveyID,'responses','read'))
+        if (Permission::model()->hasSurveyPermission($iSurveyID, 'responses', 'read'))
         {
             $aData = $this->_getData(array('iId' => $iId, 'iSurveyId' => $iSurveyID, 'browselang' => $sBrowseLang));
             $sBrowseLanguage = $aData['language'];
 
-            Yii::import("application.libraries.admin.quexmlpdf",TRUE);
+            Yii::import("application.libraries.admin.quexmlpdf", TRUE);
 
             $quexmlpdf = new quexmlpdf();
 
@@ -414,7 +414,7 @@ class responses extends Survey_Common_Action
      */
     public function set_grid_display($displaymode)
     {
-        if ($displaymode=='extended')
+        if ($displaymode == 'extended')
         {
             Yii::app()->user->setState('responsesGridSwitchDisplayState', 'extended');
             Yii::app()->user->setState('defaultEllipsizeHeaderValue', 1000);
@@ -439,14 +439,14 @@ class responses extends Survey_Common_Action
         $survey = Survey::model()->findByPk($iSurveyId);
         $displaymode = Yii::app()->request->getPost('displaymode', null);
         
-        if($displaymode !== null){
+        if ($displaymode !== null) {
             $this->set_grid_display($displaymode);
         }
 
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
         {
-            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'listresponse.js', LSYii_ClientScript::POS_BEGIN);
-            App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'tokens.js',LSYii_ClientScript::POS_BEGIN);
+            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'listresponse.js', LSYii_ClientScript::POS_BEGIN);
+            App()->getClientScript()->registerScriptFile(App()->getConfig('adminscripts').'tokens.js', LSYii_ClientScript::POS_BEGIN);
 
             // Basic datas for the view
             $aData                      = $this->_getData($iSurveyId);
@@ -523,10 +523,10 @@ class responses extends Survey_Common_Action
 
     public function setHiddenColumns($iSurveyId)
     {
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
         {
-            $aHiddenFields=explode('|',Yii::app()->request->getPost('aHiddenFields'));
-            $_SESSION['survey_'.$iSurveyId]['HiddenFields']=$aHiddenFields;
+            $aHiddenFields = explode('|', Yii::app()->request->getPost('aHiddenFields'));
+            $_SESSION['survey_'.$iSurveyId]['HiddenFields'] = $aHiddenFields;
         }
     }
 
@@ -622,39 +622,39 @@ class responses extends Survey_Common_Action
      */
     public function actionDownloadfile($iSurveyId, $iResponseId, $iQID, $iIndex)
     {
-        $iIndex=(int)$iIndex;
-        $iResponseId=(int)$iResponseId;
-        $iQID=(int)$iQID;
+        $iIndex = (int) $iIndex;
+        $iResponseId = (int) $iResponseId;
+        $iQID = (int) $iQID;
 
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
         {
             $oResponse = Response::model($iSurveyId)->findByPk($iResponseId);
-            $aQuestionFiles=$oResponse->getFiles($iQID);
+            $aQuestionFiles = $oResponse->getFiles($iQID);
             if (isset($aQuestionFiles[$iIndex]))
             {
-                $aFile=$aQuestionFiles[$iIndex];
-                $sFileRealName = Yii::app()->getConfig('uploaddir') . "/surveys/" . $iSurveyId . "/files/" . $aFile['filename'];
+                $aFile = $aQuestionFiles[$iIndex];
+                $sFileRealName = Yii::app()->getConfig('uploaddir')."/surveys/".$iSurveyId."/files/".$aFile['filename'];
                 if (file_exists($sFileRealName))
                 {
-                    $mimeType=CFileHelper::getMimeType($sFileRealName, null, false);
-                    if(is_null($mimeType)){
-                        $mimeType="application/octet-stream";
+                    $mimeType = CFileHelper::getMimeType($sFileRealName, null, false);
+                    if (is_null($mimeType)) {
+                        $mimeType = "application/octet-stream";
                     }
                     @ob_clean();
                     header('Content-Description: File Transfer');
                     header('Content-Type: '.$mimeType);
-                    header('Content-Disposition: attachment; filename="' . sanitize_filename(rawurldecode($aFile['name'])) . '"');
+                    header('Content-Disposition: attachment; filename="'.sanitize_filename(rawurldecode($aFile['name'])).'"');
                     header('Content-Transfer-Encoding: binary');
                     header('Expires: 0');
                     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
                     header('Pragma: public');
-                    header('Content-Length: ' . filesize($sFileRealName));
+                    header('Content-Length: '.filesize($sFileRealName));
                     readfile($sFileRealName);
                     exit;
                 }
             }
-            Yii::app()->setFlashMessage(gT("Sorry, this file was not found."),'error');
-            $this->getController()->redirect(array("admin/responses","sa"=>"browse","surveyid"=>$iSurveyId));
+            Yii::app()->setFlashMessage(gT("Sorry, this file was not found."), 'error');
+            $this->getController()->redirect(array("admin/responses", "sa"=>"browse", "surveyid"=>$iSurveyId));
         }
 
     }
@@ -667,11 +667,11 @@ class responses extends Survey_Common_Action
      * @param $sResponseId : list of response
      * @return application/zip
      */
-    public function actionDownloadfiles($iSurveyId,$sResponseId)
+    public function actionDownloadfiles($iSurveyId, $sResponseId)
     {
-        if(Permission::model()->hasSurveyPermission($iSurveyId,'responses','read'))
+        if (Permission::model()->hasSurveyPermission($iSurveyId, 'responses', 'read'))
         {
-            if(!$sResponseId) // No response id : get all survey files
+            if (!$sResponseId) // No response id : get all survey files
             {
                 $oCriteria = new CDbCriteria();
                 $oCriteria->select = "id";
@@ -1077,10 +1077,10 @@ class responses extends Survey_Common_Action
      * @param string|array $aViewUrls View url(s)
      * @param array $aData Data to be passed on. Optional.
      */
-    protected function _renderWrappedTemplate($sAction='', $aViewUrls = array(), $aData = array())
+    protected function _renderWrappedTemplate($sAction = '', $aViewUrls = array(), $aData = array())
     {
         // App()->getClientScript()->registerScriptFile( App()->getConfig('adminscripts') . 'browse.js');
-        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl') . 'browse.css');
+        App()->getClientScript()->registerCssFile(Yii::app()->getConfig('publicstyleurl').'browse.css');
 
         $iSurveyId = $aData['iSurveyId'];
         $oSurvey = Survey::model()->findByPk($iSurveyId);

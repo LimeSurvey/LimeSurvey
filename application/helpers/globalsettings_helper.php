@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -62,7 +62,7 @@ function getGlobalSetting($settingname)
 
 function setGlobalSetting($settingname, $settingvalue)
 {
-    if (Yii::app()->getConfig("demoMode")==true && ($settingname=='sitename' || $settingname=='defaultlang' || $settingname=='defaulthtmleditormode' || $settingname=='filterxsshtml'))
+    if (Yii::app()->getConfig("demoMode") == true && ($settingname == 'sitename' || $settingname == 'defaultlang' || $settingname == 'defaulthtmleditormode' || $settingname == 'filterxsshtml'))
     {
         return; //don't save
     }

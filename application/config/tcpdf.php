@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
     /*
     * LimeSurvey
     * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -14,10 +14,10 @@
 
 
     /**
-    * TCPDF configuration file
-    *
-    * @package configuration
-    */
+     * TCPDF configuration file
+     *
+     * @package configuration
+     */
 
 
     /***************************************************************************
@@ -85,7 +85,7 @@
     * ADD TRAILING SLASH!
     ***********************************************************/
 
-    $tcpdf['image_directory'] = Yii::app()->getConfig('styledir') . DIRECTORY_SEPARATOR . Yii::app()->getConfig('admintheme').DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR;
+    $tcpdf['image_directory'] = Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.Yii::app()->getConfig('admintheme').DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR;
 
     /************************************************************
     * TCPDF default (blank) image
@@ -200,7 +200,7 @@
     $tcpdf['data_font_size'] = 8;
     $tcpdf['mono_font'] = 'freemono';
 
-    $tcpdf['small_font_ratio'] = 2/3;
+    $tcpdf['small_font_ratio'] = 2 / 3;
 
 
     /************************************************************

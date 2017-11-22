@@ -24,10 +24,10 @@ class SurveyTimingDynamic extends LSActiveRecord
     /** @var Survey $survey*/
     protected static $survey;
 
-	/**
-	 * @inheritdoc
-	 * @return SurveyTimingDynamic
-	 */
+    /**
+     * @inheritdoc
+     * @return SurveyTimingDynamic
+     */
     public static function model($sid = NULL)
     {         
         $refresh = false;
@@ -46,18 +46,18 @@ class SurveyTimingDynamic extends LSActiveRecord
         return $model;
     }
     
-	/**
-	 * Sets the survey ID for the next model
-	 *
-	 * @static
-	 * @access public
-	 * @param int $sid
-	 * @return void
-	 */
-	public static function sid($sid)
-	{
-		self::$sid = (int) $sid;
-	}
+    /**
+     * Sets the survey ID for the next model
+     *
+     * @static
+     * @access public
+     * @param int $sid
+     * @return void
+     */
+    public static function sid($sid)
+    {
+        self::$sid = (int) $sid;
+    }
 
     /** @inheritdoc */
     public function primaryKey()
@@ -76,7 +76,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     /** @inheritdoc */
     public function tableName()
     {
-        return '{{survey_' . intval(self::$sid) . '_timings}}';
+        return '{{survey_'.intval(self::$sid).'_timings}}';
     }
 
     /**
@@ -88,7 +88,7 @@ class SurveyTimingDynamic extends LSActiveRecord
     public function statistics()
     {
         $sid = self::$sid;
-		if(Yii::app()->db->schema->getTable($this->tableName())){
+        if(Yii::app()->db->schema->getTable($this->tableName())){
             $queryAvg=Yii::app()->db->createCommand()
                 ->select("AVG(interviewtime) AS avg, COUNT(*) as count")
                 ->from($this->tableName()." t")
@@ -159,7 +159,7 @@ class SurveyTimingDynamic extends LSActiveRecord
         $oCriteria = new CdbCriteria();
         $oCriteria->join = "INNER JOIN {{survey_{$iSurveyID}}} s ON t.id=s.id";
         $oCriteria->condition = 'submitdate IS NOT NULL';
-        $oCriteria->order = "s.id " . (Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
+        $oCriteria->order = "s.id ".(Yii::app()->request->getParam('order') == 'desc' ? 'desc' : 'asc');
         //$oCriteria->offset = $start;
         //$oCriteria->limit = $limit;
 
@@ -182,19 +182,19 @@ class SurveyTimingDynamic extends LSActiveRecord
     public function getButtons()
     {
         // View details
-        $viewUrl = App()->createUrl("admin/responses/sa/view/surveyid/" . self::$sid . "/id/" . $this->id);
-        $buttons = '<a class="btn btn-xs btn-default" href="' . $viewUrl . '" role="button" data-toggle="tooltip" title="'.gT('View response details').'"><span class="fa fa-list-alt" ></span></a>';
+        $viewUrl = App()->createUrl("admin/responses/sa/view/surveyid/".self::$sid."/id/".$this->id);
+        $buttons = '<a class="btn btn-xs btn-default" href="'.$viewUrl.'" role="button" data-toggle="tooltip" title="'.gT('View response details').'"><span class="fa fa-list-alt" ></span></a>';
 
         // Edit
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'update')) {
-            $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" href="' . $editUrl . '" role="button" data-toggle="tooltip" title="'.gT('Edit this response').'"><span class="fa fa-pencil" ></span></a>';
+            $editUrl = App()->createUrl("admin/dataentry/sa/editdata/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
+            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" href="'.$editUrl.'" role="button" data-toggle="tooltip" title="'.gT('Edit this response').'"><span class="fa fa-pencil" ></span></a>';
         }
 
         // Delete
         if (Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'delete')) {
-            $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/" . self::$sid . "/id/" . $this->id);
-            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" data-target="#confirmation-modal" data-href="' . $deleteUrl . '" role="button" data-toggle="modal" data-tooltip="true" title="'.gT('Delete this response').'"><span class="text-danger fa fa-trash" ></span></a>';
+            $deleteUrl = App()->createUrl("admin/dataentry/sa/delete/subaction/edit/surveyid/".self::$sid."/id/".$this->id);
+            $buttons .= '&nbsp;<a class="btn btn-xs btn-default" data-target="#confirmation-modal" data-href="'.$deleteUrl.'" role="button" data-toggle="modal" data-tooltip="true" title="'.gT('Delete this response').'"><span class="text-danger fa fa-trash" ></span></a>';
         }
 
         return $buttons;

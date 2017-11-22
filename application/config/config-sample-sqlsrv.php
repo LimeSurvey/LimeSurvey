@@ -30,7 +30,7 @@ return array(
             'password' => 'somepassword',
             'charset' => 'utf8',
             'tablePrefix' => 'lime_',
-            'initSQLs'=>array('SET DATEFORMAT ymd;','SET QUOTED_IDENTIFIER ON;'),
+            'initSQLs'=>array('SET DATEFORMAT ymd;', 'SET QUOTED_IDENTIFIER ON;'),
         ),
 
         // Uncomment the following line if you need table-based sessions

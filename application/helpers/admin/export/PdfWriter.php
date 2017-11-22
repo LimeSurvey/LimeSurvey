@@ -19,20 +19,20 @@ class PdfWriter extends Writer
     {
         parent::init($survey, $sLanguageCode, $oOptions);
 
-        if ($oOptions->output=='file') {
+        if ($oOptions->output == 'file') {
             $this->pdfDestination = 'F';
         } else {
             $this->pdfDestination = 'D';
         }
         Yii::import('application.libraries.admin.pdf', true);
         Yii::import('application.helpers.pdfHelper');
-        $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($sLanguageCode);
+        $aPdfLanguageSettings = pdfHelper::getPdfLanguageSettings($sLanguageCode);
 
         // create PDF document
         $this->pdf = new pdf();
         $this->surveyName = $survey->info['surveyls_title'];
         $this->pdf->initAnswerPDF($survey->info, $aPdfLanguageSettings, Yii::app()->getConfig('sitename'), $this->surveyName);
-        $this->separator="\t";
+        $this->separator = "\t";
         $this->rowCounter = 0;
         $this->aGroupMap = $this->setGroupMap($survey, $oOptions);
     }

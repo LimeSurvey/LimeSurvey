@@ -18,11 +18,11 @@ class AdminController extends LSYii_Controller
     protected $user_id = 0;
 
     /**
-    * Initialises this controller, does some basic checks and setups
-    *
-    * @access protected
-    * @return void
-    */
+     * Initialises this controller, does some basic checks and setups
+     *
+     * @access protected
+     * @return void
+     */
     protected function _init()
     {
         parent::_init();
@@ -31,15 +31,15 @@ class AdminController extends LSYii_Controller
 
         $this->user_id = Yii::app()->user->getId();
 
-        if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid'));}         //SurveyID
-        if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid'));}                //Usergroup-ID
-        if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid'));}                   //GroupID
-        if (!Yii::app()->getConfig("qid")) {Yii::app()->setConfig("qid", returnGlobal('qid'));}                   //QuestionID
-        if (!Yii::app()->getConfig("lid")) {Yii::app()->setConfig("lid", returnGlobal('lid'));}                   //LabelID
-        if (!Yii::app()->getConfig("code")) {Yii::app()->setConfig("code", returnGlobal('code'));}                // ??
-        if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action'));}          //Desired action
-        if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction'));} //Desired subaction
-        if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction'));} // for html editor integration
+        if (!Yii::app()->getConfig("surveyid")) {Yii::app()->setConfig("surveyid", returnGlobal('sid')); }         //SurveyID
+        if (!Yii::app()->getConfig("ugid")) {Yii::app()->setConfig("ugid", returnGlobal('ugid')); }                //Usergroup-ID
+        if (!Yii::app()->getConfig("gid")) {Yii::app()->setConfig("gid", returnGlobal('gid')); }                   //GroupID
+        if (!Yii::app()->getConfig("qid")) {Yii::app()->setConfig("qid", returnGlobal('qid')); }                   //QuestionID
+        if (!Yii::app()->getConfig("lid")) {Yii::app()->setConfig("lid", returnGlobal('lid')); }                   //LabelID
+        if (!Yii::app()->getConfig("code")) {Yii::app()->setConfig("code", returnGlobal('code')); }                // ??
+        if (!Yii::app()->getConfig("action")) {Yii::app()->setConfig("action", returnGlobal('action')); }          //Desired action
+        if (!Yii::app()->getConfig("subaction")) {Yii::app()->setConfig("subaction", returnGlobal('subaction')); } //Desired subaction
+        if (!Yii::app()->getConfig("editedaction")) {Yii::app()->setConfig("editedaction", returnGlobal('editedaction')); } // for html editor integration
 
         // This line is needed for template editor to work
         $oAdminTheme = AdminTheme::getInstance();
@@ -49,18 +49,18 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-    * Shows a nice error message to the world
-    *
-    * @access public
-    * @param string $message The error message
-    * @return void
-    */
+     * Shows a nice error message to the world
+     *
+     * @access public
+     * @param string $message The error message
+     * @return void
+     */
     public function error($message, $sURL = array())
     {
         $this->_getAdminHeader();
         $sOutput = "<div class='messagebox ui-corner-all'>\n";
         $sOutput .= '<div class="warningheader">'.gT('Error').'</div><br />'."\n";
-        $sOutput .= $message . '<br /><br />'."\n";
+        $sOutput .= $message.'<br /><br />'."\n";
         if (!empty($sURL) && !is_array($sURL))
         {
             $sTitle = gT('Back');
@@ -93,19 +93,19 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-    * Load and set session vars
-    *
-    * @access protected
-    * @return void
-    */
+     * Load and set session vars
+     *
+     * @access protected
+     * @return void
+     */
     protected function _sessioncontrol()
     {
         // From personal settings
         if (Yii::app()->request->getPost('action') == 'savepersonalsettings') {
-            if (Yii::app()->request->getPost('lang')=='auto') {
-                $sLanguage= getBrowserLanguage();
+            if (Yii::app()->request->getPost('lang') == 'auto') {
+                $sLanguage = getBrowserLanguage();
             } else {
-                $sLanguage=sanitize_languagecode(Yii::app()->request->getPost('lang'));
+                $sLanguage = sanitize_languagecode(Yii::app()->request->getPost('lang'));
             }
             Yii::app()->session['adminlang'] = $sLanguage;
         }
@@ -120,16 +120,16 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-    * Checks for action specific authorization and then executes an action
-    *
-    * @access public
-    * @param string $action
-    * @return bool
-    */
+     * Checks for action specific authorization and then executes an action
+     *
+     * @access public
+     * @param string $action
+     * @return bool
+     */
     public function run($action)
     {
         // Check if the DB is up to date
-        if (Yii::app()->db->schema->getTable('{{surveys}}') )
+        if (Yii::app()->db->schema->getTable('{{surveys}}'))
         {
             $sDBVersion = getGlobalSetting('DBVersion');
         }
@@ -137,7 +137,7 @@ class AdminController extends LSYii_Controller
         {
             // Try a silent update first
             Yii::app()->loadHelper('update/updatedb');
-            if (!db_upgrade_all(intval($sDBVersion),true)){
+            if (!db_upgrade_all(intval($sDBVersion), true)) {
                 $this->redirect(array('/admin/databaseupdate/sa/db'));
             }
         }
@@ -145,7 +145,7 @@ class AdminController extends LSYii_Controller
 
         if ($action != "databaseupdate" && $action != "db")
         {
-            if (empty($this->user_id) && $action != "authentication"  && $action != "remotecontrol")
+            if (empty($this->user_id) && $action != "authentication" && $action != "remotecontrol")
             {
                 if (!empty($action) && $action != 'index')
                     Yii::app()->session['redirect_after_login'] = $this->createUrl('/');
@@ -162,9 +162,9 @@ class AdminController extends LSYii_Controller
 
                 $this->redirect(array('/admin/authentication/sa/login'));
             }
-            elseif (!empty($this->user_id)  && $action != "remotecontrol")
+            elseif (!empty($this->user_id) && $action != "remotecontrol")
             {
-                if (Yii::app()->session['session_hash'] != hash('sha256',getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
+                if (Yii::app()->session['session_hash'] != hash('sha256', getGlobalSetting('SessionName').Yii::app()->user->getName().Yii::app()->user->getId()))
                 {
                     Yii::app()->session->clear();
                     Yii::app()->session->close();
@@ -177,11 +177,11 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-    * Routes all the actions to their respective places
-    *
-    * @access public
-    * @return array
-    */
+     * Routes all the actions to their respective places
+     *
+     * @access public
+     * @return array
+     */
     public function actions()
     {
         $aActions = $this->getActionClasses();
@@ -245,11 +245,11 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-    * Set Session User Rights
-    *
-    * @access public
-    * @return void
-    */
+     * Set Session User Rights
+     *
+     * @access public
+     * @return void
+     */
     public function _GetSessionUserRights($loginID)
     {
         $oUser = User::model()->findByPk($loginID);
@@ -270,13 +270,13 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-    * Prints Admin Header
-    *
-    * @access protected
-    * @param bool $meta
-    * @param bool $return
-    * @return mixed
-    */
+     * Prints Admin Header
+     *
+     * @access protected
+     * @param bool $meta
+     * @param bool $return
+     * @return mixed
+     */
     public function _getAdminHeader($meta = false, $return = false)
     {
         if (empty(Yii::app()->session['adminlang'])) {
@@ -285,30 +285,30 @@ class AdminController extends LSYii_Controller
 
         $aData = array();
         $aData['adminlang'] = Yii::app()->language;
-        $aData['languageRTL']="";
-        $aData['styleRTL']="";
+        $aData['languageRTL'] = "";
+        $aData['styleRTL'] = "";
 
         Yii::app()->loadHelper("surveytranslator");
 
         if (getLanguageRTL(Yii::app()->language))
         {
             $aData['languageRTL'] = " dir=\"rtl\" ";
-            $aData['bIsRTL']=true;
+            $aData['bIsRTL'] = true;
         }
         else
         {
             $aData['languageRTL'] = " dir=\"ltr\" ";
-            $aData['bIsRTL']=false;
+            $aData['bIsRTL'] = false;
         }
 
-        $aData['meta']="";
+        $aData['meta'] = "";
         if ($meta)
         {
-            $aData['meta']=$meta;
+            $aData['meta'] = $meta;
         }
 
-        $aData['baseurl'] = Yii::app()->baseUrl . '/';
-        $aData['datepickerlang']="";
+        $aData['baseurl'] = Yii::app()->baseUrl.'/';
+        $aData['datepickerlang'] = "";
 
         $aData['sitename'] = Yii::app()->getConfig("sitename");
         $aData['firebug'] = useFirebug();
@@ -320,7 +320,7 @@ class AdminController extends LSYii_Controller
         $oAdminTheme = AdminTheme::getInstance();
 
         $aData['sAdmintheme'] = $oAdminTheme->name;
-        $aData['aPackageScripts']=$aData['aPackageStyles']=array();
+        $aData['aPackageScripts'] = $aData['aPackageStyles'] = array();
 
             //foreach ($aData['aPackageStyles'] as &$filename)
             //{
@@ -340,29 +340,29 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-    * Prints Admin Footer
-    *
-    * @access protected
-    * @param string $url
-    * @param string $explanation
-    * @param bool $return
-    * @return mixed
-    */
+     * Prints Admin Footer
+     *
+     * @access protected
+     * @param string $url
+     * @param string $explanation
+     * @param bool $return
+     * @return mixed
+     */
     public function _getAdminFooter($url, $explanation, $return = false)
     {
         $aData['versionnumber'] = Yii::app()->getConfig("versionnumber");
 
         $aData['buildtext'] = "";
-        if(Yii::app()->getConfig("buildnumber")!="") {
-            $aData['buildtext']= "+".Yii::app()->getConfig("buildnumber");
+        if (Yii::app()->getConfig("buildnumber") != "") {
+            $aData['buildtext'] = "+".Yii::app()->getConfig("buildnumber");
         }
 
         //If user is not logged in, don't print the version number information in the footer.
         if (empty(Yii::app()->session['loginID']))
         {
-            $aData['versionnumber']="";
-            $aData['versiontitle']="";
-            $aData['buildtext']="";
+            $aData['versionnumber'] = "";
+            $aData['versiontitle'] = "";
+            $aData['buildtext'] = "";
         }
         else
         {
@@ -376,14 +376,14 @@ class AdminController extends LSYii_Controller
     }
 
     /**
-    * Shows a message box
-    *
-    * @access public
-    * @param string $title
-    * @param string $message
-    * @param string $class
-    * @return void
-    */
+     * Shows a message box
+     *
+     * @access public
+     * @param string $title
+     * @param string $message
+     * @param string $class
+     * @return void
+     */
     public function _showMessageBox($title,$message,$class="message-box-error")
     {
         $aData['title'] = $title;

@@ -102,8 +102,8 @@ class SurveymenuEntries extends LSActiveRecord
 
         if (is_array($menuEntryArray['manualParams'])) {
             $oMenuEntryData->linkData = $menuEntryArray['manualParams'];
-        } else if($menuEntryArray['manualParams'] != '') {
-            $oMenuEntryData->linkData = json_decode($menuEntryArray['manualParams'],true);
+        } else if ($menuEntryArray['manualParams'] != '') {
+            $oMenuEntryData->linkData = json_decode($menuEntryArray['manualParams'], true);
         }
 
         //pjax optional
@@ -119,31 +119,31 @@ class SurveymenuEntries extends LSActiveRecord
         return $oSurveymenuEntries->getPrimaryKey();
     }
 
-    public function reorder(){
+    public function reorder() {
 
         $menusWithEntries = SurveymenuEntries::model()->findAll(array(
             'select'=>'t.menu_id',
             'distinct'=>true,
         ));
-        foreach($menusWithEntries as $key=>$menuWithEntry){
+        foreach ($menusWithEntries as $key=>$menuWithEntry) {
             self::reorderMenu($menuWithEntry->menu_id);
         }
     }
 
-    public static function reorderMenu($menuId){
+    public static function reorderMenu($menuId) {
         $criteriaItems = new CDbCriteria();
-        $criteriaItems->compare('menu_id', (int) $menuId, false );
-        $criteriaItems->order='t.ordering ASC';
+        $criteriaItems->compare('menu_id', (int) $menuId, false);
+        $criteriaItems->order = 't.ordering ASC';
         $menuEntriesInMenu = SurveymenuEntries::model()->findAll($criteriaItems);
 
         $statistics =
         Yii::app()->db->createCommand()->select('MIN(ordering) as loworder, MAX(ordering) as highorder, COUNT(id) as count')
                 ->from('{{surveymenu_entries}}')
-                ->where(['menu_id = :menu_id'],['menu_id' => (int) $menuId])
+                ->where(['menu_id = :menu_id'], ['menu_id' => (int) $menuId])
                 ->queryRow();
-        if( ($statistics['loworder'] != 1) || ($statistics['highorder'] != $statistics['count']) ){
+        if (($statistics['loworder'] != 1) || ($statistics['highorder'] != $statistics['count'])) {
             $current = 1;
-            foreach($menuEntriesInMenu as $menuEntry){
+            foreach ($menuEntriesInMenu as $menuEntry) {
                 $menuEntry->ordering = $current;
                 $menuEntry->save();
                 $current++;
@@ -151,7 +151,7 @@ class SurveymenuEntries extends LSActiveRecord
         }
     }
 
-    public function onAfterSave($event){
+    public function onAfterSave($event) {
         $criteria = new CDbCriteria();
 
         $criteria->addCondition(['menu_id = :menu_id']);
@@ -161,8 +161,8 @@ class SurveymenuEntries extends LSActiveRecord
         $criteria->limit = 1;
 
         $collidingMenuEntry = SurveymenuEntries::model()->find($criteria);
-        if($collidingMenuEntry != null){
-            $collidingMenuEntry->ordering = (((int) $collidingMenuEntry->ordering)+1);
+        if ($collidingMenuEntry != null) {
+            $collidingMenuEntry->ordering = (((int) $collidingMenuEntry->ordering) + 1);
             $collidingMenuEntry->save();
 
         }
@@ -203,8 +203,8 @@ class SurveymenuEntries extends LSActiveRecord
         );
     }
 
-    public static function returnCombinedMenuLink($data){
-        if($data->menu_link){
+    public static function returnCombinedMenuLink($data) {
+        if ($data->menu_link) {
             return $data->menu_link;
         } else {
             return gt('Action: ').$data->action.', <br/>'
@@ -213,37 +213,37 @@ class SurveymenuEntries extends LSActiveRecord
         }
     }
 
-    public static function returnMenuIcon($data){
-        if($data->menu_icon_type == 'fontawesome'){
+    public static function returnMenuIcon($data) {
+        if ($data->menu_icon_type == 'fontawesome') {
             return "<i class='fa fa-".$data->menu_icon."'></i>";
-        } else if($data->menu_icon_type == 'image'){
+        } else if ($data->menu_icon_type == 'image') {
             return '<img width="60px" src="'.$data->menu_icon.'" />';
         } else {
             return $data->menu_icon_type.'|'.$data->menu_icon;
         }
     }
 
-    public function getMenuIdOptions (){
-        $criteria=new CDbCriteria;
-        if(Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin','read'))
+    public function getMenuIdOptions() {
+        $criteria = new CDbCriteria;
+        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read'))
         {
-            $criteria->compare('id','<> 0');
-            $criteria->compare('id','<> 1');
+            $criteria->compare('id', '<> 0');
+            $criteria->compare('id', '<> 1');
         }
         $oSurveymenus = Surveymenu::model()->findAll($criteria);
         $options = [];
-        foreach($oSurveymenus as $oSurveymenu){
+        foreach ($oSurveymenus as $oSurveymenu) {
             $options["".$oSurveymenu->id] = $oSurveymenu->title;
         }
         return $options;
     }
 
-    public function getUserIdOptions (){
+    public function getUserIdOptions() {
         $oUsers = User::model()->findAll();
         $options = [
             NULL => gT('All users')
         ];
-        foreach($oUsers as $oUser){
+        foreach ($oUsers as $oUser) {
             //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
             $options[$oUser->uid] = $oUser->full_name;
         }
@@ -251,17 +251,17 @@ class SurveymenuEntries extends LSActiveRecord
         return $options;
     }
 
-    public function getUserOptions (){
+    public function getUserOptions() {
 
         $oUsers = User::model()->findAll();
         $options = [];
-        foreach($oUsers as $oUser){
+        foreach ($oUsers as $oUser) {
             $options[$oUser->uid] = $oUser->full_name;
         }
         return $options;
     }
 
-    public function getMenuIconTypeOptions (){
+    public function getMenuIconTypeOptions() {
         return [
             'fontawesome'	=> gT('Fontawesome icon'),
             'image'			=> gT('Image'),
@@ -270,14 +270,14 @@ class SurveymenuEntries extends LSActiveRecord
         // 		."<option value='image'>".gT('Image')."</option>";
     }
 
-    public function getButtons(){
+    public function getButtons() {
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 
-        if(Permission::model()->hasGlobalPermission('settings', 'update')){
+        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
 
             $deleteData = array(
                 'action_surveymenuEntries_deleteModal',
@@ -305,7 +305,7 @@ class SurveymenuEntries extends LSActiveRecord
     /**
      * @return array
      */
-    public function getColumns(){
+    public function getColumns() {
         $cols = array(
             array(
             'name' => 'id',
@@ -388,7 +388,7 @@ class SurveymenuEntries extends LSActiveRecord
     /**
      * @return array
      */
-    public function getShortListColumns(){
+    public function getShortListColumns() {
         $cols = array(
             array(
             'name' => 'id',
@@ -447,39 +447,39 @@ class SurveymenuEntries extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
         //Don't show main menu when not superadmin
-        if(Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read'))
         {
-            $criteria->compare('menu_id','<> 1');
-            $criteria->compare('menu_id','<> 2');
+            $criteria->compare('menu_id', '<> 1');
+            $criteria->compare('menu_id', '<> 2');
         }
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('menu_id',$this->menu_id);
-        $criteria->compare('user_id',$this->user_id);
-        $criteria->compare('ordering',$this->ordering);
-        $criteria->compare('title',$this->title,true);
-        $criteria->compare('name',$this->name,true);
-        $criteria->compare('menu_title',$this->menu_title,true);
-        $criteria->compare('menu_description',$this->menu_description,true);
-        $criteria->compare('menu_icon',$this->menu_icon,true);
-        $criteria->compare('menu_class',$this->menu_class,true);
-        $criteria->compare('menu_link',$this->menu_link,true);
-        $criteria->compare('action',$this->action,true);
-        $criteria->compare('template',$this->template,true);
-        $criteria->compare('partial',$this->partial,true);
-        $criteria->compare('language',$this->language,true);
-        $criteria->compare('permission',$this->permission,true);
-        $criteria->compare('permission_grade',$this->permission_grade,true);
-        $criteria->compare('classes',$this->classes,true);
-        $criteria->compare('data',$this->data,true);
-        $criteria->compare('getdatamethod',$this->getdatamethod,true);
-        $criteria->compare('changed_at',$this->changed_at,true);
-        $criteria->compare('changed_by',$this->changed_by);
-        $criteria->compare('created_at',$this->created_at,true);
-        $criteria->compare('created_by',$this->created_by);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('menu_id', $this->menu_id);
+        $criteria->compare('user_id', $this->user_id);
+        $criteria->compare('ordering', $this->ordering);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('name', $this->name, true);
+        $criteria->compare('menu_title', $this->menu_title, true);
+        $criteria->compare('menu_description', $this->menu_description, true);
+        $criteria->compare('menu_icon', $this->menu_icon, true);
+        $criteria->compare('menu_class', $this->menu_class, true);
+        $criteria->compare('menu_link', $this->menu_link, true);
+        $criteria->compare('action', $this->action, true);
+        $criteria->compare('template', $this->template, true);
+        $criteria->compare('partial', $this->partial, true);
+        $criteria->compare('language', $this->language, true);
+        $criteria->compare('permission', $this->permission, true);
+        $criteria->compare('permission_grade', $this->permission_grade, true);
+        $criteria->compare('classes', $this->classes, true);
+        $criteria->compare('data', $this->data, true);
+        $criteria->compare('getdatamethod', $this->getdatamethod, true);
+        $criteria->compare('changed_at', $this->changed_at, true);
+        $criteria->compare('changed_by', $this->changed_by);
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('created_by', $this->created_by);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -495,55 +495,55 @@ class SurveymenuEntries extends LSActiveRecord
      *
      * @return boolean
      */
-    public function restoreDefaults(){
+    public function restoreDefaults() {
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
-        try{
+        try {
 
             $oDB->createCommand()->truncateTable('{{surveymenu_entries}}');
 
-            $headerArray = ['menu_id','user_id','ordering','name','title','menu_title','menu_description','menu_icon','menu_icon_type','menu_class','menu_link','action','template','partial','classes','permission','permission_grade','data','getdatamethod','language','active','changed_at','changed_by','created_at','created_by'];
+            $headerArray = ['menu_id', 'user_id', 'ordering', 'name', 'title', 'menu_title', 'menu_description', 'menu_icon', 'menu_icon_type', 'menu_class', 'menu_link', 'action', 'template', 'partial', 'classes', 'permission', 'permission_grade', 'data', 'getdatamethod', 'language', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by'];
             $basicMenues = [
-            [1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,4,'theme_options','Theme options','Theme options','Edit theme options for this survey','paint-brush','fontawesome','','admin/themeoptions/sa/updatesurvey','','','','','themes','read','{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,5,'participants','Survey participants','Survey participants','Go to survey participant and token settings','user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,6,'presentation','Presentation &amp; navigation settings','Presentation','Edit presentation and navigation settings','eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,7,'publication','Publication and access control settings','Publication &amp; access','Edit settings for publicationa and access control','key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,8,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,9,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,10,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,11,'assessments','Edit assessments','Assessments','Edit and look at the assessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,12,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,13,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,14,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read','{"render": {"link": { "pjaxed": false}}}','_tabPanelIntegration','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [1,NULL,15,'resources','Add/Edit resources to the survey','Resources','Add/Edit resources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,1,'activateSurvey','Activate survey','Activate survey','Activate survey','play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,2,'deactivateSurvey','Stop this survey','Stop this survey','Stop this survey','stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,3,'testSurvey','Go to survey','Go to survey','Go to survey','cog','fontawesome','','survey/index/','','','','','','','{\"render\"\: {\"link\"\: {\"external\"\: true, \"data\"\: {\"sid\"\: [\"survey\",\"sid\"], \"newtest\"\: \"Y\", \"lang\"\: [\"survey\",\"language\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,4,'listQuestions','List questions','List questions','List questions','list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,5,'listQuestionGroups','List question groups','List question groups','List question groups','th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,6,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,7,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,9,'assessments','Edit assessments','Assessments','Edit and look at the assessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,10,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,11,'surveyLogicFile','Survey logic file','Survey logic file','Survey logic file','sitemap','fontawesome','','admin/expressions/sa/survey_logic_file/','','','','','surveycontent','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,12,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','user','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read','{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','_tabTokens','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{render\: {\"link\"\: {}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{\"render\"\: {\"isActive\"\: true}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
-            [2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}','','en-GB',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0],
+            [1, NULL, 1, 'overview', 'Survey overview', 'Overview', 'Open general survey overview and quick action', 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 2, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', NULL, '_generalTabEditSurvey', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 3, 'surveytexts', 'Edit survey text elements', 'Survey texts', 'Edit survey text elements', 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', NULL, '_getTextEditData', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 4, 'theme_options', 'Theme options', 'Theme options', 'Edit theme options for this survey', 'paint-brush', 'fontawesome', '', 'admin/themeoptions/sa/updatesurvey', '', '', '', '', 'themes', 'read', '{"render": {"link": { "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 5, 'participants', 'Survey participants', 'Survey participants', 'Go to survey participant and token settings', 'user', 'fontawesome', '', 'admin/tokens/sa/index/', '', '', '', '', 'surveysettings', 'update', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 6, 'presentation', 'Presentation &amp; navigation settings', 'Presentation', 'Edit presentation and navigation settings', 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', NULL, '_tabPresentationNavigation', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 7, 'publication', 'Publication and access control settings', 'Publication &amp; access', 'Edit settings for publicationa and access control', 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', NULL, '_tabPublicationAccess', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 8, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 9, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', NULL, '_tabTokens', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 10, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 11, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 12, 'notification', 'Notification and data management settings', 'Data management', 'Edit settings for notification and data management', 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', NULL, '_tabNotificationDataManagement', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 13, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'assessments', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 14, 'panelintegration', 'Edit survey panel integration', 'Panel integration', 'Define panel integrations for your survey', 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', '{"render": {"link": { "pjaxed": false}}}', '_tabPanelIntegration', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [1, NULL, 15, 'resources', 'Add/Edit resources to the survey', 'Resources', 'Add/Edit resources to the survey', 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', NULL, '_tabResourceManagement', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 1, 'activateSurvey', 'Activate survey', 'Activate survey', 'Activate survey', 'play', 'fontawesome', '', 'admin/survey/sa/activate', '', '', '', '', 'surveyactivation', 'update', '{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 2, 'deactivateSurvey', 'Stop this survey', 'Stop this survey', 'Stop this survey', 'stop', 'fontawesome', '', 'admin/survey/sa/deactivate', '', '', '', '', 'surveyactivation', 'update', '{\"render\": {\"isActive\": true, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 3, 'testSurvey', 'Go to survey', 'Go to survey', 'Go to survey', 'cog', 'fontawesome', '', 'survey/index/', '', '', '', '', '', '', '{\"render\"\: {\"link\"\: {\"external\"\: true, \"data\"\: {\"sid\"\: [\"survey\",\"sid\"], \"newtest\"\: \"Y\", \"lang\"\: [\"survey\",\"language\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 4, 'listQuestions', 'List questions', 'List questions', 'List questions', 'list', 'fontawesome', '', 'admin/survey/sa/listquestions', '', '', '', '', 'surveycontent', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 5, 'listQuestionGroups', 'List question groups', 'List question groups', 'List question groups', 'th-list', 'fontawesome', '', 'admin/survey/sa/listquestiongroups', '', '', '', '', 'surveycontent', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 6, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', NULL, '_generalTabEditSurvey', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 7, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 8, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 10, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'surveylocale', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 11, 'surveyLogicFile', 'Survey logic file', 'Survey logic file', 'Survey logic file', 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 12, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'user', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', '{\"render\": { \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '_tabTokens', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 13, 'cpdb', 'Central participant database', 'Central participant database', 'Central participant database', 'users', 'fontawesome', '', 'admin/participants/sa/displayParticipants', '', '', '', '', 'tokens', 'read', '{render\: {\"link\"\: {}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 14, 'responses', 'Responses', 'Responses', 'Responses', 'icon-browse', 'iconclass', '', 'admin/responses/sa/browse/', '', '', '', '', 'responses', 'read', '{\"render\"\: {\"isActive\"\: true}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 15, 'statistics', 'Statistics', 'Statistics', 'Statistics', 'bar-chart', 'fontawesome', '', 'admin/statistics/sa/index/', '', '', '', '', 'statistics', 'read', '{\"render\"\: {\"isActive\"\: true}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
+            [2, NULL, 16, 'reorder', 'Reorder questions/question groups', 'Reorder questions/question groups', 'Reorder questions/question groups', 'icon-organize', 'iconclass', '', 'admin/survey/sa/organize/', '', '', '', '', 'surveycontent', 'update', '{\"render\": {\"isActive\": false, \"link\": {\"data\": {\"surveyid\": [\"survey\",\"sid\"]}}}}', '', 'en-GB', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0],
             ];
 
-            foreach($basicMenues as $basicMenu){
+            foreach ($basicMenues as $basicMenu) {
                 $oDB->createCommand()->insert("{{surveymenu_entries}}", array_combine($headerArray, $basicMenu));
             }
 
             $oTransaction->commit();
 
-        } catch (Exception $e){
+        } catch (Exception $e) {
             throw $e;
             return false;
         }
@@ -557,10 +557,10 @@ class SurveymenuEntries extends LSActiveRecord
      * @param string $className active record class name.
      * @return SurveymenuEntries the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model =parent::model($className);
+        $model = parent::model($className);
         return $model;
     }
 }

@@ -62,7 +62,7 @@ abstract class PluginBase implements iPlugin {
      */
     protected function setLocaleComponent()
     {
-        $basePath = $this->getDir() . DIRECTORY_SEPARATOR . 'locale';
+        $basePath = $this->getDir().DIRECTORY_SEPARATOR.'locale';
 
         // No need to load a component if there is no locale files
         if (!file_exists($basePath))
@@ -71,7 +71,7 @@ abstract class PluginBase implements iPlugin {
         }
 
         // Set plugin specific locale file to locale/<lang>/<lang>.mo
-        \Yii::app()->setComponent('pluginMessages' . $this->id, array(
+        \Yii::app()->setComponent('pluginMessages'.$this->id, array(
             'class' => 'LSCGettextMessageSource',
             'cachingDuration' => 3600,
             'forceTranslation' => true,
@@ -139,7 +139,7 @@ abstract class PluginBase implements iPlugin {
         {
             if ($getValues)
             {
-                $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null );
+                $setting['current'] = $this->get($name, null, null, isset($setting['default']) ? $setting['default'] : null);
             }
             if ($setting['type'] == 'logo')
             {
@@ -179,12 +179,12 @@ abstract class PluginBase implements iPlugin {
             // This is a limesurvey relative path.
             if (strpos('/', $fileName) === 0)
             {
-                $url = \Yii::getPathOfAlias('webroot') . $fileName;
+                $url = \Yii::getPathOfAlias('webroot').$fileName;
 
             }
             else // This is a plugin relative path.
             {
-                $path = \Yii::getPathOfAlias('webroot.plugins.' . get_class($this)) . DIRECTORY_SEPARATOR . $fileName;
+                $path = \Yii::getPathOfAlias('webroot.plugins.'.get_class($this)).DIRECTORY_SEPARATOR.$fileName;
                 /*
                  * By using the asset manager the assets are moved to a publicly accessible path.
                  * This approach allows a locked down plugin directory that is not publicly accessible.
@@ -308,9 +308,9 @@ abstract class PluginBase implements iPlugin {
      */
     public function renderPartial($viewfile, $data, $return = false, $processOutput = false)
     {
-        $alias = 'plugin_views_folder' . $this->id;
+        $alias = 'plugin_views_folder'.$this->id;
         \Yii::setPathOfAlias($alias, $this->getDir());
-        $fullAlias = $alias . '.views.' . $viewfile;
+        $fullAlias = $alias.'.views.'.$viewfile;
 
         if (isset($data['plugin'])) {
             throw new InvalidArgumentException("Key 'plugin' in data variable is for plugin base only. Please use another key name.");
@@ -337,7 +337,7 @@ abstract class PluginBase implements iPlugin {
                 '',
                 $sToTranslate,
                 array(),
-                'pluginMessages' . $this->id,
+                'pluginMessages'.$this->id,
                 $sLanguage
             ),
             $sEscapeMode
@@ -375,7 +375,7 @@ abstract class PluginBase implements iPlugin {
     public function log($message, $level = \CLogger::LEVEL_TRACE)
     {
         $category = $this->getName();
-        \Yii::log($message, $level, 'plugin.' . $category);
+        \Yii::log($message, $level, 'plugin.'.$category);
     }
 
     /**
@@ -385,7 +385,7 @@ abstract class PluginBase implements iPlugin {
      */
     public function readConfigFile()
     {
-        $file = $this->getDir() . DIRECTORY_SEPARATOR . 'config.json';
+        $file = $this->getDir().DIRECTORY_SEPARATOR.'config.json';
         if (file_exists($file))
         {
             $json = file_get_contents($file);
@@ -405,7 +405,7 @@ abstract class PluginBase implements iPlugin {
                 // "Impossible"
                 if (empty($pluginModel))
                 {
-                    throw new \Exception('Internal error: Found no database entry for plugin id ' . $this->id);
+                    throw new \Exception('Internal error: Found no database entry for plugin id '.$this->id);
                 }
 
                 $this->checkActive($pluginModel);
@@ -445,9 +445,9 @@ abstract class PluginBase implements iPlugin {
                     'user_id' => App()->user->id,
                     'title' => gT('Plugin error'),
                     'message' =>
-                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
-                        gT('Could not activate plugin ' . $this->getName()) . '. ' .
-                        gT('Reason:') . ' ' . $result->get('message'),
+                        '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                        gT('Could not activate plugin '.$this->getName()).'. '.
+                        gT('Reason:').' '.$result->get('message'),
                     'importance' => \Notification::HIGH_IMPORTANCE
                 ));
                 $not->save();
@@ -465,8 +465,8 @@ abstract class PluginBase implements iPlugin {
             'user_id' => App()->user->id,
             'title' => gT('Plugin error'),
             'message' =>
-                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;' .
-                gT('Could not read config file for plugin ' . $this->getName()) . '. ' .
+                '<span class="fa fa-exclamation-circle text-warning"></span>&nbsp;'.
+                gT('Could not read config file for plugin '.$this->getName()).'. '.
                 gT('Config file is malformed or null.'),
             'importance' => \Notification::HIGH_IMPORTANCE
         ));

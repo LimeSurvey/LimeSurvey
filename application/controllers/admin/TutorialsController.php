@@ -27,22 +27,22 @@ class TutorialsController extends Survey_Common_Action
     {
         return array(
             array(
-                'allow',  // allow all users to perform 'index' and 'view' actions
-                'actions'=>array('index','view'),
+                'allow', // allow all users to perform 'index' and 'view' actions
+                'actions'=>array('index', 'view'),
                 'users'=>array('*'),
             ),
             array(
                 'allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions'=>array('create','update'),
+                'actions'=>array('create', 'update'),
                 'users'=>array('@'),
             ),
             array(
                 'allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions'=>array('admin','delete'),
+                'actions'=>array('admin', 'delete'),
                 'users'=>array('admin'),
             ),
             array(
-                'deny',  // deny all users
+                'deny', // deny all users
                 'users'=>array('*'),
             ),
         );
@@ -92,15 +92,15 @@ class TutorialsController extends Survey_Common_Action
      */
     public function create()
     {
-        $model=new Tutorials;
+        $model = new Tutorials;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['Tutorials'])) {
-            $model->attributes=$_POST['Tutorials'];
+            $model->attributes = $_POST['Tutorials'];
             if ($model->save()) {
-                $this->redirect(array('view','id'=>$model->tid));
+                $this->redirect(array('view', 'id'=>$model->tid));
             }
         }
 
@@ -119,15 +119,15 @@ class TutorialsController extends Survey_Common_Action
      */
     public function update($id)
     {
-        $model=$this->loadModel($id);
+        $model = $this->loadModel($id);
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
         if (isset($_POST['Tutorials'])) {
-            $model->attributes=$_POST['Tutorials'];
+            $model->attributes = $_POST['Tutorials'];
             if ($model->save()) {
-                $this->redirect(array('view','id'=>$model->tid));
+                $this->redirect(array('view', 'id'=>$model->tid));
             }
         }
 
@@ -159,7 +159,7 @@ class TutorialsController extends Survey_Common_Action
      */
     public function index()
     {
-        $dataProvider=new CActiveDataProvider('Tutorials');
+        $dataProvider = new CActiveDataProvider('Tutorials');
         $this->render(
             'index',
             array(
@@ -173,10 +173,10 @@ class TutorialsController extends Survey_Common_Action
      */
     public function admin()
     {
-        $model=new Tutorials('search');
-        $model->unsetAttributes();  // clear any default values
+        $model = new Tutorials('search');
+        $model->unsetAttributes(); // clear any default values
         if (isset($_GET['Tutorials'])) {
-            $model->attributes=$_GET['Tutorials'];
+            $model->attributes = $_GET['Tutorials'];
         }
 
         $this->render(
@@ -196,8 +196,8 @@ class TutorialsController extends Survey_Common_Action
      */
     public function loadModel($id)
     {
-        $model=Tutorials::model()->findByPk($id);
-        if ($model===null) {
+        $model = Tutorials::model()->findByPk($id);
+        if ($model === null) {
             throw new CHttpException(404, 'The requested page does not exist.');
         }
         return $model;
@@ -209,7 +209,7 @@ class TutorialsController extends Survey_Common_Action
      */
     protected function performAjaxValidation($model)
     {
-        if (isset($_POST['ajax']) && $_POST['ajax']==='tutorials-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'tutorials-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

@@ -36,7 +36,7 @@ class AjaxHelper
     public static function output($msg)
     {
         $output = new JsonOutput($msg);
-        self::echoString($output);  // Encoded to json format when converted to string
+        self::echoString($output); // Encoded to json format when converted to string
     }
 
     /**
@@ -166,7 +166,7 @@ class JsonOutput
     public function __toString()
     {
         return json_encode(array(
-            'ajaxHelper'       => true,  // To help JS parse in some cases.
+            'ajaxHelper'       => true, // To help JS parse in some cases.
             'success'          => $this->success,
             'result'           => $this->result,
             'error'            => $this->error,
