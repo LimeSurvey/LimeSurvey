@@ -132,10 +132,22 @@ class CreateSurveyTest extends TestBaseClassWeb
             $overview = self::$webDriver->findElement(WebDriverBy::id('sidemenu_1_1'));
             $overview->click();
 
-            sleep(2);
+            sleep(1);
+
+            // In case quick actions are hidden, show them.
+            try {
+                $showquickactions = self::$webDriver->wait(1)->until(
+                    WebDriverExpectedCondition::elementToBeClickable(
+                        WebDriverBy::cssSelector('#survey-action-chevron i.fa-caret-down')
+                    )
+                );
+                $showquickactions->click();
+            } catch (NoSuchElementException $ex) {
+                // Ignore
+            }
 
             // Click "Add question".
-            $addgroup = self::$webDriver->wait(10)->until(
+            $addgroup = self::$webDriver->wait(5)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
                     WebDriverBy::cssSelector('#panel-2 .panel-body-link a')
                 )
