@@ -84,6 +84,8 @@ class CreateSurveyTest extends TestBaseClassWeb
                 $button->click();
             } catch (NoSuchElementException $ex) {
                 // Do nothing.
+            } catch (TimeOutException $ex) {
+                // Do nothing.
             }
 
             sleep(1);
@@ -96,6 +98,8 @@ class CreateSurveyTest extends TestBaseClassWeb
                     )
                 );
                 $button->click();
+            } catch (TimeOutException $ex) {
+                // Do nothing.
             } catch (NoSuchElementException $ex) {
                 // Do nothing.
             }
@@ -319,29 +323,25 @@ class CreateSurveyTest extends TestBaseClassWeb
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
-                $ex->getMessage() . PHP_EOL
-                . $ex->getTraceAsString()
+                self::$testHelper->javaTrace($ex)
             );
         } catch (StaleElementReferenceException $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
-                $ex->getMessage() . PHP_EOL
-                . $ex->getTraceAsString()
+                self::$testHelper->javaTrace($ex)
             );
         } catch (UnknownServerException $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
-                $ex->getMessage() . PHP_EOL
-                . $ex->getTraceAsString()
+                self::$testHelper->javaTrace($ex)
             );
         } catch (TimeOutException $ex) {
             self::$testHelper->takeScreenshot(self::$webDriver, __CLASS__ . '_' . __FUNCTION__);
             $this->assertFalse(
                 true,
-                $ex->getMessage() . PHP_EOL
-                . $ex->getTraceAsString()
+                self::$testHelper->javaTrace($ex)
             );
         }
     }
