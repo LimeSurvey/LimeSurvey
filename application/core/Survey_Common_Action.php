@@ -1235,8 +1235,7 @@ class Survey_Common_Action extends CAction
 
         // We get the state of the quickaction
         // If the survey is new (ie: it has no group), it is opened by default
-        $setting_entry = 'quickaction_'.Yii::app()->user->getId();
-        $aData['quickactionstate'] = ($sumcount2<1)?1:getGlobalSetting($setting_entry);
+        $aData['quickactionstate'] = (int) SettingsUser::getUserSettingValue('quickaction_state');
 
         $content = $this->getController()->renderPartial("/admin/survey/surveySummary_view", $aData, true);
         $this->getController()->renderPartial("/admin/super/sidebody", array(

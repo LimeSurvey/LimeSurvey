@@ -28,11 +28,11 @@ $surveyid = $oSurvey->sid;
     <!-- Quick Actions -->
     <div id="survey-action-title" class="h3 pagetitle" >
         <button id="survey-action-chevron" class="btn btn-default btn-tiny" data-active="<?=$quickactionstate?>" data-url="<?php echo Yii::app()->urlManager->createUrl("admin/survey/sa/togglequickaction/");?>">
-            <i class="fa <?=($quickactionstate >0 ?  'fa-caret-up' : 'fa-caret-down')?>"></i>
+            <i class="fa <?=($quickactionstate > 0 ?  'fa-caret-up' : 'fa-caret-down')?>"></i>
         </button>&nbsp;&nbsp;
         <?php eT('Survey quick actions'); ?>
     </div>
-    <div class="row welcome survey-action" style="display:<?=($quickactionstate >0 ? 'block' : 'none')?>" id="survey-action-container">
+    <div class="row welcome survey-action" style="display:<?=($quickactionstate > 0 ? 'block' : 'none')?>" id="survey-action-container">
         <div class="col-sm-12 content-right">
             <!-- Alerts, infos... -->
             <div class="row">

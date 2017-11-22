@@ -10,7 +10,7 @@
  * @property string $stg_name Setting name
  * @property string $stg_value Setting Value
  */
-class SettingsUser extends CActiveRecord
+class SettingsUser extends LSActiveRecord
 {
 	/**
 	 * @return string the associated database table name
@@ -28,7 +28,7 @@ class SettingsUser extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, entity, entity_id, stg_name', 'required'),
+			array('uid, stg_name', 'required'),
 			array('uid', 'numerical', 'integerOnly'=>true),
 			array('entity', 'length', 'max'=>15),
 			array('entity_id', 'length', 'max'=>31),
@@ -48,6 +48,7 @@ class SettingsUser extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+            'user' =>  array(self::HAS_ONE, 'User', 'uid')
 		);
 	}
 
@@ -60,10 +61,94 @@ class SettingsUser extends CActiveRecord
 			'uid' => 'Uid',
 			'entity' => 'Entity',
 			'entity_id' => 'Entity',
-			'stg_name' => 'Stg Name',
-			'stg_value' => 'Stg Value',
+			'stg_name' => 'Setting Name',
+			'stg_value' => 'Setting Value',
 		);
 	}
+
+    /**
+     * Changes or creates a user setting
+     *
+     * @param [String] $stg_name
+     * @param [String] $stg_value
+     * @param [Integer] $uid | Can be omitted to just take the currently logged in users id
+     * @param [type] $entity | optional defaults to 'null'
+     * @param [type] $entity_id | optional defaults to 'null'
+     * @return boolean | Saving success/failure
+     */
+
+    public static function setUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null){   
+        if($uid === null){ $uid = Yii::app()->user->getId(); }        
+
+        $setting = self::getUserSetting($stg_name,$uid,$entity,$entity_id);
+
+        if($setting == null){
+            $setting = new SettingsUser();
+            $setting->setAttributes([
+                'stg_name' => $stg_name,
+                'stg_value' => '',
+                'uid' => $uid,
+                'entity' => $entity,
+                'entity_id' => $entity_id
+            ]);  
+        }
+        $setting->setAttribute('stg_value',$stg_value);
+
+        return $setting->save();
+    }
+
+    /**
+     * Gets a user setting depending on the given parameters
+     *
+     * @param [String] $stg_name
+     * @param [Integer] $uid | Can be omitted to just take the currently logged in users id
+     * @param [type] $entity | optional defaults to 'null'
+     * @param [type] $entity_id | optional defaults to 'null'
+     * @return SettingsUser | The current settings Object
+     */
+    public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null){
+        if($uid === null){ $uid = Yii::app()->user->getId(); }        
+        $searchCriteria = new CDbCriteria;
+        $searchParams = [];
+
+        $searchCriteria->addCondition('uid=:uid');
+        $searchParams[':uid'] = $uid;
+        $searchCriteria->addCondition('stg_name=:stg_name');
+        $searchParams[':stg_name'] = $stg_name; 
+        if($entity != null){
+            $searchCriteria->addCondition('entity=:entity');
+            $searchParams[':entity'] = $entity;
+        } else {
+            $searchCriteria->addCondition('entity IS NULL');
+        }
+        if($entity_id != null){
+            $searchCriteria->addCondition('entity_id=:entity_id');
+            $searchParams[':entity_id'] = $entity_id;
+        } else {
+            $searchCriteria->addCondition('entity_id IS NULL');
+        }
+
+        $searchCriteria->params = $searchParams;
+        
+        $setting = self::model()->find($searchCriteria);
+
+        return $setting;
+    }
+
+    /**
+     * Gets a user settings value depending on the given parameters
+     * Shorthand function
+     *
+     * @param [String] $stg_name
+     * @param [Integer] $uid | Can be omitted to just take the currently logged in users id
+     * @param [type] $entity | optional defaults to 'null'
+     * @param [type] $entity_id | optional defaults to 'null'
+     * @return String|Null | The current settings value or null id there is no setting
+     */
+    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null){
+        $setting = self::getUserSetting($stg_name,$uid,$entity,$entity_id);
+        return $setting != null ? $setting->getAttribute('stg_value') : null;
+    }
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.

@@ -247,8 +247,11 @@ function surveyQuickActionTrigger(){
         data: {currentState: $self.data('active')},
         // html contains the buttons
         success : function(data, statut){
-            $self.data('active', data.newState);
-            if(data.newState === 1){
+            var newState = parseInt(data.newState);
+            console.log('quickaction resolve', data);
+            console.log('quickaction new state', newState);
+            $self.data('active', newState);
+            if(newState === 1){
                 $('#survey-action-container').slideDown(500);
             } else {
                 $('#survey-action-container').slideUp(500);

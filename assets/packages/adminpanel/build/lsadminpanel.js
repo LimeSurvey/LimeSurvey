@@ -37006,6 +37006,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.orderBy(this.$store.state.questiongroups, a => {
                 return parseInt(a.group_order || 999999);
             }, ['asc']);
+        },
+        createQuestionAllowed() {
+            return this.$store.state.questiongroups.length > 0;
         }
     },
     methods: {
@@ -37145,15 +37148,15 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "ls-flex-row wrap align-content-space-between align-items-space-between ls-space margin top-5 bottom-15 button-sub-bar"
   }, [((_vm.createQuestionGroupLink != undefined && _vm.createQuestionGroupLink.length > 1)) ? _c('a', {
-    staticClass: "btn btn-small btn-primary",
+    staticClass: "btn btn-small btn-primary pjax",
     attrs: {
       "id": "adminpanel__sidebar--selectorCreateQuestionGroup",
       "href": _vm.createQuestionGroupLink
     }
   }, [_c('i', {
     staticClass: "fa fa-plus"
-  }), _vm._v(" " + _vm._s(_vm.translate.createQuestionGroup))]) : _vm._e(), _vm._v(" "), ((_vm.createQuestionLink != undefined && _vm.createQuestionLink.length > 1)) ? _c('a', {
-    staticClass: "btn btn-small btn-default ls-space margin right-10",
+  }), _vm._v(" " + _vm._s(_vm.translate.createQuestionGroup))]) : _vm._e(), _vm._v(" "), (_vm.createQuestionAllowed) ? _c('a', {
+    staticClass: "btn btn-small btn-default ls-space margin right-10 pjax",
     attrs: {
       "id": "adminpanel__sidebar--selectorCreateQuestion",
       "href": _vm.createQuestionLink
@@ -37249,7 +37252,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       }, [_vm._v(" ")]), _vm._v(" "), _c('a', {
-        staticClass: "pjax",
+        staticClass: "col-12 pjax",
         attrs: {
           "href": question.link,
           "data-toggle": "tootltip",

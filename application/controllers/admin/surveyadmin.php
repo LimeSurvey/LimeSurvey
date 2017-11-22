@@ -340,30 +340,29 @@ class SurveyAdmin extends Survey_Common_Action
 
     public function togglequickaction()
     {
-        $setting_entry = 'quickaction_'.Yii::app()->user->getId();
-        $quickactionstate = getGlobalSetting($setting_entry);
+        $quickactionstate = (int) SettingsUser::getUserSettingValue('quickaction_state');
 
         switch ($quickactionstate)
         {
-            // if the quickaction state is not set, then it's the first time user click on the chevron, then the state must be set to 0
+            // 
             case null:
-                setGlobalSetting($setting_entry, 0);
+                $save = SettingsUser::setUserSetting(quickaction_state, 1);
                 break;
 
             case 0:
-                setGlobalSetting($setting_entry, 1);
+                $save = SettingsUser::setUserSetting(quickaction_state, 1);
                 break;
 
             case 1:
-                setGlobalSetting($setting_entry, 0);
+                $save = SettingsUser::setUserSetting(quickaction_state, 0);
                 break;
         }
         return Yii::app()->getController()->renderPartial(
             '/admin/super/_renderJson',
             array(
                 'data' => [
-                    'success' => true,
-                    'newState'=> getGlobalSetting($setting_entry)
+                    'success' => $save,
+                    'newState'=> SettingsUser::getUserSettingValue('quickaction_state')
                 ],
             ),
             false,
