@@ -686,7 +686,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false) {
             $oTransaction->commit();
         }
 
-        if ($iOldDBVersion < 328) {
+        if ($iOldDBVersion < 329) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->alterColumn('{{surveymenu_entries}}', 'name', 'string(128) NOT NULL');
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('name' => 'generalsettings_collapsed'), 'name = "generalsettings" AND menu_id = 2');
@@ -703,7 +703,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false) {
             $oDB->createCommand()->update('{{surveymenu}}', array('name' => 'quickmenu'), 'id = 2');
             $oDB->createCommand()->alterColumn('{{surveymenu}}', 'name', 'string(128) NOT NULL');
             
-            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>328), "stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>329), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
     }
