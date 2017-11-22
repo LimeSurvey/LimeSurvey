@@ -131,10 +131,10 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
                     case 'Y': // Yes/No Question Type
                         switch ($row[$fieldno]) {
                             case 'Y':
-                                echo($q.1.$q);
+                                echo($q.'1'.$q);
                                 break;
                             case 'N':
-                                echo($q.2.$q);
+                                echo($q.'2'.$q);
                                 break;
                             default:
                                 echo($na);
@@ -143,10 +143,10 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
                     case 'G': //Gender
                         switch ($row[$fieldno]) {
                             case 'F':
-                                echo($q.1.$q);
+                                echo($q.'1'.$q);
                                 break;
                             case 'M':
-                                echo($q.2.$q);
+                                echo($q.'2'.$q);
                                 break;
                             default:
                                 echo($na);
@@ -155,13 +155,13 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
                     case 'C': //Yes/No/Uncertain
                         switch ($row[$fieldno]) {
                             case 'Y':
-                                echo($q.1.$q);
+                                echo($q.'1'.$q);
                                 break;
                             case 'N':
-                                echo($q.2.$q);
+                                echo($q.'2'.$q);
                                 break;
                             case 'U':
-                                echo($q.3.$q);
+                                echo($q.'3'.$q);
                                 break;
                             default:
                                 echo($na);
@@ -170,13 +170,13 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
                     case 'E': //Increase / Same / Decrease
                         switch ($row[$fieldno]) {
                             case 'I':
-                                echo($q.1.$q);
+                                echo($q.'1'.$q);
                                 break;
                             case 'S':
-                                echo($q.2.$q);
+                                echo($q.'2'.$q);
                                 break;
                             case 'D':
-                                echo($q.3.$q);
+                                echo($q.'3'.$q);
                                 break;
                             default:
                                 echo($na);
@@ -186,9 +186,9 @@ function SPSSExportData($iSurveyID, $iLength, $na = '', $q = '\'', $header = FAL
                     case 'M':
                         if (substr($field['code'], -7) != 'comment' && substr($field['code'], -5) != 'other') {
                             if ($row[$fieldno] == 'Y') {
-                                echo($q.1.$q);
+                                echo($q.'1'.$q);
                             } elseif (isset($row[$fieldno])) {
-                                echo($q.0.$q);
+                                echo($q.'0'.$q);
                             } else {
                                 echo($na);
                             }
@@ -363,7 +363,7 @@ function SPSSGetValues($field = array(), $qidattributes = null, $language) {
         $answers['size'] = $size;
         return $answers;
     } else {
-        /* Not managed (currently): url, IP, … */
+        /* Not managed (currently): url, IP, â€¦ */
         return;
     }
 }

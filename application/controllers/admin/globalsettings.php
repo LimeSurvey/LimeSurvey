@@ -317,7 +317,7 @@ class GlobalSettings extends Survey_Common_Action
         setGlobalSetting('rpc_publish_api', (bool) $_POST['rpc_publish_api']);
         setGlobalSetting('characterset', $_POST['characterset']);
         setGlobalSetting('sideMenuBehaviour', Yii::app()->getRequest()->getPost('sideMenuBehaviour', 'adaptive'));
-        $savetime = ((float) $_POST['timeadjust']) * 60.' minutes'; //makes sure it is a number, at least 0
+        $savetime = intval((float) $_POST['timeadjust'] * 60).' minutes'; //makes sure it is a number, at least 0
         if ((substr($savetime, 0, 1) != '-') && (substr($savetime, 0, 1) != '+')) {
             $savetime = '+'.$savetime;
         }
