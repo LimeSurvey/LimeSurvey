@@ -93,7 +93,7 @@ enabletests
 ## Ignore files and dependencies for testing
 composer.lock
 third_party/facebook/**/*
-third_party/symphony/process/**/*
+third_party/symfony/**/*
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
