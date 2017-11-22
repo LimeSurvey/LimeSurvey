@@ -31,7 +31,7 @@ $config['uploaddir']               = $config['rootdir'].DIRECTORY_SEPARATOR."upl
 $config['standardthemerootdir'] = $config['rootdir'].DIRECTORY_SEPARATOR."templates";   // The directory path of the standard themes
 $config['userthemerootdir']     = $config['uploaddir'].DIRECTORY_SEPARATOR."templates"; // The directory path of the user themes
 $config['assets']                  = $config['rootdir'].DIRECTORY_SEPARATOR."assets";
-$config['styledir']                = $config['assets'].DIRECTORY_SEPARATOR.'styles-admin';
+$config['styledir']                 = $config['rootdir'].DIRECTORY_SEPARATOR.'themes'.DIRECTORY_SEPARATOR.'admin';
 $config['questiontypedir']         = $config['rootdir'].DIRECTORY_SEPARATOR.'application'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'questionTypes';
 
 return $config;

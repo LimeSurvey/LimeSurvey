@@ -18,8 +18,8 @@
             App()->getClientScript()->registerCssFile(Yii::app()->getConfig('adminstyleurl') .  "displayParticipants.css");
 
         ?>
-        <link rel="shortcut icon" href="<?php echo App()->baseUrl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
-        <link rel="icon" href="<?php echo App()->baseUrl; ?>assets/styles-admin/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="<?php echo Yii::app()->getConfig('styleurl'); ?>favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="<?php echo Yii::app()->getConfig('styleurl'); ?>favicon.ico" type="image/x-icon" />
         <?php $this->widget('ext.LimeScript.LimeScript'); ?>
         <?php $this->widget('ext.LimeDebug.LimeDebug'); ?>
         <title>Limesurvey Administration</title>
