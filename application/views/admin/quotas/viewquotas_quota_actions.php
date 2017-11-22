@@ -20,7 +20,7 @@
 <?php } ?>
 <?php if (Permission::model()->hasSurveyPermission($oSurvey->getPrimaryKey(), 'quotas','update')) {
     echo CHtml::link(CHtml::tag('span', array(
-        'class' => 'fa fa-floppy-o-sign',
+        'class' => 'fa fa-tasks',
     ), ''
     ), array(
         'admin/validate',
