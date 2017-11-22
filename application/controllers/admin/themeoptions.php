@@ -235,8 +235,14 @@ class themeoptions  extends Survey_Common_Action
         }
     }
 
-
-    private function _updateCommon($model,$sid=null)
+    /**
+     * Renders the template options form.
+     *
+     * @param TemplateConfiguration $model
+     * @param int $sid
+     * @return void
+     */
+    private function _updateCommon(TemplateConfiguration $model,$sid=null)
     {
         $oModelWithInheritReplacement = TemplateConfiguration::model()->findByPk($model->id);
         $templateOptionPage           = $oModelWithInheritReplacement->optionPage;

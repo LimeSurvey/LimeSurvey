@@ -7,6 +7,21 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
 
 ?>
 
+<?php if (empty($model->sid)): ?>
+    <!-- This is only visible when we're not in survey view. -->
+    <div class='container-fluid'>
+        <div class='menubar' id='theme-options-bar'>
+            <div class='row'>
+                <div class='text-right'>
+                    <a class="btn btn-success" href="#" role="button" id="save-form-button" data-form-id="template-options-form">
+                        <span class="fa fa-floppy-o"></span>
+                        <?php eT('Save'); ?>
+                    </a>
+                </div>
+            </div>
+        </div>
+<?php endif; ?>
+
 <div class="row h1"><?php echo sprintf(gT('Update survey theme options for %s'),'<em>' . $model->template_name . '</em>'); ?></div>
 <!-- Using bootstrap tabs to differ between just hte options and advanced direct settings -->
 <div class="row">
@@ -187,6 +202,10 @@ echo viewHelper::getViewTestTag('surveyTemplateOptionsUpdate');
     </div>
 
 </div>
+
+<?php if (empty($model->sid)): ?>
+    </div>
+<?php endif; ?>
 
 
 <script type="text/javascript">
