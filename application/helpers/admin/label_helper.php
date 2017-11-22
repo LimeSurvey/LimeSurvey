@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -31,14 +33,16 @@ function updateset($lid)
 
     // If new languages are added, create labels' codes and sortorder for the new languages
     $result = Label::model()->findAllByAttributes(array('lid' => $lid), array('order' => 'code, sortorder, assessment_value'));
-    if ($result)
-        foreach ($result as $row)
+    if ($result) {
+            foreach ($result as $row)
             $oldcodesarray[$row['code']] = array('sortorder'=> $row['sortorder'], 'assessment_value'=> $row['assessment_value']);
+    }
 
-    if (isset($oldcodesarray) && count($oldcodesarray) > 0)
-        foreach ($addlangidsarray as $addedlangid)
+    if (isset($oldcodesarray) && count($oldcodesarray) > 0) {
+            foreach ($addlangidsarray as $addedlangid)
             foreach ($oldcodesarray as $oldcode => $olddata)
                 $sqlvalues[] = array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
+    }
 
     if (isset($sqlvalues)) {
         foreach ($sqlvalues as $sqlvalue) {
@@ -54,12 +58,14 @@ function updateset($lid)
     $criteria = new CDbCriteria;
     $criteria->addColumnCondition(array('lid' => $lid));
     $langcriteria = new CDbCriteria();
-    foreach ($dellangidsarray as $dellangid)
-        $langcriteria->addColumnCondition(array('language' => $dellangid), 'OR');
+    foreach ($dellangidsarray as $dellangid) {
+            $langcriteria->addColumnCondition(array('language' => $dellangid), 'OR');
+    }
     $criteria->mergeWith($langcriteria);
 
-    if (!empty($dellangidsarray))
-        Label::model()->deleteAll($criteria);
+    if (!empty($dellangidsarray)) {
+            Label::model()->deleteAll($criteria);
+    }
 
     // Update the label set itself
     $labelset->label_name = $postlabel_name;
@@ -96,8 +102,7 @@ function insertlabelset()
     if (!$result)
     {
         Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
-    }
-    else
+    } else
     {
         return $result;
     }
@@ -124,14 +129,14 @@ function modlabelsetanswers($lid)
     if (get_magic_quotes_gpc())
     {
         $data = json_decode(stripslashes($sPostData));
-    }
-    else
+    } else
     {
         $data = json_decode($sPostData);
     }
 
-    if ($ajax)
-        $lid = insertlabelset();
+    if ($ajax) {
+            $lid = insertlabelset();
+    }
     $aErrors = array();
     if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'}))
     {
@@ -172,13 +177,11 @@ function modlabelsetanswers($lid)
         if (count($aErrors))
         {
             Yii::app()->session['flashmessage'] = gT("Not all labels were updated successfully.");
-        }
-        else
+        } else
         {
             Yii::app()->session['flashmessage'] = gT("Labels sucessfully updated");
         }
-    }
-    else
+    } else
     {
         Yii::app()->setFlashMessage(gT("Can't update labels because you are using duplicated codes"), 'error');
     }

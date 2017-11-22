@@ -237,8 +237,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             // There is no account defined to do the LDAP search,
             // let's use anonymous bind instead
             $ldapbindsearch = @ldap_bind($ldapconn);
-        }
-        else
+        } else
         {
             // An account is defined to do the LDAP search, let's use it
             $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
@@ -254,8 +253,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         if ($extrauserfilter != "")
         {
             $usersearchfilter = "(&($searchuserattribute=$new_user)$extrauserfilter)";
-        }
-        else
+        } else
         {
             $usersearchfilter = "($searchuserattribute=$new_user)";
         }
@@ -450,8 +448,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             if ($ldapmode == 'searchandbind' && $this->get('autocreate', null, null, false) == true)
             {
                 $autoCreateFlag = true;
-            }
-            else
+            } else
             {
                 // If the user doesnt exist in the LS database, he can not login
                 $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
@@ -500,8 +497,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         {
             // in simple bind mode we know how to construct the userDN from the username
             $ldapbind = @ldap_bind($ldapconn, $prefix.$username.$suffix, $password);
-        }
-        else
+        } else
         {
             // in search and bind mode we first do a LDAP search from the username given
             // to foind the userDN and then we procced to the bind operation
@@ -510,8 +506,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 // There is no account defined to do the LDAP search,
                 // let's use anonymous bind instead
                 $ldapbindsearch = @ldap_bind($ldapconn);
-            }
-            else
+            } else
             {
                 // An account is defined to do the LDAP search, let's use it
                 $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
@@ -525,8 +520,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             if ($extrauserfilter != "")
             {
                 $usersearchfilter = "(&($searchuserattribute=$username)$extrauserfilter)";
-            }
-            else
+            } else
             {
                 $usersearchfilter = "($searchuserattribute=$username)";
             }
@@ -537,8 +531,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             {
                 $userentry = ldap_get_entries($ldapconn, $dnsearchres);
                 $userdn = $userentry[0]["dn"];
-            }
-            else
+            } else
             {
                 // if no entry or more than one entry returned
                 // then deny authentication

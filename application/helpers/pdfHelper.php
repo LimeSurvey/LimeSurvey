@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -55,8 +57,7 @@ class pdfHelper
         if (getLanguageRTL($language))
         {
             $lg['a_meta_dir'] = 'rtl';
-        }
-        else
+        } else
         {
             $lg['a_meta_dir'] = 'ltr';
         }
