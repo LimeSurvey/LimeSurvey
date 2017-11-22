@@ -74,6 +74,7 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
+            // Ignore welcome modal.
             try {
                 $button = self::$webDriver->wait(1)->until(
                     WebDriverExpectedCondition::elementToBeClickable(
@@ -82,8 +83,23 @@ class CreateSurveyTest extends TestBaseClassWeb
                 );
                 $button->click();
             } catch (NoSuchElementException $ex) {
-                // Ignore this if welcome modal was not shown.
+                // Do nothing.
             }
+
+            sleep(1);
+
+            // Ignore password warning.
+            try {
+                $button = self::$webDriver->wait(1)->until(
+                    WebDriverExpectedCondition::elementToBeClickable(
+                        WebDriverBy::cssSelector('#admin-notification-modal button.btn-default')
+                    )
+                );
+                $button->click();
+            } catch (NoSuchElementException $ex) {
+                // Do nothing.
+            }
+
 
             sleep(1);
 
