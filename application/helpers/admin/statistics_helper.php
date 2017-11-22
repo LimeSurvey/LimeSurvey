@@ -75,8 +75,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
         {
             $graph = new pChart(690,200);
             $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->drawTitle(0,0,gT('Sorry, but this question has too many answer options to be shown properly in a graph.','unescaped'),30,30,30,690,200);
             $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
             $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
@@ -94,8 +94,8 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
         {
             $graph = new pChart(690,200);
             $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
             $graph->drawTitle(0,0,gT('Sorry, but this question has no responses yet so a graph cannot be shown.','unescaped'),30,30,30,690,200);
             $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
             $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
@@ -182,14 +182,14 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
             else
             {
                 $graph = new pChart(1,1);
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
 
                 if ($legendsize[1]<320) $gheight=420; else $gheight=$legendsize[1]+100;
                 $graph = new pChart(690+$legendsize[0],$gheight);
                 $graph->drawFilledRectangle(0,0,690+$legendsize[0],$gheight,254,254,254,false);
                 $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
                 $graph->setGraphArea(50,30,500,$gheight-60);
                 $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
                 $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
@@ -197,14 +197,14 @@ function createChart($iQuestionID, $iSurveyID, $type=null, $lbl, $gdata, $grawda
                 $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
                 $graph->drawGrid(4,TRUE,230,230,230,50);
                 // Draw the 0 line
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
                 $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
 
                 // Draw the bar graph
                 $graph->drawBarGraph($DataSet->GetData(),$DataSet->GetDataDescription(),FALSE);
                 //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
                 // Finish the graph
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
                 $graph->drawLegend(510,30,$DataSet->GetDataDescription(),250,250,250);
 
                 $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet->GetData(),$graph);
