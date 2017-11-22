@@ -30,7 +30,7 @@ echo viewHelper::getViewTestTag('surveyPublicationOptions');
                     <?php Yii::app()->getController()->widget('yiiwheels.widgets.datetimepicker.WhDateTimePicker', array(
                             'name' => "startdate",
                             'id' => 'startdate',
-                            'value' => date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->startdate)),
+                            'value' => ($oSurvey->startdate ? date($dateformatdetails['phpdate']." H:i",strtotime($oSurvey->startdate)) : ''),
                             'pluginOptions' => array(
                                 'format' => $dateformatdetails['jsdate'] . " HH:mm",
                                 'allowInputToggle' =>true,
