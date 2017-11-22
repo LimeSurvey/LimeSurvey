@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -42,7 +44,9 @@ class SurveyTimingDynamic extends LSActiveRecord
         $model = parent::model(__CLASS__);
         
         //We need to refresh if we changed sid
-        if ($refresh === true) $model->refreshMetaData();
+        if ($refresh === true) {
+            $model->refreshMetaData();
+        }
         return $model;
     }
     

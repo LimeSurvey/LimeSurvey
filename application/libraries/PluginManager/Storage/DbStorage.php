@@ -24,8 +24,7 @@ class DbStorage implements iPluginStorage {
         if ($model == null || !method_exists($this, $functionName))
         {
             return $this->getGeneric($plugin, $key, $model, $id, $default);
-        }
-        else
+        } else
         {
             return $this->$functionName($plugin, $key, $model, $id, $default, $language);
         }
@@ -59,12 +58,10 @@ class DbStorage implements iPluginStorage {
             {
                 $result[] = json_decode($record->value, true);
             }
-        }
-        elseif (count($records) == 1)
+        } elseif (count($records) == 1)
         {
             $result = json_decode($records[0]->value, true);
-        }
-        else 
+        } else 
         {
             $result = $default;
         }
@@ -99,8 +96,7 @@ class DbStorage implements iPluginStorage {
         if (in_array($key, $baseAttributes))
         {
             $result = $this->getQuestionBase($id, $key, $default);
-        }
-        else 
+        } else 
         {
             $attributes = array('qid' => $id);
             // If * is passed we retrieve all languages.
@@ -121,16 +117,14 @@ class DbStorage implements iPluginStorage {
                     if ($record->serialized)
                     {
                         $value = json_decode($record->value, true);
-                    }
-                    else
+                    } else
                     {
                         $value = $record->value;
                     }
                     if ($record->language != null && ($language == '*' || is_array($language)))
                     {
                         $result[$record->language][] = $value;
-                    }
-                    else
+                    } else
                     {
                         $result[] = $value;
                     }
@@ -144,13 +138,11 @@ class DbStorage implements iPluginStorage {
                             $item = $item[0];
                         }
                     }
-                }
-                elseif (count($result) == 1)
+                } elseif (count($result) == 1)
                 {
                     $result = $result[0];
                 }
-            }
-            else
+            } else
             {
                 $result = $default;
             }
@@ -193,8 +185,7 @@ class DbStorage implements iPluginStorage {
         if ($model == null || !method_exists($this, $functionName))
         {
             return $this->setGeneric($plugin, $key, $data, $model, $id, $language);
-        }
-        else
+        } else
         {
             return $this->$functionName($plugin, $key, $data, $model, $id, $language);
         }
@@ -268,8 +259,7 @@ class DbStorage implements iPluginStorage {
                 $data = null;
             }
             $result = $this->setQuestionBase($id, $key, $data);
-        }
-        else 
+        } else 
         {
             $attributes = array(
                 'qid'  => $id,
@@ -288,8 +278,7 @@ class DbStorage implements iPluginStorage {
             {
                 $record->value = json_encode($data);           
                 $record->serialized = true;
-            }
-            else
+            } else
             {
                 $record->value = $data;
                 $record->serialized = false;

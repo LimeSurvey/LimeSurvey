@@ -86,8 +86,7 @@ class PluginManager extends \CApplicationComponent {
         if ($record == false)
         {
             return false;
-        }
-        else
+        } else
         {
             return true;
         }
@@ -161,8 +160,7 @@ class PluginManager extends \CApplicationComponent {
             {
                 $this->unsubscribe($plugin, $event);
             }
-        }
-        elseif (isset($this->subscriptions[$event]))
+        } elseif (isset($this->subscriptions[$event]))
         {
             foreach ($this->subscriptions[$event] as $index => $subscription)
             {
@@ -299,8 +297,7 @@ class PluginManager extends \CApplicationComponent {
                     return $plugin;
                 }
             }
-        }
-        else
+        } else
         {
             if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName))
             {
@@ -342,8 +339,7 @@ class PluginManager extends \CApplicationComponent {
             {
                 $this->loadPlugin($record->name, $record->id);
             }
-        }
-        else
+        } else
         {
             // Log it ? tracevar ?
         }

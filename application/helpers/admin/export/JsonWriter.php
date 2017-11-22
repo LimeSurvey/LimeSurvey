@@ -58,8 +58,7 @@ class JsonWriter extends Writer
         if (!$this->file)
         {
             echo $sEndOutput;
-        }
-        else
+        } else
         {
             $this->output .= $sEndOutput;
             fwrite($this->file, $this->output);

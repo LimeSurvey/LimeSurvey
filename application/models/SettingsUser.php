@@ -12,77 +12,77 @@
  */
 class SettingsUser extends LSActiveRecord
 {
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{settings_user}}';
-	}
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return '{{settings_user}}';
+    }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('uid, stg_name', 'required'),
-			array('uid', 'numerical', 'integerOnly'=>true),
-			array('entity', 'length', 'max'=>15),
-			array('entity_id', 'length', 'max'=>31),
-			array('stg_name', 'length', 'max'=>63),
-			array('stg_value', 'safe'),
-			// The following rule is used by search().
-			// @todo Please remove those attributes that should not be searched.
-			array('uid, entity, entity_id, stg_name, stg_value', 'safe', 'on'=>'search'),
-		);
-	}
+    /**
+     * @return array validation rules for model attributes.
+     */
+    public function rules()
+    {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
+        return array(
+            array('uid, stg_name', 'required'),
+            array('uid', 'numerical', 'integerOnly'=>true),
+            array('entity', 'length', 'max'=>15),
+            array('entity_id', 'length', 'max'=>31),
+            array('stg_name', 'length', 'max'=>63),
+            array('stg_value', 'safe'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('uid, entity, entity_id, stg_name, stg_value', 'safe', 'on'=>'search'),
+        );
+    }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
+    /**
+     * @return array relational rules.
+     */
+    public function relations()
+    {
+        // NOTE: you may need to adjust the relation name and the related
+        // class name for the relations automatically generated below.
+        return array(
             'user' =>  array(self::HAS_ONE, 'User', 'uid')
-		);
-	}
+        );
+    }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'uid' => 'Uid',
-			'entity' => 'Entity',
-			'entity_id' => 'Entity',
-			'stg_name' => 'Setting Name',
-			'stg_value' => 'Setting Value',
-		);
-	}
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels()
+    {
+        return array(
+            'uid' => 'Uid',
+            'entity' => 'Entity',
+            'entity_id' => 'Entity',
+            'stg_name' => 'Setting Name',
+            'stg_value' => 'Setting Value',
+        );
+    }
 
     /**
      * Changes or creates a user setting
      *
      * @param [String] $stg_name
-     * @param [String] $stg_value
+     * @param integer $stg_value
      * @param [Integer] $uid | Can be omitted to just take the currently logged in users id
      * @param [type] $entity | optional defaults to 'null'
      * @param [type] $entity_id | optional defaults to 'null'
      * @return boolean | Saving success/failure
      */
 
-    public static function setUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null){   
-        if($uid === null){ $uid = Yii::app()->user->getId(); }        
+    public static function setUserSetting($stg_name, $stg_value, $uid = null, $entity = null, $entity_id = null) {   
+        if ($uid === null) { $uid = Yii::app()->user->getId(); }        
 
-        $setting = self::getUserSetting($stg_name,$uid,$entity,$entity_id);
+        $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
 
-        if($setting == null){
+        if ($setting == null) {
             $setting = new SettingsUser();
             $setting->setAttributes([
                 'stg_name' => $stg_name,
@@ -92,7 +92,7 @@ class SettingsUser extends LSActiveRecord
                 'entity_id' => $entity_id
             ]);  
         }
-        $setting->setAttribute('stg_value',$stg_value);
+        $setting->setAttribute('stg_value', $stg_value);
 
         return $setting->save();
     }
@@ -106,8 +106,8 @@ class SettingsUser extends LSActiveRecord
      * @param [type] $entity_id | optional defaults to 'null'
      * @return SettingsUser | The current settings Object
      */
-    public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null){
-        if($uid === null){ $uid = Yii::app()->user->getId(); }        
+    public static function getUserSetting($stg_name, $uid = null, $entity = null, $entity_id = null) {
+        if ($uid === null) { $uid = Yii::app()->user->getId(); }        
         $searchCriteria = new CDbCriteria;
         $searchParams = [];
 
@@ -115,13 +115,13 @@ class SettingsUser extends LSActiveRecord
         $searchParams[':uid'] = $uid;
         $searchCriteria->addCondition('stg_name=:stg_name');
         $searchParams[':stg_name'] = $stg_name; 
-        if($entity != null){
+        if ($entity != null) {
             $searchCriteria->addCondition('entity=:entity');
             $searchParams[':entity'] = $entity;
         } else {
             $searchCriteria->addCondition('entity IS NULL');
         }
-        if($entity_id != null){
+        if ($entity_id != null) {
             $searchCriteria->addCondition('entity_id=:entity_id');
             $searchParams[':entity_id'] = $entity_id;
         } else {
@@ -139,56 +139,56 @@ class SettingsUser extends LSActiveRecord
      * Gets a user settings value depending on the given parameters
      * Shorthand function
      *
-     * @param [String] $stg_name
+     * @param string $stg_name
      * @param [Integer] $uid | Can be omitted to just take the currently logged in users id
      * @param [type] $entity | optional defaults to 'null'
      * @param [type] $entity_id | optional defaults to 'null'
      * @return String|Null | The current settings value or null id there is no setting
      */
-    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null){
-        $setting = self::getUserSetting($stg_name,$uid,$entity,$entity_id);
+    public static function getUserSettingValue($stg_name, $uid = null, $entity = null, $entity_id = null) {
+        $setting = self::getUserSetting($stg_name, $uid, $entity, $entity_id);
         return $setting != null ? $setting->getAttribute('stg_value') : null;
     }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 *
-	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
-	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
-	 * - Pass data provider to CGridView, CListView or any similar widget.
-	 *
-	 * @return CActiveDataProvider the data provider that can return the models
-	 * based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// @todo Please modify the following code to remove attributes that should not be searched.
+    /**
+     * Retrieves a list of models based on the current search/filter conditions.
+     *
+     * Typical usecase:
+     * - Initialize the model fields with values from filter form.
+     * - Execute this method to get CActiveDataProvider instance which will filter
+     * models according to data in model fields.
+     * - Pass data provider to CGridView, CListView or any similar widget.
+     *
+     * @return CActiveDataProvider the data provider that can return the models
+     * based on the search/filter conditions.
+     */
+    public function search()
+    {
+        // @todo Please modify the following code to remove attributes that should not be searched.
 
-		$criteria=new CDbCriteria;
+        $criteria=new CDbCriteria;
 
-		$criteria->compare('uid',$this->uid);
-		$criteria->compare('entity',$this->entity,true);
-		$criteria->compare('entity_id',$this->entity_id,true);
-		$criteria->compare('stg_name',$this->stg_name,true);
-		$criteria->compare('stg_value',$this->stg_value,true);
+        $criteria->compare('uid',$this->uid);
+        $criteria->compare('entity',$this->entity,true);
+        $criteria->compare('entity_id',$this->entity_id,true);
+        $criteria->compare('stg_name',$this->stg_name,true);
+        $criteria->compare('stg_value',$this->stg_value,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+        return new CActiveDataProvider($this, array(
+            'criteria'=>$criteria,
+        ));
+    }
 
-	/**
-	 * Returns the static model of the specified AR class.
-	 * Please note that you should have this exact method in all your CActiveRecord descendants!
-	 * @param string $className active record class name.
-	 * @return SettingsUser the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $className active record class name.
+     * @return SettingsUser the static model class
+     */
+    public static function model($className=__CLASS__)
+    {
         /** @var self $model */
         $model =parent::model($className);
         return $model;
-	}
+    }
 }

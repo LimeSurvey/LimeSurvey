@@ -2079,7 +2079,7 @@ class ExpressionManager {
                             break;
                         case 1:
                             if (!$this->RDP_onlyparse) {
-                                switch($funcName) {
+                                switch ($funcName) {
                                     case 'acos':
                                     case 'asin':
                                     case 'atan':
@@ -2106,11 +2106,11 @@ class ExpressionManager {
                         break;
                         case 2:
                             if (!$this->RDP_onlyparse) {
-                                switch($funcName) {
+                                switch ($funcName) {
                                     case 'atan2':
                                         if (is_numeric($params[0]) && is_numeric($params[1]))
                                         {
-                                            $result = $funcName(floatval($params[0]),floatval($params[1]));
+                                            $result = $funcName(floatval($params[0]), floatval($params[1]));
                                         }
                                         else
                                         {

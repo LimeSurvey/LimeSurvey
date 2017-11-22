@@ -289,8 +289,7 @@ class JsonOutputNotLoggedIn extends JsonOutputModal
         // This should not be possible here
         if (isset($result[0]) && $result[0] == 'success') {
             throw new \CException('Internal error: login form submitted');
-        }
-        else if (isset($result[0]) && $result[0] == 'failed') {
+        } else if (isset($result[0]) && $result[0] == 'failed') {
             throw new \CException('Internal error: login form submitted');
         }
 
