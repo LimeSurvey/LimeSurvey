@@ -94,6 +94,7 @@ enabletests
 composer.lock
 third_party/facebook/**/*
 third_party/symfony/**/*
+third_party/composer/installed\.json
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode
@@ -111,3 +112,4 @@ third_party/symfony/**/*
 
 ## ignore Vagrantfile
 Vagrantfile
+
