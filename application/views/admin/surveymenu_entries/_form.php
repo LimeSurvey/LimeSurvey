@@ -120,9 +120,9 @@
 			</div>
 
 			<div class="form-group">
-				<?php echo $form->labelEx($model,'template'); ?>
-				<?php echo $form->textField($model,'template',array('size'=>60,'maxlength'=>255)); ?>
-				<?php echo $form->error($model,'template'); ?>
+				<?php echo $form->labelEx($model,'theme'); ?>
+				<?php echo $form->textField($model,'theme',array('size'=>60,'maxlength'=>255)); ?>
+				<?php echo $form->error($model,'theme'); ?>
 			</div>
 
 			<div class="form-group">

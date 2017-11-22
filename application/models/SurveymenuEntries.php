@@ -208,7 +208,7 @@ class SurveymenuEntries extends LSActiveRecord
             return $data->menu_link;
         } else {
             return gt('Action: ').$data->action.', <br/>'
-            .gt('Template: ').$data->template.', <br/>'
+            .gt('Template: ').$data->theme.', <br/>'
             .gt('Partial: ').$data->partial;
         }
     }
