@@ -90,8 +90,10 @@ enabletests
 ## Ignore test tmp files
 /tests/data/tmp/**
 
-## Ignore composer.lock to always reinstall all dependancies
+## Ignore files and dependencies for testing
 composer.lock
+third_party/facebook/**/*
+third_party/symphony/process/**/*
 
 ## Ignore any hidden folder/files (except explicitly defined)
 ## such as various IDE folders .idea .netbeans .vscode

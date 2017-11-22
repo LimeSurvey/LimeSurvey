@@ -1,27 +1,27 @@
 [
     {
         "name": "symfony/process",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
+        "version": "v3.3.13",
+        "version_normalized": "3.3.13.0",
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/process.git",
-            "reference": "937744f90ebc4de3f82b568be6101b78b2e3afb4"
+            "reference": "a56a3989fb762d7b19a0cf8e7693ee99a6ffb78d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/process/zipball/937744f90ebc4de3f82b568be6101b78b2e3afb4",
-            "reference": "937744f90ebc4de3f82b568be6101b78b2e3afb4",
+            "url": "https://api.github.com/repos/symfony/process/zipball/a56a3989fb762d7b19a0cf8e7693ee99a6ffb78d",
+            "reference": "a56a3989fb762d7b19a0cf8e7693ee99a6ffb78d",
             "shasum": ""
         },
         "require": {
-            "php": "^7.1.3"
+            "php": "^5.5.9|>=7.0.8"
         },
-        "time": "2017-11-21T17:31:29+00:00",
+        "time": "2017-11-13T15:31:11+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
-                "dev-master": "4.1-dev"
+                "dev-master": "3.3-dev"
             }
         },
         "installation-source": "source",
@@ -52,8 +52,8 @@
     },
     {
         "name": "facebook/webdriver",
-        "version": "dev-community",
-        "version_normalized": "dev-community",
+        "version": "1.5.0",
+        "version_normalized": "1.5.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/facebook/php-webdriver.git",
