@@ -132,47 +132,32 @@
         //error_log("TIBO fieldtype=$fieldtype,fieldname=$fieldname,fieldtext=$fieldtext,surveyID=$surveyID,gID=$gID,qID=$qID,action=$action");
         $session = &Yii::app()->session;
 
-        if ($session['htmleditormode'] &&
-        $session['htmleditormode'] == 'none')
-        {
+        if ($session['htmleditormode'] && $session['htmleditormode'] == 'none') {
             return '';
         }
 
 
-        if (!$session['htmleditormode'] ||
-        ($session['htmleditormode'] != 'inline' &&
-        $session['htmleditormode'] != 'popup'))
-        {
-            $htmleditormode = Yii::app()->getConfig('defaulthtmleditormode');
-        }
-        else
-        {
+        if (!$session['htmleditormode'] || ($session['htmleditormode'] != 'inline' && $session['htmleditormode'] != 'popup')) {
+                $htmleditormode = Yii::app()->getConfig('defaulthtmleditormode');
+        } else {
             $htmleditormode = $session['htmleditormode'];
         }
-        if ($surveyID && getEmailFormat($surveyID) != 'html' && substr($fieldtype, 0, 6) === "email-")// email but survey as text email
-        {
+        if ($surveyID && getEmailFormat($surveyID) != 'html' && substr($fieldtype, 0, 6) === "email-") { // email but survey as text email
             return '';
         }
 
-        if ($htmleditormode == 'popup' ||
-        ($fieldtype == 'editanswer' ||
-        $fieldtype == 'addanswer' ||
-        $fieldtype == 'editlabel' ||
-        $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0))
+        if ($htmleditormode == 'popup' || ($fieldtype == 'editanswer' ||$fieldtype == 'addanswer' || $fieldtype == 'editlabel' || $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0))
         {
             return getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
-        } elseif ($htmleditormode == 'inline')
-        {
+        } elseif ($htmleditormode == 'inline')  {
             return getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
-        } else
-        {
+        } else  {
             return '';
         }
     }
 
     function getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID = null, $gID = null, $qID = null, $action = null)
     {
-
         $htmlcode = '';
 
         if ($fieldtype == 'editanswer' ||

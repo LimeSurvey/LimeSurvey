@@ -213,13 +213,11 @@ class Save
             $this->aSaveErrors[] = gT("You may not use slashes or ampersands in your name or password.");
             return;
         }
-        elseif (!empty($duplicate) && $duplicate->count() > 0)  // OK - AR count
-        {
+        elseif (!empty($duplicate) && $duplicate->count() > 0) { // OK - AR count
             $this->aSaveErrors[] = gT("This name has already been used for this survey. You must use a unique save name.");
             return;
         }
-        elseif (!empty($_POST['saveemail']) && !validateEmailAddress($_POST['saveemail']))  // Check if the email address is valid
-        {
+        elseif (!empty($_POST['saveemail']) && !validateEmailAddress($_POST['saveemail'])) { // Check if the email address is valid
             $errormsg .= gT("This is not a valid email address. Please provide a valid email address or leave it empty.")."<br />\n";
             return;
         }
@@ -235,8 +233,7 @@ class Save
                     "startlanguage" => $_SESSION['survey_'.$surveyid]['s_lang'],
                     "refurl" => ((isset($_SESSION['survey_'.$surveyid]['refurl'])) ? $_SESSION['survey_'.$surveyid]['refurl'] : getenv('HTTP_REFERER'))
                 );
-                if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata))    // Checked
-                {
+                if (SurveyDynamic::model($thissurvey['sid'])->insert($sdata)) {
                     $srid = getLastInsertID($survey->responsesTableName);
                     $_SESSION['survey_'.$surveyid]['srid'] = $srid;
                 }

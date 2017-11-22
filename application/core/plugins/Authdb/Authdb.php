@@ -141,8 +141,7 @@ class Authdb extends AuthPluginBase
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
-        if ($user !== null && ($username != $user->users_name && $username != $user->email)) // Control of equality for uppercase/lowercase with mysql
-        {
+        if ($user !== null && ($username != $user->users_name && $username != $user->email)) { // Control of equality for uppercase/lowercase with mysql
             $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
             return;
         }
