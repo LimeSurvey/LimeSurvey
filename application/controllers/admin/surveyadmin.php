@@ -999,7 +999,7 @@ class SurveyAdmin extends Survey_Common_Action
         //Start collecting aData
         $aData['surveyid'] = $iSurveyID;
         $aData['menuaction'] = $menuaction;
-        $aData['template'] = $menuEntry->template;
+        $aData['template'] = $menuEntry->theme;
         $aData['templateData'] = $templateData;
         $aData['surveyls_language'] = $baselang;
         $aData['action'] = $menuEntry->action;
@@ -1013,7 +1013,7 @@ class SurveyAdmin extends Survey_Common_Action
         $aData['surveybar']['saveandclosebutton']['form'] = true;
         $aData['surveybar']['closebutton']['url'] = $this->getController()->createUrl("'admin/survey/sa/view/",['surveyid' => $iSurveyID]); // Close button
 
-        $aViewUrls[] = $menuEntry->template;
+        $aViewUrls[] = $menuEntry->theme;
 
         $this->_renderWrappedTemplate('survey', $aViewUrls, $aData);
      }
