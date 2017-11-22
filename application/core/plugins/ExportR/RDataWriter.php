@@ -15,11 +15,11 @@ class RDataWriter extends CsvWriter {
         parent::init($survey, $sLanguageCode, $oOptions);
 
         // Change filename
-        $this->csvFilename = 'survey_' . $survey->id .'_R_data_file.csv';
+        $this->csvFilename = 'survey_'.$survey->id.'_R_data_file.csv';
         // Skip the first line with headers
         $this->doHeaders = true;
 
-        $oOptions->answerFormat = "short";      // force answer codes
+        $oOptions->answerFormat = "short"; // force answer codes
 
         // Save fieldmap so we can use it in transformResponseValue
         $this->fieldmap = $survey->fieldMap;
@@ -68,7 +68,7 @@ class RDataWriter extends CsvWriter {
             case 'P':
                 if (!empty($column) && isset($this->fieldmap[$column])) {
                     $aid = $this->fieldmap[$column]['aid'];
-                    if (substr($aid,-7) == 'comment' || substr($aid,-5) == 'other') {
+                    if (substr($aid, -7) == 'comment' || substr($aid, -5) == 'other') {
                         // Do not process comment or other fields
                         return $value;
                     }

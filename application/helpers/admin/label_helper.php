@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -20,8 +20,8 @@ function updateset($lid)
 
 
     // Get added and deleted languagesid arrays
-    $newlanidarray=Yii::app()->getRequest()->getPost('languageids');
-    $postlabel_name=Yii::app()->getRequest()->getPost('label_name');
+    $newlanidarray = Yii::app()->getRequest()->getPost('languageids');
+    $postlabel_name = Yii::app()->getRequest()->getPost('label_name');
 
     $labelset = LabelSet::model()->findByAttributes(array('lid' => $lid));
     $oldlangidsarray = explode(' ', $labelset->languages);
@@ -35,10 +35,10 @@ function updateset($lid)
         foreach ($result as $row)
             $oldcodesarray[$row['code']] = array('sortorder'=> $row['sortorder'], 'assessment_value'=> $row['assessment_value']);
 
-    if (isset($oldcodesarray) && count($oldcodesarray) > 0 )
+    if (isset($oldcodesarray) && count($oldcodesarray) > 0)
         foreach ($addlangidsarray as $addedlangid)
             foreach ($oldcodesarray as $oldcode => $olddata)
-                $sqlvalues[]= array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
+                $sqlvalues[] = array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
 
     if (isset($sqlvalues)) {
         foreach ($sqlvalues as $sqlvalue) {
@@ -54,16 +54,18 @@ function updateset($lid)
     $criteria = new CDbCriteria;
     $criteria->addColumnCondition(array('lid' => $lid));
     $langcriteria = new CDbCriteria();
-    foreach ($dellangidsarray as $dellangid)
-        $langcriteria->addColumnCondition(array('language' => $dellangid), 'OR');
+    foreach ($dellangidsarray as $dellangid) {
+            $langcriteria->addColumnCondition(array('language' => $dellangid), 'OR');
+    }
     $criteria->mergeWith($langcriteria);
 
-    if (!empty($dellangidsarray))
-        Label::model()->deleteAll($criteria);
+    if (!empty($dellangidsarray)) {
+            Label::model()->deleteAll($criteria);
+    }
 
     // Update the label set itself
     $labelset->label_name = $postlabel_name;
-    $labelset->languages = implode(' ',$newlanidarray);
+    $labelset->languages = implode(' ', $newlanidarray);
     $labelset->save();
 }
 
@@ -86,18 +88,17 @@ function deletelabelset($lid)
 
 function insertlabelset()
 {
-    $postlabel_name=flattenText(Yii::app()->getRequest()->getPost('label_name'),false,true,'UTF-8',true);
+    $postlabel_name = flattenText(Yii::app()->getRequest()->getPost('label_name'), false, true, 'UTF-8', true);
 
     $data = array(
         'label_name' => $postlabel_name,
-        'languages' => sanitize_languagecodeS(implode(' ',Yii::app()->getRequest()->getPost('languageids',array('en'))))
+        'languages' => sanitize_languagecodeS(implode(' ', Yii::app()->getRequest()->getPost('languageids', array('en'))))
     );
-    $result=LabelSet::model()->insertRecords($data);
+    $result = LabelSet::model()->insertRecords($data);
     if (!$result)
     {
         Yii::app()->session['flashmessage'] = gT("Inserting the label set failed.");
-    }
-    else
+    } else
     {
         return $result;
     }
@@ -112,7 +113,7 @@ function modlabelsetanswers($lid)
 
     $ajax = false;
 
-    if (isset($_POST['ajax']) && $_POST['ajax'] == "1"){
+    if (isset($_POST['ajax']) && $_POST['ajax'] == "1") {
         $ajax = true;
     }
     if (!isset($_POST['method'])) {
@@ -120,7 +121,7 @@ function modlabelsetanswers($lid)
     }
 
     $sPostData = Yii::app()->getRequest()->getPost('dataToSend');
-    $sPostData=str_replace("\t", '', $sPostData);
+    $sPostData = str_replace("\t", '', $sPostData);
     if (get_magic_quotes_gpc())
     {
         $data = json_decode(stripslashes($sPostData));
@@ -132,7 +133,7 @@ function modlabelsetanswers($lid)
 
     if ($ajax)
         $lid = insertlabelset();
-    $aErrors=array();
+    $aErrors = array();
     if (count(array_unique($data->{'codelist'})) == count($data->{'codelist'}))
     {
 
@@ -140,7 +141,7 @@ function modlabelsetanswers($lid)
 
         Yii::app()->db->createCommand($query)->execute();
 
-        foreach($data->{'codelist'} as $index=>$codeid){
+        foreach ($data->{'codelist'} as $index=>$codeid) {
 
             $codeObj = $data->$codeid;
 
@@ -148,42 +149,40 @@ function modlabelsetanswers($lid)
             $actualcode = $codeObj->{'code'};
             //$codeid = dbQuoteAll($codeid,true);
 
-            $assessmentvalue = (int)($codeObj->{'assessmentvalue'});
-            foreach($data->{'langs'} as $lang){
+            $assessmentvalue = (int) ($codeObj->{'assessmentvalue'});
+            foreach ($data->{'langs'} as $lang) {
 
                 $strTemp = 'text_'.$lang;
                 $title = $codeObj->$strTemp;
                 $sortorder = $index;
 
                 $oLabel = new Label();
-                $oLabel->lid=$lid;
-                $oLabel->code=$actualcode;
-                $oLabel->title=$title;
-                $oLabel->sortorder=$sortorder;
-                $oLabel->assessment_value=$assessmentvalue;
-                $oLabel->language=$lang;
-                if($oLabel->validate()) {
+                $oLabel->lid = $lid;
+                $oLabel->code = $actualcode;
+                $oLabel->title = $title;
+                $oLabel->sortorder = $sortorder;
+                $oLabel->assessment_value = $assessmentvalue;
+                $oLabel->language = $lang;
+                if ($oLabel->validate()) {
                     $oLabel->save();
                 } else {
-                    $aErrors[]=$oLabel->getErrors();
+                    $aErrors[] = $oLabel->getErrors();
                 }
             }
         }
-        if(count($aErrors))
+        if (count($aErrors))
         {
             Yii::app()->session['flashmessage'] = gT("Not all labels were updated successfully.");
-        }
-        else
+        } else
         {
             Yii::app()->session['flashmessage'] = gT("Labels sucessfully updated");
         }
-    }
-    else
+    } else
     {
-        Yii::app()->setFlashMessage(gT("Can't update labels because you are using duplicated codes"),'error');
+        Yii::app()->setFlashMessage(gT("Can't update labels because you are using duplicated codes"), 'error');
     }
 
-    if ($ajax){ die(); }
+    if ($ajax) { die(); }
 }
 
 /**
@@ -197,17 +196,17 @@ function fixorder($lid) {
 
     $qulabelset = "SELECT * FROM {{labelsets}} WHERE lid=$lid";
     $rslabelset = Yii::app()->db->createCommand($qulabelset)->query();
-    $rwlabelset=$rslabelset->read();
-    $lslanguages=explode(" ", trim($rwlabelset['languages']));
+    $rwlabelset = $rslabelset->read();
+    $lslanguages = explode(" ", trim($rwlabelset['languages']));
     foreach ($lslanguages as $lslanguage)
     {
         $query = "SELECT lid, code, title, sortorder FROM {{labels}} WHERE lid=:lid and language=:lang ORDER BY sortorder, code";
         $result = Yii::app()->createCommand($query)->query(array(':lid' => $lid, ':lang' => $lslanguage)); // or safeDie("Can't read labels table: $query // (lid=$lid, language=$lslanguage) "
-        $position=0;
+        $position = 0;
         foreach ($result->readAll() as $row)
         {
-            $position=sprintf("%05d", $position);
-            $query2="UPDATE {{labels}} SET sortorder='$position' WHERE lid=".$row['lid']." AND code=".$row['code']." AND title=".$row['title']." AND language='$lslanguage' ";
+            $position = sprintf("%05d", $position);
+            $query2 = "UPDATE {{labels}} SET sortorder='$position' WHERE lid=".$row['lid']." AND code=".$row['code']." AND title=".$row['title']." AND language='$lslanguage' ";
             Yii::app()->db->createCommand($query2)->execute();
             $position++;
         }

@@ -28,7 +28,7 @@ class Timing extends LSActiveRecord
             $iSurveyId = Response::getLastSurveyId();
         }
         $survey = Survey::model()->findByPk($iSurveyId);
-        if($survey){
+        if ($survey) {
             $this->surveyId = $iSurveyId;
             $this->survey = $survey;
             parent::__construct($scenario);
@@ -39,8 +39,8 @@ class Timing extends LSActiveRecord
     /** @inheritdoc */
     protected function instantiate($attributes)
     {
-        $class=get_class($this);
-        $model=new $class($this->surveyId, null);
+        $class = get_class($this);
+        $model = new $class($this->surveyId, null);
         return $model;
     }
 
@@ -83,12 +83,12 @@ class Timing extends LSActiveRecord
      */
     public function getMetaData()
     {
-        if(isset($this->_md)){
+        if (isset($this->_md)) {
             return $this->_md;
-        } else{
+        } else {
             /** @var CActiveRecordMetaData $md */
             $md = self::model($this->surveyId)->_md;
-            return $this->_md=$md;
+            return $this->_md = $md;
         }
     }
 

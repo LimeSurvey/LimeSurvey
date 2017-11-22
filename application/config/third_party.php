@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /**
  * This file contains package definition for third party libraries.
@@ -8,12 +10,12 @@
 /* This allow us to use minified version according to debug */
 $debug = isset($userConfig['config']['debug']) ? $userConfig['config']['debug'] : 0;
 /* To add more easily min version : config > 2 , seems really an core dev issue to fix bootstrap.js ;) */
-$minVersion = ($debug>0) ? "":".min";
-$minFolder = ($debug>0) ? "/dev":"/min";
+$minVersion = ($debug > 0) ? "" : ".min";
+$minFolder = ($debug > 0) ? "/dev" : "/min";
 
 /* Please : comment the reason, mantis bug link: ajax don't need any package if i don't make error */
 /* Ajax must renderPartial (better : always return json) and never render and don't registerScript (IMHO) / Shnoulle on 2016-11-16 */
-if(isset($_GET['isAjax'])){
+if (isset($_GET['isAjax'])) {
     return array();
 }
 
@@ -37,7 +39,7 @@ return array(
         'devBaseUrl' => 'assets/packages/bootstrap/',
         'basePath' => 'core.bootstrap',
         'css'=> array(
-            'bootstrap'.$minVersion.'.css',/* Admin need it, not public */
+            'bootstrap'.$minVersion.'.css', /* Admin need it, not public */
             'yiistrap'.$minVersion.'.css',
         ),
         'js'=>array(
@@ -54,7 +56,7 @@ return array(
         'devBaseUrl' => 'assets/packages/bootstrap/',
         'basePath' => 'core.bootstrap',
         'css'=> array(
-            'bootstrap'.$minVersion.'.css',/* Admin need it, not public */
+            'bootstrap'.$minVersion.'.css', /* Admin need it, not public */
             'yiistrap'.$minVersion.'.css',
         ),
         'js'=>array(
@@ -279,9 +281,9 @@ return array(
     ),
 
     // jQuery Ace
-     'jquery-ace' => array(
-         'devBaseUrl' => 'third_party/jquery-ace',
-         'basePath' => 'third_party.jquery-ace',
+        'jquery-ace' => array(
+            'devBaseUrl' => 'third_party/jquery-ace',
+            'basePath' => 'third_party.jquery-ace',
         'js' => array(
             'jquery.ace.js',
         ),

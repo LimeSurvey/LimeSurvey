@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 /*
  * LimeSurvey
  * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -19,12 +19,12 @@
  *
  * @package LimeSurvey
  * @copyright 2011
-  * @access public
+ * @access public
  */
 class OptinController extends LSYii_Controller {
 
-     public $layout = 'bare';
-     public $defaultAction = 'tokens';
+        public $layout = 'bare';
+        public $defaultAction = 'tokens';
 
     function actiontokens($surveyid, $token, $langcode = '')
     {
@@ -39,30 +39,28 @@ class OptinController extends LSYii_Controller {
         {
             $this->redirect(array('/'));
         }
-        $iSurveyID = (int)$iSurveyID;
+        $iSurveyID = (int) $iSurveyID;
 
         //Check that there is a SID
         // Get passed language from form, so that we dont loose this!
         if (!isset($sLanguageCode) || $sLanguageCode == "" || !$sLanguageCode)
         {
             $sBaseLanguage = Survey::model()->findByPk($iSurveyID)->language;
-        }
-        else
+        } else
         {
             $sBaseLanguage = sanitize_languagecode($sLanguageCode);
         }
 
         Yii::app()->setLanguage($sBaseLanguage);
 
-        $aSurveyInfo=getSurveyInfo($iSurveyID,$sBaseLanguage);
+        $aSurveyInfo = getSurveyInfo($iSurveyID, $sBaseLanguage);
 
         if ($aSurveyInfo == false || !tableExists("{{tokens_{$iSurveyID}}}"))
         {
             throw new CHttpException(404, "This survey does not seem to exist. It may have been deleted or the link you were given is outdated or incorrect.");
-        }
-        else
+        } else
         {
-            LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID,$token,false);
+            LimeExpressionManager::singleton()->loadTokenInformation($iSurveyID, $token, false);
             $oToken = Token::model($iSurveyID)->findByAttributes(array('token' => $token));
 
             if (!isset($oToken))
@@ -71,7 +69,7 @@ class OptinController extends LSYii_Controller {
             }
             else
             {
-                if ($oToken->emailstatus =='OptOut')
+                if ($oToken->emailstatus == 'OptOut')
                 {
                     $oToken->emailstatus = 'OK';
                     $oToken->save();
@@ -103,21 +101,21 @@ class OptinController extends LSYii_Controller {
     {
         sendCacheHeaders();
         doHeader();
-        $aSupportData=array('thissurvey'=>$aSurveyInfo);
+        $aSupportData = array('thissurvey'=>$aSurveyInfo);
 
         $oTemplate = Template::model()->getInstance(null, $iSurveyID);
-        if($oTemplate->cssFramework == 'bootstrap')
+        if ($oTemplate->cssFramework == 'bootstrap')
         {
             App()->bootstrap->register();
         }
         App()->clientScript->registerPackage('survey-template');
         $thistpl = $oTemplate->pstplPath;
 
-        echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'),array(), $aSupportData);
+        echo templatereplace(file_get_contents($thistpl.'startpage.pstpl'), array(), $aSupportData);
         $aData['html'] = $html;
         $aData['thistpl'] = $thistpl;
-        $this->render('/opt_view',$aData);
-        echo templatereplace(file_get_contents($thistpl.'endpage.pstpl'),array(), $aSupportData);
+        $this->render('/opt_view', $aData);
+        echo templatereplace(file_get_contents($thistpl.'endpage.pstpl'), array(), $aSupportData);
         doFooter();
     }
 

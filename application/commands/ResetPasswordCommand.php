@@ -21,7 +21,7 @@
                 $oUser = User::findByUsername($sArgument[0]);
                 if ($oUser) {
                     $oUser->setPassword($sArgument[1]);
-                    if($oUser->save()) {
+                    if ($oUser->save()) {
                         echo "Password for user {$sArgument[0]} was set.\n";
                         return 1;
                     } else {
