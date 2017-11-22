@@ -82,8 +82,10 @@ class themeoptions  extends Survey_Common_Action
 
             if(isset($_POST['TemplateConfiguration'])){
                 $model->attributes=$_POST['TemplateConfiguration'];
-                if($model->save())
+                if($model->save()) {
+                    Yii::app()->user->setFlash('success', gT('Theme options saved.'));
                     $this->getController()->redirect(array('admin/themeoptions/sa/update/id/'.$model->id));
+                }
             }
 
             $this->_updateCommon($model);
@@ -105,8 +107,10 @@ class themeoptions  extends Survey_Common_Action
 
             if(isset($_POST['TemplateConfiguration'])){
                 $model->attributes=$_POST['TemplateConfiguration'];
-                if($model->save())
+                if($model->save()) {
+                    Yii::app()->user->setFlash('success', gT('Theme options saved.'));
                     $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/themeoptions/sa/updatesurvey",['surveyid'=>$sid,'sid'=>$sid]));
+                }
             }
 
             $this->_updateCommon($model, $sid);
@@ -130,8 +134,10 @@ class themeoptions  extends Survey_Common_Action
             if(isset($_POST['TemplateConfiguration'])){
                 $model = TemplateConfiguration::getInstance($_POST['TemplateConfiguration']['template_name'], $gsid);
                 $model->attributes=$_POST['TemplateConfiguration'];
-                if($model->save())
+                if($model->save()) {
+                    Yii::app()->user->setFlash('success', gT('Theme options saved.'));
                     $this->getController()->redirect(Yii::app()->getController()->createUrl("/admin/surveysgroups/sa/update/",['id'=>$gsid]));
+                }
             }
 
             $this->_updateCommon($model);
