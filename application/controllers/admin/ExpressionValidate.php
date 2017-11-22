@@ -38,52 +38,52 @@ class ExpressionValidate extends Survey_Common_Action {
      * @author Denis Chenu
      * @version 1.0
      */
-    public function quota($iSurveyId,$quota,$lang=null)
+    public function quota($iSurveyId, $quota, $lang = null)
     {
-        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas','read'))
-            throw new CHttpException(401,"401 Unauthorized");
-        $iQuotaId=$quota;
-        if(is_string($lang))
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'quotas', 'read'))
+            throw new CHttpException(401, "401 Unauthorized");
+        $iQuotaId = $quota;
+        if (is_string($lang))
         {
-            $oValidator= new LSYii_Validators;
-            $aLangs=array($oValidator->languageFilter($lang));
+            $oValidator = new LSYii_Validators;
+            $aLangs = array($oValidator->languageFilter($lang));
         }
         else
         {
             $aLangs = Survey::model()->findByPk($iSurveyId)->getAllLanguages();
         }
-        $aExpressions=array();
-        $this->iSurveyId=$iSurveyId;
-        foreach($aLangs as $sLang)
+        $aExpressions = array();
+        $this->iSurveyId = $iSurveyId;
+        foreach ($aLangs as $sLang)
         {
-            $oQuotaLanguageSetting=QuotaLanguageSetting::model()->find("quotals_quota_id =:quota_id and quotals_language=:language",array(':quota_id'=>$iQuotaId,':language'=>$sLang));
+            $oQuotaLanguageSetting = QuotaLanguageSetting::model()->find("quotals_quota_id =:quota_id and quotals_language=:language", array(':quota_id'=>$iQuotaId, ':language'=>$sLang));
             // We don't need to go to step since new feature #8823, maybe need to be fixed ?
-            if($oQuotaLanguageSetting)
+            if ($oQuotaLanguageSetting)
             {
-                $this->sLang=$sLang;
-                $aExpressions['name_'.$sLang]=array(
-                    'title'=>sprintf(gT("Quota name (%s)"),$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_name,array(),__METHOD__),
+                $this->sLang = $sLang;
+                $aExpressions['name_'.$sLang] = array(
+                    'title'=>sprintf(gT("Quota name (%s)"), $sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_name, array(), __METHOD__),
                 );
-                $aExpressions['message_'.$sLang]=array(
-                    'title'=>sprintf(gT("Quota message (%s)"),$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_message,array(),__METHOD__),
+                $aExpressions['message_'.$sLang] = array(
+                    'title'=>sprintf(gT("Quota message (%s)"), $sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_message, array(), __METHOD__),
                 );
-                $aExpressions['url_'.$sLang]=array(
-                    'title'=>sprintf(gT("URL (%s)"),$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url,array(),__METHOD__),
+                $aExpressions['url_'.$sLang] = array(
+                    'title'=>sprintf(gT("URL (%s)"), $sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_url, array(), __METHOD__),
                 );
-                $aExpressions['urldescrip_'.$sLang]=array(
-                    'title'=>sprintf(gT("URL description (%s)"),$sLang),
-                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_urldescrip,array(),__METHOD__),
+                $aExpressions['urldescrip_'.$sLang] = array(
+                    'title'=>sprintf(gT("URL description (%s)"), $sLang),
+                    'expression'=> $this->getHtmlExpression($oQuotaLanguageSetting->quotals_urldescrip, array(), __METHOD__),
                 );
             }
         }
-        $aData=array(
+        $aData = array(
             'aExpressions'=>$aExpressions,
         );
-        $this->getController()->layout=$this->layout;
-        $this->getController()->pageTitle=gT("Validate quota");
+        $this->getController()->layout = $this->layout;
+        $this->getController()->pageTitle = gT("Validate quota");
 
         $this->getController()->render("/admin/expressions/validationList", $aData);
     }
@@ -95,15 +95,15 @@ class ExpressionValidate extends Survey_Common_Action {
      * @author Denis Chenu
      * @version 1.1
      */
-    public function email($iSurveyId,$lang)
+    public function email($iSurveyId, $lang)
     {
-        if(!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'read'))
-            throw new CHttpException(401,"401 Unauthorized");
-        $sType=Yii::app()->request->getQuery('type');
-        $this->sLang=$sLang=$lang;
-        $this->iSurveyId=$iSurveyId; // This start the survey before Expression : is this allways needed ?
+        if (!Permission::model()->hasSurveyPermission($iSurveyId, 'surveysettings', 'read'))
+            throw new CHttpException(401, "401 Unauthorized");
+        $sType = Yii::app()->request->getQuery('type');
+        $this->sLang = $sLang = $lang;
+        $this->iSurveyId = $iSurveyId; // This start the survey before Expression : is this allways needed ?
 
-        $aTypeAttributes=array(
+        $aTypeAttributes = array(
             'invitation'=>array(
                 'subject'=>array(
                     'attribute'=>'surveyls_email_invite_subj',
@@ -261,22 +261,22 @@ class ExpressionValidate extends Survey_Common_Action {
      * @author Denis Chenu
      * @version 1.0
      */
-    private function getHtmlExpression($sExpression,$aReplacement=array(),$sDebugSource=__CLASS__)
+    private function getHtmlExpression($sExpression, $aReplacement = array(), $sDebugSource = __CLASS__)
     {
-        $LEM =LimeExpressionManager::singleton();
-        $LEM::SetDirtyFlag();// Not sure it's needed
+        $LEM = LimeExpressionManager::singleton();
+        $LEM::SetDirtyFlag(); // Not sure it's needed
         $LEM::SetPreviewMode('logic');
 
-        $aReData=array();
-        if($this->iSurveyId)
+        $aReData = array();
+        if ($this->iSurveyId)
         {
-            $LEM::StartSurvey($this->iSurveyId, 'survey', array('hyperlinkSyntaxHighlighting'=>true));// replace QCODE
-            $aReData['thissurvey']=getSurveyInfo($this->iSurveyId,$this->sLang);
+            $LEM::StartSurvey($this->iSurveyId, 'survey', array('hyperlinkSyntaxHighlighting'=>true)); // replace QCODE
+            $aReData['thissurvey'] = getSurveyInfo($this->iSurveyId, $this->sLang);
         }
         // TODO : Find error in class name, style etc ....
         // need: templatereplace without any filter and find if there are error but $bHaveError=$LEM->em->HasErrors() is Private
         $oFilter = new CHtmlPurifier();
-        templatereplace($oFilter->purify(viewHelper::filterScript($sExpression)), $aReplacement,$aReData,$sDebugSource,false,null,array(),true);
+        templatereplace($oFilter->purify(viewHelper::filterScript($sExpression)), $aReplacement, $aReData, $sDebugSource, false, null, array(), true);
 
         return $LEM::GetLastPrettyPrintExpression();
     }

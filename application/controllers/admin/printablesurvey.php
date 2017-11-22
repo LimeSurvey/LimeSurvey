@@ -604,23 +604,23 @@ class printablesurvey extends Survey_Common_Action
                         ,'QUESTIONHELP' => ''            // content of the question help field.
                         ,'ANSWER' => ''                // contains formatted HTML answer
                         );
-                        if(trim($question['QUESTION_TYPE_HELP'])!=""){
-                            $question['QUESTION_TYPE_HELP']=CHtml::tag("div",array("class"=>"tip-help"),$question['QUESTION_TYPE_HELP']);
+                        if (trim($question['QUESTION_TYPE_HELP']) != "") {
+                            $question['QUESTION_TYPE_HELP'] = CHtml::tag("div", array("class"=>"tip-help"), $question['QUESTION_TYPE_HELP']);
                         }
-                        if(isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass']!=""){
-                            $attributeClass=trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), false, 1, 1, false, false, true));
-                            $question['QUESTION_CLASS'].=" ".Chtml::encode($attributeClass);
+                        if (isset($aQuestionAttributes['cssclass']) && $aQuestionAttributes['cssclass'] != "") {
+                            $attributeClass = trim(LimeExpressionManager::ProcessString($aQuestionAttributes['cssclass'], null, array(), false, 1, 1, false, false, true));
+                            $question['QUESTION_CLASS'] .= " ".Chtml::encode($attributeClass);
                         }
                         /* Add a PRINT_QUESTION_CODE : same than used in "automatic system generation (with EM condition) */
-                        $question['QUESTION_PRINT_CODE']="{$question['QUESTION_NUMBER']} [{$question['QUESTION_CODE']}]";
+                        $question['QUESTION_PRINT_CODE'] = "{$question['QUESTION_NUMBER']} [{$question['QUESTION_CODE']}]";
                         $showqnumcode = Yii::app()->getConfig('showqnumcode');
-                        if(($showqnumcode=='choose' && ($aSurveyInfo['showqnumcode']=='N' || $aSurveyInfo['showqnumcode']=='X')) || $showqnumcode=='number' || $showqnumcode=='none')
+                        if (($showqnumcode == 'choose' && ($aSurveyInfo['showqnumcode'] == 'N' || $aSurveyInfo['showqnumcode'] == 'X')) || $showqnumcode == 'number' || $showqnumcode == 'none')
                         {
-                            $question['QUESTION_CODE']='';
+                            $question['QUESTION_CODE'] = '';
                         }
-                        if(($showqnumcode=='choose' && ($aSurveyInfo['showqnumcode']=='C' || $aSurveyInfo['showqnumcode']=='X')) || $showqnumcode=='code' || $showqnumcode=='none')
+                        if (($showqnumcode == 'choose' && ($aSurveyInfo['showqnumcode'] == 'C' || $aSurveyInfo['showqnumcode'] == 'X')) || $showqnumcode == 'code' || $showqnumcode == 'none')
                         {
-                            $question['QUESTION_NUMBER']='';
+                            $question['QUESTION_NUMBER'] = '';
                         }
 
                         if ($deqrow['mandatory'] == 'Y')
@@ -897,124 +897,124 @@ class printablesurvey extends Survey_Common_Action
     //                            {
     //                                $question['QUESTION_TYPE_HELP'] .= sprintf(gT('Total of all entries must be at least %s'),$qidattributes['min_num_value'])."<br />\n";
     //                            }
-                                if(!isset($aWidth)){
-                                    $aWidth=$this->getColumnWidth($qidattributes['label_input_columns'],$qidattributes['text_input_width']);
+                                if (!isset($aWidth)) {
+                                    $aWidth = $this->getColumnWidth($qidattributes['label_input_columns'], $qidattributes['text_input_width']);
                                 }
 
-                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div",array("class"=>"tip-help"),gT("Please write your answer(s) here:"));
+                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please write your answer(s) here:"));
 
 
                                 $longest_string = 0;
-                                $mearesult=Question::model()->getAllRecords("parent_qid='{$deqrow['qid']}' AND language='{$sLanguageCode}'", array('question_order'));
-                                $question['ANSWER']="";
+                                $mearesult = Question::model()->getAllRecords("parent_qid='{$deqrow['qid']}' AND language='{$sLanguageCode}'", array('question_order'));
+                                $question['ANSWER'] = "";
                                 foreach ($mearesult->readAll() as $mearow)
                                 {
-                                    $longest_string = longestString($mearow['question'] , $longest_string );
-                                    if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout']==1)
+                                    $longest_string = longestString($mearow['question'], $longest_string);
+                                    if (isset($qidattributes['slider_layout']) && $qidattributes['slider_layout'] == 1)
                                     {
-                                        $mearow['question']=explode(':',$mearow['question']);
-                                        $mearow['question']=$mearow['question'][0];
+                                        $mearow['question'] = explode(':', $mearow['question']);
+                                        $mearow['question'] = $mearow['question'][0];
                                     }
-                                    $question['ANSWER'] .=  "\t<li class='row'>\n";
-                                    $question['ANSWER'] .=  "\t\t<div class='col-sm-{$aWidth['label']}'>".$mearow['question']."</div>\n";
-                                    $question['ANSWER'] .=  "\t\t<div class='col-sm-{$aWidth['answer']}'>".self::_input_type_image('text',$mearow['question'],$width,$height).self::_addsgqacode(" (".$fieldname.$mearow['title'].") ")."</div>\n";
-                                    $question['ANSWER'] .=  "\t</li>\n";
+                                    $question['ANSWER'] .= "\t<li class='row'>\n";
+                                    $question['ANSWER'] .= "\t\t<div class='col-sm-{$aWidth['label']}'>".$mearow['question']."</div>\n";
+                                    $question['ANSWER'] .= "\t\t<div class='col-sm-{$aWidth['answer']}'>".self::_input_type_image('text', $mearow['question'], $width, $height).self::_addsgqacode(" (".$fieldname.$mearow['title'].") ")."</div>\n";
+                                    $question['ANSWER'] .= "\t</li>\n";
                                 }
-                                $question['ANSWER'] =  "\n<ul class='list-print-answers list-unstyled'>\n".$question['ANSWER']."</ul>\n";
+                                $question['ANSWER'] = "\n<ul class='list-print-answers list-unstyled'>\n".$question['ANSWER']."</ul>\n";
                                 break;
 
 
                                 // ==================================================================
                             case "S":  //SHORT TEXT
-                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div",array("class"=>"tip-help"),gT("Please write your answer here:"));
-                                $width=(isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
-                                $height=(isset($qidattributes['display_rows']) && $qidattributes['display_rows']) ? $qidattributes['display_rows'] : null;
-                                $question['ANSWER'] = self::_input_type_image('text',$question['QUESTION_TYPE_HELP'], $width,$height);
+                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please write your answer here:"));
+                                $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
+                                $height = (isset($qidattributes['display_rows']) && $qidattributes['display_rows']) ? $qidattributes['display_rows'] : null;
+                                $question['ANSWER'] = self::_input_type_image('text', $question['QUESTION_TYPE_HELP'], $width, $height);
                                 break;
                                 // ==================================================================
                             case "T":  //LONG TEXT
-                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div",array("class"=>"tip-help"),gT("Please write your answer here:"));
-                                $width=(isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
-                                $height=(isset($qidattributes['display_rows']) && $qidattributes['display_rows']) ? $qidattributes['display_rows'] : 5;
-                                $question['ANSWER'] = self::_input_type_image('textarea',$question['QUESTION_TYPE_HELP'], $width,$height);
+                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please write your answer here:"));
+                                $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
+                                $height = (isset($qidattributes['display_rows']) && $qidattributes['display_rows']) ? $qidattributes['display_rows'] : 5;
+                                $question['ANSWER'] = self::_input_type_image('textarea', $question['QUESTION_TYPE_HELP'], $width, $height);
                                 break;
 
 
                                 // ==================================================================
                             case "U":  //HUGE TEXT
-                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div",array("class"=>"tip-help"),gT("Please write your answer here:"));
-                                $width=(isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
-                                $height=(isset($qidattributes['display_rows']) && $qidattributes['display_rows']) ? $qidattributes['display_rows'] : 20;
-                                $question['ANSWER'] = self::_input_type_image('textarea',$question['QUESTION_TYPE_HELP'], $width,$height);
+                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please write your answer here:"));
+                                $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
+                                $height = (isset($qidattributes['display_rows']) && $qidattributes['display_rows']) ? $qidattributes['display_rows'] : 20;
+                                $question['ANSWER'] = self::_input_type_image('textarea', $question['QUESTION_TYPE_HELP'], $width, $height);
                                 break;
 
 
                                 // ==================================================================
                             case "N":  //NUMERICAL
-                                $prefix="";
-                                $suffix="";
-                                if($qidattributes['prefix'][$sLanguageCode] != "") {
-                                    $prefix=$qidattributes['prefix'][$sLanguageCode];
+                                $prefix = "";
+                                $suffix = "";
+                                if ($qidattributes['prefix'][$sLanguageCode] != "") {
+                                    $prefix = $qidattributes['prefix'][$sLanguageCode];
                                 }
-                                if($qidattributes['suffix'][$sLanguageCode] != "") {
-                                    $suffix=$qidattributes['suffix'][$sLanguageCode];
+                                if ($qidattributes['suffix'][$sLanguageCode] != "") {
+                                    $suffix = $qidattributes['suffix'][$sLanguageCode];
                                 }
-                                $width=(isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
-                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div",array("class"=>"tip-help"),gT("Please write your answer here:"));
-                                $question['ANSWER'] = "<ul class='list-print-answers list-unstyled'>\n\t<li>\n\t\t<span>$prefix</span>\n\t\t".self::_input_type_image('text',$question['QUESTION_TYPE_HELP'],$width)."\n\t\t<span>$suffix</span>\n\t\t</li>\n\t</ul>";
+                                $width = (isset($qidattributes['input_size']) && $qidattributes['input_size']) ? $qidattributes['input_size'] : null;
+                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please write your answer here:"));
+                                $question['ANSWER'] = "<ul class='list-print-answers list-unstyled'>\n\t<li>\n\t\t<span>$prefix</span>\n\t\t".self::_input_type_image('text', $question['QUESTION_TYPE_HELP'], $width)."\n\t\t<span>$suffix</span>\n\t\t</li>\n\t</ul>";
                                 break;
 
                                 // ==================================================================
                             case "Y":  //YES/NO
-                                  $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div",array("class"=>"tip-help"),gT("Please choose *only one* of the following:"));
-                                $question['ANSWER'] = "\n<ul class='list-print-answers list-unstyled'>\n\t<li>\n\t\t".self::_input_type_image('radio',gT('Yes'))."\n\t\t".gT('Yes').self::_addsgqacode(" (Y)")."\n\t</li>\n";
-                                $question['ANSWER'] .= "\n\t<li>\n\t\t".self::_input_type_image('radio',gT('No'))."\n\t\t".gT('No').self::_addsgqacode(" (N)")."\n\t</li>\n</ul>\n";
+                                  $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please choose *only one* of the following:"));
+                                $question['ANSWER'] = "\n<ul class='list-print-answers list-unstyled'>\n\t<li>\n\t\t".self::_input_type_image('radio', gT('Yes'))."\n\t\t".gT('Yes').self::_addsgqacode(" (Y)")."\n\t</li>\n";
+                                $question['ANSWER'] .= "\n\t<li>\n\t\t".self::_input_type_image('radio', gT('No'))."\n\t\t".gT('No').self::_addsgqacode(" (N)")."\n\t</li>\n</ul>\n";
                                 break;
 
 
                                 // ==================================================================
                             case "A":  //ARRAY (5 POINT CHOICE)
                                 $condition = "parent_qid = '{$deqrow['qid']}'  AND language= '{$sLanguageCode}'";
-                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div",array("class"=>"tip-help"),gT("Please choose the appropriate response for each item:"));
+                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please choose the appropriate response for each item:"));
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
-                                $answerwidth=(trim($qidattributes['answer_width'])!='') ? $qidattributes['answer_width'] : 33;
+                                $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                                 $question['ANSWER'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
                                 $question['ANSWER'] .= "\t\t\t<td style='width:{$answerwidth}%'>{NOTEMPTY}</td>\n";
-                                for ($i=1; $i<=5; $i++)
+                                for ($i = 1; $i <= 5; $i++)
                                 {
                                     $question['ANSWER'] .= "\t\t\t<th>$i".self::_addsgqacode(" ($i)")."</th>\n";
                                 }
                                 $question['ANSWER'] .= "\t</tr></thead>\n\n\t<tbody>\n";
-                                $j=0;
+                                $j = 0;
                                 $rowclass = 'ls-odd';
-                                $mearesult= Question::model()->getAllRecords( $condition, array('question_order'));
+                                $mearesult = Question::model()->getAllRecords($condition, array('question_order'));
                                 foreach ($mearesult->readAll() as $mearow)
                                 {
                                     $question['ANSWER'] .= "\t\t<tr class=\"$rowclass\">\n";
-                                    $rowclass = alternation($rowclass,'row');
+                                    $rowclass = alternation($rowclass, 'row');
 
                                     //semantic differential question type?
-                                    if (strpos($mearow['question'],'|'))
+                                    if (strpos($mearow['question'], '|'))
                                     {
-                                        $answertext = substr($mearow['question'],0, strpos($mearow['question'],'|')).self::_addsgqacode(" (".$fieldname.$mearow['title'].")")." ";
+                                        $answertext = substr($mearow['question'], 0, strpos($mearow['question'], '|')).self::_addsgqacode(" (".$fieldname.$mearow['title'].")")." ";
                                     }
                                     else
                                     {
-                                        $answertext=$mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].")");
+                                        $answertext = $mearow['question'].self::_addsgqacode(" (".$fieldname.$mearow['title'].")");
                                     }
                                     $question['ANSWER'] .= "\t\t\t<th class=\"answertext\">$answertext</th>\n";
 
-                                    for ($i=1; $i<=5; $i++)
+                                    for ($i = 1; $i <= 5; $i++)
                                     {
-                                        $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio',$i)."</td>\n";
+                                        $question['ANSWER'] .= "\t\t\t<td>".self::_input_type_image('radio', $i)."</td>\n";
                                     }
 
                                     $answertext .= $mearow['question'];
 
                                     //semantic differential question type?
-                                    if (strpos($mearow['question'],'|'))
+                                    if (strpos($mearow['question'], '|'))
                                     {
-                                        $answertext2 = substr($mearow['question'],strpos($mearow['question'],'|')+1);
+                                        $answertext2 = substr($mearow['question'], strpos($mearow['question'], '|') + 1);
                                         $question['ANSWER'] .= "\t\t\t<th class=\"answertextright\">$answertext2</td>\n";
                                     }
                                     $question['ANSWER'] .= "\t\t</tr>\n";
@@ -1356,45 +1356,45 @@ class printablesurvey extends Survey_Common_Action
                                 // ==================================================================
                             case "1": //ARRAY (Flexible Labels) multi scale
 
-                                $leftheader= $qidattributes['dualscale_headerA'][$sLanguageCode];
-                                $rightheader= $qidattributes['dualscale_headerB'][$sLanguageCode];
+                                $leftheader = $qidattributes['dualscale_headerA'][$sLanguageCode];
+                                $rightheader = $qidattributes['dualscale_headerB'][$sLanguageCode];
 
-                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div",array("class"=>"tip-help"),gT("Please choose the appropriate response for each item:"));
+                                $question['QUESTION_TYPE_HELP'] .= CHtml::tag("div", array("class"=>"tip-help"), gT("Please choose the appropriate response for each item:"));
                                 $question['QUESTION_TYPE_HELP'] .= self::_array_filter_help($qidattributes, $sLanguageCode, $surveyid);
 
-                                $answerwidth=(trim($qidattributes['answer_width'])!='') ? $qidattributes['answer_width'] : 33;
+                                $answerwidth = (trim($qidattributes['answer_width']) != '') ? $qidattributes['answer_width'] : 33;
                                 $question['ANSWER'] .= "\n<table class='table-print-answers table table-bordered'>\n\t<thead>\n\t\t<tr>\n";
 
                                 $condition = "qid= '{$deqrow['qid']}'  AND language= '{$sLanguageCode}' AND scale_id=0";
-                                $fresult= Answer::model()->getAllRecords( $condition, array('sortorder', 'code'));
+                                $fresult = Answer::model()->getAllRecords($condition, array('sortorder', 'code'));
                                 $fresult = $fresult->readAll();
                                 $fcount = count($fresult);
 
                                 $fwidth = "120";
-                                $l1=0;
+                                $l1 = 0;
                                 $printablesurveyoutput2 = "<td style='width:{$answerwidth}%'>{NOTEMPTY}</td>";
                                 $myheader2 = '';
                                 foreach ($fresult as $frow)
                                 {
-                                    $printablesurveyoutput2 .="\t\t\t<th>{$frow['answer']}".self::_addsgqacode(" (".$frow['code'].")")."</th>\n";
+                                    $printablesurveyoutput2 .= "\t\t\t<th>{$frow['answer']}".self::_addsgqacode(" (".$frow['code'].")")."</th>\n";
                                     $myheader2 .= "<td></td>";
                                     $l1++;
                                 }
                                 // second scale
-                                $printablesurveyoutput2 .="\t\t\t<td>{NOTEMPTY}</td>\n";
+                                $printablesurveyoutput2 .= "\t\t\t<td>{NOTEMPTY}</td>\n";
                                 //$fquery1 = "SELECT * FROM {{answers}} WHERE qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}' AND scale_id=1 ORDER BY sortorder, code";
                                 // $fresult1 = Yii::app()->db->createCommand($fquery1)->query();
-                                $fresult1 = Answer::model()->getAllRecords(" qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}' AND scale_id=1 ", array('sortorder','code'));
+                                $fresult1 = Answer::model()->getAllRecords(" qid='{$deqrow['qid']}'  AND language='{$sLanguageCode}' AND scale_id=1 ", array('sortorder', 'code'));
                                 $fresult1 = $fresult1->readAll();
-                                $fcount1 = count ($fresult1);
+                                $fcount1 = count($fresult1);
                                 $fwidth = "120";
-                                $l2=0;
+                                $l2 = 0;
 
                                 //array to temporary store second scale question codes
                                 $scale2array = array();
                                 foreach ($fresult1 as $frow1)
                                 {
-                                    $printablesurveyoutput2 .="\t\t\t<th>{$frow1['answer']}".self::_addsgqacode(" (".$frow1['code'].")")."</th>\n";
+                                    $printablesurveyoutput2 .= "\t\t\t<th>{$frow1['answer']}".self::_addsgqacode(" (".$frow1['code'].")")."</th>\n";
 
                                     //add current question code
                                     $scale2array[$l2] = $frow1['code'];

@@ -75,36 +75,36 @@ class UploaderController extends SurveyController {
             }
         }
         elseif ($bDelete) {
-            if (substr($sFileName,0,6)=='futmp_')
+            if (substr($sFileName, 0, 6) == 'futmp_')
             {
                 $sFileDir = $tempdir.'/upload/';
             }
-            elseif(substr($sFileName,0,3)=='fu_')
+            elseif (substr($sFileName, 0, 3) == 'fu_')
             {
                 // Need to validate $_SESSION['srid'], and this file is from this srid !
                 $sFileDir = "{$uploaddir}/surveys/{$surveyid}/files/";
             }
             else
             {
-                throw new CHttpException(400);// See for debug > 1
+                throw new CHttpException(400); // See for debug > 1
             }
-            if(isset($_SESSION[$sFieldName])) {// We already have $sFieldName ?
+            if (isset($_SESSION[$sFieldName])) {// We already have $sFieldName ?
                 $sJSON = $_SESSION[$sFieldName];
-                $aFiles = json_decode(stripslashes($sJSON),true);
+                $aFiles = json_decode(stripslashes($sJSON), true);
 
-                if(substr($sFileName,0,3)=='fu_'){
-                    $iFileIndex=0;
-                    $found=false;
+                if (substr($sFileName, 0, 3) == 'fu_') {
+                    $iFileIndex = 0;
+                    $found = false;
                     foreach ($aFiles as $aFile)
                     {
-                        if ($aFile['filename']==$sFileName)
+                        if ($aFile['filename'] == $sFileName)
                         {
-                        $found=true;
+                        $found = true;
                         break;
                         }
                         $iFileIndex++;
                     }
-                    if ($found==true) unset($aFiles[$iFileIndex]);
+                    if ($found == true) unset($aFiles[$iFileIndex]);
                     $_SESSION[$sFieldName] = ls_json_encode($aFiles);
                 }
             }
@@ -204,17 +204,17 @@ class UploaderController extends SurveyController {
                 {
                     $return = array(
                         "success" => false,
-                            "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed.",'unescaped'), $maxfilesize)
+                            "msg" => sprintf(gT("Sorry, this file is too large. Only files up to %s KB are allowed.", 'unescaped'), $maxfilesize)
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);
                     Yii::app()->end();
                 }
-                elseif ($iFileUploadTotalSpaceMB>0 && ((calculateTotalFileUploadUsage()+($size/1024/1024))>$iFileUploadTotalSpaceMB))
+                elseif ($iFileUploadTotalSpaceMB > 0 && ((calculateTotalFileUploadUsage() + ($size / 1024 / 1024)) > $iFileUploadTotalSpaceMB))
                 {
                     $return = array(
                         "success" => false,
-                            "msg" => gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.",'unescaped')
+                            "msg" => gT("We are sorry but there was a system error and your file was not saved. An email has been dispatched to notify the survey administrator.", 'unescaped')
                     );
                     //header('Content-Type: application/json');
                     echo ls_json_encode($return);

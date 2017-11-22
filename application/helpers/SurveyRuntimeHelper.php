@@ -84,24 +84,24 @@ class SurveyRuntimeHelper {
      * @param mixed $surveyid
      * @param mixed $args
      */
-    public function run($surveyid,$args)
+    public function run($surveyid, $args)
     {
         // Survey settings
-        $this->setSurveySettings( $surveyid, $args);
+        $this->setSurveySettings($surveyid, $args);
 
         // Start rendering
-        $this->makeLanguageChanger();                                           //  language changer can be used on any entry screen, so it must be set first
+        $this->makeLanguageChanger(); //  language changer can be used on any entry screen, so it must be set first
         extract($args);
 
         ///////////////////////////////////////////////////////////
         // 1: We check if token and/or captcha form shouls be shown
-        if (!isset($_SESSION[$this->LEMsessid]['step'])){
+        if (!isset($_SESSION[$this->LEMsessid]['step'])) {
             $this->showTokenOrCaptchaFormsIfNeeded();
         }
 
-        if ( !$this->previewgrp && !$this->previewquestion){
-            $this->initMove();                                                  // main methods to init session, LEM, moves, errors, etc
-            $this->checkQuotas();                                               // check quotas (then the process will stop here)
+        if (!$this->previewgrp && !$this->previewquestion) {
+            $this->initMove(); // main methods to init session, LEM, moves, errors, etc
+            $this->checkQuotas(); // check quotas (then the process will stop here)
             $this->displayFirstPageIfNeeded();
             $this->saveAllIfNeeded();
             $this->saveSubmitIfNeeded();
@@ -933,19 +933,19 @@ class SurveyRuntimeHelper {
 
         // TODO FIXME
             // Don't test if save is allowed
-        if ($this->aSurveyInfo['active'] == "Y" && Yii::app()->request->getPost('saveall')){
-            $bTokenAnswerPersitance = $this->aSurveyInfo['tokenanswerspersistence'] == 'Y' && $this->iSurveyid!=null && tableExists('tokens_'.$this->iSurveyid);
+        if ($this->aSurveyInfo['active'] == "Y" && Yii::app()->request->getPost('saveall')) {
+            $bTokenAnswerPersitance = $this->aSurveyInfo['tokenanswerspersistence'] == 'Y' && $this->iSurveyid != null && tableExists('tokens_'.$this->iSurveyid);
 
             // must do this here to process the POSTed values
-            $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false);   // by jumping to current step, saves data so far
+            $this->aMoveResult = LimeExpressionManager::JumpTo($_SESSION[$this->LEMsessid]['step'], false); // by jumping to current step, saves data so far
 
-            if (!isset($_SESSION[$this->LEMsessid]['scid']) && !$bTokenAnswerPersitance ){
+            if (!isset($_SESSION[$this->LEMsessid]['scid']) && !$bTokenAnswerPersitance) {
                 Yii::import("application.libraries.Save");
                 $cSave = new Save();
                 // $cSave->showsaveform($this->aSurveyInfo['sid']); // generates a form and exits, awaiting input
                 $this->aSurveyInfo['aSaveForm'] = $cSave->getSaveFormDatas($this->aSurveyInfo['sid']);
                 Yii::app()->twigRenderer->renderTemplateFromFile("layout_save.twig", array('oSurvey'=> Survey::model()->findByPk($this->iSurveyid), 'aSurveyInfo'=>$this->aSurveyInfo), false);
-            }else{
+            } else {
                 // Intentional retest of all conditions to be true, to make sure we do have tokens and surveyid
                 // Now update lastpage to $_SESSION[$this->LEMsessid]['step'] in SurveyDynamic, otherwise we land on
                 // the previous page when we return.
@@ -1181,23 +1181,23 @@ class SurveyRuntimeHelper {
      * @return @void
      * @param integer $iSurveyId : the survey id for the script
      */
-    public function setJavascriptVar($iSurveyId='')
+    public function setJavascriptVar($iSurveyId = '')
     {
-        $aSurveyinfo  = ($iSurveyId!='')?getSurveyInfo($iSurveyId, App()->getLanguage()):$this->thissurvey;
+        $aSurveyinfo = ($iSurveyId != '') ?getSurveyInfo($iSurveyId, App()->getLanguage()) : $this->thissurvey;
 
-        if(isset($aSurveyinfo['surveyls_numberformat'])){
+        if (isset($aSurveyinfo['surveyls_numberformat'])) {
             $aLSJavascriptVar                  = array();
-            $aLSJavascriptVar['bFixNumAuto']   = (int)(bool)Yii::app()->getConfig('bFixNumAuto',1);
-            $aLSJavascriptVar['bNumRealValue'] = (int)(bool)Yii::app()->getConfig('bNumRealValue',0);
+            $aLSJavascriptVar['bFixNumAuto']   = (int) (bool) Yii::app()->getConfig('bFixNumAuto', 1);
+            $aLSJavascriptVar['bNumRealValue'] = (int) (bool) Yii::app()->getConfig('bNumRealValue', 0);
             $aRadix                            = getRadixPointData($aSurveyinfo['surveyls_numberformat']);
             $aLSJavascriptVar['sLEMradix']     = $aRadix['separator'];
             $aLSJavascriptVar['lang']          = new stdClass; // To add more easily some lang string here
-            $aLSJavascriptVar['showpopup']     = (int)Yii::app()->getConfig('showpopups');
+            $aLSJavascriptVar['showpopup']     = (int) Yii::app()->getConfig('showpopups');
             $aLSJavascriptVar['startPopups']   = new stdClass;
             $aLSJavascriptVar['debugMode']     = Yii::app()->getConfig('debug');
-            $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar) . ';';
-            App()->clientScript->registerScript('sLSJavascriptVar',$sLSJavascriptVar,CClientScript::POS_HEAD);
-            App()->clientScript->registerScript('setJsVar',"setJsVar();",CClientScript::POS_BEGIN); // Ensure all js var is set before rendering the page (User can click before $.ready)
+            $sLSJavascriptVar                  = "LSvar=".json_encode($aLSJavascriptVar).';';
+            App()->clientScript->registerScript('sLSJavascriptVar', $sLSJavascriptVar, CClientScript::POS_HEAD);
+            App()->clientScript->registerScript('setJsVar', "setJsVar();", CClientScript::POS_BEGIN); // Ensure all js var is set before rendering the page (User can click before $.ready)
         }
     }
 

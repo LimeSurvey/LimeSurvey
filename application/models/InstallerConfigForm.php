@@ -63,12 +63,12 @@ class InstallerConfigForm extends CFormModel
      * @param string $scenario
      */
     public function __construct($scenario = 'database') {
-        $drivers=array();
+        $drivers = array();
         if (extension_loaded('pdo')) {
-            $drivers=CDbConnection::getAvailableDrivers();
+            $drivers = CDbConnection::getAvailableDrivers();
         }
-        foreach($drivers as $driver) {
-            if (isset($this->db_names[$driver])){
+        foreach ($drivers as $driver) {
+            if (isset($this->db_names[$driver])) {
                 $this->supported_db_types[$driver] = $this->db_names[$driver];
             }
         }
@@ -86,7 +86,7 @@ class InstallerConfigForm extends CFormModel
     {
         return array(
             // Database
-            array('dbname','match', 'pattern' => '/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/'), // Check that database name is a single word with options underscores not starting with a number
+            array('dbname', 'match', 'pattern' => '/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/'), // Check that database name is a single word with options underscores not starting with a number
             array('dbtype, dblocation, dbname, dbuser', 'required', 'on' => 'database'),
             array('dbpwd, dbprefix', 'safe', 'on' => 'database'),
             array('dbtype', 'in', 'range' => array_keys($this->supported_db_types), 'on' => 'database'),

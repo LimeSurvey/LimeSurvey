@@ -97,7 +97,7 @@ class TemplateConfig extends CActiveRecord
          */
         public function getTemplateURL()
         {
-            if(!isset($this->sTemplateurl)){
+            if (!isset($this->sTemplateurl)) {
                 $this->sTemplateurl = Template::getTemplateURL($this->sTemplateName);
             }
             return $this->sTemplateurl;
@@ -114,10 +114,10 @@ class TemplateConfig extends CActiveRecord
          */
         public function getTemplateForFile($sFile, $oRTemplate)
         {
-            while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)){
+            while (!file_exists($oRTemplate->path.$sFile) && !file_exists($oRTemplate->viewPath.$sFile) && !file_exists($oRTemplate->filesPath.$sFile)) {
                 $oMotherTemplate = $oRTemplate->oMotherTemplate;
-                if(!($oMotherTemplate instanceof TemplateConfiguration)){
-                    throw new Exception("No template found for $sFile! Last template searched: ".$oRTemplate->sTemplateName );
+                if (!($oMotherTemplate instanceof TemplateConfiguration)) {
+                    throw new Exception("No template found for $sFile! Last template searched: ".$oRTemplate->sTemplateName);
                     break;
                 }
                 $oRTemplate = $oMotherTemplate;
@@ -157,7 +157,7 @@ class TemplateConfig extends CActiveRecord
 
             // Remove/Replace mother template files
             $aCssFiles = $this->changeMotherConfiguration('css', $aCssFiles);
-            $aJsFiles  = $this->changeMotherConfiguration('js',  $aJsFiles);
+            $aJsFiles  = $this->changeMotherConfiguration('js', $aJsFiles);
 
             // Then we add the direction files if they exist
             // TODO: attribute system rather than specific fields for RTL
@@ -165,19 +165,19 @@ class TemplateConfig extends CActiveRecord
             $this->sPackageName = 'survey-template-'.$this->sTemplateName;
             $sTemplateurl       = $oTemplate->getTemplateURL();
 
-            $aDepends          = empty($oTemplate->depends)?array():$oTemplate->depends;
+            $aDepends = empty($oTemplate->depends) ? array() : $oTemplate->depends;
 
 
             // The package "survey-template-{sTemplateName}" will be available from anywhere in the app now.
             // To publish it : Yii::app()->clientScript->registerPackage( 'survey-template-{sTemplateName}' );
             // Depending on settings, it will create the asset directory, and publish the css and js files
-            Yii::app()->clientScript->addPackage( $this->sPackageName, array(
-                'devBaseUrl'  => $sTemplateurl,                                     // Used when asset manager is off
-                'basePath'    => $sPathName,                                        // Used when asset manager is on
+            Yii::app()->clientScript->addPackage($this->sPackageName, array(
+                'devBaseUrl'  => $sTemplateurl, // Used when asset manager is off
+                'basePath'    => $sPathName, // Used when asset manager is on
                 'css'         => $aCssFiles,
                 'js'          => $aJsFiles,
                 'depends'     => $aDepends,
-            ) );
+            ));
         }
 
         /**
@@ -198,10 +198,10 @@ class TemplateConfig extends CActiveRecord
             // Retreive the correct template for this file (can be a mother template)
             $oTemplate = $this->getTemplateForFile($sFile, $oTemplate);
 
-            if($oTemplate instanceof TemplateConfiguration){
-                if(file_exists($oTemplate->path.$sFile)){
+            if ($oTemplate instanceof TemplateConfiguration) {
+                if (file_exists($oTemplate->path.$sFile)) {
                     return $oTemplate->path.$sFile;
-                }elseif(file_exists($oTemplate->viewPath.$sFile)){
+                }elseif (file_exists($oTemplate->viewPath.$sFile)) {
                     return $oTemplate->viewPath.$sFile;
                 }
             }
@@ -215,33 +215,33 @@ class TemplateConfig extends CActiveRecord
          */
         protected function getDependsPackages($oTemplate)
         {
-            $dir = (getLanguageRTL(App()->getLanguage()))?'rtl':'ltr';
+            $dir = (getLanguageRTL(App()->getLanguage())) ? 'rtl' : 'ltr';
 
             /* Core package */
             $packages[] = 'limesurvey-public';
             $packages[] = 'template-core';
-            $packages[] = ( $dir == "ltr")? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
+            $packages[] = ($dir == "ltr") ? 'template-core-ltr' : 'template-core-rtl'; // Awesome Bootstrap Checkboxes
 
             /* bootstrap */
-            if(!empty($this->cssFramework)){
+            if (!empty($this->cssFramework)) {
 
                 // Basic bootstrap package
-                if((string)$this->cssFramework->name == "bootstrap"){
+                if ((string) $this->cssFramework->name == "bootstrap") {
                     $packages[] = 'bootstrap';
                 }
 
                 // Rtl version of bootstrap
-                if ($dir == "rtl"){
+                if ($dir == "rtl") {
                     $packages[] = 'bootstrap-rtl';
                 }
 
                 // Remove unwanted bootstrap stuff
-                foreach( $this->getFrameworkAssetsToReplace('css', true) as $toReplace){
-                    Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace );
+                foreach ($this->getFrameworkAssetsToReplace('css', true) as $toReplace) {
+                    Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'css', $toReplace);
                 }
 
-                foreach( $this->getFrameworkAssetsToReplace('js', true) as $toReplace){
-                    Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'js', $toReplace );
+                foreach ($this->getFrameworkAssetsToReplace('js', true) as $toReplace) {
+                    Yii::app()->clientScript->removeFileFromPackage('bootstrap', 'js', $toReplace);
                 }
             }
 
@@ -254,13 +254,13 @@ class TemplateConfig extends CActiveRecord
         // For list, so no "setConfiguration" before
         public function getPreview()
         {
-            if (empty($this->sPreviewImgTag)){
-                $previewPath =  (is_a($this->template, 'Template'))?Template::getTemplatePath($this->template->name):false;
+            if (empty($this->sPreviewImgTag)) {
+                $previewPath = (is_a($this->template, 'Template')) ?Template::getTemplatePath($this->template->name) : false;
 
-                if ( $previewPath && file_exists($previewPath.'/preview.png')){
-                    $previewUrl =  Template::getTemplateURL($this->template->name);
+                if ($previewPath && file_exists($previewPath.'/preview.png')) {
+                    $previewUrl = Template::getTemplateURL($this->template->name);
                     $this->sPreviewImgTag = '<img src="'.$previewUrl.'/preview.png" alt="template preview" height="200" class="img-thumbnail" />';
-                }else{
+                } else {
                     $this->sPreviewImgTag = '<em>'.gT('No preview available').'</em>';
                 }
 
@@ -788,12 +788,12 @@ class TemplateConfig extends CActiveRecord
     public function __toString()
     {
         $s = '';
-        foreach($this as $k => $v){
+        foreach ($this as $k => $v) {
             $s .= " <strong> $k : </strong>  $v  <br/>";
             }
 
             $aProp = get_object_vars($this);
-            foreach ( $aProp as $k => $v) {
+            foreach ($aProp as $k => $v) {
                 $s .= " <strong> $k : </strong>  $v  <br/>";
 
             }
@@ -939,32 +939,32 @@ class TemplateConfig extends CActiveRecord
     // Then, the lonely differences between TemplateManifest and TemplateConfiguration should be how to retreive and format the data
     // Note: signature are already the same
 
-    public static function rename($sOldName,$sNewName){}
-    public function prepareTemplateRendering($sTemplateName='', $iSurveyId='', $bUseMagicInherit=true){}
-    public function addFileReplacement($sFile, $sType){}
+    public static function rename($sOldName, $sNewName) {}
+    public function prepareTemplateRendering($sTemplateName = '', $iSurveyId = '', $bUseMagicInherit = true) {}
+    public function addFileReplacement($sFile, $sType) {}
 
-    protected function getTemplateForPath($oRTemplate, $sPath ) {}
-
-    /**
-     * @param string $sType
-     */
-    protected function getFilesToLoad($oTemplate, $sType){}
+    protected function getTemplateForPath($oRTemplate, $sPath) {}
 
     /**
      * @param string $sType
      */
-    protected function changeMotherConfiguration( $sType, $aSettings ){}
+    protected function getFilesToLoad($oTemplate, $sType) {}
 
     /**
      * @param string $sType
      */
-    protected function getFrameworkAssetsToReplace( $sType, $bInlcudeRemove = false){}
+    protected function changeMotherConfiguration($sType, $aSettings) {}
 
     /**
      * @param string $sType
      */
-    protected function getFrameworkAssetsReplacement($sType){}
-    protected function removeFileFromPackage( $sPackageName, $sType, $aSettings ){}
-    protected function setMotherTemplates(){}
-    protected function setThisTemplate(){}
+    protected function getFrameworkAssetsToReplace($sType, $bInlcudeRemove = false) {}
+
+    /**
+     * @param string $sType
+     */
+    protected function getFrameworkAssetsReplacement($sType) {}
+    protected function removeFileFromPackage($sPackageName, $sType, $aSettings) {}
+    protected function setMotherTemplates() {}
+    protected function setThisTemplate() {}
     }

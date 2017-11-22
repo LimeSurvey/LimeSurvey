@@ -400,7 +400,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
                 $aPluginSettings['ldapversion']['current'] = $ldapver;
             }
 
-            if ($ldapver == '2' ) {
+            if ($ldapver == '2') {
                 unset($aPluginSettings['ldaptls']);
             }
 

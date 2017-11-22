@@ -80,17 +80,17 @@ class LSHttpRequest extends CHttpRequest
      * @param $sAlternativeUrl string, the url to return if referrer url is the same than current url.
      * @return string if success, else null
      */
-    public function getUrlReferrer($sAlternativeUrl=null)
+    public function getUrlReferrer($sAlternativeUrl = null)
     {
 
         $referrer = parent::getUrlReferrer();
         $baseReferrer    = str_replace(Yii::app()->getBaseUrl(true), "", $referrer);
         $baseRequestUri  = str_replace(Yii::app()->getBaseUrl(), "", Yii::app()->request->requestUri);
-        $referrer = ($baseReferrer != $baseRequestUri)?$referrer:null;
+        $referrer = ($baseReferrer != $baseRequestUri) ? $referrer : null;
         //Use alternative url if the $referrer is still available in the checkLoopInNavigationStack
-        if( ($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer)) ) {
+        if (($this->checkLoopInNavigationStack($referrer)) || (is_null($referrer))) {
             // Checks if the alternative url should be used
-            if(isset($sAlternativeUrl)) {
+            if (isset($sAlternativeUrl)) {
                 $referrer = $sAlternativeUrl;
             } else {
                 return App()->createUrl('admin/index');

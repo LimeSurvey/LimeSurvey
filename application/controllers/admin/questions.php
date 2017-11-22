@@ -1149,7 +1149,7 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return void
      */
-    public function index($sa, $surveyid, $gid, $qid=null)
+    public function index($sa, $surveyid, $gid, $qid = null)
     {
         App()->getClientScript()->registerPackage('qTip2');
         $action = $sa;
@@ -1434,7 +1434,7 @@ class questions extends Survey_Common_Action
      * @param int $qid
      * @return array
      */
-    public function delete($surveyid, $gid, $qid, $ajax=false)
+    public function delete($surveyid, $gid, $qid, $ajax = false)
     {
         $surveyid = sanitize_int($surveyid);
         $gid = sanitize_int($gid);
@@ -2018,38 +2018,38 @@ class questions extends Survey_Common_Action
     /**
      * function ajaxValidate
      */
-    public function ajaxValidate($surveyid,$qid=false){
+    public function ajaxValidate($surveyid, $qid = false) {
 
         // Stupid hack since Bootstrap switch is a checkbox and 'other' used to be radio button
         // TODO: Longterm, change 'other' to boolean; change the model rules
-        $_POST['other'] = ( Yii::app()->request->getPost('other') == '1' ) ? 'Y' : 'N' ;
+        $_POST['other'] = (Yii::app()->request->getPost('other') == '1') ? 'Y' : 'N';
 
-        $iSurveyId=$surveyid;
-        $iQid=$qid;
-        $oSurvey=Survey::model()->findByPk($surveyid);
-        if($oSurvey)
+        $iSurveyId = $surveyid;
+        $iQid = $qid;
+        $oSurvey = Survey::model()->findByPk($surveyid);
+        if ($oSurvey)
         {
-            $sLanguage=$oSurvey->language;// Validate only on default language
+            $sLanguage = $oSurvey->language; // Validate only on default language
         }
         else
         {
-            Yii::app()->end();// Or throw error 500
+            Yii::app()->end(); // Or throw error 500
         }
-        if(!$iQid)
+        if (!$iQid)
         {
-            $oQuestion=new Question('insert');
-            $oQuestion->sid=$iSurveyId;
-            $oQuestion->language=$sLanguage;
+            $oQuestion = new Question('insert');
+            $oQuestion->sid = $iSurveyId;
+            $oQuestion->language = $sLanguage;
         }
         else
         {
-            $oQuestion=Question::model()->find('qid=:qid and language=:language',array(":qid"=>$iQid,":language"=>$sLanguage));
-            if(!$oQuestion){
+            $oQuestion = Question::model()->find('qid=:qid and language=:language', array(":qid"=>$iQid, ":language"=>$sLanguage));
+            if (!$oQuestion) {
                     throw new Exception('Invalid question id.');
             }
         }
-        $oQuestion->title=App()->request->getParam('title');
-        $oQuestion->other=App()->request->getParam('other');
+        $oQuestion->title = App()->request->getParam('title');
+        $oQuestion->other = App()->request->getParam('other');
         $oQuestion->validate();
 
         header('Content-type: application/json');

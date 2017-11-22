@@ -1436,28 +1436,28 @@ protected function getCAnswersAndCQuestions(array $theserows)
             $aresult = Question::model()->findAllByAttributes(array('parent_qid'=>$rows['qid'], 'language' => $this->language), array('order' => 'question_order ASC'));
             
             foreach ($aresult as $arows) {
-                $shortanswer = "{$arows['title']}: [". flattenText($arows['question']) ."]";
+                $shortanswer = "{$arows['title']}: [".flattenText($arows['question'])."]";
                 $shortquestion = $rows['title'].":$shortanswer ".flattenText($rows['question']);
-                $cquestions[] = array( $shortquestion, $rows['qid'], $rows['type'],
+                $cquestions[] = array($shortquestion, $rows['qid'], $rows['type'],
                 $rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title']
                 );
                 
                 switch ($rows['type']) {
                     //Array 5 buttons
-                    case "A": for ($i=1; $i<=5; $i++) { $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i); } break;
+                    case "A": for ($i = 1; $i <= 5; $i++) { $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i); } break;
                         //Array 10 buttons
-                    case "B": for ($i=1; $i<=10; $i++) { $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i); } break;
+                    case "B": for ($i = 1; $i <= 10; $i++) { $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], $i, $i); } break;
                         //Array Y/N/NA
                     case "C":
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "Y", gT("Yes"));
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "U", gT("Uncertain"));
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "N", gT("No"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "Y", gT("Yes"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "U", gT("Uncertain"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "N", gT("No"));
                         break;
                     //Array >/=/<
                     case "E":
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "I", gT("Increase"));
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "S", gT("Same"));
-                        $canswers[]=array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "D", gT("Decrease"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "I", gT("Increase"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "S", gT("Same"));
+                        $canswers[] = array($rows['sid'].$X.$rows['gid'].$X.$rows['qid'].$arows['title'], "D", gT("Decrease"));
                         break;
                     //Array Flexible Row
                     case "F": 

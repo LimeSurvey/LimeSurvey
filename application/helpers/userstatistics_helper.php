@@ -75,11 +75,11 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         {
             $graph = new pChart(690, 200);
             $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->drawTitle(0,0,gT('Sorry, but this question has too many answer options to be shown properly in a graph.','unescaped'),30,30,30,690,200);
-            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
-            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->drawTitle(0, 0, gT('Sorry, but this question has too many answer options to be shown properly in a graph.', 'unescaped'), 30, 30, 30, 690, 200);
+            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet, $graph);
+            $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -94,11 +94,11 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
         {
             $graph = new pChart(690, 200);
             $graph->loadColorPalette(Yii::app()->getConfig('styledir').DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-            $graph->drawTitle(0,0,gT('Sorry, but this question has no responses yet so a graph cannot be shown.','unescaped'),30,30,30,690,200);
-            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet,$graph);
-            $cachefilename=basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID,$DataSet));
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+            $graph->drawTitle(0, 0, gT('Sorry, but this question has no responses yet so a graph cannot be shown.', 'unescaped'), 30, 30, 30, 690, 200);
+            $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet, $graph);
+            $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet));
             unset($graph);
         }
         return  $cachefilename;
@@ -182,31 +182,31 @@ function createChart($iQuestionID, $iSurveyID, $type = null, $lbl, $gdata, $graw
             }
             else
             {
-                $graph = new pChart(1,1);
+                $graph = new pChart(1, 1);
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-                $legendsize=$graph->getLegendBoxSize($DataSet->GetDataDescription());
+                $legendsize = $graph->getLegendBoxSize($DataSet->GetDataDescription());
 
                 if ($legendsize[1] < 320) $gheight = 420; else $gheight = $legendsize[1] + 100;
                 $graph = new pChart(690 + $legendsize[0], $gheight);
                 $graph->drawFilledRectangle(0, 0, 690 + $legendsize[0], $gheight, 254, 254, 254, false);
                 $graph->loadColorPalette($homedir.DIRECTORY_SEPARATOR.'assets/styles'.DIRECTORY_SEPARATOR.$admintheme.DIRECTORY_SEPARATOR.'images/limesurvey.pal');
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-                $graph->setGraphArea(50,30,500,$gheight-60);
-                $graph->drawFilledRoundedRectangle(7,7,523+$legendsize[0],$gheight-7,5,254,255,254);
-                $graph->drawRoundedRectangle(5,5,525+$legendsize[0],$gheight-5,5,230,230,230);
-                $graph->drawGraphArea(254,254,254,TRUE);
-                $graph->drawScale($DataSet->GetData(),$DataSet->GetDataDescription(),SCALE_START0,150,150,150,TRUE,90,0,TRUE,5,false);
-                $graph->drawGrid(4,TRUE,230,230,230,50);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->setGraphArea(50, 30, 500, $gheight - 60);
+                $graph->drawFilledRoundedRectangle(7, 7, 523 + $legendsize[0], $gheight - 7, 5, 254, 255, 254);
+                $graph->drawRoundedRectangle(5, 5, 525 + $legendsize[0], $gheight - 5, 5, 230, 230, 230);
+                $graph->drawGraphArea(254, 254, 254, TRUE);
+                $graph->drawScale($DataSet->GetData(), $DataSet->GetDataDescription(), SCALE_START0, 150, 150, 150, TRUE, 90, 0, TRUE, 5, false);
+                $graph->drawGrid(4, TRUE, 230, 230, 230, 50);
                 // Draw the 0 line
-                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile,$chartfontsize);
-                $graph->drawTreshold(0,143,55,72,TRUE,TRUE);
+                $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
+                $graph->drawTreshold(0, 143, 55, 72, TRUE, TRUE);
 
                 // Draw the bar graph
                 $graph->drawBarGraph($DataSet->GetData(), $DataSet->GetDataDescription(), FALSE);
                 //$Test->setLabel($DataSet->GetData(),$DataSet->GetDataDescription(),"Serie4","1","Important point!");
                 // Finish the graph
                 $graph->setFontProperties($rootdir.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'fonts'.DIRECTORY_SEPARATOR.$chartfontfile, $chartfontsize);
-                $graph->drawLegend(510,30,$DataSet->GetDataDescription(),250,250,250);
+                $graph->drawLegend(510, 30, $DataSet->GetDataDescription(), 250, 250, 250);
 
                 $cache->WriteToCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData(), $graph);
                 $cachefilename = basename($cache->GetFileFromCache("graph".$iSurveyID.$sLanguageCode.$iQuestionID, $DataSet->GetData()));
@@ -622,18 +622,18 @@ class userstatistics_helper {
      *                       "qquestion"=>The description of the question,
      *                       "qtype"=>The question type code
      */
-    protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage,$browse=true) {
+    protected function buildOutputList($rt, $language, $surveyid, $outputType, $sql, $oLanguage, $browse = true) {
 
         //Set up required variables
         $survey = Survey::model()->findByPk($surveyid);
-        $alist=array();
-        $qtitle="";
-        $qquestion="";
-        $qtype="";
+        $alist = array();
+        $qtitle = "";
+        $qquestion = "";
+        $qtype = "";
         $firstletter = substr($rt, 0, 1);
-        $fieldmap=createFieldMap($survey, "full", false, false, $language);
+        $fieldmap = createFieldMap($survey, "full", false, false, $language);
         $sDatabaseType = Yii::app()->db->getDriverName();
-        $statisticsoutput="";
+        $statisticsoutput = "";
         $qqid = "";
 
         /* Some variable depend on output type, actually : only line feed */
@@ -2779,27 +2779,27 @@ class userstatistics_helper {
      * @param boolean $browse  Show browse buttons
      * @return string|null
      */
-    public function generate_statistics($surveyid, $allfields, $q2show='all', $usegraph=0, $outputType='pdf', $pdfOutput='I',$sLanguageCode=null, $browse = true)
+    public function generate_statistics($surveyid, $allfields, $q2show = 'all', $usegraph = 0, $outputType = 'pdf', $pdfOutput = 'I', $sLanguageCode = null, $browse = true)
     {
         $survey = Survey::model()->findByPk($surveyid);
 
-        $aStatisticsData=array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
+        $aStatisticsData = array(); //astatdata generates data for the output page's javascript so it can rebuild graphs on the fly
         //load surveytranslator helper
         Yii::import('application.helpers.surveytranslator_helper', true);
         Yii::import('application.third_party.ar-php.Arabic', true);
 
         $sTempDir = Yii::app()->getConfig("tempdir");
 
-        $this->pdf=array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
+        $this->pdf = array(); //Make sure $this->pdf exists - it will be replaced with an object if a $this->pdf is actually being created
 
         //pick the best font file if font setting is 'auto'
         if (is_null($sLanguageCode)) {
-            $sLanguageCode =  $survey->language;
+            $sLanguageCode = $survey->language;
         }
         Yii::app()->setLanguage($sLanguageCode);
 
         //we collect all the html-output within this variable
-        $sOutputHTML ='';
+        $sOutputHTML = '';
         /**
          * $outputType: html || pdf ||
          */
@@ -2879,24 +2879,24 @@ class userstatistics_helper {
         /**
          * pdf Config
          */
-        if($outputType=='pdf')
+        if ($outputType == 'pdf')
         {
             //require_once('classes/tcpdf/mypdf.php');
             Yii::import('application.libraries.admin.pdf', true);
             Yii::import('application.helpers.pdfHelper');
-            $aPdfLanguageSettings=pdfHelper::getPdfLanguageSettings($language);
+            $aPdfLanguageSettings = pdfHelper::getPdfLanguageSettings($language);
 
             // create new PDF document
             $this->pdf = new pdf();
 
-            $surveyInfo = getSurveyInfo($surveyid,$language);
+            $surveyInfo = getSurveyInfo($surveyid, $language);
 
             // set document information
             $this->pdf->SetCreator(PDF_CREATOR);
             $this->pdf->SetAuthor('LimeSurvey');
-            $this->pdf->SetTitle(sprintf(gT("Statistics survey %s"),$surveyid));
+            $this->pdf->SetTitle(sprintf(gT("Statistics survey %s"), $surveyid));
             $this->pdf->SetSubject($surveyInfo['surveyls_title']);
-            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"),$surveyid));
+            $this->pdf->SetKeywords('LimeSurvey,'.gT("Statistics").', '.sprintf(gT("Survey %s"), $surveyid));
             $this->pdf->SetDisplayMode('fullpage', 'two');
             $this->pdf->setLanguageArray($aPdfLanguageSettings['lg']);
 
@@ -2907,19 +2907,19 @@ class userstatistics_helper {
             // set default header data
             // Since png crashes some servers (and we can not try/catch that) we use .gif (or .jpg) instead
             $headerlogo = 'statistics.gif';
-            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics",'unescaped') , gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'],false,true,'UTF-8')."'");
+            $this->pdf->SetHeaderData($headerlogo, 10, gT("Quick statistics", 'unescaped'), gT("Survey")." ".$surveyid." '".flattenText($surveyInfo['surveyls_title'], false, true, 'UTF-8')."'");
             $this->pdf->SetFont($aPdfLanguageSettings['pdffont'], '', $aPdfLanguageSettings['pdffontsize']);
             // set default monospaced font
             $this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
         }
-        if($outputType=='xls')
+        if ($outputType == 'xls')
         {
             /**
              * Initiate the Spreadsheet_Excel_Writer
              */
             require_once(APPPATH.'/third_party/pear/Spreadsheet/Excel/Xlswriter.php');
 
-            if($pdfOutput=='F')
+            if ($pdfOutput == 'F')
             {
                 $sFileName = $sTempDir.'/statistic-survey'.$surveyid.'.xls';
                 $this->workbook = new Xlswriter($sFileName);
@@ -3243,58 +3243,58 @@ class userstatistics_helper {
                 break;
         }
 
-        $q1 = $quartile/4 * ($recordCount+1);
-        $row = $q1-1; // -1 since we start counting at 0
+        $q1 = $quartile / 4 * ($recordCount + 1);
+        $row = $q1 - 1; // -1 since we start counting at 0
         if ($q1 === (int) $q1) {
             return $allRows[$row][$fieldname];
         } else {
             $diff = ($q1 - (int) $q1);
-            return $allRows[$row][$fieldname] + $diff * ($allRows[$row+1][$fieldname]-$allRows[$row][$fieldname]);
+            return $allRows[$row][$fieldname] + $diff * ($allRows[$row + 1][$fieldname] - $allRows[$row][$fieldname]);
         }
     }
 
     /**
      *  Returns a simple list of values in a particular column, that meet the requirements of the SQL
      */
-    function _listcolumn($surveyid, $column, $sortby="", $sortmethod="", $sorttype="")
+    function _listcolumn($surveyid, $column, $sortby = "", $sortmethod = "", $sorttype = "")
     {
-        $search['condition']=Yii::app()->db->quoteColumnName($column)." != ''";
-        $sDBDriverName=Yii::app()->db->getDriverName();
-        if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
+        $search['condition'] = Yii::app()->db->quoteColumnName($column)." != ''";
+        $sDBDriverName = Yii::app()->db->getDriverName();
+        if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
         {
-            $search['condition']="CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
+            $search['condition'] = "CAST(".Yii::app()->db->quoteColumnName($column)." as varchar) != ''";
         }
 
         //filter incomplete answers if set
-        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null";}
-        elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null";}
+        if (incompleteAnsFilterState() == "incomplete") {$search['condition'] .= " AND submitdate is null"; }
+        elseif (incompleteAnsFilterState() == "complete") {$search['condition'] .= " AND submitdate is not null"; }
 
         //Look for any selects/filters set in the original statistics query, and apply them to the column listing
         if (isset(Yii::app()->session['statistics_selects_'.$surveyid]) && is_array(Yii::app()->session['statistics_selects_'.$surveyid]))
         {
-            foreach(Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
+            foreach (Yii::app()->session['statistics_selects_'.$surveyid] as $sql) {
                 $search['condition'] .= " AND $sql";
             }
         }
 
-        if ($sortby!='')
+        if ($sortby != '')
         {
-            if ($sDBDriverName=='sqlsrv' || $sDBDriverName=='mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
+            if ($sDBDriverName == 'sqlsrv' || $sDBDriverName == 'mssql' || $sDBDriverName == 'dblib') // ADAPTED JV: added condition for dblib
             {
-                $sortby="CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
+                $sortby = "CAST(".Yii::app()->db->quoteColumnName($sortby)." as varchar)";
             }
             else
             {
-                $sortby=Yii::app()->db->quoteColumnName($sortby);
+                $sortby = Yii::app()->db->quoteColumnName($sortby);
             }
 
-            if($sorttype=='N') {$sortby = "($sortby * 1)";} //Converts text sorting into numerical sorting
-            $search['order']=$sortby.' '.$sortmethod;
+            if ($sorttype == 'N') {$sortby = "($sortby * 1)"; } //Converts text sorting into numerical sorting
+            $search['order'] = $sortby.' '.$sortmethod;
         }
-        $results=SurveyDynamic::model($surveyid)->findAll($search);
-        $output=array();
-        foreach($results as $row) {
-            $output[]=array("id"=>$row['id'], "value"=>$row[$column]);
+        $results = SurveyDynamic::model($surveyid)->findAll($search);
+        $output = array();
+        foreach ($results as $row) {
+            $output[] = array("id"=>$row['id'], "value"=>$row[$column]);
         }
         return $output;
     }

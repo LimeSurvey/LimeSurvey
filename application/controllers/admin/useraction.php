@@ -37,9 +37,9 @@ class UserAction extends Survey_Common_Action
      * @param string $param
      * @return string
      */
-    private function _getPostOrParam($param){
+    private function _getPostOrParam($param) {
         $value = Yii::app()->request->getPost($param);
-        if(!$value)
+        if (!$value)
         {
             /* This already return GET or POST : : http://www.yiiframework.com/doc/api/1.1/CHttpRequest#getParam-detail
              * DB update need $_POST, then only Yii::app()->request->getPost or control Yii::app()->request->getIsPostRequest()
@@ -494,30 +494,30 @@ class UserAction extends Survey_Common_Action
         }
 
         // Check permissions
-        $aBasePermissions=Permission::model()->getGlobalBasePermissions();
-        if (!Permission::model()->hasGlobalPermission('superadmin','read')) {
+        $aBasePermissions = Permission::model()->getGlobalBasePermissions();
+        if (!Permission::model()->hasGlobalPermission('superadmin', 'read')) {
                 // if not superadmin filter the available permissions as no admin may give more permissions than he owns
             Yii::app()->session['flashmessage'] = gT("Note: You can only give limited permissions to other users because your own permissions are limited, too.");
-            $aFilteredPermissions=array();
-            foreach  ($aBasePermissions as $PermissionName=>$aPermission)
+            $aFilteredPermissions = array();
+            foreach ($aBasePermissions as $PermissionName=>$aPermission)
             {
                 foreach ($aPermission as $sPermissionKey=>&$sPermissionValue)
                 {
-                    if ($sPermissionKey!='title' && $sPermissionKey!='img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) $sPermissionValue=false;
+                    if ($sPermissionKey != 'title' && $sPermissionKey != 'img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) $sPermissionValue = false;
                 }
                 // Only show a row for that permission if there is at least one permission he may give to other users
                 if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
-                    $aFilteredPermissions[$PermissionName]=$aPermission;
+                    $aFilteredPermissions[$PermissionName] = $aPermission;
                 }
             }
-            $aBasePermissions=$aFilteredPermissions;
+            $aBasePermissions = $aFilteredPermissions;
         }
 
-        if(isset($oUser)) {
-            if ( $oUser  && (Permission::model()->hasGlobalPermission('superadmin','read') || Permission::model()->hasGlobalPermission('users','update') &&  Yii::app()->session['loginID'] != $iUserID) )
+        if (isset($oUser)) {
+            if ($oUser && (Permission::model()->hasGlobalPermission('superadmin', 'read') || Permission::model()->hasGlobalPermission('users', 'update') && Yii::app()->session['loginID'] != $iUserID))
             {
                 // Show superadmin right if create is set (review for delete too ?)
-                if (!Permission::model()->hasGlobalPermission('superadmin','create') ) {
+                if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
                     unset($aBasePermissions['superadmin']);
                 }
                 $aData = array();
@@ -689,10 +689,10 @@ class UserAction extends Survey_Common_Action
         unset($oUser);
         $oUser = User::model()->findByPk(Yii::app()->session['loginID']);
 
-        $aLanguageData=array('auto'=>gT("(Autodetect)"));
+        $aLanguageData = array('auto'=>gT("(Autodetect)"));
         foreach (getLanguageData(true, Yii::app()->session['adminlang']) as $langkey => $languagekind)
         {
-            $aLanguageData[$langkey]=html_entity_decode($languagekind['nativedescription'].' - '.$languagekind['description'],ENT_COMPAT,'utf-8');
+            $aLanguageData[$langkey] = html_entity_decode($languagekind['nativedescription'].' - '.$languagekind['description'], ENT_COMPAT, 'utf-8');
         }
         $aData = array();
         $aData['aLanguageData'] = $aLanguageData;

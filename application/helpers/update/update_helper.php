@@ -19,21 +19,21 @@
 function CheckForDBUpgrades($subaction = null)
 {
     $dbversionnumber = Yii::app()->getConfig('dbversionnumber');
-    $currentDBVersion=GetGlobalSetting('DBVersion');
-    if (intval($dbversionnumber)>intval($currentDBVersion))
+    $currentDBVersion = GetGlobalSetting('DBVersion');
+    if (intval($dbversionnumber) > intval($currentDBVersion))
     {
         Yii::app()->loadHelper('update/updatedb');
-            if(isset($subaction) && $subaction=="yes")
+            if (isset($subaction) && $subaction == "yes")
         {
             echo Yii::app()->getController()->_getAdminHeader();
-            $result=db_upgrade_all(intval($currentDBVersion));
+            $result = db_upgrade_all(intval($currentDBVersion));
             if ($result)
             {
                 $data =
                 '<div class="jumbotron message-box">'.
                     '<h2 class="">'.gT('Success').'</h2>'.
                     '<p class="lead">'.
-                        sprintf(gT("Database has been successfully upgraded to version %s"),$dbversionnumber).
+                        sprintf(gT("Database has been successfully upgraded to version %s"), $dbversionnumber).
                     '</p>'.
                     '<p>'.
                         '<a href="'.Yii::app()->getController()->createUrl("/admin").'">'.gT("Back to main menu").'</a>'.

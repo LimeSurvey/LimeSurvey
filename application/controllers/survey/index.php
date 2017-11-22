@@ -155,18 +155,18 @@ class index extends CAction {
                     null,
                     $aErrors
                     );
-            }else{
-                if((intval($param['qid']) && $param['action']=='previewquestion')) $previewmode='question';
-                if((intval($param['gid']) && $param['action']=='previewgroup')) $previewmode='group';
+            } else {
+                if ((intval($param['qid']) && $param['action'] == 'previewquestion')) $previewmode = 'question';
+                if ((intval($param['gid']) && $param['action'] == 'previewgroup')) $previewmode = 'group';
             }
         }
 
-        Yii::app()->setConfig('previewmode',$previewmode);
+        Yii::app()->setConfig('previewmode', $previewmode);
 
-        if ( $this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists) ){
+        if ($this->_surveyCantBeViewedWithCurrentPreviewAccess($surveyid, $isSurveyActive, $surveyExists)) {
             $bPreviewRight = $this->_userHasPreviewAccessSession($surveyid);
 
-            if ($bPreviewRight === false){
+            if ($bPreviewRight === false) {
                 // @todo : throw a 401
                 $aErrors  = array(gT('Error'));
                 $aMessage = array(gT("We are sorry but you don't have permissions to do this."),);
@@ -483,15 +483,15 @@ class index extends CAction {
                         null,
                         array($sError)
                         );
-                }else{
+                } else {
                     $sError = gT("This is a controlled survey. You need a valid token to participate.");
                 }
             }
         }
 
         //Check to see if a refering URL has been captured.
-        if (!isset($_SESSION['survey_'.$surveyid]['refurl'])){
-            $_SESSION['survey_'.$surveyid]['refurl']=getReferringUrl(); // do not overwrite refurl
+        if (!isset($_SESSION['survey_'.$surveyid]['refurl'])) {
+            $_SESSION['survey_'.$surveyid]['refurl'] = getReferringUrl(); // do not overwrite refurl
         }
 
         // Let's do this only if
@@ -501,14 +501,14 @@ class index extends CAction {
         //  - a token information has been provided
         //  - the survey is setup to allow token-response-persistence
 
-        if (!isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token !=''){
+        if (!isset($_SESSION['survey_'.$surveyid]['srid']) && $thissurvey['anonymized'] == "N" && $thissurvey['active'] == "Y" && isset($token) && $token != '') {
 
             // load previous answers if any (dataentry with nosubmit)
-                $oResponses  = Response::model($surveyid)->findAllByAttributes(array(
+                $oResponses = Response::model($surveyid)->findAllByAttributes(array(
                 'token' => $token
             ), array('order' => 'id DESC'));
 
-            if (!empty($oResponses)){
+            if (!empty($oResponses)) {
 
                 /**
                  * We fire the response selection event when at least 1 response was found.

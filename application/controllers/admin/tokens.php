@@ -1456,40 +1456,40 @@ class tokens extends Survey_Common_Action
                         $emrow['language'] = $sBaseLanguage;
                     }
 
-                    $from = Yii::app()->request->getPost('from_' . $emrow['language']);
+                    $from = Yii::app()->request->getPost('from_'.$emrow['language']);
 
                     $fieldsarray["{OPTOUTURL}"] = $this->getController()
-                                                        ->createAbsoluteUrl("/optout/tokens",array("surveyid"=>$iSurveyId,"langcode"=>trim($emrow['language']),"token"=>$emrow['token']));
+                                                        ->createAbsoluteUrl("/optout/tokens", array("surveyid"=>$iSurveyId, "langcode"=>trim($emrow['language']), "token"=>$emrow['token']));
                     $fieldsarray["{OPTINURL}"] = $this->getController()
-                                                        ->createAbsoluteUrl("/optin/tokens",array("surveyid"=>$iSurveyId,"langcode"=>trim($emrow['language']),"token"=>$emrow['token']));
+                                                        ->createAbsoluteUrl("/optin/tokens", array("surveyid"=>$iSurveyId, "langcode"=>trim($emrow['language']), "token"=>$emrow['token']));
                     $fieldsarray["{SURVEYURL}"] = $this->getController()
-                                                        ->createAbsoluteUrl("/survey/index",array("sid"=>$iSurveyId,"token"=>$emrow['token'],"lang"=>trim($emrow['language'])));
+                                                        ->createAbsoluteUrl("/survey/index", array("sid"=>$iSurveyId, "token"=>$emrow['token'], "lang"=>trim($emrow['language'])));
                     // Add some var for expression : actually only EXPIRY because : it's used in limereplacement field and have good reason to have it.
-                    $fieldsarray["{EXPIRY}"]=$aData['thissurvey']["expires"];
-                    $customheaders = array('1' => "X-surveyid: " . $iSurveyId,
-                    '2' => "X-tokenid: " . $fieldsarray["{TOKEN}"]);
+                    $fieldsarray["{EXPIRY}"] = $aData['thissurvey']["expires"];
+                    $customheaders = array('1' => "X-surveyid: ".$iSurveyId,
+                    '2' => "X-tokenid: ".$fieldsarray["{TOKEN}"]);
                     global $maildebug;
                     $modsubject = $sSubject[$emrow['language']];
                     $modmessage = $sMessage[$emrow['language']];
-                    foreach(array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
+                    foreach (array('OPTOUT', 'OPTIN', 'SURVEY') as $key)
                     {
                         $url = $fieldsarray["{{$key}URL}"];
-                        if ($bHtml) $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>" . htmlspecialchars($url) . '</a>';
+                        if ($bHtml) $fieldsarray["{{$key}URL}"] = "<a href='{$url}'>".htmlspecialchars($url).'</a>';
                         $modsubject = str_replace("@@{$key}URL@@", $url, $modsubject);
                         $modmessage = str_replace("@@{$key}URL@@", $url, $modmessage);
                     }
                     $modsubject = Replacefields($modsubject, $fieldsarray);
                     $modmessage = Replacefields($modmessage, $fieldsarray);
 
-                    if (!App()->request->getPost('bypassdatecontrol')=='1' && trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
+                    if (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validfrom']) != '' && convertDateTimeFormat($emrow['validfrom'], 'Y-m-d H:i:s', 'U') * 1 > date('U') * 1)
                     {
-                        $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.",'unescaped'), $fieldsarray)). "<br />";
-                        $bInvalidDate=true;
+                        $tokenoutput .= $emrow['tid']." ".htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) delayed: Token is not yet valid.", 'unescaped'), $fieldsarray))."<br />";
+                        $bInvalidDate = true;
                     }
-                    elseif (!App()->request->getPost('bypassdatecontrol')=='1' && trim($emrow['validuntil']) != '' && convertDateTimeFormat($emrow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
+                    elseif (!App()->request->getPost('bypassdatecontrol') == '1' && trim($emrow['validuntil']) != '' && convertDateTimeFormat($emrow['validuntil'], 'Y-m-d H:i:s', 'U') * 1 < date('U') * 1)
                     {
-                        $tokenoutput .= $emrow['tid'] . " " . htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.",'unescaped'), $fieldsarray)). "<br />";
-                        $bInvalidDate=true;
+                        $tokenoutput .= $emrow['tid']." ".htmlspecialchars(ReplaceFields(gT("Email to {FIRSTNAME} {LASTNAME} ({EMAIL}) skipped: Token is not valid anymore.", 'unescaped'), $fieldsarray))."<br />";
+                        $bInvalidDate = true;
                     }
                     else
                     {
@@ -2021,25 +2021,25 @@ class tokens extends Survey_Common_Action
                     $aData['xy'] = $xy;
                     $aData['xz'] = $xz;
 
-                    $this->_renderWrappedTemplate('token', array( 'ldappost'), $aData);
+                    $this->_renderWrappedTemplate('token', array('ldappost'), $aData);
                 }
                 else
                 {
-                    $sErrorMessage=ldap_error($ds);
+                    $sErrorMessage = ldap_error($ds);
                     define(LDAP_OPT_DIAGNOSTIC_MESSAGE, 0x0032);
                     if (ldap_get_option($ds, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error))
                     {
-                        $sErrorMessage.= ' - '.$extended_error; 
+                        $sErrorMessage .= ' - '.$extended_error; 
                     }
-                    $aData['sError'] = sprintf(gT("Can't bind to the LDAP directory. Error message: %s"),ldap_error($ds));
-                    $this->_renderWrappedTemplate('token', array( 'ldapform'), $aData);
+                    $aData['sError'] = sprintf(gT("Can't bind to the LDAP directory. Error message: %s"), ldap_error($ds));
+                    $this->_renderWrappedTemplate('token', array('ldapform'), $aData);
                 }
                 @ldap_close($ds);
             }
             else
             {
                 $aData['sError'] = gT("Can't connect to the LDAP directory");
-                $this->_renderWrappedTemplate('token', array( 'ldapform'), $aData);
+                $this->_renderWrappedTemplate('token', array('ldapform'), $aData);
             }
         }
     }
@@ -2257,42 +2257,42 @@ class tokens extends Survey_Common_Action
                         if (!$bDuplicateFound && $bFilterBlankEmail && $aWriteArray['email'] == '')
                         {
                             $bInvalidEmail = true;
-                            $aInvalidEmailList[] = sprintf(gT("Line %s : %s %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']));
+                            $aInvalidEmailList[] = sprintf(gT("Line %s : %s %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']));
                         }
                         if (!$bDuplicateFound && $aWriteArray['email'] != '')
                         {
-                            $aEmailAddresses = preg_split( "/(,|;)/", $aWriteArray['email'] );
+                            $aEmailAddresses = preg_split("/(,|;)/", $aWriteArray['email']);
                             foreach ($aEmailAddresses as $sEmailaddress)
                             {
                                 if (!validateEmailAddress($sEmailaddress))
                                 {
-                                    if($bAllowInvalidEmail)
+                                    if ($bAllowInvalidEmail)
                                     {
                                         $iInvalidEmailCount++;
-                                        if(empty($aWriteArray['emailstatus']) || strtoupper($aWriteArray['emailstatus']=="OK"))
-                                            $aWriteArray['emailstatus']="invalid";
+                                        if (empty($aWriteArray['emailstatus']) || strtoupper($aWriteArray['emailstatus'] == "OK"))
+                                            $aWriteArray['emailstatus'] = "invalid";
                                     }
                                     else
                                     {
                                         $bInvalidEmail = true;
-                                        $aInvalidEmailList[] = sprintf(gT("Line %s : %s %s (%s)"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']));
+                                        $aInvalidEmailList[] = sprintf(gT("Line %s : %s %s (%s)"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']));
                                     }
                                 }
                             }
                             }
 
-                        if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim($aWriteArray['token'])!='')
+                        if (!$bDuplicateFound && !$bInvalidEmail && isset($aWriteArray['token']) && trim($aWriteArray['token']) != '')
                         {
                             if (trim($aWriteArray['token']) != Token::sanitizeToken($aWriteArray['token']))
                             {
-                                $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']),CHtml::encode($aWriteArray['token']));
-                                $bInvalidToken=true;
+                                $aInvalidTokenList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
+                                $bInvalidToken = true;
                             }
                             // We allways search for duplicate token (it's in model. Allow to reset or update token ?
-                            if(Token::model($iSurveyId)->count("token=:token",array(":token"=>$aWriteArray['token'])))
+                            if (Token::model($iSurveyId)->count("token=:token", array(":token"=>$aWriteArray['token'])))
                             {
-                                $bDuplicateFound=true;
-                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"),$iRecordCount,CHtml::encode($aWriteArray['firstname']),CHtml::encode($aWriteArray['lastname']),CHtml::encode($aWriteArray['email']),CHtml::encode($aWriteArray['token']));
+                                $bDuplicateFound = true;
+                                $aDuplicateList[] = sprintf(gT("Line %s : %s %s (%s) - token : %s"), $iRecordCount, CHtml::encode($aWriteArray['firstname']), CHtml::encode($aWriteArray['lastname']), CHtml::encode($aWriteArray['email']), CHtml::encode($aWriteArray['token']));
                             }
                         }
 
@@ -2366,24 +2366,24 @@ class tokens extends Survey_Common_Action
         unset($aTokenTableFields['usesleft']);
         foreach ($aTokenTableFields as $sKey=>$sValue)
         {
-            if ($sValue['description']!=$sKey)
+            if ($sValue['description'] != $sKey)
             {
                 $sValue['description'] .= ' - '.$sKey;
             }
-            $aNewTokenTableFields[$sKey]= $sValue['description'];
+            $aNewTokenTableFields[$sKey] = $sValue['description'];
         }
         $aData['aTokenTableFields'] = $aNewTokenTableFields;
 
         // Get default character set from global settings
         $thischaracterset = getGlobalSetting('characterset');
         // If no encoding was set yet, use the old "auto" default
-        if($thischaracterset == "")
+        if ($thischaracterset == "")
         {
             $thischaracterset = "auto";
         }
         $aData['thischaracterset'] = $thischaracterset;
 
-        $this->_renderWrappedTemplate('token', array( 'csvupload'), $aData);
+        $this->_renderWrappedTemplate('token', array('csvupload'), $aData);
 
     }
 
@@ -2433,20 +2433,20 @@ class tokens extends Survey_Common_Action
             $newtoken = Token::model($iSurveyId)->generateTokens($iSurveyId);
             $newtokencount = $newtoken['0'];
             $neededtokencount = $newtoken['1'];
-            if($neededtokencount>$newtokencount)
+            if ($neededtokencount > $newtokencount)
             {
                 $aData['success'] = false;
-                $message = ngT('Only {n} token has been created.|Only {n} tokens have been created.',$newtokencount)
-                            .ngT('Need {n} token.|Need {n} tokens.',$neededtokencount);
+                $message = ngT('Only {n} token has been created.|Only {n} tokens have been created.', $newtokencount)
+                            .ngT('Need {n} token.|Need {n} tokens.', $neededtokencount);
                 $message .= '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Ok").'</a></p>';
             }
             else
             {
                 $aData['success'] = true;
-                $message = ngT('{n} token has been created.|{n} tokens have been created.',$newtokencount);
+                $message = ngT('{n} token has been created.|{n} tokens have been created.', $newtokencount);
                 $message .= '<p><a href="'.App()->createUrl('admin/tokens/sa/index/surveyid/'.$iSurveyId).'" title="" class="btn btn-default btn-lg">'.gT("Ok").'</a></p>';
             }
-            $this->_renderWrappedTemplate('token', array( 'message' => array(
+            $this->_renderWrappedTemplate('token', array('message' => array(
             'title' => gT("Create tokens"),
             'message' => $message
             )), $aData);

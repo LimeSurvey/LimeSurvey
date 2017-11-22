@@ -423,6 +423,9 @@ function sanitize_languagecode($codetosanitize) {
     return preg_replace('/[^a-z0-9-]/i', '', $codetosanitize);
 }
 
+/**
+ * @param string $codestringtosanitize
+ */
 function sanitize_languagecodeS($codestringtosanitize) {
     $codearray = explode(" ", trim($codestringtosanitize));
     $codearray = array_map("sanitize_languagecode", $codearray);

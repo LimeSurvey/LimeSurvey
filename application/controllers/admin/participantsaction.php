@@ -1119,15 +1119,15 @@ class participantsaction extends Survey_Common_Action
         }
 
         $chosenParticipants = Yii::app()->request->getPost('selectedParticipant');
-        $chosenParticipantsArray = explode(',',$chosenParticipants);
+        $chosenParticipantsArray = explode(',', $chosenParticipants);
 
             $searchSelected = new CDbCriteria;
-        if(!empty($chosenParticipants))
-            $searchSelected->addInCondition("{{participant_id}}",$chosenParticipantsArray);
+        if (!empty($chosenParticipants))
+            $searchSelected->addInCondition("{{participant_id}}", $chosenParticipantsArray);
         else
             $searchSelected = null;
 
-        if($search)
+        if ($search)
             $search->mergeWith($searchSelected);
         else
             $search = $searchSelected;

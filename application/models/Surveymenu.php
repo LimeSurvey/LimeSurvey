@@ -82,27 +82,27 @@ class Surveymenu extends LSActiveRecord
         return $oSurveymenu->getPrimaryKey();
     }
 
-    public static function staticRemoveMenu($menuName, $recursive=false){
+    public static function staticRemoveMenu($menuName, $recursive = false) {
         
         $oSurveymenu = Surveymenu::model()->find('name=:name', [':name'=>$menuName]);
         
-        if($recursive !== true){
-            if(count($oSurveymenu->surveymenuEntries)>0)
+        if ($recursive !== true) {
+            if (count($oSurveymenu->surveymenuEntries) > 0)
                 return;
         }
-        foreach($oSurveymenu->surveymenuEntries as $oSurveymenuEntry){
+        foreach ($oSurveymenu->surveymenuEntries as $oSurveymenuEntry) {
             $oSurveymenuEntry->delete();
         }
 
         $oSurveymenu->delete();
     }
 
-    public function getMenuIdOptions (){
+    public function getMenuIdOptions() {
         $oSurveymenus = Surveymenu::model()->findAll();
         $options = [
             '' => gT('No parent menu')
         ];
-        foreach($oSurveymenus as $oSurveymenu){
+        foreach ($oSurveymenus as $oSurveymenu) {
             //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
             $options[''.($oSurveymenu->id).''] = '('.$oSurveymenu->id.') '.$oSurveymenu->title;
         }
@@ -110,12 +110,12 @@ class Surveymenu extends LSActiveRecord
         return $options;
     }
 
-    public function getSurveyIdOptions (){
-        $oSurveys = Survey::model()->findAll('expires < :expire',['expire' => date('Y-m-d H:i:s', strtotime('+1 hour'))]);
+    public function getSurveyIdOptions() {
+        $oSurveys = Survey::model()->findAll('expires < :expire', ['expire' => date('Y-m-d H:i:s', strtotime('+1 hour'))]);
         $options = [
             NULL => gT('All surveys')
         ];
-        foreach($oSurveys as $oSurvey){
+        foreach ($oSurveys as $oSurvey) {
             //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
             $options[$oSurvey->sid] = $oSurvey->defaultlanguage->surveyls_title;
         }
@@ -123,12 +123,12 @@ class Surveymenu extends LSActiveRecord
         return $options;
     }
 
-    public function getUserIdOptions (){
+    public function getUserIdOptions() {
         $oUsers = User::model()->findAll();
         $options = [
             NULL => gT('All users')
         ];
-        foreach($oUsers as $oUser){
+        foreach ($oUsers as $oUser) {
             //$options[] = "<option value='".$oSurveymenu->id."'>".$oSurveymenu->title."</option>";
             $options[$oUser->uid] = $oUser->full_name;
         }
@@ -138,21 +138,21 @@ class Surveymenu extends LSActiveRecord
 
 
 
-    public function getNextOrderPosition(){
-        $oSurveymenus = Surveymenu::model()->findAll('parent_id=:parent_id',array('parent_id'=>0));
+    public function getNextOrderPosition() {
+        $oSurveymenus = Surveymenu::model()->findAll('parent_id=:parent_id', array('parent_id'=>0));
         return count($oSurveymenus);
     }
 
-    public function getOrderOptions (){
+    public function getOrderOptions() {
         $oSurveymenus = Surveymenu::model()->findAll();
         $options = [];
-        for($i=0; $i<=count($oSurveymenus); $i++){
+        for ($i = 0; $i <= count($oSurveymenus); $i++) {
             $options[$i] = $i;
         }
         //return join('\n',$options);
         return $options;
     }
-    public function getPositionOptions (){
+    public function getPositionOptions() {
         $options = [
             'side' => gT('Sidemenu'),
             'collapsed' => gT('Collapsed menu'),
@@ -184,14 +184,14 @@ class Surveymenu extends LSActiveRecord
             'created_by'	=> gT('Created by'),
         );
     }
-    public function getButtons(){
+    public function getButtons() {
         $buttons = "<div style='white-space: nowrap'>";
         $raw_button_template = ""
             . "<button class='btn btn-default btn-xs %s %s' role='button' data-toggle='tooltip' title='%s' onclick='return false;'>" //extra class //title
             . "<i class='fa fa-%s' ></i>" //icon class
             . "</button>";
 		
-        if(Permission::model()->hasGlobalPermission('settings', 'update')){
+        if (Permission::model()->hasGlobalPermission('settings', 'update')) {
 
             
             $editData = array(
@@ -279,15 +279,15 @@ class Surveymenu extends LSActiveRecord
         return $cols;
     }
 
-    public function onBeforeSave($event){
-        if($this->parent_id){
+    public function onBeforeSave($event) {
+        if ($this->parent_id) {
             $parentMenu = Surveymenu::model()->findByPk($this->parent_id);
-            $this->level = (( (int) $parentMenu->level)+1);
+            $this->level = (((int) $parentMenu->level) + 1);
         }
         return parent::onBeforeSave($event);
     }
 
-    public function onAfterSave($event){
+    public function onAfterSave($event) {
         $criteria = new CDbCriteria();
 		
         $criteria->addCondition(['position=:position']);
@@ -298,8 +298,8 @@ class Surveymenu extends LSActiveRecord
 		
         $collidingMenu = Surveymenu::model()->find($criteria);
 
-        if($collidingMenu != null){
-            $collidingMenu->ordering = (((int) $collidingMenu->ordering)+1);
+        if ($collidingMenu != null) {
+            $collidingMenu->ordering = (((int) $collidingMenu->ordering) + 1);
             $collidingMenu->save();
         }
         return parent::onAfterSave($event);
@@ -312,15 +312,15 @@ class Surveymenu extends LSActiveRecord
          *
          * @return boolean
          */
-    public function restoreDefaults(){
+    public function restoreDefaults() {
         $oDB = Yii::app()->db;
         $oTransaction = $oDB->beginTransaction();
         try {
             $oDB->createCommand()->truncateTable('{{surveymenu}}');
 
-            $headerArray = ['parent_id','survey_id','user_id','ordering','level','title','position','description','active','changed_at','changed_by','created_at','created_by'];
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'Survey menu','side','Main survey menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null,null,null,0,0,'Quick menu','collapsed','Quick menu',1, date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0]));
+            $headerArray = ['parent_id', 'survey_id', 'user_id', 'ordering', 'level', 'title', 'position', 'description', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by'];
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'Survey menu', 'side', 'Main survey menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'Quick menu', 'collapsed', 'Quick menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
             
             $oTransaction->commit();
         } catch (Exception $e) {
@@ -380,28 +380,28 @@ class Surveymenu extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
         //Don't show main menu when not superadmin
-        if(Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin','read'))
+        if (Yii::app()->getConfig('demoMode') || !Permission::model()->hasGlobalPermission('superadmin', 'read'))
         {
-            $criteria->compare('id','<> 1');
-            $criteria->compare('id','<> 2');
+            $criteria->compare('id', '<> 1');
+            $criteria->compare('id', '<> 2');
         }
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('parent_id',$this->parent_id);
-        $criteria->compare('survey_id',$this->survey_id);
-        $criteria->compare('user_id',$this->user_id);
-        $criteria->compare('ordering',$this->ordering);
-        $criteria->compare('level',$this->level);
-        $criteria->compare('title',$this->title,true);
-        $criteria->compare('position',$this->position,true);
-        $criteria->compare('description',$this->description,true);
-        $criteria->compare('changed_at',$this->changed_at,true);
-        $criteria->compare('changed_by',$this->changed_by);
-        $criteria->compare('created_at',$this->created_at,true);
-        $criteria->compare('created_by',$this->created_by);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('parent_id', $this->parent_id);
+        $criteria->compare('survey_id', $this->survey_id);
+        $criteria->compare('user_id', $this->user_id);
+        $criteria->compare('ordering', $this->ordering);
+        $criteria->compare('level', $this->level);
+        $criteria->compare('title', $this->title, true);
+        $criteria->compare('position', $this->position, true);
+        $criteria->compare('description', $this->description, true);
+        $criteria->compare('changed_at', $this->changed_at, true);
+        $criteria->compare('changed_by', $this->changed_by);
+        $criteria->compare('created_at', $this->created_at, true);
+        $criteria->compare('created_by', $this->created_by);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -414,16 +414,16 @@ class Surveymenu extends LSActiveRecord
      * @param string $className active record class name.
      * @return Surveymenu the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model =parent::model($className);
+        $model = parent::model($className);
         return $model;
     }
     
 
-    public function delete(){
-        foreach($this->surveymenuEntries as $oSurveymenuEntry){
+    public function delete() {
+        foreach ($this->surveymenuEntries as $oSurveymenuEntry) {
             $oSurveymenuEntry->delete();
         }
         parent::delete();

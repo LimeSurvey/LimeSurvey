@@ -155,18 +155,18 @@ class ParticipantAttributeName extends LSActiveRecord
     {
         $namesList = $this->participant_attribute_names_lang;
         $names = array();
-        foreach($namesList as $name){
+        foreach ($namesList as $name) {
                 $names[] = $name['attribute_name'];
         }
         $defaultname = $this->defaultname;
-        $returnName = $defaultname." (".join(', ',$names).")";
+        $returnName = $defaultname." (".join(', ', $names).")";
         return $returnName;
     }
 
     /**
      * @return string
      */
-    public function getVisibleSwitch(){
+    public function getVisibleSwitch() {
         $inputHtml = "<input type='checkbox' data-size='small' data-visible='".$this->visible."' data-on-color='primary' data-off-color='warning' data-off-text='".gT('No')."' data-on-text='".gT('Yes')."' class='action_changeAttributeVisibility' "
             . ($this->visible == "TRUE" ? "checked" : "")
             . "/>";
@@ -176,7 +176,7 @@ class ParticipantAttributeName extends LSActiveRecord
     /**
      * @return array
      */
-    public function getColumns(){
+    public function getColumns() {
         $cols = array(
             array(
                 "name" => 'massiveActionCheckbox',
@@ -238,7 +238,7 @@ class ParticipantAttributeName extends LSActiveRecord
 
     function getAllAttributes()
     {
-        $aResult=Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*')
+        $aResult = Yii::app()->db->createCommand()->select('{{participant_attribute_names}}.*')
                                                 ->from('{{participant_attribute_names}}')
                                                 ->order('{{participant_attribute_names}}.attribute_id')
                                                 ->queryAll();
@@ -315,22 +315,22 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     function getParticipantVisibleAttribute($participant_id)
     {
-        $output=array();
+        $output = array();
 
-        if($participant_id != ''){
-            $findCriteria=new CDbCriteria();
+        if ($participant_id != '') {
+            $findCriteria = new CDbCriteria();
             $findCriteria->addCondition('participant_id = :participant_id');
             $findCriteria->params = array(':participant_id'=>$participant_id);
-            $records=ParticipantAttributeName::model()->with('participant_attribute_names_lang', 'participant_attribute')
+            $records = ParticipantAttributeName::model()->with('participant_attribute_names_lang', 'participant_attribute')
                                                         ->findAll($findCriteria);
-            foreach($records as $row) { //Iterate through each attribute
-                $thisname="";
-                $thislang="";
-                foreach($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
-                    if($thisname=="") {$thisname=$names->attribute_name; $thislang=$names->lang;} //Choose the first item by default
-                    if($names->lang == Yii::app()->session['adminlang']) {$thisname=$names->attribute_name; $thislang=$names->lang;} //Override the default with the admin language version if found
+            foreach ($records as $row) { //Iterate through each attribute
+                $thisname = "";
+                $thislang = "";
+                foreach ($row->participant_attribute_names_lang as $names) { //Iterate through each language version of this attribute
+                    if ($thisname == "") {$thisname = $names->attribute_name; $thislang = $names->lang; } //Choose the first item by default
+                    if ($names->lang == Yii::app()->session['adminlang']) {$thisname = $names->attribute_name; $thislang = $names->lang; } //Override the default with the admin language version if found
                 }
-                $output[]=array('participant_id'=>$row->participant_attribute->participant_id,
+                $output[] = array('participant_id'=>$row->participant_attribute->participant_id,
                                 'attribute_id'=>$row->attribute_id,
                                 'attribute_type'=>$row->attribute_type,
                                 'attribute_display'=>$row->visible,
@@ -489,9 +489,9 @@ class ParticipantAttributeName extends LSActiveRecord
                     ':attribute_id'=>$data['attribute_id'])
                 );
 
-        if(count($query) == 0) {
+        if (count($query) == 0) {
             Yii::app()->db->createCommand()
-                        ->insert('{{participant_attribute}}',$data);
+                        ->insert('{{participant_attribute}}', $data);
         } else {
             Yii::app()->db->createCommand()
                 ->update('{{participant_attribute}}',
@@ -588,15 +588,15 @@ class ParticipantAttributeName extends LSActiveRecord
             $insertnames['defaultname'] = $data['defaultname'];
         }
         if (!empty($insertnames)) {
-            $oParticipantAttributeName=ParticipantAttributeName::model()->findByPk($data['attribute_id']);
+            $oParticipantAttributeName = ParticipantAttributeName::model()->findByPk($data['attribute_id']);
             foreach ($insertnames as $sFieldname=>$sValue) {
-                $oParticipantAttributeName->$sFieldname=$sValue;
+                $oParticipantAttributeName->$sFieldname = $sValue;
             }
             $oParticipantAttributeName->save();
         }
         if (!empty($data['attribute_name'])) {
-            $oParticipantAttributeNameLang=ParticipantAttributeNameLang::model()->findByPk(array('attribute_id'=>$data['attribute_id'],'lang'=>Yii::app()->session['adminlang']));
-            $oParticipantAttributeNameLang->attribute_name=$data['attribute_name'];
+            $oParticipantAttributeNameLang = ParticipantAttributeNameLang::model()->findByPk(array('attribute_id'=>$data['attribute_id'], 'lang'=>Yii::app()->session['adminlang']));
+            $oParticipantAttributeNameLang->attribute_name = $data['attribute_name'];
             $oParticipantAttributeNameLang->save();
         }
     }

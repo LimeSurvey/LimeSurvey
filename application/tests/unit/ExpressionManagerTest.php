@@ -104,7 +104,7 @@
             );
             foreach ($functions as $function => $expected)
             {
-                $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions('{' . $function . '}'));
+                $this->assertEquals($expected, $this->em->sProcessStringContainingExpressions('{'.$function.'}'));
             }
         }
 
@@ -678,13 +678,13 @@ NULL~convert_value( -10000, 1, '0,5,10,15,20', '0,50,100,150,200')
 NULL~convert_value( 30, 1, '0,5,10,15,20', '0,50,100,150,200')
 EOD;
 
-        $atests = explode("\n",$tests);
+        $atests = explode("\n", $tests);
         $atests[] = "1\n2\n3~BREAKS";
         $atests[] = "1<br />\n2<br />\n3~nl2br(BREAKS)";
         $atests[] = "hi<br />\nthere<br />\nhow<br />\nare<br />\nyou?~nl2br('hi\\nthere\\nhow\\nare\\nyou?')";
         $atests[] = "hi<br />\nthere,<br />\nuser!~nl2br(implode('\\n','hi','there,','user!'))";
 
-        $LEM =& LimeExpressionManager::singleton();
+        $LEM = & LimeExpressionManager::singleton();
         $em = new ExpressionManager();
         $LEM->setTempVars($vars);
 
@@ -769,50 +769,50 @@ EOD;
         $pre = '';
         $pre .= "<h3>Change some Relevance values to 0 to see how it affects computations</h3>\n";
         $pre .= '<table border="1"><tr><th>#</th><th>JsVarname</th><th>Starting Value</th><th>Relevance</th></tr>';
-        $i=0;
-        $LEMvarNameAttr=array();
-        $LEMalias2varName=array();
+        $i = 0;
+        $LEMvarNameAttr = array();
+        $LEMalias2varName = array();
         foreach ($allJsVarnamesUsed as $jsVarName)
         {
             ++$i;
-            $pre .= "<tr><td>" .  $i . "</td><td>" . $jsVarName;
-            foreach($vars as $k => $v) {
+            $pre .= "<tr><td>".$i."</td><td>".$jsVarName;
+            foreach ($vars as $k => $v) {
                 if ($v['jsName'] == $jsVarName)
                 {
                     $value = $v['code'];
                 }
             }
-            $pre .= "</td><td>" . $value . "</td><td><input type='text' id='relevance" . $i . "' value='1' onchange='recompute()'/>\n";
-            $pre .= "<input type='hidden' id='" . $jsVarName . "' name='" . $jsVarName . "' value='" . $value . "'/>\n";
+            $pre .= "</td><td>".$value."</td><td><input type='text' id='relevance".$i."' value='1' onchange='recompute()'/>\n";
+            $pre .= "<input type='hidden' id='".$jsVarName."' name='".$jsVarName."' value='".$value."'/>\n";
             $pre .= "</td></tr>\n";
-            $LEMalias2varName[] = "'" . substr($jsVarName,5) . "':'" . $jsVarName . "'";
-            $LEMalias2varName[] = "'" . $jsVarName . "':'" . $jsVarName . "'";
-            $attrInfo = "'" . $jsVarName .  "': {'jsName':'" . $jsVarName . "'";
+            $LEMalias2varName[] = "'".substr($jsVarName, 5)."':'".$jsVarName."'";
+            $LEMalias2varName[] = "'".$jsVarName."':'".$jsVarName."'";
+            $attrInfo = "'".$jsVarName."': {'jsName':'".$jsVarName."'";
 
-            $varInfo = $vars[substr($jsVarName,5)];
+            $varInfo = $vars[substr($jsVarName, 5)];
             foreach ($varInfo as $k=>$v) {
                 if ($k == 'code') {
-                    continue;   // will access it from hidden node
+                    continue; // will access it from hidden node
                 }
                 if ($k == 'shown') {
                     $k = 'shown';
-                    $v = htmlspecialchars(preg_replace("/[[:space:]]/",' ',$v),ENT_QUOTES);
+                    $v = htmlspecialchars(preg_replace("/[[:space:]]/", ' ', $v), ENT_QUOTES);
                 }
                 if ($k == 'jsName') {
-                    continue;   // since already set
+                    continue; // since already set
                 }
-                $attrInfo .= ", '" . $k . "':'" . $v . "'";
+                $attrInfo .= ", '".$k."':'".$v."'";
 
             }
-            $attrInfo .= ",'qid':" . $i . "}";
+            $attrInfo .= ",'qid':".$i."}";
             $LEMvarNameAttr[] = $attrInfo;
         }
         $pre .= "</table>\n";
 
         $pre .= "<script type='text/javascript'>\n";
         $pre .= "<!--\n";
-        $pre .= "var LEMalias2varName= {". implode(",\n", $LEMalias2varName) ."};\n";
-        $pre .= "var LEMvarNameAttr= {" . implode(",\n", $LEMvarNameAttr) . "};\n";
+        $pre .= "var LEMalias2varName= {".implode(",\n", $LEMalias2varName)."};\n";
+        $pre .= "var LEMvarNameAttr= {".implode(",\n", $LEMvarNameAttr)."};\n";
         $pre .= "var LEMradix = '.';\n";
         $pre .= "//-->\n</script>\n";
 

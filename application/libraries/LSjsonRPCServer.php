@@ -21,33 +21,33 @@
         }
         
         // reads the input data
-        $request = json_decode(file_get_contents('php://input'),true);
+        $request = json_decode(file_get_contents('php://input'), true);
         // executes the task on local object
         if (is_null($request)) {
             // Can not decode the json, issue error
-            $response = array (
+            $response = array(
                                 'id' => null,
                                 'result' => NULL,
                                 'error' => sprintf('unable to decode malformed json')
                                 );
         } else {
             try {
-                $result = @call_user_func_array(array($object,$request['method']),$request['params']);
-                if ($result!==false) {
-                    $response = array (
+                $result = @call_user_func_array(array($object, $request['method']), $request['params']);
+                if ($result !== false) {
+                    $response = array(
                                         'id' => $request['id'],
                                         'result' => $result,
                                         'error' => NULL
                                         );
                 } else {
-                    $response = array (
+                    $response = array(
                                         'id' => $request['id'],
                                         'result' => NULL,
                                         'error' => 'unknown method or incorrect parameters'
                                         );
                 }
             } catch (Exception $e) {
-                $response = array (
+                $response = array(
                                     'id' => $request['id'],
                                     'result' => NULL,
                                     'error' => $e->getMessage()

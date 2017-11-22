@@ -137,22 +137,22 @@ class Quota extends LSActiveRecord
     /**
      * @return QuotaLanguageSetting
      */
-    public function getMainLanguagesetting(){
-        return $this->languagesettings[ $this->survey->language ];
+    public function getMainLanguagesetting() {
+        return $this->languagesettings[$this->survey->language];
 
     }
 
-    public function getCompleteCount(){
-        if(!tableExists("survey_{$this->sid}")) {
+    public function getCompleteCount() {
+        if (!tableExists("survey_{$this->sid}")) {
             return;
         }
         /* Must control if column name exist (@todo : move this to QuotaMember::model(), even with deactivated survey*/
-        $aExistingColumnName=SurveyDynamic::model($this->sid)->getTableSchema()->getColumnNames();
+        $aExistingColumnName = SurveyDynamic::model($this->sid)->getTableSchema()->getColumnNames();
         if (count($this->quotaMembers) > 0) {
             // Keep a list of fields for easy reference
             $aQuotaColumns = array();
             foreach ($this->quotaMembers as $member) {
-                if(!in_array($member->memberInfo['fieldname'],$aExistingColumnName)) {
+                if (!in_array($member->memberInfo['fieldname'], $aExistingColumnName)) {
                     \Yii::log(
                         sprintf(
                             "Invalid quota member %s",
@@ -183,10 +183,10 @@ class Quota extends LSActiveRecord
         }
     }
 
-    public function getViewArray(){
+    public function getViewArray() {
         $languageSettings = $this->currentLanguageSetting;
         $members = array();
-        foreach($this->quotaMembers as $quotaMember){
+        foreach ($this->quotaMembers as $quotaMember) {
         $members[] = $quotaMember->memberInfo;
         }
         $attributes = $this->attributes;

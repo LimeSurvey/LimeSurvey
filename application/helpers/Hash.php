@@ -50,7 +50,7 @@ class Hash {
         }
         foreach ($parts as $key) {
             if (is_array($data) && isset($data[$key])) {
-                $data =& $data[$key];
+                $data = & $data[$key];
             } else {
                 return null;
             }
@@ -94,7 +94,7 @@ class Hash {
 
         // Simple paths.
         if (!preg_match('/[{\[]/', $path)) {
-            return (array)self::get($data, $path);
+            return (array) self::get($data, $path);
         }
 
         if (strpos($path, '[') === false) {
@@ -119,7 +119,7 @@ class Hash {
             }
 
             foreach ($context[$_key] as $item) {
-                foreach ((array)$item as $k => $v) {
+                foreach ((array) $item as $k => $v) {
                     if (self::_matchToken($k, $token)) {
                         $next[] = $v;
                     }
@@ -249,7 +249,7 @@ class Hash {
  * @return array $data.
  */
     protected static function _simpleOp($op, $data, $path, $values = null) {
-        $_list =& $data;
+        $_list = & $data;
 
         $count = count($path);
         $last = $count - 1;
@@ -265,7 +265,7 @@ class Hash {
                 if (!isset($_list[$key])) {
                     $_list[$key] = array();
                 }
-                $_list =& $_list[$key];
+                $_list = & $_list[$key];
                 if (!is_array($_list)) {
                     $_list = array();
                 }
@@ -277,7 +277,7 @@ class Hash {
                 if (!isset($_list[$key])) {
                     return $data;
                 }
-                $_list =& $_list[$key];
+                $_list = & $_list[$key];
             }
         }
     }
@@ -535,9 +535,9 @@ class Hash {
                 }
                 $data = $element;
                 reset($data);
-                $path .= $key . $separator;
+                $path .= $key.$separator;
             } else {
-                $result[$path . $key] = $element;
+                $result[$path.$key] = $element;
             }
 
             if (empty($data) && !empty($stack)) {
@@ -597,7 +597,7 @@ class Hash {
         $return = current($args);
 
         while (($arg = next($args)) !== false) {
-            foreach ((array)$arg as $key => $val) {
+            foreach ((array) $arg as $key => $val) {
                 if (!empty($return[$key]) && is_array($return[$key]) && is_array($val)) {
                     $return[$key] = self::merge($return[$key], $val);
                 } elseif (is_int($key) && isset($return[$key])) {
@@ -622,7 +622,7 @@ class Hash {
         }
         $values = array_values($data);
         $str = implode('', $values);
-        return (bool)ctype_digit($str);
+        return (bool) ctype_digit($str);
     }
 
 /**
@@ -644,7 +644,7 @@ class Hash {
         while ($elem = array_shift($data)) {
             if (is_array($elem)) {
                 $depth += 1;
-                $data =& $elem;
+                $data = & $elem;
             } else {
                 break;
             }
@@ -664,7 +664,7 @@ class Hash {
         $depth = array();
         if (is_array($data) && reset($data) !== false) {
             foreach ($data as $value) {
-                $depth[] = self::dimensions((array)$value) + 1;
+                $depth[] = self::dimensions((array) $value) + 1;
             }
         }
         return max($depth);
@@ -680,7 +680,7 @@ class Hash {
  * @return array An array of the modified values.
  */
     public static function map(array $data, $path, $function) {
-        $values = (array)self::extract($data, $path);
+        $values = (array) self::extract($data, $path);
         return array_map($function, $values);
     }
 
@@ -693,7 +693,7 @@ class Hash {
  * @return mixed The reduced value.
  */
     public static function reduce(array $data, $path, $function) {
-        $values = (array)self::extract($data, $path);
+        $values = (array) self::extract($data, $path);
         return array_reduce($values, $function);
     }
 
@@ -718,7 +718,7 @@ class Hash {
  * @return mixed The results of the applied method.
  */
     public static function apply(array $data, $path, $function) {
-        $values = (array)self::extract($data, $path);
+        $values = (array) self::extract($data, $path);
         return call_user_func($function, $values);
     }
 
@@ -841,10 +841,10 @@ class Hash {
  */
     public static function diff(array $data, $compare) {
         if (empty($data)) {
-            return (array)$compare;
+            return (array) $compare;
         }
         if (empty($compare)) {
-            return (array)$data;
+            return (array) $data;
         }
         $intersection = array_intersect_key($data, $compare);
         while (($key = key($intersection)) !== null) {
@@ -962,14 +962,14 @@ class Hash {
             $parentId = self::get($result, $parentKeys);
 
             if (isset($idMap[$id][$options['children']])) {
-                $idMap[$id] = array_merge($result, (array)$idMap[$id]);
+                $idMap[$id] = array_merge($result, (array) $idMap[$id]);
             } else {
                 $idMap[$id] = array_merge($result, array($options['children'] => array()));
             }
             if (!$parentId || !in_array($parentId, $ids)) {
-                $return[] =& $idMap[$id];
+                $return[] = & $idMap[$id];
             } else {
-                $idMap[$parentId][$options['children']][] =& $idMap[$id];
+                $idMap[$parentId][$options['children']][] = & $idMap[$id];
             }
         }
 

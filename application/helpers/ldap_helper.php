@@ -105,28 +105,28 @@ function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope) {
  */
 function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
     $ldap_queries = Yii::app()->getConfig('ldap_queries');
-    $totalrescount=0;
-    $userattrs=array();
+    $totalrescount = 0;
+    $userattrs = array();
 
     // First let's lowercase the ldap query values
     prepareLDAPQuery($ldapq);
 
     // Retrieve the ldap user attribute-list to read
-    $userparams = array('firstname_attr','lastname_attr',
-            'email_attr','token_attr', 'language');
+    $userparams = array('firstname_attr', 'lastname_attr',
+            'email_attr', 'token_attr', 'language');
     //			'attr1', 'attr2');
 
-    $aTokenAttr=getAttributeFieldNames($surveyid);
+    $aTokenAttr = getAttributeFieldNames($surveyid);
     foreach ($aTokenAttr as $thisattrfieldname)
     {
-        $attridx=substr($thisattrfieldname,10); // the 'attribute_' prefix is 10 chars long
+        $attridx = substr($thisattrfieldname, 10); // the 'attribute_' prefix is 10 chars long
         $userparams[] = "attr".$attridx;
     }
 
     foreach ($userparams as $id => $attr) {
-        if (array_key_exists($attr,$ldap_queries[$ldapq]) &&
+        if (array_key_exists($attr, $ldap_queries[$ldapq]) &&
         $ldap_queries[$ldapq][$attr] != '') {
-            $userattrs[]=$ldap_queries[$ldapq][$attr];
+            $userattrs[] = $ldap_queries[$ldapq][$attr];
         }
     }
 
@@ -231,17 +231,17 @@ function ldap_doTokenSearch($ds, $ldapq, &$ResArray, $surveyid) {
                     else {
                         // There is no userbase defined
                         // Only apply userfilter to the user's DN
-                        $search_users=ldap_search_withScope($ds,
+                        $search_users = ldap_search_withScope($ds,
                         $user,
                         $userfilter,
                         $userattrs,
                             'base');
-                        $rescount=@ldap_count_entries($ds,$search_users);
+                        $rescount = @ldap_count_entries($ds, $search_users);
 
                         if ($rescount >= 1) {
                             // DN match criteria, add result to the result Array
-                            $userentry=ldap_get_entries($ds, $search_users);
-                            $ResArray[]=$userentry;
+                            $userentry = ldap_get_entries($ds, $search_users);
+                            $ResArray[] = $userentry;
                             $totalrescount++;
                         }
                     } // End of Member is DN and a userbase is NOT defined

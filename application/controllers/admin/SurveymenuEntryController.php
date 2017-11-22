@@ -36,9 +36,9 @@ class SurveymenuEntryController extends Survey_Common_Action
         $this->_renderWrappedTemplate(null, array('surveymenu_entries/index'), $data);
     }
 
-    public function getsurveymenuentryform($menuentryid=null){
+    public function getsurveymenuentryform($menuentryid = null) {
         $menuentryid = Yii::app()->request->getParam('menuentryid', null);
-        if($menuentryid != null)
+        if ($menuentryid != null)
         {
             $model = SurveymenuEntries::model()->findByPk(((int) $menuentryid));
         } else 
@@ -56,19 +56,19 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function create()
     {
-        $model=new SurveymenuEntries;
+        $model = new SurveymenuEntries;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if(isset($_POST['SurveymenuEntries']))
+        if (isset($_POST['SurveymenuEntries']))
         {
-            $model->attributes=$_POST['SurveymenuEntries'];
-            if($model->save())
-                $this->redirect(array('view','id'=>$model->id));
+            $model->attributes = $_POST['SurveymenuEntries'];
+            if ($model->save())
+                $this->redirect(array('view', 'id'=>$model->id));
         }
 
-        $this->render('create',array(
+        $this->render('create', array(
             'model'=>$model,
         ));
     }
@@ -80,7 +80,7 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function update($id)
     {
-        if($id != 0)
+        if ($id != 0)
             $model = $this->loadModel($id);
         else 
             $model = new SurveymenuEntries();
@@ -88,7 +88,7 @@ class SurveymenuEntryController extends Survey_Common_Action
         // $this->performAjaxValidation($model);
 		
         $success = false;
-        if(Yii::app()->request->isPostRequest)
+        if (Yii::app()->request->isPostRequest)
         {
             $aSurveymenuEntry = Yii::app()->request->getPost('SurveymenuEntries', []);
 
@@ -96,7 +96,7 @@ class SurveymenuEntryController extends Survey_Common_Action
             $aSurveymenuEntry['created_at'] = date('Y-m-d H:i:s');
             $aSurveymenuEntry['menu_id'] = (int) $aSurveymenuEntry['menu_id'];
             $model->setAttributes($aSurveymenuEntry);
-            if($model->save()){
+            if ($model->save()) {
                 $model->id = $model->getPrimaryKey();
                 $success = true;
                 SurveymenuEntries::reorderMenu($model->menu_id);
@@ -109,7 +109,7 @@ class SurveymenuEntryController extends Survey_Common_Action
                 'data' => [
                     'success'=> $success,
                     'redirect' => $this->getController()->createUrl('admin/menus/sa/view'),
-                    'debug' => [$model,$aSurveymenuEntry, $_POST],
+                    'debug' => [$model, $aSurveymenuEntry, $_POST],
                     'debugErrors' => $model->getErrors(),
                     'settings' => array(
                         'extrasettings' => false,
@@ -186,11 +186,11 @@ class SurveymenuEntryController extends Survey_Common_Action
     /**
      * Restores the default surveymenu entries
      */
-    public function restore(){
-        if( Yii::app()->request->isPostRequest )
+    public function restore() {
+        if (Yii::app()->request->isPostRequest)
         {
             //Check for permission!
-            if(!Permission::model()->hasGlobalPermission('superadmin','read'))
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read'))
             {
                 return Yii::app()->getController()->renderPartial(
                     '/admin/super/_renderJson',
@@ -232,11 +232,11 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function massDelete()
     {
-        if( Yii::app()->request->isPostRequest )
+        if (Yii::app()->request->isPostRequest)
         {
             $aSurveyMenuEntryIds = json_decode(Yii::app()->request->getPost('sItems'));
             $success = [];
-            foreach($aSurveyMenuEntryIds as $menuEntryid){
+            foreach ($aSurveyMenuEntryIds as $menuEntryid) {
                 $model = $this->loadModel($menuEntryid);
                 $success[$menuEntryid] = $model->delete(); 
             }
@@ -273,7 +273,7 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function delete()
     {
-        if( Yii::app()->request->isPostRequest )
+        if (Yii::app()->request->isPostRequest)
         {
             $menuEntryid = Yii::app()->request->getPost('menuEntryid', 0);
             $success = false;
@@ -312,7 +312,7 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function reorder()
     {
-        if( Yii::app()->request->isPostRequest )
+        if (Yii::app()->request->isPostRequest)
         {
             $model = SurveymenuEntries::model();
             $success = $model->reorder();
@@ -354,9 +354,9 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     public function loadModel($id)
     {
-        $model=SurveymenuEntries::model()->findByPk($id);
-        if($model===null)
-            throw new CHttpException(404,'The requested page does not exist.');
+        $model = SurveymenuEntries::model()->findByPk($id);
+        if ($model === null)
+            throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
     }
 
@@ -366,7 +366,7 @@ class SurveymenuEntryController extends Survey_Common_Action
      */
     protected function performAjaxValidation($model)
     {
-        if(isset($_POST['ajax']) && $_POST['ajax']==='surveymenu-entries-form')
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'surveymenu-entries-form')
         {
             echo CActiveForm::validate($model);
             Yii::app()->end();

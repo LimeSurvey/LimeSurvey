@@ -461,18 +461,18 @@ class surveypermission extends Survey_Common_Action {
         $imageurl = Yii::app()->getConfig('adminimageurl');
         $postuserid = App()->getRequest()->getParam('uid');
         $postusergroupid = App()->getRequest()->getParam('ugid');
-        if($action == "setsurveysecurity")
+        if ($action == "setsurveysecurity")
         {
-            if ( (!Permission::model()->hasGlobalPermission('superadmin','read') && Yii::app()->user->getId()==$postuserid) // User can not change own security (except superadmin)
-                || !in_array($postuserid,getUserList('onlyuidarray')) // User can not set user security if it can not see it
+            if ((!Permission::model()->hasGlobalPermission('superadmin', 'read') && Yii::app()->user->getId() == $postuserid) // User can not change own security (except superadmin)
+                || !in_array($postuserid, getUserList('onlyuidarray')) // User can not set user security if it can not see it
                 )
             {
                 $this->getController()->error('Access denied');
             }
         }
-        elseif( $action == "setusergroupsurveysecurity" )
+        elseif ($action == "setusergroupsurveysecurity")
         {
-            if ( !Permission::model()->hasGlobalPermission('superadmin','read') && !in_array($postusergroupid,getUserGroupList(null, 'simplegidarray')) ) // User can not change own security (except for superadmin ?)
+            if (!Permission::model()->hasGlobalPermission('superadmin', 'read') && !in_array($postusergroupid, getUserGroupList(null, 'simplegidarray'))) // User can not change own security (except for superadmin ?)
             {
                 $this->getController()->error('Access denied');
             }

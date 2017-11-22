@@ -600,7 +600,7 @@ class SurveyDynamic extends LSActiveRecord
     public function search()
     {
 
-        $pageSize = Yii::app()->user->getState('pageSize',Yii::app()->params['defaultPageSize']);
+        $pageSize = Yii::app()->user->getState('pageSize', Yii::app()->params['defaultPageSize']);
         $criteria = new CDbCriteria;
         $sort     = new CSort;
         $sort->defaultOrder = 'id ASC';
@@ -617,30 +617,30 @@ class SurveyDynamic extends LSActiveRecord
         }
 
         // Basic filters
-        $criteria->compare('t.lastpage',empty($this->lastpage) ? null : $this->lastpage, false);
-        $criteria->compare('t.id',empty($this->id) ? null : $this->id, false);
-        $criteria->compare('t.submitdate',$this->submitdate, true);
-        $criteria->compare('t.startlanguage',$this->startlanguage, true);
+        $criteria->compare('t.lastpage', empty($this->lastpage) ? null : $this->lastpage, false);
+        $criteria->compare('t.id', empty($this->id) ? null : $this->id, false);
+        $criteria->compare('t.submitdate', $this->submitdate, true);
+        $criteria->compare('t.startlanguage', $this->startlanguage, true);
 
         // Completed filters
-        if($this->completed_filter == "Y") {
+        if ($this->completed_filter == "Y") {
             $criteria->addCondition('t.submitdate IS NOT NULL');
         }
 
-        if($this->completed_filter == "N") {
+        if ($this->completed_filter == "N") {
             $criteria->addCondition('t.submitdate IS NULL');
         }
 
         // When selection of responses come from statistics
         // TODO: This provide a first step to enable the old jQgrid selector system, and could be use for users and tokens
-        if (Yii::app()->user->getState('sql_'.self::$sid) != null ){
+        if (Yii::app()->user->getState('sql_'.self::$sid) != null) {
             $criteria->condition .= Yii::app()->user->getState('sql_'.self::$sid);
         }
 
         $this->filterColumns($criteria);
 
 
-        $dataProvider=new CActiveDataProvider('SurveyDynamic', array(
+        $dataProvider = new CActiveDataProvider('SurveyDynamic', array(
             'sort'=>$sort,
             'criteria'=>$criteria,
             'pagination'=>array(

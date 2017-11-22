@@ -810,9 +810,9 @@ class quexmlpdf extends pdf {
     {
     $words = explode(' ', $txt);
     $length = 0;
-    foreach($words as $v)
+    foreach ($words as $v)
     {
-        if(strlen($v) > $length)
+        if (strlen($v) > $length)
         $length = strlen($v);
     }
     return $length;
@@ -837,11 +837,11 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-02
      */
-    protected function addBoxGroup($type,$varname,$label = "", $width = 1)
+    protected function addBoxGroup($type, $varname, $label = "", $width = 1)
     {
     $this->boxGroupCP++;
     $this->layout[$this->layoutCP]['boxgroup'][$this->boxGroupCP] =
-        array(  'type' => $type,
+        array('type' => $type,
         'width' => $width,
         'varname' => $varname,
         'sortorder' => $this->boxGroupCP,
@@ -861,7 +861,7 @@ class quexmlpdf extends pdf {
     if (isset($this->layout[$this->layoutCP]['boxgroup'][$this->boxGroupCP]))
     {
         $a = $this->layout[$this->layoutCP]['boxgroup'][$this->boxGroupCP];
-        $this->addBoxGroup($a['type'],$a['varname'],$a['label']);
+        $this->addBoxGroup($a['type'], $a['varname'], $a['label']);
     }
     }
 
@@ -877,11 +877,11 @@ class quexmlpdf extends pdf {
      * @param string $label Optional, defaults to "".
      *
      */
-    protected function addBox($tlx,$tly,$brx,$bry,$value = "",$label = "")
+    protected function addBox($tlx, $tly, $brx, $bry, $value = "", $label = "")
     {
     $this->boxCP++;
     $this->layout[$this->layoutCP]['boxgroup'][$this->boxGroupCP]['box'][] =
-        array(  'tlx' => $this->mm2px($tlx),
+        array('tlx' => $this->mm2px($tlx),
         'tly' => $this->mm2px($tly),
         'brx' => $this->mm2px($brx),
         'bry' => $this->mm2px($bry),
@@ -894,7 +894,7 @@ class quexmlpdf extends pdf {
     $count = count($this->layout[$this->layoutCP]['boxgroup'][$this->boxGroupCP]['box']);
     $width = $this->layout[$this->layoutCP]['boxgroup'][$this->boxGroupCP]['width'];
 
-    switch($type){
+    switch ($type) {
         case 1: //Single choice
       case 2: //Multiple choice
         if (strlen($value) > $width) $width = strlen($value);
@@ -1295,7 +1295,7 @@ class quexmlpdf extends pdf {
      */
     public function getStyle()
     {
-    return strip_tags(str_replace("\t","",$this->style));
+    return strip_tags(str_replace("\t", "", $this->style));
     }
 
     /**
@@ -1309,7 +1309,7 @@ class quexmlpdf extends pdf {
      */
     public function setStyle($style)
     {
-    $this->style = "<style>" . $style . "</style>";
+    $this->style = "<style>".$style."</style>";
     }
 
     /**
@@ -1451,10 +1451,10 @@ class quexmlpdf extends pdf {
     $id->appendChild($value);
     $q->appendChild($id);
 
-    foreach($this->section as $key => $val)
+    foreach ($this->section as $key => $val)
     {
         $s = $doc->createElement('section');
-        $s->setAttribute('id',$key);
+        $s->setAttribute('id', $key);
         foreach ($val as $sk => $sv)
         {
         $tmpe = $doc->createElement($sk);
@@ -1499,10 +1499,10 @@ class quexmlpdf extends pdf {
             }
         }
 
-        foreach($bg['box'] as $b)
+        foreach ($bg['box'] as $b)
         {
             $bE = $doc->createElement('box');
-            foreach($b as $bk => $bv)
+            foreach ($b as $bk => $bv)
             {
             $tmpe = $doc->createElement($bk);
             $tmpv = $doc->createTextNode($bv);
@@ -1531,16 +1531,16 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-11-05
      */
-    protected function setDefaultFont($size = 12,$style = '')
+    protected function setDefaultFont($size = 12, $style = '')
     {
-    $alternatepdffontfile=Yii::app()->getConfig('alternatepdffontfile');
-    if(array_key_exists($this->language,$alternatepdffontfile))
+    $alternatepdffontfile = Yii::app()->getConfig('alternatepdffontfile');
+    if (array_key_exists($this->language, $alternatepdffontfile))
     {
-        $this->SetFont($alternatepdffontfile[$this->language],$style);
+        $this->SetFont($alternatepdffontfile[$this->language], $style);
     }
     else
     {
-        $this->SetFont($this->defaultFont,$style);
+        $this->SetFont($this->defaultFont, $style);
     }
     $this->SetFontSize($size);
     }
@@ -1557,14 +1557,14 @@ class quexmlpdf extends pdf {
     if ($this->embedFonts)
     {
         $this->setFontSubsetting(false); //we want full subsetting
-        $this->AddFont('freesans','');
-        $this->AddFont('freesans','B');
-        $this->AddFont('freesans','I');
-        $this->AddFont('freesans','BI');
-        $this->AddFont('freeserif','');
-        $this->AddFont('freeserif','B');
-        $this->AddFont('freeserif','I');
-        $this->AddFont('freeserif','BI');
+        $this->AddFont('freesans', '');
+        $this->AddFont('freesans', 'B');
+        $this->AddFont('freesans', 'I');
+        $this->AddFont('freesans', 'BI');
+        $this->AddFont('freeserif', '');
+        $this->AddFont('freeserif', 'B');
+        $this->AddFont('freeserif', 'I');
+        $this->AddFont('freeserif', 'BI');
 
         $this->setDefaultFont();
     }
@@ -1594,7 +1594,7 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-20
      */
-    public function Header(){
+    public function Header() {
     }
 
     /**
@@ -1602,7 +1602,7 @@ class quexmlpdf extends pdf {
      *
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      */
-    public function Footer(){
+    public function Footer() {
     }
 
     /**
@@ -1653,7 +1653,7 @@ class quexmlpdf extends pdf {
     $border = 0;
     if ($this->columnCP > 0)
         $border = $this->columnBorder;
-    return $this->getMainPageX() + ($this->columnCP  * ($this->getColumnWidth() + $border)) + $border;
+    return $this->getMainPageX() + ($this->columnCP * ($this->getColumnWidth() + $border)) + $border;
     }
 
     /**
@@ -1695,7 +1695,7 @@ class quexmlpdf extends pdf {
      * @param bool $filled Whether or not to have the box pre-filled
      *
      */
-    protected function drawHorizontalResponseBox($x,$y,$position = 'only',$downarrow = false, $rightarrow = false, $smallwidth = false, $filled =false)
+    protected function drawHorizontalResponseBox($x, $y, $position = 'only', $downarrow = false, $rightarrow = false, $smallwidth = false, $filled = false)
     {
     $this->SetDrawColor($this->lineColour[0]);
     $this->SetLineWidth($this->singleResponseBoxBorder);
@@ -1718,22 +1718,22 @@ class quexmlpdf extends pdf {
 
     if ($position == 'last' || $position == 'middle')
     {
-        $this->Line($x, $boxmid, $x + $linelength,$boxmid);
+        $this->Line($x, $boxmid, $x + $linelength, $boxmid);
     }
     if ($position == 'first' || $position == 'middle')
     {
-        $this->Line($x + $linelength + $this->singleResponseBoxWidth, $boxmid, $x + ($linelength * 2) + $this->singleResponseBoxWidth,$boxmid);
+        $this->Line($x + $linelength + $this->singleResponseBoxWidth, $boxmid, $x + ($linelength * 2) + $this->singleResponseBoxWidth, $boxmid);
     }
 
     $this->SetLineStyle(array('dash' => '0'));
 
-    $this->Rect($x + $linelength,$y,$this->singleResponseBoxWidth,$this->singleResponseBoxHeight,'DF',array(),$this->backgroundColourEmpty);
+    $this->Rect($x + $linelength, $y, $this->singleResponseBoxWidth, $this->singleResponseBoxHeight, 'DF', array(), $this->backgroundColourEmpty);
 
     if ($downarrow)
     {
         $boxmiddle = ($x + ($this->singleResponseBoxWidth / 2.0)) + $linelength;
         $this->SetFillColor($this->lineColour[0]);
-        $this->Polygon(array($x + $linelength, $y + $this->singleResponseBoxHeight, $boxmiddle, $y + $this->singleResponseBoxHeight + $this->arrowHeight, $x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight),'DF',array(),$this->lineColour);
+        $this->Polygon(array($x + $linelength, $y + $this->singleResponseBoxHeight, $boxmiddle, $y + $this->singleResponseBoxHeight + $this->arrowHeight, $x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight), 'DF', array(), $this->lineColour);
         $this->setBackground('empty');
     }
 
@@ -1746,7 +1746,7 @@ class quexmlpdf extends pdf {
     }
 
     $this->setBackground('question');
-    return array($x + $linelength,$y,$x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
+    return array($x + $linelength, $y, $x + $linelength + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
     }
 
     /**
@@ -1760,7 +1760,7 @@ class quexmlpdf extends pdf {
      * @param bool $filled Whether or not to have the box pre-filled
      *
      */
-    protected function drawVerticalResponseBox($x,$y,$position = 'only',$downarrow = false, $rightarrow = false, $filled = false)
+    protected function drawVerticalResponseBox($x, $y, $position = 'only', $downarrow = false, $rightarrow = false, $filled = false)
     {
     $this->SetDrawColor($this->lineColour[0]);
     $this->SetLineWidth($this->singleResponseBoxBorder);
@@ -1783,7 +1783,7 @@ class quexmlpdf extends pdf {
     if ($downarrow)
     {
         $this->SetFillColor($this->lineColour[0]);
-        $this->Polygon(array($x, $y + $this->singleResponseBoxHeight, $boxmid, $y + $this->singleResponseBoxHeight + $this->arrowHeight, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight),'DF',array(),$this->lineColour);
+        $this->Polygon(array($x, $y + $this->singleResponseBoxHeight, $boxmid, $y + $this->singleResponseBoxHeight + $this->arrowHeight, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight), 'DF', array(), $this->lineColour);
         $this->setBackground('empty');
     }
 
@@ -1792,27 +1792,27 @@ class quexmlpdf extends pdf {
         //Draw skipto
         $boxymid = ($y + ($this->singleResponseBoxHeight / 2.0));
         $this->SetFillColor($this->lineColour[0]);
-        $this->Polygon(array($x + $this->singleResponseBoxWidth, $y, $x + $this->singleResponseBoxWidth + $this->arrowHeight, $boxymid, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight),'DF',array(),$this->lineColour);
+        $this->Polygon(array($x + $this->singleResponseBoxWidth, $y, $x + $this->singleResponseBoxWidth + $this->arrowHeight, $boxymid, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight), 'DF', array(), $this->lineColour);
         $this->setBackground('empty');
         //Now draw the text
 
         //Start at $x + singleResponseboxWidth + arrowHeight, $y - siongleresponseboxlinelength and go to $skipcolumnwidth wide and singleresponseareHeight high
         $this->setBackground('question');
-        $text =  $this->skipToText . $rightarrow;
+        $text = $this->skipToText.$rightarrow;
         $ypos = $this->GetY();
 
-        $this->setDefaultFont($this->skipToTextFontSize,'B');
+        $this->setDefaultFont($this->skipToTextFontSize, 'B');
 
-        $this->MultiCell($this->skipColumnWidth,$this->singleResponseBoxHeight,$text,0,'L',false,0,(($this->getColumnWidth() + $this->getColumnX()) - $this->skipColumnWidth),$y,true,0,false,true,$this->singleResponseBoxHeight,'M',true);
+        $this->MultiCell($this->skipColumnWidth, $this->singleResponseBoxHeight, $text, 0, 'L', false, 0, (($this->getColumnWidth() + $this->getColumnX()) - $this->skipColumnWidth), $y, true, 0, false, true, $this->singleResponseBoxHeight, 'M', true);
 
         //Reset to non bold as causing problems with TCPDF HTML CSS conversion
-        $this->setDefaultFont($this->skipToTextFontSize,'');
+        $this->setDefaultFont($this->skipToTextFontSize, '');
 
         //$this->writeHTMLCell($this->skipColumnWidth, 0, $this->getPageWidth() - $this->getMainPageX() - $this->skipColumnWidth ,$y, $this->style . $html,0,0,true,true,'C',true);
-        $this->SetY($ypos,false);
+        $this->SetY($ypos, false);
     }
 
-    $this->Rect($x,$y,$this->singleResponseBoxWidth,$this->singleResponseBoxHeight,'DF',array(),$this->backgroundColourEmpty);
+    $this->Rect($x, $y, $this->singleResponseBoxWidth, $this->singleResponseBoxHeight, 'DF', array(), $this->backgroundColourEmpty);
 
     if ($filled)
     {
@@ -1823,7 +1823,7 @@ class quexmlpdf extends pdf {
     }
 
     $this->setBackground('question');
-    return array($x,$y,$x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
+    return array($x, $y, $x + $this->singleResponseBoxWidth, $y + $this->singleResponseBoxHeight); //return the posistion for banding
     }
 
 
@@ -1841,7 +1841,7 @@ class quexmlpdf extends pdf {
     if ($number < 1) $number = 1;
 
     if ($number > 26)
-        return chr((($number - 1) / 26) + 64) . chr((($number - 1) % 26) + 65);
+        return chr((($number - 1) / 26) + 64).chr((($number - 1) % 26) + 65);
     else
         return chr($number + 64);
     }
@@ -1889,22 +1889,22 @@ class quexmlpdf extends pdf {
         if (!isset($q['infoafter']))
             $q['infoafter'] = "";
 
-        $q['infoafter'] .= $qitmp->text . "<br/><br/>";
+        $q['infoafter'] .= $qitmp->text."<br/><br/>";
         }
         else if ($qitmp->position == 'before')
         {
         if (!isset($q['infobefore']))
             $q['infobefore'] = "";
 
-        $q['infobefore'] .= $qitmp->text . "<br/><br/>";
+        $q['infobefore'] .= $qitmp->text."<br/><br/>";
         }
     }
 
-    foreach($xml->section as $s)
+    foreach ($xml->section as $s)
     {
         $stmp = array();
         $sl = $this->numberToLetter($scount);
-        $stmp['title'] = gT("Section") . " " . $sl;
+        $stmp['title'] = gT("Section")." ".$sl;
         $stmp['info'] = "";
         $stmp['text'] = "";
         $bfc = 0;
@@ -1952,7 +1952,7 @@ class quexmlpdf extends pdf {
         foreach ($qu->text as $ttmp)
         {
             //Add a new line if we aren't at the end
-            if ($ttmp != end($qu->text)){ $qtmp['text'] .= "<br/>"; }
+            if ($ttmp != end($qu->text)) { $qtmp['text'] .= "<br/>"; }
 
             $qtmp['text'] .= $ttmp;
         }
@@ -2064,7 +2064,7 @@ class quexmlpdf extends pdf {
                 {
                 $cat['skipto'] = current($c->skipTo);
                 //save a skip
-                $this->skipToRegistry[current($c->skipTo) . $this->questionTitleSuffix] = $qtmp['title'];
+                $this->skipToRegistry[current($c->skipTo).$this->questionTitleSuffix] = $qtmp['title'];
                 }
                 if (isset($c->contingentQuestion))
                 {
@@ -2149,17 +2149,17 @@ class quexmlpdf extends pdf {
         $this->drawInfo($questionnaire['infobefore']);
     }
 
-    foreach($questionnaire['sections'] as $sk => $sv)
+    foreach ($questionnaire['sections'] as $sk => $sv)
     {
         //link the section title with the first question for pagination purposes
         if (isset($sv['questions']))
         {
         $questions = count($sv['questions']);
         }
-        else $questions=0;
+        else $questions = 0;
 
         $this->startTransaction();
-        $this->addSection($sv['text'],$sv['title'],$sv['info']);
+        $this->addSection($sv['text'], $sv['title'], $sv['info']);
         if ($questions != 0) $this->createQuestion($sv['questions'][0]);
         if ($this->pageBreakOccured)
         {
@@ -2177,7 +2177,7 @@ class quexmlpdf extends pdf {
         //start from the second question as first is linked to the section (if there is a question in this section)
         if ($questions != 0)
         {
-        foreach(array_slice($sv['questions'], 1) as $qk => $qv)
+        foreach (array_slice($sv['questions'], 1) as $qk => $qv)
         {
             $this->startTransaction();
             //add question here
@@ -2335,9 +2335,9 @@ class quexmlpdf extends pdf {
     protected function drawInfo($info)
     {
     $this->setBackground('question');
-    $this->writeHTMLCell($this->getColumnWidth(), $this->questionnaireInfoMargin, $this->getColumnX(), $this->GetY() - $this->questionBorderBottom, "<div></div>",0,1,true,true);
-    $html = "<table><tr><td width=\"" . $this->getColumnWidth() . "mm\" class=\"questionnaireInfo\">{$info}</td><td></td></tr></table>";
-    $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+    $this->writeHTMLCell($this->getColumnWidth(), $this->questionnaireInfoMargin, $this->getColumnX(), $this->GetY() - $this->questionBorderBottom, "<div></div>", 0, 1, true, true);
+    $html = "<table><tr><td width=\"".$this->getColumnWidth()."mm\" class=\"questionnaireInfo\">{$info}</td><td></td></tr></table>";
+    $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
     }
 
     /**
@@ -2366,15 +2366,15 @@ class quexmlpdf extends pdf {
     {
         //Leave a border at the top of the Help Before text
         if ($this->helpBeforeBorderTop > 0) //question border
-        $this->SetY($this->GetY() + $this->helpBeforeBorderTop,false); //new line
+        $this->SetY($this->GetY() + $this->helpBeforeBorderTop, false); //new line
 
         $this->setBackground('question');
-        $html = "<table><tr><td width=\"" . $this->getColumnWidth() . "mm\" class=\"questionHelpBefore\">{$question['helptextbefore']}</td><td></td></tr></table>";
-        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+        $html = "<table><tr><td width=\"".$this->getColumnWidth()."mm\" class=\"questionHelpBefore\">{$question['helptextbefore']}</td><td></td></tr></table>";
+        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
 
         //Leave a border at the bottom of the Help Before text
         if ($this->helpBeforeBorderBottom > 0) //question border
-        $this->SetY($this->GetY() + $this->helpBeforeBorderBottom,false); //new line
+        $this->SetY($this->GetY() + $this->helpBeforeBorderBottom, false); //new line
     }
 
     //Question header
@@ -2442,12 +2442,12 @@ class quexmlpdf extends pdf {
             $categories = $response['categories'];
 
             if (isset($response['rotate']))
-                $this->drawSingleChoiceVertical($categories,$subquestions,$text,$response['split']);
+                $this->drawSingleChoiceVertical($categories, $subquestions, $text, $response['split']);
             else
             {
                 if (isset($response['separate']))
                 {
-                $this->drawSingleChoiceVerticalSeparate($categories,$subquestions,$text,$help,$response['split']);
+                $this->drawSingleChoiceVerticalSeparate($categories, $subquestions, $text, $help, $response['split']);
                 }
                 else
                 {
@@ -2455,7 +2455,7 @@ class quexmlpdf extends pdf {
                 $vn = false;
                 if ($iCountResponseScales > 1)
                     $vn = $varname;
-                $this->drawSingleChoiceHorizontal($categories,$subquestions,$text,$vn,$response['split']);
+                $this->drawSingleChoiceHorizontal($categories, $subquestions, $text, $vn, $response['split']);
                 }
             }
 
@@ -2467,12 +2467,12 @@ class quexmlpdf extends pdf {
           case 'text':
             if ($type == 'longtext') { $bgtype = 6; }
             if (isset($response['rotate']))
-                $this->drawMatrixTextHorizontal($subquestions,$response['width'],$text,$bgtype,$response['text']);
+                $this->drawMatrixTextHorizontal($subquestions, $response['width'], $text, $bgtype, $response['text']);
             else
-                $this->drawMatrixTextVertical($subquestions,$response['width'],$text,$bgtype,$response['text'],$response['split']);
+                $this->drawMatrixTextVertical($subquestions, $response['width'], $text, $bgtype, $response['text'], $response['split']);
             break;
             case 'vas':
-            $this->drawMatrixVas($subquestions,$text,$response['labelleft'],$response['labelright'],$response['split']);
+            $this->drawMatrixVas($subquestions, $text, $response['labelleft'], $response['labelright'], $response['split']);
             break;
             case 'i25':
             $this->drawMatrixBarcode($subquestions, 'I25');
@@ -2492,7 +2492,7 @@ class quexmlpdf extends pdf {
             $defaultvalue = $r['defaultvalue'];
 
         if (isset($response['text']) && !empty($response['text']))
-            $rtext = $text .  $this->subQuestionTextSeparator .  $response['text'];
+            $rtext = $text.$this->subQuestionTextSeparator.$response['text'];
         else
             $rtext = $text;
 
@@ -2502,33 +2502,33 @@ class quexmlpdf extends pdf {
         {
             case 'fixed':
             if (isset($response['rotate']))
-                $this->drawSingleChoiceHorizontal($response['categories'],array(array('text' => '', 'varname' => $varname, 'defaultvalue' => $defaultvalue)),$rtext,false,$response['split']);
+                $this->drawSingleChoiceHorizontal($response['categories'], array(array('text' => '', 'varname' => $varname, 'defaultvalue' => $defaultvalue)), $rtext, false, $response['split']);
             else
-                $this->drawSingleChoiceVertical($response['categories'],array(array('text' => '', 'varname' => $varname, 'defaultvalue' => $defaultvalue)),$rtext,$response['split']);
+                $this->drawSingleChoiceVertical($response['categories'], array(array('text' => '', 'varname' => $varname, 'defaultvalue' => $defaultvalue)), $rtext, $response['split']);
             break;
             case 'longtext':
-            $this->addBoxGroup(6,$varname,$rtext);
-            $this->drawLongText($response['width'],$defaultvalue);
+            $this->addBoxGroup(6, $varname, $rtext);
+            $this->drawLongText($response['width'], $defaultvalue);
             break;
             case 'number':
             $bgtype = 4;
             case 'currency':
           case 'text':
-            $this->addBoxGroup($bgtype,$varname,$rtext,$response['width']);
-            $this->drawText($response['text'],$response['width'],$defaultvalue);
+            $this->addBoxGroup($bgtype, $varname, $rtext, $response['width']);
+            $this->drawText($response['text'], $response['width'], $defaultvalue);
             //Insert a gap here
-            $this->Rect($this->getColumnX(),$this->GetY(),$this->getColumnWidth(),$this->subQuestionLineSpacing,'F',array(),$this->backgroundColourQuestion);
-            $this->SetY($this->GetY() + $this->subQuestionLineSpacing,false);
+            $this->Rect($this->getColumnX(), $this->GetY(), $this->getColumnWidth(), $this->subQuestionLineSpacing, 'F', array(), $this->backgroundColourQuestion);
+            $this->SetY($this->GetY() + $this->subQuestionLineSpacing, false);
             break;
             case 'vas':
-            $this->addBoxGroup(1,$varname,$rtext,strlen($this->vasIncrements));
-            $this->drawVas("",$response['labelleft'],$response['labelright']);
+            $this->addBoxGroup(1, $varname, $rtext, strlen($this->vasIncrements));
+            $this->drawVas("", $response['labelleft'], $response['labelright']);
             break;
             case 'i25':
-            $this->drawMatrixBarcode(array(array('text' => $rtext, 'varname' => $varname, 'defaultvalue' => $defaultvalue)),'I25');
+            $this->drawMatrixBarcode(array(array('text' => $rtext, 'varname' => $varname, 'defaultvalue' => $defaultvalue)), 'I25');
             break;
             case 'codabar':
-            $this->drawMatrixBarcode(array(array('text' => $rtext, 'varname' => $varname, 'defaultvalue' => $defaultvalue)),'CODABAR');
+            $this->drawMatrixBarcode(array(array('text' => $rtext, 'varname' => $varname, 'defaultvalue' => $defaultvalue)), 'CODABAR');
             break;
 
         }
@@ -2560,14 +2560,14 @@ class quexmlpdf extends pdf {
     if (isset($question['helptextafter']))
     {
         $this->setBackground('question');
-        $html = "<table><tr><td width=\"" . $this->getColumnWidth() . "mm\" class=\"questionHelpAfter\">{$question['helptextafter']}</td><td></td></tr></table>";
-        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+        $html = "<table><tr><td width=\"".$this->getColumnWidth()."mm\" class=\"questionHelpAfter\">{$question['helptextafter']}</td><td></td></tr></table>";
+        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
 
     }
 
     //Leave a border at the bottom of the question
     if ($this->questionBorderBottom > 0) //question border
-        $this->SetY($this->GetY() + $this->questionBorderBottom,false); //new line
+        $this->SetY($this->GetY() + $this->questionBorderBottom, false); //new line
     }
 
 
@@ -2585,7 +2585,7 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-02
      */
-    protected function drawMatrixTextVertical($subquestions,$width,$parenttext = false,$bgtype = 3, $responsegrouplabel = false, $split = 'notset')
+    protected function drawMatrixTextVertical($subquestions, $width, $parenttext = false, $bgtype = 3, $responsegrouplabel = false, $split = 'notset')
     {
     if ($split === 'notset')
         $split = $this->allowSplittingMatrixText;
@@ -2596,15 +2596,15 @@ class quexmlpdf extends pdf {
     if ($responsegrouplabel)
     {
         $this->setBackground('question');
-        $html = "<table><tr><td width=\"{$this->questionTitleWidth}mm\"></td><td width=\"" . ($this->getColumnWidth() -  $this->skipColumnWidth - $this->questionTitleWidth) . "mm\" class=\"matrixResponseGroupLabel\">$responsegrouplabel:</td><td></td></tr></table>";
-        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+        $html = "<table><tr><td width=\"{$this->questionTitleWidth}mm\"></td><td width=\"".($this->getColumnWidth() - $this->skipColumnWidth - $this->questionTitleWidth)."mm\" class=\"matrixResponseGroupLabel\">$responsegrouplabel:</td><td></td></tr></table>";
+        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
     }
 
     //don't proceed if breaking the page already
     if ($this->pageBreakOccured)
         return;
 
-    for($i = 0; $i < $c; $i++)
+    for ($i = 0; $i < $c; $i++)
     {
         if ($split && $i == 1)
         {
@@ -2618,25 +2618,25 @@ class quexmlpdf extends pdf {
         $s = $subquestions[$i];
 
         if ($parenttext == false)
-        $this->addBoxGroup($bgtype,$s['varname'],$s['text'],$width);
+        $this->addBoxGroup($bgtype, $s['varname'], $s['text'], $width);
         else
-        $this->addBoxGroup($bgtype,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text'],$width);
+        $this->addBoxGroup($bgtype, $s['varname'], $parenttext.$this->subQuestionTextSeparator.$s['text'], $width);
 
         $defaultvalue = false;
         if (isset($s['defaultvalue']))
         $defaultvalue = $s['defaultvalue'];
 
         if ($bgtype != 6) {
-            $this->drawText($s['text'],$width,$defaultvalue);
+            $this->drawText($s['text'], $width, $defaultvalue);
         } else {
-        $this->drawLongText($width,$defaultvalue,$s['text']);
+        $this->drawLongText($width, $defaultvalue, $s['text']);
     }
 
         $currentY = $this->GetY();
 
         //Insert a gap here
-        $this->Rect($this->getColumnX(),$this->GetY(),$this->getColumnWidth(),$this->subQuestionLineSpacing,'F',array(),$this->backgroundColourQuestion);
-        $this->SetY($currentY + $this->subQuestionLineSpacing,false);
+        $this->Rect($this->getColumnX(), $this->GetY(), $this->getColumnWidth(), $this->subQuestionLineSpacing, 'F', array(), $this->backgroundColourQuestion);
+        $this->SetY($currentY + $this->subQuestionLineSpacing, false);
 
         //only allow a page break if defined and we have more than one item already on this page
         if ($split && $this->pageBreakOccured && $i > 0)
@@ -2687,27 +2687,27 @@ class quexmlpdf extends pdf {
     {
         $s = $subquestions[$i];
 
-        $this->addBoxGroup(5,$s['varname'],$s['text'],strlen($s['defaultvalue']));
+        $this->addBoxGroup(5, $s['varname'], $s['text'], strlen($s['defaultvalue']));
 
         $x = $this->getColumnX();
         $y = $this->GetY();
 
         $html = "<div></div>";
         $this->setBackground('question');
-        $this->writeHTMLCell($this->getColumnWidth(), $this->barcodeResponseHeight, $this->getColumnX(), $this->GetY() , $this->style . $html,0,1,true,false);
+        $this->writeHTMLCell($this->getColumnWidth(), $this->barcodeResponseHeight, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, false);
 
         //draw the barcode
         $barcodeStyle = array('align' => 'R', 'border' => false, 'padding' => '0', 'bgcolor' => $this->backgroundColourQuestion, 'text' => false, 'stretch' => false);
-        $this->write1DBarcode($s['defaultvalue'], $type, $x, $y, $this->getColumnWidth() - $this->skipColumnWidth,$this->barcodeResponseHeight,'', $barcodeStyle, 'B');
+        $this->write1DBarcode($s['defaultvalue'], $type, $x, $y, $this->getColumnWidth() - $this->skipColumnWidth, $this->barcodeResponseHeight, '', $barcodeStyle, 'B');
 
         //pointer should now be at the bottom right - but make the box the width of the whole column for better reading
-        $this->addBox($x,$y,$this->GetX(),$this->getColumnWidth() + $this->getColumnX());
+        $this->addBox($x, $y, $this->GetX(), $this->getColumnWidth() + $this->getColumnX());
 
         $currentY = $this->GetY();
 
         //Insert a gap here
-        $this->Rect($this->getColumnX(),$this->GetY(),$this->getColumnWidth(),$this->subQuestionLineSpacing,'F',array(),$this->backgroundColourQuestion);
-        $this->SetY($currentY + $this->subQuestionLineSpacing,false);
+        $this->Rect($this->getColumnX(), $this->GetY(), $this->getColumnWidth(), $this->subQuestionLineSpacing, 'F', array(), $this->backgroundColourQuestion);
+        $this->SetY($currentY + $this->subQuestionLineSpacing, false);
 
     }
 
@@ -2725,7 +2725,7 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-20
      */
-    protected function drawMatrixVas($subquestions,$parenttext = false,$labelleft,$labelright,$split = 'notset')
+    protected function drawMatrixVas($subquestions, $parenttext = false, $labelleft, $labelright, $split = 'notset')
     {
     if ($split === 'notset')
         $split = $this->allowSplittingVas;
@@ -2750,18 +2750,18 @@ class quexmlpdf extends pdf {
         $s = $subquestions[$i];
 
         if ($parenttext == false)
-        $this->addBoxGroup(1,$s['varname'],$s['text'],$width);
+        $this->addBoxGroup(1, $s['varname'], $s['text'], $width);
         else
-        $this->addBoxGroup(1,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text'],$width);
+        $this->addBoxGroup(1, $s['varname'], $parenttext.$this->subQuestionTextSeparator.$s['text'], $width);
 
 
-        $this->drawVas($s['text'],$labelleft,$labelright,$heading);
+        $this->drawVas($s['text'], $labelleft, $labelright, $heading);
 
         $currentY = $this->GetY();
 
         //Insert a gap here
-        $this->Rect($this->getColumnX(),$this->GetY(),$this->getColumnWidth(),$this->subQuestionLineSpacing,'F',array(),$this->backgroundColourQuestion);
-        $this->SetY($currentY + $this->subQuestionLineSpacing,false);
+        $this->Rect($this->getColumnX(), $this->GetY(), $this->getColumnWidth(), $this->subQuestionLineSpacing, 'F', array(), $this->backgroundColourQuestion);
+        $this->SetY($currentY + $this->subQuestionLineSpacing, false);
 
         $heading = false;
 
@@ -2810,7 +2810,7 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-02
      */
-    protected function drawLongText($width,$defaultvalue = false,$text =false)
+    protected function drawLongText($width, $defaultvalue = false, $text = false)
     {
     //Calculate long text box width as the width of the available column minus the skip column and question title area
     $rwidth = $this->getColumnWidth() - $this->skipColumnWidth - $this->questionTitleWidth;
@@ -2818,32 +2818,32 @@ class quexmlpdf extends pdf {
     if ($text !== false && !empty($text))
     {
         $this->setBackground('question');
-        $html = "<table><tr><td width=\"{$this->questionTitleWidth}mm\"></td><td width=\"" . ($this->getColumnWidth() -  $this->skipColumnWidth - $this->questionTitleWidth) . "mm\" class=\"responseAboveText\">$text</td><td></td></tr></table>";
-        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+        $html = "<table><tr><td width=\"{$this->questionTitleWidth}mm\"></td><td width=\"".($this->getColumnWidth() - $this->skipColumnWidth - $this->questionTitleWidth)."mm\" class=\"responseAboveText\">$text</td><td></td></tr></table>";
+        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
     }
 
     $currentY = $this->GetY();
     $height = $width * $this->longTextResponseHeightMultiplier;
     $html = "<div></div>";
     $this->setBackground('question');
-    $this->writeHTMLCell($this->getColumnWidth(), $height, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
-    $this->SetY($currentY,false);
+    $this->writeHTMLCell($this->getColumnWidth(), $height, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
+    $this->SetY($currentY, false);
     $this->setBackground('empty');
     $border = array('LTRB' => array('width' => $this->textResponseBorder, 'dash' => 0));
     //Align to skip column on right
-    $this->SetX((($this->getColumnWidth() + $this->getColumnX()) - $this->skipColumnWidth - $rwidth),false);
+    $this->SetX((($this->getColumnWidth() + $this->getColumnX()) - $this->skipColumnWidth - $rwidth), false);
     //Add to page layout
-    $this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $rwidth, $this->GetY() + $height);
+    $this->addBox($this->GetX(), $this->GetY(), $this->GetX() + $rwidth, $this->GetY() + $height);
     $this->SetDrawColor($this->lineColour[0]);
 
     $text = "";
     if ($defaultvalue !== false)
         $text = $defaultvalue;
 
-    $this->MultiCell($rwidth,$height,$text,$border,'L',true,1,$this->GetX(),$currentY,true,0,false,true,$height,'T',true);
+    $this->MultiCell($rwidth, $height, $text, $border, 'L', true, 1, $this->GetX(), $currentY, true, 0, false, true, $height, 'T', true);
     
     $currentY = $currentY + $height;
-    $this->SetY($currentY,false);
+    $this->SetY($currentY, false);
     }
 
 
@@ -2858,7 +2858,7 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-20
      */
-    protected function drawVas($text, $labelleft,$labelright,$heading = true)
+    protected function drawVas($text, $labelleft, $labelright, $heading = true)
     {
     $textwidth = $this->getColumnWidth() - $this->skipColumnWidth - ($this->vasLength + ($this->vasLineWidth * 2.0)) - 2;
     $this->setBackground('question');
@@ -2874,7 +2874,7 @@ class quexmlpdf extends pdf {
         $html = "<table><tr><td width=\"{$slwidth}mm\"></td><td width=\"{$lwidth}mm\" class=\"vasLabel\">$labelleft</td><td width=\"{$gapwidth}mm\"></td><td width=\"{$lwidth}mm\" class=\"vasLabel\">$labelright</td></tr></table>";
 
 
-        $this->writeHTMLCell($this->getColumnWidth(), 0, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,false);
+        $this->writeHTMLCell($this->getColumnWidth(), 0, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, false);
     }
 
     $currentY = $this->GetY();
@@ -2898,28 +2898,28 @@ class quexmlpdf extends pdf {
     //Draw the VAS left vert line
     $ly = (($this->vasAreaHeight - $this->vasHeight) / 2.0) + $currentY;
     $lx = $textwidth + $this->getColumnX();
-    $this->Line($lx,$ly,$lx,$ly + $this->vasHeight);
+    $this->Line($lx, $ly, $lx, $ly + $this->vasHeight);
 
     //Right vert line
     $lx = $textwidth + $this->getColumnX() + $this->vasLength + $this->vasLineWidth;
-    $this->Line($lx,$ly,$lx,$ly + $this->vasHeight);
+    $this->Line($lx, $ly, $lx, $ly + $this->vasHeight);
 
     //Line itself
     $ly = ($this->vasAreaHeight / 2.0) + $currentY;
     $lx = $textwidth + $this->getColumnX() + ($this->vasLineWidth / 2.0);
-    $this->Line($lx,$ly,$lx + $this->vasLength,$ly);
+    $this->Line($lx, $ly, $lx + $this->vasLength, $ly);
 
     //Add to layout system
     $bw = ($this->vasLength / $this->vasIncrements);
     $ly = (($this->vasAreaHeight - $this->vasHeight) / 2.0) + $currentY;
     for ($i = 0; $i < $this->vasIncrements; $i++)
     {
-        $this->addBox($lx,$ly,$lx + $bw,$ly + $this->vasHeight, $i + 1, $i + 1);
+        $this->addBox($lx, $ly, $lx + $bw, $ly + $this->vasHeight, $i + 1, $i + 1);
         $lx += $bw;
     }
 
     //Go back to the right Y position
-    $this->SetY($ncurrentY,false);
+    $this->SetY($ncurrentY, false);
     }
 
     /**
@@ -2929,7 +2929,7 @@ class quexmlpdf extends pdf {
      * @param int $width The number of boxes to draw
      * @param bool|string $defaultvalue The default text to include or false if none
      */
-    protected function drawText($text,$width,$defaultvalue = false)
+    protected function drawText($text, $width, $defaultvalue = false)
     {
     $this->SetDrawColor($this->lineColour[0]);
 
@@ -2944,8 +2944,8 @@ class quexmlpdf extends pdf {
     if ($width > $labelTextResponsesSameLine && !empty($text))
     {
         $this->setBackground('question');
-        $html = "<table><tr><td width=\"{$this->questionTitleWidth}mm\"></td><td width=\"" . ($this->getColumnWidth() -  $this->skipColumnWidth - $this->questionTitleWidth) . "mm\" class=\"responseAboveText\">$text</td><td></td></tr></table>";
-        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+        $html = "<table><tr><td width=\"{$this->questionTitleWidth}mm\"></td><td width=\"".($this->getColumnWidth() - $this->skipColumnWidth - $this->questionTitleWidth)."mm\" class=\"responseAboveText\">$text</td><td></td></tr></table>";
+        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
     }
 
     $currentY = $this->GetY();
@@ -2955,7 +2955,7 @@ class quexmlpdf extends pdf {
     for ($i = 0; $i < $lines; $i++)
     {
         if ($lines == 1) $cells = $width; //one line only
-        else if (($i + 1 == $lines)) $cells = ($width - ($textResponsesPerLine * $i));  //last line
+        else if (($i + 1 == $lines)) $cells = ($width - ($textResponsesPerLine * $i)); //last line
         else $cells = $textResponsesPerLine; //middle line
 
 
@@ -2963,19 +2963,19 @@ class quexmlpdf extends pdf {
         if ($i >= 1)
         $this->addBoxGroupCopyPrevious();
 
-        $textwidth = ($this->getColumnWidth() - $this->skipColumnWidth) - (($this->textResponseWidth + $this->textResponseBorder ) * $cells);
+        $textwidth = ($this->getColumnWidth() - $this->skipColumnWidth) - (($this->textResponseWidth + $this->textResponseBorder) * $cells);
 
         //print "textwidth: $textwidth cells: $cells mainpagex: " . $this->getMainPageX() . "<br/>";
         //First draw a background of height $this->responseLabelHeight
         $html = "<div></div>";
         $this->setBackground('question');
-        $this->writeHTMLCell($this->getColumnWidth(), $this->textResponseHeight, $this->getColumnX(), $this->GetY() , $this->style . $html,0,1,true,false);
+        $this->writeHTMLCell($this->getColumnWidth(), $this->textResponseHeight, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, false);
 
         if ($lines == 1 && $cells <= $labelTextResponsesSameLine && !empty($text))
         {
         $this->setDefaultFont($this->responseTextFontSize);
 
-        $this->MultiCell($textwidth,$this->textResponseHeight,$text,0,'R',false,1,$this->getColumnX(),$currentY,true,0,false,true,$this->textResponseHeight,'M',true);
+        $this->MultiCell($textwidth, $this->textResponseHeight, $text, 0, 'R', false, 1, $this->getColumnX(), $currentY, true, 0, false, true, $this->textResponseHeight, 'M', true);
 
 
         //$html = "<table><tr><td width=\"{$textwidth}mm\" class=\"responseText\">$text</td><td></td></tr></table>";
@@ -2984,30 +2984,30 @@ class quexmlpdf extends pdf {
 
         $ncurrentY = $this->GetY();
 
-        $this->SetY($currentY,false);
-        $this->SetX($textwidth + $this->getColumnX() + 2,false); //set the X position to the first cell
+        $this->SetY($currentY, false);
+        $this->SetX($textwidth + $this->getColumnX() + 2, false); //set the X position to the first cell
 
         $string = false;
         if ($defaultvalue !== false)
-        $string = substr($defaultvalue,$startstring,$cells);
+        $string = substr($defaultvalue, $startstring, $cells);
 
-        $this->drawCells($cells,$string);
+        $this->drawCells($cells, $string);
 
         $startstring += $cells;
 
         $currentY = $ncurrentY;
 
         //New line
-        $this->SetY($currentY,false); //new line
+        $this->SetY($currentY, false); //new line
 
 
         if (!(($i + 1) == $lines) && $this->textResponseLineSpacing > 0) //if there should be a gap between text responses and not the last
         {
-        $this->SetX($this->getColumnX(),false);
+        $this->SetX($this->getColumnX(), false);
         $this->setBackground('question');
-        $this->Cell($this->getColumnWidth(),$this->textResponseLineSpacing,'','',0,'',true,'',0,false,'T','C');
+        $this->Cell($this->getColumnWidth(), $this->textResponseLineSpacing, '', '', 0, '', true, '', 0, false, 'T', 'C');
         $currentY += $this->textResponseLineSpacing;
-        $this->SetY($currentY,false); //new line
+        $this->SetY($currentY, false); //new line
         }
 
     }
@@ -3040,24 +3040,24 @@ class quexmlpdf extends pdf {
         $border = array('TR' => array('width' => $this->textResponseBorder, 'dash' => 0), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
 
         //add a border gap
-        $this->SetX($this->GetX() + ($this->textResponseBorder),false);
+        $this->SetX($this->GetX() + ($this->textResponseBorder), false);
         }
         else //middle
         {
         $border = array('T' => array('width' => $this->textResponseBorder, 'dash' => 0), 'R' => array('width' => $this->textResponseBorder, 'dash' => 1), 'B' => array('width' => ($this->textResponseBorder * 2), 'dash' => 0));
         //add a border gap
-        $this->SetX($this->GetX() + ($this->textResponseBorder),false);
+        $this->SetX($this->GetX() + ($this->textResponseBorder), false);
         }
 
         //Add the box to the layout scheme
-        $this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $this->textResponseWidth,$this->GetY() + $this->textResponseHeight);
+        $this->addBox($this->GetX(), $this->GetY(), $this->GetX() + $this->textResponseWidth, $this->GetY() + $this->textResponseHeight);
 
         $text = '';
         if (isset($string[$j]))
         $text = $string[$j];
 
         //Draw the box
-        $this->Cell($this->textResponseWidth,$this->textResponseHeight,$text,$border,0,'',true,'',0,false,'T','C');
+        $this->Cell($this->textResponseWidth, $this->textResponseHeight, $text, $border, 0, '', true, '', 0, false, 'T', 'C');
 
     }
 
@@ -3077,7 +3077,7 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-08
      */
-    protected function drawMatrixTextHorizontal($subquestions,$width,$parenttext = false,$bgtype = 3, $responsegrouplabel = false)
+    protected function drawMatrixTextHorizontal($subquestions, $width, $parenttext = false, $bgtype = 3, $responsegrouplabel = false)
     {
     $total = count($subquestions);
     $currentY = $this->GetY();
@@ -3092,52 +3092,52 @@ class quexmlpdf extends pdf {
         $html .= "<td class=\"responseLabel\" width=\"{$rwidth}mm\">{$r['text']}</td>";
     }
     $html .= "<td></td></tr></table>";
-    $this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseAreaHeight, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+    $this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseAreaHeight, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
     $currentY = $this->GetY();
 
     //label "vertical axis"
     $html = "<table><tr><td width=\"{$textwidth}mm\" class=\"matrixResponseGroupLabel\">$responsegrouplabel</td><td></td></tr></table>";
-    $this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseAreaHeight, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+    $this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseAreaHeight, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
 
     $ncurrentY = $this->GetY();
 
-    $this->SetY($currentY,false);
+    $this->SetY($currentY, false);
 
     //Set X position
-    $this->SetX($this->getColumnX() + $textwidth,false);
+    $this->SetX($this->getColumnX() + $textwidth, false);
 
 
     foreach ($subquestions as $s)
     {
         //Add box group to current layout
         if ($parenttext == false)
-        $this->addBoxGroup($bgtype,$s['varname'],$s['text']);
+        $this->addBoxGroup($bgtype, $s['varname'], $s['text']);
         else
-        $this->addBoxGroup($bgtype,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text']);
+        $this->addBoxGroup($bgtype, $s['varname'], $parenttext.$this->subQuestionTextSeparator.$s['text']);
 
         if ($bgtype != 6) {
             $string = false;
             if (isset($s['defaultvalue']))
-            $string = substr($s['defaultvalue'],0,$width);
+            $string = substr($s['defaultvalue'], 0, $width);
 	
             //Draw the cells
-            $this->drawCells($width,$string);
+            $this->drawCells($width, $string);
         } else {
             $this->setBackground('empty');
             $border = array('LTRB' => array('width' => $this->textResponseBorder, 'dash' => 0));
             //Add to page layout
-            $this->addBox($this->GetX(),$this->GetY(),$this->GetX() + $rwidth, $this->GetY() + $height);
+            $this->addBox($this->GetX(), $this->GetY(), $this->GetX() + $rwidth, $this->GetY() + $height);
             $this->SetDrawColor($this->lineColour[0]);
-            $this->MultiCell($rwidth,$this->singleResponseAreaHeight,$s['defaultvalue'],$border,'L',true,1,$this->GetX(),$currentY,true,0,false,true,$height,'T',true);
+            $this->MultiCell($rwidth, $this->singleResponseAreaHeight, $s['defaultvalue'], $border, 'L', true, 1, $this->GetX(), $currentY, true, 0, false, true, $height, 'T', true);
         }
 
         //Move X for a gap
-        $this->SetX($this->GetX() + $this->textResponseLineSpacing,false);
-        $this->SetY($currentY,false);
+        $this->SetX($this->GetX() + $this->textResponseLineSpacing, false);
+        $this->SetY($currentY, false);
     }
 
     //Move cursor back to the right spot
-    $this->SetY($ncurrentY,false);
+    $this->SetY($ncurrentY, false);
     }
 
 
@@ -3150,7 +3150,7 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2012-06-05
      */
-    protected function drawSingleChoiceHorizontalHead($categories, $responsegrouplabel=false)
+    protected function drawSingleChoiceHorizontalHead($categories, $responsegrouplabel = false)
     {
     $total = count($categories);
     $currentY = $this->GetY();
@@ -3189,7 +3189,7 @@ class quexmlpdf extends pdf {
         if ($this->wordLength($r['text']) > $this->responseLabelSmallWordLength)
         $this->setDefaultFont($this->responseLabelFontSizeSmall);
 
-        $this->MultiCell($rwidth,$this->responseLabelHeight,$r['text'],0,'C',false,0,$x,$y,true,0,false,true,$this->responseLabelHeight,'B',true);
+        $this->MultiCell($rwidth, $this->responseLabelHeight, $r['text'], 0, 'C', false, 0, $x, $y, true, 0, false, true, $this->responseLabelHeight, 'B', true);
 
         //reset font
         if ($this->wordLength($r['text']) > $this->responseLabelSmallWordLength)
@@ -3211,7 +3211,7 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-08
      */
-    protected function drawSingleChoiceHorizontal($categories, $subquestions = array(array('text' => '')),$parenttext = false, $responsegrouplabel=false, $split = "notset")
+    protected function drawSingleChoiceHorizontal($categories, $subquestions = array(array('text' => '')), $parenttext = false, $responsegrouplabel = false, $split = "notset")
     {
     if ($split === "notset")
         $split = $this->allowSplittingSingleChoiceHorizontal;
@@ -3249,20 +3249,20 @@ class quexmlpdf extends pdf {
 
         //Add box group to current layout
         if ($parenttext == false)
-        $this->addBoxGroup(1,$s['varname'],$s['text']);
+        $this->addBoxGroup(1, $s['varname'], $s['text']);
         else
-        $this->addBoxGroup(1,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text']);
+        $this->addBoxGroup(1, $s['varname'], $parenttext.$this->subQuestionTextSeparator.$s['text']);
 
         //Draw background
         $html = "<div></div>";
         $this->setBackground('question');
-        $this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseHorizontalHeight, $this->getColumnX(), $currentY, $this->style . $html,0,1,true,true);
+        $this->writeHTMLCell($this->getColumnWidth(), $this->singleResponseHorizontalHeight, $this->getColumnX(), $currentY, $this->style.$html, 0, 1, true, true);
         $this->setDefaultFont($this->responseTextFontSize);
 
         $newlineheight = $this->singleResponseHorizontalHeight;
         $heightadjust = 0;
 
-        $testcells = $this->getNumLines($s['text'],$textwidth);
+        $testcells = $this->getNumLines($s['text'], $textwidth);
 
         if ($testcells > $this->singleResponseHorizontalMaxLines)
         {
@@ -3272,14 +3272,14 @@ class quexmlpdf extends pdf {
         $newlineheight = $newlineheight + $heightadjust;
 
         $this->setBackground('question');
-        $this->writeHTMLCell($this->getColumnWidth(), $newlineheight, $this->getColumnX(), $currentY, $this->style . $html,0,1,true,false);
+        $this->writeHTMLCell($this->getColumnWidth(), $newlineheight, $this->getColumnX(), $currentY, $this->style.$html, 0, 1, true, false);
         $this->setDefaultFont($this->responseTextFontSize);
 
-        $this->MultiCell($textwidth,$newlineheight,$s['text'],0,'R',false,0,$this->getColumnX(),$currentY,true,0,false,true,$newlineheight,'M',false);
+        $this->MultiCell($textwidth, $newlineheight, $s['text'], 0, 'R', false, 0, $this->getColumnX(), $currentY, true, 0, false, true, $newlineheight, 'M', false);
         }
         else
         {
-        $this->MultiCell($textwidth,$this->singleResponseHorizontalHeight,$s['text'],0,'R',false,0,$this->getColumnX(),$currentY,true,0,false,true,$this->singleResponseHorizontalHeight,'M',false);
+        $this->MultiCell($textwidth, $this->singleResponseHorizontalHeight, $s['text'], 0, 'R', false, 0, $this->getColumnX(), $currentY, true, 0, false, true, $this->singleResponseHorizontalHeight, 'M', false);
         }
 
 
@@ -3313,7 +3313,7 @@ class quexmlpdf extends pdf {
         else
         $currentY = $currentY + $newlineheight;
 
-        $this->SetY($currentY,false);
+        $this->SetY($currentY, false);
 
         if ($other)
         $this->drawOther($s['other']);
@@ -3357,16 +3357,16 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2013-07-30
      */
-    protected function drawSingleChoiceVerticalSeparate($categories,$subquestions,$parenttext,$help,$split='notset')
+    protected function drawSingleChoiceVerticalSeparate($categories, $subquestions, $parenttext, $help, $split = 'notset')
     {
     for ($sc = 0; $sc < count($subquestions); $sc++)
     {
         $s = $subquestions[$sc];
 
-        $this->drawQuestionHead("",$this->numberToLetter($sc + 1) . ". " . $s['text'],$help);
+        $this->drawQuestionHead("", $this->numberToLetter($sc + 1).". ".$s['text'], $help);
         //Don't send it twice
         unset($s['text']);
-        $this->drawSingleChoiceVertical($categories,array(array($s)),$this->subQuestionTextSeparator . $s['text']);
+        $this->drawSingleChoiceVertical($categories, array(array($s)), $this->subQuestionTextSeparator.$s['text']);
     }
     }
 
@@ -3408,7 +3408,7 @@ class quexmlpdf extends pdf {
         if ($this->wordLength($r['text']) > $this->responseLabelSmallWordLength)
         $this->setDefaultFont($this->responseLabelFontSizeSmall);
 
-        $this->MultiCell($rwidth,$this->responseLabelHeight,$r['text'],0,'C',false,0,$x,$y,true,0,false,true,$this->responseLabelHeight,'B',true);
+        $this->MultiCell($rwidth, $this->responseLabelHeight, $r['text'], 0, 'C', false, 0, $x, $y, true, 0, false, true, $this->responseLabelHeight, 'B', true);
 
         if ($this->wordLength($r['text']) > $this->responseLabelSmallWordLength)
         $this->setDefaultFont($this->responseLabelFontSize);
@@ -3420,9 +3420,9 @@ class quexmlpdf extends pdf {
     }
 
     if ($isempty)
-        $this->SetY($currentY,false);
+        $this->SetY($currentY, false);
     else
-        $this->SetY($currentY+$this->responseLabelHeight);
+        $this->SetY($currentY + $this->responseLabelHeight);
 
     }
 
@@ -3437,7 +3437,7 @@ class quexmlpdf extends pdf {
      * @author Adam Zammit <adam.zammit@acspri.org.au>
      * @since  2010-09-02
      */
-    protected function drawSingleChoiceVertical($categories, $subquestions = array(array('text' => '')),$parenttext = false,$split = 'notset')
+    protected function drawSingleChoiceVertical($categories, $subquestions = array(array('text' => '')), $parenttext = false, $split = 'notset')
     {
     //draw subquestions if more than one category (otherwise probably a multiple choice question)
     if (count($categories) > 1)
@@ -3486,11 +3486,11 @@ class quexmlpdf extends pdf {
         //Draw background
         $html = "<div></div>";
         $this->setBackground('question');
-        $this->writeHTMLCell($this->getColumnWidth(), $bheight, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+        $this->writeHTMLCell($this->getColumnWidth(), $bheight, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
         $this->setDefaultFont($this->responseTextFontSize);
 
         //draw text
-        $this->MultiCell($textwidth,$this->singleResponseAreaHeight,$r['text'],0,'R',false,0,$this->getColumnX(),$currentY,true,0,false,true,$this->singleResponseAreaHeight,'M',true);
+        $this->MultiCell($textwidth, $this->singleResponseAreaHeight, $r['text'], 0, 'R', false, 0, $this->getColumnX(), $currentY, true, 0, false, true, $this->singleResponseAreaHeight, 'M', true);
 
         $skipto = false;
         $other = false;
@@ -3506,9 +3506,9 @@ class quexmlpdf extends pdf {
         if ($i == 0) // only need to do this once
         {
             if ($parenttext == false)
-            $this->addBoxGroup(1,$s['varname'],$s['text']);
+            $this->addBoxGroup(1, $s['varname'], $s['text']);
             else
-            $this->addBoxGroup(1,$s['varname'],$parenttext . $this->subQuestionTextSeparator . $s['text']);
+            $this->addBoxGroup(1, $s['varname'], $parenttext.$this->subQuestionTextSeparator.$s['text']);
 
             //save the box group for this subquestion
             $boxcp[$j] = $this->boxGroupCP;
@@ -3523,13 +3523,13 @@ class quexmlpdf extends pdf {
         if (isset($s['defaultvalue']) && $s['defaultvalue'] !== false && $s['defaultvalue'] == $r['value'])
             $bfilled = true;
 
-        $x = $this->getColumnX() + $textwidth + ($rwidth * $j) + ((($rwidth - $this->singleResponseBoxWidth) / 2.0 ));
+        $x = $this->getColumnX() + $textwidth + ($rwidth * $j) + ((($rwidth - $this->singleResponseBoxWidth) / 2.0));
 
         //Draw the box over the top
-        $position = $this->drawVerticalResponseBox($x,$currentY, $num, $other, $skipto, $bfilled);
+        $position = $this->drawVerticalResponseBox($x, $currentY, $num, $other, $skipto, $bfilled);
 
         //Add box to the current layout
-        $this->addBox($position[0],$position[1],$position[2],$position[3],$r['value'],$r['text']);
+        $this->addBox($position[0], $position[1], $position[2], $position[3], $r['value'], $r['text']);
         }
 
         if (($this->GetY() - $currentY) > $bheight)
@@ -3537,7 +3537,7 @@ class quexmlpdf extends pdf {
         else
         $currentY = $currentY + $bheight;
 
-        $this->SetY($currentY,false);
+        $this->SetY($currentY, false);
 
         if ($other !== false)
         {
@@ -3576,9 +3576,9 @@ class quexmlpdf extends pdf {
         foreach ($subquestions as $sbg)
         {
             if ($parenttext == false)
-            $this->addBoxGroup(1,$sbg['varname'],$sbg['text']);
+            $this->addBoxGroup(1, $sbg['varname'], $sbg['text']);
             else
-            $this->addBoxGroup(1,$sbg['varname'],$parenttext . $this->subQuestionTextSeparator . $sbg['text']);
+            $this->addBoxGroup(1, $sbg['varname'], $parenttext.$this->subQuestionTextSeparator.$sbg['text']);
             //save the box group for this subquestion
             $boxcp[$sbgc] = $this->boxGroupCP;
             $sbgc++;
@@ -3612,20 +3612,20 @@ class quexmlpdf extends pdf {
     if ($other['format'] == 'longtext')
         $btid = 6;
 
-    $this->addBoxGroup($btid,$other['varname'],$other['text'],$other['width']);
+    $this->addBoxGroup($btid, $other['varname'], $other['text'], $other['width']);
 
     $defaultvalue = false;
     if (isset($other['defaultvalue']) && $other['defaultvalue'] !== false)
         $defaultvalue = $other['defaultvalue'];
 
     if ($btid != 6)
-        $this->drawText($other['text'],$other['width'],$defaultvalue);
+        $this->drawText($other['text'], $other['width'], $defaultvalue);
     else
-        $this->drawLongText($other['width'],$defaultvalue,$other['text']);
+        $this->drawLongText($other['width'], $defaultvalue, $other['text']);
 
     //Insert a gap here
-    $this->Rect($this->getColumnX(),$this->GetY(),$this->getColumnWidth(),$this->subQuestionLineSpacing,'F',array(),$this->backgroundColourQuestion);
-    $this->SetY($this->GetY() + $this->subQuestionLineSpacing,false);
+    $this->Rect($this->getColumnX(), $this->GetY(), $this->getColumnWidth(), $this->subQuestionLineSpacing, 'F', array(), $this->backgroundColourQuestion);
+    $this->SetY($this->GetY() + $this->subQuestionLineSpacing, false);
     }
 
     /**
@@ -3636,7 +3636,7 @@ class quexmlpdf extends pdf {
      * @param string|bool $help The question help text or false if none (can be HTML)
      * @param string|bool $specifier The question specifier text or false if none (can be HTML)
      */
-    protected function drawQuestionHead($title,$text,$help = false,$specifier = false)
+    protected function drawQuestionHead($title, $text, $help = false, $specifier = false)
     {
     $this->setBackground('question');
     //Cell for question number (title) and text including a white border at the bottom
@@ -3647,22 +3647,22 @@ class quexmlpdf extends pdf {
     if (isset($this->skipToRegistry[$title]))
         $class = "questionTitleSkipTo";
 
-    $html = "<table><tr><td class=\"$class\" width=\"" . $this->questionTitleWidth . "mm\">$title</td><td class=\"questionText\" width=\"" . ($this->getColumnWidth() - $this->questionTextRightMargin - $this->questionTitleWidth) . "mm\">$text</td><td></td></tr>";
+    $html = "<table><tr><td class=\"$class\" width=\"".$this->questionTitleWidth."mm\">$title</td><td class=\"questionText\" width=\"".($this->getColumnWidth() - $this->questionTextRightMargin - $this->questionTitleWidth)."mm\">$text</td><td></td></tr>";
 
     if ($specifier !== false)
     {
-        $html .= "<tr><td></td><td></td><td></td></tr><tr><td class=\"$class\" width=\"" . $this->questionTitleWidth . "mm\">&nbsp;</td><td class=\"questionSpecifier\" width=\"" . ($this->getColumnWidth() - $this->questionTextRightMargin - $this->questionTitleWidth) . "mm\">$specifier</td><td></td></tr>";
+        $html .= "<tr><td></td><td></td><td></td></tr><tr><td class=\"$class\" width=\"".$this->questionTitleWidth."mm\">&nbsp;</td><td class=\"questionSpecifier\" width=\"".($this->getColumnWidth() - $this->questionTextRightMargin - $this->questionTitleWidth)."mm\">$specifier</td><td></td></tr>";
     }
 
     $html .= "</table>";
 
 
-    $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+    $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
 
     if ($help != false)
     {
-        $html = "<table><tr><td width=\"" . ($this->getColumnWidth() -  $this->skipColumnWidth) . "mm\" class=\"questionHelp\">$help</td><td></td></tr></table>";
-        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style . $html,0,1,true,true);
+        $html = "<table><tr><td width=\"".($this->getColumnWidth() - $this->skipColumnWidth)."mm\" class=\"questionHelp\">$help</td><td></td></tr></table>";
+        $this->writeHTMLCell($this->getColumnWidth(), 1, $this->getColumnX(), $this->GetY(), $this->style.$html, 0, 1, true, true);
 
     }
     }
@@ -3673,7 +3673,7 @@ class quexmlpdf extends pdf {
      * @param string $desc The description of this section
      * @param string $info Information for this section
      */
-    protected function addSection($desc = 'queXMLPDF Section',$title = false,$info = false)
+    protected function addSection($desc = 'queXMLPDF Section', $title = false, $info = false)
     {
     $this->sectionCP++;
 
@@ -3714,7 +3714,7 @@ class quexmlpdf extends pdf {
     while ($this->columnCP < $this->columns)
     {
         $this->fillPageBackground();
-        $this->SetXY($this->getColumnX(),($this->cornerBorder + $this->cornerWidth));
+        $this->SetXY($this->getColumnX(), ($this->cornerBorder + $this->cornerWidth));
         $this->columnCP++;
     }
     }
@@ -3730,7 +3730,7 @@ class quexmlpdf extends pdf {
     $height = $this->getPageHeight() - $this->cornerBorder - $this->GetY() + $this->questionBorderBottom;
     $html = "<div></div>";
     $this->setBackground('question');
-    $this->writeHTMLCell($this->getColumnWidth(), $height, $this->getColumnX(), $this->GetY() - $this->questionBorderBottom, $this->style . $html,0,1,true,true);
+    $this->writeHTMLCell($this->getColumnWidth(), $height, $this->getColumnX(), $this->GetY() - $this->questionBorderBottom, $this->style.$html, 0, 1, true, true);
     }
 
     /**
@@ -3750,7 +3750,7 @@ class quexmlpdf extends pdf {
         //Set Auto page break to false
         $this->SetAutoPageBreak(false);
 
-        $this->SetMargins(0,0,0);
+        $this->SetMargins(0, 0, 0);
         $this->SetHeaderMargin(0);
         $this->SetFooterMargin(0);
 
@@ -3770,20 +3770,20 @@ class quexmlpdf extends pdf {
         $lineStyle = array('width' => $this->cornerWidth, 'cap' => 'butt', 'join' => 'miter', 'dash' => 0, 'color' => array(0, 0, 0));
 
         //Top left
-        $this->Line($cb,$cb,$cb + $cl,$cb,$lineStyle);
-        $this->Line($cb,$cb,$cb,$cb + $cl,$lineStyle);
+        $this->Line($cb, $cb, $cb + $cl, $cb, $lineStyle);
+        $this->Line($cb, $cb, $cb, $cb + $cl, $lineStyle);
 
         //Top right
-        $this->Line($width - $cb,$cb,$width - $cb - $cl,$cb,$lineStyle);
-        $this->Line($width - $cb,$cb,$width - $cb,$cb + $cl,$lineStyle);
+        $this->Line($width - $cb, $cb, $width - $cb - $cl, $cb, $lineStyle);
+        $this->Line($width - $cb, $cb, $width - $cb, $cb + $cl, $lineStyle);
 
         //Bottom left
-        $this->Line($cb,$height - $cb,$cb + $cl,$height - $cb,$lineStyle);
-        $this->Line($cb,$height - $cb,$cb,$height - ($cb + $cl),$lineStyle);
+        $this->Line($cb, $height - $cb, $cb + $cl, $height - $cb, $lineStyle);
+        $this->Line($cb, $height - $cb, $cb, $height - ($cb + $cl), $lineStyle);
 
         //Bottom right
-        $this->Line($width - $cb,$height - $cb,$width - $cb - $cl,$height - $cb,$lineStyle);
-        $this->Line($width - $cb,$height - $cb,$width - $cb,$height - ($cb + $cl),$lineStyle);
+        $this->Line($width - $cb, $height - $cb, $width - $cb - $cl, $height - $cb, $lineStyle);
+        $this->Line($width - $cb, $height - $cb, $width - $cb, $height - ($cb + $cl), $lineStyle);
 
         $calc = $cl;
             } else {
@@ -3805,16 +3805,16 @@ class quexmlpdf extends pdf {
                 $calc = -$cw;
             }
             
-        $barcodeValue = substr(str_pad($this->questionnaireId,$this->idLength,"0",STR_PAD_LEFT),0,$this->idLength) . substr(str_pad($this->getPage(),$this->pageLength,"0",STR_PAD_LEFT),0,$this->pageLength);
+        $barcodeValue = substr(str_pad($this->questionnaireId, $this->idLength, "0", STR_PAD_LEFT), 0, $this->idLength).substr(str_pad($this->getPage(), $this->pageLength, "0", STR_PAD_LEFT), 0, $this->pageLength);
 
         //Calc X position of barcode from page width
         $barcodeX = $width - ($this->barcodeMarginX + $this->barcodeW);
 
-        $this->write1DBarcode($barcodeValue, $this->barcodeType, $barcodeX, $this->barcodeY, $this->barcodeW, $this->barcodeH,'', $barcodeStyle, 'N');
+        $this->write1DBarcode($barcodeValue, $this->barcodeType, $barcodeX, $this->barcodeY, $this->barcodeW, $this->barcodeH, '', $barcodeStyle, 'N');
 
         //Add this page to the layout system
         $b = $this->cornerBorder + ($calc / 2.0); //temp calc for middle of line
-        $this->layout[$barcodeValue] = array(  'id' => $barcodeValue,
+        $this->layout[$barcodeValue] = array('id' => $barcodeValue,
                 'tlx' => $this->mm2px($b),
                 'tly' => $this->mm2px($b),
                 'trx' => $this->mm2px($width - $b),
@@ -3836,9 +3836,9 @@ class quexmlpdf extends pdf {
     }
     else // move to a new column
     {
-        $this->SetXY($this->getColumnX(),($this->cornerBorder + $this->cornerWidth));
+        $this->SetXY($this->getColumnX(), ($this->cornerBorder + $this->cornerWidth));
     }
-    $this->SetAutoPageBreak(true,$this->getMainPageX());
+    $this->SetAutoPageBreak(true, $this->getMainPageX());
 
         //after a new page was begun....page should not have already ended
         $this->pageBreakOccured = false;

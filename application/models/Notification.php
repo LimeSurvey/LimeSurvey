@@ -173,17 +173,17 @@ class Notification extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
-        $criteria->compare('id',$this->id);
-        $criteria->compare('entity',$this->entity,true);
-        $criteria->compare('entity_id',$this->entity_id);
-        $criteria->compare('message',$this->message,true);
-        $criteria->compare('importance',$this->importance);
-        $criteria->compare('created',$this->created,true);
-        $criteria->compare('first_read',$this->first_read);
-        $criteria->compare('status',$this->status,true);
-        $criteria->compare('title',$this->title,true);
+        $criteria->compare('id', $this->id);
+        $criteria->compare('entity', $this->entity, true);
+        $criteria->compare('entity_id', $this->entity_id);
+        $criteria->compare('message', $this->message, true);
+        $criteria->compare('importance', $this->importance);
+        $criteria->compare('created', $this->created, true);
+        $criteria->compare('first_read', $this->first_read);
+        $criteria->compare('status', $this->status, true);
+        $criteria->compare('title', $this->title, true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -255,10 +255,10 @@ class Notification extends LSActiveRecord
      * @inheritdoc
      * @return Notification the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model =parent::model($className);
+        $model = parent::model($className);
         return $model;
     }
 

@@ -999,7 +999,7 @@ class export extends Survey_Common_Action {
      * @param boolean $bSendToBrowser If TRUE (default) then the ZIP file is sent to the browser
      * @return string Full path of the ZIP filename if $bSendToBrowser is set to TRUE, otherwise no return value
      */
-    private function _exportarchive($iSurveyID, $bSendToBrowser=TRUE)
+    private function _exportarchive($iSurveyID, $bSendToBrowser = TRUE)
     {
         $survey = Survey::model()->findByPk($iSurveyID);
 

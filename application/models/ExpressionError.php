@@ -56,7 +56,7 @@ class ExpressionError extends LSActiveRecord
      * @param bool|mixed $condition
      * @return mixed
      */
-    public function getAllRecords($condition=FALSE)
+    public function getAllRecords($condition = FALSE)
     {
         if ($condition != FALSE) {
             $this->db->where($condition);

@@ -283,40 +283,40 @@ class LSYii_ClientScript extends CClientScript {
      */
     public function registerPackageScriptOnPosition($name, $position)
     {
-        if(isset($this->coreScripts[$name])){
+        if (isset($this->coreScripts[$name])) {
             $this->coreScripts[$name]['position'] = $position;
             return $this;
         }
 
-        if(isset($this->packages[$name]))
-            $package=$this->packages[$name];
+        if (isset($this->packages[$name]))
+            $package = $this->packages[$name];
         else
         {
-            if($this->corePackages===null)
-                $this->corePackages=require(YII_PATH.'/web/js/packages.php');
-            if(isset($this->corePackages[$name]))
-                $package=$this->corePackages[$name];
+            if ($this->corePackages === null)
+                $this->corePackages = require(YII_PATH.'/web/js/packages.php');
+            if (isset($this->corePackages[$name]))
+                $package = $this->corePackages[$name];
         }
         
-        if(isset($package))
+        if (isset($package))
         {
             $package['position'] = $position;
 
-            if(!empty($package['depends']))
+            if (!empty($package['depends']))
             {
-                foreach($package['depends'] as $p)
+                foreach ($package['depends'] as $p)
                     $this->registerPackageScriptOnPosition($p, $position);
             }
             
-            $this->coreScripts[$name]=$package;
-            $this->hasScripts=true;
-            $params=func_get_args();
-            $this->recordCachingAction('clientScript','registerPackageScriptOnPosition',$params);
+            $this->coreScripts[$name] = $package;
+            $this->hasScripts = true;
+            $params = func_get_args();
+            $this->recordCachingAction('clientScript', 'registerPackageScriptOnPosition', $params);
         }
-        elseif(YII_DEBUG)
+        elseif (YII_DEBUG)
             throw new CException('There is no LSYii_ClientScript package: '.$name);
         else
-            Yii::log('There is no LSYii_ClientScript package: '.$name,CLogger::LEVEL_WARNING,'system.web.LSYii_ClientScript');
+            Yii::log('There is no LSYii_ClientScript package: '.$name, CLogger::LEVEL_WARNING, 'system.web.LSYii_ClientScript');
 
         return $this;
     }

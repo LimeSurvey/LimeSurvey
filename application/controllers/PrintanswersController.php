@@ -37,7 +37,7 @@
          * @param bool $printableexport
          * @return
          */
-        function actionView($surveyid,$printableexport=FALSE)
+        function actionView($surveyid, $printableexport = FALSE)
         {
             Yii::app()->loadHelper("frontend");
             Yii::import('application.libraries.admin.pdf');
