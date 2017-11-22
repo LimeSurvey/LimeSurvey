@@ -76,8 +76,7 @@ class PluginEvent
         if (!Hash::check($this->_parameters, $key))
         {
             return $default;
-        }
-        else
+        } else
         {
             return Hash::get($this->_parameters, $key);
         }
@@ -91,7 +90,7 @@ class PluginEvent
     public function getAllContent()
     {
         $output = array();
-        foreach($this->_content as $plugin => $content)
+        foreach ($this->_content as $plugin => $content)
         {
             /* @var $content PluginEventContent */
             if ($content->hasContent()) {
@@ -189,8 +188,7 @@ class PluginEvent
         if (!Hash::check($this->_parameters, $key))
         {
             $oldValue = array();
-        }
-        else
+        } else
         {
             $oldValue = Hash::get($this->_parameters, $key);
         }

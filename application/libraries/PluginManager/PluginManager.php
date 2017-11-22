@@ -7,7 +7,7 @@ use Plugin;
  * Factory for limesurvey plugin objects.
  */
 class PluginManager extends \CApplicationComponent {
-   /**
+    /**
      * Object containing any API that the plugins can use.
      * @var mixed $api The class name of the API class to load, or
      */
@@ -86,8 +86,7 @@ class PluginManager extends \CApplicationComponent {
         if ($record == false)
         {
             return false;
-        }
-        else
+        } else
         {
             return true;
         }
@@ -101,8 +100,8 @@ class PluginManager extends \CApplicationComponent {
     public function getStore($storageClass)
     {
         if (!class_exists($storageClass)
-                && class_exists('LimeSurvey\\PluginManager\\' . $storageClass)) {
-            $storageClass = 'LimeSurvey\\PluginManager\\' . $storageClass;
+                && class_exists('LimeSurvey\\PluginManager\\'.$storageClass)) {
+            $storageClass = 'LimeSurvey\\PluginManager\\'.$storageClass;
         }
         if (!isset($this->stores[$storageClass]))
         {
@@ -161,8 +160,7 @@ class PluginManager extends \CApplicationComponent {
             {
                 $this->unsubscribe($plugin, $event);
             }
-        }
-        elseif (isset($this->subscriptions[$event]))
+        } elseif (isset($this->subscriptions[$event]))
         {
             foreach ($this->subscriptions[$event] as $index => $subscription)
             {
@@ -189,7 +187,7 @@ class PluginManager extends \CApplicationComponent {
         }
         if (isset($this->subscriptions[$eventName]))
         {
-            foreach($this->subscriptions[$eventName] as $subscription)
+            foreach ($this->subscriptions[$eventName] as $subscription)
             {
                 if (!$event->isStopped()
                  && (empty($target) || in_array(get_class($subscription[0]), $target)))
@@ -221,7 +219,7 @@ class PluginManager extends \CApplicationComponent {
                         // Check if the base plugin file exists.
                         // Directory name Example most contain file ExamplePlugin.php.
                         $pluginName = $fileInfo->getFilename();
-                        $file = Yii::getPathOfAlias($pluginDir . ".$pluginName.{$pluginName}") . ".php";
+                        $file = Yii::getPathOfAlias($pluginDir.".$pluginName.{$pluginName}").".php";
                         if (file_exists($file))
                         {
                             $result[$pluginName] = $this->getPluginInfo($pluginName, $pluginDir);
@@ -256,9 +254,9 @@ class PluginManager extends \CApplicationComponent {
             }
 
             foreach ($this->pluginDirs as $pluginDir) {
-                $file = Yii::getPathOfAlias($pluginDir . ".$pluginClass.{$pluginClass}") . ".php";
+                $file = Yii::getPathOfAlias($pluginDir.".$pluginClass.{$pluginClass}").".php";
                 if (file_exists($file)) {
-                    Yii::import($pluginDir . ".$pluginClass.*");
+                    Yii::import($pluginDir.".$pluginClass.*");
                     $found = true;
                     break;
                 }
@@ -299,8 +297,7 @@ class PluginManager extends \CApplicationComponent {
                     return $plugin;
                 }
             }
-        }
-        else
+        } else
         {
             if ((!isset($this->plugins[$id]) || get_class($this->plugins[$id]) !== $pluginName))
             {
@@ -332,8 +329,8 @@ class PluginManager extends \CApplicationComponent {
     public function loadPlugins()
     {
         // If DB version is less than 165 : plugins table don't exist. 175 update it (boolean to integer for active).
-        $dbVersion=\SettingGlobal::model()->find("stg_name=:name",array(':name'=>'DBVersion'));// Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
-        if($dbVersion && $dbVersion->stg_value >= 165)
+        $dbVersion = \SettingGlobal::model()->find("stg_name=:name", array(':name'=>'DBVersion')); // Need table SettingGlobal, but settings from DB is set only in controller, not in App, see #11294
+        if ($dbVersion && $dbVersion->stg_value >= 165)
         {
             $pluginModel = Plugin::model();
             $records = $pluginModel->findAllByAttributes(array('active'=>1));
@@ -342,12 +339,11 @@ class PluginManager extends \CApplicationComponent {
             {
                 $this->loadPlugin($record->name, $record->id);
             }
-        }
-        else
+        } else
         {
             // Log it ? tracevar ?
         }
-        $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this));    // Alow plugins to do stuff after all plugins are loaded
+        $this->dispatchEvent(new PluginEvent('afterPluginLoad', $this)); // Alow plugins to do stuff after all plugins are loaded
     }
 
     /**
@@ -430,10 +426,10 @@ class PluginManager extends \CApplicationComponent {
     {
         $this->loadAllPlugins();
         foreach ($this->plugins as $plugin) {
-            if(is_object($plugin)){
+            if (is_object($plugin)) {
                 $plugin->readConfigFile();
             } else {
-              // Do nothing, plugin is deleted next time plugin manager is visited and loadPlugin validate if class exist
+                // Do nothing, plugin is deleted next time plugin manager is visited and loadPlugin validate if class exist
             }
         }
         $this->plugins = array();

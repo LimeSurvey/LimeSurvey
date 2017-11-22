@@ -29,7 +29,7 @@
         {
             parent::init($survey, $sLanguageCode, $oOptions);
             $this->survey = $survey;
-            if ($oOptions->output=='display') {
+            if ($oOptions->output == 'display') {
                 //header("Content-Disposition: attachment; filename=results-survey".$survey->id.".html");
                 header("Content-type: text/html; charset=UTF-8");
                 $this->handle = fopen('php://output', 'w');
@@ -44,15 +44,15 @@
         {
             $this->out('<!DOCTYPE html>');
             $this->openTag('html');
-			$this->openTag('head');
-			$this->tag('meta', array('charset' => 'utf-8'));
+            $this->openTag('head');
+            $this->tag('meta', array('charset' => 'utf-8'));
             $this->tag('style', 'td { border: 1px solid black }');
-			$this->closeTag();
+            $this->closeTag();
             $this->openTag('body');
             // Title of the survey.
-            $this->tag('h1',  array(
+            $this->tag('h1', array(
                 'data-sid' => $this->survey->info['sid']
-            ), gT("Survey name (ID)") . ": {$this->survey->info['surveyls_title']} ({$this->survey->info['sid']})");
+            ), gT("Survey name (ID)").": {$this->survey->info['surveyls_title']} ({$this->survey->info['sid']})");
 
             
             
@@ -75,7 +75,7 @@
                 {
                     if ($gid != 0)
                     {
-                        $this->tag('h2', gT("Group") . ": " . $questions[0]['group_name']);
+                        $this->tag('h2', gT("Group").": ".$questions[0]['group_name']);
                     }
                     $this->openTag('table', array(
                         'class' => 'group',
@@ -97,7 +97,7 @@
 
         protected function out($content)
         {
-            fwrite($this->handle, str_pad('', count($this->stack) * 4) . $content . "\n");
+            fwrite($this->handle, str_pad('', count($this->stack) * 4).$content."\n");
 
         }
 
@@ -148,8 +148,7 @@
             {
                 $this->out(CHtml::closeTag(array_pop($this->stack)));
                 return true;
-            }
-            else
+            } else
             {
                 return false;
             }

@@ -30,8 +30,11 @@ function getListOfFiles($wh){
     if ($handle = opendir($wh)) {
         while (false !== ($file = readdir($handle))) {
             if ($file != "." && $file != ".." && !is_dir($file)) {
-                if(!isset($files) || !$files) $files="$file";
-                else $files="$file\n$files";
+                if(!isset($files) || !$files) {
+                    $files="$file";
+                } else {
+                    $files="$file\n$files";
+                }
             }
         }
         closedir($handle);
@@ -50,23 +53,25 @@ function mkdir_p($target){
     //Returns 1 for success
     //        2 for "directory/file by that name exists
     //        0 for other errors
-    if(file_exists($target) || is_dir($target))
-        return 2;
+    if(file_exists($target) || is_dir($target)) {
+            return 2;
+    }
     if(mkdir($target,0777)){
         return 1;
     }
     if(mkdir_p(substr($target, 0, (strrpos($target, '/')))) == 1){
-        if(mkdir_p($target) == 1)
-            return 1;
-        else
-            return 0;
+        if(mkdir_p($target) == 1) {
+                    return 1;
+        } else {
+                    return 0;
+        }
     } else {
         return 0;
     }
 }
 
 function themeoptions($optionarray, $selectedvalue) {
-    $return='';
+    $return = '';
     foreach ($optionarray as $arkey=>$arvalue) {
         $return .= "<option value='".HTMLEscape($arkey)."'";
         if ($arkey == $selectedvalue)
@@ -78,9 +83,9 @@ function themeoptions($optionarray, $selectedvalue) {
     return $return;
 }
 
-function multiarray_search($arrayVet, $campo, $valor){
-    while(isset($arrayVet[key($arrayVet)])){
-        if($arrayVet[key($arrayVet)][$campo] == $valor){
+function multiarray_search($arrayVet, $campo, $valor) {
+    while (isset($arrayVet[key($arrayVet)])) {
+        if ($arrayVet[key($arrayVet)][$campo] == $valor) {
             return key($arrayVet);
         }
         next($arrayVet);
@@ -104,11 +109,10 @@ function recursive_in_array($needle, $haystack) {
 */
 function is_template_editable($templatename)
 {
-    if (isStandardTemplate($templatename) && Yii::app()->getConfig("standard_themes_readonly")==true)
+    if (isStandardTemplate($templatename) && Yii::app()->getConfig("standard_themes_readonly") == true)
     {
         return false;
-    }
-    else
+    } else
     {
         return true;
     }
@@ -127,12 +131,13 @@ function templateExtractFilter($p_event, &$p_header)
     $aAllowExtensions[]='pstpl';
     $info = pathinfo($p_header['filename']);
     // Deny files with multiple extensions in general
-    if (substr_count($info['basename'],'.')!=1) return 0;
+    if (substr_count($info['basename'],'.')!=1) {
+        return 0;
+    }
 
     if ($p_header['folder'] || !isset($info['extension']) || in_array($info['extension'],$aAllowExtensions)) {
         return 1;
-    }
-    else {
+    } else {
         return 0;
     }
 }

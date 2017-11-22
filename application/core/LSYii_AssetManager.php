@@ -43,7 +43,7 @@ class LSYii_AssetManager extends CAssetManager
             );
         }
 
-        $lsVersion = $assetsVersionNumber . $versionNumber . $dbVersion;
+        $lsVersion = $assetsVersionNumber.$versionNumber.$dbVersion;
 
         if (is_file($file)) {
             $pathForHashing = $hashByName ? dirname($file) : dirname($file).$lsVersion;

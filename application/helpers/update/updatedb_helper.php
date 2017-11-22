@@ -28,10 +28,10 @@
 */
 function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     /**
-    * If you add a new database version add any critical database version numbers to this array. See link
-    * @link https://manual.limesurvey.org/Database_versioning for explanations
-    * @var array $aCriticalDBVersions An array of cricital database version.
-    */
+     * If you add a new database version add any critical database version numbers to this array. See link
+     * @link https://manual.limesurvey.org/Database_versioning for explanations
+     * @var array $aCriticalDBVersions An array of cricital database version.
+     */
     $aCriticalDBVersions = array(310);
     $aAllUpdates         = range($iOldDBVersion+1,Yii::app()->getConfig('dbversionnumber'));
 
@@ -53,71 +53,71 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     $sStandardTemplateRootDir   = Yii::app()->getConfig('standardthemerootdir');
     $oDB                        = Yii::app()->getDb();
     $oDB->schemaCachingDuration = 0; // Deactivate schema caching
-    Yii::app()->setConfig('Updating',true);
+    Yii::app()->setConfig('Updating', true);
 
-    try{
+    try {
         // LS 2.5 table start at 250
         if ($iOldDBVersion < 250) {
             $oTransaction = $oDB->beginTransaction();
             createBoxes250();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>250),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>250), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
-        if ( $iOldDBVersion < 251 ) {
+        if ($iOldDBVersion < 251) {
             $oTransaction = $oDB->beginTransaction();
             upgradeBoxesTable251();
 
             // Update DBVersion
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>251),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>251), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
-        if ( $iOldDBVersion < 252 ) {
+        if ($iOldDBVersion < 252) {
             $oTransaction = $oDB->beginTransaction();
-            Yii::app()->db->createCommand()->addColumn('{{questions}}','modulename','string');
+            Yii::app()->db->createCommand()->addColumn('{{questions}}', 'modulename', 'string');
             // Update DBVersion
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>252),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>252), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ( $iOldDBVersion < 253 ) {
+        if ($iOldDBVersion < 253) {
             $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables253();
 
             // Update DBVersion
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>253),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>253), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ( $iOldDBVersion < 254 ) {
+        if ($iOldDBVersion < 254) {
             $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables254();
             // Update DBVersion
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>254),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>254), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ( $iOldDBVersion < 255 ) {
+        if ($iOldDBVersion < 255) {
             $oTransaction = $oDB->beginTransaction();
             upgradeSurveyTables255();
             // Update DBVersion
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>255),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>255), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-        if ( $iOldDBVersion < 256 ) {
+        if ($iOldDBVersion < 256) {
             $oTransaction = $oDB->beginTransaction();
             upgradeTokenTables256();
             alterColumn('{{participants}}', 'email', "text", false);
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>256),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>256), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 257) {
             $oTransaction = $oDB->beginTransaction();
-            switch (Yii::app()->db->driverName){
+            switch (Yii::app()->db->driverName) {
                 case 'pgsql':
-                    $sSubstringCommand='substr';
+                    $sSubstringCommand = 'substr';
                     break;
                 default:
-                    $sSubstringCommand='substring';
+                    $sSubstringCommand = 'substring';
             }
             $oDB->createCommand("UPDATE {{templates}} set folder={$sSubstringCommand}(folder,1,50)")->execute();
             dropPrimaryKey('templates');
@@ -125,43 +125,43 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             addPrimaryKey('templates', 'folder');
             dropPrimaryKey('participant_attribute_names_lang');
             alterColumn('{{participant_attribute_names_lang}}', 'lang', "string(20)", false);
-            addPrimaryKey('participant_attribute_names_lang', array('attribute_id','lang'));
+            addPrimaryKey('participant_attribute_names_lang', array('attribute_id', 'lang'));
             //Fixes the collation for the complete DB, tables and columns
-            if (Yii::app()->db->driverName=='mysql')
+            if (Yii::app()->db->driverName == 'mysql')
             {
-                fixMySQLCollations('utf8mb4','utf8mb4_unicode_ci');
+                fixMySQLCollations('utf8mb4', 'utf8mb4_unicode_ci');
                 // Also apply again fixes from DBVersion 181 again for case sensitive token fields
                 upgradeSurveyTables181('utf8mb4_bin');
                 upgradeTokenTables181('utf8mb4_bin');
             }
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>257),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>257), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         /**
-        * Remove adminimageurl from global settings
-        */
+         * Remove adminimageurl from global settings
+         */
         if ($iOldDBVersion < 258) {
             $oTransaction = $oDB->beginTransaction();
             Yii::app()->getDb()->createCommand(
                 "DELETE FROM {{settings_global}} WHERE stg_name='adminimageurl'"
             )->execute();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>258),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>258), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         /**
-        * Add table for notifications
-        * @since 2016-08-04
-        * @author Olle Haerstedt
-        */
+         * Add table for notifications
+         * @since 2016-08-04
+         * @author Olle Haerstedt
+         */
         if ($iOldDBVersion < 259) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable('{{notifications}}', array(
                 'id' => 'pk',
                 'entity' => 'string(15) not null',
                 'entity_id' => 'integer not null',
-                'title' => 'string not null',  // varchar(255) in postgres
+                'title' => 'string not null', // varchar(255) in postgres
                 'message' => 'text not null',
                 'status' => "string(15) not null default 'new' ",
                 'importance' => 'integer default 1',
@@ -170,15 +170,15 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'first_read' => 'datetime null'
             ));
             $oDB->createCommand()->createIndex('{{notif_index}}', '{{notifications}}', 'entity, entity_id, status', false);
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>259),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>259), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 260) {
             $oTransaction = $oDB->beginTransaction();
-            alterColumn('{{participant_attribute_names}}','defaultname',"string(255)",false);
-            alterColumn('{{participant_attribute_names_lang}}','attribute_name',"string(255)",false);
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>260),"stg_name='DBVersion'");
+            alterColumn('{{participant_attribute_names}}', 'defaultname', "string(255)", false);
+            alterColumn('{{participant_attribute_names_lang}}', 'attribute_name', "string(255)", false);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>260), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -191,37 +191,37 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             */
             addColumn('{{notifications}}', 'hash', 'string(64)');
             $oDB->createCommand()->createIndex('{{notif_hash_index}}', '{{notifications}}', 'hash', false);
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>261),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>261), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 262) {
             $oTransaction = $oDB->beginTransaction();
-            alterColumn('{{settings_global}}','stg_value',"text",false);
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>262),"stg_name='DBVersion'");
+            alterColumn('{{settings_global}}', 'stg_value', "text", false);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>262), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 263) {
             $oTransaction = $oDB->beginTransaction();
             // Dummy version update for hash column in installation SQL.
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>263),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>263), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         /**
-        * Add seed column in all active survey tables
-        * Might take time to execute
-        * @since 2016-09-01
-        */
+         * Add seed column in all active survey tables
+         * Might take time to execute
+         * @since 2016-09-01
+         */
         if ($iOldDBVersion < 290) {
             $oTransaction = $oDB->beginTransaction();
             $aTables = dbGetTablesLike("survey\_%");
             $oSchema = Yii::app()->db->schema;
-            foreach ( $aTables as $sTableName ) {
-                $oTableSchema=$oSchema->getTable($sTableName);
+            foreach ($aTables as $sTableName) {
+                $oTableSchema = $oSchema->getTable($sTableName);
                 // Only update the table if it really is a survey response table - there are other tables that start the same
-                if (!in_array('lastpage',$oTableSchema->columnNames)) {
+                if (!in_array('lastpage', $oTableSchema->columnNames)) {
                     continue;
                 }
                 // If survey has active table, create seed column
@@ -238,105 +238,105 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                         break;
                 }
             }
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>290),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>290), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         /**
-        * Plugin JSON config file
-        * @since 2016-08-22
-        */
+         * Plugin JSON config file
+         * @since 2016-08-22
+         */
         if ($iOldDBVersion < 291)
         {
             $oTransaction = $oDB->beginTransaction();
 
             addColumn('{{plugins}}', 'version', 'string(32)');
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>291),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>291), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
 
         /**
-        * Survey menue table
-        * @since 2017-07-03
-        */
+         * Survey menue table
+         * @since 2017-07-03
+         */
         if ($iOldDBVersion < 293) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>293),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>293), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         /**
-        * Survey menue table update
-        * @since 2017-07-03
-        */
+         * Survey menue table update
+         * @since 2017-07-03
+         */
         if ($iOldDBVersion < 294) {
             $oTransaction = $oDB->beginTransaction();
 
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>294),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>294), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         /**
-        * Survey menue table update
-        * @since 2017-07-12
-        */
+         * Survey menue table update
+         * @since 2017-07-12
+         */
         if ($iOldDBVersion < 296) {
             $oTransaction = $oDB->beginTransaction();
 
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>296),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>296), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         /**
-        * Template tables
-        * @since 2017-07-12
-        */
+         * Template tables
+         * @since 2017-07-12
+         */
         if ($iOldDBVersion < 298) {
             $oTransaction = $oDB->beginTransaction();
             upgradeTemplateTables298($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>298),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>298), "stg_name='DBVersion'");
         }
 
         /**
-        * Template tables
-        * @since 2017-07-12
-        */
+         * Template tables
+         * @since 2017-07-12
+         */
         if ($iOldDBVersion < 304) {
             $oTransaction = $oDB->beginTransaction();
             upgradeTemplateTables304($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>304),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>304), "stg_name='DBVersion'");
         }
 
         /**
-        * Update to sidemenu rendering
-        */
+         * Update to sidemenu rendering
+         */
         if ($iOldDBVersion < 305) {
             $oTransaction = $oDB->beginTransaction();
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>305),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>305), "stg_name='DBVersion'");
         }
 
         /**
-        * Template tables
-        * @since 2017-07-12
-        */
+         * Template tables
+         * @since 2017-07-12
+         */
         if ($iOldDBVersion < 306) {
             $oTransaction = $oDB->beginTransaction();
             createSurveyGroupTables306($oDB);
             $oTransaction->commit();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>306),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>306), "stg_name='DBVersion'");
         }
 
         /**
-        * User settings table
-        * @since 2016-08-29
-        */
+         * User settings table
+         * @since 2016-08-29
+         */
         if ($iOldDBVersion < 307) {
             $oTransaction = $oDB->beginTransaction();
             if (tableExists('{settings_user}')) {
@@ -351,7 +351,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'stg_value' => 'text',
 
             ));
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>307),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>307), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -360,7 +360,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         */
         if ($iOldDBVersion < 308) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>308),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>308), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
         /*
@@ -369,7 +369,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 309) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>309),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>309), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -380,7 +380,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oTransaction = $oDB->beginTransaction();
             reCreateSurveyMenuTable310($oDB);
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>310),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>310), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -389,8 +389,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         */
         if ($iOldDBVersion < 311) {
             $oTransaction = $oDB->beginTransaction();
-            addColumn('{{surveys_groups}}','template', "string(128) DEFAULT 'default'");
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>311),"stg_name='DBVersion'");
+            addColumn('{{surveys_groups}}', 'template', "string(128) DEFAULT 'default'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>311), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -401,12 +401,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 312) {
             $oTransaction = $oDB->beginTransaction();
             // Already added in beta 2 but with wrong type
-            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_ltr'); } catch(Exception $e) { rollBackToTransactionBookmark();}
-            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_rtl'); } catch(Exception $e) { rollBackToTransactionBookmark();}
+            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_ltr'); } catch (Exception $e) { rollBackToTransactionBookmark(); }
+            try { setTransactionBookmark(); $oDB->createCommand()->dropColumn('{{template_configuration}}', 'packages_rtl'); } catch (Exception $e) { rollBackToTransactionBookmark(); }
 
-            addColumn('{{template_configuration}}','packages_ltr', "text");
-            addColumn('{{template_configuration}}','packages_rtl', "text");
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>312),"stg_name='DBVersion'");
+            addColumn('{{template_configuration}}', 'packages_ltr', "text");
+            addColumn('{{template_configuration}}', 'packages_rtl', "text");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>312), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -416,12 +416,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 313) {
             $oTransaction = $oDB->beginTransaction();
 
-            addColumn('{{surveymenu_entries}}','active', "boolean DEFAULT '0'");
-            addColumn('{{surveymenu}}','active', "boolean DEFAULT '0'");
+            addColumn('{{surveymenu_entries}}', 'active', "boolean DEFAULT '0'");
+            addColumn('{{surveymenu}}', 'active', "boolean DEFAULT '0'");
             $oDB->createCommand()->update('{{surveymenu_entries}}', array('active'=>1));
             $oDB->createCommand()->update('{{surveymenu}}', array('active'=>1));
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>313),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>313), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -436,7 +436,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'id=15'
             );
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>314),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>314), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -448,7 +448,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 "templates_name='default' OR templates_name='material'"
             );
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>315),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>315), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -457,7 +457,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
             $oDB->createCommand()->renameColumn('{{template_configuration}}', 'templates_name', 'template_name');
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>316),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>316), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -468,7 +468,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
             transferPasswordFieldToText($oDB);
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>317),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>317), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -479,7 +479,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 318) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>318),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>318), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -488,18 +488,18 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
         if ($iOldDBVersion < 319) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->update('{{surveymenu_entries}}',array('data'=>'{"render": {"link": { "pjaxed": false}}}'),"name='panelintegration'");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('data'=>'{"render": {"link": { "pjaxed": false}}}'), "name='panelintegration'");
 
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>319),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>319), "stg_name='DBVersion'");
 
             $table = Yii::app()->db->schema->getTable('{{surveys_groups}}');
-            if(isset($table->columns['order'])) {
+            if (isset($table->columns['order'])) {
                 $oDB->createCommand()->renameColumn('{{surveys_groups}}', 'order', 'sortorder');
             }
 
             $table = Yii::app()->db->schema->getTable('{{templates}}');
-            if(isset($table->columns['extends_template_name'])) {
-                $oDB->createCommand()->renameColumn('{{templates}}','extends_template_name','extends');
+            if (isset($table->columns['extends_template_name'])) {
+                $oDB->createCommand()->renameColumn('{{templates}}', 'extends_template_name', 'extends');
             }
 
             $oTransaction->commit();
@@ -507,8 +507,8 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
         if ($iOldDBVersion < 320) {
             $oTransaction = $oDB->beginTransaction();
-            $oDB->createCommand()->update('{{surveymenu_entries}}',array('action'=>'updatesurveylocalesettings_generalsettings'),"name='generalsettings'");
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>320),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{surveymenu_entries}}', array('action'=>'updatesurveylocalesettings_generalsettings'), "name='generalsettings'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>320), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -519,14 +519,14 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 array('data' => '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey", "sid"]}}}}'),
                 "name = 'statistics' OR name = 'responses'"
             );
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>321),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>321), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 322) {
             $oTransaction = $oDB->beginTransaction();
             $oDB->createCommand()->createTable(
-                '{{tutorials}}',[
+                '{{tutorials}}', [
                     'tid' =>  'pk',
                     'name' =>  'string(128)',
                     'description' =>  'text',
@@ -537,7 +537,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 ]
             );
             $oDB->createCommand()->createTable(
-                '{{tutorial_entries}}',[
+                '{{tutorial_entries}}', [
                     'teid' =>  'pk',
                     'tid' =>  'int NOT NULL',
                     'title' =>  'text',
@@ -545,23 +545,23 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                     'settings' => 'text'
                 ]
             );
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>322),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>322), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 323) {
             $oTransaction = $oDB->beginTransaction();
             dropPrimaryKey('labels', 'lid');
-            $oDB->createCommand()->addColumn( '{{labels}}', 'id', 'pk');
-            $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid','sortorder','language'], false);
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>323),"stg_name='DBVersion'");
+            $oDB->createCommand()->addColumn('{{labels}}', 'id', 'pk');
+            $oDB->createCommand()->createIndex('{{idx4_labels}}', '{{labels}}', ['lid', 'sortorder', 'language'], false);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>323), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
         if ($iOldDBVersion < 324) {
             $oTransaction = $oDB->beginTransaction();
 
-            $oDB->createCommand()->insert( '{{surveymenu_entries}}',
+            $oDB->createCommand()->insert('{{surveymenu_entries}}',
             array(
                 'menu_id' => 1,
                 'ordering' => 16,
@@ -584,7 +584,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
                 'created_by' => 1,
                 'active' => 0
             ));
-            $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>324),"stg_name='DBVersion'");
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>324), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
 
@@ -620,12 +620,12 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->createIndex('{{idx3_templates}}', '{{templates}}', 'owner_id', false);
             $oDB->createCommand()->createIndex('{{idx4_templates}}', '{{templates}}', 'extends', false);
 
-            $headerArray = ['name','folder','title','creation_date','author','author_email','author_url','copyright','license','version','api_version','view_folder','files_folder','description','last_update','owner_id','extends'];
+            $headerArray = ['name', 'folder', 'title', 'creation_date', 'author', 'author_email', 'author_url', 'copyright', 'license', 'version', 'api_version', 'view_folder', 'files_folder', 'description', 'last_update', 'owner_id', 'extends'];
             $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['default', 'default', 'Advanced Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', "<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)", NULL, 1, '']));
 
-            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', NULL, 1, 'default']));
+            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['material', 'material', 'Material Template', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Advanced Template</strong><br> A template extending default, to show the inheritance concept. Notice the options, differents from Default.<br><small>uses FezVrasta\'s Material design theme for Bootstrap 3</small>', NULL, 1, 'default']));
 
-            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray,['monochrome', 'monochrome', 'Monochrome Templates', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Monochrome Templates</strong><br>A template with monochrome colors for easy customization.', NULL, 1, '']));
+            $oDB->createCommand()->insert("{{templates}}", array_combine($headerArray, ['monochrome', 'monochrome', 'Monochrome Templates', date('Y-m-d H:i:s'), 'Louis Gac', 'louis.gac@limesurvey.org', 'https://www.limesurvey.org/', 'Copyright (C) 2007-2017 The LimeSurvey Project Team\\r\\nAll rights reserved.', 'License: GNU/GPL License v2 or later, see LICENSE.php\\r\\n\\r\\nLimeSurvey is free software. This version may have been modified pursuant to the GNU General Public License, and as distributed it includes or is derivative of works licensed under the GNU General Public License or other free or open source software licenses. See COPYRIGHT.php for copyright notices and details.', '1.0', '3.0', 'views', 'files', '<strong>LimeSurvey Monochrome Templates</strong><br>A template with monochrome colors for easy customization.', NULL, 1, '']));
 
 
             // template_configuration
@@ -678,8 +678,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
             $oDB->createCommand()->update('{{settings_global}}',array('stg_value'=>327),"stg_name='DBVersion'");
             $oTransaction->commit();
         }
-    }
-    catch(Exception $e)
+    } catch(Exception $e)
     {
         Yii::app()->setConfig('Updating',false);
         $oTransaction->rollback();
@@ -695,7 +694,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
     }
 
     // Activate schema cache first - otherwise it won't be refreshed!
-    $oDB->schemaCachingDuration=3600;
+    $oDB->schemaCachingDuration = 3600;
     // Load all tables of the application in the schema
     $oDB->schema->getTables();
     // clear the cache of all loaded tables
@@ -719,7 +718,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent=false) {
 
     fixLanguageConsistencyAllSurveys();
 
-    Yii::app()->setConfig('Updating',false);
+    Yii::app()->setConfig('Updating', false);
     return true;
 }
 
@@ -773,11 +772,11 @@ function upgrade327($oDB)
 
 }
 
-function transferPasswordFieldToText($oDB){
-    switch($oDB->getDriverName()){
+function transferPasswordFieldToText($oDB) {
+    switch ($oDB->getDriverName()) {
         case 'mysql':
         case 'mysqli':
-            $oDB->createCommand()->alterColumn( '{{users}}','password', 'TEXT NOT NULL');
+            $oDB->createCommand()->alterColumn('{{users}}', 'password', 'TEXT NOT NULL');
             break;
         case 'pgsql':
 
@@ -786,8 +785,8 @@ function transferPasswordFieldToText($oDB){
             $oDB->createCommand()->renameColumn('{{users}}', 'password', 'password_blob');
             $oDB->createCommand()->addColumn('{{users}}', 'password', "TEXT NOT NULL DEFAULT 'nopw'");
 
-            foreach($userPasswords as $userArray){
-                $oDB->createCommand()->update('{{users}}', ['password' => $userArray['password']], 'uid=:uid' , [':uid'=> $userArray['uid']] );
+            foreach ($userPasswords as $userArray) {
+                $oDB->createCommand()->update('{{users}}', ['password' => $userArray['password']], 'uid=:uid', [':uid'=> $userArray['uid']]);
             }
 
             $oDB->createCommand()->dropColumn('{{users}}', 'password_blob');
@@ -870,24 +869,24 @@ function createSurveyMenuTable293($oDB) {
         "FOREIGN KEY (menu_id) REFERENCES  {{surveymenu}} (id) ON DELETE CASCADE"
     ));
 
-    $colsToAdd = array("menu_id","order","name","title","menu_title","menu_description","menu_icon","menu_icon_type","menu_class","menu_link","action","template","partial","classes","permission","permission_grade","data","getdatamethod","language","changed_at","changed_by","created_at","created_by");
+    $colsToAdd = array("menu_id", "order", "name", "title", "menu_title", "menu_description", "menu_icon", "menu_icon_type", "menu_class", "menu_link", "action", "template", "partial", "classes", "permission", "permission_grade", "data", "getdatamethod", "language", "changed_at", "changed_by", "created_at", "created_by");
     $rowsToAdd = array(
-        array(1,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings_generalsettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,4,'presentation','Presentation &amp; navigation settings','Presentation','Edit presentation and navigation settings','eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,5,'publication','Publication and access control settings','Publication &amp; access','Edit settings for publicationa and access control','key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,6,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,7,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,9,'assessments','Edit assessments','Assessments','Edit and look at the assessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,10,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,11,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read',NULL,'','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,12,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,13,'ressources','Add/Edit ressources to the survey','Ressources','Add/Edit ressources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0)
+        array(1, 1, 'overview', 'Survey overview', 'Overview', 'Open general survey overview and quick action', 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 2, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', NULL, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 3, 'surveytexts', 'Edit survey text elements', 'Survey texts', 'Edit survey text elements', 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', NULL, '_getTextEditData', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 4, 'presentation', 'Presentation &amp; navigation settings', 'Presentation', 'Edit presentation and navigation settings', 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', NULL, '_tabPresentationNavigation', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 5, 'publication', 'Publication and access control settings', 'Publication &amp; access', 'Edit settings for publicationa and access control', 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', NULL, '_tabPublicationAccess', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 6, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 7, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', NULL, '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 8, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 10, 'notification', 'Notification and data management settings', 'Data management', 'Edit settings for notification and data management', 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', NULL, '_tabNotificationDataManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 11, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'assessments', 'read', NULL, '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 12, 'panelintegration', 'Edit survey panel integration', 'Panel integration', 'Define panel integrations for your survey', 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', NULL, '_tabPanelIntegration', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, 13, 'ressources', 'Add/Edit ressources to the survey', 'Ressources', 'Add/Edit ressources to the survey', 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', NULL, '_tabResourceManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0)
     );
-    foreach($rowsToAdd as $row){
-        $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd,$row));
+    foreach ($rowsToAdd as $row) {
+        $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd, $row));
     }
 }
 
@@ -994,42 +993,42 @@ function reCreateSurveyMenuTable310(CDbConnection $oDB)
     $oDB->createCommand()->createIndex('{{idx_menu_id}}', '{{surveymenu_entries}}', 'menu_id');
     $oDB->createCommand()->createIndex('{{idx_menu_title}}', '{{surveymenu_entries}}', 'menu_title');
 
-    $colsToAdd = array("menu_id","user_id","ordering","name","title","menu_title","menu_description","menu_icon","menu_icon_type","menu_class","menu_link","action","template","partial","classes","permission","permission_grade","data","getdatamethod","language","changed_at","changed_by","created_at","created_by");
+    $colsToAdd = array("menu_id", "user_id", "ordering", "name", "title", "menu_title", "menu_description", "menu_icon", "menu_icon_type", "menu_class", "menu_link", "action", "template", "partial", "classes", "permission", "permission_grade", "data", "getdatamethod", "language", "changed_at", "changed_by", "created_at", "created_by");
     $rowsToAdd = array(
-        array(1,NULL,1,'overview','Survey overview','Overview','Open general survey overview and quick action','list','fontawesome','','admin/survey/sa/view','','','','','','','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,2,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings_generalsettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,3,'surveytexts','Edit survey text elements','Survey texts','Edit survey text elements','file-text-o','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/tab_edit_view','','surveylocale','read',NULL,'_getTextEditData','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,4,'template_options','Template options','Template options','Edit Template options for this survey','paint-brush','fontawesome','','admin/templateoptions/sa/updatesurvey','','','','','templates','read','{"render": {"link": { "pjaxed": true, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,5,'participants','Survey participants','Survey participants','Go to survey participant and token settings','user','fontawesome','','admin/tokens/sa/index/','','','','','surveysettings','update','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,6,'presentation','Presentation &amp; navigation settings','Presentation','Edit presentation and navigation settings','eye-slash','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_presentation_panel','','surveylocale','read',NULL,'_tabPresentationNavigation','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,7,'publication','Publication and access control settings','Publication &amp; access','Edit settings for publicationa and access control','key','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_publication_panel','','surveylocale','read',NULL,'_tabPublicationAccess','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,8,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,9,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','users','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read',NULL,'_tabTokens','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,10,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,11,'assessments','Edit assessments','Assessments','Edit and look at the assessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,12,'notification','Notification and data management settings','Data management','Edit settings for notification and data management','feed','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_notification_panel','','surveylocale','read',NULL,'_tabNotificationDataManagement','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,13,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','assessments','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,14,'panelintegration','Edit survey panel integration','Panel integration','Define panel integrations for your survey','link','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_integration_panel','','surveylocale','read',NULL,'_tabPanelIntegration','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(1,NULL,15,'ressources','Add/Edit ressources to the survey','Ressources','Add/Edit ressources to the survey','file','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_resources_panel','','surveylocale','read',NULL,'_tabResourceManagement','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,1,'activateSurvey','Activate survey','Activate survey','Activate survey','play','fontawesome','','admin/survey/sa/activate','','','','','surveyactivation','update','{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,2,'deactivateSurvey','Stop this survey','Stop this survey','Stop this survey','stop','fontawesome','','admin/survey/sa/deactivate','','','','','surveyactivation','update','{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,3,'testSurvey','Go to survey','Go to survey','Go to survey','cog','fontawesome','','survey/index/','','','','','','','{"render": {"link": {"external": true, "data": {"sid": ["survey","sid"], "newtest": "Y", "lang": ["survey","language"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,4,'listQuestions','List questions','List questions','List questions','list','fontawesome','','admin/survey/sa/listquestions','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,5,'listQuestionGroups','List question groups','List question groups','List question groups','th-list','fontawesome','','admin/survey/sa/listquestiongroups','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,6,'generalsettings','Edit survey general settings','General settings','Open general survey settings','gears','fontawesome','','','updatesurveylocalesettings_generalsettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_generaloptions_panel','','surveysettings','read',NULL,'_generalTabEditSurvey','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,7,'surveypermissions','Edit surveypermissions','Survey permissions','Edit permissions for this survey','lock','fontawesome','','admin/surveypermission/sa/view/','','','','','surveysecurity','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,8,'quotas','Edit quotas','Survey quotas','Edit quotas for this survey.','tasks','fontawesome','','admin/quotas/sa/index/','','','','','quotas','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,9,'assessments','Edit assessments','Assessments','Edit and look at the assessements for this survey.','comment-o','fontawesome','','admin/assessments/sa/index/','','','','','assessments','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,10,'emailtemplates','Email templates','Email templates','Edit the templates for invitation, reminder and registration emails','envelope-square','fontawesome','','admin/emailtemplates/sa/index/','','','','','surveylocale','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,11,'surveyLogicFile','Survey logic file','Survey logic file','Survey logic file','sitemap','fontawesome','','admin/expressions/sa/survey_logic_file/','','','','','surveycontent','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,12,'tokens','Token handling','Participant tokens','Define how tokens should be treated or generated','user','fontawesome','','','updatesurveylocalesettings','editLocalSettings_main_view','/admin/survey/subview/accordion/_tokens_panel','','surveylocale','read','{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}','_tabTokens','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,13,'cpdb','Central participant database','Central participant database','Central participant database','users','fontawesome','','admin/participants/sa/displayParticipants','','','','','tokens','read','{"render": {"link": {}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,14,'responses','Responses','Responses','Responses','icon-browse','iconclass','','admin/responses/sa/browse/','','','','','responses','read','{"render": {"isActive": true}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,15,'statistics','Statistics','Statistics','Statistics','bar-chart','fontawesome','','admin/statistics/sa/index/','','','','','statistics','read','{"render": {"isActive": true}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0),
-        array(2,NULL,16,'reorder','Reorder questions/question groups','Reorder questions/question groups','Reorder questions/question groups','icon-organize','iconclass','','admin/survey/sa/organize/','','','','','surveycontent','update','{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}','','en-GB',date('Y-m-d H:i:s'),0,date('Y-m-d H:i:s'),0)
+        array(1, NULL, 1, 'overview', 'Survey overview', 'Overview', 'Open general survey overview and quick action', 'list', 'fontawesome', '', 'admin/survey/sa/view', '', '', '', '', '', '', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 2, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', NULL, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 3, 'surveytexts', 'Edit survey text elements', 'Survey texts', 'Edit survey text elements', 'file-text-o', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/tab_edit_view', '', 'surveylocale', 'read', NULL, '_getTextEditData', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 4, 'template_options', 'Template options', 'Template options', 'Edit Template options for this survey', 'paint-brush', 'fontawesome', '', 'admin/templateoptions/sa/updatesurvey', '', '', '', '', 'templates', 'read', '{"render": {"link": { "pjaxed": true, "data": {"surveyid": ["survey","sid"], "gsid":["survey","gsid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 5, 'participants', 'Survey participants', 'Survey participants', 'Go to survey participant and token settings', 'user', 'fontawesome', '', 'admin/tokens/sa/index/', '', '', '', '', 'surveysettings', 'update', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 6, 'presentation', 'Presentation &amp; navigation settings', 'Presentation', 'Edit presentation and navigation settings', 'eye-slash', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_presentation_panel', '', 'surveylocale', 'read', NULL, '_tabPresentationNavigation', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 7, 'publication', 'Publication and access control settings', 'Publication &amp; access', 'Edit settings for publicationa and access control', 'key', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_publication_panel', '', 'surveylocale', 'read', NULL, '_tabPublicationAccess', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 8, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 9, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'users', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', NULL, '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 10, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 11, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 12, 'notification', 'Notification and data management settings', 'Data management', 'Edit settings for notification and data management', 'feed', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_notification_panel', '', 'surveylocale', 'read', NULL, '_tabNotificationDataManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 13, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 14, 'panelintegration', 'Edit survey panel integration', 'Panel integration', 'Define panel integrations for your survey', 'link', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_integration_panel', '', 'surveylocale', 'read', NULL, '_tabPanelIntegration', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(1, NULL, 15, 'ressources', 'Add/Edit ressources to the survey', 'Ressources', 'Add/Edit ressources to the survey', 'file', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_resources_panel', '', 'surveylocale', 'read', NULL, '_tabResourceManagement', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 1, 'activateSurvey', 'Activate survey', 'Activate survey', 'Activate survey', 'play', 'fontawesome', '', 'admin/survey/sa/activate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 2, 'deactivateSurvey', 'Stop this survey', 'Stop this survey', 'Stop this survey', 'stop', 'fontawesome', '', 'admin/survey/sa/deactivate', '', '', '', '', 'surveyactivation', 'update', '{"render": {"isActive": true, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 3, 'testSurvey', 'Go to survey', 'Go to survey', 'Go to survey', 'cog', 'fontawesome', '', 'survey/index/', '', '', '', '', '', '', '{"render": {"link": {"external": true, "data": {"sid": ["survey","sid"], "newtest": "Y", "lang": ["survey","language"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 4, 'listQuestions', 'List questions', 'List questions', 'List questions', 'list', 'fontawesome', '', 'admin/survey/sa/listquestions', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 5, 'listQuestionGroups', 'List question groups', 'List question groups', 'List question groups', 'th-list', 'fontawesome', '', 'admin/survey/sa/listquestiongroups', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 6, 'generalsettings', 'Edit survey general settings', 'General settings', 'Open general survey settings', 'gears', 'fontawesome', '', '', 'updatesurveylocalesettings_generalsettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_generaloptions_panel', '', 'surveysettings', 'read', NULL, '_generalTabEditSurvey', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 7, 'surveypermissions', 'Edit surveypermissions', 'Survey permissions', 'Edit permissions for this survey', 'lock', 'fontawesome', '', 'admin/surveypermission/sa/view/', '', '', '', '', 'surveysecurity', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 8, 'quotas', 'Edit quotas', 'Survey quotas', 'Edit quotas for this survey.', 'tasks', 'fontawesome', '', 'admin/quotas/sa/index/', '', '', '', '', 'quotas', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 9, 'assessments', 'Edit assessments', 'Assessments', 'Edit and look at the assessements for this survey.', 'comment-o', 'fontawesome', '', 'admin/assessments/sa/index/', '', '', '', '', 'assessments', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 10, 'emailtemplates', 'Email templates', 'Email templates', 'Edit the templates for invitation, reminder and registration emails', 'envelope-square', 'fontawesome', '', 'admin/emailtemplates/sa/index/', '', '', '', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 11, 'surveyLogicFile', 'Survey logic file', 'Survey logic file', 'Survey logic file', 'sitemap', 'fontawesome', '', 'admin/expressions/sa/survey_logic_file/', '', '', '', '', 'surveycontent', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 12, 'tokens', 'Token handling', 'Participant tokens', 'Define how tokens should be treated or generated', 'user', 'fontawesome', '', '', 'updatesurveylocalesettings', 'editLocalSettings_main_view', '/admin/survey/subview/accordion/_tokens_panel', '', 'surveylocale', 'read', '{"render": { "link": {"data": {"surveyid": ["survey","sid"]}}}}', '_tabTokens', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 13, 'cpdb', 'Central participant database', 'Central participant database', 'Central participant database', 'users', 'fontawesome', '', 'admin/participants/sa/displayParticipants', '', '', '', '', 'tokens', 'read', '{"render": {"link": {}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 14, 'responses', 'Responses', 'Responses', 'Responses', 'icon-browse', 'iconclass', '', 'admin/responses/sa/browse/', '', '', '', '', 'responses', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 15, 'statistics', 'Statistics', 'Statistics', 'Statistics', 'bar-chart', 'fontawesome', '', 'admin/statistics/sa/index/', '', '', '', '', 'statistics', 'read', '{"render": {"isActive": true}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0),
+        array(2, NULL, 16, 'reorder', 'Reorder questions/question groups', 'Reorder questions/question groups', 'Reorder questions/question groups', 'icon-organize', 'iconclass', '', 'admin/survey/sa/organize/', '', '', '', '', 'surveycontent', 'update', '{"render": {"isActive": false, "link": {"data": {"surveyid": ["survey","sid"]}}}}', '', 'en-GB', date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0)
     );
-    foreach($rowsToAdd as $row){
-        $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd,$row));
+    foreach ($rowsToAdd as $row) {
+        $oDB->createCommand()->insert('{{surveymenu_entries}}', array_combine($colsToAdd, $row));
     }
 }
 /**
@@ -1071,7 +1070,7 @@ function createSurveyGroupTables306($oDB)
         'created_by'  => '1'
     ));
 
-    $oDB->createCommand()->addColumn('{{surveys}}','gsid',"integer DEFAULT 1");
+    $oDB->createCommand()->addColumn('{{surveys}}', 'gsid', "integer DEFAULT 1");
 
 
 }
@@ -1245,20 +1244,20 @@ function upgradeTemplateTables304($oDB)
 function upgradeTemplateTables298($oDB)
 {
     // Add global configuration for Advanced Template
-    $oDB->createCommand()->update('{{boxes}}',array(
+    $oDB->createCommand()->update('{{boxes}}', array(
         'url'=>'admin/templateoptions',
         'title'=>'Templates',
         'desc'=>'View templates list',
-        ) ,"id=6");
+        ), "id=6");
 }
 
 function upgradeTokenTables256()
 {
     $aTableNames = dbGetTablesLike("tokens%");
     $oDB = Yii::app()->getDb();
-    foreach ( $aTableNames as $sTableName )
+    foreach ($aTableNames as $sTableName)
     {
-        try { setTransactionBookmark(); $oDB->createCommand()->dropIndex("idx_lime_{$sTableName}_efl",$sTableName); } catch(Exception $e) { rollBackToTransactionBookmark();}
+        try { setTransactionBookmark(); $oDB->createCommand()->dropIndex("idx_lime_{$sTableName}_efl", $sTableName); } catch (Exception $e) { rollBackToTransactionBookmark(); }
         alterColumn($sTableName, 'email', "text");
         alterColumn($sTableName, 'firstname', "string(150)");
         alterColumn($sTableName, 'lastname', "string(150)");
@@ -1277,10 +1276,10 @@ function upgradeSurveyTables255()
     $oDB = Yii::app()->db;
     $oDB->createCommand()->insert('{{boxes}}', array(
         'position' =>  '1',
-        'url'      => 'admin/survey/sa/newsurvey' ,
-        'title'    => 'Create survey' ,
-        'ico'      => 'add' ,
-        'desc'     => 'Create a new survey' ,
+        'url'      => 'admin/survey/sa/newsurvey',
+        'title'    => 'Create survey',
+        'ico'      => 'add',
+        'desc'     => 'Create a new survey',
         'page'     => 'welcome',
         'usergroup' => '-2',
     ));
@@ -1339,24 +1338,24 @@ function upgradeSurveyTables255()
 
 function upgradeSurveyTables254()
 {
-    Yii::app()->db->createCommand()->dropColumn('{{boxes}}','img');
-    Yii::app()->db->createCommand()->addColumn('{{boxes}}','usergroup','integer');
+    Yii::app()->db->createCommand()->dropColumn('{{boxes}}', 'img');
+    Yii::app()->db->createCommand()->addColumn('{{boxes}}', 'usergroup', 'integer');
 }
 
 function upgradeSurveyTables253()
 {
     $oSchema = Yii::app()->db->schema;
     $aTables = dbGetTablesLike("survey\_%");
-    foreach ( $aTables as $sTable )
+    foreach ($aTables as $sTable)
     {
-        $oTableSchema=$oSchema->getTable($sTable);
-        if (in_array('refurl',$oTableSchema->columnNames))
+        $oTableSchema = $oSchema->getTable($sTable);
+        if (in_array('refurl', $oTableSchema->columnNames))
         {
-            alterColumn($sTable,'refurl',"text");
+            alterColumn($sTable, 'refurl', "text");
         }
-        if (in_array('ipaddr',$oTableSchema->columnNames))
+        if (in_array('ipaddr', $oTableSchema->columnNames))
         {
-            alterColumn($sTable,'ipaddr',"text");
+            alterColumn($sTable, 'ipaddr', "text");
         }
     }
 }
@@ -1364,19 +1363,19 @@ function upgradeSurveyTables253()
 
 function upgradeBoxesTable251()
 {
-    Yii::app()->db->createCommand()->addColumn('{{boxes}}','ico','string');
-    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'add',
+    Yii::app()->db->createCommand()->addColumn('{{boxes}}', 'ico', 'string');
+    Yii::app()->db->createCommand()->update('{{boxes}}', array('ico'=>'add',
         'title'=>'Create survey')
         ,"id=1");
-    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'list')
+    Yii::app()->db->createCommand()->update('{{boxes}}', array('ico'=>'list')
         ,"id=2");
-    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'settings')
+    Yii::app()->db->createCommand()->update('{{boxes}}', array('ico'=>'settings')
         ,"id=3");
-    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'shield')
+    Yii::app()->db->createCommand()->update('{{boxes}}', array('ico'=>'shield')
         ,"id=4");
-    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'label')
+    Yii::app()->db->createCommand()->update('{{boxes}}', array('ico'=>'label')
         ,"id=5");
-    Yii::app()->db->createCommand()->update('{{boxes}}',array('ico'=>'templates')
+    Yii::app()->db->createCommand()->update('{{boxes}}', array('ico'=>'templates')
         ,"id=6");
 }
 
@@ -1386,7 +1385,7 @@ function upgradeBoxesTable251()
 function createBoxes250()
 {
     $oDB = Yii::app()->db;
-    $oDB->createCommand()->createTable('{{boxes}}',array(
+    $oDB->createCommand()->createTable('{{boxes}}', array(
         'id' => 'pk',
         'position' => 'integer',
         'url' => 'text',
@@ -1398,10 +1397,10 @@ function createBoxes250()
 
     $oDB->createCommand()->insert('{{boxes}}', array(
         'position' =>  '1',
-        'url'      => 'admin/survey/sa/newsurvey' ,
-        'title'    => 'Create survey' ,
-        'img'      => 'add.png' ,
-        'desc'     => 'Create a new survey' ,
+        'url'      => 'admin/survey/sa/newsurvey',
+        'title'    => 'Create survey',
+        'img'      => 'add.png',
+        'desc'     => 'Create a new survey',
         'page'     => 'welcome',
     ));
 
@@ -1456,9 +1455,9 @@ function fixLanguageConsistencyAllSurveys()
 {
     $surveyidquery = "SELECT sid,additional_languages FROM ".dbQuoteID('{{surveys}}');
     $surveyidresult = Yii::app()->db->createCommand($surveyidquery)->queryAll();
-    foreach ( $surveyidresult as $sv )
+    foreach ($surveyidresult as $sv)
     {
-        fixLanguageConsistency($sv['sid'],$sv['additional_languages']);
+        fixLanguageConsistency($sv['sid'], $sv['additional_languages']);
     }
 }
 
@@ -1470,19 +1469,19 @@ function upgradeSurveyTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
     $oSchema = Yii::app()->db->schema;
-    if(Yii::app()->db->driverName!='pgsql')
+    if (Yii::app()->db->driverName != 'pgsql')
     {
         $aTables = dbGetTablesLike("survey\_%");
-        foreach ( $aTables as $sTableName )
+        foreach ($aTables as $sTableName)
         {
-            $oTableSchema=$oSchema->getTable($sTableName);
-            if (!in_array('token',$oTableSchema->columnNames)) continue; // No token field in this table
-            switch (Yii::app()->db->driverName){
+            $oTableSchema = $oSchema->getTable($sTableName);
+            if (!in_array('token', $oTableSchema->columnNames)) continue; // No token field in this table
+            switch (Yii::app()->db->driverName) {
                 case 'sqlsrv':
                 case 'dblib':
-                case 'mssql': dropSecondaryKeyMSSQL('token',$sTableName);
+                case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
                     alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
-                    $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1,40000).'}}',  $sTableName,'token');
+                    $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 40000).'}}', $sTableName, 'token');
                     break;
                 case 'mysql':
                 case 'mysqli':
@@ -1501,19 +1500,19 @@ function upgradeSurveyTables181($sMySQLCollation)
 function upgradeTokenTables181($sMySQLCollation)
 {
     $oDB = Yii::app()->db;
-    if(Yii::app()->db->driverName!='pgsql')
+    if (Yii::app()->db->driverName != 'pgsql')
     {
         $aTables = dbGetTablesLike("tokens%");
-        if (! empty($aTables))
+        if (!empty($aTables))
         {
-            foreach ( $aTables as $sTableName )
+            foreach ($aTables as $sTableName)
             {
-                switch (Yii::app()->db->driverName){
+                switch (Yii::app()->db->driverName) {
                     case 'sqlsrv':
                     case 'dblib':
-                    case 'mssql': dropSecondaryKeyMSSQL('token',$sTableName);
+                    case 'mssql': dropSecondaryKeyMSSQL('token', $sTableName);
                         alterColumn($sTableName, 'token', "string(35) COLLATE SQL_Latin1_General_CP1_CS_AS");
-                        $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1,50000).'}}',  $sTableName,'token');
+                        $oDB->createCommand()->createIndex("{{idx_{$sTableName}_".rand(1, 50000).'}}', $sTableName, 'token');
                         break;
                     case 'mysql':
                     case 'mysqli':
@@ -1530,61 +1529,61 @@ function upgradeTokenTables181($sMySQLCollation)
 * @param string $sFieldType
 * @param string $sColumn
 */
-function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault='NULL')
+function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefault = 'NULL')
 {
     $oDB = Yii::app()->db;
-    switch (Yii::app()->db->driverName){
+    switch (Yii::app()->db->driverName) {
         case 'mysql':
         case 'mysqli':
-            $sType=$sFieldType;
-            if ($bAllowNull!==true)
+            $sType = $sFieldType;
+            if ($bAllowNull !== true)
             {
-                $sType.=' NOT NULL';
+                $sType .= ' NOT NULL';
             }
-            if ($sDefault!='NULL')
+            if ($sDefault != 'NULL')
             {
-                $sType.=" DEFAULT '{$sDefault}'";
+                $sType .= " DEFAULT '{$sDefault}'";
             }
-            $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
+            $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
             break;
         case 'dblib':
         case 'sqlsrv':
         case 'mssql':
-            dropDefaultValueMSSQL($sColumn,$sTable);
-            $sType=$sFieldType;
-            if ($bAllowNull!=true && $sDefault!='NULL')
+            dropDefaultValueMSSQL($sColumn, $sTable);
+            $sType = $sFieldType;
+            if ($bAllowNull != true && $sDefault != 'NULL')
             {
                 $oDB->createCommand("UPDATE {$sTable} SET [{$sColumn}]='{$sDefault}' where [{$sColumn}] is NULL;")->execute();
             }
-            if ($bAllowNull!=true)
+            if ($bAllowNull != true)
             {
-                $sType.=' NOT NULL';
+                $sType .= ' NOT NULL';
             }
             else
             {
-                $sType.=' NULL';
+                $sType .= ' NULL';
             }
-            $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
-            if ($sDefault!='NULL')
+            $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
+            if ($sDefault != 'NULL')
             {
                 $oDB->createCommand("ALTER TABLE {$sTable} ADD default '{$sDefault}' FOR [{$sColumn}];")->execute();
             }
             break;
         case 'pgsql':
-            $sType=$sFieldType;
-            $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
-            try{ $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute();} catch(Exception $e) {};
-            try{ $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute();} catch(Exception $e) {};
+            $sType = $sFieldType;
+            $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
+            try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP DEFAULT")->execute(); } catch (Exception $e) {};
+            try { $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} DROP NOT NULL")->execute(); } catch (Exception $e) {};
 
-            if ($bAllowNull!=true)
+            if ($bAllowNull != true)
             {
                 $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET NOT NULL")->execute();
             }
-            if ($sDefault!='NULL')
+            if ($sDefault != 'NULL')
             {
                 $oDB->createCommand("ALTER TABLE {$sTable} ALTER COLUMN {$sColumn} SET DEFAULT '{$sDefault}'")->execute();
             }
-            $oDB->createCommand()->alterColumn($sTable,$sColumn,$sType);
+            $oDB->createCommand()->alterColumn($sTable, $sColumn, $sType);
             break;
         default: die('Unknown database type');
     }
@@ -1594,7 +1593,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull=true, $sDefault
 * @param string $sType
 */
 function addColumn($sTableName, $sColumn, $sType) {
-    Yii::app()->db->createCommand()->addColumn($sTableName,$sColumn,$sType);
+    Yii::app()->db->createCommand()->addColumn($sTableName, $sColumn, $sType);
 }
 
 /**
@@ -1602,8 +1601,8 @@ function addColumn($sTableName, $sColumn, $sType) {
 *
 * @param mixed $sBookmark  Name of the bookmark
 */
-function setTransactionBookmark($sBookmark='limesurvey') {
-    if (Yii::app()->db->driverName=='pgsql') {
+function setTransactionBookmark($sBookmark = 'limesurvey') {
+    if (Yii::app()->db->driverName == 'pgsql') {
         Yii::app()->db->createCommand("SAVEPOINT {$sBookmark};")->execute();
     }
 }
@@ -1613,9 +1612,9 @@ function setTransactionBookmark($sBookmark='limesurvey') {
 *
 * @param mixed $sBookmark   Name of the bookmark
 */
-function rollBackToTransactionBookmark($sBookmark='limesurvey')
+function rollBackToTransactionBookmark($sBookmark = 'limesurvey')
 {
-    if (Yii::app()->db->driverName=='pgsql') {
+    if (Yii::app()->db->driverName == 'pgsql') {
         Yii::app()->db->createCommand("ROLLBACK TO SAVEPOINT {$sBookmark};")->execute();
     }
 }
@@ -1630,14 +1629,14 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
 {
     // find out the name of the default constraint
     // Did I already mention that this is the most suckiest thing I have ever seen in MSSQL database?
-    $dfquery ="SELECT c_obj.name AS constraint_name
+    $dfquery = "SELECT c_obj.name AS constraint_name
     FROM sys.sysobjects AS c_obj INNER JOIN
     sys.sysobjects AS t_obj ON c_obj.parent_obj = t_obj.id INNER JOIN
     sys.sysconstraints AS con ON c_obj.id = con.constid INNER JOIN
     sys.syscolumns AS col ON t_obj.id = col.id AND con.colid = col.colid
     WHERE (c_obj.xtype = 'D') AND (col.name = '$fieldname') AND (t_obj.name='{$tablename}')";
     $defaultname = Yii::app()->getDb()->createCommand($dfquery)->queryRow();
-    if ($defaultname!=false) {
+    if ($defaultname != false) {
         Yii::app()->db->createCommand("ALTER TABLE {$tablename} DROP CONSTRAINT {$defaultname['constraint_name']}")->execute();
     }
 }
@@ -1650,11 +1649,11 @@ function dropDefaultValueMSSQL($fieldname, $tablename)
 */
 function dropUniqueKeyMSSQL($sFieldName, $sTableName)
 {
-    $sQuery ="select TC.Constraint_Name, CC.Column_Name from information_schema.table_constraints TC
+    $sQuery = "select TC.Constraint_Name, CC.Column_Name from information_schema.table_constraints TC
     inner join information_schema.constraint_column_usage CC on TC.Constraint_Name = CC.Constraint_Name
     where TC.constraint_type = 'Unique' and Column_name='{$sFieldName}' and TC.TABLE_NAME='{$sTableName}'";
     $aUniqueKeyName = Yii::app()->getDb()->createCommand($sQuery)->queryRow();
-    if ($aUniqueKeyName!=false) {
+    if ($aUniqueKeyName != false) {
         Yii::app()->getDb()->createCommand("ALTER TABLE {$sTableName} DROP CONSTRAINT {$aUniqueKeyName['Constraint_Name']}")->execute();
     }
 }
@@ -1668,7 +1667,7 @@ function dropUniqueKeyMSSQL($sFieldName, $sTableName)
 function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
 {
     $oDB = Yii::app()->getDb();
-    $sQuery="select
+    $sQuery = "select
     i.name as IndexName
     from sys.indexes i
     join sys.objects o on i.object_id = o.object_id
@@ -1683,9 +1682,9 @@ function dropSecondaryKeyMSSQL($sFieldName, $sTableName)
     and ic.is_included_column = 0
     and o.name='{$sTableName}' and co.name='{$sFieldName}'";
     $aKeyName = Yii::app()->getDb()->createCommand($sQuery)->queryScalar();
-    if ($aKeyName!=false)
+    if ($aKeyName != false)
     {
-        try { $oDB->createCommand()->dropIndex($aKeyName,$sTableName); } catch(Exception $e) { }
+        try { $oDB->createCommand()->dropIndex($aKeyName, $sTableName); } catch (Exception $e) { }
     }
 }
 
@@ -1699,11 +1698,11 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 {
     switch (Yii::app()->db->driverName) {
         case 'mysql':
-        if($oldPrimaryKeyColumn !== null){
-            $sQuery="ALTER TABLE {{".$sTablename."}} MODIFY {$oldPrimaryKeyColumn} INT NOT NULL";
+        if ($oldPrimaryKeyColumn !== null) {
+            $sQuery = "ALTER TABLE {{".$sTablename."}} MODIFY {$oldPrimaryKeyColumn} INT NOT NULL";
             Yii::app()->db->createCommand($sQuery)->execute();
         }
-            $sQuery="ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY";
+            $sQuery = "ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY";
             Yii::app()->db->createCommand($sQuery)->execute();
             break;
         case 'pgsql':
@@ -1715,9 +1714,9 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
             ."WHERE (TABLE_NAME = '{{{$sTablename}}}') AND (CONSTRAINT_TYPE = 'PRIMARY KEY')";
 
             $primarykey = Yii::app()->db->createCommand($pkquery)->queryRow(false);
-            if ($primarykey!==false)
+            if ($primarykey !== false)
             {
-                $sQuery="ALTER TABLE {{".$sTablename."}} DROP CONSTRAINT ".$primarykey[0];
+                $sQuery = "ALTER TABLE {{".$sTablename."}} DROP CONSTRAINT ".$primarykey[0];
                 Yii::app()->db->createCommand($sQuery)->execute();
             }
             break;
@@ -1731,7 +1730,7 @@ function dropPrimaryKey($sTablename, $oldPrimaryKeyColumn = null)
 */
 function addPrimaryKey($sTablename, $aColumns)
 {
-    return Yii::app()->db->createCommand()->addPrimaryKey('PK_'.$sTablename.'_'.randomChars(12,'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{'.$sTablename.'}}', $aColumns);
+    return Yii::app()->db->createCommand()->addPrimaryKey('PK_'.$sTablename.'_'.randomChars(12, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'), '{{'.$sTablename.'}}', $aColumns);
 }
 
 /**
@@ -1742,7 +1741,7 @@ function addPrimaryKey($sTablename, $aColumns)
 */
 function modifyPrimaryKey($sTablename, $aColumns)
 {
-    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',',$aColumns).")")->execute();
+    Yii::app()->db->createCommand("ALTER TABLE {{".$sTablename."}} DROP PRIMARY KEY, ADD PRIMARY KEY (".implode(',', $aColumns).")")->execute();
 }
 
 
@@ -1754,14 +1753,14 @@ function modifyPrimaryKey($sTablename, $aColumns)
 function fixMySQLCollations($sEncoding, $sCollation)
 {
     $surveyidresult = dbGetTablesLike("%");
-    foreach ( $surveyidresult as $sTableName ) {
-        try{
+    foreach ($surveyidresult as $sTableName) {
+        try {
             Yii::app()->getDb()->createCommand("ALTER TABLE {$sTableName} CONVERT TO CHARACTER SET {$sEncoding} COLLATE {$sCollation};")->execute();
-        } catch(Exception $e){
+        } catch (Exception $e) {
             // There are some big survey response tables that cannot be converted because the new charset probably uses
             // more bytes per character than the old one - we just leave them as they are for now.
         };
     }
-    $sDatabaseName=getDBConnectionStringProperty('dbname');
+    $sDatabaseName = getDBConnectionStringProperty('dbname');
     Yii::app()->getDb()->createCommand("ALTER DATABASE `$sDatabaseName` DEFAULT CHARACTER SET {$sEncoding} COLLATE {$sCollation};");
 }
