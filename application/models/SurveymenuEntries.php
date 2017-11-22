@@ -468,7 +468,7 @@ class SurveymenuEntries extends LSActiveRecord
         $criteria->compare('menu_class',$this->menu_class,true);
         $criteria->compare('menu_link',$this->menu_link,true);
         $criteria->compare('action',$this->action,true);
-        $criteria->compare('template',$this->template,true);
+        $criteria->compare('template',$this->theme,true);
         $criteria->compare('partial',$this->partial,true);
         $criteria->compare('language',$this->language,true);
         $criteria->compare('permission',$this->permission,true);
