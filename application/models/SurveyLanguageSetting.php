@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -150,7 +152,9 @@ class SurveyLanguageSetting extends LSActiveRecord
             $aDefaultTextData['admin_detailed_notification'] = $aDefaultTexts['admin_detailed_notification_css'].$aDefaultTexts['admin_detailed_notification'];
         }
 
-        if (empty($this->$attribute)) $this->$attribute = $aDefaultTextData[$attribute];
+        if (empty($this->$attribute)) {
+            $this->$attribute = $aDefaultTextData[$attribute];
+        }
     }
 
 

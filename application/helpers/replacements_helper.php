@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -77,8 +79,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
 
     if ($_surveyid) {
         $totalgroups = QuestionGroup::model()->getTotalGroupsWithQuestions($_surveyid);
-    }
-    else {
+    } else {
         $totalgroups = "";
     }
 
@@ -100,12 +101,13 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($thissurvey['templatedir']))
     {
         $templatename = $thissurvey['templatedir'];
-    }
-    else
+    } else
     {
         $templatename = Yii::app()->getConfig('defaulttheme');
     }
-    if (!isset($templateurl)) $templateurl = getTemplateURL($templatename)."/";
+    if (!isset($templateurl)) {
+        $templateurl = getTemplateURL($templatename)."/";
+    }
     if (!$anonymized && isset($thissurvey['anonymized'])) {
         $anonymized = ($thissurvey['anonymized'] == "Y");
     }
@@ -128,8 +130,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($thissurvey['format']))
     {
         $surveyformat = str_replace(array("A", "S", "G"), array("allinone", "questionbyquestion", "groupbygroup"), $thissurvey['format']);
-    }
-    else
+    } else
     {
         $surveyformat = "";
     }
@@ -156,7 +157,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     // real survey contact
     if (isset($thissurvey['admin']) && $thissurvey['admin'] != "") {
         $surveycontact = sprintf(gT("Please contact %s ( %s ) for further assistance."), $thissurvey['admin'], encodeEmail($thissurvey['adminemail']));
-    }elseif (Yii::app()->getConfig("siteadminname")) {
+    } elseif (Yii::app()->getConfig("siteadminname")) {
         $surveycontact = sprintf(gT("Please contact %s ( %s ) for further assistance."), Yii::app()->getConfig("siteadminname"), encodeEmail(Yii::app()->getConfig("siteadminemail")));
     } else {
         $surveycontact = "";
@@ -178,8 +179,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     )
     {
         $_groupname = isset($groupname) ? $groupname : '';
-    }
-    else
+    } else
     {
         $_groupname = '';
     };
@@ -192,13 +192,14 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     )
     {
         $_groupdescription = isset($groupdescription) ? $groupdescription : '';
-    }
-    else
+    } else
     {
         $_groupdescription = '';
     };
 
-    if (!isset($totalquestions)) $totalquestions = 0;
+    if (!isset($totalquestions)) {
+        $totalquestions = 0;
+    }
     $_totalquestionsAsked = $totalquestions;
     if (
     $showxquestions == 'show' ||
@@ -209,18 +210,15 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         if ($_totalquestionsAsked < 1)
         {
             $_therearexquestions = gT("There are no questions in this survey"); // Singular
-        }
-        elseif ($_totalquestionsAsked == 1)
+        } elseif ($_totalquestionsAsked == 1)
         {
             $_therearexquestions = gT("There is 1 question in this survey"); //Singular
-        }
-        else
+        } else
         {
             $_therearexquestions = gT("There are {NUMBEROFQUESTIONS} questions in this survey."); //Note this line MUST be before {NUMBEROFQUESTIONS}
         };
         $_therearexquestions = "<div class='question-count-text'>".$_therearexquestions."</div>";
-    }
-    else
+    } else
     {
         $_therearexquestions = '';
     };
@@ -228,12 +226,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($token))
     {
         $_token = $token;
-    }
-    elseif (isset($clienttoken))
+    } elseif (isset($clienttoken))
     {
         $_token = htmlentities($clienttoken, ENT_QUOTES, 'UTF-8'); // or should it be URL-encoded?
-    }
-    else
+    } else
     {
         $_token = '';
     }
@@ -245,8 +241,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
         Yii::import('application.libraries.Date_Time_Converter', true);
         $datetimeobj = new Date_Time_Converter($thissurvey['expiry'], "Y-m-d");
         $_dateoutput = $datetimeobj->convert($dateformatdetails['phpdate']);
-    }
-    else
+    } else
     {
         $_dateoutput = '-';
     }
@@ -256,8 +251,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($thissurvey['sid']) && isset($_SESSION['survey_'.$thissurvey['sid']]['srid']) && $thissurvey['active'] == 'Y')
     {
         $iscompleted = $thissurvey['iscompleted'] = SurveyDynamic::model($surveyid)->isCompleted($_SESSION['survey_'.$thissurvey['sid']]['srid']);
-    }
-    else
+    } else
     {
         $iscompleted = $thissurvey['iscompleted'] = false;
     }
@@ -267,8 +261,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset(Yii::app()->session['datestamp']))
     {
         $_datestamp = Yii::app()->session['datestamp'];
-    }
-    else
+    } else
     {
         $_datestamp = '-';
     }
@@ -281,12 +274,10 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (isset($thissurvey['googleanalyticsapikey']) && $thissurvey['googleanalyticsapikey'] === "9999useGlobal9999")
     {
         $_googleAnalyticsAPIKey = trim(getGlobalSetting('googleanalyticsapikey'));
-    }
-    else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '')
+    } else if (isset($thissurvey['googleanalyticsapikey']) && trim($thissurvey['googleanalyticsapikey']) != '')
     {
         $_googleAnalyticsAPIKey = trim($thissurvey['googleanalyticsapikey']);
-    }
-    else
+    } else
     {
         $_googleAnalyticsAPIKey = "";
     }
@@ -387,8 +378,7 @@ function templatereplace($line, $replacements = array(), &$redata = array(), $de
     if (!is_null($replacements) && is_array($replacements))
     {
         $doTheseReplacements = array_merge($coreReplacements, $replacements); // so $replacements overrides core values
-    }
-    else
+    } else
     {
         $doTheseReplacements = $coreReplacements;
     }
@@ -414,8 +404,7 @@ function ReplaceFields($text, $fieldsarray, $bReplaceInsertans = true, $staticRe
             $replacements[substr($key, 1, -1)] = $value;
         }
         $text = LimeExpressionManager::ProcessString($text, NULL, $replacements, false, 2, 1, false, false, $staticReplace);
-    }
-    else
+    } else
     {
         foreach ($fieldsarray as $key => $value)
         {

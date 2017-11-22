@@ -97,10 +97,11 @@ function checkGroup($postsid)
             $failedgroupcheck[] = array($row['gid'], $row['group_name'], ": ".gT("This group does not contain any question(s)."));
         }
     }
-    if (isset($failedgroupcheck))
-        return $failedgroupcheck;
-    else
-        return false;
+    if (isset($failedgroupcheck)) {
+            return $failedgroupcheck;
+    } else {
+            return false;
+    }
 
 }
 /**
@@ -262,8 +263,7 @@ function activateSurvey($iSurveyID, $simulate = false)
     {
         Yii::app()->user->setFlash('error', $message);
         return array('error' => 'plugin');
-    }
-    else if (!empty($message))
+    } else if (!empty($message))
     {
         Yii::app()->user->setFlash('info', $message);
     }
@@ -321,8 +321,7 @@ function activateSurvey($iSurveyID, $simulate = false)
                 if ($aRow['aid'] != 'other' && strpos($aRow['aid'], 'comment') === false && strpos($aRow['aid'], 'othercomment') === false)
                 {
                     $aTableDefinition[$aRow['fieldname']] = "string(5)";
-                }
-                else
+                } else
                 {
                     $aTableDefinition[$aRow['fieldname']] = "text";
                 }
@@ -348,18 +347,21 @@ function activateSurvey($iSurveyID, $simulate = false)
                 break;
             case "|":
                 $bCreateSurveyDir = true;
-                if (strpos($aRow['fieldname'], "_"))
-                    $aTableDefinition[$aRow['fieldname']] = "integer";
-                else
-                    $aTableDefinition[$aRow['fieldname']] = "text";
+                if (strpos($aRow['fieldname'], "_")) {
+                                    $aTableDefinition[$aRow['fieldname']] = "integer";
+                } else {
+                                    $aTableDefinition[$aRow['fieldname']] = "text";
+                }
                 break;
             case "ipaddress":
-                if ($oSurvey->ipaddr == "Y")
-                    $aTableDefinition[$aRow['fieldname']] = "text";
+                if ($oSurvey->ipaddr == "Y") {
+                                    $aTableDefinition[$aRow['fieldname']] = "text";
+                }
                 break;
             case "url":
-                if ($oSurvey->refurl == "Y")
-                    $aTableDefinition[$aRow['fieldname']] = "text";
+                if ($oSurvey->refurl == "Y") {
+                                    $aTableDefinition[$aRow['fieldname']] = "text";
+                }
                 break;
             case "token":
                 $aTableDefinition[$aRow['fieldname']] = 'string(35)'.$sCollation;
@@ -406,8 +408,7 @@ function activateSurvey($iSurveyID, $simulate = false)
             $brackets = strpos($tempTrim, "(");
             if ($brackets === false) {
                 $type = substr($tempTrim, 0, 2);
-            }
-            else {
+            } else {
                 $type = substr($tempTrim, 0, 2);
             }
             $arrSim[] = array($type);
@@ -426,23 +427,22 @@ function activateSurvey($iSurveyID, $simulate = false)
     {
         Yii::app()->db->createCommand()->createTable($sTableName, $aTableDefinition);
         Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-    }
-    catch (CDbException $e)
+    } catch (CDbException $e)
     {
         if (App()->getConfig('debug'))
         {
             return array('error'=>$e->getMessage());
-        }
-        else
+        } else
         {
             return array('error'=>'surveytablecreation');
         }
     }
     try
     {
-        if (isset($aTableDefinition['token'])) Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1, 50000), $sTableName, 'token');
-    }
-        catch (CDbException $e)
+        if (isset($aTableDefinition['token'])) {
+            Yii::app()->db->createCommand()->createIndex("idx_survey_token_{$iSurveyID}_".rand(1, 50000), $sTableName, 'token');
+        }
+    } catch (CDbException $e)
     {
     }
 
@@ -461,13 +461,11 @@ function activateSurvey($iSurveyID, $simulate = false)
             // Add back the primaryKey
 
             Yii::app()->db->createCommand()->addPrimaryKey('PRIMARY_'.rand(1, 50000), $oSurvey->responsesTableName, 'id');
-        }
-        elseif (Yii::app()->db->driverName == 'pgsql')
+        } elseif (Yii::app()->db->driverName == 'pgsql')
         {
             $sQuery = "SELECT setval(pg_get_serial_sequence('{{survey_{$iSurveyID}}}', 'id'),{$iAutoNumberStart},false);";
             @Yii::app()->db->createCommand($sQuery)->execute();
-        }
-        else
+        } else
         {
             $sQuery = "ALTER TABLE {{survey_{$iSurveyID}}} AUTO_INCREMENT = {$iAutoNumberStart}";
             @Yii::app()->db->createCommand($sQuery)->execute();
@@ -488,8 +486,7 @@ function activateSurvey($iSurveyID, $simulate = false)
         {
             Yii::app()->db->createCommand()->createTable($sTableName, $aTimingTableDefinition);
             Yii::app()->db->schema->getTable($sTableName, true); // Refresh schema cache just in case the table existed in the past
-        }
-        catch (CDbException $e)
+        } catch (CDbException $e)
         {
             return array('error'=>'timingstablecreation');
         }

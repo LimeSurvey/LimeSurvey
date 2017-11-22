@@ -32,13 +32,16 @@ class DbConnection extends \CDbConnection
      */
     public function quoteValueExtended($str, $quoteParam)
     {
-        if (is_int($str) || is_float($str))
-            return $str;
+        if (is_int($str) || is_float($str)) {
+                    return $str;
+        }
 
         $this->setActive(true);
-        if (($value = $this->getPdoInstance()->quote($str, $quoteParam)) !== false)
-            return $value;
-        else  // the driver doesn't support quote (e.g. oci)
+        if (($value = $this->getPdoInstance()->quote($str, $quoteParam)) !== false) {
+                    return $value;
+        } else {
+            // the driver doesn't support quote (e.g. oci)
             return "'".addcslashes(str_replace("'", "''", $str), "\000\n\r\\\032")."'";
+        }
     }
 }

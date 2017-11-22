@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
     /*
     * LimeSurvey
     * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -62,15 +64,13 @@
                             $sUploadUrl = substr($sUploadUrl, strlen($sBaseUrl));
                         }
                         $_SESSION['KCFINDER']['uploadURL'] = trim($sBaseAbsoluteUrl, "/").$sUploadUrl."/surveys/{$surveyid}/";
-                    }
-                    else
+                    } else
                     {
                         $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->getConfig('uploadurl')."/surveys/{$surveyid}/";
                     }
                     $_SESSION['KCFINDER']['uploadDir'] = realpath(Yii::app()->getConfig('uploaddir')).DIRECTORY_SEPARATOR.'surveys'.DIRECTORY_SEPARATOR.$surveyid.DIRECTORY_SEPARATOR;
                 }
-            }
-            elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
+            } elseif (preg_match('/^edit:label/', Yii::app()->session['FileManagerContext']) != 0)
             {
                 $contextarray = explode(':', Yii::app()->session['FileManagerContext'], 3);
                 $labelid = $contextarray[2];
@@ -102,8 +102,7 @@
         );
         if (isset($aTranslationTable[$sLanguageCode])) {
             $sResultCode = $aTranslationTable[$sLanguageCode];
-        }
-        else
+        } else
         {
             $sResultCode = strtolower($sLanguageCode);
         }
@@ -121,8 +120,7 @@
         {
 
             return $controller->renderPartial('/admin/survey/prepareEditorScript_view', array(), true);
-        }
-        else
+        } else
         {
             $controller->renderPartial('/admin/survey/prepareEditorScript_view', array());
         }
@@ -163,12 +161,10 @@
         $fieldtype == 'addlabel') && (preg_match("/^translate/", $action) == 0))
         {
             return getPopupEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
-        }
-        elseif ($htmleditormode == 'inline')
+        } elseif ($htmleditormode == 'inline')
         {
             return getInlineEditor($fieldtype, $fieldname, $fieldtext, $surveyID, $gID, $qID, $action);
-        }
-        else
+        } else
         {
             return '';
         }
@@ -213,8 +209,7 @@
             $toolbaroption = ",toolbarStartupExpanded:true\n"
             .",toolbar:'popup'\n"
             .",toolbarCanCollapse:false\n";
-        }
-        else
+        } else
         {
             $ckeditexpandtoolbar = Yii::app()->getConfig('ckeditexpandtoolbar');
             if (!isset($ckeditexpandtoolbar) || $ckeditexpandtoolbar == true)
