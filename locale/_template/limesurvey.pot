@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LimeSurvey language file\n"
 "Report-Msgid-Bugs-To: http://translate.limesurvey.org/\n"
-"POT-Creation-Date: 2017-11-22 10:24:30+00:00\n"
+"POT-Creation-Date: 2017-11-22 10:38:29+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3506,7 +3506,7 @@ msgstr ""
 
 #: application/controllers/admin/responses.php:1088
 #: application/controllers/admin/responses.php:1089
-msgid "Responses and Statistics"
+msgid "Responses and statistics"
 msgstr ""
 
 #: application/controllers/admin/saved.php:58
@@ -11198,11 +11198,11 @@ msgid "Template options"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:463
-msgid "This will delete all the specific configurations of this template"
+msgid "This will delete all the specific configurations of this theme."
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:465
-msgid "uninstall this template"
+msgid "Uninstall this theme"
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:468
@@ -11214,7 +11214,7 @@ msgid "Error: Malformed JSON: Field %s must be either a JSON array or the string
 msgstr ""
 
 #: application/models/TemplateConfiguration.php:662
-msgid "Templates '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
+msgid "Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."
 msgstr ""
 
 #: application/models/TemplateManifest.php:246
