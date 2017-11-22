@@ -460,9 +460,9 @@ class TemplateConfiguration extends TemplateConfig
             data-href="'.$sUninstallUrl.'"
             data-target="#confirmation-modal"
             data-toggle="modal"
-            data-message="'.gT('This will delete all the specific configurations of this template').'<br>'.gT('Do you want to continue?').'"
+            data-message="'.gT('This will delete all the specific configurations of this theme.').'<br>'.gT('Do you want to continue?').'"
             data-tooltip="true"
-            title="'.gT('uninstall this template').'"
+            title="'.gT('Uninstall this theme').'"
             class="btn btn-danger">
                 <span class="icon-trash"></span>
                 '.gT('Uninstall').'
@@ -659,7 +659,7 @@ class TemplateConfiguration extends TemplateConfig
             if(!($oMotherTemplate instanceof TemplateConfiguration)){
                 //throw new Exception("can't find a template for template '{$oRTemplate->template_name}' for path '$sPath'.");
                 TemplateConfiguration::uninstall($this->template_name);
-                Yii::app()->setFlashMessage(sprintf(gT("Templates '%s' has been uninstalled because it's not compatible with this LimeSurvey version."), $this->template_name), 'error');
+                Yii::app()->setFlashMessage(sprintf(gT("Theme '%s' has been uninstalled because it's not compatible with this LimeSurvey version."), $this->template_name), 'error');
                 Yii::app()->getController()->redirect(array("admin/themeoptions"));
                 break;
             }
