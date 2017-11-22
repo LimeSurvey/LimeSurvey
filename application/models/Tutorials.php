@@ -48,7 +48,7 @@ class Tutorials extends LSActiveRecord
                                     .gT("From left to right it should be 'Create survey', 'List surveys' and 'Global settings'. Best we start by creating a survey.")
                                     .'<p class="alert bg-warning">'.gT("Click on the 'Create survey' box - or 'Next' in this tutorial").'</p>',
                                     'reflex' => '.selector__lstour--createsurvey',
-                                    'redirect' => false,
+                                    'redirect' => true,
                                     'onShow' => "(function(){ $('#welcomeModal').modal('hide'); })"
                                 ),
                                 array( //3
