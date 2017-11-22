@@ -39,13 +39,15 @@ class Surveymenu extends LSActiveRecord
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('changed_at', 'required'),
+            array('changed_at, name', 'required'),
+            array('name', 'unique'),
             array('parent_id, survey_id, user_id, ordering, level, changed_by, created_by', 'numerical', 'integerOnly'=>true),
             array('title, position', 'length', 'max'=>255),
+            array('name', 'length', 'max'=>128),
             array('description, created_at', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, parent_id, survey_id, user_id, ordering, level, position, title, description, changed_at, changed_by, created_at, created_by', 'safe', 'on'=>'search'),
+            array('id, parent_id, survey_id, user_id, ordering, level, position, name, title, description, changed_at, changed_by, created_at, created_by', 'safe', 'on'=>'search'),
         );
     }
 
@@ -69,6 +71,7 @@ class Surveymenu extends LSActiveRecord
     {
         $oSurveymenu = new Surveymenu();
         $oSurveymenu->parent_id = $menuArray['parent_id'];
+        $oSurveymenu->name = $menuArray['name'];
         $oSurveymenu->title = $menuArray['title'];
         $oSurveymenu->position = $menuArray['position'];
         $oSurveymenu->description = $menuArray['description'];
@@ -86,10 +89,10 @@ class Surveymenu extends LSActiveRecord
         
         $oSurveymenu = Surveymenu::model()->find('name=:name', [':name'=>$menuName]);
         
-        if ($recursive !== true) {
-            if (count($oSurveymenu->surveymenuEntries) > 0)
-                return;
+        if ($recursive !== true && count($oSurveymenu->surveymenuEntries) > 0) {
+                return false;
         }
+
         foreach ($oSurveymenu->surveymenuEntries as $oSurveymenuEntry) {
             $oSurveymenuEntry->delete();
         }
@@ -175,6 +178,7 @@ class Surveymenu extends LSActiveRecord
             'user_id' 		=> gT('User'),
             'ordering' 		=> gT('Order'),
             'level' 		=> gT('Level'),
+            'name' 		    => gT('Name'),
             'title' 		=> gT('Title'),
             'position' 		=> gT('Position'),
             'description'	=> gT('Description'),
@@ -231,6 +235,9 @@ class Surveymenu extends LSActiveRecord
                 "type" => 'raw',
                 "header" => gT("Action"),
                 "filter" => false
+            ),
+            array(
+                'name' => 'name',
             ),
             array(
                 'name' => 'title',
@@ -318,9 +325,9 @@ class Surveymenu extends LSActiveRecord
         try {
             $oDB->createCommand()->truncateTable('{{surveymenu}}');
 
-            $headerArray = ['parent_id', 'survey_id', 'user_id', 'ordering', 'level', 'title', 'position', 'description', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by'];
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'Survey menu', 'side', 'Main survey menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
-            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'Quick menu', 'collapsed', 'Quick menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
+            $headerArray = ['parent_id', 'survey_id', 'user_id', 'ordering', 'level', 'name', 'title', 'position', 'description', 'active', 'changed_at', 'changed_by', 'created_at', 'created_by'];
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'mainmenu', 'Survey menu', 'side', 'Main survey menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
+            $oDB->createCommand()->insert("{{surveymenu}}", array_combine($headerArray, [null, null, null, 0, 0, 'quickmenu', 'Quick menu', 'collapsed', 'Quick menu', 1, date('Y-m-d H:i:s'), 0, date('Y-m-d H:i:s'), 0]));
             
             $oTransaction->commit();
         } catch (Exception $e) {
@@ -395,6 +402,7 @@ class Surveymenu extends LSActiveRecord
         $criteria->compare('user_id', $this->user_id);
         $criteria->compare('ordering', $this->ordering);
         $criteria->compare('level', $this->level);
+        $criteria->compare('name', $this->name, true);
         $criteria->compare('title', $this->title, true);
         $criteria->compare('position', $this->position, true);
         $criteria->compare('description', $this->description, true);

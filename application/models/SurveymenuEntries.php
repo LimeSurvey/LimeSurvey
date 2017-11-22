@@ -54,6 +54,7 @@ class SurveymenuEntries extends LSActiveRecord
             array('changed_at', 'required'),
             array('menu_id, user_id, ordering, changed_by, created_by', 'numerical', 'integerOnly'=>true),
             array('title, menu_title, menu_icon, menu_icon_type, menu_class, menu_link, action, template, partial, permission, permission_grade, classes, getdatamethod', 'length', 'max'=>255),
+            array('name', 'unique'),
             array('name, menu_description, language, data, created_at', 'safe'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
