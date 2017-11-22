@@ -142,6 +142,7 @@ class CreateSurveyTest extends TestBaseClassWeb
                     )
                 );
                 $showquickactions->click();
+                sleep(1);
             } catch (NoSuchElementException $ex) {
                 // Ignore
             }
