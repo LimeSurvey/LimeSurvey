@@ -842,6 +842,7 @@ class TemplateConfig extends CActiveRecord
         $oNewTemplate->api_version      = $aDatas['api_version'];
         $oNewTemplate->view_folder      = $aDatas['view_folder'];
         $oNewTemplate->files_folder     = $aDatas['files_folder'];
+        $oNewTemplate->description      = $aDatas['description'];
         $oNewTemplate->owner_id         = Yii::app()->user->id;
         $oNewTemplate->extends          = $aDatas['extends'];
 
