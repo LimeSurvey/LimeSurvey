@@ -93,8 +93,7 @@ use Template;
             if ($bPluginTable)
             {
                 $table = $this->getTableName($plugin, $sTableName);
-            }
-            else
+            } else
             {
                 $table = $sTableName;
             }
@@ -128,8 +127,7 @@ use Template;
             if ($bPluginTable)
             {
                 $table = $this->getTableName($plugin, $sTableName);
-            }
-            else
+            } else
             {
                 $table = $sTableName;
             }
@@ -303,8 +301,9 @@ use Template;
             $timingbase = App()->getDb()->tablePrefix.'old_survey_'.$surveyId.'_timings_';
             foreach (App()->getDb()->getSchema()->getTableNames() as $table)
             {
-                if (strpos($table, $base) === 0 && strpos($table, $timingbase) === false)
-                $tables[] = $table;
+                if (strpos($table, $base) === 0 && strpos($table, $timingbase) === false) {
+                                $tables[] = $table;
+                }
             }
             return $tables;
         }
@@ -425,8 +424,7 @@ use Template;
             if ($plugin)
             {
                 return $plugin->active == 1;
-            }
-            else
+            } else
             {
                 throw new Exception("Can't find a plugin with name ".$name);
             }

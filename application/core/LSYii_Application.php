@@ -182,8 +182,9 @@ class LSYii_Application extends CWebApplication
         $config = require_once(APPPATH.'/config/'.$file.'.php');
         if (is_array($config))
         {
-            foreach ($config as $k => $v)
-                $this->setConfig($k, $v);
+            foreach ($config as $k => $v) {
+                            $this->setConfig($k, $v);
+            }
         }
     }
 

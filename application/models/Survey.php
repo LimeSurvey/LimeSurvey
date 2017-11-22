@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     die('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -414,8 +415,10 @@ class Survey extends LSActiveRecord
             // Reset to default only if different from actual value
             if (!$this->isNewRecord) {
                 $oSurvey = self::model()->findByPk($this->sid);
-                if ($oSurvey->template != $sTemplateName)// No need to test !is_null($oSurvey)
+                if ($oSurvey->template != $sTemplateName) {
+                    // No need to test !is_null($oSurvey)
                     $sTemplateName = Yii::app()->getConfig('defaulttheme');
+                }
             } else {
                 $sTemplateName = Yii::app()->getConfig('defaulttheme');
             }
@@ -435,8 +438,10 @@ class Survey extends LSActiveRecord
     public function permission($loginID)
     {
         $loginID = (int) $loginID;
-        if (Permission::model()->hasGlobalPermission('surveys', 'read', $loginID))// Test global before adding criteria
+        if (Permission::model()->hasGlobalPermission('surveys', 'read', $loginID)) {
+            // Test global before adding criteria
             return $this;
+        }
         $criteria = $this->getDBCriteria();
         $criteria->mergeWith(array(
             'condition' => 'sid IN (SELECT entity_id FROM {{permissions}} WHERE entity = :entity AND  uid = :uid AND permission = :permission AND read_p = 1)
@@ -460,10 +465,11 @@ class Survey extends LSActiveRecord
     public function getAdditionalLanguages()
     {
         $sLanguages = trim($this->additional_languages);
-        if ($sLanguages != '')
-            return explode(' ', $sLanguages);
-        else
-            return array();
+        if ($sLanguages != '') {
+                    return explode(' ', $sLanguages);
+        } else {
+                    return array();
+        }
     }
 
     /**
@@ -497,8 +503,7 @@ class Survey extends LSActiveRecord
         if ($attdescriptiondata && strpos(key(reset($attdescriptiondata)), 'attribute_') === false) {
             // don't know why yet but this breaks normal tokenAttributes functionning
             //$attdescriptiondata=array_flip(GetAttributeFieldNames($this->sid));
-        }
-        elseif (is_null($attdescriptiondata)) {
+        } elseif (is_null($attdescriptiondata)) {
             $attdescriptiondata = array();
         }
         // Legacy records support
@@ -527,7 +532,9 @@ class Survey extends LSActiveRecord
         }
         $aCompleteData = array();
         foreach ($attdescriptiondata as $sKey=>$aValues) {
-            if (!is_array($aValues)) $aValues = array();
+            if (!is_array($aValues)) {
+                $aValues = array();
+            }
             if (preg_match("/^attribute_[0-9]{1,}$/", $sKey)) {
                 $aCompleteData[$sKey] = array_merge(array(
                     'description' => '',
@@ -752,8 +759,7 @@ class Survey extends LSActiveRecord
             if (isset($aData['wishSID'])) {
                 $aData['sid'] = $aData['wishSID'];
                 unset($aData['wishSID']);
-            }
-            else {
+            } else {
                 $aData['sid'] = randomChars(6, '123456789');
             }
             $isresult = self::model()->findByPk($aData['sid']);
@@ -1278,8 +1284,7 @@ class Survey extends LSActiveRecord
         if (isset($this->languagesettings[App()->language]))
         {
             return $this->languagesettings[App()->language]->surveyls_title;
-        }
-        else
+        } else
         {
             return $this->languagesettings[$this->language]->surveyls_title;
         }

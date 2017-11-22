@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -63,7 +65,9 @@ class TokenDynamic extends LSActiveRecord
         $model = parent::model(__CLASS__);
 
         //We need to refresh if we changed sid
-        if ($refresh === true) $model->refreshMetaData();
+        if ($refresh === true) {
+            $model->refreshMetaData();
+        }
         return $model;
     }
 
@@ -184,20 +188,25 @@ class TokenDynamic extends LSActiveRecord
             $command->addCondition("(sent <> 'N') AND (sent <> '')");
         }
 
-        if ($SQLemailstatuscondition)
-            $command->addCondition($SQLemailstatuscondition);
+        if ($SQLemailstatuscondition) {
+                    $command->addCondition($SQLemailstatuscondition);
+        }
 
-        if ($SQLremindercountcondition)
-            $command->addCondition($SQLremindercountcondition);
+        if ($SQLremindercountcondition) {
+                    $command->addCondition($SQLremindercountcondition);
+        }
 
-        if ($SQLreminderdelaycondition)
-            $command->addCondition($SQLreminderdelaycondition);
+        if ($SQLreminderdelaycondition) {
+                    $command->addCondition($SQLreminderdelaycondition);
+        }
 
-        if ($aTokenIds)
-            $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
+        if ($aTokenIds) {
+                    $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
+        }
 
-        if ($iMaxEmails)
-            $command->limit = $iMaxEmails;
+        if ($iMaxEmails) {
+                    $command->limit = $iMaxEmails;
+        }
 
         $command->order = 'tid';
 
@@ -227,20 +236,25 @@ class TokenDynamic extends LSActiveRecord
             $command->addCondition("(sent <> 'N') AND (sent <> '')");
         }
 
-        if ($SQLemailstatuscondition)
-            $command->addCondition($SQLemailstatuscondition);
+        if ($SQLemailstatuscondition) {
+                    $command->addCondition($SQLemailstatuscondition);
+        }
 
-        if ($SQLremindercountcondition)
-            $command->addCondition($SQLremindercountcondition);
+        if ($SQLremindercountcondition) {
+                    $command->addCondition($SQLremindercountcondition);
+        }
 
-        if ($SQLreminderdelaycondition)
-            $command->addCondition($SQLreminderdelaycondition);
+        if ($SQLreminderdelaycondition) {
+                    $command->addCondition($SQLreminderdelaycondition);
+        }
 
-        if ($aTokenIds)
-            $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
+        if ($aTokenIds) {
+                    $command->addCondition("tid IN ('".implode("', '", $aTokenIds)."')");
+        }
 
-        if ($iMaxEmails)
-            $command->limit = $iMaxEmails;
+        if ($iMaxEmails) {
+                    $command->limit = $iMaxEmails;
+        }
 
         $command->order = 'tid';
 
@@ -367,7 +381,9 @@ class TokenDynamic extends LSActiveRecord
     {
         $tkresult = $this->selectEmptyTokens($iSurveyID);
         //Exit early if there are not empty tokens
-        if (count($tkresult) === 0) return array(0, 0);
+        if (count($tkresult) === 0) {
+            return array(0, 0);
+        }
 
         //get token length from survey settings
         $tlrow = Survey::model()->findByAttributes(array("sid"=>$iSurveyID));
@@ -404,8 +420,7 @@ class TokenDynamic extends LSActiveRecord
             if ($bIsValidToken) {
                 $this->updateToken($tkrow['tid'], $newtoken);
                 $newtokencount++;
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -804,8 +819,7 @@ class TokenDynamic extends LSActiveRecord
                     $button .= '<a class="btn btn-default btn-xs" href="'.$sResponseUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT("View last response details").'"><span class="fa fa-list-alt" ></span></a>';
                 }
             }
-        }
-        else {
+        } else {
             $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
         }
 
@@ -814,8 +828,7 @@ class TokenDynamic extends LSActiveRecord
             && Permission::model()->hasSurveyPermission(self::$sid, 'responses', 'create')) {
 
             $button .= '<a class="btn btn-default btn-xs" href="'.$sPreviewUrl.'" target="_blank" role="button" data-toggle="tooltip" title="'.gT('Launch the survey with this token').'"><span class="icon-do" ></span></a>';
-        }
-        else {
+        } else {
             $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
         }
 
@@ -824,16 +837,13 @@ class TokenDynamic extends LSActiveRecord
             if ($this->completed == 'N' && $this->usesleft > 0) {
                 if ($this->sent == 'N') {
                     $button .= '<a class="btn btn-default btn-xs" href="'.$sInviteUrl.'" role="button" data-toggle="tooltip" title="'.gT('Send email invitation').'"><span class="icon-invite" ></span></a>';
-                }
-                else {
+                } else {
                     $button .= '<a class="btn btn-default btn-xs" href="'.$sRemindUrl.'" role="button" data-toggle="tooltip" title="'.gT('Send email reminder').'"><span class="icon-remind " ></span></a>';
                 }
-            }
-            else {
+            } else {
                 $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span></span>';
             }
-        }
-        else {
+        } else {
             $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ></span><!-- Invite or Remind --></span>';
         }
 
@@ -855,8 +865,7 @@ class TokenDynamic extends LSActiveRecord
 
             $onClick = "sendPost('".App()->createUrl('admin/participants/sa/displayParticipants')."','',['searchcondition'],['participant_id||equal||{$this->participant_id}']);";
             $button .= '<a class="btn btn-default btn-xs" href="#" role="button" data-toggle="tooltip" title="'.gT('View this person in the central participants database').'" onclick="'.$onClick.'"><span class="icon-cpdb" ></span></a>';
-        }
-        else {
+        } else {
             $button .= '<span class="btn btn-default btn-xs disabled blank_button" href="#"><span class="fa-fw fa" ><!-- Display participant in CPDB--></span></span>';
         }
         return "<div style='white-space:nowrap'>".$button."</div>";

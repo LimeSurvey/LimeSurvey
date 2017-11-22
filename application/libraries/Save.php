@@ -260,8 +260,7 @@ class Save
             if (isset($_SESSION['survey_'.$surveyid]['refurl']))
             {
                 $saved_control->refurl = $_SESSION['survey_'.$surveyid]['refurl'];
-            }
-            else
+            } else
             {
                 $saved_control->refurl = getenv("HTTP_REFERER");
             }
@@ -270,8 +269,7 @@ class Save
             {
                 $scid = getLastInsertID('{{saved_control}}');
                 $_SESSION['survey_'.$surveyid]['scid'] = $scid;
-            }
-            else
+            } else
             {
                 safeDie("Unable to insert record into saved_control table.<br /><br />");
             }
@@ -299,8 +297,7 @@ class Save
                 if (SendEmailMessage($message, $subject, $_POST['saveemail'], $from, $sitename, false, getBounceEmail($surveyid)))
                 {
                     $emailsent = "Y";
-                }
-                else
+                } else
                 {
                     $errormsg .= gT('Error: Email failed, this may indicate a PHP Mail Setup problem on the server. Your survey details have still been saved, however you will not get an email with the details. You should note the "name" and "password" you just used for future reference.');
                     if (trim($thissurvey['adminemail']) == '')
@@ -479,8 +476,7 @@ class Save
 
         if (isset($_POST['lastanswer'])) {
             $setField = $_POST['lastanswer'];
-        }
-        elseif (isset($_POST['lastgroup']))
+        } elseif (isset($_POST['lastgroup']))
         {
             $setField = $_POST['lastgroup'];
         }
@@ -490,12 +486,13 @@ class Save
             ."interviewtime = (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + ".$passedTime
             ." WHERE id = ".$_SESSION['survey_'.$thissurvey['sid']]['srid'];
 
-        }
-        else
+        } else
         {
             $aColumnNames = SurveyTimingDynamic::model($thissurvey['sid'])->getTableSchema()->columnNames;
             $setField .= "time";
-            if (!in_array($setField, $aColumnNames)) die('Invalid last group timing fieldname');
+            if (!in_array($setField, $aColumnNames)) {
+                die('Invalid last group timing fieldname');
+            }
             $setField = Yii::app()->db->quoteColumnName($setField);
             $query = "UPDATE ".$survey->timingsTableName." SET "
             ."interviewtime =  (CASE WHEN interviewtime IS NULL THEN 0 ELSE interviewtime END) + ".$passedTime.","

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -234,8 +236,7 @@ class QuestionAttribute extends LSActiveRecord
                     }
                 }
             }
-        }
-        else {
+        } else {
             return false; // return false but don't set $aQuestionAttributesStatic[$iQuestionID]
         }
         $aQuestionAttributesStatic[$iQuestionID] = $aQuestionAttributes;

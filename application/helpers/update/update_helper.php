@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -39,8 +41,7 @@ function CheckForDBUpgrades($subaction = null)
                         '<a href="'.Yii::app()->getController()->createUrl("/admin").'">'.gT("Back to main menu").'</a>'.
                     '</p>'.
                     '</div>';
-            }
-            else
+            } else
             {
                 $msg = '';
                 foreach (yii::app()->user->getflashes() as $key => $message)
@@ -50,8 +51,7 @@ function CheckForDBUpgrades($subaction = null)
                 $data = $msg."<p><a href='".Yii::app()->getController()->createUrl("/admin/databaseupdate/sa/db")."'>".gT("Please fix this error in your database and try again")."</a></p></div> ";
             }
             return $data;
-        }
-        else {
+        } else {
             return ShowDBUpgradeNotice();
         }
     }
