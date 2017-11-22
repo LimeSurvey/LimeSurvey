@@ -246,7 +246,7 @@ class Survey_Common_Action extends CAction
         //// This will be handle by subviews inclusions
         $aViewUrls = (array) $aViewUrls; $sViewPath = '/admin/';
         if (!empty($sAction)) {
-                    $sViewPath .= $sAction . '/';
+                    $sViewPath .= $sAction.'/';
         }
 
         ob_start(); //// That was used before the MVC pattern, in procedural code. Will not be used anymore.
@@ -317,13 +317,13 @@ class Survey_Common_Action extends CAction
             {
                 if (is_numeric($sViewKey))
                 {
-                    Yii::app()->getController()->renderPartial($sViewPath . $viewUrl, $aData);
+                    Yii::app()->getController()->renderPartial($sViewPath.$viewUrl, $aData);
                 } elseif (is_array($viewUrl))
                 {
                     foreach ($viewUrl as $aSubData)
                     {
                         $aSubData = array_merge($aData, $aSubData);
-                        Yii::app()->getController()->renderPartial($sViewPath . $sViewKey, $aSubData);
+                        Yii::app()->getController()->renderPartial($sViewPath.$sViewKey, $aSubData);
                     }
                 }
             } else
@@ -348,7 +348,7 @@ class Survey_Common_Action extends CAction
 
                         echo $viewUrl;
 
-                        if(isset($aViewUrls['afteroutput'])) {
+                        if (isset($aViewUrls['afteroutput'])) {
                                                     echo $aViewUrls['afteroutput'];
                         }
 
@@ -358,29 +358,29 @@ class Survey_Common_Action extends CAction
         }
 
         //// TODO : Move this divs inside each correct view ASAP !
-        echo '</div>' ;
+        echo '</div>';
 
         if (!empty($aData['surveyid']))
         {
-            echo '</div>' ;
-            echo '</div>' ;
-            echo '</div>' ;
-            echo '</div>' ;
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
+            echo '</div>';
         }
 
 
         //// THe footer will be called directly from the layout.
         // Footer
-        if(!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {
+        if (!isset($aData['display']['endscripts']) || $aData['display']['endscripts'] !== false) {
                     Yii::app()->getController()->_loadEndScripts();
         }
 
-        if( !Yii::app()->user->isGuest )
+        if (!Yii::app()->user->isGuest)
         {
-            if(!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
+            if (!isset($aData['display']['footer']) || $aData['display']['footer'] !== false) {
                             Yii::app()->getController()->_getAdminFooter('http://manual.limesurvey.org', gT('LimeSurvey online manual'));
             }
-        } else{
+        } else {
             echo '</body></html>';
         }
 
@@ -662,7 +662,7 @@ class Survey_Common_Action extends CAction
                     {
                         if ($aAttribute['inputtype'] == 'singleselect')
                         {
-                            if(isset($aAttribute['options'][$aAttribute['value']])) {
+                            if (isset($aAttribute['options'][$aAttribute['value']])) {
                                                             $aAttribute['value'] = $aAttribute['options'][$aAttribute['value']];
                             }
                         }
@@ -893,12 +893,12 @@ class Survey_Common_Action extends CAction
             $aData['GidNext'] = $GidNext = getGidNext($iSurveyID, $gid);
             $aData['iIconSize'] = Yii::app()->getConfig('adminthemeiconsize');
 
-            if(isset($aData['surveybar']['closebutton']['url'])) {
+            if (isset($aData['surveybar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['surveybar']['closebutton']['url'];
-                $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl));
+                $aData['surveybar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
 
-            if($aData['gid']==null) {
+            if ($aData['gid'] == null) {
                             $this->getController()->renderPartial("/admin/survey/surveybar_view", $aData);
             }
         }
@@ -1066,14 +1066,14 @@ class Survey_Common_Action extends CAction
 
             // Set number of page
             if (isset($_GET['pageSize'])) {
-                            Yii::app()->user->setState('pageSize',(int)$_GET['pageSize']);
+                            Yii::app()->user->setState('pageSize', (int) $_GET['pageSize']);
             }
 
             // We filter the current survey id
             $model->sid = $iSurveyID;
             $model->language = $baselang;
 
-            $aData['model']=$model;
+            $aData['model'] = $model;
 
             $this->getController()->renderPartial("/admin/survey/Question/listquestions", $aData);
         }
@@ -1104,64 +1104,64 @@ class Survey_Common_Action extends CAction
         $surveysummary2 = "";
         if ($aSurveyInfo['anonymized'] != "N")
         {
-            $surveysummary2 .= gT("Responses to this survey are anonymized.") . "<br />";
+            $surveysummary2 .= gT("Responses to this survey are anonymized.")."<br />";
         } else
         {
-            $surveysummary2 .= gT("Responses to this survey are NOT anonymized.") . "<br />";
+            $surveysummary2 .= gT("Responses to this survey are NOT anonymized.")."<br />";
         }
         if ($aSurveyInfo['format'] == "S")
         {
-            $surveysummary2 .= gT("It is presented question by question.") . "<br />";
+            $surveysummary2 .= gT("It is presented question by question.")."<br />";
         } elseif ($aSurveyInfo['format'] == "G")
         {
-            $surveysummary2 .= gT("It is presented group by group.") . "<br />";
+            $surveysummary2 .= gT("It is presented group by group.")."<br />";
         } else
         {
-            $surveysummary2 .= gT("It is presented on one single page.") . "<br />";
+            $surveysummary2 .= gT("It is presented on one single page.")."<br />";
         }
         if ($aSurveyInfo['questionindex'] > 0)
         {
             if ($aSurveyInfo['format'] == 'A')
             {
-                $surveysummary2 .= gT("No question index will be shown with this format.") . "<br />";
+                $surveysummary2 .= gT("No question index will be shown with this format.")."<br />";
             } elseif ($aSurveyInfo['questionindex'] == 1)
             {
-                $surveysummary2 .= gT("A question index will be shown; participants will be able to jump between viewed questions.") . "<br />";
+                $surveysummary2 .= gT("A question index will be shown; participants will be able to jump between viewed questions.")."<br />";
             } elseif ($aSurveyInfo['questionindex'] == 2)
             {
-                $surveysummary2 .= gT("A full question index will be shown; participants will be able to jump between relevant questions.") . "<br />";
+                $surveysummary2 .= gT("A full question index will be shown; participants will be able to jump between relevant questions.")."<br />";
             }
         }
         if ($oSurvey->isDateStamp) {
-            $surveysummary2 .= gT("Responses will be date stamped.") . "<br />";
+            $surveysummary2 .= gT("Responses will be date stamped.")."<br />";
         }
         if ($oSurvey->isIpAddr) {
-            $surveysummary2 .= gT("IP Addresses will be logged") . "<br />";
+            $surveysummary2 .= gT("IP Addresses will be logged")."<br />";
         }
         if ($oSurvey->isRefUrl) {
-            $surveysummary2 .= gT("Referrer URL will be saved.") . "<br />";
+            $surveysummary2 .= gT("Referrer URL will be saved.")."<br />";
         }
         if ($oSurvey->isUseCookie) {
-            $surveysummary2 .= gT("It uses cookies for access control.") . "<br />";
+            $surveysummary2 .= gT("It uses cookies for access control.")."<br />";
         }
         if ($oSurvey->isAllowRegister) {
-            $surveysummary2 .= gT("If tokens are used, the public may register for this survey") . "<br />";
+            $surveysummary2 .= gT("If tokens are used, the public may register for this survey")."<br />";
         }
         if ($oSurvey->isAllowSave && !$oSurvey->isTokenAnswersPersistence) {
-            $surveysummary2 .= gT("Participants can save partially finished surveys") . "<br />\n";
+            $surveysummary2 .= gT("Participants can save partially finished surveys")."<br />\n";
         }
         if ($oSurvey->emailnotificationto != '') {
-            $surveysummary2 .= gT("Basic email notification is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailnotificationto'])."<br />\n";
+            $surveysummary2 .= gT("Basic email notification is sent to:").' '.htmlspecialchars($aSurveyInfo['emailnotificationto'])."<br />\n";
         }
         if ($oSurvey->emailresponseto != '') {
-            $surveysummary2 .= gT("Detailed email notification with response data is sent to:") .' '. htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
+            $surveysummary2 .= gT("Detailed email notification with response data is sent to:").' '.htmlspecialchars($aSurveyInfo['emailresponseto'])."<br />\n";
         }
 
         $dateformatdetails = getDateFormatData(Yii::app()->session['dateformat']);
         if (trim($oSurvey->startdate) != '') {
             Yii::import('application.libraries.Date_Time_Converter');
             $datetimeobj = new Date_Time_Converter($oSurvey->startdate, 'Y-m-d H:i:s');
-            $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
+            $aData['startdate'] = $datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         } else
         {
             $aData['startdate'] = "-";
@@ -1172,7 +1172,7 @@ class Survey_Common_Action extends CAction
             Yii::import('application.libraries.Date_Time_Converter');
             $datetimeobj = new Date_Time_Converter($oSurvey->expires, 'Y-m-d H:i:s');
             //$datetimeobj = new Date_Time_Converter($surveyinfo['expires'] , "Y-m-d H:i:s");
-            $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'] . ' H:i');
+            $aData['expdate'] = $datetimeobj->convert($dateformatdetails['phpdate'].' H:i');
         } else
         {
             $aData['expdate'] = "-";
@@ -1282,18 +1282,18 @@ class Survey_Common_Action extends CAction
             if (!empty($ugid)) {
                 $userGroup = UserGroup::model()->findByPk($ugid);
                 $uid = Yii::app()->session['loginID'];
-                if($userGroup && $userGroup->hasUser($uid)){
+                if ($userGroup && $userGroup->hasUser($uid)) {
                     $data['userGroup'] = $userGroup;
-                } else{
+                } else {
                     $data['userGroup'] = null;
                 }
             }
 
             $data['imageurl'] = Yii::app()->getConfig("adminimageurl");
 
-            if(isset($aData['usergroupbar']['closebutton']['url'])) {
+            if (isset($aData['usergroupbar']['closebutton']['url'])) {
                 $sAlternativeUrl = $aData['usergroupbar']['closebutton']['url'];
-                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer( Yii::app()->createUrl($sAlternativeUrl) );
+                $aData['usergroupbar']['closebutton']['url'] = Yii::app()->request->getUrlReferrer(Yii::app()->createUrl($sAlternativeUrl));
             }
 
             $this->getController()->renderPartial('/admin/usergroup/usergroupbar_view', $data);
@@ -1370,7 +1370,7 @@ class Survey_Common_Action extends CAction
      * @param int $mode
      * @return string
      */
-    protected function _tempdir($dir, $prefix='', $mode=0700)
+    protected function _tempdir($dir, $prefix = '', $mode = 0700)
     {
         if (substr($dir, -1) != DIRECTORY_SEPARATOR) {
                     $dir .= DIRECTORY_SEPARATOR;
@@ -1378,7 +1378,7 @@ class Survey_Common_Action extends CAction
 
         do
         {
-            $path = $dir . $prefix . mt_rand(0, 9999999);
+            $path = $dir.$prefix.mt_rand(0, 9999999);
         }
         while (!mkdir($path, $mode));
 

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -56,8 +58,9 @@ class SurveyController extends LSYii_Controller
      */
     protected function _sessioncontrol()
     {
-        if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"] == '')
-            Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
+        if (!Yii::app()->session["adminlang"] || Yii::app()->session["adminlang"] == '') {
+                    Yii::app()->session["adminlang"] = Yii::app()->getConfig("defaultlang");
+        }
         Yii::app()->setLanguage(Yii::app()->session['adminlang']);
     }
 

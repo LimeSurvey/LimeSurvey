@@ -70,7 +70,9 @@ class RSyntaxWriter extends Writer
 
                 $len = mb_strlen($strTmp);
 
-                if ($len > $field['size']) $field['size'] = $len;
+                if ($len > $field['size']) {
+                    $field['size'] = $len;
+                }
 
                 if (trim($strTmp) != '')
                 {
@@ -90,8 +92,9 @@ class RSyntaxWriter extends Writer
             foreach ($this->headers as $id => $title) {
             $field = $this->customFieldmap[$title];
             $i = $id + 1;
-            if ($field['SPSStype'] == 'DATETIME23.2')
-                $field['size'] = '';
+            if ($field['SPSStype'] == 'DATETIME23.2') {
+                            $field['size'] = '';
+            }
 
             if ($field['LStype'] == 'N' || $field['LStype'] == 'K')
             {

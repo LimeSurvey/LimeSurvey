@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -29,10 +31,11 @@ class LSYii_Locale extends CLocale {
             $id = $aLanguageData[$id]['cldr'];
         }
         static $locales = array();
-        if (isset($locales[$id]))
-            return $locales[$id];
-        else
-            return $locales[$id] = new CLocale($id);
+        if (isset($locales[$id])) {
+                    return $locales[$id];
+        } else {
+                    return $locales[$id] = new CLocale($id);
+        }
     }
 
 }

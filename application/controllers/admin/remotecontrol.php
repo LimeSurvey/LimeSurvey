@@ -49,14 +49,12 @@ class remotecontrol extends Survey_Common_Action
                 if ($result instanceof LSZend_XmlRpc_Response_Http)
                 {
                     $result->printXml();
-                }
-                else
+                } else
                 {
                     // a Zend_XmlRpc_Server_Fault with exception message from XMLRPC
                     echo $result;
                 }
-            }
-            elseif ($RPCType == 'json')
+            } elseif ($RPCType == 'json')
             {
                 Yii::app()->loadLibrary('LSjsonRPCServer');
                 if (!isset($_SERVER['CONTENT_TYPE']))

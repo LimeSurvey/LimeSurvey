@@ -57,8 +57,7 @@ class STATAxmlWriter extends Writer
             header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
             header("Pragma: public");
             $this->handle = fopen('php://output', 'w');
-        }
-        elseif ($oOptions->output == 'file')
+        } elseif ($oOptions->output == 'file')
         {
             $this->handle = fopen($this->filename, 'w');
         }
@@ -155,8 +154,7 @@ class STATAxmlWriter extends Writer
             if (array_key_exists($aQuestion['qid'], $this->aQIDnonumericalAnswers))
             {
                 $aFieldmap['questions'][$sSGQAkey]['nonnumericanswercodes'] = true;
-            }
-            else
+            } else
             {
                 $aFieldmap['questions'][$sSGQAkey]['nonnumericanswercodes'] = false;
             }
@@ -169,28 +167,22 @@ class STATAxmlWriter extends Writer
             if ($aQuestion['varname'] == 'submitdate' || $aQuestion['varname'] == 'startdate' || $aQuestion['varname'] == 'datestamp')
             {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'D';
-            }
-            elseif ($aQuestion['varname'] == 'startlanguage')
+            } elseif ($aQuestion['varname'] == 'startlanguage')
             {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
-            }
-            elseif ($aQuestion['varname'] == 'token')
+            } elseif ($aQuestion['varname'] == 'token')
             {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
-            }
-            elseif ($aQuestion['varname'] == 'id')
+            } elseif ($aQuestion['varname'] == 'id')
             {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'N';
-            }
-            elseif ($aQuestion['varname'] == 'ipaddr')
+            } elseif ($aQuestion['varname'] == 'ipaddr')
             {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
-            }
-            elseif ($aQuestion['varname'] == 'refurl')
+            } elseif ($aQuestion['varname'] == 'refurl')
             {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'S';
-            }
-            elseif ($aQuestion['varname'] == 'lastpage')
+            } elseif ($aQuestion['varname'] == 'lastpage')
             {
                 $aFieldmap['questions'][$sSGQAkey]['type'] = 'N';
             }
@@ -201,14 +193,18 @@ class STATAxmlWriter extends Writer
 
             // create variable labels
             $aQuestion['varlabel'] = $aQuestion['question'];
-            if (isset($aQuestion['scale']))
-                $aQuestion['varlabel'] = "[{$aQuestion['scale']}] ".$aQuestion['varlabel'];
-            if (isset($aQuestion['subquestion']))
-                $aQuestion['varlabel'] = "[{$aQuestion['subquestion']}] ".$aQuestion['varlabel'];
-            if (isset($aQuestion['subquestion2']))
-                $aQuestion['varlabel'] = "[{$aQuestion['subquestion2']}] ".$aQuestion['varlabel'];
-            if (isset($aQuestion['subquestion1']))
-                $aQuestion['varlabel'] = "[{$aQuestion['subquestion1']}] ".$aQuestion['varlabel'];
+            if (isset($aQuestion['scale'])) {
+                            $aQuestion['varlabel'] = "[{$aQuestion['scale']}] ".$aQuestion['varlabel'];
+            }
+            if (isset($aQuestion['subquestion'])) {
+                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion']}] ".$aQuestion['varlabel'];
+            }
+            if (isset($aQuestion['subquestion2'])) {
+                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion2']}] ".$aQuestion['varlabel'];
+            }
+            if (isset($aQuestion['subquestion1'])) {
+                            $aQuestion['varlabel'] = "[{$aQuestion['subquestion1']}] ".$aQuestion['varlabel'];
+            }
 
             //write varlabel back to fieldmap
             $aFieldmap['questions'][$sSGQAkey]['varlabel'] = $aQuestion['varlabel'];
@@ -217,8 +213,7 @@ class STATAxmlWriter extends Writer
             if ((isset($aQuestion['other']) && $aQuestion['other'] == 'Y') || substr($aQuestion['fieldname'], -7) == 'comment')
             {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = true; //comment/other fields: create flag, so value labels are not attached (in close())
-            }
-            else
+            } else
             {
                 $aFieldmap['questions'][$sSGQAkey]['commentother'] = false;
 
@@ -233,8 +228,7 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not Selected')
                     );
-                }
-                elseif ($aQuestion['type'] == "P")
+                } elseif ($aQuestion['type'] == "P")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
@@ -244,8 +238,7 @@ class STATAxmlWriter extends Writer
                         'code' => 0,
                         'answer' => gT('Not Selected')
                     );
-                }
-                elseif ($aQuestion['type'] == "G")
+                } elseif ($aQuestion['type'] == "G")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['0'] = array(
                         'code' => 'F',
@@ -255,8 +248,7 @@ class STATAxmlWriter extends Writer
                         'code' => 'M',
                         'answer' => gT('Male')
                     );
-                }
-                elseif ($aQuestion['type'] == "Y")
+                } elseif ($aQuestion['type'] == "Y")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0'][$yvalue] = array(
                         'code' => $yvalue,
@@ -266,8 +258,7 @@ class STATAxmlWriter extends Writer
                         'code' => $nvalue,
                         'answer' => gT('No')
                     );
-                }
-                elseif ($aQuestion['type'] == "C")
+                } elseif ($aQuestion['type'] == "C")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,
@@ -281,8 +272,7 @@ class STATAxmlWriter extends Writer
                         'code' => 3,
                         'answer' => gT('Uncertain')
                     );
-                }
-                elseif ($aQuestion['type'] == "E")
+                } elseif ($aQuestion['type'] == "E")
                 {
                     $aFieldmap['answers'][$aQuestion['qid']]['0']['1'] = array(
                         'code' => 1,

@@ -166,13 +166,13 @@ class SettingsUser extends LSActiveRecord
     {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
-        $criteria=new CDbCriteria;
+        $criteria = new CDbCriteria;
 
-        $criteria->compare('uid',$this->uid);
-        $criteria->compare('entity',$this->entity,true);
-        $criteria->compare('entity_id',$this->entity_id,true);
-        $criteria->compare('stg_name',$this->stg_name,true);
-        $criteria->compare('stg_value',$this->stg_value,true);
+        $criteria->compare('uid', $this->uid);
+        $criteria->compare('entity', $this->entity, true);
+        $criteria->compare('entity_id', $this->entity_id, true);
+        $criteria->compare('stg_name', $this->stg_name, true);
+        $criteria->compare('stg_value', $this->stg_value, true);
 
         return new CActiveDataProvider($this, array(
             'criteria'=>$criteria,
@@ -185,10 +185,10 @@ class SettingsUser extends LSActiveRecord
      * @param string $className active record class name.
      * @return SettingsUser the static model class
      */
-    public static function model($className=__CLASS__)
+    public static function model($className = __CLASS__)
     {
         /** @var self $model */
-        $model =parent::model($className);
+        $model = parent::model($className);
         return $model;
     }
 }

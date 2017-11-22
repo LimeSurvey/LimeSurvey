@@ -109,12 +109,10 @@ class ConsoleApplication extends CConsoleApplication
         if (isset($this->$name))
         {
             return $this->name;
-        }
-        elseif (isset($this->config[$name]))
+        } elseif (isset($this->config[$name]))
         {
             return $this->config[$name];
-        }
-        else
+        } else
         {
             return false;
         }

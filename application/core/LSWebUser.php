@@ -15,8 +15,7 @@
             if ($operation == 'administrator')
             {
                 return Permission::model()->hasGlobalPermission('superadmin', 'read');
-            }
-            else
+            } else
             {
                 return parent::checkAccess($operation, $params, $allowCaching);
             }
@@ -53,8 +52,7 @@
             if (!isset($_SESSION[$this->sessionVariable]) || !Hash::check($_SESSION[$this->sessionVariable], $key))
             {
                 return $defaultValue;
-            }
-            else
+            } else
             {
                 return Hash::get($_SESSION[$this->sessionVariable], $key);
             }
@@ -75,8 +73,7 @@
             if ($value === $defaultValue)
             {
                 $_SESSION[$this->sessionVariable] = Hash::remove($current, $key);
-            }
-            else
+            } else
             {
                 $_SESSION[$this->sessionVariable] = Hash::insert($current, $key, $value);
             }
@@ -99,8 +96,9 @@
             $oUsergroup = UserGroup::model()->findByPk($gid);
 
             // The group doesn't exist anymore
-            if (!is_object($oUsergroup))
-                return false;
+            if (!is_object($oUsergroup)) {
+                            return false;
+            }
 
             $users = $oUsergroup->users;
             $aUids = array();
@@ -109,10 +107,11 @@
                 $aUids[] = $user->uid;
             }
 
-            if (in_array($this->id, $aUids))
-                return true;
-            else
-                return false;
+            if (in_array($this->id, $aUids)) {
+                            return true;
+            } else {
+                            return false;
+            }
         }
 
     }

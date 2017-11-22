@@ -354,8 +354,7 @@ class ExpressionManager {
             case 'lt':
                 if ($bMismatchType) {
                     $result = array(false, $token[1], 'NUMBER');
-                }
-                else {
+                } else {
                     $result = array(($arg1[0] < $arg2[0]), $token[1], 'NUMBER');
                 }
                 break;
@@ -363,13 +362,11 @@ class ExpressionManager {
             case 'le':
                 if ($bMismatchType) {
                     $result = array(false, $token[1], 'NUMBER');
-                }
-                else {
+                } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(true, $token[1], 'NUMBER');
-                    }
-                    else {
+                    } else {
                         $result = array(($arg1[0] <= $arg2[0]), $token[1], 'NUMBER');
                     }
                 }
@@ -378,13 +375,11 @@ class ExpressionManager {
             case 'gt':
                 if ($bMismatchType) {
                     $result = array(false, $token[1], 'NUMBER');
-                }
-                else {
+                } else {
                     // Need this explicit comparison in order to be in agreement with JavaScript : still needed since we use ==='' ?
                     if (($arg1[0] == '0' && $arg2[0] == '') || ($arg1[0] == '' && $arg2[0] == '0')) {
                         $result = array(false, $token[1], 'NUMBER');
-                    }
-                    else {
+                    } else {
                         $result = array(($arg1[0] > $arg2[0]), $token[1], 'NUMBER');
                     }
                 }
@@ -393,8 +388,7 @@ class ExpressionManager {
             case 'ge':
                 if ($bMismatchType) {
                     $result = array(false, $token[1], 'NUMBER');
-                }
-                else {
+                } else {
                     $result = array(($arg1[0] >= $arg2[0]), $token[1], 'NUMBER');
 
                 }
@@ -402,24 +396,21 @@ class ExpressionManager {
             case '+':
                 if ($bBothNumeric) {
                     $result = array(($arg1[0] + $arg2[0]), $token[1], 'NUMBER');
-                }
-                else {
+                } else {
                     $result = array($arg1[0].$arg2[0], $token[1], 'STRING');
                 }
                 break;
             case '-':
                 if ($bBothNumeric) {
                     $result = array(($arg1[0] - $arg2[0]), $token[1], 'NUMBER');
-                }
-                else {
+                } else {
                     $result = array(NAN, $token[1], 'NUMBER');
                 }
                 break;
             case '*':
                 if ($bBothNumeric) {
                     $result = array(($arg1[0] * $arg2[0]), $token[1], 'NUMBER');
-                }
-                else {
+                } else {
                     $result = array(NAN, $token[1], 'NUMBER');
                 }
                 break;
@@ -427,12 +418,10 @@ class ExpressionManager {
                 if ($bBothNumeric) {
                     if ($arg2[0] == 0) {
                         $result = array(NAN, $token[1], 'NUMBER');
-                    }
-                    else {
+                    } else {
                         $result = array(($arg1[0] / $arg2[0]), $token[1], 'NUMBER');
                     }
-                }
-                else {
+                } else {
                     $result = array(NAN, $token[1], 'NUMBER');
                 }
                 break;
@@ -500,8 +489,7 @@ class ExpressionManager {
 
         if ($this->HasSyntaxErrors()) {
             return false;
-        }
-        elseif ($this->RDP_EvaluateExpressions())
+        } elseif ($this->RDP_EvaluateExpressions())
         {
             if ($this->RDP_pos < $this->RDP_count)
             {
@@ -517,14 +505,12 @@ class ExpressionManager {
             {
                 $this->RDP_evalStatus = true;
                 return true;
-            }
-            else
+            } else
             {
                 $this->RDP_AddError(self::gT("Unbalanced equation - values left on stack"), NULL);
                 return false;
             }
-        }
-        else
+        } else
         {
             $this->RDP_AddError(self::gT("Not a valid expression"), NULL);
             return false;
@@ -558,8 +544,7 @@ class ExpressionManager {
                                 return false;
                             }
                             // else continue;
-                        }
-                        else
+                        } else
                         {
                             return false;
                         }
@@ -568,8 +553,7 @@ class ExpressionManager {
                         --$this->RDP_pos;
                         return true;
                 }
-            }
-            else
+            } else
             {
                 --$this->RDP_pos;
                 return true;
@@ -604,8 +588,7 @@ class ExpressionManager {
                 if (($this->RDP_pos + 1) < $this->RDP_count and $this->RDP_tokens[($this->RDP_pos + 1)][2] == 'LP')
                 {
                     return $this->RDP_EvaluateFunction();
-                }
-                else
+                } else
                 {
                     if ($this->RDP_isValidVariable($token[0]))
                     {
@@ -613,8 +596,7 @@ class ExpressionManager {
                         if (preg_match("/\.(gid|grelevance|gseq|jsName|mandatory|qid|qseq|question|readWrite|relevance|rowdivid|sgqa|type)$/", $token[0]))
                         {
                             $relStatus = 1; // static, so always relevant
-                        }
-                        else
+                        } else
                         {
                             $relStatus = $this->GetVarAttribute($token[0], 'relevanceStatus', 1);
                         }
@@ -622,15 +604,13 @@ class ExpressionManager {
                         {
                             $argtype = ($this->GetVarAttribute($token[0], 'onlynum', 0)) ? "NUMBER" : "WORD";
                             $result = array($this->GetVarAttribute($token[0], NULL, ''), $token[1], $argtype);
-                        }
-                        else
+                        } else
                         {
                             $result = array(NULL, $token[1], 'NUMBER'); // was 0 instead of NULL
                         }
                         $this->RDP_StackPush($result);
                         return true;
-                    }
-                    else
+                    } else
                     {
                         $this->RDP_AddError(self::gT("Undefined variable"), $token);
                         return false;
@@ -674,8 +654,7 @@ class ExpressionManager {
                             return false;
                         }
                         // else continue;
-                    }
-                    else
+                    } else
                     {
                         return false;
                     }
@@ -716,34 +695,29 @@ class ExpressionManager {
                                 $newResult[2] = 'NUMBER';
                                 $newResult[0] = $this->RDP_SetVariableValue($token2[0], $token1[0], $result[0]);
                                 $this->RDP_StackPush($newResult);
-                            }
-                            else
+                            } else
                             {
                                 $evalStatus = false;
                             }
                         }
                         return $evalStatus;
-                    }
-                    else
+                    } else
                     {
                         $this->RDP_AddError(self::gT('The value of this variable can not be changed'), $token1);
                         return false;
                     }
-                }
-                else
+                } else
                 {
                     $this->RDP_AddError(self::gT('Only variables can be assigned values'), $token1);
                     return false;
                 }
-            }
-            else
+            } else
             {
                 // not an assignment expression, so try something else
                 $this->RDP_pos -= 2;
                 return $this->RDP_EvaluateLogicalOrExpression();
             }
-        }
-        else
+        } else
         {
             return $this->RDP_EvaluateLogicalOrExpression();
         }
@@ -767,8 +741,7 @@ class ExpressionManager {
             if ($token[2] == 'RP')
             {
                 return true; // presumbably the end of an expression
-            }
-            elseif ($token[2] == 'COMMA')
+            } elseif ($token[2] == 'COMMA')
             {
                 if ($this->RDP_EvaluateExpression())
                 {
@@ -780,13 +753,11 @@ class ExpressionManager {
                     }
                     $this->RDP_StackPush($secondResult);
                     $evalStatus = true;
-                }
-                else
+                } else
                 {
                     return false; // an error must have occurred
                 }
-            }
-            else
+            } else
             {
                 $this->RDP_AddError(self::gT("Expected expressions separated by commas"), $token);
                 $evalStatus = false;
@@ -839,8 +810,7 @@ class ExpressionManager {
                         }
                         $params[] = $value[0];
                         continue;
-                    }
-                    else
+                    } else
                     {
                         $this->RDP_AddError(self::gT("Extra comma found in function"), $token3);
                         return false;
@@ -851,8 +821,7 @@ class ExpressionManager {
             {
                 ++$this->RDP_pos; // consume the token so can process next clause
                 return $this->RDP_RunFunction($funcNameToken, $params);
-            }
-            else
+            } else
             {
                 if ($this->RDP_EvaluateExpression())
                 {
@@ -863,8 +832,7 @@ class ExpressionManager {
                     }
                     $params[] = $value[0];
                     continue;
-                }
-                else
+                } else
                 {
                     return false;
                 }
@@ -897,8 +865,7 @@ class ExpressionManager {
                             return false;
                         }
                         // else continue
-                    }
-                    else
+                    } else
                     {
                         return false; // an error must have occurred
                     }
@@ -935,8 +902,7 @@ class ExpressionManager {
                             return false;
                         }
                         // else  continue
-                    }
-                    else
+                    } else
                     {
                         // an error must have occurred
                         return false;
@@ -979,8 +945,7 @@ class ExpressionManager {
                                 return false;
                             }
                             // else  continue
-                        }
-                        else
+                        } else
                         {
                             // an error must have occurred
                             return false;
@@ -990,8 +955,7 @@ class ExpressionManager {
                         --$this->RDP_pos;
                         return true;
                 }
-            }
-            else
+            } else
             {
                 --$this->RDP_pos;
                 return true;
@@ -1022,14 +986,12 @@ class ExpressionManager {
             if ($token[2] == 'RP')
             {
                 return true;
-            }
-            else
+            } else
             {
                 $this->RDP_AddError(self::gT("Expected right parentheses"), $token);
                 return false;
             }
-        }
-        else
+        } else
         {
             --$this->RDP_pos;
             return $this->RDP_EvaluateConstantVarOrFunction();
@@ -1066,8 +1028,7 @@ class ExpressionManager {
                             return false;
                         }
                         // else  continue
-                    }
-                    else
+                    } else
                     {
                         // an error must have occurred
                         return false;
@@ -1110,8 +1071,7 @@ class ExpressionManager {
                     --$this->RDP_pos;
                     return $this->RDP_EvaluatePrimaryExpression();
             }
-        }
-        else
+        } else
         {
             --$this->RDP_pos;
             return $this->RDP_EvaluatePrimaryExpression();
@@ -1308,8 +1268,7 @@ class ExpressionManager {
                             return ''; // to indicate that this is trying to use a undefined function.  Need more graceful solution
                         }
                         $stringParts[] = $funcInfo[1]; // the PHP function name
-                    }
-                    elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN')
+                    } elseif ($i + 1 < $numTokens && $tokens[$i + 1][2] == 'ASSIGN')
                     {
                         $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
                         $stringParts[] = "document.getElementById('".$jsName."').value";
@@ -1320,8 +1279,7 @@ class ExpressionManager {
                             $stringParts[] = " = LEMval('".$varName."') + ";
                             ++$i;
                         }
-                    }
-                    else
+                    } else
                     {
                         $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
                         $code = $this->GetVarAttribute($token[0], 'code', '');
@@ -1329,8 +1287,7 @@ class ExpressionManager {
                         {
                             $varName = $this->GetVarAttribute($token[0], 'varName', $token[0]);
                             $stringParts[] = "LEMval('".$varName."') ";
-                        }
-                        else
+                        } else
                         {
                             $stringParts[] = "'".addcslashes($code, "'")."'";
                         }
@@ -1365,13 +1322,15 @@ class ExpressionManager {
         }
         // for each variable that does not have a default value, add clause to throw error if any of them are NA
         $nonNAvarsUsed = array();
-        foreach ($this->GetVarsUsed() as $var)    // this function wants to see the NAOK suffix
+        foreach ($this->GetVarsUsed() as $var) {
+            // this function wants to see the NAOK suffix
         {
             if (!preg_match("/^.*\.(NAOK|relevanceStatus)$/", $var))
             {
                 if ($this->GetVarAttribute($var, 'jsName', '') != '')
                 {
                     $nonNAvarsUsed[] = $var;
+        }
                 }
             }
         }
@@ -1380,8 +1339,7 @@ class ExpressionManager {
         if ($varsUsed != '')
         {
             $this->jsExpression = "LEMif(LEManyNA('".$varsUsed."'),'',(".$mainClause."))";
-        }
-        else
+        } else
         {
             $this->jsExpression = '('.$mainClause.')';
         }
@@ -1473,8 +1431,7 @@ class ExpressionManager {
                 // General message, associated with position 0
                 $globalErrs[] = $errs[$errIndex - 1][0];
                 $bHaveError = true;
-            }
-            else
+            } else
             {
                 --$errIndex;
                 break;
@@ -1525,15 +1482,13 @@ class ExpressionManager {
                         $stringParts[] = "<span title='".implode('; ', $messages)."' class='em-function' >";
                         $stringParts[] = $token[0];
                         $stringParts[] = "</span>";
-                    }
-                    else
+                    } else
                     {
                         if (!$this->RDP_isValidVariable($token[0]))
                         {
                             $class = 'em-var-error';
                             $displayName = $token[0];
-                        }
-                        else
+                        } else
                         {
                             $jsName = $this->GetVarAttribute($token[0], 'jsName', '');
                             $code = $this->GetVarAttribute($token[0], 'code', '');
@@ -1547,8 +1502,7 @@ class ExpressionManager {
 
                             if ($jsName != '') {
                                 $descriptor = '['.$jsName.']';
-                            }
-                            else {
+                            } else {
                                 $descriptor = '';
                             }
                             // Show variable name instead of SGQA code, if available
@@ -1556,18 +1510,15 @@ class ExpressionManager {
                                 if (preg_match('/^INSERTANS:/', $token[0])) {
                                     $displayName = $qcode.'.shown';
                                     $descriptor = '['.$token[0].']';
-                                }
-                                else {
+                                } else {
                                     $args = explode('.', $token[0]);
                                     if (count($args) == 2) {
                                         $displayName = $qcode.'.'.$args[1];
-                                    }
-                                    else {
+                                    } else {
                                         $displayName = $qcode;
                                     }
                                 }
-                            }
-                            else {
+                            } else {
                                 $displayName = $token[0];
                             }
                             if ($questionSeq != -1) {
@@ -1590,25 +1541,20 @@ class ExpressionManager {
                                     $shown = $this->GetVarAttribute($token[0], 'shown', '');
                                     $messages[] = 'value=['.htmlspecialchars($code, ENT_QUOTES, 'UTF-8', false).'] '
                                             . htmlspecialchars($shown, ENT_QUOTES, 'UTF-8', false);
-                                }
-                                else {
+                                } else {
                                     $messages[] = 'value='.htmlspecialchars($code, ENT_QUOTES, 'UTF-8', false);
                                 }
                             }
 
                             if ($this->groupSeq == -1 || $groupSeq == -1 || $questionSeq == -1 || $this->questionSeq == -1) {
                                 $class = 'em-var-static';
-                            }
-                            elseif ($groupSeq > $this->groupSeq) {
+                            } elseif ($groupSeq > $this->groupSeq) {
                                 $class = 'em-var-before em-var-diffgroup';
-                            }
-                            elseif ($groupSeq < $this->groupSeq) {
+                            } elseif ($groupSeq < $this->groupSeq) {
                                 $class = 'em-var-after ';
-                            }
-                            elseif ($questionSeq > $this->questionSeq) {
+                            } elseif ($questionSeq > $this->questionSeq) {
                                 $class = 'em-var-before em-var-inpage';
-                            }
-                            else {
+                            } else {
                                 $class = 'em-var-after em-var-inpage';
                             }
                         }
@@ -1620,8 +1566,7 @@ class ExpressionManager {
                         {
                             $editlink = Yii::app()->getController()->createUrl('admin/questions/sa/view/surveyid/'.$this->sid.'/gid/'.$gid.'/qid/'.$qid);
                             $stringParts[] = "<a title='{$message}' class='em-var {$class}' href='{$editlink}' >";
-                        }
-                        else
+                        } else
                         {
                             $stringParts[] = "<span title='".$message."' class='em-var {$class}' >";
                         }
@@ -1634,16 +1579,14 @@ class ExpressionManager {
                                 $sgqa .= '.'.$nameParts[1];
                             }
                             $stringParts[] = $sgqa;
-                        }
-                        else
+                        } else
                         {
                             $stringParts[] = $displayName;
                         }
                         if ($this->hyperlinkSyntaxHighlighting && isset($gid) && isset($qid) && $qid > 0)
                         {
                             $stringParts[] = "</a>";
-                        }
-                        else
+                        } else
                         {
                             $stringParts[] = "</span>";
                         }
@@ -1748,8 +1691,7 @@ class ExpressionManager {
                         {
                             $this->RDP_AddError(self::gT("Undefined function"), $token);
                         }
-                    }
-                    else
+                    } else
                     {
                         if (!($this->RDP_isValidVariable($token[0])))
                         {
@@ -1922,22 +1864,19 @@ class ExpressionManager {
             if ($stringPart[2] == 'STRING') {
                 $resolvedParts[] = $stringPart[0];
                 $prettyPrintParts[] = $stringPart[0];
-            }
-            else {
+            } else {
                 ++$this->substitutionNum;
                 $expr = $this->ExpandThisVar(substr($stringPart[0], 1, -1));
                 if ($this->RDP_Evaluate($expr))
                 {
                     $resolvedPart = $this->GetResult();
-                }
-                else
+                } else
                 {
                     // show original and errors in-line only if user have the rigth to update survey content
                     if ($this->sid && Permission::model()->hasSurveyPermission($this->sid, 'surveycontent', 'update'))
                     {
                         $resolvedPart = $this->GetPrettyPrintString();
-                    }
-                    else
+                    } else
                     {
                         $resolvedPart = '';
                     }
@@ -1963,8 +1902,7 @@ class ExpressionManager {
                         'vars' => implode('|', $jsVarsUsed),
                         'js' => $this->GetJavaScriptFunctionForReplacement($questionNum, $idName, $expr),
                     );
-                }
-                else
+                } else
                 {
                     $resolvedParts[] = $resolvedPart;
                 }
@@ -1990,8 +1928,7 @@ class ExpressionManager {
             if (preg_match("/".$splitter."/", $part))
             {
                 $result .= LimeExpressionManager::GetAllVarNamesForQ($this->questionSeq, $part);
-            }
-            else
+            } else
             {
                 $result .= $part;
             }
@@ -2092,8 +2029,7 @@ class ExpressionManager {
                                         if (is_numeric($params[0]))
                                         {
                                             $result = $funcName(floatval($params[0]));
-                                        }
-                                        else
+                                        } else
                                         {
                                             $result = NAN;
                                         }
@@ -2111,8 +2047,7 @@ class ExpressionManager {
                                         if (is_numeric($params[0]) && is_numeric($params[1]))
                                         {
                                             $result = $funcName(floatval($params[0]), floatval($params[1]));
-                                        }
-                                        else
+                                        } else
                                         {
                                             $result = NAN;
                                         }
@@ -2161,8 +2096,7 @@ class ExpressionManager {
                         return false;
                     }
                 }
-            }
-            catch (Exception $e)
+            } catch (Exception $e)
             {
                 $this->RDP_AddError($e->getMessage(), $funcNameToken);
                 return false;
@@ -2230,19 +2164,16 @@ class ExpressionManager {
                         // don't count this as an expression if the opening brace is followed by whitespace
                         $thistoken[] = '{';
                         $thistoken[] = $parts[++$j];
-                    }
-                    else if ($inDQString || $inSQString)
+                    } else if ($inDQString || $inSQString)
                     {
                         // just push the curly brace
                         $thistoken[] = '{';
-                    }
-                    else if ($curlyDepth > 0)
+                    } else if ($curlyDepth > 0)
                     {
                         // a nested curly brace - just push it
                         $thistoken[] = '{';
                         ++$curlyDepth;
-                    }
-                    else
+                    } else
                     {
                         // then starting an expression - save the out-of-expression string
                         if (count($thistoken) > 0)
@@ -2265,20 +2196,17 @@ class ExpressionManager {
                     if ($j > 0 && preg_match('/\s|\n|\r/', substr($parts[$j - 1], -1, 1)))
                     {
                         $thistoken[] = '}';
-                    }
-                    else if ($curlyDepth == 0)
+                    } else if ($curlyDepth == 0)
                     {
                         // just push the token
                         $thistoken[] = '}';
-                    }
-                    else
+                    } else
                     {
                         if ($inSQString || $inDQString)
                         {
                             // just push the token
                             $thistoken[] = '}';
-                        }
-                        else
+                        } else
                         {
                             --$curlyDepth;
                             if ($curlyDepth == 0)
@@ -2293,8 +2221,7 @@ class ExpressionManager {
                                     );
                                 $offset += strlen($_token);
                                 $thistoken = array();
-                            }
-                            else
+                            } else
                             {
                                 // just push the token
                                 $thistoken[] = '}';
@@ -2307,19 +2234,16 @@ class ExpressionManager {
                     if ($curlyDepth == 0)
                     {
                         // only counts as part of a string if it is already within an expression
-                    }
-                    else
+                    } else
                     {
                         if ($inDQString)
                         {
                             // then just push the single quote
-                        }
-                        else
+                        } else
                         {
                             if ($inSQString) {
                                 $inSQString = false; // finishing a single-quoted string
-                            }
-                            else {
+                            } else {
                                 $inSQString = true; // starting a single-quoted string
                             }
                         }
@@ -2330,19 +2254,16 @@ class ExpressionManager {
                     if ($curlyDepth == 0)
                     {
                         // only counts as part of a string if it is already within an expression
-                    }
-                    else
+                    } else
                     {
                         if ($inSQString)
                         {
                             // then just push the double quote
-                        }
-                        else
+                        } else
                         {
                             if ($inDQString) {
                                 $inDQString = false; // finishing a double-quoted string
-                            }
-                            else {
+                            } else {
                                 $inDQString = true; // starting a double-quoted string
                             }
                         }
@@ -2392,8 +2313,7 @@ class ExpressionManager {
         if (count($this->RDP_stack) > 0)
         {
             return array_pop($this->RDP_stack);
-        }
-        else
+        } else
         {
             $this->RDP_AddError(self::gT("Tried to pop value off of empty stack"), NULL);
             return NULL;
@@ -2420,8 +2340,7 @@ class ExpressionManager {
                     $this->RDP_stack[] = array(1, $token[1], 'NUMBER');
                     break;
             }
-        }
-        else
+        } else
         {
             $this->RDP_stack[] = $token;
         }
@@ -2449,10 +2368,11 @@ class ExpressionManager {
     private function RDP_Tokenize($sSource, $bOnEdit = false)
     {
         // $aInitTokens = array of tokens from equation, showing value and offset position.  Will include SPACE.
-        if ($bOnEdit)
-            $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
-        else
-            $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        if ($bOnEdit) {
+                    $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        } else {
+                    $aInitTokens = preg_split($this->RDP_TokenizerRegex, $sSource, -1, (PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE));
+        }
 
         // $aTokens = array of tokens from equation, showing value, offsete position, and type.  Will not contain SPACE if !$bOnEdit, but will contain OTHER
         $aTokens = array();
@@ -2614,8 +2534,7 @@ function exprmgr_countifop($args)
                     {
                         ++$j;
                     }
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     // Do nothing
                 }
                 break;
@@ -2632,8 +2551,9 @@ function exprmgr_countifop($args)
  */
 function exprmgr_stripos($haystack, $needle, $offset = 0)
 {
-    if ($offset > mb_strlen($haystack))
-        return false;
+    if ($offset > mb_strlen($haystack)) {
+            return false;
+    }
     return mb_stripos($haystack, $needle, $offset, 'UTF-8');
 }
 /**
@@ -2665,8 +2585,9 @@ function exprmgr_strlen($string)
  */
 function exprmgr_strpos($haystack, $needle, $offset = 0)
 {
-    if ($offset > mb_strlen($haystack))
-        return false;
+    if ($offset > mb_strlen($haystack)) {
+            return false;
+    }
     return mb_strpos($haystack, $needle, $offset, 'UTF-8');
 }
 /**
@@ -2735,8 +2656,7 @@ function exprmgr_sumifop($args)
                     {
                         $result += $arg;
                     }
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     // Do nothing
                 }
                 break;
@@ -2803,8 +2723,7 @@ function exprmgr_if($test, $ok, $error)
     if ($test)
     {
         return $ok;
-    }
-    else
+    } else
     {
         return $error;
     }
@@ -2839,8 +2758,7 @@ function exprmgr_list($args)
         if ($arg != '') {
             if ($j > 1) {
                 $result .= ', '.$arg;
-            }
-            else {
+            } else {
                 $result .= $arg;
             }
             ++$j;

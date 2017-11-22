@@ -1,5 +1,5 @@
 <?php
-if ( ! defined('BASEPATH')) {
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
 /*
@@ -300,17 +300,17 @@ class TemplateManifest extends TemplateConfiguration
 
 
         // If empty in manifest, it should be the field in db, so the Mother Template css/js files will be used...
-        if (is_object($oTemplate->config->files)){
+        if (is_object($oTemplate->config->files)) {
             $aDatas['files_css']         = self::formatArrayFields($oTemplate, 'files', 'css');
             $aDatas['files_js']          = self::formatArrayFields($oTemplate, 'files', 'js');
             $aDatas['files_print_css']   = self::formatArrayFields($oTemplate, 'files', 'print_css');
-        } else{
+        } else {
             $aDatas['files_css'] = $aDatas['files_js'] = $aDatas['files_print_css'] = null;
         }
 
-        $aDatas['aOptions']          = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0  )?array():$oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
+        $aDatas['aOptions'] = (!empty($oTemplate->config->options[0]) && count($oTemplate->config->options[0]) == 0) ? array() : $oTemplate->config->options[0]; // If template provide empty options, it must be cleaned to avoid crashes
 
-        return parent::importManifest($sTemplateName, $aDatas );
+        return parent::importManifest($sTemplateName, $aDatas);
     }
 
     /**
@@ -322,13 +322,13 @@ class TemplateManifest extends TemplateConfiguration
         while (!is_object($oRTemplate->config->$sFieldPath) || empty($oRTemplate->config->$sFieldPath)) {
             $sRTemplateName = (string) $oRTemplate->config->metadatas->extends;
 
-            if (!empty($sRTemplateName)){
+            if (!empty($sRTemplateName)) {
                 $oRTemplate = Template::getTemplateConfiguration($sRTemplateName, null, null, true);
-                if (!is_a($oRTemplate, 'TemplateManifest')){
+                if (!is_a($oRTemplate, 'TemplateManifest')) {
                     // Think about what to do..
                     throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sFieldPath'.");
                 }
-            } else{
+            } else {
                 throw new Exception("Error: Can't find a template for '$oRTemplate->sTemplateName' in xpath '$sFieldPath'.");
             }
         }
@@ -472,14 +472,14 @@ class TemplateManifest extends TemplateConfiguration
      */
     public static function changeExtendsInDom($oNewManifest, $sToExtends)
     {
-        $oExtendsNode    = $oNewManifest->createElement('extends', $sToExtends);
+        $oExtendsNode = $oNewManifest->createElement('extends', $sToExtends);
         $oConfig        = $oNewManifest->getElementsByTagName('config')->item(0);
         $oMetadatas     = $oConfig->getElementsByTagName('metadatas')->item(0);
 
         // We test if mother template already extends another template
-        if(!empty($oMetadatas->getElementsByTagName('extends')->item(0))){
+        if (!empty($oMetadatas->getElementsByTagName('extends')->item(0))) {
             $oMetadatas->replaceChild($oExtendsNode, $oMetadatas->getElementsByTagName('extends')->item(0));
-        } else{
+        } else {
             $oMetadatas->appendChild($oExtendsNode);
         }
     }
@@ -570,26 +570,26 @@ class TemplateManifest extends TemplateConfiguration
      * @var     $sTemplateName  string the name of the template
      * @var     $iSurveyId      int    the id of the survey
      */
-    private function setTemplateName($sTemplateName='', $iSurveyId='')
+    private function setTemplateName($sTemplateName = '', $iSurveyId = '')
     {
 
         // If it is called from the template editor, a template name will be provided.
         // If it is called for survey taking, a survey id will be provided
         if ($sTemplateName == '' && $iSurveyId == '') {
             /* Some controller didn't test completely survey id (PrintAnswersController for example), then set to default here */
-            $sTemplateName = Template::templateNameFilter(Yii::app()->getConfig('defaulttheme','default'));
+            $sTemplateName = Template::templateNameFilter(Yii::app()->getConfig('defaulttheme', 'default'));
         }
 
         $this->sTemplateName = $sTemplateName;
         $this->iSurveyId     = (int) $iSurveyId;
 
         if ($sTemplateName == '') {
-            $oSurvey       = Survey::model()->findByPk($iSurveyId);
+            $oSurvey = Survey::model()->findByPk($iSurveyId);
 
-            if($oSurvey) {
+            if ($oSurvey) {
                 $this->sTemplateName = $oSurvey->template;
             } else {
-                $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttheme','default'));
+                $this->sTemplateName = Template::templateNameFilter(App()->getConfig('defaulttheme', 'default'));
             }
         }
     }
@@ -761,18 +761,18 @@ class TemplateManifest extends TemplateConfiguration
         $this->templateEditor     = $this->getTemplateForPath($this, '//template_editor')->config->engine->template_editor;
 
         // Options are optional
-        if (!empty($this->config->xpath("//options"))){
+        if (!empty($this->config->xpath("//options"))) {
             $aOptions = $this->config->xpath("//options");
             $this->oOptions = $aOptions[0];
-        } elseif(!empty($this->oMotherTemplate->oOptions)){
+        } elseif (!empty($this->oMotherTemplate->oOptions)) {
             $this->oOptions = $this->oMotherTemplate->oOptions;
-        } else{
+        } else {
             $this->oOptions = "";
         }
 
         // Not mandatory (use package dependances)
-        $this->cssFramework             = (!empty($this->config->xpath("//cssframework")))    ? $this->config->engine->cssframework: '';
-        $this->packages                 = (!empty($this->config->xpath("//packages")))        ? $this->config->engine->packages: array();
+        $this->cssFramework             = (!empty($this->config->xpath("//cssframework"))) ? $this->config->engine->cssframework : '';
+        $this->packages                 = (!empty($this->config->xpath("//packages"))) ? $this->config->engine->packages : array();
 
         // Add depend package according to packages
         $this->depends                  = array_merge($this->depends, $this->getDependsPackages($this));

@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 
 /*
    * LimeSurvey
@@ -111,8 +113,7 @@ class Quota extends LSActiveRecord
         try {
             $quota->save();
             return $quota->id;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
