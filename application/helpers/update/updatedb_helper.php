@@ -706,8 +706,7 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false) {
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>329), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
-    }
-    catch (Exception $e)
+    } catch (Exception $e)
     {
         Yii::app()->setConfig('Updating', false);
         $oTransaction->rollback();
@@ -1514,7 +1513,10 @@ function upgradeSurveyTables181($sMySQLCollation)
         foreach ($aTables as $sTableName)
         {
             $oTableSchema = $oSchema->getTable($sTableName);
-            if (!in_array('token', $oTableSchema->columnNames)) continue; // No token field in this table
+            if (!in_array('token', $oTableSchema->columnNames)) {
+                continue;
+            }
+            // No token field in this table
             switch (Yii::app()->db->driverName) {
                 case 'sqlsrv':
                 case 'dblib':
@@ -1597,8 +1599,7 @@ function alterColumn($sTable, $sColumn, $sFieldType, $bAllowNull = true, $sDefau
             if ($bAllowNull != true)
             {
                 $sType .= ' NOT NULL';
-            }
-            else
+            } else
             {
                 $sType .= ' NULL';
             }

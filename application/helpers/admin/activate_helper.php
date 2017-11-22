@@ -237,11 +237,12 @@ function checkQuestions($postsid, $iSurveyID, $qtypes)
             $failedcheck[] = array($iQID, $aDuplicate['question'], ": Bad duplicate fieldname {$sFixLink}", $aDuplicate['gid']);
         }
     }
-    if (isset($failedcheck))
-        return $failedcheck;
-    else
-        return false;
-}
+    if (isset($failedcheck)) {
+            return $failedcheck;
+    } else {
+            return false;
+    }
+    }
 
 /**
 * Function to activate a survey

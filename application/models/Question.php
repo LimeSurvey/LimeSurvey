@@ -1,6 +1,7 @@
 <?php
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -128,8 +129,7 @@ class Question extends LSActiveRecord
             if ($oParentQuestion->other == "Y") {
                 $aRules[] = array('title', 'LSYii_CompareInsensitiveValidator', 'compareValue'=>'other', 'operator'=>'!=', 'message'=> sprintf(gT("'%s' can not be used if the 'Other' option for this question is activated."), "other"), 'except' => 'archiveimport');
             }
-        }
-        else {
+        } else {
             // Disallow other if sub question have 'other' for title
             $oSubquestionOther = Question::model()->find("parent_qid=:parent_qid and LOWER(title)='other'", array("parent_qid"=>$this->qid));
             if ($oSubquestionOther) {
@@ -158,8 +158,7 @@ class Question extends LSActiveRecord
             $aRules[] = array('title', 'match', 'pattern' => '/^[a-z,A-Z][[:alnum:]]*$/',
                 'message' => gT('Question codes must start with a letter and may only contain alphanumeric characters.'),
                 'except' => 'archiveimport');
-        }
-        else {
+        } else {
             $aRules[] = array('title', 'compare', 'compareValue'=>'time', 'operator'=>'!=',
                 'message'=> gT("'time' is a reserved word and can not be used for a subquestion."),
                 'except' => 'archiveimport');
@@ -230,8 +229,7 @@ class Question extends LSActiveRecord
     {
         if (is_null($sLanguage)) {
             $aLanguages = array_merge(array(Survey::model()->findByPk($iSurveyID)->language), Survey::model()->findByPk($iSurveyID)->additionalLanguages);
-        }
-        else {
+        } else {
             $aLanguages = array($sLanguage);
         }
         $aAttributeValues = QuestionAttribute::model()->getQuestionAttributes($iQuestionID, $sLanguage);
@@ -252,17 +250,14 @@ class Question extends LSActiveRecord
             if ($aAttribute['i18n'] == false) {
                 if (isset($aAttributeValues[$aAttribute['name']])) {
                     $aAttributeNames[$iKey]['value'] = $aAttributeValues[$aAttribute['name']];
-                }
-                else {
+                } else {
                     $aAttributeNames[$iKey]['value'] = $aAttribute['default'];
                 }
-            }
-            else {
+            } else {
                 foreach ($aLanguages as $sLanguage) {
                     if (isset($aAttributeValues[$aAttribute['name']][$sLanguage])) {
                         $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttributeValues[$aAttribute['name']][$sLanguage];
-                    }
-                    else {
+                    } else {
                         $aAttributeNames[$iKey][$sLanguage]['value'] = $aAttribute['default'];
                     }
                 }
@@ -825,8 +820,7 @@ class Question extends LSActiveRecord
     {
         if ($this->type != "X" && $this->type != "|") {
             $sIcon = ($this->mandatory == "Y") ? '<span class="fa fa-asterisk text-danger"></span>' : '<span></span>';
-        }
-        else {
+        } else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
         }
         return $sIcon;
@@ -837,8 +831,7 @@ class Question extends LSActiveRecord
 
         if (($this->type == "L") || ($this->type == "!") || ($this->type == "P") || ($this->type == "M")) {
             $sIcon = ($this->other === "Y") ? '<span class="fa fa-dot-circle-o"></span>' : '<span></span>';
-        }
-        else {
+        } else {
             $sIcon = '<span class="fa fa-ban text-danger" data-toggle="tooltip" title="'.gT('Not relevant for this question type').'"></span>';
         }
         return $sIcon;
@@ -960,8 +953,7 @@ class Question extends LSActiveRecord
                 return false;
             }
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }

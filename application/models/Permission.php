@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) die('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    die('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -312,12 +314,24 @@ class Permission extends LSActiveRecord
         } else {
             foreach ($aBasePermissions as $sPermission=>&$aPermissionDetail) {
                 $oCurrentPermissions = Permission::model()->findByAttributes(array('uid'=>$iUserID, 'entity_id'=>$iEntityID, 'permission'=>$sPermission));
-                if ($aPermissionDetail['create']) $aPermissionDetail['create'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->create_p : false);
-                if ($aPermissionDetail['read']) $aPermissionDetail['read'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->read_p : false);
-                if ($aPermissionDetail['update']) $aPermissionDetail['update'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->update_p : false);
-                if ($aPermissionDetail['delete']) $aPermissionDetail['delete'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->delete_p : false);
-                if ($aPermissionDetail['import']) $aPermissionDetail['import'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->import_p : false);
-                if ($aPermissionDetail['export']) $aPermissionDetail['export'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->export_p : false);
+                if ($aPermissionDetail['create']) {
+                    $aPermissionDetail['create'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->create_p : false);
+                }
+                if ($aPermissionDetail['read']) {
+                    $aPermissionDetail['read'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->read_p : false);
+                }
+                if ($aPermissionDetail['update']) {
+                    $aPermissionDetail['update'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->update_p : false);
+                }
+                if ($aPermissionDetail['delete']) {
+                    $aPermissionDetail['delete'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->delete_p : false);
+                }
+                if ($aPermissionDetail['import']) {
+                    $aPermissionDetail['import'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->import_p : false);
+                }
+                if ($aPermissionDetail['export']) {
+                    $aPermissionDetail['export'] = ($oCurrentPermissions ? (boolean) $oCurrentPermissions->export_p : false);
+                }
             }
         }
         return $aBasePermissions;
@@ -352,7 +366,9 @@ class Permission extends LSActiveRecord
                 $aFilteredPermissions = array();
                 foreach ($aBasePermissions as $PermissionName=>$aPermission) {
                     foreach ($aPermission as $sPermissionKey=>&$sPermissionValue) {
-                        if ($sPermissionKey != 'title' && $sPermissionKey != 'img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) $sPermissionValue = false;
+                        if ($sPermissionKey != 'title' && $sPermissionKey != 'img' && !Permission::model()->hasGlobalPermission($PermissionName, $sPermissionKey)) {
+                            $sPermissionValue = false;
+                        }
                     }
                     // Only have a row for that permission if there is at least one permission he may give to other users
                     if ($aPermission['create'] || $aPermission['read'] || $aPermission['update'] || $aPermission['delete'] || $aPermission['import'] || $aPermission['export']) {
@@ -360,13 +376,11 @@ class Permission extends LSActiveRecord
                     }
                 }
                 $aBasePermissions = $aFilteredPermissions;
-            }
-            elseif (Permission::model()->hasGlobalPermission('superadmin', 'read') && Yii::app()->session['loginID'] != 1) 
+            } elseif (Permission::model()->hasGlobalPermission('superadmin', 'read') && Yii::app()->session['loginID'] != 1) 
             {
                 unset($aBasePermissions['superadmin']);
             }
-        }
-        elseif ($sEntityName == 'survey') 
+        } elseif ($sEntityName == 'survey') 
         {
             $aBasePermissions = Permission::model()->getSurveyBasePermissions();
         }
@@ -389,8 +403,7 @@ class Permission extends LSActiveRecord
 
         if (!Permission::model()->hasGlobalPermission('superadmin', 'create')) {
             Permission::model()->deleteAllByAttributes($condition, "permission <> 'superadmin' AND entity <> 'template'");
-        }
-        else {
+        } else {
             Permission::model()->deleteAllByAttributes($condition, "entity <> 'template'");
         }
 
@@ -410,8 +423,9 @@ class Permission extends LSActiveRecord
                 );
 
                 $permission = new self;
-                foreach ($data as $k => $v)
-                    $permission->$k = $v;
+                foreach ($data as $k => $v) {
+                                    $permission->$k = $v;
+                }
                 $permission->save();
             }
         }
@@ -475,8 +489,9 @@ class Permission extends LSActiveRecord
      */
     public function insertRecords($data)
     {
-        foreach ($data as $item)
-            $this->insertSomeRecords($item);
+        foreach ($data as $item) {
+                    $this->insertSomeRecords($item);
+        }
     }
 
     /**
@@ -486,8 +501,9 @@ class Permission extends LSActiveRecord
     public function insertSomeRecords($data)
     {
         $permission = new self;
-        foreach ($data as $k => $v)
-            $permission->$k = $v;
+        foreach ($data as $k => $v) {
+                    $permission->$k = $v;
+        }
         return $permission->save();
     }
 
@@ -519,8 +535,7 @@ class Permission extends LSActiveRecord
             unset($aRow['id']); // To insert, we reset the id
             try {
                 $this->insertSomeRecords($aRow);
-            }
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 //Ignore
             }
         }
@@ -624,8 +639,7 @@ class Permission extends LSActiveRecord
             $bPermission = is_null($query) ? array() : $query->attributes;
             if (!isset($bPermission[$sCRUD]) || $bPermission[$sCRUD] == 0) {
                 $bPermission = false;
-            }
-            else {
+            } else {
                 $bPermission = true;
             }
             $aPermissionStatic[$iEntityID][$sEntityName][$iUserID][$sPermission][$sCRUD] = $bPermission;

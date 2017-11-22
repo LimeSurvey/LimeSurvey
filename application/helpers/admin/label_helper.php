@@ -34,14 +34,16 @@ function updateset($lid)
     // If new languages are added, create labels' codes and sortorder for the new languages
     $result = Label::model()->findAllByAttributes(array('lid' => $lid), array('order' => 'code, sortorder, assessment_value'));
     if ($result) {
-            foreach ($result as $row)
-            $oldcodesarray[$row['code']] = array('sortorder'=> $row['sortorder'], 'assessment_value'=> $row['assessment_value']);
+            foreach ($result as $row) {
+                        $oldcodesarray[$row['code']] = array('sortorder'=> $row['sortorder'], 'assessment_value'=> $row['assessment_value']);
+            }
     }
 
     if (isset($oldcodesarray) && count($oldcodesarray) > 0) {
-            foreach ($addlangidsarray as $addedlangid)
-            foreach ($oldcodesarray as $oldcode => $olddata)
+            foreach ($addlangidsarray as $addedlangid) {
+                        foreach ($oldcodesarray as $oldcode => $olddata)
                 $sqlvalues[] = array('lid' => $lid, 'code' => $oldcode, 'sortorder' => $olddata['sortorder'], 'language' => $addedlangid, 'assessment_value' => $olddata['assessment_value']);
+            }
     }
 
     if (isset($sqlvalues)) {

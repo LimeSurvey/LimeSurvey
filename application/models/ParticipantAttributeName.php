@@ -258,7 +258,9 @@ class ParticipantAttributeName extends LSActiveRecord
      */
     function getVisibleAttributes($sLanguageFilter = null)
     {
-        if ($sLanguageFilter == null) $sLanguageFilter = Yii::app()->session['adminlang'];
+        if ($sLanguageFilter == null) {
+            $sLanguageFilter = Yii::app()->session['adminlang'];
+        }
         $output = array();
         //First get all the distinct id's that are visible
         $ids = ParticipantAttributeName::model()->findAll("visible = 'TRUE'");
@@ -290,8 +292,7 @@ class ParticipantAttributeName extends LSActiveRecord
                     $language = $langs[0]->lang;
                     $attribute_name = $langs[0]->attribute_name;
                 }
-            }
-            else {
+            } else {
                 $language = Yii::app()->session['adminlang'];
                 $attribute_name = $id->defaultname;
             }
@@ -623,8 +624,7 @@ class ParticipantAttributeName extends LSActiveRecord
             $oParticipantAttributeNameLang->attribute_name = $data['attribute_name'];
             $oParticipantAttributeNameLang->lang = $data['lang'];
             $oParticipantAttributeNameLang->save();
-        }
-        else {
+        } else {
             $oParticipantAttributeNameLang = ParticipantAttributeNameLang::model()->findByPk(array(
                 'attribute_id' => $data['attribute_id'], 
                 'lang' => $data['lang']

@@ -468,38 +468,39 @@ class STATAxmlWriter extends Writer
                                     $iDatatype = 4; //long
                                 }
                             }
-                        }
-                        else { //non-integer numeric response
+                        } else { //non-integer numeric response
                             $iDatatype = 5; // float
                             $response = $numberresponse; //replace in customResponsemap: value with '.' as decimal
                         }
-                    }
-                    else 
+                    } else 
                     { // non-numeric response
                         $iDatatype = 7; //string
                         $iStringlength = strlen($response); //for strings we need the length for the format and the data type
                     }
-                }
-                else
+                } else
                 {
                     $iDatatype = 1; // response = "" 
                 }
                 
                 // initialize format and type (default: empty)
-                if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['type']))
-                    $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = 1;
-                if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['format']))
-                    $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = 0;
+                if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['type'])) {
+                                    $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = 1;
+                }
+                if (!isset($aStatatypelist[$this->headersSGQA[$iVarid]]['format'])) {
+                                    $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = 0;
+                }
                 
                 // Does the variable need a higher datatype because of the current response?
-                if ($aStatatypelist[$this->headersSGQA[$iVarid]]['type'] < $iDatatype)
-                    $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = $iDatatype;
+                if ($aStatatypelist[$this->headersSGQA[$iVarid]]['type'] < $iDatatype) {
+                                    $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = $iDatatype;
+                }
                 
                 // if datatype is a string, set needed stringlength
                 if ($iDatatype == 7) {
                     // Does the variable need a higher stringlength because of the current response?
-                    if ($aStatatypelist[$this->headersSGQA[$iVarid]]['format'] < $iStringlength)
-                        $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = $iStringlength;
+                    if ($aStatatypelist[$this->headersSGQA[$iVarid]]['format'] < $iStringlength) {
+                                            $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = $iStringlength;
+                    }
                     
                 }
                 //write the recoded response back to the response array

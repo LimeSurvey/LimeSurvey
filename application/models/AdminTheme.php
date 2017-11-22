@@ -1,5 +1,7 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
@@ -233,7 +235,9 @@ class AdminTheme extends CFormModel
     public static function forceAssets()
     {
         // Don't touch symlinked assets because it won't work
-        if (App()->getAssetManager()->linkAssets) return;
+        if (App()->getAssetManager()->linkAssets) {
+            return;
+        }
 
         // Touch all the admin themes
         $standardTemplatesPath = Yii::app()->getConfig("styledir");
@@ -270,8 +274,9 @@ class AdminTheme extends CFormModel
         $Resource = opendir($sPath);
         while ($Item = readdir($Resource)) {
             if (is_dir($sPath.DIRECTORY_SEPARATOR.$Item) && $Item != "." && $Item != "..") {
-                if (is_writable($sPath.DIRECTORY_SEPARATOR.$Item))
-                    touch($sPath.DIRECTORY_SEPARATOR.$Item);
+                if (is_writable($sPath.DIRECTORY_SEPARATOR.$Item)) {
+                                    touch($sPath.DIRECTORY_SEPARATOR.$Item);
+                }
             }
         }
     }

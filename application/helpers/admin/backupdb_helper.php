@@ -35,8 +35,7 @@
         {
             $oFile = fopen($sFileName, 'w');
             fwrite($oFile, $sOutput);
-        }
-        else
+        } else
         {
             $oFile = null;
         }
@@ -64,8 +63,7 @@
     {
         if ($bAllowExportAllDb) {
             $aTables = Yii::app()->db->getSchema()->getTableNames();
-        }
-        else
+        } else
         {
             $aTables = Yii::app()->db->createCommand(dbSelectTablesLike(addcslashes(Yii::app()->db->tablePrefix, '_')."%"))->queryColumn();
         }
@@ -172,8 +170,7 @@
 
                 if (isset($aRecord[$sFieldName]) && !is_null($aRecord[$sFieldName])) {
                     $sOutput .= Yii::app()->db->quoteValue($aRecord[$sFieldName]);
-                }
-                else
+                } else
                 {
                     $sOutput .= 'NULL';
                 }
@@ -187,8 +184,7 @@
             {
                 $sOutput .= ');'."\n";
                 $i = 0;
-            }
-            else
+            } else
             {
                 $sOutput .= '),'."\n";
             }

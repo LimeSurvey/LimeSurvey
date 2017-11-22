@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
  * LimeSurvey
  * Copyright (C) 2007-2011 The LimeSurvey Project Team / Carsten Schmitz
@@ -91,11 +93,12 @@ if ($magic_quotes == TRUE) { define("MAGIC_QUOTES", 1); } else { define("MAGIC_Q
 function nice_addslashes($string)
 {
     // if magic quotes is on the string is already quoted, just return it
-    if (MAGIC_QUOTES)
-    return $string;
-    else
-    return addslashes($string);
-}
+    if (MAGIC_QUOTES) {
+        return $string;
+    } else {
+        return addslashes($string);
+    }
+    }
 
 
 /**
@@ -121,7 +124,9 @@ function sanitize_filename($filename, $force_lowercase = true, $alphanumeric = f
     // avoids ".", ".." or ".hiddenFiles"
     $filename = ltrim($filename, '.-');
     // optional beautification
-    if ($beautify) $filename = beautify_filename($filename);
+    if ($beautify) {
+        $filename = beautify_filename($filename);
+    }
     // maximise filename length to 255 bytes http://serverfault.com/a/9548/44086
     $ext = pathinfo($filename, PATHINFO_EXTENSION);
     $filename = mb_strcut(pathinfo($filename, PATHINFO_FILENAME), 0, 255 - ($ext ? strlen($ext) + 1 : 0), mb_detect_encoding($filename)).($ext ? '.'.$ext : '');
@@ -183,8 +188,9 @@ function sanitize_paranoid_string($string, $min = '', $max = '')
     {
         $string = preg_replace("/[^_.a-zA-Z0-9]/", "", $string);
         $len = strlen($string);
-        if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
-        return FALSE;
+        if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
+                return FALSE;
+        }
         return $string;
     }
 }
@@ -195,8 +201,9 @@ function sanitize_cquestions($string, $min = '', $max = '')
     {
         $string = preg_replace("/[^_.a-zA-Z0-9+#]/", "", $string);
         $len = strlen($string);
-        if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
-        return FALSE;
+        if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
+                return FALSE;
+        }
         return $string;
     }
 }
@@ -213,7 +220,9 @@ function sanitize_system_string($string, $min = '', $max = '')
         $string = preg_replace($pattern, '', $string);
         $string = '"'.preg_replace('/\$/', '\\\$', $string).'"'; //make sure this is only interpretted as ONE argument
         $len = strlen($string);
-        if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))	return FALSE;
+        if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
+            return FALSE;
+        }
         return $string;
     }
 }
@@ -241,8 +250,9 @@ function sanitize_ldap_string($string, $min = '', $max = '')
 {
     $pattern = '/(\)|\(|\||&)/';
     $len = strlen($string);
-    if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max)))
-    return FALSE;
+    if ((($min != '') && ($len < $min)) || (($max != '') && ($len > $max))) {
+        return FALSE;
+    }
     return preg_replace($pattern, '', $string);
 }
 
@@ -331,18 +341,17 @@ function sanitize_float($float, $min = '', $max = '')
         if (($min != '' && gmp_cmp($gNumber, $min) < 0) || ($max != '' && gmp_cmp($gNumber, $max) > 0))
         {
             return FALSE;
-        }
-        else
+        } else
         {
             return gmp_strval($gNumber);
         }
-    }
-    else
+    } else
     {
         $fNumber = str_replace(',', '.', $float);
         $fNumber = floatval($fNumber);
-        if ((($min != '') && ($fNumber < $min)) || (($max != '') && ($fNumber > $max)))
-            return FALSE;
+        if ((($min != '') && ($fNumber < $min)) || (($max != '') && ($fNumber > $max))) {
+                    return FALSE;
+        }
         return $fNumber;
     }
 }
@@ -351,55 +360,73 @@ function sanitize_float($float, $min = '', $max = '')
 // glue together all the other functions
 function sanitize($input, $flags, $min = '', $max = '')
 {
-    if ($flags & PARANOID) $input = sanitize_paranoid_string($input, $min, $max);
-    if ($flags & INT) $input = sanitize_int($input, $min, $max);
-    if ($flags & FLOAT) $input = sanitize_float($input, $min, $max);
-    if ($flags & HTML) $input = sanitize_html_string($input);
-    if ($flags & LDAP) $input = sanitize_ldap_string($input, $min, $max);
-    if ($flags & SYSTEM) $input = sanitize_system_string($input, $min, $max);
+    if ($flags & PARANOID) {
+        $input = sanitize_paranoid_string($input, $min, $max);
+    }
+    if ($flags & INT) {
+        $input = sanitize_int($input, $min, $max);
+    }
+    if ($flags & FLOAT) {
+        $input = sanitize_float($input, $min, $max);
+    }
+    if ($flags & HTML) {
+        $input = sanitize_html_string($input);
+    }
+    if ($flags & LDAP) {
+        $input = sanitize_ldap_string($input, $min, $max);
+    }
+    if ($flags & SYSTEM) {
+        $input = sanitize_system_string($input, $min, $max);
+    }
     return $input;
 }
 
 function check_paranoid_string($input, $min = '', $max = '')
 {
-    if ($input != sanitize_paranoid_string($input, $min, $max))
-    return FALSE;
+    if ($input != sanitize_paranoid_string($input, $min, $max)) {
+        return FALSE;
+    }
     return TRUE;
 }
 
 function check_int($input, $min = '', $max = '')
 {
-    if ($input != sanitize_int($input, $min, $max))
-    return FALSE;
+    if ($input != sanitize_int($input, $min, $max)) {
+        return FALSE;
+    }
     return TRUE;
 }
 
 function check_float($input, $min = '', $max = '')
 {
-    if ($input != sanitize_float($input, $min, $max))
-    return FALSE;
+    if ($input != sanitize_float($input, $min, $max)) {
+        return FALSE;
+    }
     return TRUE;
 }
 
 function check_html_string($input, $min = '', $max = '')
 {
-    if ($input != sanitize_html_string($input))
-        return FALSE;
+    if ($input != sanitize_html_string($input)) {
+            return FALSE;
+    }
     return TRUE;
 }
 
 
 function check_ldap_string($input, $min = '', $max = '')
 {
-    if ($input != sanitize_string($input, $min, $max))
-    return FALSE;
+    if ($input != sanitize_string($input, $min, $max)) {
+        return FALSE;
+    }
     return TRUE;
 }
 
 function check_system_string($input, $min = '', $max = '')
 {
-    if ($input != sanitize_system_string($input, $min, $max))
-        return FALSE;
+    if ($input != sanitize_system_string($input, $min, $max)) {
+            return FALSE;
+    }
     return TRUE;
 }
 
@@ -407,15 +434,30 @@ function check_system_string($input, $min = '', $max = '')
 function check($input, $flags, $min = '', $max = '')
 {
     $oldput = $input;
-    if ($flags & UTF8) $input = my_utf8_decode($input);
-    if ($flags & PARANOID) $input = sanitize_paranoid_string($input, $min, $max);
-    if ($flags & INT) $input = sanitize_int($input, $min, $max);
-    if ($flags & FLOAT) $input = sanitize_float($input, $min, $max);
-    if ($flags & HTML) $input = sanitize_html_string($input);
-    if ($flags & LDAP) $input = sanitize_ldap_string($input, $min, $max);
-    if ($flags & SYSTEM) $input = sanitize_system_string($input, $min, $max);
-    if ($input != $oldput)
-    return FALSE;
+    if ($flags & UTF8) {
+        $input = my_utf8_decode($input);
+    }
+    if ($flags & PARANOID) {
+        $input = sanitize_paranoid_string($input, $min, $max);
+    }
+    if ($flags & INT) {
+        $input = sanitize_int($input, $min, $max);
+    }
+    if ($flags & FLOAT) {
+        $input = sanitize_float($input, $min, $max);
+    }
+    if ($flags & HTML) {
+        $input = sanitize_html_string($input);
+    }
+    if ($flags & LDAP) {
+        $input = sanitize_ldap_string($input, $min, $max);
+    }
+    if ($flags & SYSTEM) {
+        $input = sanitize_system_string($input, $min, $max);
+    }
+    if ($input != $oldput) {
+        return FALSE;
+    }
     return TRUE;
 }
 

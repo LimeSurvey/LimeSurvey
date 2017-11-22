@@ -1,5 +1,7 @@
 <?php
-if (!defined('BASEPATH')) exit('No direct script access allowed');
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
 * LimeSurvey
 * Copyright (C) 2007-2015 The LimeSurvey Project Team / Carsten Schmitz
@@ -78,8 +80,7 @@ class UpdateForm extends CFormModel
                 $content->result = FALSE;
                 $content->error = "no_build";
             }
-        }
-        else {
+        } else {
             $content = new stdClass();
             $content->result = FALSE;
             $content->error = "update_disable";
@@ -358,7 +359,9 @@ class UpdateForm extends CFormModel
     public function republishAssets()
     {
         // Don't touch symlinked assets because it won't work
-        if (App()->getAssetManager()->linkAssets) return;
+        if (App()->getAssetManager()->linkAssets) {
+            return;
+        }
 
         // Republish the assets
         Template::model()->forceAssets();

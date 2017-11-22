@@ -1,4 +1,6 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
 /*
    * LimeSurvey
    * Copyright (C) 2013 The LimeSurvey Project Team / Carsten Schmitz
@@ -67,8 +69,9 @@ class Assessment extends LSActiveRecord
     {
         $assessment = new self;
 
-        foreach ($data as $k => $v)
-            $assessment->$k = $v;
+        foreach ($data as $k => $v) {
+                    $assessment->$k = $v;
+        }
         $assessment->save();
 
         return $assessment;
@@ -84,8 +87,9 @@ class Assessment extends LSActiveRecord
     {
         $assessment = self::model()->findByAttributes(array('id' => $id, 'sid'=> $iSurveyID, 'language' => $language));
         if (!is_null($assessment)) {
-            foreach ($data as $k => $v)
-                $assessment->$k = $v;
+            foreach ($data as $k => $v) {
+                            $assessment->$k = $v;
+            }
             $assessment->save();
         }
     }

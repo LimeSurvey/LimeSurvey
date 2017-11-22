@@ -16,8 +16,7 @@ function setSeed($surveyid)
     {
         $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_'.$surveyid]['srid']);
         $seed = $oResponse->seed;
-    }
-    else
+    } else
     {
         $seed = mt_rand();
 
@@ -104,8 +103,9 @@ class MersenneTwister
 
 
     public function __construct($seed = null) {
-        if ($seed === null)
-            $seed = mt_rand();
+        if ($seed === null) {
+                    $seed = mt_rand();
+        }
 
         $this->setSeed($seed);
     }
@@ -132,8 +132,9 @@ class MersenneTwister
     }
 
     public function getNext($min = null, $max = null) {
-        if (($min === null && $max !== null) || ($min !== null && $max === null))
-            throw new Exception('Invalid arguments');
+        if (($min === null && $max !== null) || ($min !== null && $max === null)) {
+                    throw new Exception('Invalid arguments');
+        }
 
         if ($this->index === 0) {
             $this->generateTwister();
@@ -147,8 +148,9 @@ class MersenneTwister
 
         $this->index = ($this->index + 1) % 624;
 
-        if ($min === null && $max === null)
-            return $y;
+        if ($min === null && $max === null) {
+                    return $y;
+        }
 
         $range = abs($max - $min);
 

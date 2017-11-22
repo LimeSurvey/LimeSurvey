@@ -23,9 +23,7 @@ function ldap_getCnx($server_id = null) {
 
     if (is_null($server_id)) {
         return False;
-    }
-
-    else {
+    } else {
         if ($ldap_server[$server_id]['protoversion'] == 'ldapv3' && $ldap_server[$server_id]['encrypt'] != 'ldaps') {
             $ds = ldap_connect($ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
             ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -37,12 +35,10 @@ function ldap_getCnx($server_id = null) {
             if ($ldap_server[$server_id]['encrypt'] == 'start-tls') {
                 ldap_start_tls($ds);
             }
-        }
-        elseif ($ldap_server[$server_id]['protoversion'] == 'ldapv2') {
+        } elseif ($ldap_server[$server_id]['protoversion'] == 'ldapv2') {
             if ($ldap_server[$server_id]['encrypt'] == 'ldaps') {
                 $ds = ldap_connect("ldaps://".$ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
-            }
-            else {
+            } else {
                 $ds = ldap_connect($ldap_server[$server_id]['server'], $ldap_server[$server_id]['port']);
             }
 
@@ -67,8 +63,7 @@ function ldap_bindCnx($ds, $server_id = null) {
         $resbind = @ldap_bind($ds,
         $ldap_server[$server_id]['binddn'],
         $ldap_server[$server_id]['bindpw']);
-    }
-    else {
+    } else {
         $resbind = @ldap_bind($ds);
     }
     return $resbind;
@@ -79,8 +74,7 @@ function ldap_readattr($attr) {
 
     if (is_array($attr)) {
         return trim($attr[0]);
-    }
-    else {
+    } else {
         return trim($attr);
     }
 }
@@ -89,11 +83,9 @@ function ldap_readattr($attr) {
 function ldap_search_withScope($ds, $basedn, $filter, $attrlist, $scope) {
     if ($scope == "base") {
         $search = ldap_read($ds, $basedn, $filter, $attrlist);
-    }
-    elseif ($scope == "one") {
+    } elseif ($scope == "one") {
         $search = ldap_list($ds, $basedn, $filter, $attrlist);
-    }
-    elseif ($scope == "sub") {
+    } elseif ($scope == "sub") {
         $search = ldap_search($ds, $basedn, $filter, $attrlist);
     }
     return $search;
