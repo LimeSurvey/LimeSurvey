@@ -37,12 +37,9 @@ class STATAxmlWriter extends Writer
         $this->separator       = ',';
         $this->hasOutputHeader = false;
         $this->statafileversion = $pluginsettings['statafileversion']['current'];
-        if ($this->statafileversion >= 117)  // 117 is the version number of the .dta/xml format for stata version 13
-        {
+        if ($this->statafileversion >= 117) { // 117 is the version number of the .dta/xml format for stata version 13
             $this->maxStringLength = 2045; // for Stata version 13 and above
-        }
-        else
-        {
+        } else {
             $this->maxStringLength = 244; // for older Stata versions
         }
     }
@@ -303,8 +300,7 @@ class STATAxmlWriter extends Writer
      */
     protected function STATAvarname($sVarname)
     {
-        if (!preg_match("/^([a-z]|[A-Z])+.*$/", $sVarname)) //var starting with a number?
-        {
+        if (!preg_match("/^([a-z]|[A-Z])+.*$/", $sVarname)) { //var starting with a number?
             $sVarname = "v".$sVarname; //add a leading 'v'
         }
         $sVarname = str_replace(array(
@@ -455,43 +451,31 @@ class STATAxmlWriter extends Writer
                        7=string
                     */
                     $numberresponse = trim($response);
-                    if ($this->customFieldmap['info']['surveyls_numberformat'] == 1) // if settings: decimal seperator==','
-                    {
+                    if ($this->customFieldmap['info']['surveyls_numberformat'] == 1) { // if settings: decimal seperator==','
                         $numberresponse = str_replace(',', '.', $response); // replace comma with dot so STATA can use float variables
                     }
 
-                    if (is_numeric($numberresponse)) // deal with numeric responses/variables
-                    {
-                        if (ctype_digit($numberresponse)) // if it contains only digits (no dot) --> non-float number
-                        {
-                            if ($numberresponse >= $this->minByte && $numberresponse <= $this->maxByte)
-                            {
+                    if (is_numeric($numberresponse)) { // deal with numeric responses/variables
+                        if (ctype_digit($numberresponse)) {  // if it contains only digits (no dot) --> non-float number
+                            if ($numberresponse >= $this->minByte && $numberresponse <= $this->maxByte) {
                                 $iDatatype = 2; //this response is of STATA type 'byte'
-                            }
-                            elseif ($numberresponse >= $this->minInt && $numberresponse <= $this->maxInt)
-                            {
+                            } elseif ($numberresponse >= $this->minInt && $numberresponse <= $this->maxInt) {
                                 $iDatatype = 3; // and this is is 'int'
-                            }
-                            else
-                            {
-                                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') // if datefield then a 'double' data type is needed
-                                {
+                            } else {
+                                if ($this->customFieldmap['questions'][$this->headersSGQA[$iVarid]]['type'] == 'D') { // if datefield then a 'double' data type is needed
                                     $iDatatype = 6; // double
-                                }
-                                else
-                                {
+                                } else {
                                     $iDatatype = 4; //long
                                 }
                             }
                         }
-                        else //non-integer numeric response
-                        {
+                        else { //non-integer numeric response
                             $iDatatype = 5; // float
                             $response = $numberresponse; //replace in customResponsemap: value with '.' as decimal
                         }
                     }
-                    else // non-numeric response
-                    {
+                    else 
+                    { // non-numeric response
                         $iDatatype = 7; //string
                         $iStringlength = strlen($response); //for strings we need the length for the format and the data type
                     }
@@ -512,8 +496,7 @@ class STATAxmlWriter extends Writer
                     $aStatatypelist[$this->headersSGQA[$iVarid]]['type'] = $iDatatype;
                 
                 // if datatype is a string, set needed stringlength
-                if ($iDatatype == 7)
-                {
+                if ($iDatatype == 7) {
                     // Does the variable need a higher stringlength because of the current response?
                     if ($aStatatypelist[$this->headersSGQA[$iVarid]]['format'] < $iStringlength)
                         $aStatatypelist[$this->headersSGQA[$iVarid]]['format'] = $iStringlength;
@@ -678,8 +661,7 @@ class STATAxmlWriter extends Writer
         {
             foreach ($aScales as $iScaleID => $aAnswercodes)
             {
-                if (!array_key_exists($iQid, $this->aQIDnonumericalAnswers))        //if QID is not one of those with nonnumeric answers
-                {                                                                   // write value label
+                if (!array_key_exists($iQid, $this->aQIDnonumericalAnswers)) { //if QID is not one of those with nonnumeric answers write value label
                     $xml->startElement('vallab');
                     $xml->writeAttribute('name', 'vall'.$iQid.$iScaleID);
                     foreach ($aAnswercodes as $iAnscode => $aAnswer)
