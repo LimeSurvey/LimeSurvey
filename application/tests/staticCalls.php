@@ -1,6 +1,6 @@
 <?php
 
-$dir = realpath(dirname(__FILE__) . "/..");
+$dir = realpath(dirname(__FILE__)."/..");
 
 
 $dir = new RecursiveDirectoryIterator($dir);
@@ -10,8 +10,8 @@ iterateList($dir);
 
 function ignore($entry)
 {
-  // Check if directory is ignored.
-  if (substr($entry, -9, 9) == 'libraries') return true;
+    // Check if directory is ignored.
+    if (substr($entry, -9, 9) == 'libraries') return true;
 }
 
 function iterateList(Iterator $i)
@@ -144,6 +144,6 @@ function checkStatic($line)
 }
 function pr($msg)
 {
-    echo $msg . "\n";
+    echo $msg."\n";
 }
 ?>

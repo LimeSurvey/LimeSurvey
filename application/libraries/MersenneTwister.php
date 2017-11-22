@@ -12,9 +12,9 @@ namespace ls\mersenne;
 function setSeed($surveyid)
 {
     //traceVar(@$_SESSION['survey_' . $surveyid]['srid']);
-    if (isset($_SESSION['survey_' . $surveyid]['srid']))
+    if (isset($_SESSION['survey_'.$surveyid]['srid']))
     {
-        $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_' . $surveyid]['srid']);
+        $oResponse = \Response::model($surveyid)->findByPk($_SESSION['survey_'.$surveyid]['srid']);
         $seed = $oResponse->seed;
     }
     else
@@ -24,9 +24,9 @@ function setSeed($surveyid)
         // Only set seed if corresponding database column exists.
         // This mismatch can happen if survey is activated before update to
         // new version that uses seed.
-        $table = \Yii::app()->db->schema->getTable('{{survey_' . $surveyid.'}}');
+        $table = \Yii::app()->db->schema->getTable('{{survey_'.$surveyid.'}}');
         if (isset($table->columns['seed'])) {
-            $_SESSION['survey_' . $surveyid]['startingValues']['seed'] = $seed;
+            $_SESSION['survey_'.$surveyid]['startingValues']['seed'] = $seed;
         }
     }
     MersenneTwister::init($seed);
@@ -51,7 +51,7 @@ function shuffle(array $arr)
  */
 class MersenneTwister
 {
-    private $state = array ();
+    private $state = array();
     private $index = 0;
 
     /**
@@ -94,7 +94,7 @@ class MersenneTwister
         $new = $arr;
         for ($i = count($new) - 1; $i > 0; $i--)
         {
-            $j = $mt->getNext(0,$i);
+            $j = $mt->getNext(0, $i);
             $tmp = $new[$i];
             $new[$i] = $new[$j];
             $new[$j] = $tmp;

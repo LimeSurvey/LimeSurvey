@@ -30,7 +30,7 @@ class ExportR extends \LimeSurvey\PluginManager\PluginBase {
                 $tooltip .= CHtml::closeTag('ol');
                 $tooltip .= CHtml::tag('br');
                 $tooltip .= gT("Your data should be imported now, the data.frame is named \"data\", the variable.labels are attributes of data (\"attributes(data)\$variable.labels\"), like for foreign:read.spss.");
-                $event->set('tooltip',$tooltip);
+                $event->set('tooltip', $tooltip);
                 $event->set('label', gT("R (syntax file)"));
                 break;
             

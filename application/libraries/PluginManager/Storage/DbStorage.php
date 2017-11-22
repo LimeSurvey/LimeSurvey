@@ -20,7 +20,7 @@ class DbStorage implements iPluginStorage {
      */
     public function get(iPlugin $plugin, $key = null, $model = null, $id = null, $default = null, $language = null) 
     {
-        $functionName = 'get' . ucfirst($model);
+        $functionName = 'get'.ucfirst($model);
         if ($model == null || !method_exists($this, $functionName))
         {
             return $this->getGeneric($plugin, $key, $model, $id, $default);
@@ -106,7 +106,7 @@ class DbStorage implements iPluginStorage {
             // If * is passed we retrieve all languages.
             if ($language != '*')
             {
-                 $attributes['language'] = $language;
+                    $attributes['language'] = $language;
             }
             if ($key != null)
             {
@@ -189,7 +189,7 @@ class DbStorage implements iPluginStorage {
     public function set(iPlugin $plugin, $key, $data, $model = null, $id = null, $language = null) 
     {
         
-        $functionName = 'set' . ucfirst($model);
+        $functionName = 'set'.ucfirst($model);
         if ($model == null || !method_exists($this, $functionName))
         {
             return $this->setGeneric($plugin, $key, $data, $model, $id, $language);
@@ -299,12 +299,12 @@ class DbStorage implements iPluginStorage {
         return $result;
     }
     
-     /**
-     * Sets a field from the question table.
-     * @param int $questionId
-     * @param string $key
-     * @param mixed $data Data to be saved.
-     */
+        /**
+         * Sets a field from the question table.
+         * @param int $questionId
+         * @param string $key
+         * @param mixed $data Data to be saved.
+         */
     protected function setQuestionBase($questionId, $key, $data)
     {
         $question = Question::model()->findByPk($questionId);

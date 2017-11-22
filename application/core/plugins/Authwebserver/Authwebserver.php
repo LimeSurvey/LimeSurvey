@@ -38,7 +38,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
      * @return void
      */
     public function getGlobalBasePermissions() {
-        $this->getEvent()->append('globalBasePermissions',array(
+        $this->getEvent()->append('globalBasePermissions', array(
             'auth_webserver' => array(
                 'create' => false,
                 'update' => false,
@@ -74,7 +74,7 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             $aUserMappings=$this->api->getConfigKey('auth_webserver_user_map', array());
             if (isset($aUserMappings[$sUser])) 
             {
-               $sUser = $aUserMappings[$sUser];
+                $sUser = $aUserMappings[$sUser];
             }
             $oUser = $this->api->getUserByName($sUser);
             if($oUser || $this->api->getConfigKey('auth_webserver_autocreate_user'))
@@ -112,10 +112,10 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
             }
             elseif ($this->api->getConfigKey('auth_webserver_autocreate_user'))
             {
-                $aUserProfile=$this->api->getConfigKey('auth_webserver_autocreate_profile');
+                $aUserProfile = $this->api->getConfigKey('auth_webserver_autocreate_profile');
             }
         } else {
-            if (Permission::model()->hasGlobalPermission('auth_webserver','read',$oUser->uid))
+            if (Permission::model()->hasGlobalPermission('auth_webserver', 'read', $oUser->uid))
             {
                 $this->setAuthSuccess($oUser);
                 return;
@@ -129,19 +129,19 @@ class Authwebserver extends LimeSurvey\PluginManager\AuthPluginBase
 
         if ($this->api->getConfigKey('auth_webserver_autocreate_user') && isset($aUserProfile) && is_null($oUser))
         { // user doesn't exist but auto-create user is set
-            $oUser=new User;
-            $oUser->users_name=$sUser;
-            $oUser->setPassword(createPassword());// needed ? 
-            $oUser->full_name=$aUserProfile['full_name'];
-            $oUser->parent_id=1;
-            $oUser->lang=$aUserProfile['lang'];
-            $oUser->email=$aUserProfile['email'];
+            $oUser = new User;
+            $oUser->users_name = $sUser;
+            $oUser->setPassword(createPassword()); // needed ? 
+            $oUser->full_name = $aUserProfile['full_name'];
+            $oUser->parent_id = 1;
+            $oUser->lang = $aUserProfile['lang'];
+            $oUser->email = $aUserProfile['email'];
 
             if ($oUser->save())
             {
-                $permission=new Permission;
+                $permission = new Permission;
                 $permission->setPermissions($oUser->uid, 0, 'global', $this->api->getConfigKey('auth_webserver_autocreate_permissions'), true);
-                Permission::model()->setGlobalPermission($oUser->uid,'auth_webserver');
+                Permission::model()->setGlobalPermission($oUser->uid, 'auth_webserver');
 
                 // read again user from newly created entry
                 $this->setAuthSuccess($oUser);

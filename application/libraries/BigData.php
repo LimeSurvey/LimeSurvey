@@ -40,7 +40,7 @@
             {
                 return true;
             }
-            elseif(is_array($item))
+            elseif (is_array($item))
             {
                 return array_reduce($item, array('BigData', 'hasStream'), false);
             }
@@ -107,7 +107,7 @@
             echo '[';
                 foreach ($json as $key => $entry)
                 {
-                    echo json_encode($key) . ':';
+                    echo json_encode($key).':';
                     self::json_echo_data($entry);
                     echo ', '; // The extra comma is allowed: { 1: 'test', 2: 'test',} is valid.
                 }
@@ -127,7 +127,7 @@
                 reset($json);
                 foreach ($json as $key => $entry)
                 {
-                    echo json_encode($key) . ':';
+                    echo json_encode($key).':';
                     self::json_echo_data($entry);
                     if ($lastKey !== $key)
                     {
@@ -209,7 +209,7 @@
          */
         protected static function xmlrpc_echo_number($data)
         {
-            if (floor($data) == $data){
+            if (floor($data) == $data) {
                 self::tag('int', $data);
             }
             else {
@@ -255,7 +255,7 @@
         protected $deleteAfterUse;
         protected $defaultEcho;
 
-        public function __construct($fileName, $deleteAfterUse = true, $defaultEcho ='base64')
+        public function __construct($fileName, $deleteAfterUse = true, $defaultEcho = 'base64')
         {
             $this->fileName = $fileName;
             $this->deleteAfterUse = $deleteAfterUse;

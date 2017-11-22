@@ -64,5 +64,5 @@ interface iPlugin {
      * @param PluginEvent $event
      * @return PluginBase
      */
-   public function setEvent(PluginEvent $event);
+    public function setEvent(PluginEvent $event);
 }
