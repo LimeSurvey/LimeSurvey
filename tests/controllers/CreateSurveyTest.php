@@ -111,6 +111,19 @@ class CreateSurveyTest extends TestBaseClassWeb
 
             sleep(1);
 
+            // In case quick actions are hidden, show them.
+            try {
+                $showquickactions = self::$webDriver->wait(1)->until(
+                    WebDriverExpectedCondition::elementToBeClickable(
+                        WebDriverBy::cssSelector('#survey-action-chevron i.fa-caret-down')
+                    )
+                );
+                $showquickactions->click();
+                sleep(1);
+            } catch (NoSuchElementException $ex) {
+                // Ignore
+            }
+
             // Click "Add group".
             $addgroup = self::$webDriver->wait(10)->until(
                 WebDriverExpectedCondition::elementToBeClickable(
