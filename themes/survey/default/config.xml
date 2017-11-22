@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Default configuration for the template.
+    Default configuration for the theme.
     In future versions of LimeSurvey, it will be used to fill a template table,
     and to give user control on template configuration (like variables to use to render the questions, banners, background, etc.)
 -->
@@ -17,7 +17,7 @@
         <license>GNU General Public License version 2 or later</license>
         <version>2.0</version>
         <apiVersion>3</apiVersion>
-        <description><![CDATA[<strong>LimeSurvey Advanced Template</strong><br>A template with custom options to show what it's possible to do with the new engines. Each template provider will be able to offer its own option page (loaded from template)]]></description>
+        <description><![CDATA[<strong>LimeSurvey Advanced Theme</strong><br>A theme with custom options to show what it's possible to do with the new engines. Each theme provider will be able to offer its own option page (loaded from theme)]]></description>
         <last_update>2016-11-14 17:21:00</last_update>
     </metadatas>
 
@@ -29,14 +29,14 @@
         <css>
             <add>css/animate.css</add>
             <add>css/ajaxify.css</add>
-            <add>css/template.css</add>            
+            <add>css/theme.css</add>
         </css>
         <js>
-            <add>scripts/template.js</add>
+            <add>scripts/theme.js</add>
             <add>scripts/ajaxify.js</add>
         </js>
         <print_css>
-            <add>css/print_template.css</add>
+            <add>css/print_theme.css</add>
         </print_css>
     </files>
 
@@ -96,16 +96,16 @@
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/language_changer.twig</file>
                     <file type="css">./css/background-image.css</file>
-                    <file type="css">./css/template.css</file>
-                    <file type="js">./scripts/template.js</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
                 </question>
 
                 <surveylist>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_survey_list.twig</file>
-                    <file type="css">./css/template.css</file>
+                    <file type="css">./css/theme.css</file>
                     <file type="css">./css/background-image.css</file>
-                    <file type="js">./scripts/template.js</file>
+                    <file type="js">./scripts/theme.js</file>
                 </surveylist>
 
                 <welcome>
@@ -116,25 +116,25 @@
                     <file type="view" role="subview">./subviews/no_js_alert.twig</file>
                     <file type="view" role="subview">./subviews/privacy/privacy.twig</file>
                     <file type="css">./css/background-image.css</file>
-                    <file type="css">./css/template.css</file>
-                    <file type="js">./scripts/template.js</file>
+                    <file type="css">./css/theme.css</file>
+                    <file type="js">./scripts/theme.js</file>
                 </welcome>
 
                 <completed>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_submit.twig</file>
-                    <file type="css">./css/template.css</file>
+                    <file type="css">./css/theme.css</file>
                     <file type="css">./css/background-image.css</file>
-                    <file type="js">./scripts/template.js</file>
+                    <file type="js">./scripts/theme.js</file>
                 </completed>
 
                 <assessments>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_submit.twig</file>
                     <file type="view" role="subview">./subviews/assessments.twig</file>
-                    <file type="css">./css/template.css</file>
+                    <file type="css">./css/theme.css</file>
                     <file type="css">./css/background-image.css</file>
-                    <file type="js">./scripts/template.js</file>
+                    <file type="js">./scripts/theme.js</file>
                 </assessments>
 
                 <error>
@@ -145,36 +145,36 @@
                 <clearall>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_clearall.twig</file>
-                    <file type="css">./css/template.css</file>
+                    <file type="css">./css/theme.css</file>
                     <file type="css">./css/background-image.css</file>
-                    <file type="js">./scripts/template.js</file>
+                    <file type="js">./scripts/theme.js</file>
                 </clearall>
 
                 <load>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_load.twig</file>
-                    <file type="css">./css/template.css</file>
+                    <file type="css">./css/theme.css</file>
                     <file type="css">./css/background-image.css</file>
-                    <file type="js">./scripts/template.js</file>
+                    <file type="js">./scripts/theme.js</file>
                 </load>
 
                 <save>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_save.twig</file>
-                    <file type="css">./css/template.css</file>
+                    <file type="css">./css/theme.css</file>
                     <file type="css">./css/background-image.css</file>
-                    <file type="js">./scripts/template.js</file>
+                    <file type="js">./scripts/theme.js</file>
                 </save>
 
                 <register>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_register.twig</file>
-                    <file type="view" role="subview">./subviews/registration/register_head.twig</file>                    
-                    <file type="view" role="subview">./subviews/registration/register_form.twig</file>                    
-                    <file type="view" role="subview">./subviews/registration/register_error.twig</file>                    
-                    <file type="view" role="subview">./subviews/registration/register_message.twig</file>                    
+                    <file type="view" role="subview">./subviews/registration/register_head.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_form.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_error.twig</file>
+                    <file type="view" role="subview">./subviews/registration/register_message.twig</file>
                 </register>
-                
+
                 <printanswers>
                     <file type="view" role="global">layout_global.twig</file>
                     <file type="view" role="layout">layout_printanswers.twig</file>

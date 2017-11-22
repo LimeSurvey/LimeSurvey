@@ -678,6 +678,13 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false) {
             $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>327), "stg_name='DBVersion'");
             $oTransaction->commit();
         }
+
+        if ($iOldDBVersion < 328) {
+            $oTransaction = $oDB->beginTransaction();
+            upgrade328($oDB);
+            $oDB->createCommand()->update('{{settings_global}}', array('stg_value'=>328), "stg_name='DBVersion'");
+            $oTransaction->commit();
+        }
     }
     catch (Exception $e)
     {
@@ -724,6 +731,16 @@ function db_upgrade_all($iOldDBVersion, $bSilent = false) {
 }
 
 
+/**
+* @param $oDB
+* @return void
+*/
+function upgrade328($oDB)
+{
+    $oDB->createCommand()->update('{{templates}}', array(
+            'description' =>  "<strong>LimeSurvey Advanced Theme</strong><br>A theme with custom options to show what it's possible to do with the new engines. Each theme provider will be able to offer its own option page (loaded from theme)",
+    ), "name='default'");
+}
 
 /**
 * @param $oDB
